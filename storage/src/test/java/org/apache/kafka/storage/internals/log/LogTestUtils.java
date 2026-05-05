@@ -130,7 +130,7 @@ public class LogTestUtils {
      * Create a single record batch with the specified compression, timestamp, and magic value.
      */
     public static MemoryRecords singletonRecords(byte[] value, Compression codec, byte[] key,
-                                                  long timestamp, byte magicValue) {
+                                                 long timestamp, byte magicValue) {
         return records(
             List.of(new SimpleRecord(timestamp, key, value)),
             magicValue,
@@ -327,9 +327,9 @@ public class LogTestUtils {
 
             MemoryRecords records = isTransactional
                 ? MemoryRecords.withTransactionalRecords(Compression.NONE, producerId,
-                        producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]))
+                producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]))
                 : MemoryRecords.withIdempotentRecords(Compression.NONE, producerId,
-                        producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]));
+                producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]));
 
             assertDoesNotThrow(() -> log.appendAsLeader(records, 0));
             sequence.addAndGet(numRecords);

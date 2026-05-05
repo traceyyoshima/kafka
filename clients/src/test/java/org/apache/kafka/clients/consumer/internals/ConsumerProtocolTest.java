@@ -338,7 +338,7 @@ public class ConsumerProtocolTest {
         subscriptionV100.set("topics", new Object[]{"topic"});
         subscriptionV100.set("user_data", ByteBuffer.wrap(new byte[0]));
         subscriptionV100.set("owned_partitions", new Object[]{new Struct(
-            ConsumerProtocolSubscription.TopicPartition.SCHEMA_1)
+                ConsumerProtocolSubscription.TopicPartition.SCHEMA_1)
             .set("topic", tp2.topic())
             .set("partitions", new Object[]{tp2.partition()})});
         subscriptionV100.set("generation_id", generationId);

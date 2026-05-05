@@ -438,7 +438,7 @@ public class AssignmentsManagerTest {
         assertEquals(Optional.of("Disconnected[Timeout]"),
             AssignmentsManager.globalResponseError(Optional.of(
                 new ClientResponse(null, null, "", 0, 0, true, true,
-                   null, null, null))));
+                    null, null, null))));
     }
 
     @Test
@@ -463,7 +463,7 @@ public class AssignmentsManagerTest {
             AssignmentsManager.globalResponseError(Optional.of(
                 new ClientResponse(null, null, "", 0, 0, false, false,
                         null, null, new AssignReplicasToDirsResponse(
-                            new AssignReplicasToDirsResponseData().
+                    new AssignReplicasToDirsResponseData().
                                 setErrorCode(Errors.INVALID_REQUEST.code()))))));
     }
 

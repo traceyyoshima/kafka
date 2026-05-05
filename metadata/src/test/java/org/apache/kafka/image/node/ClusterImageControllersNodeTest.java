@@ -43,7 +43,7 @@ public class ClusterImageControllersNodeTest {
                     setIncarnationId(Uuid.fromString("adGo6sTPS0uJshjvdTUmqQ")).
                     setZkMigrationReady(false).
                     setSupportedFeatures(Map.of(
-                            MetadataVersion.FEATURE_NAME, VersionRange.of(1, 4))).
+                MetadataVersion.FEATURE_NAME, VersionRange.of(1, 4))).
                     setListeners(Map.of()).
                         build()));
 

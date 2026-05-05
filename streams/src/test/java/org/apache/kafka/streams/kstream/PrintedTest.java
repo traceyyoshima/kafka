@@ -62,7 +62,7 @@ public class PrintedTest {
     public void shouldCreateProcessorThatPrintsToFile() throws IOException {
         final File file = TestUtils.tempFile();
         final ProcessorSupplier<String, Integer, Void, Void> processorSupplier = new PrintedInternal<>(
-                Printed.<String, Integer>toFile(file.getPath()))
+                    Printed.<String, Integer>toFile(file.getPath()))
                 .build("processor");
         final Processor<String, Integer, Void, Void> processor = processorSupplier.get();
         processor.process(new Record<>("hi", 1, 0L));

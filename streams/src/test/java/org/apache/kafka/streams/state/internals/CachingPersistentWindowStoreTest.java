@@ -158,7 +158,7 @@ public class CachingPersistentWindowStoreTest {
         builder.addStateStore(storeBuilder);
 
         builder.stream(TOPIC,
-            Consumed.with(Serdes.String(), Serdes.String()))
+                Consumed.with(Serdes.String(), Serdes.String()))
             .process(() -> new Processor<String, String, String, String>() {
                 private WindowStore<String, String> store;
                 private int numRecordsProcessed;

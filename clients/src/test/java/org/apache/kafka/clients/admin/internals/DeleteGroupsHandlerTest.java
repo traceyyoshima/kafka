@@ -86,7 +86,7 @@ public abstract class DeleteGroupsHandlerTest {
         return new DeleteGroupsResponse(
                 new DeleteGroupsResponseData()
                     .setResults(new DeletableGroupResultCollection(singletonList(
-                            new DeletableGroupResult()
+                    new DeletableGroupResult()
                                 .setErrorCode(error.code())
                                 .setGroupId(groupId1)))));
     }

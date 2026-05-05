@@ -171,7 +171,7 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
         @Override
         public String clusterId() {
             return Stream.concat(controllers().values().stream().map(ControllerServer::clusterId),
-                brokers().values().stream().map(KafkaBroker::clusterId)).findFirst()
+                    brokers().values().stream().map(KafkaBroker::clusterId)).findFirst()
                 .orElseThrow(() -> new RuntimeException("No controllers or brokers!"));
         }
 

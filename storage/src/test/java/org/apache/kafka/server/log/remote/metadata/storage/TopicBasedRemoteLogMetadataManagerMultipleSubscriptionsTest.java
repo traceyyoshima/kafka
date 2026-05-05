@@ -157,7 +157,7 @@ public class TopicBasedRemoteLogMetadataManagerMultipleSubscriptionsTest {
             initializationPhaser.bulkRegister(2); // 1 for emptyTopicIdPartition and 1 for followerTopicIdPartition
             handleRemoteLogSegmentMetadataPhaser.register(); // 1 for followerTopicIdPartition, emptyTopicIdPartition doesn't have a RemoteLogSegmentMetadata event
             remoteLogMetadataManager.onPartitionLeadershipChanges(Set.of(emptyTopicIdPartition),
-                    Set.of(followerTopicIdPartition));
+            Set.of(followerTopicIdPartition));
 
             initializationPhaser.awaitAdvanceInterruptibly(initializationPhaser.arrive(), 30_000, TimeUnit.MILLISECONDS);
             handleRemoteLogSegmentMetadataPhaser.awaitAdvanceInterruptibly(handleRemoteLogSegmentMetadataPhaser.arrive(), 30_000, TimeUnit.MILLISECONDS);

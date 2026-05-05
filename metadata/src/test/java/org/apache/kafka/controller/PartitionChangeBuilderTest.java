@@ -420,7 +420,7 @@ public class PartitionChangeBuilderTest {
             // Actual
             createFooBuilder(version)
               .setTargetIsrWithBrokerStates(
-                  AlterPartitionRequest.newIsrToSimpleNewIsrWithBrokerEpochs(List.of(2, 1))
+                AlterPartitionRequest.newIsrToSimpleNewIsrWithBrokerEpochs(List.of(2, 1))
               )
               .build()
         );
@@ -846,7 +846,7 @@ public class PartitionChangeBuilderTest {
         // No replica is acceptable as leader, so election yields NO_LEADER.
         // We intentionally do not change target ISR so record.isr remains null.
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> false,
-            metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
+                metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
             .setElection(Election.PREFERRED)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER)
             .setUseLastKnownLeaderInBalancedRecovery(true);

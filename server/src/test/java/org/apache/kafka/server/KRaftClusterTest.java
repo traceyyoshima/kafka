@@ -275,7 +275,7 @@ public class KRaftClusterTest {
 
             try (Admin admin = cluster.admin()) {
                 admin.incrementalAlterConfigs(
-                    Map.of(new ConfigResource(Type.BROKER, ""),
+                            Map.of(new ConfigResource(Type.BROKER, ""),
                         List.of(new AlterConfigOp(
                             new ConfigEntry(DummyClientQuotaCallback.DUMMY_CLIENT_QUOTA_CALLBACK_VALUE_CONFIG_KEY, "1"), OpType.SET))))
                         .all().get();
@@ -315,7 +315,7 @@ public class KRaftClusterTest {
 
             try (Admin admin = cluster.admin()) {
                 admin.incrementalAlterConfigs(
-                    Map.of(new ConfigResource(Type.BROKER, ""),
+                        Map.of(new ConfigResource(Type.BROKER, ""),
                         List.of(new AlterConfigOp(
                             new ConfigEntry(FakeConfigurableAuthorizer.FOOBAR_CONFIG_KEY, "123"), OpType.SET))))
                     .all().get();

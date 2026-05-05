@@ -1237,7 +1237,7 @@ public class TimeOrderedWindowStoreTest {
         setUp(hasIndex);
         setUpCloseTests();
         doThrow(new RuntimeException(
-                "Simulating an error on flush"))
+                    "Simulating an error on flush"))
                 .when(cache).flush(CACHE_NAMESPACE);
         assertThrows(RuntimeException.class, cachingStore::close);
         verifyAndTearDownCloseTests();

@@ -635,7 +635,7 @@ public class StoreQueryIntegrationTest {
 
     private void getStreamsBuilderWithTopology(final StreamsBuilder builder, final Semaphore semaphore) {
         builder.table(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()),
-            Materialized.<Integer, Integer, KeyValueStore<Bytes, byte[]>>as(TABLE_NAME).withCachingDisabled())
+                Materialized.<Integer, Integer, KeyValueStore<Bytes, byte[]>>as(TABLE_NAME).withCachingDisabled())
             .toStream()
             .peek((k, v) -> semaphore.release());
     }

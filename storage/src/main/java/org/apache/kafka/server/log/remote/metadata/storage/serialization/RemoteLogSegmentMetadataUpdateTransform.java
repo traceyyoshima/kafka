@@ -55,7 +55,7 @@ public class RemoteLogSegmentMetadataUpdateTransform implements RemoteLogMetadat
         return new RemoteLogSegmentMetadataUpdateRecord.RemoteLogSegmentIdEntry()
                 .setId(data.remoteLogSegmentId().id())
                 .setTopicIdPartition(
-                        new RemoteLogSegmentMetadataUpdateRecord.TopicIdPartitionEntry()
+            new RemoteLogSegmentMetadataUpdateRecord.TopicIdPartitionEntry()
                                 .setName(data.remoteLogSegmentId().topicIdPartition().topic())
                                 .setPartition(data.remoteLogSegmentId().topicIdPartition().partition())
                                 .setId(data.remoteLogSegmentId().topicIdPartition().topicId()));

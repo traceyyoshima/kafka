@@ -112,7 +112,7 @@ public class ClusterImageTest {
             setIncarnationId(Uuid.fromString("9ABu6HEgRuS-hjHLgC4cHw")).
             setZkMigrationReady(false).
             setListeners(Map.of("PLAINTEXT",
-                    new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 19092))).
+            new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 19092))).
             setSupportedFeatures(Map.of()).build());
         IMAGE1 = new ClusterImage(map1, cmap1);
 

@@ -90,7 +90,7 @@ public class AdminClientWithPoliciesIntegrationTest {
             // Set a mutable broker config
             ConfigResource brokerResource = new ConfigResource(ConfigResource.Type.BROKER, "0"); // "0" represents the broker ID
             Map<ConfigResource, Collection<AlterConfigOp>> configOps = Map.of(
-                    brokerResource, List.of(new AlterConfigOp(new ConfigEntry(ServerConfigs.MESSAGE_MAX_BYTES_CONFIG, "50000"), OpType.SET))
+            brokerResource, List.of(new AlterConfigOp(new ConfigEntry(ServerConfigs.MESSAGE_MAX_BYTES_CONFIG, "50000"), OpType.SET))
             );
             adminClient.incrementalAlterConfigs(configOps).all().get();
             assertEquals(Set.of(ServerConfigs.MESSAGE_MAX_BYTES_CONFIG), validationsForResource(brokerResource).get(0).configs().keySet());

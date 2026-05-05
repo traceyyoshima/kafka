@@ -410,7 +410,7 @@ public class ConsumerGroupCommand {
                         for (MemberAssignmentState memberAssignment : assignments.get()) {
                             maxGroupLen = Math.max(maxGroupLen, memberAssignment.group().length());
                             maxConsumerIdLen = Math.max(maxConsumerIdLen, memberAssignment.consumerId().length());
-                            maxGroupInstanceIdLen =  Math.max(maxGroupInstanceIdLen, memberAssignment.groupInstanceId().length());
+                            maxGroupInstanceIdLen = Math.max(maxGroupInstanceIdLen, memberAssignment.groupInstanceId().length());
                             maxHostLen = Math.max(maxHostLen, memberAssignment.host().length());
                             maxClientIdLen = Math.max(maxClientIdLen, memberAssignment.clientId().length());
                             includeGroupInstanceId = includeGroupInstanceId || !memberAssignment.groupInstanceId().isEmpty();
@@ -623,7 +623,7 @@ public class ConsumerGroupCommand {
             // concat the data and then sort them
             return Stream.concat(existLeaderAssignments.stream(), noneLeaderAssignments.stream())
                     .sorted(Comparator.<PartitionAssignmentState, String>comparing(
-                            state -> state.topic().orElse(""), String::compareTo)
+                                state -> state.topic().orElse(""), String::compareTo)
                             .thenComparingInt(state -> state.partition().orElse(-1)))
                     .collect(Collectors.toList());
         }

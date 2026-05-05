@@ -125,7 +125,7 @@ public class DefaultRecord implements Record {
     }
 
     @Override
-    public void ensureValid() {}
+    public void ensureValid() { }
 
     @Override
     public int keySize() {
@@ -290,7 +290,7 @@ public class DefaultRecord implements Record {
                 " bytes in record payload, but the record payload reached EOF.");
         recordBuffer.flip(); // prepare for reading
         return readFrom(recordBuffer, sizeOfBodyInBytes, baseOffset, baseTimestamp,
-                baseSequence, logAppendTime);
+        baseSequence, logAppendTime);
     }
 
     public static DefaultRecord readFrom(ByteBuffer buffer,

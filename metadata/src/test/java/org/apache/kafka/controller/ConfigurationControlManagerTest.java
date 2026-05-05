@@ -348,9 +348,9 @@ public class ConfigurationControlManagerTest {
         assertEquals(ControllerResult.atomicOf(List.of(new ApiMessageAndVersion(
                 new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0").
                     setName("foo.bar").setValue("123"), CONFIG_RECORD.highestSupportedVersion()), new ApiMessageAndVersion(
-                                new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0").
+            new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0").
                                         setName("quux").setValue("456"), CONFIG_RECORD.highestSupportedVersion()), new ApiMessageAndVersion(
-                                            new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0").
+            new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0").
                                                     setName("broker.config.to.remove").setValue(null), CONFIG_RECORD.highestSupportedVersion())
                 ),
                 toMap(entry(MYTOPIC, new ApiError(Errors.POLICY_VIOLATION,
@@ -358,7 +358,7 @@ public class ConfigurationControlManagerTest {
                     "type=TOPIC, name='mytopic'), configs={}). Got: " +
                     "AlterConfigPolicy.RequestMetadata(resource=ConfigResource(" +
                     "type=TOPIC, name='mytopic'), configs={foo.bar=123})")),
-                entry(BROKER0, ApiError.NONE))),
+                    entry(BROKER0, ApiError.NONE))),
             manager.incrementalAlterConfigs(toMap(entry(MYTOPIC, toMap(
                 entry("foo.bar", entry(SET, "123")))),
                 entry(BROKER0, toMap(

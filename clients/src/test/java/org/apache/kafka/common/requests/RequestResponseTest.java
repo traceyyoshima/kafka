@@ -1310,7 +1310,7 @@ public class RequestResponseTest {
                 setVoterId(1).
                 setVoterDirectoryId(Uuid.fromString("DZG26STKRxaelDpg2wqsXw")).
                 setListeners(new UpdateRaftVoterRequestData.ListenerCollection(
-                    Collections.singletonList(new UpdateRaftVoterRequestData.Listener().
+            Collections.singletonList(new UpdateRaftVoterRequestData.Listener().
                         setName("CONTROLLER").
                         setHost("localhost").
                         setPort(8080)))),
@@ -3370,7 +3370,7 @@ public class RequestResponseTest {
             new ListPartitionReassignmentsResponseData.OngoingTopicReassignment()
                         .setName("topic")
                         .setPartitions(singletonList(
-                                new ListPartitionReassignmentsResponseData.OngoingPartitionReassignment()
+                new ListPartitionReassignmentsResponseData.OngoingPartitionReassignment()
                                         .setPartitionIndex(0)
                                         .setReplicas(asList(1, 2))
                                         .setAddingReplicas(singletonList(2))

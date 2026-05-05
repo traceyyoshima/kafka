@@ -206,7 +206,7 @@ public class StateManagerUtilTest {
 
             final ProcessorStateException thrown = assertThrows(
                     ProcessorStateException.class, () -> StateManagerUtil.closeStateManager(logger,
-                            "logPrefix:", false, true, stateManager, stateDirectory, TaskType.ACTIVE));
+                "logPrefix:", false, true, stateManager, stateDirectory, TaskType.ACTIVE));
 
             assertEquals(IOException.class, thrown.getCause().getClass());
         }
