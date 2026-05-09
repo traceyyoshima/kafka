@@ -115,12 +115,12 @@ public class UuidTest {
     void testToArray() {
         assertNull(Uuid.toArray(null));
         assertArrayEquals(
-                new Uuid[]{
-                    Uuid.ZERO_UUID, Uuid.fromString("UXyU9i5ARn6W00ON2taeWA")
-                },
-                Uuid.toArray(Arrays.asList(
-                    Uuid.ZERO_UUID, Uuid.fromString("UXyU9i5ARn6W00ON2taeWA")
-                ))
+            new Uuid[]{
+                Uuid.ZERO_UUID, Uuid.fromString("UXyU9i5ARn6W00ON2taeWA")
+            },
+            Uuid.toArray(Arrays.asList(
+                Uuid.ZERO_UUID, Uuid.fromString("UXyU9i5ARn6W00ON2taeWA")
+            ))
         );
     }
 
@@ -128,12 +128,12 @@ public class UuidTest {
     void testToList() {
         assertNull(Uuid.toList(null));
         assertEquals(
-                Arrays.asList(
-                    Uuid.ZERO_UUID, Uuid.fromString("UXyU9i5ARn6W00ON2taeWA")
-                ),
-                Uuid.toList(new Uuid[]{
-                    Uuid.ZERO_UUID, Uuid.fromString("UXyU9i5ARn6W00ON2taeWA")
-                })
+            Arrays.asList(
+                Uuid.ZERO_UUID, Uuid.fromString("UXyU9i5ARn6W00ON2taeWA")
+            ),
+            Uuid.toList(new Uuid[]{
+                Uuid.ZERO_UUID, Uuid.fromString("UXyU9i5ARn6W00ON2taeWA")
+            })
         );
     }
 }

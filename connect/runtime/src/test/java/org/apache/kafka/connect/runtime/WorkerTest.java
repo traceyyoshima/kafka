@@ -264,9 +264,9 @@ public class WorkerTest {
 
         defaultProducerConfigs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         defaultProducerConfigs.put(
-            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.ByteArraySerializer");
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.ByteArraySerializer");
         defaultProducerConfigs.put(
-            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.ByteArraySerializer");
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.ByteArraySerializer");
         defaultProducerConfigs.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, Long.toString(Long.MAX_VALUE));
         // By default, producers that are instantiated and used by Connect have idempotency disabled even after idempotency became
         // default for Kafka producers. This is chosen to avoid breaking changes when Connect contacts Kafka brokers that do not support
@@ -765,7 +765,7 @@ public class WorkerTest {
                 Set.of()
         );
 
-        assertTrue(worker.startExactlyOnceSourceTask(TASK_ID, configState,  connectorConfigs, origProps, taskStatusListener, TargetState.STARTED, preProducer, postProducer));
+        assertTrue(worker.startExactlyOnceSourceTask(TASK_ID, configState, connectorConfigs, origProps, taskStatusListener, TargetState.STARTED, preProducer, postProducer));
         assertStatistics(worker, 0, 1);
         assertEquals(Set.of(TASK_ID), worker.taskIds());
         worker.stopAndAwaitTask(TASK_ID);
@@ -813,13 +813,13 @@ public class WorkerTest {
         );
 
         worker = new Worker(WORKER_ID,
-            new MockTime(),
-            plugins,
-            config,
-            offsetBackingStore,
-            executorService,
-            noneConnectorClientConfigOverridePolicy,
-            null);
+                new MockTime(),
+                plugins,
+                config,
+                offsetBackingStore,
+                executorService,
+                noneConnectorClientConfigOverridePolicy,
+                null);
 
         worker.herder = herder;
 
@@ -828,12 +828,12 @@ public class WorkerTest {
         assertStartupStatistics(worker, 0, 0, 0, 0);
         assertEquals(Set.of(), worker.taskIds());
         worker.startSourceTask(
-            TASK_ID,
-            ClusterConfigState.EMPTY,
-            anyConnectorConfigMap(),
-            origProps,
+                TASK_ID,
+                ClusterConfigState.EMPTY,
+                anyConnectorConfigMap(),
+                origProps,
                 taskStatusListener,
-            TargetState.STARTED);
+                TargetState.STARTED);
 
         assertStatusMetrics(1L, "connector-running-task-count");
         assertStatusMetrics(1L, "connector-paused-task-count");
@@ -880,15 +880,15 @@ public class WorkerTest {
         mockFileConfigProvider();
 
         worker = new Worker(WORKER_ID,
-            new MockTime(),
-            plugins,
-            config,
-            offsetBackingStore,
-            noneConnectorClientConfigOverridePolicy);
+                new MockTime(),
+                plugins,
+                config,
+                offsetBackingStore,
+                noneConnectorClientConfigOverridePolicy);
         worker.herder = herder;
 
         Worker.ConnectorStatusMetricsGroup metricGroup = new Worker.ConnectorStatusMetricsGroup(
-            worker.metrics(), tasks, herder
+                worker.metrics(), tasks, herder
         );
         assertEquals(2L, (long) metricGroup.taskCounter("c1").metricValue(0L));
         assertEquals(1L, (long) metricGroup.taskCounter("c2").metricValue(0L));
@@ -1812,7 +1812,7 @@ public class WorkerTest {
                 config,
                 offsetBackingStore,
                 noneConnectorClientConfigOverridePolicy
-                );
+        );
         MetricName name = worker.metrics().metrics().metricName("test.avg", "grp1");
         worker.metrics().metrics().addMetric(name, new Avg());
         MBeanServer server = ManagementFactory.getPlatformMBeanServer();
@@ -2926,8 +2926,8 @@ public class WorkerTest {
         assertTrue(
                 message.startsWith(expectedPrefix),
                 "Warning/exception message '"
-                                + message + "' did not start with the expected prefix '"
-                                + expectedPrefix + "'"
+                        + message + "' did not start with the expected prefix '"
+                        + expectedPrefix + "'"
         );
     }
 

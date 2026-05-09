@@ -188,7 +188,7 @@ public class StreamsGroupSubtopologyDescription {
                 "partitions=" + partitions +
                 ", replicationFactor=" + replicationFactor +
                 ", topicConfigs=" + topicConfigs.entrySet().stream().map(x -> x.getKey() + "=" + x.getValue())
-                .collect(Collectors.joining(",")) +
+                    .collect(Collectors.joining(",")) +
                 ')';
         }
     }

@@ -121,9 +121,9 @@ public class WorkerConfig extends AbstractConfig {
     public static final String OFFSET_COMMIT_TIMEOUT_MS_CONFIG = "offset.flush.timeout.ms";
     private static final String OFFSET_COMMIT_TIMEOUT_MS_DOC
             = "Maximum number of milliseconds to wait for records to flush and partition offset data to be"
-            + " committed to offset storage before cancelling the process and restoring the offset "
-            + "data to be committed in a future attempt. This property has no effect for source connectors "
-            + "running with exactly-once support.";
+                    + " committed to offset storage before cancelling the process and restoring the offset "
+                    + "data to be committed in a future attempt. This property has no effect for source connectors "
+                    + "running with exactly-once support.";
     public static final long OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5000L;
 
     public static final String PLUGIN_PATH_CONFIG = "plugin.path";
@@ -331,7 +331,7 @@ public class WorkerConfig extends AbstractConfig {
         if (!removedProperties.isEmpty()) {
             log.warn(
                     "The worker has been configured with one or more internal converter properties ({}). "
-                     + "These properties have been removed since version 3.0 and an instance of the JsonConverter with schemas.enable set to false will be used instead.",
+                    + "These properties have been removed since version 3.0 and an instance of the JsonConverter with schemas.enable set to false will be used instead.",
                     removedProperties);
         }
     }
@@ -343,12 +343,12 @@ public class WorkerConfig extends AbstractConfig {
         String transformedPluginPath = Objects.toString(originals().get(PLUGIN_PATH_CONFIG), null);
         if (!Objects.equals(rawPluginPath, transformedPluginPath)) {
             log.warn(
-                "Variables cannot be used in the 'plugin.path' property, since the property is "
-                + "used by plugin scanning before the config providers that replace the "
-                + "variables are initialized. The raw value '{}' was used for plugin scanning, as "
-                + "opposed to the transformed value '{}', and this may cause unexpected results.",
-                rawPluginPath,
-                transformedPluginPath
+                    "Variables cannot be used in the 'plugin.path' property, since the property is "
+                            + "used by plugin scanning before the config providers that replace the "
+                            + "variables are initialized. The raw value '{}' was used for plugin scanning, as "
+                            + "opposed to the transformed value '{}', and this may cause unexpected results.",
+                    rawPluginPath,
+                    transformedPluginPath
             );
         }
     }

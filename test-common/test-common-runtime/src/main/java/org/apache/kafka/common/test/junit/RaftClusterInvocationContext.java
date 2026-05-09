@@ -76,7 +76,7 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
      * avoid transient failures due to slow or overloaded machines.
      */
     static void waitForCondition(final java.util.function.Supplier<Boolean> testCondition,
-                                        final String conditionDetails) throws InterruptedException {
+                                 final String conditionDetails) throws InterruptedException {
         var maxWaitMs = 15_000L;
         long endTime = System.currentTimeMillis() + maxWaitMs;
 
@@ -159,20 +159,20 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
         public ListenerName controllerListenerName() {
             return new ListenerName(
                 controllers()
-                    .values()
-                    .iterator()
-                    .next()
-                    .config()
-                    .controllerListenerNames()
-                    .get(0)
+                        .values()
+                        .iterator()
+                        .next()
+                        .config()
+                        .controllerListenerNames()
+                        .get(0)
             );
         }
 
         @Override
         public String clusterId() {
             return Stream.concat(controllers().values().stream().map(ControllerServer::clusterId),
-                brokers().values().stream().map(KafkaBroker::clusterId)).findFirst()
-                .orElseThrow(() -> new RuntimeException("No controllers or brokers!"));
+                    brokers().values().stream().map(KafkaBroker::clusterId)).findFirst()
+                    .orElseThrow(() -> new RuntimeException("No controllers or brokers!"));
         }
 
         @Override
@@ -292,7 +292,7 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
                 Feature.PRODUCTION_FEATURES.forEach(supportedFeature -> {
                     if (!newFeatureLevels.containsKey(supportedFeature.featureName())) {
                         newFeatureLevels.put(supportedFeature.featureName(),
-                            supportedFeature.defaultLevel(clusterConfig.metadataVersion()));
+                                supportedFeature.defaultLevel(clusterConfig.metadataVersion()));
                     }
                 });
 

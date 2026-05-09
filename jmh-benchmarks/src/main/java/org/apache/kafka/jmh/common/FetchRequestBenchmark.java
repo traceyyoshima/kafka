@@ -113,7 +113,7 @@ public class FetchRequestBenchmark {
     public int testFetchRequestForReplica() {
         FetchRequest fetchRequest = FetchRequest.Builder.forReplica(
             ApiKeys.FETCH.latestVersion(), 1, 1, 0, 0, fetchData)
-                .build(ApiKeys.FETCH.latestVersion());
+            .build(ApiKeys.FETCH.latestVersion());
         return fetchRequest.fetchData(topicNames).size();
     }
 

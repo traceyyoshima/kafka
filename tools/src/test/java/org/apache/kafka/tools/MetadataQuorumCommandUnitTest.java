@@ -195,8 +195,8 @@ public class MetadataQuorumCommandUnitTest {
                      new MetadataQuorumCommandUnitTestEnv(Optional.empty())) {
             testEnv.close();
             assertEquals("Unable to read meta.properties from " + testEnv.metadataDir.getAbsolutePath(),
-                    assertThrows(TerseException.class,
-                        () -> MetadataQuorumCommand.getMetadataDirectoryId(testEnv.metadataDir.getAbsolutePath())).
+                assertThrows(TerseException.class,
+                    () -> MetadataQuorumCommand.getMetadataDirectoryId(testEnv.metadataDir.getAbsolutePath())).
                             getMessage());
         }
     }
@@ -228,7 +228,7 @@ public class MetadataQuorumCommandUnitTest {
         assertEquals(Set.of(
             new RaftVoterEndpoint("CONTROLLER", "example.com", 9092),
             new RaftVoterEndpoint("CONTROLLER2", "localhost", 9093)),
-                MetadataQuorumCommand.getControllerAdvertisedListeners(props));
+            MetadataQuorumCommand.getControllerAdvertisedListeners(props));
     }
 
     @Test
@@ -240,7 +240,7 @@ public class MetadataQuorumCommandUnitTest {
         assertEquals(Set.of(
             new RaftVoterEndpoint("CONTROLLER", "example.com", 9092),
             new RaftVoterEndpoint("CONTROLLER2", "example.com", 9093)),
-                MetadataQuorumCommand.getControllerAdvertisedListeners(props));
+            MetadataQuorumCommand.getControllerAdvertisedListeners(props));
     }
 
     @Test
@@ -257,7 +257,7 @@ public class MetadataQuorumCommandUnitTest {
                         "--dry-run"))).split("\n"));
             assertTrue(outputs.contains("DRY RUN of adding controller 5 with directory id " +
                 "wZoXPqWoSu6F6c8MkmdyAg and endpoints: CONTROLLER://example.com:9093, CONTROLLER_SSL://example.com:9094"),
-                    "Failed to find expected output in stdout: " + outputs);
+                       "Failed to find expected output in stdout: " + outputs);
         }
     }
 }

@@ -141,18 +141,18 @@ class MetadataQuorumCommandTest {
     public void testOnlyOneBrokerAndOneController(ClusterInstance cluster, boolean usingBootstrapController) {
         String statusOutput = ToolsTestUtils.captureStandardOut(() ->
             MetadataQuorumCommand.mainNoExit(
-                    usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
-                    usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
-                    "describe", "--status")
+                usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
+                usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
+                "describe", "--status")
         );
         assertEquals("MaxFollowerLag:         0", statusOutput.split("\n")[4]);
         assertEquals("MaxFollowerLagTimeMs:   0", statusOutput.split("\n")[5]);
 
         String replicationOutput = ToolsTestUtils.captureStandardOut(() ->
             MetadataQuorumCommand.mainNoExit(
-                    usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
-                    usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
-                    "describe", "--replication")
+                usingBootstrapController ? "--bootstrap-controller" : "--bootstrap-server",
+                usingBootstrapController ? cluster.bootstrapControllers() : cluster.bootstrapServers(),
+                "describe", "--replication")
         );
         assertEquals("0", replicationOutput.split("\n")[1].split("\\s+")[3]);
     }
@@ -162,7 +162,7 @@ class MetadataQuorumCommandTest {
         // specifying a --command-config containing properties that would prevent login must fail
         File tmpfile = TestUtils.tempFile(AdminClientConfig.SECURITY_PROTOCOL_CONFIG + "=SSL_PLAINTEXT");
         assertEquals(1, MetadataQuorumCommand.mainNoExit("--bootstrap-server", "localhost:9092",
-                        "--command-config", tmpfile.getAbsolutePath(), "describe", "--status"));
+            "--command-config", tmpfile.getAbsolutePath(), "describe", "--status"));
     }
 
     @ClusterTest(types = {Type.CO_KRAFT})

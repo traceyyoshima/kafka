@@ -518,8 +518,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
     private static void throwIfInvalidTopology(
         StreamsGroupHeartbeatRequestData.Topology topology
     ) throws StreamsInvalidTopologyException {
-        for (StreamsGroupHeartbeatRequestData.Subtopology subtopology: topology.subtopologies()) {
-            for (StreamsGroupHeartbeatRequestData.TopicInfo topicInfo: subtopology.stateChangelogTopics()) {
+        for (StreamsGroupHeartbeatRequestData.Subtopology subtopology : topology.subtopologies()) {
+            for (StreamsGroupHeartbeatRequestData.TopicInfo topicInfo : subtopology.stateChangelogTopics()) {
                 if (topicInfo.partitions() != 0) {
                     throw new StreamsInvalidTopologyException(String.format(
                         "Changelog topic %s must have an undefined partition count, but it is set to %d.",
@@ -1076,11 +1076,11 @@ public class GroupCoordinatorService implements GroupCoordinator {
                 if (error == Errors.UNKNOWN_MEMBER_ID) {
                     // Group was not found.
                     List<LeaveGroupResponseData.MemberResponse> memberResponses = request.members().stream()
-                         .map(member -> new LeaveGroupResponseData.MemberResponse()
-                             .setMemberId(member.memberId())
-                             .setGroupInstanceId(member.groupInstanceId())
-                             .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code()))
-                         .toList();
+                        .map(member -> new LeaveGroupResponseData.MemberResponse()
+                            .setMemberId(member.memberId())
+                            .setGroupInstanceId(member.groupInstanceId())
+                            .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code()))
+                        .toList();
                     return new LeaveGroupResponseData()
                         .setMembers(memberResponses);
                 } else {
@@ -2415,20 +2415,20 @@ public class GroupCoordinatorService implements GroupCoordinator {
                     // COORDINATOR_NOT_AVAILABLE is also not handled by consumers on versions prior to
                     // 3.9.
                 OffsetFetchResponse.groupError(
-                            request,
-                            Errors.NOT_COORDINATOR,
-                            context.requestVersion()
+                    request,
+                    Errors.NOT_COORDINATOR,
+                    context.requestVersion()
                 );
             default -> handleOperationException(
-                    operationName,
+                operationName,
+                request,
+                exception,
+                (error, __) -> OffsetFetchResponse.groupError(
                     request,
-                    exception,
-                    (error, __) -> OffsetFetchResponse.groupError(
-                        request,
-                        error,
-                        context.requestVersion()
-                    ),
-                    log
+                    error,
+                    context.requestVersion()
+                ),
+                log
             );
         };
     }

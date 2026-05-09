@@ -65,7 +65,7 @@ public class SimpleExampleMessageTest {
 
         final SimpleExampleMessageData out = new SimpleExampleMessageData().setProcessId(Uuid.randomUuid());
         assertThrows(UnsupportedVersionException.class, () ->
-                out.write(new ByteBufferAccessor(ByteBuffer.allocate(64)), new ObjectSerializationCache(), (short) 0));
+            out.write(new ByteBufferAccessor(ByteBuffer.allocate(64)), new ObjectSerializationCache(), (short) 0));
     }
 
     @Test
@@ -187,12 +187,12 @@ public class SimpleExampleMessageTest {
     public void testMyUint32() {
         // Verify that the uint16 field reads as 33000 when not set.
         testRoundTrip(new SimpleExampleMessageData(),
-                message -> assertEquals(1234567, message.myUint32()));
+            message -> assertEquals(1234567, message.myUint32()));
 
         testRoundTrip(new SimpleExampleMessageData().setMyUint32(123),
-                message -> assertEquals(123, message.myUint32()));
+            message -> assertEquals(123, message.myUint32()));
         testRoundTrip(new SimpleExampleMessageData().setMyUint32(60000),
-                message -> assertEquals(60000, message.myUint32()));
+            message -> assertEquals(60000, message.myUint32()));
     }
 
     @Test
@@ -225,9 +225,9 @@ public class SimpleExampleMessageTest {
             () -> new SimpleExampleMessageData().setMyUint16(UNSIGNED_SHORT_MAX + 1));
 
         assertThrows(RuntimeException.class,
-                () -> new SimpleExampleMessageData().setMyUint32(-1));
+            () -> new SimpleExampleMessageData().setMyUint32(-1));
         assertThrows(RuntimeException.class,
-                () -> new SimpleExampleMessageData().setMyUint32(UNSIGNED_INT_MAX + 1));
+            () -> new SimpleExampleMessageData().setMyUint32(UNSIGNED_INT_MAX + 1));
 
         // Verify that the tagged field reads as empty when not set.
         testRoundTrip(new SimpleExampleMessageData(),

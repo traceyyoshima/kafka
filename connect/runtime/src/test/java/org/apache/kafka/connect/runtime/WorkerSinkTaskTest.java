@@ -512,7 +512,7 @@ public class WorkerSinkTaskTest {
                     rebalanceListener.getValue().onPartitionsRevoked(INITIAL_ASSIGNMENT);
                     rebalanceListener.getValue().onPartitionsAssigned(List.of());
                     return new ConsumerRecords<>(Map.of(TOPIC_PARTITION3, List.of(newRecord)),
-                        Map.of(TOPIC_PARTITION3, new OffsetAndMetadata(FIRST_OFFSET + 1, Optional.empty(), "")));
+                            Map.of(TOPIC_PARTITION3, new OffsetAndMetadata(FIRST_OFFSET + 1, Optional.empty(), "")));
                 });
         expectConversionAndTransformation(null, new RecordHeaders());
 
@@ -1942,7 +1942,7 @@ public class WorkerSinkTaskTest {
         return expectConsumerPoll(numMessages, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, new RecordHeaders());
     }
 
-    private Answer<ConsumerRecords<byte[], byte[]>> expectConsumerPoll(final int numMessages,  Headers headers) {
+    private Answer<ConsumerRecords<byte[], byte[]>> expectConsumerPoll(final int numMessages, Headers headers) {
         return expectConsumerPoll(numMessages, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, headers);
     }
 
@@ -1953,7 +1953,7 @@ public class WorkerSinkTaskTest {
             for (int i = 0; i < numMessages; i++) {
                 offset = FIRST_OFFSET + recordsReturnedTp1 + i;
                 records.add(new ConsumerRecord<>(TOPIC, PARTITION, offset, timestamp, timestampType,
-                    0, 0, RAW_KEY, RAW_VALUE, headers, Optional.empty()));
+                        0, 0, RAW_KEY, RAW_VALUE, headers, Optional.empty()));
             }
             recordsReturnedTp1 += numMessages;
             final TopicPartition tp = new TopicPartition(TOPIC, PARTITION);
@@ -1995,15 +1995,16 @@ public class WorkerSinkTaskTest {
                     SinkRecord origRecord = invocation.getArgument(1);
                     return topicPrefix != null && !topicPrefix.isEmpty()
                             ? origRecord.newRecord(
-                            topicPrefix + origRecord.topic(),
-                            origRecord.kafkaPartition(),
-                            origRecord.keySchema(),
-                            origRecord.key(),
-                            origRecord.valueSchema(),
-                            origRecord.value(),
-                            origRecord.timestamp(),
-                            origRecord.headers()
-                    ) : origRecord;
+                                    topicPrefix + origRecord.topic(),
+                                    origRecord.kafkaPartition(),
+                                    origRecord.keySchema(),
+                                    origRecord.key(),
+                                    origRecord.valueSchema(),
+                                    origRecord.value(),
+                                    origRecord.timestamp(),
+                                    origRecord.headers()
+                            )
+                            : origRecord;
                 });
     }
 

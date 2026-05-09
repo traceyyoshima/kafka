@@ -68,7 +68,7 @@ public class ControllerMetadataMetricsTest {
                     ));
             }
             ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "KafkaController",
-                    Set.of());
+                Set.of());
         } finally {
             registry.shutdown();
         }

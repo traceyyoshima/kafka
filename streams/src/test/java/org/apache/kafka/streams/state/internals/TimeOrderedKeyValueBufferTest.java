@@ -83,7 +83,7 @@ public class TimeOrderedKeyValueBufferTest<B extends TimeOrderedKeyValueBuffer<S
     // As we add more buffer implementations/configurations, we can add them here
     public static Stream<Arguments> parameters() {
         return Stream.of(
-                Arguments.of("in-memory buffer",
+            Arguments.of("in-memory buffer",
                 (Function<String, InMemoryTimeOrderedKeyValueChangeBuffer<String, String, Change<String>>>) name ->
                     new InMemoryTimeOrderedKeyValueChangeBuffer
                         .Builder<>(name, Serdes.String(), Serdes.serdeFrom(new NullRejectingStringSerializer(), new StringDeserializer()))

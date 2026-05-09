@@ -647,13 +647,13 @@ public class StreamThread extends Thread implements ProcessingThread {
     }
 
     private static StateUpdater createStateUpdater(final StreamsMetricsImpl streamsMetrics,
-                                                        final StreamsConfig streamsConfig,
-                                                        final Consumer<byte[], byte[]> restoreConsumer,
-                                                        final ChangelogReader changelogReader,
-                                                        final TopologyMetadata topologyMetadata,
-                                                        final Time time,
-                                                        final String clientId,
-                                                        final int threadIdx) {
+                                                   final StreamsConfig streamsConfig,
+                                                   final Consumer<byte[], byte[]> restoreConsumer,
+                                                   final ChangelogReader changelogReader,
+                                                   final TopologyMetadata topologyMetadata,
+                                                   final Time time,
+                                                   final String clientId,
+                                                   final int threadIdx) {
         final String name = clientId + STATE_UPDATER_ID_SUBSTRING + threadIdx;
         return new DefaultStateUpdater(
             name,
@@ -892,7 +892,7 @@ public class StreamThread extends Thread implements ProcessingThread {
     private static final class InternalConsumerConfig extends ConsumerConfig {
         private InternalConsumerConfig(final Map<String, Object> props) {
             super(ConsumerConfig.appendDeserializerToConfig(props, new ByteArrayDeserializer(),
-                    new ByteArrayDeserializer()), false);
+                new ByteArrayDeserializer()), false);
         }
     }
 
@@ -987,8 +987,8 @@ public class StreamThread extends Thread implements ProcessingThread {
 
                     log.error("Shutting down because the Kafka cluster seems to be on a too old version. " +
                               "Setting {}=\"{}\" requires broker version 2.5 or higher.",
-                          StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
-                          StreamsConfig.EXACTLY_ONCE_V2);
+                              StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
+                              StreamsConfig.EXACTLY_ONCE_V2);
                 }
                 failedStreamThreadSensor.record();
                 this.streamsUncaughtExceptionHandler.accept(new StreamsException(e), false);
@@ -1312,7 +1312,7 @@ public class StreamThread extends Thread implements ProcessingThread {
         final long timeSinceLastLog = now - lastLogSummaryMs;
         if (logSummaryIntervalMs > 0 && timeSinceLastLog > logSummaryIntervalMs) {
             log.info("Processed {} total records, ran {} punctuators, polled {} times and committed {} total tasks since the last update {}ms ago",
-                 totalRecordsProcessedSinceLastSummary, totalPunctuatorsSinceLastSummary, totalPolledSinceLastSummary, totalCommittedSinceLastSummary, timeSinceLastLog);
+                totalRecordsProcessedSinceLastSummary, totalPunctuatorsSinceLastSummary, totalPolledSinceLastSummary, totalCommittedSinceLastSummary, timeSinceLastLog);
 
             totalRecordsProcessedSinceLastSummary = 0L;
             totalPunctuatorsSinceLastSummary = 0L;
@@ -1454,7 +1454,7 @@ public class StreamThread extends Thread implements ProcessingThread {
 
         final int numRecords = records.count();
 
-        for (final TopicPartition topicPartition: records.partitions()) {
+        for (final TopicPartition topicPartition : records.partitions()) {
             records
                 .records(topicPartition)
                 .stream()
@@ -1549,9 +1549,9 @@ public class StreamThread extends Thread implements ProcessingThread {
                 standbyHostInfoMap.put(new HostInfo(hostInfo.host(), hostInfo.port()), new HashSet<>(endpointPartitions.standbyPartitions()));
             });
             streamsMetadataState.onChange(
-                    activeHostInfoMap,
-                    standbyHostInfoMap,
-                    getTopicPartitionInfo(activeHostInfoMap)
+                activeHostInfoMap,
+                standbyHostInfoMap,
+                getTopicPartitionInfo(activeHostInfoMap)
             );
         }
     }

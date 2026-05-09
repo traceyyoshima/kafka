@@ -100,7 +100,7 @@ public abstract class DelegationChecker<D, W, T> {
     }
 
     public DelegationChecker<D, W, T> defineWrapperUnsupportedFunctionInvocation(
-            Function<W, T> wrapperFunctionApplier) {
+        Function<W, T> wrapperFunctionApplier) {
         this.wrapperFunctionApplier = Objects.requireNonNull(wrapperFunctionApplier);
         return this;
     }

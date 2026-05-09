@@ -297,11 +297,11 @@ public class ConsumerProtocolTest {
 
             if (version >= 1) {
                 assertEquals(
-                        Set.of(
-                            new ConsumerProtocolSubscription.TopicPartition().setTopic("foo").setPartitions(Collections.singletonList(0)),
-                            new ConsumerProtocolSubscription.TopicPartition().setTopic("bar").setPartitions(Collections.singletonList(0)
+                    Set.of(
+                        new ConsumerProtocolSubscription.TopicPartition().setTopic("foo").setPartitions(Collections.singletonList(0)),
+                        new ConsumerProtocolSubscription.TopicPartition().setTopic("bar").setPartitions(Collections.singletonList(0)
                     )),
-                        Set.copyOf(parsedSubscription.ownedPartitions())
+                    Set.copyOf(parsedSubscription.ownedPartitions())
                 );
             } else {
                 assertEquals(new ConsumerProtocolSubscription.TopicPartitionCollection(), parsedSubscription.ownedPartitions());

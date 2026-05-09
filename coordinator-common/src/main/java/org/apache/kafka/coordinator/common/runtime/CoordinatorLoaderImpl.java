@@ -239,9 +239,9 @@ public class CoordinatorLoaderImpl<T> implements CoordinatorLoader<T> {
                                 tp, record.offset(), batch.producerId(), batch.producerEpoch());
                         }
                         coordinator.replayEndTransactionMarker(
-                                batch.producerId(),
-                                batch.producerEpoch(),
-                                TransactionResult.COMMIT
+                            batch.producerId(),
+                            batch.producerEpoch(),
+                            TransactionResult.COMMIT
                         );
                     } else if (controlRecord == ControlRecordType.ABORT) {
                         if (LOG.isTraceEnabled()) {
@@ -250,9 +250,9 @@ public class CoordinatorLoaderImpl<T> implements CoordinatorLoader<T> {
                                 tp, record.offset(), batch.producerId(), batch.producerEpoch());
                         }
                         coordinator.replayEndTransactionMarker(
-                                batch.producerId(),
-                                batch.producerEpoch(),
-                                TransactionResult.ABORT
+                            batch.producerId(),
+                            batch.producerEpoch(),
+                            TransactionResult.ABORT
                         );
                     }
                 }

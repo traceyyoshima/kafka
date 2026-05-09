@@ -293,8 +293,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -370,8 +370,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             null,
             suppliedNode
         );
@@ -497,8 +497,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -514,8 +514,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -594,8 +594,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -696,8 +696,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -808,8 +808,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -821,8 +821,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -929,8 +929,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -942,8 +942,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -1548,8 +1548,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -1658,8 +1658,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -1765,8 +1765,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -1778,8 +1778,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -1882,8 +1882,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -1895,8 +1895,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -2391,8 +2391,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -2500,8 +2500,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -2606,8 +2606,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -2619,8 +2619,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -2722,8 +2722,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -2735,8 +2735,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -3225,8 +3225,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -3328,8 +3328,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -3341,8 +3341,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -3440,8 +3440,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -3453,8 +3453,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -4011,8 +4011,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -4118,8 +4118,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -4131,8 +4131,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -4234,8 +4234,8 @@ class PersisterStateManagerTest {
         String coordinatorKey = SharePartitionKey.asCoordinatorKey(groupId, topicId, partition);
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(
@@ -4247,8 +4247,8 @@ class PersisterStateManagerTest {
         );
 
         client.prepareResponseFrom(body -> body instanceof FindCoordinatorRequest
-                && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
-                && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
+            && ((FindCoordinatorRequest) body).data().keyType() == FindCoordinatorRequest.CoordinatorType.SHARE.id()
+            && ((FindCoordinatorRequest) body).data().coordinatorKeys().get(0).equals(coordinatorKey),
             new FindCoordinatorResponse(
                 new FindCoordinatorResponseData()
                     .setCoordinators(List.of(

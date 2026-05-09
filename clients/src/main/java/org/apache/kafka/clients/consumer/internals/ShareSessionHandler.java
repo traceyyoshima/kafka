@@ -322,7 +322,7 @@ public class ShareSessionHandler {
      */
     public void notifyClose() {
         log.debug("Set the metadata for next ShareFetch request to close the share session memberId={}",
-                nextMetadata.memberId());
+                  nextMetadata.memberId());
         nextMetadata = nextMetadata.finalEpoch();
     }
 

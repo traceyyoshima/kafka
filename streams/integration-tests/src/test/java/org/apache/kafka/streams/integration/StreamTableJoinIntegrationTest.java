@@ -133,7 +133,7 @@ public class StreamTableJoinIntegrationTest extends AbstractJoinIntegrationTest 
         final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Long, String> leftStream = builder.stream(INPUT_TOPIC_LEFT);
         final KTable<Long, String> rightTable = builder.table(INPUT_TOPIC_RIGHT, Materialized.as(
-                Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMinutes(5))));
+            Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMinutes(5))));
         final Properties streamsConfig = setupConfigsAndUtils(cacheEnabled);
         streamsConfig.put(StreamsConfig.APPLICATION_ID_CONFIG, APP_ID + "-inner");
 
@@ -175,7 +175,7 @@ public class StreamTableJoinIntegrationTest extends AbstractJoinIntegrationTest 
         final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Long, String> leftStream = builder.stream(INPUT_TOPIC_LEFT);
         final KTable<Long, String> rightTable = builder.table(INPUT_TOPIC_RIGHT, Materialized.as(
-                Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMinutes(5))));
+            Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMinutes(5))));
         final Properties streamsConfig = setupConfigsAndUtils(cacheEnabled);
         streamsConfig.put(StreamsConfig.APPLICATION_ID_CONFIG, APP_ID + "-left");
 

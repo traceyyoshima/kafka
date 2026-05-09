@@ -843,10 +843,10 @@ public class ApplicationEventProcessor implements EventProcessor<ApplicationEven
             protected ApplicationEventProcessor create() {
                 RequestManagers requestManagers = requestManagersSupplier.get();
                 return new ApplicationEventProcessor(
-                        logContext,
-                        requestManagers,
-                        metadata,
-                        subscriptions
+                    logContext,
+                    requestManagers,
+                    metadata,
+                    subscriptions
                 );
             }
         };

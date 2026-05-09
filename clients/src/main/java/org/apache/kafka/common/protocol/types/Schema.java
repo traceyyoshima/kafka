@@ -260,6 +260,7 @@ public class Schema extends DocumentedType {
      */
     public abstract static class Visitor {
         public void visit(Schema schema) {}
+
         public void visit(Type field) {}
     }
 }

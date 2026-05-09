@@ -48,7 +48,7 @@ import static org.apache.kafka.streams.state.internals.ExceptionUtils.throwSuppr
 
 public class CachingWindowStore
     extends WrappedStateStore<WindowStore<Bytes, byte[]>, byte[], byte[]>
-    implements WindowStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
+        implements WindowStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CachingWindowStore.class);
 

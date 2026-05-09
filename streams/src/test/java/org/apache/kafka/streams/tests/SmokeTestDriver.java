@@ -403,10 +403,10 @@ public class SmokeTestDriver extends SmokeTestUtil {
     }
 
     private static PollResult pollAndCollect(
-            final KafkaConsumer<String, Number> consumer,
-            final Map<String, Set<Integer>> inputs,
-            final int maxRecordsPerKey,
-            final boolean eosEnabled) {
+        final KafkaConsumer<String, Number> consumer,
+        final Map<String, Set<Integer>> inputs,
+        final int maxRecordsPerKey,
+        final boolean eosEnabled) {
         final int recordsGenerated = inputs.size() * maxRecordsPerKey;
         final Map<String, Map<String, LinkedList<ConsumerRecord<String, Number>>>> events = new HashMap<>();
         VerificationResult verificationResult = new VerificationResult(false, "no results yet");
@@ -463,11 +463,11 @@ public class SmokeTestDriver extends SmokeTestUtil {
     }
 
     private static VerificationResult reportAndFinalize(
-            final Map<String, Set<Integer>> inputs,
-            final int maxRecordsPerKey,
-            final long startTime,
-            final boolean eosEnabled,
-            final PollResult pollResult) {
+        final Map<String, Set<Integer>> inputs,
+        final int maxRecordsPerKey,
+        final long startTime,
+        final boolean eosEnabled,
+        final PollResult pollResult) {
         final int recordsGenerated = inputs.size() * maxRecordsPerKey;
         final long finished = System.currentTimeMillis() - startTime;
         System.out.println("Verification time=" + finished);
@@ -784,8 +784,8 @@ public class SmokeTestDriver extends SmokeTestUtil {
         try (final KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<>(txnProps)) {
             // Get all output topics except "data" (which is the input topic)
             final String[] outputTopics = Arrays.stream(NUMERIC_VALUE_TOPICS)
-                    .filter(topic -> !topic.equals("data"))
-                    .toArray(String[]::new);
+                .filter(topic -> !topic.equals("data"))
+                .toArray(String[]::new);
 
             final List<TopicPartition> partitions = getAllPartitions(consumer, outputTopics);
             consumer.assign(partitions);

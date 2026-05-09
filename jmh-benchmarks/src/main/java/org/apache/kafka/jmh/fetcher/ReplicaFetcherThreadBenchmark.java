@@ -332,10 +332,10 @@ public class ReplicaFetcherThreadBenchmark {
 
         @Override
         public Option<LogAppendInfo> processPartitionData(
-            TopicPartition topicPartition,
-            long fetchOffset,
-            int partitionLeaderEpoch,
-            FetchResponseData.PartitionData partitionData
+                TopicPartition topicPartition,
+                long fetchOffset,
+                int partitionLeaderEpoch,
+                FetchResponseData.PartitionData partitionData
         ) {
             return Option.empty();
         }

@@ -145,7 +145,7 @@ public class TimestampedWindowStoreWithHeadersBuilder<K, V>
      */
     private static final class InMemoryTimestampedWindowStoreWithHeadersMarker
         extends WrappedStateStore<WindowStore<Bytes, byte[]>, Bytes, byte[]>
-        implements WindowStore<Bytes, byte[]>, TimestampedBytesStore, HeadersBytesStore {
+            implements WindowStore<Bytes, byte[]>, TimestampedBytesStore, HeadersBytesStore {
 
         private InMemoryTimestampedWindowStoreWithHeadersMarker(final WindowStore<Bytes, byte[]> wrapped) {
             super(wrapped);

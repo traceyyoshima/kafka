@@ -80,130 +80,130 @@ public class KGroupedStreamImplTest {
 
     @Test
     public void shouldNotHaveNullAggregatorOnCogroup() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.cogroup(null));
+        assertThrows(NullPointerException.class, () -> groupedStream.cogroup(null));
     }
 
     @Test
     public void shouldNotHaveNullReducerOnReduce() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.reduce(null));
+        assertThrows(NullPointerException.class, () -> groupedStream.reduce(null));
     }
 
     @Test
     public void shouldNotHaveInvalidStoreNameOnReduce() {
-        assertThrows(TopologyException.class, () ->  groupedStream.reduce(MockReducer.STRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
+        assertThrows(TopologyException.class, () -> groupedStream.reduce(MockReducer.STRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
     }
 
     @Test
     public void shouldNotHaveNullReducerWithWindowedReduce() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
-                .reduce(null, Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
+            .reduce(null, Materialized.as("store")));
     }
 
     @Test
     public void shouldNotHaveNullWindowsWithWindowedReduce() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.windowedBy((Windows<?>) null));
+        assertThrows(NullPointerException.class, () -> groupedStream.windowedBy((Windows<?>) null));
     }
 
     @Test
     public void shouldNotHaveInvalidStoreNameWithWindowedReduce() {
-        assertThrows(TopologyException.class, () ->  groupedStream
-                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
-                .reduce(MockReducer.STRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
+        assertThrows(TopologyException.class, () -> groupedStream
+            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
+            .reduce(MockReducer.STRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
     }
 
     @Test
     public void shouldNotHaveNullInitializerOnAggregate() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.aggregate(null, MockAggregator.TOSTRING_ADDER, Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> groupedStream.aggregate(null, MockAggregator.TOSTRING_ADDER, Materialized.as("store")));
     }
 
     @Test
     public void shouldNotHaveNullAdderOnAggregate() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.aggregate(MockInitializer.STRING_INIT, null, Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> groupedStream.aggregate(MockInitializer.STRING_INIT, null, Materialized.as("store")));
     }
 
     @Test
     public void shouldNotHaveInvalidStoreNameOnAggregate() {
-        assertThrows(TopologyException.class, () ->  groupedStream.aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER,
-                Materialized.as(INVALID_STORE_NAME)));
+        assertThrows(TopologyException.class, () -> groupedStream.aggregate(
+            MockInitializer.STRING_INIT,
+            MockAggregator.TOSTRING_ADDER,
+            Materialized.as(INVALID_STORE_NAME)));
     }
 
     @Test
     public void shouldNotHaveNullInitializerOnWindowedAggregate() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
-                .aggregate(null, MockAggregator.TOSTRING_ADDER, Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
+            .aggregate(null, MockAggregator.TOSTRING_ADDER, Materialized.as("store")));
     }
 
     @Test
     public void shouldNotHaveNullAdderOnWindowedAggregate() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
-                .aggregate(MockInitializer.STRING_INIT, null, Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
+            .aggregate(MockInitializer.STRING_INIT, null, Materialized.as("store")));
     }
 
     @Test
     public void shouldNotHaveNullWindowsOnWindowedAggregate() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.windowedBy((Windows<?>) null));
+        assertThrows(NullPointerException.class, () -> groupedStream.windowedBy((Windows<?>) null));
     }
 
     @Test
     public void shouldNotHaveInvalidStoreNameOnWindowedAggregate() {
-        assertThrows(TopologyException.class, () ->  groupedStream
-                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
-                .aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
+        assertThrows(TopologyException.class, () -> groupedStream
+            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10)))
+            .aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
     }
 
     @Test
     public void shouldNotHaveNullReducerWithSlidingWindowedReduce() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
-                .reduce(null, Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
+            .reduce(null, Materialized.as("store")));
     }
 
     @Test
     public void shouldNotHaveNullWindowsWithSlidingWindowedReduce() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.windowedBy((SlidingWindows) null));
+        assertThrows(NullPointerException.class, () -> groupedStream.windowedBy((SlidingWindows) null));
     }
 
     @Test
     public void shouldNotHaveInvalidStoreNameWithSlidingWindowedReduce() {
-        assertThrows(TopologyException.class, () ->  groupedStream
-                .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
-                .reduce(MockReducer.STRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
+        assertThrows(TopologyException.class, () -> groupedStream
+            .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
+            .reduce(MockReducer.STRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
     }
 
     @Test
     public void shouldNotHaveNullInitializerOnSlidingWindowedAggregate() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
-                .aggregate(null, MockAggregator.TOSTRING_ADDER, Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
+            .aggregate(null, MockAggregator.TOSTRING_ADDER, Materialized.as("store")));
     }
 
     @Test
     public void shouldNotHaveNullAdderOnSlidingWindowedAggregate() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
-                .aggregate(MockInitializer.STRING_INIT, null, Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
+            .aggregate(MockInitializer.STRING_INIT, null, Materialized.as("store")));
     }
 
     @Test
     public void shouldNotHaveInvalidStoreNameOnSlidingWindowedAggregate() {
-        assertThrows(TopologyException.class, () ->  groupedStream
-                .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
-                .aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
+        assertThrows(TopologyException.class, () -> groupedStream
+            .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(10), ofMillis(100)))
+            .aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, Materialized.as(INVALID_STORE_NAME)));
     }
 
     @Test
     public void shouldCountSlidingWindows() {
         final MockApiProcessorSupplier<Windowed<String>, Long, Void, Void> supplier = new MockApiProcessorSupplier<>();
         groupedStream
-                .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(500L), ofMillis(2000L)))
-                .count(Materialized.as("aggregate-by-key-windowed"))
-                .toStream()
-                .process(supplier);
+            .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(500L), ofMillis(2000L)))
+            .count(Materialized.as("aggregate-by-key-windowed"))
+            .toStream()
+            .process(supplier);
 
         doCountSlidingWindows(supplier);
     }
@@ -212,10 +212,10 @@ public class KGroupedStreamImplTest {
     public void shouldCountSlidingWindowsWithInternalStoreName() {
         final MockApiProcessorSupplier<Windowed<String>, Long, Void, Void> supplier = new MockApiProcessorSupplier<>();
         groupedStream
-                .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(500L), ofMillis(2000L)))
-                .count()
-                .toStream()
-                .process(supplier);
+            .windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(500L), ofMillis(2000L)))
+            .count()
+            .toStream()
+            .process(supplier);
 
         doCountSlidingWindows(supplier);
     }
@@ -500,37 +500,37 @@ public class KGroupedStreamImplTest {
 
     @Test
     public void shouldNotAcceptNullReducerWhenReducingSessionWindows() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
-                .reduce(null, Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
+            .reduce(null, Materialized.as("store")));
     }
 
     @Test
     public void shouldNotAcceptNullSessionWindowsReducingSessionWindows() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.windowedBy((SessionWindows) null));
+        assertThrows(NullPointerException.class, () -> groupedStream.windowedBy((SessionWindows) null));
     }
 
     @Test
     public void shouldNotAcceptInvalidStoreNameWhenReducingSessionWindows() {
-        assertThrows(TopologyException.class, () ->  groupedStream
-                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
-                .reduce(MockReducer.STRING_ADDER, Materialized.as(INVALID_STORE_NAME))
+        assertThrows(TopologyException.class, () -> groupedStream
+            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
+            .reduce(MockReducer.STRING_ADDER, Materialized.as(INVALID_STORE_NAME))
         );
     }
 
     @Test
     public void shouldNotAcceptNullStateStoreSupplierWhenReducingSessionWindows() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
-                .reduce(null, Materialized.<String, String, SessionStore<Bytes, byte[]>>as((String) null))
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
+            .reduce(null, Materialized.<String, String, SessionStore<Bytes, byte[]>>as((String) null))
         );
     }
 
     @Test
     public void shouldNotAcceptNullInitializerWhenAggregatingSessionWindows() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
-                .aggregate(null, MockAggregator.TOSTRING_ADDER, (aggKey, aggOne, aggTwo) -> null, Materialized.as("storeName"))
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
+            .aggregate(null, MockAggregator.TOSTRING_ADDER, (aggKey, aggOne, aggTwo) -> null, Materialized.as("storeName"))
         );
     }
 
@@ -538,21 +538,21 @@ public class KGroupedStreamImplTest {
     public void shouldNotAcceptNullAggregatorWhenAggregatingSessionWindows() {
         assertThrows(NullPointerException.class, () -> groupedStream.
                 windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
-                .aggregate(MockInitializer.STRING_INIT, null, (aggKey, aggOne, aggTwo) -> null, Materialized.as("storeName"))
+            .aggregate(MockInitializer.STRING_INIT, null, (aggKey, aggOne, aggTwo) -> null, Materialized.as("storeName"))
         );
     }
 
     @Test
     public void shouldNotAcceptNullSessionMergerWhenAggregatingSessionWindows() {
-        assertThrows(NullPointerException.class, () ->  groupedStream
-                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
-                .aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, null, Materialized.as("storeName"))
+        assertThrows(NullPointerException.class, () -> groupedStream
+            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(30)))
+            .aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, null, Materialized.as("storeName"))
         );
     }
 
     @Test
     public void shouldNotAcceptNullSessionWindowsWhenAggregatingSessionWindows() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.windowedBy((SessionWindows) null));
+        assertThrows(NullPointerException.class, () -> groupedStream.windowedBy((SessionWindows) null));
     }
 
     @Test
@@ -560,33 +560,33 @@ public class KGroupedStreamImplTest {
         groupedStream
             .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(10)))
             .aggregate(
-                    MockInitializer.STRING_INIT,
-                    MockAggregator.TOSTRING_ADDER,
-                    (aggKey, aggOne, aggTwo) -> null, Materialized.with(Serdes.String(), Serdes.String())
+                MockInitializer.STRING_INIT,
+                MockAggregator.TOSTRING_ADDER,
+                (aggKey, aggOne, aggTwo) -> null, Materialized.with(Serdes.String(), Serdes.String())
             );
     }
 
     @Test
     public void shouldNotAcceptInvalidStoreNameWhenAggregatingSessionWindows() {
-        assertThrows(TopologyException.class, () ->  groupedStream
-                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(10)))
-                .aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, (aggKey, aggOne, aggTwo) -> null, Materialized.as(INVALID_STORE_NAME))
+        assertThrows(TopologyException.class, () -> groupedStream
+            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(10)))
+            .aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, (aggKey, aggOne, aggTwo) -> null, Materialized.as(INVALID_STORE_NAME))
         );
     }
 
     @Test
     public void shouldThrowNullPointerOnReduceWhenMaterializedIsNull() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.reduce(MockReducer.STRING_ADDER, null));
+        assertThrows(NullPointerException.class, () -> groupedStream.reduce(MockReducer.STRING_ADDER, null));
     }
 
     @Test
     public void shouldThrowNullPointerOnAggregateWhenMaterializedIsNull() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, null));
+        assertThrows(NullPointerException.class, () -> groupedStream.aggregate(MockInitializer.STRING_INIT, MockAggregator.TOSTRING_ADDER, null));
     }
 
     @Test
     public void shouldThrowNullPointerOnCountWhenMaterializedIsNull() {
-        assertThrows(NullPointerException.class, () ->  groupedStream.count((Materialized<String, Long, KeyValueStore<Bytes, byte[]>>) null));
+        assertThrows(NullPointerException.class, () -> groupedStream.count((Materialized<String, Long, KeyValueStore<Bytes, byte[]>>) null));
     }
 
     @Test

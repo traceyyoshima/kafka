@@ -449,7 +449,7 @@ public class DelayedShareFetchTest {
         // Since no partition could be acquired, the future should be empty and replicaManager.readFromLog should not be called.
         assertEquals(0, future.join().size());
         Mockito.verify(replicaManager, times(0)).readFromLog(
-                any(), any(), any(ReplicaQuota.class), anyBoolean());
+            any(), any(), any(ReplicaQuota.class), anyBoolean());
         assertTrue(delayedShareFetch.isCompleted());
         Mockito.verify(delayedShareFetch, times(0)).releasePartitionLocks(any());
         assertTrue(delayedShareFetch.lock().tryLock());

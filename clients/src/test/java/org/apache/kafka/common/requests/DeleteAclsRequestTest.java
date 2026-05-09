@@ -65,7 +65,7 @@ public class DeleteAclsRequestTest {
     @Test
     public void shouldRoundTripV1() {
         final DeleteAclsRequest original = new DeleteAclsRequest.Builder(
-                requestData(LITERAL_FILTER, PREFIXED_FILTER, ANY_FILTER)
+            requestData(LITERAL_FILTER, PREFIXED_FILTER, ANY_FILTER)
         ).build(V1);
         final Readable readable = original.serialize();
 

@@ -71,8 +71,8 @@ public class TieredStorageTestUtils {
     }
 
     public static Map<String, TopicDescription> describeTopics(TieredStorageTestContext context,
-                                                                List<String> topics)
-            throws ExecutionException, InterruptedException {
+                                                               List<String> topics)
+                                                                       throws ExecutionException, InterruptedException {
         return context.admin()
                 .describeTopics(topics)
                 .allTopicNames()

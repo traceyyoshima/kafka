@@ -45,10 +45,10 @@ public class CommonClientConfigs {
 
     public static final String BOOTSTRAP_SERVERS_CONFIG = "bootstrap.servers";
     public static final String BOOTSTRAP_SERVERS_DOC = "A list of host/port pairs used to establish the initial connection to the Kafka cluster. "
-                                                        + "Clients use this list to bootstrap and discover the full set of Kafka brokers. "
-                                                        + "While the order of servers in the list does not matter, we recommend including more than one server to ensure resilience if any servers are down. "
-                                                        + "This list does not need to contain the entire set of brokers, as Kafka clients automatically manage and update connections to the cluster efficiently. "
-                                                        + "This list must be in the form <code>host1:port1,host2:port2,...</code>.";
+            + "Clients use this list to bootstrap and discover the full set of Kafka brokers. "
+            + "While the order of servers in the list does not matter, we recommend including more than one server to ensure resilience if any servers are down. "
+            + "This list does not need to contain the entire set of brokers, as Kafka clients automatically manage and update connections to the cluster efficiently. "
+            + "This list must be in the form <code>host1:port1,host2:port2,...</code>.";
     public static final String CLIENT_DNS_LOOKUP_CONFIG = "client.dns.lookup";
     public static final String CLIENT_DNS_LOOKUP_DOC = "Controls how the client uses DNS lookups. "
                                                        + "If set to <code>use_all_dns_ips</code>, connect to each returned IP "
@@ -154,9 +154,9 @@ public class CommonClientConfigs {
 
     public static final String REQUEST_TIMEOUT_MS_CONFIG = "request.timeout.ms";
     public static final String REQUEST_TIMEOUT_MS_DOC = "The configuration controls the maximum amount of time the client will wait "
-                                                         + "for the response of a request. If the response is not received before the timeout "
-                                                         + "elapses the client will resend the request if necessary or fail the request if "
-                                                         + "retries are exhausted.";
+                                                        + "for the response of a request. If the response is not received before the timeout "
+                                                        + "elapses the client will resend the request if necessary or fail the request if "
+                                                        + "retries are exhausted.";
 
     public static final String DEFAULT_LIST_KEY_SERDE_INNER_CLASS = "default.list.key.serde.inner";
     public static final String DEFAULT_LIST_KEY_SERDE_INNER_CLASS_DOC = "Default inner class of list serde for key that implements the <code>org.apache.kafka.common.serialization.Serde</code> interface. "
@@ -286,8 +286,8 @@ public class CommonClientConfigs {
         if (retryBackoffMs > retryBackoffMaxMs) {
             log.warn("Configuration '{}' with value '{}' is greater than configuration '{}' with value '{}'. " +
                     "A static backoff with value '{}' will be applied.",
-                RETRY_BACKOFF_MS_CONFIG, retryBackoffMs,
-                RETRY_BACKOFF_MAX_MS_CONFIG, retryBackoffMaxMs, retryBackoffMaxMs);
+                    RETRY_BACKOFF_MS_CONFIG, retryBackoffMs,
+                    RETRY_BACKOFF_MAX_MS_CONFIG, retryBackoffMaxMs, retryBackoffMaxMs);
         }
 
         long connectionSetupTimeoutMs = config.getLong(SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG);
@@ -295,8 +295,8 @@ public class CommonClientConfigs {
         if (connectionSetupTimeoutMs > connectionSetupTimeoutMaxMs) {
             log.warn("Configuration '{}' with value '{}' is greater than configuration '{}' with value '{}'. " +
                     "A static connection setup timeout with value '{}' will be applied.",
-                SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG, connectionSetupTimeoutMs,
-                SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG, connectionSetupTimeoutMaxMs, connectionSetupTimeoutMaxMs);
+                    SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG, connectionSetupTimeoutMs,
+                    SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG, connectionSetupTimeoutMaxMs, connectionSetupTimeoutMaxMs);
         }
     }
 

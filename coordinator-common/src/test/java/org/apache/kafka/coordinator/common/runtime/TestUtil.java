@@ -197,8 +197,8 @@ public class TestUtil {
     }
 
     public static RequestContext requestContext(
-            ApiKeys apiKey,
-            Short version
+        ApiKeys apiKey,
+        Short version
     ) {
         return new RequestContext(
             new RequestHeader(

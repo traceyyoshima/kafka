@@ -138,9 +138,9 @@ public class ClientMetricsCommandTest {
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.alterClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--alter",
-                                     "--name", clientMetricsName, "--metrics", "org.apache.kafka.producer.",
-                                     "--interval", "5000", "--match", "client_id=CLIENT1"}));
+                    new String[]{"--bootstrap-server", bootstrapServer, "--alter",
+                                 "--name", clientMetricsName, "--metrics", "org.apache.kafka.producer.",
+                                 "--interval", "5000", "--match", "client_id=CLIENT1"}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -159,9 +159,9 @@ public class ClientMetricsCommandTest {
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.alterClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--alter",
-                                     "--generate-name", "--metrics", "org.apache.kafka.producer.",
-                                     "--interval", "5000", "--match", "client_id=CLIENT1"}));
+                    new String[]{"--bootstrap-server", bootstrapServer, "--alter",
+                                 "--generate-name", "--metrics", "org.apache.kafka.producer.",
+                                 "--interval", "5000", "--match", "client_id=CLIENT1"}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -182,9 +182,9 @@ public class ClientMetricsCommandTest {
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.alterClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--alter",
-                                     "--name", clientMetricsName, "--metrics", "",
-                                     "--interval", "", "--match", ""}));
+                    new String[]{"--bootstrap-server", bootstrapServer, "--alter",
+                                 "--name", clientMetricsName, "--metrics", "",
+                                 "--interval", "", "--match", ""}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -196,7 +196,7 @@ public class ClientMetricsCommandTest {
         for (Collection<AlterConfigOp> operations : alteredConfigOps.values()) {
             for (AlterConfigOp op : operations) {
                 assertEquals(AlterConfigOp.OpType.DELETE, op.opType(),
-                        "Expected DELETE operation for config: " + op.configEntry().name());
+                    "Expected DELETE operation for config: " + op.configEntry().name());
             }
         }
         assertTrue(capturedOutput.contains("Altered client metrics config for " + clientMetricsName + "."));
@@ -217,8 +217,8 @@ public class ClientMetricsCommandTest {
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.deleteClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--delete",
-                                     "--name", clientMetricsName}));
+                    new String[]{"--bootstrap-server", bootstrapServer, "--delete",
+                                 "--name", clientMetricsName}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -243,8 +243,8 @@ public class ClientMetricsCommandTest {
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.describeClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--describe",
-                                     "--name", clientMetricsName}));
+                    new String[]{"--bootstrap-server", bootstrapServer, "--describe",
+                                 "--name", clientMetricsName}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -290,7 +290,7 @@ public class ClientMetricsCommandTest {
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.describeClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--describe"}));
+                    new String[]{"--bootstrap-server", bootstrapServer, "--describe"}));
             } catch (Throwable t) {
                 fail(t);
             }

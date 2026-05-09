@@ -44,8 +44,8 @@ public class SetSchemaMetadataTest {
 
     public static Stream<Arguments> data() {
         return Stream.of(
-                Arguments.of(false, null),
-                Arguments.of(true, "default")
+                         Arguments.of(false, null),
+                         Arguments.of(true, "default")
         );
     }
 
@@ -122,10 +122,10 @@ public class SetSchemaMetadataTest {
         final String fieldName2 = "f2";
         final int fieldValue2 = 1;
         final Schema schema = SchemaBuilder.struct()
-                .name("my.orig.SchemaDefn")
-                .field(fieldName1, SchemaBuilder.string().defaultValue("default").optional().build())
-                .field(fieldName2, Schema.INT32_SCHEMA)
-                .build();
+                                      .name("my.orig.SchemaDefn")
+                                      .field(fieldName1, SchemaBuilder.string().defaultValue("default").optional().build())
+                                      .field(fieldName2, Schema.INT32_SCHEMA)
+                                      .build();
         final Struct value = new Struct(schema).put(fieldName1, null).put(fieldName2, fieldValue2);
 
         final Map<String, Object> props = new HashMap<>();

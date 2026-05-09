@@ -87,7 +87,7 @@ public final class ConsoleShareConsumerOptions extends CommandDefaultOptions {
                 .ofType(String.class)
                 .defaultsTo(DefaultMessageFormatter.class.getName());
         messageFormatterArgOptDeprecated = parser.accepts("property",
-                        "(DEPRECATED) The properties to initialize the message formatter. Default properties include: \n" +
+                "(DEPRECATED) The properties to initialize the message formatter. Default properties include: \n" +
                                 " print.timestamp=true|false\n" +
                                 " print.key=true|false\n" +
                                 " print.offset=true|false\n" +
@@ -109,7 +109,7 @@ public final class ConsoleShareConsumerOptions extends CommandDefaultOptions {
                 .describedAs("prop")
                 .ofType(String.class);
         messageFormatterArgOpt = parser.accepts("formatter-property",
-                        "The properties to initialize the message formatter. Default properties include: \n" +
+                "The properties to initialize the message formatter. Default properties include: \n" +
                                 " print.timestamp=true|false\n" +
                                 " print.key=true|false\n" +
                                 " print.offset=true|false\n" +
@@ -162,7 +162,7 @@ public final class ConsoleShareConsumerOptions extends CommandDefaultOptions {
                 .describedAs("share group id")
                 .ofType(String.class);
         enableSystestEventsLoggingOpt = parser.accepts("enable-systest-events",
-            "Log lifecycle events of the share consumer in addition to logging consumed messages. (This is specific for system tests.)");
+                "Log lifecycle events of the share consumer in addition to logging consumed messages. (This is specific for system tests.)");
 
         try {
             options = parser.parse(args);

@@ -183,12 +183,12 @@ public class ConsumerMembershipManager extends AbstractMembershipManager<Consume
                               RebalanceMetricsManager metricsManager,
                               boolean autoCommitEnabled) {
         super(groupId,
-            subscriptions,
-            metadata,
-            logContext.logger(ConsumerMembershipManager.class),
-            time,
-            metricsManager,
-            autoCommitEnabled);
+              subscriptions,
+              metadata,
+              logContext.logger(ConsumerMembershipManager.class),
+              time,
+              metricsManager,
+              autoCommitEnabled);
         this.groupInstanceId = groupInstanceId;
         this.rackId = rackId;
         this.rebalanceTimeoutMs = rebalanceTimeoutMs;
@@ -261,7 +261,7 @@ public class ConsumerMembershipManager extends AbstractMembershipManager<Consume
 
             Map<Uuid, SortedSet<Integer>> newAssignment = new HashMap<>();
             assignment.topicPartitions().forEach(topicPartition ->
-                newAssignment.put(topicPartition.topicId(), new TreeSet<>(topicPartition.partitions())));
+                    newAssignment.put(topicPartition.topicId(), new TreeSet<>(topicPartition.partitions())));
             processAssignmentReceived(newAssignment);
         }
     }

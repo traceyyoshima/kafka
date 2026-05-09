@@ -50,12 +50,12 @@ public class DefaultApiVersionManager implements ApiVersionManager {
      * @param clientMetricsManager the client metrics manager, helps to determine whether client telemetry is enabled
      */
     public DefaultApiVersionManager(
-            ApiMessageType.ListenerType listenerType,
-            Supplier<Optional<NodeApiVersions>> nodeApiVersionsSupplier,
-            BrokerFeatures brokerFeatures,
-            MetadataCache metadataCache,
-            boolean enableUnstableLastVersion,
-            Optional<ClientMetricsManager> clientMetricsManager) {
+        ApiMessageType.ListenerType listenerType,
+        Supplier<Optional<NodeApiVersions>> nodeApiVersionsSupplier,
+        BrokerFeatures brokerFeatures,
+        MetadataCache metadataCache,
+        boolean enableUnstableLastVersion,
+        Optional<ClientMetricsManager> clientMetricsManager) {
         this.listenerType = listenerType;
         this.nodeApiVersionsSupplier = nodeApiVersionsSupplier;
         this.brokerFeatures = brokerFeatures;

@@ -119,17 +119,17 @@ public class MeteredKeyValueStoreTest {
         final MockTime mockTime = new MockTime();
         this.mockTime = mockTime;
         metered = new MeteredKeyValueStore<>(
-                inner,
-                STORE_TYPE,
-                mockTime,
-                Serdes.String(),
-                Serdes.String()
+            inner,
+            STORE_TYPE,
+            mockTime,
+            Serdes.String(),
+            Serdes.String()
         );
         metrics.config().recordLevel(Sensor.RecordingLevel.DEBUG);
         tags = mkMap(
-                mkEntry(THREAD_ID_TAG_KEY, threadId),
-                mkEntry("task-id", taskId.toString()),
-                mkEntry(STORE_TYPE + "-state-id", STORE_NAME)
+            mkEntry(THREAD_ID_TAG_KEY, threadId),
+            mkEntry("task-id", taskId.toString()),
+            mkEntry(STORE_TYPE + "-state-id", STORE_NAME)
         );
     }
 

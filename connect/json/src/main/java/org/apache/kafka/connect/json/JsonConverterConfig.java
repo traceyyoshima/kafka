@@ -81,9 +81,9 @@ public final class JsonConverterConfig extends ConverterConfig {
             Importance.LOW, DECIMAL_FORMAT_DOC, group, orderInGroup++,
             Width.MEDIUM, DECIMAL_FORMAT_DISPLAY);
         CONFIG.define(
-                REPLACE_NULL_WITH_DEFAULT_CONFIG, Type.BOOLEAN, REPLACE_NULL_WITH_DEFAULT_DEFAULT,
-                Importance.LOW, REPLACE_NULL_WITH_DEFAULT_DOC, group, orderInGroup++,
-                Width.MEDIUM, REPLACE_NULL_WITH_DEFAULT_DISPLAY);
+            REPLACE_NULL_WITH_DEFAULT_CONFIG, Type.BOOLEAN, REPLACE_NULL_WITH_DEFAULT_DEFAULT,
+            Importance.LOW, REPLACE_NULL_WITH_DEFAULT_DOC, group, orderInGroup++,
+            Width.MEDIUM, REPLACE_NULL_WITH_DEFAULT_DISPLAY);
     }
 
     public static ConfigDef configDef() {
@@ -105,8 +105,8 @@ public final class JsonConverterConfig extends ConverterConfig {
         this.replaceNullWithDefault = getBoolean(REPLACE_NULL_WITH_DEFAULT_CONFIG);
         String schemaContentStr = getString(SCHEMA_CONTENT_CONFIG);
         this.schemaContent = (schemaContentStr == null || schemaContentStr.isEmpty())
-                ? null
-                : schemaContentStr.getBytes(StandardCharsets.UTF_8);
+            ? null
+            : schemaContentStr.getBytes(StandardCharsets.UTF_8);
     }
 
     /**

@@ -55,7 +55,7 @@ public class OffsetForLeaderEpochClientTest {
                 offsetClient.sendAsyncRequest(Node.noNode(), Collections.emptyMap());
 
         OffsetsForLeaderEpochResponse resp = new OffsetsForLeaderEpochResponse(
-            new OffsetForLeaderEpochResponseData());
+                new OffsetForLeaderEpochResponseData());
         client.prepareResponse(resp);
         consumerClient.pollNoWakeup();
 
@@ -75,7 +75,7 @@ public class OffsetForLeaderEpochClientTest {
                 offsetClient.sendAsyncRequest(Node.noNode(), positionMap);
 
         OffsetsForLeaderEpochResponse resp = new OffsetsForLeaderEpochResponse(
-            new OffsetForLeaderEpochResponseData());
+                new OffsetForLeaderEpochResponseData());
         client.prepareResponse(resp);
         consumerClient.pollNoWakeup();
 
@@ -95,7 +95,7 @@ public class OffsetForLeaderEpochClientTest {
                 offsetClient.sendAsyncRequest(Node.noNode(), positionMap);
 
         client.prepareResponse(prepareOffsetForLeaderEpochResponse(
-            tp0, Errors.NONE, 1, 10L));
+                tp0, Errors.NONE, 1, 10L));
         consumerClient.pollNoWakeup();
 
         OffsetsForLeaderEpochUtils.OffsetForEpochResult result = future.value();
@@ -117,7 +117,7 @@ public class OffsetForLeaderEpochClientTest {
                 offsetClient.sendAsyncRequest(Node.noNode(), positionMap);
 
         client.prepareResponse(prepareOffsetForLeaderEpochResponse(
-            tp0, Errors.TOPIC_AUTHORIZATION_FAILED, -1, -1));
+                tp0, Errors.TOPIC_AUTHORIZATION_FAILED, -1, -1));
         consumerClient.pollNoWakeup();
 
         assertTrue(future.failed());
@@ -136,7 +136,7 @@ public class OffsetForLeaderEpochClientTest {
                 offsetClient.sendAsyncRequest(Node.noNode(), positionMap);
 
         client.prepareResponse(prepareOffsetForLeaderEpochResponse(
-            tp0, Errors.LEADER_NOT_AVAILABLE, -1, -1));
+                tp0, Errors.LEADER_NOT_AVAILABLE, -1, -1));
         consumerClient.pollNoWakeup();
 
         assertFalse(future.failed());
@@ -168,10 +168,10 @@ public class OffsetForLeaderEpochClientTest {
             .setTopic(tp.topic());
         data.topics().add(topic);
         topic.partitions().add(new EpochEndOffset()
-            .setPartition(tp.partition())
-            .setErrorCode(error.code())
-            .setLeaderEpoch(leaderEpoch)
-            .setEndOffset(endOffset));
+                .setPartition(tp.partition())
+                .setErrorCode(error.code())
+                .setLeaderEpoch(leaderEpoch)
+                .setEndOffset(endOffset));
         return new OffsetsForLeaderEpochResponse(data);
     }
 }

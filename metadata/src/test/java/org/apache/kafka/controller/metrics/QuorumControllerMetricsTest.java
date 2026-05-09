@@ -43,19 +43,19 @@ public class QuorumControllerMetricsTest {
                     9000)) {
                 metrics.addTimeSinceLastHeartbeatMetric(1);
                 Set<String> expected = Set.of(
-                    "kafka.controller:type=ControllerEventManager,name=EventQueueProcessingTimeMs",
-                    "kafka.controller:type=ControllerEventManager,name=EventQueueTimeMs",
-                    "kafka.controller:type=ControllerEventManager,name=AvgIdleRatio",
-                    "kafka.controller:type=KafkaController,name=ActiveControllerCount",
-                    "kafka.controller:type=KafkaController,name=EventQueueOperationsStartedCount",
-                    "kafka.controller:type=KafkaController,name=EventQueueOperationsTimedOutCount",
-                    "kafka.controller:type=KafkaController,name=LastAppliedRecordLagMs",
-                    "kafka.controller:type=KafkaController,name=LastAppliedRecordOffset",
-                    "kafka.controller:type=KafkaController,name=LastAppliedRecordTimestamp",
-                    "kafka.controller:type=KafkaController,name=LastCommittedRecordOffset",
-                    "kafka.controller:type=KafkaController,name=NewActiveControllersCount",
-                    "kafka.controller:type=KafkaController,name=TimedOutBrokerHeartbeatCount",
-                    "kafka.controller:type=KafkaController,name=TimeSinceLastHeartbeatReceivedMs,broker=1"
+                        "kafka.controller:type=ControllerEventManager,name=EventQueueProcessingTimeMs",
+                        "kafka.controller:type=ControllerEventManager,name=EventQueueTimeMs",
+                        "kafka.controller:type=ControllerEventManager,name=AvgIdleRatio",
+                        "kafka.controller:type=KafkaController,name=ActiveControllerCount",
+                        "kafka.controller:type=KafkaController,name=EventQueueOperationsStartedCount",
+                        "kafka.controller:type=KafkaController,name=EventQueueOperationsTimedOutCount",
+                        "kafka.controller:type=KafkaController,name=LastAppliedRecordLagMs",
+                        "kafka.controller:type=KafkaController,name=LastAppliedRecordOffset",
+                        "kafka.controller:type=KafkaController,name=LastAppliedRecordTimestamp",
+                        "kafka.controller:type=KafkaController,name=LastCommittedRecordOffset",
+                        "kafka.controller:type=KafkaController,name=NewActiveControllersCount",
+                        "kafka.controller:type=KafkaController,name=TimedOutBrokerHeartbeatCount",
+                        "kafka.controller:type=KafkaController,name=TimeSinceLastHeartbeatReceivedMs,broker=1"
                 );
                 ControllerMetricsTestUtils.assertMetricsForTypeEqual(registry, "kafka.controller", expected);
             }
@@ -115,26 +115,26 @@ public class QuorumControllerMetricsTest {
 
             @SuppressWarnings("unchecked")
             Gauge<Long> lastAppliedRecordOffset = (Gauge<Long>) registry
-                .allMetrics()
-                .get(metricName("KafkaController", "LastAppliedRecordOffset"));
+                    .allMetrics()
+                    .get(metricName("KafkaController", "LastAppliedRecordOffset"));
             assertEquals(100, lastAppliedRecordOffset.value());
 
             @SuppressWarnings("unchecked")
             Gauge<Long> lastAppliedRecordTimestamp = (Gauge<Long>) registry
-                .allMetrics()
-                .get(metricName("KafkaController", "LastAppliedRecordTimestamp"));
+                    .allMetrics()
+                    .get(metricName("KafkaController", "LastAppliedRecordTimestamp"));
             assertEquals(500, lastAppliedRecordTimestamp.value());
 
             @SuppressWarnings("unchecked")
             Gauge<Long> lastAppliedRecordLagMs = (Gauge<Long>) registry
-                .allMetrics()
-                .get(metricName("KafkaController", "LastAppliedRecordLagMs"));
+                    .allMetrics()
+                    .get(metricName("KafkaController", "LastAppliedRecordLagMs"));
             assertEquals(time.milliseconds() - 500, lastAppliedRecordLagMs.value());
 
             @SuppressWarnings("unchecked")
             Gauge<Long> lastCommittedRecordOffset = (Gauge<Long>) registry
-                .allMetrics()
-                .get(metricName("KafkaController", "LastCommittedRecordOffset"));
+                    .allMetrics()
+                    .get(metricName("KafkaController", "LastCommittedRecordOffset"));
             assertEquals(50, lastCommittedRecordOffset.value());
 
             @SuppressWarnings("unchecked")

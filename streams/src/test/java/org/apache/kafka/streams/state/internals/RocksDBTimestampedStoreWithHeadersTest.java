@@ -98,19 +98,19 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         final ColumnFamilyOptions columnFamilyOptions = new ColumnFamilyOptions();
 
         final List<ColumnFamilyDescriptor> columnFamilyDescriptors = asList(
-                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-                new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
-                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
+            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+            new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
+            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
         final List<ColumnFamilyHandle> columnFamilies = new ArrayList<>(columnFamilyDescriptors.size());
 
         RocksDB db = null;
         ColumnFamilyHandle defaultColumnFamily = null, headersColumnFamily = null;
         try {
             db = RocksDB.open(
-                    dbOptions,
-                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
-                    columnFamilyDescriptors,
-                    columnFamilies);
+                dbOptions,
+                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
+                columnFamilyDescriptors,
+                columnFamilies);
 
             defaultColumnFamily = columnFamilies.get(0);
             headersColumnFamily = columnFamilies.get(1);
@@ -529,10 +529,10 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         final ColumnFamilyOptions columnFamilyOptions = new ColumnFamilyOptions();
 
         final List<ColumnFamilyDescriptor> columnFamilyDescriptors = asList(
-                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-                new ColumnFamilyDescriptor("keyValueWithTimestamp".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
-                new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
-                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
+            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+            new ColumnFamilyDescriptor("keyValueWithTimestamp".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
+            new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
+            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
 
         final List<ColumnFamilyHandle> columnFamilies = new ArrayList<>(columnFamilyDescriptors.size());
         RocksDB db = null;
@@ -541,10 +541,10 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         ColumnFamilyHandle headersColumnFamily = null;
         try {
             db = RocksDB.open(
-                    dbOptions,
-                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
-                    columnFamilyDescriptors,
-                    columnFamilies);
+                dbOptions,
+                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
+                columnFamilyDescriptors,
+                columnFamilies);
 
             defaultColumnFamily = columnFamilies.get(0);
             legacyTimestampedColumnFamily = columnFamilies.get(1);
@@ -602,10 +602,10 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
     }
 
     private void closeColumnFamilies(
-            final RocksDB db,
-            final ColumnFamilyHandle defaultColumnFamily,
-            final ColumnFamilyHandle legacyTimestampedColumnFamily,
-            final ColumnFamilyHandle headersColumnFamily) {
+        final RocksDB db,
+        final ColumnFamilyHandle defaultColumnFamily,
+        final ColumnFamilyHandle legacyTimestampedColumnFamily,
+        final ColumnFamilyHandle headersColumnFamily) {
         // Order of closing must follow: ColumnFamilyHandle > RocksDB
         if (defaultColumnFamily != null) {
             defaultColumnFamily.close();
@@ -749,10 +749,10 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         final ColumnFamilyOptions columnFamilyOptions = new ColumnFamilyOptions();
 
         final List<ColumnFamilyDescriptor> columnFamilyDescriptors = asList(
-                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-                new ColumnFamilyDescriptor("keyValueWithTimestamp".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
-                new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
-                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
+            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+            new ColumnFamilyDescriptor("keyValueWithTimestamp".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
+            new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
+            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
 
         final List<ColumnFamilyHandle> columnFamilies = new ArrayList<>(columnFamilyDescriptors.size());
         RocksDB db = null;
@@ -761,10 +761,10 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         ColumnFamilyHandle headersCF = null;
         try {
             db = RocksDB.open(
-                    dbOptions,
-                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
-                    columnFamilyDescriptors,
-                    columnFamilies);
+                dbOptions,
+                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
+                columnFamilyDescriptors,
+                columnFamilies);
 
             defaultCF = columnFamilies.get(0);
             legacyCF = columnFamilies.get(1);

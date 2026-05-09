@@ -90,11 +90,11 @@ class LocalLogTest {
 
         static KeyValue fromRecord(Record record) {
             String key = record.hasKey()
-                ? StandardCharsets.UTF_8.decode(record.key()).toString()
-                : "";
+                    ? StandardCharsets.UTF_8.decode(record.key()).toString()
+                    : "";
             String value = record.hasValue()
-                ? StandardCharsets.UTF_8.decode(record.value()).toString()
-                : "";
+                    ? StandardCharsets.UTF_8.decode(record.value()).toString()
+                    : "";
             return new KeyValue(key, value);
         }
     }
@@ -141,9 +141,9 @@ class LocalLogTest {
     }
 
     private FetchDataInfo readRecords(
-                            long startOffset,
-                            int maxLength,
-                            LogOffsetMetadata maxOffsetMetadata) throws IOException {
+                                      long startOffset,
+                                      int maxLength,
+                                      LogOffsetMetadata maxOffsetMetadata) throws IOException {
         return log.read(startOffset,
                 maxLength,
                 false,

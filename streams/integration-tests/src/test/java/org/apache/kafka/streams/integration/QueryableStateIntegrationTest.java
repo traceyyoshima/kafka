@@ -193,19 +193,19 @@ public class QueryableStateIntegrationTest {
         } catch (final Exception e) {
             log.warn("Unable to read '{}{}{}'. Using default inputValues list", "resources", File.separator, fileName);
             input = Arrays.asList(
-                        "hello world",
-                        "all streams lead to kafka",
-                        "streams",
-                        "kafka streams",
-                        "the cat in the hat",
-                        "green eggs and ham",
-                        "that Sam i am",
-                        "up the creek without a paddle",
-                        "run forest run",
-                        "a tank full of gas",
-                        "eat sleep rave repeat",
-                        "one jolly sailor",
-                        "king of the world");
+                "hello world",
+                "all streams lead to kafka",
+                "streams",
+                "kafka streams",
+                "the cat in the hat",
+                "green eggs and ham",
+                "that Sam i am",
+                "up the creek without a paddle",
+                "run forest run",
+                "a tank full of gas",
+                "eat sleep rave repeat",
+                "one jolly sailor",
+                "king of the world");
 
         }
         return input;
@@ -306,7 +306,7 @@ public class QueryableStateIntegrationTest {
             final Map<String, Exception> exceptionalKeys = new TreeMap<>();
             final StringSerializer serializer = new StringSerializer();
 
-            for (final String key: keys) {
+            for (final String key : keys) {
                 try {
                     final KeyQueryMetadata queryMetadata = streams.queryMetadataForKey(storeName, key, serializer);
                     if (queryMetadata == null || queryMetadata.equals(KeyQueryMetadata.NOT_AVAILABLE)) {
@@ -360,7 +360,7 @@ public class QueryableStateIntegrationTest {
             final Map<String, Exception> exceptionalKeys = new TreeMap<>();
             final StringSerializer serializer = new StringSerializer();
 
-            for (final String key: keys) {
+            for (final String key : keys) {
                 try {
                     final KeyQueryMetadata queryMetadata = streams.queryMetadataForKey(storeName, key, serializer);
                     if (queryMetadata == null || queryMetadata.equals(KeyQueryMetadata.NOT_AVAILABLE)) {
@@ -777,23 +777,23 @@ public class QueryableStateIntegrationTest {
 
         for (final KeyValue<String, Long> expectedEntry : expectedBatch1) {
             TestUtils.waitForCondition(() -> expectedEntry.value.equals(myFilterStore.get(expectedEntry.key)),
-                    "Cannot get expected result");
+                "Cannot get expected result");
         }
         for (final KeyValue<String, Long> batchEntry : batch1) {
             if (!expectedBatch1.contains(batchEntry)) {
                 TestUtils.waitForCondition(() -> myFilterStore.get(batchEntry.key) == null,
-                        "Cannot get null result");
+                    "Cannot get null result");
             }
         }
 
         for (final KeyValue<String, Long> expectedEntry : expectedBatch1) {
             TestUtils.waitForCondition(() -> myFilterNotStore.get(expectedEntry.key) == null,
-                    "Cannot get null result");
+                "Cannot get null result");
         }
         for (final KeyValue<String, Long> batchEntry : batch1) {
             if (!expectedBatch1.contains(batchEntry)) {
                 TestUtils.waitForCondition(() -> batchEntry.value.equals(myFilterNotStore.get(batchEntry.key)),
-                        "Cannot get expected result");
+                    "Cannot get expected result");
             }
         }
     }
@@ -979,15 +979,15 @@ public class QueryableStateIntegrationTest {
         }
 
         IntegrationTestUtils.produceKeyValuesSynchronously(
-                streamOne,
-                batch1,
-                TestUtils.producerConfig(
-                        CLUSTER.bootstrapServers(),
-                        StringSerializer.class,
-                        StringSerializer.class,
-                        new Properties()
-                ),
-                mockTime);
+            streamOne,
+            batch1,
+            TestUtils.producerConfig(
+                CLUSTER.bootstrapServers(),
+                StringSerializer.class,
+                StringSerializer.class,
+                new Properties()
+            ),
+            mockTime);
 
         final KStream<String, String> s1 = builder.stream(streamOne);
 
@@ -1155,8 +1155,8 @@ public class QueryableStateIntegrationTest {
                     || "12125".equals(store2.get("a")))
                     &&
                     ("34".equals(store2.get("b"))
-                    || "344".equals(store2.get("b"))
-                    || "3434".equals(store2.get("b"))),
+                        || "344".equals(store2.get("b"))
+                        || "3434".equals(store2.get("b"))),
                 maxWaitMs,
                 "wait for agg to be <a,125>||<a,1225>||<a,12125> and <b,34>||<b,344>||<b,3434>");
         } catch (final Throwable t) {

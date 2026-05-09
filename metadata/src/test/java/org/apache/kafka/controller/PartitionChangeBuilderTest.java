@@ -96,9 +96,9 @@ public class PartitionChangeBuilderTest {
             )
         );
         assertFalse(changeRecordIsNoOp(new PartitionChangeRecord().setDirectories(List.of(
-                Uuid.fromString("5JwD0VNXRV2Wr9CCON38Tw"),
-                Uuid.fromString("zpL1bRzTQXmmgdxlLHOWuw"),
-                Uuid.fromString("6iGUpAkHQXC6bY0FTcPRDw")
+            Uuid.fromString("5JwD0VNXRV2Wr9CCON38Tw"),
+            Uuid.fromString("zpL1bRzTQXmmgdxlLHOWuw"),
+            Uuid.fromString("6iGUpAkHQXC6bY0FTcPRDw")
         ))));
     }
 
@@ -129,12 +129,12 @@ public class PartitionChangeBuilderTest {
 
     private static PartitionChangeBuilder createFooBuilder(MetadataVersion metadataVersion) {
         return new PartitionChangeBuilder(FOO,
-                FOO_ID,
-                0,
-                r -> r != 3,
-                metadataVersion,
-                2,
-                metadataVersion.isElrSupported()).
+            FOO_ID,
+            0,
+            r -> r != 3,
+            metadataVersion,
+            2,
+            metadataVersion.isElrSupported()).
                 setDefaultDirProvider(DEFAULT_DIR_PROVIDER);
     }
 
@@ -167,12 +167,12 @@ public class PartitionChangeBuilderTest {
 
     private static PartitionChangeBuilder createBarBuilder(short version) {
         return new PartitionChangeBuilder(BAR,
-                BAR_ID,
-                0,
-                r -> r != 3,
-                metadataVersionForPartitionChangeRecordVersion(version),
-                2,
-                isElrEnabled(version)).
+            BAR_ID,
+            0,
+            r -> r != 3,
+            metadataVersionForPartitionChangeRecordVersion(version),
+            2,
+            isElrEnabled(version)).
                 setDefaultDirProvider(DEFAULT_DIR_PROVIDER);
     }
 
@@ -194,21 +194,21 @@ public class PartitionChangeBuilderTest {
 
     private static PartitionChangeBuilder createBazBuilder(short version) {
         return new PartitionChangeBuilder(BAZ,
-                BAZ_ID,
-                0,
-                __ -> true,
-                metadataVersionForPartitionChangeRecordVersion(version),
-                2,
-                isElrEnabled(version)).
+            BAZ_ID,
+            0,
+            __ -> true,
+            metadataVersionForPartitionChangeRecordVersion(version),
+            2,
+            isElrEnabled(version)).
                 setDefaultDirProvider(DEFAULT_DIR_PROVIDER);
     }
 
     private static final PartitionRegistration OFFLINE_WITHOUT_ELR = new PartitionRegistration.Builder().
         setReplicas(new int[] {2, 1, 3}).
         setDirectories(new Uuid[]{
-           Uuid.fromString("iYGgiDV5Sb2EtH6hbgYnCA"),
-           Uuid.fromString("XI2t4qAUSkGlLZSKeEVf8g"),
-           Uuid.fromString("eqRW24kIRlitzQFzmovE0Q")
+            Uuid.fromString("iYGgiDV5Sb2EtH6hbgYnCA"),
+            Uuid.fromString("XI2t4qAUSkGlLZSKeEVf8g"),
+            Uuid.fromString("eqRW24kIRlitzQFzmovE0Q")
         }).
         setIsr(new int[] {3}).
         setLeader(-1).
@@ -220,9 +220,9 @@ public class PartitionChangeBuilderTest {
     private static final PartitionRegistration OFFLINE_WITH_ELR = new PartitionRegistration.Builder().
             setReplicas(new int[] {2, 1, 3}).
             setDirectories(new Uuid[]{
-                    Uuid.fromString("CQEqt7trRrmqyNxUT1CY0g"),
-                    Uuid.fromString("59Mb9smoSsC0bGUP2FYV8A"),
-                    Uuid.fromString("LBTmsCVJREqJuIEtwqxRDg")
+                Uuid.fromString("CQEqt7trRrmqyNxUT1CY0g"),
+                Uuid.fromString("59Mb9smoSsC0bGUP2FYV8A"),
+                Uuid.fromString("LBTmsCVJREqJuIEtwqxRDg")
             }).
             setElr(new int[] {3}).
             setIsr(new int[] {}).
@@ -240,11 +240,11 @@ public class PartitionChangeBuilderTest {
             metadataVersionForPartitionChangeRecordVersion(partitionChangeRecordVersion);
         if (metadataVersion.isElrSupported()) {
             return new PartitionChangeBuilder(OFFLINE_WITH_ELR, OFFLINE_ID, 0, r -> r == 1,
-                    metadataVersion, 2, true).
+                metadataVersion, 2, true).
                      setDefaultDirProvider(DEFAULT_DIR_PROVIDER);
         } else {
             return new PartitionChangeBuilder(OFFLINE_WITHOUT_ELR, OFFLINE_ID, 0, r -> r == 1,
-                    metadataVersion, 2, false).
+                metadataVersion, 2, false).
                      setDefaultDirProvider(DEFAULT_DIR_PROVIDER);
         }
     }
@@ -600,9 +600,9 @@ public class PartitionChangeBuilderTest {
         PartitionRegistration registration = new PartitionRegistration.Builder().
             setReplicas(new int[] {leaderId, leaderId + 1, leaderId + 2}).
             setDirectories(new Uuid[] {
-                    Uuid.fromString("1sF6XXLkSN2LtDums7CJ8Q"),
-                    Uuid.fromString("iaBBVsoHQR6NDKXwliKMqw"),
-                    Uuid.fromString("sHaBwjdrR2S3bL4E1RKC8Q")
+                Uuid.fromString("1sF6XXLkSN2LtDums7CJ8Q"),
+                Uuid.fromString("iaBBVsoHQR6NDKXwliKMqw"),
+                Uuid.fromString("sHaBwjdrR2S3bL4E1RKC8Q")
             }).
             setIsr(new int[] {leaderId}).
             setLeader(leaderId).
@@ -714,10 +714,10 @@ public class PartitionChangeBuilderTest {
         // Set up PartitionRegistration as if there's an ongoing reassignment from [0, 1] to [2, 3]
         int[] replicas = new int[] {2, 3, 0, 1};
         Uuid[] directories = {
-                Uuid.fromString("XCBQClkBSZyphD87QUXzDA"),
-                Uuid.fromString("Or2Rp9tTQOSVuy12hsfmTA"),
-                Uuid.fromString("pThsodMNSwGvljTfc1RNVQ"),
-                Uuid.fromString("d8CGoNJmS5mJdF20tc8P7g")
+            Uuid.fromString("XCBQClkBSZyphD87QUXzDA"),
+            Uuid.fromString("Or2Rp9tTQOSVuy12hsfmTA"),
+            Uuid.fromString("pThsodMNSwGvljTfc1RNVQ"),
+            Uuid.fromString("d8CGoNJmS5mJdF20tc8P7g")
         };
         // The ISR starts off with the old replicas
         int[] isr = new int[] {0, 1};
@@ -770,7 +770,7 @@ public class PartitionChangeBuilderTest {
                 setRemovingReplicas(List.of()).
                 setAddingReplicas(List.of()).
                 setLeader(NO_LEADER),
-                (short) 0)),
+            (short) 0)),
             partitionChangeBuilder.setTargetIsr(List.of(0, 1, 2, 3)).
                 build());
     }
@@ -794,7 +794,7 @@ public class PartitionChangeBuilderTest {
             .build();
         Uuid topicId = Uuid.fromString("FbrrdcfiR-KC2CPSTHaJrg");
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> r != 3,
-                metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
+            metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
             .setElection(Election.PREFERRED)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER)
             .setUseLastKnownLeaderInBalancedRecovery(false);
@@ -886,7 +886,7 @@ public class PartitionChangeBuilderTest {
         Uuid topicId = Uuid.fromString("FbrrdcfiR-KC2CPSTHaJrg");
         // Min ISR is 3.
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> r != 3,
-                metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
+            metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
             .setElection(Election.PREFERRED)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER)
             .setUseLastKnownLeaderInBalancedRecovery(false);
@@ -931,7 +931,7 @@ public class PartitionChangeBuilderTest {
         Uuid topicId = Uuid.fromString("FbrrdcfiR-KC2CPSTHaJrg");
         // Min ISR is 3.
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> r != 3,
-                metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
+            metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
             .setElection(Election.PREFERRED)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER)
             .setUseLastKnownLeaderInBalancedRecovery(false);
@@ -982,7 +982,7 @@ public class PartitionChangeBuilderTest {
         Uuid topicId = Uuid.fromString("FbrrdcfiR-KC2CPSTHaJrg");
         // Min ISR is 3.
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> r != 3,
-                metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
+            metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
             .setElection(Election.PREFERRED)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER)
             .setUseLastKnownLeaderInBalancedRecovery(false);
@@ -1017,9 +1017,9 @@ public class PartitionChangeBuilderTest {
         PartitionRegistration registration = new PartitionRegistration.Builder().
                 setReplicas(new int[]{2, 1, 3}).
                 setDirectories(new Uuid[]{
-                        Uuid.fromString("v1PVrX6uS5m8CByXlLfmWg"),
-                        Uuid.fromString("iU2znv45Q9yQkOpkTSy3jA"),
-                        Uuid.fromString("fM5NKyWTQHqEihjIkUl99Q")
+                    Uuid.fromString("v1PVrX6uS5m8CByXlLfmWg"),
+                    Uuid.fromString("iU2znv45Q9yQkOpkTSy3jA"),
+                    Uuid.fromString("fM5NKyWTQHqEihjIkUl99Q")
                 }).
                 setIsr(new int[]{2, 1, 3}).
                 setLeader(1).
@@ -1028,24 +1028,24 @@ public class PartitionChangeBuilderTest {
                 setPartitionEpoch(200).
                 build();
         Optional<ApiMessageAndVersion> built = new PartitionChangeBuilder(registration, FOO_ID,
-                0, r -> true, MetadataVersion.IBP_3_7_IV2, 2, MetadataVersion.IBP_3_7_IV2.isElrSupported()).
+            0, r -> true, MetadataVersion.IBP_3_7_IV2, 2, MetadataVersion.IBP_3_7_IV2.isElrSupported()).
                 setTargetReplicas(List.of(3, 1, 5, 4)).
                 setDirectory(5, Uuid.fromString("RNJ5oFjjSSWMMFRwqdCfJg")).
                 setDefaultDirProvider(DEFAULT_DIR_PROVIDER).
                 build();
         Optional<ApiMessageAndVersion> expected = Optional.of(new ApiMessageAndVersion(
-                new PartitionChangeRecord().
+            new PartitionChangeRecord().
                         setTopicId(FOO_ID).
                         setPartitionId(0).
                         setLeader(1).
                         setReplicas(List.of(3, 1, 5, 4)).
                         setDirectories(List.of(
-                                Uuid.fromString("fM5NKyWTQHqEihjIkUl99Q"),
-                                Uuid.fromString("iU2znv45Q9yQkOpkTSy3jA"),
-                                Uuid.fromString("RNJ5oFjjSSWMMFRwqdCfJg"),
-                                DirectoryId.UNASSIGNED
+                            Uuid.fromString("fM5NKyWTQHqEihjIkUl99Q"),
+                            Uuid.fromString("iU2znv45Q9yQkOpkTSy3jA"),
+                            Uuid.fromString("RNJ5oFjjSSWMMFRwqdCfJg"),
+                            DirectoryId.UNASSIGNED
                         )),
-                (short) 1
+            (short) 1
         ));
         assertEquals(expected, built);
     }
@@ -1055,9 +1055,9 @@ public class PartitionChangeBuilderTest {
         PartitionRegistration registration = new PartitionRegistration.Builder().
                 setReplicas(new int[]{2, 1, 3}).
                 setDirectories(new Uuid[]{
-                        Uuid.fromString("S1zMYZczRjWmucidLqGA5g"),
-                        Uuid.fromString("9eRNXTvFTsWUJObvW51V5A"),
-                        Uuid.fromString("UpePYVBgRAi3c4ujQrf3Kg")
+                    Uuid.fromString("S1zMYZczRjWmucidLqGA5g"),
+                    Uuid.fromString("9eRNXTvFTsWUJObvW51V5A"),
+                    Uuid.fromString("UpePYVBgRAi3c4ujQrf3Kg")
                 }).
                 setIsr(new int[]{2, 1, 3}).
                 setLeader(2).
@@ -1066,21 +1066,21 @@ public class PartitionChangeBuilderTest {
                 setPartitionEpoch(200).
                 build();
         Optional<ApiMessageAndVersion> built = new PartitionChangeBuilder(registration, FOO_ID,
-                0, r -> true, MetadataVersion.latestTesting(), 2, MetadataVersion.latestTesting().isElrSupported()).
+            0, r -> true, MetadataVersion.latestTesting(), 2, MetadataVersion.latestTesting().isElrSupported()).
                 setDirectory(3, Uuid.fromString("pN1VKs9zRzK4APflpegAVg")).
                 setDirectory(1, DirectoryId.LOST).
                 setDefaultDirProvider(DEFAULT_DIR_PROVIDER).
                 build();
         Optional<ApiMessageAndVersion> expected = Optional.of(new ApiMessageAndVersion(
-                new PartitionChangeRecord().
+            new PartitionChangeRecord().
                         setTopicId(FOO_ID).
                         setPartitionId(0).
                         setDirectories(List.of(
-                                Uuid.fromString("S1zMYZczRjWmucidLqGA5g"),
-                                DirectoryId.LOST,
-                                Uuid.fromString("pN1VKs9zRzK4APflpegAVg")
+                            Uuid.fromString("S1zMYZczRjWmucidLqGA5g"),
+                            DirectoryId.LOST,
+                            Uuid.fromString("pN1VKs9zRzK4APflpegAVg")
                         )),
-                (short) 2
+            (short) 2
         ));
         assertEquals(expected, built);
     }
@@ -1104,7 +1104,7 @@ public class PartitionChangeBuilderTest {
 
         // Make replica 1 offline.
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> r != 1,
-                metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
+            metadataVersionForPartitionChangeRecordVersion(version), 3, isElrEnabled(version))
             .setElection(Election.PREFERRED)
             .setUseLastKnownLeaderInBalancedRecovery(lastKnownLeaderEnabled)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER);
@@ -1135,10 +1135,10 @@ public class PartitionChangeBuilderTest {
         PartitionRegistration partition = new PartitionRegistration.Builder()
             .setReplicas(new int[] {1, 2, 3, 4})
             .setDirectories(new Uuid[]{
-                    Uuid.fromString("MrTKKPEpRv66ZpWv4V7EBQ"),
-                    Uuid.fromString("CkvgdEcWTVmdhfNuJXL0xA"),
-                    Uuid.fromString("4a2coMsPRkSCsiTVWSksSw"),
-                    Uuid.fromString("tmPdVjzASZ2ZqiS0cVJvtQ")
+                Uuid.fromString("MrTKKPEpRv66ZpWv4V7EBQ"),
+                Uuid.fromString("CkvgdEcWTVmdhfNuJXL0xA"),
+                Uuid.fromString("4a2coMsPRkSCsiTVWSksSw"),
+                Uuid.fromString("tmPdVjzASZ2ZqiS0cVJvtQ")
             })
             .setIsr(new int[] {1, 2, 3, 4})
             .setElr(new int[] {})
@@ -1152,7 +1152,7 @@ public class PartitionChangeBuilderTest {
 
         // Mark all the replicas offline.
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> false,
-                metadataVersionForPartitionChangeRecordVersion(version), 3, true)
+            metadataVersionForPartitionChangeRecordVersion(version), 3, true)
             .setElection(Election.PREFERRED)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER)
             .setUseLastKnownLeaderInBalancedRecovery(lastKnownLeaderEnabled);
@@ -1178,7 +1178,7 @@ public class PartitionChangeBuilderTest {
         if (lastKnownLeaderEnabled) {
             assertArrayEquals(new int[]{1}, partition.lastKnownElr, partition.toString());
             builder = new PartitionChangeBuilder(partition, topicId, 0, r -> false,
-                    metadataVersionForPartitionChangeRecordVersion(version), 3, true)
+                metadataVersionForPartitionChangeRecordVersion(version), 3, true)
                 .setElection(Election.PREFERRED)
                 .setUncleanShutdownReplicas(List.of(2))
                 .setDefaultDirProvider(DEFAULT_DIR_PROVIDER)
@@ -1195,20 +1195,20 @@ public class PartitionChangeBuilderTest {
     public void testEligibleLeaderReplicas_ElectLastKnownLeader() {
         short version = 2;
         PartitionRegistration partition = new PartitionRegistration.Builder()
-                .setReplicas(new int[] {1, 2, 3, 4})
-                .setDirectories(DirectoryId.migratingArray(4))
-                .setIsr(new int[] {})
-                .setElr(new int[] {})
-                .setLastKnownElr(new int[] {1})
-                .setLeader(-1)
-                .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED)
-                .setLeaderEpoch(100)
-                .setPartitionEpoch(200)
-                .build();
+            .setReplicas(new int[] {1, 2, 3, 4})
+            .setDirectories(DirectoryId.migratingArray(4))
+            .setIsr(new int[] {})
+            .setElr(new int[] {})
+            .setLastKnownElr(new int[] {1})
+            .setLeader(-1)
+            .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED)
+            .setLeaderEpoch(100)
+            .setPartitionEpoch(200)
+            .build();
         Uuid topicId = Uuid.fromString("FbrrdcfiR-KC2CPSTHaJrg");
 
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> true,
-                metadataVersionForPartitionChangeRecordVersion(version), 3, true)
+            metadataVersionForPartitionChangeRecordVersion(version), 3, true)
             .setElection(Election.PREFERRED)
             .setUseLastKnownLeaderInBalancedRecovery(true)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER);
@@ -1236,25 +1236,25 @@ public class PartitionChangeBuilderTest {
     public void testEligibleLeaderReplicas_ElectLastKnownLeaderShouldFail() {
         short version = 2;
         PartitionRegistration partition = new PartitionRegistration.Builder()
-                .setReplicas(new int[] {1, 2, 3, 4})
-                .setDirectories(new Uuid[]{
-                        Uuid.fromString("zANDdMukTEqefOvHpmniMg"),
-                        Uuid.fromString("Ui2Eq8rbRiuW7m7uiPTRyg"),
-                        Uuid.fromString("MhgJOZrrTsKNcGM0XKK4aA"),
-                        Uuid.fromString("Y25PaCAmRfyGIKxAThhBAw")
-                })
-                .setIsr(new int[] {})
-                .setElr(new int[] {3})
-                .setLastKnownElr(new int[] {1})
-                .setLeader(-1)
-                .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED)
-                .setLeaderEpoch(100)
-                .setPartitionEpoch(200)
-                .build();
+            .setReplicas(new int[] {1, 2, 3, 4})
+            .setDirectories(new Uuid[]{
+                Uuid.fromString("zANDdMukTEqefOvHpmniMg"),
+                Uuid.fromString("Ui2Eq8rbRiuW7m7uiPTRyg"),
+                Uuid.fromString("MhgJOZrrTsKNcGM0XKK4aA"),
+                Uuid.fromString("Y25PaCAmRfyGIKxAThhBAw")
+            })
+            .setIsr(new int[] {})
+            .setElr(new int[] {3})
+            .setLastKnownElr(new int[] {1})
+            .setLeader(-1)
+            .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED)
+            .setLeaderEpoch(100)
+            .setPartitionEpoch(200)
+            .build();
         Uuid topicId = Uuid.fromString("FbrrdcfiR-KC2CPSTHaJrg");
 
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> r != 3,
-                metadataVersionForPartitionChangeRecordVersion(version), 3, true)
+            metadataVersionForPartitionChangeRecordVersion(version), 3, true)
             .setElection(Election.PREFERRED)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER)
             .setUseLastKnownLeaderInBalancedRecovery(true);
@@ -1270,25 +1270,25 @@ public class PartitionChangeBuilderTest {
     public void testEligibleLeaderReplicas_NotEligibleLastKnownLeader(Election type) {
         short version = 2;
         PartitionRegistration partition = new PartitionRegistration.Builder()
-                .setReplicas(new int[] {1, 2, 3, 4})
-                .setDirectories(new Uuid[]{
-                        Uuid.fromString("zANDdMukTEqefOvHpmniMg"),
-                        Uuid.fromString("Ui2Eq8rbRiuW7m7uiPTRyg"),
-                        Uuid.fromString("MhgJOZrrTsKNcGM0XKK4aA"),
-                        Uuid.fromString("Y25PaCAmRfyGIKxAThhBAw")
-                })
-                .setIsr(new int[] {})
-                .setElr(new int[] {})
-                .setLastKnownElr(new int[] {1})
-                .setLeader(-1)
-                .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED)
-                .setLeaderEpoch(100)
-                .setPartitionEpoch(200)
-                .build();
+            .setReplicas(new int[] {1, 2, 3, 4})
+            .setDirectories(new Uuid[]{
+                Uuid.fromString("zANDdMukTEqefOvHpmniMg"),
+                Uuid.fromString("Ui2Eq8rbRiuW7m7uiPTRyg"),
+                Uuid.fromString("MhgJOZrrTsKNcGM0XKK4aA"),
+                Uuid.fromString("Y25PaCAmRfyGIKxAThhBAw")
+            })
+            .setIsr(new int[] {})
+            .setElr(new int[] {})
+            .setLastKnownElr(new int[] {1})
+            .setLeader(-1)
+            .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED)
+            .setLeaderEpoch(100)
+            .setPartitionEpoch(200)
+            .build();
         Uuid topicId = Uuid.fromString("FbrrdcfiR-KC2CPSTHaJrg");
 
         PartitionChangeBuilder builder = new PartitionChangeBuilder(partition, topicId, 0, r -> false,
-                metadataVersionForPartitionChangeRecordVersion(version), 3, true)
+            metadataVersionForPartitionChangeRecordVersion(version), 3, true)
             .setElection(type)
             .setDefaultDirProvider(DEFAULT_DIR_PROVIDER)
             .setUseLastKnownLeaderInBalancedRecovery(true);

@@ -79,9 +79,9 @@ public class QuorumControllerIntegrationTestUtils {
      * @param featureMaxVersions    The features and their max supported versions.
      */
     static BrokerRegistrationRequestData.FeatureCollection brokerFeaturesPlusFeatureVersions(
-            MetadataVersion minVersion,
-            MetadataVersion maxVersion,
-            Map<String, Short> featureMaxVersions
+        MetadataVersion minVersion,
+        MetadataVersion maxVersion,
+        Map<String, Short> featureMaxVersions
     ) {
         BrokerRegistrationRequestData.FeatureCollection features = new BrokerRegistrationRequestData.FeatureCollection();
         features.add(new BrokerRegistrationRequestData.Feature()
@@ -129,8 +129,7 @@ public class QuorumControllerIntegrationTestUtils {
                                 .setHost("localhost")
                                 .setPort(9092 + brokerId)
                             )
-                        )
-                    )
+                    ))
             ).get();
             brokerEpochs.put(brokerId, reply.epoch());
 

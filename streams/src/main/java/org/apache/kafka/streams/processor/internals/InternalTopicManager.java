@@ -479,8 +479,8 @@ public class InternalTopicManager {
 
             // Only consider the not-ready subset on each iteration
             final Map<String, InternalTopicConfig> notReadyTopicsMap = topics.entrySet().stream()
-                    .filter(e -> topicsNotReady.contains(e.getKey()))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .filter(e -> topicsNotReady.contains(e.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
             final Set<NewTopic> topicsToCreate = computeTopicsToCreate(notReadyTopicsMap, tempUnknownTopics);
 
             topicsNotReady.retainAll(notReadyTopicsMap.keySet());
@@ -528,15 +528,15 @@ public class InternalTopicManager {
             final Map<String, String> topicConfig = internalTopicConfig.properties(defaultTopicConfigs, windowChangeLogAdditionalRetention);
 
             log.debug("Going to create topic {} with {} partitions and config {}.",
-                    internalTopicConfig.name(),
-                    internalTopicConfig.numberOfPartitions(),
-                    topicConfig);
+                internalTopicConfig.name(),
+                internalTopicConfig.numberOfPartitions(),
+                topicConfig);
 
             topicsToCreate.add(
-                    new NewTopic(
-                            internalTopicConfig.name(),
-                            internalTopicConfig.numberOfPartitions(),
-                            Optional.of(replicationFactor))
+                new NewTopic(
+                    internalTopicConfig.name(),
+                    internalTopicConfig.numberOfPartitions(),
+                    Optional.of(replicationFactor))
                             .configs(topicConfig));
         }
         return topicsToCreate;
@@ -565,12 +565,12 @@ public class InternalTopicManager {
                 if (cause instanceof TopicExistsException) {
                     // This topic didn't exist earlier or its leader not known before; just retain it for next round of validation.
                     log.info(
-                            "Could not create topic {}. Topic is probably marked for deletion (number of partitions is unknown).\n"
-                                    +
+                        "Could not create topic {}. Topic is probably marked for deletion (number of partitions is unknown).\n"
+                            +
                                     "Will retry to create this topic in {} ms (to let broker finish async delete operation first).\n"
-                                    +
+                            +
                                     "Error message was: {}", topicName, retryBackOffMs,
-                            cause.toString());
+                        cause.toString());
                 } else {
                     log.error("Unexpected error during topic creation for {}.\n" +
                             "Error message was: {}", topicName, cause.toString());
@@ -581,9 +581,9 @@ public class InternalTopicManager {
                                 errorMessage.startsWith("Creating topics with default partitions/replication factor are only supported in CreateTopicRequest version 4+")) {
 
                             throw new StreamsException(String.format(
-                                    "Could not create topic %s, because brokers don't support configuration replication.factor=-1."
-                                            + " You can change the replication.factor config or upgrade your brokers to version 2.4 or newer to avoid this error.",
-                                    topicName)
+                                "Could not create topic %s, because brokers don't support configuration replication.factor=-1."
+                                    + " You can change the replication.factor config or upgrade your brokers to version 2.4 or newer to avoid this error.",
+                                topicName)
                             );
                         }
                     } else if (cause instanceof TimeoutException) {
@@ -591,8 +591,8 @@ public class InternalTopicManager {
                                 "Error message was: {}", topicName, cause.toString());
                     } else {
                         throw new StreamsException(
-                                String.format("Could not create topic %s.", topicName),
-                                cause
+                            String.format("Could not create topic %s.", topicName),
+                            cause
                         );
                     }
                 }
@@ -600,13 +600,13 @@ public class InternalTopicManager {
 
             if (!topicsNotReady.isEmpty()) {
                 maybeThrowTimeout(new TimeoutContext(
-                        topicsNotReady,
-                        deadlineMs,
-                        "createTopics timeout",
-                        String.format(
-                                "Could not create topics within %d milliseconds. This can happen if the Kafka cluster is temporarily not available.",
-                                retryTimeoutMs),
-                        null));
+                    topicsNotReady,
+                    deadlineMs,
+                    "createTopics timeout",
+                    String.format(
+                        "Could not create topics within %d milliseconds. This can happen if the Kafka cluster is temporarily not available.",
+                        retryTimeoutMs),
+                    null));
                 log.info(
                     "Topics {} could not be made ready. Will retry in {} milliseconds. Remaining time in milliseconds: {}",
                     topicsNotReady,
@@ -744,10 +744,10 @@ public class InternalTopicManager {
         while (!topicStillToCreate.isEmpty()) {
             final Set<NewTopic> newTopics = topicStillToCreate.stream()
                 .map(topicName -> new NewTopic(
-                        topicName,
-                        topicConfigs.get(topicName).numberOfPartitions(),
-                        Optional.of(replicationFactor)
-                    ).configs(streamsSideTopicConfigs.get(topicName))
+                    topicName,
+                    topicConfigs.get(topicName).numberOfPartitions(),
+                    Optional.of(replicationFactor)
+                ).configs(streamsSideTopicConfigs.get(topicName))
                 ).collect(Collectors.toSet());
 
             log.info("Going to create internal topics: " + newTopics);
@@ -879,7 +879,7 @@ public class InternalTopicManager {
                     String.format("Could not cleanup internal topics within %d milliseconds. This can happen if the " +
                                 "Kafka cluster is temporarily not available or the broker did not complete topic creation " +
                                 "before the cleanup. The following internal topics could not be cleaned up: %s",
-                                retryTimeoutMs, topicsStillToCleanup),
+                                  retryTimeoutMs, topicsStillToCleanup),
                     null
                 ));
 

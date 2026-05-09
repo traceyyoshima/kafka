@@ -793,10 +793,9 @@ public class TargetAssignmentBuilderTest {
             // All the existing members are prepared.
             members.forEach((memberId, member) ->
                 memberSpecs.put(memberId, createAssignmentMemberSpec(
-                        member,
-                        targetAssignment.getOrDefault(memberId, TasksTuple.EMPTY)
-                    )
-                ));
+                    member,
+                    targetAssignment.getOrDefault(memberId, TasksTuple.EMPTY)
+                )));
 
             // All the updated are added and all the deleted
             // members are removed.

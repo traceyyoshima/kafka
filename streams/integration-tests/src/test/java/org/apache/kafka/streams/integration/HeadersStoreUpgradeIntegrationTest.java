@@ -143,10 +143,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         final StreamsBuilder streamsBuilderForOldStore = new StreamsBuilder();
 
         streamsBuilderForOldStore.addStateStore(
-                Stores.timestampedKeyValueStoreBuilder(
-                    persistentStore ? Stores.persistentTimestampedKeyValueStore(STORE_NAME) : Stores.inMemoryKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedKeyValueStoreBuilder(
+                persistentStore ? Stores.persistentTimestampedKeyValueStore(STORE_NAME) : Stores.inMemoryKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedKeyValueProcessor::new, STORE_NAME);
 
@@ -164,10 +164,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         final StreamsBuilder streamsBuilderForNewStore = new StreamsBuilder();
 
         streamsBuilderForNewStore.addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    persistentStore ? Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME) : Stores.inMemoryKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                persistentStore ? Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME) : Stores.inMemoryKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedKeyValueWithHeadersProcessor::new, STORE_NAME);
 
@@ -194,10 +194,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         final StreamsBuilder streamsBuilderForOldStore = new StreamsBuilder();
 
         streamsBuilderForOldStore.addStateStore(
-                Stores.timestampedKeyValueStoreBuilder(
-                    Stores.persistentTimestampedKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedKeyValueStoreBuilder(
+                Stores.persistentTimestampedKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedKeyValueProcessor::new, STORE_NAME);
 
@@ -217,10 +217,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         final StreamsBuilder streamsBuilderForNewStore = new StreamsBuilder();
 
         streamsBuilderForNewStore.addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                Stores.persistentTimestampedKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedKeyValueWithHeadersProcessor::new, STORE_NAME);
 
@@ -257,10 +257,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         final StreamsBuilder streamsBuilderForOldStore = new StreamsBuilder();
 
         streamsBuilderForOldStore.addStateStore(
-                Stores.keyValueStoreBuilder(
-                    persistentStore ? Stores.persistentKeyValueStore(STORE_NAME) : Stores.inMemoryKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.keyValueStoreBuilder(
+                persistentStore ? Stores.persistentKeyValueStore(STORE_NAME) : Stores.inMemoryKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(KeyValueProcessor::new, STORE_NAME);
 
@@ -283,10 +283,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         final StreamsBuilder streamsBuilderForNewStore = new StreamsBuilder();
 
         streamsBuilderForNewStore.addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    persistentStore ? Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME) : Stores.inMemoryKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                persistentStore ? Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME) : Stores.inMemoryKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedKeyValueWithHeadersProcessor::new, STORE_NAME);
 
@@ -313,10 +313,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         final StreamsBuilder streamsBuilderForOldStore = new StreamsBuilder();
 
         streamsBuilderForOldStore.addStateStore(
-                Stores.keyValueStoreBuilder(
-                    Stores.persistentKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.keyValueStoreBuilder(
+                Stores.persistentKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(KeyValueProcessor::new, STORE_NAME);
 
@@ -336,10 +336,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         final StreamsBuilder streamsBuilderForNewStore = new StreamsBuilder();
 
         streamsBuilderForNewStore.addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    Stores.persistentKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                Stores.persistentKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedKeyValueWithHeadersProcessor::new, STORE_NAME);
 
@@ -365,7 +365,7 @@ public class HeadersStoreUpgradeIntegrationTest {
     private <K, V> void processKeyValueAndVerifyTimestampedValue(final K key,
                                                                  final V value,
                                                                  final long timestamp)
-        throws Exception {
+                                                                     throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
             inputStream,
@@ -399,7 +399,7 @@ public class HeadersStoreUpgradeIntegrationTest {
 
     private <K, V> void processKeyValueAndVerifyValue(final K key,
                                                       final V value)
-        throws Exception {
+                                                          throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronously(
             inputStream,
@@ -434,7 +434,7 @@ public class HeadersStoreUpgradeIntegrationTest {
     private <K, V> void verifyLegacyTimestampedValue(final K key,
                                                      final V value,
                                                      final long timestamp)
-        throws Exception {
+                                                         throws Exception {
 
         TestUtils.waitForCondition(
             () -> {
@@ -462,7 +462,7 @@ public class HeadersStoreUpgradeIntegrationTest {
                                                                         final long timestamp,
                                                                         final Headers headers,
                                                                         final Headers expectedHeaders)
-        throws Exception {
+                                                                            throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
             inputStream,
@@ -503,7 +503,7 @@ public class HeadersStoreUpgradeIntegrationTest {
                                                                         final long expectedTimestamp,
                                                                         final Headers headers,
                                                                         final Headers expectedHeaders)
-        throws Exception {
+                                                                            throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
             inputStream,
@@ -620,12 +620,12 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Run with old plain WindowStore
         final StreamsBuilder oldBuilder = new StreamsBuilder();
         oldBuilder.addStateStore(
-                Stores.windowStoreBuilder(
-                    persistentStore
-                        ? Stores.persistentWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false)
-                        : Stores.inMemoryWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.windowStoreBuilder(
+                persistentStore
+                    ? Stores.persistentWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false)
+                    : Stores.inMemoryWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(PlainWindowedProcessor::new, WINDOW_STORE_NAME);
 
@@ -644,12 +644,12 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Restart with TimestampedWindowStoreWithHeaders
         final StreamsBuilder newBuilder = new StreamsBuilder();
         newBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    persistentStore
-                        ? Stores.persistentTimestampedWindowStoreWithHeaders(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false)
-                        : Stores.inMemoryWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedWindowStoreWithHeadersBuilder(
+                persistentStore
+                    ? Stores.persistentTimestampedWindowStoreWithHeaders(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false)
+                    : Stores.inMemoryWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedWindowedWithHeadersProcessor::new, WINDOW_STORE_NAME);
 
@@ -674,10 +674,10 @@ public class HeadersStoreUpgradeIntegrationTest {
     public void shouldProxyPlainWindowStoreToTimestampedWindowStoreWithHeaders() throws Exception {
         final StreamsBuilder oldBuilder = new StreamsBuilder();
         oldBuilder.addStateStore(
-                Stores.windowStoreBuilder(
-                    Stores.persistentWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.windowStoreBuilder(
+                Stores.persistentWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(PlainWindowedProcessor::new, WINDOW_STORE_NAME);
 
@@ -696,10 +696,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Restart with headers-aware builder but non-headers supplier (proxy/adapter mode)
         final StreamsBuilder newBuilder = new StreamsBuilder();
         newBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),  // non-headers supplier!
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedWindowStoreWithHeadersBuilder(
+                Stores.persistentWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),  // non-headers supplier!
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedWindowedWithHeadersProcessor::new, WINDOW_STORE_NAME);
 
@@ -741,12 +741,12 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Phase 1: Run with old TimestampedWindowStore
         final StreamsBuilder oldBuilder = new StreamsBuilder();
         oldBuilder.addStateStore(
-                Stores.timestampedWindowStoreBuilder(
-                    persistentStore
-                        ? Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false)
-                        : Stores.inMemoryWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedWindowStoreBuilder(
+                persistentStore
+                    ? Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false)
+                    : Stores.inMemoryWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedWindowedProcessor::new, WINDOW_STORE_NAME);
 
@@ -764,12 +764,12 @@ public class HeadersStoreUpgradeIntegrationTest {
 
         final StreamsBuilder newBuilder = new StreamsBuilder();
         newBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    persistentStore
-                        ? Stores.persistentTimestampedWindowStoreWithHeaders(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false)
-                        : Stores.inMemoryWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedWindowStoreWithHeadersBuilder(
+                persistentStore
+                    ? Stores.persistentTimestampedWindowStoreWithHeaders(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false)
+                    : Stores.inMemoryWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedWindowedWithHeadersProcessor::new, WINDOW_STORE_NAME);
 
@@ -794,10 +794,10 @@ public class HeadersStoreUpgradeIntegrationTest {
     public void shouldProxyTimestampedWindowStoreToTimestampedWindowStoreWithHeaders() throws Exception {
         final StreamsBuilder oldBuilder = new StreamsBuilder();
         oldBuilder.addStateStore(
-                Stores.timestampedWindowStoreBuilder(
-                    Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedWindowStoreBuilder(
+                Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedWindowedProcessor::new, WINDOW_STORE_NAME);
 
@@ -816,10 +816,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Restart with headers-aware builder but non-headers supplier (proxy/adapter mode)
         final StreamsBuilder newBuilder = new StreamsBuilder();
         newBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),  // non-headers supplier!
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedWindowStoreWithHeadersBuilder(
+                Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),  // non-headers supplier!
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedWindowedWithHeadersProcessor::new, WINDOW_STORE_NAME);
 
@@ -1168,10 +1168,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Attempt to downgrade to plain key-value store
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.keyValueStoreBuilder(
-                    Stores.persistentKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.keyValueStoreBuilder(
+                Stores.persistentKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(KeyValueProcessor::new, STORE_NAME);
 
@@ -1215,10 +1215,10 @@ public class HeadersStoreUpgradeIntegrationTest {
 
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.keyValueStoreBuilder(
-                    Stores.persistentKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.keyValueStoreBuilder(
+                Stores.persistentKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(KeyValueProcessor::new, STORE_NAME);
 
@@ -1240,10 +1240,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Attempt to downgrade to non-headers key-value store
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.timestampedKeyValueStoreBuilder(
-                    Stores.persistentTimestampedKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedKeyValueStoreBuilder(
+                Stores.persistentTimestampedKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedKeyValueProcessor::new, STORE_NAME);
 
@@ -1287,10 +1287,10 @@ public class HeadersStoreUpgradeIntegrationTest {
 
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.timestampedKeyValueStoreBuilder(
-                    Stores.persistentTimestampedKeyValueStore(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedKeyValueStoreBuilder(
+                Stores.persistentTimestampedKeyValueStore(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedKeyValueProcessor::new, STORE_NAME);
 
@@ -1316,13 +1316,13 @@ public class HeadersStoreUpgradeIntegrationTest {
 
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.windowStoreBuilder(
-                    Stores.persistentWindowStore(WINDOW_STORE_NAME,
-                        Duration.ofMillis(RETENTION_MS),
-                        Duration.ofMillis(WINDOW_SIZE_MS),
-                        false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.windowStoreBuilder(
+                Stores.persistentWindowStore(WINDOW_STORE_NAME,
+                    Duration.ofMillis(RETENTION_MS),
+                    Duration.ofMillis(WINDOW_SIZE_MS),
+                    false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(PlainWindowedProcessor::new, WINDOW_STORE_NAME);
 
@@ -1365,13 +1365,13 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Attempt to downgrade to non-headers window store
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.timestampedWindowStoreBuilder(
-                    Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME,
-                        Duration.ofMillis(RETENTION_MS),
-                        Duration.ofMillis(WINDOW_SIZE_MS),
-                        false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedWindowStoreBuilder(
+                Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME,
+                    Duration.ofMillis(RETENTION_MS),
+                    Duration.ofMillis(WINDOW_SIZE_MS),
+                    false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedWindowedProcessor::new, WINDOW_STORE_NAME);
 
@@ -1415,13 +1415,13 @@ public class HeadersStoreUpgradeIntegrationTest {
 
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.windowStoreBuilder(
-                    Stores.persistentWindowStore(WINDOW_STORE_NAME,
-                        Duration.ofMillis(RETENTION_MS),
-                        Duration.ofMillis(WINDOW_SIZE_MS),
-                        false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.windowStoreBuilder(
+                Stores.persistentWindowStore(WINDOW_STORE_NAME,
+                    Duration.ofMillis(RETENTION_MS),
+                    Duration.ofMillis(WINDOW_SIZE_MS),
+                    false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(PlainWindowedProcessor::new, WINDOW_STORE_NAME);
 
@@ -1445,13 +1445,13 @@ public class HeadersStoreUpgradeIntegrationTest {
 
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.timestampedWindowStoreBuilder(
-                    Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME,
-                        Duration.ofMillis(RETENTION_MS),
-                        Duration.ofMillis(WINDOW_SIZE_MS),
-                        false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedWindowStoreBuilder(
+                Stores.persistentTimestampedWindowStore(WINDOW_STORE_NAME,
+                    Duration.ofMillis(RETENTION_MS),
+                    Duration.ofMillis(WINDOW_SIZE_MS),
+                    false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedWindowedProcessor::new, WINDOW_STORE_NAME);
 
@@ -1524,13 +1524,13 @@ public class HeadersStoreUpgradeIntegrationTest {
     private long setupWindowStoreWithHeaders(final Properties props) throws Exception {
         final StreamsBuilder headersBuilder = new StreamsBuilder();
         headersBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(WINDOW_STORE_NAME,
-                        Duration.ofMillis(RETENTION_MS),
-                        Duration.ofMillis(WINDOW_SIZE_MS),
-                        false),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedWindowStoreWithHeadersBuilder(
+                Stores.persistentTimestampedWindowStoreWithHeaders(WINDOW_STORE_NAME,
+                    Duration.ofMillis(RETENTION_MS),
+                    Duration.ofMillis(WINDOW_SIZE_MS),
+                    false),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedWindowedWithHeadersProcessor::new, WINDOW_STORE_NAME);
 
@@ -1556,10 +1556,10 @@ public class HeadersStoreUpgradeIntegrationTest {
     private void setupAndPopulateKeyValueStoreWithHeaders(final Properties props) throws Exception {
         final StreamsBuilder headersBuilder = new StreamsBuilder();
         headersBuilder.addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(TimestampedKeyValueWithHeadersProcessor::new, STORE_NAME);
 
@@ -1591,11 +1591,11 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Phase 1: Run with plain SessionStore
         final StreamsBuilder oldBuilder = new StreamsBuilder();
         oldBuilder.addStateStore(
-                Stores.sessionStoreBuilder(
-                    isPersistent ? Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)) :
+            Stores.sessionStoreBuilder(
+                isPersistent ? Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)) :
                         Stores.inMemorySessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.String(),
-                    Serdes.String()))
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(SessionProcessor::new, SESSION_STORE_NAME);
 
@@ -1614,11 +1614,11 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Phase 2: Restart with SessionStoreWithHeaders (headers-aware supplier)
         final StreamsBuilder newBuilder = new StreamsBuilder();
         newBuilder.addStateStore(
-                Stores.sessionStoreWithHeadersBuilder(
-                    isPersistent ? Stores.persistentSessionStoreWithHeaders(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)) :
+            Stores.sessionStoreWithHeadersBuilder(
+                isPersistent ? Stores.persistentSessionStoreWithHeaders(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)) :
                         Stores.inMemorySessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.String(),
-                    Serdes.String()))
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(SessionWithHeadersProcessor::new, SESSION_STORE_NAME);
 
@@ -1645,10 +1645,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Phase 1: Run with plain SessionStore
         final StreamsBuilder oldBuilder = new StreamsBuilder();
         oldBuilder.addStateStore(
-                Stores.sessionStoreBuilder(
-                    Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.sessionStoreBuilder(
+                Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(SessionProcessor::new, SESSION_STORE_NAME);
 
@@ -1667,10 +1667,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Phase 2: Restart with headers-aware builder but non-headers supplier (proxy/adapter mode)
         final StreamsBuilder newBuilder = new StreamsBuilder();
         newBuilder.addStateStore(
-                Stores.sessionStoreWithHeadersBuilder(
-                    Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),  // non-headers supplier!
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.sessionStoreWithHeadersBuilder(
+                Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),  // non-headers supplier!
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(SessionWithHeadersProcessor::new, SESSION_STORE_NAME);
 
@@ -1703,10 +1703,10 @@ public class HeadersStoreUpgradeIntegrationTest {
         // Attempt to downgrade to plain session store
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.sessionStoreBuilder(
-                    Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.sessionStoreBuilder(
+                Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(SessionProcessor::new, SESSION_STORE_NAME);
 
@@ -1749,10 +1749,10 @@ public class HeadersStoreUpgradeIntegrationTest {
 
         final StreamsBuilder downgradedBuilder = new StreamsBuilder();
         downgradedBuilder.addStateStore(
-                Stores.sessionStoreBuilder(
-                    Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.sessionStoreBuilder(
+                Stores.persistentSessionStore(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(SessionProcessor::new, SESSION_STORE_NAME);
 
@@ -1769,8 +1769,8 @@ public class HeadersStoreUpgradeIntegrationTest {
     // ==================== Session Store Helper Methods ====================
 
     private void processSessionKeyValueAndVerify(final String key,
-                                                  final String value,
-                                                  final long timestamp) throws Exception {
+                                                 final String value,
+                                                 final long timestamp) throws Exception {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
             inputStream,
             singletonList(KeyValue.pair(key, value)),
@@ -1916,10 +1916,10 @@ public class HeadersStoreUpgradeIntegrationTest {
     private void setupAndPopulateSessionStoreWithHeaders(final Properties props) throws Exception {
         final StreamsBuilder headersBuilder = new StreamsBuilder();
         headersBuilder.addStateStore(
-                Stores.sessionStoreWithHeadersBuilder(
-                    Stores.persistentSessionStoreWithHeaders(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.String(),
-                    Serdes.String()))
+            Stores.sessionStoreWithHeadersBuilder(
+                Stores.persistentSessionStoreWithHeaders(SESSION_STORE_NAME, Duration.ofMillis(RETENTION_MS)),
+                Serdes.String(),
+                Serdes.String()))
             .stream(inputStream, Consumed.with(Serdes.String(), Serdes.String()))
             .process(SessionWithHeadersProcessor::new, SESSION_STORE_NAME);
 

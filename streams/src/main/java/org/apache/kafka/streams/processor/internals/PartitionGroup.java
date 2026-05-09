@@ -109,8 +109,8 @@ class PartitionGroup extends AbstractPartitionGroup {
                                 "\n\tThere may be out-of-order processing for this task as a result." +
                                 "\n\tBuffered partitions: {}" +
                                 "\n\tNon-buffered partitions: {}",
-                        bufferedPartitions,
-                        emptyPartitions);
+                    bufferedPartitions,
+                    emptyPartitions);
             }
             return new ReadyToProcessResult(true, Optional.empty());
         }
@@ -143,7 +143,7 @@ class PartitionGroup extends AbstractPartitionGroup {
                     idlePartitionDeadlines.remove(partition);
                     appendLog(logMessageBuilder,
                         String.format("Partition %s has current lag %d, but no data is buffered locally. Waiting to buffer some records.",
-                        partition, fetchedLag));
+                            partition, fetchedLag));
 
                     return new ReadyToProcessResult(false, Optional.of(logMessageBuilder.toString()));
                 } else {
@@ -187,10 +187,10 @@ class PartitionGroup extends AbstractPartitionGroup {
                             "\n\tPartitions we gave up waiting for, with their corresponding deadlines: {}." +
                             "\n\tConfigured max.task.idle.ms: {}." +
                             "\n\tCurrent wall-clock time: {}.",
-                    queued,
-                    enforced,
-                    maxTaskIdleMs,
-                    wallClockTime);
+                queued,
+                enforced,
+                maxTaskIdleMs,
+                wallClockTime);
             return new ReadyToProcessResult(true, Optional.empty());
         }
     }

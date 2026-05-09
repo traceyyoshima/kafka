@@ -409,9 +409,9 @@ public class ConfigCommandTest {
         List<String> addConfigFileArgs = List.of("--add-config-file", file.getPath());
 
         ConfigCommand.ConfigCommandOptions createOpts = new ConfigCommand.ConfigCommandOptions(toArray(List.of("--bootstrap-server", "localhost:9092",
-                "--entity-name", "1",
-                "--entity-type", "brokers",
-                "--alter"),
+            "--entity-name", "1",
+            "--entity-type", "brokers",
+            "--alter"),
             addConfigFileArgs));
         createOpts.checkArgs();
 

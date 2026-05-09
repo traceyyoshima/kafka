@@ -415,7 +415,7 @@ public abstract class ShareConsumerTestBase {
 
     protected void waitForMetadataCache() throws InterruptedException {
         TestUtils.waitForCondition(() ->
-                !cluster.brokers().get(0).metadataCache().getAliveBrokerNodes(new ListenerName("EXTERNAL")).isEmpty(),
+            !cluster.brokers().get(0).metadataCache().getAliveBrokerNodes(new ListenerName("EXTERNAL")).isEmpty(),
             DEFAULT_MAX_WAIT_MS, 100L, () -> "cache not up yet");
     }
 

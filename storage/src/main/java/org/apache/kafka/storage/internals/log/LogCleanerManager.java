@@ -274,9 +274,9 @@ public class LogCleanerManager {
             dirtiestLogCleanableRatio = dirtyLogs.isEmpty()
                     ? 0
                     : dirtyLogs.stream()
-                        .mapToDouble(LogToClean::cleanableRatio)
-                        .max()
-                        .orElse(0.0);
+                            .mapToDouble(LogToClean::cleanableRatio)
+                            .max()
+                            .orElse(0.0);
             // and must meet the minimum threshold for dirty byte ratio or have some bytes required to be compacted
             List<LogToClean> cleanableLogs = dirtyLogs.stream()
                     .filter(ltc -> (ltc.needCompactionNow() && ltc.cleanableBytes() > 0) || ltc.cleanableRatio() > ltc.log().config().minCleanableRatio)
@@ -728,15 +728,15 @@ public class LogCleanerManager {
         // 2. The last stable offset (including the high watermark)
         // 3. Any segments closer to the head of the log than the minimum compaction lag time
         long firstUncleanableDirtyOffset = Stream.of(
-                        // we do not clean beyond the last stable offset
+                // we do not clean beyond the last stable offset
                         Optional.of(log.lastStableOffset()),
 
-                        // the active segment is always uncleanable
+                // the active segment is always uncleanable
                         Optional.of(log.activeSegment().baseOffset()),
 
-                        // the first segment whose largest message timestamp is within a minimum time lag from now
+                // the first segment whose largest message timestamp is within a minimum time lag from now
                         minCompactionLagMs > 0 ? findFirstUncleanableSegment(log, firstDirtyOffset, now, minCompactionLagMs) : Optional.<Long>empty()
-                )
+        )
                 .flatMap(Optional::stream)
                 .min(Long::compare)
                 .orElseThrow(() -> new IllegalStateException("No uncleanable offset found"));

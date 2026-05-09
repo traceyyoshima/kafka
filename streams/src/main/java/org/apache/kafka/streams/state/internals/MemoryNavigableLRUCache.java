@@ -54,7 +54,7 @@ public class MemoryNavigableLRUCache extends MemoryLRUCache {
             final TreeMap<Bytes, byte[]> treeMap = toTreeMap();
             final Iterator<Bytes> keys = getIterator(treeMap, from, to, true);
             return new DelegatingPeekingKeyValueIterator<>(name(),
-                    new MemoryNavigableLRUCache.CacheIterator(keys, treeMap));
+                new MemoryNavigableLRUCache.CacheIterator(keys, treeMap));
         }
     }
 
@@ -70,7 +70,7 @@ public class MemoryNavigableLRUCache extends MemoryLRUCache {
             final TreeMap<Bytes, byte[]> treeMap = toTreeMap();
             final Iterator<Bytes> keys = getIterator(treeMap, from, to, false);
             return new DelegatingPeekingKeyValueIterator<>(name(),
-                    new MemoryNavigableLRUCache.CacheIterator(keys, treeMap));
+                new MemoryNavigableLRUCache.CacheIterator(keys, treeMap));
         }
     }
 

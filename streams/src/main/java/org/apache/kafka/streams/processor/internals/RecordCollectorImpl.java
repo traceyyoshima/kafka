@@ -168,10 +168,10 @@ public class RecordCollectorImpl implements RecordCollector {
                     if (multicastPartitions.isEmpty()) {
                         // If a record is not to be sent to any partition, mark it as a dropped record.
                         log.warn("Skipping record as partitioner returned empty partitions. "
-                                + "topic=[{}]", topic);
+                                 + "topic=[{}]", topic);
                         droppedRecordsSensor.record();
                     } else {
-                        for (final int multicastPartition: multicastPartitions) {
+                        for (final int multicastPartition : multicastPartitions) {
                             send(topic, key, value, headers, multicastPartition, timestamp, keySerializer, valueSerializer, processorNodeId, context);
                         }
                     }
@@ -377,11 +377,11 @@ public class RecordCollectorImpl implements RecordCollector {
         if (!deadLetterQueueRecords.isEmpty()) {
             for (final ProducerRecord<byte[], byte[]> deadLetterQueueRecord : deadLetterQueueRecords) {
                 this.send(
-                        deadLetterQueueRecord.key(),
-                        deadLetterQueueRecord.value(),
-                        processorNodeId,
-                        context,
-                        deadLetterQueueRecord
+                          deadLetterQueueRecord.key(),
+                          deadLetterQueueRecord.value(),
+                          processorNodeId,
+                          context,
+                          deadLetterQueueRecord
                 );
             }
         }
@@ -443,21 +443,22 @@ public class RecordCollectorImpl implements RecordCollector {
                                                                               final Serializer<KV> keyOrValueSerializer,
                                                                               final ClassCastException exception) {
         final String keyOrValueClass = keyOrValue == null
-            ? String.format("unknown because %s is null", origin.toString().toLowerCase(Locale.ROOT)) : keyOrValue.getClass().getName();
+            ? String.format("unknown because %s is null", origin.toString().toLowerCase(Locale.ROOT))
+            : keyOrValue.getClass().getName();
 
         return new StreamsException(
             MessageFormat.format(
                 String.format(
-                        "ClassCastException while producing data to topic %s. " +
+                    "ClassCastException while producing data to topic %s. " +
                             "The {0} serializer %s is not compatible to the actual {0} type: %s. " +
                             "Change the default {0} serde in StreamConfig or provide the correct {0} serde via method parameters " +
                             "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with " +
                             "`Produced.{0}Serde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).",
-                        topic,
-                        keyOrValueSerializer.getClass().getName(),
-                        keyOrValueClass),
+                    topic,
+                    keyOrValueSerializer.getClass().getName(),
+                    keyOrValueClass),
                 origin.toString().toLowerCase(Locale.ROOT)),
-                exception);
+            exception);
     }
 
     private void recordSendError(final String topic,
@@ -506,8 +507,7 @@ public class RecordCollectorImpl implements RecordCollector {
                     "Fatal user code error in production error callback",
                     processorNodeId,
                     fatalUserException
-                    )
-                );
+                ));
                 return;
             }
 
@@ -515,11 +515,11 @@ public class RecordCollectorImpl implements RecordCollector {
             if (!deadLetterQueueRecords.isEmpty()) {
                 for (final ProducerRecord<byte[], byte[]> deadLetterQueueRecord : deadLetterQueueRecords) {
                     this.send(
-                            deadLetterQueueRecord.key(),
-                            deadLetterQueueRecord.value(),
-                            processorNodeId,
-                            context,
-                            deadLetterQueueRecord
+                              deadLetterQueueRecord.key(),
+                              deadLetterQueueRecord.value(),
+                              processorNodeId,
+                              context,
+                              deadLetterQueueRecord
                     );
                 }
             }

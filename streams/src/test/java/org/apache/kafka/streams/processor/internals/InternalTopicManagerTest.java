@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package org.apache.kafka.streams.processor.internals;
+
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.Config;
 import org.apache.kafka.clients.admin.ConfigEntry;
@@ -218,7 +219,7 @@ public class InternalTopicManagerTest {
                 mkEntry(topic1, createTopicSuccessfulFuture)
             )))
             .thenAnswer(answer -> new MockCreateTopicsResult(mkMap(
-                    mkEntry(topic2, createTopicSuccessfulFuture)
+                mkEntry(topic2, createTopicSuccessfulFuture)
             )));
 
         topicManager.setup(mkMap(
@@ -783,13 +784,13 @@ public class InternalTopicManagerTest {
         // it should retry with just topic2 and then let it succeed
         when(admin.describeTopics(Set.of(topic1, topic2)))
                 .thenAnswer(answer -> new MockDescribeTopicsResult(mkMap(
-                        mkEntry(topic1, topicDescriptionSuccessFuture),
-                        mkEntry(topic2, topicDescriptionFailFuture) // first call: missing
+                    mkEntry(topic1, topicDescriptionSuccessFuture),
+                    mkEntry(topic2, topicDescriptionFailFuture) // first call: missing
                 )));
 
         when(admin.createTopics(Collections.singleton(new NewTopic(topic2, Optional.of(1), Optional.of((short) 1))
             .configs(mkMap(mkEntry(TopicConfig.CLEANUP_POLICY_CONFIG, TopicConfig.CLEANUP_POLICY_COMPACT),
-                                 mkEntry(TopicConfig.MESSAGE_TIMESTAMP_TYPE_CONFIG, "CreateTime"))))))
+                           mkEntry(TopicConfig.MESSAGE_TIMESTAMP_TYPE_CONFIG, "CreateTime"))))))
             .thenAnswer(answer -> new MockCreateTopicsResult(Collections.singletonMap(topic2, topicCreationFuture)));
         when(admin.describeTopics(Set.of(topic2)))
                 .thenAnswer(answer -> new MockDescribeTopicsResult(Collections.singletonMap(topic2, topicDescriptionSuccessFuture)));
@@ -854,9 +855,9 @@ public class InternalTopicManagerTest {
         mockAdminClient.timeoutNextRequest(5);
 
         final InternalTopicManager topicManager = new InternalTopicManager(
-                new AutoAdvanceMockTime(time),
-                mockAdminClient,
-                new StreamsConfig(config)
+            new AutoAdvanceMockTime(time),
+            mockAdminClient,
+            new StreamsConfig(config)
         );
 
         final InternalTopicConfig internalTopicConfig = new RepartitionTopicConfig(topic1, Collections.emptyMap());
@@ -869,6 +870,7 @@ public class InternalTopicManagerTest {
                     "This can happen if the Kafka cluster is temporarily not available."));
         }
     }
+
     @Test
     public void shouldLogWhenTopicNotFoundAndNotThrowException() {
         mockAdminClient.addTopic(
@@ -924,7 +926,7 @@ public class InternalTopicManagerTest {
             .thenAnswer(answer -> new MockDescribeTopicsResult(
                 Collections.singletonMap(topic1, topicDescriptionUnknownTopicFuture)));
         when(admin.createTopics(Collections.singleton(
-                new NewTopic(topic1, Optional.of(1), Optional.of((short) 1))
+            new NewTopic(topic1, Optional.of(1), Optional.of((short) 1))
             .configs(mkMap(mkEntry(TopicConfig.CLEANUP_POLICY_CONFIG, TopicConfig.CLEANUP_POLICY_DELETE),
                 mkEntry(TopicConfig.MESSAGE_TIMESTAMP_TYPE_CONFIG, "CreateTime"),
                 mkEntry(TopicConfig.SEGMENT_BYTES_CONFIG, "52428800"),
@@ -945,7 +947,7 @@ public class InternalTopicManagerTest {
             new StreamsConfig(config)
         );
         final TopicPartitionInfo partitionInfo = new TopicPartitionInfo(0, broker1,
-                Collections.singletonList(broker1), Collections.singletonList(broker1));
+            Collections.singletonList(broker1), Collections.singletonList(broker1));
 
         final KafkaFutureImpl<TopicDescription> topicDescriptionFailFuture = new KafkaFutureImpl<>();
         topicDescriptionFailFuture.completeExceptionally(new LeaderNotAvailableException("Leader Not Available!"));

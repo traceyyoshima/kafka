@@ -37,11 +37,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Timeout(40)
 public class BootstrapDirectoryTest {
     static final List<ApiMessageAndVersion> SAMPLE_RECORDS1 = List.of(
-            new ApiMessageAndVersion(new FeatureLevelRecord().
+        new ApiMessageAndVersion(new FeatureLevelRecord().
                     setName(MetadataVersion.FEATURE_NAME).
                     setFeatureLevel((short) 7), (short) 0),
-            new ApiMessageAndVersion(new NoOpRecord(), (short) 0),
-            new ApiMessageAndVersion(new NoOpRecord(), (short) 0));
+        new ApiMessageAndVersion(new NoOpRecord(), (short) 0),
+        new ApiMessageAndVersion(new NoOpRecord(), (short) 0));
 
     static class BootstrapTestDirectory implements AutoCloseable {
         File directory = null;
@@ -72,7 +72,7 @@ public class BootstrapDirectoryTest {
     public void testReadFromEmptyConfiguration() throws Exception {
         try (BootstrapTestDirectory testDirectory = new BootstrapTestDirectory().createDirectory()) {
             assertEquals(BootstrapMetadata.fromVersion(MetadataVersion.latestProduction(),
-                    "the default bootstrap"),
+                "the default bootstrap"),
                 new BootstrapDirectory(testDirectory.path()).read());
         }
     }
@@ -89,7 +89,7 @@ public class BootstrapDirectoryTest {
         try (BootstrapTestDirectory testDirectory = new BootstrapTestDirectory().createDirectory()) {
             BootstrapDirectory directory = new BootstrapDirectory(testDirectory.path());
             BootstrapMetadata metadata = BootstrapMetadata.fromRecords(SAMPLE_RECORDS1,
-                    "the binary bootstrap metadata file: " + testDirectory.binaryBootstrapPath());
+                "the binary bootstrap metadata file: " + testDirectory.binaryBootstrapPath());
             directory.writeBinaryFile(metadata);
             assertEquals(metadata, directory.read());
         }

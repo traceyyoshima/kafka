@@ -57,8 +57,8 @@ public final class QuorumFeatures {
     public static Map<String, VersionRange> defaultSupportedFeatureMap(boolean enableUnstable) {
         Map<String, VersionRange> features = new HashMap<>(1);
         features.put(MetadataVersion.FEATURE_NAME, VersionRange.of(
-                MetadataVersion.MINIMUM_VERSION.featureLevel(),
-                enableUnstable ?
+            MetadataVersion.MINIMUM_VERSION.featureLevel(),
+            enableUnstable ?
                     MetadataVersion.latestTesting().featureLevel() :
                     MetadataVersion.latestProduction().featureLevel()));
         for (Feature feature : Feature.PRODUCTION_FEATURES) {

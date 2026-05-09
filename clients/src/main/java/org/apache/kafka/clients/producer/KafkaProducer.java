@@ -383,9 +383,9 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             this.producerMetrics = new KafkaProducerMetrics(metrics);
             this.partitionerPlugin = Plugin.wrapInstance(
                     config.getConfiguredInstance(
-                        ProducerConfig.PARTITIONER_CLASS_CONFIG,
-                        Partitioner.class,
-                        Collections.singletonMap(ProducerConfig.CLIENT_ID_CONFIG, clientId)),
+                            ProducerConfig.PARTITIONER_CLASS_CONFIG,
+                            Partitioner.class,
+                            Collections.singletonMap(ProducerConfig.CLIENT_ID_CONFIG, clientId)),
                     metrics,
                     ProducerConfig.PARTITIONER_CLASS_CONFIG);
             this.partitionerIgnoreKeys = config.getBoolean(ProducerConfig.PARTITIONER_IGNORE_KEYS_CONFIG);
@@ -432,10 +432,10 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             boolean enableAdaptivePartitioning = partitionerPlugin.get() == null &&
                 config.getBoolean(ProducerConfig.PARTITIONER_ADAPTIVE_PARTITIONING_ENABLE_CONFIG);
             RecordAccumulator.PartitionerConfig partitionerConfig = new RecordAccumulator.PartitionerConfig(
-                enableAdaptivePartitioning,
-                config.getLong(ProducerConfig.PARTITIONER_AVAILABILITY_TIMEOUT_MS_CONFIG),
-                config.getBoolean(ProducerConfig.PARTITIONER_RACK_AWARE_CONFIG),
-                config.getString(ProducerConfig.CLIENT_RACK_CONFIG)
+                    enableAdaptivePartitioning,
+                    config.getLong(ProducerConfig.PARTITIONER_AVAILABILITY_TIMEOUT_MS_CONFIG),
+                    config.getBoolean(ProducerConfig.PARTITIONER_RACK_AWARE_CONFIG),
+                    config.getString(ProducerConfig.CLIENT_RACK_CONFIG)
             );
             // As per Kafka producer configuration documentation batch.size may be set to 0 to explicitly disable
             // batching which in practice actually means using a batch size of 1.
@@ -593,14 +593,14 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             if (config.originals().containsKey(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG)) {
                 // throw an exception if the user explicitly set an inconsistent value
                 throw new ConfigException(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG
-                    + " should be equal to or larger than " + ProducerConfig.LINGER_MS_CONFIG
-                    + " + " + ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG);
+                        + " should be equal to or larger than " + ProducerConfig.LINGER_MS_CONFIG
+                        + " + " + ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG);
             } else {
                 // override deliveryTimeoutMs default value to lingerMs + requestTimeoutMs for backward compatibility
                 deliveryTimeoutMs = lingerAndRequestTimeoutMs;
                 log.warn("{} should be equal to or larger than {} + {}. Setting it to {}.",
-                    ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, ProducerConfig.LINGER_MS_CONFIG,
-                    ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, deliveryTimeoutMs);
+                        ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, ProducerConfig.LINGER_MS_CONFIG,
+                        ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, deliveryTimeoutMs);
             }
         }
         return deliveryTimeoutMs;
@@ -617,12 +617,12 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             final long retryBackoffMs = config.getLong(ProducerConfig.RETRY_BACKOFF_MS_CONFIG);
             
             transactionManager = new TransactionManager(
-                logContext,
-                transactionalId,
-                transactionTimeoutMs,
-                retryBackoffMs,
-                apiVersions,
-                enable2PC
+                    logContext,
+                    transactionalId,
+                    transactionTimeoutMs,
+                    retryBackoffMs,
+                    apiVersions,
+                    enable2PC
             );
 
             if (transactionManager.isTransactional())
@@ -1273,10 +1273,11 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     private String getErrorMessage(Integer partitionsCount, String topic, Integer partition, long maxWaitMs) {
         return partitionsCount == null ?
             String.format("Topic %s not present in metadata after %d ms.",
-                topic, maxWaitMs) :
+                    topic, maxWaitMs) :
             String.format("Partition %d of topic %s with partition count %d is not present in metadata after %d ms.",
-                partition, topic, partitionsCount, maxWaitMs);
+                    partition, topic, partitionsCount, maxWaitMs);
     }
+
     /**
      * Validate that the record size isn't too large
      */
@@ -1414,7 +1415,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     public void registerMetricForSubscription(KafkaMetric metric) {
         if (!metrics().containsKey(metric.metricName())) {
             clientTelemetryReporter.ifPresent(reporter -> reporter.metricChange(metric));
-        }  else {
+        } else {
             log.debug("Skipping registration for metric {}. Existing producer metrics cannot be overwritten.", metric.metricName());
         }
     }
@@ -1598,10 +1599,10 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
 
         if (partitionerPlugin.get() != null) {
             int customPartition = partitionerPlugin.get().partition(
-                record.topic(), record.key(), serializedKey, record.value(), serializedValue, cluster);
+                    record.topic(), record.key(), serializedKey, record.value(), serializedValue, cluster);
             if (customPartition < 0) {
                 throw new IllegalArgumentException(String.format(
-                    "The partitioner generated an invalid partition number: %d. Partition number should always be non-negative.", customPartition));
+                        "The partitioner generated an invalid partition number: %d. Partition number should always be non-negative.", customPartition));
             }
             return customPartition;
         }
@@ -1618,7 +1619,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
         if (groupMetadata == null) {
             throw new IllegalArgumentException("Consumer group metadata could not be null");
         } else if (groupMetadata.generationId() > 0
-            && JoinGroupRequest.UNKNOWN_MEMBER_ID.equals(groupMetadata.memberId())) {
+                && JoinGroupRequest.UNKNOWN_MEMBER_ID.equals(groupMetadata.memberId())) {
             throw new IllegalArgumentException("Passed in group metadata " + groupMetadata + " has generationId > 0 but the member.id is unknown");
         }
     }
@@ -1637,6 +1638,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     private static class ClusterAndWaitTime {
         final Cluster cluster;
         final long waitedOnMetadataMs;
+
         ClusterAndWaitTime(Cluster cluster, long waitedOnMetadataMs) {
             this.cluster = cluster;
             this.waitedOnMetadataMs = waitedOnMetadataMs;

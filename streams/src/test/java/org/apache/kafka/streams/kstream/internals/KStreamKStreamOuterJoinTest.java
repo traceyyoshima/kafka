@@ -84,10 +84,10 @@ public class KStreamKStreamOuterJoinTest {
         stream2 = builder.stream(topic2, consumed2);
 
         joined = stream1.outerJoin(
-                stream2,
-                MockValueJoiner.TOSTRING_JOINER,
-                JoinWindows.of(ofMillis(100L)).grace(ofMillis(10L)),
-                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.Long())
+            stream2,
+            MockValueJoiner.TOSTRING_JOINER,
+            JoinWindows.of(ofMillis(100L)).grace(ofMillis(10L)),
+            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.Long())
         );
         joined.process(supplier);
 
@@ -610,7 +610,7 @@ public class KStreamKStreamOuterJoinTest {
             // --> w2 = { 2:12 (ts: 31), 3:13 (ts: 36), 4:14 (ts: 37) }
             inputTopic2.pipeInput(4, 14L, 37L);
             processor.checkAndClearProcessResult(
-                    new KeyValueTimestamp<>(2, "null+12", 31L)
+                new KeyValueTimestamp<>(2, "null+12", 31L)
             );
 
             // push another item to the other stream; this should produce no inner joined-items because there are no matching keys 
@@ -1459,7 +1459,7 @@ public class KStreamKStreamOuterJoinTest {
         final CapturingStoreSuppliers suppliers = new CapturingStoreSuppliers();
         final StreamJoined<Integer, String, String> streamJoined =
                 StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
-                        .withDslStoreSuppliers(suppliers);
+                    .withDslStoreSuppliers(suppliers);
 
         final StreamsBuilder builder = new StreamsBuilder();
 
@@ -1471,17 +1471,17 @@ public class KStreamKStreamOuterJoinTest {
         stream2 = builder.stream(topic2, consumed);
 
         joined = stream1.outerJoin(
-                stream2,
-                MockValueJoiner.TOSTRING_JOINER,
-                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100L)),
-                streamJoined
+            stream2,
+            MockValueJoiner.TOSTRING_JOINER,
+            JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100L)),
+            streamJoined
         );
         joined.process(supplier);
 
         // create a TTD so that the topology gets built
         try (final TopologyTestDriver ignored = new TopologyTestDriver(builder.build(PROPS), PROPS)) {
             assertThat("Expected stream joined to supply builders that create non-timestamped stores",
-                    !WrappedStateStore.isTimestamped(suppliers.capture.get().get()));
+                       !WrappedStateStore.isTimestamped(suppliers.capture.get().get()));
         }
     }
 

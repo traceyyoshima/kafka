@@ -172,7 +172,7 @@ public class RocksDBTimestampedStoreWithHeaders extends RocksDBStore implements 
                         headersCf,
                         HeadersBytesStore::convertToHeaderFormat,
                         this,
-                            open
+                        open
                     );
                 } else {
                     log.info("Opening store {} in regular headers-aware mode", name);

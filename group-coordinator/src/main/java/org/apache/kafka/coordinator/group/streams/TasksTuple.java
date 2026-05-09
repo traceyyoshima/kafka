@@ -90,22 +90,19 @@ public record TasksTuple(Map<String, Set<Integer>> activeTasks,
         return new TasksTuple(
             record.activeTasks().stream()
                 .collect(Collectors.toMap(
-                        StreamsGroupTargetAssignmentMemberValue.TaskIds::subtopologyId,
-                        taskId -> new HashSet<>(taskId.partitions())
-                    )
-                ),
+                    StreamsGroupTargetAssignmentMemberValue.TaskIds::subtopologyId,
+                    taskId -> new HashSet<>(taskId.partitions())
+                )),
             record.standbyTasks().stream()
                 .collect(Collectors.toMap(
-                        StreamsGroupTargetAssignmentMemberValue.TaskIds::subtopologyId,
-                        taskId -> new HashSet<>(taskId.partitions())
-                    )
-                ),
+                    StreamsGroupTargetAssignmentMemberValue.TaskIds::subtopologyId,
+                    taskId -> new HashSet<>(taskId.partitions())
+                )),
             record.warmupTasks().stream()
                 .collect(Collectors.toMap(
-                        StreamsGroupTargetAssignmentMemberValue.TaskIds::subtopologyId,
-                        taskId -> new HashSet<>(taskId.partitions())
-                    )
-                )
+                    StreamsGroupTargetAssignmentMemberValue.TaskIds::subtopologyId,
+                    taskId -> new HashSet<>(taskId.partitions())
+                ))
         );
     }
 
@@ -123,21 +120,18 @@ public record TasksTuple(Map<String, Set<Integer>> activeTasks,
             ownedActiveTasks.stream()
                 .collect(Collectors.toMap(
                     StreamsGroupHeartbeatRequestData.TaskIds::subtopologyId,
-                        taskId -> new HashSet<>(taskId.partitions())
-                    )
-                ),
+                    taskId -> new HashSet<>(taskId.partitions())
+                )),
             ownedStandbyTasks.stream()
                 .collect(Collectors.toMap(
                     StreamsGroupHeartbeatRequestData.TaskIds::subtopologyId,
-                        taskId -> new HashSet<>(taskId.partitions())
-                    )
-                ),
+                    taskId -> new HashSet<>(taskId.partitions())
+                )),
             ownedWarmupTasks.stream()
                 .collect(Collectors.toMap(
                     StreamsGroupHeartbeatRequestData.TaskIds::subtopologyId,
-                        taskId -> new HashSet<>(taskId.partitions())
-                    )
-                )
+                    taskId -> new HashSet<>(taskId.partitions())
+                ))
         );
     }
 

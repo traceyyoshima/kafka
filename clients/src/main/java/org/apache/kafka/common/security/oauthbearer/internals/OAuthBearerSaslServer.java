@@ -220,7 +220,8 @@ public class OAuthBearerSaslServer implements SaslServer {
     }
 
     public static String[] mechanismNamesCompatibleWithPolicy(Map<String, ?> props) {
-        return props != null && "true".equals(String.valueOf(props.get(Sasl.POLICY_NOPLAINTEXT))) ? new String[] {}
+        return props != null && "true".equals(String.valueOf(props.get(Sasl.POLICY_NOPLAINTEXT)))
+                ? new String[] {}
                 : new String[] {OAuthBearerLoginModule.OAUTHBEARER_MECHANISM};
     }
 

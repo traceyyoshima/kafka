@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
  */
 public class KeyValueTimestampedHeaderStoreToKeyValueTimestampStoreAdapter<K, V>
     extends WrappedStateStore<TimestampedKeyValueStore<K, V>, K, V>
-    implements TimestampedKeyValueStoreWithHeaders<K, V> {
+        implements TimestampedKeyValueStoreWithHeaders<K, V> {
 
     public KeyValueTimestampedHeaderStoreToKeyValueTimestampStoreAdapter(final TimestampedKeyValueStore<K, V> timestampedKeyValueStore) {
         super(timestampedKeyValueStore);
@@ -142,7 +142,7 @@ public class KeyValueTimestampedHeaderStoreToKeyValueTimestampStoreAdapter<K, V>
                 keyValuePair.key,
                 ValueAndTimestamp.make(keyValuePair.value.value(), keyValuePair.value.timestamp()))
             )
-            .collect(Collectors.toList())
+                .collect(Collectors.toList())
         );
     }
 

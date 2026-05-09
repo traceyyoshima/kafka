@@ -151,7 +151,7 @@ public class CogroupedKStreamImplTest {
     @ValueSource(booleans = {false, true})
     public void shouldNotHaveNullNamedOnAggregateWithMateriazlied(final boolean withHeaders) {
         setup(withHeaders);
-        assertThrows(NullPointerException.class, () -> cogroupedStream.aggregate(STRING_INITIALIZER,  null,  Materialized.as("store")));
+        assertThrows(NullPointerException.class, () -> cogroupedStream.aggregate(STRING_INITIALIZER, null, Materialized.as("store")));
     }
 
     @ParameterizedTest
@@ -195,17 +195,17 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> groupedTwo = test2.groupByKey();
 
         final KTable<String, String> customers = groupedOne
-            .cogroup(STRING_AGGREGATOR)
-            .cogroup(groupedTwo, STRING_AGGREGATOR)
-            .aggregate(STRING_INITIALIZER, Named.as("test"), Materialized.as("store"));
+                .cogroup(STRING_AGGREGATOR)
+                .cogroup(groupedTwo, STRING_AGGREGATOR)
+                .aggregate(STRING_INITIALIZER, Named.as("test"), Materialized.as("store"));
 
         customers.toStream().to(OUTPUT);
 
         final String topologyDescription = builder.build().describe().toString();
 
         assertThat(
-            topologyDescription,
-            equalTo("Topologies:\n" +
+                topologyDescription,
+                equalTo("Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [one])\n" +
                 "      --> test-cogroup-agg-0\n" +
@@ -897,8 +897,8 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> grouped1 = stream1.groupByKey();
 
         final KTable<String, String> customers = grouped1
-            .cogroup(STRING_AGGREGATOR)
-            .aggregate(STRING_INITIALIZER);
+                .cogroup(STRING_AGGREGATOR)
+                .aggregate(STRING_INITIALIZER);
 
         customers.toStream().to(OUTPUT);
 
@@ -929,8 +929,8 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> grouped1 = stream1.groupByKey();
 
         final KTable<String, String> customers = grouped1
-            .cogroup(STRING_AGGREGATOR)
-            .aggregate(STRING_INITIALIZER);
+                .cogroup(STRING_AGGREGATOR)
+                .aggregate(STRING_INITIALIZER);
 
         customers.toStream().to(OUTPUT);
 
@@ -962,9 +962,9 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> grouped2 = stream2.groupByKey();
 
         final KTable<String, String> customers = grouped1
-            .cogroup(STRING_AGGREGATOR)
-            .cogroup(grouped2, STRING_AGGREGATOR)
-            .aggregate(STRING_INITIALIZER);
+                .cogroup(STRING_AGGREGATOR)
+                .cogroup(grouped2, STRING_AGGREGATOR)
+                .aggregate(STRING_INITIALIZER);
 
         customers.toStream().to(OUTPUT);
 
@@ -1012,9 +1012,9 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> grouped2 = stream2.groupByKey();
 
         final KTable<String, String> customers = grouped1
-            .cogroup(STRING_AGGREGATOR)
-            .cogroup(grouped2, STRING_AGGREGATOR)
-            .aggregate(STRING_INITIALIZER);
+                .cogroup(STRING_AGGREGATOR)
+                .cogroup(grouped2, STRING_AGGREGATOR)
+                .aggregate(STRING_INITIALIZER);
 
         customers.toStream().to(OUTPUT);
 
@@ -1064,12 +1064,12 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> grouped2 = stream2.groupByKey();
 
         final KTable<String, Integer> customers = grouped1
-            .cogroup(STRING_SUM_AGGREGATOR)
-            .cogroup(grouped2, STRING_SUM_AGGREGATOR)
-            .aggregate(
-                SUM_INITIALIZER,
-                Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("store1")
-                    .withValueSerde(Serdes.Integer()));
+                .cogroup(STRING_SUM_AGGREGATOR)
+                .cogroup(grouped2, STRING_SUM_AGGREGATOR)
+                .aggregate(
+                        SUM_INITIALIZER,
+                        Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("store1")
+                                .withValueSerde(Serdes.Integer()));
 
         customers.toStream().to(OUTPUT);
 
@@ -1120,12 +1120,12 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, Integer> grouped2 = stream2.groupByKey();
 
         final KTable<String, Integer> customers = grouped1
-            .cogroup(STRING_SUM_AGGREGATOR)
-            .cogroup(grouped2, SUM_AGGREGATOR)
-            .aggregate(
-                SUM_INITIALIZER,
-                Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("store1")
-                    .withValueSerde(Serdes.Integer()));
+                .cogroup(STRING_SUM_AGGREGATOR)
+                .cogroup(grouped2, SUM_AGGREGATOR)
+                .aggregate(
+                        SUM_INITIALIZER,
+                        Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("store1")
+                                .withValueSerde(Serdes.Integer()));
 
         customers.toStream().to(OUTPUT);
 
@@ -1173,12 +1173,12 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> grouped2 = stream2.groupByKey();
 
         final KTable<String, String> customers = grouped1
-            .cogroup(MockAggregator.TOSTRING_REMOVER)
-            .cogroup(grouped2, MockAggregator.TOSTRING_ADDER)
-            .aggregate(
-                MockInitializer.STRING_INIT,
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store1")
-                    .withValueSerde(Serdes.String()));
+                .cogroup(MockAggregator.TOSTRING_REMOVER)
+                .cogroup(grouped2, MockAggregator.TOSTRING_ADDER)
+                .aggregate(
+                        MockInitializer.STRING_INIT,
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store1")
+                                .withValueSerde(Serdes.String()));
 
         customers.toStream().to(OUTPUT);
 
@@ -1224,10 +1224,10 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> grouped3 = stream3.groupByKey();
 
         final KTable<String, String> customers = grouped1
-            .cogroup(STRING_AGGREGATOR)
-            .cogroup(grouped2, STRING_AGGREGATOR)
-            .cogroup(grouped3, STRING_AGGREGATOR)
-            .aggregate(STRING_INITIALIZER);
+                .cogroup(STRING_AGGREGATOR)
+                .cogroup(grouped2, STRING_AGGREGATOR)
+                .cogroup(grouped3, STRING_AGGREGATOR)
+                .aggregate(STRING_INITIALIZER);
 
         customers.toStream().to(OUTPUT);
 
@@ -1279,9 +1279,9 @@ public class CogroupedKStreamImplTest {
         final KGroupedStream<String, String> grouped2 = builder.stream("two", stringConsumed).groupByKey();
 
         final KTable<String, String> table1 = grouped1
-            .cogroup(STRING_AGGREGATOR)
-            .cogroup(grouped2, STRING_AGGREGATOR)
-            .aggregate(STRING_INITIALIZER, Named.as("name"), Materialized.as("store"));
+                .cogroup(STRING_AGGREGATOR)
+                .cogroup(grouped2, STRING_AGGREGATOR)
+                .aggregate(STRING_INITIALIZER, Named.as("name"), Materialized.as("store"));
 
         final KTable<String, String> table2 = builder.table("three", stringConsumed);
         final KTable<String, String> joined = table1.join(table2, MockValueJoiner.TOSTRING_JOINER, Materialized.with(Serdes.String(), Serdes.String()));
@@ -1316,8 +1316,8 @@ public class CogroupedKStreamImplTest {
                                                final String expectedValue,
                                                final long expectedTimestamp) {
         assertThat(
-            outputTopic.readRecord(),
-            equalTo(new TestRecord<>(expectedKey, expectedValue, null, expectedTimestamp)));
+                outputTopic.readRecord(),
+                equalTo(new TestRecord<>(expectedKey, expectedValue, null, expectedTimestamp)));
     }
 
     private void assertOutputKeyValueTimestamp(final TestOutputTopic<String, Integer> outputTopic,
@@ -1325,7 +1325,7 @@ public class CogroupedKStreamImplTest {
                                                final Integer expectedValue,
                                                final long expectedTimestamp) {
         assertThat(
-            outputTopic.readRecord(),
-            equalTo(new TestRecord<>(expectedKey, expectedValue, null, expectedTimestamp)));
+                outputTopic.readRecord(),
+                equalTo(new TestRecord<>(expectedKey, expectedValue, null, expectedTimestamp)));
     }
 }

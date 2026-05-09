@@ -248,8 +248,8 @@ public final class TopologyConfig extends AbstractConfig {
 
             if (cacheSize != 0) {
                 log.warn("Topology {} is overriding cache size to {} but this will not have any effect as the "
-                                + "topology-level cache size config only controls whether record buffering is enabled "
-                                + "or disabled, thus the only valid override value is 0",
+                         + "topology-level cache size config only controls whether record buffering is enabled "
+                         + "or disabled, thus the only valid override value is 0",
                         topologyName, cacheSize);
             } else {
                 log.info("Topology {} is overriding cache size to {}, record buffering will be disabled",

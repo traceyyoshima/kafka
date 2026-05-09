@@ -256,12 +256,12 @@ public class BrokerLifecycleManager {
      * @param previousBrokerEpoch           The broker epoch before the reboot.
      */
     public void start(Supplier<Long> highestMetadataOffsetProvider,
-               NodeToControllerChannelManager channelManager,
-               String clusterId,
-               ListenerCollection advertisedListeners,
-               Map<String, VersionRange> supportedFeatures,
-               OptionalLong previousBrokerEpoch,
-               Set<Uuid> cordonedLogDirs) {
+            NodeToControllerChannelManager channelManager,
+            String clusterId,
+            ListenerCollection advertisedListeners,
+            Map<String, VersionRange> supportedFeatures,
+            OptionalLong previousBrokerEpoch,
+            Set<Uuid> cordonedLogDirs) {
         this.previousBrokerEpoch = previousBrokerEpoch;
         if (!cordonedLogDirs.isEmpty()) {
             // At this point we don't have fresh metadata yet so we don't know if the cordoned log dirs feature is supported.
@@ -351,7 +351,7 @@ public class BrokerLifecycleManager {
         public void run() {
             switch (state) {
                 case PENDING_CONTROLLED_SHUTDOWN ->
-                    logger.info("Attempted to enter pending controlled shutdown state, but we are already in that state.");
+                        logger.info("Attempted to enter pending controlled shutdown state, but we are already in that state.");
                 case RUNNING -> {
                     logger.info("Beginning controlled shutdown.");
                     state = BrokerState.PENDING_CONTROLLED_SHUTDOWN;

@@ -150,7 +150,7 @@ public final class TieredStorageTestContext implements AutoCloseable {
     public void updateTopicConfig(String topic,
                                   Map<String, String> configsToBeAdded,
                                   List<String> configsToBeDeleted)
-            throws ExecutionException, InterruptedException, TimeoutException {
+                                          throws ExecutionException, InterruptedException, TimeoutException {
         ConfigResource configResource = new ConfigResource(ConfigResource.Type.TOPIC, topic);
         updateResource(configResource, configsToBeAdded, configsToBeDeleted);
     }
@@ -158,7 +158,7 @@ public final class TieredStorageTestContext implements AutoCloseable {
     public void updateBrokerConfig(Integer brokerId,
                                    Map<String, String> configsToBeAdded,
                                    List<String> configsToBeDeleted)
-            throws ExecutionException, InterruptedException, TimeoutException {
+                                           throws ExecutionException, InterruptedException, TimeoutException {
         ConfigResource configResource = new ConfigResource(ConfigResource.Type.BROKER, brokerId.toString());
         updateResource(configResource, configsToBeAdded, configsToBeDeleted);
     }
@@ -166,7 +166,7 @@ public final class TieredStorageTestContext implements AutoCloseable {
     private void updateResource(ConfigResource configResource,
                                 Map<String, String> configsToBeAdded,
                                 List<String> configsToBeDeleted)
-            throws ExecutionException, InterruptedException, TimeoutException {
+                                        throws ExecutionException, InterruptedException, TimeoutException {
         List<AlterConfigOp> alterEntries = new ArrayList<>();
         configsToBeDeleted.forEach(k ->
                 alterEntries.add(new AlterConfigOp(new ConfigEntry(k, ""), AlterConfigOp.OpType.DELETE)));

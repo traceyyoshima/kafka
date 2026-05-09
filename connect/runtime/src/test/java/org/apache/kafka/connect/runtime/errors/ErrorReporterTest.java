@@ -151,7 +151,7 @@ public class ErrorReporterTest {
     @Test
     public void testCloseDLQ() {
         DeadLetterQueueReporter deadLetterQueueReporter = new DeadLetterQueueReporter(
-            producer, config(Map.of(SinkConnectorConfig.DLQ_TOPIC_NAME_CONFIG, DLQ_TOPIC)), TASK_ID, errorHandlingMetrics);
+                producer, config(Map.of(SinkConnectorConfig.DLQ_TOPIC_NAME_CONFIG, DLQ_TOPIC)), TASK_ID, errorHandlingMetrics);
 
         deadLetterQueueReporter.close();
         verify(producer).close();
@@ -309,7 +309,7 @@ public class ErrorReporterTest {
 
         deadLetterQueueReporter.populateContextHeaders(producerRecord, context);
         int appearances = 0;
-        for (Header header: producerRecord.headers()) {
+        for (Header header : producerRecord.headers()) {
             if (ERROR_HEADER_ORIG_TOPIC.equalsIgnoreCase(header.key())) {
                 appearances++;
             }

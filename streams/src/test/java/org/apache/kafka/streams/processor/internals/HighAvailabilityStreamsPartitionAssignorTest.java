@@ -227,8 +227,8 @@ public class HighAvailabilityStreamsPartitionAssignorTest {
 
         createMockTaskManager();
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(
-                singletonList(APPLICATION_ID + "-store1-changelog"),
-                singletonList(3)),
+            singletonList(APPLICATION_ID + "-store1-changelog"),
+            singletonList(3)),
             true);
         configurePartitionAssignorWith(singletonMap(StreamsConfig.PROBING_REBALANCE_INTERVAL_MS_CONFIG, rebalanceInterval));
 

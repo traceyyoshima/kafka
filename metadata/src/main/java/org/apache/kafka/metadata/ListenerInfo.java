@@ -169,9 +169,9 @@ public final class ListenerInfo {
                         (int) listener.securityProtocol() + " in listener " + listener.name());
             }
             listeners.put(listener.name(), new Endpoint(listener.name(),
-                    protocol,
-                    listener.host(),
-                    listener.port()));
+                protocol,
+                listener.host(),
+                listener.port()));
         });
         return new ListenerInfo(listeners);
     }
@@ -237,9 +237,9 @@ public final class ListenerInfo {
                 String newHost = InetAddress.getLocalHost().getCanonicalHostName();
                 Endpoint prevEndpoint = entry.getValue();
                 newListeners.put(entry.getKey(), new Endpoint(prevEndpoint.listener(),
-                        prevEndpoint.securityProtocol(),
-                        newHost,
-                        prevEndpoint.port()));
+                    prevEndpoint.securityProtocol(),
+                    newHost,
+                    prevEndpoint.port()));
                 log.info("{}: resolved wildcard host to {}", entry.getValue().listener(),
                         newHost);
             } else {
@@ -271,9 +271,9 @@ public final class ListenerInfo {
                 log.info("{}: resolved ephemeral port to {}", entry.getValue().listener(),
                         newPort);
                 newListeners.put(entry.getKey(), new Endpoint(prevEndpoint.listener(),
-                        prevEndpoint.securityProtocol(),
-                        prevEndpoint.host(),
-                        newPort));
+                    prevEndpoint.securityProtocol(),
+                    prevEndpoint.host(),
+                    newPort));
             } else {
                 newListeners.put(entry.getKey(), entry.getValue());
             }

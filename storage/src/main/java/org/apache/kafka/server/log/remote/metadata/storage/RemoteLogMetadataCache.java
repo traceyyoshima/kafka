@@ -216,11 +216,11 @@ public class RemoteLogMetadataCache {
 
     protected final void handleSegmentWithCopySegmentFinishedState(RemoteLogSegmentMetadata remoteLogSegmentMetadata) {
         doHandleSegmentStateTransitionForLeaderEpochs(remoteLogSegmentMetadata,
-            (leaderEpoch, remoteLogLeaderEpochState, startOffset, segmentId) -> {
-                long leaderEpochEndOffset = highestOffsetForEpoch(leaderEpoch, remoteLogSegmentMetadata);
-                remoteLogLeaderEpochState
+                (leaderEpoch, remoteLogLeaderEpochState, startOffset, segmentId) -> {
+                    long leaderEpochEndOffset = highestOffsetForEpoch(leaderEpoch, remoteLogSegmentMetadata);
+                    remoteLogLeaderEpochState
                         .handleSegmentWithCopySegmentFinishedState(startOffset, segmentId, leaderEpochEndOffset);
-            });
+                });
 
         // Put the entry with the updated metadata.
         idToSegmentMetadata.put(remoteLogSegmentMetadata.remoteLogSegmentId(), remoteLogSegmentMetadata);
@@ -230,8 +230,8 @@ public class RemoteLogMetadataCache {
         log.debug("Cleaning up the state for : [{}]", remoteLogSegmentMetadata);
 
         doHandleSegmentStateTransitionForLeaderEpochs(remoteLogSegmentMetadata,
-            (leaderEpoch, remoteLogLeaderEpochState, startOffset, segmentId) ->
-                    remoteLogLeaderEpochState.handleSegmentWithDeleteSegmentStartedState(startOffset, segmentId));
+                (leaderEpoch, remoteLogLeaderEpochState, startOffset, segmentId) ->
+                        remoteLogLeaderEpochState.handleSegmentWithDeleteSegmentStartedState(startOffset, segmentId));
 
         // Put the entry with the updated metadata.
         idToSegmentMetadata.put(remoteLogSegmentMetadata.remoteLogSegmentId(), remoteLogSegmentMetadata);
@@ -241,8 +241,8 @@ public class RemoteLogMetadataCache {
         log.debug("Removing the entry as it reached the terminal state: [{}]", remoteLogSegmentMetadata);
 
         doHandleSegmentStateTransitionForLeaderEpochs(remoteLogSegmentMetadata,
-            (leaderEpoch, remoteLogLeaderEpochState, startOffset, segmentId) ->
-                    remoteLogLeaderEpochState.handleSegmentWithDeleteSegmentFinishedState(segmentId));
+                (leaderEpoch, remoteLogLeaderEpochState, startOffset, segmentId) ->
+                        remoteLogLeaderEpochState.handleSegmentWithDeleteSegmentFinishedState(segmentId));
 
         // Remove the segment's id to metadata mapping because this segment is considered as deleted and it cleared all
         // the state of this segment in the cache.

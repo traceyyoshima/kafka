@@ -655,7 +655,7 @@ public class ShareGroupCommand {
             Map<String, List<TopicPartition>> grouped = new HashMap<>();
             assignment.topicPartitions().forEach(tp ->
                 grouped
-                   .computeIfAbsent(tp.topic(), key -> new ArrayList<>())
+                    .computeIfAbsent(tp.topic(), key -> new ArrayList<>())
                     .add(tp)
             );
             return grouped.entrySet().stream().map(entry -> {

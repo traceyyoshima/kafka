@@ -286,7 +286,7 @@ public class BuiltInPartitioner {
         // See also RecordAccumulator#partitionReady where the queueSizes are built.
         if (length < 1 || queueSizes.length < 2) {
             log.trace("The number of partitions is too small: available={}, all={}, not using adaptive for topic {}",
-                    length, queueSizes.length, topic);
+                      length, queueSizes.length, topic);
             partitionLoadStatsHolder = null;
             return;
         }
@@ -335,7 +335,7 @@ public class BuiltInPartitioner {
         invertAndFoldQueueSizeArray(queueSizes, maxSizePlus1, length);
 
         log.trace("Partition load stats for topic {}: CFT={}, IDs={}, length={}",
-                topic, queueSizes, partitionIds, length);
+                  topic, queueSizes, partitionIds, length);
         partitionLoadStatsHolder = new PartitionLoadStatsHolder(
             new PartitionLoadStats(queueSizes, partitionIds, length),
             partitionLoadStatsInThisRack

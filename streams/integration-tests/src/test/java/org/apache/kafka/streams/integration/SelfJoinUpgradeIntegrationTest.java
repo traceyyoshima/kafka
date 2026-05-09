@@ -255,7 +255,7 @@ public class SelfJoinUpgradeIntegrationTest {
         final V value,
         final long timestamp,
         final List<KeyValueTimestamp<K, V>> expected)
-        throws Exception {
+            throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
             inputTopic,
@@ -277,10 +277,10 @@ public class SelfJoinUpgradeIntegrationTest {
 
         final List<KeyValueTimestamp<K, V>> actual =
             IntegrationTestUtils.waitUntilMinKeyValueWithTimestampRecordsReceived(
-            consumerProperties,
-            outputTopic,
-            expected.size(),
-            60 * 1000);
+                consumerProperties,
+                outputTopic,
+                expected.size(),
+                60 * 1000);
 
         assertThat(actual, is(expected));
 

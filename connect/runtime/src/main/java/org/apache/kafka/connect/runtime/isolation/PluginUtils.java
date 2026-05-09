@@ -155,7 +155,7 @@ public class PluginUtils {
     private static final Pattern COMMA_WITH_WHITESPACE = Pattern.compile("\\s*,\\s*");
 
     private static final DirectoryStream.Filter<Path> PLUGIN_PATH_FILTER = path ->
-        Files.isDirectory(path) || isArchive(path) || isClassFile(path);
+            Files.isDirectory(path) || isArchive(path) || isClassFile(path);
 
     /**
      * Return whether the class with the given name should be loaded in isolation using a plugin
@@ -235,10 +235,10 @@ public class PluginUtils {
     private static List<Path> pluginLocations(Path pluginPathElement) throws IOException {
         List<Path> locations = new ArrayList<>();
         try (
-                DirectoryStream<Path> listing = Files.newDirectoryStream(
-                        pluginPathElement,
-                        PLUGIN_PATH_FILTER
-                )
+            DirectoryStream<Path> listing = Files.newDirectoryStream(
+                    pluginPathElement,
+                    PLUGIN_PATH_FILTER
+            )
         ) {
             for (Path dir : listing) {
                 locations.add(dir);

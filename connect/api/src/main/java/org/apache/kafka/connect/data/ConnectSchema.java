@@ -217,7 +217,7 @@ public class ConnectSchema implements Schema {
         if (value == null) {
             if (!schema.isOptional())
                 throw new DataException("Invalid value: null used for required " + location
-                        + ", schema type: " + schema.type());
+                    + ", schema type: " + schema.type());
             return;
         }
 

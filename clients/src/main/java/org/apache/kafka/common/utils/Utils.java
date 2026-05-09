@@ -110,7 +110,7 @@ public final class Utils {
 
     // Prints up to 2 decimal digits. Used for human-readable printing
     private static final DecimalFormat TWO_DIGIT_FORMAT = new DecimalFormat("0.##",
-        DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
     private static final String[] BYTE_SCALE_SUFFIXES = new String[] {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
 
@@ -1315,9 +1315,9 @@ public final class Utils {
      * @throws IOException If an I/O error occurs
      */
     public static int tryWriteTo(TransferableChannel destChannel,
-                                  int position,
-                                  int length,
-                                  ByteBuffer sourceBuffer) throws IOException {
+                                 int position,
+                                 int length,
+                                 ByteBuffer sourceBuffer) throws IOException {
 
         ByteBuffer dup = sourceBuffer.duplicate();
         dup.position(position);

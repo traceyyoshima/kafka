@@ -149,23 +149,23 @@ public class KafkaClusterTestKit implements AutoCloseable {
 
             Map<String, Object> props = new HashMap<>(configProps);
             props.put(KRaftConfigs.SERVER_MAX_STARTUP_TIME_MS_CONFIG,
-                    Long.toString(TimeUnit.MINUTES.toMillis(10)));
+                Long.toString(TimeUnit.MINUTES.toMillis(10)));
             props.put(KRaftConfigs.PROCESS_ROLES_CONFIG, roles(node.id()));
             props.put(KRaftConfigs.NODE_ID_CONFIG,
-                    Integer.toString(node.id()));
+                Integer.toString(node.id()));
             // In combined mode, always prefer the metadata log directory of the controller node.
             if (controllerNode != null) {
                 props.put(MetadataLogConfig.METADATA_LOG_DIR_CONFIG,
-                        controllerNode.metadataDirectory());
+                    controllerNode.metadataDirectory());
                 setSecurityProtocolProps(props, controllerSecurityProtocol);
             } else {
                 props.put(MetadataLogConfig.METADATA_LOG_DIR_CONFIG,
-                        node.metadataDirectory());
+                    node.metadataDirectory());
             }
             if (brokerNode != null) {
                 // Set the log.dirs according to the broker node setting (if there is a broker node)
                 props.put(LOG_DIRS_CONFIG,
-                        String.join(",", brokerNode.logDataDirectories()));
+                    String.join(",", brokerNode.logDataDirectories()));
                 setSecurityProtocolProps(props, brokerSecurityProtocol);
             } else {
                 // Set log.dirs equal to the metadata directory if there is just a controller.
@@ -176,7 +176,7 @@ public class KafkaClusterTestKit implements AutoCloseable {
             // We allow configuring the listeners and related properties via Builder::setConfigProp,
             // and they shouldn't be overridden here
             props.putIfAbsent(SocketServerConfigs.LISTENER_SECURITY_PROTOCOL_MAP_CONFIG, String.format("%s:%s,%s:%s",
-                    brokerListenerName, brokerSecurityProtocol, controllerListenerName, controllerSecurityProtocol));
+                brokerListenerName, brokerSecurityProtocol, controllerListenerName, controllerSecurityProtocol));
             props.putIfAbsent(SocketServerConfigs.LISTENERS_CONFIG, listeners(node.id()));
             props.putIfAbsent(INTER_BROKER_LISTENER_NAME_CONFIG, brokerListenerName);
             props.putIfAbsent(KRaftConfigs.CONTROLLER_LISTENER_NAMES_CONFIG, controllerListenerName);
@@ -296,9 +296,9 @@ public class KafkaClusterTestKit implements AutoCloseable {
                     ControllerServer controller = null;
                     try {
                         controller = new ControllerServer(
-                                sharedServer,
-                                KafkaRaftServer.configSchema(),
-                                nodes.bootstrapMetadata());
+                            sharedServer,
+                            KafkaRaftServer.configSchema(),
+                            nodes.bootstrapMetadata());
                     } catch (Throwable e) {
                         log.error("Error creating controller {}", node.id(), e);
                         Utils.swallow(log, Level.WARN, "sharedServer.stopForController error", sharedServer::stopForController);
@@ -347,16 +347,16 @@ public class KafkaClusterTestKit implements AutoCloseable {
                 throw e;
             }
             return new KafkaClusterTestKit(
-                    nodes,
-                    controllers,
-                    brokers,
-                    baseDirectory,
-                    faultHandlerFactory,
-                    socketFactoryManager,
-                    jaasFile,
-                    standalone,
-                    initialVoterSet,
-                    deleteOnClose);
+                nodes,
+                controllers,
+                brokers,
+                baseDirectory,
+                faultHandlerFactory,
+                socketFactoryManager,
+                jaasFile,
+                standalone,
+                initialVoterSet,
+                deleteOnClose);
         }
 
         private String listeners(int node) {
@@ -449,11 +449,11 @@ public class KafkaClusterTestKit implements AutoCloseable {
                     futures.add(executorService.submit(() -> formatNode(broker.sharedServer().metaPropsEnsemble())));
                 }
             }
-            for (Future<?> future: futures) {
+            for (Future<?> future : futures) {
                 future.get();
             }
         } catch (Exception e) {
-            for (Future<?> future: futures) {
+            for (Future<?> future : futures) {
                 future.cancel(true);
             }
             throw e;
@@ -532,11 +532,11 @@ public class KafkaClusterTestKit implements AutoCloseable {
             for (BrokerServer broker : brokers.values()) {
                 futures.add(executorService.submit(broker::startup));
             }
-            for (Future<?> future: futures) {
+            for (Future<?> future : futures) {
                 future.get();
             }
         } catch (Exception e) {
-            for (Future<?> future: futures) {
+            for (Future<?> future : futures) {
                 future.cancel(true);
             }
             throw e;
@@ -556,8 +556,8 @@ public class KafkaClusterTestKit implements AutoCloseable {
 
         // make sure metadata cache in each broker server is up-to-date
         TestUtils.waitForCondition(() ->
-                brokers.values().stream().map(BrokerServer::metadataCache)
-                    .allMatch(cache -> brokers.values().stream().map(b -> b.config().brokerId()).allMatch(cache::hasAliveBroker)),
+            brokers.values().stream().map(BrokerServer::metadataCache)
+                .allMatch(cache -> brokers.values().stream().map(b -> b.config().brokerId()).allMatch(cache::hasAliveBroker)),
             "Failed to wait for publisher to publish the metadata update to each broker.");
     }
 
@@ -738,7 +738,7 @@ public class KafkaClusterTestKit implements AutoCloseable {
     }
 
     private void waitForAllFutures(List<Entry<String, Future<?>>> futureEntries)
-            throws Exception {
+        throws Exception {
         for (Entry<String, Future<?>> entry : futureEntries) {
             log.debug("waiting for {} to shut down.", entry.getKey());
             entry.getValue().get();
@@ -748,7 +748,7 @@ public class KafkaClusterTestKit implements AutoCloseable {
 
     private void waitForAllThreads() throws InterruptedException {
         TestUtils.waitForCondition(() -> Thread.getAllStackTraces().keySet()
-                    .stream().noneMatch(t -> threadFactory.getThreadIds().contains(t.getId())),
-                "Failed to wait for all threads to shut down.");
+            .stream().noneMatch(t -> threadFactory.getThreadIds().contains(t.getId())),
+            "Failed to wait for all threads to shut down.");
     }
 }

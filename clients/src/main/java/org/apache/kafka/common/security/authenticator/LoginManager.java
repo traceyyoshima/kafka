@@ -59,7 +59,7 @@ public class LoginManager {
     private int refCount;
 
     private LoginManager(JaasContext jaasContext, String saslMechanism, Map<String, ?> configs,
-                 LoginMetadata<?> loginMetadata) throws LoginException {
+            LoginMetadata<?> loginMetadata) throws LoginException {
         this.loginMetadata = loginMetadata;
         this.login = Utils.newInstance(loginMetadata.loginClass);
         loginCallbackHandler = Utils.newInstance(loginMetadata.loginCallbackClass);
@@ -102,8 +102,9 @@ public class LoginManager {
         Class<? extends Login> loginClass = configuredClassOrDefault(configs, jaasContext,
                 saslMechanism, SaslConfigs.SASL_LOGIN_CLASS, defaultLoginClass);
         Class<? extends AuthenticateCallbackHandler> defaultLoginCallbackHandlerClass = OAuthBearerLoginModule.OAUTHBEARER_MECHANISM
-                .equals(saslMechanism) ? OAuthBearerUnsecuredLoginCallbackHandler.class
-                        : AbstractLogin.DefaultLoginCallbackHandler.class;
+                .equals(saslMechanism)
+                ? OAuthBearerUnsecuredLoginCallbackHandler.class
+                : AbstractLogin.DefaultLoginCallbackHandler.class;
         Class<? extends AuthenticateCallbackHandler> loginCallbackClass = configuredClassOrDefault(configs, jaasContext,
                 saslMechanism, SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS, defaultLoginCallbackHandlerClass);
         synchronized (LoginManager.class) {
@@ -210,10 +211,10 @@ public class LoginManager {
     }
 
     private static <T> Class<? extends T> configuredClassOrDefault(Map<String, ?> configs,
-                                                     JaasContext jaasContext,
-                                                     String saslMechanism,
-                                                     String configName,
-                                                     Class<? extends T> defaultClass) {
+                                                                   JaasContext jaasContext,
+                                                                   String saslMechanism,
+                                                                   String configName,
+                                                                   Class<? extends T> defaultClass) {
         String prefix  = jaasContext.type() == JaasContext.Type.SERVER ? ListenerName.saslMechanismPrefix(saslMechanism) : "";
         @SuppressWarnings("unchecked")
         Class<? extends T> clazz = (Class<? extends T>) configs.get(prefix + configName);

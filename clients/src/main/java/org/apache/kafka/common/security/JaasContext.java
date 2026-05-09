@@ -116,11 +116,11 @@ public class JaasContext {
         String allowedProperty = System.getProperty(ALLOWED_LOGIN_MODULES_CONFIG);
         if (allowedProperty != null) {
             Set<String> allowedLoginModuleList = Arrays.stream(allowedProperty.split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toSet());
+                .map(String::trim)
+                .collect(Collectors.toSet());
             if (!allowedLoginModuleList.contains(loginModuleName)) {
                 throw new IllegalArgumentException(loginModuleName + " is not allowed. Update System property '"
-                        + ALLOWED_LOGIN_MODULES_CONFIG + "' to allow " + loginModuleName);
+                    + ALLOWED_LOGIN_MODULES_CONFIG + "' to allow " + loginModuleName);
             }
             return;
         }
@@ -128,8 +128,8 @@ public class JaasContext {
             disallowedProperty = DISALLOWED_LOGIN_MODULES_DEFAULT;
         }
         Set<String> disallowedLoginModuleList = Arrays.stream(disallowedProperty.split(","))
-                .map(String::trim)
-                .collect(Collectors.toSet());
+            .map(String::trim)
+            .collect(Collectors.toSet());
         if (disallowedLoginModuleList.contains(loginModuleName)) {
             throw new IllegalArgumentException(loginModuleName + " is not allowed. "
                 + "The system property '" + DISALLOWED_LOGIN_MODULES_CONFIG + "' is deprecated. "

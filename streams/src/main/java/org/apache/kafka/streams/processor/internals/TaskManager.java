@@ -110,6 +110,7 @@ public class TaskManager {
     private final StandbyTaskCreator standbyTaskCreator;
     private final StateUpdater stateUpdater;
     private final DefaultTaskManager schedulingTaskManager;
+
     TaskManager(final Time time,
                 final ChangelogReader changelogReader,
                 final ProcessId processId,
@@ -151,6 +152,7 @@ public class TaskManager {
     void init() {
         this.stateUpdater.start();
     }
+
     void setMainConsumer(final Consumer<byte[], byte[]> mainConsumer) {
         this.mainConsumer = mainConsumer;
     }
@@ -299,10 +301,10 @@ public class TaskManager {
                     intersection(HashSet::new, currentAssignment, taskInputPartitions);
                 if (!assignedToPauseAndReset.equals(taskInputPartitions)) {
                     log.warn(
-                        "Expected the current consumer assignment {} to contain the input partitions {}. " +
+                            "Expected the current consumer assignment {} to contain the input partitions {}. " +
                             "Will proceed to recover.",
-                        currentAssignment,
-                        taskInputPartitions
+                            currentAssignment,
+                            taskInputPartitions
                     );
                 }
 
@@ -714,7 +716,7 @@ public class TaskManager {
         } catch (final ExecutionException executionException) {
             log.warn("An exception happened when removing task {} from the state updater. The task was added to the " +
                     "failed task in the state updater: ",
-                taskId, executionException);
+                    taskId, executionException);
             return null;
         } catch (final InterruptedException shouldNotHappen) {
             Thread.currentThread().interrupt();
@@ -722,7 +724,7 @@ public class TaskManager {
             throw new IllegalStateException(INTERRUPTED_ERROR_MESSAGE, shouldNotHappen);
         } catch (final java.util.concurrent.TimeoutException timeoutException) {
             log.warn("The state updater wasn't able to remove task {} in time. The state updater thread may be dead. "
-                    + BUG_ERROR_MESSAGE, taskId, timeoutException);
+                     + BUG_ERROR_MESSAGE, taskId, timeoutException);
             return null;
         }
     }
@@ -764,7 +766,7 @@ public class TaskManager {
                 if (!offsets.isEmpty()) {
                     log.error("Task {} should have been committed when it was suspended, but it reports non-empty " +
                                     "offsets {} to commit; this means it failed during last commit and hence should be closed dirty",
-                            task.id(), offsets);
+                              task.id(), offsets);
 
                     tasksToCloseDirty.add(task);
                 } else if (!task.isActive()) {
@@ -777,8 +779,8 @@ public class TaskManager {
                 }
             } catch (final RuntimeException e) {
                 final String uncleanMessage = String.format(
-                        "Failed to checkpoint task %s. Attempting to close remaining tasks before re-throwing:",
-                        task.id());
+                    "Failed to checkpoint task %s. Attempting to close remaining tasks before re-throwing:",
+                    task.id());
                 log.error(uncleanMessage, e);
                 taskCloseExceptions.putIfAbsent(task.id(), e);
                 // We've already recorded the exception (which is the point of clean).
@@ -1053,7 +1055,7 @@ public class TaskManager {
 
         if (!remainingRevokedPartitions.isEmpty()) {
             log.debug("The following revoked partitions {} are missing from the current task partitions. It could "
-                          + "potentially be due to race condition of consumer detecting the heartbeat failure, or the tasks " +
+                      + "potentially be due to race condition of consumer detecting the heartbeat failure, or the tasks " +
                          "have been cleaned up by the handleAssignment callback.", remainingRevokedPartitions);
         }
 
@@ -1690,12 +1692,13 @@ public class TaskManager {
 
     private Stream<StandbyTask> standbyTaskStream() {
         final Stream<StandbyTask> standbyTasksInTaskRegistry = tasks.allInitializedTasks().stream().filter(t -> !t.isActive())
-                .map(StandbyTask.class::cast);
+            .map(StandbyTask.class::cast);
         return Stream.concat(
             stateUpdater.standbyTasks().stream(),
             standbyTasksInTaskRegistry
         );
     }
+
     // For testing only.
     int commitAll() {
         return commit(tasks.allInitializedTasks());
@@ -1706,7 +1709,7 @@ public class TaskManager {
      * the corresponding record queues have capacity (again).
      */
     public void resumePollingForPartitionsWithAvailableSpace() {
-        for (final StreamTask t: tasks.activeInitializedTasks()) {
+        for (final StreamTask t : tasks.activeInitializedTasks()) {
             t.resumePollingForPartitionsWithAvailableSpace();
         }
     }
@@ -1715,7 +1718,7 @@ public class TaskManager {
      * Fetches up-to-date lag information from the consumer.
      */
     public void updateLags() {
-        for (final StreamTask t: tasks.activeInitializedTasks()) {
+        for (final StreamTask t : tasks.activeInitializedTasks()) {
             t.updateLags();
         }
     }

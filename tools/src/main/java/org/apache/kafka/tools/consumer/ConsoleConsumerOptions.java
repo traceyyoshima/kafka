@@ -76,12 +76,12 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .describedAs("topic")
                 .ofType(String.class);
         includeOpt = parser.accepts("include",
-                        "Regular expression specifying list of topics to include for consumption.")
+                "Regular expression specifying list of topics to include for consumption.")
                 .withRequiredArg()
                 .describedAs("Java regex (String)")
                 .ofType(String.class);
         partitionIdOpt = parser.accepts("partition",
-                        "The partition to consume from. Consumption starts from the end of the partition unless '--offset' is specified.")
+                "The partition to consume from. Consumption starts from the end of the partition unless '--offset' is specified.")
                 .withRequiredArg()
                 .describedAs("partition")
                 .ofType(Integer.class);
@@ -116,7 +116,7 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .ofType(String.class)
                 .defaultsTo(DefaultMessageFormatter.class.getName());
         messageFormatterArgOptDeprecated = parser.accepts("property",
-                        "(DEPRECATED) The properties to initialize the message formatter. Default properties include: \n" +
+                "(DEPRECATED) The properties to initialize the message formatter. Default properties include: \n" +
                             " print.timestamp=true|false\n" +
                             " print.key=true|false\n" +
                             " print.offset=true|false\n" +
@@ -137,7 +137,7 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .describedAs("prop")
                 .ofType(String.class);
         messageFormatterArgOpt = parser.accepts("formatter-property",
-                        "The properties to initialize the message formatter. Default properties include: \n" +
+                "The properties to initialize the message formatter. Default properties include: \n" +
                             " print.timestamp=true|false\n" +
                             " print.key=true|false\n" +
                             " print.offset=true|false\n" +
@@ -187,7 +187,7 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
         enableSystestEventsLoggingOpt = parser.accepts("enable-systest-events",
                 "Log lifecycle events of the consumer in addition to logging consumed messages. (This is specific for system tests.)");
         isolationLevelOpt = parser.accepts("isolation-level",
-                        "Set to read_committed in order to filter out transactional messages which are not committed. Set to read_uncommitted " +
+                "Set to read_committed in order to filter out transactional messages which are not committed. Set to read_uncommitted " +
                                 "to read all messages.")
                 .withRequiredArg()
                 .ofType(String.class)

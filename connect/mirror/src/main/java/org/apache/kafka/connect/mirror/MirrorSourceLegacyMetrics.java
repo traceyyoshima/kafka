@@ -114,8 +114,8 @@ class MirrorSourceLegacyMetrics implements AutoCloseable {
 
         ReplicationPolicy replicationPolicy = taskConfig.replicationPolicy();
         partitionMetrics = taskConfig.taskTopicPartitions().stream()
-            .map(x -> new TopicPartition(replicationPolicy.formatRemoteTopic(source, x.topic()), x.partition()))
-            .collect(Collectors.toMap(x -> x, PartitionMetrics::new));
+                .map(x -> new TopicPartition(replicationPolicy.formatRemoteTopic(source, x.topic()), x.partition()))
+                .collect(Collectors.toMap(x -> x, PartitionMetrics::new));
     }
 
     @Override

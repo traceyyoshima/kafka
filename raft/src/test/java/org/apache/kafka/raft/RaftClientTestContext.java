@@ -1726,14 +1726,14 @@ public final class RaftClientTestContext {
         boolean preVote
     ) {
         return RaftUtil.singletonVoteRequest(
-                metadataPartition,
-                clusterId,
-                epoch,
-                candidateKey,
-                voterKey,
-                lastEpoch,
-                lastEpochOffset,
-                preVote
+            metadataPartition,
+            clusterId,
+            epoch,
+            candidateKey,
+            voterKey,
+            lastEpoch,
+            lastEpochOffset,
+            preVote
         );
     }
 

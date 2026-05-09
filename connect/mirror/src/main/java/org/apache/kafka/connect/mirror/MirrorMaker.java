@@ -146,8 +146,8 @@ public class MirrorMaker {
         }
         log.info("Targeting clusters {}", this.clusters);
         Set<SourceAndTarget> herderPairs = config.clusterPairs().stream()
-            .filter(x -> this.clusters.contains(x.target()))
-            .collect(Collectors.toSet());
+                .filter(x -> this.clusters.contains(x.target()))
+                .collect(Collectors.toSet());
         if (herderPairs.isEmpty()) {
             throw new IllegalArgumentException("No source->target replication flows.");
         }
@@ -330,10 +330,10 @@ public class MirrorMaker {
         ArgumentParser parser = ArgumentParsers.newArgumentParser("connect-mirror-maker");
         parser.description("MirrorMaker 2.0 driver");
         parser.addArgument("config").type(Arguments.fileType().verifyCanRead())
-            .metavar("mm2.properties").required(true)
-            .help("MM2 configuration file.");
+              .metavar("mm2.properties").required(true)
+              .help("MM2 configuration file.");
         parser.addArgument("--clusters").nargs("+").metavar("CLUSTER").required(false)
-            .help("Target cluster to use for this node.");
+              .help("Target cluster to use for this node.");
         Namespace ns;
         try {
             ns = parser.parseArgs(args);

@@ -36,9 +36,9 @@ public class WindowStoreMaterializer<K, V> extends MaterializedStoreFactory<K, V
     private final long retentionPeriod;
 
     public WindowStoreMaterializer(
-        final MaterializedInternal<K, V, WindowStore<Bytes, byte[]>> materialized,
-        final Windows<?> windows,
-        final EmitStrategy emitStrategy
+            final MaterializedInternal<K, V, WindowStore<Bytes, byte[]>> materialized,
+            final Windows<?> windows,
+            final EmitStrategy emitStrategy
     ) {
         super(materialized, DslStoreFormat.TIMESTAMPED);
         this.windows = windows;
@@ -59,29 +59,29 @@ public class WindowStoreMaterializer<K, V> extends MaterializedStoreFactory<K, V
     public StoreBuilder<?> builder() {
         final WindowBytesStoreSupplier supplier =
             materialized.storeSupplier() == null
-                ? dslStoreSuppliers().windowStore(new DslWindowParams(
-                    materialized.storeName(),
-                    Duration.ofMillis(retentionPeriod),
-                    Duration.ofMillis(windows.size()),
-                    false,
-                    emitStrategy,
-                    false,
-                    dslStoreFormat()
-                ))
-                : (WindowBytesStoreSupplier) materialized.storeSupplier();
+                    ? dslStoreSuppliers().windowStore(new DslWindowParams(
+                            materialized.storeName(),
+                            Duration.ofMillis(retentionPeriod),
+                            Duration.ofMillis(windows.size()),
+                            false,
+                            emitStrategy,
+                            false,
+                            dslStoreFormat()
+                    ))
+                    : (WindowBytesStoreSupplier) materialized.storeSupplier();
 
         final StoreBuilder<?>  builder;
         if (supplier instanceof HeadersBytesStoreSupplier) {
             builder = Stores.timestampedWindowStoreWithHeadersBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde()
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde()
             );
         } else {
             builder = Stores.timestampedWindowStoreBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde()
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde()
             );
         }
 

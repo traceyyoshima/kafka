@@ -208,8 +208,8 @@ public final class NioEchoServer extends Thread {
                                 + "> but was:<" + metricValue(metricName) + ">");
             else
                 TestUtils.waitForCondition(() -> metricValue(metricName) > 0.0, thisMaxWaitMs,
-                    () -> "Metric not updated " + metricName + " expected:<a positive number> but was:<"
-                                + metricValue(metricName) + ">");
+                        () -> "Metric not updated " + metricName + " expected:<a positive number> but was:<"
+                              + metricValue(metricName) + ">");
         }
     }
 
@@ -382,6 +382,7 @@ public final class NioEchoServer extends Thread {
         public AcceptorThread() {
             setName("acceptor");
         }
+
         @Override
         public void run() {
             java.nio.channels.Selector acceptSelector = null;

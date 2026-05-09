@@ -692,7 +692,7 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
     }
 
     private static Map<StreamsRebalanceData.HostInfo, StreamsRebalanceData.EndpointPartitions> convertHostInfoMap(
-            final StreamsGroupHeartbeatResponseData data) {
+        final StreamsGroupHeartbeatResponseData data) {
         Map<StreamsRebalanceData.HostInfo, StreamsRebalanceData.EndpointPartitions> partitionsByHost = new HashMap<>();
         data.partitionsByUserEndpoint().forEach(endpoint -> {
             List<TopicPartition> activeTopicPartitions = getTopicPartitionList(endpoint.activePartitions());
@@ -706,9 +706,9 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
 
     static List<TopicPartition> getTopicPartitionList(List<StreamsGroupHeartbeatResponseData.TopicPartition> topicPartitions) {
         return topicPartitions.stream()
-                .flatMap(partition ->
-                        partition.partitions().stream().map(partitionId -> new TopicPartition(partition.topic(), partitionId)))
-                .collect(Collectors.toList());
+            .flatMap(partition ->
+                partition.partitions().stream().map(partitionId -> new TopicPartition(partition.topic(), partitionId)))
+            .collect(Collectors.toList());
     }
 
 }

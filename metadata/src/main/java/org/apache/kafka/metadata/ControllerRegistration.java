@@ -75,7 +75,7 @@ public class ControllerRegistration {
             Map<String, VersionRange> newSupportedFeatures = new HashMap<>();
             record.features().forEach(feature ->
                 newSupportedFeatures.put(feature.name(), VersionRange.of(
-                        feature.minSupportedVersion(), feature.maxSupportedVersion()))
+                    feature.minSupportedVersion(), feature.maxSupportedVersion()))
             );
             this.supportedFeatures = Collections.unmodifiableMap(newSupportedFeatures);
         }
@@ -111,8 +111,8 @@ public class ControllerRegistration {
             if (supportedFeatures == null) {
                 supportedFeatures = new HashMap<>();
                 supportedFeatures.put(MetadataVersion.FEATURE_NAME, VersionRange.of(
-                        MetadataVersion.MINIMUM_VERSION.featureLevel(),
-                        MetadataVersion.latestProduction().featureLevel()));
+                    MetadataVersion.MINIMUM_VERSION.featureLevel(),
+                    MetadataVersion.latestProduction().featureLevel()));
             }
             return new ControllerRegistration(id,
                 incarnationId,

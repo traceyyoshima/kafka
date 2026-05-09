@@ -91,8 +91,7 @@ class RecordsBatchReaderTest {
                 ignore -> { },
                 true,
                 new LogContext()
-            )
-        ) {
+        )) {
             assertTrue(reader.hasNext());
             assertEquals(List.of(expectedRecord), reader.next().controlRecords());
             assertFalse(reader.hasNext());

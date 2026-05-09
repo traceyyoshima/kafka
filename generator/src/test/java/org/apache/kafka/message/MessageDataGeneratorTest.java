@@ -32,43 +32,43 @@ public class MessageDataGeneratorTest {
     @Test
     public void testNullDefaults() throws Exception {
         MessageSpec testMessageSpec = MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                "{",
-                "  \"type\": \"request\",",
-                "  \"name\": \"FooBar\",",
-                "  \"validVersions\": \"0-2\",",
-                "  \"flexibleVersions\": \"none\",",
-                "  \"fields\": [",
-                "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" },",
-                "    { \"name\": \"field2\", \"type\": \"[]TestStruct\", \"versions\": \"1+\", ",
-                "    \"nullableVersions\": \"1+\", \"default\": \"null\", \"fields\": [",
-                "      { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" }",
-                "    ]},",
-                "    { \"name\": \"field3\", \"type\": \"bytes\", \"versions\": \"2+\", ",
-                "      \"nullableVersions\": \"2+\", \"default\": \"null\" }",
-                "  ]",
-                "}")), MessageSpec.class);
+            "{",
+            "  \"type\": \"request\",",
+            "  \"name\": \"FooBar\",",
+            "  \"validVersions\": \"0-2\",",
+            "  \"flexibleVersions\": \"none\",",
+            "  \"fields\": [",
+            "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" },",
+            "    { \"name\": \"field2\", \"type\": \"[]TestStruct\", \"versions\": \"1+\", ",
+            "    \"nullableVersions\": \"1+\", \"default\": \"null\", \"fields\": [",
+            "      { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" }",
+            "    ]},",
+            "    { \"name\": \"field3\", \"type\": \"bytes\", \"versions\": \"2+\", ",
+            "      \"nullableVersions\": \"2+\", \"default\": \"null\" }",
+            "  ]",
+            "}")), MessageSpec.class);
         new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec);
     }
 
     @Test
     public void testNullDefaultsWithDeprecatedVersions() throws Exception {
         MessageSpec testMessageSpec = MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                "{",
-                "  \"type\": \"request\",",
-                "  \"name\": \"FooBar\",",
-                "  \"validVersions\": \"0-4\",",
-                "  \"deprecatedVersions\": \"0-1\",",
-                "  \"flexibleVersions\": \"none\",",
-                "  \"fields\": [",
-                "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" },",
-                "    { \"name\": \"field2\", \"type\": \"[]TestStruct\", \"versions\": \"1+\", ",
-                "    \"nullableVersions\": \"1+\", \"default\": \"null\", \"fields\": [",
-                "      { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" }",
-                "    ]},",
-                "    { \"name\": \"field3\", \"type\": \"bytes\", \"versions\": \"2+\", ",
-                "      \"nullableVersions\": \"2+\", \"default\": \"null\" }",
-                "  ]",
-                "}")), MessageSpec.class);
+            "{",
+            "  \"type\": \"request\",",
+            "  \"name\": \"FooBar\",",
+            "  \"validVersions\": \"0-4\",",
+            "  \"deprecatedVersions\": \"0-1\",",
+            "  \"flexibleVersions\": \"none\",",
+            "  \"fields\": [",
+            "    { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" },",
+            "    { \"name\": \"field2\", \"type\": \"[]TestStruct\", \"versions\": \"1+\", ",
+            "    \"nullableVersions\": \"1+\", \"default\": \"null\", \"fields\": [",
+            "      { \"name\": \"field1\", \"type\": \"int32\", \"versions\": \"0+\" }",
+            "    ]},",
+            "    { \"name\": \"field3\", \"type\": \"bytes\", \"versions\": \"2+\", ",
+            "      \"nullableVersions\": \"2+\", \"default\": \"null\" }",
+            "  ]",
+            "}")), MessageSpec.class);
         new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec);
     }
 
@@ -96,16 +96,16 @@ public class MessageDataGeneratorTest {
     @Test
     public void testInvalidNullDefaultForPotentiallyNonNullableArray() throws Exception {
         MessageSpec testMessageSpec = MessageGenerator.JSON_SERDE.readValue(String.join("", Arrays.asList(
-                "{",
-                "  \"type\": \"request\",",
-                "  \"name\": \"FooBar\",",
-                "  \"validVersions\": \"0-2\",",
-                "  \"flexibleVersions\": \"none\",",
-                "  \"fields\": [",
-                "    { \"name\": \"field1\", \"type\": \"[]int32\", \"versions\": \"0+\", \"nullableVersions\": \"1+\", ",
-                "    \"default\": \"null\" }",
-                "  ]",
-                "}")), MessageSpec.class);
+            "{",
+            "  \"type\": \"request\",",
+            "  \"name\": \"FooBar\",",
+            "  \"validVersions\": \"0-2\",",
+            "  \"flexibleVersions\": \"none\",",
+            "  \"fields\": [",
+            "    { \"name\": \"field1\", \"type\": \"[]int32\", \"versions\": \"0+\", \"nullableVersions\": \"1+\", ",
+            "    \"default\": \"null\" }",
+            "  ]",
+            "}")), MessageSpec.class);
 
         assertStringContains("not all versions of this field are nullable",
             assertThrows(RuntimeException.class, () -> new MessageDataGenerator("org.apache.kafka.common.message").generate(testMessageSpec)).getMessage());

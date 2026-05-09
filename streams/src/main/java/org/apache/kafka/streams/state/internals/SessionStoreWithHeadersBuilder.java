@@ -96,7 +96,7 @@ public class SessionStoreWithHeadersBuilder<K, V>
 
     private static final class InMemorySessionStoreWithHeadersMarker
         extends WrappedStateStore<SessionStore<Bytes, byte[]>, Bytes, byte[]>
-        implements SessionStore<Bytes, byte[]>, HeadersBytesStore {
+            implements SessionStore<Bytes, byte[]>, HeadersBytesStore {
         private InMemorySessionStoreWithHeadersMarker(final SessionStore<Bytes, byte[]> wrapped) {
             super(wrapped);
             if (wrapped.persistent()) {

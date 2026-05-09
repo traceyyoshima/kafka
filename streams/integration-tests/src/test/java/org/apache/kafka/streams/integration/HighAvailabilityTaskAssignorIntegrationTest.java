@@ -83,7 +83,7 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
             mkEntry(0, mkMap(mkEntry(ServerConfigs.BROKER_RACK_CONFIG, AssignmentTestUtils.RACK_0))),
             mkEntry(1, mkMap(mkEntry(ServerConfigs.BROKER_RACK_CONFIG, AssignmentTestUtils.RACK_1))),
             mkEntry(2, mkMap(mkEntry(ServerConfigs.BROKER_RACK_CONFIG, AssignmentTestUtils.RACK_2)))
-    ));
+        ));
 
     @BeforeAll
     public static void startCluster() throws IOException {
@@ -236,13 +236,13 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
                     }
                 },
                 120_000L,
-                    () -> "Never saw a first assignment after scale out: " + assignmentsCompleted.get()
+                () -> "Never saw a first assignment after scale out: " + assignmentsCompleted.get()
             );
 
             TestUtils.waitForCondition(
                 assignmentStable::get,
                 120_000L,
-                    () -> "Assignment hasn't become stable: " + assignmentsCompleted.get() +
+                () -> "Assignment hasn't become stable: " + assignmentsCompleted.get() +
                     " Note, if this does fail, check and see if the new instance just failed to catch up within" +
                     " the probing rebalance interval. A full minute should be long enough to read ~500 records" +
                     " in any test environment, but you never know..."
@@ -278,12 +278,12 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
 
     private static Properties getConsumerProperties() {
         return mkProperties(
-                mkMap(
-                    mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                    mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()),
-                    mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName())
-                )
-            );
+            mkMap(
+                mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()),
+                mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName())
+            )
+        );
     }
 
     private static String getKiloByteValue() {

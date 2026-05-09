@@ -69,7 +69,8 @@ public class BrokerFeatures {
         features.put(MetadataVersion.FEATURE_NAME,
                 new SupportedVersionRange(
                         MetadataVersion.MINIMUM_VERSION.featureLevel(),
-                        unstableFeatureVersionsEnabled ? MetadataVersion.latestTesting().featureLevel()
+                        unstableFeatureVersionsEnabled
+                                ? MetadataVersion.latestTesting().featureLevel()
                                 : MetadataVersion.latestProduction().featureLevel()));
         PRODUCTION_FEATURES.forEach(feature -> {
             int maxVersion = unstableFeatureVersionsEnabled ? feature.latestTesting() : feature.latestProduction();

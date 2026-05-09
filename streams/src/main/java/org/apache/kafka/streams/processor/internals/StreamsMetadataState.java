@@ -113,8 +113,8 @@ public class StreamsMetadataState {
         Objects.requireNonNull(storeName, "storeName cannot be null");
         if (topologyMetadata.hasNamedTopologies()) {
             throw new IllegalArgumentException("Cannot invoke the allMetadataForStore(storeName) method when"
-                                                   + "using named topologies, please use the overload that accepts"
-                                                   + "a topologyName parameter to identify the correct store");
+                + "using named topologies, please use the overload that accepts"
+                + "a topologyName parameter to identify the correct store");
         }
 
         if (!isInitialized()) {
@@ -209,8 +209,8 @@ public class StreamsMetadataState {
         Objects.requireNonNull(keySerializer, "keySerializer can't be null");
         if (topologyMetadata.hasNamedTopologies()) {
             throw new IllegalArgumentException("Cannot invoke the KeyQueryMetadataForKey(storeName, key, keySerializer)"
-                                                   + "method when using named topologies, please use the overload that"
-                                                   + "accepts a topologyName parameter to identify the correct store");
+                + "method when using named topologies, please use the overload that"
+                + "accepts a topologyName parameter to identify the correct store");
         }
         return keyQueryMetadataForKey(storeName,
                                       key,
@@ -252,8 +252,8 @@ public class StreamsMetadataState {
         Objects.requireNonNull(partitioner, "partitioner can't be null");
         if (topologyMetadata.hasNamedTopologies()) {
             throw new IllegalArgumentException("Cannot invoke the keyQueryMetadataForKey(storeName, key, partitioner)"
-                                                   + "method when using named topologies, please use the overload that"
-                                                   + "accepts a topologyName parameter to identify the correct store");
+                + "method when using named topologies, please use the overload that"
+                + "accepts a topologyName parameter to identify the correct store");
         }
 
         if (!isInitialized()) {
@@ -313,8 +313,8 @@ public class StreamsMetadataState {
                                final Map<TopicPartition, PartitionInfo> topicPartitionInfo) {
         this.partitionsByTopic = new HashMap<>();
         topicPartitionInfo.forEach((key, value) -> this.partitionsByTopic
-                .computeIfAbsent(key.topic(), topic -> new ArrayList<>())
-                .add(value));
+            .computeIfAbsent(key.topic(), topic -> new ArrayList<>())
+            .add(value));
 
         rebuildMetadata(activePartitionHostMap, standbyPartitionHostMap);
     }

@@ -52,7 +52,7 @@ public class CoordinatorOperationExceptionHelper {
         return switch (apiError.error()) {
             case UNKNOWN_SERVER_ERROR -> {
                 log.error("Operation {} with {} hit an unexpected exception: {}.",
-                        operationName, operationInput, exception.getMessage(), exception);
+                          operationName, operationInput, exception.getMessage(), exception);
                 yield handler.apply(Errors.UNKNOWN_SERVER_ERROR, null);
             }
             case NETWORK_EXCEPTION ->

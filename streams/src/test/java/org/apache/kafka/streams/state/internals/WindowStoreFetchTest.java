@@ -146,7 +146,7 @@ public class WindowStoreFetchTest {
     @BeforeEach
     public void setup() {
         streamsConfig = mkProperties(mkMap(
-                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
+            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
         ));
     }
 

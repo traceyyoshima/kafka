@@ -404,11 +404,13 @@ public class SelectorTest {
         AtomicInteger closedChannelsCount = new AtomicInteger(0);
         ChannelBuilder channelBuilder = new PlaintextChannelBuilder(null) {
             private int channelIndex = 0;
+
             @Override
             KafkaChannel buildChannel(String id, TransportLayer transportLayer, Supplier<Authenticator> authenticatorCreator,
                                       int maxReceiveSize, MemoryPool memoryPool, ChannelMetadataRegistry metadataRegistry) {
                 return new KafkaChannel(id, transportLayer, authenticatorCreator, maxReceiveSize, memoryPool, metadataRegistry) {
                     private final int index = channelIndex++;
+
                     @Override
                     public void close() throws IOException {
                         closedChannelsCount.getAndIncrement();
@@ -433,7 +435,7 @@ public class SelectorTest {
         final ChannelBuilder channelBuilder = mock(ChannelBuilder.class);
 
         when(channelBuilder.buildChannel(eq(channelId), any(SelectionKey.class), anyInt(), any(MemoryPool.class),
-                any(ChannelMetadataRegistry.class))).thenThrow(new RuntimeException("Test exception"));
+            any(ChannelMetadataRegistry.class))).thenThrow(new RuntimeException("Test exception"));
 
         try (MockedConstruction<Selector.SelectorChannelMetadataRegistry> mockedMetadataRegistry =
                      mockConstruction(Selector.SelectorChannelMetadataRegistry.class)) {
@@ -1110,8 +1112,8 @@ public class SelectorTest {
 
     private KafkaMetric getMetric(String name) throws Exception {
         Optional<Map.Entry<MetricName, KafkaMetric>> metric = metrics.metrics().entrySet().stream()
-                .filter(entry -> entry.getKey().name().equals(name))
-                .findFirst();
+            .filter(entry -> entry.getKey().name().equals(name))
+            .findFirst();
         if (metric.isEmpty())
             throw new Exception(String.format("Could not find metric called %s", name));
 

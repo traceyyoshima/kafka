@@ -67,7 +67,7 @@ class EndpointToPartitionsManagerTest {
         streamsGroupMember = mock(StreamsGroupMember.class);
         configuredTopology = mock(ConfiguredTopology.class);
         configuredSubtopologyOne = new ConfiguredSubtopology(1, Set.of("Topic-A"), new HashMap<>(), new HashSet<>(), new HashMap<>());
-        Map<String, ConfiguredInternalTopic> repartitionSourceTopics = Map.of("Topic-B",  new ConfiguredInternalTopic("Topic-B", 1, Optional.of((short) 1), Collections.emptyMap()));
+        Map<String, ConfiguredInternalTopic> repartitionSourceTopics = Map.of("Topic-B", new ConfiguredInternalTopic("Topic-B", 1, Optional.of((short) 1), Collections.emptyMap()));
         configuredSubtopologyTwo = new ConfiguredSubtopology(1, new HashSet<>(), repartitionSourceTopics, new HashSet<>(), new HashMap<>());
         SortedMap<String, ConfiguredSubtopology> configuredSubtopologyOneMap = new TreeMap<>();
         configuredSubtopologyOneMap.put("0", configuredSubtopologyOne);
@@ -164,8 +164,8 @@ class EndpointToPartitionsManagerTest {
 
     static Stream<Arguments> argsProvider() {
         return Stream.of(
-                arguments(2, 5, List.of(0, 1), List.of(0, 1, 2, 3, 4), "Should assign correct partitions when partitions differ between topics"),
-                arguments(3, 3, List.of(0, 1, 2), List.of(0, 1, 2), "Should assign correct partitions when partitions same between topics")
+            arguments(2, 5, List.of(0, 1), List.of(0, 1, 2, 3, 4), "Should assign correct partitions when partitions differ between topics"),
+            arguments(3, 3, List.of(0, 1, 2), List.of(0, 1, 2), "Should assign correct partitions when partitions same between topics")
         );
     }
 }

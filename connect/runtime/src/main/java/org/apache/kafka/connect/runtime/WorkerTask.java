@@ -430,7 +430,7 @@ abstract class WorkerTask<T, R extends ConnectRecord<R>> implements Runnable {
             metricGroup.close();
 
             metricGroup.addValueMetric(registry.taskStatus, now ->
-                taskStateTimer.currentState().toString().toLowerCase(Locale.getDefault())
+                    taskStateTimer.currentState().toString().toLowerCase(Locale.getDefault())
             );
 
             addRatioMetric(State.RUNNING, registry.taskRunningRatio);

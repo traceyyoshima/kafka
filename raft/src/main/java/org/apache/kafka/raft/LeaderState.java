@@ -140,7 +140,7 @@ public class LeaderState<T> implements EpochState {
         this.epoch = epoch;
         this.epochStartOffset = epochStartOffset;
 
-        for (VoterSet.VoterNode voterNode: voterSetAtEpochStart.voterNodes()) {
+        for (VoterSet.VoterNode voterNode : voterSetAtEpochStart.voterNodes()) {
             boolean hasAcknowledgedLeader = voterNode.isVoter(localVoterNode.voterKey());
             this.voterStates.put(
                 voterNode.voterKey().id(),
@@ -155,7 +155,7 @@ public class LeaderState<T> implements EpochState {
         this.checkQuorumTimer = time.timer(checkQuorumTimeoutMs);
         this.beginQuorumEpochTimeoutMs = fetchTimeoutMs / 2;
         this.beginQuorumEpochTimer = time.timer(0);
-        this.voterSetAtEpochStart =  voterSetAtEpochStart;
+        this.voterSetAtEpochStart = voterSetAtEpochStart;
         this.offsetOfVotersAtEpochStart = offsetOfVotersAtEpochStart;
         this.kraftVersionAtEpochStart = kraftVersionAtEpochStart;
 
@@ -401,13 +401,12 @@ public class LeaderState<T> implements EpochState {
 
         accumulator.appendControlMessages((baseOffset, epoch, compression, buffer) -> {
             try (MemoryRecordsBuilder builder = createControlRecordsBuilder(
-                    baseOffset,
-                    epoch,
-                    compression,
-                    buffer,
-                    currentTimeMs
-                )
-            ) {
+                baseOffset,
+                epoch,
+                compression,
+                buffer,
+                currentTimeMs
+            )) {
                 builder.appendLeaderChangeMessage(currentTimeMs, leaderChangeMessage);
 
                 if (kraftVersionAtEpochStart.isReconfigSupported()) {
@@ -629,13 +628,12 @@ public class LeaderState<T> implements EpochState {
             // All of the validations succeeded; create control records for the upgrade
             accumulator.appendControlMessages((baseOffset, batchEpoch, compression, buffer) -> {
                 try (MemoryRecordsBuilder builder = createControlRecordsBuilder(
-                        baseOffset,
-                        batchEpoch,
-                        compression,
-                        buffer,
-                        currentTimeMs
-                    )
-                ) {
+                    baseOffset,
+                    batchEpoch,
+                    compression,
+                    buffer,
+                    currentTimeMs
+                )) {
                     log.info("Appended kraft.version {} to the batch accumulator", newVersion);
                     builder.appendKRaftVersionMessage(
                         currentTimeMs,
@@ -764,7 +762,7 @@ public class LeaderState<T> implements EpochState {
                                 "value {}, which should only happen when voter set membership changes. If the voter " +
                                 "set has not changed this suggests that one of the voters has lost committed data. " +
                                 "Full voter replication state: {}", highWatermarkUpdateOffset,
-                            currentHighWatermarkMetadata.offset(), voterStates.values());
+                                currentHighWatermarkMetadata.offset(), voterStates.values());
                         return false;
                     } else {
                         return false;

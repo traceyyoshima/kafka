@@ -62,7 +62,7 @@ public class Lz4CompressionTest {
         ByteBuffer buffer = ByteBuffer.allocate(256);
         Lz4Compression compression = new Lz4Compression.Builder().build();
         Lz4BlockOutputStream out = (Lz4BlockOutputStream) compression.wrapForOutput(
-                new ByteBufferOutputStream(buffer), RecordBatch.MAGIC_VALUE_V0);
+            new ByteBufferOutputStream(buffer), RecordBatch.MAGIC_VALUE_V0);
         assertTrue(out.useBrokenFlagDescriptorChecksum());
 
         buffer.rewind();
@@ -76,7 +76,7 @@ public class Lz4CompressionTest {
         ByteBuffer buffer = ByteBuffer.allocate(256);
         Lz4Compression compression = new Lz4Compression.Builder().build();
         Lz4BlockOutputStream out = (Lz4BlockOutputStream) compression.wrapForOutput(
-                new ByteBufferOutputStream(buffer), RecordBatch.MAGIC_VALUE_V1);
+            new ByteBufferOutputStream(buffer), RecordBatch.MAGIC_VALUE_V1);
         assertFalse(out.useBrokenFlagDescriptorChecksum());
 
         buffer.rewind();

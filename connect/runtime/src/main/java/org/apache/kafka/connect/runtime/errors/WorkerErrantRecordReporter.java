@@ -153,10 +153,10 @@ public class WorkerErrantRecordReporter implements ErrantRecordReporter {
     // Removes and returns all futures for the given topic partitions from the set of currently-active futures
     private Collection<Future<Void>> futuresFor(Collection<TopicPartition> topicPartitions) {
         return topicPartitions.stream()
-                .map(futures::remove)
-                .filter(Objects::nonNull)
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
+            .map(futures::remove)
+            .filter(Objects::nonNull)
+            .flatMap(List::stream)
+            .collect(Collectors.toList());
     }
 
     public synchronized void maybeThrowAsyncError() {
@@ -190,7 +190,7 @@ public class WorkerErrantRecordReporter implements ErrantRecordReporter {
         }
 
         public Void get() throws InterruptedException, ExecutionException {
-            for (Future<RecordMetadata> future: futures) {
+            for (Future<RecordMetadata> future : futures) {
                 future.get();
             }
             return null;
@@ -198,7 +198,7 @@ public class WorkerErrantRecordReporter implements ErrantRecordReporter {
 
         public Void get(long timeout, TimeUnit unit)
             throws InterruptedException, ExecutionException, TimeoutException {
-            for (Future<RecordMetadata> future: futures) {
+            for (Future<RecordMetadata> future : futures) {
                 future.get(timeout, unit);
             }
             return null;

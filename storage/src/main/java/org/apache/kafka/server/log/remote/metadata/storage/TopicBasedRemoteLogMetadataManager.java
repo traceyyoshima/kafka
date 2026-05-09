@@ -183,7 +183,7 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
     @Override
     public Optional<Long> highestOffsetForEpoch(TopicIdPartition topicIdPartition,
                                                 int leaderEpoch)
-            throws RemoteStorageException {
+                                                        throws RemoteStorageException {
         return withReadLockAndEnsureInitialized(
                 () -> remotePartitionMetadataStore.highestLogOffset(topicIdPartition, leaderEpoch));
     }

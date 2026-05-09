@@ -85,24 +85,24 @@ public class RocksDBTimeOrderedSessionSegmentedBytesStore<S extends Segment> ext
         final Bytes binaryTo = baseKeySchema.lowerRangeFixedSize(null, latestSessionEndTime + 1);
 
         return new SegmentIterator<>(
-                searchSpace.iterator(),
-                iterator -> {
-                    while (iterator.hasNext()) {
-                        final Bytes bytes = iterator.peekNextKey();
+            searchSpace.iterator(),
+            iterator -> {
+                while (iterator.hasNext()) {
+                    final Bytes bytes = iterator.peekNextKey();
 
-                        final Windowed<Bytes> windowedKey = TimeFirstSessionKeySchema.from(bytes);
-                        final long endTime = windowedKey.window().end();
+                    final Windowed<Bytes> windowedKey = TimeFirstSessionKeySchema.from(bytes);
+                    final long endTime = windowedKey.window().end();
 
-                        if (endTime <= latestSessionEndTime && endTime >= earliestSessionEndTime) {
-                            return true;
-                        }
-                        iterator.next();
+                    if (endTime <= latestSessionEndTime && endTime >= earliestSessionEndTime) {
+                        return true;
                     }
-                    return false;
-                },
-                binaryFrom,
-                binaryTo,
-                true);
+                    iterator.next();
+                }
+                return false;
+            },
+            binaryFrom,
+            binaryTo,
+            true);
     }
 
     @Override

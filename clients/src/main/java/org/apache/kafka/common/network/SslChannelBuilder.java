@@ -103,7 +103,7 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
             Supplier<Authenticator> authenticatorCreator = () ->
                 new SslAuthenticator(configs, finalTransportLayer, listenerName, sslPrincipalMapper);
             return new KafkaChannel(id, transportLayer, authenticatorCreator, maxReceiveSize,
-                    memoryPool != null ? memoryPool : MemoryPool.NONE, metadataRegistry);
+                memoryPool != null ? memoryPool : MemoryPool.NONE, metadataRegistry);
         } catch (Exception e) {
             // Ideally these resources are closed by the KafkaChannel but this builder should close the resources instead
             // if an error occurs due to which KafkaChannel is not created.
@@ -137,6 +137,7 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
             this.principalBuilder = ChannelBuilders.createPrincipalBuilder(configs, null, sslPrincipalMapper);
             this.listenerName = listenerName;
         }
+
         /**
          * No-Op for plaintext authenticator
          */
@@ -154,9 +155,9 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
             if (listenerName == null)
                 throw new IllegalStateException("Unexpected call to principal() when listenerName is null");
             SslAuthenticationContext context = new SslAuthenticationContext(
-                    transportLayer.sslSession(),
-                    clientAddress,
-                    listenerName.value());
+                transportLayer.sslSession(),
+                clientAddress,
+                listenerName.value());
             return principalBuilder.build(context);
         }
 

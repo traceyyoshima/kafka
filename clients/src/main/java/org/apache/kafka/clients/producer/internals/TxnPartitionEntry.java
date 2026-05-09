@@ -61,8 +61,8 @@ class TxnPartitionEntry {
     // See https://github.com/apache/kafka/pull/12096#pullrequestreview-955554191 for details.
     private static final Comparator<ProducerBatch> PRODUCER_BATCH_COMPARATOR =
         Comparator.comparingLong(ProducerBatch::producerId)
-            .thenComparingInt(ProducerBatch::producerEpoch)
-            .thenComparingInt(ProducerBatch::baseSequence);
+                .thenComparingInt(ProducerBatch::producerEpoch)
+                .thenComparingInt(ProducerBatch::baseSequence);
 
     TxnPartitionEntry(TopicPartition topicPartition) {
         this.topicPartition = topicPartition;

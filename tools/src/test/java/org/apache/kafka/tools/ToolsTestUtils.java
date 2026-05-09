@@ -116,8 +116,8 @@ public class ToolsTestUtils {
     public static void assignThrottledPartitionReplicas(Admin adminClient, Map<TopicPartition, List<Integer>> allReplicasByPartition) throws InterruptedException, ExecutionException {
         Map<ConfigResource, List<Entry<TopicPartition, List<Integer>>>> configResourceToPartitionReplicas =
             allReplicasByPartition.entrySet().stream()
-            .collect(Collectors.groupingBy(
-                topicPartitionListEntry -> new ConfigResource(ConfigResource.Type.TOPIC, topicPartitionListEntry.getKey().topic()))
+                .collect(Collectors.groupingBy(
+                    topicPartitionListEntry -> new ConfigResource(ConfigResource.Type.TOPIC, topicPartitionListEntry.getKey().topic()))
             );
 
         Map<ConfigResource, List<AlterConfigOp>> throttles = configResourceToPartitionReplicas.entrySet().stream()
@@ -146,11 +146,11 @@ public class ToolsTestUtils {
         Map<ConfigResource, Collection<AlterConfigOp>> throttles = partitions.stream().collect(Collectors.toMap(
             tp -> new ConfigResource(ConfigResource.Type.TOPIC, tp.topic()),
             tp -> List.of(
-                    new AlterConfigOp(new ConfigEntry(QuotaConfig.LEADER_REPLICATION_THROTTLED_REPLICAS_CONFIG, ""),
-                        AlterConfigOp.OpType.DELETE),
-                    new AlterConfigOp(new ConfigEntry(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_REPLICAS_CONFIG, ""),
-                        AlterConfigOp.OpType.DELETE))
-            ));
+                new AlterConfigOp(new ConfigEntry(QuotaConfig.LEADER_REPLICATION_THROTTLED_REPLICAS_CONFIG, ""),
+                    AlterConfigOp.OpType.DELETE),
+                new AlterConfigOp(new ConfigEntry(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_REPLICAS_CONFIG, ""),
+                    AlterConfigOp.OpType.DELETE))
+        ));
 
         adminClient.incrementalAlterConfigs(throttles).all().get();
     }

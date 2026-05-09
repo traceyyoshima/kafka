@@ -389,7 +389,7 @@ public class ResetStreamsGroupOffsetTest {
         }
         adminClient.alterStreamsGroupOffsets(appId, offsets).all().get();
         Map<TopicPartition, Long> committedOffsets = committedOffsets(List.of(topics), appId);
-        for (TopicPartition tp: offsets.keySet()) {
+        for (TopicPartition tp : offsets.keySet()) {
             assertEquals(desiredOffset, committedOffsets.get(tp));
         }
     }
@@ -402,7 +402,7 @@ public class ResetStreamsGroupOffsetTest {
             .mapToObj(partition -> new TopicPartition(topic, partition))
             .toList();
         Map<TopicPartition, Long> committedOffsets = committedOffsets(List.of(topic), appId);
-        for (TopicPartition tp: affectedTPs) {
+        for (TopicPartition tp : affectedTPs) {
             assertEquals(expectedCommittedOffset, committedOffsets.get(tp));
         }
     }
@@ -594,16 +594,16 @@ public class ResetStreamsGroupOffsetTest {
                                                           long expectedOffset,
                                                           long expectedCommittedOffset,
                                                           int... partitions) throws ExecutionException, InterruptedException {
-        resetOffsetsAndAssert(addTo(args, "--dry-run"), appId, topic,  expectedOffset, expectedCommittedOffset, partitions);
+        resetOffsetsAndAssert(addTo(args, "--dry-run"), appId, topic, expectedOffset, expectedCommittedOffset, partitions);
         resetOffsetsAndAssert(addTo(args, "--execute"), appId, topic, expectedOffset, expectedOffset, partitions);
     }
 
     private void resetOffsetsAndAssertForDryRunAndExecute(String[] args,
-                                       String appId,
-                                       String topic1,
-                                       String topic2,
-                                       long expectedOffset,
-                                       long expectedCommittedOffset) throws ExecutionException, InterruptedException {
+                                                          String appId,
+                                                          String topic1,
+                                                          String topic2,
+                                                          long expectedOffset,
+                                                          long expectedCommittedOffset) throws ExecutionException, InterruptedException {
         resetOffsetsAndAssert(addTo(args, "--dry-run"), appId, topic1, topic2, expectedOffset, expectedCommittedOffset);
         resetOffsetsAndAssert(addTo(args, "--execute"), appId, topic1, topic2, expectedOffset, expectedOffset);
     }
@@ -705,12 +705,12 @@ public class ResetStreamsGroupOffsetTest {
 
 
         TestUtils.waitForCondition(() -> streams.state().equals(KafkaStreams.State.RUNNING),
-                () -> "Expected RUNNING state but streams is on " + streams.state());
+            () -> "Expected RUNNING state but streams is on " + streams.state());
 
 
         try {
             TestUtils.waitForCondition(() -> recordCount.get() == numOfCommittedMessages,
-                    () -> "Expected " + numOfCommittedMessages + " records processed but only got " + recordCount.get());
+                () -> "Expected " + numOfCommittedMessages + " records processed but only got " + recordCount.get());
         } catch (final Exception e) {
             e.printStackTrace();
         } finally {

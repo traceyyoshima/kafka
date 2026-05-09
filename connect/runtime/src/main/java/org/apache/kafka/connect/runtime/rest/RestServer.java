@@ -505,13 +505,13 @@ public abstract class RestServer {
 
     protected final void registerRestExtensions(Herder herder, ResourceConfig resourceConfig) {
         connectRestExtensionPlugins = Plugin.wrapInstances(
-                herder.plugins().newPlugins(
-                    config.restExtensions(),
-                    config,
-                    ConnectRestExtension.class
-                ),
-                herder.connectMetrics().metrics(),
-                RestServerConfig.REST_EXTENSION_CLASSES_CONFIG);
+            herder.plugins().newPlugins(
+                config.restExtensions(),
+                config,
+                ConnectRestExtension.class
+            ),
+            herder.connectMetrics().metrics(),
+            RestServerConfig.REST_EXTENSION_CLASSES_CONFIG);
 
         long herderRequestTimeoutMs = DEFAULT_REST_REQUEST_TIMEOUT_MS;
 

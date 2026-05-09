@@ -270,22 +270,22 @@ public class DescribeConsumerGroupsHandlerTest {
     @Test
     public void testSuccessfulHandleClassicGroupResponse() {
         Collection<MemberDescription> members = singletonList(new MemberDescription(
-                "memberId",
-                Optional.empty(),
-                Optional.empty(),
-                "clientId",
-                "host",
-                new MemberAssignment(tps),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty()));
+            "memberId",
+            Optional.empty(),
+            Optional.empty(),
+            "clientId",
+            "host",
+            new MemberAssignment(tps),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty()));
         ConsumerGroupDescription expected = new ConsumerGroupDescription(
-                groupId1,
-                true,
-                members,
-                "assignor",
-                ConsumerGroupState.STABLE,
-                coordinator);
+            groupId1,
+            true,
+            members,
+            "assignor",
+            ConsumerGroupState.STABLE,
+            coordinator);
         assertCompleted(handleClassicGroupWithError(Errors.NONE, ""), expected);
     }
 
@@ -342,7 +342,7 @@ public class DescribeConsumerGroupsHandlerTest {
 
     private DescribeGroupsResponse buildResponse(Errors error, String protocolType) {
         return new DescribeGroupsResponse(
-                new DescribeGroupsResponseData()
+            new DescribeGroupsResponseData()
                     .setGroups(singletonList(
                             new DescribedGroup()
                                 .setErrorCode(error.code())
@@ -357,7 +357,7 @@ public class DescribeConsumerGroupsHandlerTest {
                                             .setClientId("clientId")
                                             .setMemberId("memberId")
                                             .setMemberAssignment(ConsumerProtocol.serializeAssignment(
-                                                    new Assignment(new ArrayList<>(tps))).array())
+                                                new Assignment(new ArrayList<>(tps))).array())
                                             )))));
     }
 

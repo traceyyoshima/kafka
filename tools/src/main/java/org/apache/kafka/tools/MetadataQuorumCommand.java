@@ -402,7 +402,7 @@ public class MetadataQuorumCommand {
         }
         LinkedHashSet<RaftVoterEndpoint> results = new LinkedHashSet<>();
         for (String listenerName : props.getProperty(
-                KRaftConfigs.CONTROLLER_LISTENER_NAMES_CONFIG).split(",")) {
+            KRaftConfigs.CONTROLLER_LISTENER_NAMES_CONFIG).split(",")) {
             listenerName = ListenerName.normalised(listenerName).value();
             Endpoint endpoint = listeners.get(listenerName);
             if (endpoint == null) {
@@ -410,8 +410,8 @@ public class MetadataQuorumCommand {
                     listenerName);
             }
             results.add(new RaftVoterEndpoint(endpoint.listener(),
-                    endpoint.host() == null ? "localhost" : endpoint.host(),
-                    endpoint.port()));
+                endpoint.host() == null ? "localhost" : endpoint.host(),
+                endpoint.port()));
         }
         return results;
     }

@@ -631,6 +631,7 @@ public class DumpLogSegments {
         }
 
         protected abstract JsonNode keyAsJson(ApiMessage message);
+
         protected abstract JsonNode valueAsJson(ApiMessage message, short version);
     }
 
@@ -819,7 +820,7 @@ public class DumpLogSegments {
                 "If set, just checks the index sanity without printing its content. " +
                 "This is the same check that is executed on broker startup to determine if an index needs rebuilding or not.");
             filesOpt = parser.accepts("files",
-                    "REQUIRED: The comma separated list of data and index log files to be dumped.")
+                "REQUIRED: The comma separated list of data and index log files to be dumped.")
                 .withRequiredArg()
                 .describedAs("file1, file2, ...")
                 .ofType(String.class);
@@ -829,7 +830,7 @@ public class DumpLogSegments {
                 .ofType(Integer.class)
                 .defaultsTo(5 * 1024 * 1024);
             maxBytesOpt = parser.accepts("max-bytes",
-                    "Limit the amount of total batches read in bytes avoiding reading the whole .log file(s).")
+                "Limit the amount of total batches read in bytes avoiding reading the whole .log file(s).")
                 .withRequiredArg()
                 .describedAs("size")
                 .ofType(Integer.class)
@@ -837,12 +838,12 @@ public class DumpLogSegments {
             deepIterationOpt = parser.accepts("deep-iteration",
                 "If set, uses deep instead of shallow iteration. Automatically set if print-data-log is enabled.");
             valueDecoderOpt = parser.accepts("value-decoder-class",
-                    "If set, used to deserialize the messages. This class should implement org.apache.kafka.tools.api.Decoder trait. Custom jar should be available in kafka/libs directory.")
+                "If set, used to deserialize the messages. This class should implement org.apache.kafka.tools.api.Decoder trait. Custom jar should be available in kafka/libs directory.")
                 .withOptionalArg()
                 .ofType(String.class)
                 .defaultsTo(StringDecoder.class.getName());
             keyDecoderOpt = parser.accepts("key-decoder-class",
-                    "If set, used to deserialize the keys. This class should implement org.apache.kafka.tools.api.Decoder trait. Custom jar should be available in kafka/libs directory.")
+                "If set, used to deserialize the keys. This class should implement org.apache.kafka.tools.api.Decoder trait. Custom jar should be available in kafka/libs directory.")
                 .withOptionalArg()
                 .ofType(String.class)
                 .defaultsTo(StringDecoder.class.getName());

@@ -128,7 +128,7 @@ public class InternalTopologyBuilderTest {
 
         builder.addSource(new AutoOffsetResetInternal(AutoOffsetReset.none()), "source0", null, null, null, Pattern.compile(noneTopicPattern));
         builder.addSource(new AutoOffsetResetInternal(AutoOffsetReset.earliest()), "source1", null, null, null, Pattern.compile(earliestTopicPattern));
-        builder.addSource(new AutoOffsetResetInternal(AutoOffsetReset.latest()), "source2", null, null, null,  Pattern.compile(latestTopicPattern));
+        builder.addSource(new AutoOffsetResetInternal(AutoOffsetReset.latest()), "source2", null, null, null, Pattern.compile(latestTopicPattern));
         builder.addSource(new AutoOffsetResetInternal(AutoOffsetReset.byDuration(Duration.ofSeconds(42))), "source3", null, null, null, Pattern.compile(durationTopicPattern));
 
         builder.initializeSubscription();
@@ -230,7 +230,7 @@ public class InternalTopologyBuilderTest {
     public void testAddProcessorWithBadSupplier() {
         final Processor<Object, Object, Object, Object> processor = new MockApiProcessor<>();
         final IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+            IllegalArgumentException.class,
             () -> builder.addProcessor("processor", () -> processor, (String) null)
         );
         assertThat(exception.getMessage(), containsString("#get() must return a new object each time it is called."));
@@ -240,14 +240,14 @@ public class InternalTopologyBuilderTest {
     public void testAddGlobalStoreWithBadSupplier() {
         final org.apache.kafka.streams.processor.api.Processor<?, ?, Void, Void> processor = new MockApiProcessorSupplier<Object, Object, Void, Void>().get();
         final IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+            IllegalArgumentException.class,
             () -> builder.addGlobalStore(
-                        "globalSource",
-                        null,
-                        null,
-                        null,
-                        "globalTopic",
-                        "global-processor",
+                "globalSource",
+                null,
+                null,
+                null,
+                "globalTopic",
+                "global-processor",
                 () -> processor,
                 false
             )
@@ -938,10 +938,10 @@ public class InternalTopologyBuilderTest {
             "processor"
         );
         builder.addStateStore(
-                Stores.sessionStoreBuilder(
-                        Stores.persistentSessionStore("store2", ofSeconds(30)), Serdes.String(), Serdes.String()
-                ),
-                "processor"
+            Stores.sessionStoreBuilder(
+                Stores.persistentSessionStore("store2", ofSeconds(30)), Serdes.String(), Serdes.String()
+            ),
+            "processor"
         );
         builder.buildTopology();
         final Map<Subtopology, InternalTopologyBuilder.TopicsInfo> topicGroups = builder.subtopologyToTopicsInfo();

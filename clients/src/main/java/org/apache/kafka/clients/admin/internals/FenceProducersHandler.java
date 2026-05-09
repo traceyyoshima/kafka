@@ -121,19 +121,19 @@ public class FenceProducersHandler extends AdminApiHandler.Unbatched<Coordinator
         switch (error) {
             case CLUSTER_AUTHORIZATION_FAILED:
                 return ApiResult.failed(transactionalIdKey, new ClusterAuthorizationException(
-                        "InitProducerId request for transactionalId `" + transactionalIdKey.idValue + "` " +
+                    "InitProducerId request for transactionalId `" + transactionalIdKey.idValue + "` " +
                                 "failed due to cluster authorization failure"));
 
             case TRANSACTIONAL_ID_AUTHORIZATION_FAILED:
                 return ApiResult.failed(transactionalIdKey, new TransactionalIdAuthorizationException(
-                        "InitProducerId request for transactionalId `" + transactionalIdKey.idValue + "` " +
+                    "InitProducerId request for transactionalId `" + transactionalIdKey.idValue + "` " +
                                 "failed due to transactional ID authorization failure"));
 
             case COORDINATOR_LOAD_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("InitProducerId request for transactionalId `{}` failed because the " +
                                 "coordinator is still in the process of loading state. Will retry",
-                        transactionalIdKey.idValue);
+                          transactionalIdKey.idValue);
                 return ApiResult.empty();
             case CONCURRENT_TRANSACTIONS:
                 log.debug("InitProducerId request for transactionalId `{}` failed because of " +

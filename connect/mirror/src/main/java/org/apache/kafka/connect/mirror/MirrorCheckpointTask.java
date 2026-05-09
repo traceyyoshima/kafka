@@ -186,10 +186,10 @@ public class MirrorCheckpointTask extends SourceTask {
             Map<TopicPartition, Checkpoint> newCheckpoints = checkpointsForGroup(upstreamGroupOffsets, group);
             checkpointStore.update(group, newCheckpoints);
             return newCheckpoints.values().stream()
-                .map(x -> checkpointRecord(x, timestamp))
-                .collect(Collectors.toList());
+                    .map(x -> checkpointRecord(x, timestamp))
+                    .collect(Collectors.toList());
         } catch (ExecutionException e) {
-            log.error("Error querying offsets for consumer group {} on cluster {}.",  group, sourceClusterAlias, e);
+            log.error("Error querying offsets for consumer group {} on cluster {}.", group, sourceClusterAlias, e);
             return List.of();
         }
     }
@@ -197,9 +197,9 @@ public class MirrorCheckpointTask extends SourceTask {
     // for testing
     Map<TopicPartition, Checkpoint> checkpointsForGroup(Map<TopicPartition, OffsetAndMetadata> upstreamGroupOffsets, String group) {
         return upstreamGroupOffsets.entrySet().stream()
-            .filter(x -> shouldCheckpointTopic(x.getKey().topic())) // Only perform relevant checkpoints filtered by "topic filter"
+                .filter(x -> shouldCheckpointTopic(x.getKey().topic())) // Only perform relevant checkpoints filtered by "topic filter"
             .map(x -> checkpoint(group, x.getKey(), x.getValue()))
-            .flatMap(Optional::stream) // do not emit checkpoints for partitions that don't have offset-syncs
+                .flatMap(Optional::stream) // do not emit checkpoints for partitions that don't have offset-syncs
             .filter(x -> x.downstreamOffset() >= 0)  // ignore offsets we cannot translate accurately
             .filter(this::checkpointIsMoreRecent) // do not emit checkpoints for partitions that have a later checkpoint
             .collect(Collectors.toMap(Checkpoint::topicPartition, Function.identity()));
@@ -254,7 +254,7 @@ public class MirrorCheckpointTask extends SourceTask {
                 offsetSyncStore.translateDownstream(group, topicPartition, upstreamOffset);
             if (downstreamOffset.isPresent()) {
                 return Optional.of(new Checkpoint(group, renameTopicPartition(topicPartition),
-                    upstreamOffset, downstreamOffset.getAsLong(), offsetAndMetadata.metadata()));
+                        upstreamOffset, downstreamOffset.getAsLong(), offsetAndMetadata.metadata()));
             }
         }
         return Optional.empty();
@@ -262,22 +262,22 @@ public class MirrorCheckpointTask extends SourceTask {
 
     SourceRecord checkpointRecord(Checkpoint checkpoint, long timestamp) {
         return new SourceRecord(
-            checkpoint.connectPartition(), MirrorUtils.wrapOffset(0),
-            checkpointsTopic, 0,
-            Schema.BYTES_SCHEMA, checkpoint.recordKey(),
-            Schema.BYTES_SCHEMA, checkpoint.recordValue(),
-            timestamp);
+                checkpoint.connectPartition(), MirrorUtils.wrapOffset(0),
+                checkpointsTopic, 0,
+                Schema.BYTES_SCHEMA, checkpoint.recordKey(),
+                Schema.BYTES_SCHEMA, checkpoint.recordValue(),
+                timestamp);
     }
 
     TopicPartition renameTopicPartition(TopicPartition upstreamTopicPartition) {
         if (targetClusterAlias.equals(replicationPolicy.topicSource(upstreamTopicPartition.topic()))) {
             // this topic came from the target cluster, so we rename like us-west.topic1 -> topic1
             return new TopicPartition(replicationPolicy.originalTopic(upstreamTopicPartition.topic()),
-                upstreamTopicPartition.partition());
+                    upstreamTopicPartition.partition());
         } else {
             // rename like topic1 -> us-west.topic1
             return new TopicPartition(replicationPolicy.formatRemoteTopic(sourceClusterAlias,
-                upstreamTopicPartition.topic()), upstreamTopicPartition.partition());
+                    upstreamTopicPartition.topic()), upstreamTopicPartition.partition());
         }
     }
 

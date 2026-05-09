@@ -289,8 +289,8 @@ public final class KafkaEventQueue implements EventQueue {
                         }
                     } catch (InterruptedException e) {
                         log.warn(
-                                "Interrupted while waiting for a {} event. Shutting down event queue",
-                                (awaitNs == Long.MAX_VALUE) ? "new" : "deferred"
+                                 "Interrupted while waiting for a {} event. Shutting down event queue",
+                                 (awaitNs == Long.MAX_VALUE) ? "new" : "deferred"
                         );
                         interrupted = true;
                     } finally {

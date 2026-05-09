@@ -44,7 +44,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
 
 public class MeteredSessionStoreWithHeaders<K, AGG>
     extends MeteredSessionStore<K, AggregationWithHeaders<AGG>>
-    implements SessionStoreWithHeaders<K, AGG> {
+        implements SessionStoreWithHeaders<K, AGG> {
 
     MeteredSessionStoreWithHeaders(
         final SessionStore<Bytes, byte[]> inner,
@@ -59,8 +59,8 @@ public class MeteredSessionStoreWithHeaders<K, AGG>
     @SuppressWarnings("unchecked")
     @Override
     protected Serde<AggregationWithHeaders<AGG>> prepareValueSerdeForStore(
-            final Serde<AggregationWithHeaders<AGG>> valueSerde,
-            final SerdeGetter getter
+        final Serde<AggregationWithHeaders<AGG>> valueSerde,
+        final SerdeGetter getter
     ) {
         if (valueSerde == null) {
             return new AggregationWithHeadersSerde<>((Serde<AGG>) getter.valueSerde());

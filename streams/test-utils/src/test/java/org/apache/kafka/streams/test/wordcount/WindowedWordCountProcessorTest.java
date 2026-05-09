@@ -162,7 +162,7 @@ public class WindowedWordCountProcessorTest {
     }
 
     private InternalProcessorContext<?, ?> mockInternalProcessorContext(final MockProcessorContext<String, String> context,
-                                                                  final File stateDir) {
+                                                                        final File stateDir) {
         final InternalProcessorContext<?, ?> internalProcessorContext = mock(InternalProcessorContext.class);
         when(internalProcessorContext.taskId()).thenReturn(context.taskId());
         when(internalProcessorContext.metrics()).thenReturn((StreamsMetricsImpl) context.metrics());

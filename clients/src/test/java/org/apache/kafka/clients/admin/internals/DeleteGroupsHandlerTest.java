@@ -84,7 +84,7 @@ public abstract class DeleteGroupsHandlerTest {
 
     private DeleteGroupsResponse buildResponse(Errors error) {
         return new DeleteGroupsResponse(
-                new DeleteGroupsResponseData()
+            new DeleteGroupsResponseData()
                     .setResults(new DeletableGroupResultCollection(singletonList(
                             new DeletableGroupResult()
                                 .setErrorCode(error.code())

@@ -822,8 +822,7 @@ public class GroupCoordinatorRecordHelpers {
                 .setTopicId(topicId)
                 .setPartitions(partitionList)
                 .setAssignmentEpochs(epochList));
-            }
-        );
+        });
         return topics;
     }
 

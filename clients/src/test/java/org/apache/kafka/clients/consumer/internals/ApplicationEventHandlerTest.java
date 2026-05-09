@@ -59,15 +59,15 @@ public class ApplicationEventHandlerTest {
         try (Metrics metrics = new Metrics();
              AsyncConsumerMetrics asyncConsumerMetrics = spy(new AsyncConsumerMetrics(metrics, groupName));
              ApplicationEventHandler applicationEventHandler = new ApplicationEventHandler(
-                     new LogContext(),
-                     time,
-                     initializationTimeoutMs,
-                     applicationEventsQueue,
-                     applicationEventReaper,
-                     () -> applicationEventProcessor,
-                     () -> networkClientDelegate,
-                     () -> requestManagers,
-                     asyncConsumerMetrics
+                 new LogContext(),
+                 time,
+                 initializationTimeoutMs,
+                 applicationEventsQueue,
+                 applicationEventReaper,
+                 () -> applicationEventProcessor,
+                 () -> networkClientDelegate,
+                 () -> requestManagers,
+                 asyncConsumerMetrics
              )) {
             // add event
             applicationEventHandler.add(new AsyncPollEvent(time.milliseconds() + 10, time.milliseconds()));

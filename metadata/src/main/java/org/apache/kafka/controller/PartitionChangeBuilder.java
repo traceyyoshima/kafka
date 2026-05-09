@@ -286,12 +286,12 @@ public class PartitionChangeBuilder {
     private boolean canElectLastKnownLeader() {
         if (!eligibleLeaderReplicasEnabled || !useLastKnownLeaderInBalancedRecovery) {
             log.trace("Try to elect last known leader for {}-{} but elrEnabled={}, useLastKnownLeaderInBalancedRecovery={}",
-                    topicId, partitionId, eligibleLeaderReplicasEnabled, useLastKnownLeaderInBalancedRecovery);
+                topicId, partitionId, eligibleLeaderReplicasEnabled, useLastKnownLeaderInBalancedRecovery);
             return false;
         }
         if (!targetElr.isEmpty() || !targetIsr.isEmpty()) {
             log.trace("Try to elect last known leader for {}-{} but ELR/ISR is not empty. ISR={}, ELR={}",
-                    topicId, partitionId, targetIsr, targetElr);
+                topicId, partitionId, targetIsr, targetElr);
             return false;
         }
 
@@ -304,12 +304,12 @@ public class PartitionChangeBuilder {
         //    refer to the lastKnownElr.
         if (partition.lastKnownElr.length != 1) {
             log.trace("Try to elect last known leader for {}-{} but lastKnownElr does not only have 1 member. lastKnownElr={}",
-                    topicId, partitionId, Arrays.toString(partition.lastKnownElr));
+                topicId, partitionId, Arrays.toString(partition.lastKnownElr));
             return false;
         }
         if (!isAcceptableLeader.test(partition.lastKnownElr[0])) {
             log.trace("Try to elect last known leader for {}-{} but last known leader is not alive. last known leader={}",
-                    topicId, partitionId, partition.lastKnownElr[0]);
+                topicId, partitionId, partition.lastKnownElr[0]);
             return false;
         }
         return true;

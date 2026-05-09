@@ -158,15 +158,15 @@ public class ConnectStandalone extends AbstractConnectCli<StandaloneHerder, Stan
 
     @Override
     protected StandaloneHerder createHerder(StandaloneConfig config, String workerId, Plugins plugins,
-                                  ConnectorClientConfigOverridePolicy connectorClientConfigOverridePolicy,
-                                  RestServer restServer, RestClient restClient) {
+                                            ConnectorClientConfigOverridePolicy connectorClientConfigOverridePolicy,
+                                            RestServer restServer, RestClient restClient) {
 
         OffsetBackingStore offsetBackingStore = new FileOffsetBackingStore(plugins.newInternalConverter(
-                true, JsonConverter.class.getName(), Map.of(JsonConverterConfig.SCHEMAS_ENABLE_CONFIG, "false")));
+            true, JsonConverter.class.getName(), Map.of(JsonConverterConfig.SCHEMAS_ENABLE_CONFIG, "false")));
         offsetBackingStore.configure(config);
 
         Worker worker = new Worker(workerId, Time.SYSTEM, plugins, config, offsetBackingStore,
-                connectorClientConfigOverridePolicy);
+            connectorClientConfigOverridePolicy);
 
         return new StandaloneHerder(worker, config.kafkaClusterId(), connectorClientConfigOverridePolicy);
     }

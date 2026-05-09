@@ -126,12 +126,12 @@ public class SessionsStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.sessionStoreWithHeadersBuilder(
-                    Stores.persistentSessionStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.sessionStoreWithHeadersBuilder(
+                Stores.persistentSessionStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new SessionStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -172,12 +172,12 @@ public class SessionsStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.sessionStoreWithHeadersBuilder(
-                    Stores.persistentSessionStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.sessionStoreWithHeadersBuilder(
+                Stores.persistentSessionStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new SessionStoreWithHeadersContentCheckerProcessor(false), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -207,12 +207,12 @@ public class SessionsStoreWithHeadersTest {
         StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.sessionStoreWithHeadersBuilder(
-                    Stores.persistentSessionStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.sessionStoreWithHeadersBuilder(
+                Stores.persistentSessionStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new SessionStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -248,12 +248,12 @@ public class SessionsStoreWithHeadersTest {
         streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.sessionStoreWithHeadersBuilder(
-                    Stores.persistentSessionStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.sessionStoreWithHeadersBuilder(
+                Stores.persistentSessionStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new SessionStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -282,12 +282,12 @@ public class SessionsStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.sessionStoreBuilder(
-                    Stores.persistentSessionStore(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.sessionStoreBuilder(
+                Stores.persistentSessionStore(STORE_NAME, Duration.ofMillis(RETENTION_MS)),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(SessionStoreContentCheckerProcessor::new, STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));

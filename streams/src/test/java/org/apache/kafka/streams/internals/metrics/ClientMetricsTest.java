@@ -179,10 +179,10 @@ public class ClientMetricsTest {
         metricAdder.run();
 
         verify(streamsMetrics).addClientLevelMutableMetric(
-                eq(name),
-                eq(description),
-                eq(RecordingLevel.INFO),
-                eq(valueProvider)
+            eq(name),
+            eq(description),
+            eq(RecordingLevel.INFO),
+            eq(valueProvider)
         );
     }
 
@@ -194,10 +194,10 @@ public class ClientMetricsTest {
         metricAdder.run();
 
         verify(streamsMetrics).addClientLevelImmutableMetric(
-                eq(name),
-                eq(description),
-                eq(RecordingLevel.INFO),
-                eq(value)
+            eq(name),
+            eq(description),
+            eq(RecordingLevel.INFO),
+            eq(value)
         );
     }
 
@@ -209,10 +209,10 @@ public class ClientMetricsTest {
         metricAdder.run();
 
         verify(streamsMetrics).addClientLevelImmutableMetric(
-                eq(name),
-                eq(description),
-                eq(RecordingLevel.INFO),
-                eq(value)
+            eq(name),
+            eq(description),
+            eq(RecordingLevel.INFO),
+            eq(value)
         );
     }
 }

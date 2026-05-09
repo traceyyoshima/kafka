@@ -131,7 +131,7 @@ public class ScramSaslServer implements SaslServer {
                             throw new SaslAuthenticationException("Authentication failed: Client requested an authorization id that is different from username");
 
                         if (scramCredential.iterations() < mechanism.minIterations())
-                            throw new SaslException("Iterations " + scramCredential.iterations() +  " is less than the minimum " + mechanism.minIterations() + " for " + mechanism);
+                            throw new SaslException("Iterations " + scramCredential.iterations() + " is less than the minimum " + mechanism.minIterations() + " for " + mechanism);
                         this.serverFirstMessage = new ServerFirstMessage(clientFirstMessage.nonce(),
                                 serverNonce,
                                 scramCredential.salt(),
@@ -246,7 +246,7 @@ public class ScramSaslServer implements SaslServer {
 
         @Override
         public SaslServer createSaslServer(String mechanism, String protocol, String serverName, Map<String, ?> props, CallbackHandler cbh)
-            throws SaslException {
+                throws SaslException {
 
             if (!ScramMechanism.isScram(mechanism)) {
                 throw new SaslException(String.format("Requested mechanism '%s' is not supported. Supported mechanisms are '%s'.",

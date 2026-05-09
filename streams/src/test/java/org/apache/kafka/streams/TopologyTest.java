@@ -1172,13 +1172,13 @@ public class TopologyTest {
         final TopologyDescription describe = builder.build().describe();
 
         assertEquals(
-                "Topologies:\n" +
+            "Topologies:\n" +
                 "   Sub-topology: 0\n" +
                 "    Source: KSTREAM-SOURCE-0000000000 (topics: [input-topic])\n" +
                 "      --> KSTREAM-SINK-0000000001\n" +
                 "    Sink: KSTREAM-SINK-0000000001 (extractor class: anonymous topic name extractor. topic is [recordContext.topic()]-[key])\n" +
                 "      <-- KSTREAM-SOURCE-0000000000\n\n",
-                describe.toString());
+            describe.toString());
     }
 
     @Test
@@ -2391,14 +2391,14 @@ public class TopologyTest {
         final KeyValueStoreBuilder<?, ?> storeBuilder = mock(KeyValueStoreBuilder.class);
         when(storeBuilder.name()).thenReturn(storeName);
         topology.addReadOnlyStateStore(
-                storeBuilder,
-                sourceName,
-                null,
-                null,
-                null,
-                topicName,
-                processorName,
-                new MockProcessorSupplier<>());
+            storeBuilder,
+            sourceName,
+            null,
+            null,
+            null,
+            topicName,
+            processorName,
+            new MockProcessorSupplier<>());
 
         final TopologyDescription.Source expectedSource = new InternalTopologyBuilder.Source(sourceName, Sets.newSet(topicName), null);
         final TopologyDescription.Processor expectedProcessor = new InternalTopologyBuilder.Processor(processorName, Sets.newSet(storeName));
@@ -2425,14 +2425,14 @@ public class TopologyTest {
         final KeyValueStoreBuilder<?, ?> storeBuilder = mock(KeyValueStoreBuilder.class);
         when(storeBuilder.name()).thenReturn(storeName);
         topology.addReadOnlyStateStore(
-                storeBuilder,
-                sourceName,
-                null,
-                null,
-                null,
-                topicName,
-                processorName,
-                new MockProcessorSupplier<>());
+            storeBuilder,
+            sourceName,
+            null,
+            null,
+            null,
+            topicName,
+            processorName,
+            new MockProcessorSupplier<>());
 
         final StoreFactory stateStoreFactory = topology.internalTopologyBuilder.stateStores().get(storeName);
         assertThat(stateStoreFactory.loggingEnabled(), equalTo(false));

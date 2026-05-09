@@ -102,8 +102,8 @@ public class SnapshotEmitterTest {
 
         @Override
         public Optional<SnapshotWriter<ApiMessageAndVersion>> createSnapshot(
-            OffsetAndEpoch snapshotId,
-            long lastContainedLogTime
+                OffsetAndEpoch snapshotId,
+                long lastContainedLogTime
         ) {
             if (writers.containsKey(snapshotId)) {
                 return Optional.empty();

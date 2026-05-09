@@ -81,9 +81,9 @@ public class RecordTestUtils {
     }
 
     public static <T extends ApiMessage> Optional<T> recordAtIndexAs(
-            Class<T> recordClazz,
-            List<ApiMessageAndVersion> recordsAndVersions,
-            int recordIndex
+        Class<T> recordClazz,
+        List<ApiMessageAndVersion> recordsAndVersions,
+        int recordIndex
     ) {
         if (recordIndex > recordsAndVersions.size() - 1) {
             return Optional.empty();

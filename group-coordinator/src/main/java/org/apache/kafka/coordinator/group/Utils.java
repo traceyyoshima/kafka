@@ -315,11 +315,11 @@ public class Utils {
      * @return a map of topic id and partition set.
      */
     public static Map<Uuid, Set<Integer>> assignmentFromShareGroupTopicPartitions(
-            List<ShareGroupCurrentMemberAssignmentValue.TopicPartitions> topicPartitionsList
+        List<ShareGroupCurrentMemberAssignmentValue.TopicPartitions> topicPartitionsList
     ) {
         return topicPartitionsList.stream().collect(Collectors.toMap(
-                ShareGroupCurrentMemberAssignmentValue.TopicPartitions::topicId,
-                topicPartitions -> Collections.unmodifiableSet(new HashSet<>(topicPartitions.partitions()))));
+            ShareGroupCurrentMemberAssignmentValue.TopicPartitions::topicId,
+            topicPartitions -> Collections.unmodifiableSet(new HashSet<>(topicPartitions.partitions()))));
     }
 
     /**

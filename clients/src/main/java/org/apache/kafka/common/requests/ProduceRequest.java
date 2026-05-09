@@ -149,7 +149,7 @@ public class ProduceRequest extends AbstractRequest {
         // Use the same format as `Struct.toString()`
         StringBuilder bld = new StringBuilder();
         bld.append("{acks=").append(acks)
-                .append(",timeout=").append(timeout);
+            .append(",timeout=").append(timeout);
 
         if (verbose)
             bld.append(",partitionSizes=").append(Utils.mkString(partitionSizes(), "[", "]", "=", ","));

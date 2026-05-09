@@ -317,11 +317,11 @@ public class ApiVersionsResponse extends AbstractResponse {
         short minVersion = (short) Math.max(thisVersion.minVersion(), other.minVersion());
         short maxVersion = (short) Math.min(thisVersion.maxVersion(), other.maxVersion());
         return minVersion > maxVersion
-                ? Optional.empty()
-                : Optional.of(new ApiVersion()
-                    .setApiKey(thisVersion.apiKey())
-                    .setMinVersion(minVersion)
-                    .setMaxVersion(maxVersion));
+               ? Optional.empty()
+               : Optional.of(new ApiVersion()
+                   .setApiKey(thisVersion.apiKey())
+                   .setMinVersion(minVersion)
+                   .setMaxVersion(maxVersion));
     }
 
     public static ApiVersion toApiVersion(ApiKeys apiKey) {

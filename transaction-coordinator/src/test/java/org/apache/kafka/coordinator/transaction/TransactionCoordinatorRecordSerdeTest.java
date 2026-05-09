@@ -122,7 +122,7 @@ public class TransactionCoordinatorRecordSerdeTest {
 
         Deserializer.UnknownRecordTypeException ex =
                 assertThrows(Deserializer.UnknownRecordTypeException.class,
-                        () -> serde.deserialize(keyBuffer, valueBuffer));
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertEquals((short) 255, ex.unknownType());
     }
 
@@ -135,7 +135,7 @@ public class TransactionCoordinatorRecordSerdeTest {
 
         RuntimeException ex =
                 assertThrows(RuntimeException.class,
-                        () -> serde.deserialize(keyBuffer, valueBuffer));
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertEquals("Could not read version from key's buffer.", ex.getMessage());
     }
 
@@ -150,7 +150,7 @@ public class TransactionCoordinatorRecordSerdeTest {
 
         RuntimeException ex =
                 assertThrows(RuntimeException.class,
-                        () -> serde.deserialize(keyBuffer, valueBuffer));
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertEquals("Could not read version from value's buffer.", ex.getMessage());
     }
 
@@ -168,9 +168,9 @@ public class TransactionCoordinatorRecordSerdeTest {
 
         RuntimeException ex =
                 assertThrows(RuntimeException.class,
-                        () -> serde.deserialize(keyBuffer, valueBuffer));
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertTrue(ex.getMessage().startsWith("Could not read record with version 0 from key's buffer due to"),
-                ex.getMessage());
+            ex.getMessage());
     }
 
     @Test
@@ -186,9 +186,9 @@ public class TransactionCoordinatorRecordSerdeTest {
 
         RuntimeException ex =
                 assertThrows(RuntimeException.class,
-                        () -> serde.deserialize(keyBuffer, valueBuffer));
+                    () -> serde.deserialize(keyBuffer, valueBuffer));
         assertTrue(ex.getMessage().startsWith("Could not read record with version 0 from value's buffer due to"),
-                ex.getMessage());
+            ex.getMessage());
     }
 
     @Test

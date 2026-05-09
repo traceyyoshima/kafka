@@ -30,7 +30,7 @@ import org.apache.kafka.streams.state.SessionStore;
 
 public class RocksDBSessionStore
     extends WrappedStateStore<SegmentedBytesStore, Object, Object>
-    implements SessionStore<Bytes, byte[]> {
+        implements SessionStore<Bytes, byte[]> {
 
     private StateStoreContext stateStoreContext;
 

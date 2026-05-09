@@ -1047,8 +1047,8 @@ public interface Admin extends AutoCloseable {
      * @return The DeleteStreamsGroupOffsetsResult.
      */
     DeleteStreamsGroupOffsetsResult deleteStreamsGroupOffsets(String groupId,
-                                                                Set<TopicPartition> partitions,
-                                                                DeleteStreamsGroupOffsetsOptions options);
+                                                              Set<TopicPartition> partitions,
+                                                              DeleteStreamsGroupOffsetsOptions options);
 
     /**
      * Delete committed offsets for a set of partitions in a streams group with the default
@@ -1514,6 +1514,7 @@ public interface Admin extends AutoCloseable {
      */
     AlterUserScramCredentialsResult alterUserScramCredentials(List<UserScramCredentialAlteration> alterations,
                                                               AlterUserScramCredentialsOptions options);
+
     /**
      * Describes finalized as well as supported features.
      * <p>

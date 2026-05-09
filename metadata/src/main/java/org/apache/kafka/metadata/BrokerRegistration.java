@@ -414,9 +414,9 @@ public class BrokerRegistration {
         List<Uuid> newCordonedDirectories = cordonedDirectoriesChange.orElse(cordonedDirectories);
 
         if (newFenced == fenced
-                && newInControlledShutdownChange == inControlledShutdown
-                && newDirectories.equals(directories)
-                && newCordonedDirectories.equals(cordonedDirectories))
+            && newInControlledShutdownChange == inControlledShutdown
+            && newDirectories.equals(directories)
+            && newCordonedDirectories.equals(cordonedDirectories))
             return this;
 
         return new BrokerRegistration(

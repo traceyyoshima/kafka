@@ -51,7 +51,7 @@ public class BootstrapMetadataTest {
             new ApiMessageAndVersion(new FeatureLevelRecord().
                 setName(FEATURE_NAME).
                 setFeatureLevel((short) 7), (short) 0)),
-                    IBP_3_3_IV3.featureLevel(), "foo"),
+            IBP_3_3_IV3.featureLevel(), "foo"),
             BootstrapMetadata.fromVersion(IBP_3_3_IV3, "foo"));
     }
 
@@ -122,7 +122,7 @@ public class BootstrapMetadataTest {
     }
 
     static final List<ApiMessageAndVersion> RECORDS_WITH_OLD_METADATA_VERSION = List.of(
-            new ApiMessageAndVersion(new FeatureLevelRecord().
+        new ApiMessageAndVersion(new FeatureLevelRecord().
                 setName(FEATURE_NAME).
                 setFeatureLevel(MetadataVersionTestUtils.IBP_3_0_IV1_FEATURE_LEVEL), (short) 0));
 
@@ -131,6 +131,6 @@ public class BootstrapMetadataTest {
         BootstrapMetadata bootstrapMetadata = BootstrapMetadata.fromRecords(RECORDS_WITH_OLD_METADATA_VERSION, "quux");
         assertEquals("No MetadataVersion with feature level 1. Valid feature levels are from " + MetadataVersion.MINIMUM_VERSION.featureLevel()
             + " to " + MetadataVersion.latestTesting().featureLevel() + ".",
-                assertThrows(RuntimeException.class, bootstrapMetadata::metadataVersion).getMessage());
+            assertThrows(RuntimeException.class, bootstrapMetadata::metadataVersion).getMessage());
     }
 }

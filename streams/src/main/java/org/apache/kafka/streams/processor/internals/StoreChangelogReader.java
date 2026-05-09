@@ -748,9 +748,9 @@ public class StoreChangelogReader implements ChangelogReader {
                 .topicPartitions(new ArrayList<>(partitions));
             final Map<TopicPartition, Long> committedOffsets =
                 adminClient.listConsumerGroupOffsets(
-                        Collections.singletonMap(groupId, spec),
-                        options
-                    )
+                    Collections.singletonMap(groupId, spec),
+                    options
+                )
                     .partitionsToOffsetAndMetadata(groupId).get().entrySet()
                     .stream()
                     .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() == null ? 0L : e.getValue().offset()));
@@ -1029,7 +1029,7 @@ public class StoreChangelogReader implements ChangelogReader {
                 final long recordsToRestore = Math.max(changelogMetadata.restoreEndOffset - startOffset, 0L);
                 task.recordRestoration(time, recordsToRestore, true);
                 changelogMetadata.restoreStartTimeNs = time.nanoseconds();
-            }  else if (changelogMetadata.stateManager.taskType() == TaskType.STANDBY) {
+            } else if (changelogMetadata.stateManager.taskType() == TaskType.STANDBY) {
                 try {
                     standbyUpdateListener.onUpdateStart(partition, storeName, startOffset);
                 } catch (final Exception e) {

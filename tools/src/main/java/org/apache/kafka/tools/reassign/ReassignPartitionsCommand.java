@@ -109,14 +109,14 @@ public class ReassignPartitionsCommand {
     static final int EARLIEST_TOPICS_JSON_VERSION = 1;
 
     static final List<String> BROKER_LEVEL_THROTTLES = List.of(
-            QuotaConfig.LEADER_REPLICATION_THROTTLED_RATE_CONFIG,
-            QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_RATE_CONFIG,
-            QuotaConfig.REPLICA_ALTER_LOG_DIRS_IO_MAX_BYTES_PER_SECOND_CONFIG
+        QuotaConfig.LEADER_REPLICATION_THROTTLED_RATE_CONFIG,
+        QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_RATE_CONFIG,
+        QuotaConfig.REPLICA_ALTER_LOG_DIRS_IO_MAX_BYTES_PER_SECOND_CONFIG
     );
 
     private static final List<String> TOPIC_LEVEL_THROTTLES = List.of(
-            QuotaConfig.LEADER_REPLICATION_THROTTLED_REPLICAS_CONFIG,
-            QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_REPLICAS_CONFIG
+        QuotaConfig.LEADER_REPLICATION_THROTTLED_REPLICAS_CONFIG,
+        QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_REPLICAS_CONFIG
     );
 
     private static final String CANNOT_EXECUTE_BECAUSE_OF_EXISTING_MESSAGE = "Cannot execute because " +
@@ -596,8 +596,8 @@ public class ReassignPartitionsCommand {
             int partitionNum = assignment.size();
             // generate topic assignments
             TopicAssignment topicAssignment = REPLICA_PLACER.place(
-                    new PlacementSpec(0, partitionNum, (short) replicas.size()),
-                    new ClusterDescriber() {
+                new PlacementSpec(0, partitionNum, (short) replicas.size()),
+                new ClusterDescriber() {
                         @Override
                         public Iterator<UsableBroker> usableBrokers() {
                             return usableBrokers.iterator();
@@ -689,11 +689,11 @@ public class ReassignPartitionsCommand {
         Map<TopicPartition, List<Node>> replicaAssignmentForPartitions
     ) {
         return replicaAssignmentForPartitions.entrySet()
-                .stream()
-                .collect(Collectors.toMap(
-                    Entry::getKey,
-                    e -> e.getValue().stream().map(Node::id).collect(Collectors.toList())
-                ));
+            .stream()
+            .collect(Collectors.toMap(
+                Entry::getKey,
+                e -> e.getValue().stream().map(Node::id).collect(Collectors.toList())
+            ));
     }
 
     /**
@@ -858,11 +858,11 @@ public class ReassignPartitionsCommand {
             } else if (time.milliseconds() >= startTimeMs + timeoutMs) {
                 throw new TerseException(String.format(
                     "Timed out before log directory move%s could be started for: %s",
-                        pendingReplicas.size() == 1 ? "" : "s",
-                        pendingReplicas.keySet().stream()
-                            .sorted(ReassignPartitionsCommand::compareTopicPartitionReplicas)
-                            .map(Object::toString)
-                            .collect(Collectors.joining(","))));
+                    pendingReplicas.size() == 1 ? "" : "s",
+                    pendingReplicas.keySet().stream()
+                        .sorted(ReassignPartitionsCommand::compareTopicPartitionReplicas)
+                        .map(Object::toString)
+                        .collect(Collectors.joining(","))));
             } else {
                 // If a replica has been moved to a new host, and we also specified a particular
                 // log directory, we will have to keep retrying the alterReplicaLogDirs
@@ -1561,12 +1561,12 @@ public class ReassignPartitionsCommand {
         }
 
         return adminClient.describeReplicaLogDirs(availableReplicas).all().get()
-                .entrySet()
-                .stream()
-                .filter(e -> e.getValue().getCurrentReplicaLogDir() != null)
-                .collect(Collectors.toMap(
-                    Entry::getKey,
-                    e -> e.getValue().getCurrentReplicaLogDir())
+            .entrySet()
+            .stream()
+            .filter(e -> e.getValue().getCurrentReplicaLogDir() != null)
+            .collect(Collectors.toMap(
+                Entry::getKey,
+                e -> e.getValue().getCurrentReplicaLogDir())
                 );
     }
 
@@ -1575,16 +1575,15 @@ public class ReassignPartitionsCommand {
      */
     private static List<TopicPartitionReplica> available(Map<TopicPartition, List<Node>> current) {
         return current.entrySet()
+            .stream()
+            .flatMap(entry -> entry.getValue()
                 .stream()
-                .flatMap(entry -> entry.getValue()
-                    .stream()
-                    .filter(node -> !node.isEmpty())
-                    .map(node -> new TopicPartitionReplica(
-                        entry.getKey().topic(),
-                        entry.getKey().partition(),
-                        node.id()
-                    ))
-                )
-                .toList();
+                .filter(node -> !node.isEmpty())
+                .map(node -> new TopicPartitionReplica(
+                    entry.getKey().topic(),
+                    entry.getKey().partition(),
+                    node.id()
+                )))
+            .toList();
     }
 }

@@ -171,9 +171,9 @@ public class JoinStoreIntegrationTest {
             latch.await();
 
             final Collection<ConfigResource> changelogTopics = Stream.of(
-                    "join-store-integration-test-changelog-cleanup-policy-join-store-this-join-store-changelog",
-                    "join-store-integration-test-changelog-cleanup-policy-join-store-other-join-store-changelog"
-                )
+                "join-store-integration-test-changelog-cleanup-policy-join-store-this-join-store-changelog",
+                "join-store-integration-test-changelog-cleanup-policy-join-store-other-join-store-changelog"
+            )
                 .map(name -> new ConfigResource(Type.TOPIC, name))
                 .collect(Collectors.toList());
 

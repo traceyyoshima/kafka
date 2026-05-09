@@ -241,7 +241,7 @@ class WorkerSourceTask extends AbstractWorkerSourceTask {
             log.info("{} Committing offsets for {} acknowledged messages", this, offsetsToCommit.numCommittableMessages());
             if (offsetsToCommit.hasPending()) {
                 log.debug("{} There are currently {} pending messages spread across {} source partitions whose offsets will not be committed. "
-                                + "The source partition with the most pending messages is {}, with {} pending messages",
+                          + "The source partition with the most pending messages is {}, with {} pending messages",
                         this,
                         offsetsToCommit.numUncommittableMessages(),
                         offsetsToCommit.numDeques(),
@@ -250,7 +250,7 @@ class WorkerSourceTask extends AbstractWorkerSourceTask {
                 );
             } else {
                 log.debug("{} There are currently no pending messages for this offset commit; "
-                                + "all messages dispatched to the task's producer since the last commit have been acknowledged",
+                          + "all messages dispatched to the task's producer since the last commit have been acknowledged",
                         this
                 );
             }

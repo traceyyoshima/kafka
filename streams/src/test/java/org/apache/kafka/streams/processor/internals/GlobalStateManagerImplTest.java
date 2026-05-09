@@ -184,11 +184,11 @@ public class GlobalStateManagerImplTest {
         stateManager.initialize();
         final Map<TopicPartition, Long> offsets = stateManager.changelogOffsets();
         assertEquals(mkMap(
-                mkEntry(t1, 1L),
-                mkEntry(t2, 0L),
-                mkEntry(t3, 0L),
-                mkEntry(t4, 0L),
-                mkEntry(t5, 0L)
+            mkEntry(t1, 1L),
+            mkEntry(t2, 0L),
+            mkEntry(t3, 0L),
+            mkEntry(t4, 0L),
+            mkEntry(t5, 0L)
         ), offsets);
     }
 
@@ -524,11 +524,11 @@ public class GlobalStateManagerImplTest {
 
         assertThat(readOffsetsCheckpoint(storeName1), equalTo(offsets));
         assertThat(stateManager.changelogOffsets(), equalTo(mkMap(
-                mkEntry(t1, 25_000L),
-                mkEntry(t2, 0L),
-                mkEntry(t3, 0L),
-                mkEntry(t4, 0L),
-                mkEntry(t5, 0L)
+            mkEntry(t1, 25_000L),
+            mkEntry(t2, 0L),
+            mkEntry(t3, 0L),
+            mkEntry(t4, 0L),
+            mkEntry(t5, 0L)
         )));
     }
 
@@ -586,11 +586,11 @@ public class GlobalStateManagerImplTest {
         final Map<TopicPartition, Long> checkpointMap = stateManager.changelogOffsets();
         // changelogOffsets() returns offsets for *all* stores
         assertThat(checkpointMap, equalTo(mkMap(
-                mkEntry(t1, 10L),
-                mkEntry(t2, 0L),
-                mkEntry(t3, 0L),
-                mkEntry(t4, 0L),
-                mkEntry(t5, 0L)
+            mkEntry(t1, 10L),
+            mkEntry(t2, 0L),
+            mkEntry(t3, 0L),
+            mkEntry(t4, 0L),
+            mkEntry(t5, 0L)
         )));
 
         assertThat(readOffsetsCheckpoint(storeName1), equalTo(mkMap(mkEntry(t1, 10L))));
@@ -609,7 +609,7 @@ public class GlobalStateManagerImplTest {
 
     private Map<TopicPartition, Long> readOffsetsCheckpoint(final String storeName) throws IOException {
         final OffsetCheckpoint offsetCheckpoint = new OffsetCheckpoint(new File(stateManager.baseDir(),
-                StateManagerUtil.CHECKPOINT_FILE_NAME + "_" + storeName));
+            StateManagerUtil.CHECKPOINT_FILE_NAME + "_" + storeName));
         return offsetCheckpoint.read();
     }
 

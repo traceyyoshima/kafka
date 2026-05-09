@@ -228,8 +228,7 @@ public class ProcessorTopologyTest {
         processorTopology.updateSourceTopics(mkMap(
             mkEntry(sourceNodeWithinSubtopology, Collections.singletonList(topicWithinSubtopology)),
             mkEntry(sourceNodeOutsideSubtopology, Collections.singletonList(topicOutsideSubtopology))
-            )
-        );
+        ));
 
         assertThat(processorTopology.source(topicOutsideSubtopology), is(nullValue()));
         assertThat(processorTopology.sources().size(), equalTo(1));
@@ -860,11 +859,11 @@ public class ProcessorTopologyTest {
         inputTopic.pipeInput("key3", "value3@3000");
         final TestOutputTopic<String, String> outputTopic = driver.createOutputTopic(OUTPUT_TOPIC_1, STRING_DESERIALIZER, STRING_DESERIALIZER);
         assertThat(outputTopic.readRecord(),
-                equalTo(new TestRecord<>("key1", "value1", null, 1000L)));
+            equalTo(new TestRecord<>("key1", "value1", null, 1000L)));
         assertThat(outputTopic.readRecord(),
-                equalTo(new TestRecord<>("key2", "value2", null, 2000L)));
+            equalTo(new TestRecord<>("key2", "value2", null, 2000L)));
         assertThat(outputTopic.readRecord(),
-                equalTo(new TestRecord<>("key3", "value3", null, 3000L)));
+            equalTo(new TestRecord<>("key3", "value3", null, 3000L)));
     }
 
 
@@ -1117,9 +1116,9 @@ public class ProcessorTopologyTest {
     // getting tested in other tests
     private Topology createSimpleTopologyWithDroppingPartitioner() {
         return topology
-                .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-                .addProcessor("processor", ForwardingProcessor::new, "source")
-                .addSink("sink", OUTPUT_TOPIC_1, new DroppingPartitioner(), "processor");
+            .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+            .addProcessor("processor", ForwardingProcessor::new, "source")
+            .addSink("sink", OUTPUT_TOPIC_1, new DroppingPartitioner(), "processor");
     }
 
     private Topology createStatefulTopology(final String storeName) {
@@ -1167,24 +1166,24 @@ public class ProcessorTopologyTest {
 
     private Topology createForwardToSourceTopology() {
         return topology.addSource("source-1", INPUT_TOPIC_1)
-                .addSink("sink-1", OUTPUT_TOPIC_1, "source-1")
-                .addSource("source-2", OUTPUT_TOPIC_1)
-                .addSink("sink-2", OUTPUT_TOPIC_2, "source-2");
+            .addSink("sink-1", OUTPUT_TOPIC_1, "source-1")
+            .addSource("source-2", OUTPUT_TOPIC_1)
+            .addSink("sink-2", OUTPUT_TOPIC_2, "source-2");
     }
 
     private Topology createSimpleMultiSourceTopology(final int partition) {
         return topology.addSource("source-1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-                .addProcessor("processor-1", ForwardingProcessor::new, "source-1")
-                .addSink("sink-1", OUTPUT_TOPIC_1, constantPartitioner(partition), "processor-1")
-                .addSource("source-2", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_2)
-                .addProcessor("processor-2", ForwardingProcessor::new, "source-2")
-                .addSink("sink-2", OUTPUT_TOPIC_2, constantPartitioner(partition), "processor-2");
+            .addProcessor("processor-1", ForwardingProcessor::new, "source-1")
+            .addSink("sink-1", OUTPUT_TOPIC_1, constantPartitioner(partition), "processor-1")
+            .addSource("source-2", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_2)
+            .addProcessor("processor-2", ForwardingProcessor::new, "source-2")
+            .addSink("sink-2", OUTPUT_TOPIC_2, constantPartitioner(partition), "processor-2");
     }
 
     private Topology createAddHeaderTopology() {
         return topology.addSource("source-1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-                .addProcessor("processor-1", AddHeaderProcessor::new, "source-1")
-                .addSink("sink-1", OUTPUT_TOPIC_1, "processor-1");
+            .addProcessor("processor-1", AddHeaderProcessor::new, "source-1")
+            .addSink("sink-1", OUTPUT_TOPIC_1, "processor-1");
     }
 
     /**

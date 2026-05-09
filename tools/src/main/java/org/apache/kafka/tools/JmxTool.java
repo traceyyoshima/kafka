@@ -144,7 +144,7 @@ public class JmxTool {
                 connected = true;
             } catch (Exception e) {
                 System.err.printf("Could not connect to JMX url: %s. Exception: %s.%n",
-                        options.jmxServiceURL(), e.getMessage());
+                    options.jmxServiceURL(), e.getMessage());
                 e.printStackTrace();
                 TimeUnit.MILLISECONDS.sleep(100);
             }
@@ -152,7 +152,7 @@ public class JmxTool {
 
         if (!connected) {
             throw new TerseException(String.format("Could not connect to JMX url %s after %d ms.",
-                    options.jmxServiceURL(), connectTimeoutMs));
+                options.jmxServiceURL(), connectTimeoutMs));
         }
         return serverConn;
     }
@@ -247,16 +247,16 @@ public class JmxTool {
         for (ObjectName objectName : objectNames) {
             MBeanInfo beanInfo = conn.getMBeanInfo(objectName);
             AttributeList attributes = conn.getAttributes(objectName,
-                    Arrays.stream(beanInfo.getAttributes()).map(MBeanFeatureInfo::getName).toArray(String[]::new));
+                Arrays.stream(beanInfo.getAttributes()).map(MBeanFeatureInfo::getName).toArray(String[]::new));
             for (Attribute attribute : attributes.asList()) {
                 if (attributesInclude.isPresent()) {
                     if (List.of(attributesInclude.get()).contains(attribute.getName())) {
                         result.put(String.format("%s:%s", objectName.toString(), attribute.getName()),
-                                attribute.getValue());
+                            attribute.getValue());
                     }
                 } else {
                     result.put(String.format("%s:%s", objectName.toString(), attribute.getName()),
-                            attribute.getValue());
+                        attribute.getValue());
                 }
             }
         }
@@ -369,7 +369,7 @@ public class JmxTool {
         public Optional<String[]> attributesInclude() {
             if (options.has(attributesOpt)) {
                 String[] attributes = Arrays.stream(options.valueOf(attributesOpt).split(","))
-                        .sequential().filter(s -> !s.isEmpty()).toArray(String[]::new);
+                    .sequential().filter(s -> !s.isEmpty()).toArray(String[]::new);
                 return Optional.of(attributes);
             } else {
                 return Optional.empty();
@@ -406,13 +406,13 @@ public class JmxTool {
         public List<ObjectName> queries() {
             if (options.has(objectNameOpt)) {
                 return options.valuesOf(objectNameOpt).stream()
-                        .map(s -> {
-                            try {
-                                return new ObjectName(s);
-                            } catch (MalformedObjectNameException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }).collect(Collectors.toList());
+                    .map(s -> {
+                        try {
+                            return new ObjectName(s);
+                        } catch (MalformedObjectNameException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).collect(Collectors.toList());
             } else {
                 List<ObjectName> listWithNull = new ArrayList<>();
                 listWithNull.add(null);

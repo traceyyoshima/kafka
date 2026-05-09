@@ -425,10 +425,10 @@ public class ExactlyOnceSourceIntegrationTest {
         consumerProps.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
         // consume all records from the source topic or fail, to ensure that they were correctly produced
         ConsumerRecords<byte[], byte[]> sourceRecords = connect.kafka().consumeAll(
-            CONSUME_RECORDS_TIMEOUT_MS,
-            Map.of(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"),
-            null,
-            topic
+                CONSUME_RECORDS_TIMEOUT_MS,
+                Map.of(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"),
+                null,
+                topic
         );
         assertTrue(sourceRecords.count() >= MINIMUM_MESSAGES,
                 "Not enough records produced by source connector. Expected at least: " + MINIMUM_MESSAGES + " + but got " + sourceRecords.count());
@@ -861,7 +861,7 @@ public class ExactlyOnceSourceIntegrationTest {
             // consume at least the expected number of records from the source topic or fail, to ensure that they were correctly produced
             int recordNum = connectorTargetedCluster
                     .consume(
-                        MINIMUM_MESSAGES,
+                            MINIMUM_MESSAGES,
                             TimeUnit.MINUTES.toMillis(1),
                             Map.of(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"),
                             "test-topic")
@@ -879,16 +879,16 @@ public class ExactlyOnceSourceIntegrationTest {
                     );
             List<Long> seqnos = parseAndAssertOffsetsForSingleTask(offsetRecords);
             seqnos.forEach(seqno ->
-                assertEquals(0, seqno % MINIMUM_MESSAGES,
-                        "Offset commits should occur on connector-defined poll boundaries, which happen every " + MINIMUM_MESSAGES + " records")
+                    assertEquals(0, seqno % MINIMUM_MESSAGES,
+                            "Offset commits should occur on connector-defined poll boundaries, which happen every " + MINIMUM_MESSAGES + " records")
             );
 
             // also consume from the cluster's global offsets topic
             offsetRecords = connect.kafka().consumeAll(TimeUnit.MINUTES.toMillis(1), globalOffsetsTopic);
             seqnos = parseAndAssertOffsetsForSingleTask(offsetRecords);
             seqnos.forEach(seqno ->
-                assertEquals(0, seqno % MINIMUM_MESSAGES,
-                        "Offset commits should occur on connector-defined poll boundaries, which happen every " + MINIMUM_MESSAGES + " records")
+                    assertEquals(0, seqno % MINIMUM_MESSAGES,
+                            "Offset commits should occur on connector-defined poll boundaries, which happen every " + MINIMUM_MESSAGES + " records")
             );
 
             // Shut down the whole cluster
@@ -986,7 +986,7 @@ public class ExactlyOnceSourceIntegrationTest {
         connect.configureConnector(CONNECTOR_NAME, props);
 
         connect.assertions().assertConnectorIsRunningAndTasksHaveFailed(
-            CONNECTOR_NAME, 1, "Task should have failed after trying to produce to its own offsets topic");
+                CONNECTOR_NAME, 1, "Task should have failed after trying to produce to its own offsets topic");
     }
 
     private ConfigInfo findConfigInfo(String property, ConfigInfos validationResult) {

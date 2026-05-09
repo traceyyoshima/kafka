@@ -126,13 +126,13 @@ public class TaskMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = TaskMetrics.totalCacheSizeBytesSensor(THREAD_ID, TASK_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                    () -> StreamsMetricsImpl.addValueMetricToSensor(
-                            expectedSensor,
-                            TASK_LEVEL_GROUP,
-                            tagMap,
-                            operation,
-                            totalBytesDescription
-                    )
+                () -> StreamsMetricsImpl.addValueMetricToSensor(
+                    expectedSensor,
+                    TASK_LEVEL_GROUP,
+                    tagMap,
+                    operation,
+                    totalBytesDescription
+                )
             );
             assertThat(sensor, is(expectedSensor));
         }

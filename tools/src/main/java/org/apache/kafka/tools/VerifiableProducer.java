@@ -244,9 +244,9 @@ public class VerifiableProducer implements AutoCloseable {
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, res.getString("bootstrapServer"));
 
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                "org.apache.kafka.common.serialization.StringSerializer");
+            "org.apache.kafka.common.serialization.StringSerializer");
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                "org.apache.kafka.common.serialization.StringSerializer");
+            "org.apache.kafka.common.serialization.StringSerializer");
         producerProps.put(ProducerConfig.ACKS_CONFIG, Integer.toString(res.getInt("acks")));
         // No producer retries
         producerProps.put(ProducerConfig.RETRIES_CONFIG, "0");
@@ -325,7 +325,7 @@ public class VerifiableProducer implements AutoCloseable {
         printJson(new ShutdownComplete());
     }
 
-    @JsonPropertyOrder({ "timestamp", "name" })
+    @JsonPropertyOrder({"timestamp", "name"})
     private abstract static class ProducerEvent {
         private final long timestamp = System.currentTimeMillis();
 

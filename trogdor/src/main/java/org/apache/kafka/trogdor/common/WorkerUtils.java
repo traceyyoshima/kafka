@@ -63,7 +63,7 @@ public final class WorkerUtils {
      * @throws KafkaException   A wrapped version of the exception.
      */
     public static void abort(Logger log, String what, Throwable exception,
-            KafkaFutureImpl<String> doneFuture) throws KafkaException {
+        KafkaFutureImpl<String> doneFuture) throws KafkaException {
         log.warn("{} caught an exception", what, exception);
         if (exception.getMessage() == null || exception.getMessage().isEmpty()) {
             doneFuture.complete(exception.getClass().getCanonicalName());
@@ -254,9 +254,9 @@ public final class WorkerUtils {
         Collection<String> topicsToVerify, Map<String, NewTopic> topicsInfo, int retryCount, long retryBackoffMs) throws Throwable {
 
         Map<String, TopicDescription> topicDescriptionMap = topicDescriptions(topicsToVerify, adminClient,
-                retryCount, retryBackoffMs);
+            retryCount, retryBackoffMs);
 
-        for (TopicDescription desc: topicDescriptionMap.values()) {
+        for (TopicDescription desc : topicDescriptionMap.values()) {
             // map will always contain the topic since all topics in 'topicsExists' are in given
             // 'topics' map
             int partitions = topicsInfo.get(desc.name()).numPartitions();
@@ -273,12 +273,12 @@ public final class WorkerUtils {
     private static Map<String, TopicDescription> topicDescriptions(Collection<String> topicsToVerify,
                                                                    Admin adminClient,
                                                                    int retryCount, long retryBackoffMs)
-            throws ExecutionException, InterruptedException {
+                                                                       throws ExecutionException, InterruptedException {
         UnknownTopicOrPartitionException lastException = null;
         for (int i = 0; i < retryCount; i++) {
             try {
                 DescribeTopicsResult topicsResult = adminClient.describeTopics(
-                        topicsToVerify, new DescribeTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
+                    topicsToVerify, new DescribeTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
                 return topicsResult.allTopicNames().get();
             } catch (ExecutionException exception) {
                 if (exception.getCause() instanceof UnknownTopicOrPartitionException) {
@@ -302,7 +302,7 @@ public final class WorkerUtils {
      */
     static Collection<TopicPartition> getMatchingTopicPartitions(
         Admin adminClient, String topicRegex, int startPartition, int endPartition)
-        throws Throwable {
+            throws Throwable {
         final Pattern topicNamePattern = Pattern.compile(topicRegex);
 
         // first get list of matching topics
@@ -310,7 +310,7 @@ public final class WorkerUtils {
         ListTopicsResult res = adminClient.listTopics(
             new ListTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
         Map<String, TopicListing> topicListingMap = res.namesToListings().get();
-        for (Map.Entry<String, TopicListing> topicListingEntry: topicListingMap.entrySet()) {
+        for (Map.Entry<String, TopicListing> topicListingEntry : topicListingMap.entrySet()) {
             if (!topicListingEntry.getValue().isInternal()
                 && topicNamePattern.matcher(topicListingEntry.getKey()).matches()) {
                 matchedTopics.add(topicListingEntry.getKey());
@@ -322,9 +322,9 @@ public final class WorkerUtils {
         DescribeTopicsResult topicsResult = adminClient.describeTopics(
             matchedTopics, new DescribeTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
         Map<String, TopicDescription> topicDescriptionMap = topicsResult.allTopicNames().get();
-        for (TopicDescription desc: topicDescriptionMap.values()) {
+        for (TopicDescription desc : topicDescriptionMap.values()) {
             List<TopicPartitionInfo> partitions = desc.partitions();
-            for (TopicPartitionInfo info: partitions) {
+            for (TopicPartitionInfo info : partitions) {
                 if ((info.partition() >= startPartition) && (info.partition() <= endPartition)) {
                     out.add(new TopicPartition(desc.name(), info.partition()));
                 }

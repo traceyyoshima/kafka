@@ -87,7 +87,7 @@ class MirrorCheckpointLegacyMetrics implements AutoCloseable {
 
     GroupMetrics group(TopicPartition topicPartition, String group) {
         return groupMetrics.computeIfAbsent(String.join("-", topicPartition.toString(), group),
-            x -> new GroupMetrics(topicPartition, group));
+                x -> new GroupMetrics(topicPartition, group));
     }
 
     void addReporter(MetricsReporter reporter) {

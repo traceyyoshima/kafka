@@ -124,11 +124,11 @@ public class ClientMetricsCommand {
             ConfigResource configResource = new ConfigResource(ConfigResource.Type.CLIENT_METRICS, entityName);
             AlterConfigsOptions alterOptions = new AlterConfigsOptions().timeoutMs(30000).validateOnly(false);
             Collection<AlterConfigOp> alterEntries = configsToBeSet.entrySet().stream()
-                    .map(entry -> new AlterConfigOp(new ConfigEntry(entry.getKey(), entry.getValue()),
-                            entry.getValue().isEmpty() ? AlterConfigOp.OpType.DELETE : AlterConfigOp.OpType.SET))
-                    .toList();
+                .map(entry -> new AlterConfigOp(new ConfigEntry(entry.getKey(), entry.getValue()),
+                    entry.getValue().isEmpty() ? AlterConfigOp.OpType.DELETE : AlterConfigOp.OpType.SET))
+                .toList();
             adminClient.incrementalAlterConfigs(Map.of(configResource, alterEntries), alterOptions).all()
-                    .get(30, TimeUnit.SECONDS);
+                .get(30, TimeUnit.SECONDS);
 
             System.out.println("Altered client metrics config for " + entityName + ".");
         }
@@ -140,9 +140,9 @@ public class ClientMetricsCommand {
             ConfigResource configResource = new ConfigResource(ConfigResource.Type.CLIENT_METRICS, entityName);
             AlterConfigsOptions alterOptions = new AlterConfigsOptions().timeoutMs(30000).validateOnly(false);
             Collection<AlterConfigOp> alterEntries = oldConfigs.stream()
-                    .map(entry -> new AlterConfigOp(entry, AlterConfigOp.OpType.DELETE)).toList();
+                .map(entry -> new AlterConfigOp(entry, AlterConfigOp.OpType.DELETE)).toList();
             adminClient.incrementalAlterConfigs(Map.of(configResource, alterEntries), alterOptions)
-                    .all().get(30, TimeUnit.SECONDS);
+                .all().get(30, TimeUnit.SECONDS);
 
             System.out.println("Deleted client metrics config for " + entityName + ".");
         }
@@ -153,8 +153,8 @@ public class ClientMetricsCommand {
             List<String> entities;
             if (entityNameOpt.isPresent()) {
                 if (adminClient.listConfigResources(Set.of(ConfigResource.Type.CLIENT_METRICS), new ListConfigResourcesOptions())
-                        .all().get(30, TimeUnit.SECONDS).stream()
-                        .noneMatch(resource -> resource.name().equals(entityNameOpt.get()))) {
+                    .all().get(30, TimeUnit.SECONDS).stream()
+                    .noneMatch(resource -> resource.name().equals(entityNameOpt.get()))) {
                     System.out.println("The client metric resource " + entityNameOpt.get() + " doesn't exist and doesn't have dynamic config.");
                     return;
                 }
@@ -186,7 +186,7 @@ public class ClientMetricsCommand {
         private Collection<ConfigEntry> getClientMetricsConfig(String entityName) throws Exception {
             ConfigResource configResource = new ConfigResource(ConfigResource.Type.CLIENT_METRICS, entityName);
             Map<ConfigResource, Config> result = adminClient.describeConfigs(Set.of(configResource))
-                    .all().get(30, TimeUnit.SECONDS);
+                .all().get(30, TimeUnit.SECONDS);
             return result.get(configResource).entries();
         }
 
@@ -382,7 +382,7 @@ public class ClientMetricsCommand {
                             Integer.parseInt(intervalStr);
                         } catch (NumberFormatException e) {
                             throw new IllegalArgumentException(
-                                    "Invalid interval value. Enter an integer, or leave empty to reset.");
+                                "Invalid interval value. Enter an integer, or leave empty to reset.");
                         }
                     }
 

@@ -221,8 +221,8 @@ public class CompositeReadOnlySessionStore<K, V> implements ReadOnlySessionStore
             store -> store.fetch(keyFrom, keyTo);
         return new DelegatingPeekingKeyValueIterator<>(storeName,
                                                        new CompositeKeyValueIterator<>(
-                                                               storeProvider.stores(storeName, queryableStoreType).iterator(),
-                                                               nextIteratorFunction));
+                                                           storeProvider.stores(storeName, queryableStoreType).iterator(),
+                                                           nextIteratorFunction));
     }
 
     @Override

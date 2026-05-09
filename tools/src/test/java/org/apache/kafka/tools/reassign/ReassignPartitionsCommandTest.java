@@ -91,16 +91,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(brokers = 5, disksPerBroker = 3, serverProperties = {
-    // shorter backoff to reduce test durations when no active partitions are eligible for fetching due to throttling
+        // shorter backoff to reduce test durations when no active partitions are eligible for fetching due to throttling
     @ClusterConfigProperty(key = REPLICA_FETCH_BACKOFF_MS_CONFIG, value = "100"),
-    // Don't move partition leaders automatically.
+        // Don't move partition leaders automatically.
     @ClusterConfigProperty(key = AUTO_LEADER_REBALANCE_ENABLE_CONFIG, value = "false"),
-    @ClusterConfigProperty(key = REPLICA_LAG_TIME_MAX_MS_CONFIG, value = "1000"),
-    @ClusterConfigProperty(id = 0, key = "broker.rack", value = "rack0"),
-    @ClusterConfigProperty(id = 1, key = "broker.rack", value = "rack0"),
-    @ClusterConfigProperty(id = 2, key = "broker.rack", value = "rack1"),
-    @ClusterConfigProperty(id = 3, key = "broker.rack", value = "rack1"),
-    @ClusterConfigProperty(id = 4, key = "broker.rack", value = "rack1"),
+        @ClusterConfigProperty(key = REPLICA_LAG_TIME_MAX_MS_CONFIG, value = "1000"),
+        @ClusterConfigProperty(id = 0, key = "broker.rack", value = "rack0"),
+        @ClusterConfigProperty(id = 1, key = "broker.rack", value = "rack0"),
+        @ClusterConfigProperty(id = 2, key = "broker.rack", value = "rack1"),
+        @ClusterConfigProperty(id = 3, key = "broker.rack", value = "rack1"),
+        @ClusterConfigProperty(id = 4, key = "broker.rack", value = "rack1"),
 })
 public class ReassignPartitionsCommandTest {
     private final ClusterInstance clusterInstance;
@@ -108,7 +108,7 @@ public class ReassignPartitionsCommandTest {
             .range(0, 4)
             .boxed()
             .collect(Collectors.toMap(Function.identity(), i ->
-        BROKER_LEVEL_THROTTLES.stream().collect(Collectors.toMap(Function.identity(), t -> -1L))
+                    BROKER_LEVEL_THROTTLES.stream().collect(Collectors.toMap(Function.identity(), t -> -1L))
     ));
 
     ReassignPartitionsCommandTest(ClusterInstance clusterInstance) {
@@ -312,7 +312,7 @@ public class ReassignPartitionsCommandTest {
         removeReplicationThrottleForPartitions(part);
         Map<TopicPartition, PartitionReassignmentState> finalAssignment = Map.of(part,
                 new PartitionReassignmentState(List.of(3, 2, 1), List.of(3, 2, 1), true));
-        try (Admin admin = Admin.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers())))  {
+        try (Admin admin = Admin.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers()))) {
             waitForVerifyAssignment(admin, assignment, false,
                     new VerifyAssignmentResult(finalAssignment));
         }
@@ -385,15 +385,15 @@ public class ReassignPartitionsCommandTest {
         runExecuteAssignment(false, assignment, -1L, -1L);
         try (Admin admin = Admin.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers()))) {
             TestUtils.waitForCondition(
-                () -> {
-                    Set<Integer> isr = admin.describeTopics(Set.of(foo0.topic()))
-                        .allTopicNames().get().get(foo0.topic()).partitions().stream()
-                        .filter(p -> p.partition() == foo0.partition())
-                        .flatMap(p -> p.isr().stream())
-                        .map(Node::id).collect(Collectors.toSet());
-                    return isr.containsAll(List.of(0, 1, 2, 3));
-                },
-                "Timed out while waiting for replica 3 to join the ISR"
+                    () -> {
+                        Set<Integer> isr = admin.describeTopics(Set.of(foo0.topic()))
+                                .allTopicNames().get().get(foo0.topic()).partitions().stream()
+                                .filter(p -> p.partition() == foo0.partition())
+                                .flatMap(p -> p.isr().stream())
+                                .map(Node::id).collect(Collectors.toSet());
+                        return isr.containsAll(List.of(0, 1, 2, 3));
+                    },
+                    "Timed out while waiting for replica 3 to join the ISR"
             );
         }
 
@@ -434,9 +434,9 @@ public class ReassignPartitionsCommandTest {
 
             // Remove the throttle
             admin.incrementalAlterConfigs(Map.of(
-                            new ConfigResource(ConfigResource.Type.BROKER, "0"),
-                            List.of(new AlterConfigOp(
-                                    new ConfigEntry(QuotaConfig.REPLICA_ALTER_LOG_DIRS_IO_MAX_BYTES_PER_SECOND_CONFIG, ""), AlterConfigOp.OpType.DELETE))))
+                    new ConfigResource(ConfigResource.Type.BROKER, "0"),
+                    List.of(new AlterConfigOp(
+                            new ConfigEntry(QuotaConfig.REPLICA_ALTER_LOG_DIRS_IO_MAX_BYTES_PER_SECOND_CONFIG, ""), AlterConfigOp.OpType.DELETE))))
                     .all().get();
             waitForBrokerLevelThrottles(admin, unthrottledBrokerConfigs);
 
@@ -535,8 +535,8 @@ public class ReassignPartitionsCommandTest {
         produceMessages(foo0.topic(), foo0.partition(), 100);
         clusterInstance.shutdownBroker(brokerIdToShutdown);
         TestUtils.waitForCondition(
-            () -> clusterInstance.aliveBrokers().size() == 4,
-            "Waiting for broker to shutdown failed"
+                () -> clusterInstance.aliveBrokers().size() == 4,
+                "Waiting for broker to shutdown failed"
         );
         // Execute the assignment
         String assignment = "{\"version\":1,\"partitions\":" +

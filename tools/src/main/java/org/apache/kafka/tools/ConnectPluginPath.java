@@ -354,14 +354,14 @@ public class ConnectPluginPath {
             String firstAlias = row.aliases.size() > 0 ? row.aliases.get(0) : NO_ALIAS;
             String secondAlias = row.aliases.size() > 1 ? row.aliases.get(1) : NO_ALIAS;
             listTablePrint(config,
-                    row.className,
-                    firstAlias,
-                    secondAlias,
-                    row.version,
-                    row.type,
-                    row.loadable,
-                    row.hasManifest,
-                    // last because it is least important and most repetitive
+                row.className,
+                firstAlias,
+                secondAlias,
+                row.version,
+                row.type,
+                row.loadable,
+                row.hasManifest,
+                // last because it is least important and most repetitive
                     row.locationString()
             );
         } else if (config.command == Command.SYNC_MANIFESTS) {
@@ -374,9 +374,9 @@ public class ConnectPluginPath {
     }
 
     private static void endCommand(
-            Config config,
-            ManifestWorkspace workspace,
-            Map<Path, Set<Row>> rowsByLocation
+        Config config,
+        ManifestWorkspace workspace,
+        Map<Path, Set<Row>> rowsByLocation
     ) throws IOException, TerseException {
         if (config.command == Command.LIST) {
             // end the table with an empty line to enable users to separate the table from the summary.
@@ -426,8 +426,8 @@ public class ConnectPluginPath {
             throw new IllegalArgumentException("Table must have exactly " + ConnectPluginPath.LIST_TABLE_COLUMNS.length + " columns");
         }
         config.out.println(Stream.of(args)
-                .map(Objects::toString)
-                .collect(Collectors.joining("\t")));
+            .map(Objects::toString)
+            .collect(Collectors.joining("\t")));
     }
 
     private static PluginScanResult discoverPlugins(PluginSource source, ReflectionScanner reflectionScanner, ServiceLoaderScanner serviceLoaderScanner) {

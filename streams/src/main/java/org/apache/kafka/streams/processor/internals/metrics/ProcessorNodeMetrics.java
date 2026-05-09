@@ -89,9 +89,9 @@ public class ProcessorNodeMetrics {
     }
 
     public static Sensor skippedIdempotentUpdatesSensor(final String threadId,
-            final String taskId,
-            final String processorNodeId,
-            final StreamsMetricsImpl streamsMetrics) {
+        final String taskId,
+        final String processorNodeId,
+        final StreamsMetricsImpl streamsMetrics) {
         return throughputSensor(
             threadId,
             taskId,

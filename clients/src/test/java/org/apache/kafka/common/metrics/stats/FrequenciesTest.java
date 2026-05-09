@@ -112,7 +112,7 @@ public class FrequenciesTest {
     @Test
     public void testWithMetricsStrategy1() {
         Frequencies frequencies = new Frequencies(4, 1.0, 4.0, freq("1", 1.0),
-                freq("2", 2.0), freq("3", 3.0), freq("4", 4.0));
+            freq("2", 2.0), freq("3", 3.0), freq("4", 4.0));
         Sensor sensor = metrics.sensor("test", config);
         sensor.add(frequencies);
 
@@ -129,7 +129,7 @@ public class FrequenciesTest {
     @Test
     public void testWithMetricsStrategy2() {
         Frequencies frequencies = new Frequencies(4, 1.0, 4.0, freq("1", 1.0),
-                freq("2", 2.0), freq("3", 3.0), freq("4", 4.0));
+            freq("2", 2.0), freq("3", 3.0), freq("4", 4.0));
         Sensor sensor = metrics.sensor("test", config);
         sensor.add(frequencies);
 
@@ -146,7 +146,7 @@ public class FrequenciesTest {
     @Test
     public void testWithMetricsStrategy3() {
         Frequencies frequencies = new Frequencies(4, 1.0, 4.0, freq("1", 1.0),
-                freq("2", 2.0), freq("3", 3.0), freq("4", 4.0));
+            freq("2", 2.0), freq("3", 3.0), freq("4", 4.0));
         Sensor sensor = metrics.sensor("test", config);
         sensor.add(frequencies);
 

@@ -165,8 +165,8 @@ public class ProducerConfig extends AbstractConfig {
     /** <code>request.timeout.ms</code> */
     public static final String REQUEST_TIMEOUT_MS_CONFIG = CommonClientConfigs.REQUEST_TIMEOUT_MS_CONFIG;
     private static final String REQUEST_TIMEOUT_MS_DOC = CommonClientConfigs.REQUEST_TIMEOUT_MS_DOC
-        + " This should be larger than <code>replica.lag.time.max.ms</code> (a broker configuration)"
-        + " to reduce the possibility of message duplication due to unnecessary producer retries.";
+            + " This should be larger than <code>replica.lag.time.max.ms</code> (a broker configuration)"
+            + " to reduce the possibility of message duplication due to unnecessary producer retries.";
 
     /** <code>delivery.timeout.ms</code> */
     public static final String DELIVERY_TIMEOUT_MS_CONFIG = "delivery.timeout.ms";
@@ -211,13 +211,13 @@ public class ProducerConfig extends AbstractConfig {
     /** <code>max.block.ms</code> */
     public static final String MAX_BLOCK_MS_CONFIG = "max.block.ms";
     private static final String MAX_BLOCK_MS_DOC = "The configuration controls how long the <code>KafkaProducer</code>'s <code>send()</code>, <code>partitionsFor()</code>, "
-                                                    + "<code>initTransactions()</code>, <code>sendOffsetsToTransaction()</code>, <code>commitTransaction()</code> "
-                                                    + "and <code>abortTransaction()</code> methods will block. "
-                                                    + "For <code>send()</code> this timeout bounds the total time waiting for both metadata fetch and buffer allocation "
-                                                    + "(blocking in the user-supplied serializers or partitioner is not counted against this timeout). "
-                                                    + "For <code>partitionsFor()</code> this timeout bounds the time spent waiting for metadata if it is unavailable. "
-                                                    + "The transaction-related methods always block, but may timeout if "
-                                                    + "the transaction coordinator could not be discovered or did not respond within the timeout.";
+            + "<code>initTransactions()</code>, <code>sendOffsetsToTransaction()</code>, <code>commitTransaction()</code> "
+            + "and <code>abortTransaction()</code> methods will block. "
+            + "For <code>send()</code> this timeout bounds the total time waiting for both metadata fetch and buffer allocation "
+            + "(blocking in the user-supplied serializers or partitioner is not counted against this timeout). "
+            + "For <code>partitionsFor()</code> this timeout bounds the time spent waiting for metadata if it is unavailable. "
+            + "The transaction-related methods always block, but may timeout if "
+            + "the transaction coordinator could not be discovered or did not respond within the timeout.";
 
     /** <code>buffer.memory</code> */
     public static final String BUFFER_MEMORY_CONFIG = "buffer.memory";
@@ -343,8 +343,8 @@ public class ProducerConfig extends AbstractConfig {
     /** <code>interceptor.classes</code> */
     public static final String INTERCEPTOR_CLASSES_CONFIG = "interceptor.classes";
     public static final String INTERCEPTOR_CLASSES_DOC = "A list of classes to use as interceptors. "
-                                                        + "Implementing the <code>org.apache.kafka.clients.producer.ProducerInterceptor</code> interface allows you to intercept (and possibly mutate) the records "
-                                                        + "received by the producer before they are published to the Kafka cluster. By default, there are no interceptors.";
+                                                         + "Implementing the <code>org.apache.kafka.clients.producer.ProducerInterceptor</code> interface allows you to intercept (and possibly mutate) the records "
+                                                         + "received by the producer before they are published to the Kafka cluster. By default, there are no interceptors.";
 
     /** <code>enable.idempotence</code> */
     public static final String ENABLE_IDEMPOTENCE_CONFIG = "enable.idempotence";
@@ -662,7 +662,7 @@ public class ProducerConfig extends AbstractConfig {
         boolean userConfiguredTransactionTimeout = originalConfigs.containsKey(TRANSACTION_TIMEOUT_CONFIG);
         if (enable2PC && userConfiguredTransactionTimeout) {
             throw new ConfigException(
-                "Cannot set " + ProducerConfig.TRANSACTION_TIMEOUT_CONFIG +
+                    "Cannot set " + ProducerConfig.TRANSACTION_TIMEOUT_CONFIG +
                 " when " + ProducerConfig.TRANSACTION_TWO_PHASE_COMMIT_ENABLE_CONFIG +
                 " is set to true. Transactions will not expire with two-phase commit enabled."
             );

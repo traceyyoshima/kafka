@@ -307,10 +307,10 @@ public class FetchCollector<K, V> {
 
         if (FetchResponse.isPreferredReplica(partitionData)) {
             return subscriptions.tryUpdatingPreferredReadReplica(
-                tp, partitionData.preferredReadReplica(), () -> {
+                    tp, partitionData.preferredReadReplica(), () -> {
                     long expireTimeMs = time.milliseconds() + metadata.metadataExpireMs();
                     log.debug("Updating preferred read replica for partition {} to {}, set to expire at {}",
-                        tp, partitionData.preferredReadReplica(), expireTimeMs);
+                            tp, partitionData.preferredReadReplica(), expireTimeMs);
                     return expireTimeMs;
                 });
         }

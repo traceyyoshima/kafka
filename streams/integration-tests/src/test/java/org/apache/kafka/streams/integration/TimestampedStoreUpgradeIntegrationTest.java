@@ -336,7 +336,7 @@ public class TimestampedStoreUpgradeIntegrationTest {
 
     private <K, V> void processKeyValueAndVerifyPlainCount(final K key,
                                                            final List<KeyValue<Integer, Object>> expectedStoreContent)
-            throws Exception {
+                                                               throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronously(
             inputStream,
@@ -423,7 +423,7 @@ public class TimestampedStoreUpgradeIntegrationTest {
     private <K, V> void processKeyValueAndVerifyCount(final K key,
                                                       final long timestamp,
                                                       final List<KeyValue<Integer, Object>> expectedStoreContent)
-            throws Exception {
+                                                          throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
             inputStream,
@@ -462,7 +462,7 @@ public class TimestampedStoreUpgradeIntegrationTest {
     private <K, V> void processKeyValueAndVerifyCountWithTimestamp(final K key,
                                                                    final long timestamp,
                                                                    final List<KeyValue<Integer, Object>> expectedStoreContent)
-        throws Exception {
+                                                                       throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
             inputStream,
@@ -509,8 +509,8 @@ public class TimestampedStoreUpgradeIntegrationTest {
                         Duration.ofMillis(1000L),
                         Duration.ofMillis(1000L),
                         false),
-                Serdes.Integer(),
-                Serdes.Long()))
+                    Serdes.Integer(),
+                    Serdes.Long()))
             .<Integer, Integer>stream(inputStream)
             .process(WindowedProcessor::new, STORE_NAME);
 
@@ -523,8 +523,8 @@ public class TimestampedStoreUpgradeIntegrationTest {
                         Duration.ofMillis(1000L),
                         Duration.ofMillis(1000L),
                         false),
-            Serdes.Integer(),
-            Serdes.Long()))
+                    Serdes.Integer(),
+                    Serdes.Long()))
             .<Integer, Integer>stream(inputStream)
             .process(TimestampedWindowedProcessor::new, STORE_NAME);
 
@@ -576,7 +576,7 @@ public class TimestampedStoreUpgradeIntegrationTest {
                                                                            final StreamsBuilder streamsBuilderForNewStore,
                                                                            final boolean persistentStore) throws Exception {
         final Properties props = props();
-        kafkaStreams =  new KafkaStreams(streamsBuilderForOldStore.build(), props);
+        kafkaStreams = new KafkaStreams(streamsBuilderForOldStore.build(), props);
         kafkaStreams.start();
 
         processWindowedKeyValueAndVerifyPlainCount(1, singletonList(
@@ -832,7 +832,7 @@ public class TimestampedStoreUpgradeIntegrationTest {
 
     private <K, V> void processWindowedKeyValueAndVerifyPlainCount(final K key,
                                                                    final List<KeyValue<Windowed<Integer>, Object>> expectedStoreContent)
-            throws Exception {
+                                                                       throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronously(
             inputStream,
@@ -918,7 +918,7 @@ public class TimestampedStoreUpgradeIntegrationTest {
     private <K, V> void processKeyValueAndVerifyWindowedCountWithTimestamp(final K key,
                                                                            final long timestamp,
                                                                            final List<KeyValue<Windowed<Integer>, Object>> expectedStoreContent)
-            throws Exception {
+                                                                               throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
             inputStream,

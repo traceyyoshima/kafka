@@ -100,7 +100,7 @@ public class RestExtensionIntegrationTest {
             StartAndStopLatch connectorStartLatch = connectorHandle.expectedStarts(1);
             connect.configureConnector(connectorHandle.name(), connectorProps);
             connect.assertions().assertConnectorAndAtLeastNumTasksAreRunning(connectorHandle.name(), 1,
-                    "Connector tasks did not start in time.");
+                "Connector tasks did not start in time.");
             connectorStartLatch.await(CONNECTOR_HEALTH_AND_CONFIG_TIMEOUT_MS, TimeUnit.MILLISECONDS);
 
             String workerId = String.format("%s:%d", worker.url().getHost(), worker.url().getPort());

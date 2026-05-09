@@ -391,7 +391,7 @@ public class MockAdminClient extends AdminClient {
             }
             if (replicationFactor > brokers.size()) {
                 future.completeExceptionally(new InvalidReplicationFactorException(
-                        String.format("Replication factor: %d is larger than brokers: %d", newTopic.replicationFactor(), brokers.size())));
+                    String.format("Replication factor: %d is larger than brokers: %d", newTopic.replicationFactor(), brokers.size())));
                 createTopicResult.put(topicName, future);
                 continue;
             }
@@ -698,7 +698,7 @@ public class MockAdminClient extends AdminClient {
         if (tokenFound) {
             allTokens.removeAll(tokensToRemove);
             future.complete(expiryTimestamp);
-        }   else {
+        } else {
             future.completeExceptionally(new DelegationTokenNotFoundException(""));
         }
 
@@ -754,8 +754,8 @@ public class MockAdminClient extends AdminClient {
         Collection<TopicPartition> topicPartitions = groupSpecs.get(group).topicPartitions();
         final KafkaFutureImpl<Map<TopicPartition, OffsetAndMetadata>> future = new KafkaFutureImpl<>();
         future.complete(committedOffsets.entrySet().stream()
-                .filter(entry -> topicPartitions.isEmpty() || topicPartitions.contains(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> new OffsetAndMetadata(entry.getValue()))));
+            .filter(entry -> topicPartitions.isEmpty() || topicPartitions.contains(entry.getKey()))
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> new OffsetAndMetadata(entry.getValue()))));
         return new ListConsumerGroupOffsetsResult(Collections.singletonMap(CoordinatorKey.byGroupId(group), future));
     }
 
@@ -791,9 +791,9 @@ public class MockAdminClient extends AdminClient {
 
     @Override
     public synchronized ElectLeadersResult electLeaders(
-            ElectionType electionType,
-            Set<TopicPartition> partitions,
-            ElectLeadersOptions options) {
+        ElectionType electionType,
+        Set<TopicPartition> partitions,
+        ElectLeadersOptions options) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -896,8 +896,8 @@ public class MockAdminClient extends AdminClient {
 
     @Override
     public synchronized AlterConfigsResult incrementalAlterConfigs(
-            Map<ConfigResource, Collection<AlterConfigOp>> configs,
-            AlterConfigsOptions options) {
+        Map<ConfigResource, Collection<AlterConfigOp>> configs,
+        AlterConfigsOptions options) {
         Map<ConfigResource, KafkaFuture<Void>> futures = new HashMap<>();
         for (Map.Entry<ConfigResource, Collection<AlterConfigOp>> entry :
                 configs.entrySet()) {
@@ -916,7 +916,7 @@ public class MockAdminClient extends AdminClient {
     }
 
     private synchronized Throwable handleIncrementalResourceAlteration(
-            ConfigResource resource, Collection<AlterConfigOp> ops) {
+        ConfigResource resource, Collection<AlterConfigOp> ops) {
         switch (resource.type()) {
             case BROKER: {
                 int brokerId;
@@ -1030,8 +1030,8 @@ public class MockAdminClient extends AdminClient {
 
     @Override
     public synchronized AlterReplicaLogDirsResult alterReplicaLogDirs(
-            Map<TopicPartitionReplica, String> replicaAssignment,
-            AlterReplicaLogDirsOptions options) {
+        Map<TopicPartitionReplica, String> replicaAssignment,
+        AlterReplicaLogDirsOptions options) {
         Map<TopicPartitionReplica, KafkaFuture<Void>> results = new HashMap<>();
         for (Map.Entry<TopicPartitionReplica, String> entry : replicaAssignment.entrySet()) {
             TopicPartitionReplica replica = entry.getKey();
@@ -1106,7 +1106,7 @@ public class MockAdminClient extends AdminClient {
 
     @Override
     public synchronized DescribeReplicaLogDirsResult describeReplicaLogDirs(
-            Collection<TopicPartitionReplica> replicas, DescribeReplicaLogDirsOptions options) {
+        Collection<TopicPartitionReplica> replicas, DescribeReplicaLogDirsOptions options) {
         Map<TopicPartitionReplica, KafkaFuture<ReplicaLogDirInfo>> results = new HashMap<>();
         for (TopicPartitionReplica replica : replicas) {
             TopicMetadata topicMetadata = allTopics.get(replica.topic());
@@ -1141,8 +1141,8 @@ public class MockAdminClient extends AdminClient {
 
     @Override
     public synchronized AlterPartitionReassignmentsResult alterPartitionReassignments(
-            Map<TopicPartition, Optional<NewPartitionReassignment>> newReassignments,
-            AlterPartitionReassignmentsOptions options) {
+        Map<TopicPartition, Optional<NewPartitionReassignment>> newReassignments,
+        AlterPartitionReassignmentsOptions options) {
         Map<TopicPartition, KafkaFuture<Void>> futures = new HashMap<>();
         for (Map.Entry<TopicPartition, Optional<NewPartitionReassignment>> entry :
                 newReassignments.entrySet()) {
@@ -1168,8 +1168,8 @@ public class MockAdminClient extends AdminClient {
 
     @Override
     public synchronized ListPartitionReassignmentsResult listPartitionReassignments(
-            Optional<Set<TopicPartition>> partitions,
-            ListPartitionReassignmentsOptions options) {
+        Optional<Set<TopicPartition>> partitions,
+        ListPartitionReassignmentsOptions options) {
         Map<TopicPartition, PartitionReassignment> map = new HashMap<>();
         for (TopicPartition partition : partitions.orElseGet(reassignments::keySet)) {
             PartitionReassignment reassignment = findPartitionReassignment(partition);
@@ -1271,15 +1271,15 @@ public class MockAdminClient extends AdminClient {
         Map<String, SupportedVersionRange> supportedFeatures = new HashMap<>();
         for (Map.Entry<String, Short> entry : featureLevels.entrySet()) {
             finalizedFeatures.put(entry.getKey(), new FinalizedVersionRange(
-                    entry.getValue(), entry.getValue()));
+                entry.getValue(), entry.getValue()));
             supportedFeatures.put(entry.getKey(), new SupportedVersionRange(
-                    minSupportedFeatureLevels.get(entry.getKey()),
-                    maxSupportedFeatureLevels.get(entry.getKey())));
+                minSupportedFeatureLevels.get(entry.getKey()),
+                maxSupportedFeatureLevels.get(entry.getKey())));
         }
         return new DescribeFeaturesResult(KafkaFuture.completedFuture(
-                new FeatureMetadata(finalizedFeatures,
-                    Optional.of(123L),
-                    supportedFeatures)));
+            new FeatureMetadata(finalizedFeatures,
+                Optional.of(123L),
+                supportedFeatures)));
     }
 
     @Override

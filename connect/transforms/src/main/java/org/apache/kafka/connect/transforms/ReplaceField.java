@@ -67,14 +67,14 @@ public abstract class ReplaceField<R extends ConnectRecord<R>> implements Transf
                     ConfigDef.Importance.MEDIUM,
                     "Fields to include. If specified, only these fields will be used.")
             .define(ConfigName.RENAMES, ConfigDef.Type.LIST, List.of(),
-                ConfigDef.LambdaValidator.with(
-                    (name, value) -> {
-                        @SuppressWarnings("unchecked")
+                    ConfigDef.LambdaValidator.with(
+                            (name, value) -> {
+                                @SuppressWarnings("unchecked")
                         List<String> valueList = (List<String>) value;
-                        parseRenameMappings(valueList);
-                    },
-                    () -> "list of colon-delimited pairs, e.g. <code>foo:bar,abc:xyz</code>"),
-                ConfigDef.Importance.MEDIUM, "Field rename mappings.")
+                                parseRenameMappings(valueList);
+                            },
+                            () -> "list of colon-delimited pairs, e.g. <code>foo:bar,abc:xyz</code>"),
+                    ConfigDef.Importance.MEDIUM, "Field rename mappings.")
             .define(ConfigName.REPLACE_NULL_WITH_DEFAULT_CONFIG, ConfigDef.Type.BOOLEAN, true, ConfigDef.Importance.MEDIUM,
                     "Whether to replace fields that have a default value and that are null to the default value. When set to true, the default value is used, otherwise null is used.");
 

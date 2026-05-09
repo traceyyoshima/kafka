@@ -54,10 +54,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 
 @ClusterTestDefaults(
-    brokers = 3,
-    serverProperties = {
-        @ClusterConfigProperty(key = ServerLogConfigs.ALTER_CONFIG_POLICY_CLASS_NAME_CONFIG, value = "org.apache.kafka.clients.admin.AdminClientWithPoliciesIntegrationTest$Policy"),
-    }
+        brokers = 3,
+        serverProperties = {
+                @ClusterConfigProperty(key = ServerLogConfigs.ALTER_CONFIG_POLICY_CLASS_NAME_CONFIG, value = "org.apache.kafka.clients.admin.AdminClientWithPoliciesIntegrationTest$Policy"),
+        }
 )
 public class AdminClientWithPoliciesIntegrationTest {
     private final ClusterInstance clusterInstance;

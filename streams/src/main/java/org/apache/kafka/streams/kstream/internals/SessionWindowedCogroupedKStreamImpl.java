@@ -93,9 +93,9 @@ public class SessionWindowedCogroupedKStreamImpl<K, V> extends
             initializer,
             new NamedInternal(named),
             new SessionStoreMaterializer<>(
-                    materializedInternal,
-                    sessionWindows,
-                    EmitStrategy.onWindowUpdate()),
+                materializedInternal,
+                sessionWindows,
+                EmitStrategy.onWindowUpdate()),
             materializedInternal.keySerde() != null ?
                 new WindowedSerdes.SessionWindowedSerde<>(
                     materializedInternal.keySerde()) :

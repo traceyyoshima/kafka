@@ -617,8 +617,8 @@ public class QuorumControllerTest {
         long sessionTimeoutMillis = 300;
 
         try (
-                MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).build();
-                QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
+            MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).build();
+            QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
                 setSessionTimeoutMillis(OptionalLong.of(sessionTimeoutMillis)).
                 setBootstrapMetadata(BootstrapMetadata.fromVersion(MetadataVersion.IBP_4_0_IV1, "test-provided bootstrap ELR enabled")).
                 build()
@@ -707,7 +707,7 @@ public class QuorumControllerTest {
 
             // First, decrease the min ISR config to 1. This should clear the ELR fields.
             ControllerResult<Map<ConfigResource, ApiError>> result = active.configurationControl().incrementalAlterConfigs(toMap(
-                    entry(new ConfigResource(TOPIC, "foo"), toMap(entry(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, entry(SET, "1"))))),
+                entry(new ConfigResource(TOPIC, "foo"), toMap(entry(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, entry(SET, "1"))))),
                 true);
             assertEquals(2, result.records().size(), result.records().toString());
             RecordTestUtils.replayAll(active.configurationControl(), List.of(result.records().get(0)));
@@ -723,7 +723,7 @@ public class QuorumControllerTest {
             assertEquals(1, partition.elr.length, partition.toString());
 
             result = active.configurationControl().incrementalAlterConfigs(toMap(
-                    entry(new ConfigResource(BROKER, ""), toMap(entry(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, entry(SET, "1"))))),
+                entry(new ConfigResource(BROKER, ""), toMap(entry(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, entry(SET, "1"))))),
                 true);
             assertEquals(2, result.records().size(), result.records().toString());
             RecordTestUtils.replayAll(active.configurationControl(), List.of(result.records().get(0)));
@@ -1082,7 +1082,7 @@ public class QuorumControllerTest {
                                     setHost("localhost").
                                     setPort(8000 + i).
                                     setSecurityProtocol(SecurityProtocol.PLAINTEXT.id)
-                                )
+                            )
                         )).
                         setFeatures(new ControllerRegistrationRequestData.FeatureCollection(
                             List.of(
@@ -1159,7 +1159,7 @@ public class QuorumControllerTest {
                             setName(MetadataVersion.FEATURE_NAME).
                             setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
                             setMaxSupportedVersion(MetadataVersion.IBP_3_7_IV0.featureLevel())))),
-                    (short) 0),
+                (short) 0),
             new ApiMessageAndVersion(new RegisterControllerRecord().
                 setControllerId(1).
                 setIncarnationId(Uuid.fromString("AAAAAAA04IIAAAAAAAAAAQ")).
@@ -1176,7 +1176,7 @@ public class QuorumControllerTest {
                             setName(MetadataVersion.FEATURE_NAME).
                             setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
                             setMaxSupportedVersion(MetadataVersion.IBP_3_7_IV0.featureLevel())))),
-                    (short) 0),
+                (short) 0),
             new ApiMessageAndVersion(new RegisterControllerRecord().
                 setControllerId(2).
                 setIncarnationId(Uuid.fromString("AAAAAAA04IIAAAAAAAAAAg")).
@@ -1267,8 +1267,8 @@ public class QuorumControllerTest {
     @Test
     public void testTimeouts() throws Throwable {
         try (
-                MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).build();
-                QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
+            MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).build();
+            QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
                 build()
         ) {
             QuorumController controller = controlEnv.activeController();
@@ -1440,8 +1440,8 @@ public class QuorumControllerTest {
         ) {
             QuorumController active = controlEnv.activeController();
             CompletableFuture<Void> future = active.appendWriteEvent("errorEvent",
-                    OptionalLong.empty(), () -> ControllerResult.of(List.of(new ApiMessageAndVersion(
-                            new ConfigRecord().
+                OptionalLong.empty(), () -> ControllerResult.of(List.of(new ApiMessageAndVersion(
+                    new ConfigRecord().
                                     setName(null).
                                     setResourceName(null).
                                     setResourceType((byte) 255).
@@ -1468,8 +1468,8 @@ public class QuorumControllerTest {
         try (MockRaftClientTestEnv clientEnv = clientEnvBuilder.build()) {
             try (QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).build()) {
                 TestUtils.waitForCondition(() -> controlEnv.controllers().stream().allMatch(
-                        controller -> controlEnv.fatalFaultHandler(controller.nodeId()).firstException() != null),
-                        "At least one controller failed to detect the fatal fault"
+                    controller -> controlEnv.fatalFaultHandler(controller.nodeId()).firstException() != null),
+                    "At least one controller failed to detect the fatal fault"
                 );
                 controlEnv.ignoreFatalFaults();
             }
@@ -1480,12 +1480,12 @@ public class QuorumControllerTest {
     public void testFatalMetadataErrorDuringLogLoading() throws Exception {
         try (MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(3).build()) {
             clientEnv.appendInitialRecords(List.of(
-                    new ApiMessageAndVersion(new PartitionRecord(), (short) 0)));
+                new ApiMessageAndVersion(new PartitionRecord(), (short) 0)));
 
             try (QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).build()) {
                 TestUtils.waitForCondition(() -> controlEnv.controllers().stream().allMatch(
-                        controller -> controlEnv.fatalFaultHandler(controller.nodeId()).firstException() != null),
-                        "At least one controller failed to detect the fatal fault"
+                    controller -> controlEnv.fatalFaultHandler(controller.nodeId()).firstException() != null),
+                    "At least one controller failed to detect the fatal fault"
                 );
                 controlEnv.ignoreFatalFaults();
             }
@@ -1513,18 +1513,18 @@ public class QuorumControllerTest {
     }
 
     private static final BootstrapMetadata COMPLEX_BOOTSTRAP = BootstrapMetadata.fromRecords(
-            List.of(
-                new ApiMessageAndVersion(new FeatureLevelRecord().
+        List.of(
+            new ApiMessageAndVersion(new FeatureLevelRecord().
                         setName(MetadataVersion.FEATURE_NAME).
                         setFeatureLevel(MetadataVersion.MINIMUM_VERSION.featureLevel()),
-                        (short) 0),
-                new ApiMessageAndVersion(new ConfigRecord().
+                (short) 0),
+            new ApiMessageAndVersion(new ConfigRecord().
                         setResourceType(BROKER.id()).
                         setResourceName("").
                         setName("foo").
                         setValue("bar"),
-                        (short) 0)),
-            "test bootstrap");
+                (short) 0)),
+        "test bootstrap");
 
     @Test
     public void testInsertBootstrapRecordsToEmptyLog() throws Exception {
@@ -1566,7 +1566,7 @@ public class QuorumControllerTest {
         }
     }
 
-    static class TestAppender implements Function<List<ApiMessageAndVersion>, Long>  {
+    static class TestAppender implements Function<List<ApiMessageAndVersion>, Long> {
         private long offset = 0;
 
         @Override
@@ -1583,7 +1583,7 @@ public class QuorumControllerTest {
 
     private static ApiMessageAndVersion rec(int i) {
         return new ApiMessageAndVersion(new BrokerRegistrationChangeRecord().setBrokerId(i),
-                (short) 0);
+            (short) 0);
     }
 
     @Test
@@ -1601,9 +1601,9 @@ public class QuorumControllerTest {
         assertEquals("Attempted to atomically commit 5 records, but maxRecordsPerBatch is 2",
             assertThrows(IllegalStateException.class, () ->
                 QuorumController.appendRecords(log,
-                        ControllerResult.atomicOf(List.of(rec(0), rec(1), rec(2), rec(3), rec(4)), null),
-                        2,
-                        appender)).getMessage());
+                    ControllerResult.atomicOf(List.of(rec(0), rec(1), rec(2), rec(3), rec(4)), null),
+                    2,
+                    appender)).getMessage());
     }
 
     FeatureControlManager getActivationRecords(MetadataVersion metadataVersion) {

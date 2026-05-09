@@ -124,15 +124,15 @@ public class JaasTestUtils {
 
     public static String clientLoginModule(String mechanism, Optional<File> keytabLocation, String serviceName) {
         return kafkaClientModule(
-            mechanism,
-            keytabLocation,
-            KAFKA_CLIENT_PRINCIPAL,
-            KAFKA_PLAIN_USER,
-            KAFKA_PLAIN_PASSWORD,
-            KAFKA_SCRAM_USER,
-            KAFKA_SCRAM_PASSWORD,
-            KAFKA_OAUTH_BEARER_USER,
-            serviceName
+                mechanism,
+                keytabLocation,
+                KAFKA_CLIENT_PRINCIPAL,
+                KAFKA_PLAIN_USER,
+                KAFKA_PLAIN_PASSWORD,
+                KAFKA_SCRAM_USER,
+                KAFKA_SCRAM_PASSWORD,
+                KAFKA_OAUTH_BEARER_USER,
+                serviceName
         ).toString();
     }
 
@@ -142,15 +142,15 @@ public class JaasTestUtils {
 
     public static String adminLoginModule(String mechanism, Optional<File> keytabLocation, String serviceName) {
         return kafkaClientModule(
-            mechanism,
-            keytabLocation,
-            KAFKA_SERVER_PRINCIPAL,
-            KAFKA_PLAIN_ADMIN,
-            KAFKA_PLAIN_ADMIN_PASSWORD,
-            KAFKA_SCRAM_ADMIN,
-            KAFKA_SCRAM_ADMIN_PASSWORD,
-            KAFKA_OAUTH_BEARER_ADMIN,
-            serviceName
+                mechanism,
+                keytabLocation,
+                KAFKA_SERVER_PRINCIPAL,
+                KAFKA_PLAIN_ADMIN,
+                KAFKA_PLAIN_ADMIN_PASSWORD,
+                KAFKA_SCRAM_ADMIN,
+                KAFKA_SCRAM_ADMIN_PASSWORD,
+                KAFKA_OAUTH_BEARER_ADMIN,
+                serviceName
         ).toString();
     }
 
@@ -316,6 +316,7 @@ public class JaasTestUtils {
         return securityConfigs(connectionMode, securityProtocol, trustStoreFile, certAlias, certCn, saslProperties,
                 TestSslUtils.DEFAULT_TLS_PROTOCOL_FOR_TESTS, Optional.empty());
     }
+
     /**
      * Returns security configuration options for broker or clients
      *

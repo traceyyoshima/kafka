@@ -107,7 +107,7 @@ public class ShareMembershipManagerTest {
 
     private ShareMembershipManager createMembershipManager() {
         ShareMembershipManager manager = spy(new ShareMembershipManager(
-            logContext, GROUP_ID, RACK_ID, subscriptionState, metadata, time, rebalanceMetricsManager));
+                logContext, GROUP_ID, RACK_ID, subscriptionState, metadata, time, rebalanceMetricsManager));
         assertMemberIdIsGenerated(manager.memberId());
         return manager;
     }
@@ -154,7 +154,7 @@ public class ShareMembershipManagerTest {
         assertEquals(MemberState.JOINING, membershipManager.state());
 
         ShareGroupHeartbeatResponse responseWithoutAssignment = createShareGroupHeartbeatResponse(new Assignment(),
-            membershipManager.memberId());
+                membershipManager.memberId());
         membershipManager.onHeartbeatSuccess(responseWithoutAssignment);
         assertEquals(MemberState.RECONCILING, membershipManager.state());
 
@@ -263,7 +263,7 @@ public class ShareMembershipManagerTest {
 
     private void mockStableMember(ShareMembershipManager membershipManager) {
         ShareGroupHeartbeatResponse heartbeatResponse = createShareGroupHeartbeatResponse(new Assignment(),
-            membershipManager.memberId());
+                membershipManager.memberId());
         membershipManager.onHeartbeatSuccess(heartbeatResponse);
         membershipManager.poll(time.milliseconds());
         membershipManager.onHeartbeatRequestGenerated();
@@ -463,8 +463,8 @@ public class ShareMembershipManagerTest {
         // No reconciliation triggered, because new topic in assignment is waiting for metadata.
 
         Map<Uuid, SortedSet<Integer>> newAssignment = Map.of(
-            topicId1, mkSortedSet(0),
-            topicId2, mkSortedSet(0)
+                topicId1, mkSortedSet(0),
+                topicId2, mkSortedSet(0)
         );
 
         receiveAssignment(newAssignment, membershipManager);
@@ -486,8 +486,8 @@ public class ShareMembershipManagerTest {
         // with membership manager entering ACKNOWLEDGING state.
 
         Map<Uuid, String> fullTopicMetadata = Map.of(
-            topicId1, topic1,
-            topicId2, topic2
+                topicId1, topic1,
+                topicId2, topic2
         );
         when(metadata.topicNames()).thenReturn(fullTopicMetadata);
 
@@ -584,9 +584,9 @@ public class ShareMembershipManagerTest {
         // Receive a previous heartbeat response, which should be ignored
         membershipManager.onHeartbeatSuccess(new ShareGroupHeartbeatResponse(
             new ShareGroupHeartbeatResponseData()
-                .setErrorCode(Errors.NONE.code())
-                .setMemberId(membershipManager.memberId())
-                .setMemberEpoch(MEMBER_EPOCH)
+                    .setErrorCode(Errors.NONE.code())
+                    .setMemberId(membershipManager.memberId())
+                    .setMemberEpoch(MEMBER_EPOCH)
         ));
         assertFalse(leaveResult.isDone());
 
@@ -1329,7 +1329,7 @@ public class ShareMembershipManagerTest {
     public void testRebalanceMetricsOnSuccessfulRebalance() {
         ShareMembershipManager membershipManager = createMembershipManagerJoiningGroup();
         ShareGroupHeartbeatResponse heartbeatResponse = createShareGroupHeartbeatResponse(
-            new ShareGroupHeartbeatResponseData.Assignment(), membershipManager.memberId());
+                new ShareGroupHeartbeatResponseData.Assignment(), membershipManager.memberId());
         membershipManager.onHeartbeatSuccess(heartbeatResponse);
         mockOwnedPartition(membershipManager, Uuid.randomUuid(), "topic1");
 
@@ -1359,7 +1359,7 @@ public class ShareMembershipManagerTest {
     public void testRebalanceMetricsOnFailedRebalance() {
         ShareMembershipManager membershipManager = createMembershipManagerJoiningGroup();
         ShareGroupHeartbeatResponse heartbeatResponse = createShareGroupHeartbeatResponse(
-            new ShareGroupHeartbeatResponseData.Assignment(), membershipManager.memberId());
+                new ShareGroupHeartbeatResponseData.Assignment(), membershipManager.memberId());
         membershipManager.onHeartbeatSuccess(heartbeatResponse);
 
         Uuid topicId = Uuid.randomUuid();
@@ -1481,7 +1481,7 @@ public class ShareMembershipManagerTest {
 
     private Set<TopicPartition> getTopicPartitions(Collection<TopicIdPartition> topicIdPartitions) {
         return topicIdPartitions.stream().map(topicIdPartition ->
-                        new TopicPartition(topicIdPartition.topic(), topicIdPartition.partition()))
+                new TopicPartition(topicIdPartition.topic(), topicIdPartition.partition()))
                 .collect(Collectors.toSet());
     }
 
@@ -1627,9 +1627,9 @@ public class ShareMembershipManagerTest {
 
     private ShareGroupHeartbeatResponse createShareGroupLeaveResponse(String memberId) {
         return new ShareGroupHeartbeatResponse(new ShareGroupHeartbeatResponseData()
-            .setErrorCode(Errors.NONE.code())
-            .setMemberId(memberId)
-            .setMemberEpoch(ShareGroupHeartbeatRequest.LEAVE_GROUP_MEMBER_EPOCH));
+                .setErrorCode(Errors.NONE.code())
+                .setMemberId(memberId)
+                .setMemberEpoch(ShareGroupHeartbeatRequest.LEAVE_GROUP_MEMBER_EPOCH));
     }
 
     private ShareGroupHeartbeatResponse createShareGroupHeartbeatResponseWithError(String memberId) {

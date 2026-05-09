@@ -302,7 +302,7 @@ public final class TaskManager {
      * @throws RequestConflictException - if a task with the same ID but different spec exists
      */
     public void createTask(final String id, TaskSpec spec)
-            throws Throwable {
+        throws Throwable {
         try {
             executor.submit(new CreateTask(id, spec)).get();
         } catch (ExecutionException | JsonProcessingException e) {

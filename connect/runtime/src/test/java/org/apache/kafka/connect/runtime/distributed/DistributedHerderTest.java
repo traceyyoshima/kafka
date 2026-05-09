@@ -640,7 +640,7 @@ public class DistributedHerderTest {
 
         // Revoke the connector in the next rebalance
         expectRebalance(List.of(CONN1), List.of(),
-            ConnectProtocol.Assignment.NO_ERROR, configOffset, List.of(),
+                ConnectProtocol.Assignment.NO_ERROR, configOffset, List.of(),
                 List.of());
 
         if (incompleteRebalance) {
@@ -1289,7 +1289,7 @@ public class DistributedHerderTest {
         FutureCallback<ConnectorStateInfo> callback = new FutureCallback<>();
         herder.restartConnectorAndTasks(restartRequest, callback);
         herder.tick();
-        assertEquals(connectorStateInfo,  callback.get(1000L, TimeUnit.MILLISECONDS));
+        assertEquals(connectorStateInfo, callback.get(1000L, TimeUnit.MILLISECONDS));
 
         verifyNoMoreInteractions(restartPlan, worker, member, configBackingStore, statusBackingStore);
     }
@@ -1926,9 +1926,9 @@ public class DistributedHerderTest {
 
         assertTrue(cb.isDone(), "Callback should already have been invoked by herder");
         ExecutionException e = assertThrows(
-            ExecutionException.class,
-            () -> cb.get(0, TimeUnit.SECONDS),
-            "Should not be able to handle request to stop connector when not leader"
+                ExecutionException.class,
+                () -> cb.get(0, TimeUnit.SECONDS),
+                "Should not be able to handle request to stop connector when not leader"
         );
         assertInstanceOf(NotLeaderException.class, e.getCause());
 
@@ -1967,9 +1967,9 @@ public class DistributedHerderTest {
 
         assertTrue(cb.isDone(), "Callback should already have been invoked by herder");
         ExecutionException e = assertThrows(
-            ExecutionException.class,
-            () -> cb.get(0, TimeUnit.SECONDS),
-            "Should not be able to handle request to stop connector when not leader"
+                ExecutionException.class,
+                () -> cb.get(0, TimeUnit.SECONDS),
+                "Should not be able to handle request to stop connector when not leader"
         );
         assertEquals(e.getCause(), taskConfigsWriteException);
 
@@ -2343,15 +2343,15 @@ public class DistributedHerderTest {
         assertEquals(Set.of(CONN1), listConnectorsCb.get());
         assertTrue(connectorInfoCb.isDone());
         ConnectorInfo info = new ConnectorInfo(CONN1, CONN1_CONFIG, List.of(TASK0, TASK1, TASK2),
-            ConnectorType.SOURCE);
+                ConnectorType.SOURCE);
         assertEquals(info, connectorInfoCb.get());
         assertTrue(connectorConfigCb.isDone());
         assertEquals(CONN1_CONFIG, connectorConfigCb.get());
         assertTrue(taskConfigsCb.isDone());
         assertEquals(List.of(
-                        new TaskInfo(TASK0, TASK_CONFIG),
-                        new TaskInfo(TASK1, TASK_CONFIG),
-                        new TaskInfo(TASK2, TASK_CONFIG)),
+                             new TaskInfo(TASK0, TASK_CONFIG),
+                             new TaskInfo(TASK1, TASK_CONFIG),
+                             new TaskInfo(TASK2, TASK_CONFIG)),
                 taskConfigsCb.get());
 
         // Config transformation should not occur when requesting connector or task info
@@ -3376,20 +3376,20 @@ public class DistributedHerderTest {
     @Test
     public void testKeyExceptionDetection() {
         assertFalse(herder.isPossibleExpiredKeyException(
-            time.milliseconds(),
-            new RuntimeException()
+                time.milliseconds(),
+                new RuntimeException()
         ));
         assertFalse(herder.isPossibleExpiredKeyException(
-            time.milliseconds(),
-            new BadRequestException("")
+                time.milliseconds(),
+                new BadRequestException("")
         ));
         assertFalse(herder.isPossibleExpiredKeyException(
-            time.milliseconds() - TimeUnit.MINUTES.toMillis(2),
-            new ConnectRestException(FORBIDDEN.getStatusCode(), "")
+                time.milliseconds() - TimeUnit.MINUTES.toMillis(2),
+                new ConnectRestException(FORBIDDEN.getStatusCode(), "")
         ));
         assertTrue(herder.isPossibleExpiredKeyException(
-            time.milliseconds(),
-            new ConnectRestException(FORBIDDEN.getStatusCode(), "")
+                time.milliseconds(),
+                new ConnectRestException(FORBIDDEN.getStatusCode(), "")
         ));
     }
 
@@ -3712,8 +3712,8 @@ public class DistributedHerderTest {
         List<String> errors = validatedConfigs.get(SourceConnectorConfig.EXACTLY_ONCE_SUPPORT_CONFIG).errorMessages();
         assertFalse(errors.isEmpty());
         assertTrue(
-            errors.get(0).contains("The connector does not implement the API required for preflight validation of exactly-once source support."),
-            "Error message did not contain expected text: " + errors.get(0));
+                errors.get(0).contains("The connector does not implement the API required for preflight validation of exactly-once source support."),
+                "Error message did not contain expected text: " + errors.get(0));
         assertEquals(1, errors.size());
     }
 
@@ -3733,8 +3733,8 @@ public class DistributedHerderTest {
         List<String> errors = validatedConfigs.get(SourceConnectorConfig.EXACTLY_ONCE_SUPPORT_CONFIG).errorMessages();
         assertFalse(errors.isEmpty());
         assertTrue(
-            errors.get(0).contains(errorMessage),
-            "Error message did not contain expected text: " + errors.get(0));
+                errors.get(0).contains(errorMessage),
+                "Error message did not contain expected text: " + errors.get(0));
         assertEquals(1, errors.size());
     }
 
@@ -3769,8 +3769,8 @@ public class DistributedHerderTest {
         List<String> errors = validatedConfigs.get(SourceConnectorConfig.EXACTLY_ONCE_SUPPORT_CONFIG).errorMessages();
         assertFalse(errors.isEmpty());
         assertTrue(
-            errors.get(0).contains("String must be one of (case insensitive): "),
-            "Error message did not contain expected text: " + errors.get(0));
+                errors.get(0).contains("String must be one of (case insensitive): "),
+                "Error message did not contain expected text: " + errors.get(0));
         assertEquals(1, errors.size());
     }
 
@@ -3807,8 +3807,8 @@ public class DistributedHerderTest {
         List<String> errors = validatedConfigs.get(SourceConnectorConfig.TRANSACTION_BOUNDARY_CONFIG).errorMessages();
         assertFalse(errors.isEmpty());
         assertTrue(
-            errors.get(0).contains("The connector does not support connector-defined transaction boundaries with the given configuration."),
-            "Error message did not contain expected text: " + errors.get(0));
+                errors.get(0).contains("The connector does not support connector-defined transaction boundaries with the given configuration."),
+                "Error message did not contain expected text: " + errors.get(0));
         assertEquals(1, errors.size());
     }
 
@@ -3828,8 +3828,8 @@ public class DistributedHerderTest {
         List<String> errors = validatedConfigs.get(SourceConnectorConfig.TRANSACTION_BOUNDARY_CONFIG).errorMessages();
         assertFalse(errors.isEmpty());
         assertTrue(
-            errors.get(0).contains(errorMessage),
-            "Error message did not contain expected text: " + errors.get(0));
+                errors.get(0).contains(errorMessage),
+                "Error message did not contain expected text: " + errors.get(0));
         assertEquals(1, errors.size());
     }
 
@@ -3847,8 +3847,8 @@ public class DistributedHerderTest {
         List<String> errors = validatedConfigs.get(SourceConnectorConfig.TRANSACTION_BOUNDARY_CONFIG).errorMessages();
         assertFalse(errors.isEmpty());
         assertTrue(
-            errors.get(0).contains("String must be one of (case insensitive): "),
-            "Error message did not contain expected text: " + errors.get(0));
+                errors.get(0).contains("String must be one of (case insensitive): "),
+                "Error message did not contain expected text: " + errors.get(0));
         assertEquals(1, errors.size());
     }
 
@@ -4153,6 +4153,7 @@ public class DistributedHerderTest {
                                  final List<ConnectorTaskId> assignedTasks) {
         expectRebalance(revokedConnectors, revokedTasks, error, offset, assignedConnectors, assignedTasks, 0);
     }
+
     // Handles common initial part of rebalance callback. Does not handle instantiation of connectors and tasks.
     private void expectRebalance(final Collection<String> revokedConnectors,
                                  final List<ConnectorTaskId> revokedTasks,

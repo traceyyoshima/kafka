@@ -176,7 +176,7 @@ public class ConfigCommand {
 
             //Create properties, parsing square brackets from values if necessary
             Stream.of(configsToBeAdded).forEach(pair ->
-                props.setProperty(pair[0].trim(), pair[1].replaceAll("\\[?\\]?", "").trim())
+                    props.setProperty(pair[0].trim(), pair[1].replaceAll("\\[?\\]?", "").trim())
             );
         }
         validatePropsKey(props);
@@ -202,8 +202,8 @@ public class ConfigCommand {
 
     private static void processCommand(ConfigCommandOptions opts) throws Exception {
         Properties props = opts.options.has(opts.commandConfigOpt)
-            ? Utils.loadProps(opts.options.valueOf(opts.commandConfigOpt))
-            : new Properties();
+                ? Utils.loadProps(opts.options.valueOf(opts.commandConfigOpt))
+                : new Properties();
         CommandLineUtils.initializeBootstrapProperties(opts.parser,
                 opts.options,
                 props,
@@ -371,8 +371,8 @@ public class ConfigCommand {
         String password = matcher.group(2);
 
         int iterations = (iterationsStr != null && !"-1".equals(iterationsStr))
-            ? Integer.parseInt(iterationsStr)
-            : DEFAULT_SCRAM_ITERATIONS;
+                ? Integer.parseInt(iterationsStr)
+                : DEFAULT_SCRAM_ITERATIONS;
 
         if (iterations < mechanism.minIterations()) {
             throw new IllegalArgumentException("Iterations " + iterations + " is less than the minimum " + mechanism.minIterations() + " required for " + mechanism.mechanismName());
@@ -637,7 +637,7 @@ public class ConfigCommand {
         ConfigResource configResource = new ConfigResource(configResourceType, entityName);
         DescribeConfigsOptions describeOptions = new DescribeConfigsOptions().includeSynonyms(includeSynonyms);
         Map<ConfigResource, Config> configs = adminClient.describeConfigs(Collections.singleton(configResource), describeOptions)
-                    .all().get(30, TimeUnit.SECONDS);
+                .all().get(30, TimeUnit.SECONDS);
 
         return configs.get(configResource).entries().stream()
                 .filter(entry -> configSourceFilter.isEmpty() || entry.source() == configSourceFilter.get())
@@ -876,23 +876,23 @@ public class ConfigCommand {
 
         private List<EntityFlag> entityFlags() {
             return List.of(
-                new EntityFlag(topic, TOPIC_TYPE),
-                new EntityFlag(client, CLIENT_TYPE),
-                new EntityFlag(user, USER_TYPE),
-                new EntityFlag(broker, BROKER_TYPE),
-                new EntityFlag(brokerLogger, BROKER_LOGGER_CONFIG_TYPE),
-                new EntityFlag(ip, IP_TYPE),
-                new EntityFlag(clientMetrics, CLIENT_METRICS_TYPE),
-                new EntityFlag(group, GROUP_TYPE)
+                    new EntityFlag(topic, TOPIC_TYPE),
+                    new EntityFlag(client, CLIENT_TYPE),
+                    new EntityFlag(user, USER_TYPE),
+                    new EntityFlag(broker, BROKER_TYPE),
+                    new EntityFlag(brokerLogger, BROKER_LOGGER_CONFIG_TYPE),
+                    new EntityFlag(ip, IP_TYPE),
+                    new EntityFlag(clientMetrics, CLIENT_METRICS_TYPE),
+                    new EntityFlag(group, GROUP_TYPE)
             );
         }
 
         private List<EntityFlag> entityDefaultsFlags() {
             return List.of(
-                new EntityFlag(clientDefaults, CLIENT_TYPE),
-                new EntityFlag(userDefaults, USER_TYPE),
-                new EntityFlag(brokerDefaults, BROKER_TYPE),
-                new EntityFlag(ipDefaults, IP_TYPE)
+                    new EntityFlag(clientDefaults, CLIENT_TYPE),
+                    new EntityFlag(userDefaults, USER_TYPE),
+                    new EntityFlag(brokerDefaults, BROKER_TYPE),
+                    new EntityFlag(ipDefaults, IP_TYPE)
             );
         }
 

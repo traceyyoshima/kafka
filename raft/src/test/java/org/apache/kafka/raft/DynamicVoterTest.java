@@ -32,27 +32,27 @@ public class DynamicVoterTest {
     @Test
     public void testParseDynamicVoter() {
         assertEquals(new DynamicVoter(Uuid.fromString("K90IZ-0DRNazJ49kCZ1EMQ"),
-                2,
-                "localhost",
-                (short) 8020),
+            2,
+            "localhost",
+            (short) 8020),
             DynamicVoter.parse("2@localhost:8020:K90IZ-0DRNazJ49kCZ1EMQ"));
     }
 
     @Test
     public void testParseDynamicVoter2() {
         assertEquals(new DynamicVoter(Uuid.fromString("__0IZ-0DRNazJ49kCZ1EMQ"),
-                100,
-                "192.128.0.100",
-                (short) 800),
+            100,
+            "192.128.0.100",
+            (short) 800),
             DynamicVoter.parse("100@192.128.0.100:800:__0IZ-0DRNazJ49kCZ1EMQ"));
     }
 
     @Test
     public void testParseDynamicVoterWithBrackets() {
         assertEquals(new DynamicVoter(Uuid.fromString("__0IZ-0DRNazJ49kCZ1EMQ"),
-                5,
-                "2001:4860:4860::8888",
-                (short) 8020),
+            5,
+            "2001:4860:4860::8888",
+            (short) 8020),
             DynamicVoter.parse("5@[2001:4860:4860::8888]:8020:__0IZ-0DRNazJ49kCZ1EMQ"));
     }
 

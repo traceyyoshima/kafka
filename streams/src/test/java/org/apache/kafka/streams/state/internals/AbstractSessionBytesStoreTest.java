@@ -100,8 +100,8 @@ public abstract class AbstractSessionBytesStoreTest {
     InternalMockProcessorContext<?, ?> context;
 
     <K, V> SessionStore<K, V> buildSessionStore(final long retentionPeriod,
-                                                         final Serde<K> keySerde,
-                                                         final Serde<V> valueSerde) {
+                                                final Serde<K> keySerde,
+                                                final Serde<V> valueSerde) {
         switch (storeType()) {
             case RocksDBSessionStore: {
                 return Stores.sessionStoreBuilder(

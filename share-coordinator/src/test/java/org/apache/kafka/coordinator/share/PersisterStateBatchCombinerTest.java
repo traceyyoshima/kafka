@@ -205,9 +205,9 @@ public class PersisterStateBatchCombinerTest {
                     .addBatch(116, 123, 2, 2)  // overlap with first batch
                     .build(),       // ,  //[(111-123, 2, 2)]
                 BatchTestHolder.multiBatch()
-                    .addBatch(100, 110, 0, 1)
-                    .addBatch(111, 123, 2, 2)
-                    .build(),
+                        .addBatch(100, 110, 0, 1)
+                        .addBatch(111, 123, 2, 2)
+                        .build(),
                 -1
             ),
 

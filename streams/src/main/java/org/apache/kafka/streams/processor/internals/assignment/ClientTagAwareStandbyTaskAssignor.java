@@ -264,9 +264,9 @@ class ClientTagAwareStandbyTaskAssignor implements StandbyTaskAssignor {
 
             log.debug("Assigning {} out of {} standby tasks for an active task [{}] with client tags {}. " +
                     "Standby task client tags are {}.",
-                    numberOfStandbyClients - numRemainingStandbys, numberOfStandbyClients, activeTaskId,
-                    clientTagFunction.apply(activeTaskClient, clientStates.get(activeTaskClient)),
-                    clientTagFunction.apply(clientStateOnUsedTagDimensions.processId(), clientStateOnUsedTagDimensions));
+                      numberOfStandbyClients - numRemainingStandbys, numberOfStandbyClients, activeTaskId,
+                      clientTagFunction.apply(activeTaskClient, clientStates.get(activeTaskClient)),
+                      clientTagFunction.apply(clientStateOnUsedTagDimensions.processId(), clientStateOnUsedTagDimensions));
 
             clientStateOnUsedTagDimensions.assignStandby(activeTaskId);
             lastUsedClient = clientOnUnusedTagDimensions;
@@ -296,12 +296,12 @@ class ClientTagAwareStandbyTaskAssignor implements StandbyTaskAssignor {
     }
 
     private void updateClientsOnAlreadyUsedTagEntries(final ProcessId usedClient,
-                                                             final int countOfUsedClients,
-                                                             final Set<String> rackAwareAssignmentTags,
-                                                             final Map<ProcessId, ClientState> clientStates,
-                                                             final Map<TagEntry, Set<ProcessId>> tagEntryToClients,
-                                                             final Map<String, Set<String>> tagKeyToValues,
-                                                             final Map<TagEntry, Set<ProcessId>> tagEntryToUsedClients) {
+                                                      final int countOfUsedClients,
+                                                      final Set<String> rackAwareAssignmentTags,
+                                                      final Map<ProcessId, ClientState> clientStates,
+                                                      final Map<TagEntry, Set<ProcessId>> tagEntryToClients,
+                                                      final Map<String, Set<String>> tagKeyToValues,
+                                                      final Map<TagEntry, Set<ProcessId>> tagEntryToUsedClients) {
         final Map<String, String> usedClientTags = clientTagFunction.apply(usedClient, clientStates.get(usedClient));
 
         for (final Entry<String, String> usedClientTagEntry : usedClientTags.entrySet()) {

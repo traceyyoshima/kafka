@@ -246,7 +246,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
     }
 
     public void addGraphNode(final GraphNode parent,
-                      final GraphNode child) {
+                             final GraphNode child) {
         Objects.requireNonNull(parent, "parent node can't be null");
         Objects.requireNonNull(child, "child node can't be null");
         parent.addChild(child);
@@ -255,7 +255,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
     }
 
     public void addGraphNode(final Collection<GraphNode> parents,
-                      final GraphNode child) {
+                             final GraphNode child) {
         Objects.requireNonNull(parents, "parent node can't be null");
         Objects.requireNonNull(child, "child node can't be null");
 
@@ -445,7 +445,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
             // Remove JoinOtherWindowed node
             final GraphNode parent = joinNode.parentNodes().stream().findFirst().get();
             GraphNode left = null, right = null;
-            for (final GraphNode child: parent.children()) {
+            for (final GraphNode child : parent.children()) {
                 if (child instanceof WindowedStreamProcessorNode && child.buildPriority() < joinNode.buildPriority()) {
                     if (child.nodeName().equals(joinNode.thisWindowedStreamProcessorName())) {
                         left = child;
@@ -462,7 +462,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
                 throw new IllegalStateException(String.format("Expected the left node %s to have smaller build priority than the right node %s.", left, right));
             }
         }
-        for (final GraphNode child: currentNode.children()) {
+        for (final GraphNode child : currentNode.children()) {
             if (!visited.containsKey(child)) {
                 rewriteSingleStoreSelfJoin(child, visited);
             }
@@ -589,13 +589,13 @@ public class InternalStreamsBuilder implements InternalNameProvider {
         final OptimizableRepartitionNode.OptimizableRepartitionNodeBuilder<K, V> repartitionNodeBuilder =
             OptimizableRepartitionNode.optimizableRepartitionNodeBuilder();
         KStreamImpl.createRepartitionedSource(
-                this,
-                keySerde,
-                valueSerde,
-                repartitionTopicName,
-                null,
-                repartitionNodeBuilder,
-                true
+            this,
+            keySerde,
+            valueSerde,
+            repartitionTopicName,
+            null,
+            repartitionNodeBuilder,
+            true
         );
 
         // ensures setting the repartition topic to the name of the
@@ -690,7 +690,7 @@ public class InternalStreamsBuilder implements InternalNameProvider {
 
     // Visible for testing.
     GraphNode findParentNodeMatching(final GraphNode startSeekingNode,
-                                             final Predicate<GraphNode> parentNodePredicate) {
+                                     final Predicate<GraphNode> parentNodePredicate) {
         if (parentNodePredicate.test(startSeekingNode)) {
             return startSeekingNode;
         }

@@ -541,7 +541,7 @@ public class StreamsMembershipManager implements RequestManager {
         if (state == MemberState.LEAVING) {
             log.warn("Heartbeat to leave group cannot be sent (most probably due to coordinator " +
                     "not known/available). Member {} with epoch {} will transition to {}.",
-                memberId, memberEpoch, MemberState.UNSUBSCRIBED);
+                    memberId, memberEpoch, MemberState.UNSUBSCRIBED);
             transitionTo(MemberState.UNSUBSCRIBED);
             maybeCompleteLeaveInProgress();
         }
@@ -987,7 +987,7 @@ public class StreamsMembershipManager implements RequestManager {
         } else {
             log.info("Member {} completed callback to revoke task assignment. It will proceed " +
                     "to clear its assignment and send a leave group heartbeat",
-                memberId);
+                    memberId);
         }
         leaving();
     }
@@ -1094,16 +1094,16 @@ public class StreamsMembershipManager implements RequestManager {
                 "\tOwned standby tasks:           {}\n" +
                 "\tAssigned warm-up tasks:        {}\n" +
                 "\tOwned warm-up tasks:           {}\n",
-            targetAssignment.localEpoch,
-            isGroupReady ? "is ready" : "is not ready",
-            memberId,
-            assignedActiveTasks,
-            ownedActiveTasks,
-            activeTasksToRevoke,
-            assignedStandbyTasks,
-            ownedStandbyTasks,
-            assignedWarmupTasks,
-            ownedWarmupTasks
+                targetAssignment.localEpoch,
+                isGroupReady ? "is ready" : "is not ready",
+                memberId,
+                assignedActiveTasks,
+                ownedActiveTasks,
+                activeTasksToRevoke,
+                assignedStandbyTasks,
+                ownedStandbyTasks,
+                assignedWarmupTasks,
+                ownedWarmupTasks
         );
 
         SortedSet<TopicPartition> ownedTopicPartitionsFromSubscriptionState = new TreeSet<>(TOPIC_PARTITION_COMPARATOR);
@@ -1215,7 +1215,7 @@ public class StreamsMembershipManager implements RequestManager {
                 if (!partitionsToAssignNotPreviouslyOwned.isEmpty() && subscriptionState.assignedPartitions().containsAll(partitionsToAssignNotPreviouslyOwned)) {
                     log.warn("Leaving newly assigned partitions {} marked as non-fetchable and not " +
                             "requiring initializing positions after onTasksAssigned callback failed.",
-                        partitionsToAssignNotPreviouslyOwned, callbackError);
+                            partitionsToAssignNotPreviouslyOwned, callbackError);
                 }
             }
         });
@@ -1317,9 +1317,9 @@ public class StreamsMembershipManager implements RequestManager {
      * @return Future that completes when the assignment is applied and the callback executed
      */
     private CompletableFuture<Void> enqueueStreamsPartitionsAssignedEvent(
-            final SortedSet<TopicPartition> partitionsToAssign,
-            final SortedSet<TopicPartition> addedPartitions,
-            final StreamsRebalanceData.Assignment assignment) {
+        final SortedSet<TopicPartition> partitionsToAssign,
+        final SortedSet<TopicPartition> addedPartitions,
+        final StreamsRebalanceData.Assignment assignment) {
         final StreamsTasksAssignedEvent event = new StreamsTasksAssignedEvent(
             partitionsToAssign,
             addedPartitions,

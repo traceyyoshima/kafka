@@ -900,10 +900,10 @@ public class StandaloneHerderTest {
         Throwable cause = e.getCause();
         assertInstanceOf(BadRequestException.class, cause);
         assertEquals(
-                "Connector configuration is invalid and contains the following 1 error(s):\n" +
+                    "Connector configuration is invalid and contains the following 1 error(s):\n" +
                     error + "\n" +
                     "You can also find the above list of errors at the endpoint `/connector-plugins/{connectorType}/config/validate`",
-                cause.getMessage()
+                    cause.getMessage()
         );
         verify(loaderSwap).close();
     }
@@ -1107,6 +1107,7 @@ public class StandaloneHerderTest {
     private void expectAdd(SourceSink sourceSink) {
         expectAdd(sourceSink, true);
     }
+
     private void expectAdd(SourceSink sourceSink, boolean mockStartConnector) {
         expectAdd(sourceSink, mockStartConnector, true, true);
     }
@@ -1280,7 +1281,7 @@ public class StandaloneHerderTest {
             onStart.getValue().onCompletion(exception, result);
             return true;
         }).when(worker).startConnector(eq(CONNECTOR_NAME), eq(config),
-                any(HerderConnectorContext.class),
-                eq(herder), eq(targetState), onStart.capture());
+            any(HerderConnectorContext.class),
+            eq(herder), eq(targetState), onStart.capture());
     }
 }

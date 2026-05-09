@@ -91,8 +91,8 @@ public class StreamsAssignorBenchmarkUtils {
             String processId = "process-" + i / membersPerProcess;
 
             members.put(memberId, StreamsGroupMember.Builder.withDefaults(memberId)
-                    .setProcessId(processId)
-                    .build());
+                .setProcessId(processId)
+                .build());
         }
 
         return members;

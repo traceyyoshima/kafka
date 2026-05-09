@@ -585,13 +585,13 @@ public class Sender implements Runnable {
                 requestHeader, response.destination());
             for (ProducerBatch batch : batches.values())
                 completeBatch(batch, new ProduceResponse.PartitionResponse(Errors.REQUEST_TIMED_OUT, String.format("Disconnected from node %s due to timeout", response.destination())),
-                        correlationId, now, null);
+                    correlationId, now, null);
         } else if (response.wasDisconnected()) {
             log.trace("Cancelled request with header {} due to node {} being disconnected",
                 requestHeader, response.destination());
             for (ProducerBatch batch : batches.values())
                 completeBatch(batch, new ProduceResponse.PartitionResponse(Errors.NETWORK_EXCEPTION, String.format("Disconnected from node %s", response.destination())),
-                        correlationId, now, null);
+                    correlationId, now, null);
         } else if (response.versionMismatch() != null) {
             log.warn("Cancelled request {} due to a version mismatch with node {}",
                     response, response.destination(), response.versionMismatch());
@@ -608,16 +608,16 @@ public class Sender implements Runnable {
                 Map<TopicPartition, Metadata.LeaderIdAndEpoch> partitionsWithUpdatedLeaderInfo = new HashMap<>();
                 produceResponse.data().responses().forEach(r -> r.partitionResponses().forEach(p -> {
                     ProduceResponse.PartitionResponse partResp = new ProduceResponse.PartitionResponse(
-                            Errors.forCode(p.errorCode()),
-                            p.baseOffset(),
-                            p.logAppendTimeMs(),
-                            p.logStartOffset(),
-                            p.recordErrors()
-                                .stream()
-                                .map(e -> new ProduceResponse.RecordError(e.batchIndex(), e.batchIndexErrorMessage()))
-                                .collect(Collectors.toList()),
-                            p.errorMessage(),
-                            p.currentLeader());
+                        Errors.forCode(p.errorCode()),
+                        p.baseOffset(),
+                        p.logAppendTimeMs(),
+                        p.logStartOffset(),
+                        p.recordErrors()
+                            .stream()
+                            .map(e -> new ProduceResponse.RecordError(e.batchIndex(), e.batchIndexErrorMessage()))
+                            .collect(Collectors.toList()),
+                        p.errorMessage(),
+                        p.currentLeader());
 
                     // Version 13 drops topic name, and supports topic id.
                     // We need to find batch based on topic id and partition index only as
@@ -714,7 +714,7 @@ public class Sender implements Runnable {
                 if (error.exception() instanceof UnknownTopicOrPartitionException) {
                     log.warn("Received unknown topic or partition error in produce request on partition {}. The " +
                             "topic-partition may not exist or the user may not have Describe access to it",
-                        batch.topicPartition);
+                            batch.topicPartition);
                 } else {
                     log.warn("Received invalid metadata error in produce request on partition {} due to {} Going " +
                             "to request metadata update now", batch.topicPartition, error.exception(response.errorMessage).toString());
@@ -909,13 +909,13 @@ public class Sender implements Runnable {
 
             if (tpData == null) {
                 tpData = new ProduceRequestData.TopicProduceData()
-                        .setTopicId(topicId).setName(tp.topic());
+                    .setTopicId(topicId).setName(tp.topic());
                 tpd.add(tpData);
             }
 
             tpData.partitionData().add(new ProduceRequestData.PartitionProduceData()
-                    .setIndex(tp.partition())
-                    .setRecords(records));
+                .setIndex(tp.partition())
+                .setRecords(records));
             recordsByPartition.put(tp, batch);
             batch.setInflight(true);
         }
@@ -929,10 +929,10 @@ public class Sender implements Runnable {
 
         ProduceRequest.Builder requestBuilder = ProduceRequest.builder(
                 new ProduceRequestData()
-                        .setAcks(acks)
-                        .setTimeoutMs(timeout)
-                        .setTransactionalId(transactionalId)
-                        .setTopicData(tpd),
+                    .setAcks(acks)
+                    .setTimeoutMs(timeout)
+                    .setTransactionalId(transactionalId)
+                    .setTopicData(tpd),
                 useTransactionV1Version
         );
         // Fetch topic names from metadata outside callback as topic ids may change during the callback
@@ -943,17 +943,17 @@ public class Sender implements Runnable {
 
         String nodeId = Integer.toString(destination);
         ClientRequest clientRequest = client.newClientRequest(nodeId, requestBuilder, now, acks != 0,
-                requestTimeoutMs, callback);
+            requestTimeoutMs, callback);
         client.send(clientRequest, now);
         log.trace("Sent produce request to {}: {}", nodeId, requestBuilder);
     }
 
     private Map<String, Uuid> topicIdsForBatches(List<ProducerBatch> batches) {
         return batches.stream()
-                .collect(Collectors.toMap(
-                        b -> b.topicPartition.topic(),
-                        b -> metadata.topicIds().getOrDefault(b.topicPartition.topic(), Uuid.ZERO_UUID),
-                        (existing, replacement) -> replacement)
+            .collect(Collectors.toMap(
+                b -> b.topicPartition.topic(),
+                b -> metadata.topicIds().getOrDefault(b.topicPartition.topic(), Uuid.ZERO_UUID),
+                (existing, replacement) -> replacement)
                 );
     }
 

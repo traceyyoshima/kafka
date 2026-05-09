@@ -176,8 +176,9 @@ public class FetchResponse extends AbstractResponse {
     }
 
     public static Optional<FetchResponseData.EpochEndOffset> divergingEpoch(FetchResponseData.PartitionData partitionResponse) {
-        return partitionResponse.divergingEpoch().epoch() < 0 ? Optional.empty()
-                : Optional.of(partitionResponse.divergingEpoch());
+        return partitionResponse.divergingEpoch().epoch() < 0
+            ? Optional.empty()
+            : Optional.of(partitionResponse.divergingEpoch());
     }
 
     public static boolean isDivergingEpoch(FetchResponseData.PartitionData partitionResponse) {
@@ -185,8 +186,9 @@ public class FetchResponse extends AbstractResponse {
     }
 
     public static Optional<Integer> preferredReadReplica(FetchResponseData.PartitionData partitionResponse) {
-        return partitionResponse.preferredReadReplica() == INVALID_PREFERRED_REPLICA_ID ? Optional.empty()
-                : Optional.of(partitionResponse.preferredReadReplica());
+        return partitionResponse.preferredReadReplica() == INVALID_PREFERRED_REPLICA_ID
+            ? Optional.empty()
+            : Optional.of(partitionResponse.preferredReadReplica());
     }
 
     public static boolean isPreferredReplica(FetchResponseData.PartitionData partitionResponse) {
@@ -279,7 +281,8 @@ public class FetchResponse extends AbstractResponse {
                 partitionData.setRecords(MemoryRecords.EMPTY);
             // We have to keep the order of input topic-partition. Hence, we batch the partitions only if the last
             // batch is in the same topic group.
-            FetchResponseData.FetchableTopicResponse previousTopic = topicResponseList.isEmpty() ? null
+            FetchResponseData.FetchableTopicResponse previousTopic = topicResponseList.isEmpty()
+                ? null
                 : topicResponseList.get(topicResponseList.size() - 1);
             if (matchingTopic(previousTopic, entry.getKey()))
                 previousTopic.partitions().add(partitionData);
@@ -301,8 +304,8 @@ public class FetchResponse extends AbstractResponse {
                         .setPort(endpoint.port())
                         .setRack(endpoint.rack())));
         return data.setThrottleTimeMs(throttleTimeMs)
-                .setErrorCode(error.code())
-                .setSessionId(sessionId)
-                .setResponses(topicResponseList);
+                   .setErrorCode(error.code())
+                   .setSessionId(sessionId)
+                   .setResponses(topicResponseList);
     }
 }

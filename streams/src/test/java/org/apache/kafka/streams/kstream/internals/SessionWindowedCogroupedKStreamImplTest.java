@@ -103,43 +103,43 @@ public class SessionWindowedCogroupedKStreamImplTest {
     @Test
     public void shouldNotHaveNullMaterializedOnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            sessionMerger, (Named) null));
+                sessionMerger, (Named) null));
     }
 
     @Test
     public void shouldNotHaveNullSessionMerger2OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            null, Materialized.as("test")));
+                null, Materialized.as("test")));
     }
 
     @Test
     public void shouldNotHaveNullInitializer2OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(null, sessionMerger,
-            Materialized.as("test")));
+                Materialized.as("test")));
     }
 
     @Test
     public void shouldNotHaveNullMaterialized2OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            sessionMerger, Named.as("name"), null));
+                sessionMerger, Named.as("name"), null));
     }
 
     @Test
     public void shouldNotHaveNullSessionMerger3OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            null, Named.as("name"), Materialized.as("test")));
+                null, Named.as("name"), Materialized.as("test")));
     }
 
     @Test
     public void shouldNotHaveNullNamedOnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            sessionMerger, null, Materialized.as("test")));
+                sessionMerger, null, Materialized.as("test")));
     }
 
     @Test
     public void shouldNotHaveNullInitializer3OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(null, sessionMerger,
-            Named.as("name"), Materialized.as("test")));
+                Named.as("name"), Materialized.as("test")));
     }
 
     @Test

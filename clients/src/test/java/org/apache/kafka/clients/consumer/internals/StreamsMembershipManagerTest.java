@@ -137,8 +137,8 @@ public class StreamsMembershipManagerTest {
     @Test
     public void testAssignedPartitionCountMetricRegistered() {
         MetricName metricName = metrics.metricName(
-                "assigned-partitions",
-                CONSUMER_METRIC_GROUP_PREFIX + COORDINATOR_METRICS_SUFFIX
+            "assigned-partitions",
+            CONSUMER_METRIC_GROUP_PREFIX + COORDINATOR_METRICS_SUFFIX
         );
         assertNotNull(metrics.metric(metricName), "Metric assigned-partitions should have been registered");
     }

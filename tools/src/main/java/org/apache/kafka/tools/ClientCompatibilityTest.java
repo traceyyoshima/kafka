@@ -297,7 +297,7 @@ public class ClientCompatibilityTest {
                         throw e.getCause();
                     }
                 },
-                () ->  createTopicsResultTest(client, Set.of("newtopic"))
+                () -> createTopicsResultTest(client, Set.of("newtopic"))
             );
 
             while (true) {
@@ -349,7 +349,7 @@ public class ClientCompatibilityTest {
     }
 
     private void createTopicsResultTest(Admin client, Collection<String> topics)
-            throws InterruptedException, ExecutionException {
+        throws InterruptedException, ExecutionException {
         while (true) {
             try {
                 client.describeTopics(topics).allTopicNames().get();
@@ -524,7 +524,7 @@ public class ClientCompatibilityTest {
     }
 
     private void tryFeature(String featureName, boolean supported, Invoker invoker, ResultTester resultTester)
-            throws Throwable {
+        throws Throwable {
         try {
             invoker.invoke();
             log.info("Successfully used feature {}", featureName);

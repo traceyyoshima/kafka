@@ -710,7 +710,7 @@ public class SslTransportLayerTest {
 
         // Wait for echo server to send the message back
         TestUtils.waitForCondition(() ->
-            server.numSent() >= 2, "Timed out waiting for echo server to send message");
+                server.numSent() >= 2, "Timed out waiting for echo server to send message");
 
         // Read the message from socket with only one poll()
         selector.poll(1000L);
@@ -904,7 +904,7 @@ public class SslTransportLayerTest {
                 if (selector.disconnected().containsKey(node)) {
                     ChannelState.State state = selector.disconnected().get(node).state();
                     assertTrue(state == ChannelState.State.AUTHENTICATE || state == ChannelState.State.READY,
-                        "Unexpected channel state " + state);
+                            "Unexpected channel state " + state);
                     break;
                 }
             }
@@ -1003,7 +1003,7 @@ public class SslTransportLayerTest {
         server.selector().unmuteAll();
         selector.close(node);
         TestUtils.waitForCondition(() ->
-            bytesOut.toByteArray().length == totalSendSize, 5000, "All requests sent were not processed");
+                bytesOut.toByteArray().length == totalSendSize, 5000, "All requests sent were not processed");
     }
 
     /**
@@ -1023,8 +1023,8 @@ public class SslTransportLayerTest {
         TestSecurityConfig config = new TestSecurityConfig(args.sslServerConfigs);
         ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
         ChannelBuilder serverChannelBuilder = ChannelBuilders.serverChannelBuilder(listenerName,
-            true, securityProtocol, config, null, null, TIME, new LogContext(),
-            defaultApiVersionsSupplier());
+                true, securityProtocol, config, null, null, TIME, new LogContext(),
+                defaultApiVersionsSupplier());
         server = new NioEchoServer(listenerName, securityProtocol, config,
                 "localhost", serverChannelBuilder, null, TIME);
         server.start();
@@ -1047,8 +1047,8 @@ public class SslTransportLayerTest {
         TestSecurityConfig config = new TestSecurityConfig(args.sslServerConfigs);
         ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
         assertThrows(KafkaException.class, () -> ChannelBuilders.serverChannelBuilder(
-            listenerName, true, securityProtocol, config,
-            null, null, TIME, new LogContext(), defaultApiVersionsSupplier()));
+                listenerName, true, securityProtocol, config,
+                null, null, TIME, new LogContext(), defaultApiVersionsSupplier()));
     }
 
     /**
@@ -1062,8 +1062,8 @@ public class SslTransportLayerTest {
         TestSecurityConfig config = new TestSecurityConfig(args.sslServerConfigs);
         ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
         ChannelBuilder serverChannelBuilder = ChannelBuilders.serverChannelBuilder(listenerName,
-            false, securityProtocol, config, null, null, TIME, new LogContext(),
-            defaultApiVersionsSupplier());
+                false, securityProtocol, config, null, null, TIME, new LogContext(),
+                defaultApiVersionsSupplier());
         server = new NioEchoServer(listenerName, securityProtocol, config,
                 "localhost", serverChannelBuilder, null, TIME);
         server.start();
@@ -1123,10 +1123,10 @@ public class SslTransportLayerTest {
         TestSecurityConfig config = new TestSecurityConfig(args.sslServerConfigs);
         ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
         ChannelBuilder serverChannelBuilder = ChannelBuilders.serverChannelBuilder(listenerName,
-            false, securityProtocol, config, null, null, TIME, new LogContext(),
-            defaultApiVersionsSupplier());
+                false, securityProtocol, config, null, null, TIME, new LogContext(),
+                defaultApiVersionsSupplier());
         server = new NioEchoServer(listenerName, securityProtocol, config,
-            "localhost", serverChannelBuilder, null, TIME);
+                "localhost", serverChannelBuilder, null, TIME);
         server.start();
         InetSocketAddress addr = new InetSocketAddress("localhost", server.port());
 
@@ -1189,8 +1189,8 @@ public class SslTransportLayerTest {
         TestSecurityConfig config = new TestSecurityConfig(args.sslServerConfigs);
         ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
         ChannelBuilder serverChannelBuilder = ChannelBuilders.serverChannelBuilder(listenerName,
-            false, securityProtocol, config, null, null, TIME, new LogContext(),
-            defaultApiVersionsSupplier());
+                false, securityProtocol, config, null, null, TIME, new LogContext(),
+                defaultApiVersionsSupplier());
         server = new NioEchoServer(listenerName, securityProtocol, config,
                 "localhost", serverChannelBuilder, null, TIME);
         server.start();
@@ -1294,7 +1294,7 @@ public class SslTransportLayerTest {
     }
 
     private Selector createSelector(Map<String, Object> sslClientConfigs, final Integer netReadBufSize,
-                                final Integer netWriteBufSize, final Integer appBufSize) {
+                                    final Integer netWriteBufSize, final Integer appBufSize) {
         TestSslChannelBuilder channelBuilder = new TestSslChannelBuilder(ConnectionMode.CLIENT);
         channelBuilder.configureBufferSizes(netReadBufSize, netWriteBufSize, appBufSize);
         channelBuilder.configure(sslClientConfigs);
@@ -1388,6 +1388,7 @@ public class SslTransportLayerTest {
         FailureAction THROW_IO_EXCEPTION = () -> {
             throw new IOException("Test IO exception");
         };
+
         void run() throws IOException;
     }
 
@@ -1509,9 +1510,11 @@ public class SslTransportLayerTest {
 
         static class ResizeableBufferSize {
             private Integer bufSizeOverride;
+
             ResizeableBufferSize(Integer bufSizeOverride) {
                 this.bufSizeOverride = bufSizeOverride;
             }
+
             int updateAndGet(int actualSize, boolean update) {
                 int size = actualSize;
                 if (bufSizeOverride != null) {

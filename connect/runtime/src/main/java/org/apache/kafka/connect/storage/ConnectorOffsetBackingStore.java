@@ -312,12 +312,12 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
 
         if (secondaryStore != null && !tombstoneOffsets.isEmpty()) {
             return new ChainedOffsetWriteFuture(
-                primaryStore,
-                secondaryStore,
-                values,
-                regularOffsets,
-                tombstoneOffsets,
-                callback
+                    primaryStore,
+                    secondaryStore,
+                    values,
+                    regularOffsets,
+                    tombstoneOffsets,
+                    callback
             );
         } else {
             return setPrimaryThenSecondary(primaryStore, secondaryStore, values, regularOffsets, callback);
@@ -325,11 +325,11 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
     }
 
     private Future<Void> setPrimaryThenSecondary(
-        OffsetBackingStore primaryStore,
-        OffsetBackingStore secondaryStore,
-        Map<ByteBuffer, ByteBuffer> completeOffsets,
-        Map<ByteBuffer, ByteBuffer> nonTombstoneOffsets,
-        Callback<Void> callback
+            OffsetBackingStore primaryStore,
+            OffsetBackingStore secondaryStore,
+            Map<ByteBuffer, ByteBuffer> completeOffsets,
+            Map<ByteBuffer, ByteBuffer> nonTombstoneOffsets,
+            Callback<Void> callback
     ) {
         return primaryStore.set(completeOffsets, (primaryWriteError, ignored) -> {
             if (secondaryStore != null) {
@@ -411,12 +411,12 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
         private final CountDownLatch completed;
 
         public ChainedOffsetWriteFuture(
-            OffsetBackingStore primaryStore,
-            OffsetBackingStore secondaryStore,
-            Map<ByteBuffer, ByteBuffer> completeOffsets,
-            Map<ByteBuffer, ByteBuffer> regularOffsets,
-            Map<ByteBuffer, ByteBuffer> tombstoneOffsets,
-            Callback<Void> callback
+                OffsetBackingStore primaryStore,
+                OffsetBackingStore secondaryStore,
+                Map<ByteBuffer, ByteBuffer> completeOffsets,
+                Map<ByteBuffer, ByteBuffer> regularOffsets,
+                Map<ByteBuffer, ByteBuffer> tombstoneOffsets,
+                Callback<Void> callback
         ) {
             this.primaryStore = primaryStore;
             this.secondaryStore = secondaryStore;

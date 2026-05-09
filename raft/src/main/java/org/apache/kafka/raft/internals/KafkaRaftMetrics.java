@@ -81,9 +81,9 @@ public class KafkaRaftMetrics implements AutoCloseable {
         this.currentVotedIdMetricName = metrics.metricName("current-vote", metricGroupName, "The current voted id; -1 indicates not voted for anyone");
 
         this.currentVotedDirectoryIdMetricName = metrics.metricName(
-            "current-vote-directory-id",
-            metricGroupName,
-            String.format("The current voted directory id; %s indicates not voted for a directory id", Uuid.ZERO_UUID)
+                "current-vote-directory-id",
+                metricGroupName,
+                String.format("The current voted directory id; %s indicates not voted for a directory id", Uuid.ZERO_UUID)
         );
 
         this.currentEpochMetricName = metrics.metricName("current-epoch", metricGroupName, "The current quorum epoch.");
@@ -132,13 +132,13 @@ public class KafkaRaftMetrics implements AutoCloseable {
 
         this.pollDurationSensor = metrics.sensor("poll-idle-ratio");
         this.pollDurationSensor.add(
-            metrics.metricName(
-                "poll-idle-ratio-avg",
-                metricGroupName,
-                "The ratio of time the Raft IO thread is idle as opposed to " +
+                metrics.metricName(
+                        "poll-idle-ratio-avg",
+                        metricGroupName,
+                        "The ratio of time the Raft IO thread is idle as opposed to " +
                     "doing work (e.g. handling requests or replicating from the leader)"
-            ),
-            new TimeRatio(1.0)
+                ),
+                new TimeRatio(1.0)
         );
     }
 
@@ -189,7 +189,7 @@ public class KafkaRaftMetrics implements AutoCloseable {
         metrics.addMetric(this.currentEpochMetricName, (Gauge<Integer>) (mConfig, currentTimeMs) -> state.epoch());
 
         metrics.addMetric(
-            this.highWatermarkMetricName,
+                this.highWatermarkMetricName,
                 (Gauge<Long>) (mConfig, currentTimeMs) -> state.highWatermark().map(LogOffsetMetadata::offset).orElse(-1L)
         );
     }
@@ -264,26 +264,26 @@ public class KafkaRaftMetrics implements AutoCloseable {
     @Override
     public void close() {
         List.of(
-            currentLeaderIdMetricName,
-            currentVotedIdMetricName,
-            currentVotedDirectoryIdMetricName,
-            currentEpochMetricName,
-            currentStateMetricName,
-            highWatermarkMetricName,
-            logEndOffsetMetricName,
-            logEndEpochMetricName,
-            numObserversMetricName,
-            numUnknownVoterConnectionsMetricName,
-            numVotersMetricName,
-            uncommittedVoterChangeMetricName
+                currentLeaderIdMetricName,
+                currentVotedIdMetricName,
+                currentVotedDirectoryIdMetricName,
+                currentEpochMetricName,
+                currentStateMetricName,
+                highWatermarkMetricName,
+                logEndOffsetMetricName,
+                logEndEpochMetricName,
+                numObserversMetricName,
+                numUnknownVoterConnectionsMetricName,
+                numVotersMetricName,
+                uncommittedVoterChangeMetricName
         ).forEach(metrics::removeMetric);
 
         List.of(
-            commitTimeSensor.name(),
-            electionTimeSensor.name(),
-            fetchRecordsSensor.name(),
-            appendRecordsSensor.name(),
-            pollDurationSensor.name()
+                commitTimeSensor.name(),
+                electionTimeSensor.name(),
+                fetchRecordsSensor.name(),
+                appendRecordsSensor.name(),
+                pollDurationSensor.name()
         ).forEach(metrics::removeSensor);
     }
 }

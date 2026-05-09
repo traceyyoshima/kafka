@@ -117,13 +117,13 @@ public class KafkaClusterTestKitTest {
             nodes.brokerNodes().forEach((brokerId, node) -> {
                 assertEquals(numDisks, node.logDataDirectories().size());
                 Set<String> expectedDisks = IntStream.range(0, numDisks)
-                        .mapToObj(i -> {
-                            if (nodes.isCombined(node.id())) {
-                                return String.format("combined_%d_%d", brokerId, i);
-                            } else {
-                                return String.format("broker_%d_data%d", brokerId, i);
-                            }
-                        }).collect(Collectors.toSet());
+                    .mapToObj(i -> {
+                        if (nodes.isCombined(node.id())) {
+                            return String.format("combined_%d_%d", brokerId, i);
+                        } else {
+                            return String.format("broker_%d_data%d", brokerId, i);
+                        }
+                    }).collect(Collectors.toSet());
                 assertEquals(
                     expectedDisks,
                     node.logDataDirectories().stream()

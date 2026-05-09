@@ -50,16 +50,16 @@ public class UnifierTest {
     }
 
     static final MessageSpec TOP_LEVEL_MESSAGE_1 = new MessageSpec("TopLevelMessage",
-            "0-2", null, null, null, MessageSpecType.DATA, Collections.emptyList(),
-            "0+", Collections.emptyList(), false);
+        "0-2", null, null, null, MessageSpecType.DATA, Collections.emptyList(),
+        "0+", Collections.emptyList(), false);
 
     static final MessageSpec TOP_LEVEL_MESSAGE_2 = new MessageSpec("TopLevelMessage",
-            "0-4", null, null, null, MessageSpecType.DATA, Collections.emptyList(),
-            "0+", Collections.emptyList(), false);
+        "0-4", null, null, null, MessageSpecType.DATA, Collections.emptyList(),
+        "0+", Collections.emptyList(), false);
 
     static final MessageSpec TOP_LEVEL_MESSAGE_2_DROPPING_V0 = new MessageSpec("TopLevelMessage",
-            "1-4", null, null, null, MessageSpecType.DATA, Collections.emptyList(),
-            "0+", Collections.emptyList(), false);
+        "1-4", null, null, null, MessageSpecType.DATA, Collections.emptyList(),
+        "0+", Collections.emptyList(), false);
 
     @Test
     public void testFieldTypesDoNotMatch() throws Exception {
@@ -157,8 +157,8 @@ public class UnifierTest {
     @Test
     public void testNullableVersionsCheckPasses2() throws Exception {
         new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                fieldWithNulls("foo", "0+", "string", "0+"), // effectively 0-2 because of max valid version
-                fieldWithNulls("foo", "0+", "string", "0-2"));
+            fieldWithNulls("foo", "0+", "string", "0+"), // effectively 0-2 because of max valid version
+            fieldWithNulls("foo", "0+", "string", "0-2"));
     }
 
     @Test

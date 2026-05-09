@@ -91,8 +91,8 @@ abstract class AbstractReadWriteDecorator<T extends StateStore, K, V> extends Wr
     }
 
     static class KeyValueStoreReadWriteDecorator<K, V>
-        extends AbstractReadWriteDecorator<KeyValueStore<K, V>, K, V>
-        implements KeyValueStore<K, V> {
+    extends AbstractReadWriteDecorator<KeyValueStore<K, V>, K, V>
+    implements KeyValueStore<K, V> {
 
         KeyValueStoreReadWriteDecorator(final KeyValueStore<K, V> inner) {
             super(inner);
@@ -160,8 +160,8 @@ abstract class AbstractReadWriteDecorator<T extends StateStore, K, V> extends Wr
     }
 
     static class TimestampedKeyValueStoreReadWriteDecorator<K, V>
-        extends KeyValueStoreReadWriteDecorator<K, ValueAndTimestamp<V>>
-        implements TimestampedKeyValueStore<K, V> {
+    extends KeyValueStoreReadWriteDecorator<K, ValueAndTimestamp<V>>
+    implements TimestampedKeyValueStore<K, V> {
 
         TimestampedKeyValueStoreReadWriteDecorator(final TimestampedKeyValueStore<K, V> inner) {
             super(inner);
@@ -169,8 +169,8 @@ abstract class AbstractReadWriteDecorator<T extends StateStore, K, V> extends Wr
     }
 
     static class VersionedKeyValueStoreReadWriteDecorator<K, V>
-        extends AbstractReadWriteDecorator<VersionedKeyValueStore<K, V>, K, V>
-        implements VersionedKeyValueStore<K, V> {
+    extends AbstractReadWriteDecorator<VersionedKeyValueStore<K, V>, K, V>
+    implements VersionedKeyValueStore<K, V> {
 
         VersionedKeyValueStoreReadWriteDecorator(final VersionedKeyValueStore<K, V> inner) {
             super(inner);
@@ -198,8 +198,8 @@ abstract class AbstractReadWriteDecorator<T extends StateStore, K, V> extends Wr
     }
 
     static class WindowStoreReadWriteDecorator<K, V>
-        extends AbstractReadWriteDecorator<WindowStore<K, V>, K, V>
-        implements WindowStore<K, V> {
+    extends AbstractReadWriteDecorator<WindowStore<K, V>, K, V>
+    implements WindowStore<K, V> {
 
         WindowStoreReadWriteDecorator(final WindowStore<K, V> inner) {
             super(inner);
@@ -272,8 +272,8 @@ abstract class AbstractReadWriteDecorator<T extends StateStore, K, V> extends Wr
     }
 
     static class TimestampedWindowStoreReadWriteDecorator<K, V>
-        extends WindowStoreReadWriteDecorator<K, ValueAndTimestamp<V>>
-        implements TimestampedWindowStore<K, V> {
+    extends WindowStoreReadWriteDecorator<K, ValueAndTimestamp<V>>
+    implements TimestampedWindowStore<K, V> {
 
         TimestampedWindowStoreReadWriteDecorator(final TimestampedWindowStore<K, V> inner) {
             super(inner);
@@ -281,8 +281,8 @@ abstract class AbstractReadWriteDecorator<T extends StateStore, K, V> extends Wr
     }
 
     static class TimestampedWindowStoreWithHeadersReadWriteDecorator<K, V>
-        extends WindowStoreReadWriteDecorator<K, ValueTimestampHeaders<V>>
-        implements TimestampedWindowStoreWithHeaders<K, V> {
+    extends WindowStoreReadWriteDecorator<K, ValueTimestampHeaders<V>>
+    implements TimestampedWindowStoreWithHeaders<K, V> {
 
         TimestampedWindowStoreWithHeadersReadWriteDecorator(final TimestampedWindowStoreWithHeaders<K, V> inner) {
             super(inner);
@@ -290,8 +290,8 @@ abstract class AbstractReadWriteDecorator<T extends StateStore, K, V> extends Wr
     }
 
     static class SessionStoreWithHeadersReadWriteDecorator<K, AGG>
-        extends SessionStoreReadWriteDecorator<K, AggregationWithHeaders<AGG>>
-        implements SessionStoreWithHeaders<K, AGG> {
+    extends SessionStoreReadWriteDecorator<K, AggregationWithHeaders<AGG>>
+    implements SessionStoreWithHeaders<K, AGG> {
 
         SessionStoreWithHeadersReadWriteDecorator(final SessionStoreWithHeaders<K, AGG> inner) {
             super(inner);
@@ -299,8 +299,8 @@ abstract class AbstractReadWriteDecorator<T extends StateStore, K, V> extends Wr
     }
 
     static class SessionStoreReadWriteDecorator<K, AGG>
-        extends AbstractReadWriteDecorator<SessionStore<K, AGG>, K, AGG>
-        implements SessionStore<K, AGG> {
+    extends AbstractReadWriteDecorator<SessionStore<K, AGG>, K, AGG>
+    implements SessionStore<K, AGG> {
 
         SessionStoreReadWriteDecorator(final SessionStore<K, AGG> inner) {
             super(inner);
@@ -422,8 +422,8 @@ abstract class AbstractReadWriteDecorator<T extends StateStore, K, V> extends Wr
     }
 
     static class TimestampedKeyValueStoreReadWriteDecoratorWithHeaders<K, V>
-        extends KeyValueStoreReadWriteDecorator<K, ValueTimestampHeaders<V>>
-        implements TimestampedKeyValueStoreWithHeaders<K, V> {
+    extends KeyValueStoreReadWriteDecorator<K, ValueTimestampHeaders<V>>
+    implements TimestampedKeyValueStoreWithHeaders<K, V> {
 
         TimestampedKeyValueStoreReadWriteDecoratorWithHeaders(final TimestampedKeyValueStoreWithHeaders<K, V> inner) {
             super(inner);

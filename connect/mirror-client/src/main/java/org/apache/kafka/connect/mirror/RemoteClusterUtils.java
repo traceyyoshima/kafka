@@ -96,7 +96,7 @@ public final class RemoteClusterUtils {
      */
     public static Map<TopicPartition, OffsetAndMetadata> translateOffsets(Map<String, Object> properties,
             String remoteClusterAlias, String consumerGroupId, Duration timeout)
-            throws InterruptedException, TimeoutException {
+                    throws InterruptedException, TimeoutException {
         try (MirrorClient client = new MirrorClient(properties)) {
             return client.remoteConsumerOffsets(consumerGroupId, remoteClusterAlias, timeout);
         }

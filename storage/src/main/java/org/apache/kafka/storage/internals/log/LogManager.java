@@ -410,7 +410,7 @@ public class LogManager {
      */
     public void handleLogDirFailure(String dir) {
         LOG.warn("Stopping serving logs in dir {}", dir);
-        synchronized (logCreationOrDeletionLock)  {
+        synchronized (logCreationOrDeletionLock) {
             liveLogDirs.remove(new File(dir));
             directoryIds.remove(dir);
             if (liveLogDirs.isEmpty()) {
@@ -509,35 +509,35 @@ public class LogManager {
 
     // Visible for testing
     public UnifiedLog loadLog(File logDir,
-                               boolean hadCleanShutdown,
-                               Map<TopicPartition, Long> recoveryPoints,
-                               Map<TopicPartition, Long> logStartOffsets,
-                               LogConfig defaultConfig,
-                               Map<String, LogConfig> topicConfigOverrides,
-                               ConcurrentMap<String, Integer> numRemainingSegments,
-                               Function<UnifiedLog, Boolean> isStray) throws IOException {
+                              boolean hadCleanShutdown,
+                              Map<TopicPartition, Long> recoveryPoints,
+                              Map<TopicPartition, Long> logStartOffsets,
+                              LogConfig defaultConfig,
+                              Map<String, LogConfig> topicConfigOverrides,
+                              ConcurrentMap<String, Integer> numRemainingSegments,
+                              Function<UnifiedLog, Boolean> isStray) throws IOException {
         TopicPartition topicPartition = UnifiedLog.parseTopicPartitionName(logDir);
         LogConfig config = topicConfigOverrides.getOrDefault(topicPartition.topic(), defaultConfig);
         long logRecoveryPoint = recoveryPoints.getOrDefault(topicPartition, 0L);
         long logStartOffset = logStartOffsets.getOrDefault(topicPartition, 0L);
 
         UnifiedLog log = UnifiedLog.create(
-            logDir,
-            config,
-            logStartOffset,
-            logRecoveryPoint,
-            scheduler,
-            brokerTopicStats,
-            time,
-            maxTransactionTimeoutMs,
-            producerStateManagerConfig,
-            producerIdExpirationCheckIntervalMs,
-            logDirFailureChannel,
-            hadCleanShutdown,
-            Optional.empty(),
-            numRemainingSegments,
-            remoteStorageSystemEnable,
-            LogOffsetsListener.NO_OP_OFFSETS_LISTENER);
+                logDir,
+                config,
+                logStartOffset,
+                logRecoveryPoint,
+                scheduler,
+                brokerTopicStats,
+                time,
+                maxTransactionTimeoutMs,
+                producerStateManagerConfig,
+                producerIdExpirationCheckIntervalMs,
+                logDirFailureChannel,
+                hadCleanShutdown,
+                Optional.empty(),
+                numRemainingSegments,
+                remoteStorageSystemEnable,
+                LogOffsetsListener.NO_OP_OFFSETS_LISTENER);
 
         if (logDir.getName().endsWith(UnifiedLog.DELETE_DIR_SUFFIX)) {
             addLogToBeDeleted(log);
@@ -722,7 +722,7 @@ public class LogManager {
             }
 
             offlineDirs.forEach(entry ->
-                logDirFailureChannel.maybeAddOfflineLogDir(entry.getKey(), "Error while loading log dir " + entry.getKey(), entry.getValue())
+                    logDirFailureChannel.maybeAddOfflineLogDir(entry.getKey(), "Error while loading log dir " + entry.getKey(), entry.getValue())
             );
         } catch (ExecutionException e) {
             LOG.error("There was an error in one of the threads during logs loading", e.getCause());
@@ -937,8 +937,8 @@ public class LogManager {
             TopicPartition topicPartition = entry.getKey();
             long truncateOffset = entry.getValue();
             UnifiedLog log = isFuture
-                ? futureLogs.get(topicPartition)
-                : currentLogs.get(topicPartition);
+                    ? futureLogs.get(topicPartition)
+                    : currentLogs.get(topicPartition);
             // If the log does not exist, skip it
             if (log != null) {
                 // May need to abort and pause the cleaning of the log, and resume after truncation is done.
@@ -976,12 +976,12 @@ public class LogManager {
      * @param logStartOffsetOpt The log start offset to set for the log. If None, the new offset will be used.
      */
     public void truncateFullyAndStartAt(TopicPartition topicPartition,
-                                 long newOffset,
-                                 boolean isFuture,
-                                 Optional<Long> logStartOffsetOpt) {
+                                        long newOffset,
+                                        boolean isFuture,
+                                        Optional<Long> logStartOffsetOpt) {
         UnifiedLog log = isFuture
-            ? futureLogs.get(topicPartition)
-            : currentLogs.get(topicPartition);
+                ? futureLogs.get(topicPartition)
+                : currentLogs.get(topicPartition);
         // If the log does not exist, skip it
         if (log != null) {
             // Abort and pause the cleaning of the log, and resume after truncation is done.
@@ -1022,7 +1022,7 @@ public class LogManager {
     public void checkpointLogStartOffsets() {
         Map<String, Map<TopicPartition, UnifiedLog>> logsByDirCached = logsByDir();
         liveLogDirs.forEach(logDir ->
-            checkpointLogStartOffsetsInDir(logDir, logsInDir(logsByDirCached, logDir))
+                checkpointLogStartOffsetsInDir(logDir, logsInDir(logsByDirCached, logDir))
         );
     }
 
@@ -1163,8 +1163,8 @@ public class LogManager {
      */
     public Optional<UnifiedLog> getLog(TopicPartition topicPartition, boolean isFuture) {
         return isFuture
-            ? Optional.ofNullable(futureLogs.get(topicPartition))
-            : Optional.ofNullable(currentLogs.get(topicPartition));
+                ? Optional.ofNullable(futureLogs.get(topicPartition))
+                : Optional.ofNullable(currentLogs.get(topicPartition));
     }
 
     /**
@@ -1185,7 +1185,7 @@ public class LogManager {
         partitionsInitializing.keySet().stream()
                 .filter(tp -> tp.topic().equals(topic))
                 .forEach(topicPartition ->
-                    partitionsInitializing.replace(topicPartition, false, true));
+                        partitionsInitializing.replace(topicPartition, false, true));
     }
 
     /**
@@ -1275,7 +1275,7 @@ public class LogManager {
 
             // Ensure topic IDs are consistent
             topicId.ifPresent(id ->
-                log.topicId().ifPresent(logTopicId -> {
+                    log.topicId().ifPresent(logTopicId -> {
                     if (!id.equals(logTopicId))
                         throw new InconsistentTopicIdException("Tried to assign topic ID " + id + " to log for topic partition " + topicPartition + "," +
                                 "but log already contained topic ID " + logTopicId);
@@ -1503,7 +1503,7 @@ public class LogManager {
      * @param topicPartition TopicPartition that needs to be swapped
      */
     public void replaceCurrentWithFutureLog(TopicPartition topicPartition) throws IOException {
-        synchronized (logCreationOrDeletionLock)  {
+        synchronized (logCreationOrDeletionLock) {
             UnifiedLog sourceLog = currentLogs.get(topicPartition);
             UnifiedLog destLog = futureLogs.get(topicPartition);
 
@@ -1537,7 +1537,7 @@ public class LogManager {
         currentLogs.put(topicPartition, destLog);
         if (cleaner != null) {
             sourceLog.ifPresent(srcLog ->
-                cleaner.alterCheckpointDir(topicPartition, srcLog.parentDirFile(), destLog.parentDirFile())
+                    cleaner.alterCheckpointDir(topicPartition, srcLog.parentDirFile(), destLog.parentDirFile())
             );
             resumeCleaning(topicPartition);
         }
@@ -1588,7 +1588,7 @@ public class LogManager {
      */
     public Optional<UnifiedLog> asyncDelete(TopicPartition topicPartition, boolean isFuture, boolean checkpoint, boolean isStray) {
         Optional<UnifiedLog> removedLogOpt;
-        synchronized (logCreationOrDeletionLock)  {
+        synchronized (logCreationOrDeletionLock) {
             removedLogOpt = removeLogAndMetrics(isFuture ? futureLogs : currentLogs, topicPartition);
         }
         if (removedLogOpt.isPresent()) {
@@ -1772,10 +1772,10 @@ public class LogManager {
         // When changing this code please measure the changes with org.apache.kafka.jmh.server.CheckpointBench
         Map<String, Map<TopicPartition, UnifiedLog>> byDir = new HashMap<>();
         currentLogs.forEach((tp, log) ->
-            byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
+                byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
         );
         futureLogs.forEach((tp, log) ->
-            byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
+                byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
         );
         return byDir;
     }

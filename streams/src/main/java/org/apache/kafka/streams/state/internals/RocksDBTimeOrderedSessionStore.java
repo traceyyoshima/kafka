@@ -32,7 +32,7 @@ import java.util.Objects;
 
 public class RocksDBTimeOrderedSessionStore
     extends WrappedStateStore<AbstractRocksDBTimeOrderedSegmentedBytesStore<? extends Segment>, Object, Object>
-    implements SessionStore<Bytes, byte[]> {
+        implements SessionStore<Bytes, byte[]> {
 
     private StateStoreContext stateStoreContext;
 

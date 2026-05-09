@@ -189,7 +189,7 @@ public class ShareSessionContext extends ShareFetchContext {
 
     @Override
     public ShareFetchResponse updateAndGenerateResponseData(String groupId, String memberId,
-                                                     LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> updates) {
+                                                            LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> updates) {
         if (!isSubsequent) {
             return ShareFetchResponse.of(Errors.NONE, 0, updates, List.of(), 0);
         } else {

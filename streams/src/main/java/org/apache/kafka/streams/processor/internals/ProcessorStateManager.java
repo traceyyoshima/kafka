@@ -260,12 +260,12 @@ public class ProcessorStateManager implements StateManager {
                 if (isLoggingEnabled(store.name())) {
                     final TopicPartition changelogPartition = getStorePartition(store.name());
                     final StateStore maybeWrappedStore = LegacyCheckpointingStateStore.maybeWrapStore(
-                            store, eosEnabled, Set.of(changelogPartition), stateDirectory, taskId, logPrefix);
+                        store, eosEnabled, Set.of(changelogPartition), stateDirectory, taskId, logPrefix);
                     maybeWrappedStore.init(processorContext, maybeWrappedStore);
                     storesToMigrate.put(changelogPartition, maybeWrappedStore);
                 } else {
                     final StateStore maybeWrappedStore = LegacyCheckpointingStateStore.maybeWrapStore(
-                            store, eosEnabled, Set.of(), stateDirectory, taskId, logPrefix);
+                        store, eosEnabled, Set.of(), stateDirectory, taskId, logPrefix);
                     maybeWrappedStore.init(processorContext, maybeWrappedStore);
                 }
             }
@@ -294,8 +294,8 @@ public class ProcessorStateManager implements StateManager {
             if (store.corrupted) {
                 log.error("Tried to initialize store offsets for corrupted store {}", store);
                 throw new ProcessorStateException(
-                        "Error initializing offsets for store '" + store + "'",
-                        new IllegalStateException("Should not initialize offsets for a corrupted task")
+                    "Error initializing offsets for store '" + store + "'",
+                    new IllegalStateException("Should not initialize offsets for a corrupted task")
                 );
             }
 
@@ -522,9 +522,9 @@ public class ProcessorStateManager implements StateManager {
                             metadata.commitCallback.onCommit();
                         } catch (final IOException e) {
                             throw new ProcessorStateException(
-                                    format("%sException caught while trying to checkpoint store, " +
+                                format("%sException caught while trying to checkpoint store, " +
                                             "changelog partition %s", logPrefix, metadata.changelogPartition),
-                                    e
+                                e
                             );
                         }
                     }
@@ -534,13 +534,13 @@ public class ProcessorStateManager implements StateManager {
                         // In case of FailedProcessingException Do not keep the failed processing exception in the stack trace
                         if (exception instanceof FailedProcessingException)
                             firstException = new ProcessorStateException(
-                                    format("%sFailed to commit state store %s", logPrefix, store.name()),
-                                    exception.getCause());
+                                format("%sFailed to commit state store %s", logPrefix, store.name()),
+                                exception.getCause());
                         else if (exception instanceof StreamsException)
                             firstException = exception;
                         else
                             firstException = new ProcessorStateException(
-                                    format("%sFailed to commit state store %s", logPrefix, store.name()), exception);
+                                format("%sFailed to commit state store %s", logPrefix, store.name()), exception);
                         log.error("Failed to commit state store {}: ", store.name(), firstException);
                     } else {
                         log.error("Failed to commit state store {}: ", store.name(), exception);
@@ -696,7 +696,7 @@ public class ProcessorStateManager implements StateManager {
                 store.setOffset(entry.getValue());
 
                 log.debug("State store {} updated to written offset {} at changelog {}",
-                        store.stateStore.name(), store.offset, store.changelogPartition);
+                    store.stateStore.name(), store.offset, store.changelogPartition);
             }
         }
 

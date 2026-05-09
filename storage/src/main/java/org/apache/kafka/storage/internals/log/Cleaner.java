@@ -329,14 +329,14 @@ public class Cleaner {
 
         } catch (LogCleaningAbortedException e) {
             Stream.concat(cleanedSegments.stream(), Stream.of(currentCleaned))
-                .distinct()
-                .forEach(segment -> {
-                    try {
-                        segment.deleteIfExists();
-                    } catch (Exception deleteException) {
-                        e.addSuppressed(deleteException);
-                    }
-                });
+                  .distinct()
+                  .forEach(segment -> {
+                      try {
+                          segment.deleteIfExists();
+                      } catch (Exception deleteException) {
+                          e.addSuppressed(deleteException);
+                      }
+                  });
             throw e;
         }
     }
@@ -363,18 +363,18 @@ public class Cleaner {
      *         was detected in the source), or {@code Optional.empty()} if cleaning completed normally
      */
     private Optional<Integer> cleanInto(TopicPartition topicPartition,
-                           FileRecords sourceRecords,
-                           LogSegment dest,
-                           int startPosition,
-                           OffsetMap map,
-                           boolean retainLegacyDeletesAndTxnMarkers,
-                           long deleteRetentionMs,
-                           int maxLogMessageSize,
-                           CleanedTransactionMetadata transactionMetadata,
-                           Map<Long, LastRecord> lastRecordsOfActiveProducers,
-                           long upperBoundOffsetOfCleaningRound,
-                           CleanerStats stats,
-                           long currentTime) throws IOException {
+                                        FileRecords sourceRecords,
+                                        LogSegment dest,
+                                        int startPosition,
+                                        OffsetMap map,
+                                        boolean retainLegacyDeletesAndTxnMarkers,
+                                        long deleteRetentionMs,
+                                        int maxLogMessageSize,
+                                        CleanedTransactionMetadata transactionMetadata,
+                                        Map<Long, LastRecord> lastRecordsOfActiveProducers,
+                                        long upperBoundOffsetOfCleaningRound,
+                                        CleanerStats stats,
+                                        long currentTime) throws IOException {
         MemoryRecords.RecordFilter logCleanerFilter = new MemoryRecords.RecordFilter(currentTime, deleteRetentionMs) {
             private boolean discardBatchRecords;
 

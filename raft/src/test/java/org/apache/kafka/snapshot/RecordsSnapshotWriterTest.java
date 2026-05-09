@@ -65,14 +65,13 @@ final class RecordsSnapshotWriterTest {
         }
 
         try (RecordsSnapshotReader<String> reader = RecordsSnapshotReader.of(
-                new MockRawSnapshotReader(snapshotId, buffer.get()),
-                STRING_SERDE,
-                BufferSupplier.NO_CACHING,
-                maxBatchSizeBytes,
-                true,
-                new LogContext()
-            )
-        ) {
+            new MockRawSnapshotReader(snapshotId, buffer.get()),
+            STRING_SERDE,
+            BufferSupplier.NO_CACHING,
+            maxBatchSizeBytes,
+            true,
+            new LogContext()
+        )) {
             // Consume the control record batch
             Batch<String> batch = reader.next();
             assertEquals(1, batch.controlRecords().size());
@@ -138,14 +137,13 @@ final class RecordsSnapshotWriterTest {
         }
 
         try (RecordsSnapshotReader<String> reader = RecordsSnapshotReader.of(
-                new MockRawSnapshotReader(snapshotId, buffer.get()),
-                STRING_SERDE,
-                BufferSupplier.NO_CACHING,
-                maxBatchSizeBytes,
-                true,
-                new LogContext()
-            )
-        ) {
+            new MockRawSnapshotReader(snapshotId, buffer.get()),
+            STRING_SERDE,
+            BufferSupplier.NO_CACHING,
+            maxBatchSizeBytes,
+            true,
+            new LogContext()
+        )) {
             // Consume the control record batch
             Batch<String> batch = reader.next();
             assertEquals(3, batch.controlRecords().size());
@@ -196,14 +194,13 @@ final class RecordsSnapshotWriterTest {
         }
 
         try (RecordsSnapshotReader<String> reader = RecordsSnapshotReader.of(
-                new MockRawSnapshotReader(snapshotId, buffer.get()),
-                STRING_SERDE,
-                BufferSupplier.NO_CACHING,
-                maxBatchSizeBytes,
-                true,
-                new LogContext()
-            )
-        ) {
+            new MockRawSnapshotReader(snapshotId, buffer.get()),
+            STRING_SERDE,
+            BufferSupplier.NO_CACHING,
+            maxBatchSizeBytes,
+            true,
+            new LogContext()
+        )) {
             // Consume the control record batch
             Batch<String> batch = reader.next();
             assertEquals(2, batch.controlRecords().size());

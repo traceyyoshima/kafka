@@ -214,14 +214,14 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
     public TimeWindowedKStream<K, V> windowedBy(final SlidingWindows windows) {
 
         return new SlidingWindowedKStreamImpl<>(
-                windows,
-                builder,
-                subTopologySourceNodes,
-                name,
-                keySerde,
-                valueSerde,
-                aggregateBuilder,
-                graphNode
+            windows,
+            builder,
+            subTopologySourceNodes,
+            name,
+            keySerde,
+            valueSerde,
+            aggregateBuilder,
+            graphNode
         );
     }
 

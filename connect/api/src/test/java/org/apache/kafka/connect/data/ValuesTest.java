@@ -345,7 +345,7 @@ public class ValuesTest {
 
     @Test
     public void shouldConvertSimpleString() {
-        assertRoundTrip(Schema.STRING_SCHEMA,  "simple");
+        assertRoundTrip(Schema.STRING_SCHEMA, "simple");
     }
 
     @Test
@@ -466,17 +466,17 @@ public class ValuesTest {
     @Test
     public void shouldParseStringListWithMultipleElementTypes() {
         assertParseStringArrayWithNoSchema(
-                List.of((byte) 1, (byte) 2, (short) 300, "four"),
-                "[1, 2, 300, \"four\"]");
+            List.of((byte) 1, (byte) 2, (short) 300, "four"),
+            "[1, 2, 300, \"four\"]");
         assertParseStringArrayWithNoSchema(
-                List.of((byte) 2, (short) 300, "four", (byte) 1),
-                "[2, 300, \"four\", 1]");
+            List.of((byte) 2, (short) 300, "four", (byte) 1),
+            "[2, 300, \"four\", 1]");
         assertParseStringArrayWithNoSchema(
-                List.of((short) 300, "four", (byte) 1, (byte) 2),
-                "[300, \"four\", 1, 2]");
+            List.of((short) 300, "four", (byte) 1, (byte) 2),
+            "[300, \"four\", 1, 2]");
         assertParseStringArrayWithNoSchema(
-                List.of("four", (byte) 1, (byte) 2, (short) 300),
-                "[\"four\", 1, 2, 300]");
+            List.of("four", (byte) 1, (byte) 2, (short) 300),
+            "[\"four\", 1, 2, 300]");
     }
 
     private void assertParseStringArrayWithNoSchema(List<Object> expected, String str) {
@@ -1018,7 +1018,7 @@ public class ValuesTest {
     @Test
     public void shouldNotConvertArrayValuesToDecimal() {
         List<Object> decimals = List.of("\"1.0\"", BigDecimal.valueOf(Long.MAX_VALUE).add(BigDecimal.ONE),
-                BigDecimal.valueOf(Long.MIN_VALUE).subtract(BigDecimal.ONE), (byte) 1, (byte) 1);
+            BigDecimal.valueOf(Long.MIN_VALUE).subtract(BigDecimal.ONE), (byte) 1, (byte) 1);
         List<Object> expected = new ArrayList<>(decimals); // most values are directly reproduced with the same type
         expected.set(0, "1.0"); // The quotes are parsed away, but the value remains a string
         SchemaAndValue schemaAndValue = Values.parseString(decimals.toString());
@@ -1031,7 +1031,7 @@ public class ValuesTest {
     @Test
     public void shouldParseArrayOfOnlyDecimals() {
         List<Object> decimals = List.of(BigDecimal.valueOf(Long.MAX_VALUE).add(BigDecimal.ONE),
-                BigDecimal.valueOf(Long.MIN_VALUE).subtract(BigDecimal.ONE));
+            BigDecimal.valueOf(Long.MIN_VALUE).subtract(BigDecimal.ONE));
         SchemaAndValue schemaAndValue = Values.parseString(decimals.toString());
         Schema schema = schemaAndValue.schema();
         assertEquals(Type.ARRAY, schema.type());

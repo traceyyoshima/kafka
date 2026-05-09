@@ -282,7 +282,7 @@ public class MetadataResponse extends AbstractResponse {
 
     public static MetadataResponse parse(Readable readable, short version) {
         return new MetadataResponse(new MetadataResponseData(readable, version),
-            hasReliableLeaderEpochs(version));
+                hasReliableLeaderEpochs(version));
     }
 
     public static class TopicMetadata {
@@ -499,11 +499,11 @@ public class MetadataResponse extends AbstractResponse {
         MetadataResponseData responseData = new MetadataResponseData();
         responseData.setThrottleTimeMs(throttleTimeMs);
         brokers.forEach(broker ->
-            responseData.brokers().add(new MetadataResponseBroker()
-                .setNodeId(broker.id())
-                .setHost(broker.host())
-                .setPort(broker.port())
-                .setRack(broker.rack()))
+                responseData.brokers().add(new MetadataResponseBroker()
+                        .setNodeId(broker.id())
+                        .setHost(broker.host())
+                        .setPort(broker.port())
+                        .setRack(broker.rack()))
         );
 
         responseData.setClusterId(clusterId);

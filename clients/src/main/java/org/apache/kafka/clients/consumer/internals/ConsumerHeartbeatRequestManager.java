@@ -60,14 +60,14 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
     private final HeartbeatState heartbeatState;
 
     public ConsumerHeartbeatRequestManager(
-            final LogContext logContext,
-            final Time time,
-            final ConsumerConfig config,
-            final CoordinatorRequestManager coordinatorRequestManager,
-            final SubscriptionState subscriptions,
-            final ConsumerMembershipManager membershipManager,
-            final BackgroundEventHandler backgroundEventHandler,
-            final Metrics metrics) {
+        final LogContext logContext,
+        final Time time,
+        final ConsumerConfig config,
+        final CoordinatorRequestManager coordinatorRequestManager,
+        final SubscriptionState subscriptions,
+        final ConsumerMembershipManager membershipManager,
+        final BackgroundEventHandler backgroundEventHandler,
+        final Metrics metrics) {
         super(logContext, time, config, coordinatorRequestManager, backgroundEventHandler,
             new HeartbeatMetricsManager(metrics));
         this.membershipManager = membershipManager;
@@ -76,15 +76,15 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
 
     // Visible for testing
     ConsumerHeartbeatRequestManager(
-            final LogContext logContext,
-            final Timer timer,
-            final ConsumerConfig config,
-            final CoordinatorRequestManager coordinatorRequestManager,
-            final ConsumerMembershipManager membershipManager,
-            final HeartbeatState heartbeatState,
-            final HeartbeatRequestState heartbeatRequestState,
-            final BackgroundEventHandler backgroundEventHandler,
-            final Metrics metrics) {
+        final LogContext logContext,
+        final Timer timer,
+        final ConsumerConfig config,
+        final CoordinatorRequestManager coordinatorRequestManager,
+        final ConsumerMembershipManager membershipManager,
+        final HeartbeatState heartbeatState,
+        final HeartbeatRequestState heartbeatRequestState,
+        final BackgroundEventHandler backgroundEventHandler,
+        final Metrics metrics) {
         super(logContext, timer, config, coordinatorRequestManager, heartbeatRequestState, backgroundEventHandler,
             new HeartbeatMetricsManager(metrics));
         this.membershipManager = membershipManager;
@@ -237,9 +237,9 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
         private final SentFields sentFields;
 
         public HeartbeatState(
-                final SubscriptionState subscriptions,
-                final ConsumerMembershipManager membershipManager,
-                final int rebalanceTimeoutMs) {
+            final SubscriptionState subscriptions,
+            final ConsumerMembershipManager membershipManager,
+            final int rebalanceTimeoutMs) {
             this.subscriptions = subscriptions;
             this.membershipManager = membershipManager;
             this.rebalanceTimeoutMs = rebalanceTimeoutMs;
@@ -322,9 +322,9 @@ public class ConsumerHeartbeatRequestManager extends AbstractHeartbeatRequestMan
 
         private List<ConsumerGroupHeartbeatRequestData.TopicPartitions> buildTopicPartitionsList(Map<Uuid, SortedSet<Integer>> topicIdPartitions) {
             return topicIdPartitions.entrySet().stream().map(
-                    entry -> new ConsumerGroupHeartbeatRequestData.TopicPartitions()
-                        .setTopicId(entry.getKey())
-                        .setPartitions(new ArrayList<>(entry.getValue())))
+                entry -> new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                    .setTopicId(entry.getKey())
+                    .setPartitions(new ArrayList<>(entry.getValue())))
                 .collect(Collectors.toList());
         }
 

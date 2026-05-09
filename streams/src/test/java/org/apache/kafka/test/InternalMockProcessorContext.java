@@ -70,7 +70,7 @@ import static org.apache.kafka.streams.processor.internals.StateRestoreCallbackA
 
 public class InternalMockProcessorContext<KOut, VOut>
     extends AbstractProcessorContext<KOut, VOut>
-    implements RecordCollector.Supplier {
+        implements RecordCollector.Supplier {
 
     private StateManager stateManager = new StateManagerStub();
     private final File stateDir;
@@ -209,14 +209,14 @@ public class InternalMockProcessorContext<KOut, VOut>
                                         final ThreadCache cache,
                                         final StreamsConfig config) {
         this(
-                stateDir,
-                keySerde,
-                valueSerde,
-                new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
-                config,
-                () -> collector,
-                cache,
-                Time.SYSTEM
+             stateDir,
+             keySerde,
+             valueSerde,
+             new StreamsMetricsImpl(new Metrics(), "mock", new MockTime()),
+             config,
+             () -> collector,
+             cache,
+             Time.SYSTEM
         );
     }
 
@@ -254,17 +254,17 @@ public class InternalMockProcessorContext<KOut, VOut>
         this.recordCollectorSupplier = collectorSupplier;
         this.time = time;
         consistencyEnabled = StreamsConfig.InternalConfig.getBoolean(
-                appConfigs(),
-                IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
-                false);
+            appConfigs(),
+            IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
+            false);
         this.recordContext = new ProcessorRecordContext(
-                0,
-                0,
-                0,
-                "topic",
-                new RecordHeaders(),
-                "sourceKey".getBytes(StandardCharsets.UTF_8),
-                "sourceValue".getBytes(StandardCharsets.UTF_8)
+            0,
+            0,
+            0,
+            "topic",
+            new RecordHeaders(),
+            "sourceKey".getBytes(StandardCharsets.UTF_8),
+            "sourceValue".getBytes(StandardCharsets.UTF_8)
         );
     }
 

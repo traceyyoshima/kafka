@@ -280,8 +280,8 @@ public class ConnectorHandle {
     public StartAndStopLatch expectedStarts(int expectedStarts, boolean includeTasks) {
         List<StartAndStopLatch> taskLatches = includeTasks
                 ? taskHandles.values().stream()
-                .map(task -> task.expectedStarts(expectedStarts))
-                .toList()
+                        .map(task -> task.expectedStarts(expectedStarts))
+                        .toList()
                 : List.of();
         return startAndStopCounter.expectedStarts(expectedStarts, taskLatches);
     }
@@ -289,8 +289,8 @@ public class ConnectorHandle {
     public StartAndStopLatch expectedStarts(int expectedStarts, Map<String, Integer> expectedTasksStarts, boolean includeTasks) {
         List<StartAndStopLatch> taskLatches = includeTasks
                 ? taskHandles.values().stream()
-                .map(task -> task.expectedStarts(expectedTasksStarts.get(task.taskId())))
-                .toList()
+                        .map(task -> task.expectedStarts(expectedTasksStarts.get(task.taskId())))
+                        .toList()
                 : List.of();
         return startAndStopCounter.expectedStarts(expectedStarts, taskLatches);
     }
@@ -342,8 +342,8 @@ public class ConnectorHandle {
     public StartAndStopLatch expectedStops(int expectedStops, boolean includeTasks) {
         List<StartAndStopLatch> taskLatches = includeTasks
                 ? taskHandles.values().stream()
-                .map(task -> task.expectedStops(expectedStops))
-                .toList()
+                        .map(task -> task.expectedStops(expectedStops))
+                        .toList()
                 : List.of();
         return startAndStopCounter.expectedStops(expectedStops, taskLatches);
     }
@@ -351,8 +351,8 @@ public class ConnectorHandle {
     public StartAndStopLatch expectedStops(int expectedStops, Map<String, Integer> expectedTasksStops, boolean includeTasks) {
         List<StartAndStopLatch> taskLatches = includeTasks
                 ? taskHandles.values().stream()
-                .map(task -> task.expectedStops(expectedTasksStops.get(task.taskId())))
-                .toList()
+                        .map(task -> task.expectedStops(expectedTasksStops.get(task.taskId())))
+                        .toList()
                 : List.of();
         return startAndStopCounter.expectedStops(expectedStops, taskLatches);
     }

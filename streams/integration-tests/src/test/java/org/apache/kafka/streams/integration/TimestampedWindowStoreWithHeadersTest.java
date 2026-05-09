@@ -126,12 +126,12 @@ public class TimestampedWindowStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.timestampedWindowStoreWithHeadersBuilder(
+                Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -172,12 +172,12 @@ public class TimestampedWindowStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.timestampedWindowStoreWithHeadersBuilder(
+                Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(false), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -207,12 +207,12 @@ public class TimestampedWindowStoreWithHeadersTest {
         StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.timestampedWindowStoreWithHeadersBuilder(
+                Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -248,12 +248,12 @@ public class TimestampedWindowStoreWithHeadersTest {
         streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.timestampedWindowStoreWithHeadersBuilder(
+                Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
@@ -282,12 +282,12 @@ public class TimestampedWindowStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreBuilder(
-                    Stores.persistentTimestampedWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
-                )
+            Stores.timestampedWindowStoreBuilder(
+                Stores.persistentTimestampedWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                Serdes.Integer(),
+                Serdes.String()
             )
+        )
             .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
             .process(TimestampedWindowStoreContentCheckerProcessor::new, STORE_NAME)
             .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));

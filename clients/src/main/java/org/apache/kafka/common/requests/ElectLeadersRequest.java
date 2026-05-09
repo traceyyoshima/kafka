@@ -95,7 +95,7 @@ public class ElectLeadersRequest extends AbstractRequest {
         }
         return this.data.topicPartitions().stream()
             .flatMap(topicPartition -> topicPartition.partitions().stream()
-                    .map(partitionId -> new TopicPartition(topicPartition.topic(), partitionId))
+                .map(partitionId -> new TopicPartition(topicPartition.topic(), partitionId))
             )
             .collect(Collectors.toSet());
     }

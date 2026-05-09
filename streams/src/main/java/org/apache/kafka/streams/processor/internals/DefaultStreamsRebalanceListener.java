@@ -133,9 +133,9 @@ public class DefaultStreamsRebalanceListener implements StreamsRebalanceListener
                                                   final StreamsRebalanceData.Subtopology subTopology) {
         return
             Stream.concat(
-                    subTopology.sourceTopics().stream(),
-                    subTopology.repartitionSourceTopics().keySet().stream()
-                )
+                subTopology.sourceTopics().stream(),
+                subTopology.repartitionSourceTopics().keySet().stream()
+            )
                 .map(t -> new TopicPartition(t, task.partitionId()))
                 .collect(Collectors.toSet());
     }

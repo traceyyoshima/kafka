@@ -218,6 +218,7 @@ public class InternalTopologyBuilder {
             this.valueDeserializer = value;
             this.processorName = processorName;
         }
+
         public ProcessorSupplier<KIn, VIn, KOut, VOut> processorSupplier() {
             return processorSupplier;
         }
@@ -280,8 +281,8 @@ public class InternalTopologyBuilder {
         private final FixedKeyProcessorSupplier<KIn, VIn, VOut> supplier;
 
         FixedKeyProcessorNodeFactory(final String name,
-                             final String[] predecessors,
-                             final FixedKeyProcessorSupplier<KIn, VIn, VOut> supplier) {
+                                     final String[] predecessors,
+                                     final FixedKeyProcessorSupplier<KIn, VIn, VOut> supplier) {
             super(name, predecessors.clone(), null);
             this.supplier = supplier;
         }
@@ -688,7 +689,8 @@ public class InternalTopologyBuilder {
             valueDeserializer)
         );
         storeNameToReprocessOnRestore.put(storeFactory.storeName(),
-            reprocessOnRestore ?
+            reprocessOnRestore
+                ?
                 Optional.of(new ReprocessFactory<>(stateUpdateSupplier, keyDeserializer, valueDeserializer, processorName))
                 : Optional.empty());
         nodeToSourceTopics.put(sourceName, Arrays.asList(topics));
@@ -791,7 +793,7 @@ public class InternalTopologyBuilder {
                         .map(sourceGroup -> sourceGroup
                                 .stream()
                                 .flatMap(sourceNodeName -> nodeToSourceTopics.getOrDefault(sourceNodeName,
-                                        Collections.emptyList()).stream())
+                                    Collections.emptyList()).stream())
                                 .collect(Collectors.toSet())
                         ).collect(Collectors.toList());
         for (final Set<String> copartition : allCopartitionedSourceTopics) {
@@ -1263,10 +1265,10 @@ public class InternalTopologyBuilder {
             }
             if (!sourceTopics.isEmpty()) {
                 topicGroups.put(new Subtopology(entry.getKey(), topologyName), new TopicsInfo(
-                        Collections.unmodifiableSet(sinkTopics),
-                        Collections.unmodifiableSet(sourceTopics),
-                        Collections.unmodifiableMap(repartitionTopics),
-                        Collections.unmodifiableMap(stateChangelogTopics)));
+                    Collections.unmodifiableSet(sinkTopics),
+                    Collections.unmodifiableSet(sourceTopics),
+                    Collections.unmodifiableMap(repartitionTopics),
+                    Collections.unmodifiableMap(stateChangelogTopics)));
             }
         }
 
@@ -1409,10 +1411,10 @@ public class InternalTopologyBuilder {
             copartitionSourceGroups
                 .stream()
                 .map(sourceGroup ->
-                         sourceGroup
-                             .stream()
-                             .flatMap(node -> maybeDecorateInternalSourceTopics(nodeToSourceTopics.get(node)).stream())
-                             .collect(Collectors.toSet())
+                    sourceGroup
+                        .stream()
+                        .flatMap(node -> maybeDecorateInternalSourceTopics(nodeToSourceTopics.get(node)).stream())
+                        .collect(Collectors.toSet())
                 ).collect(Collectors.toList());
 
         final Map<String, Set<String>> topicsToCopartitionGroup = new LinkedHashMap<>();
@@ -1461,8 +1463,8 @@ public class InternalTopologyBuilder {
     private String decorateTopic(final String topic) {
         if (applicationId == null) {
             throw new TopologyException("there are internal topics and "
-                                            + "applicationId hasn't been set. Call "
-                                            + "setApplicationId first");
+                                        + "applicationId hasn't been set. Call "
+                                        + "setApplicationId first");
         }
 
         final String prefix = topologyConfigs == null
@@ -1689,8 +1691,8 @@ public class InternalTopologyBuilder {
         }
 
         description.addSubtopology(new SubtopologyDescription(
-                subtopologyId,
-                new HashSet<>(nodesByName.values())));
+            subtopologyId,
+            new HashSet<>(nodesByName.values())));
     }
 
     public static final class GlobalStore implements TopologyDescription.GlobalStore {
@@ -1728,8 +1730,8 @@ public class InternalTopologyBuilder {
         @Override
         public String toString() {
             return "Sub-topology: " + id + " for global store (will not generate tasks)\n"
-                    + "    " + source.toString() + "\n"
-                    + "    " + processor.toString() + "\n";
+                   + "    " + source.toString() + "\n"
+                   + "    " + processor.toString() + "\n";
         }
 
         @Override
@@ -2255,7 +2257,7 @@ public class InternalTopologyBuilder {
 
             final Collection<String> existingTopics = subscriptionUpdates();
 
-            if  (!existingTopics.equals(assignedTopics)) {
+            if (!existingTopics.equals(assignedTopics)) {
                 assignedTopics.addAll(existingTopics);
                 updateSubscribedTopics(assignedTopics, logPrefix);
             }
@@ -2295,7 +2297,7 @@ public class InternalTopologyBuilder {
 
     public <KIn, VIn, VOut> WrappedFixedKeyProcessorSupplier<KIn, VIn, VOut> wrapFixedKeyProcessorSupplier(
         final String name,
-        final FixedKeyProcessorSupplier<KIn, VIn,  VOut> processorSupplier
+        final FixedKeyProcessorSupplier<KIn, VIn, VOut> processorSupplier
     ) {
         return ProcessorWrapper.asWrappedFixedKey(
             processorWrapper.wrapFixedKeyProcessorSupplier(name, processorSupplier)

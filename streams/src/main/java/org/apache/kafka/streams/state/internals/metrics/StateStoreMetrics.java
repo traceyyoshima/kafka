@@ -477,13 +477,13 @@ public class StateStoreMetrics {
                                                 final StreamsMetricsImpl streamsMetrics,
                                                 final Gauge<Long> numOpenIteratorsGauge) {
         streamsMetrics.addStoreLevelMutableMetric(
-                taskId,
-                storeType,
-                storeName,
-                NUM_OPEN_ITERATORS,
-                NUM_OPEN_ITERATORS_DESCRIPTION,
-                RecordingLevel.INFO,
-                numOpenIteratorsGauge
+            taskId,
+            storeType,
+            storeName,
+            NUM_OPEN_ITERATORS,
+            NUM_OPEN_ITERATORS_DESCRIPTION,
+            RecordingLevel.INFO,
+            numOpenIteratorsGauge
         );
 
     }
@@ -494,13 +494,13 @@ public class StateStoreMetrics {
                                                         final StreamsMetricsImpl streamsMetrics,
                                                         final Gauge<Long> oldestOpenIteratorGauge) {
         return streamsMetrics.addStoreLevelMutableMetric(
-                taskId,
-                storeType,
-                storeName,
-                OLDEST_ITERATOR_OPEN_SINCE_MS,
-                OLDEST_ITERATOR_OPEN_SINCE_MS_DESCRIPTION,
-                RecordingLevel.DEBUG,
-                oldestOpenIteratorGauge
+            taskId,
+            storeType,
+            storeName,
+            OLDEST_ITERATOR_OPEN_SINCE_MS,
+            OLDEST_ITERATOR_OPEN_SINCE_MS_DESCRIPTION,
+            RecordingLevel.DEBUG,
+            oldestOpenIteratorGauge
         );
     }
 
@@ -554,13 +554,13 @@ public class StateStoreMetrics {
                                        final StreamsMetricsImpl streamsMetrics,
                                        final Gauge<Long> numKeysGauge) {
         streamsMetrics.addStoreLevelMutableMetric(
-                taskId,
-                storeType,
-                storeName,
-                NUM_KEYS,
-                NUM_KEYS_DESCRIPTION,
-                RecordingLevel.INFO,
-                numKeysGauge
+            taskId,
+            storeType,
+            storeName,
+            NUM_KEYS,
+            NUM_KEYS_DESCRIPTION,
+            RecordingLevel.INFO,
+            numKeysGauge
         );
     }
 }

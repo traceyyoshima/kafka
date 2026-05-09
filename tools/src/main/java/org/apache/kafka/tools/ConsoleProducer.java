@@ -196,27 +196,27 @@ public class ConsoleProducer {
                     .ofType(Integer.class)
                     .defaultsTo(1500);
             metadataExpiryMsOpt = parser.accepts("metadata-expiry-ms",
-                            "The period of time in milliseconds after which we force a refresh of metadata even if we haven't seen any leadership changes. " +
+                    "The period of time in milliseconds after which we force a refresh of metadata even if we haven't seen any leadership changes. " +
                                     "This is the option to control `metadata.max.age.ms` in producer configs.")
                     .withRequiredArg()
                     .describedAs("metadata expiration interval")
                     .ofType(Long.class)
                     .defaultsTo(5 * 60 * 1000L);
             maxBlockMsOpt = parser.accepts("max-block-ms",
-                            "The max time that the producer will block for during a send request.")
+                    "The max time that the producer will block for during a send request.")
                     .withRequiredArg()
                     .describedAs("max block on send")
                     .ofType(Long.class)
                     .defaultsTo(60 * 1000L);
             maxMemoryBytesOpt = parser.accepts("max-memory-bytes",
-                            "The total memory used by the producer to buffer records waiting to be sent to the server. " +
+                    "The total memory used by the producer to buffer records waiting to be sent to the server. " +
                                     "This is the option to control `buffer.memory` in producer configs.")
                     .withRequiredArg()
                     .describedAs("total memory in bytes")
                     .ofType(Long.class)
                     .defaultsTo(32 * 1024 * 1024L);
             maxPartitionMemoryBytesOpt = parser.accepts("max-partition-memory-bytes",
-                            "(Deprecated) The buffer size in bytes allocated for a partition. " +
+                    "(Deprecated) The buffer size in bytes allocated for a partition. " +
                                     "When records are received which are smaller than this size the producer " +
                                     "will attempt to optimistically group them together until this size is reached. " +
                                     "This is the option to control batch.size in producer configs. " +
@@ -238,7 +238,7 @@ public class ConsoleProducer {
                     .ofType(Integer.class)
                     .defaultsTo(1024 * 100);
             propertyOpt = parser.accepts("property",
-                            "(DEPRECATED) A mechanism to pass user-defined properties in the form key=value to the message reader. This allows custom configuration for a user-defined message reader." +
+                    "(DEPRECATED) A mechanism to pass user-defined properties in the form key=value to the message reader. This allows custom configuration for a user-defined message reader." +
                                     "\nDefault properties include:" +
                                     "\n parse.key=false" +
                                     "\n parse.headers=false" +
@@ -260,7 +260,7 @@ public class ConsoleProducer {
                     .describedAs("prop")
                     .ofType(String.class);
             readerPropertyOpt = parser.accepts("reader-property",
-                            "A mechanism to pass user-defined properties in the form key=value to the message reader. This allows custom configuration for a user-defined message reader." +
+                    "A mechanism to pass user-defined properties in the form key=value to the message reader. This allows custom configuration for a user-defined message reader." +
                                     "\nDefault properties include:" +
                                     "\n parse.key=false" +
                                     "\n parse.headers=false" +

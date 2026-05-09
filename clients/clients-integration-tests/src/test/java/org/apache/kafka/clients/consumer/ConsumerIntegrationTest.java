@@ -92,7 +92,7 @@ public class ConsumerIntegrationTest {
         @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
     })
     public void testFetchPartitionsAfterFailedListenerWithGroupProtocolClassic(ClusterInstance clusterInstance)
-            throws InterruptedException {
+        throws InterruptedException {
         testFetchPartitionsAfterFailedListener(clusterInstance, GroupProtocol.CLASSIC);
     }
 
@@ -101,23 +101,24 @@ public class ConsumerIntegrationTest {
         @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
     })
     public void testFetchPartitionsAfterFailedListenerWithGroupProtocolConsumer(ClusterInstance clusterInstance)
-            throws InterruptedException {
+        throws InterruptedException {
         testFetchPartitionsAfterFailedListener(clusterInstance, GroupProtocol.CONSUMER);
     }
 
     private static void testFetchPartitionsAfterFailedListener(ClusterInstance clusterInstance, GroupProtocol groupProtocol)
-            throws InterruptedException {
+        throws InterruptedException {
         var topic = "topic";
         try (var producer = clusterInstance.producer(Map.of(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class,
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class))) {
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class))) {
             producer.send(new ProducerRecord<>(topic, "key".getBytes(), "value".getBytes()));
         }
 
         try (var consumer = clusterInstance.consumer(Map.of(
-                ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name()))) {
+            ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name()))) {
             consumer.subscribe(List.of(topic), new ConsumerRebalanceListener() {
                 private int count = 0;
+
                 @Override
                 public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
                 }
@@ -130,8 +131,8 @@ public class ConsumerIntegrationTest {
             });
 
             TestUtils.waitForCondition(() -> consumer.poll(Duration.ofSeconds(1)).count() == 1,
-                    5000,
-                    "failed to poll data");
+                5000,
+                "failed to poll data");
         }
     }
 
@@ -140,7 +141,7 @@ public class ConsumerIntegrationTest {
         @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
     })
     public void testFetchPartitionsWithAlwaysFailedListenerWithGroupProtocolClassic(ClusterInstance clusterInstance)
-            throws InterruptedException {
+        throws InterruptedException {
         testFetchPartitionsWithAlwaysFailedListener(clusterInstance, GroupProtocol.CLASSIC);
     }
 
@@ -149,21 +150,21 @@ public class ConsumerIntegrationTest {
         @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
     })
     public void testFetchPartitionsWithAlwaysFailedListenerWithGroupProtocolConsumer(ClusterInstance clusterInstance)
-            throws InterruptedException {
+        throws InterruptedException {
         testFetchPartitionsWithAlwaysFailedListener(clusterInstance, GroupProtocol.CONSUMER);
     }
 
     private static void testFetchPartitionsWithAlwaysFailedListener(ClusterInstance clusterInstance, GroupProtocol groupProtocol)
-            throws InterruptedException {
+        throws InterruptedException {
         var topic = "topic";
         try (var producer = clusterInstance.producer(Map.of(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class,
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class))) {
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class))) {
             producer.send(new ProducerRecord<>(topic, "key".getBytes(), "value".getBytes()));
         }
 
         try (var consumer = clusterInstance.consumer(Map.of(
-                ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name()))) {
+            ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name()))) {
             consumer.subscribe(List.of(topic), new ConsumerRebalanceListener() {
                 @Override
                 public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
@@ -407,9 +408,9 @@ public class ConsumerIntegrationTest {
 
     private void sendMsg(ClusterInstance clusterInstance, String topic, int sendMsgNum) {
         try (var producer = clusterInstance.producer(Map.of(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
-                ProducerConfig.ACKS_CONFIG, "-1"))) {
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
+            ProducerConfig.ACKS_CONFIG, "-1"))) {
             for (int i = 0; i < sendMsgNum; i++) {
                 producer.send(new ProducerRecord<>(topic, ("key_" + i), ("value_" + i)));
             }

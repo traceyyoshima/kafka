@@ -104,9 +104,9 @@ public class ProduceRequestTest {
             new ProduceRequestData()
                 .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
                     new ProduceRequestData.TopicProduceData()
-                            .setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
-                            .setPartitionData(Collections.singletonList(
-                                    new ProduceRequestData.PartitionProduceData().setIndex(9).setRecords(builder.build()))))
+                        .setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData().setIndex(9).setRecords(builder.build()))))
                     ))
                 .setAcks((short) 1)
                 .setTimeoutMs(5000),
@@ -119,18 +119,18 @@ public class ProduceRequestTest {
     public void testBuildWithCurrentMessageFormatWithoutTopicId() {
         ByteBuffer buffer = ByteBuffer.allocate(256);
         MemoryRecordsBuilder builder = MemoryRecords.builder(buffer, RecordBatch.CURRENT_MAGIC_VALUE,
-                Compression.NONE, TimestampType.CREATE_TIME, 0L);
+            Compression.NONE, TimestampType.CREATE_TIME, 0L);
         builder.append(10L, null, "a".getBytes());
         ProduceRequest.Builder requestBuilder = ProduceRequest.builder(
                 new ProduceRequestData()
-                        .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
+                    .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
                                         new ProduceRequestData.TopicProduceData()
-                                                .setName("topic")  // TopicId will default to Uuid.ZERO and client will get UNKNOWN_TOPIC_ID error.
+                                            .setName("topic")  // TopicId will default to Uuid.ZERO and client will get UNKNOWN_TOPIC_ID error.
                                                 .setPartitionData(Collections.singletonList(
-                                                        new ProduceRequestData.PartitionProduceData().setIndex(9).setRecords(builder.build()))))
+                                                    new ProduceRequestData.PartitionProduceData().setIndex(9).setRecords(builder.build()))))
                                 ))
-                        .setAcks((short) 1)
-                        .setTimeoutMs(5000),
+                    .setAcks((short) 1)
+                    .setTimeoutMs(5000),
                 false);
         assertEquals(ApiKeys.PRODUCE.oldestVersion(), requestBuilder.oldestAllowedVersion());
         assertEquals(ApiKeys.PRODUCE.latestVersion(), requestBuilder.latestAllowedVersion());
@@ -157,7 +157,7 @@ public class ProduceRequestTest {
                     .setPartitionData(Collections.singletonList(
                         new ProduceRequestData.PartitionProduceData()
                             .setIndex(0)
-                                .setRecords(MemoryRecords.readableRecords(buffer)))))))
+                            .setRecords(MemoryRecords.readableRecords(buffer)))))))
             .setAcks((short) 1)
             .setTimeoutMs(5000));
         assertThrowsForAllVersions(requestBuilder, InvalidRecordException.class);
@@ -260,11 +260,11 @@ public class ProduceRequestTest {
             new ProduceRequestData()
                 .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Arrays.asList(
                     new ProduceRequestData.TopicProduceData().setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
-                            .setPartitionData(Collections.singletonList(
-                                    new ProduceRequestData.PartitionProduceData().setIndex(0).setRecords(txnRecords))),
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData().setIndex(0).setRecords(txnRecords))),
                     new ProduceRequestData.TopicProduceData().setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
-                            .setPartitionData(Collections.singletonList(
-                                    new ProduceRequestData.PartitionProduceData().setIndex(1).setRecords(nonTxnRecords))))
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData().setIndex(1).setRecords(nonTxnRecords))))
                     ))
                 .setAcks((short) -1)
                 .setTimeoutMs(5000),
@@ -289,11 +289,11 @@ public class ProduceRequestTest {
             new ProduceRequestData()
                 .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Arrays.asList(
                     new ProduceRequestData.TopicProduceData().setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
-                            .setPartitionData(Collections.singletonList(
-                                    new ProduceRequestData.PartitionProduceData().setIndex(0).setRecords(idempotentRecords))),
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData().setIndex(0).setRecords(idempotentRecords))),
                     new ProduceRequestData.TopicProduceData().setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
-                            .setPartitionData(Collections.singletonList(
-                                    new ProduceRequestData.PartitionProduceData().setIndex(1).setRecords(nonIdempotentRecords))))
+                        .setPartitionData(Collections.singletonList(
+                            new ProduceRequestData.PartitionProduceData().setIndex(1).setRecords(nonIdempotentRecords))))
                     ))
                 .setAcks((short) -1)
                 .setTimeoutMs(5000),
@@ -330,7 +330,7 @@ public class ProduceRequestTest {
         return ProduceRequest.builder(new ProduceRequestData()
             .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
                 new ProduceRequestData.TopicProduceData()
-                     .setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
+                    .setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
                     .setPartitionData(Collections.singletonList(new ProduceRequestData.PartitionProduceData()
                         .setIndex(1)
                         .setRecords(MemoryRecords.withRecords(Compression.NONE, simpleRecord)))))

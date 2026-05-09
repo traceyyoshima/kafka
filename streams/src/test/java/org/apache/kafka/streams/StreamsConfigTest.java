@@ -455,25 +455,25 @@ public class StreamsConfigTest {
             // Main consumer - verify override is ignored
             final Map<String, Object> mainConfigs = streamsConfig.getMainConsumerConfigs("group", "client", 0);
             assertEquals("false", mainConfigs.get(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG),
-                    "Main consumer should not allow auto topic creation with consumer.* override");
+                "Main consumer should not allow auto topic creation with consumer.* override");
 
             // Restore consumer - verify override is ignored
             final Map<String, Object> restoreConfigs = streamsConfig.getRestoreConsumerConfigs("client");
             assertEquals("false", restoreConfigs.get(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG),
-                    "Restore consumer should not allow auto topic creation with consumer.* override");
+                "Restore consumer should not allow auto topic creation with consumer.* override");
 
             // Global consumer - verify override is ignored
             final Map<String, Object> globalConfigs = streamsConfig.getGlobalConsumerConfigs("client");
             assertEquals("false", globalConfigs.get(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG),
-                    "Global consumer should not allow auto topic creation with consumer.* override");
+                "Global consumer should not allow auto topic creation with consumer.* override");
 
             // Verify exactly 1 error is logged (consumer.* prefix is validated once in getCommonConsumerConfigs for each type of consumer)
             final List<String> errorMessages = appender.getMessages();
             final long errorCount = errorMessages.stream()
-                    .filter(msg -> msg.contains("Unexpected user-specified consumer config 'allow.auto.create.topics' found"))
-                    .count();
+                .filter(msg -> msg.contains("Unexpected user-specified consumer config 'allow.auto.create.topics' found"))
+                .count();
             assertEquals(3, errorCount,
-                    "Should log exactly 3 error for consumer.* prefix");
+                "Should log exactly 3 error for consumer.* prefix");
         }
     }
 
@@ -492,25 +492,25 @@ public class StreamsConfigTest {
             // Main consumer - verify override is ignored
             final Map<String, Object> mainConfigs = streamsConfig.getMainConsumerConfigs("group", "client", 0);
             assertEquals("false", mainConfigs.get(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG),
-                    "Main consumer should not allow auto topic creation with main.consumer.* override");
+                "Main consumer should not allow auto topic creation with main.consumer.* override");
 
             // Restore consumer - verify override is ignored
             final Map<String, Object> restoreConfigs = streamsConfig.getRestoreConsumerConfigs("client");
             assertEquals("false", restoreConfigs.get(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG),
-                    "Restore consumer should not allow auto topic creation with restore.consumer.* override");
+                "Restore consumer should not allow auto topic creation with restore.consumer.* override");
 
             // Global consumer - verify override is ignored
             final Map<String, Object> globalConfigs = streamsConfig.getGlobalConsumerConfigs("client");
             assertEquals("false", globalConfigs.get(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG),
-                    "Global consumer should not allow auto topic creation with global.consumer.* override");
+                "Global consumer should not allow auto topic creation with global.consumer.* override");
 
             // Verify exactly 3 errors are logged (one for each specific prefix)
             final List<String> errorMessages = appender.getMessages();
             final long errorCount = errorMessages.stream()
-                    .filter(msg -> msg.contains("Unexpected user-specified consumer config 'allow.auto.create.topics' found"))
-                    .count();
+                .filter(msg -> msg.contains("Unexpected user-specified consumer config 'allow.auto.create.topics' found"))
+                .count();
             assertEquals(3, errorCount,
-                    "Should log exactly 3 errors: one for main.consumer.*, one for restore.consumer.*, one for global.consumer.*");
+                "Should log exactly 3 errors: one for main.consumer.*, one for restore.consumer.*, one for global.consumer.*");
         }
     }
 
@@ -1310,7 +1310,7 @@ public class StreamsConfigTest {
     public void testInvalidSecurityProtocol() {
         props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "abc");
         final ConfigException ce = assertThrows(ConfigException.class,
-                () -> new StreamsConfig(props));
+            () -> new StreamsConfig(props));
         assertTrue(ce.getMessage().contains(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG));
     }
 
@@ -1564,8 +1564,8 @@ public class StreamsConfigTest {
         final Exception exception = assertThrows(ConfigException.class, () -> new StreamsConfig(props));
 
         assertThat(
-                exception.getMessage(),
-                containsString("main.consumer metrics push is disabled")
+            exception.getMessage(),
+            containsString("main.consumer metrics push is disabled")
         );
     }
 
@@ -1576,8 +1576,8 @@ public class StreamsConfigTest {
         final Exception exception = assertThrows(ConfigException.class, () -> new StreamsConfig(props));
 
         assertThat(
-                exception.getMessage(),
-                containsString("Kafka Streams metrics push enabled but consumer.enable.metrics is false, the setting needs to be consistent between the two")
+            exception.getMessage(),
+            containsString("Kafka Streams metrics push enabled but consumer.enable.metrics is false, the setting needs to be consistent between the two")
         );
     }
 
@@ -1590,8 +1590,8 @@ public class StreamsConfigTest {
         final Exception exception = assertThrows(ConfigException.class, () -> new StreamsConfig(props));
 
         assertThat(
-                exception.getMessage(),
-                containsString("Kafka Streams metrics push and consumer.enable.metrics are enabled, but main.consumer and admin.client metrics push are disabled")
+            exception.getMessage(),
+            containsString("Kafka Streams metrics push and consumer.enable.metrics are enabled, but main.consumer and admin.client metrics push are disabled")
         );
     }
 
@@ -1603,8 +1603,8 @@ public class StreamsConfigTest {
         final Exception exception = assertThrows(ConfigException.class, () -> new StreamsConfig(props));
 
         assertThat(
-                exception.getMessage(),
-                containsString("main.consumer metrics push is disabled")
+            exception.getMessage(),
+            containsString("main.consumer metrics push is disabled")
         );
     }
 
@@ -1616,8 +1616,8 @@ public class StreamsConfigTest {
         final Exception exception = assertThrows(ConfigException.class, () -> new StreamsConfig(props));
 
         assertThat(
-                exception.getMessage(),
-                containsString("admin.client metrics push is disabled")
+            exception.getMessage(),
+            containsString("admin.client metrics push is disabled")
         );
     }
 
@@ -1628,8 +1628,8 @@ public class StreamsConfigTest {
         final StreamsConfig streamsConfig = new StreamsConfig(props);
 
         assertTrue(
-                (Boolean) streamsConfig.getMainConsumerConfigs("groupId", "clientId", 0)
-                        .get(StreamsConfig.mainConsumerPrefix(ConsumerConfig.ENABLE_METRICS_PUSH_CONFIG))
+            (Boolean) streamsConfig.getMainConsumerConfigs("groupId", "clientId", 0)
+                .get(StreamsConfig.mainConsumerPrefix(ConsumerConfig.ENABLE_METRICS_PUSH_CONFIG))
         );
     }
 
@@ -1640,8 +1640,8 @@ public class StreamsConfigTest {
         final StreamsConfig streamsConfig = new StreamsConfig(props);
 
         assertTrue(
-                (Boolean) streamsConfig.getMainConsumerConfigs("groupId", "clientId", 0)
-                        .get(StreamsConfig.mainConsumerPrefix(ConsumerConfig.ENABLE_METRICS_PUSH_CONFIG))
+            (Boolean) streamsConfig.getMainConsumerConfigs("groupId", "clientId", 0)
+                .get(StreamsConfig.mainConsumerPrefix(ConsumerConfig.ENABLE_METRICS_PUSH_CONFIG))
         );
     }
 
@@ -1652,8 +1652,8 @@ public class StreamsConfigTest {
         final Exception exception = assertThrows(ConfigException.class, () -> new StreamsConfig(props));
 
         assertThat(
-                exception.getMessage(),
-                containsString("admin.client metrics push is disabled")
+            exception.getMessage(),
+            containsString("admin.client metrics push is disabled")
         );
     }
 
@@ -1665,8 +1665,8 @@ public class StreamsConfigTest {
         final Exception exception = assertThrows(ConfigException.class, () -> new StreamsConfig(props));
 
         assertThat(
-                exception.getMessage(),
-                containsString("main.consumer and admin.client metrics push are disabled")
+            exception.getMessage(),
+            containsString("main.consumer and admin.client metrics push are disabled")
         );
     }
 
@@ -1674,7 +1674,7 @@ public class StreamsConfigTest {
     public void shouldGetDefaultValueProcessingExceptionHandler() {
         final StreamsConfig streamsConfig = new StreamsConfig(props);
 
-        assertEquals("org.apache.kafka.streams.errors.LogAndFailProcessingExceptionHandler",   streamsConfig.processingExceptionHandler().getClass().getName());
+        assertEquals("org.apache.kafka.streams.errors.LogAndFailProcessingExceptionHandler", streamsConfig.processingExceptionHandler().getClass().getName());
     }
 
     @Test
@@ -1682,7 +1682,7 @@ public class StreamsConfigTest {
         props.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, "org.apache.kafka.streams.errors.LogAndContinueProcessingExceptionHandler");
         final StreamsConfig streamsConfig = new StreamsConfig(props);
 
-        assertEquals("org.apache.kafka.streams.errors.LogAndContinueProcessingExceptionHandler",   streamsConfig.processingExceptionHandler().getClass().getName());
+        assertEquals("org.apache.kafka.streams.errors.LogAndContinueProcessingExceptionHandler", streamsConfig.processingExceptionHandler().getClass().getName());
     }
 
     @Test
@@ -1691,8 +1691,8 @@ public class StreamsConfigTest {
         final Exception exception = assertThrows(ConfigException.class, () -> new StreamsConfig(props));
 
         assertThat(
-                exception.getMessage(),
-                containsString("Invalid value org.apache.kafka.streams.errors.InvalidProcessingExceptionHandler " +
+            exception.getMessage(),
+            containsString("Invalid value org.apache.kafka.streams.errors.InvalidProcessingExceptionHandler " +
                         "for configuration processing.exception.handler: Class org.apache.kafka.streams.errors.InvalidProcessingExceptionHandler could not be found.")
         );
     }

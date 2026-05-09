@@ -411,16 +411,16 @@ public class KStreamKStreamJoinTest {
         final TrackingDslStoreSuppliers dslStoreSuppliers = new TrackingDslStoreSuppliers();
 
         final WindowBytesStoreSupplier thisStoreSupplier = Stores.inMemoryWindowStore(
-                "in-memory-join-store-other",
-                Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
-                Duration.ofMillis(joinWindows.size()),
-                true
+            "in-memory-join-store-other",
+            Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
+            Duration.ofMillis(joinWindows.size()),
+            true
         );
         final WindowBytesStoreSupplier otherStoreSupplier = Stores.inMemoryWindowStore(
-                "in-memory-join-store",
-                Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
-                Duration.ofMillis(joinWindows.size()),
-                true
+            "in-memory-join-store",
+            Duration.ofMillis(joinWindows.size() + joinWindows.gracePeriodMs()),
+            Duration.ofMillis(joinWindows.size()),
+            true
         );
 
         // neither side is supplied explicitly
@@ -433,7 +433,7 @@ public class KStreamKStreamJoinTest {
 
         // both sides are supplied explicitly, so we don't increment further
         runJoin(streamJoined.withDslStoreSuppliers(dslStoreSuppliers)
-                .withThisStoreSupplier(thisStoreSupplier).withOtherStoreSupplier(otherStoreSupplier), joinWindows);
+            .withThisStoreSupplier(thisStoreSupplier).withOtherStoreSupplier(otherStoreSupplier), joinWindows);
         assertThat(TrackingDslStoreSuppliers.NUM_CALLS.get(), is(3));
 
     }
@@ -475,7 +475,7 @@ public class KStreamKStreamJoinTest {
         final CapturingStoreSuppliers storeSuppliers = new CapturingStoreSuppliers();
         final StreamJoined<String, Integer, Integer> streamJoined =
                 StreamJoined.with(Serdes.String(), Serdes.Integer(), Serdes.Integer())
-                        .withDslStoreSuppliers(storeSuppliers);
+                    .withDslStoreSuppliers(storeSuppliers);
 
         runJoin(streamJoined, joinWindows);
         if (withHeaders) {
@@ -558,8 +558,8 @@ public class KStreamKStreamJoinTest {
 
     private <T> List<T> iteratorToList(final Iterator<T> iterator) {
         return StreamSupport.stream(
-                        Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false)
-                .collect(Collectors.toList());
+            Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false)
+            .collect(Collectors.toList());
     }
 
     private void runJoin(final StreamJoined<String, Integer, Integer> streamJoined,

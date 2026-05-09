@@ -404,7 +404,7 @@ public class SubscriptionStateTest {
         state.assignFromSubscribed(Set.of(tp0));
 
         assertThrows(IllegalStateException.class, () -> state.position(tp0,
-            new SubscriptionState.FetchPosition(0, Optional.empty(), leaderAndEpoch)));
+                new SubscriptionState.FetchPosition(0, Optional.empty(), leaderAndEpoch)));
     }
 
     @Test
@@ -423,7 +423,7 @@ public class SubscriptionStateTest {
     @Test
     public void cantChangePositionForNonAssignedPartition() {
         assertThrows(IllegalStateException.class, () -> state.position(tp0,
-            new SubscriptionState.FetchPosition(1, Optional.empty(), leaderAndEpoch)));
+                new SubscriptionState.FetchPosition(1, Optional.empty(), leaderAndEpoch)));
     }
 
     @Test
@@ -538,7 +538,7 @@ public class SubscriptionStateTest {
     public void testMixedPatternSubscriptionNotAllowed() {
         state.subscribe(Pattern.compile(".*"), Optional.of(rebalanceListener));
         assertThrows(IllegalStateException.class, () -> state.subscribe(new SubscriptionPattern("t.*"),
-            Optional.of(rebalanceListener)));
+                Optional.of(rebalanceListener)));
 
         state.unsubscribe();
 
@@ -611,8 +611,8 @@ public class SubscriptionStateTest {
 
         // Set the preferred replica with lease
         state.updatePreferredReadReplica(tp0, 42, () -> 10L);
-        TestUtils.assertOptional(state.preferredReadReplica(tp0, 9L),  value -> assertEquals(42, value.intValue()));
-        TestUtils.assertOptional(state.preferredReadReplica(tp0, 10L),  value -> assertEquals(42, value.intValue()));
+        TestUtils.assertOptional(state.preferredReadReplica(tp0, 9L), value -> assertEquals(42, value.intValue()));
+        TestUtils.assertOptional(state.preferredReadReplica(tp0, 10L), value -> assertEquals(42, value.intValue()));
         assertFalse(state.preferredReadReplica(tp0, 11L).isPresent());
 
         // Unset the preferred replica
@@ -622,13 +622,13 @@ public class SubscriptionStateTest {
 
         // Set to new preferred replica with lease
         state.updatePreferredReadReplica(tp0, 43, () -> 20L);
-        TestUtils.assertOptional(state.preferredReadReplica(tp0, 11L),  value -> assertEquals(43, value.intValue()));
-        TestUtils.assertOptional(state.preferredReadReplica(tp0, 20L),  value -> assertEquals(43, value.intValue()));
+        TestUtils.assertOptional(state.preferredReadReplica(tp0, 11L), value -> assertEquals(43, value.intValue()));
+        TestUtils.assertOptional(state.preferredReadReplica(tp0, 20L), value -> assertEquals(43, value.intValue()));
         assertFalse(state.preferredReadReplica(tp0, 21L).isPresent());
 
         // Set to new preferred replica without clearing first
         state.updatePreferredReadReplica(tp0, 44, () -> 30L);
-        TestUtils.assertOptional(state.preferredReadReplica(tp0, 30L),  value -> assertEquals(44, value.intValue()));
+        TestUtils.assertOptional(state.preferredReadReplica(tp0, 30L), value -> assertEquals(44, value.intValue()));
         assertFalse(state.preferredReadReplica(tp0, 31L).isPresent());
     }
 
@@ -770,8 +770,8 @@ public class SubscriptionStateTest {
 
         Optional<LogTruncation> truncationOpt = state.maybeCompleteValidation(tp0, initialPosition,
                 new EpochEndOffset()
-                    .setLeaderEpoch(initialOffsetEpoch)
-                    .setEndOffset(initialOffset + 5));
+                        .setLeaderEpoch(initialOffsetEpoch)
+                        .setEndOffset(initialOffset + 5));
         assertEquals(Optional.empty(), truncationOpt);
         assertFalse(state.awaitingValidation(tp0));
         assertEquals(initialPosition, state.position(tp0));
@@ -806,7 +806,7 @@ public class SubscriptionStateTest {
 
         // tp1 is not part of the subscription, so validation should be skipped.
         assertFalse(state.maybeValidatePositionForCurrentLeader(apiVersions, tp1, new Metadata.LeaderAndEpoch(
-            Optional.of(broker1), Optional.of(10))));
+                Optional.of(broker1), Optional.of(10))));
         assertFalse(state.assignedPartitions().contains(tp1));
     }
 
@@ -832,8 +832,8 @@ public class SubscriptionStateTest {
 
         Optional<LogTruncation> truncationOpt = state.maybeCompleteValidation(tp0, initialPosition,
                 new EpochEndOffset()
-                    .setLeaderEpoch(initialOffsetEpoch)
-                    .setEndOffset(initialOffset + 5));
+                        .setLeaderEpoch(initialOffsetEpoch)
+                        .setEndOffset(initialOffset + 5));
         assertEquals(Optional.empty(), truncationOpt);
         assertTrue(state.awaitingValidation(tp0));
         assertEquals(updatePosition, state.position(tp0));
@@ -849,7 +849,7 @@ public class SubscriptionStateTest {
         int initialOffsetEpoch = 5;
 
         SubscriptionState.FetchPosition initialPosition = new SubscriptionState.FetchPosition(initialOffset,
-            Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
+                Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
         state.seekUnvalidated(tp0, initialPosition);
         assertTrue(state.awaitingValidation(tp0));
 
@@ -857,8 +857,8 @@ public class SubscriptionStateTest {
 
         Optional<LogTruncation> truncationOpt = state.maybeCompleteValidation(tp0, initialPosition,
                 new EpochEndOffset()
-                    .setLeaderEpoch(initialOffsetEpoch)
-                    .setEndOffset(initialOffset + 5));
+                        .setLeaderEpoch(initialOffsetEpoch)
+                        .setEndOffset(initialOffset + 5));
         assertEquals(Optional.empty(), truncationOpt);
         assertFalse(state.awaitingValidation(tp0));
         assertTrue(state.isOffsetResetNeeded(tp0));
@@ -883,8 +883,8 @@ public class SubscriptionStateTest {
 
         Optional<LogTruncation> truncationOpt = state.maybeCompleteValidation(tp0, initialPosition,
                 new EpochEndOffset()
-                    .setLeaderEpoch(divergentOffsetEpoch)
-                    .setEndOffset(divergentOffset));
+                        .setLeaderEpoch(divergentOffsetEpoch)
+                        .setEndOffset(divergentOffset));
         assertEquals(Optional.empty(), truncationOpt);
         assertFalse(state.awaitingValidation(tp0));
 
@@ -912,8 +912,8 @@ public class SubscriptionStateTest {
 
         Optional<LogTruncation> truncationOpt = state.maybeCompleteValidation(tp0, initialPosition,
                 new EpochEndOffset()
-                    .setLeaderEpoch(divergentOffsetEpoch)
-                    .setEndOffset(divergentOffset));
+                        .setLeaderEpoch(divergentOffsetEpoch)
+                        .setEndOffset(divergentOffset));
         assertTrue(truncationOpt.isPresent());
         LogTruncation truncation = truncationOpt.get();
 
@@ -934,14 +934,14 @@ public class SubscriptionStateTest {
         int initialOffsetEpoch = 5;
 
         SubscriptionState.FetchPosition initialPosition = new SubscriptionState.FetchPosition(initialOffset,
-            Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
+                Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
         state.seekUnvalidated(tp0, initialPosition);
         assertTrue(state.awaitingValidation(tp0));
 
         Optional<LogTruncation> truncationOpt = state.maybeCompleteValidation(tp0, initialPosition,
                 new EpochEndOffset()
-                    .setLeaderEpoch(UNDEFINED_EPOCH)
-                    .setEndOffset(UNDEFINED_EPOCH_OFFSET));
+                        .setLeaderEpoch(UNDEFINED_EPOCH)
+                        .setEndOffset(UNDEFINED_EPOCH_OFFSET));
         assertEquals(Optional.empty(), truncationOpt);
         assertFalse(state.awaitingValidation(tp0));
         assertTrue(state.isOffsetResetNeeded(tp0));
@@ -959,14 +959,14 @@ public class SubscriptionStateTest {
         int initialOffsetEpoch = 5;
 
         SubscriptionState.FetchPosition initialPosition = new SubscriptionState.FetchPosition(initialOffset,
-            Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
+                Optional.of(initialOffsetEpoch), new Metadata.LeaderAndEpoch(Optional.of(broker1), Optional.of(currentEpoch)));
         state.seekUnvalidated(tp0, initialPosition);
         assertTrue(state.awaitingValidation(tp0));
 
         Optional<LogTruncation> truncationOpt = state.maybeCompleteValidation(tp0, initialPosition,
                 new EpochEndOffset()
-                    .setLeaderEpoch(UNDEFINED_EPOCH)
-                    .setEndOffset(UNDEFINED_EPOCH_OFFSET));
+                        .setLeaderEpoch(UNDEFINED_EPOCH)
+                        .setEndOffset(UNDEFINED_EPOCH_OFFSET));
         assertTrue(truncationOpt.isPresent());
         LogTruncation truncation = truncationOpt.get();
 

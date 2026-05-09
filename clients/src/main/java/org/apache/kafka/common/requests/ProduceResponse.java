@@ -125,11 +125,11 @@ public class ProduceResponse extends AbstractResponse {
                         .collect(Collectors.toList())));
         });
         nodeEndpoints.forEach(endpoint -> data.nodeEndpoints()
-                .add(new ProduceResponseData.NodeEndpoint()
-                        .setNodeId(endpoint.id())
-                        .setHost(endpoint.host())
-                        .setPort(endpoint.port())
-                        .setRack(endpoint.rack())));
+            .add(new ProduceResponseData.NodeEndpoint()
+                .setNodeId(endpoint.id())
+                .setHost(endpoint.host())
+                .setPort(endpoint.port())
+                .setRack(endpoint.rack())));
         return data;
     }
 
@@ -279,9 +279,9 @@ public class ProduceResponse extends AbstractResponse {
         @Override
         public String toString() {
             return "RecordError("
-                    + "batchIndex=" + batchIndex
-                    + ", message=" + ((message == null) ? "null" : "'" + message + "'")
-                    + ")";
+                + "batchIndex=" + batchIndex
+                + ", message=" + ((message == null) ? "null" : "'" + message + "'")
+                + ")";
         }
     }
 

@@ -267,7 +267,7 @@ public class ProducerPerformanceTest {
             "--payload-monotonic",
             "--bootstrap-server", "localhost:9000"};
         ArgumentParser parser1 = ProducerPerformance.argParser();
-        ArgumentParserException thrown = assertThrows(ArgumentParserException.class, () ->  parser1.parseArgs(args1));
+        ArgumentParserException thrown = assertThrows(ArgumentParserException.class, () -> parser1.parseArgs(args1));
         assertEquals("argument --payload-monotonic: not allowed with argument --record-size", thrown.getMessage());
 
         String[] args2 = new String[] {
@@ -360,7 +360,7 @@ public class ProducerPerformanceTest {
     }
 
     @Test
-    public void testClientIdOverride()  throws Exception {
+    public void testClientIdOverride() throws Exception {
         List<String> producerProps = List.of("client.id=producer-1");
 
         Properties prop = ProducerPerformance.readProps(producerProps, null);
@@ -701,7 +701,7 @@ public class ProducerPerformanceTest {
         assertTrue(configs.transactionsEnabled);
         assertEquals(5000, configs.transactionDurationMs);
         assertTrue(configs.producerProps.get(ProducerConfig.TRANSACTIONAL_ID_CONFIG).toString()
-                .startsWith(ProducerPerformance.DEFAULT_TRANSACTION_ID_PREFIX));
+            .startsWith(ProducerPerformance.DEFAULT_TRANSACTION_ID_PREFIX));
     }
 
     @Test

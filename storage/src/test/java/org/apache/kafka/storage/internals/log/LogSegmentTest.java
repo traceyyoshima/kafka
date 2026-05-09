@@ -119,8 +119,8 @@ public class LogSegmentTest {
             simpleRecords.add(new SimpleRecord(offset * 10, s.getBytes()));
         }
         return MemoryRecords.withRecords(
-                RecordBatch.MAGIC_VALUE_V2, offset,
-                Compression.NONE, TimestampType.CREATE_TIME, simpleRecords.toArray(new SimpleRecord[0]));
+            RecordBatch.MAGIC_VALUE_V2, offset,
+            Compression.NONE, TimestampType.CREATE_TIME, simpleRecords.toArray(new SimpleRecord[0]));
     }
 
     @BeforeEach

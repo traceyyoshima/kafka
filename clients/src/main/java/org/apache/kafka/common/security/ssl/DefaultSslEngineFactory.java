@@ -211,6 +211,7 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
         }
         return sslEngine;
     }
+
     private static SslClientAuth createSslClientAuth(String key) {
         SslClientAuth auth = SslClientAuth.forConfig(key);
         if (auth != null) {
@@ -329,7 +330,9 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
 
     interface SecurityStore {
         KeyStore get();
+
         char[] keyPassword();
+
         boolean modified();
     }
 
@@ -495,7 +498,7 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
             Certificate[] certs = new Certificate[certEntries.size()];
             for (int i = 0; i < certs.length; i++) {
                 certs[i] = CertificateFactory.getInstance("X.509")
-                    .generateCertificate(new ByteArrayInputStream(certEntries.get(i)));
+                        .generateCertificate(new ByteArrayInputStream(certEntries.get(i)));
             }
             return certs;
         }

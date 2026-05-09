@@ -167,7 +167,7 @@ public class MirrorSourceTask extends SourceTask {
         } catch (KafkaException e) {
             log.warn("Failure during poll.", e);
             return null;
-        } catch (Throwable e)  {
+        } catch (Throwable e) {
             log.error("Failure during poll.", e);
             // allow Connect to deal with the exception
             throw e;

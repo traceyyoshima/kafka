@@ -44,7 +44,7 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
 
     @Override
     public void generateAndWrite(MessageSpec message, BufferedWriter writer)
-            throws Exception {
+        throws Exception {
         structRegistry.register(message);
         headerGenerator.addStaticImport(String.format("%s.%s.*",
             packageName, message.dataClassName()));
@@ -54,7 +54,7 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
         generateConverters(message.dataClassName(), message.struct(),
             message.validVersions());
         for (Iterator<StructRegistry.StructInfo> iter = structRegistry.structs();
-                iter.hasNext(); ) {
+                iter.hasNext();) {
             StructRegistry.StructInfo info = iter.next();
             buffer.printf("%n");
             buffer.printf("public static class %s {%n",
@@ -117,8 +117,8 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
             buffer.incrementIndent();
             VersionConditional.forVersions(struct.versions(), curVersions).
                 ifMember(presentVersions -> generateTargetFromJson(new Target(field,
-                        sourceVariable,
-                        className,
+                    sourceVariable,
+                    className,
                     input -> String.format("_object.%s = %s", field.camelCaseName(), input)),
                     curVersions)).ifNotMember(__ -> buffer.printf("throw new RuntimeException(\"%s: field '%s' is not " +
                         "supported in version \" + _version);%n",
@@ -159,8 +159,8 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
         } else if (target.field().type() instanceof FieldType.Uint32FieldType) {
             headerGenerator.addImport(MessageGenerator.MESSAGE_UTIL_CLASS);
             buffer.printf("%s;%n", target.assignmentStatement(
-                 String.format("MessageUtil.jsonNodeToUnsignedInt(%s, \"%s\")",
-                     target.sourceVariable(), target.humanReadableName())));
+                String.format("MessageUtil.jsonNodeToUnsignedInt(%s, \"%s\")",
+                    target.sourceVariable(), target.humanReadableName())));
         } else if (target.field().type() instanceof FieldType.Int32FieldType) {
             headerGenerator.addImport(MessageGenerator.MESSAGE_UTIL_CLASS);
             buffer.printf("%s;%n", target.assignmentStatement(
@@ -258,7 +258,7 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
 
     private void generateOverloadWrite(String className) {
         buffer.printf("public static JsonNode write(%s _object, short _version) {%n",
-                className);
+            className);
         buffer.incrementIndent();
         buffer.printf("return write(_object, _version, true);%n");
         buffer.decrementIndent();
@@ -379,7 +379,7 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
                 headerGenerator.addImport(MessageGenerator.ARRAYS_CLASS);
                 buffer.printf("%s;%n", target.assignmentStatement(
                     String.format("new BinaryNode(Arrays.copyOf(%s, %s.length))",
-                            target.sourceVariable(), target.sourceVariable())));
+                        target.sourceVariable(), target.sourceVariable())));
             }
         } else if (target.field().type().isRecords()) {
             headerGenerator.addImport(MessageGenerator.BINARY_NODE_CLASS);
@@ -394,8 +394,8 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
             buffer.printf("} else {%n");
             buffer.incrementIndent();
             buffer.printf("_node.set(\"%sSizeInBytes\", new IntNode(%s.sizeInBytes()));%n",
-                    target.field().camelCaseName(),
-                    target.sourceVariable());
+                target.field().camelCaseName(),
+                target.sourceVariable());
             buffer.decrementIndent();
             buffer.printf("}%n");
         } else if (target.field().type().isArray()) {

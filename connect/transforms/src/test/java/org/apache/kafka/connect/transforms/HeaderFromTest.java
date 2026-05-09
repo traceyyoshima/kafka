@@ -114,11 +114,11 @@ public class HeaderFromTest {
                 }
             }
             return new SourceRecord(sourcePartition, sourceOffset, topic, partition,
-                    keyTransform ? keyOrValueSchema : null,
-                    keyTransform ? keyOrValue : "key",
-                    !keyTransform ? keyOrValueSchema : null,
-                    !keyTransform ? keyOrValue : "value",
-                    timestamp, headers);
+                keyTransform ? keyOrValueSchema : null,
+                keyTransform ? keyOrValue : "key",
+                !keyTransform ? keyOrValueSchema : null,
+                !keyTransform ? keyOrValue : "value",
+                timestamp, headers);
         }
 
         @Override
@@ -263,35 +263,35 @@ public class HeaderFromTest {
                         .addHeader("inserted1", STRING_SCHEMA, "field2-value")
                 ));
             result.add(
-                    Arguments.of(
-                            "Copy null field without default",
-                            testKeyTransform,
-                            new RecordBuilder()
-                                    .withField("field1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
-                                    .withField("field2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
-                                    .addHeader("header1", STRING_SCHEMA, "existing-value"),
-                            List.of("field1", "field2"), List.of("inserted1", "inserted2"), HeaderFrom.Operation.COPY, false,
-                            new RecordBuilder()
-                                    .withField("field1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
-                                    .withField("field2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
-                                    .addHeader("header1", STRING_SCHEMA, "existing-value")
-                                    .addHeader("inserted1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
-                                    .addHeader("inserted2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
-                    ));
+                Arguments.of(
+                    "Copy null field without default",
+                    testKeyTransform,
+                    new RecordBuilder()
+                        .withField("field1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
+                        .withField("field2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
+                        .addHeader("header1", STRING_SCHEMA, "existing-value"),
+                    List.of("field1", "field2"), List.of("inserted1", "inserted2"), HeaderFrom.Operation.COPY, false,
+                    new RecordBuilder()
+                        .withField("field1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
+                        .withField("field2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
+                        .addHeader("header1", STRING_SCHEMA, "existing-value")
+                        .addHeader("inserted1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
+                        .addHeader("inserted2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
+                ));
             result.add(
-                    Arguments.of(
-                            "Move null field without default",
-                            testKeyTransform,
-                            new RecordBuilder()
-                                    .withField("field1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
-                                    .withField("field2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
-                                    .addHeader("header1", STRING_SCHEMA, "existing-value"),
-                            List.of("field1", "field2"), List.of("inserted1", "inserted2"), HeaderFrom.Operation.MOVE, false,
-                            new RecordBuilder()
-                                    .addHeader("header1", STRING_SCHEMA, "existing-value")
-                                    .addHeader("inserted1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
-                                    .addHeader("inserted2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
-                    ));
+                Arguments.of(
+                    "Move null field without default",
+                    testKeyTransform,
+                    new RecordBuilder()
+                        .withField("field1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
+                        .withField("field2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
+                        .addHeader("header1", STRING_SCHEMA, "existing-value"),
+                    List.of("field1", "field2"), List.of("inserted1", "inserted2"), HeaderFrom.Operation.MOVE, false,
+                    new RecordBuilder()
+                        .addHeader("header1", STRING_SCHEMA, "existing-value")
+                        .addHeader("inserted1", SchemaBuilder.string().defaultValue("default").optional().build(), "field1-value")
+                        .addHeader("inserted2", SchemaBuilder.string().defaultValue("default").optional().build(), null)
+                ));
         }
         return result;
     }

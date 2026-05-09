@@ -89,8 +89,8 @@ public class ConsumerConfig extends AbstractConfig {
     /** <code>max.poll.records</code> */
     public static final String MAX_POLL_RECORDS_CONFIG = "max.poll.records";
     private static final String MAX_POLL_RECORDS_DOC = "The maximum number of records returned in a single call to poll()."
-        + " Note, that <code>" + MAX_POLL_RECORDS_CONFIG + "</code> does not impact the underlying fetching behavior."
-        + " The consumer will cache the records from each fetch request and returns them incrementally from each poll.";
+            + " Note, that <code>" + MAX_POLL_RECORDS_CONFIG + "</code> does not impact the underlying fetching behavior."
+            + " The consumer will cache the records from each fetch request and returns them incrementally from each poll.";
     public static final int DEFAULT_MAX_POLL_RECORDS = 500;
 
     /** <code>max.poll.interval.ms</code> */
@@ -320,8 +320,8 @@ public class ConsumerConfig extends AbstractConfig {
     /** <code>interceptor.classes</code> */
     public static final String INTERCEPTOR_CLASSES_CONFIG = "interceptor.classes";
     public static final String INTERCEPTOR_CLASSES_DOC = "A list of classes to use as interceptors. "
-                                                        + "Implementing the <code>org.apache.kafka.clients.consumer.ConsumerInterceptor</code> interface allows you to intercept (and possibly mutate) records "
-                                                        + "received by the consumer. By default, there are no interceptors.";
+                                                         + "Implementing the <code>org.apache.kafka.clients.consumer.ConsumerInterceptor</code> interface allows you to intercept (and possibly mutate) records "
+                                                         + "received by the consumer. By default, there are no interceptors.";
 
 
     /** <code>exclude.internal.topics</code> */

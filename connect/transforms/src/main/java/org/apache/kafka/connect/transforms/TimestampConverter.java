@@ -167,11 +167,11 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
                     throw new DataException("Expected Unix timestamp to be a Long, but found " + orig.getClass());
                 return switch (config.unixPrecision) {
                     case UNIX_PRECISION_SECONDS ->
-                        Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.SECONDS.toMillis(unixTime));
+                            Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.SECONDS.toMillis(unixTime));
                     case UNIX_PRECISION_MICROS ->
-                        Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.MICROSECONDS.toMillis(unixTime));
+                            Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.MICROSECONDS.toMillis(unixTime));
                     case UNIX_PRECISION_NANOS ->
-                        Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.NANOSECONDS.toMillis(unixTime));
+                            Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.NANOSECONDS.toMillis(unixTime));
                     default -> Timestamp.toLogical(Timestamp.SCHEMA, unixTime);
                 };
             }
@@ -276,6 +276,7 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
             this.format = format;
             this.unixPrecision = unixPrecision;
         }
+
         String field;
         String type;
         SimpleDateFormat format;

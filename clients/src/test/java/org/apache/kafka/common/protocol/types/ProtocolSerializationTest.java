@@ -124,7 +124,7 @@ public class ProtocolSerializationTest {
         check(Type.COMPACT_NULLABLE_BYTES, null, "COMPACT_NULLABLE_BYTES");
         check(Type.COMPACT_NULLABLE_BYTES, ByteBuffer.allocate(0), "COMPACT_NULLABLE_BYTES");
         check(Type.COMPACT_NULLABLE_BYTES, ByteBuffer.wrap("abcd".getBytes()),
-                "COMPACT_NULLABLE_BYTES");
+            "COMPACT_NULLABLE_BYTES");
         check(Type.VARINT, Integer.MAX_VALUE, "VARINT");
         check(Type.VARINT, Integer.MIN_VALUE, "VARINT");
         check(Type.VARLONG, Long.MAX_VALUE, "VARLONG");
@@ -132,17 +132,17 @@ public class ProtocolSerializationTest {
         check(new ArrayOf(Type.INT32), new Object[] {1, 2, 3, 4}, "ARRAY(INT32)");
         check(new ArrayOf(Type.STRING), new Object[] {}, "ARRAY(STRING)");
         check(new ArrayOf(Type.STRING), new Object[] {"hello", "there", "beautiful"},
-                "ARRAY(STRING)");
+            "ARRAY(STRING)");
         check(new CompactArrayOf(Type.INT32), new Object[] {1, 2, 3, 4},
-                "COMPACT_ARRAY(INT32)");
+            "COMPACT_ARRAY(INT32)");
         check(new CompactArrayOf(Type.COMPACT_STRING), new Object[] {},
-                "COMPACT_ARRAY(COMPACT_STRING)");
+            "COMPACT_ARRAY(COMPACT_STRING)");
         check(new CompactArrayOf(Type.COMPACT_STRING),
-                new Object[] {"hello", "there", "beautiful"},
-                "COMPACT_ARRAY(COMPACT_STRING)");
+            new Object[] {"hello", "there", "beautiful"},
+            "COMPACT_ARRAY(COMPACT_STRING)");
         check(ArrayOf.nullable(Type.STRING), null, "NULLABLE_ARRAY(STRING)");
         check(CompactArrayOf.nullable(Type.COMPACT_STRING), null,
-                "COMPACT_NULLABLE_ARRAY(COMPACT_STRING)");
+            "COMPACT_NULLABLE_ARRAY(COMPACT_STRING)");
     }
 
     @Test
@@ -382,12 +382,12 @@ public class ProtocolSerializationTest {
     public void testReadWhenOptionalDataMissingAtTheEndIsTolerated() {
         Schema oldSchema = new Schema(new Field("field1", Type.NULLABLE_STRING));
         Schema newSchema = new Schema(
-                true,
-                new Field("field1", Type.NULLABLE_STRING),
-                new Field("field2", Type.NULLABLE_STRING, "", true, "default"),
-                new Field("field3", Type.NULLABLE_STRING, "", true, null),
-                new Field("field4", Type.NULLABLE_BYTES, "", true, ByteBuffer.allocate(0)),
-                new Field("field5", Type.INT64, "doc", true, Long.MAX_VALUE));
+            true,
+            new Field("field1", Type.NULLABLE_STRING),
+            new Field("field2", Type.NULLABLE_STRING, "", true, "default"),
+            new Field("field3", Type.NULLABLE_STRING, "", true, null),
+            new Field("field4", Type.NULLABLE_BYTES, "", true, ByteBuffer.allocate(0)),
+            new Field("field5", Type.INT64, "doc", true, Long.MAX_VALUE));
         String value = "foo bar baz";
         Struct oldFormat = new Struct(oldSchema).set("field1", value);
         ByteBuffer buffer = ByteBuffer.allocate(oldSchema.sizeOf(oldFormat));
@@ -405,8 +405,8 @@ public class ProtocolSerializationTest {
     public void testReadWhenOptionalDataMissingAtTheEndIsNotTolerated() {
         Schema oldSchema = new Schema(new Field("field1", Type.NULLABLE_STRING));
         Schema newSchema = new Schema(
-                new Field("field1", Type.NULLABLE_STRING),
-                new Field("field2", Type.NULLABLE_STRING, "", true, "default"));
+            new Field("field1", Type.NULLABLE_STRING),
+            new Field("field2", Type.NULLABLE_STRING, "", true, "default"));
         String value = "foo bar baz";
         Struct oldFormat = new Struct(oldSchema).set("field1", value);
         ByteBuffer buffer = ByteBuffer.allocate(oldSchema.sizeOf(oldFormat));
@@ -420,9 +420,9 @@ public class ProtocolSerializationTest {
     public void testReadWithMissingNonOptionalExtraDataAtTheEnd() {
         Schema oldSchema = new Schema(new Field("field1", Type.NULLABLE_STRING));
         Schema newSchema = new Schema(
-                true,
-                new Field("field1", Type.NULLABLE_STRING),
-                new Field("field2", Type.NULLABLE_STRING));
+            true,
+            new Field("field1", Type.NULLABLE_STRING),
+            new Field("field2", Type.NULLABLE_STRING));
         String value = "foo bar baz";
         Struct oldFormat = new Struct(oldSchema).set("field1", value);
         ByteBuffer buffer = ByteBuffer.allocate(oldSchema.sizeOf(oldFormat));

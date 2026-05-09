@@ -115,8 +115,8 @@ public class SessionedProtocolIntegrationTest {
             connectorTasksEndpoint
         );
         assertEquals(
-                FORBIDDEN.getStatusCode(),
-                connect.requestPost(connectorTasksEndpoint, "[]", invalidSignatureHeaders).getStatus()
+            FORBIDDEN.getStatusCode(),
+            connect.requestPost(connectorTasksEndpoint, "[]", invalidSignatureHeaders).getStatus()
         );
 
         // Create the connector now

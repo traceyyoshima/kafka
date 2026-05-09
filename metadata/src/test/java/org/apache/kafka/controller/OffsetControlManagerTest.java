@@ -263,6 +263,6 @@ public class OffsetControlManagerTest {
         offsetControl.beginLoadSnapshot(new OffsetAndEpoch(4000L, 300));
         assertEquals(-1L, offsetControl.transactionStartOffset());
         assertEquals(List.of("snapshot[-1]", "snapshot[1499]", "reset"),
-                snapshotRegistry.operations());
+            snapshotRegistry.operations());
     }
 }

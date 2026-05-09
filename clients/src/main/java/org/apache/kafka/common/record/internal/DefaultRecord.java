@@ -240,10 +240,10 @@ public class DefaultRecord implements Record {
     @Override
     public String toString() {
         return String.format("DefaultRecord(offset=%d, timestamp=%d, key=%d bytes, value=%d bytes)",
-                offset,
-                timestamp,
-                key == null ? 0 : key.limit(),
-                value == null ? 0 : value.limit());
+            offset,
+            timestamp,
+            key == null ? 0 : key.limit(),
+            value == null ? 0 : value.limit());
     }
 
     @Override
@@ -290,7 +290,7 @@ public class DefaultRecord implements Record {
                 " bytes in record payload, but the record payload reached EOF.");
         recordBuffer.flip(); // prepare for reading
         return readFrom(recordBuffer, sizeOfBodyInBytes, baseOffset, baseTimestamp,
-                baseSequence, logAppendTime);
+            baseSequence, logAppendTime);
     }
 
     public static DefaultRecord readFrom(ByteBuffer buffer,

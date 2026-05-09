@@ -70,8 +70,8 @@ public class CopartitionedTopicsEnforcerTest {
     public void shouldThrowTopologyBuilderExceptionIfPartitionCountsForCoPartitionedTopicsDontMatch() {
         partitions.remove(new TopicPartition("second", 0));
         assertThrows(TopologyException.class, () -> validator.enforce(Set.of("first", "second"),
-                          Collections.emptyMap(),
-                          cluster.withPartitions(partitions)));
+            Collections.emptyMap(),
+            cluster.withPartitions(partitions)));
     }
 
 
@@ -99,8 +99,8 @@ public class CopartitionedTopicsEnforcerTest {
         repartitionTopicConfig.put(three.name(), three);
 
         validator.enforce(Set.of(one.name(),
-                                      two.name(),
-                                      three.name()),
+                                 two.name(),
+                                 three.name()),
                           repartitionTopicConfig,
                           cluster
         );

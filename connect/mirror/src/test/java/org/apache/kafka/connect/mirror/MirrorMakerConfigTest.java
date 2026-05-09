@@ -109,7 +109,7 @@ public class MirrorMakerConfigTest {
             "client configs include bootstrap.servers");
         try (ForwardingAdmin forwardingAdmin = aClientConfig.forwardingAdmin(aClientConfig.adminConfig())) {
             assertEquals(ForwardingAdmin.class.getName(), forwardingAdmin.getClass().getName(),
-                    "Cluster a uses the default ForwardingAdmin");
+                "Cluster a uses the default ForwardingAdmin");
         }
         assertEquals("PLAINTEXT", aClientConfig.adminConfig().get("security.protocol"),
             "client configs include security.protocol");
@@ -129,7 +129,7 @@ public class MirrorMakerConfigTest {
             "client configs should not include metrics reporter");
         try (ForwardingAdmin forwardingAdmin = bClientConfig.forwardingAdmin(bClientConfig.adminConfig())) {
             assertEquals(FakeForwardingAdmin.class.getName(), forwardingAdmin.getClass().getName(),
-                    "Cluster b should use the FakeForwardingAdmin");
+                "Cluster b should use the FakeForwardingAdmin");
         }
     }
 
@@ -154,15 +154,15 @@ public class MirrorMakerConfigTest {
         assertEquals(List.of("topic-1"), sourceConfig.getList("topics"),
             "Topics include should be passed through to underlying Connectors.");
         assertEquals(List.of("property-3"), sourceConfig.getList("config.properties.exclude"),
-                "Config properties exclude should be passed through to underlying Connectors.");
+            "Config properties exclude should be passed through to underlying Connectors.");
         assertEquals(List.of("FakeMetricsReporter"), sourceConfig.getList("metric.reporters"),
-                "Metrics reporters should be passed through to underlying Connectors.");
+            "Metrics reporters should be passed through to underlying Connectors.");
         assertEquals("DefaultTopicFilter", sourceConfig.getClass("topic.filter.class").getSimpleName(),
-                "Filters should be passed through to underlying Connectors.");
+            "Filters should be passed through to underlying Connectors.");
         assertEquals("__", sourceConfig.getString("replication.policy.separator"),
-                "replication policy separator should be passed through to underlying Connectors.");
+            "replication policy separator should be passed through to underlying Connectors.");
         assertFalse(sourceConfig.originals().containsKey("xxx"),
-                "Unknown properties should not be passed through to Connectors.");
+            "Unknown properties should not be passed through to Connectors.");
 
         MirrorCheckpointConfig checkpointConfig = new MirrorCheckpointConfig(connectorProps);
         assertEquals(List.of("group-2"), checkpointConfig.getList("groups"),
@@ -234,7 +234,7 @@ public class MirrorMakerConfigTest {
     @Test
     public void testClusterPairsWithDefaultSettings() {
         MirrorMakerConfig mirrorConfig = new MirrorMakerConfig(makeProps(
-                "clusters", "a, b, c"));
+            "clusters", "a, b, c"));
         // implicit configuration associated
         // a->b.enabled=false
         // a->b.emit.heartbeat.enabled=true
@@ -255,17 +255,17 @@ public class MirrorMakerConfigTest {
     @Test
     public void testEmptyClusterPairsWithGloballyDisabledHeartbeats() {
         MirrorMakerConfig mirrorConfig = new MirrorMakerConfig(makeProps(
-                "clusters", "a, b, c",
-                "emit.heartbeats.enabled", "false"));
+            "clusters", "a, b, c",
+            "emit.heartbeats.enabled", "false"));
         assertEquals(0, mirrorConfig.clusterPairs().size(), "clusterPairs count should be 0");
     }
 
     @Test
     public void testClusterPairsWithTwoDisabledHeartbeats() {
         MirrorMakerConfig mirrorConfig = new MirrorMakerConfig(makeProps(
-                "clusters", "a, b, c",
-                "a->b.emit.heartbeats.enabled", "false",
-                "a->c.emit.heartbeats.enabled", "false"));
+            "clusters", "a, b, c",
+            "a->b.emit.heartbeats.enabled", "false",
+            "a->c.emit.heartbeats.enabled", "false"));
         List<SourceAndTarget> clusterPairs = mirrorConfig.clusterPairs();
         assertEquals(4, clusterPairs.size(),
             "clusterPairs count should match all combinations count except x->y.emit.heartbeats.enabled=false");
@@ -274,13 +274,13 @@ public class MirrorMakerConfigTest {
     @Test
     public void testClusterPairsWithGloballyDisabledHeartbeats() {
         MirrorMakerConfig mirrorConfig = new MirrorMakerConfig(makeProps(
-                "clusters", "a, b, c, d, e, f",
-                "emit.heartbeats.enabled", "false",
-                "a->b.enabled", "true",
-                "a->c.enabled", "true",
-                "a->d.enabled", "true",
-                "a->e.enabled", "false",
-                "a->f.enabled", "false"));
+            "clusters", "a, b, c, d, e, f",
+            "emit.heartbeats.enabled", "false",
+            "a->b.enabled", "true",
+            "a->c.enabled", "true",
+            "a->d.enabled", "true",
+            "a->e.enabled", "false",
+            "a->f.enabled", "false"));
         List<SourceAndTarget> clusterPairs = mirrorConfig.clusterPairs();
         assertEquals(3, clusterPairs.size(),
             "clusterPairs count should match (x->y.enabled=true or x->y.emit.heartbeats.enabled=true) count");
@@ -293,11 +293,11 @@ public class MirrorMakerConfigTest {
     @Test
     public void testClusterPairsWithGloballyDisabledHeartbeatsCentralLocal() {
         MirrorMakerConfig mirrorConfig = new MirrorMakerConfig(makeProps(
-                "clusters", "central, local_one, local_two, beats_emitter",
-                "emit.heartbeats.enabled", "false",
-                "central->local_one.enabled", "true",
-                "central->local_two.enabled", "true",
-                "beats_emitter->central.emit.heartbeats.enabled", "true"));
+            "clusters", "central, local_one, local_two, beats_emitter",
+            "emit.heartbeats.enabled", "false",
+            "central->local_one.enabled", "true",
+            "central->local_two.enabled", "true",
+            "beats_emitter->central.emit.heartbeats.enabled", "true"));
 
         assertEquals(3, mirrorConfig.clusterPairs().size(),
             "clusterPairs count should match (x->y.enabled=true or x->y.emit.heartbeats.enabled=true) count");
@@ -306,21 +306,21 @@ public class MirrorMakerConfigTest {
     @Test
     public void testInvalidSecurityProtocol() {
         ConfigException ce = assertThrows(ConfigException.class,
-                () -> new MirrorMakerConfig(makeProps(
-                        "clusters", "a, b, c",
-                        "a->b.emit.heartbeats.enabled", "false",
-                        "a->c.emit.heartbeats.enabled", "false",
-                        CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "abc")));
+            () -> new MirrorMakerConfig(makeProps(
+                "clusters", "a, b, c",
+                "a->b.emit.heartbeats.enabled", "false",
+                "a->c.emit.heartbeats.enabled", "false",
+                CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "abc")));
         assertTrue(ce.getMessage().contains(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG));
     }
 
     @Test
     public void testClientInvalidSecurityProtocol() {
         ConfigException ce = assertThrows(ConfigException.class,
-                () -> new MirrorClientConfig(makeProps(
-                        CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "abc",
-                        CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
-                )));
+            () -> new MirrorClientConfig(makeProps(
+                CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "abc",
+                CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
+            )));
         assertTrue(ce.getMessage().contains(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG));
     }
 
@@ -328,8 +328,8 @@ public class MirrorMakerConfigTest {
     public void testCaseInsensitiveSecurityProtocol() {
         final String saslSslLowerCase = SecurityProtocol.SASL_SSL.name.toLowerCase(Locale.ROOT);
         final MirrorClientConfig config = new MirrorClientConfig(makeProps(
-                CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, saslSslLowerCase,
-                CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
+            CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, saslSslLowerCase,
+            CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"
         ));
         assertEquals(saslSslLowerCase, config.originalsStrings().get(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG));
     }
@@ -337,7 +337,7 @@ public class MirrorMakerConfigTest {
     @Test
     public void testAllConfigNames() {
         MirrorMakerConfig mirrorConfig = new MirrorMakerConfig(makeProps(
-                "clusters", "a, b"));
+            "clusters", "a, b"));
         Set<String> allNames = mirrorConfig.allConfigNames();
 
         assertTrue(allNames.contains("topics"));

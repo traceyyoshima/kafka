@@ -350,8 +350,8 @@ public class ConsumerNetworkThread extends KafkaThread implements Closeable {
         Objects.requireNonNull(timeout, "Close timeout for consumer network thread must be non-null");
 
         closer.close(
-                () -> closeInternal(timeout),
-                () -> log.warn("The consumer network thread was already closed")
+            () -> closeInternal(timeout),
+            () -> log.warn("The consumer network thread was already closed")
         );
     }
 

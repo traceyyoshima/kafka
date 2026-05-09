@@ -239,9 +239,9 @@ public class PartitionRegistration {
         int[] newReplicas = (record.replicas() == null) ?
             replicas : Replicas.toArray(record.replicas());
         Uuid[] newDirectories = defaultToMigrating(
-                (record.directories() == null) ?
+            (record.directories() == null) ?
                         directories : Uuid.toArray(checkDirectories(record)),
-                newReplicas.length
+            newReplicas.length
         );
         int[] newIsr = (record.isr() == null) ? isr : Replicas.toArray(record.isr());
         int[] newRemovingReplicas = (record.removingReplicas() == null) ?

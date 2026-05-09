@@ -305,7 +305,7 @@ public class ShareSessionCacheTest {
         assertEquals(sessionKeys.size(), cache.size());
         for (ShareSessionKey sessionKey : sessionKeys) {
             assertFalse(cache.get(sessionKey).isEmpty(),
-                    "Missing session " + ++i + " out of " + sessionKeys.size() + " ( " + sessionKey + " )");
+                "Missing session " + ++i + " out of " + sessionKeys.size() + " ( " + sessionKey + " )");
         }
     }
 

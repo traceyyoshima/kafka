@@ -388,11 +388,11 @@ public class WorkerCoordinator extends AbstractCoordinator implements Closeable 
             };
 
             metrics.addMetric(metrics.metricName("assigned-connectors",
-                              this.metricGrpName,
-                              "The number of connector instances currently assigned to this worker"), numConnectors);
+                    this.metricGrpName,
+                    "The number of connector instances currently assigned to this worker"), numConnectors);
             metrics.addMetric(metrics.metricName("assigned-tasks",
-                              this.metricGrpName,
-                              "The number of tasks currently assigned to this worker"), numTasks);
+                    this.metricGrpName,
+                    "The number of tasks currently assigned to this worker"), numTasks);
         }
     }
 

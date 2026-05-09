@@ -291,8 +291,8 @@ public class SubscriptionState {
             if (this.subscribedPattern != null) {
                 if (!this.subscribedPattern.matcher(topicPartition.topic()).matches()) {
                     log.info("Assigned partition {} for non-subscribed topic regex pattern; subscription pattern is {}",
-                        topicPartition,
-                        this.subscribedPattern);
+                            topicPartition,
+                            this.subscribedPattern);
 
                     return false;
                 }
@@ -600,7 +600,7 @@ public class SubscriptionState {
                     state.seekValidated(newPosition);
                 } else {
                     OffsetAndMetadata divergentOffset = new OffsetAndMetadata(epochEndOffset.endOffset(),
-                        Optional.of(epochEndOffset.leaderEpoch()), null);
+                            Optional.of(epochEndOffset.leaderEpoch()), null);
                     log.warn("Truncation detected for partition {} at offset {} (the end offset from the " +
                              "broker is {}), but no reset policy is set", tp, currentPosition, divergentOffset);
                     return Optional.of(new LogTruncation(tp, requestPosition, Optional.of(divergentOffset)));
@@ -742,8 +742,8 @@ public class SubscriptionState {
      * @return {@code true} if the preferred read replica was updated, {@code false} otherwise.
      */
     public synchronized boolean tryUpdatingPreferredReadReplica(TopicPartition tp,
-                                                             int preferredReadReplicaId,
-                                                             LongSupplier timeMs) {
+                                                                int preferredReadReplicaId,
+                                                                LongSupplier timeMs) {
         final TopicPartitionState state = assignedStateOrNull(tp);
         if (state != null) {
             assignedState(tp).updatePreferredReadReplica(preferredReadReplicaId, timeMs);
@@ -903,7 +903,7 @@ public class SubscriptionState {
     }
 
     public synchronized boolean hasPartitionsNeedingValidation(long nowMs) {
-        for (TopicPartitionState tps  : assignment.partitionStateValues()) {
+        for (TopicPartitionState tps : assignment.partitionStateValues()) {
             if (tps.awaitingValidation() && !tps.awaitingRetryBackoff(nowMs) && tps.position != null) {
                 return true;
             }

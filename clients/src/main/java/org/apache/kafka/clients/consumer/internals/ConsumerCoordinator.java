@@ -315,16 +315,16 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
             ByteBuffer metadata = ConsumerProtocol.serializeSubscription(subscription);
 
             protocolSet.add(new JoinGroupRequestData.JoinGroupRequestProtocol()
-                    .setName(assignor.name())
-                    .setMetadata(Utils.toArray(metadata)));
+                .setName(assignor.name())
+                .setMetadata(Utils.toArray(metadata)));
         }
         return protocolSet;
     }
 
     public void updatePatternSubscription(Cluster cluster) {
         final Set<String> topicsToSubscribe = cluster.topics().stream()
-                .filter(subscriptions::matchesSubscribedPattern)
-                .collect(Collectors.toSet());
+            .filter(subscriptions::matchesSubscribedPattern)
+            .collect(Collectors.toSet());
         if (subscriptions.subscribeFromPattern(topicsToSubscribe))
             metadata.requestUpdateForNewTopics();
     }
@@ -412,7 +412,7 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
         if (!subscriptions.checkAssignmentMatchedSubscription(assignedPartitions)) {
             final String fullReason = String.format("received assignment %s does not match the current subscription %s; " +
                     "it is likely that the subscription has changed since we joined the group, will re-join with current subscription",
-                    assignment.partitions(), subscriptions.prettyString());
+                assignment.partitions(), subscriptions.prettyString());
             requestRejoin("received assignment does not match the current subscription", fullReason);
 
             return;
@@ -433,10 +433,10 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
                     "\tCurrent owned partitions:                  {}\n" +
                     "\tAdded partitions (assigned - owned):       {}\n" +
                     "\tRevoked partitions (owned - assigned):     {}\n",
-                assignedPartitions,
-                ownedPartitions,
-                addedPartitions,
-                revokedPartitions
+                    assignedPartitions,
+                    ownedPartitions,
+                    addedPartitions,
+                    revokedPartitions
             );
 
             if (!revokedPartitions.isEmpty()) {
@@ -790,11 +790,11 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
                 onJoinPrepareAsyncCommitCompleted = false;
             } else if (autoCommitOffsetRequestFuture.failed() && autoCommitOffsetRequestFuture.isRetriable()) {
                 log.debug("Asynchronous auto-commit of offsets failed with retryable error: {}. Will retry it.",
-                        autoCommitOffsetRequestFuture.exception().getMessage());
+                    autoCommitOffsetRequestFuture.exception().getMessage());
                 onJoinPrepareAsyncCommitCompleted = false;
             } else if (autoCommitOffsetRequestFuture.failed() && !autoCommitOffsetRequestFuture.isRetriable()) {
                 log.error("Asynchronous auto-commit of offsets failed: {}. Will continue to join group.",
-                        autoCommitOffsetRequestFuture.exception().getMessage());
+                    autoCommitOffsetRequestFuture.exception().getMessage());
             }
             if (autoCommitOffsetRequestFuture.isDone()) {
                 autoCommitOffsetRequestFuture = null;
@@ -1089,7 +1089,7 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
                 public void onFailure(RuntimeException e) {
                     pendingAsyncCommits.decrementAndGet();
                     completedOffsetCommits.add(new OffsetCommitCompletion(callback, offsets,
-                            new RetriableCommitFailedException(e)));
+                        new RetriableCommitFailedException(e)));
                 }
             });
         }
@@ -1293,15 +1293,15 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
 
             OffsetCommitRequestData.OffsetCommitRequestTopic topic = requestTopicDataMap
                     .getOrDefault(topicPartition.topic(),
-                            new OffsetCommitRequestData.OffsetCommitRequestTopic()
+                        new OffsetCommitRequestData.OffsetCommitRequestTopic()
                                     .setName(topicPartition.topic())
                     );
 
             topic.partitions().add(new OffsetCommitRequestData.OffsetCommitRequestPartition()
-                    .setPartitionIndex(topicPartition.partition())
-                    .setCommittedOffset(offsetAndMetadata.offset())
-                    .setCommittedLeaderEpoch(offsetAndMetadata.leaderEpoch().orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
-                    .setCommittedMetadata(offsetAndMetadata.metadata())
+                .setPartitionIndex(topicPartition.partition())
+                .setCommittedOffset(offsetAndMetadata.offset())
+                .setCommittedLeaderEpoch(offsetAndMetadata.leaderEpoch().orElse(RecordBatch.NO_PARTITION_LEADER_EPOCH))
+                .setCommittedMetadata(offsetAndMetadata.metadata())
             );
             requestTopicDataMap.put(topicPartition.topic(), topic);
         }
@@ -1337,17 +1337,17 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
 
         OffsetCommitRequest.Builder builder = OffsetCommitRequest.Builder.forTopicNames(
                 new OffsetCommitRequestData()
-                        .setGroupId(this.rebalanceConfig.groupId)
-                        .setGenerationIdOrMemberEpoch(generation.generationId)
-                        .setMemberId(generation.memberId)
-                        .setGroupInstanceId(groupInstanceId)
-                        .setTopics(new ArrayList<>(requestTopicDataMap.values()))
+                    .setGroupId(this.rebalanceConfig.groupId)
+                    .setGenerationIdOrMemberEpoch(generation.generationId)
+                    .setMemberId(generation.memberId)
+                    .setGroupInstanceId(groupInstanceId)
+                    .setTopics(new ArrayList<>(requestTopicDataMap.values()))
         );
 
         log.trace("Sending OffsetCommit request with {} to coordinator {}", offsets, coordinator);
 
         return client.send(coordinator, builder)
-                .compose(new OffsetCommitResponseHandler(offsets, generation));
+            .compose(new OffsetCommitResponseHandler(offsets, generation));
     }
 
     private class OffsetCommitResponseHandler extends CoordinatorResponseHandler<OffsetCommitResponse, Void> {
@@ -1386,18 +1386,18 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
                         } else if (error == Errors.TOPIC_AUTHORIZATION_FAILED) {
                             unauthorizedTopics.add(tp.topic());
                         } else if (error == Errors.OFFSET_METADATA_TOO_LARGE
-                                || error == Errors.INVALID_COMMIT_OFFSET_SIZE) {
+                            || error == Errors.INVALID_COMMIT_OFFSET_SIZE) {
                             // raise the error to the user
                             future.raise(error);
                             return;
                         } else if (error == Errors.COORDINATOR_LOAD_IN_PROGRESS
-                                || error == Errors.UNKNOWN_TOPIC_OR_PARTITION) {
+                            || error == Errors.UNKNOWN_TOPIC_OR_PARTITION) {
                             // just retry
                             future.raise(error);
                             return;
                         } else if (error == Errors.COORDINATOR_NOT_AVAILABLE
-                                || error == Errors.NOT_COORDINATOR
-                                || error == Errors.REQUEST_TIMED_OUT) {
+                            || error == Errors.NOT_COORDINATOR
+                            || error == Errors.REQUEST_TIMED_OUT) {
                             markCoordinatorUnknown(error);
                             future.raise(error);
                             return;
@@ -1436,7 +1436,7 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
                                 "by calling poll() and then retry commit again"));
                             return;
                         } else if (error == Errors.UNKNOWN_MEMBER_ID
-                                || error == Errors.ILLEGAL_GENERATION) {
+                            || error == Errors.ILLEGAL_GENERATION) {
                             log.info("OffsetCommit failed with {}: {}", sentGeneration, error.message());
 
                             // only need to reset generation and re-join group if generation has not changed or we are not in rebalancing;
@@ -1509,7 +1509,7 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
 
         // send the request with a callback
         return client.send(coordinator, requestBuilder)
-                .compose(new OffsetFetchResponseHandler());
+            .compose(new OffsetFetchResponseHandler());
     }
 
     private class OffsetFetchResponseHandler extends CoordinatorResponseHandler<OffsetFetchResponse, Map<TopicPartition, OffsetAndMetadata>> {
@@ -1609,8 +1609,8 @@ public final class ConsumerCoordinator extends AbstractCoordinator {
                 List<PartitionInfo> partitions = cluster.partitionsForTopic(topic);
                 if (partitions != null) {
                     List<PartitionRackInfo> partitionRacks = partitions.stream()
-                            .map(p -> new PartitionRackInfo(clientRack, p))
-                            .collect(Collectors.toList());
+                        .map(p -> new PartitionRackInfo(clientRack, p))
+                        .collect(Collectors.toList());
                     partitionsPerTopic.put(topic, partitionRacks);
                 }
             }

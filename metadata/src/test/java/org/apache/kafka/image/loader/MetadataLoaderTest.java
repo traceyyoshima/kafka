@@ -147,8 +147,8 @@ public class MetadataLoaderTest {
     public void testInstallPublishers() throws Exception {
         MockFaultHandler faultHandler = new MockFaultHandler("testInstallPublishers");
         List<MockPublisher> publishers = List.of(new MockPublisher("a"),
-                new MockPublisher("b"),
-                new MockPublisher("c"));
+            new MockPublisher("b"),
+            new MockPublisher("c"));
         try (MetadataLoader loader = new MetadataLoader.Builder().
                 setFaultHandler(faultHandler).
                 setHighWaterMarkAccessor(OptionalLong::empty).
@@ -280,14 +280,14 @@ public class MetadataLoaderTest {
             if (sameObject) {
                 assertEquals("testPublisherCannotBeInstalledMoreThanOnce: Attempted to install " +
                     "publisher MockPublisher, which is already installed.",
-                        assertThrows(ExecutionException.class,
-                                () -> loader.installPublishers(List.of(publisher)).get()).
+                    assertThrows(ExecutionException.class,
+                        () -> loader.installPublishers(List.of(publisher)).get()).
                                 getCause().getMessage());
             } else {
                 assertEquals("testPublisherCannotBeInstalledMoreThanOnce: Attempted to install " +
                     "a new publisher named MockPublisher, but there is already a publisher with that name.",
-                        assertThrows(ExecutionException.class,
-                                () -> loader.installPublishers(List.of(new MockPublisher())).get()).
+                    assertThrows(ExecutionException.class,
+                        () -> loader.installPublishers(List.of(new MockPublisher())).get()).
                                 getCause().getMessage());
             }
         }
@@ -300,8 +300,8 @@ public class MetadataLoaderTest {
     public void testRemovePublisher() throws Exception {
         MockFaultHandler faultHandler = new MockFaultHandler("testRemovePublisher");
         List<MockPublisher> publishers = List.of(new MockPublisher("a"),
-                new MockPublisher("b"),
-                new MockPublisher("c"));
+            new MockPublisher("b"),
+            new MockPublisher("c"));
         try (MetadataLoader loader = new MetadataLoader.Builder().
                 setFaultHandler(faultHandler).
                 setHighWaterMarkAccessor(() -> OptionalLong.of(1L)).
@@ -323,7 +323,7 @@ public class MetadataLoaderTest {
         }
         assertTrue(publishers.get(0).closed);
         assertEquals(Optional.of(MINIMUM_VERSION),
-                publishers.get(0).latestImage.features().metadataVersion());
+            publishers.get(0).latestImage.features().metadataVersion());
         assertTrue(publishers.get(1).closed);
         assertNull(publishers.get(1).latestImage);
         assertFalse(publishers.get(2).closed);
@@ -582,7 +582,7 @@ public class MetadataLoaderTest {
     public void testLastAppliedOffset() throws Exception {
         MockFaultHandler faultHandler = new MockFaultHandler("testLastAppliedOffset");
         List<MockPublisher> publishers = List.of(new MockPublisher("a"),
-                new MockPublisher("b"));
+            new MockPublisher("b"));
         try (MetadataLoader loader = new MetadataLoader.Builder().
                 setFaultHandler(faultHandler).
                 setHighWaterMarkAccessor(() -> OptionalLong.of(1L)).
@@ -625,7 +625,7 @@ public class MetadataLoaderTest {
     public void testCatchingUpState() throws Exception {
         MockFaultHandler faultHandler = new MockFaultHandler("testLastAppliedOffset");
         List<MockPublisher> publishers = List.of(new MockPublisher("a"),
-                new MockPublisher("b"));
+            new MockPublisher("b"));
         AtomicReference<OptionalLong> highWaterMark = new AtomicReference<>(OptionalLong.empty());
         try (MetadataLoader loader = new MetadataLoader.Builder().
                 setFaultHandler(faultHandler).
@@ -658,14 +658,14 @@ public class MetadataLoaderTest {
         long offset
     ) throws Exception {
         loader.handleLoadSnapshot(MockSnapshotReader.fromRecordLists(
-                new MetadataProvenance(offset, 100, 4000, true), List.of(
-                        List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
+            new MetadataProvenance(offset, 100, 4000, true), List.of(
+                List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
                                 setName(MetadataVersion.FEATURE_NAME).
                                 setFeatureLevel(MINIMUM_VERSION.featureLevel()), (short) 0)),
-                        List.of(new ApiMessageAndVersion(new TopicRecord().
+                List.of(new ApiMessageAndVersion(new TopicRecord().
                                 setName("foo").
                                 setTopicId(Uuid.fromString("Uum7sfhHQP-obSvfywmNUA")), (short) 0))
-                )));
+            )));
         loader.waitForAllEventsToBeHandled();
     }
 
@@ -674,14 +674,14 @@ public class MetadataLoaderTest {
         long offset
     ) throws Exception {
         loader.handleLoadSnapshot(MockSnapshotReader.fromRecordLists(
-                new MetadataProvenance(offset, 100, 4000, true), List.of(
-                        List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
+            new MetadataProvenance(offset, 100, 4000, true), List.of(
+                List.of(new ApiMessageAndVersion(new FeatureLevelRecord().
                                 setName(MetadataVersion.FEATURE_NAME).
                                 setFeatureLevel(MetadataVersion.latestProduction().featureLevel()), (short) 0)),
-                        List.of(new ApiMessageAndVersion(new TopicRecord().
+                List.of(new ApiMessageAndVersion(new TopicRecord().
                                 setName("bar").
                                 setTopicId(Uuid.fromString("VcL2Mw-cT4aL6XV9VujzoQ")), (short) 0))
-                )));
+            )));
         loader.waitForAllEventsToBeHandled();
     }
 
@@ -762,7 +762,7 @@ public class MetadataLoaderTest {
                     new ApiMessageAndVersion(new TopicRecord()
                         .setName("foo")
                         .setTopicId(Uuid.fromString("dMCqhcK4T5miGH5wEX7NsQ")), (short) 0)
-            )));
+                )));
             loader.waitForAllEventsToBeHandled();
             publisher.firstPublish.get(30, TimeUnit.SECONDS);
             assertNull(publisher.latestImage.topics().getTopic("foo"),

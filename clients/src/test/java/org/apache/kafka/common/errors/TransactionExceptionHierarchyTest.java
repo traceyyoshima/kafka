@@ -38,12 +38,12 @@ public class TransactionExceptionHierarchyTest {
      */
     @ParameterizedTest
     @ValueSource(classes = {
-        TimeoutException.class,
-        NotEnoughReplicasException.class,
-        CoordinatorLoadInProgressException.class,
-        CorruptRecordException.class,
-        NotEnoughReplicasAfterAppendException.class,
-        ConcurrentTransactionsException.class
+            TimeoutException.class,
+            NotEnoughReplicasException.class,
+            CoordinatorLoadInProgressException.class,
+            CorruptRecordException.class,
+            NotEnoughReplicasAfterAppendException.class,
+            ConcurrentTransactionsException.class
     })
     void testRetriableExceptionHierarchy(Class<? extends Exception> exceptionClass) {
         assertTrue(RetriableException.class.isAssignableFrom(exceptionClass),
@@ -68,10 +68,10 @@ public class TransactionExceptionHierarchyTest {
      */
     @ParameterizedTest
     @ValueSource(classes = {
-        UnknownTopicOrPartitionException.class,
-        NotLeaderOrFollowerException.class,
-        NotCoordinatorException.class,
-        CoordinatorNotAvailableException.class
+            UnknownTopicOrPartitionException.class,
+            NotLeaderOrFollowerException.class,
+            NotCoordinatorException.class,
+            CoordinatorNotAvailableException.class
     })
     void testRefreshRetriableExceptionHierarchy(Class<? extends Exception> exceptionClass) {
         assertTrue(RefreshRetriableException.class.isAssignableFrom(exceptionClass),
@@ -85,12 +85,12 @@ public class TransactionExceptionHierarchyTest {
      */
     @ParameterizedTest
     @ValueSource(classes = {
-        FencedInstanceIdException.class,
-        IllegalGenerationException.class,
-        InvalidPidMappingException.class,
-        InvalidProducerEpochException.class,
-        ProducerFencedException.class,
-        UnknownMemberIdException.class
+            FencedInstanceIdException.class,
+            IllegalGenerationException.class,
+            InvalidPidMappingException.class,
+            InvalidProducerEpochException.class,
+            ProducerFencedException.class,
+            UnknownMemberIdException.class
     })
     void testApplicationRecoverableExceptionHierarchy(Class<? extends Exception> exceptionClass) {
         assertTrue(ApplicationRecoverableException.class.isAssignableFrom(exceptionClass),
@@ -104,18 +104,18 @@ public class TransactionExceptionHierarchyTest {
      */
     @ParameterizedTest
     @ValueSource(classes = {
-        AuthenticationException.class,
-        AuthorizationException.class,
-        ClusterAuthorizationException.class,
-        TransactionalIdAuthorizationException.class,
-        UnsupportedVersionException.class,
-        UnsupportedForMessageFormatException.class,
-        InvalidRecordException.class,
-        InvalidRequiredAcksException.class,
-        RecordBatchTooLargeException.class,
-        InvalidTopicException.class,
-        TopicAuthorizationException.class,
-        GroupAuthorizationException.class
+            AuthenticationException.class,
+            AuthorizationException.class,
+            ClusterAuthorizationException.class,
+            TransactionalIdAuthorizationException.class,
+            UnsupportedVersionException.class,
+            UnsupportedForMessageFormatException.class,
+            InvalidRecordException.class,
+            InvalidRequiredAcksException.class,
+            RecordBatchTooLargeException.class,
+            InvalidTopicException.class,
+            TopicAuthorizationException.class,
+            GroupAuthorizationException.class
     })
     void testInvalidConfigurationExceptionHierarchy(Class<? extends Exception> exceptionClass) {
         assertTrue(InvalidConfigurationException.class.isAssignableFrom(exceptionClass),

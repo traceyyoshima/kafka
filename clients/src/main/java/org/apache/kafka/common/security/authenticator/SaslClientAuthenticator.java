@@ -217,7 +217,7 @@ public class SaslClientAuthenticator implements Authenticator {
             return SecurityManagerCompatibility.get().callAs(subject, () -> {
                 String[] mechs = {mechanism};
                 log.debug("Creating SaslClient: client={};service={};serviceHostname={};mechs={}",
-                    clientPrincipalName, servicePrincipal, host, Arrays.toString(mechs));
+                        clientPrincipalName, servicePrincipal, host, Arrays.toString(mechs));
                 SaslClient retvalSaslClient = Sasl.createSaslClient(mechs, clientPrincipalName, servicePrincipal, host, configs, callbackHandler);
                 if (retvalSaslClient == null) {
                     throw new SaslAuthenticationException("Failed to create SaslClient with mechanism " + mechanism);
@@ -374,12 +374,12 @@ public class SaslClientAuthenticator implements Authenticator {
         String clientId = (String) configs.get(CommonClientConfigs.CLIENT_ID_CONFIG);
         short requestApiKey = apiKey.id;
         currentRequestHeader = new RequestHeader(
-            new RequestHeaderData().
+                new RequestHeaderData().
                 setRequestApiKey(requestApiKey).
                 setRequestApiVersion(version).
                 setClientId(clientId).
                 setCorrelationId(nextCorrelationId()),
-            apiKey.requestHeaderVersion(version));
+                apiKey.requestHeaderVersion(version));
         return currentRequestHeader;
     }
 
@@ -607,13 +607,13 @@ public class SaslClientAuthenticator implements Authenticator {
                 break;
             case UNSUPPORTED_SASL_MECHANISM:
                 throw new UnsupportedSaslMechanismException(String.format("Client SASL mechanism '%s' not enabled in the server, enabled mechanisms are %s",
-                    mechanism, response.enabledMechanisms()));
+                        mechanism, response.enabledMechanisms()));
             case ILLEGAL_SASL_STATE:
                 throw new IllegalSaslStateException(String.format("Unexpected handshake request with client mechanism %s, enabled mechanisms are %s",
-                    mechanism, response.enabledMechanisms()));
+                        mechanism, response.enabledMechanisms()));
             default:
                 throw new IllegalSaslStateException(String.format("Unknown error code %s, client mechanism is %s, enabled mechanisms are %s",
-                    response.error(), mechanism, response.enabledMechanisms()));
+                        response.error(), mechanism, response.enabledMechanisms()));
         }
     }
 
@@ -658,7 +658,8 @@ public class SaslClientAuthenticator implements Authenticator {
         }
 
         public ApiVersionsResponse apiVersionsResponse() {
-            return reauthenticating() ? apiVersionsResponseFromOriginalAuthentication
+            return reauthenticating()
+                    ? apiVersionsResponseFromOriginalAuthentication
                     : apiVersionsResponseReceivedFromBroker;
         }
 

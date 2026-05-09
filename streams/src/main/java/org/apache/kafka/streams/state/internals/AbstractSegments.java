@@ -124,9 +124,9 @@ public abstract class AbstractSegments<S extends Segment> implements Segments<S>
         if (dir.exists() && dir.isDirectory()) {
             final String[] list = dir.list();
             Arrays.stream(list)
-                    .map(segment -> segmentIdFromSegmentName(segment, dir))
-                    .filter(segmentId -> segmentId >= 0)
-                    .sorted() // open segments in the id order
+                  .map(segment -> segmentIdFromSegmentName(segment, dir))
+                  .filter(segmentId -> segmentId >= 0)
+                  .sorted() // open segments in the id order
                     .forEach(segmentId -> getOrCreateSegment(segmentId, context));
         } else {
             if (!dir.mkdir()) {

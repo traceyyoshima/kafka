@@ -112,7 +112,7 @@ public class ClientQuotasImageNodeTest {
     @Test
     public void testClientIdEntityWithParentheses() {
         entityToStringRoundTrip(new ClientQuotaEntity(Map.of("client-id", "(this )one)")),
-                "clientId(\\(this \\)one\\))");
+            "clientId(\\(this \\)one\\))");
     }
 
     @Test

@@ -150,10 +150,10 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
         props.put(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, MockRocksDbConfigSetter.class);
         dir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-                dir,
-                Serdes.String(),
-                Serdes.String(),
-                new StreamsConfig(props)
+            dir,
+            Serdes.String(),
+            Serdes.String(),
+            new StreamsConfig(props)
         );
         rocksDBStore = getRocksDBStore();
     }
@@ -166,9 +166,9 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
     @Override
     protected <K, V> KeyValueStore<K, V> createKeyValueStore(final StateStoreContext context) {
         final StoreBuilder<KeyValueStore<K, V>> storeBuilder = Stores.keyValueStoreBuilder(
-                Stores.persistentKeyValueStore("my-store"),
-                (Serde<K>) context.keySerde(),
-                (Serde<V>) context.valueSerde());
+            Stores.persistentKeyValueStore("my-store"),
+            (Serde<K>) context.keySerde(),
+            (Serde<V>) context.valueSerde());
 
         final KeyValueStore<K, V> store = storeBuilder.build();
         store.init(context, store);
@@ -189,7 +189,7 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
 
     private InternalMockProcessorContext<?, ?> getProcessorContext(final File stateDir, final Properties streamsProps) {
         return new InternalMockProcessorContext<>(
-                stateDir,
+            stateDir,
             new StreamsConfig(streamsProps)
         );
     }
@@ -1135,29 +1135,29 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
         props.put(InternalConfig.IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED, true);
         dir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-                dir,
-                Serdes.String(),
-                Serdes.String(),
-                new StreamsConfig(props)
+            dir,
+            Serdes.String(),
+            Serdes.String(),
+            new StreamsConfig(props)
         );
         rocksDBStore.init(context, rocksDBStore);
         context.restoreWithHeaders(rocksDBStore.name(), entries);
 
         assertEquals(
-                "a",
-                stringDeserializer.deserialize(
-                        null,
-                        rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "1")))));
+            "a",
+            stringDeserializer.deserialize(
+                null,
+                rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "1")))));
         assertEquals(
-                "b",
-                stringDeserializer.deserialize(
-                        null,
-                        rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "2")))));
+            "b",
+            stringDeserializer.deserialize(
+                null,
+                rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "2")))));
         assertEquals(
-                "c",
-                stringDeserializer.deserialize(
-                        null,
-                        rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "3")))));
+            "c",
+            stringDeserializer.deserialize(
+                null,
+                rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "3")))));
 
         assertThat(rocksDBStore.getPosition(), Matchers.notNullValue());
         assertThat(rocksDBStore.getPosition().getPartitionPositions(""), Matchers.notNullValue());
@@ -1172,29 +1172,29 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
         props.put(InternalConfig.IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED, true);
         dir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-                dir,
-                Serdes.String(),
-                Serdes.String(),
-                new StreamsConfig(props)
+            dir,
+            Serdes.String(),
+            Serdes.String(),
+            new StreamsConfig(props)
         );
         rocksDBStore.init(context, rocksDBStore);
         context.restoreWithHeaders(rocksDBStore.name(), entries);
 
         assertEquals(
-                "a",
-                stringDeserializer.deserialize(
-                        null,
-                        rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "1")))));
+            "a",
+            stringDeserializer.deserialize(
+                null,
+                rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "1")))));
         assertEquals(
-                "b",
-                stringDeserializer.deserialize(
-                        null,
-                        rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "2")))));
+            "b",
+            stringDeserializer.deserialize(
+                null,
+                rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "2")))));
         assertEquals(
-                "c",
-                stringDeserializer.deserialize(
-                        null,
-                        rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "3")))));
+            "c",
+            stringDeserializer.deserialize(
+                null,
+                rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "3")))));
 
         assertThat(rocksDBStore.getPosition(), Matchers.notNullValue());
         assertThat(rocksDBStore.getPosition().getPartitionPositions("A"), Matchers.notNullValue());
@@ -1211,17 +1211,17 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
         props.put(InternalConfig.IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED, true);
         dir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-                dir,
-                Serdes.String(),
-                Serdes.String(),
-                new StreamsConfig(props)
+            dir,
+            Serdes.String(),
+            Serdes.String(),
+            new StreamsConfig(props)
         );
         rocksDBStore.init(context, rocksDBStore);
         context.restoreWithHeaders(rocksDBStore.name(), entries);
 
         assertNull(stringDeserializer.deserialize(
-                null,
-                rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "1")))));
+            null,
+            rocksDBStore.get(new Bytes(stringSerializer.serialize(null, "1")))));
 
         assertThat(rocksDBStore.getPosition(), Matchers.notNullValue());
         assertThat(rocksDBStore.getPosition().getPartitionPositions("A"), hasEntry(0, 2L));
@@ -1235,10 +1235,10 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
         props.put(InternalConfig.IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED, true);
         dir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-                dir,
-                Serdes.String(),
-                Serdes.String(),
-                new StreamsConfig(props)
+            dir,
+            Serdes.String(),
+            Serdes.String(),
+            new StreamsConfig(props)
         );
         rocksDBStore.init(context, rocksDBStore);
         context.restore(rocksDBStore.name(), entries);
@@ -1287,16 +1287,16 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
     }
 
     private ConsumerRecord<byte[], byte[]> createChangelogRecord(
-            final byte[] key, final byte[] value, final String topic, final int partition, final long offset) {
+        final byte[] key, final byte[] value, final String topic, final int partition, final long offset) {
         final Headers headers = new RecordHeaders();
         Position position = Position.emptyPosition();
         position = position.withComponent(topic, partition, offset);
         headers.add(ChangelogRecordDeserializationHelper.CHANGELOG_VERSION_HEADER_RECORD_CONSISTENCY);
         headers.add(new RecordHeader(
-                ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
-                PositionSerde.serialize(position).array()));
+            ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
+            PositionSerde.serialize(position).array()));
         return new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
-                key, value, headers, Optional.empty());
+            key, value, headers, Optional.empty());
     }
 
     private void overwritePersistedStoreStatusToOpen() throws Exception {
@@ -1307,17 +1307,17 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
 
         final String dbPath = new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath();
         final List<ColumnFamilyDescriptor> existingColumnFamilies = RocksDB.listColumnFamilies(new Options(), dbPath).stream()
-                .map(b -> new ColumnFamilyDescriptor(b, columnFamilyOptions))
-                .collect(Collectors.toList());
+            .map(b -> new ColumnFamilyDescriptor(b, columnFamilyOptions))
+            .collect(Collectors.toList());
         final List<ColumnFamilyHandle> columnFamilies = new ArrayList<>(existingColumnFamilies.size());
         RocksDB db = null;
         ColumnFamilyHandle offsetsColumnFamily = null;
         try {
             db = RocksDB.open(
-                    dbOptions,
-                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
-                    existingColumnFamilies,
-                    columnFamilies);
+                dbOptions,
+                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
+                existingColumnFamilies,
+                columnFamilies);
             final byte[] statusKey = stringSerializer.serialize(null, "status");
 
             offsetsColumnFamily = columnFamilies.get(columnFamilies.size() - 1);

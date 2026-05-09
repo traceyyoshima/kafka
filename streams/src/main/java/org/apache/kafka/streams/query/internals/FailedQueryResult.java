@@ -28,7 +28,7 @@ import org.apache.kafka.streams.query.StateQueryRequest;
  */
 public final class FailedQueryResult<R>
     extends AbstractQueryResult<R>
-    implements QueryResult<R> {
+        implements QueryResult<R> {
 
     private final FailureReason failureReason;
     private final String failure;

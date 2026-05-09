@@ -387,16 +387,16 @@ public class StoreChangelogReaderTest {
         changelogReader.restore(mockTasks);
 
         assertEquals(
-                type == ACTIVE ?
+            type == ACTIVE ?
                         StoreChangelogReader.ChangelogState.COMPLETED :
                         StoreChangelogReader.ChangelogState.RESTORING,
-                changelogReader.changelogMetadata(tp).state()
+            changelogReader.changelogMetadata(tp).state()
         );
         assertEquals(type == ACTIVE ? 10L : null, changelogReader.changelogMetadata(tp).endOffset());
         assertEquals(0L, changelogReader.changelogMetadata(tp).totalRestored());
         assertEquals(
-                type == ACTIVE ? Collections.singleton(tp) : Collections.emptySet(),
-                changelogReader.completedChangelogs()
+            type == ACTIVE ? Collections.singleton(tp) : Collections.emptySet(),
+            changelogReader.completedChangelogs()
         );
         assertEquals(10L, consumer.position(tp));
         assertEquals(Collections.singleton(tp), consumer.paused());

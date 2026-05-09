@@ -113,13 +113,13 @@ public class StreamsProducer {
                 transactionInitialized = true;
             } catch (final TimeoutException timeoutException) {
                 log.warn(
-                    "Timeout exception caught trying to initialize transactions. " +
+                        "Timeout exception caught trying to initialize transactions. " +
                         "The broker is either slow or in bad state (like not having enough replicas) in " +
                         "responding to the request, or the connection to broker was interrupted sending " +
                         "the request or receiving the response. " +
                         "Will retry initializing the task in the next loop. " +
                         "Consider overwriting {} to a larger value to avoid timeout errors",
-                    ProducerConfig.MAX_BLOCK_MS_CONFIG
+                        ProducerConfig.MAX_BLOCK_MS_CONFIG
                 );
 
                 // re-throw to trigger `task.timeout.ms`
@@ -240,7 +240,7 @@ public class StreamsProducer {
      * @throws TaskMigratedException
      */
     public void commitTransaction(final Map<TopicPartition, OffsetAndMetadata> offsets,
-                                     final ConsumerGroupMetadata consumerGroupMetadata) {
+                                  final ConsumerGroupMetadata consumerGroupMetadata) {
         if (!eosEnabled()) {
             throw new IllegalStateException(formatException("Exactly-once is not enabled"));
         }
@@ -295,9 +295,9 @@ public class StreamsProducer {
                 // no need to re-throw because we abort a TX only if we close a task dirty,
                 // and thus `task.timeout.ms` does not apply
                 log.warn(
-                    "Aborting transaction failed due to timeout." +
+                        "Aborting transaction failed due to timeout." +
                         " Will rely on broker to eventually abort the transaction after the transaction timeout passed.",
-                    logAndSwallow
+                        logAndSwallow
                 );
             } catch (final ProducerFencedException | InvalidProducerEpochException | InvalidPidMappingException error) {
                 // The producer is aborting the txn when there's still an ongoing one,

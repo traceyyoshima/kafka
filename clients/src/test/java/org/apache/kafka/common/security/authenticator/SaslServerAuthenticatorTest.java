@@ -145,7 +145,7 @@ public class SaslServerAuthenticatorTest {
             new RequestHeaderData()
                 .setRequestApiKey(invalidApiKeyId)
                 .setRequestApiVersion((short) 0),
-                (short) 2));
+            (short) 2));
 
         when(transportLayer.read(any(ByteBuffer.class))).then(invocation -> {
             invocation.<ByteBuffer>getArgument(0).putInt(headerBuffer.remaining());
@@ -180,9 +180,9 @@ public class SaslServerAuthenticatorTest {
 
         MockTime time = new MockTime();
         try (
-                MockedStatic<?> ignored = mockSaslServer(saslServer, mechanism, time, tokenExpirationDuration);
-                MockedStatic<?> ignored2 = mockKafkaPrincipal("[principal-type]", "[principal-name");
-                TransportLayer transportLayer = mockTransportLayer()
+            MockedStatic<?> ignored = mockSaslServer(saslServer, mechanism, time, tokenExpirationDuration);
+            MockedStatic<?> ignored2 = mockKafkaPrincipal("[principal-type]", "[principal-name");
+            TransportLayer transportLayer = mockTransportLayer()
         ) {
 
             SaslServerAuthenticator authenticator = getSaslServerAuthenticatorForOAuth(mechanism, transportLayer, time, 0L);
@@ -213,9 +213,9 @@ public class SaslServerAuthenticatorTest {
         Duration tokenExpiryGreaterThanMaxReauth = Duration.ofMillis(maxReauthMs).multipliedBy(10);
 
         try (
-                MockedStatic<?> ignored = mockSaslServer(saslServer, mechanism, time, tokenExpiryGreaterThanMaxReauth);
-                MockedStatic<?> ignored2 = mockKafkaPrincipal("[principal-type]", "[principal-name");
-                TransportLayer transportLayer = mockTransportLayer()
+            MockedStatic<?> ignored = mockSaslServer(saslServer, mechanism, time, tokenExpiryGreaterThanMaxReauth);
+            MockedStatic<?> ignored2 = mockKafkaPrincipal("[principal-type]", "[principal-name");
+            TransportLayer transportLayer = mockTransportLayer()
         ) {
 
             SaslServerAuthenticator authenticator = getSaslServerAuthenticatorForOAuth(mechanism, transportLayer, time, maxReauthMs);
@@ -246,9 +246,9 @@ public class SaslServerAuthenticatorTest {
         long maxReauthMs = tokenExpiryShorterThanMaxReauth.multipliedBy(2).toMillis();
 
         try (
-                MockedStatic<?> ignored = mockSaslServer(saslServer, mechanism, time, tokenExpiryShorterThanMaxReauth);
-                MockedStatic<?> ignored2 = mockKafkaPrincipal("[principal-type]", "[principal-name");
-                TransportLayer transportLayer = mockTransportLayer()
+            MockedStatic<?> ignored = mockSaslServer(saslServer, mechanism, time, tokenExpiryShorterThanMaxReauth);
+            MockedStatic<?> ignored2 = mockKafkaPrincipal("[principal-type]", "[principal-name");
+            TransportLayer transportLayer = mockTransportLayer()
         ) {
 
             SaslServerAuthenticator authenticator = getSaslServerAuthenticatorForOAuth(mechanism, transportLayer, time, maxReauthMs);
@@ -295,7 +295,7 @@ public class SaslServerAuthenticatorTest {
             Throwable t = assertThrows(IllegalArgumentException.class, authenticator::authenticate);
             assertEquals(ArithmeticException.class, t.getCause().getClass());
             assertEquals("Cannot convert " + Long.MAX_VALUE + " millisecond to nanosecond due to arithmetic overflow",
-                t.getMessage());
+                    t.getMessage());
         }
     }
 

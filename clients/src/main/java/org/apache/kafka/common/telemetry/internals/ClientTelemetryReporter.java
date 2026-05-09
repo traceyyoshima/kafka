@@ -971,8 +971,8 @@ public class ClientTelemetryReporter implements MetricsReporter {
         private final Predicate<? super MetricKeyable> selector;
 
         ClientTelemetrySubscription(Uuid clientInstanceId, int subscriptionId, int pushIntervalMs,
-                List<CompressionType> acceptedCompressionTypes, boolean deltaTemporality,
-                Predicate<? super MetricKeyable> selector) {
+            List<CompressionType> acceptedCompressionTypes, boolean deltaTemporality,
+            Predicate<? super MetricKeyable> selector) {
             this.clientInstanceId = clientInstanceId;
             this.subscriptionId = subscriptionId;
             this.pushIntervalMs = pushIntervalMs;

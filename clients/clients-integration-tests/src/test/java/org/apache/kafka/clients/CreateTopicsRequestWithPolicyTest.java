@@ -150,11 +150,11 @@ public class CreateTopicsRequestWithPolicyTest {
 
     private void validateErrorCreateTopicsRequests(NewTopic topic, Admin admin, boolean validateOnly, Class<? extends Throwable> expectedExceptionClass, String expectedErrorMessage) {
         ExecutionException exception = assertThrows(ExecutionException.class, () ->
-                admin.createTopics(List.of(topic), new CreateTopicsOptions().validateOnly(validateOnly)).all().get());
+            admin.createTopics(List.of(topic), new CreateTopicsOptions().validateOnly(validateOnly)).all().get());
         assertEquals(
-                expectedExceptionClass,
-                exception.getCause().getClass(),
-                "Expected " + expectedExceptionClass.getSimpleName() + ", but got " + exception.getCause().getClass().getSimpleName()
+            expectedExceptionClass,
+            exception.getCause().getClass(),
+            "Expected " + expectedExceptionClass.getSimpleName() + ", but got " + exception.getCause().getClass().getSimpleName()
         );
         assertTrue(exception.getMessage().contains(expectedErrorMessage));
     }

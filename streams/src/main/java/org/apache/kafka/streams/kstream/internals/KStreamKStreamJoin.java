@@ -278,7 +278,7 @@ abstract class KStreamKStreamJoin<K, VLeft, VRight, VOut, VThis, VOther> impleme
             final VOther otherValue = otherValue(leftOrRightValue);
             final VOut nullJoinedValue = joiner.apply(key, thisValue, otherValue);
             context().forward(
-                    record.withKey(key).withValue(nullJoinedValue).withTimestamp(timestamp)
+                record.withKey(key).withValue(nullJoinedValue).withTimestamp(timestamp)
             );
         }
 
@@ -311,7 +311,7 @@ abstract class KStreamKStreamJoin<K, VLeft, VRight, VOut, VThis, VOther> impleme
 
             context().forward(
                     thisRecord.withValue(joiner.apply(thisRecord.key(), thisRecord.value(), otherRecord.value))
-                            .withTimestamp(Math.max(inputRecordTimestamp, otherRecord.key)));
+                              .withTimestamp(Math.max(inputRecordTimestamp, otherRecord.key)));
         }
 
         private void putInOuterJoinStore(final Record<K, VThis> thisRecord) {

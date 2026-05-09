@@ -60,7 +60,7 @@ import static org.apache.kafka.streams.state.internals.ExceptionUtils.throwSuppr
 
 public class TimeOrderedCachingWindowStore
     extends WrappedStateStore<WindowStore<Bytes, byte[]>, byte[], byte[]>
-    implements WindowStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
+        implements WindowStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
 
     private static final Logger LOG = LoggerFactory.getLogger(TimeOrderedCachingWindowStore.class);
 
@@ -122,7 +122,7 @@ public class TimeOrderedCachingWindowStore
             stateStoreContext.applicationId()
         );
         internalContext = asInternalProcessorContext(stateStoreContext);
-        final String topic = ProcessorStateManager.storeChangelogTopic(prefix, name(),  stateStoreContext.taskId().topologyName());
+        final String topic = ProcessorStateManager.storeChangelogTopic(prefix, name(), stateStoreContext.taskId().topologyName());
 
         bytesSerdes = new StateSerdes<>(
             topic,
@@ -214,7 +214,7 @@ public class TimeOrderedCachingWindowStore
                     flushListener.apply(
                         new Record<>(
                             WindowKeySchema.toStoreKeyBinary(binaryKey,
-                                    windowStartTimestamp, 0)
+                                windowStartTimestamp, 0)
                                 .get(),
                             new Change<>(rawNewValue, sendOldValues ? rawOldValue : null),
                             finalEntry.entry().context().timestamp(),
@@ -364,7 +364,8 @@ public class TimeOrderedCachingWindowStore
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator =
             new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
 
-        final Function<byte[], Long> tsExtractor = hasIndex ? KeyFirstWindowKeySchema::extractStoreTimestamp
+        final Function<byte[], Long> tsExtractor = hasIndex
+            ? KeyFirstWindowKeySchema::extractStoreTimestamp
             : TimeFirstWindowKeySchema::extractStoreTimestamp;
         return new MergedSortedCacheWindowStoreIterator(filteredCacheIterator, underlyingIterator, forward, tsExtractor);
     }

@@ -339,8 +339,8 @@ public class PrefixedWindowKeySchemas {
 
         // package private for testing
         public static Bytes toStoreKeyBinary(final byte[] serializedKey,
-                                      final long timestamp,
-                                      final int seqnum) {
+                                             final long timestamp,
+                                             final int seqnum) {
             final ByteBuffer buf = ByteBuffer.allocate(PREFIX_SIZE + serializedKey.length + TIMESTAMP_SIZE + SEQNUM_SIZE);
             buf.put(KEY_FIRST_PREFIX);
             buf.put(serializedKey);
@@ -372,7 +372,7 @@ public class PrefixedWindowKeySchemas {
         }
 
         static Window extractStoreWindow(final byte[] binaryKey,
-                                     final long windowSize) {
+                                         final long windowSize) {
             final long start = KeyFirstWindowKeySchema.extractStoreTimestamp(binaryKey);
             return timeWindowForSize(start, windowSize);
         }

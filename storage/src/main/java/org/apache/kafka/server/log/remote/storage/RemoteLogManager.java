@@ -241,23 +241,23 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
         rlmFetchQuotaManager = createRLMFetchQuotaManager();
 
         fetchQuotaMetrics = new RLMQuotaMetrics(metrics, "remote-fetch-throttle-time", RemoteLogManager.class.getSimpleName(),
-            "The %s time in millis remote fetches was throttled by a broker", INACTIVE_SENSOR_EXPIRATION_TIME_SECONDS);
+                "The %s time in millis remote fetches was throttled by a broker", INACTIVE_SENSOR_EXPIRATION_TIME_SECONDS);
         copyQuotaMetrics = new RLMQuotaMetrics(metrics, "remote-copy-throttle-time", RemoteLogManager.class.getSimpleName(),
-            "The %s time in millis remote copies was throttled by a broker", INACTIVE_SENSOR_EXPIRATION_TIME_SECONDS);
+                "The %s time in millis remote copies was throttled by a broker", INACTIVE_SENSOR_EXPIRATION_TIME_SECONDS);
 
         indexCache = new RemoteIndexCache(
-            rlmConfig.remoteLogIndexFileCacheTotalSizeBytes(),
-            rlmConfig.remoteLogIndexFileCacheTtlMs(),
-            false,
-            remoteStorageManagerPlugin.get(),
-            logDir);
+                rlmConfig.remoteLogIndexFileCacheTotalSizeBytes(),
+                rlmConfig.remoteLogIndexFileCacheTtlMs(),
+                false,
+                remoteStorageManagerPlugin.get(),
+                logDir);
         delayInMs = rlmConfig.remoteLogManagerTaskIntervalMs();
         rlmCopyThreadPool = new RLMScheduledThreadPool(rlmConfig.remoteLogManagerCopierThreadPoolSize(),
-            "RLMCopyThreadPool", "kafka-rlm-copy-thread-pool-%d");
+                "RLMCopyThreadPool", "kafka-rlm-copy-thread-pool-%d");
         rlmExpirationThreadPool = new RLMScheduledThreadPool(rlmConfig.remoteLogManagerExpirationThreadPoolSize(),
-            "RLMExpirationThreadPool", "kafka-rlm-expiration-thread-pool-%d");
+                "RLMExpirationThreadPool", "kafka-rlm-expiration-thread-pool-%d");
         followerThreadPool = new RLMScheduledThreadPool(rlmConfig.remoteLogManagerFollowerThreadPoolSize(),
-            "RLMFollowerScheduledThreadPool", "kafka-rlm-follower-thread-pool-%d");
+                "RLMFollowerScheduledThreadPool", "kafka-rlm-follower-thread-pool-%d");
 
         metricsGroup.newGauge(REMOTE_LOG_MANAGER_TASKS_AVG_IDLE_PERCENT_METRIC, rlmCopyThreadPool::getIdlePercent);
         remoteReadTimer = metricsGroup.newTimer(REMOTE_LOG_READER_FETCH_RATE_AND_TIME_METRIC,
@@ -346,12 +346,12 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
 
     RLMQuotaManager createRLMCopyQuotaManager() {
         return new RLMQuotaManager(copyQuotaManagerConfig(rlmConfig), metrics, QuotaType.RLM_COPY,
-          "Tracking copy byte-rate for Remote Log Manager", time);
+                "Tracking copy byte-rate for Remote Log Manager", time);
     }
 
     RLMQuotaManager createRLMFetchQuotaManager() {
         return new RLMQuotaManager(fetchQuotaManagerConfig(rlmConfig), metrics, QuotaType.RLM_FETCH,
-          "Tracking fetch byte-rate for Remote Log Manager", time);
+                "Tracking fetch byte-rate for Remote Log Manager", time);
     }
 
     public long getFetchThrottleTimeMs() {
@@ -364,14 +364,14 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
 
     static RLMQuotaManagerConfig copyQuotaManagerConfig(RemoteLogManagerConfig rlmConfig) {
         return new RLMQuotaManagerConfig(rlmConfig.remoteLogManagerCopyMaxBytesPerSecond(),
-          rlmConfig.remoteLogManagerCopyNumQuotaSamples(),
-          rlmConfig.remoteLogManagerCopyQuotaWindowSizeSeconds());
+                rlmConfig.remoteLogManagerCopyNumQuotaSamples(),
+                rlmConfig.remoteLogManagerCopyQuotaWindowSizeSeconds());
     }
 
     static RLMQuotaManagerConfig fetchQuotaManagerConfig(RemoteLogManagerConfig rlmConfig) {
         return new RLMQuotaManagerConfig(rlmConfig.remoteLogManagerFetchMaxBytesPerSecond(),
-          rlmConfig.remoteLogManagerFetchNumQuotaSamples(),
-          rlmConfig.remoteLogManagerFetchQuotaWindowSizeSeconds());
+                rlmConfig.remoteLogManagerFetchNumQuotaSamples(),
+                rlmConfig.remoteLogManagerFetchQuotaWindowSizeSeconds());
     }
 
     @SuppressWarnings("unchecked")
@@ -523,7 +523,7 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
     public void stopPartitions(Set<StopPartition> stopPartitions,
                                BiConsumer<TopicPartition, Throwable> errorHandler) {
         LOGGER.debug("Stop partitions: {}", stopPartitions);
-        for (StopPartition stopPartition: stopPartitions) {
+        for (StopPartition stopPartition : stopPartitions) {
             TopicPartition tp = stopPartition.topicPartition;
             try {
                 if (topicIdByPartitionMap.containsKey(tp)) {
@@ -586,7 +586,7 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
 
         // KAFKA-15313: Delete remote log segments partition asynchronously when a partition is deleted.
         Collection<Uuid> deletedSegmentIds = new ArrayList<>();
-        for (RemoteLogSegmentMetadata metadata: metadataList) {
+        for (RemoteLogSegmentMetadata metadata : metadataList) {
             deletedSegmentIds.add(metadata.remoteLogSegmentId().id());
             remoteStorageManagerPlugin.get().deleteLogSegmentData(metadata);
         }
@@ -907,7 +907,7 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
                 // epoch cache then it starts copying the segments from the earliest epoch entry's offset.
                 copiedOffsetOption = Optional.of(findHighestRemoteOffset(topicIdPartition, log));
                 logger.info("Found the highest copiedRemoteOffset: {} for partition: {} after becoming leader", copiedOffsetOption, topicIdPartition);
-                copiedOffsetOption.ifPresent(offsetAndEpoch ->  log.updateHighestOffsetInRemoteStorage(offsetAndEpoch.offset()));
+                copiedOffsetOption.ifPresent(offsetAndEpoch -> log.updateHighestOffsetInRemoteStorage(offsetAndEpoch.offset()));
             }
         }
 
@@ -1092,7 +1092,7 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
 
             remoteLogMetadataManagerPlugin.get().updateRemoteLogSegmentMetadata(copySegmentFinishedRlsm).get();
             brokerTopicStats.topicStats(log.topicPartition().topic())
-                .remoteCopyBytesRate().mark(copySegmentStartedRlsm.segmentSizeInBytes());
+                    .remoteCopyBytesRate().mark(copySegmentStartedRlsm.segmentSizeInBytes());
             brokerTopicStats.allTopicsStats().remoteCopyBytesRate().mark(copySegmentStartedRlsm.segmentSizeInBytes());
 
             // `epochEntries` cannot be empty, there is a pre-condition validation in RemoteLogSegmentMetadata
@@ -1283,9 +1283,9 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
             // unreferenced because they are not part of the current leader epoch lineage.
             private boolean deleteLogSegmentsDueToLeaderEpochCacheTruncation(EpochEntry earliestEpochEntry,
                                                                              RemoteLogSegmentMetadata metadata)
-                    throws RemoteStorageException, ExecutionException, InterruptedException {
+                                                                                     throws RemoteStorageException, ExecutionException, InterruptedException {
                 boolean isSegmentDeleted = deleteRemoteLogSegment(metadata,
-                    ignored -> metadata.segmentLeaderEpochs().keySet().stream().allMatch(epoch -> epoch < earliestEpochEntry.epoch()));
+                        ignored -> metadata.segmentLeaderEpochs().keySet().stream().allMatch(epoch -> epoch < earliestEpochEntry.epoch()));
                 if (isSegmentDeleted) {
                     logger.info("Deleted remote log segment {} due to leader-epoch-cache truncation. " +
                                     "Current earliest-epoch-entry: {}, segment-end-offset: {} and segment-epochs: {}",
@@ -1619,8 +1619,8 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
     }
 
     private boolean deleteRemoteLogSegment(
-        RemoteLogSegmentMetadata segmentMetadata,
-        Predicate<RemoteLogSegmentMetadata> predicate
+            RemoteLogSegmentMetadata segmentMetadata,
+            Predicate<RemoteLogSegmentMetadata> predicate
     ) throws RemoteStorageException, ExecutionException, InterruptedException {
         if (predicate.test(segmentMetadata)) {
             LOGGER.debug("Deleting remote log segment {}", segmentMetadata.remoteLogSegmentId());
@@ -1628,8 +1628,8 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
 
             // Publish delete segment started event.
             remoteLogMetadataManagerPlugin.get().updateRemoteLogSegmentMetadata(
-                new RemoteLogSegmentMetadataUpdate(segmentMetadata.remoteLogSegmentId(), time.milliseconds(),
-                    segmentMetadata.customMetadata(), RemoteLogSegmentState.DELETE_SEGMENT_STARTED, brokerId)).get();
+                    new RemoteLogSegmentMetadataUpdate(segmentMetadata.remoteLogSegmentId(), time.milliseconds(),
+                            segmentMetadata.customMetadata(), RemoteLogSegmentState.DELETE_SEGMENT_STARTED, brokerId)).get();
 
             brokerTopicStats.topicStats(topic).remoteDeleteRequestRate().mark();
             brokerTopicStats.allTopicsStats().remoteDeleteRequestRate().mark();
@@ -1647,8 +1647,8 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
 
             // Publish delete segment finished event.
             remoteLogMetadataManagerPlugin.get().updateRemoteLogSegmentMetadata(
-                new RemoteLogSegmentMetadataUpdate(segmentMetadata.remoteLogSegmentId(), time.milliseconds(),
-                    segmentMetadata.customMetadata(), RemoteLogSegmentState.DELETE_SEGMENT_FINISHED, brokerId)).get();
+                    new RemoteLogSegmentMetadataUpdate(segmentMetadata.remoteLogSegmentId(), time.milliseconds(),
+                            segmentMetadata.customMetadata(), RemoteLogSegmentState.DELETE_SEGMENT_FINISHED, brokerId)).get();
             LOGGER.debug("Deleted remote log segment {}", segmentMetadata.remoteLogSegmentId());
             return true;
         }
@@ -1868,6 +1868,7 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
             }
         }
     }
+
     // for testing
     RemoteLogInputStream getRemoteLogInputStream(InputStream in) {
         return new RemoteLogInputStream(in);
@@ -2237,9 +2238,11 @@ public class RemoteLogManager implements Closeable, AsyncOffsetReader {
     RLMTaskWithFuture leaderCopyTask(TopicIdPartition partition) {
         return leaderCopyRLMTasks.get(partition);
     }
+
     RLMTaskWithFuture leaderExpirationTask(TopicIdPartition partition) {
         return leaderExpirationRLMTasks.get(partition);
     }
+
     RLMTaskWithFuture followerTask(TopicIdPartition partition) {
         return followerRLMTasks.get(partition);
     }

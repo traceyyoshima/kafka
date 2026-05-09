@@ -233,7 +233,7 @@ public abstract class AbstractMembershipManager<R extends AbstractResponse> impl
     protected void transitionTo(MemberState nextState) {
         if (!state.equals(nextState) && !nextState.getPreviousValidStates().contains(state)) {
             throw new IllegalStateException(String.format("Invalid state transition from %s to %s",
-                    state, nextState));
+                state, nextState));
         }
 
         if (isCompletingRebalance(state, nextState)) {
@@ -695,7 +695,7 @@ public abstract class AbstractMembershipManager<R extends AbstractResponse> impl
                         "to ack a previous reconciliation. \n" +
                         "\t\tCurrent assignment: {} \n" +
                         "\t\tTarget assignment: {}\n",
-                        memberId, memberEpoch, MemberState.RECONCILING, currentAssignment, currentTargetAssignment);
+                          memberId, memberEpoch, MemberState.RECONCILING, currentAssignment, currentTargetAssignment);
                 transitionTo(MemberState.RECONCILING);
             }
         } else if (state == MemberState.LEAVING) {
@@ -720,7 +720,7 @@ public abstract class AbstractMembershipManager<R extends AbstractResponse> impl
         if (state == MemberState.LEAVING) {
             log.warn("Heartbeat to leave group cannot be sent (most probably due to coordinator " +
                     "not known/available). Member {} with epoch {} will transition to {}.",
-                memberId, memberEpoch, MemberState.UNSUBSCRIBED);
+                    memberId, memberEpoch, MemberState.UNSUBSCRIBED);
             transitionTo(MemberState.UNSUBSCRIBED);
             maybeCompleteLeaveInProgress();
         }
@@ -1181,8 +1181,8 @@ public abstract class AbstractMembershipManager<R extends AbstractResponse> impl
      * @return Future that will complete when the callback execution completes.
      */
     private CompletableFuture<Void> assignPartitions(
-            TopicIdPartitionSet assignedPartitions,
-            SortedSet<TopicPartition> addedPartitions) {
+        TopicIdPartitionSet assignedPartitions,
+        SortedSet<TopicPartition> addedPartitions) {
 
         // Signal that new partitions have been reconciled so that type-specific actions can be taken.
         // - ShareMembershipManager: updates subscription immediately and returns completed future
@@ -1206,7 +1206,7 @@ public abstract class AbstractMembershipManager<R extends AbstractResponse> impl
                 if (!addedPartitions.isEmpty() && subscriptions.assignedPartitions().containsAll(addedPartitions)) {
                     log.warn("Leaving newly assigned partitions {} marked as non-fetchable and not " +
                             "requiring initializing positions after onPartitionsAssigned callback failed.",
-                        addedPartitions, exception);
+                            addedPartitions, exception);
                 }
             }
         });

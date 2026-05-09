@@ -39,7 +39,7 @@ import java.util.TreeMap;
  */
 public class GenericInMemoryKeyValueStore<K extends Comparable, V>
     extends WrappedStateStore<StateStore, K, V>
-    implements KeyValueStore<K, V> {
+        implements KeyValueStore<K, V> {
 
     private final String name;
     private final NavigableMap<K, V> map;

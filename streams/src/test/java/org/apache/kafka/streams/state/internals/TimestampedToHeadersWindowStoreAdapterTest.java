@@ -105,15 +105,15 @@ public class TimestampedToHeadersWindowStoreAdapterTest {
     public void shouldHandleWindowKeyQuerySuccessfully() {
         // Build a typed window store using timestamped window store (adapter wraps it)
         final TimestampedWindowStoreWithHeaders<String, String> store = Stores.timestampedWindowStoreWithHeadersBuilder(
-            Stores.persistentTimestampedWindowStore(
-                "typed-adapter-test",
-                ofMillis(RETENTION_PERIOD),
-                ofMillis(WINDOW_SIZE),
-                false),
-            Serdes.String(),
-            Serdes.String())
-            .withLoggingDisabled()
-            .build();
+                Stores.persistentTimestampedWindowStore(
+                        "typed-adapter-test",
+                        ofMillis(RETENTION_PERIOD),
+                        ofMillis(WINDOW_SIZE),
+                        false),
+                Serdes.String(),
+                Serdes.String())
+                .withLoggingDisabled()
+                .build();
 
         store.init(context, store);
 
@@ -134,9 +134,9 @@ public class TimestampedToHeadersWindowStoreAdapterTest {
 
             // Query at typed level - WindowKeyQuery should return windowed values with timestamps
             final WindowKeyQuery<String, ValueAndTimestamp<String>> query = WindowKeyQuery.withKeyAndWindowStartRange(
-                "test-key",
-                Instant.ofEpochMilli(0),
-                Instant.ofEpochMilli(10000L)
+                    "test-key",
+                    Instant.ofEpochMilli(0),
+                    Instant.ofEpochMilli(10000L)
             );
             final QueryResult<WindowStoreIterator<ValueAndTimestamp<String>>> result =
                 store.query(query, PositionBound.unbounded(), new QueryConfig(false));
@@ -175,15 +175,15 @@ public class TimestampedToHeadersWindowStoreAdapterTest {
     public void shouldHandleWindowRangeQuerySuccessfully() {
         // Build a typed window store using timestamped window store (adapter wraps it)
         final TimestampedWindowStoreWithHeaders<String, String> store = Stores.timestampedWindowStoreWithHeadersBuilder(
-            Stores.persistentTimestampedWindowStore(
-                "typed-range-adapter-test",
-                ofMillis(RETENTION_PERIOD),
-                ofMillis(WINDOW_SIZE),
-                false),
-            Serdes.String(),
-            Serdes.String())
-            .withLoggingDisabled()
-            .build();
+                Stores.persistentTimestampedWindowStore(
+                        "typed-range-adapter-test",
+                        ofMillis(RETENTION_PERIOD),
+                        ofMillis(WINDOW_SIZE),
+                        false),
+                Serdes.String(),
+                Serdes.String())
+                .withLoggingDisabled()
+                .build();
 
         store.init(context, store);
 
@@ -208,8 +208,8 @@ public class TimestampedToHeadersWindowStoreAdapterTest {
 
             // Query at typed level - WindowRangeQuery should return all windowed key-values with timestamps
             final WindowRangeQuery<String, ValueAndTimestamp<String>> query = WindowRangeQuery.withWindowStartRange(
-                Instant.ofEpochMilli(0),
-                Instant.ofEpochMilli(10000L)
+                    Instant.ofEpochMilli(0),
+                    Instant.ofEpochMilli(10000L)
             );
             final QueryResult<KeyValueIterator<Windowed<String>, ValueAndTimestamp<String>>> result =
                 store.query(query, PositionBound.unbounded(), new QueryConfig(false));

@@ -189,7 +189,7 @@ public class KStreamWindowAggregate<KIn, VIn, VAgg, W extends Window> implements
 
                 if (matchedCloseWindows.equals(matchedEmitWindows)) {
                     log.trace("No new windows to emit. LastEmitCloseTime={}, emitRangeLowerBound={}, emitRangeUpperBound={}",
-                            lastEmitWindowCloseTime, emitRangeLowerBound, emitRangeUpperBound);
+                              lastEmitWindowCloseTime, emitRangeLowerBound, emitRangeUpperBound);
                     return false;
                 }
             }

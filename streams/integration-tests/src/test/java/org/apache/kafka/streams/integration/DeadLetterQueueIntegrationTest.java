@@ -287,7 +287,7 @@ public class DeadLetterQueueIntegrationTest {
             // Consume the output records
             // No records of the same batch should be available in the output topic due to deserialization error
             final AssertionError error = assertThrows(AssertionError.class,
-                                   () -> readResult(OUTPUT_TOPIC, 1, StringDeserializer.class, StringDeserializer.class, 10000L)
+                () -> readResult(OUTPUT_TOPIC, 1, StringDeserializer.class, StringDeserializer.class, 10000L)
             );
             assertEquals("""
                 Did not receive all 1 records from topic outputTopic within 10000 ms
@@ -362,8 +362,7 @@ public class DeadLetterQueueIntegrationTest {
                     throw new RuntimeException("KABOOM");
                 }
                 return v;
-            }
-            )
+            })
             .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         return new KafkaStreams(builder.build(), getProcessingProperties(processingExceptionHandlerClass));

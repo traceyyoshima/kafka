@@ -254,8 +254,8 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
     }
 
     private static Map<TaskId, SortedSet<ProcessId>> tasksToCaughtUpClients(final Set<TaskId> statefulTasks,
-                                                                       final Map<ProcessId, ClientState> clientStates,
-                                                                       final long acceptableRecoveryLag) {
+                                                                            final Map<ProcessId, ClientState> clientStates,
+                                                                            final long acceptableRecoveryLag) {
         final Map<TaskId, SortedSet<ProcessId>> taskToCaughtUpClients = new HashMap<>();
 
         for (final TaskId task : statefulTasks) {
@@ -274,11 +274,11 @@ public class HighAvailabilityTaskAssignor implements LegacyTaskAssignor {
     }
 
     private static Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag(final Set<TaskId> statefulTasks,
-                                                              final Map<ProcessId, ClientState> clientStates) {
+                                                                        final Map<ProcessId, ClientState> clientStates) {
         final Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag = new HashMap<>();
         for (final TaskId task : statefulTasks) {
             final SortedSet<ProcessId> clientLag = new TreeSet<>(Comparator.<ProcessId>comparingLong(a ->
-                    clientStates.get(a).lagFor(task)).thenComparing(a -> a));
+                clientStates.get(a).lagFor(task)).thenComparing(a -> a));
             clientLag.addAll(clientStates.keySet());
             tasksToClientByLag.put(task, clientLag);
         }

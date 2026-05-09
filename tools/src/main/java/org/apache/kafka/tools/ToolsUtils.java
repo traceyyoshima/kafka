@@ -118,8 +118,8 @@ public class ToolsUtils {
         }
 
         String[] validHostPort = Arrays.stream(hostPorts)
-                .filter(hostPortData -> Utils.getPort(hostPortData) != null)
-                .toArray(String[]::new);
+            .filter(hostPortData -> Utils.getPort(hostPortData) != null)
+            .toArray(String[]::new);
 
         if (validHostPort.length == 0 || validHostPort.length != hostPorts.length) {
             throw new IllegalArgumentException("Please provide valid host:port like host1:9091,host2:9092\n");

@@ -117,7 +117,7 @@ class KStreamKStreamSelfJoin<K, V1, V2, VOut> implements ProcessorSupplier<K, V1
                     // Join this with other
                     context().forward(
                         record.withValue(joinerThis.apply(
-                                record.key(), record.value(), otherValue))
+                            record.key(), record.value(), otherValue))
                             .withTimestamp(Math.max(inputRecordTimestamp, otherRecordTimestamp)));
                 }
             }

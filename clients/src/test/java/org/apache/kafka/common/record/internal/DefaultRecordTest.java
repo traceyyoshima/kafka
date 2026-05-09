@@ -61,7 +61,7 @@ public class DefaultRecordTest {
 
             ByteBufferOutputStream out = new ByteBufferOutputStream(1024);
             DefaultRecord.writeTo(new DataOutputStream(out), offsetDelta, timestampDelta, record.key(), record.value(),
-                    record.headers());
+                record.headers());
             ByteBuffer buffer = out.buffer();
             buffer.flip();
 
@@ -74,7 +74,7 @@ public class DefaultRecordTest {
             assertEquals(record.value(), logRecord.value());
             assertArrayEquals(record.headers(), logRecord.headers());
             assertEquals(DefaultRecord.sizeInBytes(offsetDelta, timestampDelta, record.key(), record.value(),
-                    record.headers()), logRecord.sizeInBytes());
+                record.headers()), logRecord.sizeInBytes());
         }
     }
 
@@ -96,7 +96,7 @@ public class DefaultRecordTest {
 
         ByteBufferOutputStream out = new ByteBufferOutputStream(1024);
         DefaultRecord.writeTo(new DataOutputStream(out), offsetDelta, timestampDelta, record.key(), record.value(),
-                record.headers());
+            record.headers());
         ByteBuffer buffer = out.buffer();
         buffer.flip();
         buffer.put(14, (byte) 8);
@@ -128,7 +128,7 @@ public class DefaultRecordTest {
 
         ByteBufferOutputStream out = new ByteBufferOutputStream(1024);
         DefaultRecord.writeTo(new DataOutputStream(out), offsetDelta, timestampDelta, record.key(), record.value(),
-                record.headers());
+            record.headers());
         ByteBuffer buffer = out.buffer();
         buffer.flip();
         buffer.put(14, (byte) 4);

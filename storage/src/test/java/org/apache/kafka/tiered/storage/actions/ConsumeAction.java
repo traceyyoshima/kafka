@@ -167,20 +167,20 @@ public final class ConsumeAction implements TieredStorageTestAction {
     }
 
     private String errorMessage(
-        LocalTieredStorageEvent.EventType eventType,
-        int actualCount,
-        RemoteFetchCount.OperationType exceptedOperationType,
-        int exceptedCount
+            LocalTieredStorageEvent.EventType eventType,
+            int actualCount,
+            RemoteFetchCount.OperationType exceptedOperationType,
+            int exceptedCount
     ) {
         return String.format(
-            "Expected %s requests count from broker %d to tiered storage for topic-partition %s to be %s %d, " +
+                "Expected %s requests count from broker %d to tiered storage for topic-partition %s to be %s %d, " +
                     "but actual count was %d.",
-            eventType,
-            remoteFetchSpec.sourceBrokerId(),
-            remoteFetchSpec.topicPartition(),
-            operationTypeToString(exceptedOperationType),
-            exceptedCount,
-            actualCount
+                eventType,
+                remoteFetchSpec.sourceBrokerId(),
+                remoteFetchSpec.topicPartition(),
+                operationTypeToString(exceptedOperationType),
+                exceptedCount,
+                actualCount
         );
     }
 

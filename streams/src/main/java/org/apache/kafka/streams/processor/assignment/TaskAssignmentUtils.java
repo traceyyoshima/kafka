@@ -819,7 +819,7 @@ public final class TaskAssignmentUtils {
                      "There is not enough available capacity. You should " +
                      "increase the number of application instances " +
                      "to maintain the requested number of standby replicas.",
-                numRemainingStandbys, numStandbyReplicas, activeTaskId);
+                     numRemainingStandbys, numStandbyReplicas, activeTaskId);
         }
     }
 
@@ -867,9 +867,9 @@ public final class TaskAssignmentUtils {
 
             LOG.debug("Assigning {} out of {} standby tasks for an active task [{}] with client tags {}. " +
                       "Standby task client tags are {}.",
-                numberOfStandbyClients - numRemainingStandbys, numberOfStandbyClients, activeTaskId,
-                clientStates.get(activeClient).clientTags(),
-                clientStateOnUsedTagDimensions.clientTags());
+                      numberOfStandbyClients - numRemainingStandbys, numberOfStandbyClients, activeTaskId,
+                      clientStates.get(activeClient).clientTags(),
+                      clientStateOnUsedTagDimensions.clientTags());
 
             assignments.get(clientStateOnUsedTagDimensions.processId()).assignTask(
                 new AssignedTask(activeTaskId, AssignedTask.Type.STANDBY)
@@ -886,9 +886,9 @@ public final class TaskAssignmentUtils {
                      "dimensions compared to an active and corresponding standby task. " +
                      "Consider launching application instances on different tag dimensions than [{}]. " +
                      "Standby task assignment will fall back to assigning standby tasks to the least loaded clients.",
-                numRemainingStandbys, numberOfStandbyClients,
-                activeTaskId, rackAwareAssignmentTags,
-                clientStates.get(activeClient).clientTags());
+                     numRemainingStandbys, numberOfStandbyClients,
+                     activeTaskId, rackAwareAssignmentTags,
+                     clientStates.get(activeClient).clientTags());
 
         } else {
             tasksToRemainingStandbys.remove(activeTaskId);
@@ -914,7 +914,7 @@ public final class TaskAssignmentUtils {
             if (!rackAwareAssignmentTags.contains(tagKey)) {
                 LOG.warn("Client tag with key [{}] will be ignored when computing rack aware standby " +
                          "task assignment because it is not part of the configured rack awareness [{}].",
-                    tagKey, rackAwareAssignmentTags);
+                         tagKey, rackAwareAssignmentTags);
                 continue;
             }
 
@@ -949,7 +949,7 @@ public final class TaskAssignmentUtils {
             return (source, destination, sourceTask, kafkaStreamsAssignments) -> {
                 final Set<KeyValue<String, String>> tagsWithSource = new HashSet<>();
                 final Set<KeyValue<String, String>> tagsWithDestination = new HashSet<>();
-                for (final KafkaStreamsAssignment assignment: kafkaStreamsAssignments.values()) {
+                for (final KafkaStreamsAssignment assignment : kafkaStreamsAssignments.values()) {
                     final boolean hasAssignedTask = assignment.tasks().containsKey(sourceTask);
                     final boolean isSourceProcess = assignment.processId().equals(source.processId());
                     final boolean isDestinationProcess = assignment.processId().equals(destination.processId());

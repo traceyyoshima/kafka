@@ -70,7 +70,7 @@ public class BrokerRegistrationTest {
             setListeners(List.of(new Endpoint("INTERNAL", SecurityProtocol.PLAINTEXT, "localhost", 9092))).
             setSupportedFeatures(Stream.of(new SimpleEntry<>("foo", VersionRange.of((short) 2, (short) 3)),
                 new SimpleEntry<>("bar", VersionRange.of((short) 1, (short) 4))).collect(
-                        Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue))).
+                    Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue))).
             setRack(Optional.of("myrack")).
             setFenced(false).
             setInControlledShutdown(true).build(),
@@ -191,12 +191,12 @@ public class BrokerRegistrationTest {
                 ).
                 build();
         assertEquals(List.of(
-                Uuid.fromString("3MWIBL9NR4eXhtdfBVA7Bw"),
-                Uuid.fromString("JhYia5HRTLihf2FFJVxopQ"),
-                Uuid.fromString("LWZsWPBrQruOMMrnEBj7bw"),
-                Uuid.fromString("OpIJIaO6RKaOGvHlNmOEhA"),
-                Uuid.fromString("SZQIVeLMQGiNi68StNSNZA"),
-                Uuid.fromString("VNetSHnySxSbvjwKrBzpkw")
+            Uuid.fromString("3MWIBL9NR4eXhtdfBVA7Bw"),
+            Uuid.fromString("JhYia5HRTLihf2FFJVxopQ"),
+            Uuid.fromString("LWZsWPBrQruOMMrnEBj7bw"),
+            Uuid.fromString("OpIJIaO6RKaOGvHlNmOEhA"),
+            Uuid.fromString("SZQIVeLMQGiNi68StNSNZA"),
+            Uuid.fromString("VNetSHnySxSbvjwKrBzpkw")
         ), registration.directories());
     }
 
@@ -238,7 +238,7 @@ public class BrokerRegistrationTest {
                 setFenced(false).
                 setInControlledShutdown(false).
                 setDirectories(List.of(
-                        Uuid.fromString("dir1G6EtuR1OTdAzFw1AFQ")
+                    Uuid.fromString("dir1G6EtuR1OTdAzFw1AFQ")
                 )).
                 build();
         assertTrue(registration.hasUncordonedDirs());
@@ -252,10 +252,10 @@ public class BrokerRegistrationTest {
                 setFenced(false).
                 setInControlledShutdown(false).
                 setDirectories(List.of(
-                        Uuid.fromString("dir1G6EtuR1OTdAzFw1AFQ")
+                    Uuid.fromString("dir1G6EtuR1OTdAzFw1AFQ")
                 )).
                 setCordonedDirectories(List.of(
-                        Uuid.fromString("dir1G6EtuR1OTdAzFw1AFQ")
+                    Uuid.fromString("dir1G6EtuR1OTdAzFw1AFQ")
                 )).
                 build();
         assertFalse(registration.hasUncordonedDirs());

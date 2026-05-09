@@ -246,7 +246,7 @@ public final class MirrorMakerConfig extends AbstractConfig {
 
         // override with connector-level properties
         props.putAll(stringsWithPrefixStripped(sourceAndTarget.source() + "->"
-            + sourceAndTarget.target() + "."));
+                + sourceAndTarget.target() + "."));
 
         // disabled by default
         props.putIfAbsent(MirrorConnectorConfig.ENABLED, "false");

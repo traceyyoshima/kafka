@@ -132,7 +132,7 @@ public class AtLeastOnceDeliveryMessageLossIntegrationTest {
             waitForProcessingAndCommit();
 
             assertTrue(appender.getMessages().stream()
-                    .anyMatch(msg -> msg.contains("MESSAGE_TOO_LARGE") && msg.contains("splitting and retrying")),
+                .anyMatch(msg -> msg.contains("MESSAGE_TOO_LARGE") && msg.contains("splitting and retrying")),
                 "Should log MESSAGE_TOO_LARGE and splitting retry messages");
 
             final int outputRecordCount = verifyOutputRecords(LARGE_RECORD_COUNT); // should produce records
@@ -179,7 +179,7 @@ public class AtLeastOnceDeliveryMessageLossIntegrationTest {
         waitForCondition(
             () -> {
                 try (final Admin adminClient = Admin.create(mkMap(
-                        mkEntry(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())))) {
+                    mkEntry(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())))) {
                     final TopicPartition topicPartition = new TopicPartition(inputTopic, 0);
                     return adminClient
                         .listConsumerGroupOffsets(applicationId)
@@ -197,7 +197,7 @@ public class AtLeastOnceDeliveryMessageLossIntegrationTest {
     
     private boolean verifyConsumerOffsetsCommitted(final int expectedOffset) throws Exception {
         try (final Admin adminClient = Admin.create(mkMap(
-                mkEntry(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())))) {
+            mkEntry(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())))) {
             
             final TopicPartition topicPartition = new TopicPartition(inputTopic, 0);
             

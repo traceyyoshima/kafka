@@ -106,7 +106,7 @@ public class FileRecordsTest {
     @Test
     public void testOutOfRangeSlice() {
         assertThrows(IllegalArgumentException.class,
-            () -> this.fileRecords.slice(fileRecords.sizeInBytes() + 1, 15).sizeInBytes());
+                () -> this.fileRecords.slice(fileRecords.sizeInBytes() + 1, 15).sizeInBytes());
     }
 
     /**
@@ -254,26 +254,26 @@ public class FileRecordsTest {
 
         int message1Size = batches.get(0).sizeInBytes();
         assertEquals(new FileRecords.LogOffsetPosition(0L, position, message1Size),
-            fileRecords.searchForOffsetFromPosition(0, 0),
-            "Should be able to find the first message by its offset");
+                fileRecords.searchForOffsetFromPosition(0, 0),
+                "Should be able to find the first message by its offset");
         position += message1Size;
 
         int message2Size = batches.get(1).sizeInBytes();
         assertEquals(new FileRecords.LogOffsetPosition(1L, position, message2Size),
-            fileRecords.searchForOffsetFromPosition(1, 0),
-            "Should be able to find second message when starting from 0");
+                fileRecords.searchForOffsetFromPosition(1, 0),
+                "Should be able to find second message when starting from 0");
         assertEquals(new FileRecords.LogOffsetPosition(1L, position, message2Size),
-            fileRecords.searchForOffsetFromPosition(1, position),
-            "Should be able to find second message starting from its offset");
+                fileRecords.searchForOffsetFromPosition(1, position),
+                "Should be able to find second message starting from its offset");
         position += message2Size + batches.get(2).sizeInBytes();
 
         int message4Size = batches.get(3).sizeInBytes();
         assertEquals(new FileRecords.LogOffsetPosition(50L, position, message4Size),
-            fileRecords.searchForOffsetFromPosition(3, position),
-            "Should be able to find fourth message from a non-existent offset");
+                fileRecords.searchForOffsetFromPosition(3, position),
+                "Should be able to find fourth message from a non-existent offset");
         assertEquals(new FileRecords.LogOffsetPosition(50L, position, message4Size),
-            fileRecords.searchForOffsetFromPosition(50,  position),
-            "Should be able to find fourth message by correct offset");
+                fileRecords.searchForOffsetFromPosition(50, position),
+                "Should be able to find fourth message by correct offset");
     }
 
     /**
@@ -427,11 +427,11 @@ public class FileRecordsTest {
     @Test
     public void testSliceForAlreadySlicedFileRecords() throws IOException {
         byte[][] values = new byte[][] {
-            "abcd".getBytes(),
-            "efgh".getBytes(),
-            "ijkl".getBytes(),
-            "mnopqr".getBytes(),
-            "stuv".getBytes()
+                "abcd".getBytes(),
+                "efgh".getBytes(),
+                "ijkl".getBytes(),
+                "mnopqr".getBytes(),
+                "stuv".getBytes()
         };
         try (FileRecords fileRecords = createFileRecords(values)) {
             List<RecordBatch> items = batches(fileRecords.slice(0, fileRecords.sizeInBytes()));

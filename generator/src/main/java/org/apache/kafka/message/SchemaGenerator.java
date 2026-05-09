@@ -84,7 +84,7 @@ final class SchemaGenerator {
 
         // First generate schemas for common structures so that they are
         // available when we generate the inline structures
-        for (Iterator<StructSpec> iter = structRegistry.commonStructs(); iter.hasNext(); ) {
+        for (Iterator<StructSpec> iter = structRegistry.commonStructs(); iter.hasNext();) {
             StructSpec struct = iter.next();
             generateSchemas(struct.name(), struct, message.struct().versions());
         }
@@ -170,7 +170,7 @@ final class SchemaGenerator {
     }
 
     private void generateTaggedFieldsSchemaForVersion(StructSpec struct,
-            short version, CodeBuffer buffer) {
+        short version, CodeBuffer buffer) {
         headerGenerator.addStaticImport(MessageGenerator.TAGGED_FIELDS_SECTION_CLASS);
 
         // Find the last valid tagged field index.
@@ -305,14 +305,14 @@ final class SchemaGenerator {
                 FieldType.ArrayType arrayType = (FieldType.ArrayType) type;
                 String prefix = nullable ? "CompactArrayOf.nullable" : "new CompactArrayOf";
                 return String.format("%s(%s)", prefix,
-                        fieldTypeToSchemaType(arrayType.elementType(), false, version, fieldFlexibleVersions, false));
+                    fieldTypeToSchemaType(arrayType.elementType(), false, version, fieldFlexibleVersions, false));
 
             } else {
                 headerGenerator.addImport(MessageGenerator.ARRAYOF_CLASS);
                 FieldType.ArrayType arrayType = (FieldType.ArrayType) type;
                 String prefix = nullable ? "ArrayOf.nullable" : "new ArrayOf";
                 return String.format("%s(%s)", prefix,
-                        fieldTypeToSchemaType(arrayType.elementType(), false, version, fieldFlexibleVersions, false));
+                    fieldTypeToSchemaType(arrayType.elementType(), false, version, fieldFlexibleVersions, false));
             }
         } else if (type.isStruct()) {
             if (nullable) {

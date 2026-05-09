@@ -286,8 +286,8 @@ abstract class EmbeddedConnect {
             return responseToString(response);
         } else {
             throw new ConnectRestException(
-                response.getStatus(),
-                "Could not execute 'POST /connectors' request. Error response: " + responseToString(response)
+                    response.getStatus(),
+                    "Could not execute 'POST /connectors' request. Error response: " + responseToString(response)
             );
         }
     }
@@ -507,6 +507,7 @@ abstract class EmbeddedConnect {
             throw new ConnectException("Could not parse connector state", e);
         }
     }
+
     /**
      * Get the connector names of the connectors currently running on this cluster.
      *

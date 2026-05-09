@@ -278,8 +278,8 @@ public class LogCompactionTester {
         double reduction = 100 * (1.0 - (double) consumedLines / producedLines);
 
         System.out.printf(
-            "%d rows of data produced, %d rows of data consumed (%.1f%% reduction).%n",
-            producedLines, consumedLines, reduction);
+                "%d rows of data produced, %d rows of data consumed (%.1f%% reduction).%n",
+                producedLines, consumedLines, reduction);
 
         System.out.println("De-duplicating and validating output files...");
         validateOutput(producedDataFilePath.toFile(), consumedDataFilePath.toFile());
@@ -419,7 +419,7 @@ public class LogCompactionTester {
                 case LZ4 -> producerProps.put(ProducerConfig.COMPRESSION_LZ4_LEVEL_CONFIG, compressionLevel);
                 case ZSTD -> producerProps.put(ProducerConfig.COMPRESSION_ZSTD_LEVEL_CONFIG, compressionLevel);
                 default -> System.out.println("Warning: Compression level " + compressionLevel + " is ignored for compression type "
-                    + compressionType.name + ". Only gzip, lz4, and zstd support compression levels.");
+                        + compressionType.name + ". Only gzip, lz4, and zstd support compression levels.");
             }
         }
 
@@ -467,18 +467,18 @@ public class LogCompactionTester {
                 ConsumerRecords<String, String> consumerRecords = consumer.poll(Duration.ofSeconds(20));
                 if (consumerRecords.isEmpty()) return consumedFilePath;
                 consumerRecords.forEach(
-                    record -> {
-                        try {
-                            boolean delete = record.value() == null;
-                            long value = delete ? -1L : Long.parseLong(record.value());
-                            TestRecord testRecord = new TestRecord(
-                                    record.topic(), Integer.parseInt(record.key()), value, delete);
-                            consumedWriter.write(testRecord.toString());
-                            consumedWriter.newLine();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                        record -> {
+                            try {
+                                boolean delete = record.value() == null;
+                                long value = delete ? -1L : Long.parseLong(record.value());
+                                TestRecord testRecord = new TestRecord(
+                                        record.topic(), Integer.parseInt(record.key()), value, delete);
+                                consumedWriter.write(testRecord.toString());
+                                consumedWriter.newLine();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
-                    }
                 );
             }
         }

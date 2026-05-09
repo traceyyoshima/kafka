@@ -41,14 +41,14 @@ public class ConfigurationsImageNodeTest {
     static {
         Map<ConfigResource, ConfigurationImage> resourceMap = new HashMap<>();
         for (ConfigResource resource : List.of(
-                new ConfigResource(BROKER, ""),
-                new ConfigResource(BROKER, "0"),
-                new ConfigResource(TOPIC, ""),
-                new ConfigResource(TOPIC, "foobar"),
-                new ConfigResource(TOPIC, ":colons:"),
-                new ConfigResource(TOPIC, "__internal"))) {
+            new ConfigResource(BROKER, ""),
+            new ConfigResource(BROKER, "0"),
+            new ConfigResource(TOPIC, ""),
+            new ConfigResource(TOPIC, "foobar"),
+            new ConfigResource(TOPIC, ":colons:"),
+            new ConfigResource(TOPIC, "__internal"))) {
             resourceMap.put(resource, new ConfigurationImage(resource,
-                    Map.of("foo", "bar")));
+                Map.of("foo", "bar")));
         }
         ConfigurationsImage image = new ConfigurationsImage(resourceMap);
         NODE = new ConfigurationsImageNode(image);

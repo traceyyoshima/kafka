@@ -154,7 +154,7 @@ public class KafkaStatusBackingStore extends KafkaTopicBasedBackingStore impleme
 
     // visible for testing
     KafkaStatusBackingStore(Time time, Converter converter, String statusTopic, Supplier<TopicAdmin> topicAdminSupplier,
-        KafkaBasedLog<String, byte[]> kafkaLog) {
+            KafkaBasedLog<String, byte[]> kafkaLog) {
         this(time, converter, null, "connect-distributed-");
         this.kafkaLog = kafkaLog;
         this.statusTopic = statusTopic;
@@ -291,9 +291,9 @@ public class KafkaStatusBackingStore extends KafkaTopicBasedBackingStore impleme
     }
 
     private <V extends AbstractStatus<?>> void send(final String key,
-                                                 final V status,
-                                                 final CacheEntry<V> entry,
-                                                 final boolean safeWrite) {
+                                                    final V status,
+                                                    final CacheEntry<V> entry,
+                                                    final boolean safeWrite) {
         final int sequence;
         synchronized (this) {
             this.generation = status.generation();

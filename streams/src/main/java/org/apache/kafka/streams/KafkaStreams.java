@@ -687,10 +687,10 @@ public class KafkaStreams implements AutoCloseable {
                                            final TopicPartition topicPartition,
                                            final String storeName) {
             throw new StreamsException(
-                    String.format("Fatal user code error in store restore listener for store %s, partition %s.",
-                            storeName,
-                            topicPartition),
-                    fatalUserException);
+                String.format("Fatal user code error in store restore listener for store %s, partition %s.",
+                    storeName,
+                    topicPartition),
+                fatalUserException);
         }
 
         void setUserStateRestoreListener(final StateRestoreListener userStateRestoreListener) {
@@ -755,16 +755,16 @@ public class KafkaStreams implements AutoCloseable {
                                            final TopicPartition topicPartition,
                                            final String storeName) {
             throw new StreamsException(
-                    String.format("Fatal user code error in standby update listener for store %s, partition %s.",
-                            storeName,
-                            topicPartition),
-                    fatalUserException);
+                String.format("Fatal user code error in standby update listener for store %s, partition %s.",
+                    storeName,
+                    topicPartition),
+                fatalUserException);
         }
 
         @Override
         public void onUpdateStart(final TopicPartition topicPartition,
-                          final String storeName,
-                          final long startingOffset) {
+                                  final String storeName,
+                                  final long startingOffset) {
             if (userStandbyListener != null) {
                 try {
                     userStandbyListener.onUpdateStart(topicPartition, storeName, startingOffset);
@@ -1635,7 +1635,7 @@ public class KafkaStreams implements AutoCloseable {
     @Deprecated(since = "4.2")
     public synchronized boolean close(final CloseOptions options) throws IllegalArgumentException {
         final org.apache.kafka.streams.CloseOptions closeOptions = org.apache.kafka.streams.CloseOptions.timeout(options.timeout)
-                .withGroupMembershipOperation(options.leaveGroup ?
+            .withGroupMembershipOperation(options.leaveGroup ?
                         org.apache.kafka.streams.CloseOptions.GroupMembershipOperation.LEAVE_GROUP :
                         org.apache.kafka.streams.CloseOptions.GroupMembershipOperation.REMAIN_IN_GROUP);
         return close(closeOptions);
@@ -1914,13 +1914,13 @@ public class KafkaStreams implements AutoCloseable {
                 final String clientFutureKey = clientFuture.getKey();
                 if (clientFutureKey.toLowerCase(Locale.getDefault()).endsWith("-producer")) {
                     clientInstanceIds.addProducerInstanceId(
-                            clientFutureKey,
-                            instanceId
+                        clientFutureKey,
+                        instanceId
                     );
                 } else {
                     clientInstanceIds.addConsumerInstanceId(
-                            clientFutureKey,
-                            instanceId
+                        clientFutureKey,
+                        instanceId
                     );
                 }
             } else {

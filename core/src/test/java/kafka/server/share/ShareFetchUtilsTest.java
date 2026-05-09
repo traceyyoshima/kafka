@@ -154,10 +154,10 @@ public class ShareFetchUtilsTest {
         assertEquals(Errors.NONE.code(), resultData.get(tp1).errorCode());
         assertEquals(List.of(new ShareFetchResponseData.AcquiredRecords()
                         .setFirstOffset(0).setLastOffset(3).setDeliveryCount((short) 1)),
-                resultData.get(tp0).acquiredRecords());
+            resultData.get(tp0).acquiredRecords());
         assertEquals(List.of(new ShareFetchResponseData.AcquiredRecords()
                         .setFirstOffset(100).setLastOffset(103).setDeliveryCount((short) 1)),
-                resultData.get(tp1).acquiredRecords());
+            resultData.get(tp1).acquiredRecords());
     }
 
     @Test

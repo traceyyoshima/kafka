@@ -558,7 +558,7 @@ public class ClientMetricsManager implements AutoCloseable {
                 if (time.milliseconds() - lastErrorMs > CACHE_ERROR_LOG_INTERVAL_MS &&
                     lastCacheErrorLogMs.compareAndSet(lastErrorMs, time.milliseconds())) {
                     log.warn("Client metrics instance cache cannot find the client instance id: {}. The cache"
-                            + " must be at capacity, size: {}. Connection map size: {}",
+                             + " must be at capacity, size: {}. Connection map size: {}",
                             clientInstanceId, clientInstanceCache.size(), clientConnectionIdMap.size());
                 }
             }

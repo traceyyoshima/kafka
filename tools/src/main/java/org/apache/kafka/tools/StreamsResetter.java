@@ -185,7 +185,7 @@ public class StreamsResetter {
     void maybeDeleteActiveConsumers(final String groupId,
                                     final Admin adminClient,
                                     final boolean force)
-        throws ExecutionException, InterruptedException {
+                                            throws ExecutionException, InterruptedException {
         int retries = 0;
         while (true) {
             final DescribeConsumerGroupsResult describeResult = adminClient.describeConsumerGroups(
@@ -224,7 +224,7 @@ public class StreamsResetter {
 
     private int maybeResetInputAndSeekToEndIntermediateTopicOffsets(final Map<Object, Object> consumerConfig,
                                                                     final StreamsResetterOptions options)
-        throws IOException, ParseException {
+                                                                            throws IOException, ParseException {
         final List<String> inputTopics = options.inputTopicsOption();
         final List<String> intermediateTopics = options.intermediateTopicsOption();
         int topicNotFound = EXIT_CODE_SUCCESS;
@@ -347,7 +347,7 @@ public class StreamsResetter {
     private void maybeReset(final Consumer<byte[], byte[]> client,
                             final Set<TopicPartition> inputTopicPartitions,
                             final StreamsResetterOptions options)
-        throws IOException, ParseException {
+                                    throws IOException, ParseException {
         if (!inputTopicPartitions.isEmpty()) {
             System.out.println("Following input topics offsets will be reset to (for consumer group " + options.applicationId() + ")");
             if (options.hasToOffset()) {
@@ -396,7 +396,7 @@ public class StreamsResetter {
     }
 
     private Map<TopicPartition, Long> getTopicPartitionOffsetFromResetPlan(final String resetPlanPath)
-        throws IOException, ParseException {
+            throws IOException, ParseException {
         final String resetPlanCsv = Utils.readFileAsString(resetPlanPath);
         return parseResetPlan(resetPlanCsv);
     }
@@ -602,60 +602,60 @@ public class StreamsResetter {
         public StreamsResetterOptions(String[] args) {
             super(args);
             applicationIdOption = parser.accepts("application-id", "REQUIRED: The Kafka Streams application ID (application.id).")
-                .withRequiredArg()
-                .ofType(String.class)
-                .describedAs("id")
-                .required();
+                    .withRequiredArg()
+                    .ofType(String.class)
+                    .describedAs("id")
+                    .required();
             bootstrapServerOption = parser.accepts("bootstrap-server", "The server(s) to connect to. The broker list string in the form HOST1:PORT1,HOST2:PORT2. (default: localhost:9092)")
-                .withRequiredArg()
-                .ofType(String.class)
-                .describedAs("server to connect to");
+                    .withRequiredArg()
+                    .ofType(String.class)
+                    .describedAs("server to connect to");
             inputTopicsOption = parser.accepts("input-topics", "Comma-separated list of user input topics. For these topics, the tool by default will reset the offset to the earliest available offset. "
                     + "Reset to other offset position by appending other reset offset option, ex: --input-topics foo --shift-by 5")
-                .withRequiredArg()
-                .ofType(String.class)
-                .withValuesSeparatedBy(',')
-                .describedAs("list");
+                    .withRequiredArg()
+                    .ofType(String.class)
+                    .withValuesSeparatedBy(',')
+                    .describedAs("list");
             intermediateTopicsOption = parser.accepts("intermediate-topics", "[deprecated] Comma-separated list of intermediate user topics (topics that are input and output topics). "
                     + "For these topics, the tool will skip to the end.")
-                .withRequiredArg()
-                .ofType(String.class)
-                .withValuesSeparatedBy(',')
-                .describedAs("list");
+                    .withRequiredArg()
+                    .ofType(String.class)
+                    .withValuesSeparatedBy(',')
+                    .describedAs("list");
             internalTopicsOption = parser.accepts("internal-topics", "Comma-separated list of "
                     + "internal topics to delete. Must be a subset of the internal topics marked for deletion by the "
                     + "default behaviour (do a dry-run without this option to view these topics).")
-                .withRequiredArg()
-                .ofType(String.class)
-                .withValuesSeparatedBy(',')
-                .describedAs("list");
+                    .withRequiredArg()
+                    .ofType(String.class)
+                    .withValuesSeparatedBy(',')
+                    .describedAs("list");
             toOffsetOption = parser.accepts("to-offset", "Reset offsets to a specific offset.")
-                .withRequiredArg()
-                .ofType(Long.class);
+                    .withRequiredArg()
+                    .ofType(Long.class);
             toDatetimeOption = parser.accepts("to-datetime", "Reset offsets to offset from datetime. Format: 'YYYY-MM-DDThh:mm:ss.sss'")
-                .withRequiredArg()
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .ofType(String.class);
             byDurationOption = parser.accepts("by-duration", "Reset offsets to offset by duration from current timestamp. Format: 'PnDTnHnMnS'")
-                .withRequiredArg()
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .ofType(String.class);
             toEarliestOption = parser.accepts("to-earliest", "Reset offsets to earliest offset.");
             toLatestOption = parser.accepts("to-latest", "Reset offsets to latest offset.");
             fromFileOption = parser.accepts("from-file", "Reset offsets to values defined in CSV file.")
-                .withRequiredArg()
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .ofType(String.class);
             shiftByOption = parser.accepts("shift-by", "Reset offsets shifting current offset by 'n', where 'n' can be positive or negative")
-                .withRequiredArg()
-                .describedAs("number-of-offsets")
-                .ofType(Long.class);
+                    .withRequiredArg()
+                    .describedAs("number-of-offsets")
+                    .ofType(Long.class);
             configOption = parser.accepts("config-file", "(DEPRECATED) Property file containing configs to be passed to admin clients and embedded consumer. "
                     + "This option will be removed in a future version. Use --command-config instead.")
-                .withRequiredArg()
-                .ofType(String.class)
-                .describedAs("file name");
+                    .withRequiredArg()
+                    .ofType(String.class)
+                    .describedAs("file name");
             commandConfigOption = parser.accepts("command-config", "Config properties file to be passed to admin clients and embedded consumer.")
-                .withRequiredArg()
-                .ofType(String.class)
-                .describedAs("file name");
+                    .withRequiredArg()
+                    .ofType(String.class)
+                    .describedAs("file name");
             forceOption = parser.accepts("force", "Force the removal of members of the consumer group (intended to remove stopped members if a long session timeout was used). " +
                 "Make sure to shut down all stream applications when this option is specified to avoid unexpected rebalances.");
 
@@ -782,7 +782,7 @@ public class StreamsResetter {
             // and don't consider them as internal topics even if they follow the same naming schema.
             // Cf. https://issues.apache.org/jira/browse/KAFKA-7930
             return !isInputTopic(topicName) && !isIntermediateTopic(topicName) && topicName.startsWith(options.valueOf(applicationIdOption) + "-")
-                && matchesInternalTopicFormat(topicName);
+                    && matchesInternalTopicFormat(topicName);
         }
 
         public List<String> internalTopics() {

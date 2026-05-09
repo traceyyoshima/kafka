@@ -92,7 +92,7 @@ public class AgentTest {
         AgentRestResource resource = new AgentRestResource();
         restServer.start(resource);
         agent = new Agent(createBasicPlatform(scheduler), scheduler,
-                restServer, resource);
+            restServer, resource);
         return agent;
     }
 

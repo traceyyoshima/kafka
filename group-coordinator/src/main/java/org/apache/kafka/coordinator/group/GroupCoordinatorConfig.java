@@ -570,10 +570,10 @@ public class GroupCoordinatorConfig {
         this.offsetsRetentionMs = config.getInt(GroupCoordinatorConfig.OFFSETS_RETENTION_MINUTES_CONFIG) * 60L * 1000L;
         this.offsetCommitTimeoutMs = config.getInt(GroupCoordinatorConfig.OFFSET_COMMIT_TIMEOUT_MS_CONFIG);
         this.consumerGroupMigrationPolicy = ConsumerGroupMigrationPolicy.parse(
-                config.getString(GroupCoordinatorConfig.CONSUMER_GROUP_MIGRATION_POLICY_CONFIG));
+            config.getString(GroupCoordinatorConfig.CONSUMER_GROUP_MIGRATION_POLICY_CONFIG));
         this.offsetTopicCompressionType = Optional.ofNullable(config.getInt(GroupCoordinatorConfig.OFFSETS_TOPIC_COMPRESSION_CODEC_CONFIG))
-                .map(CompressionType::forId)
-                .orElse(null);
+            .map(CompressionType::forId)
+            .orElse(null);
         this.offsetsLoadBufferSize = config.getInt(GroupCoordinatorConfig.OFFSETS_LOAD_BUFFER_SIZE_CONFIG);
         this.offsetsTopicPartitions = config.getInt(GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG);
         this.offsetsTopicReplicationFactor = config.getShort(GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG);
@@ -766,12 +766,12 @@ public class GroupCoordinatorConfig {
         if (value < min) {
             LOG.warn("The config '{}' has value {} which is below the " +
                     "allowed minimum {}. The effective value will be capped to {}.",
-                key, value, min, min);
+                    key, value, min, min);
             props.put(key, String.valueOf(min));
         } else if (value > max) {
             LOG.warn("The config '{}' has value {} which exceeds the " +
                     "allowed maximum {}. The effective value will be capped to {}.",
-                key, value, max, max);
+                    key, value, max, max);
             props.put(key, String.valueOf(max));
         }
     }

@@ -239,14 +239,13 @@ public final class KRaftControlRecordStateMachine {
                 Integer.MAX_VALUE
             );
             try (RecordsIterator<?> iterator = new RecordsIterator<>(
-                    info.records,
-                    serde,
-                    bufferSupplier,
-                    maxBatchSizeBytes,
-                    true, // Validate batch CRC
-                    logContext
-                )
-            ) {
+                info.records,
+                serde,
+                bufferSupplier,
+                maxBatchSizeBytes,
+                true, // Validate batch CRC
+                logContext
+            )) {
                 while (iterator.hasNext()) {
                     Batch<?> batch = iterator.next();
                     handleBatch(batch, OptionalLong.empty());
@@ -269,14 +268,13 @@ public final class KRaftControlRecordStateMachine {
 
             // Load the snapshot since the listener is at the start of the log or the log doesn't have the next entry.
             try (SnapshotReader<?> reader = RecordsSnapshotReader.of(
-                    rawSnapshot,
-                    serde,
-                    bufferSupplier,
-                    maxBatchSizeBytes,
-                    true, // Validate batch CRC
-                    logContext
-                )
-            ) {
+                rawSnapshot,
+                serde,
+                bufferSupplier,
+                maxBatchSizeBytes,
+                true, // Validate batch CRC
+                logContext
+            )) {
                 logger.info(
                     "Loading snapshot ({}) since log start offset ({}) is greater than the internal listener's next offset ({})",
                     reader.snapshotId(),

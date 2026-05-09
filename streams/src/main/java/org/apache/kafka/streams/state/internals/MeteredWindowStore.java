@@ -62,7 +62,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
 
 public class MeteredWindowStore<K, V>
     extends WrappedStateStore<WindowStore<Bytes, byte[]>, Windowed<K>, V>
-    implements WindowStore<K, V>, MeteredStateStore {
+        implements WindowStore<K, V>, MeteredStateStore {
 
     private final long windowSizeMs;
     private final String metricsScope;

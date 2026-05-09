@@ -82,8 +82,8 @@ public class StreamsOptimizedTest {
         final KStream<String, String> mappedStream = sourceStream.selectKey((k, v) -> keyFunction.apply(v));
 
         final KStream<String, Long> countStream = mappedStream.groupByKey()
-                                                               .count(Materialized.with(Serdes.String(),
-                                                                                        Serdes.Long())).toStream();
+                                                              .count(Materialized.with(Serdes.String(),
+                                                                                       Serdes.Long())).toStream();
 
         mappedStream.groupByKey().aggregate(
             initializer,

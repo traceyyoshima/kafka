@@ -68,8 +68,8 @@ public class JsonConverterTest {
     private static final String TOPIC = "topic";
 
     private final ObjectMapper objectMapper = new ObjectMapper()
-        .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
-        .setNodeFactory(new JsonNodeFactory(true));
+            .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+            .setNodeFactory(new JsonNodeFactory(true));
 
     private final JsonConverter converter = new JsonConverter();
 
@@ -628,7 +628,7 @@ public class JsonConverterTest {
         for (JsonNode elem : payload)
             payloadEntries.add(elem);
         assertEquals(Set.of(JsonNodeFactory.instance.arrayNode().add(1).add(12),
-                        JsonNodeFactory.instance.arrayNode().add(2).add(15)),
+                            JsonNodeFactory.instance.arrayNode().add(2).add(15)),
                 payloadEntries
         );
     }
@@ -642,23 +642,23 @@ public class JsonConverterTest {
         assertEquals(parse("{ \"type\": \"struct\", \"optional\": false, \"fields\": [{ \"field\": \"field1\", \"type\": \"boolean\", \"optional\": false }, { \"field\": \"field2\", \"type\": \"string\", \"optional\": false }, { \"field\": \"field3\", \"type\": \"string\", \"optional\": false }, { \"field\": \"field4\", \"type\": \"boolean\", \"optional\": false }] }"),
                 converted.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME));
         assertEquals(JsonNodeFactory.instance.objectNode()
-                        .put("field1", true)
-                        .put("field2", "string2")
-                        .put("field3", "string3")
-                        .put("field4", false),
+                .put("field1", true)
+                .put("field2", "string2")
+                .put("field3", "string3")
+                .put("field4", false),
                 converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME));
     }
 
     @Test
     public void structSchemaIdentical() {
         Schema schema = SchemaBuilder.struct().field("field1", Schema.BOOLEAN_SCHEMA)
-                                              .field("field2", Schema.STRING_SCHEMA)
-                                              .field("field3", Schema.STRING_SCHEMA)
-                                              .field("field4", Schema.BOOLEAN_SCHEMA).build();
+                                     .field("field2", Schema.STRING_SCHEMA)
+                                     .field("field3", Schema.STRING_SCHEMA)
+                                     .field("field4", Schema.BOOLEAN_SCHEMA).build();
         Schema inputSchema = SchemaBuilder.struct().field("field1", Schema.BOOLEAN_SCHEMA)
-                                                   .field("field2", Schema.STRING_SCHEMA)
-                                                   .field("field3", Schema.STRING_SCHEMA)
-                                                   .field("field4", Schema.BOOLEAN_SCHEMA).build();
+                                          .field("field2", Schema.STRING_SCHEMA)
+                                          .field("field3", Schema.STRING_SCHEMA)
+                                          .field("field4", Schema.BOOLEAN_SCHEMA).build();
         Struct input = new Struct(inputSchema).put("field1", true).put("field2", "string2").put("field3", "string3").put("field4", false);
         assertStructSchemaEqual(schema, input);
     }
@@ -680,7 +680,7 @@ public class JsonConverterTest {
         JsonNode converted = parse(converter.fromConnectData(TOPIC, Decimal.schema(2), new BigDecimal(new BigInteger("156"), 2)));
         validateEnvelope(converted);
         assertEquals(parse("{ \"type\": \"bytes\", \"optional\": false, \"name\": \"org.apache.kafka.connect.data.Decimal\", \"version\": 1, \"parameters\": { \"scale\": \"2\" } }"),
-            converted.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME));
+                converted.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME));
         assertTrue(converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME).isNumber(), "expected node to be numeric");
         assertEquals(new BigDecimal("1.56"), converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME).decimalValue());
     }
@@ -691,7 +691,7 @@ public class JsonConverterTest {
         JsonNode converted = parse(converter.fromConnectData(TOPIC, Decimal.schema(4), new BigDecimal(new BigInteger("15600"), 4)));
         validateEnvelope(converted);
         assertEquals(parse("{ \"type\": \"bytes\", \"optional\": false, \"name\": \"org.apache.kafka.connect.data.Decimal\", \"version\": 1, \"parameters\": { \"scale\": \"4\" } }"),
-            converted.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME));
+                converted.get(JsonSchema.ENVELOPE_SCHEMA_FIELD_NAME));
         assertTrue(converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME).isNumber(), "expected node to be numeric");
         assertEquals(new BigDecimal("1.5600"), converted.get(JsonSchema.ENVELOPE_PAYLOAD_FIELD_NAME).decimalValue());
     }
@@ -699,9 +699,9 @@ public class JsonConverterTest {
     @Test
     public void decimalToJsonWithoutSchema() {
         assertThrows(
-            DataException.class,
-            () -> converter.fromConnectData(TOPIC, null, new BigDecimal(new BigInteger("156"), 2)),
-            "expected data exception when serializing BigDecimal without schema");
+                DataException.class,
+                () -> converter.fromConnectData(TOPIC, null, new BigDecimal(new BigInteger("156"), 2)),
+                "expected data exception when serializing BigDecimal without schema");
     }
 
     @Test
@@ -807,8 +807,8 @@ public class JsonConverterTest {
         for (JsonNode elem : payload)
             payloadEntries.add(elem);
         assertEquals(Set.of(JsonNodeFactory.instance.arrayNode().add("string").add(12),
-                        JsonNodeFactory.instance.arrayNode().add(52).add("string"),
-                        JsonNodeFactory.instance.arrayNode().add(false).add(true)),
+                            JsonNodeFactory.instance.arrayNode().add(52).add("string"),
+                            JsonNodeFactory.instance.arrayNode().add(false).add(true)),
                 payloadEntries
         );
     }
@@ -835,7 +835,7 @@ public class JsonConverterTest {
     public void mismatchSchemaJson() {
         // If we have mismatching schema info, we should properly convert to a DataException
         assertThrows(DataException.class,
-            () -> converter.fromConnectData(TOPIC, Schema.FLOAT64_SCHEMA, true));
+                () -> converter.fromConnectData(TOPIC, Schema.FLOAT64_SCHEMA, true));
     }
 
     @Test
@@ -1004,9 +1004,9 @@ public class JsonConverterTest {
     @Test
     public void testSchemaContentInValidSchema() {
         assertThrows(
-            DataException.class,
-            () -> converter.configure(Map.of(JsonConverterConfig.SCHEMA_CONTENT_CONFIG, "{ \"string\" }"), false),
-            " Provided schema is invalid , please recheck the schema you have provided");
+                DataException.class,
+                () -> converter.configure(Map.of(JsonConverterConfig.SCHEMA_CONTENT_CONFIG, "{ \"string\" }"), false),
+                " Provided schema is invalid , please recheck the schema you have provided");
     }
 
     @Test
@@ -1018,11 +1018,11 @@ public class JsonConverterTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        "{ }",
-        "{ \"wrong\": \"schema\" }",
-        "{ \"schema\": { \"type\": \"string\" } }",
-        "{ \"payload\": \"foo-bar-baz\" }",
-        "{ \"schema\": { \"type\": \"string\" }, \"payload\": \"foo-bar-baz\", \"extra\": \"field\" }",
+            "{ }",
+            "{ \"wrong\": \"schema\" }",
+            "{ \"schema\": { \"type\": \"string\" } }",
+            "{ \"payload\": \"foo-bar-baz\" }",
+            "{ \"schema\": { \"type\": \"string\" }, \"payload\": \"foo-bar-baz\", \"extra\": \"field\" }",
     })
     public void testNullSchemaContentWithWrongConnectDataValue(String value) {
         converter.configure(Map.of(), false);

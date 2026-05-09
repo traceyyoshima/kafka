@@ -80,7 +80,7 @@ public class SubscriptionInfoTest {
         mkEntry(NAMED_TASK_T1_0_1, 0L),
         mkEntry(NAMED_TASK_T2_0_0, 10L),
         mkEntry(NAMED_TASK_T2_2_0, 5L)
-        );
+    );
     private static final Map<String, String> CLIENT_TAGS = mkMap(mkEntry("t1", "v1"), mkEntry("t2", "v2"));
 
     private static final String IGNORED_USER_ENDPOINT = "ignoredUserEndpoint:80";

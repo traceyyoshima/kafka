@@ -345,11 +345,11 @@ public abstract class AbstractRocksDBTimeOrderedSegmentedBytesStore<S extends Se
         final Bytes binaryTo = baseKeySchema.upperRange(null, timeTo);
 
         return new SegmentIterator<>(
-                searchSpace.iterator(),
-                baseKeySchema.hasNextCondition(null, null, actualFrom, timeTo, true),
-                binaryFrom,
-                binaryTo,
-                true);
+            searchSpace.iterator(),
+            baseKeySchema.hasNextCondition(null, null, actualFrom, timeTo, true),
+            binaryFrom,
+            binaryTo,
+            true);
     }
 
     @Override
@@ -367,10 +367,10 @@ public abstract class AbstractRocksDBTimeOrderedSegmentedBytesStore<S extends Se
         final Bytes binaryTo = baseKeySchema.upperRange(null, timeTo);
 
         return new SegmentIterator<>(
-                searchSpace.iterator(),
-                baseKeySchema.hasNextCondition(null, null, actualFrom, timeTo, false),
-                binaryFrom,
-                binaryTo,
-                false);
+            searchSpace.iterator(),
+            baseKeySchema.hasNextCondition(null, null, actualFrom, timeTo, false),
+            binaryFrom,
+            binaryTo,
+            false);
     }
 }

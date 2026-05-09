@@ -582,9 +582,9 @@ public class KTableImpl<K, S, V> extends AbstractStream<K, V> implements KTable<
         }
 
         final ProcessorSupplier<K, Change<V>, K, Change<V>> suppressionSupplier = new KTableSuppressProcessorSupplier<>(
-                suppressedInternal,
-                storeBuilder,
-                this
+            suppressedInternal,
+            storeBuilder,
+            this
         );
 
         final ProcessorGraphNode<K, Change<V>> node = new TableSuppressNode<>(
@@ -786,12 +786,12 @@ public class KTableImpl<K, S, V> extends AbstractStream<K, V> implements KTable<
         final ProcessorParameters<K, Change<V>, ?, ?> joinThisProcessorParameters = new ProcessorParameters<>(joinThis, joinThisName);
         final ProcessorParameters<K, Change<VO>, ?, ?> joinOtherProcessorParameters = new ProcessorParameters<>(joinOther, joinOtherName);
         final ProcessorParameters<K, Change<VR>, ?, ?> joinMergeProcessorParameters = new ProcessorParameters<>(
-                KTableKTableJoinMerger.of(
-                        (KTableProcessorSupplier<K, V, K, VR>) joinThisProcessorParameters.processorSupplier(),
-                        (KTableProcessorSupplier<K, VO, K, VR>) joinOtherProcessorParameters.processorSupplier(),
-                        queryableStoreName,
-                        storeFactory),
-                joinMergeName);
+            KTableKTableJoinMerger.of(
+                (KTableProcessorSupplier<K, V, K, VR>) joinThisProcessorParameters.processorSupplier(),
+                (KTableProcessorSupplier<K, VO, K, VR>) joinOtherProcessorParameters.processorSupplier(),
+                queryableStoreName,
+                storeFactory),
+            joinMergeName);
 
         final KTableKTableJoinNode<K, V, VO, VR> kTableKTableJoinNode =
             KTableKTableJoinNode.<K, V, VO, VR>kTableKTableJoinNodeBuilder()
@@ -1278,8 +1278,8 @@ public class KTableImpl<K, S, V> extends AbstractStream<K, V> implements KTable<
 
         final StreamPartitioner<KO, SubscriptionWrapper<K>> subscriptionSinkPartitioner =
                 tableJoinedInternal.otherPartitioner() == null
-                        ? null
-                        : (topic, key, val, numPartitions) -> getPartition.apply(tableJoinedInternal.otherPartitioner().partitions(topic, key, null, numPartitions));
+                    ? null
+                    : (topic, key, val, numPartitions) -> getPartition.apply(tableJoinedInternal.otherPartitioner().partitions(topic, key, null, numPartitions));
 
         final StreamSinkNode<KO, SubscriptionWrapper<K>> subscriptionSink = new StreamSinkNode<>(
             renamed.suffixWithOrElseGet("-subscription-registration-sink", builder, SINK_NAME),
@@ -1353,8 +1353,8 @@ public class KTableImpl<K, S, V> extends AbstractStream<K, V> implements KTable<
 
         final StreamPartitioner<K, SubscriptionResponseWrapper<VO>> foreignResponseSinkPartitioner =
                 tableJoinedInternal.partitioner() == null
-                        ? defaultForeignResponseSinkPartitioner
-                        : (topic, key, val, numPartitions) -> getPartition.apply(tableJoinedInternal.partitioner().partitions(topic, key, null, numPartitions));
+                    ? defaultForeignResponseSinkPartitioner
+                    : (topic, key, val, numPartitions) -> getPartition.apply(tableJoinedInternal.partitioner().partitions(topic, key, null, numPartitions));
 
         final StreamSinkNode<K, SubscriptionResponseWrapper<VO>> foreignResponseSink =
             new StreamSinkNode<>(

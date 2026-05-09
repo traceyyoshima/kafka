@@ -209,12 +209,12 @@ public class SinkConnectorsIntegrationTest {
 
         Map<String, String> connectorProps = baseSinkConnectorProps(String.join(",", topics));
         connectorProps.put(
-                CONNECTOR_CLIENT_CONSUMER_OVERRIDES_PREFIX + PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
-                CooperativeStickyAssignor.class.getName());
+            CONNECTOR_CLIENT_CONSUMER_OVERRIDES_PREFIX + PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
+            CooperativeStickyAssignor.class.getName());
         // After deleting a topic, offset commits will fail for it; reduce the timeout here so that the test doesn't take forever to proceed past that point
         connectorProps.put(
-                CONNECTOR_CLIENT_CONSUMER_OVERRIDES_PREFIX + DEFAULT_API_TIMEOUT_MS_CONFIG,
-                "5000");
+            CONNECTOR_CLIENT_CONSUMER_OVERRIDES_PREFIX + DEFAULT_API_TIMEOUT_MS_CONFIG,
+            "5000");
 
         final Set<String> consumedRecordValues = new HashSet<>();
         Consumer<SinkRecord> onPut = record -> assertTrue(consumedRecordValues.add(Objects.toString(record.value())), "Task received duplicate record from Connect");

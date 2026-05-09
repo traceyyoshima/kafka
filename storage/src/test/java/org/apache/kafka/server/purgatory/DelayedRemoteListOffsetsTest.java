@@ -249,7 +249,7 @@ public class DelayedRemoteListOffsetsTest {
         });
 
         doThrow(new NotLeaderOrFollowerException("Not leader or follower!"))
-                .when(partitionOrException).accept(new TopicPartition("test1", 0));
+            .when(partitionOrException).accept(new TopicPartition("test1", 0));
         AsyncOffsetReadFutureHolder<OffsetResultHolder.FileRecordsOrError> errorFutureHolder = mock(AsyncOffsetReadFutureHolder.class);
         CompletableFuture<OffsetResultHolder.FileRecordsOrError> errorTaskFuture = new CompletableFuture<>();
         when(errorFutureHolder.taskFuture()).thenAnswer(f -> errorTaskFuture);
@@ -276,21 +276,21 @@ public class DelayedRemoteListOffsetsTest {
 
         // Directly create the partition metric in the map (avoiding recordExpiration to not pollute the aggregate meter)
         DelayedRemoteListOffsets.PARTITION_EXPIRATION_METERS.computeIfAbsent(partition, tp ->
-                DelayedRemoteListOffsets.METRICS_GROUP.newMeter("ExpiresPerSec",
-                        "requests", TimeUnit.SECONDS,
-                        MetricsUtils.getTags("topic", tp.topic(), "partition", String.valueOf(tp.partition()))));
+            DelayedRemoteListOffsets.METRICS_GROUP.newMeter("ExpiresPerSec",
+                "requests", TimeUnit.SECONDS,
+                MetricsUtils.getTags("topic", tp.topic(), "partition", String.valueOf(tp.partition()))));
 
         // Verify the partition metric exists in the map
         assertTrue(DelayedRemoteListOffsets.PARTITION_EXPIRATION_METERS.containsKey(partition),
-                "Partition metric should exist after creation");
+            "Partition metric should exist after creation");
 
         // Verify the partition metric exists in the Yammer registry
         Map<MetricName, Metric> metricsBefore = KafkaYammerMetrics.defaultRegistry().allMetrics();
         assertTrue(metricsBefore.keySet().stream().anyMatch(name ->
-                        name.getMBeanName().contains("topic=test-remove-metrics") &&
+            name.getMBeanName().contains("topic=test-remove-metrics") &&
                                 name.getMBeanName().contains("partition=0") &&
                                 name.getMBeanName().contains("name=ExpiresPerSec")),
-                "Partition metric should be registered in Yammer registry");
+            "Partition metric should be registered in Yammer registry");
 
         long aggregateCountBefore = DelayedRemoteListOffsets.AGGREGATE_EXPIRATION_METER.count();
 
@@ -299,19 +299,19 @@ public class DelayedRemoteListOffsetsTest {
 
         // Verify the partition metric is removed from the map
         assertFalse(DelayedRemoteListOffsets.PARTITION_EXPIRATION_METERS.containsKey(partition),
-                "Partition metric should be removed from map after removePartitionMetrics");
+            "Partition metric should be removed from map after removePartitionMetrics");
 
         // Verify the partition metric is removed from the Yammer registry
         Map<MetricName, Metric> metricsAfter = KafkaYammerMetrics.defaultRegistry().allMetrics();
         assertFalse(metricsAfter.keySet().stream().anyMatch(name ->
-                        name.getMBeanName().contains("topic=test-remove-metrics") &&
+            name.getMBeanName().contains("topic=test-remove-metrics") &&
                                 name.getMBeanName().contains("partition=0") &&
                                 name.getMBeanName().contains("name=ExpiresPerSec")),
-                "Partition metric should be removed from Yammer registry");
+            "Partition metric should be removed from Yammer registry");
 
         // Verify the aggregate metric is unaffected
         assertEquals(aggregateCountBefore, DelayedRemoteListOffsets.AGGREGATE_EXPIRATION_METER.count(),
-                "Aggregate metric should be unaffected by removePartitionMetrics");
+            "Aggregate metric should be unaffected by removePartitionMetrics");
     }
 
     @Test

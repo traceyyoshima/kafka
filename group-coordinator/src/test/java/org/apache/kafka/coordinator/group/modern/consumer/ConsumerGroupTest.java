@@ -1481,11 +1481,11 @@ public class ConsumerGroupTest {
                 new JoinGroupRequestData.JoinGroupRequestProtocol()
                     .setName("range")
                     .setMetadata(Utils.toArray(ConsumerProtocol.serializeSubscription(new ConsumerPartitionAssignor.Subscription(
-                            Arrays.asList(fooTopicName, barTopicName),
-                            null,
-                            Arrays.asList(
-                                new TopicPartition(fooTopicName, 0),
-                                new TopicPartition(barTopicName, 0))))))
+                        Arrays.asList(fooTopicName, barTopicName),
+                        null,
+                        Arrays.asList(
+                            new TopicPartition(fooTopicName, 0),
+                            new TopicPartition(barTopicName, 0))))))
             ).iterator()),
             Utils.toArray(ConsumerProtocol.serializeAssignment(new ConsumerPartitionAssignor.Assignment(Arrays.asList(
                 new TopicPartition(fooTopicName, 0),

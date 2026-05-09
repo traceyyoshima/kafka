@@ -516,7 +516,7 @@ public class ClientTelemetryReporterTest {
             
             // === Test 1: NoClassDefFoundError fallback (recoverable) ===
             mockedCompress.when(() -> ClientTelemetryUtils.compress(any(), eq(CompressionType.ZSTD)))
-                    .thenThrow(new NoClassDefFoundError("com/github/luben/zstd/BufferPool"));
+                .thenThrow(new NoClassDefFoundError("com/github/luben/zstd/BufferPool"));
             
             assertEquals(ClientTelemetryState.PUSH_NEEDED, telemetrySender.state());
             
@@ -534,7 +534,7 @@ public class ClientTelemetryReporterTest {
             // === Test 2: OutOfMemoryError causes termination (non-recoverable Error) ===
             mockedCompress.reset();
             mockedCompress.when(() -> ClientTelemetryUtils.compress(any(), eq(CompressionType.LZ4)))
-                    .thenThrow(new OutOfMemoryError("Out of memory during compression"));
+                .thenThrow(new OutOfMemoryError("Out of memory during compression"));
             
             assertEquals(ClientTelemetryState.PUSH_NEEDED, telemetrySender.state());
 

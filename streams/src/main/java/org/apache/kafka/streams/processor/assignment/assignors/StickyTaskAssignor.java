@@ -163,10 +163,10 @@ public class StickyTaskAssignor implements TaskAssignor {
 
         // try and assign any remaining unassigned tasks to clients that previously
         // have seen the task.
-        for (final Iterator<TaskId> iterator = unassigned.iterator(); iterator.hasNext(); ) {
+        for (final Iterator<TaskId> iterator = unassigned.iterator(); iterator.hasNext();) {
             final TaskId taskId = iterator.next();
             final Set<ProcessId> previousClientsForStandbyTask = assignmentState.previousStandbyAssignment.getOrDefault(taskId, new HashSet<>());
-            for (final ProcessId client: previousClientsForStandbyTask) {
+            for (final ProcessId client : previousClientsForStandbyTask) {
                 if (assignmentState.hasRoomForActiveTask(client, activeTasksPerThread)) {
                     assignmentState.finalizeAssignment(taskId, client, AssignedTask.Type.ACTIVE);
                     iterator.remove();
@@ -179,8 +179,8 @@ public class StickyTaskAssignor implements TaskAssignor {
         final List<TaskId> sortedTasks = new ArrayList<>(unassigned);
         Collections.sort(sortedTasks);
         final Set<ProcessId> candidateClients = clients.stream()
-                .map(KafkaStreamsState::processId)
-                .collect(Collectors.toSet());
+            .map(KafkaStreamsState::processId)
+            .collect(Collectors.toSet());
         for (final TaskId taskId : sortedTasks) {
             final ProcessId bestClient = assignmentState.findBestClientForTask(taskId, candidateClients);
             assignmentState.finalizeAssignment(taskId, bestClient, AssignedTask.Type.ACTIVE);
@@ -201,8 +201,8 @@ public class StickyTaskAssignor implements TaskAssignor {
                              "There is not enough available capacity. You should " +
                              "increase the number of threads and/or application instances " +
                              "to maintain the requested number of standby replicas.",
-                        numStandbyReplicas - i,
-                        numStandbyReplicas, task.id());
+                             numStandbyReplicas - i,
+                             numStandbyReplicas, task.id());
                     break;
                 }
 

@@ -187,7 +187,7 @@ public class ListenerInfoTest {
             withWildcardHostnamesResolved().
             withEphemeralPortsCorrected(__ -> 9094);
         ListenerInfo newListenerInfo = ListenerInfo.fromBrokerRegistrationRecord(
-                listenerInfo.toBrokerRegistrationRecord());
+            listenerInfo.toBrokerRegistrationRecord());
         assertEquals(listenerInfo, newListenerInfo);
     }
 

@@ -63,7 +63,7 @@ import static org.apache.kafka.streams.utils.TestUtils.safeUniqueTestName;
 public class SwallowUnknownTopicErrorIntegrationTest {
     private static final int NUM_BROKERS = 1;
     public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(NUM_BROKERS,
-            Utils.mkProperties(Collections.singletonMap("auto.create.topics.enable", "false")));
+        Utils.mkProperties(Collections.singletonMap("auto.create.topics.enable", "false")));
 
     @BeforeAll
     public static void startCluster() throws IOException {

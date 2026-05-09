@@ -124,11 +124,11 @@ public class RecordDeserializer {
             final RecordCollector collector = ((RecordCollector.Supplier) processorContext).recordCollector();
             for (final ProducerRecord<byte[], byte[]> deadLetterQueueRecord : deadLetterQueueRecords) {
                 collector.send(
-                        deadLetterQueueRecord.key(),
-                        deadLetterQueueRecord.value(),
-                        sourceNodeName,
-                        (InternalProcessorContext) processorContext,
-                        deadLetterQueueRecord
+                    deadLetterQueueRecord.key(),
+                    deadLetterQueueRecord.value(),
+                    sourceNodeName,
+                    (InternalProcessorContext) processorContext,
+                    deadLetterQueueRecord
                 );
             }
         }

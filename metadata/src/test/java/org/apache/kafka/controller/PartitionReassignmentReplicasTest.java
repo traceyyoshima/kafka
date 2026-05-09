@@ -201,7 +201,7 @@ public class PartitionReassignmentReplicasTest {
     @Test
     public void testCanCompleteReassignmentIfIsrDoesNotHaveAnExistingTargetReplica() {
         PartitionReassignmentReplicas replicas = new PartitionReassignmentReplicas(
-                partitionAssignment(List.of(0, 1, 2)), partitionAssignment(List.of(0, 1, 3)));
+            partitionAssignment(List.of(0, 1, 2)), partitionAssignment(List.of(0, 1, 3)));
         assertTrue(replicas.isReassignmentInProgress());
 
         // Replica 1 is not in sync
@@ -218,7 +218,7 @@ public class PartitionReassignmentReplicasTest {
     @Test
     public void testCanCompleteReassignmentIfIsrDoesNotHaveBothExistingTargetReplica() {
         PartitionReassignmentReplicas replicas = new PartitionReassignmentReplicas(
-                partitionAssignment(List.of(0, 1, 2)), partitionAssignment(List.of(0, 1, 3)));
+            partitionAssignment(List.of(0, 1, 2)), partitionAssignment(List.of(0, 1, 3)));
         assertTrue(replicas.isReassignmentInProgress());
 
         // Replica 0 and 1 are not in sync
@@ -234,7 +234,7 @@ public class PartitionReassignmentReplicasTest {
     @Test
     public void testDoesNotCompleteReassignmentIfIsrDoesNotHaveAnAddingTargetReplica() {
         PartitionReassignmentReplicas replicas = new PartitionReassignmentReplicas(
-                partitionAssignment(List.of(0, 1, 2)), partitionAssignment(List.of(0, 1, 3)));
+            partitionAssignment(List.of(0, 1, 2)), partitionAssignment(List.of(0, 1, 3)));
         assertTrue(replicas.isReassignmentInProgress());
 
         // Replica 3 is not in sync
@@ -248,7 +248,7 @@ public class PartitionReassignmentReplicasTest {
     @Test
     public void testCanCompleteReassignmentWhenReplicationFactorIncreasesAndMissingAnExistingTargetReplicaFromIsr() {
         PartitionReassignmentReplicas replicas = new PartitionReassignmentReplicas(
-                partitionAssignment(List.of(0, 1, 2, 3)), partitionAssignment(List.of(1, 2, 3, 4, 5)));
+            partitionAssignment(List.of(0, 1, 2, 3)), partitionAssignment(List.of(1, 2, 3, 4, 5)));
         assertTrue(replicas.isReassignmentInProgress());
 
         // Replica 3 is not in sync
@@ -265,7 +265,7 @@ public class PartitionReassignmentReplicasTest {
     @Test
     public void testDoesNotCompleteReassignmentWhenReplicationFactorIncreasesAndMissingAnAddingReplicaFromIsr() {
         PartitionReassignmentReplicas replicas = new PartitionReassignmentReplicas(
-                partitionAssignment(List.of(0, 1, 2, 3)), partitionAssignment(List.of(1, 2, 3, 4, 5)));
+            partitionAssignment(List.of(0, 1, 2, 3)), partitionAssignment(List.of(1, 2, 3, 4, 5)));
         assertTrue(replicas.isReassignmentInProgress());
 
         // Replica 4 is not in sync
@@ -279,7 +279,7 @@ public class PartitionReassignmentReplicasTest {
     @Test
     public void testDoesNotCompleteReassignmentWhenReplicationFactorDecreasesAndMissingAnExistingTargetReplicaFromIsr() {
         PartitionReassignmentReplicas replicas = new PartitionReassignmentReplicas(
-                partitionAssignment(List.of(0, 1, 2, 3, 4)), partitionAssignment(List.of(2, 3, 4, 5)));
+            partitionAssignment(List.of(0, 1, 2, 3, 4)), partitionAssignment(List.of(2, 3, 4, 5)));
         assertTrue(replicas.isReassignmentInProgress());
 
         // Replica 4 is not in sync
@@ -293,7 +293,7 @@ public class PartitionReassignmentReplicasTest {
     @Test
     public void testDoesNotCompleteReassignmentWhenReplicationFactorDecreasesAndMissingAnAddingReplicasFromISR() {
         PartitionReassignmentReplicas replicas = new PartitionReassignmentReplicas(
-                partitionAssignment(List.of(0, 1, 2, 3, 4)), partitionAssignment(List.of(2, 3, 4, 5)));
+            partitionAssignment(List.of(0, 1, 2, 3, 4)), partitionAssignment(List.of(2, 3, 4, 5)));
         assertTrue(replicas.isReassignmentInProgress());
 
         // Replica 5 is not in sync

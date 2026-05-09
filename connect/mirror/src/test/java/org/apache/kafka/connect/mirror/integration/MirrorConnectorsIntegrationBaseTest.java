@@ -340,26 +340,26 @@ public class MirrorConnectorsIntegrationBaseTest {
         createAndTestNewTopicWithConfigFilter();
 
         assertEquals(NUM_RECORDS_PRODUCED, primary.kafka().consume(NUM_RECORDS_PRODUCED, RECORD_TRANSFER_DURATION_MS, "test-topic-1").count(),
-            "Records were not produced to primary cluster.");
+                "Records were not produced to primary cluster.");
         assertEquals(NUM_RECORDS_PRODUCED, backup.kafka().consume(NUM_RECORDS_PRODUCED, RECORD_TRANSFER_DURATION_MS, backupTopic1).count(),
-            "Records were not replicated to backup cluster.");
+                "Records were not replicated to backup cluster.");
         assertEquals(NUM_RECORDS_PRODUCED, backup.kafka().consume(NUM_RECORDS_PRODUCED, RECORD_TRANSFER_DURATION_MS, "test-topic-1").count(),
-            "Records were not produced to backup cluster.");
+                "Records were not produced to backup cluster.");
         if (replicateBackupToPrimary) {
             assertEquals(NUM_RECORDS_PRODUCED, primary.kafka().consume(NUM_RECORDS_PRODUCED, RECORD_TRANSFER_DURATION_MS, reverseTopic1).count(),
                     "Records were not replicated to primary cluster.");
             assertEquals(NUM_RECORDS_PRODUCED * 2, primary.kafka().consume(NUM_RECORDS_PRODUCED * 2, RECORD_TRANSFER_DURATION_MS, reverseTopic1, "test-topic-1").count(),
-                "Primary cluster doesn't have all records from both clusters.");
+                    "Primary cluster doesn't have all records from both clusters.");
             assertEquals(NUM_RECORDS_PRODUCED * 2, backup.kafka().consume(NUM_RECORDS_PRODUCED * 2, RECORD_TRANSFER_DURATION_MS, backupTopic1, "test-topic-1").count(),
-                "Backup cluster doesn't have all records from both clusters.");
+                    "Backup cluster doesn't have all records from both clusters.");
         }
 
         assertTrue(primary.kafka().consume(1, RECORD_TRANSFER_DURATION_MS, "heartbeats").count() > 0,
-            "Heartbeats were not emitted to primary cluster.");
+                "Heartbeats were not emitted to primary cluster.");
         assertTrue(backup.kafka().consume(1, RECORD_TRANSFER_DURATION_MS, "heartbeats").count() > 0,
-            "Heartbeats were not emitted to backup cluster.");
+                "Heartbeats were not emitted to backup cluster.");
         assertTrue(backup.kafka().consume(1, RECORD_TRANSFER_DURATION_MS, "primary.heartbeats").count() > 0,
-            "Heartbeats were not replicated downstream to backup cluster.");
+                "Heartbeats were not replicated downstream to backup cluster.");
         if (replicateBackupToPrimary) {
             assertTrue(primary.kafka().consume(1, RECORD_TRANSFER_DURATION_MS, "backup.heartbeats").count() > 0,
                     "Heartbeats were not replicated downstream to primary cluster.");
@@ -368,7 +368,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         assertTrue(backupClient.upstreamClusters().contains(PRIMARY_CLUSTER_ALIAS), "Did not find upstream primary cluster.");
         assertEquals(1, backupClient.replicationHops(PRIMARY_CLUSTER_ALIAS), "Did not calculate replication hops correctly.");
         assertTrue(backup.kafka().consume(1, CHECKPOINT_DURATION_MS, "primary.checkpoints.internal").count() > 0,
-            "Checkpoints were not emitted downstream to backup cluster.");
+                "Checkpoints were not emitted downstream to backup cluster.");
         if (replicateBackupToPrimary) {
             assertTrue(primaryClient.upstreamClusters().contains(BACKUP_CLUSTER_ALIAS), "Did not find upstream backup cluster.");
             assertEquals(1, primaryClient.replicationHops(BACKUP_CLUSTER_ALIAS), "Did not calculate replication hops correctly.");
@@ -388,7 +388,7 @@ public class MirrorConnectorsIntegrationBaseTest {
 
             assertTrue(primaryConsumer.position(new TopicPartition(backupTopic1, 0)) > 0, "Consumer failedover to zero offset.");
             assertTrue(primaryConsumer.position(
-                new TopicPartition(backupTopic1, 0)) <= NUM_RECORDS_PRODUCED, "Consumer failedover beyond expected offset.");
+                    new TopicPartition(backupTopic1, 0)) <= NUM_RECORDS_PRODUCED, "Consumer failedover beyond expected offset.");
         }
 
         assertMonotonicCheckpoints(backup, "primary.checkpoints.internal");
@@ -425,9 +425,9 @@ public class MirrorConnectorsIntegrationBaseTest {
 
         // expect total consumed messages equals to NUM_RECORDS_PER_PARTITION
         assertEquals(NUM_RECORDS_PER_PARTITION, primary.kafka().consume(NUM_RECORDS_PER_PARTITION, RECORD_TRANSFER_DURATION_MS, "test-topic-2").count(),
-            "Records were not produced to primary cluster.");
+                "Records were not produced to primary cluster.");
         assertEquals(NUM_RECORDS_PER_PARTITION, backup.kafka().consume(NUM_RECORDS_PER_PARTITION, 2 * RECORD_TRANSFER_DURATION_MS, backupTopic2).count(),
-            "New topic was not replicated to backup cluster.");
+                "New topic was not replicated to backup cluster.");
 
         if (replicateBackupToPrimary) {
             backup.kafka().createTopic("test-topic-3", NUM_PARTITIONS);
@@ -534,7 +534,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         waitForTopicCreated(backup, backupTopic1);
         // create a consumer at backup cluster with same consumer group Id to consume 1 topic
         try (Consumer<byte[], byte[]> backupConsumer = backup.kafka().createConsumerAndSubscribeTo(
-            consumerProps, backupTopic1)) {
+                consumerProps, backupTopic1)) {
 
             waitForConsumerGroupFullSync(backup, List.of(backupTopic1),
                     consumerGroupName, NUM_RECORDS_PRODUCED, offsetLagMax);
@@ -559,7 +559,7 @@ public class MirrorConnectorsIntegrationBaseTest {
 
         // create a consumer at backup cluster with same consumer group ID to consume old and new topic
         try (Consumer<byte[], byte[]> backupConsumer = backup.kafka().createConsumerAndSubscribeTo(Map.of(
-            "group.id", consumerGroupName), backupTopic1, remoteTopic2)) {
+                "group.id", consumerGroupName), backupTopic1, remoteTopic2)) {
 
             waitForConsumerGroupFullSync(backup, List.of(backupTopic1, remoteTopic2),
                     consumerGroupName, NUM_RECORDS_PRODUCED, offsetLagMax);
@@ -648,7 +648,7 @@ public class MirrorConnectorsIntegrationBaseTest {
                 }
                 return false;
             }, 30_000,
-                "Unable to find checkpoints for " + PRIMARY_CLUSTER_ALIAS + ".test-topic-1"
+                    "Unable to find checkpoints for " + PRIMARY_CLUSTER_ALIAS + ".test-topic-1"
             );
         }
 
@@ -689,10 +689,10 @@ public class MirrorConnectorsIntegrationBaseTest {
             Collection<TopicPartition> tps = List.of(tp1, tp2);
             Map<TopicPartition, Long> endOffsets = consumer.endOffsets(tps);
             Map<TopicPartition, OffsetAndMetadata> offsetsToCommit = endOffsets.entrySet().stream()
-                            .collect(Collectors.toMap(
-                                    Map.Entry::getKey,
-                                    e -> new OffsetAndMetadata(e.getValue())
-                            ));
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            e -> new OffsetAndMetadata(e.getValue())
+                    ));
             consumer.commitSync(offsetsToCommit);
         }
 
@@ -1165,7 +1165,7 @@ public class MirrorConnectorsIntegrationBaseTest {
             String primary, String backup) throws InterruptedException {
         for (Class<? extends Connector> connector : connectorClasses) {
             connectCluster.configureConnector(connector.getSimpleName(), mm2Config.connectorBaseConfig(
-                new SourceAndTarget(primary, backup), connector));
+                    new SourceAndTarget(primary, backup), connector));
         }
         
         // we wait for the connector and tasks to come up for each connector, so that when we do the
@@ -1177,7 +1177,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         }
     }
 
-    protected static void restartMirrorMakerConnectors(EmbeddedConnectCluster connectCluster, List<Class<? extends Connector>> connectorClasses)  {
+    protected static void restartMirrorMakerConnectors(EmbeddedConnectCluster connectCluster, List<Class<? extends Connector>> connectorClasses) {
         for (Class<? extends Connector> connector : connectorClasses) {
             connectCluster.restartConnectorAndTasks(connector.getSimpleName(), false, true, false);
         }
@@ -1283,7 +1283,7 @@ public class MirrorConnectorsIntegrationBaseTest {
                     Set<String> topics = adminClient.listTopics().names().get(REQUEST_TIMEOUT_DURATION_MS, TimeUnit.MILLISECONDS);
                     return topics.contains(topicName);
                 }, OFFSET_SYNC_DURATION_MS,
-                "Topic: " + topicName + " didn't get created in the cluster"
+                    "Topic: " + topicName + " didn't get created in the cluster"
             );
         }
     }
@@ -1294,7 +1294,7 @@ public class MirrorConnectorsIntegrationBaseTest {
     protected static String getTopicConfig(EmbeddedKafkaCluster cluster, String topic, String configName) throws Exception {
         try (Admin client = cluster.createAdminClient()) {
             Collection<ConfigResource> cr = Set.of(
-                new ConfigResource(ConfigResource.Type.TOPIC, topic));
+                    new ConfigResource(ConfigResource.Type.TOPIC, topic));
 
             DescribeConfigsResult configsResult = client.describeConfigs(cr);
             Config allConfigs = (Config) configsResult.all().get().values().toArray()[0];
@@ -1340,8 +1340,8 @@ public class MirrorConnectorsIntegrationBaseTest {
     }
 
     protected static Map<TopicPartition, OffsetAndMetadata> waitForNewCheckpointOnAllPartitions(
-                MirrorClient client, String consumerGroupName, String remoteClusterAlias, String topicName,
-                Map<TopicPartition, OffsetAndMetadata> lastCheckpoint
+            MirrorClient client, String consumerGroupName, String remoteClusterAlias, String topicName,
+            Map<TopicPartition, OffsetAndMetadata> lastCheckpoint
     ) throws InterruptedException {
         AtomicReference<Map<TopicPartition, OffsetAndMetadata>> ret = new AtomicReference<>();
         waitForCondition(
@@ -1459,7 +1459,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         // After a full sync, there should be at most offset.lag.max records per partition consumed by both upstream and downstream consumers.
         for (TopicPartition tp : records.partitions()) {
             int count = records.records(tp).size();
-            assertTrue(count < offsetLagMax,  "downstream consumer is re-reading more than " + offsetLagMax + " records from" + tp);
+            assertTrue(count < offsetLagMax, "downstream consumer is re-reading more than " + offsetLagMax + " records from" + tp);
         }
     }
 
@@ -1507,7 +1507,7 @@ public class MirrorConnectorsIntegrationBaseTest {
 
         // increase admin client request timeout value to make the tests reliable.
         Map<String, Object> adminClientConfig = Map.of(
-            AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, REQUEST_TIMEOUT_DURATION_MS);
+                AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, REQUEST_TIMEOUT_DURATION_MS);
 
         // create these topics before starting the connectors, so we don't need to wait for discovery
         primary.kafka().createTopic("test-topic-no-checkpoints", 1, 1, emptyMap, adminClientConfig);
@@ -1594,9 +1594,9 @@ public class MirrorConnectorsIntegrationBaseTest {
         try (final Admin adminClient = cluster.kafka().createAdminClient()) {
             waitForCondition(() ->
                     !adminClient.listTopics().names()
-                        .get(REQUEST_TIMEOUT_DURATION_MS, TimeUnit.MILLISECONDS)
-                        .contains(topicName), TOPIC_SYNC_DURATION_MS,
-                "Topic: " + topicName + " get created on cluster: " + cluster.getName()
+                            .get(REQUEST_TIMEOUT_DURATION_MS, TimeUnit.MILLISECONDS)
+                            .contains(topicName), TOPIC_SYNC_DURATION_MS,
+                    "Topic: " + topicName + " get created on cluster: " + cluster.getName()
             );
         }
     }
@@ -1608,7 +1608,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         try (final Admin adminClient = cluster.kafka().createAdminClient()) {
             waitForCondition(() -> adminClient.describeTopics(Set.of(topicName)).allTopicNames().get()
                     .get(topicName).partitions().size() == totalNumPartitions, TOPIC_SYNC_DURATION_MS,
-                "Topic: " + topicName + "'s partitions didn't get created on cluster: " + cluster.getName()
+                    "Topic: " + topicName + "'s partitions didn't get created on cluster: " + cluster.getName()
             );
         }
     }

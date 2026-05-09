@@ -618,7 +618,7 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
         } else if (minReceivedMetadataVersion >= EARLIEST_PROBEABLE_VERSION) {
             versionProbing = true;
             log.info("Received a future (version probing) subscription (version: {})."
-                         + " Sending assignment back (with supported version {}).",
+                     + " Sending assignment back (with supported version {}).",
                 futureMetadataVersion,
                 minSupportedMetadataVersion);
 
@@ -728,10 +728,10 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
                         partitionInfo.partition());
                     if (!allAssignedPartitions.contains(partition)) {
                         log.warn("Partition {} is not assigned to any tasks: {}"
-                                     + " Possible causes of a partition not getting assigned"
-                                     + " is that another topic defined in the topology has not been"
-                                     + " created when starting your streams application,"
-                                     + " resulting in no tasks created for this topology at all.", partition,
+                                 + " Possible causes of a partition not getting assigned"
+                                 + " is that another topic defined in the topology has not been"
+                                 + " created when starting your streams application,"
+                                 + " resulting in no tasks created for this topology at all.", partition,
                             partitionsForTask);
                     }
                 }
@@ -784,7 +784,7 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
         statefulTasks.addAll(changelogTopics.statefulTaskIds());
 
         log.info("Assigning stateful tasks: {}\n"
-                     + "and stateless tasks: {}",
+                 + "and stateless tasks: {}",
                  statefulTasks,
                  allTasks.stream().filter(t -> !statefulTasks.contains(t)).collect(Collectors.toSet()));
         log.debug("Assigning tasks and {} standby replicas to client nodes {}",
@@ -866,7 +866,7 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
             return taskAssignor;
         } else {
             log.info("Failed to fetch end offsets for changelogs, will return previous assignment to clients and "
-                         + "trigger another rebalance to retry.");
+                     + "trigger another rebalance to retry.");
             return new FallbackPriorTaskAssignor();
         }
     }
@@ -1140,13 +1140,13 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
             );
 
             final Map<TaskId, Set<TopicPartition>> standbyTaskMap = buildStandbyTaskMap(
-                    consumer,
-                    standbyTaskAssignments.get(consumer),
-                    activeTasksRemovedPendingRevokation,
-                    statefulTasks,
-                    partitionsForTask,
-                    clientMetadata.state
-                );
+                consumer,
+                standbyTaskAssignments.get(consumer),
+                activeTasksRemovedPendingRevokation,
+                statefulTasks,
+                partitionsForTask,
+                clientMetadata.state
+            );
 
             final AssignmentInfo info = new AssignmentInfo(
                 minUserMetadataVersion,
@@ -1269,7 +1269,7 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
             // all of the accumulated state in the case of in-memory stores)
             if (clientState.previouslyOwnedStandby(task) && allStatefulTasks.contains(task)) {
                 log.info("Adding removed stateful active task {} as a standby for {} until it is revoked and can "
-                             + "be transitioned to active in a followup rebalance", task, consumer);
+                         + "be transitioned to active in a followup rebalance", task, consumer);
 
                 // This has no effect on the assignment, as we'll never consult the ClientState again, but
                 // it does perform a useful assertion that the it's legal to assign this task as a standby to this instance
@@ -1421,13 +1421,13 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
             // completed the rolling upgrade and can now update our subscription version for the final rebalance
             if (latestCommonlySupportedVersion > usedSubscriptionMetadataVersion) {
                 log.info(
-                    "Sent a version {} subscription and group's latest commonly supported version is {} (successful "
+                        "Sent a version {} subscription and group's latest commonly supported version is {} (successful "
                         +
                         "version probing and end of rolling upgrade). Upgrading subscription metadata version to " +
                         "{} for next rebalance.",
-                    usedSubscriptionMetadataVersion,
-                    latestCommonlySupportedVersion,
-                    latestCommonlySupportedVersion
+                        usedSubscriptionMetadataVersion,
+                        latestCommonlySupportedVersion,
+                        latestCommonlySupportedVersion
                 );
                 usedSubscriptionMetadataVersion = latestCommonlySupportedVersion;
                 return true;
@@ -1437,12 +1437,12 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
             // should downgrade our subscription until everyone is on the latest version
             if (receivedAssignmentMetadataVersion < usedSubscriptionMetadataVersion) {
                 log.info(
-                    "Sent a version {} subscription and got version {} assignment back (successful version probing). "
+                        "Sent a version {} subscription and got version {} assignment back (successful version probing). "
                         +
                         "Downgrade subscription metadata to commonly supported version {} and trigger new rebalance.",
-                    usedSubscriptionMetadataVersion,
-                    receivedAssignmentMetadataVersion,
-                    latestCommonlySupportedVersion
+                        usedSubscriptionMetadataVersion,
+                        receivedAssignmentMetadataVersion,
+                        latestCommonlySupportedVersion
                 );
                 usedSubscriptionMetadataVersion = latestCommonlySupportedVersion;
                 return true;

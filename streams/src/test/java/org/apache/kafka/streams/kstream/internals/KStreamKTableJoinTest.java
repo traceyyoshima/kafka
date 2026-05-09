@@ -108,9 +108,9 @@ public class KStreamKTableJoinTest {
     private void pushToTableNonRandom(final int messageCount, final String valuePrefix) {
         for (int i = 0; i < messageCount; i++) {
             inputTableTopic.pipeInput(
-                expectedKeys[i],
-                valuePrefix + expectedKeys[i],
-                0);
+                    expectedKeys[i],
+                    valuePrefix + expectedKeys[i],
+                    0);
         }
     }
 
@@ -118,9 +118,9 @@ public class KStreamKTableJoinTest {
         final Random r = new Random(System.currentTimeMillis());
         for (int i = 0; i < messageCount; i++) {
             inputTableTopic.pipeInput(
-                expectedKeys[i],
-                valuePrefix + expectedKeys[i],
-                r.nextInt(Integer.MAX_VALUE));
+                    expectedKeys[i],
+                    valuePrefix + expectedKeys[i],
+                    r.nextInt(Integer.MAX_VALUE));
         }
     }
 
@@ -140,10 +140,10 @@ public class KStreamKTableJoinTest {
         final Consumed<Integer, String> consumed = Consumed.with(Serdes.Integer(), Serdes.String());
         stream = builder.stream(streamTopic, consumed);
         table = builder.table("tableTopic2", consumed, Materialized.as(
-            Stores.persistentVersionedKeyValueStore("V-grace", Duration.ofMinutes(5))));
+                Stores.persistentVersionedKeyValueStore("V-grace", Duration.ofMinutes(5))));
         stream.join(table,
-            MockValueJoiner.TOSTRING_JOINER,
-            Joined.with(Serdes.Integer(), Serdes.String(), Serdes.String(), "Grace", grace)
+                MockValueJoiner.TOSTRING_JOINER,
+                Joined.with(Serdes.Integer(), Serdes.String(), Serdes.String(), "Grace", grace)
         ).process(supplier);
         final Properties props = StreamsTestUtils.getStreamsConfig(Serdes.Integer(), Serdes.String());
         driver = new TopologyTestDriver(builder.build(), props);
@@ -164,10 +164,10 @@ public class KStreamKTableJoinTest {
         final KTable<String, String> tableB = builder.table("topic2", Consumed.with(Serdes.String(), Serdes.String()));
 
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> streamA.join(tableB, (value1, value2) -> value1 + value2, Joined.with(Serdes.String(), Serdes.String(), Serdes.String(), "first-join", Duration.ofMillis(6))).to("out-one"));
+                () -> streamA.join(tableB, (value1, value2) -> value1 + value2, Joined.with(Serdes.String(), Serdes.String(), Serdes.String(), "first-join", Duration.ofMillis(6))).to("out-one"));
         assertThat(
-            exception.getMessage(),
-            is("KTable must be versioned to use a grace period in a stream table join.")
+                exception.getMessage(),
+                is("KTable must be versioned to use a grace period in a stream table join.")
         );
     }
 
@@ -180,7 +180,7 @@ public class KStreamKTableJoinTest {
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(props, withHeaders);
         final KStream<String, String> streamA = builder.stream("topic", Consumed.with(Serdes.String(), Serdes.String()));
         final KTable<String, String> source = builder.table("topic2", Consumed.with(Serdes.String(), Serdes.String()),
-            Materialized.as(Stores.inMemoryKeyValueStore("tableB")));
+                Materialized.as(Stores.inMemoryKeyValueStore("tableB")));
         final KTable<String, String> tableB = source.filter((k, v) -> true);
         // the filter operation forces the table materialization to be inherited
 
@@ -188,8 +188,8 @@ public class KStreamKTableJoinTest {
 
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, builder::build);
         assertThat(
-            exception.getMessage(),
-            is("KTable must be versioned to use a grace period in a stream table join.")
+                exception.getMessage(),
+                is("KTable must be versioned to use a grace period in a stream table join.")
         );
     }
 
@@ -202,7 +202,7 @@ public class KStreamKTableJoinTest {
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(props, withHeaders);
         final KStream<String, String> streamA = builder.stream("topic", Consumed.with(Serdes.String(), Serdes.String()));
         final KTable<String, String> source = builder.table("topic2", Consumed.with(Serdes.String(), Serdes.String()),
-            Materialized.as(Stores.persistentVersionedKeyValueStore("tableB", Duration.ofMinutes(5))));
+                Materialized.as(Stores.persistentVersionedKeyValueStore("tableB", Duration.ofMinutes(5))));
         final KTable<String, String> tableB = source.filter((k, v) -> true);
         // the filter operation forces the table materialization to be inherited
 
@@ -221,7 +221,7 @@ public class KStreamKTableJoinTest {
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(props, withHeaders);
         final KStream<String, String> streamA = builder.stream("topic", Consumed.with(Serdes.String(), Serdes.String()));
         final KTable<String, String> tableB = builder.table("topic2", Consumed.with(Serdes.String(), Serdes.String()),
-            Materialized.as(Stores.persistentVersionedKeyValueStore("tableB", Duration.ofMinutes(5))));
+                Materialized.as(Stores.persistentVersionedKeyValueStore("tableB", Duration.ofMinutes(5))));
 
         streamA.join(tableB, (value1, value2) -> value1 + value2, Joined.with(Serdes.String(), Serdes.String(), Serdes.String(), "first-join", Duration.ofMinutes(6))).to("out-one");
 
@@ -238,7 +238,7 @@ public class KStreamKTableJoinTest {
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(props, withHeaders);
         final KStream<String, String> streamA = builder.stream("topic", Consumed.with(Serdes.String(), Serdes.String()));
         final KTable<String, String> source = builder.table("topic2", Consumed.with(Serdes.String(), Serdes.String()),
-            Materialized.as(Stores.persistentVersionedKeyValueStore("V-grace", Duration.ofMinutes(0))));
+                Materialized.as(Stores.persistentVersionedKeyValueStore("V-grace", Duration.ofMinutes(0))));
         final KTable<String, String> tableB = source.filter((k, v) -> true);
         // the filter operation forces the table materialization to be inherited
 
@@ -262,8 +262,8 @@ public class KStreamKTableJoinTest {
         // push all four items to the primary stream. this should produce two items.
         pushToStream(4, "X");
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(0, "X0+Y0", 0),
-            new KeyValueTimestamp<>(1, "X1+Y1", 1));
+                new KeyValueTimestamp<>(0, "X0+Y0", 0),
+                new KeyValueTimestamp<>(1, "X1+Y1", 1));
 
         // push all items to the table. this should not produce any item
         pushToTableNonRandom(4, "YY");
@@ -272,16 +272,16 @@ public class KStreamKTableJoinTest {
         // push all four items to the primary stream. this should produce two items.
         pushToStream(4, "X");
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(0, "X0+YY0", 0),
-            new KeyValueTimestamp<>(1, "X1+YY1", 1));
+                new KeyValueTimestamp<>(0, "X0+YY0", 0),
+                new KeyValueTimestamp<>(1, "X1+YY1", 1));
 
         inputStreamTopic.pipeInput(5, "test", 7);
 
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(2, "X2+YY2", 2),
-            new KeyValueTimestamp<>(2, "X2+YY2", 2),
-            new KeyValueTimestamp<>(3, "X3+YY3", 3),
-            new KeyValueTimestamp<>(3, "X3+YY3", 3));
+                new KeyValueTimestamp<>(2, "X2+YY2", 2),
+                new KeyValueTimestamp<>(2, "X2+YY2", 2),
+                new KeyValueTimestamp<>(3, "X3+YY3", 3),
+                new KeyValueTimestamp<>(3, "X3+YY3", 3));
 
 
         // push all items to the table. this should not produce any item
@@ -302,13 +302,13 @@ public class KStreamKTableJoinTest {
         // push 4 records into the buffer and evict the first two
         pushToStream(4, "X");
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(0, "X0+Y0", 0),
-            new KeyValueTimestamp<>(1, "X1+Y1", 1));
+                new KeyValueTimestamp<>(0, "X0+Y0", 0),
+                new KeyValueTimestamp<>(1, "X1+Y1", 1));
 
         //should be processed immediately and not evict any other records
         pushToStream(1, "X");
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(0, "X0+Y0", 0));
+                new KeyValueTimestamp<>(0, "X0+Y0", 0));
     }
 
     @ParameterizedTest
@@ -382,8 +382,8 @@ public class KStreamKTableJoinTest {
         // push all four items to the primary stream. this should produce two items.
         pushToStream(4, "X");
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(0, "X0+Y0", 0),
-            new KeyValueTimestamp<>(1, "X1+Y1", 1)
+                new KeyValueTimestamp<>(0, "X0+Y0", 0),
+                new KeyValueTimestamp<>(1, "X1+Y1", 1)
         );
 
         // push all items to the table. this should not produce any item
@@ -393,10 +393,10 @@ public class KStreamKTableJoinTest {
         // push all four items to the primary stream. this should produce four items.
         pushToStream(4, "X");
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(0, "X0+YY0", 0),
-            new KeyValueTimestamp<>(1, "X1+YY1", 1),
-            new KeyValueTimestamp<>(2, "X2+YY2", 2),
-            new KeyValueTimestamp<>(3, "X3+YY3", 3)
+                new KeyValueTimestamp<>(0, "X0+YY0", 0),
+                new KeyValueTimestamp<>(1, "X1+YY1", 1),
+                new KeyValueTimestamp<>(2, "X2+YY2", 2),
+                new KeyValueTimestamp<>(3, "X3+YY3", 3)
         );
 
         // push all items to the table. this should not produce any item
@@ -415,8 +415,8 @@ public class KStreamKTableJoinTest {
         // push all four items to the primary stream. this should produce two items.
         pushToStream(4, "X");
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(0, "X0+Y0", 0),
-            new KeyValueTimestamp<>(1, "X1+Y1", 1)
+                new KeyValueTimestamp<>(0, "X0+Y0", 0),
+                new KeyValueTimestamp<>(1, "X1+Y1", 1)
         );
     }
 
@@ -431,10 +431,10 @@ public class KStreamKTableJoinTest {
         // push all four items to the primary stream. this should produce four items.
         pushToStream(4, "X");
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(0, "X0+Y0", 0),
-            new KeyValueTimestamp<>(1, "X1+Y1", 1),
-            new KeyValueTimestamp<>(2, "X2+Y2", 2),
-            new KeyValueTimestamp<>(3, "X3+Y3", 3)
+                new KeyValueTimestamp<>(0, "X0+Y0", 0),
+                new KeyValueTimestamp<>(1, "X1+Y1", 1),
+                new KeyValueTimestamp<>(2, "X2+Y2", 2),
+                new KeyValueTimestamp<>(3, "X3+Y3", 3)
         );
 
         // push two items with null to the table as deletes. this should not produce any item.
@@ -444,8 +444,8 @@ public class KStreamKTableJoinTest {
         // push all four items to the primary stream. this should produce two items.
         pushToStream(4, "XX");
         processor.checkAndClearProcessResult(
-            new KeyValueTimestamp<>(2, "XX2+Y2", 2),
-            new KeyValueTimestamp<>(3, "XX3+Y3", 3)
+                new KeyValueTimestamp<>(2, "XX2+Y2", 2),
+                new KeyValueTimestamp<>(3, "XX3+Y3", 3)
         );
     }
 
@@ -459,23 +459,23 @@ public class KStreamKTableJoinTest {
             inputTopic.pipeInput(null, "A");
 
             assertThat(
-                appender.getMessages(),
-                hasItem("Skipping record due to null join key or value. topic=[streamTopic] partition=[0] "
-                    + "offset=[0]"));
+                    appender.getMessages(),
+                    hasItem("Skipping record due to null join key or value. topic=[streamTopic] partition=[0] "
+                            + "offset=[0]"));
         }
 
         assertThat(
             driver.metrics().get(
-                new MetricName(
-                    "dropped-records-total",
-                    "stream-task-metrics",
-                    "",
-                    mkMap(
-                        mkEntry("thread-id", Thread.currentThread().getName()),
-                        mkEntry("task-id", "0_0")
-                    )
-                ))
-                .metricValue(),
+                    new MetricName(
+                            "dropped-records-total",
+                            "stream-task-metrics",
+                            "",
+                            mkMap(
+                                    mkEntry("thread-id", Thread.currentThread().getName()),
+                                    mkEntry("task-id", "0_0")
+                            )
+                    ))
+                    .metricValue(),
             is(1.0)
         );
     }
@@ -490,24 +490,24 @@ public class KStreamKTableJoinTest {
             inputTopic.pipeInput(1, null);
 
             assertThat(
-                appender.getMessages(),
-                hasItem("Skipping record due to null join key or value. topic=[streamTopic] partition=[0] "
-                    + "offset=[0]")
+                    appender.getMessages(),
+                    hasItem("Skipping record due to null join key or value. topic=[streamTopic] partition=[0] "
+                            + "offset=[0]")
             );
         }
 
         assertThat(
             driver.metrics().get(
                     new MetricName(
-                        "dropped-records-total",
-                        "stream-task-metrics",
-                        "",
-                        mkMap(
-                            mkEntry("thread-id", Thread.currentThread().getName()),
-                            mkEntry("task-id", "0_0")
-                        )
+                            "dropped-records-total",
+                            "stream-task-metrics",
+                            "",
+                            mkMap(
+                                    mkEntry("thread-id", Thread.currentThread().getName()),
+                                    mkEntry("task-id", "0_0")
+                            )
                     ))
-                .metricValue(),
+                    .metricValue(),
             is(1.0)
         );
     }

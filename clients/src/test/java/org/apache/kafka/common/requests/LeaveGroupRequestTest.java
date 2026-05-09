@@ -107,8 +107,9 @@ public class LeaveGroupRequestTest {
             assertEquals(expectedData, request.data());
             assertEquals(singleMember, request.members());
 
-            int expectedThrottleTime = version >= 1 ? throttleTimeMs
-                                           : AbstractResponse.DEFAULT_THROTTLE_TIME;
+            int expectedThrottleTime = version >= 1
+                ? throttleTimeMs
+                : AbstractResponse.DEFAULT_THROTTLE_TIME;
             LeaveGroupResponse expectedResponse = new LeaveGroupResponse(
                 new LeaveGroupResponseData()
                     .setErrorCode(Errors.NOT_CONTROLLER.code())

@@ -181,12 +181,12 @@ public class LeaderElectionCommand {
                 new AdminCommandFailedException(String.format("%s replica(s) could not be elected", failed.size()));
             failed.forEach((key, value) -> {
                 System.out.println(
-                        String.format(
-                                "Error completing leader election (%s) for partition: %s: %s",
-                                electionType,
-                                key,
-                                value
-                        )
+                    String.format(
+                        "Error completing leader election (%s) for partition: %s: %s",
+                        electionType,
+                        key,
+                        value
+                    )
                 );
                 rootException.addSuppressed(value);
             });
@@ -255,6 +255,7 @@ public class LeaderElectionCommand {
         private final ArgumentAcceptingOptionSpec<Integer> partition;
         private final OptionSpecBuilder allTopicPartitions;
         private final ArgumentAcceptingOptionSpec<ElectionType> electionType;
+
         public LeaderElectionCommandOptions(String[] args) {
             super(args);
             bootstrapServer = parser

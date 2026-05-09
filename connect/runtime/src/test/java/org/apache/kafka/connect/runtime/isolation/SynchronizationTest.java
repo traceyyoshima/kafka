@@ -162,18 +162,18 @@ public class SynchronizationTest {
         @Override
         public DelegatingClassLoader newDelegatingClassLoader(ClassLoader parent) {
             return SecurityManagerCompatibility.get().doPrivileged(
-                    () -> new SynchronizedDelegatingClassLoader(parent, dclBreakpoint)
+                () -> new SynchronizedDelegatingClassLoader(parent, dclBreakpoint)
             );
         }
 
         @Override
         public PluginClassLoader newPluginClassLoader(
-                URL pluginLocation,
-                URL[] urls,
-                ClassLoader parent
+            URL pluginLocation,
+            URL[] urls,
+            ClassLoader parent
         ) {
             return SecurityManagerCompatibility.get().doPrivileged(
-                    () -> new SynchronizedPluginClassLoader(pluginLocation, urls, parent, pclBreakpoint)
+                () -> new SynchronizedPluginClassLoader(pluginLocation, urls, parent, pclBreakpoint)
             );
         }
     }
@@ -206,7 +206,7 @@ public class SynchronizationTest {
         private final Breakpoint<String> pclBreakpoint;
 
         public SynchronizedPluginClassLoader(
-                URL pluginLocation, URL[] urls, ClassLoader parent, Breakpoint<String> pclBreakpoint
+            URL pluginLocation, URL[] urls, ClassLoader parent, Breakpoint<String> pclBreakpoint
         ) {
             super(pluginLocation, urls, parent);
             this.pclBreakpoint = pclBreakpoint;
@@ -240,8 +240,8 @@ public class SynchronizationTest {
                 // 3. Enter the PluginClassLoader
                 // 4. Load the isolated plugin class and return
                 new AbstractConfig(
-                        new ConfigDef().define("a.class", Type.CLASS, Importance.HIGH, ""),
-                        Map.of("a.class", t1Class));
+                    new ConfigDef().define("a.class", Type.CLASS, Importance.HIGH, ""),
+                    Map.of("a.class", t1Class));
             }
         };
 
@@ -259,7 +259,7 @@ public class SynchronizationTest {
                 // 3. Enter the DelegatingClassLoader
                 // 4. Load the non-isolated class and return
                 new AbstractConfig(new ConfigDef().define("a.class", Type.CLASS, Importance.HIGH, ""),
-                        Map.of("a.class", t2Class));
+                    Map.of("a.class", t2Class));
             }
         };
 

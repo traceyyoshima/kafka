@@ -47,8 +47,8 @@ class SegmentedCacheFunctionTest {
 
     private static final Bytes THE_SESSION_CACHE_KEY = Bytes.wrap(
         ByteBuffer.allocate(8 + THE_SESSION_KEY.get().length)
-                .putLong(END_TIMESTAMP / SEGMENT_INTERVAL)
-                .put(THE_SESSION_KEY.get()).array()
+            .putLong(END_TIMESTAMP / SEGMENT_INTERVAL)
+            .put(THE_SESSION_KEY.get()).array()
     );
     
     private SegmentedCacheFunction createCacheFunction(final SegmentedBytesStore.KeySchema keySchema) {
@@ -57,15 +57,15 @@ class SegmentedCacheFunctionTest {
 
     private static Stream<Arguments> provideKeysAndSchemas() {
         return Stream.of(
-                Arguments.of(THE_WINDOW_CACHE_KEY, THE_WINDOW_KEY, new WindowKeySchema()),
-                Arguments.of(THE_SESSION_CACHE_KEY, THE_SESSION_KEY, new SessionKeySchema())
+            Arguments.of(THE_WINDOW_CACHE_KEY, THE_WINDOW_KEY, new WindowKeySchema()),
+            Arguments.of(THE_SESSION_CACHE_KEY, THE_SESSION_KEY, new SessionKeySchema())
         );
     }
 
     private static Stream<Arguments> provideKeysTimestampsAndSchemas() {
         return Stream.of(
-                Arguments.of(THE_WINDOW_KEY, START_TIMESTAMP, new WindowKeySchema()),
-                Arguments.of(THE_SESSION_KEY, END_TIMESTAMP, new SessionKeySchema())
+            Arguments.of(THE_WINDOW_KEY, START_TIMESTAMP, new WindowKeySchema()),
+            Arguments.of(THE_SESSION_KEY, END_TIMESTAMP, new SessionKeySchema())
         );
     }
 
@@ -77,8 +77,8 @@ class SegmentedCacheFunctionTest {
         final Bytes lowerKeyInSameSegmentSession = toStoreKeyBinary(new byte[]{0xA, 0xB, 0xB}, END_TIMESTAMP - 1, START_TIMESTAMP + 1);
         
         return Stream.of(
-                Arguments.of(THE_WINDOW_KEY, new WindowKeySchema(), sameKeyInPriorSegmentWindow, lowerKeyInSameSegmentWindow),
-                Arguments.of(THE_SESSION_KEY, new SessionKeySchema(), sameKeyInPriorSegmentSession, lowerKeyInSameSegmentSession)
+            Arguments.of(THE_WINDOW_KEY, new WindowKeySchema(), sameKeyInPriorSegmentWindow, lowerKeyInSameSegmentWindow),
+            Arguments.of(THE_SESSION_KEY, new SessionKeySchema(), sameKeyInPriorSegmentSession, lowerKeyInSameSegmentSession)
         );
     }
 
@@ -97,8 +97,8 @@ class SegmentedCacheFunctionTest {
     @MethodSource("provideKeysAndSchemas")
     void testKey(final Bytes cacheKey, final Bytes key, final SegmentedBytesStore.KeySchema keySchema) {
         assertThat(
-                createCacheFunction(keySchema).key(cacheKey),
-                equalTo(key)
+            createCacheFunction(keySchema).key(cacheKey),
+            equalTo(key)
         );
     }
 

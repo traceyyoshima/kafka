@@ -427,14 +427,14 @@ public class ErrorHandlingTaskTest {
         TransformationChain<ConsumerRecord<byte[], byte[]>, SinkRecord> sinkTransforms =
                 new TransformationChain<>(List.of(new TransformationStage<>(transformationPlugin, "test", null, TestPlugins.noOpLoaderSwap())), retryWithToleranceOperator);
 
-        Plugin<Converter> keyConverterPlugin = metrics.wrap(converter, taskId,  true);
-        Plugin<Converter> valueConverterPlugin = metrics.wrap(converter, taskId,  false);
+        Plugin<Converter> keyConverterPlugin = metrics.wrap(converter, taskId, true);
+        Plugin<Converter> valueConverterPlugin = metrics.wrap(converter, taskId, false);
         Plugin<HeaderConverter> headerConverterPlugin = metrics.wrap(headerConverter, taskId);
         workerSinkTask = new WorkerSinkTask(
-            taskId, sinkTask, statusListener, initialState, workerConfig,
-            ClusterConfigState.EMPTY, metrics, keyConverterPlugin, valueConverterPlugin, errorHandlingMetrics,
+                taskId, sinkTask, statusListener, initialState, workerConfig,
+                ClusterConfigState.EMPTY, metrics, keyConverterPlugin, valueConverterPlugin, errorHandlingMetrics,
                 headerConverterPlugin, sinkTransforms, consumer, pluginLoader, time,
-            retryWithToleranceOperator, workerErrantRecordReporter,
+                retryWithToleranceOperator, workerErrantRecordReporter,
                 statusBackingStore, () -> errorReporters, null, TestPlugins.noOpLoaderSwap());
     }
 
@@ -463,11 +463,11 @@ public class ErrorHandlingTaskTest {
         TransformationChain<SourceRecord, SourceRecord> sourceTransforms = new TransformationChain<>(List.of(
                 new TransformationStage<>(transformationPlugin, "test", null, TestPlugins.noOpLoaderSwap())), retryWithToleranceOperator);
 
-        Plugin<Converter> keyConverterPlugin = metrics.wrap(converter, taskId,  true);
-        Plugin<Converter> valueConverterPlugin = metrics.wrap(converter, taskId,  false);
+        Plugin<Converter> keyConverterPlugin = metrics.wrap(converter, taskId, true);
+        Plugin<Converter> valueConverterPlugin = metrics.wrap(converter, taskId, false);
         Plugin<HeaderConverter> headerConverterPlugin = metrics.wrap(headerConverter, taskId);
         workerSourceTask = spy(new WorkerSourceTask(
-            taskId, sourceTask, statusListener, initialState, keyConverterPlugin,
+                taskId, sourceTask, statusListener, initialState, keyConverterPlugin,
                 valueConverterPlugin, errorHandlingMetrics, headerConverterPlugin,
                 sourceTransforms, producer, admin,
                 TopicCreationGroup.configuredGroups(sourceConfig),

@@ -125,13 +125,13 @@ public class SustainedConnectionWorker implements TaskWorker {
 
         // Create the status reporter thread and schedule it.
         this.statusUpdaterExecutor = Executors.newScheduledThreadPool(1,
-            ThreadUtils.createThreadFactory("StatusUpdaterWorkerThread%d", false));
+                ThreadUtils.createThreadFactory("StatusUpdaterWorkerThread%d", false));
         this.statusUpdaterFuture = this.statusUpdaterExecutor.scheduleAtFixedRate(
-            new StatusUpdater(), 0, REPORT_INTERVAL_MS, TimeUnit.MILLISECONDS);
+                new StatusUpdater(), 0, REPORT_INTERVAL_MS, TimeUnit.MILLISECONDS);
 
         // Create the maintainer pool, add all the maintainer threads, then start it.
         this.workerExecutor = Executors.newFixedThreadPool(spec.numThreads(),
-            ThreadUtils.createThreadFactory("SustainedConnectionWorkerThread%d", false));
+                ThreadUtils.createThreadFactory("SustainedConnectionWorkerThread%d", false));
         for (int i = 0; i < this.spec.numThreads(); i++) {
             this.workerExecutor.submit(new MaintainLoop());
         }
@@ -139,7 +139,9 @@ public class SustainedConnectionWorker implements TaskWorker {
 
     private interface SustainedConnection extends AutoCloseable {
         boolean needsRefresh(long milliseconds);
+
         void refresh();
+
         void claim();
     }
 
@@ -264,8 +266,8 @@ public class SustainedConnectionWorker implements TaskWorker {
                     // Create the producer, fetch the specified topic's partitions and randomize them.
                     this.producer = new KafkaProducer<>(this.props, new ByteArraySerializer(), new ByteArraySerializer());
                     this.partitions = this.producer.partitionsFor(this.topicName).stream()
-                             .map(partitionInfo -> new TopicPartition(partitionInfo.topic(), partitionInfo.partition()))
-                             .collect(Collectors.toList());
+                            .map(partitionInfo -> new TopicPartition(partitionInfo.topic(), partitionInfo.partition()))
+                            .collect(Collectors.toList());
                     Collections.shuffle(this.partitions);
                 }
 
@@ -415,15 +417,15 @@ public class SustainedConnectionWorker implements TaskWorker {
         public void run() {
             try {
                 JsonNode node = JsonUtil.JSON_SERDE.valueToTree(
-                    new StatusData(
-                            SustainedConnectionWorker.this.totalProducerConnections.get(),
-                            SustainedConnectionWorker.this.totalProducerFailedConnections.get(),
-                            SustainedConnectionWorker.this.totalConsumerConnections.get(),
-                            SustainedConnectionWorker.this.totalConsumerFailedConnections.get(),
-                            SustainedConnectionWorker.this.totalMetadataConnections.get(),
-                            SustainedConnectionWorker.this.totalMetadataFailedConnections.get(),
-                            SustainedConnectionWorker.this.totalAbortedThreads.get(),
-                            Time.SYSTEM.milliseconds()));
+                        new StatusData(
+                                SustainedConnectionWorker.this.totalProducerConnections.get(),
+                                SustainedConnectionWorker.this.totalProducerFailedConnections.get(),
+                                SustainedConnectionWorker.this.totalConsumerConnections.get(),
+                                SustainedConnectionWorker.this.totalConsumerFailedConnections.get(),
+                                SustainedConnectionWorker.this.totalMetadataConnections.get(),
+                                SustainedConnectionWorker.this.totalMetadataFailedConnections.get(),
+                                SustainedConnectionWorker.this.totalAbortedThreads.get(),
+                                Time.SYSTEM.milliseconds()));
                 status.update(node);
             } catch (Exception e) {
                 SustainedConnectionWorker.log.error("Aborted test while running StatusUpdater", e);

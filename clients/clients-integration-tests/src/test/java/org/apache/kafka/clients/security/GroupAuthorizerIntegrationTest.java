@@ -73,11 +73,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @ClusterTestDefaults(serverProperties = {
-    @ClusterConfigProperty(key = StandardAuthorizer.SUPER_USERS_CONFIG, value = "Group:broker"),
-    @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-    @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-    @ClusterConfigProperty(key = ServerConfigs.AUTHORIZER_CLASS_NAME_CONFIG, value = "org.apache.kafka.metadata.authorizer.StandardAuthorizer"),
-    @ClusterConfigProperty(key = BrokerSecurityConfigs.PRINCIPAL_BUILDER_CLASS_CONFIG, value = "org.apache.kafka.clients.security.GroupAuthorizerIntegrationTest$GroupPrincipalBuilder"),
+        @ClusterConfigProperty(key = StandardAuthorizer.SUPER_USERS_CONFIG, value = "Group:broker"),
+        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+        @ClusterConfigProperty(key = ServerConfigs.AUTHORIZER_CLASS_NAME_CONFIG, value = "org.apache.kafka.metadata.authorizer.StandardAuthorizer"),
+        @ClusterConfigProperty(key = BrokerSecurityConfigs.PRINCIPAL_BUILDER_CLASS_CONFIG, value = "org.apache.kafka.clients.security.GroupAuthorizerIntegrationTest$GroupPrincipalBuilder"),
 })
 public class GroupAuthorizerIntegrationTest {
     private static final KafkaPrincipal BROKER_PRINCIPAL = new KafkaPrincipal("Group", "broker");
@@ -257,8 +257,8 @@ public class GroupAuthorizerIntegrationTest {
         try {
             clusterInstance.createTopic(topic, 1, (short) 1);
             ExecutionException produceException = assertThrows(
-                ExecutionException.class,
-                () -> producer.send(new ProducerRecord<>(topic, "message".getBytes())).get()
+                    ExecutionException.class,
+                    () -> producer.send(new ProducerRecord<>(topic, "message".getBytes())).get()
             );
             Throwable cause = produceException.getCause();
             assertInstanceOf(TopicAuthorizationException.class, cause);
@@ -268,8 +268,8 @@ public class GroupAuthorizerIntegrationTest {
             TopicPartition topicPartition = new TopicPartition(topic, 0);
             consumer.assign(Collections.singletonList(topicPartition));
             TopicAuthorizationException consumeException = assertThrows(
-                TopicAuthorizationException.class,
-                () -> consumer.poll(Duration.ofSeconds(15))
+                    TopicAuthorizationException.class,
+                    () -> consumer.poll(Duration.ofSeconds(15))
             );
             assertEquals(consumeException.unauthorizedTopics(), topicAuthException.unauthorizedTopics());
         } finally {
@@ -309,9 +309,9 @@ public class GroupAuthorizerIntegrationTest {
         acls.add(createAcl(AclOperation.WRITE, AclPermissionType.ALLOW, CLIENT_PRINCIPAL));
         acls.add(createAcl(AclOperation.READ, AclPermissionType.ALLOW, CLIENT_PRINCIPAL));
         addAndVerifyAcls(
-            acls,
-            new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL),
-            clusterInstance
+                acls,
+                new ResourcePattern(ResourceType.TOPIC, topic, PatternType.LITERAL),
+                clusterInstance
         );
         addAndVerifyAcls(
                 Set.of(createAcl(AclOperation.READ, AclPermissionType.ALLOW, CLIENT_PRINCIPAL)),
@@ -321,9 +321,9 @@ public class GroupAuthorizerIntegrationTest {
 
         try (Producer<byte[], byte[]> producer = clusterInstance.producer();
             Consumer<byte[], byte[]> consumer = clusterInstance.consumer(Map.of(
-                ConsumerConfig.GROUP_ID_CONFIG, group,
-                ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
-                GROUP_PROTOCOL_CONFIG, groupProtocol.name.toLowerCase(Locale.ROOT)))
+                    ConsumerConfig.GROUP_ID_CONFIG, group,
+                    ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
+                    GROUP_PROTOCOL_CONFIG, groupProtocol.name.toLowerCase(Locale.ROOT)))
         ) {
             clusterInstance.createTopic(topic, 1, (short) 1);
             producer.send(new ProducerRecord<>(topic, "message".getBytes())).get();

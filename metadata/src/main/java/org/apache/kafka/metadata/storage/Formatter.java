@@ -267,7 +267,7 @@ public class Formatter {
                     "--feature " + MetadataVersion.FEATURE_NAME + "=X to avoid ambiguity.");
             }
             return verifyReleaseVersion(MetadataVersion.fromFeatureLevel(
-                    featureLevels.get(MetadataVersion.FEATURE_NAME)));
+                featureLevels.get(MetadataVersion.FEATURE_NAME)));
         } else if (releaseVersion != null) {
             return verifyReleaseVersion(releaseVersion);
         } else if (unstableFeatureVersionsEnabled) {
@@ -391,8 +391,8 @@ public class Formatter {
         loader.addLogDirs(directories);
         MetaPropertiesEnsemble ensemble = loader.load();
         ensemble.verify(Optional.of(clusterId),
-                OptionalInt.of(nodeId),
-                EnumSet.noneOf(MetaPropertiesEnsemble.VerificationFlag.class));
+            OptionalInt.of(nodeId),
+            EnumSet.noneOf(MetaPropertiesEnsemble.VerificationFlag.class));
         MetaPropertiesEnsemble.Copier copier = new MetaPropertiesEnsemble.Copier(ensemble);
         if (!(ignoreFormatted || copier.logDirProps().isEmpty())) {
             String firstLogDir = copier.logDirProps().keySet().iterator().next();
@@ -495,8 +495,8 @@ public class Formatter {
     ) {
         File parentDir = new File(writeLogDir);
         File clusterMetadataDirectory = new File(parentDir, String.format("%s-%d",
-                CLUSTER_METADATA_TOPIC_PARTITION.topic(),
-                CLUSTER_METADATA_TOPIC_PARTITION.partition()));
+            CLUSTER_METADATA_TOPIC_PARTITION.topic(),
+            CLUSTER_METADATA_TOPIC_PARTITION.partition()));
         VoterSet voterSet = initialControllers.toVoterSet(controllerListenerName);
         RecordsSnapshotWriter.Builder builder = new RecordsSnapshotWriter.Builder().
             setLastContainedLogTimestamp(Time.SYSTEM.milliseconds()).

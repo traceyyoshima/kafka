@@ -266,7 +266,7 @@ public class AbstractConfigTest {
 
         config.getConfiguredInstances(TestConfig.METRIC_REPORTER_CLASSES_CONFIG, MetricsReporter.class);
         assertFalse(config.unused().contains(ConfiguredFakeMetricsReporter.EXTRA_CONFIG),
-            ConfiguredFakeMetricsReporter.EXTRA_CONFIG + " should be marked as used");
+                ConfiguredFakeMetricsReporter.EXTRA_CONFIG + " should be marked as used");
     }
 
     private void testValidInputs(String configValue) {
@@ -317,6 +317,7 @@ public class AbstractConfigTest {
             public RestrictedClassLoader() {
                 super(null);
             }
+
             @Override
             protected Class<?> findClass(String name) throws ClassNotFoundException {
                 if (name.equals(ClassTestConfig.DEFAULT_CLASS.getName()) || name.equals(ClassTestConfig.RESTRICTED_CLASS.getName()))
@@ -360,15 +361,15 @@ public class AbstractConfigTest {
 
             // Properties specified as classNames should fail to load classes
             assertThrows(ConfigException.class, () -> new ClassTestConfig(ClassTestConfig.RESTRICTED_CLASS.getName(), null),
-                "Config created with class property that cannot be loaded");
+                    "Config created with class property that cannot be loaded");
 
             ClassTestConfig config = new ClassTestConfig(null, Arrays.asList(ClassTestConfig.VISIBLE_CLASS.getName(), ClassTestConfig.RESTRICTED_CLASS.getName()));
             assertThrows(KafkaException.class, () -> config.getConfiguredInstances("list.prop", MetricsReporter.class),
-                "Should have failed to load class");
+                    "Should have failed to load class");
 
             ClassTestConfig config2 = new ClassTestConfig(null, ClassTestConfig.VISIBLE_CLASS.getName() + "," + ClassTestConfig.RESTRICTED_CLASS.getName());
             assertThrows(KafkaException.class, () -> config2.getConfiguredInstances("list.prop", MetricsReporter.class),
-                "Should have failed to load class");
+                    "Should have failed to load class");
         } finally {
             Thread.currentThread().setContextClassLoader(originClassLoader);
         }
@@ -525,7 +526,7 @@ public class AbstractConfigTest {
         Properties props = new Properties();
         props.put("config.providers", "file");
         props.put("config.providers.file.class",
-            "org.apache.kafka.common.config.provider.InvalidConfigProvider");
+                "org.apache.kafka.common.config.provider.InvalidConfigProvider");
         props.put("testKey", "${test:/foo/bar/testpath:testKey}");
         assertThrows(KafkaException.class, () -> new TestIndirectConfigResolution(props));
     }
@@ -620,7 +621,7 @@ public class AbstractConfigTest {
 
         assertEquals(
                 TestIndirectConfigResolution.INDIRECT_CONFIGS_DOC,
-                    config.documentationOf(TestIndirectConfigResolution.INDIRECT_CONFIGS)
+                config.documentationOf(TestIndirectConfigResolution.INDIRECT_CONFIGS)
         );
     }
 
@@ -739,6 +740,7 @@ public class AbstractConfigTest {
 
     public static class ConfiguredFakeMetricsReporter extends FakeMetricsReporter {
         public static final String EXTRA_CONFIG = "metric.extra_config";
+
         @Override
         public void configure(Map<String, ?> configs) {
             // Calling get() should have the side effect of marking that config as used.

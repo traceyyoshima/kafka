@@ -126,7 +126,7 @@ public class EndpointReadyFutures {
                 addReadinessFutures(stage.name, newReadinessFutures);
             });
             return new EndpointReadyFutures(logContext,
-                    endpointStages);
+                endpointStages);
         }
     }
 

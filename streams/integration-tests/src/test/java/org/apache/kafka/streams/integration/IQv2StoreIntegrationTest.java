@@ -785,7 +785,7 @@ public class IQv2StoreIntegrationTest {
                 shouldCollectExecutionInfoUnderFailure();
                 if (storeToTest.keyValue()) {
                     if (storeToTest.timestamped()) {
-                        shouldHandleKeyQuery(2,  5);
+                        shouldHandleKeyQuery(2, 5);
                         shouldHandleTimestampedKeyQuery(2, ValueAndTimestamp.makeAllowNullable(5, WINDOW_START + Duration.ofMinutes(2).toMillis() * 5));
                         shouldHandleRangeQueries();
                         shouldHandleTimestampedRangeQueries(true);
@@ -1671,8 +1671,8 @@ public class IQv2StoreIntegrationTest {
     }
 
     public <V> void shouldHandleTimestampedKeyQuery(
-            final Integer key,
-            final ValueAndTimestamp expectedValueAndTimestamp) {
+        final Integer key,
+        final ValueAndTimestamp expectedValueAndTimestamp) {
 
         final TimestampedKeyQuery<Integer, V> query = TimestampedKeyQuery.withKey(key);
         final StateQueryRequest<ValueAndTimestamp<V>> request =
@@ -1695,8 +1695,8 @@ public class IQv2StoreIntegrationTest {
 
         assertThrows(IllegalArgumentException.class, queryResult::getFailureReason);
         assertThrows(
-                IllegalArgumentException.class,
-                queryResult::getFailureMessage
+            IllegalArgumentException.class,
+            queryResult::getFailureMessage
         );
 
         final ValueAndTimestamp<V> valueAndTimestamp = queryResult.getResult();

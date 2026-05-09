@@ -60,7 +60,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
 
 public class MeteredSessionStore<K, V>
     extends WrappedStateStore<SessionStore<Bytes, byte[]>, Windowed<K>, V>
-    implements SessionStore<K, V>, MeteredStateStore {
+        implements SessionStore<K, V>, MeteredStateStore {
 
     protected final String metricsScope;
     protected final Serde<K> keySerde;
@@ -132,9 +132,9 @@ public class MeteredSessionStore<K, V>
         e2eLatencySensor = StateStoreMetrics.e2ELatencySensor(taskId.toString(), metricsScope, name(), streamsMetrics);
         iteratorDurationSensor = StateStoreMetrics.iteratorDurationSensor(taskId.toString(), metricsScope, name(), streamsMetrics);
         StateStoreMetrics.addNumOpenIteratorsGauge(taskId.toString(), metricsScope, name(), streamsMetrics,
-                (config, now) -> numOpenIterators.sum());
+            (config, now) -> numOpenIterators.sum());
         StateStoreMetrics.addOldestOpenIteratorGauge(taskId.toString(), metricsScope, name(), streamsMetrics,
-                (config, now) -> {
+            (config, now) -> {
                 try {
                     final Iterator<MeteredIterator> openIteratorsIterator = openIterators.iterator();
                     return openIteratorsIterator.hasNext() ? openIteratorsIterator.next().startTimestamp() : 0L;
@@ -145,10 +145,10 @@ public class MeteredSessionStore<K, V>
         );
         if (!persistent()) {
             StateStoreMetrics.addNumKeysGauge(taskId.toString(), metricsScope, name(), streamsMetrics,
-                    (config, now) -> {
-                        final InMemorySessionStore inMemoryStore = findInMemorySessionStore(wrapped());
-                        return inMemoryStore != null ? inMemoryStore.numEntries() : -1L;
-                    }
+                (config, now) -> {
+                    final InMemorySessionStore inMemoryStore = findInMemorySessionStore(wrapped());
+                    return inMemoryStore != null ? inMemoryStore.numEntries() : -1L;
+                }
             );
         }
     }

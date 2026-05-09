@@ -177,7 +177,7 @@ public final class MetadataShell {
             waitUntilCaughtUp();
             Commands commands = new Commands(false);
             try (PrintWriter writer = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(System.out, StandardCharsets.UTF_8)))) {
+                new OutputStreamWriter(System.out, StandardCharsets.UTF_8)))) {
                 Commands.Handler handler = commands.parseCommand(args);
                 handler.run(Optional.empty(), writer, state);
                 writer.flush();

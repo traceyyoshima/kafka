@@ -280,7 +280,7 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
             final BlockingQueue<ApplicationEvent> applicationEventQueue = new LinkedBlockingQueue<>();
             this.acknowledgementEventHandler = new ShareAcknowledgementEventHandler(acknowledgementEventQueue);
             this.backgroundEventHandler = new BackgroundEventHandler(
-                backgroundEventQueue, time, asyncConsumerMetrics);
+                    backgroundEventQueue, time, asyncConsumerMetrics);
 
             // This FetchBuffer is shared between the application and network threads.
             this.fetchBuffer = new ShareFetchBuffer(logContext);
@@ -401,7 +401,7 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
         this.acknowledgementEventHandler = new ShareAcknowledgementEventHandler(acknowledgementEventQueue);
         this.backgroundEventQueue = new LinkedBlockingQueue<>();
         this.backgroundEventHandler = new BackgroundEventHandler(
-            backgroundEventQueue, time, asyncConsumerMetrics);
+                backgroundEventQueue, time, asyncConsumerMetrics);
 
         final Supplier<NetworkClientDelegate> networkClientDelegateSupplier =
                 NetworkClientDelegate.supplier(time, config, logContext, client, metadata, backgroundEventHandler, true, asyncConsumerMetrics);
@@ -1096,7 +1096,7 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
             // If users have fatal error, they will get some exceptions in the background queue.
             // When running unsubscribe, these exceptions should be ignored, or users can't unsubscribe successfully.
             processBackgroundEvents(unsubscribeEvent.future(), timer, e -> (e instanceof GroupAuthorizationException
-                || e instanceof TopicAuthorizationException || e instanceof InvalidTopicException));
+                    || e instanceof TopicAuthorizationException || e instanceof InvalidTopicException));
             log.info("Completed releasing assignment and leaving group to close consumer.");
         } catch (TimeoutException e) {
             log.warn("Consumer triggered an unsubscribe event to leave the group but couldn't " +

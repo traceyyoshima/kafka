@@ -152,11 +152,11 @@ public class ClientMetrics {
                                                      final StreamsMetricsImpl streamsMetrics,
                                                      final int recordingLevel) {
         streamsMetrics.addClientLevelImmutableMetric(
-                RECORDING_LEVEL,
-                RECORDING_LEVEL_DESCRIPTION,
-                Collections.singletonMap(PROCESS_ID_TAG, processId),
-                RecordingLevel.INFO,
-                recordingLevel
+            RECORDING_LEVEL,
+            RECORDING_LEVEL_DESCRIPTION,
+            Collections.singletonMap(PROCESS_ID_TAG, processId),
+            RecordingLevel.INFO,
+            recordingLevel
         );
     }
 

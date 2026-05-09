@@ -639,7 +639,7 @@ public class InMemoryWindowStore implements WindowStore<Bytes, byte[]> {
 
     private static class WrappedWindowedKeyValueIterator
         extends InMemoryWindowStoreIteratorWrapper
-        implements KeyValueIterator<Windowed<Bytes>, byte[]> {
+            implements KeyValueIterator<Windowed<Bytes>, byte[]> {
 
         private final long windowSize;
 

@@ -2095,11 +2095,11 @@ public class GroupMetadataManager {
             int initialDelayMs = streamsGroupInitialRebalanceDelayMs(groupId);
             if (initialDelayMs > 0) {
                 timer.scheduleIfAbsent(
-                        streamsInitialRebalanceKey(groupId),
-                        initialDelayMs,
-                        TimeUnit.MILLISECONDS,
-                        false,
-                        () -> computeDelayedTargetAssignment(groupId)
+                    streamsInitialRebalanceKey(groupId),
+                    initialDelayMs,
+                    TimeUnit.MILLISECONDS,
+                    false,
+                    () -> computeDelayedTargetAssignment(groupId)
                 );
             }
         }
@@ -3601,7 +3601,7 @@ public class GroupMetadataManager {
 
             if (log.isDebugEnabled()) {
                 log.debug("[GroupId {}] Member {} new assignment state: epoch={}, previousEpoch={}, state={}, "
-                        + "assignedPartitions={} and revokedPartitions={}.",
+                          + "assignedPartitions={} and revokedPartitions={}.",
                     groupId, updatedMember.memberId(), updatedMember.memberEpoch(), updatedMember.previousMemberEpoch(), updatedMember.state(),
                     assignmentWithEpochsToString(updatedMember.assignedPartitions()), assignmentWithEpochsToString(updatedMember.partitionsPendingRevocation()));
             }
@@ -3659,7 +3659,7 @@ public class GroupMetadataManager {
             records.add(newShareGroupCurrentAssignmentRecord(groupId, updatedMember));
 
             log.info("[GroupId {}] Member {} new assignment state: epoch={}, previousEpoch={}, state={}, "
-                    + "assignedPartitions={}.",
+                     + "assignedPartitions={}.",
                 groupId, updatedMember.memberId(), updatedMember.memberEpoch(), updatedMember.previousMemberEpoch(), updatedMember.state(),
                 assignmentToString(updatedMember.assignedPartitions()));
         }
@@ -3727,7 +3727,7 @@ public class GroupMetadataManager {
             records.add(newStreamsGroupCurrentAssignmentRecord(groupId, updatedMember));
 
             log.info("[GroupId {}][MemberId {}] Member's new assignment state: epoch={}, previousEpoch={}, state={}, "
-                    + "assignedTasks={} and tasksPendingRevocation={}.",
+                     + "assignedTasks={} and tasksPendingRevocation={}.",
                 groupId, updatedMember.memberId(), updatedMember.memberEpoch(), updatedMember.previousMemberEpoch(), updatedMember.state(),
                 updatedMember.assignedTasks().toString(),
                 updatedMember.tasksPendingRevocation().toString());
@@ -4084,12 +4084,12 @@ public class GroupMetadataManager {
                     assignor,
                     assignmentConfigs
                 )
-                .withTime(time)
-                .withMembers(group.members())
-                .withTopology(configuredTopology)
-                .withStaticMembers(group.staticMembers())
-                .withMetadataImage(metadataImage)
-                .withTargetAssignment(group.targetAssignment());
+                    .withTime(time)
+                    .withMembers(group.members())
+                    .withTopology(configuredTopology)
+                    .withStaticMembers(group.staticMembers())
+                    .withMetadataImage(metadataImage)
+                    .withTargetAssignment(group.targetAssignment());
 
             updatedMember.ifPresent(member ->
                 assignmentResultBuilder.addOrUpdateMember(member.memberId(), member)
@@ -4814,7 +4814,7 @@ public class GroupMetadataManager {
                 if (member.memberEpoch() == memberEpoch) {
                     log.info("[GroupId {}] Member {} fenced from the group because " +
                             "it failed to transition from epoch {} within {}ms.",
-                        groupId, memberId, memberEpoch, rebalanceTimeoutMs);
+                            groupId, memberId, memberEpoch, rebalanceTimeoutMs);
 
                     return consumerGroupFenceMember(group, member, null);
                 } else {
@@ -4857,7 +4857,7 @@ public class GroupMetadataManager {
                 if (member.memberEpoch() == memberEpoch) {
                     log.info("[GroupId {}] Member {} fenced from the group because " +
                             "it failed to transition from epoch {} within {}ms.",
-                        groupId, memberId, memberEpoch, rebalanceTimeoutMs);
+                            groupId, memberId, memberEpoch, rebalanceTimeoutMs);
 
                     return streamsGroupFenceMember(group, member, null);
                 } else {
@@ -5979,7 +5979,7 @@ public class GroupMetadataManager {
         } else {
             if (!group.targetAssignment().isEmpty()) {
                 throw new IllegalStateException("Received a tombstone record to delete target assignment of " + groupId
-                        + " but the assignment still has " + group.targetAssignment().size() + " members.");
+                    + " but the assignment still has " + group.targetAssignment().size() + " members.");
             }
             group.setTargetAssignmentMetadata(-1, 0L);
         }
@@ -6307,7 +6307,7 @@ public class GroupMetadataManager {
     ) {
         String groupId = key.group();
 
-        if (value == null)  {
+        if (value == null) {
             // Tombstone. Group should be removed.
             removeGroup(groupId);
         } else {
@@ -6595,7 +6595,7 @@ public class GroupMetadataManager {
         if (existingMemberId != null) {
             log.info("Static member with groupInstanceId={} and unknown member id joins " +
                     "group {} in {} state. Replacing previously mapped member {} with this groupInstanceId.",
-                groupInstanceId, group.groupId(), group.currentState(), existingMemberId);
+                    groupInstanceId, group.groupId(), group.currentState(), existingMemberId);
 
             return updateStaticMemberThenRebalanceOrCompleteJoin(
                 context,
@@ -6608,7 +6608,7 @@ public class GroupMetadataManager {
         } else {
             log.info("Static member with groupInstanceId={} and unknown member id joins " +
                     "group {} in {} state. Created a new member id {} for this member and added to the group.",
-                groupInstanceId, group.groupId(), group.currentState(), newMemberId);
+                    groupInstanceId, group.groupId(), group.currentState(), newMemberId);
 
             return addMemberThenRebalanceOrCompleteJoin(context, request, group, newMemberId, responseFuture);
         }
@@ -6641,7 +6641,7 @@ public class GroupMetadataManager {
             // back a response to call for another join group request with allocated member id.
             log.info("Dynamic member with unknown member id joins group {} in {} state. " +
                     "Created a new member id {} and requesting the member to rejoin with this id.",
-                group.groupId(), group.currentState(), newMemberId);
+                    group.groupId(), group.currentState(), newMemberId);
 
             group.addPendingMember(newMemberId);
             String classicGroupHeartbeatKey = classicGroupHeartbeatKey(group.groupId(), newMemberId);
@@ -6661,7 +6661,7 @@ public class GroupMetadataManager {
         } else {
             log.info("Dynamic member with unknown member id joins group {} in state {}. " +
                     "Created a new member id {} and added the member to the group.",
-                group.groupId(), group.currentState(), newMemberId);
+                    group.groupId(), group.currentState(), newMemberId);
 
             return addMemberThenRebalanceOrCompleteJoin(context, request, group, newMemberId, responseFuture);
         }
@@ -6984,7 +6984,7 @@ public class GroupMetadataManager {
         if (group.isInState(DEAD)) {
             log.info("Received notification of heartbeat expiration for member {} after group {} " +
                     "had already been unloaded or deleted.",
-                memberId, group.groupId());
+                    memberId, group.groupId());
         } else if (group.isPendingMember(memberId)) {
             log.info("Pending member {} in group {} has been removed after session timeout expiration.",
                 memberId, group.groupId());
@@ -8100,7 +8100,7 @@ public class GroupMetadataManager {
 
                     log.info("[GroupId {}] Dynamic member {} has left group " +
                             "through explicit `LeaveGroup` request; client reason: {}",
-                        groupId, memberIdentity.memberId(), reason);
+                            groupId, memberIdentity.memberId(), reason);
                 } else {
                     member = group.staticMember(memberIdentity.groupInstanceId());
                     throwIfStaticMemberIsUnknown(member, memberIdentity.groupInstanceId());
@@ -8112,7 +8112,7 @@ public class GroupMetadataManager {
 
                     log.info("[GroupId {}] Static member {} with instance id {} has left group " +
                             "through explicit `LeaveGroup` request; client reason: {}",
-                        groupId, memberIdentity.memberId(), memberIdentity.groupInstanceId(), reason);
+                            groupId, memberIdentity.memberId(), memberIdentity.groupInstanceId(), reason);
                 }
 
                 memberResponses.add(
@@ -8158,7 +8158,7 @@ public class GroupMetadataManager {
 
         List<MemberResponse> memberResponses = new ArrayList<>();
 
-        for (MemberIdentity member: request.members()) {
+        for (MemberIdentity member : request.members()) {
             String reason = member.reason() != null ? member.reason() : "not provided";
             // The LeaveGroup API allows administrative removal of members by GroupInstanceId
             // in which case we expect the MemberId to be undefined.

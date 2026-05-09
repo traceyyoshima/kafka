@@ -103,12 +103,12 @@ public class AlterConfigsRequest extends AbstractRequest {
 
     public Map<ConfigResource, Config> configs() {
         return data.resources().stream().collect(Collectors.toMap(
-            resource -> new ConfigResource(
-                    ConfigResource.Type.forId(resource.resourceType()),
-                    resource.resourceName()),
-            resource -> new Config(resource.configs().stream()
-                    .map(entry -> new ConfigEntry(entry.name(), entry.value()))
-                    .collect(Collectors.toList()))));
+                resource -> new ConfigResource(
+                        ConfigResource.Type.forId(resource.resourceType()),
+                        resource.resourceName()),
+                resource -> new Config(resource.configs().stream()
+                        .map(entry -> new ConfigEntry(entry.name(), entry.value()))
+                        .collect(Collectors.toList()))));
     }
 
     public boolean validateOnly() {

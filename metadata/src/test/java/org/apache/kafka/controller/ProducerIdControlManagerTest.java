@@ -155,7 +155,7 @@ public class ProducerIdControlManagerTest {
     }
 
     static void generateProducerIds(
-            ProducerIdControlManager producerIdControlManager, int brokerId, long brokerEpoch) {
+        ProducerIdControlManager producerIdControlManager, int brokerId, long brokerEpoch) {
         ControllerResult<ProducerIdsBlock> result =
             producerIdControlManager.generateNextProducerId(brokerId, brokerEpoch);
         result.records().forEach(apiMessageAndVersion ->

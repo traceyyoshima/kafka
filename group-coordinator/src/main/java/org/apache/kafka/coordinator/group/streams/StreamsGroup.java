@@ -997,7 +997,7 @@ public class StreamsGroup implements Group {
                     }
                 } else {
                     log.debug("[GroupId {}] Cannot remove the process ID {} from {} because it does not have any processId",
-                            groupId, expectedProcessId, subtopologyId);
+                              groupId, expectedProcessId, subtopologyId);
                     return partitionsOrNull;
                 }
             });
@@ -1032,7 +1032,7 @@ public class StreamsGroup implements Group {
                     }
                 } else {
                     log.debug("[GroupId {}] Cannot remove the process ID {} from {} because it does not have any process ID",
-                            groupId, processIdToRemove, subtopologyId);
+                              groupId, processIdToRemove, subtopologyId);
                     return partitionsOrNull;
                 }
             });

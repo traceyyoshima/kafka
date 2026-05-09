@@ -208,7 +208,7 @@ public class ProducerPerformance {
         if (payloadFilePath != null) {
             Path path = Paths.get(payloadFilePath);
             System.out.println("Reading payloads from: " + path.toAbsolutePath());
-            if (Files.notExists(path) || Files.size(path) == 0)  {
+            if (Files.notExists(path) || Files.size(path) == 0) {
                 throw new IllegalArgumentException("File does not exist or empty file provided.");
             }
 
@@ -626,7 +626,8 @@ public class ProducerPerformance {
 
             // since default value gets printed with the help text, we are escaping \n there and replacing it with correct value here.
             String payloadDelimiter = namespace.getString("payloadDelimiter").equals("\\n")
-                    ? "\n" : namespace.getString("payloadDelimiter");
+                    ? "\n"
+                    : namespace.getString("payloadDelimiter");
             this.payloadByteList = readPayloadFile(payloadFilePath, payloadDelimiter);
             if (producerConfigs != null) {
                 System.out.println("Option --producer-props has been deprecated and will be removed in a future version. Use --command-property instead.");

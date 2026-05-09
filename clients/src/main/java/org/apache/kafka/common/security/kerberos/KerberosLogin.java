@@ -326,7 +326,7 @@ public class KerberosLogin extends AbstractLogin {
             KerberosPrincipal server = ticket.getServer();
             if (server.getName().equals("krbtgt/" + server.getRealm() + "@" + server.getRealm())) {
                 log.debug("Found TGT with client principal '{}' and server principal '{}'.", ticket.getClient().getName(),
-                        ticket.getServer().getName());
+                          ticket.getServer().getName());
                 return ticket;
             }
         }

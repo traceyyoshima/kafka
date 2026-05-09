@@ -117,7 +117,7 @@ public class ExactlyOnceMessageProcessor extends Thread implements ConsumerRebal
         try (KafkaProducer<Integer, String> producer = new Producer("processor-producer", bootstrapServers, outputTopic,
                 true, transactionalId, true, -1, transactionTimeoutMs, null).createKafkaProducer();
              KafkaConsumer<Integer, String> consumer = new Consumer("processor-consumer", bootstrapServers, inputTopic,
-                 "processor-group", Optional.of(groupInstanceId), readCommitted, -1, null).createKafkaConsumer()) {
+                     "processor-group", Optional.of(groupInstanceId), readCommitted, -1, null).createKafkaConsumer()) {
             // called first and once to fence zombies and abort any pending transaction
             producer.initTransactions();
             consumer.subscribe(Set.of(inputTopic), this);

@@ -43,11 +43,11 @@ import static org.apache.kafka.common.config.ConfigDef.Type.STRING;
 public class SocketServerConfigs {
     public static final String LISTENER_SECURITY_PROTOCOL_MAP_CONFIG = "listener.security.protocol.map";
     public static final String LISTENER_SECURITY_PROTOCOL_MAP_DEFAULT = Arrays.stream(SecurityProtocol.values())
-            .collect(Collectors.toMap(ListenerName::forSecurityProtocol, sp -> sp))
-            .entrySet()
-            .stream()
-            .map(entry -> entry.getKey().value() + ":" + entry.getValue().name())
-            .collect(Collectors.joining(","));
+        .collect(Collectors.toMap(ListenerName::forSecurityProtocol, sp -> sp))
+        .entrySet()
+        .stream()
+        .map(entry -> entry.getKey().value() + ":" + entry.getValue().name())
+        .collect(Collectors.joining(","));
     public static final String LISTENER_SECURITY_PROTOCOL_MAP_DOC = "Map between listener names and security protocols. This must be defined for " +
             "the same security protocol to be usable in more than one port or IP. For example, internal and " +
             "external traffic can be separated even if SSL is required for both. Concretely, the user could define listeners " +
@@ -115,13 +115,13 @@ public class SocketServerConfigs {
     public static final String MAX_CONNECTIONS_CONFIG = "max.connections";
     public static final int MAX_CONNECTIONS_DEFAULT = Integer.MAX_VALUE;
     public static final String MAX_CONNECTIONS_DOC = String.format(
-            "The maximum number of connections we allow in the broker at any time. This limit is applied in addition " +
+        "The maximum number of connections we allow in the broker at any time. This limit is applied in addition " +
                     "to any per-ip limits configured using %s. Listener-level limits may also be configured by prefixing the " +
                     "config name with the listener prefix, for example, <code>listener.name.internal.%1$1s</code>. Broker-wide limit " +
                     "should be configured based on broker capacity while listener limits should be configured based on application requirements. " +
                     "New connections are blocked if either the listener or broker limit is reached. Connections on the inter-broker listener are " +
                     "permitted even if broker-wide limit is reached. The least recently used connection on another listener will be closed in this case.",
-            MAX_CONNECTIONS_PER_IP_CONFIG);
+        MAX_CONNECTIONS_PER_IP_CONFIG);
 
     public static final String MAX_CONNECTION_CREATION_RATE_CONFIG = "max.connection.creation.rate";
     public static final int MAX_CONNECTION_CREATION_RATE_DEFAULT = Integer.MAX_VALUE;

@@ -64,9 +64,9 @@ class PeriodicTaskControlManager {
 
     interface QueueAccessor {
         void scheduleDeferred(
-            String tag,
-            long deadlineNs,
-            Supplier<ControllerResult<Void>> op
+                String tag,
+                long deadlineNs,
+                Supplier<ControllerResult<Void>> op
         );
 
         void cancelDeferred(String tag);
@@ -143,9 +143,9 @@ class PeriodicTaskControlManager {
     private final Map<String, PeriodicTask> tasks;
 
     private PeriodicTaskControlManager(
-        LogContext logContext,
-        Time time,
-        QueueAccessor queueAccessor
+            LogContext logContext,
+            Time time,
+            QueueAccessor queueAccessor
     ) {
         this.log = logContext.logger(PeriodicTaskControlManager.class);
         this.time = time;

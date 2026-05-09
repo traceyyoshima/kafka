@@ -150,7 +150,7 @@ public final class ProducerBatch {
         } else {
             this.recordsBuilder.append(timestamp, key, value, headers);
             this.maxRecordSize = Math.max(this.maxRecordSize, AbstractRecords.estimateSizeInBytesUpperBound(magic(),
-                    recordsBuilder.compression().type(), key, value, headers));
+                recordsBuilder.compression().type(), key, value, headers));
             this.lastAppendTime = now;
             FutureRecordMetadata future = new FutureRecordMetadata(this.produceFuture, this.recordCount,
                                                                    timestamp,
@@ -176,7 +176,7 @@ public final class ProducerBatch {
             // No need to get the CRC.
             this.recordsBuilder.append(timestamp, key, value, headers);
             this.maxRecordSize = Math.max(this.maxRecordSize, AbstractRecords.estimateSizeInBytesUpperBound(magic(),
-                    recordsBuilder.compression().type(), key, value, headers));
+                recordsBuilder.compression().type(), key, value, headers));
             FutureRecordMetadata future = new FutureRecordMetadata(this.produceFuture, this.recordCount,
                                                                    timestamp,
                                                                    key == null ? -1 : key.remaining(),
@@ -405,14 +405,14 @@ public final class ProducerBatch {
 
     private ProducerBatch createBatchOffAccumulatorForRecord(Record record, int batchSize) {
         int initialSize = Math.max(AbstractRecords.estimateSizeInBytesUpperBound(magic(),
-                recordsBuilder.compression().type(), record.key(), record.value(), record.headers()), batchSize);
+            recordsBuilder.compression().type(), record.key(), record.value(), record.headers()), batchSize);
         ByteBuffer buffer = ByteBuffer.allocate(initialSize);
 
         // Note that we intentionally do not set producer state (producerId, epoch, sequence, and isTransactional)
         // for the newly created batch. This will be set when the batch is dequeued for sending (which is consistent
         // with how normal batches are handled).
         MemoryRecordsBuilder builder = MemoryRecords.builder(buffer, magic(), recordsBuilder.compression(),
-                TimestampType.CREATE_TIME, 0L);
+            TimestampType.CREATE_TIME, 0L);
         return new ProducerBatch(topicPartition, builder, this.createdMs, true);
     }
 

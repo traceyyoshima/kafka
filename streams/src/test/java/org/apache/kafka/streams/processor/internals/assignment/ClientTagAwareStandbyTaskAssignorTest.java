@@ -128,8 +128,8 @@ public class ClientTagAwareStandbyTaskAssignorTest {
         final ConstrainedPrioritySet constrainedPrioritySet = createLeastLoadedPrioritySetConstrainedByAssignedTask(clientStates);
         final Set<TaskId> allActiveTasks = findAllActiveTasks(clientStates);
         final Map<TaskId, ProcessId> taskToClientId = mkMap(mkEntry(TASK_0_0, PID_1),
-                                                       mkEntry(TASK_0_1, PID_2),
-                                                       mkEntry(TASK_0_2, PID_3));
+                                                            mkEntry(TASK_0_1, PID_2),
+                                                            mkEntry(TASK_0_2, PID_3));
 
         final Map<String, Set<String>> tagKeyToValues = new HashMap<>();
         final Map<TagEntry, Set<ProcessId>> tagEntryToClients = new HashMap<>();
@@ -171,8 +171,8 @@ public class ClientTagAwareStandbyTaskAssignorTest {
         final int numStandbyReplicas = 3;
         final Set<TaskId> allActiveTasks = findAllActiveTasks(clientStates);
         final Map<TaskId, ProcessId> taskToClientId = mkMap(mkEntry(TASK_0_0, PID_1),
-                                                       mkEntry(TASK_0_1, PID_2),
-                                                       mkEntry(TASK_0_2, PID_3));
+                                                            mkEntry(TASK_0_1, PID_2),
+                                                            mkEntry(TASK_0_2, PID_3));
 
         final Map<String, Set<String>> tagKeyToValues = new HashMap<>();
         final Map<TagEntry, Set<ProcessId>> tagEntryToClients = new HashMap<>();

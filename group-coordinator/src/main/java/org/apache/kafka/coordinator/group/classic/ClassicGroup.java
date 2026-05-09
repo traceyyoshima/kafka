@@ -517,9 +517,9 @@ public class ClassicGroup implements Group {
                         log.info("Group leader [memberId: {}, groupInstanceId: {}] " +
                                 "failed to join before the rebalance timeout. Member {} " +
                                 "was elected as the new leader.",
-                            currentLeader.memberId(),
-                            currentLeader.groupInstanceId().orElse("None"),
-                            member
+                                currentLeader.memberId(),
+                                currentLeader.groupInstanceId().orElse("None"),
+                                member
                         );
                         return true;
                     }
@@ -528,8 +528,8 @@ public class ClassicGroup implements Group {
                         "failed to join before the rebalance timeout and the " +
                         "group couldn't proceed to the next generation because " +
                         "no member joined.",
-                    currentLeader.memberId(),
-                    currentLeader.groupInstanceId().orElse("None")
+                        currentLeader.memberId(),
+                        currentLeader.groupInstanceId().orElse("None")
                 );
                 return false;
             }
@@ -807,7 +807,7 @@ public class ClassicGroup implements Group {
             } else if (!existingMemberId.equals(memberId)) {
                 log.info("Request memberId={} for static member with groupInstanceId={} " +
                          "is fenced by existing memberId={} during operation {}",
-                    memberId, groupInstanceId, existingMemberId, operation);
+                         memberId, groupInstanceId, existingMemberId, operation);
                 throw Errors.FENCED_INSTANCE_ID.exception();
             }
         }

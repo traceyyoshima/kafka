@@ -720,22 +720,22 @@ public class AbstractHerderTest {
         assertEquals(SampleSourceConnector.class.getName(), result.name());
         // Each transform also gets its own group
         List<String> expectedGroups = List.of(
-            ConnectorConfig.COMMON_GROUP,
-            ConnectorConfig.TRANSFORMS_GROUP,
-            ConnectorConfig.PREDICATES_GROUP,
-            ConnectorConfig.ERROR_GROUP,
-            SourceConnectorConfig.TOPIC_CREATION_GROUP,
-            SourceConnectorConfig.EXACTLY_ONCE_SUPPORT_GROUP,
-            SourceConnectorConfig.OFFSETS_TOPIC_GROUP
+                ConnectorConfig.COMMON_GROUP,
+                ConnectorConfig.TRANSFORMS_GROUP,
+                ConnectorConfig.PREDICATES_GROUP,
+                ConnectorConfig.ERROR_GROUP,
+                SourceConnectorConfig.TOPIC_CREATION_GROUP,
+                SourceConnectorConfig.EXACTLY_ONCE_SUPPORT_GROUP,
+                SourceConnectorConfig.OFFSETS_TOPIC_GROUP
         );
         assertEquals(expectedGroups, result.groups());
         assertEquals(1, result.errorCount());
         // Base connector config has 19 fields, connector's configs add 7, and 2 producer overrides
         assertEquals(28, result.configs().size());
         assertTrue(result.configs().stream().anyMatch(
-            configInfo -> ackConfigKey.equals(configInfo.configValue().name()) && !configInfo.configValue().errors().isEmpty()));
+                configInfo -> ackConfigKey.equals(configInfo.configValue().name()) && !configInfo.configValue().errors().isEmpty()));
         assertTrue(result.configs().stream().anyMatch(
-            configInfo -> saslConfigKey.equals(configInfo.configValue().name()) && configInfo.configValue().errors().isEmpty()));
+                configInfo -> saslConfigKey.equals(configInfo.configValue().name()) && configInfo.configValue().errors().isEmpty()));
 
         verifyValidationIsolation();
     }
@@ -782,8 +782,8 @@ public class AbstractHerderTest {
             }
         }
         Map<String, String> rawOverriddenClientConfigs = config.entrySet().stream()
-            .filter(e -> overriddenClientConfigs.contains(e.getKey()))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .filter(e -> overriddenClientConfigs.contains(e.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         assertEquals(rawOverriddenClientConfigs, validatedOverriddenClientConfigs);
 
@@ -863,9 +863,9 @@ public class AbstractHerderTest {
         config.put("required", "value");
 
         Map<String, String> overrides = Map.of(
-            producerOverrideKey(ProducerConfig.MAX_REQUEST_SIZE_CONFIG), "420",
-            producerOverrideKey(ProducerConfig.MAX_BLOCK_MS_CONFIG), "28980",
-            producerOverrideKey(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG), "true");
+                producerOverrideKey(ProducerConfig.MAX_REQUEST_SIZE_CONFIG), "420",
+                producerOverrideKey(ProducerConfig.MAX_BLOCK_MS_CONFIG), "28980",
+                producerOverrideKey(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG), "true");
         config.putAll(overrides);
 
         herder.validateConnectorConfig(config, s -> null, false);

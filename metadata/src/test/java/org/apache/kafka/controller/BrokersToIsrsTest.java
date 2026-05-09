@@ -68,8 +68,8 @@ public class BrokersToIsrsTest {
         assertEquals(toSet(), toSet(brokersToIsrs.iterator(5, false)));
         brokersToIsrs.update(UUIDS[1], 2, null, new int[] {3, 2, 1}, -1, 3);
         assertEquals(toSet(new TopicIdPartition(UUIDS[0], 0),
-                new TopicIdPartition(UUIDS[1], 1),
-                new TopicIdPartition(UUIDS[1], 2)),
+            new TopicIdPartition(UUIDS[1], 1),
+            new TopicIdPartition(UUIDS[1], 2)),
             toSet(brokersToIsrs.iterator(2, false)));
     }
 

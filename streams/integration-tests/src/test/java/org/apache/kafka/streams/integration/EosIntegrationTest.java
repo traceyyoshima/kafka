@@ -783,20 +783,20 @@ public class EosIntegrationTest {
             startApplicationAndWaitUntilRunning(streams);
 
             waitForCondition(
-                    () -> commitRequested.get() == 2, MAX_WAIT_TIME_MS,
-                    "StreamsTasks did not request commit.");
+                () -> commitRequested.get() == 2, MAX_WAIT_TIME_MS,
+                "StreamsTasks did not request commit.");
 
             final List<KeyValue<Long, Long>> committedRecords = readResult(SINGLE_PARTITION_OUTPUT_TOPIC, writtenData.size(), CONSUMER_GROUP_ID);
 
             checkResultPerKey(
-                    committedRecords,
-                    expectedResult,
-                    "The committed records do not match what expected");
+                committedRecords,
+                expectedResult,
+                "The committed records do not match what expected");
 
             verifyStateStore(
-                    streams,
-                    getMaxPerKey(expectedResult),
-                    "The state store content do not match what expected");
+                streams,
+                getMaxPerKey(expectedResult),
+                "The state store content do not match what expected");
         }
 
         verifyOffsetsAreInCheckpoint(0);
@@ -806,7 +806,7 @@ public class EosIntegrationTest {
     @ParameterizedTest
     @MethodSource("groupProtocolAndProcessingThreadsParameters")
     public void shouldCheckpointRestoredOffsetsWhenClosingCleanDuringRestoring(
-            final String groupProtocol, final boolean processingThreadsEnabled) throws Exception {
+        final String groupProtocol, final boolean processingThreadsEnabled) throws Exception {
 
         final Properties streamsConfiguration = new Properties();
         streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
@@ -1394,7 +1394,7 @@ public class EosIntegrationTest {
         final StateQueryResult<KeyValueIterator<Long, Long>> result =
                 IntegrationTestUtils.iqv2WaitForResult(streams, request);
 
-        for (final QueryResult<KeyValueIterator<Long, Long>> partitionResult: result.getPartitionResults().values()) {
+        for (final QueryResult<KeyValueIterator<Long, Long>> partitionResult : result.getPartitionResults().values()) {
             try (final KeyValueIterator<Long, Long> it = partitionResult.getResult()) {
                 while (it.hasNext()) {
                     assertTrue(expectedStoreContent.remove(it.next()), reason);

@@ -139,9 +139,9 @@ public class FeatureCommand {
         Subparser describeParser = subparsers.addParser("describe")
                 .help("Describes the current active feature flags.");
         describeParser.addArgument("--node-id")
-            .type(Integer.class)
-            .help("The node id to which the requests should be sent. If not specified, the requests will be sent to an arbitrary controller/broker.")
-            .action(store());
+                .type(Integer.class)
+                .help("The node id to which the requests should be sent. If not specified, the requests will be sent to an arbitrary controller/broker.")
+                .action(store());
     }
 
     private static void addUpgradeParser(Subparsers subparsers) {
@@ -366,7 +366,7 @@ public class FeatureCommand {
     static void handleVersionMapping(Namespace namespace, List<Feature> validFeatures) throws TerseException {
         // Get the release version from the command-line arguments or default to the latest stable version
         String releaseVersion = Optional.ofNullable(namespace.getString("release_version"))
-            .orElseGet(() -> MetadataVersion.latestProduction().version());
+                .orElseGet(() -> MetadataVersion.latestProduction().version());
 
         try {
             MetadataVersion version = MetadataVersion.fromVersionString(releaseVersion, true);
@@ -450,7 +450,7 @@ public class FeatureCommand {
         });
 
         int numFailures = 0;
-        for (Map.Entry<String, Optional<Throwable>> feature: errors.entrySet()) {
+        for (Map.Entry<String, Optional<Throwable>> feature : errors.entrySet()) {
             short level = updates.get(feature.getKey()).maxVersionLevel();
             Optional<Throwable> maybeThrowable = feature.getValue();
             if (maybeThrowable != null && maybeThrowable.isPresent()) {

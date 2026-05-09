@@ -256,7 +256,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
         } catch (final InvocationTargetException undeclaredMockMethodCall) {
             assertThat(undeclaredMockMethodCall.getCause(), instanceOf(AssertionError.class));
             assertThat(undeclaredMockMethodCall.getCause().getMessage().trim(),
-                matchesPattern("Unexpected method call ColumnFamilyOptions\\." + method.getName() +  "(.*)"));
+                matchesPattern("Unexpected method call ColumnFamilyOptions\\." + method.getName() + "(.*)"));
         } finally {
             optionsFacadeColumnFamilyOptions.close();
         }
@@ -368,9 +368,9 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
                          new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(new DBOptions(), new ColumnFamilyOptions())) {
                 adapter.setAtomicFlush(false);
                 final Set<String> logMessages = appender.getEvents().stream()
-                        .filter(e -> e.getLevel().equals("WARN"))
-                        .map(LogCaptureAppender.Event::getMessage)
-                        .collect(Collectors.toSet());
+                    .filter(e -> e.getLevel().equals("WARN"))
+                    .map(LogCaptureAppender.Event::getMessage)
+                    .collect(Collectors.toSet());
                 assertThat(logMessages, hasItem("AtomicFlush is explicitly set to True by Streams in RocksDB. Setting this option to 'false' will be ignored"));
             }
         }

@@ -248,9 +248,9 @@ public class TestTopicsTest {
         long baseTime = 3;
         final Headers headers = new RecordHeaders(
                 new Header[]{
-                    new RecordHeader("foo", "value".getBytes()),
-                    new RecordHeader("bar", null),
-                    new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
+                        new RecordHeader("foo", "value".getBytes()),
+                        new RecordHeader("bar", null),
+                        new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
                 });
         final TestInputTopic<Long, String> inputTopic =
             testDriver.createInputTopic(INPUT_TOPIC, longSerde.serializer(), stringSerde.serializer());
@@ -359,7 +359,7 @@ public class TestTopicsTest {
     @Test
     public void shouldNotAllowToCreateWithNullDriver() {
         assertThrows(NullPointerException.class,
-            () -> new TestInputTopic<>(null, INPUT_TOPIC, stringSerde.serializer(), stringSerde.serializer(), Instant.now(), Duration.ZERO));
+                () -> new TestInputTopic<>(null, INPUT_TOPIC, stringSerde.serializer(), stringSerde.serializer(), Instant.now(), Duration.ZERO));
     }
 
 
@@ -373,7 +373,7 @@ public class TestTopicsTest {
     @Test
     public void testDuration() {
         assertThrows(IllegalArgumentException.class,
-            () -> testDriver.createInputTopic(INPUT_TOPIC_MAP, stringSerde.serializer(), stringSerde.serializer(), testBaseTime, Duration.ofDays(-1)));
+                () -> testDriver.createInputTopic(INPUT_TOPIC_MAP, stringSerde.serializer(), stringSerde.serializer(), testBaseTime, Duration.ofDays(-1)));
     }
 
     @Test

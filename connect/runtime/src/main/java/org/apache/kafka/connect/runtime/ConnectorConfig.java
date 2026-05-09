@@ -291,14 +291,14 @@ public class ConnectorConfig extends AbstractConfig {
 
     private static ConfigDef.CompositeValidator aliasValidator(String kind) {
         return ConfigDef.CompositeValidator.of(new ConfigDef.NonNullValidator(), ConfigDef.LambdaValidator.with(
-            (name, value) -> {
-                @SuppressWarnings("unchecked")
+                (name, value) -> {
+                    @SuppressWarnings("unchecked")
                 final List<String> aliases = (List<String>) value;
-                if (aliases.size() > new HashSet<>(aliases).size()) {
-                    throw new ConfigException(name, value, "Duplicate alias provided.");
-                }
-            },
-            () -> "unique " + kind + " aliases"));
+                    if (aliases.size() > new HashSet<>(aliases).size()) {
+                        throw new ConfigException(name, value, "Duplicate alias provided.");
+                    }
+                },
+                () -> "unique " + kind + " aliases"));
     }
 
     public ConnectorConfig(Plugins plugins) {
@@ -385,21 +385,21 @@ public class ConnectorConfig extends AbstractConfig {
                     predicate.configure(originalsWithPrefix(predicatePrefix));
                     Plugin<Predicate<R>> predicatePlugin = metrics.wrap(predicate, connectorTaskId, predicateAlias);
                     transformations.add(new TransformationStage<>(
-                        predicatePlugin,
-                        predicateAlias,
-                        plugins.pluginVersion(predicate.getClass().getName(), predicate.getClass().getClassLoader(), PluginType.PREDICATE),
-                        negate != null && Boolean.parseBoolean(negate.toString()),
-                        transformationPlugin,
-                        alias,
-                        plugins.pluginVersion(transformation.getClass().getName(), transformation.getClass().getClassLoader(), PluginType.TRANSFORMATION),
-                        plugins.safeLoaderSwapper())
+                            predicatePlugin,
+                            predicateAlias,
+                            plugins.pluginVersion(predicate.getClass().getName(), predicate.getClass().getClassLoader(), PluginType.PREDICATE),
+                            negate != null && Boolean.parseBoolean(negate.toString()),
+                            transformationPlugin,
+                            alias,
+                            plugins.pluginVersion(transformation.getClass().getName(), transformation.getClass().getClassLoader(), PluginType.TRANSFORMATION),
+                            plugins.safeLoaderSwapper())
                     );
                 } else {
                     transformations.add(new TransformationStage<>(
-                        transformationPlugin,
-                        alias,
-                        plugins.pluginVersion(transformation.getClass().getName(), transformation.getClass().getClassLoader(), PluginType.TRANSFORMATION),
-                        plugins.safeLoaderSwapper())
+                            transformationPlugin,
+                            alias,
+                            plugins.pluginVersion(transformation.getClass().getName(), transformation.getClass().getClassLoader(), PluginType.TRANSFORMATION),
+                            plugins.safeLoaderSwapper())
                     );
                 }
             } catch (Exception e) {

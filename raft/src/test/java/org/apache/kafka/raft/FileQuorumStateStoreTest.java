@@ -149,7 +149,7 @@ public class FileQuorumStateStoreTest {
     }
 
     @Test
-    void testReload()  throws IOException {
+    void testReload() throws IOException {
         final File stateFile = TestUtils.tempFile();
         FileQuorumStateStore stateStore = new FileQuorumStateStore(stateFile);
 
@@ -214,7 +214,7 @@ public class FileQuorumStateStoreTest {
     private void writeToStateFile(final File stateFile, String jsonString) {
         try (final FileOutputStream fileOutputStream = new FileOutputStream(stateFile);
              final BufferedWriter writer = new BufferedWriter(
-                     new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8))) {
+                 new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8))) {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode node = mapper.readTree(jsonString);
 
@@ -224,8 +224,8 @@ public class FileQuorumStateStoreTest {
 
         } catch (IOException e) {
             throw new UncheckedIOException(
-                    String.format("Error while writing to Quorum state file %s",
-                            stateFile.getAbsolutePath()), e);
+                String.format("Error while writing to Quorum state file %s",
+                    stateFile.getAbsolutePath()), e);
         }
     }
 }

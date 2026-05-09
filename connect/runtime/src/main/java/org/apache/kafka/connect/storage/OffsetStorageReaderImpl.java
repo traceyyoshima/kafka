@@ -77,8 +77,8 @@ public class OffsetStorageReaderImpl implements CloseableOffsetStorageReader {
                 serializedToOriginal.put(keyBuffer, key);
             } catch (Throwable t) {
                 log.error("CRITICAL: Failed to serialize partition key when getting offsets for task with "
-                        + "namespace {}. No value for this data will be returned, which may break the "
-                        + "task or cause it to skip some data.", namespace, t);
+                    + "namespace {}. No value for this data will be returned, which may break the "
+                    + "task or cause it to skip some data.", namespace, t);
             }
         }
 
@@ -121,7 +121,7 @@ public class OffsetStorageReaderImpl implements CloseableOffsetStorageReader {
                 // Since null could be a valid key, explicitly check whether map contains the key
                 if (!serializedToOriginal.containsKey(rawEntry.getKey())) {
                     log.error("Should be able to map {} back to a requested partition-offset key, backing "
-                            + "store may have returned invalid data", rawEntry.getKey());
+                        + "store may have returned invalid data", rawEntry.getKey());
                     continue;
                 }
                 Map<String, T> origKey = serializedToOriginal.get(rawEntry.getKey());
@@ -132,9 +132,9 @@ public class OffsetStorageReaderImpl implements CloseableOffsetStorageReader {
                 result.put(origKey, (Map<String, Object>) deserializedValue);
             } catch (Throwable t) {
                 log.error("CRITICAL: Failed to deserialize offset data when getting offsets for task with"
-                        + " namespace {}. No value for this data will be returned, which may break the "
-                        + "task or cause it to skip some data. This could either be due to an error in "
-                        + "the connector implementation or incompatible schema.", namespace, t);
+                    + " namespace {}. No value for this data will be returned, which may break the "
+                    + "task or cause it to skip some data. This could either be due to an error in "
+                    + "the connector implementation or incompatible schema.", namespace, t);
             }
         }
 

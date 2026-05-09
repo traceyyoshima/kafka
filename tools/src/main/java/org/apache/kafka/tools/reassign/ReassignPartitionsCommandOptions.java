@@ -101,7 +101,7 @@ public class ReassignPartitionsCommandOptions extends CommandDefaultOptions {
             .ofType(Long.class)
             .defaultsTo(-1L);
         replicaAlterLogDirsThrottleOpt = parser.accepts("replica-alter-log-dirs-throttle",
-                "The movement of replicas between log directories on the same broker will be throttled to this value (bytes/sec). " +
+            "The movement of replicas between log directories on the same broker will be throttled to this value (bytes/sec). " +
                     "This option can be included with --execute when a reassignment is started, and it can be altered by resubmitting the current reassignment " +
                     "along with the --additional flag. The throttle rate should be at least 1 KB/s.")
             .withRequiredArg()

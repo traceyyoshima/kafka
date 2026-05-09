@@ -199,8 +199,8 @@ public class MemoryRecordsBuilder implements AutoCloseable {
                                 int partitionLeaderEpoch,
                                 int writeLimit) {
         this(new ByteBufferOutputStream(buffer), magic, compression, timestampType, baseOffset, logAppendTime,
-                producerId, producerEpoch, baseSequence, isTransactional, isControlBatch, partitionLeaderEpoch,
-                writeLimit);
+             producerId, producerEpoch, baseSequence, isTransactional, isControlBatch, partitionLeaderEpoch,
+             writeLimit);
     }
 
     public ByteBuffer buffer() {
@@ -421,8 +421,8 @@ public class MemoryRecordsBuilder implements AutoCloseable {
             maxTimestamp = this.maxTimestamp;
 
         DefaultRecordBatch.writeHeader(buffer, baseOffset, offsetDelta, size, magic, compression.type(), timestampType,
-                baseTimestamp, maxTimestamp, producerId, producerEpoch, baseSequence, isTransactional, isControlBatch,
-                hasDeleteHorizonMs(), partitionLeaderEpoch, numRecords);
+            baseTimestamp, maxTimestamp, producerId, producerEpoch, baseSequence, isTransactional, isControlBatch,
+            hasDeleteHorizonMs(), partitionLeaderEpoch, numRecords);
 
         buffer.position(pos);
         return writtenCompressed;

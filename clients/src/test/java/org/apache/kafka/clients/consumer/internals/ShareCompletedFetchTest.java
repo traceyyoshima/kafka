@@ -228,9 +228,9 @@ public class ShareCompletedFetchTest {
     public void testRecordDeserializationException() {
         // Create one good record and then two records which do not deserialize and then another good record.
         try (final MemoryRecordsBuilder builder = MemoryRecords.builder(ByteBuffer.allocate(1024),
-                Compression.NONE,
-                TimestampType.CREATE_TIME,
-                0);
+            Compression.NONE,
+            TimestampType.CREATE_TIME,
+            0);
             final UUIDSerializer serializer = new UUIDSerializer()) {
             builder.append(new SimpleRecord(serializer.serialize(TOPIC_NAME, UUID.randomUUID())));
             builder.append(0L, "key".getBytes(), "value".getBytes());
@@ -374,7 +374,7 @@ public class ShareCompletedFetchTest {
         acquiredRecords.add(acquiredRecords(10L, 5).get(0));
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset,  10))
+            .setRecords(newRecords(startingOffset, 10))
             .setAcquiredRecords(acquiredRecords); // Acquire only records 0-4 and 10-14
 
         Deserializers<String, String> deserializers = newStringDeserializers();
@@ -441,16 +441,16 @@ public class ShareCompletedFetchTest {
 
         // Write data records 1-5
         try (MemoryRecordsBuilder builder = MemoryRecords.builder(buffer,
-                RecordBatch.CURRENT_MAGIC_VALUE,
-                Compression.NONE,
-                TimestampType.CREATE_TIME,
-                1,
-                time.milliseconds(),
-                PRODUCER_ID,
-                PRODUCER_EPOCH,
-                0,
-                true,
-                RecordBatch.NO_PARTITION_LEADER_EPOCH)) {
+            RecordBatch.CURRENT_MAGIC_VALUE,
+            Compression.NONE,
+            TimestampType.CREATE_TIME,
+            1,
+            time.milliseconds(),
+            PRODUCER_ID,
+            PRODUCER_EPOCH,
+            0,
+            true,
+            RecordBatch.NO_PARTITION_LEADER_EPOCH)) {
             for (int i = 0; i < 5; i++)
                 builder.append(new SimpleRecord(time.milliseconds(), "key".getBytes(), "value".getBytes()));
             builder.build();
@@ -820,9 +820,9 @@ public class ShareCompletedFetchTest {
 
     private Records newRecords(long baseOffset, int count) {
         try (final MemoryRecordsBuilder builder = MemoryRecords.builder(ByteBuffer.allocate(1024),
-                Compression.NONE,
-                TimestampType.CREATE_TIME,
-                baseOffset)) {
+            Compression.NONE,
+            TimestampType.CREATE_TIME,
+            baseOffset)) {
             for (int i = 0; i < count; i++)
                 builder.append(0L, "key".getBytes(), "value-".getBytes());
             return builder.build();
@@ -835,16 +835,16 @@ public class ShareCompletedFetchTest {
 
         for (long b = 0; b < batchCount; b++) {
             try (MemoryRecordsBuilder builder = MemoryRecords.builder(buffer,
-                    RecordBatch.CURRENT_MAGIC_VALUE,
-                    Compression.NONE,
-                    TimestampType.CREATE_TIME,
-                    baseOffset + b * numRecordsPerBatch,
-                    time.milliseconds(),
-                    PRODUCER_ID,
-                    PRODUCER_EPOCH,
-                    0,
-                    true,
-                    RecordBatch.NO_PARTITION_LEADER_EPOCH)) {
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                Compression.NONE,
+                TimestampType.CREATE_TIME,
+                baseOffset + b * numRecordsPerBatch,
+                time.milliseconds(),
+                PRODUCER_ID,
+                PRODUCER_EPOCH,
+                0,
+                true,
+                RecordBatch.NO_PARTITION_LEADER_EPOCH)) {
                 for (int i = 0; i < numRecordsPerBatch; i++)
                     builder.append(new SimpleRecord(time.milliseconds(), "key".getBytes(), "value".getBytes()));
 
@@ -870,16 +870,16 @@ public class ShareCompletedFetchTest {
         ByteBuffer buffer = ByteBuffer.allocate(1024);
 
         try (MemoryRecordsBuilder builder = MemoryRecords.builder(buffer,
-                RecordBatch.CURRENT_MAGIC_VALUE,
-                Compression.NONE,
-                TimestampType.CREATE_TIME,
-                0,
-                time.milliseconds(),
-                PRODUCER_ID,
-                PRODUCER_EPOCH,
-                0,
-                true,
-                RecordBatch.NO_PARTITION_LEADER_EPOCH)) {
+            RecordBatch.CURRENT_MAGIC_VALUE,
+            Compression.NONE,
+            TimestampType.CREATE_TIME,
+            0,
+            time.milliseconds(),
+            PRODUCER_ID,
+            PRODUCER_EPOCH,
+            0,
+            true,
+            RecordBatch.NO_PARTITION_LEADER_EPOCH)) {
             for (int i = 0; i < numRecords; i++)
                 builder.append(new SimpleRecord(time.milliseconds(), "key".getBytes(), "value".getBytes()));
 
@@ -906,16 +906,16 @@ public class ShareCompletedFetchTest {
 
     private void createBatch(ByteBuffer buffer, long baseOffset, int numRecords, Time time) {
         try (MemoryRecordsBuilder builder = MemoryRecords.builder(buffer,
-                RecordBatch.CURRENT_MAGIC_VALUE,
-                Compression.NONE,
-                TimestampType.CREATE_TIME,
-                baseOffset,
-                time.milliseconds(),
-                PRODUCER_ID,
-                PRODUCER_EPOCH,
-                0,
-                false,
-                RecordBatch.NO_PARTITION_LEADER_EPOCH)) {
+            RecordBatch.CURRENT_MAGIC_VALUE,
+            Compression.NONE,
+            TimestampType.CREATE_TIME,
+            baseOffset,
+            time.milliseconds(),
+            PRODUCER_ID,
+            PRODUCER_EPOCH,
+            0,
+            false,
+            RecordBatch.NO_PARTITION_LEADER_EPOCH)) {
             for (int i = 0; i < numRecords; i++) {
                 builder.append(new SimpleRecord(time.milliseconds(), "key".getBytes(), ("value-" + (baseOffset + i)).getBytes()));
             }

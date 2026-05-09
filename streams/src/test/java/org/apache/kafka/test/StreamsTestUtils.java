@@ -92,11 +92,11 @@ public final class StreamsTestUtils {
     public static Properties getStreamsConfig(final Serde<?> keyDeserializer,
                                               final Serde<?> valueDeserializer) {
         return getStreamsConfig(
-                UUID.randomUUID().toString(),
-                "localhost:9091",
-                keyDeserializer.getClass().getName(),
-                valueDeserializer.getClass().getName(),
-                new Properties());
+            UUID.randomUUID().toString(),
+            "localhost:9091",
+            keyDeserializer.getClass().getName(),
+            valueDeserializer.getClass().getName(),
+            new Properties());
     }
 
     public static Properties getStreamsConfig(final String applicationId) {
@@ -259,7 +259,7 @@ public final class StreamsTestUtils {
      */
     public static boolean isCheckSupplierCall() {
         return Arrays.stream(Thread.currentThread().getStackTrace())
-                .anyMatch(caller -> "org.apache.kafka.streams.internals.ApiUtils".equals(caller.getClassName()) && "checkSupplier".equals(caller.getMethodName()));
+            .anyMatch(caller -> "org.apache.kafka.streams.internals.ApiUtils".equals(caller.getClassName()) && "checkSupplier".equals(caller.getMethodName()));
     }
 
     public static class TaskBuilder<T extends Task> {

@@ -77,9 +77,9 @@ public class TopicAssignmentTest {
     public void testToString() {
         List<Integer> replicas = List.of(0, 1, 2);
         List<Uuid> directories = List.of(
-                Uuid.fromString("v56qeYzNRrqNtXsxzcReog"),
-                Uuid.fromString("MvUIAsOiRlSePeiBHdZrSQ"),
-                Uuid.fromString("jUqCchHtTHqMxeVv4dw1RA")
+            Uuid.fromString("v56qeYzNRrqNtXsxzcReog"),
+            Uuid.fromString("MvUIAsOiRlSePeiBHdZrSQ"),
+            Uuid.fromString("jUqCchHtTHqMxeVv4dw1RA")
         );
         List<PartitionAssignment> partitionAssignments = List.of(
             new PartitionAssignment(replicas, directories::get)

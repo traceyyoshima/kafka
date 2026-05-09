@@ -332,8 +332,8 @@ public class LogValidator {
                     }
 
                     if (recordError.isEmpty()
-                            && batch.magic() > RecordBatch.MAGIC_VALUE_V0
-                            && toMagic > RecordBatch.MAGIC_VALUE_V0) {
+                        && batch.magic() > RecordBatch.MAGIC_VALUE_V0
+                        && toMagic > RecordBatch.MAGIC_VALUE_V0) {
 
                         if (record.timestamp() > maxTimestamp)
                             maxTimestamp = record.timestamp();

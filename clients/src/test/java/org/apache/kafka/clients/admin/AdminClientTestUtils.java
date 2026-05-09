@@ -139,7 +139,7 @@ public class AdminClientTestUtils {
 
     public static DescribeTopicsResult describeTopicsResult(Map<String, TopicDescription> topicDescriptions) {
         return DescribeTopicsResult.ofTopicNames(topicDescriptions.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> KafkaFuture.completedFuture(e.getValue()))));
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> KafkaFuture.completedFuture(e.getValue()))));
     }
 
     public static ListGroupsResult listGroupsResult(GroupListing... groups) {

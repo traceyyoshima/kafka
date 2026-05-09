@@ -61,10 +61,10 @@ import static org.apache.kafka.common.requests.AssignReplicasToDirsRequest.MAX_A
 
 public final class AssignmentsManager {
     static final ExponentialBackoff STANDARD_BACKOFF = new ExponentialBackoff(
-            TimeUnit.MILLISECONDS.toNanos(100),
-            2,
-            TimeUnit.SECONDS.toNanos(10),
-            0.02);
+        TimeUnit.MILLISECONDS.toNanos(100),
+        2,
+        TimeUnit.SECONDS.toNanos(10),
+        0.02);
 
     /**
      * The minimum amount of time we will wait before logging individual assignment failures.
@@ -218,7 +218,7 @@ public final class AssignmentsManager {
     ) {
         long nowNs = time.nanoseconds();
         Assignment assignment = new Assignment(
-                topicIdPartition, directoryId, nowNs, successCallback);
+            topicIdPartition, directoryId, nowNs, successCallback);
         ready.put(topicIdPartition, assignment);
         if (log.isTraceEnabled()) {
             String topicDescription = Optional.ofNullable(metadataImageSupplier.get().topics().
@@ -388,7 +388,7 @@ public final class AssignmentsManager {
                     TopicIdPartition topicIdPartition =
                         new TopicIdPartition(topicData.topicId(), partitionData.partitionIndex());
                     handleAssignmentResponse(topicIdPartition, sent,
-                            Errors.forCode(partitionData.errorCode()), nowNs);
+                        Errors.forCode(partitionData.errorCode()), nowNs);
                     sent.remove(topicIdPartition);
                 }
             }
@@ -477,17 +477,17 @@ public final class AssignmentsManager {
             Uuid directoryId = entry.getValue().directoryId();
             DirectoryData directory = directoryMap.computeIfAbsent(directoryId, d -> new DirectoryData().setId(directoryId));
             TopicData topic = topicMap.computeIfAbsent(directoryId, d -> new HashMap<>())
-                    .computeIfAbsent(topicPartition.topicId(), topicId -> {
-                        TopicData data = new TopicData().setTopicId(topicId);
-                        directory.topics().add(data);
-                        return data;
-                    });
+                .computeIfAbsent(topicPartition.topicId(), topicId -> {
+                    TopicData data = new TopicData().setTopicId(topicId);
+                    directory.topics().add(data);
+                    return data;
+                });
             PartitionData partition = new PartitionData().setPartitionIndex(topicPartition.partitionId());
             topic.partitions().add(partition);
         }
         return new AssignReplicasToDirsRequestData()
-                .setBrokerId(nodeId)
-                .setBrokerEpoch(brokerEpoch)
-                .setDirectories(new ArrayList<>(directoryMap.values()));
+            .setBrokerId(nodeId)
+            .setBrokerEpoch(brokerEpoch)
+            .setDirectories(new ArrayList<>(directoryMap.values()));
     }
 }

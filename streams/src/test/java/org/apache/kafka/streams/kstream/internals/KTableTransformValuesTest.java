@@ -379,8 +379,8 @@ public class KTableTransformValuesTest {
 
 
         assertThat(output(), hasItems(new KeyValueTimestamp<>("A", "A->a!", 5),
-                new KeyValueTimestamp<>("B", "B->b!", 10),
-                new KeyValueTimestamp<>("D", "D->null!", 15)
+            new KeyValueTimestamp<>("B", "B->b!", 10),
+            new KeyValueTimestamp<>("D", "D->null!", 15)
         ));
         assertNull(driver.getKeyValueStore(QUERYABLE_NAME), "Store should not be materialized");
     }
@@ -408,8 +408,8 @@ public class KTableTransformValuesTest {
         inputTopic.pipeInput("C", null, 15L);
 
         assertThat(output(), hasItems(new KeyValueTimestamp<>("A", "A->a!", 5),
-                new KeyValueTimestamp<>("B", "B->b!", 10),
-                new KeyValueTimestamp<>("C", "C->null!", 15)));
+            new KeyValueTimestamp<>("B", "B->b!", 10),
+            new KeyValueTimestamp<>("C", "C->null!", 15)));
 
         {
             final KeyValueStore<String, String> keyValueStore = driver.getKeyValueStore(QUERYABLE_NAME);
@@ -450,8 +450,8 @@ public class KTableTransformValuesTest {
         inputTopic.pipeInput("A", "ignored2", 10L);
 
         assertThat(output(), equalTo(Arrays.asList(new KeyValueTimestamp<>("A", "1", 5),
-                new KeyValueTimestamp<>("A", "2", 15),
-                new KeyValueTimestamp<>("A", "3", 15))));
+            new KeyValueTimestamp<>("A", "2", 15),
+            new KeyValueTimestamp<>("A", "3", 15))));
 
         final KeyValueStore<String, Integer> keyValueStore = driver.getKeyValueStore(QUERYABLE_NAME);
         assertThat(keyValueStore.get("A"), is(3));
@@ -480,8 +480,8 @@ public class KTableTransformValuesTest {
         inputTopic.pipeInput("A", "aaa", 10);
 
         assertThat(output(), equalTo(Arrays.asList(new KeyValueTimestamp<>("A", "1", 5),
-                new KeyValueTimestamp<>("A", "2", 15),
-                new KeyValueTimestamp<>("A", "3", 15))));
+            new KeyValueTimestamp<>("A", "2", 15),
+            new KeyValueTimestamp<>("A", "3", 15))));
         assertThat(driver.getAllStateStores().keySet(),
             equalTo(Set.of("inputTopic-STATE-STORE-0000000000", "KTABLE-AGGREGATE-STATE-STORE-0000000005")));
     }

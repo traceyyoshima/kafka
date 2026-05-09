@@ -539,11 +539,10 @@ public class DefaultStatePersister implements Persister {
                             DeleteShareGroupStateResponse partitionResponse = future.join();
                             return partitionResponse.data().results().get(0).partitions().stream()
                                 .map(partitionResult -> PartitionFactory.newPartitionErrorData(
-                                        partitionResult.partition(),
-                                        partitionResult.errorCode(),
-                                        partitionResult.errorMessage()
-                                    )
-                                )
+                                    partitionResult.partition(),
+                                    partitionResult.errorCode(),
+                                    partitionResult.errorMessage()
+                                ))
                                 .toList();
                         } catch (Exception e) {
                             log.error("Unexpected exception while getting data from share coordinator", e);

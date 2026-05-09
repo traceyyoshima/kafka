@@ -204,6 +204,7 @@ public class IntegrationTestUtils {
      */
     public static class StateListenerStub implements StreamThread.StateListener {
         boolean toPendingShutdownSeen = false;
+
         @Override
         public void onChange(final Thread thread,
                              final ThreadStateTransitionValidator newState,
@@ -609,9 +610,9 @@ public class IntegrationTestUtils {
                                                   final int expectedTasks,
                                                   final long timeoutMilliseconds) throws Exception {
         TestUtils.waitForCondition(() -> streams.metrics().entrySet().stream()
-                        .filter(metric -> metric.getKey().name().equals("active-restoring-tasks"))
-                        .anyMatch(metric -> ((Number) metric.getValue().metricValue()).intValue() == expectedTasks),
-                timeoutMilliseconds, "Timed out waiting for active restoring task");
+            .filter(metric -> metric.getKey().name().equals("active-restoring-tasks"))
+            .anyMatch(metric -> ((Number) metric.getValue().metricValue()).intValue() == expectedTasks),
+            timeoutMilliseconds, "Timed out waiting for active restoring task");
     }
 
     /**
@@ -999,9 +1000,9 @@ public class IntegrationTestUtils {
         try {
             final ConsumerGroupDescription groupDescription =
                     adminClient.describeConsumerGroups(singletonList(applicationId))
-                            .describedGroups()
-                            .get(applicationId)
-                            .get();
+                               .describedGroups()
+                               .get(applicationId)
+                               .get();
             return groupDescription.members().isEmpty();
         } catch (final ExecutionException e) {
             return e.getCause() instanceof GroupIdNotFoundException;
@@ -1387,7 +1388,7 @@ public class IntegrationTestUtils {
 
         public Map<TopicPartition, Long> changelogToRestoreTime() {
             return changelogToRestoreStartTime.entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, e -> changelogToRestoreEndTime.get(e.getKey()).get() - e.getValue().get()));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> changelogToRestoreEndTime.get(e.getKey()).get() - e.getValue().get()));
         }
     }
 

@@ -97,8 +97,8 @@ public class TopicBasedRemoteLogMetadataManagerMultipleSubscriptionsTest {
         }).when(spyRemotePartitionMetadataStore).handleRemoteLogSegmentMetadata(any());
 
         try (TopicBasedRemoteLogMetadataManager remoteLogMetadataManager = RemoteLogMetadataManagerTestUtils.builder()
-                .bootstrapServers(clusterInstance.bootstrapServers())
-                .remoteLogMetadataTopicPartitioner(numMetadataTopicPartitions -> new RemoteLogMetadataTopicPartitioner(numMetadataTopicPartitions) {
+            .bootstrapServers(clusterInstance.bootstrapServers())
+            .remoteLogMetadataTopicPartitioner(numMetadataTopicPartitions -> new RemoteLogMetadataTopicPartitioner(numMetadataTopicPartitions) {
                     @Override
                     public int metadataPartition(TopicIdPartition topicIdPartition) {
                         // Always return partition 0 except for noMessagesTopicIdPartition. So that, any new user
@@ -111,8 +111,8 @@ public class TopicBasedRemoteLogMetadataManagerMultipleSubscriptionsTest {
                         }
                     }
                 })
-                .remotePartitionMetadataStore(() -> spyRemotePartitionMetadataStore)
-                .build()) {
+            .remotePartitionMetadataStore(() -> spyRemotePartitionMetadataStore)
+            .build()) {
 
             // Add segments for these partitions but an exception is received as they have not yet been subscribed.
             // These messages would have been published to the respective metadata topic partitions but the ConsumerManager
@@ -122,7 +122,7 @@ public class TopicBasedRemoteLogMetadataManagerMultipleSubscriptionsTest {
                 0, 100, -1L, 0,
                 time.milliseconds(), segSize, Map.of(0, 0L));
             ExecutionException exception = assertThrows(ExecutionException.class,
-                    () -> remoteLogMetadataManager.addRemoteLogSegmentMetadata(leaderSegmentMetadata).get());
+                () -> remoteLogMetadataManager.addRemoteLogSegmentMetadata(leaderSegmentMetadata).get());
             assertEquals("org.apache.kafka.common.KafkaException: This consumer is not assigned to the target partition 0. Currently assigned partitions: []",
                 exception.getMessage());
 
@@ -138,7 +138,7 @@ public class TopicBasedRemoteLogMetadataManagerMultipleSubscriptionsTest {
             assertThrows(RemoteStorageException.class, () -> remoteLogMetadataManager.listRemoteLogSegments(followerTopicIdPartition));
 
             remoteLogMetadataManager.onPartitionLeadershipChanges(Set.of(leaderTopicIdPartition),
-                    Set.of());
+                Set.of());
             // RemoteLogSegmentMetadata events are already published, and topicBasedRlmm's consumer manager will start
             // fetching those events and build the cache.
             initializationPhaser.awaitAdvanceInterruptibly(initializationPhaser.arrive(), 30_000, TimeUnit.MILLISECONDS); // similar to CountdownLatch::await
@@ -157,7 +157,7 @@ public class TopicBasedRemoteLogMetadataManagerMultipleSubscriptionsTest {
             initializationPhaser.bulkRegister(2); // 1 for emptyTopicIdPartition and 1 for followerTopicIdPartition
             handleRemoteLogSegmentMetadataPhaser.register(); // 1 for followerTopicIdPartition, emptyTopicIdPartition doesn't have a RemoteLogSegmentMetadata event
             remoteLogMetadataManager.onPartitionLeadershipChanges(Set.of(emptyTopicIdPartition),
-                    Set.of(followerTopicIdPartition));
+                Set.of(followerTopicIdPartition));
 
             initializationPhaser.awaitAdvanceInterruptibly(initializationPhaser.arrive(), 30_000, TimeUnit.MILLISECONDS);
             handleRemoteLogSegmentMetadataPhaser.awaitAdvanceInterruptibly(handleRemoteLogSegmentMetadataPhaser.arrive(), 30_000, TimeUnit.MILLISECONDS);

@@ -118,10 +118,10 @@ public class FeatureTest {
 
         // Using a version that is lower than the dependency will fail.
         assertThrows(IllegalArgumentException.class,
-             () -> Feature.validateVersion(
-                 TestFeatureVersion.TEST_2,
-                 Map.of(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_7_IV0.featureLevel())
-             )
+            () -> Feature.validateVersion(
+                TestFeatureVersion.TEST_2,
+                Map.of(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_7_IV0.featureLevel())
+            )
         );
     }
 
@@ -186,7 +186,7 @@ public class FeatureTest {
         "UNIT_TEST_VERSION_6",
         "UNIT_TEST_VERSION_7"}, mode = EnumSource.Mode.EXCLUDE)
     public void testLatestProductionDependencyIsProductionReady(Feature feature) {
-        for (Map.Entry<String, Short> dependency: feature.latestProduction.dependencies().entrySet()) {
+        for (Map.Entry<String, Short> dependency : feature.latestProduction.dependencies().entrySet()) {
             String featureName = dependency.getKey();
             if (!featureName.equals(MetadataVersion.FEATURE_NAME)) {
                 Feature dependencyFeature = Feature.featureFromName(featureName);
@@ -206,7 +206,7 @@ public class FeatureTest {
         "UNIT_TEST_VERSION_6",
         "UNIT_TEST_VERSION_7"}, mode = EnumSource.Mode.EXCLUDE)
     public void testDefaultVersionDependencyIsDefaultReady(Feature feature) {
-        for (Map.Entry<String, Short> dependency: feature.defaultVersion(MetadataVersion.LATEST_PRODUCTION).dependencies().entrySet()) {
+        for (Map.Entry<String, Short> dependency : feature.defaultVersion(MetadataVersion.LATEST_PRODUCTION).dependencies().entrySet()) {
             String featureName = dependency.getKey();
             if (!featureName.equals(MetadataVersion.FEATURE_NAME)) {
                 Feature dependencyFeature = Feature.featureFromName(featureName);
@@ -259,7 +259,7 @@ public class FeatureTest {
     @Test
     public void testValidateWithDependencyNotProductionReady() {
         assertThrows(IllegalArgumentException.class, () ->
-                validateDefaultValueAndLatestProductionValue(Feature.UNIT_TEST_VERSION_3),
+            validateDefaultValueAndLatestProductionValue(Feature.UNIT_TEST_VERSION_3),
             "Feature UNIT_TEST_VERSION_3 has latest production FeatureVersion UT_FV3_1 with dependency " +
                 "UT_FV2_1 that is not production ready. (UNIT_TEST_VERSION_2 latest production: UT_FV2_0)");
     }
@@ -268,7 +268,7 @@ public class FeatureTest {
     public void testValidateWithDefaultValueDependencyAheadOfItsDefaultLevel() {
         if (MetadataVersion.latestProduction().isLessThan(MetadataVersion.latestTesting())) {
             assertThrows(IllegalArgumentException.class, () ->
-                    validateDefaultValueAndLatestProductionValue(Feature.UNIT_TEST_VERSION_5),
+                validateDefaultValueAndLatestProductionValue(Feature.UNIT_TEST_VERSION_5),
                 "Feature UNIT_TEST_VERSION_5 has default FeatureVersion UT_FV5_1 when MV=3.7-IV0 with " +
                     "dependency UT_FV4_1 that is behind its default version UT_FV4_0.");
         }
@@ -280,7 +280,7 @@ public class FeatureTest {
             IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 validateDefaultValueAndLatestProductionValue(Feature.UNIT_TEST_VERSION_6));
             assertEquals("Feature UNIT_TEST_VERSION_6 has latest production FeatureVersion UT_FV6_1 with MV dependency "
-                    + MetadataVersion.latestTesting() + " that is not production ready. (MV latest production: " + MetadataVersion.latestProduction() + ")",
+                + MetadataVersion.latestTesting() + " that is not production ready. (MV latest production: " + MetadataVersion.latestProduction() + ")",
                 exception.getMessage());
         }
     }

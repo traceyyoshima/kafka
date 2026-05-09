@@ -94,7 +94,7 @@ public class AddPartitionsToTxnResponse extends AbstractResponse {
                         .setPartitionIndex(topicPartition.partition());
 
             AddPartitionsToTxnPartitionResultCollection partitionResultCollection = resultMap.getOrDefault(
-                    topicName, new AddPartitionsToTxnPartitionResultCollection()
+                topicName, new AddPartitionsToTxnPartitionResultCollection()
             );
 
             partitionResultCollection.add(partitionResult);

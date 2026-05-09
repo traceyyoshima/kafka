@@ -157,9 +157,9 @@ public class KStreamSessionWindowAggregate<KIn, VIn, VAgg> implements KStreamAgg
                     this.lastEmitWindowCloseTime = lastEmitWindowCloseTime;
                 }
                 final long emitInterval = StreamsConfig.InternalConfig.getLong(
-                        context.appConfigs(),
-                        EMIT_INTERVAL_MS_KSTREAMS_WINDOWED_AGGREGATION,
-                        1000L
+                    context.appConfigs(),
+                    EMIT_INTERVAL_MS_KSTREAMS_WINDOWED_AGGREGATION,
+                    1000L
                 );
                 timeTracker.setEmitInterval(emitInterval);
 
@@ -327,13 +327,13 @@ public class KStreamSessionWindowAggregate<KIn, VIn, VAgg> implements KStreamAgg
             if (context().recordMetadata().isPresent()) {
                 final RecordMetadata recordMetadata = context().recordMetadata().get();
                 LOG.warn(
-                        "Skipping record due to null key. "
-                                + "topic=[{}] partition=[{}] offset=[{}]",
-                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                    "Skipping record due to null key. "
+                        + "topic=[{}] partition=[{}] offset=[{}]",
+                    recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                 );
             } else {
                 LOG.warn(
-                        "Skipping record due to null key. Topic, partition, and offset not known."
+                    "Skipping record due to null key. Topic, partition, and offset not known."
                 );
             }
             droppedRecordsSensor.record();

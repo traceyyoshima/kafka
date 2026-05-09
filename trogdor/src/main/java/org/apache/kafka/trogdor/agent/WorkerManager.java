@@ -162,7 +162,7 @@ public final class WorkerManager {
         this.time = scheduler.time();
         this.workers = new HashMap<>();
         this.stateChangeExecutor = Executors.newSingleThreadScheduledExecutor(
-                ThreadUtils.createThreadFactory("WorkerManagerStateThread", false));
+            ThreadUtils.createThreadFactory("WorkerManagerStateThread", false));
         this.workerCleanupExecutor = Executors.newCachedThreadPool(
             ThreadUtils.createThreadFactory("WorkerCleanupThread%d", false));
         this.shutdownExecutor = Executors.newScheduledThreadPool(0,

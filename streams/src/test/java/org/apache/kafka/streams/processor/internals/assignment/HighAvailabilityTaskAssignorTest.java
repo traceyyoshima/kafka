@@ -858,9 +858,9 @@ public class HighAvailabilityTaskAssignorTest {
             PID_3
         );
         final Map<ProcessId, ClientState> clientStates = mkMap(
-                mkEntry(PID_1, client1),
-                mkEntry(PID_2, client2),
-                mkEntry(PID_3, client3)
+            mkEntry(PID_1, client1),
+            mkEntry(PID_2, client2),
+            mkEntry(PID_3, client3)
         );
 
         final AssignmentConfigs configs = getConfigWithStandbys(rackAwareStrategy);

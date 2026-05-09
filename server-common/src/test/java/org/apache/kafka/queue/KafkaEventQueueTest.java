@@ -240,7 +240,7 @@ public class KafkaEventQueueTest {
     @Test
     public void testRejectedExecutionException() throws Exception {
         KafkaEventQueue queue = new KafkaEventQueue(Time.SYSTEM, logContext,
-            "testRejectedExecutionException");
+                "testRejectedExecutionException");
         queue.close();
         CompletableFuture<Void> future = new CompletableFuture<>();
         queue.append(new EventQueue.Event() {
@@ -255,7 +255,7 @@ public class KafkaEventQueueTest {
                 }
             });
         assertEquals(RejectedExecutionException.class, assertThrows(
-            ExecutionException.class, () -> future.get()).getCause().getClass());
+                ExecutionException.class, () -> future.get()).getCause().getClass());
     }
 
     @Test
@@ -326,9 +326,9 @@ public class KafkaEventQueueTest {
         private final AtomicInteger numInterruptedExceptionsSeen;
 
         InterruptibleEvent(
-            CompletableFuture<Thread> queueThread,
-            AtomicInteger numCallsToRun,
-            AtomicInteger numInterruptedExceptionsSeen
+                CompletableFuture<Thread> queueThread,
+                AtomicInteger numCallsToRun,
+                AtomicInteger numInterruptedExceptionsSeen
         ) {
             this.runFuture = new CompletableFuture<>();
             this.queueThread = queueThread;

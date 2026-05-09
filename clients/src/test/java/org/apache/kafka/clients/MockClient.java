@@ -224,7 +224,7 @@ public class MockClient implements KafkaClient {
 
         // Check if the request is directed to a node with a pending authentication error.
         for (Iterator<Map.Entry<Node, Long>> authErrorIter =
-             pendingAuthenticationErrors.entrySet().iterator(); authErrorIter.hasNext(); ) {
+             pendingAuthenticationErrors.entrySet().iterator(); authErrorIter.hasNext();) {
             Map.Entry<Node, Long> entry = authErrorIter.next();
             Node node = entry.getKey();
             long backoffMs = entry.getValue();
@@ -235,9 +235,9 @@ public class MockClient implements KafkaClient {
                 authenticationFailed(node, backoffMs);
                 AbstractRequest.Builder<?> builder = request.requestBuilder();
                 short version = nodeApiVersions.latestUsableVersion(request.apiKey(), builder.oldestAllowedVersion(),
-                    builder.latestAllowedVersion());
+                        builder.latestAllowedVersion());
                 ClientResponse resp = new ClientResponse(request.makeHeader(version), request.callback(), request.destination(),
-                    request.createdTimeMs(), time.milliseconds(), true, null,
+                        request.createdTimeMs(), time.milliseconds(), true, null,
                         new AuthenticationException("Authentication failed"), null);
                 responses.add(resp);
                 return;
@@ -681,6 +681,7 @@ public class MockClient implements KafkaClient {
 
     private static class StaticMetadataUpdater extends NoOpMetadataUpdater {
         private final List<Node> nodes;
+
         public StaticMetadataUpdater(List<Node> nodes) {
             this.nodes = nodes;
         }

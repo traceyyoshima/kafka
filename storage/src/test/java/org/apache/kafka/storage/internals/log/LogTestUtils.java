@@ -130,7 +130,7 @@ public class LogTestUtils {
      * Create a single record batch with the specified compression, timestamp, and magic value.
      */
     public static MemoryRecords singletonRecords(byte[] value, Compression codec, byte[] key,
-                                                  long timestamp, byte magicValue) {
+                                                 long timestamp, byte magicValue) {
         return records(
             List.of(new SimpleRecord(timestamp, key, value)),
             magicValue,
@@ -215,8 +215,8 @@ public class LogTestUtils {
 
     public static void deleteProducerSnapshotFiles(File logDir) {
         Stream.of(logDir.listFiles())
-                .filter(f -> f.isFile() && f.getName().endsWith(LogFileUtils.PRODUCER_SNAPSHOT_FILE_SUFFIX))
-                .forEach(f -> assertDoesNotThrow(() -> Utils.delete(f)));
+              .filter(f -> f.isFile() && f.getName().endsWith(LogFileUtils.PRODUCER_SNAPSHOT_FILE_SUFFIX))
+              .forEach(f -> assertDoesNotThrow(() -> Utils.delete(f)));
     }
 
     public static List<Long> listProducerSnapshotOffsets(File logDir) throws IOException {
@@ -327,9 +327,9 @@ public class LogTestUtils {
 
             MemoryRecords records = isTransactional
                 ? MemoryRecords.withTransactionalRecords(Compression.NONE, producerId,
-                        producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]))
+                    producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]))
                 : MemoryRecords.withIdempotentRecords(Compression.NONE, producerId,
-                        producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]));
+                    producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]));
 
             assertDoesNotThrow(() -> log.appendAsLeader(records, 0));
             sequence.addAndGet(numRecords);

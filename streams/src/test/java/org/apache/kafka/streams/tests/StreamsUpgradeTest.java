@@ -233,7 +233,7 @@ public class StreamsUpgradeTest {
 
             if (usedVersion > LATEST_SUPPORTED_VERSION + 1) {
                 throw new IllegalStateException("Unknown metadata version: " + usedVersion
-                                                    + "; latest supported version: " + LATEST_SUPPORTED_VERSION + 1);
+                                                + "; latest supported version: " + LATEST_SUPPORTED_VERSION + 1);
             }
 
             final AssignmentInfo info = AssignmentInfo.decode(

@@ -49,7 +49,7 @@ public class StringFormatterTest {
     @Test
     public void testPrettyPrintGrid() {
         assertEquals(String.format(
-                "ANIMAL  NUMBER INDEX %n" +
+            "ANIMAL  NUMBER INDEX %n" +
                 "lion    1      12345 %n" +
                 "manatee 50     1     %n"),
             StringFormatter.prettyPrintGrid(

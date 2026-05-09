@@ -55,7 +55,7 @@ import static org.apache.kafka.streams.state.internals.ExceptionUtils.throwSuppr
 
 public class CachingKeyValueStore
     extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, byte[], byte[]>
-    implements KeyValueStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
+        implements KeyValueStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CachingKeyValueStore.class);
 

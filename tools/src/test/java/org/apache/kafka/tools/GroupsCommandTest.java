@@ -87,20 +87,20 @@ public class GroupsCommandTest {
     @Test
     public void testOptionsNoActionFails() {
         assertInitializeInvalidOptionsExitCode(1,
-                new String[] {"--bootstrap-server", bootstrapServer});
+            new String[] {"--bootstrap-server", bootstrapServer});
     }
 
     @Test
     public void testOptionsListSucceeds() {
         GroupsCommand.GroupsCommandOptions opts = new GroupsCommand.GroupsCommandOptions(
-                new String[] {"--bootstrap-server", bootstrapServer, "--list"});
+            new String[] {"--bootstrap-server", bootstrapServer, "--list"});
         assertTrue(opts.hasListOption());
     }
 
     @Test
     public void testOptionsListConsumerFilterSucceeds() {
         GroupsCommand.GroupsCommandOptions opts = new GroupsCommand.GroupsCommandOptions(
-                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer"});
+            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer"});
         assertTrue(opts.hasListOption());
         assertTrue(opts.hasConsumerOption());
     }
@@ -124,7 +124,7 @@ public class GroupsCommandTest {
     @Test
     public void testOptionsListProtocolFilterSucceeds() {
         GroupsCommand.GroupsCommandOptions opts = new GroupsCommand.GroupsCommandOptions(
-                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--protocol", "anyproto"});
+            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--protocol", "anyproto"});
         assertTrue(opts.hasListOption());
         assertTrue(opts.protocol().isPresent());
         assertEquals("anyproto", opts.protocol().get());
@@ -133,7 +133,7 @@ public class GroupsCommandTest {
     @Test
     public void testOptionsListTypeFilterSucceeds() {
         GroupsCommand.GroupsCommandOptions opts = new GroupsCommand.GroupsCommandOptions(
-                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--group-type", "share"});
+            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--group-type", "share"});
         assertTrue(opts.hasListOption());
         assertTrue(opts.groupType().isPresent());
         assertEquals(GroupType.SHARE, opts.groupType().get());
@@ -151,13 +151,13 @@ public class GroupsCommandTest {
     @Test
     public void testOptionsListInvalidTypeFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--group-type", "invalid"});
+            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--group-type", "invalid"});
     }
 
     @Test
     public void testOptionsListProtocolAndTypeFiltersSucceeds() {
         GroupsCommand.GroupsCommandOptions opts = new GroupsCommand.GroupsCommandOptions(
-                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--protocol", "anyproto", "--group-type", "share"});
+            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--protocol", "anyproto", "--group-type", "share"});
         assertTrue(opts.hasListOption());
         assertTrue(opts.protocol().isPresent());
         assertEquals("anyproto", opts.protocol().get());
@@ -186,13 +186,13 @@ public class GroupsCommandTest {
     @Test
     public void testOptionsListConsumerAndProtocolFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer", "--protocol", "anyproto"});
+            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer", "--protocol", "anyproto"});
     }
 
     @Test
     public void testOptionsListConsumerAndTypeFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
-                new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer", "--group-type", "share"});
+            new String[] {"--bootstrap-server", bootstrapServer, "--list", "--consumer", "--group-type", "share"});
     }
 
     @Test
@@ -230,7 +230,7 @@ public class GroupsCommandTest {
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--list"}
+                    new String[]{"--bootstrap-server", bootstrapServer, "--list"}
                 ));
             } catch (Throwable t) {
                 fail(t);
@@ -245,27 +245,27 @@ public class GroupsCommandTest {
         GroupsCommand.GroupsService service = new GroupsCommand.GroupsService(adminClient);
 
         ListGroupsResult result = AdminClientTestUtils.listGroupsResult(
-                new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
-                new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
+            new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
+            new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
         );
         when(adminClient.listGroups()).thenReturn(result);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--list"}
+                    new String[]{"--bootstrap-server", bootstrapServer, "--list"}
                 ));
             } catch (Throwable t) {
                 fail(t);
             }
         });
         assertCapturedListOutput(capturedOutput,
-                new String[]{"CGclassic", "Classic", "consumer"},
-                new String[]{"CGconsumer", "Consumer", "consumer"},
-                new String[]{"SG", "Share", "share"},
-                new String[]{"StrG", "Streams", "streams"});
+            new String[]{"CGclassic", "Classic", "consumer"},
+            new String[]{"CGconsumer", "Consumer", "consumer"},
+            new String[]{"SG", "Share", "share"},
+            new String[]{"StrG", "Streams", "streams"});
     }
 
     @Test
@@ -274,25 +274,25 @@ public class GroupsCommandTest {
         GroupsCommand.GroupsService service = new GroupsCommand.GroupsService(adminClient);
 
         ListGroupsResult result = AdminClientTestUtils.listGroupsResult(
-                new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
-                new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
+            new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
+            new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
         );
         when(adminClient.listGroups()).thenReturn(result);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--list", "--consumer"}
+                    new String[]{"--bootstrap-server", bootstrapServer, "--list", "--consumer"}
                 ));
             } catch (Throwable t) {
                 fail(t);
             }
         });
         assertCapturedListOutput(capturedOutput,
-                new String[]{"CGclassic", "Classic", "consumer"},
-                new String[]{"CGconsumer", "Consumer", "consumer"});
+            new String[]{"CGclassic", "Classic", "consumer"},
+            new String[]{"CGconsumer", "Consumer", "consumer"});
     }
 
     @Test
@@ -353,25 +353,25 @@ public class GroupsCommandTest {
         GroupsCommand.GroupsService service = new GroupsCommand.GroupsService(adminClient);
 
         ListGroupsResult result = AdminClientTestUtils.listGroupsResult(
-                new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
-                new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
+            new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
+            new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
         );
         when(adminClient.listGroups()).thenReturn(result);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--list", "--protocol", "consumer"}
+                    new String[]{"--bootstrap-server", bootstrapServer, "--list", "--protocol", "consumer"}
                 ));
             } catch (Throwable t) {
                 fail(t);
             }
         });
         assertCapturedListOutput(capturedOutput,
-                new String[]{"CGclassic", "Classic", "consumer"},
-                new String[]{"CGconsumer", "Consumer", "consumer"});
+            new String[]{"CGclassic", "Classic", "consumer"},
+            new String[]{"CGconsumer", "Consumer", "consumer"});
     }
 
     @Test
@@ -380,24 +380,24 @@ public class GroupsCommandTest {
         GroupsCommand.GroupsService service = new GroupsCommand.GroupsService(adminClient);
 
         ListGroupsResult result = AdminClientTestUtils.listGroupsResult(
-                new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
-                new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
+            new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
+            new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
         );
         when(adminClient.listGroups()).thenReturn(result);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--list", "--group-type", "share"}
+                    new String[]{"--bootstrap-server", bootstrapServer, "--list", "--group-type", "share"}
                 ));
             } catch (Throwable t) {
                 fail(t);
             }
         });
         assertCapturedListOutput(capturedOutput,
-                new String[]{"SG", "Share", "share"});
+            new String[]{"SG", "Share", "share"});
     }
 
     @Test
@@ -406,24 +406,24 @@ public class GroupsCommandTest {
         GroupsCommand.GroupsService service = new GroupsCommand.GroupsService(adminClient);
 
         ListGroupsResult result = AdminClientTestUtils.listGroupsResult(
-                new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
-                new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
+            new GroupListing("CGclassic", Optional.of(GroupType.CLASSIC), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
+            new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
         );
         when(adminClient.listGroups()).thenReturn(result);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--list", "--protocol", "consumer", "--group-type", "classic"}
+                    new String[]{"--bootstrap-server", bootstrapServer, "--list", "--protocol", "consumer", "--group-type", "classic"}
                 ));
             } catch (Throwable t) {
                 fail(t);
             }
         });
         assertCapturedListOutput(capturedOutput,
-                new String[]{"CGclassic", "Classic", "consumer"});
+            new String[]{"CGclassic", "Classic", "consumer"});
     }
 
     @Test
@@ -432,16 +432,16 @@ public class GroupsCommandTest {
         GroupsCommand.GroupsService service = new GroupsCommand.GroupsService(adminClient);
 
         ListGroupsResult result = AdminClientTestUtils.listGroupsResult(
-                new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
-                new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
-                new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
+            new GroupListing("CGconsumer", Optional.of(GroupType.CONSUMER), "consumer", Optional.of(GroupState.STABLE)),
+            new GroupListing("SG", Optional.of(GroupType.SHARE), "share", Optional.of(GroupState.STABLE)),
+            new GroupListing("StrG", Optional.of(GroupType.STREAMS), "streams", Optional.of(GroupState.STABLE))
         );
         when(adminClient.listGroups()).thenReturn(result);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.listGroups(new GroupsCommand.GroupsCommandOptions(
-                        new String[]{"--bootstrap-server", bootstrapServer, "--list", "--protocol", "consumer", "--group-type", "classic"}
+                    new String[]{"--bootstrap-server", bootstrapServer, "--list", "--protocol", "consumer", "--group-type", "classic"}
                 ));
             } catch (Throwable t) {
                 fail(t);

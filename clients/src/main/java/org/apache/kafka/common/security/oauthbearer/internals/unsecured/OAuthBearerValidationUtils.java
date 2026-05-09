@@ -190,7 +190,8 @@ public class OAuthBearerValidationUtils {
     }
 
     private static OAuthBearerValidationResult doesNotExistResult(boolean required, String claimName) {
-        return required ? OAuthBearerValidationResult.newFailure(String.format("Required claim missing: %s", claimName))
+        return required
+                ? OAuthBearerValidationResult.newFailure(String.format("Required claim missing: %s", claimName))
                 : OAuthBearerValidationResult.newSuccess();
     }
 

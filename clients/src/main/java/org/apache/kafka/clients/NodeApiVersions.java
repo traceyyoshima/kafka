@@ -151,10 +151,10 @@ public class NodeApiVersions {
             throw new UnsupportedVersionException("The node does not support " + apiKey);
         ApiVersion supportedVersion = supportedVersions.get(apiKey);
         Optional<ApiVersion> intersectVersion = ApiVersionsResponse.intersect(supportedVersion,
-            new ApiVersion()
-                .setApiKey(apiKey.id)
-                .setMinVersion(oldestAllowedVersion)
-                .setMaxVersion(latestAllowedVersion));
+                new ApiVersion()
+                        .setApiKey(apiKey.id)
+                        .setMinVersion(oldestAllowedVersion)
+                        .setMaxVersion(latestAllowedVersion));
 
         if (intersectVersion.isPresent())
             return intersectVersion.get().maxVersion();

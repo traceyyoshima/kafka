@@ -56,9 +56,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StandardAuthorizerPropertyTest {
 
-    @Target({ ElementType.ANNOTATION_TYPE, ElementType.PARAMETER, ElementType.TYPE_USE })
+    @Target({ElementType.ANNOTATION_TYPE, ElementType.PARAMETER, ElementType.TYPE_USE})
     @Retention(RetentionPolicy.RUNTIME)
-    @AlphaChars @NumericChars @Chars({ '_', '-', '.' })
+    @AlphaChars @NumericChars @Chars({'_', '-', '.'})
     public @interface ValidTopicChars { }
 
     @Property(tries = 5000)

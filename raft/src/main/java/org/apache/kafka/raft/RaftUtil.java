@@ -52,7 +52,7 @@ import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({ "ClassDataAbstractionCoupling", "ClassFanOutComplexity" })
+@SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity"})
 public class RaftUtil {
 
     public static ApiMessage errorResponse(ApiKeys apiKey, Errors error) {

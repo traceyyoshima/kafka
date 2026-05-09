@@ -204,98 +204,98 @@ public class RequestManagers implements Closeable {
                 if (groupRebalanceConfig != null && groupRebalanceConfig.groupId != null) {
                     Optional<String> serverAssignor = Optional.ofNullable(config.getString(ConsumerConfig.GROUP_REMOTE_ASSIGNOR_CONFIG));
                     coordinator = new CoordinatorRequestManager(
-                        logContext,
-                        retryBackoffMs,
-                        retryBackoffMaxMs,
-                        groupRebalanceConfig.groupId);
+                            logContext,
+                            retryBackoffMs,
+                            retryBackoffMaxMs,
+                            groupRebalanceConfig.groupId);
                     commitRequestManager = new CommitRequestManager(
-                        time,
-                        logContext,
-                        subscriptions,
-                        config,
-                        coordinator,
-                        offsetCommitCallbackInvoker,
-                        groupRebalanceConfig.groupId,
-                        groupRebalanceConfig.groupInstanceId,
-                        metrics,
-                        metadata);
+                            time,
+                            logContext,
+                            subscriptions,
+                            config,
+                            coordinator,
+                            offsetCommitCallbackInvoker,
+                            groupRebalanceConfig.groupId,
+                            groupRebalanceConfig.groupInstanceId,
+                            metrics,
+                            metadata);
                     if (streamsRebalanceData.isPresent()) {
                         streamsMembershipManager = new StreamsMembershipManager(
-                            groupRebalanceConfig.groupId,
-                            streamsRebalanceData.get(),
-                            subscriptions,
-                            backgroundEventHandler,
-                            logContext,
-                            time,
-                            metrics);
+                                groupRebalanceConfig.groupId,
+                                streamsRebalanceData.get(),
+                                subscriptions,
+                                backgroundEventHandler,
+                                logContext,
+                                time,
+                                metrics);
                         streamsMembershipManager.registerStateListener(commitRequestManager);
                         streamsMembershipManager.registerStateListener(applicationThreadMemberStateListener);
 
                         if (clientTelemetryReporter.isPresent()) {
                             clientTelemetryReporter.get()
-                                .updateMetricsLabels(Map.of(ClientTelemetryProvider.GROUP_MEMBER_ID, streamsMembershipManager.memberId()));
+                                    .updateMetricsLabels(Map.of(ClientTelemetryProvider.GROUP_MEMBER_ID, streamsMembershipManager.memberId()));
                         }
 
                         streamsGroupHeartbeatRequestManager = new StreamsGroupHeartbeatRequestManager(
-                            logContext,
-                            time,
-                            config,
-                            coordinator,
-                            streamsMembershipManager,
-                            backgroundEventHandler,
-                            metrics,
-                            streamsRebalanceData.get()
+                                logContext,
+                                time,
+                                config,
+                                coordinator,
+                                streamsMembershipManager,
+                                backgroundEventHandler,
+                                metrics,
+                                streamsRebalanceData.get()
                         );
                     } else {
                         membershipManager = new ConsumerMembershipManager(
-                            groupRebalanceConfig.groupId,
-                            groupRebalanceConfig.groupInstanceId,
-                            groupRebalanceConfig.rackId,
-                            groupRebalanceConfig.rebalanceTimeoutMs,
-                            serverAssignor,
-                            subscriptions,
-                            commitRequestManager,
-                            metadata,
-                            logContext,
-                            backgroundEventHandler,
-                            time,
-                            metrics,
-                            config.getBoolean(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG));
+                                groupRebalanceConfig.groupId,
+                                groupRebalanceConfig.groupInstanceId,
+                                groupRebalanceConfig.rackId,
+                                groupRebalanceConfig.rebalanceTimeoutMs,
+                                serverAssignor,
+                                subscriptions,
+                                commitRequestManager,
+                                metadata,
+                                logContext,
+                                backgroundEventHandler,
+                                time,
+                                metrics,
+                                config.getBoolean(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG));
 
                         // Update the group member ID label in the client telemetry reporter.
                         // According to KIP-1082, the consumer will generate the member ID as the incarnation ID of the process.
                         // Therefore, we can update the group member ID during initialization.
                         if (clientTelemetryReporter.isPresent()) {
                             clientTelemetryReporter.get()
-                                .updateMetricsLabels(Map.of(ClientTelemetryProvider.GROUP_MEMBER_ID, membershipManager.memberId()));
+                                    .updateMetricsLabels(Map.of(ClientTelemetryProvider.GROUP_MEMBER_ID, membershipManager.memberId()));
                         }
 
                         membershipManager.registerStateListener(commitRequestManager);
                         membershipManager.registerStateListener(applicationThreadMemberStateListener);
                         heartbeatRequestManager = new ConsumerHeartbeatRequestManager(
-                            logContext,
-                            time,
-                            config,
-                            coordinator,
-                            subscriptions,
-                            membershipManager,
-                            backgroundEventHandler,
-                            metrics);
+                                logContext,
+                                time,
+                                config,
+                                coordinator,
+                                subscriptions,
+                                membershipManager,
+                                backgroundEventHandler,
+                                metrics);
                     }
                 }
 
                 final OffsetsRequestManager listOffsets = new OffsetsRequestManager(subscriptions,
-                    metadata,
-                    fetchConfig.isolationLevel,
-                    time,
-                    retryBackoffMs,
-                    requestTimeoutMs,
-                    defaultApiTimeoutMs,
-                    apiVersions,
-                    networkClientDelegate,
-                    commitRequestManager,
-                    positionsValidator,
-                    logContext);
+                        metadata,
+                        fetchConfig.isolationLevel,
+                        time,
+                        retryBackoffMs,
+                        requestTimeoutMs,
+                        defaultApiTimeoutMs,
+                        apiVersions,
+                        networkClientDelegate,
+                        commitRequestManager,
+                        positionsValidator,
+                        logContext);
 
                 return new RequestManagers(
                         logContext,

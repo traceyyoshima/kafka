@@ -104,11 +104,11 @@ public class RackAwarenessStreamsPartitionAssignorTest {
 
 
     private final Cluster metadata = new Cluster(
-            "cluster",
-            singletonList(Node.noNode()),
-            infos,
-            emptySet(),
-            emptySet());
+        "cluster",
+        singletonList(Node.noNode()),
+        infos,
+        emptySet(),
+        emptySet());
 
     private static final List<String> ALL_TAG_KEYS = new ArrayList<>();
     static {
@@ -169,10 +169,10 @@ public class RackAwarenessStreamsPartitionAssignorTest {
 
     private void overwriteInternalTopicManagerWithMock() {
         final MockInternalTopicManager mockInternalTopicManager = new MockInternalTopicManager(
-                time,
-                streamsConfig,
-                mockClientSupplier.restoreConsumer,
-                false
+            time,
+            streamsConfig,
+            mockClientSupplier.restoreConsumer,
+            false
         );
         partitionAssignor.setInternalTopicManager(mockInternalTopicManager);
     }
@@ -183,8 +183,8 @@ public class RackAwarenessStreamsPartitionAssignorTest {
 
         createMockTaskManager();
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(
-                Arrays.asList(APPLICATION_ID + "-store2-changelog", APPLICATION_ID + "-store3-changelog", APPLICATION_ID + "-store4-changelog"),
-                Arrays.asList(3, 3, 3)),
+            Arrays.asList(APPLICATION_ID + "-store2-changelog", APPLICATION_ID + "-store3-changelog", APPLICATION_ID + "-store4-changelog"),
+            Arrays.asList(3, 3, 3)),
             true);
         configurePartitionAssignorWith(Collections.singletonMap(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 1));
 
@@ -228,7 +228,7 @@ public class RackAwarenessStreamsPartitionAssignorTest {
 
         createMockTaskManager();
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(Arrays.asList(APPLICATION_ID + "-store0-changelog", APPLICATION_ID + "-store1-changelog", APPLICATION_ID + "-store2-changelog"),
-                Arrays.asList(3, 3, 3)),
+            Arrays.asList(3, 3, 3)),
             true);
         configurePartitionAssignorWith(Collections.singletonMap(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 1));
 
@@ -275,8 +275,8 @@ public class RackAwarenessStreamsPartitionAssignorTest {
 
         createMockTaskManager();
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(
-                Arrays.asList(APPLICATION_ID + "-store0-changelog", APPLICATION_ID + "-store1-changelog", APPLICATION_ID + "-store2-changelog"),
-                Arrays.asList(3, 3, 3)),
+            Arrays.asList(APPLICATION_ID + "-store0-changelog", APPLICATION_ID + "-store1-changelog", APPLICATION_ID + "-store2-changelog"),
+            Arrays.asList(3, 3, 3)),
             true);
         configurePartitionAssignorWith(Collections.singletonMap(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 2));
 
@@ -341,8 +341,8 @@ public class RackAwarenessStreamsPartitionAssignorTest {
 
         createMockTaskManager();
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(
-                Arrays.asList(APPLICATION_ID + "-store0-changelog", APPLICATION_ID + "-store1-changelog", APPLICATION_ID + "-store2-changelog"),
-                Arrays.asList(3, 3, 3)),
+            Arrays.asList(APPLICATION_ID + "-store0-changelog", APPLICATION_ID + "-store1-changelog", APPLICATION_ID + "-store2-changelog"),
+            Arrays.asList(3, 3, 3)),
             true);
         configurePartitionAssignorWith(Collections.singletonMap(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 2));
 
@@ -412,7 +412,7 @@ public class RackAwarenessStreamsPartitionAssignorTest {
 
     private void verifyIdealTaskDistributionReached(final Map<TaskId, ClientTagDistribution> taskClientTags,
                                                     final List<String> tagsToCheck) {
-        for (final Map.Entry<TaskId, ClientTagDistribution> entry: taskClientTags.entrySet()) {
+        for (final Map.Entry<TaskId, ClientTagDistribution> entry : taskClientTags.entrySet()) {
             if (!tagsAmongStandbysAreDifferent(entry.getValue(), tagsToCheck))
                 throw new AssertionError("task " + entry.getKey() + "'s tag-distribution for " + tagsToCheck +
                     " among standbys is not ideal: " + entry.getValue());
@@ -425,7 +425,7 @@ public class RackAwarenessStreamsPartitionAssignorTest {
 
     private void verifyPartialTaskDistributionReached(final Map<TaskId, ClientTagDistribution> taskClientTags,
                                                       final List<String> tagsToCheck) {
-        for (final Map.Entry<TaskId, ClientTagDistribution> entry: taskClientTags.entrySet()) {
+        for (final Map.Entry<TaskId, ClientTagDistribution> entry : taskClientTags.entrySet()) {
             if (!tagsAmongActiveAndAtLeastOneStandbyIsDifferent(entry.getValue(), tagsToCheck))
                 throw new AssertionError("task " + entry.getKey() + "'s tag-distribution for " + tagsToCheck +
                     "between active and standbys is not partially ideal: " + entry.getValue());

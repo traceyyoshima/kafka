@@ -51,7 +51,7 @@ public class DescribeUserScramCredentialsRequest extends AbstractRequest {
 
     public static DescribeUserScramCredentialsRequest parse(Readable readable, short version) {
         return new DescribeUserScramCredentialsRequest(new DescribeUserScramCredentialsRequestData(
-                readable, version), version);
+            readable, version), version);
     }
 
     @Override

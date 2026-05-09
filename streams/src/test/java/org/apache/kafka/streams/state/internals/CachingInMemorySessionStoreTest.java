@@ -439,9 +439,9 @@ public class CachingInMemorySessionStoreTest {
     public void shouldQueryItemsInCacheAndStore() {
         final List<KeyValue<Windowed<Bytes>, byte[]>> added = addSessionsUntilOverflow("a");
         final List<KeyValue<Windowed<Bytes>, byte[]>> actual = toListAndCloseIterator(cachingStore.findSessions(
-                Bytes.wrap("a".getBytes(StandardCharsets.UTF_8)),
-                0,
-                added.size() * 10L));
+            Bytes.wrap("a".getBytes(StandardCharsets.UTF_8)),
+            0,
+            added.size() * 10L));
         verifyKeyValueList(added, actual);
     }
 
@@ -665,9 +665,9 @@ public class CachingInMemorySessionStoreTest {
 
         assertEquals(
             asList(new KeyValueTimestamp<>(
-                    aDeserialized,
-                    new Change<>("1", null),
-                    DEFAULT_TIMESTAMP),
+                aDeserialized,
+                new Change<>("1", null),
+                DEFAULT_TIMESTAMP),
                 new KeyValueTimestamp<>(
                     aDeserialized,
                     new Change<>("2", null),
@@ -799,7 +799,7 @@ public class CachingInMemorySessionStoreTest {
             assertThat(
                 messages,
                 hasItem(
-                    "Returning empty iterator for fetch with invalid key range: from > to." +
+                        "Returning empty iterator for fetch with invalid key range: from > to." +
                         " This may be due to range arguments set in the wrong order, " +
                         "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes." +
                         " Note that the built-in numerical serdes do not follow this for negative numbers"

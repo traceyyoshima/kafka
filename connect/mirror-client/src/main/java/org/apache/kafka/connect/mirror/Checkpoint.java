@@ -97,8 +97,8 @@ public class Checkpoint {
     @Override
     public String toString() {
         return String.format("Checkpoint{consumerGroupId=%s, topicPartition=%s, "
-            + "upstreamOffset=%d, downstreamOffset=%d, metadata=%s}",
-            consumerGroupId, topicPartition, upstreamOffset, downstreamOffset, metadata);
+                + "upstreamOffset=%d, downstreamOffset=%d, metadata=%s}",
+                consumerGroupId, topicPartition, upstreamOffset, downstreamOffset, metadata);
     }
 
     ByteBuffer serializeValue(short version) {
@@ -134,7 +134,7 @@ public class Checkpoint {
         String topic = keyStruct.getString(TOPIC_KEY);
         int partition = keyStruct.getInt(PARTITION_KEY);
         return new Checkpoint(group, new TopicPartition(topic, partition), upstreamOffset,
-            downstreamOffset, metadata);
+                downstreamOffset, metadata);
     }
 
     private static Schema valueSchema(short version) {

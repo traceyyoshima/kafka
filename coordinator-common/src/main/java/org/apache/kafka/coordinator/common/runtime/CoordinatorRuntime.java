@@ -572,7 +572,7 @@ public class CoordinatorRuntime<S extends CoordinatorShard<U>, U> implements Aut
             loader.load(tp, coordinator).whenComplete((summary, exception) -> {
                 scheduleInternalOperation("CompleteLoad(tp=" + tp + ", epoch=" + epoch + ")", tp, () -> {
                     CoordinatorContext context = coordinators.get(tp);
-                    if (context != null)  {
+                    if (context != null) {
                         if (context.state != CoordinatorState.LOADING) {
                             log.info("Ignored load completion from {} because context is in {} state.",
                                 context.tp, context.state);
@@ -585,8 +585,8 @@ public class CoordinatorRuntime<S extends CoordinatorShard<U>, U> implements Aut
                                 runtimeMetrics.recordPartitionLoadSensor(summary.startTimeMs(), summary.endTimeMs());
                                 log.info("Finished loading of metadata from {} with epoch {} in {}ms where {}ms " +
                                         "was spent in the scheduler. Loaded {} records which total to {} bytes.",
-                                    tp, epoch, summary.endTimeMs() - summary.startTimeMs(),
-                                    summary.schedulerQueueTimeMs(), summary.numRecords(), summary.numBytes());
+                                        tp, epoch, summary.endTimeMs() - summary.startTimeMs(),
+                                        summary.schedulerQueueTimeMs(), summary.numRecords(), summary.numBytes());
                             }
                         } catch (Throwable ex) {
                             log.error("Failed to load metadata from {} with epoch {} due to {}.",

@@ -576,6 +576,7 @@ public class GroupCoordinatorServiceTest {
             future.get(5, TimeUnit.SECONDS)
         );
     }
+
     @Test
     public void testStreamsGroupHeartbeatFailsForUnsupportedFeatures() throws Exception {
 
@@ -3714,7 +3715,7 @@ public class GroupCoordinatorServiceTest {
         ReadShareGroupStateSummaryResult readShareGroupStateSummaryResult = ReadShareGroupStateSummaryResult.from(readShareGroupStateSummaryResponseData);
         when(persister.readSummary(
             ArgumentMatchers.eq(readShareGroupStateSummaryParameters)
-            )).thenReturn(CompletableFuture.completedFuture(readShareGroupStateSummaryResult));
+        )).thenReturn(CompletableFuture.completedFuture(readShareGroupStateSummaryResult));
 
         CompletableFuture<DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup> future =
             service.describeShareGroupOffsets(requestContext(ApiKeys.DESCRIBE_SHARE_GROUP_OFFSETS), requestData);
@@ -5308,7 +5309,7 @@ public class GroupCoordinatorServiceTest {
                     .setTopicId(TOPIC_ID)
                     .setPartitions(List.of(
                         new DeleteShareGroupStateResponseData.PartitionResult()
-                        .setPartition(partition)
+                            .setPartition(partition)
                             .setErrorCode(Errors.NONE.code())
                             .setErrorMessage(null)
                     ))

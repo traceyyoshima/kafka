@@ -102,7 +102,7 @@ public class BootstrapControllersIntegrationTest {
         Map<String, Object> config = Map.of(BOOTSTRAP_CONTROLLERS_CONFIG, clusterInstance.bootstrapServers());
         try (Admin admin = Admin.create(config)) {
             ExecutionException exception = assertThrows(ExecutionException.class,
-                () -> admin.describeCluster().clusterId().get(1, TimeUnit.MINUTES));
+                    () -> admin.describeCluster().clusterId().get(1, TimeUnit.MINUTES));
             assertNotNull(exception.getCause());
             assertEquals(MismatchedEndpointTypeException.class, exception.getCause().getClass());
             assertEquals("The request was sent to an endpoint of type BROKER, but we wanted " +
@@ -175,7 +175,7 @@ public class BootstrapControllersIntegrationTest {
     private void testUpdateFeatures(ClusterInstance clusterInstance, boolean usingBootstrapControllers) {
         try (Admin admin = Admin.create(adminConfig(clusterInstance, usingBootstrapControllers))) {
             UpdateFeaturesResult result = admin.updateFeatures(Map.of("foo.bar.feature",
-                            new FeatureUpdate((short) 1, FeatureUpdate.UpgradeType.UPGRADE)));
+                    new FeatureUpdate((short) 1, FeatureUpdate.UpgradeType.UPGRADE)));
             ExecutionException exception =
                     assertThrows(ExecutionException.class,
                             () -> result.all().get(1, TimeUnit.MINUTES));
@@ -211,7 +211,7 @@ public class BootstrapControllersIntegrationTest {
             ListOffsetsResult result = admin.listOffsets(Map.of(new TopicPartition("foo", 0), OffsetSpec.earliest()));
             ExecutionException exception =
                 assertThrows(ExecutionException.class,
-                    () -> result.all().get(1, TimeUnit.MINUTES));
+                        () -> result.all().get(1, TimeUnit.MINUTES));
             assertNotNull(exception.getCause());
             assertEquals(UnsupportedEndpointTypeException.class, exception.getCause().getClass());
             assertEquals("This Admin API is not yet supported when communicating directly with " +
@@ -369,16 +369,16 @@ public class BootstrapControllersIntegrationTest {
     }
 
     @ClusterTest(serverProperties = {
-        @ClusterConfigProperty(key = StandardAuthorizer.SUPER_USERS_CONFIG, value = "User:ANONYMOUS"),
-        @ClusterConfigProperty(key = AUTHORIZER_CLASS_NAME_CONFIG, value = "org.apache.kafka.metadata.authorizer.StandardAuthorizer")
+            @ClusterConfigProperty(key = StandardAuthorizer.SUPER_USERS_CONFIG, value = "User:ANONYMOUS"),
+            @ClusterConfigProperty(key = AUTHORIZER_CLASS_NAME_CONFIG, value = "org.apache.kafka.metadata.authorizer.StandardAuthorizer")
     })
     public void testAclsByControllers(ClusterInstance clusterInstance) throws Exception {
         testAcls(clusterInstance, true);
     }
 
     @ClusterTest(serverProperties = {
-        @ClusterConfigProperty(key = StandardAuthorizer.SUPER_USERS_CONFIG, value = "User:ANONYMOUS"),
-        @ClusterConfigProperty(key = AUTHORIZER_CLASS_NAME_CONFIG, value = "org.apache.kafka.metadata.authorizer.StandardAuthorizer")
+            @ClusterConfigProperty(key = StandardAuthorizer.SUPER_USERS_CONFIG, value = "User:ANONYMOUS"),
+            @ClusterConfigProperty(key = AUTHORIZER_CLASS_NAME_CONFIG, value = "org.apache.kafka.metadata.authorizer.StandardAuthorizer")
     })
     public void testAcls(ClusterInstance clusterInstance) throws Exception {
         testAcls(clusterInstance, false);
@@ -405,10 +405,10 @@ public class BootstrapControllersIntegrationTest {
     }
 
     @ClusterTest(
-        brokers = 2,
-        serverProperties = {
-            @ClusterConfigProperty(key = TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, value = "2")
-        }
+            brokers = 2,
+            serverProperties = {
+                    @ClusterConfigProperty(key = TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, value = "2")
+            }
     )
     public void testDescribeConfigs(ClusterInstance clusterInstance) throws Exception {
         try (Admin admin = Admin.create(adminConfig(clusterInstance, true))) {
@@ -439,17 +439,17 @@ public class BootstrapControllersIntegrationTest {
             int nodeId = clusterInstance.controllers().values().iterator().next().config().nodeId();
             ConfigResource nodeResource = new ConfigResource(BROKER, "" + nodeId);
             Map<ConfigResource, Collection<AlterConfigOp>> alterations = Map.of(
-                nodeResource, List.of(
-                    new AlterConfigOp(new ConfigEntry(QuotaConfig.LEADER_REPLICATION_THROTTLED_RATE_CONFIG, "16800"), AlterConfigOp.OpType.SET),
-                    new AlterConfigOp(new ConfigEntry(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_RATE_CONFIG, "16800"), AlterConfigOp.OpType.SET),
-                    new AlterConfigOp(new ConfigEntry(QuotaConfig.REPLICA_ALTER_LOG_DIRS_IO_MAX_BYTES_PER_SECOND_CONFIG, "16800"), AlterConfigOp.OpType.SET)
-                ));
+                    nodeResource, List.of(
+                            new AlterConfigOp(new ConfigEntry(QuotaConfig.LEADER_REPLICATION_THROTTLED_RATE_CONFIG, "16800"), AlterConfigOp.OpType.SET),
+                            new AlterConfigOp(new ConfigEntry(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_RATE_CONFIG, "16800"), AlterConfigOp.OpType.SET),
+                            new AlterConfigOp(new ConfigEntry(QuotaConfig.REPLICA_ALTER_LOG_DIRS_IO_MAX_BYTES_PER_SECOND_CONFIG, "16800"), AlterConfigOp.OpType.SET)
+                    ));
             admin.incrementalAlterConfigs(alterations).all().get(1, TimeUnit.MINUTES);
             TestUtils.retryOnExceptionWithTimeout(30_000, () -> {
                 Config config = admin.describeConfigs(List.of(nodeResource)).
                     all().get(1, TimeUnit.MINUTES).get(nodeResource);
                 Map<String, ConfigEntry> configEntries = config.entries().stream()
-                    .collect(Collectors.toMap(ConfigEntry::name, e -> e));
+                        .collect(Collectors.toMap(ConfigEntry::name, e -> e));
                 assertFalse(configEntries.get(QuotaConfig.LEADER_REPLICATION_THROTTLED_RATE_CONFIG).isReadOnly());
                 assertFalse(configEntries.get(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_RATE_CONFIG).isReadOnly());
                 assertFalse(configEntries.get(QuotaConfig.REPLICA_ALTER_LOG_DIRS_IO_MAX_BYTES_PER_SECOND_CONFIG).isReadOnly());

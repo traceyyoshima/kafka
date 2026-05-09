@@ -201,7 +201,7 @@ public class TransactionIndex implements Closeable {
 
     private FileChannel openChannel() throws IOException {
         FileChannel channel = FileChannel.open(file.toPath(), StandardOpenOption.CREATE,
-                StandardOpenOption.READ, StandardOpenOption.WRITE);
+            StandardOpenOption.READ, StandardOpenOption.WRITE);
         maybeChannel = Optional.of(channel);
         channel.position(channel.size());
         return channel;

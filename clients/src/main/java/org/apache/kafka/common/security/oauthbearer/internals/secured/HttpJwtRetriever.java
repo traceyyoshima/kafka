@@ -180,7 +180,7 @@ public class HttpJwtRetriever implements JwtRetriever {
         String requestBody,
         Integer connectTimeoutMs,
         Integer readTimeoutMs)
-        throws IOException, UnretryableException {
+            throws IOException, UnretryableException {
         handleInput(con, headers, requestBody, connectTimeoutMs, readTimeoutMs);
         return handleOutput(con);
     }
@@ -190,7 +190,7 @@ public class HttpJwtRetriever implements JwtRetriever {
         String requestBody,
         Integer connectTimeoutMs,
         Integer readTimeoutMs)
-        throws IOException, UnretryableException {
+            throws IOException, UnretryableException {
         log.debug("handleInput - starting post for {}", con.getURL());
         con.setRequestMethod("POST");
         con.setRequestProperty("Accept", "application/json");

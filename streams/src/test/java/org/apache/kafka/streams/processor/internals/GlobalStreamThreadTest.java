@@ -413,16 +413,16 @@ public class GlobalStreamThreadTest {
         };
         final StateStore globalStore = builder.globalStateStores().get(GLOBAL_STORE_NAME);
         globalStreamThread = new GlobalStreamThread(
-                builder.buildGlobalStateTopology(),
-                config,
-                consumer,
-                new StateDirectory(config, time, true, false),
-                0,
-                new StreamsMetricsImpl(new Metrics(), "test-client", time),
-                time,
-                "clientId",
-                stateRestoreListener,
-                e -> { }
+            builder.buildGlobalStateTopology(),
+            config,
+            consumer,
+            new StateDirectory(config, time, true, false),
+            0,
+            new StreamsMetricsImpl(new Metrics(), "test-client", time),
+            time,
+            "clientId",
+            stateRestoreListener,
+            e -> { }
         );
 
         try {

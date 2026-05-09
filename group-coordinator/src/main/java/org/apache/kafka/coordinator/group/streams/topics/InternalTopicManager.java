@@ -309,11 +309,13 @@ public class InternalTopicManager {
         return new ConfiguredInternalTopic(
             topicInfo.name(),
             topicInfo.partitions() == 0 ? decidedPartitionCountsForInternalTopics.get(topicInfo.name()) : topicInfo.partitions(),
-            topicInfo.replicationFactor() == 0 ? Optional.empty()
+            topicInfo.replicationFactor() == 0
+                ? Optional.empty()
                 : Optional.of(topicInfo.replicationFactor()),
-            topicInfo.topicConfigs() != null ? topicInfo.topicConfigs().stream()
-                .collect(Collectors.toMap(StreamsGroupTopologyValue.TopicConfig::key,
-                    StreamsGroupTopologyValue.TopicConfig::value))
+            topicInfo.topicConfigs() != null
+                ? topicInfo.topicConfigs().stream()
+                    .collect(Collectors.toMap(StreamsGroupTopologyValue.TopicConfig::key,
+                        StreamsGroupTopologyValue.TopicConfig::value))
                 : Map.of()
         );
     }

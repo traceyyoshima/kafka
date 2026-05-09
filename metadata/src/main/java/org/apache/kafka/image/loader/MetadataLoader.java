@@ -301,12 +301,12 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
             // Reschedule the initialization for later.
             log.debug("InitializeNewPublishers: unable to initialize new publisher(s) {} " +
                             "because we are still catching up with quorum metadata. Rescheduling.",
-                    uninitializedPublisherNames());
+                uninitializedPublisherNames());
             scheduleInitializeNewPublishers(TimeUnit.MILLISECONDS.toNanos(100));
             return;
         }
         log.debug("InitializeNewPublishers: setting up snapshot image for new publisher(s): {}",
-                uninitializedPublisherNames());
+            uninitializedPublisherNames());
         long startNs = time.nanoseconds();
         // We base this delta off of the empty image, reflecting the fact that these publishers
         // haven't seen anything previously.
@@ -320,10 +320,10 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                 build());
         // ImageReWriter#close invokes finishSnapshot, so we don't need to invoke it here.
         SnapshotManifest manifest = new SnapshotManifest(
-                image.provenance(),
-                time.nanoseconds() - startNs);
+            image.provenance(),
+            time.nanoseconds() - startNs);
         for (Iterator<MetadataPublisher> iter = uninitializedPublishers.values().iterator();
-                iter.hasNext(); ) {
+                iter.hasNext();) {
             MetadataPublisher publisher = iter.next();
             iter.remove();
             try {
@@ -460,8 +460,8 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
      * @return          A manifest of what was loaded.
      */
     SnapshotManifest loadSnapshot(
-            MetadataDelta delta,
-            SnapshotReader<ApiMessageAndVersion> reader
+        MetadataDelta delta,
+        SnapshotReader<ApiMessageAndVersion> reader
     ) {
         long startNs = time.nanoseconds();
         int snapshotIndex = 0;
@@ -480,9 +480,9 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         }
         delta.finishSnapshot();
         MetadataProvenance provenance = new MetadataProvenance(reader.lastContainedLogOffset(),
-                reader.lastContainedLogEpoch(), reader.lastContainedLogTimestamp(), true);
+            reader.lastContainedLogEpoch(), reader.lastContainedLogTimestamp(), true);
         return new SnapshotManifest(provenance,
-                time.nanoseconds() - startNs);
+            time.nanoseconds() - startNs);
     }
 
     void loadControlRecords(Batch<ApiMessageAndVersion> batch) {
@@ -604,12 +604,12 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         @Override
         public void run() throws Exception {
             for (Iterator<MetadataPublisher> iter = uninitializedPublishers.values().iterator();
-                 iter.hasNext(); ) {
+                 iter.hasNext();) {
                 closePublisher(iter.next());
                 iter.remove();
             }
             for (Iterator<MetadataPublisher> iter = publishers.values().iterator();
-                 iter.hasNext(); ) {
+                 iter.hasNext();) {
                 closePublisher(iter.next());
                 iter.remove();
             }

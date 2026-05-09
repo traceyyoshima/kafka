@@ -199,18 +199,18 @@ public class KGroupedTableImpl<K, V> extends AbstractStream<K, V> implements KGr
 
     @Override
     public <VAgg> KTable<K, VAgg> aggregate(final Initializer<VAgg> initializer,
-                                        final Aggregator<? super K, ? super V, VAgg> adder,
-                                        final Aggregator<? super K, ? super V, VAgg> subtractor,
-                                        final Materialized<K, VAgg, KeyValueStore<Bytes, byte[]>> materialized) {
+                                            final Aggregator<? super K, ? super V, VAgg> adder,
+                                            final Aggregator<? super K, ? super V, VAgg> subtractor,
+                                            final Materialized<K, VAgg, KeyValueStore<Bytes, byte[]>> materialized) {
         return aggregate(initializer, adder, subtractor, NamedInternal.empty(), materialized);
     }
 
     @Override
     public <VAgg> KTable<K, VAgg> aggregate(final Initializer<VAgg> initializer,
-                                        final Aggregator<? super K, ? super V, VAgg> adder,
-                                        final Aggregator<? super K, ? super V, VAgg> subtractor,
-                                        final Named named,
-                                        final Materialized<K, VAgg, KeyValueStore<Bytes, byte[]>> materialized) {
+                                            final Aggregator<? super K, ? super V, VAgg> adder,
+                                            final Aggregator<? super K, ? super V, VAgg> subtractor,
+                                            final Named named,
+                                            final Materialized<K, VAgg, KeyValueStore<Bytes, byte[]>> materialized) {
         Objects.requireNonNull(initializer, "initializer can't be null");
         Objects.requireNonNull(adder, "adder can't be null");
         Objects.requireNonNull(subtractor, "subtractor can't be null");
@@ -233,16 +233,16 @@ public class KGroupedTableImpl<K, V> extends AbstractStream<K, V> implements KGr
 
     @Override
     public <VAgg> KTable<K, VAgg> aggregate(final Initializer<VAgg> initializer,
-                                      final Aggregator<? super K, ? super V, VAgg> adder,
-                                      final Aggregator<? super K, ? super V, VAgg> subtractor,
-                                      final Named named) {
+                                            final Aggregator<? super K, ? super V, VAgg> adder,
+                                            final Aggregator<? super K, ? super V, VAgg> subtractor,
+                                            final Named named) {
         return aggregate(initializer, adder, subtractor, named, Materialized.with(keySerde, null));
     }
 
     @Override
     public <VAgg> KTable<K, VAgg> aggregate(final Initializer<VAgg> initializer,
-                                      final Aggregator<? super K, ? super V, VAgg> adder,
-                                      final Aggregator<? super K, ? super V, VAgg> subtractor) {
+                                            final Aggregator<? super K, ? super V, VAgg> adder,
+                                            final Aggregator<? super K, ? super V, VAgg> subtractor) {
         return aggregate(initializer, adder, subtractor, Materialized.with(keySerde, null));
     }
 

@@ -68,7 +68,7 @@ public final class MetaPropertiesEnsembleTest {
                         setNodeId(2).
                         build())).collect(Collectors.
                             toMap(Entry::getKey, Entry::getValue)),
-                Optional.of("/tmp/dir4"));
+            Optional.of("/tmp/dir4"));
 
     private static String createLogDir(MetaProperties metaProps) throws IOException {
         File logDir = TestUtils.tempDirectory();
@@ -206,8 +206,8 @@ public final class MetaPropertiesEnsembleTest {
         assertEquals("Found unexpected version in /tmp/dir4/meta.properties. ZK-based brokers " +
             "that are not migrating only support version 0 (which is implicit when the " +
             "`version` field is missing).",
-                assertThrows(RuntimeException.class, () ->
-                    FOO.verify(Optional.empty(), OptionalInt.empty(), EnumSet.of(REQUIRE_V0))).
+            assertThrows(RuntimeException.class, () ->
+                FOO.verify(Optional.empty(), OptionalInt.empty(), EnumSet.of(REQUIRE_V0))).
                         getMessage());
     }
 
@@ -440,8 +440,8 @@ public final class MetaPropertiesEnsembleTest {
         copier.setLogDirProps(dir0, SAMPLE_META_PROPS_LIST.get(2));
         copier.writeLogDirChanges();
         assertEquals(SAMPLE_META_PROPS_LIST.get(2).toProperties(), PropertiesUtils.readPropertiesFile(
-                new File(dir0, META_PROPERTIES_NAME).getAbsolutePath()));
+            new File(dir0, META_PROPERTIES_NAME).getAbsolutePath()));
         assertEquals(SAMPLE_META_PROPS_LIST.get(1).toProperties(), PropertiesUtils.readPropertiesFile(
-                new File(dir1, META_PROPERTIES_NAME).getAbsolutePath()));
+            new File(dir1, META_PROPERTIES_NAME).getAbsolutePath()));
     }
 }

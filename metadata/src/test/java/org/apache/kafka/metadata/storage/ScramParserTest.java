@@ -121,12 +121,13 @@ public class ScramParserTest {
             Optional.of("my pass"),
             Optional.empty()).iterations());
     }
+
     @Test
     public void testParsePerMechanismArgument() {
         assertEquals(new AbstractMap.SimpleImmutableEntry<>(
             ScramMechanism.SCRAM_SHA_512, "name=scram-admin,password=scram-user-secret"),
-                ScramParser.parsePerMechanismArgument(
-                    "SCRAM-SHA-512=[name=scram-admin,password=scram-user-secret]"));
+            ScramParser.parsePerMechanismArgument(
+                "SCRAM-SHA-512=[name=scram-admin,password=scram-user-secret]"));
     }
 
     @Test
@@ -170,7 +171,7 @@ public class ScramParserTest {
             OptionalInt.empty(),
             Optional.of("mypass"),
             Optional.empty()),
-                new PerMechanismData(ScramMechanism.SCRAM_SHA_256, "name=bob,password=mypass"));
+            new PerMechanismData(ScramMechanism.SCRAM_SHA_256, "name=bob,password=mypass"));
     }
 
     @Test
@@ -208,8 +209,8 @@ public class ScramParserTest {
             OptionalInt.of(8192),
             Optional.of("my pass"),
             Optional.empty()),
-                new PerMechanismData(ScramMechanism.SCRAM_SHA_256,
-                    "name=bob,password=my pass,iterations=8192"));
+            new PerMechanismData(ScramMechanism.SCRAM_SHA_256,
+                "name=bob,password=my pass,iterations=8192"));
     }
 
     @Test
@@ -220,8 +221,8 @@ public class ScramParserTest {
             OptionalInt.empty(),
             Optional.of("my pass"),
             Optional.empty()),
-                new PerMechanismData(ScramMechanism.SCRAM_SHA_512,
-                    "name=bob,password=my pass,salt=\"MWx2NHBkbnc0ZndxN25vdGN4bTB5eTFrN3E=\""));
+            new PerMechanismData(ScramMechanism.SCRAM_SHA_512,
+                "name=bob,password=my pass,salt=\"MWx2NHBkbnc0ZndxN25vdGN4bTB5eTFrN3E=\""));
     }
 
     @Test
@@ -232,8 +233,8 @@ public class ScramParserTest {
             OptionalInt.of(8192),
             Optional.of("my pass"),
             Optional.empty()),
-                new PerMechanismData(ScramMechanism.SCRAM_SHA_256,
-                    "name=bob,password=my pass,iterations=8192,salt=\"MWx2NHBkbnc0ZndxN25vdGN4bTB5eTFrN3E=\""));
+            new PerMechanismData(ScramMechanism.SCRAM_SHA_256,
+                "name=bob,password=my pass,iterations=8192,salt=\"MWx2NHBkbnc0ZndxN25vdGN4bTB5eTFrN3E=\""));
     }
 
     @Test
@@ -253,8 +254,8 @@ public class ScramParserTest {
             OptionalInt.empty(),
             Optional.empty(),
             Optional.of(TEST_SALTED_PASSWORD)),
-                new PerMechanismData(ScramMechanism.SCRAM_SHA_256,
-                    "name=alice,salt=\"MWx2NHBkbnc0ZndxN25vdGN4bTB5eTFrN3E=\"," +
+            new PerMechanismData(ScramMechanism.SCRAM_SHA_256,
+                "name=alice,salt=\"MWx2NHBkbnc0ZndxN25vdGN4bTB5eTFrN3E=\"," +
                         "saltedpassword=\"mT0yyUUxnlJaC99HXgRTSYlbuqa4FSGtJCJfTMvjYCE=\""));
     }
 
@@ -268,11 +269,11 @@ public class ScramParserTest {
             setStoredKey(formatter.storedKey(formatter.clientKey(TEST_SALTED_PASSWORD))).
             setServerKey(formatter.serverKey(TEST_SALTED_PASSWORD)).
             setIterations(4096),
-                new PerMechanismData(ScramMechanism.SCRAM_SHA_512,
-                    "alice",
-                    Optional.of(TEST_SALT),
-                    OptionalInt.empty(),
-                    Optional.empty(),
-                    Optional.of(TEST_SALTED_PASSWORD)).toRecord());
+            new PerMechanismData(ScramMechanism.SCRAM_SHA_512,
+                "alice",
+                Optional.of(TEST_SALT),
+                OptionalInt.empty(),
+                Optional.empty(),
+                Optional.of(TEST_SALTED_PASSWORD)).toRecord());
     }
 }

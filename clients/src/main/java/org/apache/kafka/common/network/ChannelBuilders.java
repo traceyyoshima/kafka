@@ -77,7 +77,7 @@ public class ChannelBuilders {
                 throw new IllegalArgumentException("`clientSaslMechanism` must be non-null in client mode if `securityProtocol` is `" + securityProtocol + "`");
         }
         return create(securityProtocol, ConnectionMode.CLIENT, contextType, config, listenerName, false, clientSaslMechanism,
-            null, null, time, logContext, null);
+                null, null, time, logContext, null);
     }
 
     /**
@@ -201,13 +201,13 @@ public class ChannelBuilders {
             parsedConfigs = config.valuesWithPrefixOverride(listenerName.configPrefix());
 
         config.originals().entrySet().stream()
-            .filter(e -> !parsedConfigs.containsKey(e.getKey())) // exclude already parsed configs
+                .filter(e -> !parsedConfigs.containsKey(e.getKey())) // exclude already parsed configs
             // exclude already parsed listener prefix configs
             .filter(e -> !(listenerName != null && e.getKey().startsWith(listenerName.configPrefix()) &&
                 parsedConfigs.containsKey(e.getKey().substring(listenerName.configPrefix().length()))))
             // exclude keys like `{mechanism}.some.prop` if "listener.name." prefix is present and key `some.prop` exists in parsed configs.
             .filter(e -> !(listenerName != null && parsedConfigs.containsKey(e.getKey().substring(e.getKey().indexOf('.') + 1))))
-            .forEach(e -> parsedConfigs.put(e.getKey(), e.getValue()));
+                .forEach(e -> parsedConfigs.put(e.getKey(), e.getValue()));
         return parsedConfigs;
     }
 

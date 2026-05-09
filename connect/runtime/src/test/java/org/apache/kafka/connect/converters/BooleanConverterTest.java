@@ -48,8 +48,8 @@ public class BooleanConverterTest {
     @Test
     public void testFromConnect() {
         assertArrayEquals(
-                TRUE,
-                converter.fromConnectData(TOPIC, Schema.BOOLEAN_SCHEMA, Boolean.TRUE)
+            TRUE,
+            converter.fromConnectData(TOPIC, Schema.BOOLEAN_SCHEMA, Boolean.TRUE)
         );
         assertArrayEquals(
             FALSE,

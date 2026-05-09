@@ -239,7 +239,7 @@ public class PlaintextConsumerTest {
 
             // Close should not hang waiting for retries when broker is already down
             assertTimeoutPreemptively(Duration.ofSeconds(5), () -> consumer.close(),
-                    "Consumer close should not wait for full timeout when broker is already shutdown");
+                "Consumer close should not wait for full timeout when broker is already shutdown");
         }
     }
 
@@ -1862,7 +1862,7 @@ public class PlaintextConsumerTest {
             consumer2.subscribe(List.of(TOPIC));
             OffsetAndMetadata committed = consumer2.committed(Set.of(TP)).get(TP);
             assertNull(committed,
-                    "unsubscribe() should not commit offsets even when auto-commit is enabled");
+                       "unsubscribe() should not commit offsets even when auto-commit is enabled");
         }
     }
 

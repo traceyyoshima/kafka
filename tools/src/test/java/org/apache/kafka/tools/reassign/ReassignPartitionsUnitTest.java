@@ -162,7 +162,7 @@ public class ReassignPartitionsUnitTest {
             reassignments.put(new TopicPartition("foo", 0), List.of(0, 1, 3));
             reassignments.put(new TopicPartition("quux", 0), List.of(1, 2, 3));
 
-            Map<TopicPartition, Throwable> reassignmentResult = alterPartitionReassignments(adminClient, reassignments,  false);
+            Map<TopicPartition, Throwable> reassignmentResult = alterPartitionReassignments(adminClient, reassignments, false);
 
             assertEquals(1, reassignmentResult.size());
             assertEquals(UnknownTopicOrPartitionException.class, reassignmentResult.get(new TopicPartition("quux", 0)).getClass());
@@ -216,14 +216,14 @@ public class ReassignPartitionsUnitTest {
                     List.of("/tmp/kafka-logs0", "/tmp/kafka-logs1"),
                     List.of("/tmp/kafka-logs0", "/tmp/kafka-logs1"),
                     Arrays.asList("/tmp/kafka-logs0", null)))
-                .build()) {
+            .build()) {
 
             addTopics(adminClient);
             List<Node> b = adminClient.brokers();
             adminClient.addTopic(false, "quux", List.of(
-                    new TopicPartitionInfo(0, b.get(2),
-                        List.of(b.get(1), b.get(2), b.get(3)),
-                        List.of(b.get(1), b.get(2), b.get(3)))),
+                new TopicPartitionInfo(0, b.get(2),
+                    List.of(b.get(1), b.get(2), b.get(3)),
+                    List.of(b.get(1), b.get(2), b.get(3)))),
                 Map.of());
 
             Map<TopicPartitionReplica, String> replicaAssignment = new HashMap<>();
@@ -304,7 +304,7 @@ public class ReassignPartitionsUnitTest {
                 ReassignPartitionsCommand.getReplicasForPartitions(
                     adminClient,
                     Set.of(new TopicPartition("foo", 0), new TopicPartition("bar", 0))
-            ));
+                ));
             assertEquals(
                 assignments,
                 actualAssignments

@@ -281,8 +281,8 @@ public class PositionTest {
                     // update the shared position using withComponent
                     for (final String topic : threadPosition.getTopics()) {
                         for (final Map.Entry<Integer, Long> partitionOffset : threadPosition
-                                .getPartitionPositions(topic)
-                                .entrySet()) {
+                            .getPartitionPositions(topic)
+                            .entrySet()) {
                             withComponentPosition.withComponent(topic, partitionOffset.getKey(), partitionOffset.getValue());
                         }
                     }
@@ -301,12 +301,12 @@ public class PositionTest {
 
                             // merge checks
                             assertTrue(
-                                    mergedOffsets.containsKey(partition),
-                                    "merge method failure. Missing partition " + partition + " for topic " + topic
+                                mergedOffsets.containsKey(partition),
+                                "merge method failure. Missing partition " + partition + " for topic " + topic
                             );
                             assertTrue(
-                                    mergedOffsets.get(partition) >= offsetValue,
-                                    "merge method failure. Offset for topic " +
+                                mergedOffsets.get(partition) >= offsetValue,
+                                "merge method failure. Offset for topic " +
                                             topic +
                                             " partition " +
                                             partition +
@@ -318,12 +318,12 @@ public class PositionTest {
 
                             // withComponent checks
                             assertTrue(
-                                    withComponentOffsets.containsKey(partition),
-                                    "withComponent method failure. Missing partition " + partition + " for topic " + topic
+                                withComponentOffsets.containsKey(partition),
+                                "withComponent method failure. Missing partition " + partition + " for topic " + topic
                             );
                             assertTrue(
-                                    withComponentOffsets.get(partition) >= offsetValue,
-                                    "withComponent method failure. Offset for topic " +
+                                withComponentOffsets.get(partition) >= offsetValue,
+                                "withComponent method failure. Offset for topic " +
                                             topic +
                                             " partition " +
                                             partition +

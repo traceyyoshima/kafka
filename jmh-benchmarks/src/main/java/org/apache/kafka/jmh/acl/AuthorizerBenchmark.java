@@ -152,7 +152,7 @@ public class AuthorizerBenchmark {
 
             if (shouldDeny()) {
                 entriesPrefix.add(new AccessControlEntry(principal.toString(), "127.0.0." + hostId,
-                        AclOperation.READ, AclPermissionType.DENY));
+                    AclOperation.READ, AclPermissionType.DENY));
             }
         }
 
@@ -173,7 +173,7 @@ public class AuthorizerBenchmark {
             entriesWildcard.add(new AccessControlEntry(allowAce.principal(), allowAce.host(), allowAce.operation(), allowAce.permissionType()));
             if (shouldDeny()) {
                 entriesWildcard.add(new AccessControlEntry(principal.toString(), hostName,
-                        AclOperation.READ, AclPermissionType.DENY));
+                    AclOperation.READ, AclPermissionType.DENY));
             }
         }
 

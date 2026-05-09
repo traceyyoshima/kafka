@@ -61,16 +61,16 @@ public class RecordDeserializerTest {
     private final TaskId taskId = new TaskId(0, 0);
     private final RecordHeaders headers = new RecordHeaders(new Header[]{new RecordHeader("key", "value".getBytes())});
     private final ConsumerRecord<byte[], byte[]> rawRecord = new ConsumerRecord<>("topic",
-        1,
-        1,
-        10,
-        TimestampType.LOG_APPEND_TIME,
-        3,
-        5,
-        new byte[0],
-        new byte[0],
-        headers,
-        Optional.of(5));
+            1,
+            1,
+            10,
+            TimestampType.LOG_APPEND_TIME,
+            3,
+            5,
+            new byte[0],
+            new byte[0],
+            headers,
+            Optional.of(5));
 
     private final InternalProcessorContext<Void, Void> context = new InternalMockProcessorContext<>();
 
@@ -104,9 +104,9 @@ public class RecordDeserializerTest {
 
     @ParameterizedTest
     @CsvSource({
-        "true, true",
-        "true, false",
-        "false, true",
+            "true, true",
+            "true, false",
+            "false, true",
     })
     public void shouldThrowStreamsExceptionWhenDeserializationFailsAndExceptionHandlerRepliesWithFail(final boolean keyThrowsException,
                                                                                                       final boolean valueThrowsException) {
@@ -131,10 +131,10 @@ public class RecordDeserializerTest {
 
             final StreamsException e = assertThrows(StreamsException.class, () -> recordDeserializer.deserialize(context, rawRecord));
             assertEquals("Deserialization exception handler is set "
-                            + "to fail upon a deserialization error. "
-                            + "If you would rather have the streaming pipeline "
-                            + "continue after a deserialization error, please set the "
-                            + DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG + " appropriately.",
+                         + "to fail upon a deserialization error. "
+                         + "If you would rather have the streaming pipeline "
+                         + "continue after a deserialization error, please set the "
+                         + DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG + " appropriately.",
                     e.getMessage()
             );
         }
@@ -142,9 +142,9 @@ public class RecordDeserializerTest {
 
     @ParameterizedTest
     @CsvSource({
-        "true, true",
-        "true, false",
-        "false, true"
+            "true, true",
+            "true, false",
+            "false, true"
     })
     public void shouldNotThrowStreamsExceptionWhenDeserializationFailsAndExceptionHandlerRepliesWithContinue(final boolean keyThrowsException,
                                                                                                              final boolean valueThrowsException) {

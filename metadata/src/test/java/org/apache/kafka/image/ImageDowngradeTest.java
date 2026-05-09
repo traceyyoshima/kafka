@@ -58,10 +58,10 @@ public class ImageDowngradeTest {
     }
 
     static final List<ApiMessageAndVersion> TEST_RECORDS = List.of(
-            new ApiMessageAndVersion(new TopicRecord().
+        new ApiMessageAndVersion(new TopicRecord().
                     setName("foo").
                     setTopicId(Uuid.fromString("5JPuABiJTPu2pQjpZWM6_A")), (short) 0),
-            new ApiMessageAndVersion(new PartitionRecord().
+        new ApiMessageAndVersion(new PartitionRecord().
                     setTopicId(Uuid.fromString("5JPuABiJTPu2pQjpZWM6_A")).
                     setReplicas(List.of(0, 1)).
                     setIsr(List.of(0, 1)).

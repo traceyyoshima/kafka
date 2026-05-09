@@ -193,7 +193,7 @@ public class ExternalCommandWorker implements TaskWorker {
         public void run() {
             log.trace("{}: starting stdout monitor.", id);
             try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
+                new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
                 String line;
                 while (true) {
                     try {

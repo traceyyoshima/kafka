@@ -63,9 +63,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(serverProperties = {
-    @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
-    @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
-    @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "4")
+        @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
+        @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
+        @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "4")
 })
 public class GetOffsetShellTest {
     private final int topicCount = 4;
@@ -219,8 +219,7 @@ public class GetOffsetShellTest {
             List<Row> offsets = executeAndParse("--topic", getTopicName(i));
 
             assertEquals(expectedOffsetsForTopic(i), offsets, () -> "Offset output did not match for " + getTopicName(i));
-            }
-        );
+        });
     }
 
     @ClusterTest
@@ -377,7 +376,7 @@ public class GetOffsetShellTest {
             // as remote log disabled, broker returns unknown offset of each topic partition and these
             // unknown offsets are ignore by GetOffsetShell, hence we have empty result here.
             assertEquals(List.of(),
-                executeAndParse("--topic-partitions", "topic\\d+:0", "--time", time));
+                    executeAndParse("--topic-partitions", "topic\\d+:0", "--time", time));
 
             // test topics enable remote log storage
             TestUtils.waitForCondition(() ->

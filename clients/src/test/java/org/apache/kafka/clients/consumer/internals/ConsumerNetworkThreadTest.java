@@ -84,14 +84,14 @@ public class ConsumerNetworkThreadTest {
         LogContext logContext = new LogContext();
 
         this.consumerNetworkThread = new ConsumerNetworkThread(
-                logContext,
-                time,
-                applicationEventQueue,
-                applicationEventReaper,
-                () -> applicationEventProcessor,
-                () -> networkClientDelegate,
-                () -> requestManagers,
-                asyncConsumerMetrics
+            logContext,
+            time,
+            applicationEventQueue,
+            applicationEventReaper,
+            () -> applicationEventProcessor,
+            () -> networkClientDelegate,
+            () -> requestManagers,
+            asyncConsumerMetrics
         );
     }
 
@@ -147,12 +147,12 @@ public class ConsumerNetworkThreadTest {
         // There's a nonzero amount of time between starting the thread and having it
         // begin to execute our code. Wait for a bit before checking...
         TestUtils.waitForCondition(isStarted,
-                "The consumer network thread did not start within " + DEFAULT_MAX_WAIT_MS + " ms");
+            "The consumer network thread did not start within " + DEFAULT_MAX_WAIT_MS + " ms");
 
         consumerNetworkThread.close(Duration.ofMillis(DEFAULT_MAX_WAIT_MS));
 
         TestUtils.waitForCondition(isClosed,
-                "The consumer network thread did not stop within " + DEFAULT_MAX_WAIT_MS + " ms");
+            "The consumer network thread did not stop within " + DEFAULT_MAX_WAIT_MS + " ms");
     }
 
     @Test
@@ -213,14 +213,14 @@ public class ConsumerNetworkThreadTest {
         try (Metrics metrics = new Metrics();
              AsyncConsumerMetrics asyncConsumerMetrics = new AsyncConsumerMetrics(metrics, groupName);
              ConsumerNetworkThread consumerNetworkThread = new ConsumerNetworkThread(
-                     new LogContext(),
-                     time,
-                     applicationEventQueue,
-                     applicationEventReaper,
-                     () -> applicationEventProcessor,
-                     () -> networkClientDelegate,
-                     () -> requestManagers,
-                     asyncConsumerMetrics
+                 new LogContext(),
+                 time,
+                 applicationEventQueue,
+                 applicationEventReaper,
+                 () -> applicationEventProcessor,
+                 () -> networkClientDelegate,
+                 () -> requestManagers,
+                 asyncConsumerMetrics
              )) {
             consumerNetworkThread.initializeResources();
 
@@ -248,14 +248,14 @@ public class ConsumerNetworkThreadTest {
         try (Metrics metrics = new Metrics();
              AsyncConsumerMetrics asyncConsumerMetrics = new AsyncConsumerMetrics(metrics, groupName);
              ConsumerNetworkThread consumerNetworkThread = new ConsumerNetworkThread(
-                     new LogContext(),
-                     time,
-                     applicationEventQueue,
-                     applicationEventReaper,
-                     () -> applicationEventProcessor,
-                     () -> networkClientDelegate,
-                     () -> requestManagers,
-                     asyncConsumerMetrics
+                 new LogContext(),
+                 time,
+                 applicationEventQueue,
+                 applicationEventReaper,
+                 () -> applicationEventProcessor,
+                 () -> networkClientDelegate,
+                 () -> requestManagers,
+                 asyncConsumerMetrics
              )) {
             consumerNetworkThread.initializeResources();
 

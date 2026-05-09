@@ -184,7 +184,7 @@ public class ProducerSendWhileDeletionTest {
             try (var producer = createProducer()) {
                 for (int i = 1; i <= numRecords; i++) {
                     producer.send(new ProducerRecord<>(topic, null, ("value" + i).getBytes()),
-                            (metadata, exception) -> numAcks.incrementAndGet()
+                        (metadata, exception) -> numAcks.incrementAndGet()
                     );
                 }
                 producer.flush();
@@ -247,31 +247,31 @@ public class ProducerSendWhileDeletionTest {
         TestUtils.waitForCondition(() -> 
             cluster.brokers().values().stream()
                 .allMatch(broker -> topicPartitions.stream()
-                        .allMatch(tp -> broker.replicaManager().onlinePartition(tp).isEmpty())
+                    .allMatch(tp -> broker.replicaManager().onlinePartition(tp).isEmpty())
             ), "Replica manager's should have deleted all of this topic's partitions");
 
         // ensure that logs from all replicas are deleted
         TestUtils.waitForCondition(() -> cluster.brokers().values().stream()
             .allMatch(broker -> topicPartitions.stream()
-                    .allMatch(tp -> broker.logManager().getLog(tp, false).isEmpty())
+                .allMatch(tp -> broker.logManager().getLog(tp, false).isEmpty())
             ), "Replica logs not deleted after delete topic is complete");
 
         // ensure that topic is removed from all cleaner offsets
         TestUtils.waitForCondition(() -> cluster.brokers().values().stream()
             .allMatch(broker -> topicPartitions.stream()
-                    .allMatch(tp -> partitionNotInCheckpoint(broker, tp))
+                .allMatch(tp -> partitionNotInCheckpoint(broker, tp))
             ), "Cleaner offset for deleted partition should have been removed");
 
         TestUtils.waitForCondition(() -> cluster.brokers().values().stream()
             .allMatch(broker -> broker.config().logDirs().stream()
-                    .allMatch(logDir -> topicPartitions.stream().noneMatch(tp ->
-                            new File(logDir, tp.topic() + "-" + tp.partition()).exists())
+                .allMatch(logDir -> topicPartitions.stream().noneMatch(tp ->
+                    new File(logDir, tp.topic() + "-" + tp.partition()).exists())
                     )
             ), "Failed to soft-delete the data to a delete directory");
 
         TestUtils.waitForCondition(() -> cluster.brokers().values().stream()
             .allMatch(broker -> broker.config().logDirs().stream()
-                    .allMatch(logDir -> deletionDirectoriesAbsent(logDir, topicPartitions))
+                .allMatch(logDir -> deletionDirectoriesAbsent(logDir, topicPartitions))
             ), "Failed to hard-delete the delete directory");
     }
 
@@ -285,7 +285,7 @@ public class ProducerSendWhileDeletionTest {
             }
         }).toList();
         return checkpoints.stream().noneMatch(checkpointsPerLogDir ->
-                checkpointsPerLogDir.containsKey(tp));
+            checkpointsPerLogDir.containsKey(tp));
     }
 
     private boolean deletionDirectoriesAbsent(String logDir, List<TopicPartition> topicPartitions) {
@@ -294,17 +294,17 @@ public class ProducerSendWhileDeletionTest {
             return true;
         }
         return topicPartitions.stream().allMatch(tp ->
-                Arrays.stream(directoryNames).noneMatch(directoryName ->
-                        directoryName.startsWith(tp.topic() + "-" + tp.partition()) &&
+            Arrays.stream(directoryNames).noneMatch(directoryName ->
+                directoryName.startsWith(tp.topic() + "-" + tp.partition()) &&
                                 directoryName.endsWith(UnifiedLog.DELETE_DIR_SUFFIX)));
     }
 
     private TopicDescription topicMetadata() throws Exception {
         try (var admin = cluster.admin()) {
             return admin.describeTopics(List.of(topic))
-                    .allTopicNames()
-                    .get()
-                    .get(topic);
+                .allTopicNames()
+                .get()
+                .get(topic);
             
         }
     }
@@ -327,14 +327,14 @@ public class ProducerSendWhileDeletionTest {
 
     private Optional<Integer> getCurrentLeader(Admin admin, TopicPartition topicPartition) throws Exception {
         return admin.describeTopics(List.of(topicPartition.topic()))
-                .allTopicNames()
-                .get()
-                .get(topicPartition.topic())
-                .partitions()
-                .stream()
-                .filter(p -> p.partition() == topicPartition.partition())
-                .findFirst()
-                .map(TopicPartitionInfo::leader)
-                .map(Node::id);
+            .allTopicNames()
+            .get()
+            .get(topicPartition.topic())
+            .partitions()
+            .stream()
+            .filter(p -> p.partition() == topicPartition.partition())
+            .findFirst()
+            .map(TopicPartitionInfo::leader)
+            .map(Node::id);
     }
 }

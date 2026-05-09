@@ -636,8 +636,7 @@ public class OffsetMetadataManagerTest {
                                 .setCommittedOffset(100L)
                         ))
                 ))
-            )
-        );
+        ));
     }
 
     @Test

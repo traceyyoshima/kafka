@@ -105,7 +105,7 @@ public class ShareConsumerPerformance {
             double elapsedSec = (endMs - startMs) / 1_000.0;
             long fetchTimeInMs = endMs - startMs;
             printStatsForShareGroup(totalBytesRead.get(), totalRecordsRead.get(), elapsedSec, fetchTimeInMs, startMs,
-                endMs, options.dateFormat());
+                    endMs, options.dateFormat());
 
             shareConsumersMetrics.forEach(ToolsUtils::printMetrics);
 
@@ -146,7 +146,7 @@ public class ShareConsumerPerformance {
             futures.add(executorService.submit(() -> {
                 try {
                     consumeRecordsForSingleShareConsumer(shareConsumers.get(index), recordsRead, bytesRead, options,
-                        shareConsumerConsumption, index + 1);
+                            shareConsumerConsumption, index + 1);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -198,11 +198,11 @@ public class ShareConsumerPerformance {
     }
 
     private static void consumeRecordsForSingleShareConsumer(ShareConsumer<byte[], byte[]> shareConsumer,
-                                                              AtomicLong totalRecordsRead,
-                                                              AtomicLong totalBytesRead,
-                                                              ShareConsumerPerfOptions options,
-                                                              ShareConsumerConsumption shareConsumerConsumption,
-                                                              int index) throws InterruptedException {
+                                                             AtomicLong totalRecordsRead,
+                                                             AtomicLong totalBytesRead,
+                                                             ShareConsumerPerfOptions options,
+                                                             ShareConsumerConsumption shareConsumerConsumption,
+                                                             int index) throws InterruptedException {
         SimpleDateFormat dateFormat = options.dateFormat();
         long currentTimeMs = System.currentTimeMillis();
         long lastConsumedTimeMs = currentTimeMs;
@@ -243,13 +243,13 @@ public class ShareConsumerPerformance {
     }
 
     protected static void printShareConsumerProgress(long bytesRead,
-                                                long lastBytesRead,
-                                                long recordsRead,
-                                                long lastRecordsRead,
-                                                long startMs,
-                                                long endMs,
-                                                SimpleDateFormat dateFormat,
-                                                int index) {
+                                                     long lastBytesRead,
+                                                     long recordsRead,
+                                                     long lastRecordsRead,
+                                                     long startMs,
+                                                     long endMs,
+                                                     SimpleDateFormat dateFormat,
+                                                     int index) {
         double elapsedMs = endMs - startMs;
         double totalMbRead = (bytesRead * 1.0) / (1024 * 1024);
         double intervalMbRead = ((bytesRead - lastBytesRead) * 1.0) / (1024 * 1024);
@@ -258,20 +258,20 @@ public class ShareConsumerPerformance {
         long fetchTimeMs = endMs - startMs;
 
         System.out.printf("%s, %s, %.4f, %.4f, %.4f, %d, %d for share consumer %d", dateFormat.format(startMs), dateFormat.format(endMs),
-            totalMbRead, intervalMbPerSec, intervalRecordsPerSec, recordsRead, fetchTimeMs, index);
+                totalMbRead, intervalMbPerSec, intervalRecordsPerSec, recordsRead, fetchTimeMs, index);
         System.out.println();
     }
 
     private static void printStatsForShareConsumer(
-        String clientId,
-        long bytesRead,
-        long recordsRead,
-        double elapsedSec,
-        long fetchTimeInMs,
-        long startMs,
-        long endMs,
-        SimpleDateFormat dateFormat,
-        int index) {
+            String clientId,
+            long bytesRead,
+            long recordsRead,
+            double elapsedSec,
+            long fetchTimeInMs,
+            long startMs,
+            long endMs,
+            SimpleDateFormat dateFormat,
+            int index) {
         double totalMbRead = (bytesRead * 1.0) / (1024 * 1024);
         System.out.printf("Share consumer %s having client id %s consumption metrics- %s, %s, %.4f, %.4f, %.4f, %d, %d%n",
                 index,
@@ -287,22 +287,22 @@ public class ShareConsumerPerformance {
     }
 
     private static void printStatsForShareGroup(
-        long bytesRead,
-        long recordsRead,
-        double elapsedSec,
-        long fetchTimeInMs,
-        long startMs,
-        long endMs,
-        SimpleDateFormat dateFormat) {
+            long bytesRead,
+            long recordsRead,
+            double elapsedSec,
+            long fetchTimeInMs,
+            long startMs,
+            long endMs,
+            SimpleDateFormat dateFormat) {
         double totalMbRead = (bytesRead * 1.0) / (1024 * 1024);
         System.out.printf("%s, %s, %.4f, %.4f, %.4f, %d, %d%n",
-            dateFormat.format(startMs),
-            dateFormat.format(endMs),
-            totalMbRead,
-            totalMbRead / elapsedSec,
-            recordsRead / elapsedSec,
-            recordsRead,
-            fetchTimeInMs
+                dateFormat.format(startMs),
+                dateFormat.format(endMs),
+                totalMbRead,
+                totalMbRead / elapsedSec,
+                recordsRead / elapsedSec,
+                recordsRead,
+                fetchTimeInMs
         );
     }
 

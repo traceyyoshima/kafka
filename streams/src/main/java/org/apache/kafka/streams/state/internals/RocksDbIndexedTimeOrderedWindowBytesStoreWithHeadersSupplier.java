@@ -26,7 +26,7 @@ import static org.apache.kafka.streams.internals.ApiUtils.validateMillisecondDur
 
 public class RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier
     extends RocksDbIndexedTimeOrderedWindowBytesStoreSupplier
-    implements HeadersBytesStoreSupplier {
+        implements HeadersBytesStoreSupplier {
 
     public static RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier create(
         final String name,

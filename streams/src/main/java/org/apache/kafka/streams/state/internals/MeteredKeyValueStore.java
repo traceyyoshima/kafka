@@ -75,7 +75,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
  */
 public class MeteredKeyValueStore<K, V>
     extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, K, V>
-    implements KeyValueStore<K, V>, MeteredStateStore {
+        implements KeyValueStore<K, V>, MeteredStateStore {
 
     final Serde<K> keySerde;
     final Serde<V> valueSerde;
@@ -182,7 +182,7 @@ public class MeteredKeyValueStore<K, V>
         );
         if (!persistent()) {
             StateStoreMetrics.addNumKeysGauge(taskId.toString(), metricsScope, name(), streamsMetrics,
-                    (config, now) -> wrapped().approximateNumEntries());
+                (config, now) -> wrapped().approximateNumEntries());
         }
     }
 

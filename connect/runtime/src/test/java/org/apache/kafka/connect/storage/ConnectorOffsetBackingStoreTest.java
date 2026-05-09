@@ -83,11 +83,11 @@ public class ConnectorOffsetBackingStoreTest {
         KafkaOffsetBackingStore workerStore = createStore("topic2", workerStoreProducer);
 
         ConnectorOffsetBackingStore offsetBackingStore = ConnectorOffsetBackingStore.withConnectorAndWorkerStores(
-                () -> LoggingContext.forConnector("source-connector"),
-                workerStore,
-                connectorStore,
-                "offsets-topic",
-                mock(TopicAdmin.class));
+            () -> LoggingContext.forConnector("source-connector"),
+            workerStore,
+            connectorStore,
+            "offsets-topic",
+            mock(TopicAdmin.class));
 
         AtomicBoolean callbackInvoked = new AtomicBoolean();
         AtomicReference<Object> callbackResult = new AtomicReference<>();
@@ -116,11 +116,11 @@ public class ConnectorOffsetBackingStoreTest {
         KafkaOffsetBackingStore workerStore = createStore("topic2", workerStoreProducer);
 
         ConnectorOffsetBackingStore offsetBackingStore = ConnectorOffsetBackingStore.withConnectorAndWorkerStores(
-                () -> LoggingContext.forConnector("source-connector"),
-                workerStore,
-                connectorStore,
-                "offsets-topic",
-                mock(TopicAdmin.class));
+            () -> LoggingContext.forConnector("source-connector"),
+            workerStore,
+            connectorStore,
+            "offsets-topic",
+            mock(TopicAdmin.class));
 
         AtomicBoolean callbackInvoked = new AtomicBoolean();
         AtomicReference<Object> callbackResult = new AtomicReference<>();
@@ -151,11 +151,11 @@ public class ConnectorOffsetBackingStoreTest {
         KafkaOffsetBackingStore workerStore = createStore("topic2", workerStoreProducer);
 
         ConnectorOffsetBackingStore offsetBackingStore = ConnectorOffsetBackingStore.withConnectorAndWorkerStores(
-                () -> LoggingContext.forConnector("source-connector"),
-                workerStore,
-                connectorStore,
-                "offsets-topic",
-                mock(TopicAdmin.class));
+            () -> LoggingContext.forConnector("source-connector"),
+            workerStore,
+            connectorStore,
+            "offsets-topic",
+            mock(TopicAdmin.class));
 
         AtomicBoolean callbackInvoked = new AtomicBoolean();
         AtomicReference<Object> callbackResult = new AtomicReference<>();
@@ -220,11 +220,11 @@ public class ConnectorOffsetBackingStoreTest {
         KafkaOffsetBackingStore workerStore = createStore("topic2", workerStoreProducer);
 
         ConnectorOffsetBackingStore offsetBackingStore = ConnectorOffsetBackingStore.withConnectorAndWorkerStores(
-                () -> LoggingContext.forConnector("source-connector"),
-                workerStore,
-                connectorStore,
-                "offsets-topic",
-                mock(TopicAdmin.class));
+            () -> LoggingContext.forConnector("source-connector"),
+            workerStore,
+            connectorStore,
+            "offsets-topic",
+            mock(TopicAdmin.class));
 
         AtomicBoolean callbackInvoked = new AtomicBoolean();
         AtomicReference<Object> callbackResult = new AtomicReference<>();
@@ -251,10 +251,10 @@ public class ConnectorOffsetBackingStoreTest {
         KafkaOffsetBackingStore connectorStore = createStore("topic1", connectorStoreProducer);
 
         ConnectorOffsetBackingStore offsetBackingStore = ConnectorOffsetBackingStore.withOnlyConnectorStore(
-                () -> LoggingContext.forConnector("source-connector"),
-                connectorStore,
-                "offsets-topic",
-                mock(TopicAdmin.class));
+            () -> LoggingContext.forConnector("source-connector"),
+            connectorStore,
+            "offsets-topic",
+            mock(TopicAdmin.class));
 
         AtomicBoolean callbackInvoked = new AtomicBoolean();
         AtomicReference<Object> callbackResult = new AtomicReference<>();
@@ -451,7 +451,7 @@ public class ConnectorOffsetBackingStoreTest {
 
     private Map<ByteBuffer, ByteBuffer> getSerialisedOffsets(Map<byte[], byte[]> offsets) {
         Map<ByteBuffer, ByteBuffer> serialisedOffsets = new HashMap<>();
-        for (Map.Entry<byte[], byte[]> offsetEntry: offsets.entrySet()) {
+        for (Map.Entry<byte[], byte[]> offsetEntry : offsets.entrySet()) {
             serialisedOffsets.put(ByteBuffer.wrap(offsetEntry.getKey()),
                 offsetEntry.getValue() == null ? null : ByteBuffer.wrap(offsetEntry.getValue()));
         }

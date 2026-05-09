@@ -225,7 +225,7 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
                 iteration();
         } catch (WakeupException e) {
             log.trace("Consumer woken up during initial offset commit attempt, " 
-                + "but succeeded during a later attempt");
+                    + "but succeeded during a later attempt");
         }
     }
 
@@ -423,8 +423,8 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
         }
 
         Map<TopicPartition, OffsetAndMetadata> offsetsToCommit = currentOffsets.entrySet().stream()
-            .filter(e -> topicPartitions.contains(e.getKey()))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .filter(e -> topicPartitions.contains(e.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         if (offsetsToCommit.isEmpty())
             return;
@@ -435,8 +435,8 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
         sinkTaskMetricsGroup.recordOffsetSequenceNumber(commitSeqno);
 
         Map<TopicPartition, OffsetAndMetadata> lastCommittedOffsetsForPartitions = this.lastCommittedOffsets.entrySet().stream()
-            .filter(e -> offsetsToCommit.containsKey(e.getKey()))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .filter(e -> offsetsToCommit.containsKey(e.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         final Map<TopicPartition, OffsetAndMetadata> taskProvidedOffsets;
         try {
@@ -480,7 +480,7 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
                     committableOffsets.put(partition, taskProvidedOffset);
                 } else {
                     log.warn("{} Ignoring invalid task provided offset {}/{} -- not yet consumed, taskOffset={} currentOffset={}",
-                        this, partition, taskProvidedOffset, taskOffset, currentOffset);
+                            this, partition, taskProvidedOffset, taskOffset, currentOffset);
                 }
             } else if (!allAssignedTopicPartitions.contains(partition)) {
                 log.warn("{} Ignoring invalid task provided offset {}/{} -- partition not assigned, assignment={}",
@@ -664,7 +664,7 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
         if (offsets.isEmpty()) {
             return;
         }
-        for (Map.Entry<TopicPartition, Long> entry: offsets.entrySet()) {
+        for (Map.Entry<TopicPartition, Long> entry : offsets.entrySet()) {
             TopicPartition tp = entry.getKey();
             Long offset = entry.getValue();
             if (offset != null) {

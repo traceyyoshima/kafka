@@ -158,7 +158,7 @@ public class LegacySubscriptionInfoSerde {
             return buf1;
         } else {
             throw new IllegalStateException("Unknown metadata version: " + usedVersion
-                                                + "; latest supported version: " + LATEST_SUPPORTED_VERSION);
+                                            + "; latest supported version: " + LATEST_SUPPORTED_VERSION);
         }
     }
 

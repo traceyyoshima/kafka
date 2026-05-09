@@ -138,12 +138,13 @@ public class StreamsRebalanceData {
         public List<TopicPartition> standbyPartitions() {
             return new ArrayList<>(standbyPartitions);
         }
+
         @Override
         public String toString() {
             return "EndpointPartitions {"
-                    + "activePartitions=" + activePartitions
-                    + ", standbyPartitions=" + standbyPartitions
-                    + '}';
+                   + "activePartitions=" + activePartitions
+                   + ", standbyPartitions=" + standbyPartitions
+                   + '}';
         }
     }
 
@@ -252,8 +253,7 @@ public class StreamsRebalanceData {
                 Collections.unmodifiableCollection(Objects.requireNonNull(
                     copartitionGroups,
                     "Co-partition groups cannot be null"
-                    )
-                );
+                ));
         }
 
         public Set<String> sourceTopics() {

@@ -174,7 +174,7 @@ public class AclCommand {
 
     private static void printResourceAcls(Map<ResourcePattern, Set<AccessControlEntry>> resourceToAcls) {
         resourceToAcls.forEach((resource, acls) ->
-            System.out.println("Current ACLs for resource `" + resource + "`:" + NL +
+                System.out.println("Current ACLs for resource `" + resource + "`:" + NL +
                     acls.stream().map(acl -> "\t" + acl).collect(Collectors.joining(NL)) + NL)
         );
     }
@@ -318,9 +318,9 @@ public class AclCommand {
     }
 
     static Set<AccessControlEntry> getAcls(Set<KafkaPrincipal> principals,
-                                                   AclPermissionType permissionType,
-                                                   Set<AclOperation> operations,
-                                                   Set<String> hosts) {
+                                           AclPermissionType permissionType,
+                                           Set<AclOperation> operations,
+                                           Set<String> hosts) {
         Set<AccessControlEntry> acls = new HashSet<>();
         for (KafkaPrincipal principal : principals) {
             for (AclOperation operation : operations) {

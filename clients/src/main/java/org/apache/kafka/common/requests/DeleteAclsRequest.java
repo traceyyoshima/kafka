@@ -83,10 +83,10 @@ public class DeleteAclsRequest extends AbstractRequest {
         }
 
         final boolean unknown = data.filters().stream().anyMatch(filter ->
-                filter.patternTypeFilter() == PatternType.UNKNOWN.code()
-                        || filter.resourceTypeFilter() == ResourceType.UNKNOWN.code()
-                        || filter.operation() == AclOperation.UNKNOWN.code()
-                        || filter.permissionType() == AclPermissionType.UNKNOWN.code()
+            filter.patternTypeFilter() == PatternType.UNKNOWN.code()
+                || filter.resourceTypeFilter() == ResourceType.UNKNOWN.code()
+                || filter.operation() == AclOperation.UNKNOWN.code()
+                || filter.permissionType() == AclPermissionType.UNKNOWN.code()
         );
 
         if (unknown) {

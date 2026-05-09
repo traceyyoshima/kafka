@@ -78,16 +78,16 @@ public class RocksDBVersionedStoreTest {
     @BeforeEach
     public void before() {
         context = new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.String(),
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig())
+                                            TestUtils.tempDirectory(),
+                                            Serdes.String(),
+                                            Serdes.String(),
+                                            new StreamsConfig(StreamsTestUtils.getStreamsConfig())
         );
         context.setTime(BASE_TIMESTAMP);
 
         expectedMetricsTags = mkMap(
-            mkEntry("thread-id", Thread.currentThread().getName()),
-            mkEntry("task-id", context.taskId().toString())
+                                            mkEntry("thread-id", Thread.currentThread().getName()),
+                                            mkEntry("task-id", context.taskId().toString())
         );
 
         store = new RocksDBVersionedStore(STORE_NAME, METRICS_SCOPE, HISTORY_RETENTION, SEGMENT_INTERVAL);
@@ -615,9 +615,9 @@ public class RocksDBVersionedStoreTest {
 
         // return values from two old segments + latestValueStore in ascending order
         verifyTimestampedGetValueFromStore("k", Long.MIN_VALUE, Long.MAX_VALUE, ResultOrder.ASCENDING,
-                Arrays.asList("v1", "v2", "v3", "v4"),
-                Arrays.asList(SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 5, 2 * SEGMENT_INTERVAL - 10, 2 * SEGMENT_INTERVAL - 5),
-                Arrays.asList(SEGMENT_INTERVAL - 5, 2 * SEGMENT_INTERVAL - 10, 2 * SEGMENT_INTERVAL - 5, PUT_RETURN_CODE_VALID_TO_UNDEFINED));
+                                           Arrays.asList("v1", "v2", "v3", "v4"),
+                                           Arrays.asList(SEGMENT_INTERVAL - 10, SEGMENT_INTERVAL - 5, 2 * SEGMENT_INTERVAL - 10, 2 * SEGMENT_INTERVAL - 5),
+                                           Arrays.asList(SEGMENT_INTERVAL - 5, 2 * SEGMENT_INTERVAL - 10, 2 * SEGMENT_INTERVAL - 5, PUT_RETURN_CODE_VALID_TO_UNDEFINED));
     }
 
     @Test
@@ -851,9 +851,9 @@ public class RocksDBVersionedStoreTest {
 
     private void putToStore(final String key, final String value, final long timestamp, final long expectedValidTo) {
         final long validTo = store.put(
-            new Bytes(STRING_SERIALIZER.serialize(null, key)),
-            STRING_SERIALIZER.serialize(null, value),
-            timestamp
+                                            new Bytes(STRING_SERIALIZER.serialize(null, key)),
+                                            STRING_SERIALIZER.serialize(null, value),
+                                            timestamp
         );
         assertThat(validTo, equalTo(expectedValidTo));
     }
@@ -941,20 +941,20 @@ public class RocksDBVersionedStoreTest {
 
     private void verifyExpiredRecordSensor(final int expectedValue) {
         final Metric metric = context.metrics().metrics().get(
-            new MetricName(DROPPED_RECORDS_METRIC, TASK_LEVEL_GROUP, "", expectedMetricsTags)
+                                            new MetricName(DROPPED_RECORDS_METRIC, TASK_LEVEL_GROUP, "", expectedMetricsTags)
         );
         assertEquals((Double) metric.metricValue(), expectedValue, 0.001);
     }
 
     private static VersionedRecord<String> deserializedRecord(final VersionedRecord<byte[]> versionedRecord) {
         return versionedRecord == null
-            ? null
-            : versionedRecord.validTo().isPresent()
-            ? new VersionedRecord<>(STRING_DESERIALIZER.deserialize(null, versionedRecord.value()),
-                                    versionedRecord.timestamp(),
-                                    versionedRecord.validTo().get())
-            : new VersionedRecord<>(STRING_DESERIALIZER.deserialize(null, versionedRecord.value()),
-                                    versionedRecord.timestamp());
+                                            ? null
+                                            : versionedRecord.validTo().isPresent()
+                                                                                ? new VersionedRecord<>(STRING_DESERIALIZER.deserialize(null, versionedRecord.value()),
+                                                                                                                    versionedRecord.timestamp(),
+                                                                                                                    versionedRecord.validTo().get())
+                                                                                : new VersionedRecord<>(STRING_DESERIALIZER.deserialize(null, versionedRecord.value()),
+                                                                                                                    versionedRecord.timestamp());
     }
 
     private static List<ConsumerRecord<byte[], byte[]>> getChangelogRecords(final List<DataRecord> data) {
@@ -964,17 +964,17 @@ public class RocksDBVersionedStoreTest {
             final byte[] rawKey = STRING_SERIALIZER.serialize(null, d.key);
             final byte[] rawValue = STRING_SERIALIZER.serialize(null, d.value);
             records.add(new ConsumerRecord<>(
-                "",
-                0,
-                0L,
-                d.timestamp,
-                TimestampType.CREATE_TIME,
-                rawKey.length,
-                rawValue == null ? 0 : rawValue.length,
-                rawKey,
-                rawValue,
-                new RecordHeaders(),
-                Optional.empty()
+                                                "",
+                                                0,
+                                                0L,
+                                                d.timestamp,
+                                                TimestampType.CREATE_TIME,
+                                                rawKey.length,
+                                                rawValue == null ? 0 : rawValue.length,
+                                                rawKey,
+                                                rawValue,
+                                                new RecordHeaders(),
+                                                Optional.empty()
             ));
         }
 

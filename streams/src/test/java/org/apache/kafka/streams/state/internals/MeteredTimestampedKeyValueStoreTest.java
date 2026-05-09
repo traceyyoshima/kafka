@@ -107,17 +107,17 @@ public class MeteredTimestampedKeyValueStoreTest {
     private void setUpWithoutContext() {
         mockTime = new MockTime();
         metered = new MeteredTimestampedKeyValueStore<>(
-                inner,
-                "scope",
-                mockTime,
-                Serdes.String(),
-                new ValueAndTimestampSerde<>(Serdes.String())
+            inner,
+            "scope",
+            mockTime,
+            Serdes.String(),
+            new ValueAndTimestampSerde<>(Serdes.String())
         );
         metrics.config().recordLevel(Sensor.RecordingLevel.DEBUG);
         tags = mkMap(
-                mkEntry(THREAD_ID_TAG_KEY, threadId),
-                mkEntry("task-id", taskId.toString()),
-                mkEntry(STORE_TYPE + "-state-id", STORE_NAME)
+            mkEntry(THREAD_ID_TAG_KEY, threadId),
+            mkEntry("task-id", taskId.toString()),
+            mkEntry(STORE_TYPE + "-state-id", STORE_NAME)
         );
     }
 
@@ -218,6 +218,7 @@ public class MeteredTimestampedKeyValueStoreTest {
             STORE_NAME
         )));
     }
+
     @Test
     public void shouldWriteBytesToInnerStoreAndRecordPutMetric() {
         setUp();

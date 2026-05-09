@@ -129,7 +129,7 @@ public class RetryWithToleranceOperatorTest {
 
         ProcessingContext<ConsumerRecord<byte[], byte[]>> context = new ProcessingContext<>(consumerRecord);
         retryWithToleranceOperator.executeFailed(context, Stage.TASK_PUT,
-            SinkTask.class, new Throwable());
+                SinkTask.class, new Throwable());
     }
 
     @Test
@@ -138,7 +138,7 @@ public class RetryWithToleranceOperatorTest {
 
         ProcessingContext<ConsumerRecord<byte[], byte[]>> context = new ProcessingContext<>(consumerRecord);
         assertThrows(ConnectException.class, () -> retryWithToleranceOperator.executeFailed(context, Stage.TASK_PUT,
-            SinkTask.class, new Throwable()));
+                SinkTask.class, new Throwable()));
     }
 
     @Test

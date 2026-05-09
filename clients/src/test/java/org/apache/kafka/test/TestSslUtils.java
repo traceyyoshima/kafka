@@ -116,7 +116,7 @@ public class TestSslUtils {
      */
     public static X509Certificate generateCertificate(String dn, KeyPair pair,
                                                       int days, String algorithm)
-        throws  CertificateException {
+                                                              throws  CertificateException {
         return new CertificateBuilder(days, algorithm).generate(dn, pair);
     }
 
@@ -220,19 +220,19 @@ public class TestSslUtils {
     }
 
     public static  Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore, ConnectionMode connectionMode, File trustStoreFile, String certAlias)
-        throws IOException, GeneralSecurityException {
+            throws IOException, GeneralSecurityException {
         return createSslConfig(useClientCert, trustStore, connectionMode, trustStoreFile, certAlias, "localhost");
     }
 
     public static  Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore,
             ConnectionMode connectionMode, File trustStoreFile, String certAlias, String cn)
-        throws IOException, GeneralSecurityException {
+                    throws IOException, GeneralSecurityException {
         return createSslConfig(useClientCert, trustStore, connectionMode, trustStoreFile, certAlias, cn, new CertificateBuilder());
     }
 
     public static  Map<String, Object> createSslConfig(boolean useClientCert, boolean createTrustStore,
             ConnectionMode connectionMode, File trustStoreFile, String certAlias, String cn, CertificateBuilder certBuilder)
-            throws IOException, GeneralSecurityException {
+                    throws IOException, GeneralSecurityException {
         SslConfigsBuilder builder = new SslConfigsBuilder(connectionMode)
                 .useClientCert(useClientCert)
                 .certAlias(certAlias)
@@ -299,7 +299,7 @@ public class TestSslUtils {
 
     private static void writeToFile(String path, Password... entries) throws IOException {
         try (FileOutputStream out = new FileOutputStream(path)) {
-            for (Password entry: entries) {
+            for (Password entry : entries) {
                 out.write(entry.value().getBytes(StandardCharsets.UTF_8));
             }
         }
@@ -489,7 +489,7 @@ public class TestSslUtils {
          */
         public X509Certificate generateSignedCertificate(String dn, KeyPair keyPair,
                 int daysBeforeNow, int daysAfterNow, String issuer, KeyPair parentKeyPair, boolean isCA, boolean isServerCert, boolean isClientCert)
-                throws CertificateException {
+                        throws CertificateException {
             X500Name issuerOrDn = (issuer != null) ? new X500Name(issuer) : new X500Name(dn);
             return generateSignedCertificate(new X500Name(dn), keyPair, daysBeforeNow, daysAfterNow,
                     issuerOrDn, parentKeyPair, isCA, isServerCert, isClientCert);
@@ -509,7 +509,7 @@ public class TestSslUtils {
          */
         public X509Certificate generateSignedCertificate(X500Name dn, KeyPair keyPair,
                 int daysBeforeNow, int daysAfterNow, X500Name issuer, KeyPair parentKeyPair, boolean isCA, boolean isServerCert, boolean isClientCert)
-                throws CertificateException {
+                        throws CertificateException {
             try {
                 Security.addProvider(new BouncyCastleProvider());
                 AlgorithmIdentifier sigAlgId =
@@ -808,7 +808,7 @@ public class TestSslUtils {
 
         //Generate Intermediate certificates
         for (int intermediateCertIndex = caIndex - 1; intermediateCertIndex > 0; intermediateCertIndex--) {
-            certs[intermediateCertIndex] = TestSslUtils.generateSignedCertificate("CN=Intermediate CA" +  intermediateCertIndex,
+            certs[intermediateCertIndex] = TestSslUtils.generateSignedCertificate("CN=Intermediate CA" + intermediateCertIndex,
                     keyPairs[intermediateCertIndex], 365, 365, certs[intermediateCertIndex + 1].getSubjectX500Principal().getName(),
                     keyPairs[intermediateCertIndex + 1], "SHA512withRSA", true, false, false, hostNames);
         }

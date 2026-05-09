@@ -94,12 +94,12 @@ public class SubscriptionInfo {
         final SubscriptionInfoData data = new SubscriptionInfoData();
         data.setVersion(version);
         data.setProcessId(new Uuid(processId.id().getMostSignificantBits(),
-                processId.id().getLeastSignificantBits()));
+            processId.id().getLeastSignificantBits()));
 
         if (version >= 2) {
             data.setUserEndPoint(userEndPoint == null
-                    ? new byte[0]
-                    : userEndPoint.getBytes(StandardCharsets.UTF_8));
+                ? new byte[0]
+                : userEndPoint.getBytes(StandardCharsets.UTF_8));
         }
         if (version >= 3) {
             data.setLatestSupportedVersion(latestSupportedVersion);
@@ -310,9 +310,9 @@ public class SubscriptionInfo {
     private static Set<TaskId> taskOffsetSumMapToTaskSet(final Map<TaskId, Long> taskOffsetSums,
                                                          final boolean getActiveTasks) {
         return taskOffsetSums.entrySet().stream()
-                   .filter(t -> getActiveTasks == (t.getValue() == Task.LATEST_OFFSET))
-                   .map(Map.Entry::getKey)
-                   .collect(Collectors.toSet());
+            .filter(t -> getActiveTasks == (t.getValue() == Task.LATEST_OFFSET))
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toSet());
     }
 
     /**

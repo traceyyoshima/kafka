@@ -224,8 +224,8 @@ public final class Cluster {
         Map<TopicPartition, PartitionInfo> combinedPartitions = new HashMap<>(this.partitionsByTopicPartition);
         combinedPartitions.putAll(partitions);
         return new Cluster(clusterResource.clusterId(), this.nodes, combinedPartitions.values(),
-                new HashSet<>(this.unauthorizedTopics), new HashSet<>(this.invalidTopics),
-                new HashSet<>(this.internalTopics), this.controller);
+            new HashSet<>(this.unauthorizedTopics), new HashSet<>(this.invalidTopics),
+            new HashSet<>(this.internalTopics), this.controller);
     }
 
     /**
@@ -392,6 +392,6 @@ public final class Cluster {
     @Override
     public int hashCode() {
         return Objects.hash(isBootstrapConfigured, nodes, unauthorizedTopics, invalidTopics, internalTopics, controller,
-                partitionsByTopicPartition, clusterResource, topicIds);
+            partitionsByTopicPartition, clusterResource, topicIds);
     }
 }

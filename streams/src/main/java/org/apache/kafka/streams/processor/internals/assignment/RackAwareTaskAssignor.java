@@ -465,7 +465,7 @@ public class RackAwareTaskAssignor {
                     }
 
                     final List<TaskId> taskIdList = Stream.concat(movable1.stream(),
-                            movable2.stream())
+                        movable2.stream())
                         .sorted()
                         .collect(Collectors.toList());
 

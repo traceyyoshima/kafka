@@ -57,7 +57,7 @@ public class StreamTableJoinWithGraceIntegrationTest extends AbstractJoinIntegra
         final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Long, String> leftStream = builder.stream(INPUT_TOPIC_LEFT, Consumed.with(Serdes.Long(), Serdes.String()));
         final KTable<Long, String> rightTable = builder.table(INPUT_TOPIC_RIGHT, Consumed.with(Serdes.Long(), Serdes.String()), Materialized.as(
-                Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMinutes(5))));
+            Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMinutes(5))));
         final Properties streamsConfig = setupConfigsAndUtils(cacheEnabled, false);
         streamsConfig.put(StreamsConfig.APPLICATION_ID_CONFIG, APP_ID + "-inner");
 
@@ -100,7 +100,7 @@ public class StreamTableJoinWithGraceIntegrationTest extends AbstractJoinIntegra
         final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Long, String> leftStream = builder.stream(INPUT_TOPIC_LEFT);
         final KTable<Long, String> rightTable = builder.table(INPUT_TOPIC_RIGHT, Materialized.as(
-                Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMinutes(5))));
+            Stores.persistentVersionedKeyValueStore(STORE_NAME, Duration.ofMinutes(5))));
         final Properties streamsConfig = setupConfigsAndUtils(cacheEnabled, true);
         streamsConfig.put(StreamsConfig.APPLICATION_ID_CONFIG, APP_ID + "-left");
 

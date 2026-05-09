@@ -51,7 +51,7 @@ public class KTableSource<KIn, VIn> implements ProcessorSupplier<KIn, VIn, KIn, 
     private boolean sendOldValues;
 
     public KTableSource(
-            final MaterializedInternal<KIn, VIn, KeyValueStore<Bytes, byte[]>> materialized) {
+        final MaterializedInternal<KIn, VIn, KeyValueStore<Bytes, byte[]>> materialized) {
         this.storeName = materialized.storeName();
         Objects.requireNonNull(storeName, "storeName can't be null");
         this.queryableName = materialized.queryableStoreName();

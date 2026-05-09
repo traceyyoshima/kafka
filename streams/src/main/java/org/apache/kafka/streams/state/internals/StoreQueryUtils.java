@@ -452,16 +452,16 @@ public final class StoreQueryUtils {
         return rawVersionedRecord ->
             rawVersionedRecord.validTo().isPresent()
                 ? new VersionedRecord<>(
-                      // deserializeValue s only used via IQ, so it's ok to not pass any headers
+                    // deserializeValue s only used via IQ, so it's ok to not pass any headers
                       deserializer.deserialize(serdes.topic(), new RecordHeaders(), rawVersionedRecord.value()),
-                      rawVersionedRecord.timestamp(),
-                      rawVersionedRecord.validTo().get()
-                  )
+                    rawVersionedRecord.timestamp(),
+                    rawVersionedRecord.validTo().get()
+                )
                 : new VersionedRecord<>(
-                      // deserializeValue s only used via IQ, so it's ok to not pass any headers
+                    // deserializeValue s only used via IQ, so it's ok to not pass any headers
                       deserializer.deserialize(serdes.topic(), new RecordHeaders(), rawVersionedRecord.value()),
-                      rawVersionedRecord.timestamp()
-                  );
+                    rawVersionedRecord.timestamp()
+                );
     }
 
     @SuppressWarnings("resource")

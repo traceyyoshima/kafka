@@ -31,7 +31,7 @@ import java.util.List;
  */
 public final class SucceededQueryResult<R>
     extends AbstractQueryResult<R>
-    implements QueryResult<R> {
+        implements QueryResult<R> {
 
     private final R result;
 

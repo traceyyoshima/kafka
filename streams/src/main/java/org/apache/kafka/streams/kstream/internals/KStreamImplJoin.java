@@ -162,10 +162,10 @@ class KStreamImplJoin {
         Optional<StoreFactory> outerJoinWindowStore = Optional.empty();
         if (leftOuter) {
             outerJoinWindowStore = Optional.of(new OuterStreamJoinStoreFactory<>(
-                    joinThisGeneratedName,
-                    streamJoinedInternal,
-                    windows,
-                    rightOuter ? OuterStreamJoinStoreFactory.Type.RIGHT : OuterStreamJoinStoreFactory.Type.LEFT)
+                joinThisGeneratedName,
+                streamJoinedInternal,
+                windows,
+                rightOuter ? OuterStreamJoinStoreFactory.Type.RIGHT : OuterStreamJoinStoreFactory.Type.LEFT)
             );
         }
 

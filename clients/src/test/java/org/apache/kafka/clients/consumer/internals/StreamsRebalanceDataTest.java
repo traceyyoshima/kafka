@@ -488,13 +488,13 @@ public class StreamsRebalanceDataTest {
                 StreamsRebalanceData.HostInfo("localhost", 9090));
         final Map<String, StreamsRebalanceData.Subtopology> subtopologies = Map.of();
         final Map<String, String> clientTags = Map.of("clientTag1",
-                "clientTagValue1");
+            "clientTagValue1");
         final StreamsRebalanceData streamsRebalanceData = new StreamsRebalanceData(
-                processId,
-                endpoint,
-                Optional.empty(),
-                subtopologies,
-                clientTags
+            processId,
+            endpoint,
+            Optional.empty(),
+            subtopologies,
+            clientTags
         );
 
         assertEquals(-1, streamsRebalanceData.heartbeatIntervalMs());
@@ -507,13 +507,13 @@ public class StreamsRebalanceDataTest {
                 StreamsRebalanceData.HostInfo("localhost", 9090));
         final Map<String, StreamsRebalanceData.Subtopology> subtopologies = Map.of();
         final Map<String, String> clientTags = Map.of("clientTag1",
-                "clientTagValue1");
+            "clientTagValue1");
         final StreamsRebalanceData streamsRebalanceData = new StreamsRebalanceData(
-                processId,
-                endpoint,
-                Optional.empty(),
-                subtopologies,
-                clientTags
+            processId,
+            endpoint,
+            Optional.empty(),
+            subtopologies,
+            clientTags
         );
 
         streamsRebalanceData.setHeartbeatIntervalMs(1000);

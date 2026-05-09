@@ -55,7 +55,7 @@ public class RequestTestUtils {
 
     public static ByteBuffer serializeResponseWithHeader(AbstractResponse response, short version, int correlationId) {
         return response.serializeWithHeader(new ResponseHeader(correlationId,
-            response.apiKey().responseHeaderVersion(version)), version);
+                response.apiKey().responseHeaderVersion(version)), version);
     }
 
     public static MetadataResponse metadataResponse(Collection<Node> brokers,

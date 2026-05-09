@@ -120,11 +120,11 @@ public class TaskMetrics {
         final Sensor sensor = streamsMetrics.taskLevelSensor(threadId, taskId, name, RecordingLevel.DEBUG);
 
         addValueMetricToSensor(
-                sensor,
-                TASK_LEVEL_GROUP,
-                streamsMetrics.taskLevelTagMap(threadId, taskId),
-                name,
-                CACHE_SIZE_BYTES_TOTAL_DESCRIPTION
+            sensor,
+            TASK_LEVEL_GROUP,
+            streamsMetrics.taskLevelTagMap(threadId, taskId),
+            name,
+            CACHE_SIZE_BYTES_TOTAL_DESCRIPTION
         );
         return sensor;
     }

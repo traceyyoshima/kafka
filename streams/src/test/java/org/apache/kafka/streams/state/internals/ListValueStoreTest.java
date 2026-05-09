@@ -77,7 +77,8 @@ public class ListValueStoreTest {
                                           final Serde<V> valueSerde,
                                           final StoreType storeType) {
         return new ListValueStoreBuilder<>(
-            storeType == StoreType.RocksDB ? Stores.persistentKeyValueStore("rocksDB list store")
+            storeType == StoreType.RocksDB
+                ? Stores.persistentKeyValueStore("rocksDB list store")
                 : Stores.inMemoryKeyValueStore("in-memory list store"),
             keySerde,
             valueSerde,

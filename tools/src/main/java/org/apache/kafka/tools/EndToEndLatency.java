@@ -256,7 +256,7 @@ public class EndToEndLatency {
 
     private static void createTopic(Optional<String> propertiesFile, String brokers, String topic) throws IOException {
         System.out.printf("Topic \"%s\" does not exist. "
-                        + "Will create topic with %d partition(s) and replication factor = %d%n",
+                          + "Will create topic with %d partition(s) and replication factor = %d%n",
                 topic, DEFAULT_NUM_PARTITIONS, DEFAULT_REPLICATION_FACTOR);
 
         Properties adminProps = loadPropsWithBootstrapServers(propertiesFile, brokers);
@@ -315,7 +315,7 @@ public class EndToEndLatency {
         }
 
         boolean hasRequiredNamedArgs = Arrays.stream(args).anyMatch(arg -> 
-            arg.equals("--bootstrap-server") || 
+                arg.equals("--bootstrap-server") || 
             arg.equals("--topic") || 
             arg.equals("--num-records") || 
             arg.equals("--producer-acks") || 

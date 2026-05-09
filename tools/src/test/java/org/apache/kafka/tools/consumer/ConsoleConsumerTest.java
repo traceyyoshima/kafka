@@ -298,8 +298,8 @@ public class ConsoleConsumerTest {
             produceMessagesWithTxn(cluster);
 
             String[] transactionLogMessageFormatter = createConsoleConsumerArgs(cluster, 
-                    Topic.TRANSACTION_STATE_TOPIC_NAME, 
-                    "org.apache.kafka.tools.consumer.TransactionLogMessageFormatter");
+                Topic.TRANSACTION_STATE_TOPIC_NAME, 
+                "org.apache.kafka.tools.consumer.TransactionLogMessageFormatter");
 
             ConsoleConsumerOptions options = new ConsoleConsumerOptions(transactionLogMessageFormatter);
             ConsoleConsumer.ConsumerWrapper consumerWrapper = new ConsoleConsumer.ConsumerWrapper(options, createTxnConsumer(cluster));
@@ -337,8 +337,8 @@ public class ConsoleConsumerTest {
             produceMessages(cluster);
 
             String[] offsetsMessageFormatter = createConsoleConsumerArgs(cluster, 
-                    Topic.GROUP_METADATA_TOPIC_NAME, 
-                    "org.apache.kafka.tools.consumer.OffsetsMessageFormatter");
+                Topic.GROUP_METADATA_TOPIC_NAME, 
+                "org.apache.kafka.tools.consumer.OffsetsMessageFormatter");
 
             ConsoleConsumerOptions options = new ConsoleConsumerOptions(offsetsMessageFormatter);
             ConsoleConsumer.ConsumerWrapper consumerWrapper = new ConsoleConsumer.ConsumerWrapper(options, createOffsetConsumer(cluster));
@@ -379,8 +379,8 @@ public class ConsoleConsumerTest {
             produceMessages(cluster);
 
             String[] groupMetadataMessageFormatter = createConsoleConsumerArgs(cluster, 
-                    Topic.GROUP_METADATA_TOPIC_NAME, 
-                    "org.apache.kafka.tools.consumer.GroupMetadataMessageFormatter");
+                Topic.GROUP_METADATA_TOPIC_NAME, 
+                "org.apache.kafka.tools.consumer.GroupMetadataMessageFormatter");
 
             ConsoleConsumerOptions options = new ConsoleConsumerOptions(groupMetadataMessageFormatter);
             ConsoleConsumer.ConsumerWrapper consumerWrapper = 

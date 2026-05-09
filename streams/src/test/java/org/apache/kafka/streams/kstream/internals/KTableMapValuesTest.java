@@ -69,9 +69,9 @@ public class KTableMapValuesTest {
             inputTopic1.pipeInput("C", "3", 20L);
             inputTopic1.pipeInput("D", "4", 10L);
             assertEquals(asList(new KeyValueTimestamp<>("A", 1, 5),
-                    new KeyValueTimestamp<>("B", 2, 25),
-                    new KeyValueTimestamp<>("C", 3, 20),
-                    new KeyValueTimestamp<>("D", 4, 10)), supplier.theCapturedProcessor().processed());
+                new KeyValueTimestamp<>("B", 2, 25),
+                new KeyValueTimestamp<>("C", 3, 20),
+                new KeyValueTimestamp<>("D", 4, 10)), supplier.theCapturedProcessor().processed());
         }
     }
 
@@ -237,13 +237,13 @@ public class KTableMapValuesTest {
             inputTopic1.pipeInput("B", "01", 10L);
             inputTopic1.pipeInput("C", "01", 15L);
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(1, null), 5),
-                    new KeyValueTimestamp<>("B", new Change<>(1, null), 10),
-                    new KeyValueTimestamp<>("C", new Change<>(1, null), 15));
+                new KeyValueTimestamp<>("B", new Change<>(1, null), 10),
+                new KeyValueTimestamp<>("C", new Change<>(1, null), 15));
 
             inputTopic1.pipeInput("A", "02", 10L);
             inputTopic1.pipeInput("B", "02", 8L);
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(2, null), 10),
-                    new KeyValueTimestamp<>("B", new Change<>(2, null), 8));
+                new KeyValueTimestamp<>("B", new Change<>(2, null), 8));
 
             inputTopic1.pipeInput("A", "03", 20L);
             proc.checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(3, null), 20));

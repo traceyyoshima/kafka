@@ -55,9 +55,9 @@ public class FileRecords extends AbstractRecords implements Closeable {
      * The constructor is visible for tests.
      */
     FileRecords(
-        File file,
-        FileChannel channel,
-        int end
+            File file,
+            FileChannel channel,
+            int end
     ) throws IOException {
         this.file = file;
         this.channel = channel;
@@ -67,7 +67,7 @@ public class FileRecords extends AbstractRecords implements Closeable {
 
         if (channel.size() > Integer.MAX_VALUE) {
             throw new KafkaException(
-                "The size of segment " + file + " (" + channel.size() +
+                    "The size of segment " + file + " (" + channel.size() +
                 ") is larger than the maximum allowed segment size of " + Integer.MAX_VALUE
             );
         }
@@ -87,10 +87,10 @@ public class FileRecords extends AbstractRecords implements Closeable {
      * This overloaded constructor avoids having to declare a checked IO exception.
      */
     private FileRecords(
-        File file,
-        FileChannel channel,
-        int start,
-        int end
+            File file,
+            FileChannel channel,
+            int start,
+            int end
     ) {
         this.file = file;
         this.channel = channel;

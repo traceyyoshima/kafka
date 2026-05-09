@@ -36,7 +36,7 @@ public class SimpleArraysMessageTest {
         final SimpleArraysMessageData out = new SimpleArraysMessageData();
         ByteBufferAccessor accessor = new ByteBufferAccessor(buf);
         assertEquals("Tried to allocate a collection of size 126, but there are only 7 bytes remaining.",
-                assertThrows(RuntimeException.class, () -> out.read(accessor, (short) 2)).getMessage());
+            assertThrows(RuntimeException.class, () -> out.read(accessor, (short) 2)).getMessage());
     }
 
     @Test
@@ -50,6 +50,6 @@ public class SimpleArraysMessageTest {
         final SimpleArraysMessageData out = new SimpleArraysMessageData();
         ByteBufferAccessor accessor = new ByteBufferAccessor(buf);
         assertEquals("Tried to allocate a collection of size 125, but there are only 6 bytes remaining.",
-                assertThrows(RuntimeException.class, () -> out.read(accessor, (short) 2)).getMessage());
+            assertThrows(RuntimeException.class, () -> out.read(accessor, (short) 2)).getMessage());
     }
 }

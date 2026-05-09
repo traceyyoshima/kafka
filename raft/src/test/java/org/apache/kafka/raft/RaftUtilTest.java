@@ -97,9 +97,9 @@ public class RaftUtilTest {
         assertEquals(new FetchSnapshotResponseData().setErrorCode(Errors.NONE.code()),
                 RaftUtil.errorResponse(ApiKeys.FETCH_SNAPSHOT, Errors.NONE));
         assertEquals(new AddRaftVoterResponseData().setErrorCode(Errors.NONE.code()),
-            RaftUtil.errorResponse(ApiKeys.ADD_RAFT_VOTER, Errors.NONE));
+                RaftUtil.errorResponse(ApiKeys.ADD_RAFT_VOTER, Errors.NONE));
         assertEquals(new RemoveRaftVoterResponseData().setErrorCode(Errors.NONE.code()),
-            RaftUtil.errorResponse(ApiKeys.REMOVE_RAFT_VOTER, Errors.NONE));
+                RaftUtil.errorResponse(ApiKeys.REMOVE_RAFT_VOTER, Errors.NONE));
         assertThrows(IllegalArgumentException.class, () -> RaftUtil.errorResponse(ApiKeys.PRODUCE, Errors.NONE));
     }
 
@@ -305,11 +305,11 @@ public class RaftUtilTest {
     private static Stream<Arguments> describeQuorumRequestTestCases() {
         return Stream.of(
                 Arguments.of((short) 0,
-                    "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}"),
+                        "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}"),
                 Arguments.of((short) 1,
-                    "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}"),
+                        "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}"),
                 Arguments.of((short) 2,
-                    "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}")
+                        "{\"topics\":[{\"topicName\":\"topic\",\"partitions\":[{\"partitionIndex\":1}]}]}")
         );
     }
 
@@ -359,16 +359,16 @@ public class RaftUtilTest {
     @MethodSource("singletonFetchRequestTestCases")
     public void testFetchRequestV17Compatibility(final FetchRequestTestCase testCase) {
         FetchRequestData fetchRequestData = RaftUtil.singletonFetchRequest(
-            topicPartition,
-            Uuid.ONE_UUID,
-            partition -> partition
-                .setPartitionMaxBytes(10)
-                .setCurrentLeaderEpoch(5)
-                .setFetchOffset(333)
-                .setLastFetchedEpoch(testCase.lastFetchedEpoch)
-                .setPartition(2)
-                .setReplicaDirectoryId(Uuid.ONE_UUID)
-                .setLogStartOffset(0)
+                topicPartition,
+                Uuid.ONE_UUID,
+                partition -> partition
+                        .setPartitionMaxBytes(10)
+                        .setCurrentLeaderEpoch(5)
+                        .setFetchOffset(333)
+                        .setLastFetchedEpoch(testCase.lastFetchedEpoch)
+                        .setPartition(2)
+                        .setReplicaDirectoryId(Uuid.ONE_UUID)
+                        .setLogStartOffset(0)
         );
         JsonNode json = FetchRequestDataJsonConverter.write(fetchRequestData, testCase.version);
         assertEquals(testCase.expectedJson, json.toString());
@@ -421,14 +421,14 @@ public class RaftUtilTest {
         long lastEpochOffset = 1000;
 
         VoteRequestData voteRequestData = RaftUtil.singletonVoteRequest(
-            topicPartition,
-            clusterId,
-            replicaEpoch,
-            ReplicaKey.of(1, TEST_DIRECTORY_ID1),
-            ReplicaKey.of(2, TEST_DIRECTORY_ID2),
-            lastEpoch,
-            lastEpochOffset,
-            version >= 2
+                topicPartition,
+                clusterId,
+                replicaEpoch,
+                ReplicaKey.of(1, TEST_DIRECTORY_ID1),
+                ReplicaKey.of(2, TEST_DIRECTORY_ID2),
+                lastEpoch,
+                lastEpochOffset,
+                version >= 2
         );
         JsonNode json = VoteRequestDataJsonConverter.write(voteRequestData, version);
         assertEquals(expectedJson, json.toString());
@@ -484,22 +484,22 @@ public class RaftUtilTest {
     @ParameterizedTest
     @MethodSource("fetchSnapshotRequestTestCases")
     public void testSingletonFetchSnapshotRequestV1Compatibility(
-        short version,
-        Uuid directoryId,
-        String expectedJson
+            short version,
+            Uuid directoryId,
+            String expectedJson
     ) {
         int epoch = 1;
         int maxBytes = 1000;
         int position = 10;
 
         FetchSnapshotRequestData fetchSnapshotRequestData = RaftUtil.singletonFetchSnapshotRequest(
-            clusterId,
-            ReplicaKey.of(1, directoryId),
-            topicPartition,
-            epoch,
-            new OffsetAndEpoch(10, epoch),
-            maxBytes,
-            position
+                clusterId,
+                ReplicaKey.of(1, directoryId),
+                topicPartition,
+                epoch,
+                new OffsetAndEpoch(10, epoch),
+                maxBytes,
+                position
         );
         fetchSnapshotRequestData.topics().get(0).partitions().get(0).setReplicaDirectoryId(Uuid.ONE_UUID);
         JsonNode json = FetchSnapshotRequestDataJsonConverter.write(fetchSnapshotRequestData, version);
@@ -634,16 +634,16 @@ public class RaftUtilTest {
     @Test
     public void testAddRaftVoterRequestAckWhenCommittedNotIgnorable() {
         AddRaftVoterRequestData request = new AddRaftVoterRequestData()
-            .setClusterId("test-cluster")
-            .setTimeoutMs(1000)
-            .setVoterId(1)
-            .setVoterDirectoryId(Uuid.randomUuid())
-            .setAckWhenCommitted(false); // field only exists in v1+
+                .setClusterId("test-cluster")
+                .setTimeoutMs(1000)
+                .setVoterId(1)
+                .setVoterDirectoryId(Uuid.randomUuid())
+                .setAckWhenCommitted(false); // field only exists in v1+
 
         // Attempt to serialize to version 0, which does not support ackWhenCommitted
         assertThrows(
-            UnsupportedVersionException.class,
-            () -> AddRaftVoterRequestDataJsonConverter.write(request, (short) 0)
+                UnsupportedVersionException.class,
+                () -> AddRaftVoterRequestDataJsonConverter.write(request, (short) 0)
         );
     }
 

@@ -88,7 +88,7 @@ public class TimestampedKeyValueStoreBuilder<K, V>
 
     private static final class InMemoryTimestampedKeyValueStoreMarker
         extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
-        implements KeyValueStore<Bytes, byte[]>, TimestampedBytesStore {
+            implements KeyValueStore<Bytes, byte[]>, TimestampedBytesStore {
 
         private InMemoryTimestampedKeyValueStoreMarker(final KeyValueStore<Bytes, byte[]> wrapped) {
             super(wrapped);

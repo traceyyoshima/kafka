@@ -278,7 +278,7 @@ public class KRaftClusterTest {
                     Map.of(new ConfigResource(Type.BROKER, ""),
                         List.of(new AlterConfigOp(
                             new ConfigEntry(DummyClientQuotaCallback.DUMMY_CLIENT_QUOTA_CALLBACK_VALUE_CONFIG_KEY, "1"), OpType.SET))))
-                        .all().get();
+                     .all().get();
             }
             assertConfigValue(cluster, 1);
         }

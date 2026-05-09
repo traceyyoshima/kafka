@@ -504,8 +504,8 @@ public class TaskAssignmentUtilsTest {
                                                                             final TaskId... taskIds) {
         final ProcessId processId = processId(client);
         final Set<AssignedTask> assignedTasks = Arrays.stream(taskIds)
-                .map(taskId -> new AssignedTask(taskId, taskType))
-                .collect(Collectors.toSet());
+            .map(taskId -> new AssignedTask(taskId, taskType))
+            .collect(Collectors.toSet());
         return mkEntry(
             processId,
             KafkaStreamsAssignment.of(

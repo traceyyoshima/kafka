@@ -67,7 +67,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
  */
 public class MeteredVersionedKeyValueStore<K, V>
     extends WrappedStateStore<VersionedBytesStore, K, V>
-    implements VersionedKeyValueStore<K, V> {
+        implements VersionedKeyValueStore<K, V> {
 
     private final MeteredVersionedKeyValueStoreInternal internal;
 

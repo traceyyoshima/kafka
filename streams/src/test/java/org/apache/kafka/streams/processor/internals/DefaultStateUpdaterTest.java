@@ -1763,8 +1763,8 @@ class DefaultStateUpdaterTest {
 
         final TaskCorruptedException taskCorruptedException = new TaskCorruptedException(Set.of(TASK_0_2));
         when(changelogReader.restore(Map.of(
-                TASK_0_0, activeTask1,
-                TASK_0_2, failedStatefulTask))
+            TASK_0_0, activeTask1,
+            TASK_0_2, failedStatefulTask))
         ).thenThrow(taskCorruptedException);
 
         stateUpdater.add(failedStatefulTask);
@@ -1906,7 +1906,7 @@ class DefaultStateUpdaterTest {
                 },
                 VERIFICATION_TIMEOUT,
                 () -> "Did not get all restored active task within the given timeout! Expected: "
-                        + expectedRestoredTasks + ", actual: " + restoredTasks
+                      + expectedRestoredTasks + ", actual: " + restoredTasks
             );
         }
     }
@@ -1922,7 +1922,7 @@ class DefaultStateUpdaterTest {
             },
             VERIFICATION_TIMEOUT,
             () -> "Did not get all restored active task within the given timeout! Expected: "
-                    + expectedRestoredTasks + ", actual: " + restoredTasks
+                  + expectedRestoredTasks + ", actual: " + restoredTasks
         );
         assertTrue(stateUpdater.drainRestoredActiveTasks(Duration.ZERO).isEmpty());
     }
@@ -1945,7 +1945,7 @@ class DefaultStateUpdaterTest {
                 },
                 VERIFICATION_TIMEOUT,
                 () -> "Did not get all updating task within the given timeout! Expected: "
-                        + expectedUpdatingTasks + ", actual: " + updatingTasks
+                      + expectedUpdatingTasks + ", actual: " + updatingTasks
             );
         }
     }
@@ -1961,7 +1961,7 @@ class DefaultStateUpdaterTest {
             },
             VERIFICATION_TIMEOUT,
             () -> "Did not see all standby task within the given timeout! Expected: "
-                    + expectedStandbyTasks + ", actual: " + standbyTasks
+                  + expectedStandbyTasks + ", actual: " + standbyTasks
         );
     }
 
@@ -1991,7 +1991,7 @@ class DefaultStateUpdaterTest {
                 },
                 VERIFICATION_TIMEOUT,
                 () -> "Did not get all paused task within the given timeout! Expected: "
-                        + expectedPausedTasks + ", actual: " + pausedTasks
+                      + expectedPausedTasks + ", actual: " + pausedTasks
             );
         }
     }
@@ -2007,7 +2007,7 @@ class DefaultStateUpdaterTest {
             },
             VERIFICATION_TIMEOUT,
             () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
-                    + expectedExceptionAndTasks + ", actual: " + failedTasks
+                  + expectedExceptionAndTasks + ", actual: " + failedTasks
         );
     }
 
@@ -2026,7 +2026,7 @@ class DefaultStateUpdaterTest {
             },
             VERIFICATION_TIMEOUT,
             () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
-                        + expectedFailedTasks + ", actual: " + failedTasks
+                  + expectedFailedTasks + ", actual: " + failedTasks
         );
     }
 
@@ -2045,7 +2045,7 @@ class DefaultStateUpdaterTest {
             },
             VERIFICATION_TIMEOUT,
             () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
-                    + expectedExceptionAndTasks + ", actual: " + failedTasks
+                  + expectedExceptionAndTasks + ", actual: " + failedTasks
         );
         assertFalse(stateUpdater.hasExceptionsAndFailedTasks());
         assertTrue(stateUpdater.drainExceptionsAndFailedTasks().isEmpty());

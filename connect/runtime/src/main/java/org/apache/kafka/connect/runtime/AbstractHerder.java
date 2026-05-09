@@ -339,10 +339,10 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
         Map<String, String> config = configState.rawConnectorConfig(connector);
 
         return new ConnectorInfo(
-            connector,
-            config,
-            configState.tasks(connector),
-            connectorType(config)
+                connector,
+                config,
+                configState.tasks(connector),
+                connectorType(config)
         );
     }
 
@@ -677,7 +677,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
 
     protected boolean connectorUsesProducer(org.apache.kafka.connect.health.ConnectorType connectorType, Map<String, String> connProps) {
         return connectorType == org.apache.kafka.connect.health.ConnectorType.SOURCE
-            || SinkConnectorConfig.hasDlqTopicConfig(connProps);
+               || SinkConnectorConfig.hasDlqTopicConfig(connProps);
     }
 
     private ConfigInfos validateClientOverrides(
@@ -918,12 +918,12 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
             Object rawConfigValue = rawClientConfig.getValue();
             ConfigKey configKey = configDef.configKeys().get(configName);
             Object parsedConfigValue = configKey != null
-                ? ConfigDef.parseType(configName, rawConfigValue, configKey.type)
-                : rawConfigValue;
+                    ? ConfigDef.parseType(configName, rawConfigValue, configKey.type)
+                    : rawConfigValue;
             clientConfigs.put(configName, parsedConfigValue);
         }
         ConnectorClientConfigRequest connectorClientConfigRequest = new ConnectorClientConfigRequest(
-            connName, connectorType, connectorClass, clientConfigs, clientType);
+                connName, connectorType, connectorClass, clientConfigs, clientType);
         List<ConfigValue> configValues = connectorClientConfigOverridePolicyPlugin.get().validate(connectorClientConfigRequest);
 
         return prefixedConfigInfos(configDef.configKeys(), configValues, prefix);
@@ -965,7 +965,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
         List<ConfigInfo> configInfoList = new LinkedList<>();
 
         Map<String, ConfigValue> configValueMap = new HashMap<>();
-        for (ConfigValue configValue: configValues) {
+        for (ConfigValue configValue : configValues) {
             String configName = configValue.name();
             configValueMap.put(configName, configValue);
             if (!configKeys.containsKey(configName)) {
@@ -1021,7 +1021,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
         List<String> recommendedValues = new LinkedList<>();
 
         if (type == Type.LIST) {
-            for (Object object: configValue.recommendedValues()) {
+            for (Object object : configValue.recommendedValues()) {
                 recommendedValues.add(ConfigDef.convertToString(object, Type.STRING));
             }
         } else {
@@ -1064,26 +1064,26 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
      * @return true if errors were found in the config
      */
     protected final boolean maybeAddConfigErrors(
-        ConfigInfos configInfos,
-        Callback<Created<ConnectorInfo>> callback
+            ConfigInfos configInfos,
+            Callback<Created<ConnectorInfo>> callback
     ) {
         int errors = configInfos.errorCount();
         boolean hasErrors = errors > 0;
         if (hasErrors) {
             StringBuilder messages = new StringBuilder();
             messages.append("Connector configuration is invalid and contains the following ")
-                .append(errors).append(" error(s):");
+                    .append(errors).append(" error(s):");
             for (ConfigInfo configInfo : configInfos.configs()) {
                 for (String msg : configInfo.configValue().errors()) {
                     messages.append('\n').append(msg);
                 }
             }
             callback.onCompletion(
-                new BadRequestException(
-                    messages.append(
-                        "\nYou can also find the above list of errors at the endpoint `/connector-plugins/{connectorType}/config/validate`"
-                    ).toString()
-                ), null
+                    new BadRequestException(
+                            messages.append(
+                                    "\nYou can also find the above list of errors at the endpoint `/connector-plugins/{connectorType}/config/validate`"
+                            ).toString()
+                    ), null
             );
         }
         return hasErrors;

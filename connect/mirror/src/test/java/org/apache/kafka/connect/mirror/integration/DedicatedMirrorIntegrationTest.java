@@ -85,7 +85,7 @@ public class DedicatedMirrorIntegrationTest {
                 Utils.closeQuietly(mirrorMaker::stop, "MirrorMaker worker '" + name + "'", shutdownFailure));
         mirrorMakers.forEach((name, mirrorMaker) -> mirrorMaker.awaitStop());
         kafkaClusters.forEach((name, kafkaCluster) ->
-            Utils.closeQuietly(kafkaCluster::stop, "Embedded Kafka cluster '" + name + "'", shutdownFailure)
+                Utils.closeQuietly(kafkaCluster::stop, "Embedded Kafka cluster '" + name + "'", shutdownFailure)
         );
         if (shutdownFailure.get() != null) {
             throw shutdownFailure.get();
@@ -397,6 +397,7 @@ public class DedicatedMirrorIntegrationTest {
             cluster.produce(topic, Integer.toString(i));
         }
     }
+
     private void awaitMirrorMakerStart(final MirrorMaker mm, final SourceAndTarget sourceAndTarget) throws InterruptedException {
         awaitMirrorMakerStart(mm, sourceAndTarget, CONNECTOR_CLASSES);
     }
@@ -405,7 +406,7 @@ public class DedicatedMirrorIntegrationTest {
         waitForCondition(() -> {
             try {
                 return connectorClasses.stream().allMatch(
-                    connectorClazz -> isConnectorRunningForMirrorMaker(connectorClazz, mm, sourceAndTarget));
+                        connectorClazz -> isConnectorRunningForMirrorMaker(connectorClazz, mm, sourceAndTarget));
             } catch (Exception ex) {
                 log.error("Something unexpected occurred. Unable to check for startup status for mirror maker {}", mm, ex);
                 throw new NoRetryException(ex);
@@ -471,8 +472,8 @@ public class DedicatedMirrorIntegrationTest {
             final ConnectorStateInfo connectorStatus = mm.connectorStatus(sourceAndTarget, connName);
             if (connectorStatus.connector().state().equals(AbstractStatus.State.FAILED.toString())) {
                 throw new NoRetryException(new AssertionError(
-                    String.format("Connector %s is in FAILED state for MirrorMaker %s and source->target=%s",
-                            connectorClazz, mm, sourceAndTarget)));
+                        String.format("Connector %s is in FAILED state for MirrorMaker %s and source->target=%s",
+                                connectorClazz, mm, sourceAndTarget)));
             }
             // verify that connector state is set to running
             return connectorStatus.connector().state().equals(AbstractStatus.State.RUNNING.toString());

@@ -91,8 +91,8 @@ abstract class AbstractReadOnlyDecorator<T extends StateStore, K, V> extends Wra
     }
 
     static class KeyValueStoreReadOnlyDecorator<K, V>
-        extends AbstractReadOnlyDecorator<KeyValueStore<K, V>, K, V>
-        implements KeyValueStore<K, V> {
+    extends AbstractReadOnlyDecorator<KeyValueStore<K, V>, K, V>
+    implements KeyValueStore<K, V> {
 
         private KeyValueStoreReadOnlyDecorator(final KeyValueStore<K, V> inner) {
             super(inner);
@@ -160,8 +160,8 @@ abstract class AbstractReadOnlyDecorator<T extends StateStore, K, V> extends Wra
     }
 
     static class TimestampedKeyValueStoreReadOnlyDecorator<K, V>
-        extends KeyValueStoreReadOnlyDecorator<K, ValueAndTimestamp<V>>
-        implements TimestampedKeyValueStore<K, V> {
+    extends KeyValueStoreReadOnlyDecorator<K, ValueAndTimestamp<V>>
+    implements TimestampedKeyValueStore<K, V> {
 
         private TimestampedKeyValueStoreReadOnlyDecorator(final TimestampedKeyValueStore<K, V> inner) {
             super(inner);
@@ -169,8 +169,8 @@ abstract class AbstractReadOnlyDecorator<T extends StateStore, K, V> extends Wra
     }
 
     static class TimestampedKeyValueStoreReadOnlyDecoratorWithHeaders<K, V>
-        extends KeyValueStoreReadOnlyDecorator<K, ValueTimestampHeaders<V>>
-        implements TimestampedKeyValueStoreWithHeaders<K, V> {
+    extends KeyValueStoreReadOnlyDecorator<K, ValueTimestampHeaders<V>>
+    implements TimestampedKeyValueStoreWithHeaders<K, V> {
 
         private TimestampedKeyValueStoreReadOnlyDecoratorWithHeaders(final TimestampedKeyValueStoreWithHeaders<K, V> inner) {
             super(inner);
@@ -178,8 +178,8 @@ abstract class AbstractReadOnlyDecorator<T extends StateStore, K, V> extends Wra
     }
 
     static class VersionedKeyValueStoreReadOnlyDecorator<K, V>
-        extends AbstractReadOnlyDecorator<VersionedKeyValueStore<K, V>, K, V>
-        implements VersionedKeyValueStore<K, V> {
+    extends AbstractReadOnlyDecorator<VersionedKeyValueStore<K, V>, K, V>
+    implements VersionedKeyValueStore<K, V> {
 
         private VersionedKeyValueStoreReadOnlyDecorator(final VersionedKeyValueStore<K, V> inner) {
             super(inner);
@@ -207,8 +207,8 @@ abstract class AbstractReadOnlyDecorator<T extends StateStore, K, V> extends Wra
     }
 
     static class WindowStoreReadOnlyDecorator<K, V>
-        extends AbstractReadOnlyDecorator<WindowStore<K, V>, K, V>
-        implements WindowStore<K, V> {
+    extends AbstractReadOnlyDecorator<WindowStore<K, V>, K, V>
+    implements WindowStore<K, V> {
 
         private WindowStoreReadOnlyDecorator(final WindowStore<K, V> inner) {
             super(inner);
@@ -281,8 +281,8 @@ abstract class AbstractReadOnlyDecorator<T extends StateStore, K, V> extends Wra
     }
 
     static class TimestampedWindowStoreReadOnlyDecorator<K, V>
-        extends WindowStoreReadOnlyDecorator<K, ValueAndTimestamp<V>>
-        implements TimestampedWindowStore<K, V> {
+    extends WindowStoreReadOnlyDecorator<K, ValueAndTimestamp<V>>
+    implements TimestampedWindowStore<K, V> {
 
         private TimestampedWindowStoreReadOnlyDecorator(final TimestampedWindowStore<K, V> inner) {
             super(inner);
@@ -290,8 +290,8 @@ abstract class AbstractReadOnlyDecorator<T extends StateStore, K, V> extends Wra
     }
 
     static class SessionStoreReadOnlyDecorator<K, AGG>
-        extends AbstractReadOnlyDecorator<SessionStore<K, AGG>, K, AGG>
-        implements SessionStore<K, AGG> {
+    extends AbstractReadOnlyDecorator<SessionStore<K, AGG>, K, AGG>
+    implements SessionStore<K, AGG> {
 
         private SessionStoreReadOnlyDecorator(final SessionStore<K, AGG> inner) {
             super(inner);

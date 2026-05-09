@@ -93,7 +93,7 @@ public class KStreamRepartitionTest {
             .withName(repartitionOperationName);
 
         builder.<Integer, String>stream(inputTopic)
-            .repartition(repartitioned);
+               .repartition(repartitioned);
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<Integer, String> testInputTopic = driver.createInputTopic(inputTopic,
@@ -103,9 +103,9 @@ public class KStreamRepartitionTest {
             final String topicName = repartitionOutputTopic(props, repartitionOperationName);
 
             final TestOutputTopic<Integer, String> testOutputTopic = driver.createOutputTopic(
-                topicName,
-                new IntegerDeserializer(),
-                new StringDeserializer()
+                    topicName,
+                    new IntegerDeserializer(),
+                    new StringDeserializer()
             );
 
             for (int i = 0; i < 2; i++) {

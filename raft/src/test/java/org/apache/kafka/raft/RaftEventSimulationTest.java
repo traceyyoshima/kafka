@@ -698,7 +698,7 @@ public class RaftEventSimulationTest {
 
         boolean anyReachedHighWatermark(long offset) {
             return running.values().stream()
-                    .anyMatch(node -> node.highWatermark() > offset);
+                .anyMatch(node -> node.highWatermark() > offset);
         }
 
         long maxHighWatermarkReached() {
@@ -1005,6 +1005,7 @@ public class RaftEventSimulationTest {
 
     private interface NetworkFilter {
         boolean acceptInbound(RaftMessage message);
+
         boolean acceptOutbound(RaftMessage message);
     }
 
@@ -1221,7 +1222,7 @@ public class RaftEventSimulationTest {
             for (Map.Entry<Integer, PersistentState> nodeEntry : cluster.nodes.entrySet()) {
                 int nodeId = nodeEntry.getKey();
                 RaftLog log = nodeEntry.getValue().log;
-                log.earliestSnapshotId().ifPresent(earliestSnapshotId  -> {
+                log.earliestSnapshotId().ifPresent(earliestSnapshotId -> {
                     long logStartOffset = log.startOffset();
                     ValidOffsetAndEpoch validateOffsetAndEpoch = log.validateOffsetAndEpoch(
                         earliestSnapshotId.offset(),
@@ -1307,14 +1308,13 @@ public class RaftEventSimulationTest {
                 startOffset.set(snapshotId.offset());
 
                 try (SnapshotReader<Integer> snapshot = RecordsSnapshotReader.of(
-                        log.readSnapshot(snapshotId).get(),
-                        node.intSerde,
-                        BufferSupplier.create(),
-                        Integer.MAX_VALUE,
-                        true,
-                        node.logContext()
-                    )
-                ) {
+                    log.readSnapshot(snapshotId).get(),
+                    node.intSerde,
+                    BufferSupplier.create(),
+                    Integer.MAX_VALUE,
+                    true,
+                    node.logContext()
+                )) {
                     // Since the state machine is only on e value we only expect one data record in the snapshot
                     // Expect only one batch with only one record
                     OptionalInt sequence = OptionalInt.empty();

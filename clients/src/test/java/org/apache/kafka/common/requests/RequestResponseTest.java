@@ -380,11 +380,11 @@ public class RequestResponseTest {
         checkRequest(createOffsetFetchRequestForAllPartition((short) 8, true));
         checkErrorResponse(createOffsetFetchRequestWithMultipleGroups((short) 8, true), unknownServerException);
         checkErrorResponse(createOffsetFetchRequestForAllPartition((short) 7, true),
-            new NotCoordinatorException("Not Coordinator"));
+                new NotCoordinatorException("Not Coordinator"));
         checkErrorResponse(createOffsetFetchRequestForAllPartition((short) 8, true),
-            new NotCoordinatorException("Not Coordinator"));
+                new NotCoordinatorException("Not Coordinator"));
         checkErrorResponse(createOffsetFetchRequestWithMultipleGroups((short) 8, true),
-            new NotCoordinatorException("Not Coordinator"));
+                new NotCoordinatorException("Not Coordinator"));
         // CreatePartitions
         for (short version : CREATE_PARTITIONS.allVersions()) {
             checkRequest(createCreatePartitionsRequestWithAssignments(version));
@@ -447,8 +447,8 @@ public class RequestResponseTest {
     public void cannotUseFindCoordinatorV0ToFindTransactionCoordinator() {
         FindCoordinatorRequest.Builder builder = new FindCoordinatorRequest.Builder(
                 new FindCoordinatorRequestData()
-                    .setKeyType(CoordinatorType.TRANSACTION.id)
-                    .setKey("foobar"));
+                        .setKeyType(CoordinatorType.TRANSACTION.id)
+                        .setKey("foobar"));
         assertThrows(UnsupportedVersionException.class, () -> builder.build((short) 0));
     }
 
@@ -459,9 +459,9 @@ public class RequestResponseTest {
         TopicIdPartition tpId0 = createTopicIdPartition(topicId, 0, topicName);
         TopicIdPartition tpId1 = createTopicIdPartition(topicId, 1, topicName);
         MemoryRecords records0 = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V2,
-            Compression.NONE, new SimpleRecord("woot".getBytes()));
+                Compression.NONE, new SimpleRecord("woot".getBytes()));
         MemoryRecords records1 = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V2,
-            Compression.NONE, new SimpleRecord("woot".getBytes()), new SimpleRecord("woot".getBytes()));
+                Compression.NONE, new SimpleRecord("woot".getBytes()), new SimpleRecord("woot".getBytes()));
         ProduceRequest request = ProduceRequest.builder(
                 new ProduceRequestData()
                         .setTopicData(new ProduceRequestData.TopicProduceDataCollection(asList(
@@ -471,7 +471,7 @@ public class RequestResponseTest {
                         .setTimeoutMs(5000)
                         .setTransactionalId("transactionalId"),
                 true)
-            .build((short) 7);
+                .build((short) 7);
         assertEquals(2, request.partitionSizes().size());
 
         assertEquals(records0.sizeInBytes(), partitionSize(request.partitionSizes(), tpId0));
@@ -496,8 +496,8 @@ public class RequestResponseTest {
 
         request.clearPartitionRecords();
         assertThrows(IllegalStateException.class,
-            request::data,
-            "DataOrException should fail after clearPartitionRecords()");
+                request::data,
+                "DataOrException should fail after clearPartitionRecords()");
 
         // `toString` should behave the same after `clearPartitionRecords`
         assertFalse(request.toString(false).contains("partitionSizes"));
@@ -592,15 +592,15 @@ public class RequestResponseTest {
     public void testFetchResponseShouldNotHaveNullRecords() {
         Uuid id = Uuid.randomUuid();
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(1000000)
-            .setLogStartOffset(100)
-            .setLastStableOffset(200)
-            .setRecords(null);
+                .setPartitionIndex(0)
+                .setHighWatermark(1000000)
+                .setLogStartOffset(100)
+                .setLastStableOffset(200)
+                .setRecords(null);
         FetchResponseData.FetchableTopicResponse response = new FetchResponseData.FetchableTopicResponse()
-            .setTopic("topic")
-            .setPartitions(List.of(partitionData))
-            .setTopicId(id);
+                .setTopic("topic")
+                .setPartitions(List.of(partitionData))
+                .setTopicId(id);
         FetchResponseData data = new FetchResponseData().setResponses(List.of(response));
 
         response.setPartitions(List.of(FetchResponse.partitionResponse(0, Errors.NONE)));
@@ -615,17 +615,17 @@ public class RequestResponseTest {
 
     private void validateNoNullRecords(FetchResponse fetchResponse) {
         fetchResponse.data().responses().stream()
-            .flatMap(response -> response.partitions().stream())
-            .forEach(partition -> assertEquals(MemoryRecords.EMPTY, partition.records()));
+                .flatMap(response -> response.partitions().stream())
+                .forEach(partition -> assertEquals(MemoryRecords.EMPTY, partition.records()));
     }
 
     @Test
     public void testShareFetchResponseShouldNotHaveNullRecords() {
         Uuid id = Uuid.randomUuid();
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setAcquiredRecords(List.of())
-            .setRecords(null);
+                .setPartitionIndex(0)
+                .setAcquiredRecords(List.of())
+                .setRecords(null);
 
         TopicIdPartition topicIdPartition = new TopicIdPartition(id, new TopicPartition("test", 0));
         LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> tpToData = new LinkedHashMap<>(Map.of(topicIdPartition, partitionData));
@@ -635,15 +635,15 @@ public class RequestResponseTest {
 
     private void validateNoNullRecords(ShareFetchResponse fetchResponse) {
         fetchResponse.data().responses().stream()
-            .flatMap(response -> response.partitions().stream())
-            .forEach(partition -> assertEquals(MemoryRecords.EMPTY, partition.records()));
+                .flatMap(response -> response.partitions().stream())
+                .forEach(partition -> assertEquals(MemoryRecords.EMPTY, partition.records()));
     }
 
     @Test
     public void verifyFetchResponseFullWrites() throws Exception {
         verifyFetchResponseFullWrite(FETCH.latestVersion(), createFetchResponse(123));
         verifyFetchResponseFullWrite(FETCH.latestVersion(),
-            createFetchResponse(Errors.FETCH_SESSION_ID_NOT_FOUND, 123));
+                createFetchResponse(Errors.FETCH_SESSION_ID_NOT_FOUND, 123));
         for (short version : FETCH.allVersions()) {
             verifyFetchResponseFullWrite(version, createFetchResponse(version >= 4));
         }
@@ -677,16 +677,16 @@ public class RequestResponseTest {
     @Test
     public void testCreateTopicRequestV0FailsIfValidateOnly() {
         assertThrows(UnsupportedVersionException.class,
-            () -> createCreateTopicRequest((short) 0, true));
+                () -> createCreateTopicRequest((short) 0, true));
     }
 
     @Test
     public void testCreateTopicRequestV3FailsIfNoPartitionsOrReplicas() {
         final UnsupportedVersionException exception = assertThrows(
-            UnsupportedVersionException.class, () -> {
+                UnsupportedVersionException.class, () -> {
                 CreateTopicsRequestData data = new CreateTopicsRequestData()
-                    .setTimeoutMs(123)
-                    .setValidateOnly(false);
+                        .setTimeoutMs(123)
+                        .setValidateOnly(false);
                 data.topics().add(new CreatableTopic().
                     setName("foo").
                     setNumPartitions(CreateTopicsRequest.NO_NUM_PARTITIONS).
@@ -746,8 +746,8 @@ public class RequestResponseTest {
 
         CreateTopicsRequest createTopicsRequest = new CreateTopicsRequest.Builder(
             new CreateTopicsRequestData()
-                .setTimeoutMs(10)
-                .setTopics(topicsToCreate)
+                    .setTimeoutMs(10)
+                    .setTopics(topicsToCreate)
         ).build();
 
         short requestVersion = CREATE_TOPICS.latestVersion();
@@ -759,7 +759,7 @@ public class RequestResponseTest {
         assertEquals(requestHeader, parsedHeader);
 
         RequestAndSize parsedRequest = AbstractRequest.parseRequest(
-            CREATE_TOPICS, requestVersion, new ByteBufferAccessor(serializedRequest));
+                CREATE_TOPICS, requestVersion, new ByteBufferAccessor(serializedRequest));
 
         assertEquals(createTopicsRequest.data(), parsedRequest.request.data());
     }
@@ -767,7 +767,7 @@ public class RequestResponseTest {
     @Test
     public void testSerializeWithInconsistentHeaderApiKey() {
         CreateTopicsRequest createTopicsRequest = new CreateTopicsRequest.Builder(
-            new CreateTopicsRequestData()
+                new CreateTopicsRequestData()
         ).build();
         short requestVersion = CREATE_TOPICS.latestVersion();
         RequestHeader requestHeader = new RequestHeader(DELETE_TOPICS, requestVersion, "client", 2);
@@ -777,7 +777,7 @@ public class RequestResponseTest {
     @Test
     public void testSerializeWithInconsistentHeaderVersion() {
         CreateTopicsRequest createTopicsRequest = new CreateTopicsRequest.Builder(
-            new CreateTopicsRequestData()
+                new CreateTopicsRequestData()
         ).build((short) 2);
         RequestHeader requestHeader = new RequestHeader(CREATE_TOPICS, (short) 1, "client", 2);
         assertThrows(IllegalArgumentException.class, () -> createTopicsRequest.serializeWithHeader(requestHeader));
@@ -799,9 +799,9 @@ public class RequestResponseTest {
         assertTrue(request.isValid());
 
         request = new ApiVersionsRequest(new ApiVersionsRequestData()
-            .setClientSoftwareName("apache-kafka.java")
-            .setClientSoftwareVersion("0.0.0-SNAPSHOT"),
-            API_VERSIONS.latestVersion()
+                .setClientSoftwareName("apache-kafka.java")
+                .setClientSoftwareVersion("0.0.0-SNAPSHOT"),
+                API_VERSIONS.latestVersion()
         );
         assertTrue(request.isValid());
     }
@@ -823,9 +823,9 @@ public class RequestResponseTest {
 
     private void testInvalidCase(String name, String version) {
         ApiVersionsRequest request = new ApiVersionsRequest(new ApiVersionsRequestData()
-            .setClientSoftwareName(name)
-            .setClientSoftwareVersion(version),
-            API_VERSIONS.latestVersion()
+                .setClientSoftwareName(name)
+                .setClientSoftwareVersion(version),
+                API_VERSIONS.latestVersion()
         );
         assertFalse(request.isValid());
     }
@@ -858,13 +858,13 @@ public class RequestResponseTest {
     @Test
     public void testUnregisterBrokerResponseWithUnknownServerError() {
         UnregisterBrokerRequest request = new UnregisterBrokerRequest.Builder(
-            new UnregisterBrokerRequestData()
+                new UnregisterBrokerRequestData()
         ).build((short) 0);
         String customerErrorMessage = "customer error message";
 
         UnregisterBrokerResponse response = request.getErrorResponse(
-            0,
-            new RuntimeException(customerErrorMessage)
+                0,
+                new RuntimeException(customerErrorMessage)
         );
 
         assertEquals(0, response.throttleTimeMs());
@@ -889,7 +889,7 @@ public class RequestResponseTest {
     public void testApiVersionResponseParsingFallbackException() {
         for (final short version : API_VERSIONS.allVersions()) {
             assertThrows(BufferUnderflowException.class,
-                () -> ApiVersionsResponse.parse(new ByteBufferAccessor(ByteBuffer.allocate(0)), version));
+                    () -> ApiVersionsResponse.parse(new ByteBufferAccessor(ByteBuffer.allocate(0)), version));
         }
     }
 
@@ -905,11 +905,11 @@ public class RequestResponseTest {
     @Test
     public void testInitProducerIdRequestVersions() {
         InitProducerIdRequest.Builder bld = new InitProducerIdRequest.Builder(
-            new InitProducerIdRequestData().setTransactionTimeoutMs(1000).
+                new InitProducerIdRequestData().setTransactionTimeoutMs(1000).
                 setTransactionalId("abracadabra").
                 setProducerId(123));
         final UnsupportedVersionException exception = assertThrows(
-            UnsupportedVersionException.class, () -> bld.build((short) 2).serialize());
+                UnsupportedVersionException.class, () -> bld.build((short) 2).serialize());
         assertTrue(exception.getMessage().contains("Attempted to write a non-default producerId at version 2"));
         bld.build((short) 3);
     }
@@ -917,8 +917,8 @@ public class RequestResponseTest {
     @Test
     public void testDeletableTopicResultErrorMessageIsNullByDefault() {
         DeletableTopicResult result = new DeletableTopicResult()
-            .setName("topic")
-            .setErrorCode(Errors.THROTTLING_QUOTA_EXCEEDED.code());
+                .setName("topic")
+                .setErrorCode(Errors.THROTTLING_QUOTA_EXCEEDED.code());
 
         assertEquals("topic", result.name());
         assertEquals(Errors.THROTTLING_QUOTA_EXCEEDED.code(), result.errorCode());
@@ -1176,25 +1176,25 @@ public class RequestResponseTest {
 
     private ConsumerGroupDescribeRequest createConsumerGroupDescribeRequest(short version) {
         ConsumerGroupDescribeRequestData data = new ConsumerGroupDescribeRequestData()
-            .setGroupIds(Collections.singletonList("group"))
-            .setIncludeAuthorizedOperations(false);
+                .setGroupIds(Collections.singletonList("group"))
+                .setIncludeAuthorizedOperations(false);
         return new ConsumerGroupDescribeRequest.Builder(data).build(version);
     }
 
     private ConsumerGroupDescribeResponse createConsumerGroupDescribeResponse() {
         ConsumerGroupDescribeResponseData data = new ConsumerGroupDescribeResponseData()
-            .setGroups(Collections.singletonList(
+                .setGroups(Collections.singletonList(
                 new ConsumerGroupDescribeResponseData.DescribedGroup()
-                    .setGroupId("group")
-                    .setErrorCode((short) 0)
-                    .setErrorMessage(Errors.forCode((short) 0).message())
-                    .setGroupState(GroupState.EMPTY.toString())
-                    .setGroupEpoch(0)
-                    .setAssignmentEpoch(0)
-                    .setAssignorName("range")
-                    .setMembers(new ArrayList<>(0))
+                        .setGroupId("group")
+                        .setErrorCode((short) 0)
+                        .setErrorMessage(Errors.forCode((short) 0).message())
+                        .setGroupState(GroupState.EMPTY.toString())
+                        .setGroupEpoch(0)
+                        .setAssignmentEpoch(0)
+                        .setAssignorName("range")
+                        .setMembers(new ArrayList<>(0))
             ))
-            .setThrottleTimeMs(1000);
+                .setThrottleTimeMs(1000);
         return new ConsumerGroupDescribeResponse(data);
     }
 
@@ -1277,7 +1277,7 @@ public class RequestResponseTest {
             setVoterId(1).
             setVoterDirectoryId(Uuid.fromString("DZG26STKRxaelDpg2wqsXw")).
             setListeners(new AddRaftVoterRequestData.ListenerCollection(
-                Collections.singletonList(new AddRaftVoterRequestData.Listener().
+                    Collections.singletonList(new AddRaftVoterRequestData.Listener().
                     setName("CONTROLLER").
                     setHost("localhost").
                     setPort(8080)))
@@ -1310,7 +1310,7 @@ public class RequestResponseTest {
                 setVoterId(1).
                 setVoterDirectoryId(Uuid.fromString("DZG26STKRxaelDpg2wqsXw")).
                 setListeners(new UpdateRaftVoterRequestData.ListenerCollection(
-                    Collections.singletonList(new UpdateRaftVoterRequestData.Listener().
+                        Collections.singletonList(new UpdateRaftVoterRequestData.Listener().
                         setName("CONTROLLER").
                         setHost("localhost").
                         setPort(8080)))),
@@ -1320,12 +1320,12 @@ public class RequestResponseTest {
     private UpdateRaftVoterResponse createUpdateRaftVoterResponse() {
         return new UpdateRaftVoterResponse(
             new UpdateRaftVoterResponseData()
-                .setErrorCode((short) 0)
-                .setCurrentLeader(new UpdateRaftVoterResponseData.CurrentLeader()
-                    .setLeaderId(1)
-                    .setLeaderEpoch(2)
-                    .setHost("localhost")
-                    .setPort(9999)
+                    .setErrorCode((short) 0)
+                    .setCurrentLeader(new UpdateRaftVoterResponseData.CurrentLeader()
+                            .setLeaderId(1)
+                            .setLeaderEpoch(2)
+                            .setHost("localhost")
+                            .setPort(9999)
                 )
         );
     }
@@ -1360,38 +1360,38 @@ public class RequestResponseTest {
 
     private ConsumerGroupHeartbeatRequest createConsumerGroupHeartbeatRequest(short version) {
         ConsumerGroupHeartbeatRequestData data = new ConsumerGroupHeartbeatRequestData()
-            .setGroupId("group")
-            .setMemberId("memberid")
-            .setMemberEpoch(10)
-            .setRebalanceTimeoutMs(60000)
-            .setServerAssignor("range")
-            .setRackId("rackid")
-            .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
-            .setTopicPartitions(Arrays.asList(
+                .setGroupId("group")
+                .setMemberId("memberid")
+                .setMemberEpoch(10)
+                .setRebalanceTimeoutMs(60000)
+                .setServerAssignor("range")
+                .setRackId("rackid")
+                .setSubscribedTopicNames(Arrays.asList("foo", "bar"))
+                .setTopicPartitions(Arrays.asList(
                 new ConsumerGroupHeartbeatRequestData.TopicPartitions()
-                    .setTopicId(Uuid.randomUuid())
-                    .setPartitions(Arrays.asList(0, 1, 2)),
+                        .setTopicId(Uuid.randomUuid())
+                        .setPartitions(Arrays.asList(0, 1, 2)),
                 new ConsumerGroupHeartbeatRequestData.TopicPartitions()
-                    .setTopicId(Uuid.randomUuid())
-                    .setPartitions(Arrays.asList(3, 4, 5))
+                        .setTopicId(Uuid.randomUuid())
+                        .setPartitions(Arrays.asList(3, 4, 5))
             ));
         return new ConsumerGroupHeartbeatRequest.Builder(data).build(version);
     }
 
     private ConsumerGroupHeartbeatResponse createConsumerGroupHeartbeatResponse() {
         ConsumerGroupHeartbeatResponseData data = new ConsumerGroupHeartbeatResponseData()
-            .setErrorCode(Errors.NONE.code())
-            .setThrottleTimeMs(1000)
-            .setMemberId("memberid")
-            .setMemberEpoch(11)
-            .setAssignment(new ConsumerGroupHeartbeatResponseData.Assignment()
+                .setErrorCode(Errors.NONE.code())
+                .setThrottleTimeMs(1000)
+                .setMemberId("memberid")
+                .setMemberEpoch(11)
+                .setAssignment(new ConsumerGroupHeartbeatResponseData.Assignment()
                 .setTopicPartitions(Arrays.asList(
                     new ConsumerGroupHeartbeatResponseData.TopicPartitions()
-                        .setTopicId(Uuid.randomUuid())
-                        .setPartitions(Arrays.asList(0, 1, 2)),
+                            .setTopicId(Uuid.randomUuid())
+                            .setPartitions(Arrays.asList(0, 1, 2)),
                     new ConsumerGroupHeartbeatResponseData.TopicPartitions()
-                        .setTopicId(Uuid.randomUuid())
-                        .setPartitions(Arrays.asList(3, 4, 5))
+                            .setTopicId(Uuid.randomUuid())
+                            .setPartitions(Arrays.asList(3, 4, 5))
                 ))
             );
         return new ConsumerGroupHeartbeatResponse(data);
@@ -1649,11 +1649,11 @@ public class RequestResponseTest {
 
     private VoteRequest createVoteRequest(short version) {
         VoteRequestData.PartitionData partitionData = new VoteRequestData.PartitionData()
-            .setPartitionIndex(0)
-            .setReplicaEpoch(1)
-            .setReplicaId(2)
-            .setLastOffset(3L)
-            .setLastOffsetEpoch(4);
+                .setPartitionIndex(0)
+                .setReplicaEpoch(1)
+                .setReplicaId(2)
+                .setLastOffset(3L)
+                .setLastOffsetEpoch(4);
         if (version >= 2) {
             partitionData.setPreVote(true);
         }
@@ -1667,11 +1667,11 @@ public class RequestResponseTest {
 
     private VoteResponse createVoteResponse() {
         VoteResponseData.PartitionData partitionData = new VoteResponseData.PartitionData()
-            .setErrorCode(Errors.NONE.code())
-            .setLeaderEpoch(0)
-            .setPartitionIndex(1)
-            .setLeaderId(2)
-            .setVoteGranted(false);
+                .setErrorCode(Errors.NONE.code())
+                .setLeaderEpoch(0)
+                .setPartitionIndex(1)
+                .setLeaderId(2)
+                .setVoteGranted(false);
         VoteResponseData data = new VoteResponseData()
                 .setErrorCode(Errors.NONE.code())
                 .setTopics(singletonList(new VoteResponseData.TopicData()
@@ -1725,36 +1725,36 @@ public class RequestResponseTest {
 
     private AlterPartitionRequest createAlterPartitionRequest(short version) {
         AlterPartitionRequestData.PartitionData partitionData = new AlterPartitionRequestData.PartitionData()
-            .setPartitionIndex(1)
-            .setPartitionEpoch(2)
-            .setLeaderEpoch(3)
-            .setNewIsrWithEpochs(AlterPartitionRequest.newIsrToSimpleNewIsrWithBrokerEpochs(asList(1, 2)))
-            .setLeaderRecoveryState((byte) 1); // non-default value
+                .setPartitionIndex(1)
+                .setPartitionEpoch(2)
+                .setLeaderEpoch(3)
+                .setNewIsrWithEpochs(AlterPartitionRequest.newIsrToSimpleNewIsrWithBrokerEpochs(asList(1, 2)))
+                .setLeaderRecoveryState((byte) 1); // non-default value
 
         AlterPartitionRequestData data = new AlterPartitionRequestData()
-            .setBrokerEpoch(123L)
-            .setBrokerId(1)
-            .setTopics(singletonList(new AlterPartitionRequestData.TopicData()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(singletonList(partitionData))));
+                .setBrokerEpoch(123L)
+                .setBrokerId(1)
+                .setTopics(singletonList(new AlterPartitionRequestData.TopicData()
+                        .setTopicId(Uuid.randomUuid())
+                        .setPartitions(singletonList(partitionData))));
         return new AlterPartitionRequest.Builder(data).build(version);
     }
 
     private AlterPartitionResponse createAlterPartitionResponse() {
         AlterPartitionResponseData.PartitionData partitionData = new AlterPartitionResponseData.PartitionData()
-            .setPartitionEpoch(1)
-            .setIsr(asList(0, 1, 2))
-            .setErrorCode(Errors.NONE.code())
-            .setLeaderEpoch(2)
-            .setLeaderId(3)
-            .setLeaderRecoveryState((byte) 1); // non-default value
+                .setPartitionEpoch(1)
+                .setIsr(asList(0, 1, 2))
+                .setErrorCode(Errors.NONE.code())
+                .setLeaderEpoch(2)
+                .setLeaderId(3)
+                .setLeaderRecoveryState((byte) 1); // non-default value
 
         AlterPartitionResponseData data = new AlterPartitionResponseData()
                 .setErrorCode(Errors.NONE.code())
                 .setThrottleTimeMs(123)
                 .setTopics(singletonList(new AlterPartitionResponseData.TopicData()
-                    .setTopicId(Uuid.randomUuid())
-                    .setPartitions(singletonList(partitionData))));
+                        .setTopicId(Uuid.randomUuid())
+                        .setPartitions(singletonList(partitionData))));
         return new AlterPartitionResponse(data);
     }
 
@@ -1977,8 +1977,8 @@ public class RequestResponseTest {
     private FindCoordinatorRequest createFindCoordinatorRequest(short version) {
         return new FindCoordinatorRequest.Builder(
                 new FindCoordinatorRequestData()
-                    .setKeyType(CoordinatorType.GROUP.id())
-                    .setKey("test-group"))
+                        .setKeyType(CoordinatorType.GROUP.id())
+                        .setKey("test-group"))
                 .build(version);
     }
 
@@ -2029,7 +2029,7 @@ public class RequestResponseTest {
 
     private FetchResponse createFetchResponse(Errors error, int sessionId) {
         return FetchResponse.parse(
-            FetchResponse.of(error, 25, sessionId, new LinkedHashMap<>(), List.of()).serialize(FETCH.latestVersion()), FETCH.latestVersion());
+                FetchResponse.of(error, 25, sessionId, new LinkedHashMap<>(), List.of()).serialize(FETCH.latestVersion()), FETCH.latestVersion());
     }
 
     private FetchResponse createFetchResponse(int sessionId) {
@@ -2043,7 +2043,7 @@ public class RequestResponseTest {
                         .setLogStartOffset(0)
                         .setRecords(records));
         List<FetchResponseData.AbortedTransaction> abortedTransactions = singletonList(
-            new FetchResponseData.AbortedTransaction().setProducerId(234L).setFirstOffset(999L));
+                new FetchResponseData.AbortedTransaction().setProducerId(234L).setFirstOffset(999L));
         responseData.put(new TopicIdPartition(topicIds.get("test"), new TopicPartition("test", 1)), new FetchResponseData.PartitionData()
                         .setPartitionIndex(1)
                         .setHighWatermark(1000000)
@@ -2051,7 +2051,7 @@ public class RequestResponseTest {
                         .setAbortedTransactions(abortedTransactions)
                         .setRecords(MemoryRecords.EMPTY));
         return FetchResponse.parse(FetchResponse.of(Errors.NONE, 25, sessionId,
-            responseData, List.of()).serialize(FETCH.latestVersion()), FETCH.latestVersion());
+                responseData, List.of()).serialize(FETCH.latestVersion()), FETCH.latestVersion());
     }
 
     private FetchResponse createFetchResponse(boolean includeAborted) {
@@ -2076,7 +2076,7 @@ public class RequestResponseTest {
                         .setAbortedTransactions(abortedTransactions)
                         .setRecords(MemoryRecords.EMPTY));
         return FetchResponse.parse(FetchResponse.of(Errors.NONE, 25, INVALID_SESSION_ID,
-            responseData, List.of()).serialize(FETCH.latestVersion()), FETCH.latestVersion());
+                responseData, List.of()).serialize(FETCH.latestVersion()), FETCH.latestVersion());
     }
 
     private FetchResponse createFetchResponse(short version) {
@@ -2132,19 +2132,19 @@ public class RequestResponseTest {
     private JoinGroupRequest createJoinGroupRequest(short version) {
         JoinGroupRequestData.JoinGroupRequestProtocolCollection protocols =
             new JoinGroupRequestData.JoinGroupRequestProtocolCollection(
-                Collections.singleton(
+                    Collections.singleton(
                         new JoinGroupRequestData.JoinGroupRequestProtocol()
                                 .setName("consumer-range")
                                 .setMetadata(new byte[0]))
-        );
+            );
 
         JoinGroupRequestData data = new JoinGroupRequestData()
-            .setGroupId("group1")
-            .setSessionTimeoutMs(30000)
-            .setMemberId("consumer1")
-            .setProtocolType("consumer")
-            .setProtocols(protocols)
-            .setReason("reason: test");
+                .setGroupId("group1")
+                .setSessionTimeoutMs(30000)
+                .setMemberId("consumer1")
+                .setProtocolType("consumer")
+                .setProtocols(protocols)
+                .setReason("reason: test");
 
         // v1 and above contains rebalance timeout
         if (version >= 1)
@@ -2162,21 +2162,21 @@ public class RequestResponseTest {
 
         for (int i = 0; i < 2; i++) {
             JoinGroupResponseMember member = new JoinGroupResponseData.JoinGroupResponseMember()
-                .setMemberId("consumer" + i)
-                .setMetadata(new byte[0])
-                .setGroupInstanceId("instance" + i);
+                    .setMemberId("consumer" + i)
+                    .setMetadata(new byte[0])
+                    .setGroupInstanceId("instance" + i);
 
             members.add(member);
         }
 
         JoinGroupResponseData data = new JoinGroupResponseData()
-            .setErrorCode(Errors.NONE.code())
-            .setGenerationId(1)
-            .setProtocolType("consumer") // Added in v7 but ignorable
+                .setErrorCode(Errors.NONE.code())
+                .setGenerationId(1)
+                .setProtocolType("consumer") // Added in v7 but ignorable
             .setProtocolName("range")
-            .setLeader("leader")
-            .setMemberId("consumer1")
-            .setMembers(members);
+                .setLeader("leader")
+                .setMemberId("consumer1")
+                .setMembers(members);
 
         // v1 and above could set throttle time
         if (version >= 1)
@@ -2188,15 +2188,15 @@ public class RequestResponseTest {
     private SyncGroupRequest createSyncGroupRequest(short version) {
         List<SyncGroupRequestAssignment> assignments = singletonList(
             new SyncGroupRequestAssignment()
-                .setMemberId("member")
-                .setAssignment(new byte[0])
+                    .setMemberId("member")
+                    .setAssignment(new byte[0])
         );
 
         SyncGroupRequestData data = new SyncGroupRequestData()
-            .setGroupId("group1")
-            .setGenerationId(1)
-            .setMemberId("member")
-            .setProtocolType("consumer") // Added in v5 but ignorable
+                .setGroupId("group1")
+                .setGenerationId(1)
+                .setMemberId("member")
+                .setProtocolType("consumer") // Added in v5 but ignorable
             .setProtocolName("range")    // Added in v5 but ignorable
             .setAssignments(assignments);
 
@@ -2209,8 +2209,8 @@ public class RequestResponseTest {
 
     private SyncGroupResponse createSyncGroupResponse(short version) {
         SyncGroupResponseData data = new SyncGroupResponseData()
-            .setErrorCode(Errors.NONE.code())
-            .setProtocolType("consumer") // Added in v5 but ignorable
+                .setErrorCode(Errors.NONE.code())
+                .setProtocolType("consumer") // Added in v5 but ignorable
             .setProtocolName("range")    // Added in v5 but ignorable
             .setAssignment(new byte[0]);
 
@@ -2242,7 +2242,7 @@ public class RequestResponseTest {
 
     private DescribeGroupsRequest createDescribeGroupRequest(short version) {
         return new DescribeGroupsRequest.Builder(
-            new DescribeGroupsRequestData()
+                new DescribeGroupsRequestData()
                 .setGroups(singletonList("test-group"))).build(version);
     }
 
@@ -2275,7 +2275,7 @@ public class RequestResponseTest {
 
     private DeleteGroupsRequest createDeleteGroupsRequest(short version) {
         return new DeleteGroupsRequest.Builder(
-            new DeleteGroupsRequestData()
+                new DeleteGroupsRequestData()
                 .setGroupsNames(singletonList("test-group"))
         ).build(version);
     }
@@ -2286,7 +2286,7 @@ public class RequestResponseTest {
                        .setGroupId("test-group")
                        .setErrorCode(Errors.NONE.code()));
         return new DeleteGroupsResponse(
-            new DeleteGroupsResponseData()
+                new DeleteGroupsResponseData()
                 .setResults(result)
         );
     }
@@ -2360,8 +2360,8 @@ public class RequestResponseTest {
                 emptyList()));
         allTopicMetadata.add(new MetadataResponse.TopicMetadata(Errors.NONE, "topic3", false,
                 singletonList(new MetadataResponse.PartitionMetadata(Errors.LEADER_NOT_AVAILABLE,
-                    new TopicPartition("topic3", 0), Optional.empty(),
-                    Optional.empty(), replicas, isr, offlineReplicas))));
+                        new TopicPartition("topic3", 0), Optional.empty(),
+                        Optional.empty(), replicas, isr, offlineReplicas))));
 
         return RequestTestUtils.metadataResponse(singletonList(node), null, MetadataResponse.NO_CONTROLLER_ID, allTopicMetadata);
     }
@@ -2410,17 +2410,17 @@ public class RequestResponseTest {
     private OffsetFetchRequest createOffsetFetchRequest(short version, boolean requireStable) {
         return OffsetFetchRequest.Builder.forTopicIdsOrNames(
             new OffsetFetchRequestData()
-                .setRequireStable(requireStable)
-                .setGroups(List.of(
+                    .setRequireStable(requireStable)
+                    .setGroups(List.of(
                     new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("group1")
-                        .setMemberId(version >= 9 ? "memberid" : null)
-                        .setMemberEpoch(version >= 9 ? 10 : -1)
-                        .setTopics(List.of(
+                            .setGroupId("group1")
+                            .setMemberId(version >= 9 ? "memberid" : null)
+                            .setMemberEpoch(version >= 9 ? 10 : -1)
+                            .setTopics(List.of(
                             new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName(version < 10 ? "test11" : "")
-                                .setTopicId(version >= 10 ? TOPIC_ID : Uuid.ZERO_UUID)
-                                .setPartitionIndexes(List.of(1))
+                                    .setName(version < 10 ? "test11" : "")
+                                    .setTopicId(version >= 10 ? TOPIC_ID : Uuid.ZERO_UUID)
+                                    .setPartitionIndexes(List.of(1))
                         ))
                 )),
             false
@@ -2430,44 +2430,44 @@ public class RequestResponseTest {
     private OffsetFetchRequest createOffsetFetchRequestWithMultipleGroups(short version, boolean requireStable) {
         return OffsetFetchRequest.Builder.forTopicIdsOrNames(
             new OffsetFetchRequestData()
-                .setRequireStable(requireStable)
-                .setGroups(List.of(
+                    .setRequireStable(requireStable)
+                    .setGroups(List.of(
                     new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("group1")
-                        .setTopics(List.of(
+                            .setGroupId("group1")
+                            .setTopics(List.of(
                             new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName("topic1")
-                                .setPartitionIndexes(List.of(0))
+                                    .setName("topic1")
+                                    .setPartitionIndexes(List.of(0))
                         )),
                     new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("group2")
-                        .setTopics(List.of(
+                            .setGroupId("group2")
+                            .setTopics(List.of(
                             new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName("topic1")
-                                .setPartitionIndexes(List.of(0)),
+                                    .setName("topic1")
+                                    .setPartitionIndexes(List.of(0)),
                             new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName("topic2")
-                                .setPartitionIndexes(List.of(0, 1))
+                                    .setName("topic2")
+                                    .setPartitionIndexes(List.of(0, 1))
                         )),
                     new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("group3")
-                        .setTopics(List.of(
+                            .setGroupId("group3")
+                            .setTopics(List.of(
                             new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName("topic1")
-                                .setPartitionIndexes(List.of(0)),
+                                    .setName("topic1")
+                                    .setPartitionIndexes(List.of(0)),
                             new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName("topic2")
-                                .setPartitionIndexes(List.of(0, 1)),
+                                    .setName("topic2")
+                                    .setPartitionIndexes(List.of(0, 1)),
                             new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName("topic3")
-                                .setPartitionIndexes(List.of(0, 1, 2))
+                                    .setName("topic3")
+                                    .setPartitionIndexes(List.of(0, 1, 2))
                         )),
                     new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("group4")
-                        .setTopics(null),
+                            .setGroupId("group4")
+                            .setTopics(null),
                     new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("group5")
-                        .setTopics(null)
+                            .setGroupId("group5")
+                            .setTopics(null)
                 )),
             false
         ).build(version);
@@ -2476,13 +2476,13 @@ public class RequestResponseTest {
     private OffsetFetchRequest createOffsetFetchRequestForAllPartition(short version, boolean requireStable) {
         return OffsetFetchRequest.Builder.forTopicIdsOrNames(
             new OffsetFetchRequestData()
-                .setRequireStable(requireStable)
-                .setGroups(List.of(
+                    .setRequireStable(requireStable)
+                    .setGroups(List.of(
                     new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("group1")
-                        .setMemberId(version >= 9 ? "memberid" : null)
-                        .setMemberEpoch(version >= 9 ? 10 : -1)
-                        .setTopics(null)
+                            .setGroupId("group1")
+                            .setMemberId(version >= 9 ? "memberid" : null)
+                            .setMemberEpoch(version >= 9 ? 10 : -1)
+                            .setTopics(null)
                 )),
             false
         ).build(version);
@@ -2490,19 +2490,19 @@ public class RequestResponseTest {
 
     private OffsetFetchResponse createOffsetFetchResponse(short version) {
         var group = new OffsetFetchResponseData.OffsetFetchResponseGroup()
-            .setGroupId("group1")
-            .setTopics(List.of(
+                .setGroupId("group1")
+                .setTopics(List.of(
                 new OffsetFetchResponseData.OffsetFetchResponseTopics()
-                    .setName("test")
-                    .setPartitions(List.of(
+                        .setName("test")
+                        .setPartitions(List.of(
                         new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                            .setPartitionIndex(0)
-                            .setCommittedOffset(100),
+                                .setPartitionIndex(0)
+                                .setCommittedOffset(100),
                         new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                            .setPartitionIndex(1)
-                            .setCommittedOffset(100)
-                            .setCommittedLeaderEpoch(10)
-                            .setMetadata(null)
+                                .setPartitionIndex(1)
+                                .setCommittedOffset(100)
+                                .setCommittedLeaderEpoch(10)
+                                .setMetadata(null)
                     ))
             ));
         return new OffsetFetchResponse.Builder(group).build(version);
@@ -2568,7 +2568,7 @@ public class RequestResponseTest {
     private SaslHandshakeResponse createSaslHandshakeResponse() {
         return new SaslHandshakeResponse(
                 new SaslHandshakeResponseData()
-                    .setErrorCode(Errors.NONE.code()).setMechanisms(singletonList("GSSAPI")));
+                        .setErrorCode(Errors.NONE.code()).setMechanisms(singletonList("GSSAPI")));
     }
 
     private SaslAuthenticateRequest createSaslAuthenticateRequest(short version) {
@@ -2591,14 +2591,14 @@ public class RequestResponseTest {
     private ApiVersionsResponse createApiVersionResponse() {
         ApiVersionCollection apiVersions = new ApiVersionCollection();
         apiVersions.add(new ApiVersion()
-            .setApiKey((short) 0)
-            .setMinVersion((short) 0)
-            .setMaxVersion((short) 2));
+                .setApiKey((short) 0)
+                .setMinVersion((short) 0)
+                .setMaxVersion((short) 2));
 
         return new ApiVersionsResponse(new ApiVersionsResponseData()
-            .setErrorCode(Errors.NONE.code())
-            .setThrottleTimeMs(0)
-            .setApiKeys(apiVersions));
+                .setErrorCode(Errors.NONE.code())
+                .setThrottleTimeMs(0)
+                .setApiKeys(apiVersions));
     }
 
     private CreateTopicsRequest createCreateTopicRequest(short version) {
@@ -2607,22 +2607,22 @@ public class RequestResponseTest {
 
     private CreateTopicsRequest createCreateTopicRequest(short version, boolean validateOnly) {
         CreateTopicsRequestData data = new CreateTopicsRequestData()
-            .setTimeoutMs(123)
-            .setValidateOnly(validateOnly);
+                .setTimeoutMs(123)
+                .setValidateOnly(validateOnly);
         data.topics().add(new CreatableTopic()
-            .setNumPartitions(3)
-            .setReplicationFactor((short) 5));
+                .setNumPartitions(3)
+                .setReplicationFactor((short) 5));
 
         CreatableTopic topic2 = new CreatableTopic();
         data.topics().add(topic2);
         topic2.assignments().add(new CreatableReplicaAssignment()
-            .setPartitionIndex(0)
-            .setBrokerIds(asList(1, 2, 3)));
+                .setPartitionIndex(0)
+                .setBrokerIds(asList(1, 2, 3)));
         topic2.assignments().add(new CreatableReplicaAssignment()
-            .setPartitionIndex(1)
-            .setBrokerIds(asList(2, 3, 4)));
+                .setPartitionIndex(1)
+                .setBrokerIds(asList(2, 3, 4)));
         topic2.configs().add(new CreatableTopicConfig()
-            .setName("config1").setValue("value1"));
+                .setName("config1").setValue("value1"));
 
         return new CreateTopicsRequest.Builder(data).build(version);
     }
@@ -2630,44 +2630,44 @@ public class RequestResponseTest {
     private CreateTopicsResponse createCreateTopicResponse() {
         CreateTopicsResponseData data = new CreateTopicsResponseData();
         data.topics().add(new CreatableTopicResult()
-            .setName("t1")
-            .setErrorCode(Errors.INVALID_TOPIC_EXCEPTION.code())
-            .setErrorMessage(null));
+                .setName("t1")
+                .setErrorCode(Errors.INVALID_TOPIC_EXCEPTION.code())
+                .setErrorMessage(null));
         data.topics().add(new CreatableTopicResult()
-            .setName("t2")
-            .setErrorCode(Errors.LEADER_NOT_AVAILABLE.code())
-            .setErrorMessage("Leader with id 5 is not available."));
+                .setName("t2")
+                .setErrorCode(Errors.LEADER_NOT_AVAILABLE.code())
+                .setErrorMessage("Leader with id 5 is not available."));
         data.topics().add(new CreatableTopicResult()
-            .setName("t3")
-            .setErrorCode(Errors.NONE.code())
-            .setNumPartitions(1)
-            .setReplicationFactor((short) 2)
-            .setConfigs(singletonList(new CreatableTopicConfigs()
-                .setName("min.insync.replicas")
-                .setValue("2"))));
+                .setName("t3")
+                .setErrorCode(Errors.NONE.code())
+                .setNumPartitions(1)
+                .setReplicationFactor((short) 2)
+                .setConfigs(singletonList(new CreatableTopicConfigs()
+                        .setName("min.insync.replicas")
+                        .setValue("2"))));
         return new CreateTopicsResponse(data);
     }
 
     private DeleteTopicsRequest createDeleteTopicsRequest(short version) {
         return new DeleteTopicsRequest.Builder(new DeleteTopicsRequestData()
-            .setTopicNames(asList("my_t1", "my_t2"))
-            .setTimeoutMs(1000)
+                .setTopicNames(asList("my_t1", "my_t2"))
+                .setTimeoutMs(1000)
         ).build(version);
     }
 
     private DeleteTopicsResponse createDeleteTopicsResponse() {
         DeleteTopicsResponseData data = new DeleteTopicsResponseData();
         data.responses().add(new DeletableTopicResult()
-            .setName("t1")
-            .setErrorCode(Errors.INVALID_TOPIC_EXCEPTION.code())
-            .setErrorMessage("Error Message"));
+                .setName("t1")
+                .setErrorCode(Errors.INVALID_TOPIC_EXCEPTION.code())
+                .setErrorMessage("Error Message"));
         data.responses().add(new DeletableTopicResult()
-            .setName("t2")
-            .setErrorCode(Errors.TOPIC_AUTHORIZATION_FAILED.code())
-            .setErrorMessage("Error Message"));
+                .setName("t2")
+                .setErrorCode(Errors.TOPIC_AUTHORIZATION_FAILED.code())
+                .setErrorMessage("Error Message"));
         data.responses().add(new DeletableTopicResult()
-            .setName("t3")
-            .setErrorCode(Errors.NOT_CONTROLLER.code()));
+                .setName("t3")
+                .setErrorCode(Errors.NOT_CONTROLLER.code()));
         data.responses().add(new DeletableTopicResult()
                 .setName("t4")
                 .setErrorCode(Errors.NONE.code()));
@@ -2693,23 +2693,23 @@ public class RequestResponseTest {
     private OffsetForLeaderTopicCollection createOffsetForLeaderTopicCollection() {
         OffsetForLeaderTopicCollection topics = new OffsetForLeaderTopicCollection();
         topics.add(new OffsetForLeaderTopic()
-            .setTopic("topic1")
-            .setPartitions(asList(
+                .setTopic("topic1")
+                .setPartitions(asList(
                 new OffsetForLeaderPartition()
-                    .setPartition(0)
-                    .setLeaderEpoch(1)
-                    .setCurrentLeaderEpoch(0),
+                        .setPartition(0)
+                        .setLeaderEpoch(1)
+                        .setCurrentLeaderEpoch(0),
                 new OffsetForLeaderPartition()
-                    .setPartition(1)
-                    .setLeaderEpoch(1)
-                    .setCurrentLeaderEpoch(0))));
+                        .setPartition(1)
+                        .setLeaderEpoch(1)
+                        .setCurrentLeaderEpoch(0))));
         topics.add(new OffsetForLeaderTopic()
-            .setTopic("topic2")
-            .setPartitions(singletonList(
+                .setTopic("topic2")
+                .setPartitions(singletonList(
                 new OffsetForLeaderPartition()
-                    .setPartition(2)
-                    .setLeaderEpoch(3)
-                    .setCurrentLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH))));
+                        .setPartition(2)
+                        .setLeaderEpoch(3)
+                        .setCurrentLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH))));
         return topics;
     }
 
@@ -2726,26 +2726,26 @@ public class RequestResponseTest {
     private OffsetsForLeaderEpochResponse createLeaderEpochResponse() {
         OffsetForLeaderEpochResponseData data = new OffsetForLeaderEpochResponseData();
         data.topics().add(new OffsetForLeaderTopicResult()
-            .setTopic("topic1")
-            .setPartitions(asList(
+                .setTopic("topic1")
+                .setPartitions(asList(
                 new EpochEndOffset()
-                    .setPartition(0)
-                    .setErrorCode(Errors.NONE.code())
-                    .setLeaderEpoch(1)
-                    .setEndOffset(0),
+                        .setPartition(0)
+                        .setErrorCode(Errors.NONE.code())
+                        .setLeaderEpoch(1)
+                        .setEndOffset(0),
                 new EpochEndOffset()
-                    .setPartition(1)
-                    .setErrorCode(Errors.NONE.code())
-                    .setLeaderEpoch(1)
-                    .setEndOffset(1))));
+                        .setPartition(1)
+                        .setErrorCode(Errors.NONE.code())
+                        .setLeaderEpoch(1)
+                        .setEndOffset(1))));
         data.topics().add(new OffsetForLeaderTopicResult()
-            .setTopic("topic2")
-            .setPartitions(singletonList(
+                .setTopic("topic2")
+                .setPartitions(singletonList(
                 new EpochEndOffset()
-                    .setPartition(2)
-                    .setErrorCode(Errors.NONE.code())
-                    .setLeaderEpoch(1)
-                    .setEndOffset(1))));
+                        .setPartition(2)
+                        .setErrorCode(Errors.NONE.code())
+                        .setLeaderEpoch(1)
+                        .setEndOffset(1))));
 
         return new OffsetsForLeaderEpochResponse(data);
     }
@@ -2756,16 +2756,16 @@ public class RequestResponseTest {
                     singletonList(new TopicPartition("topic", 73))).build(version);
         } else {
             AddPartitionsToTxnTransactionCollection transactions = new AddPartitionsToTxnTransactionCollection(
-                singletonList(new AddPartitionsToTxnTransaction()
-                    .setTransactionalId("tid")
-                    .setProducerId(21L)
-                    .setProducerEpoch((short) 42)
-                    .setVerifyOnly(false)
-                    .setTopics(new AddPartitionsToTxnTopicCollection(
-                        singletonList(new AddPartitionsToTxnTopic()
-                            .setName("topic")
-                            .setPartitions(Collections.singletonList(73))))))
-                    );
+                    singletonList(new AddPartitionsToTxnTransaction()
+                            .setTransactionalId("tid")
+                            .setProducerId(21L)
+                            .setProducerEpoch((short) 42)
+                            .setVerifyOnly(false)
+                            .setTopics(new AddPartitionsToTxnTopicCollection(
+                                    singletonList(new AddPartitionsToTxnTopic()
+                                            .setName("topic")
+                                            .setPartitions(Collections.singletonList(73))))))
+            );
             return AddPartitionsToTxnRequest.Builder.forBroker(transactions).build(version);
         }
     }
@@ -2787,10 +2787,10 @@ public class RequestResponseTest {
     private AddOffsetsToTxnRequest createAddOffsetsToTxnRequest(short version) {
         return new AddOffsetsToTxnRequest.Builder(
             new AddOffsetsToTxnRequestData()
-                .setTransactionalId("tid")
-                .setProducerId(21L)
-                .setProducerEpoch((short) 42)
-                .setGroupId("gid")
+                    .setTransactionalId("tid")
+                    .setProducerId(21L)
+                    .setProducerEpoch((short) 42)
+                    .setGroupId("gid")
         ).build(version);
     }
 
@@ -2804,10 +2804,10 @@ public class RequestResponseTest {
         boolean isTransactionV2Enabled = version > LAST_STABLE_VERSION_BEFORE_TRANSACTION_V2;
         return new EndTxnRequest.Builder(
             new EndTxnRequestData()
-                .setTransactionalId("tid")
-                .setProducerId(21L)
-                .setProducerEpoch((short) 42)
-                .setCommitted(TransactionResult.COMMIT.id),
+                    .setTransactionalId("tid")
+                    .setProducerId(21L)
+                    .setProducerEpoch((short) 42)
+                    .setCommitted(TransactionResult.COMMIT.id),
             isTransactionV2Enabled
             ).build(version);
     }
@@ -2815,8 +2815,8 @@ public class RequestResponseTest {
     private EndTxnResponse createEndTxnResponse() {
         return new EndTxnResponse(
             new EndTxnResponseData()
-                .setErrorCode(Errors.NONE.code())
-                .setThrottleTimeMs(0)
+                    .setErrorCode(Errors.NONE.code())
+                    .setThrottleTimeMs(0)
         );
     }
 
@@ -2843,50 +2843,50 @@ public class RequestResponseTest {
 
         if (version < 3) {
             return new TxnOffsetCommitRequest.Builder("transactionalId",
-                "groupId",
-                21L,
-                (short) 42,
-                offsets,
-                false).build();
+                    "groupId",
+                    21L,
+                    (short) 42,
+                    offsets,
+                    false).build();
         } else if (version < 5) {
             return new TxnOffsetCommitRequest.Builder("transactionalId",
-                "groupId",
-                21L,
-                (short) 42,
-                offsets,
-                "member",
-                2,
-                Optional.of("instance"),
-                false).build(version);
+                    "groupId",
+                    21L,
+                    (short) 42,
+                    offsets,
+                    "member",
+                    2,
+                    Optional.of("instance"),
+                    false).build(version);
         } else {
             return new TxnOffsetCommitRequest.Builder("transactionalId",
-                "groupId",
-                21L,
-                (short) 42,
-                offsets,
-                "member",
-                2,
-                Optional.of("instance"),
-                true).build(version);
+                    "groupId",
+                    21L,
+                    (short) 42,
+                    offsets,
+                    "member",
+                    2,
+                    Optional.of("instance"),
+                    true).build(version);
         }
     }
 
     private TxnOffsetCommitRequest createTxnOffsetCommitRequestWithAutoDowngrade() {
         final Map<TopicPartition, TxnOffsetCommitRequest.CommittedOffset> offsets = new HashMap<>();
         offsets.put(new TopicPartition("topic", 73),
-            new TxnOffsetCommitRequest.CommittedOffset(100, null, Optional.empty()));
+                new TxnOffsetCommitRequest.CommittedOffset(100, null, Optional.empty()));
         offsets.put(new TopicPartition("topic", 74),
-            new TxnOffsetCommitRequest.CommittedOffset(100, "blah", Optional.of(27)));
+                new TxnOffsetCommitRequest.CommittedOffset(100, "blah", Optional.of(27)));
 
         return new TxnOffsetCommitRequest.Builder("transactionalId",
-            "groupId",
-            21L,
-            (short) 42,
-            offsets,
-            "member",
-            2,
-            Optional.of("instance"),
-            false).build();
+                "groupId",
+                21L,
+                (short) 42,
+                offsets,
+                "member",
+                2,
+                Optional.of("instance"),
+                false).build();
     }
 
     private TxnOffsetCommitResponse createTxnOffsetCommitResponse() {
@@ -2921,41 +2921,41 @@ public class RequestResponseTest {
     private CreateAclsRequest createCreateAclsRequest(short version) {
         List<CreateAclsRequestData.AclCreation> creations = new ArrayList<>();
         creations.add(CreateAclsRequest.aclCreation(new AclBinding(
-            new ResourcePattern(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
-            new AccessControlEntry("User:ANONYMOUS", "127.0.0.1", AclOperation.READ, AclPermissionType.ALLOW))));
+                new ResourcePattern(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
+                new AccessControlEntry("User:ANONYMOUS", "127.0.0.1", AclOperation.READ, AclPermissionType.ALLOW))));
         creations.add(CreateAclsRequest.aclCreation(new AclBinding(
-            new ResourcePattern(ResourceType.GROUP, "mygroup", PatternType.LITERAL),
-            new AccessControlEntry("User:ANONYMOUS", "*", AclOperation.WRITE, AclPermissionType.DENY))));
+                new ResourcePattern(ResourceType.GROUP, "mygroup", PatternType.LITERAL),
+                new AccessControlEntry("User:ANONYMOUS", "*", AclOperation.WRITE, AclPermissionType.DENY))));
         CreateAclsRequestData data = new CreateAclsRequestData().setCreations(creations);
         return new CreateAclsRequest.Builder(data).build(version);
     }
 
     private CreateAclsResponse createCreateAclsResponse() {
         return new CreateAclsResponse(new CreateAclsResponseData().setResults(asList(
-            new CreateAclsResponseData.AclCreationResult(),
-            new CreateAclsResponseData.AclCreationResult()
-                .setErrorCode(Errors.NONE.code())
-                .setErrorMessage("Foo bar"))));
+                new CreateAclsResponseData.AclCreationResult(),
+                new CreateAclsResponseData.AclCreationResult()
+                        .setErrorCode(Errors.NONE.code())
+                        .setErrorMessage("Foo bar"))));
     }
 
     private DeleteAclsRequest createDeleteAclsRequest(short version) {
         DeleteAclsRequestData data = new DeleteAclsRequestData().setFilters(asList(
             new DeleteAclsRequestData.DeleteAclsFilter()
-                .setResourceTypeFilter(ResourceType.ANY.code())
-                .setResourceNameFilter(null)
-                .setPatternTypeFilter(PatternType.LITERAL.code())
-                .setPrincipalFilter("User:ANONYMOUS")
-                .setHostFilter(null)
-                .setOperation(AclOperation.ANY.code())
-                .setPermissionType(AclPermissionType.ANY.code()),
+                    .setResourceTypeFilter(ResourceType.ANY.code())
+                    .setResourceNameFilter(null)
+                    .setPatternTypeFilter(PatternType.LITERAL.code())
+                    .setPrincipalFilter("User:ANONYMOUS")
+                    .setHostFilter(null)
+                    .setOperation(AclOperation.ANY.code())
+                    .setPermissionType(AclPermissionType.ANY.code()),
             new DeleteAclsRequestData.DeleteAclsFilter()
-                .setResourceTypeFilter(ResourceType.ANY.code())
-                .setResourceNameFilter(null)
-                .setPatternTypeFilter(PatternType.LITERAL.code())
-                .setPrincipalFilter("User:bob")
-                .setHostFilter(null)
-                .setOperation(AclOperation.ANY.code())
-                .setPermissionType(AclPermissionType.ANY.code())
+                    .setResourceTypeFilter(ResourceType.ANY.code())
+                    .setResourceNameFilter(null)
+                    .setPatternTypeFilter(PatternType.LITERAL.code())
+                    .setPrincipalFilter("User:bob")
+                    .setHostFilter(null)
+                    .setOperation(AclOperation.ANY.code())
+                    .setPermissionType(AclPermissionType.ANY.code())
         ));
         return new DeleteAclsRequest.Builder(data).build(version);
     }
@@ -2964,27 +2964,27 @@ public class RequestResponseTest {
         List<DeleteAclsResponseData.DeleteAclsFilterResult> filterResults = new ArrayList<>();
         filterResults.add(new DeleteAclsResponseData.DeleteAclsFilterResult().setMatchingAcls(asList(
                 new DeleteAclsResponseData.DeleteAclsMatchingAcl()
-                    .setResourceType(ResourceType.TOPIC.code())
-                    .setResourceName("mytopic3")
-                    .setPatternType(PatternType.LITERAL.code())
-                    .setPrincipal("User:ANONYMOUS")
-                    .setHost("*")
-                    .setOperation(AclOperation.DESCRIBE.code())
-                    .setPermissionType(AclPermissionType.ALLOW.code()),
+                        .setResourceType(ResourceType.TOPIC.code())
+                        .setResourceName("mytopic3")
+                        .setPatternType(PatternType.LITERAL.code())
+                        .setPrincipal("User:ANONYMOUS")
+                        .setHost("*")
+                        .setOperation(AclOperation.DESCRIBE.code())
+                        .setPermissionType(AclPermissionType.ALLOW.code()),
                 new DeleteAclsResponseData.DeleteAclsMatchingAcl()
-                    .setResourceType(ResourceType.TOPIC.code())
-                    .setResourceName("mytopic4")
-                    .setPatternType(PatternType.LITERAL.code())
-                    .setPrincipal("User:ANONYMOUS")
-                    .setHost("*")
-                    .setOperation(AclOperation.DESCRIBE.code())
-                    .setPermissionType(AclPermissionType.DENY.code()))));
+                        .setResourceType(ResourceType.TOPIC.code())
+                        .setResourceName("mytopic4")
+                        .setPatternType(PatternType.LITERAL.code())
+                        .setPrincipal("User:ANONYMOUS")
+                        .setHost("*")
+                        .setOperation(AclOperation.DESCRIBE.code())
+                        .setPermissionType(AclPermissionType.DENY.code()))));
         filterResults.add(new DeleteAclsResponseData.DeleteAclsFilterResult()
-            .setErrorCode(Errors.SECURITY_DISABLED.code())
-            .setErrorMessage("No security"));
+                .setErrorCode(Errors.SECURITY_DISABLED.code())
+                .setErrorMessage("No security"));
         return new DeleteAclsResponse(new DeleteAclsResponseData()
-            .setThrottleTimeMs(0)
-            .setFilterResults(filterResults), version);
+                .setThrottleTimeMs(0)
+                .setFilterResults(filterResults), version);
     }
 
     private DescribeConfigsRequest createDescribeConfigsRequest(short version) {
@@ -3003,17 +3003,17 @@ public class RequestResponseTest {
         return new DescribeConfigsRequest.Builder(new DescribeConfigsRequestData()
             .setResources(asList(
                 new DescribeConfigsRequestData.DescribeConfigsResource()
-                    .setResourceType(ConfigResource.Type.BROKER.id())
-                    .setResourceName("0")
-                    .setConfigurationKeys(asList("foo", "bar")),
+                        .setResourceType(ConfigResource.Type.BROKER.id())
+                        .setResourceName("0")
+                        .setConfigurationKeys(asList("foo", "bar")),
                 new DescribeConfigsRequestData.DescribeConfigsResource()
-                    .setResourceType(ConfigResource.Type.TOPIC.id())
-                    .setResourceName("topic")
-                    .setConfigurationKeys(null),
+                        .setResourceType(ConfigResource.Type.TOPIC.id())
+                        .setResourceName("topic")
+                        .setConfigurationKeys(null),
                 new DescribeConfigsRequestData.DescribeConfigsResource()
-                    .setResourceType(ConfigResource.Type.TOPIC.id())
-                    .setResourceName("topic a")
-                    .setConfigurationKeys(emptyList())))).build(version);
+                        .setResourceType(ConfigResource.Type.TOPIC.id())
+                        .setResourceName("topic a")
+                        .setConfigurationKeys(emptyList())))).build(version);
     }
 
     private DescribeConfigsRequest createDescribeConfigsRequestWithDocumentation(short version) {
@@ -3142,8 +3142,8 @@ public class RequestResponseTest {
                 .setName("my_other_topic")
                 .setCount(3)
                 .setAssignments(asList(
-                    new CreatePartitionsAssignment().setBrokerIds(asList(2, 3)),
-                    new CreatePartitionsAssignment().setBrokerIds(asList(3, 1))
+                        new CreatePartitionsAssignment().setBrokerIds(asList(2, 3)),
+                        new CreatePartitionsAssignment().setBrokerIds(asList(3, 1))
                 ))
         );
 
@@ -3246,10 +3246,10 @@ public class RequestResponseTest {
         List<DelegationToken> tokenList = new LinkedList<>();
 
         TokenInformation tokenInfo1 = new TokenInformation("1", SecurityUtils.parseKafkaPrincipal("User:owner"), renewers,
-            System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+                System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
 
         TokenInformation tokenInfo2 = new TokenInformation("2", SecurityUtils.parseKafkaPrincipal("User:owner1"), renewers,
-            System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+                System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
 
         tokenList.add(new DelegationToken(tokenInfo1, "test".getBytes()));
         tokenList.add(new DelegationToken(tokenInfo2, "test".getBytes()));
@@ -3355,10 +3355,10 @@ public class RequestResponseTest {
     private ListPartitionReassignmentsRequest createListPartitionReassignmentsRequest(short version) {
         ListPartitionReassignmentsRequestData data = new ListPartitionReassignmentsRequestData();
         data.setTopics(
-            singletonList(
+                singletonList(
                 new ListPartitionReassignmentsRequestData.ListPartitionReassignmentsTopics()
-                    .setName("topic")
-                    .setPartitionIndexes(singletonList(1))
+                        .setName("topic")
+                        .setPartitionIndexes(singletonList(1))
             )
         );
         return new ListPartitionReassignmentsRequest.Builder(data).build(version);
@@ -3384,9 +3384,9 @@ public class RequestResponseTest {
     private OffsetDeleteRequest createOffsetDeleteRequest(short version) {
         OffsetDeleteRequestTopicCollection topics = new OffsetDeleteRequestTopicCollection();
         topics.add(new OffsetDeleteRequestTopic()
-            .setName("topic1")
-            .setPartitions(singletonList(
-                new OffsetDeleteRequestPartition()
+                .setName("topic1")
+                .setPartitions(singletonList(
+                        new OffsetDeleteRequestPartition()
                     .setPartitionIndex(0)
                 )
             )
@@ -3402,14 +3402,14 @@ public class RequestResponseTest {
     private OffsetDeleteResponse createOffsetDeleteResponse() {
         OffsetDeleteResponsePartitionCollection partitions = new OffsetDeleteResponsePartitionCollection();
         partitions.add(new OffsetDeleteResponsePartition()
-            .setPartitionIndex(0)
-            .setErrorCode(Errors.NONE.code())
+                .setPartitionIndex(0)
+                .setErrorCode(Errors.NONE.code())
         );
 
         OffsetDeleteResponseTopicCollection topics = new OffsetDeleteResponseTopicCollection();
         topics.add(new OffsetDeleteResponseTopic()
-            .setName("topic1")
-            .setPartitions(partitions)
+                .setName("topic1")
+                .setPartitions(partitions)
         );
 
         OffsetDeleteResponseData data = new OffsetDeleteResponseData();
@@ -3458,11 +3458,11 @@ public class RequestResponseTest {
         DescribeClientQuotasResponseData data = new DescribeClientQuotasResponseData().setEntries(singletonList(
                 new DescribeClientQuotasResponseData.EntryData()
                         .setEntity(singletonList(new DescribeClientQuotasResponseData.EntityData()
-                            .setEntityType(ClientQuotaEntity.USER)
-                            .setEntityName("user")))
+                                .setEntityType(ClientQuotaEntity.USER)
+                                .setEntityName("user")))
                         .setValues(singletonList(new DescribeClientQuotasResponseData.ValueData()
-                            .setKey("request_percentage")
-                            .setValue(1.0)))));
+                                .setKey("request_percentage")
+                                .setValue(1.0)))));
         return new DescribeClientQuotasResponse(data);
     }
 
@@ -3477,8 +3477,8 @@ public class RequestResponseTest {
         AlterClientQuotasResponseData data = new AlterClientQuotasResponseData()
             .setEntries(singletonList(new AlterClientQuotasResponseData.EntryData()
                 .setEntity(singletonList(new AlterClientQuotasResponseData.EntityData()
-                    .setEntityType(ClientQuotaEntity.USER)
-                    .setEntityName("user")))));
+                        .setEntityType(ClientQuotaEntity.USER)
+                        .setEntityName("user")))));
         return new AlterClientQuotasResponse(data);
     }
 
@@ -3496,18 +3496,18 @@ public class RequestResponseTest {
         DescribeProducersResponseData data = new DescribeProducersResponseData();
         DescribeProducersResponseData.TopicResponse topicResponse = new DescribeProducersResponseData.TopicResponse();
         topicResponse.partitions().add(new DescribeProducersResponseData.PartitionResponse()
-            .setErrorCode(Errors.NONE.code())
-            .setPartitionIndex(0)
-            .setActiveProducers(asList(
+                .setErrorCode(Errors.NONE.code())
+                .setPartitionIndex(0)
+                .setActiveProducers(asList(
                 new DescribeProducersResponseData.ProducerState()
-                    .setProducerId(1234L)
-                    .setProducerEpoch(15)
-                    .setLastTimestamp(13490218304L)
-                    .setCurrentTxnStartOffset(5000),
+                        .setProducerId(1234L)
+                        .setProducerEpoch(15)
+                        .setLastTimestamp(13490218304L)
+                        .setCurrentTxnStartOffset(5000),
                 new DescribeProducersResponseData.ProducerState()
-                    .setProducerId(9876L)
-                    .setProducerEpoch(32)
-                    .setLastTimestamp(13490218399L)
+                        .setProducerId(9876L)
+                        .setProducerEpoch(32)
+                        .setLastTimestamp(13490218399L)
             ))
         );
         data.topics().add(topicResponse);
@@ -3573,40 +3573,39 @@ public class RequestResponseTest {
         DescribeTransactionsResponseData data = new DescribeTransactionsResponseData();
         data.setTransactionStates(asList(
             new DescribeTransactionsResponseData.TransactionState()
-                .setErrorCode(Errors.NONE.code())
-                .setTransactionalId("t1")
-                .setProducerId(12345L)
-                .setProducerEpoch((short) 15)
-                .setTransactionStartTimeMs(13490218304L)
-                .setTransactionState("Empty"),
+                    .setErrorCode(Errors.NONE.code())
+                    .setTransactionalId("t1")
+                    .setProducerId(12345L)
+                    .setProducerEpoch((short) 15)
+                    .setTransactionStartTimeMs(13490218304L)
+                    .setTransactionState("Empty"),
             new DescribeTransactionsResponseData.TransactionState()
-                .setErrorCode(Errors.NONE.code())
-                .setTransactionalId("t2")
-                .setProducerId(98765L)
-                .setProducerEpoch((short) 30)
-                .setTransactionStartTimeMs(13490218304L)
-                .setTransactionState("Ongoing")
-                .setTopics(new DescribeTransactionsResponseData.TopicDataCollection(
-                    asList(
+                    .setErrorCode(Errors.NONE.code())
+                    .setTransactionalId("t2")
+                    .setProducerId(98765L)
+                    .setProducerEpoch((short) 30)
+                    .setTransactionStartTimeMs(13490218304L)
+                    .setTransactionState("Ongoing")
+                    .setTopics(new DescribeTransactionsResponseData.TopicDataCollection(
+                            asList(
                         new DescribeTransactionsResponseData.TopicData()
-                            .setTopic("foo")
-                            .setPartitions(asList(1, 3, 5, 7)),
+                                .setTopic("foo")
+                                .setPartitions(asList(1, 3, 5, 7)),
                         new DescribeTransactionsResponseData.TopicData()
-                            .setTopic("bar")
-                            .setPartitions(asList(1, 3))
-                    )
-                )),
+                                .setTopic("bar")
+                                .setPartitions(asList(1, 3))
+                    ))),
             new DescribeTransactionsResponseData.TransactionState()
-                .setErrorCode(Errors.NOT_COORDINATOR.code())
-                .setTransactionalId("t3")
+                    .setErrorCode(Errors.NOT_COORDINATOR.code())
+                    .setTransactionalId("t3")
         ));
         return new DescribeTransactionsResponse(data);
     }
 
     private ListTransactionsRequest createListTransactionsRequest(short version) {
         return new ListTransactionsRequest.Builder(new ListTransactionsRequestData()
-            .setStateFilters(singletonList("Ongoing"))
-            .setProducerIdFilters(asList(1L, 2L, 15L))
+                .setStateFilters(singletonList("Ongoing"))
+                .setProducerIdFilters(asList(1L, 2L, 15L))
         ).build(version);
     }
 
@@ -3615,13 +3614,13 @@ public class RequestResponseTest {
         response.setErrorCode(Errors.NONE.code());
         response.setTransactionStates(asList(
             new ListTransactionsResponseData.TransactionState()
-                .setTransactionalId("foo")
-                .setProducerId(12345L)
-                .setTransactionState("Ongoing"),
+                    .setTransactionalId("foo")
+                    .setProducerId(12345L)
+                    .setTransactionState("Ongoing"),
             new ListTransactionsResponseData.TransactionState()
-                .setTransactionalId("bar")
-                .setProducerId(98765L)
-                .setTransactionState("PrepareAbort")
+                    .setTransactionalId("bar")
+                    .setProducerId(98765L)
+                    .setTransactionState("PrepareAbort")
         ));
         return new ListTransactionsResponse(response);
     }
@@ -3646,11 +3645,11 @@ public class RequestResponseTest {
 
     private PushTelemetryRequest createPushTelemetryRequest(short version) {
         return new PushTelemetryRequest.Builder(new PushTelemetryRequestData()
-            .setClientInstanceId(Uuid.randomUuid())
-            .setSubscriptionId(1)
-            .setTerminating(false)
-            .setCompressionType(CompressionType.ZSTD.id)
-            .setMetrics(ByteBuffer.wrap("test-metrics".getBytes(StandardCharsets.UTF_8)))
+                .setClientInstanceId(Uuid.randomUuid())
+                .setSubscriptionId(1)
+                .setTerminating(false)
+                .setCompressionType(CompressionType.ZSTD.id)
+                .setMetrics(ByteBuffer.wrap("test-metrics".getBytes(StandardCharsets.UTF_8)))
         ).build(version);
     }
 
@@ -3677,32 +3676,32 @@ public class RequestResponseTest {
 
     private InitializeShareGroupStateRequest createInitializeShareGroupStateRequest(short version) {
         InitializeShareGroupStateRequestData data = new InitializeShareGroupStateRequestData()
-            .setGroupId("group")
-            .setTopics(Collections.singletonList(new InitializeShareGroupStateRequestData.InitializeStateData()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new InitializeShareGroupStateRequestData.PartitionData()
-                    .setPartition(0)
-                    .setStateEpoch(0)
-                    .setStartOffset(0)))));
+                .setGroupId("group")
+                .setTopics(Collections.singletonList(new InitializeShareGroupStateRequestData.InitializeStateData()
+                        .setTopicId(Uuid.randomUuid())
+                        .setPartitions(Collections.singletonList(new InitializeShareGroupStateRequestData.PartitionData()
+                                .setPartition(0)
+                                .setStateEpoch(0)
+                                .setStartOffset(0)))));
         return new InitializeShareGroupStateRequest.Builder(data).build(version);
     }
 
     private InitializeShareGroupStateResponse createInitializeShareGroupStateResponse() {
         InitializeShareGroupStateResponseData data = new InitializeShareGroupStateResponseData();
         data.setResults(Collections.singletonList(new InitializeShareGroupStateResponseData.InitializeStateResult()
-            .setTopicId(Uuid.randomUuid())
-            .setPartitions(Collections.singletonList(new InitializeShareGroupStateResponseData.PartitionResult()
-                .setPartition(0)
-                .setErrorCode(Errors.NONE.code())))));
+                .setTopicId(Uuid.randomUuid())
+                .setPartitions(Collections.singletonList(new InitializeShareGroupStateResponseData.PartitionResult()
+                        .setPartition(0)
+                        .setErrorCode(Errors.NONE.code())))));
         return new InitializeShareGroupStateResponse(data);
     }
 
     private ReadShareGroupStateRequest createReadShareGroupStateRequest(short version) {
         ReadShareGroupStateRequestData data = new ReadShareGroupStateRequestData()
-            .setGroupId("group")
-            .setTopics(Collections.singletonList(new ReadShareGroupStateRequestData.ReadStateData()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new ReadShareGroupStateRequestData.PartitionData()
+                .setGroupId("group")
+                .setTopics(Collections.singletonList(new ReadShareGroupStateRequestData.ReadStateData()
+                        .setTopicId(Uuid.randomUuid())
+                        .setPartitions(Collections.singletonList(new ReadShareGroupStateRequestData.PartitionData()
                     .setPartition(0)))));
         return new ReadShareGroupStateRequest.Builder(data).build(version);
     }
@@ -3710,54 +3709,54 @@ public class RequestResponseTest {
     private ReadShareGroupStateResponse createReadShareGroupStateResponse() {
         ReadShareGroupStateResponseData data = new ReadShareGroupStateResponseData()
             .setResults(Collections.singletonList(new ReadShareGroupStateResponseData.ReadStateResult()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new ReadShareGroupStateResponseData.PartitionResult()
-                    .setPartition(0)
-                    .setErrorCode(Errors.NONE.code())
-                    .setStateEpoch(0)
-                    .setStartOffset(0)
-                    .setStateBatches(Collections.singletonList(new ReadShareGroupStateResponseData.StateBatch()
-                        .setFirstOffset(0)
-                        .setLastOffset(0)
-                        .setDeliveryState((byte) 0x0)
-                        .setDeliveryCount((short) 0)))))));
+                    .setTopicId(Uuid.randomUuid())
+                    .setPartitions(Collections.singletonList(new ReadShareGroupStateResponseData.PartitionResult()
+                            .setPartition(0)
+                            .setErrorCode(Errors.NONE.code())
+                            .setStateEpoch(0)
+                            .setStartOffset(0)
+                            .setStateBatches(Collections.singletonList(new ReadShareGroupStateResponseData.StateBatch()
+                                    .setFirstOffset(0)
+                                    .setLastOffset(0)
+                                    .setDeliveryState((byte) 0x0)
+                                    .setDeliveryCount((short) 0)))))));
         return new ReadShareGroupStateResponse(data);
     }
 
     private WriteShareGroupStateRequest createWriteShareGroupStateRequest(short version) {
         WriteShareGroupStateRequestData data = new WriteShareGroupStateRequestData()
-            .setGroupId("group")
-            .setTopics(Collections.singletonList(new WriteShareGroupStateRequestData.WriteStateData()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new WriteShareGroupStateRequestData.PartitionData()
-                    .setPartition(0)
-                    .setStateEpoch(0)
-                    .setStartOffset(0)
-                    .setDeliveryCompleteCount(0)
-                    .setStateBatches(singletonList(new WriteShareGroupStateRequestData.StateBatch()
-                        .setFirstOffset(0)
-                        .setLastOffset(0)
-                        .setDeliveryState((byte) 0x0)
-                        .setDeliveryCount((short) 0)))))));
+                .setGroupId("group")
+                .setTopics(Collections.singletonList(new WriteShareGroupStateRequestData.WriteStateData()
+                        .setTopicId(Uuid.randomUuid())
+                        .setPartitions(Collections.singletonList(new WriteShareGroupStateRequestData.PartitionData()
+                                .setPartition(0)
+                                .setStateEpoch(0)
+                                .setStartOffset(0)
+                                .setDeliveryCompleteCount(0)
+                                .setStateBatches(singletonList(new WriteShareGroupStateRequestData.StateBatch()
+                                        .setFirstOffset(0)
+                                        .setLastOffset(0)
+                                        .setDeliveryState((byte) 0x0)
+                                        .setDeliveryCount((short) 0)))))));
         return new WriteShareGroupStateRequest.Builder(data).build(version);
     }
 
     private WriteShareGroupStateResponse createWriteShareGroupStateResponse() {
         WriteShareGroupStateResponseData data = new WriteShareGroupStateResponseData()
             .setResults(Collections.singletonList(new WriteShareGroupStateResponseData.WriteStateResult()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new WriteShareGroupStateResponseData.PartitionResult()
-                    .setPartition(0)
-                    .setErrorCode(Errors.NONE.code())))));
+                    .setTopicId(Uuid.randomUuid())
+                    .setPartitions(Collections.singletonList(new WriteShareGroupStateResponseData.PartitionResult()
+                            .setPartition(0)
+                            .setErrorCode(Errors.NONE.code())))));
         return new WriteShareGroupStateResponse(data);
     }
 
     private DeleteShareGroupStateRequest createDeleteShareGroupStateRequest(short version) {
         DeleteShareGroupStateRequestData data = new DeleteShareGroupStateRequestData()
-            .setGroupId("group")
-            .setTopics(Collections.singletonList(new DeleteShareGroupStateRequestData.DeleteStateData()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new DeleteShareGroupStateRequestData.PartitionData()
+                .setGroupId("group")
+                .setTopics(Collections.singletonList(new DeleteShareGroupStateRequestData.DeleteStateData()
+                        .setTopicId(Uuid.randomUuid())
+                        .setPartitions(Collections.singletonList(new DeleteShareGroupStateRequestData.PartitionData()
                     .setPartition(0)))));
         return new DeleteShareGroupStateRequest.Builder(data).build(version);
     }
@@ -3765,19 +3764,19 @@ public class RequestResponseTest {
     private DeleteShareGroupStateResponse createDeleteShareGroupStateResponse() {
         DeleteShareGroupStateResponseData data = new DeleteShareGroupStateResponseData()
             .setResults(Collections.singletonList(new DeleteShareGroupStateResponseData.DeleteStateResult()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new DeleteShareGroupStateResponseData.PartitionResult()
-                    .setPartition(0)
-                    .setErrorCode(Errors.NONE.code())))));
+                    .setTopicId(Uuid.randomUuid())
+                    .setPartitions(Collections.singletonList(new DeleteShareGroupStateResponseData.PartitionResult()
+                            .setPartition(0)
+                            .setErrorCode(Errors.NONE.code())))));
         return new DeleteShareGroupStateResponse(data);
     }
 
     private ReadShareGroupStateSummaryRequest createReadShareGroupStateSummaryRequest(short version) {
         ReadShareGroupStateSummaryRequestData data = new ReadShareGroupStateSummaryRequestData()
-            .setGroupId("group")
-            .setTopics(Collections.singletonList(new ReadShareGroupStateSummaryRequestData.ReadStateSummaryData()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new ReadShareGroupStateSummaryRequestData.PartitionData()
+                .setGroupId("group")
+                .setTopics(Collections.singletonList(new ReadShareGroupStateSummaryRequestData.ReadStateSummaryData()
+                        .setTopicId(Uuid.randomUuid())
+                        .setPartitions(Collections.singletonList(new ReadShareGroupStateSummaryRequestData.PartitionData()
                     .setPartition(0)))));
         return new ReadShareGroupStateSummaryRequest.Builder(data).build(version);
     }
@@ -3785,43 +3784,43 @@ public class RequestResponseTest {
     private ReadShareGroupStateSummaryResponse createReadShareGroupStateSummaryResponse() {
         ReadShareGroupStateSummaryResponseData data = new ReadShareGroupStateSummaryResponseData()
             .setResults(Collections.singletonList(new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new ReadShareGroupStateSummaryResponseData.PartitionResult()
-                    .setPartition(0)
-                    .setErrorCode(Errors.NONE.code())
-                    .setStartOffset(0)
-                    .setStateEpoch(0)))));
+                    .setTopicId(Uuid.randomUuid())
+                    .setPartitions(Collections.singletonList(new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                            .setPartition(0)
+                            .setErrorCode(Errors.NONE.code())
+                            .setStartOffset(0)
+                            .setStateEpoch(0)))));
         return new ReadShareGroupStateSummaryResponse(data);
     }
 
     private DescribeShareGroupOffsetsRequest createDescribeShareGroupOffsetsRequest(short version) {
         DescribeShareGroupOffsetsRequestData data = new DescribeShareGroupOffsetsRequestData()
             .setGroups(Collections.singletonList(new DescribeShareGroupOffsetsRequestData.DescribeShareGroupOffsetsRequestGroup()
-                .setGroupId("group")
-                .setTopics(Collections.singletonList(new DescribeShareGroupOffsetsRequestData.DescribeShareGroupOffsetsRequestTopic()
-                    .setTopicName("topic-1")
-                    .setPartitions(Collections.singletonList(0))))));
+                    .setGroupId("group")
+                    .setTopics(Collections.singletonList(new DescribeShareGroupOffsetsRequestData.DescribeShareGroupOffsetsRequestTopic()
+                            .setTopicName("topic-1")
+                            .setPartitions(Collections.singletonList(0))))));
         return new DescribeShareGroupOffsetsRequest.Builder(data).build(version);
     }
 
     private AlterShareGroupOffsetsRequest createAlterShareGroupOffsetsRequest(short version) {
         AlterShareGroupOffsetsRequestData.AlterShareGroupOffsetsRequestTopicCollection alterShareGroupOffsetsRequestTopics = new AlterShareGroupOffsetsRequestData.AlterShareGroupOffsetsRequestTopicCollection();
         alterShareGroupOffsetsRequestTopics.add(new AlterShareGroupOffsetsRequestData.AlterShareGroupOffsetsRequestTopic()
-            .setTopicName("topic")
-            .setPartitions(List.of(new AlterShareGroupOffsetsRequestData.AlterShareGroupOffsetsRequestPartition()
-                .setPartitionIndex(0)
-                .setStartOffset(0)))
+                .setTopicName("topic")
+                .setPartitions(List.of(new AlterShareGroupOffsetsRequestData.AlterShareGroupOffsetsRequestPartition()
+                        .setPartitionIndex(0)
+                        .setStartOffset(0)))
         );
         AlterShareGroupOffsetsRequestData data = new AlterShareGroupOffsetsRequestData()
-            .setGroupId("group")
-            .setTopics(alterShareGroupOffsetsRequestTopics);
+                .setGroupId("group")
+                .setTopics(alterShareGroupOffsetsRequestTopics);
         return new AlterShareGroupOffsetsRequest.Builder(data).build(version);
     }
 
     private DeleteShareGroupOffsetsRequest createDeleteShareGroupOffsetsRequest(short version) {
         DeleteShareGroupOffsetsRequestData data = new DeleteShareGroupOffsetsRequestData()
-            .setGroupId("group")
-            .setTopics(List.of(new DeleteShareGroupOffsetsRequestData.DeleteShareGroupOffsetsRequestTopic()
+                .setGroupId("group")
+                .setTopics(List.of(new DeleteShareGroupOffsetsRequestData.DeleteShareGroupOffsetsRequestTopic()
                 .setTopicName("topic-1")));
         return new DeleteShareGroupOffsetsRequest.Builder(data).build(version);
     }
@@ -3829,16 +3828,16 @@ public class RequestResponseTest {
     private DescribeShareGroupOffsetsResponse createDescribeShareGroupOffsetsResponse() {
         DescribeShareGroupOffsetsResponseData data = new DescribeShareGroupOffsetsResponseData()
             .setGroups(Collections.singletonList(new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup()
-                .setGroupId("group")
-                .setTopics(Collections.singletonList(new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseTopic()
-                .setTopicName("topic-1")
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponsePartition()
-                    .setPartitionIndex(0)
-                    .setErrorCode(Errors.NONE.code())
-                    .setStartOffset(0)
-                    .setLag(0)
-                    .setLeaderEpoch(0)))))));
+                    .setGroupId("group")
+                    .setTopics(Collections.singletonList(new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseTopic()
+                            .setTopicName("topic-1")
+                            .setTopicId(Uuid.randomUuid())
+                            .setPartitions(Collections.singletonList(new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponsePartition()
+                                    .setPartitionIndex(0)
+                                    .setErrorCode(Errors.NONE.code())
+                                    .setStartOffset(0)
+                                    .setLag(0)
+                                    .setLeaderEpoch(0)))))));
         return new DescribeShareGroupOffsetsResponse(data);
     }
 
@@ -3846,27 +3845,27 @@ public class RequestResponseTest {
         AlterShareGroupOffsetsResponseData data = new AlterShareGroupOffsetsResponseData()
             .setResponses(new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopicCollection(List.of(
                 new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponseTopic()
-                    .setPartitions(List.of(new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponsePartition()
-                        .setPartitionIndex(0)
-                        .setErrorCode(Errors.NONE.code())))
-                    .setTopicName("topic")
-                    .setTopicId(Uuid.randomUuid()))));
+                        .setPartitions(List.of(new AlterShareGroupOffsetsResponseData.AlterShareGroupOffsetsResponsePartition()
+                                .setPartitionIndex(0)
+                                .setErrorCode(Errors.NONE.code())))
+                        .setTopicName("topic")
+                        .setTopicId(Uuid.randomUuid()))));
         return new AlterShareGroupOffsetsResponse(data);
     }
 
     private DeleteShareGroupOffsetsResponse createDeleteShareGroupOffsetsResponse() {
         DeleteShareGroupOffsetsResponseData data = new DeleteShareGroupOffsetsResponseData()
             .setResponses(List.of(new DeleteShareGroupOffsetsResponseData.DeleteShareGroupOffsetsResponseTopic()
-                .setTopicName("topic-1")
-                .setTopicId(Uuid.randomUuid())
-                .setErrorCode(Errors.NONE.code())));
+                    .setTopicName("topic-1")
+                    .setTopicId(Uuid.randomUuid())
+                    .setErrorCode(Errors.NONE.code())));
         return new DeleteShareGroupOffsetsResponse(data);
     }
 
     private AbstractRequest createStreamsGroupDescribeRequest(final short version) {
         return new StreamsGroupDescribeRequest.Builder(new StreamsGroupDescribeRequestData()
-            .setGroupIds(Collections.singletonList("group"))
-            .setIncludeAuthorizedOperations(false)).build(version);
+                .setGroupIds(Collections.singletonList("group"))
+                .setIncludeAuthorizedOperations(false)).build(version);
     }
 
     private AbstractRequest createStreamsGroupHeartbeatRequest(final short version) {
@@ -3875,18 +3874,18 @@ public class RequestResponseTest {
 
     private AbstractResponse createStreamsGroupDescribeResponse() {
         StreamsGroupDescribeResponseData data = new StreamsGroupDescribeResponseData()
-            .setGroups(Collections.singletonList(
+                .setGroups(Collections.singletonList(
                 new StreamsGroupDescribeResponseData.DescribedGroup()
-                    .setGroupId("group")
-                    .setErrorCode((short) 0)
-                    .setErrorMessage(Errors.forCode((short) 0).message())
-                    .setGroupState("EMPTY")
-                    .setGroupEpoch(0)
-                    .setAssignmentEpoch(0)
-                    .setMembers(new ArrayList<>(0))
-                    .setTopology(null)
+                        .setGroupId("group")
+                        .setErrorCode((short) 0)
+                        .setErrorMessage(Errors.forCode((short) 0).message())
+                        .setGroupState("EMPTY")
+                        .setGroupEpoch(0)
+                        .setAssignmentEpoch(0)
+                        .setMembers(new ArrayList<>(0))
+                        .setTopology(null)
             ))
-            .setThrottleTimeMs(1000);
+                .setThrottleTimeMs(1000);
         return new StreamsGroupDescribeResponse(data);
     }
 
@@ -3911,11 +3910,11 @@ public class RequestResponseTest {
     public void testInvalidSaslAuthenticateRequest() {
         short version = (short) 1; // choose a version with fixed length encoding, for simplicity
         byte[] b = new byte[] {
-            0x11, 0x1f, 0x15, 0x2c,
-            0x5e, 0x2a, 0x20, 0x26,
-            0x6c, 0x39, 0x45, 0x1f,
-            0x25, 0x1c, 0x2d, 0x25,
-            0x43, 0x2a, 0x11, 0x76
+                0x11, 0x1f, 0x15, 0x2c,
+                0x5e, 0x2a, 0x20, 0x26,
+                0x6c, 0x39, 0x45, 0x1f,
+                0x25, 0x1c, 0x2d, 0x25,
+                0x43, 0x2a, 0x11, 0x76
         };
         SaslAuthenticateRequestData data = new SaslAuthenticateRequestData().setAuthBytes(b);
         AbstractRequest request = new SaslAuthenticateRequest(data, version);
@@ -4009,20 +4008,20 @@ public class RequestResponseTest {
     public void testListConfigResourcesRequestV0FailsWithConfigResourceTypeOtherThanClientMetrics() {
         // One type which is not CLIENT_METRICS
         Arrays.stream(ConfigResource.Type.values())
-            .filter(t -> t != ConfigResource.Type.CLIENT_METRICS)
-            .forEach(t -> {
-                ListConfigResourcesRequestData data = new ListConfigResourcesRequestData()
+                .filter(t -> t != ConfigResource.Type.CLIENT_METRICS)
+                .forEach(t -> {
+                    ListConfigResourcesRequestData data = new ListConfigResourcesRequestData()
                     .setResourceTypes(List.of(t.id()));
-                assertThrows(UnsupportedVersionException.class, () -> new ListConfigResourcesRequest.Builder(data).build((short) 0));
-            });
+                    assertThrows(UnsupportedVersionException.class, () -> new ListConfigResourcesRequest.Builder(data).build((short) 0));
+                });
 
         // Multiple types with CLIENT_METRICS
         Arrays.stream(ConfigResource.Type.values())
-            .filter(t -> t != ConfigResource.Type.CLIENT_METRICS)
-            .forEach(t -> {
-                ListConfigResourcesRequestData data = new ListConfigResourcesRequestData()
+                .filter(t -> t != ConfigResource.Type.CLIENT_METRICS)
+                .forEach(t -> {
+                    ListConfigResourcesRequestData data = new ListConfigResourcesRequestData()
                     .setResourceTypes(List.of(t.id(), ConfigResource.Type.CLIENT_METRICS.id()));
-                assertThrows(UnsupportedVersionException.class, () -> new ListConfigResourcesRequest.Builder(data).build((short) 0));
-            });
+                    assertThrows(UnsupportedVersionException.class, () -> new ListConfigResourcesRequest.Builder(data).build((short) 0));
+                });
     }
 }

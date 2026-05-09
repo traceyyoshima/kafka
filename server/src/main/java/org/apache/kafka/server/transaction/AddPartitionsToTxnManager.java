@@ -160,7 +160,8 @@ public class AddPartitionsToTxnManager extends InterBrokerSendThread {
                     // The client should not be exposed to CLUSTER_AUTHORIZATION_FAILED so modify the error to signify the verification did not complete.
                     // Return INVALID_TXN_STATE.
                     short finalError = responseData.errorCode() == Errors.CLUSTER_AUTHORIZATION_FAILED.code()
-                            ? Errors.INVALID_TXN_STATE.code() : responseData.errorCode();
+                            ? Errors.INVALID_TXN_STATE.code()
+                            : responseData.errorCode();
                     sendCallbacksToAll(finalError);
                 } else {
                     for (AddPartitionsToTxnResponseData.AddPartitionsToTxnResult txnResult : responseData.resultsByTransaction()) {
@@ -287,7 +288,8 @@ public class AddPartitionsToTxnManager extends InterBrokerSendThread {
             if (existingTransactionData != null) {
                 if (existingTransactionData.producerEpoch() <= transactionData.producerEpoch()) {
                     Errors error = (existingTransactionData.producerEpoch() < transactionData.producerEpoch())
-                            ? Errors.INVALID_PRODUCER_EPOCH : Errors.NETWORK_EXCEPTION;
+                            ? Errors.INVALID_PRODUCER_EPOCH
+                            : Errors.NETWORK_EXCEPTION;
                     AppendCallback oldCallback = existingNodeAndTransactionData.callbacks.get(transactionData.transactionalId());
                     existingNodeAndTransactionData.transactionData.remove(transactionData);
                     sendCallback(oldCallback, topicPartitionsToError(existingTransactionData, error), existingNodeAndTransactionData.startTimeMs.get(transactionData.transactionalId()));
@@ -314,8 +316,8 @@ public class AddPartitionsToTxnManager extends InterBrokerSendThread {
     private Map<TopicPartition, Errors> topicPartitionsToError(AddPartitionsToTxnTransaction txnData, Errors error) {
         Map<TopicPartition, Errors> topicPartitionsToError = new HashMap<>();
         txnData.topics().forEach(topic ->
-            topic.partitions().forEach(partition ->
-                topicPartitionsToError.put(new TopicPartition(topic.name(), partition), error)));
+                topic.partitions().forEach(partition ->
+                        topicPartitionsToError.put(new TopicPartition(topic.name(), partition), error)));
         verificationFailureRate.mark(topicPartitionsToError.size());
         return topicPartitionsToError;
     }

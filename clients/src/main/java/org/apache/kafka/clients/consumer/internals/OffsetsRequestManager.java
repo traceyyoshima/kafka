@@ -381,11 +381,11 @@ public final class OffsetsRequestManager implements RequestManager, ClusterResou
                     commitRequestManager.fetchOffsets(initializingPartitions, fetchCommittedDeadlineMs);
             CompletableFuture<Map<TopicPartition, OffsetAndMetadata>> fetchOffsetsAndRefresh =
                     fetchOffsets.thenApply(CommitRequestManager.OffsetFetchResult::toOffsetMapWithNulls)
-                    .whenComplete((offsets, error) -> {
-                        pendingOffsetFetchEvent = null;
-                        // Update positions with the retrieved offsets
-                        refreshOffsets(offsets, error, result);
-                    });
+                            .whenComplete((offsets, error) -> {
+                                pendingOffsetFetchEvent = null;
+                                // Update positions with the retrieved offsets
+                                refreshOffsets(offsets, error, result);
+                            });
             pendingOffsetFetchEvent = new PendingFetchCommittedRequest(initializingPartitions, fetchOffsetsAndRefresh);
         } else {
             // Reuse pending OffsetFetch request that will complete when positions are refreshed with the committed offsets retrieved

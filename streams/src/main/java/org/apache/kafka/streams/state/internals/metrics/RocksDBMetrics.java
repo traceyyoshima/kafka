@@ -173,9 +173,11 @@ public class RocksDBMetrics {
         public String taskName() {
             return taskName;
         }
+
         public String metricsScope() {
             return metricsScope;
         }
+
         public String storeName() {
             return storeName;
         }

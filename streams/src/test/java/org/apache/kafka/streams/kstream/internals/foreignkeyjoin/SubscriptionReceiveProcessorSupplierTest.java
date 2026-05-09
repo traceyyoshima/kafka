@@ -124,7 +124,7 @@ public class SubscriptionReceiveProcessorSupplierTest {
             null
         );
         final ValueTimestampHeaders<SubscriptionWrapper<String>> newValue = ValueTimestampHeaders.make(
-                newWrapper, 1L, null);
+            newWrapper, 1L, null);
         final Record<String, SubscriptionWrapper<String>> record = new Record<>(
             FK,
             newWrapper,

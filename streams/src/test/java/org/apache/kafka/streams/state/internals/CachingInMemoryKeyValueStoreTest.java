@@ -97,10 +97,10 @@ public class CachingInMemoryKeyValueStoreTest extends AbstractKeyValueStoreTest 
     @Override
     protected <K, V> KeyValueStore<K, V> createKeyValueStore(final StateStoreContext context) {
         final StoreBuilder<KeyValueStore<K, V>> storeBuilder = Stores.keyValueStoreBuilder(
-                Stores.persistentKeyValueStore("cache-store"),
-                (Serde<K>) context.keySerde(),
-                (Serde<V>) context.valueSerde())
-                .withCachingEnabled();
+            Stores.persistentKeyValueStore("cache-store"),
+            (Serde<K>) context.keySerde(),
+            (Serde<V>) context.valueSerde())
+            .withCachingEnabled();
 
         final KeyValueStore<K, V> store = storeBuilder.build();
         store.init(context, store);

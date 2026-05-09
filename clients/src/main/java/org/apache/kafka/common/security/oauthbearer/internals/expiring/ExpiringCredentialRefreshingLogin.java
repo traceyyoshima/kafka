@@ -431,7 +431,8 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
     }
 
     private String principalLogText() {
-        return expiringCredential == null ? principalName
+        return expiringCredential == null
+                ? principalName
                 : expiringCredential.getClass().getSimpleName() + ":" + principalName;
     }
 

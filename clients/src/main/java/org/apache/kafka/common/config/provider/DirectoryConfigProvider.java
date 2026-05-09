@@ -77,8 +77,8 @@ public class DirectoryConfigProvider implements ConfigProvider {
     @Override
     public ConfigData get(String path, Set<String> keys) {
         return get(path, pathname ->
-                Files.isRegularFile(pathname)
-                        && keys.contains(pathname.getFileName().toString()));
+            Files.isRegularFile(pathname)
+                && keys.contains(pathname.getFileName().toString()));
     }
 
     private ConfigData get(String path, Predicate<Path> fileFilter) {

@@ -252,7 +252,7 @@ public class SaslAuthenticatorTest {
         sendHandshakeRequestReceiveResponse(node3, ApiKeys.SASL_HANDSHAKE.latestVersion());
 
         // test with sasl authenticate request with large auth_byes string
-        String authString = "\u0000" + TestJaasConfig.USERNAME + "\u0000" +  new String(bytes, StandardCharsets.UTF_8);
+        String authString = "\u0000" + TestJaasConfig.USERNAME + "\u0000" + new String(bytes, StandardCharsets.UTF_8);
         ByteBuffer authBuf = ByteBuffer.wrap(Utils.utf8(authString));
         SaslAuthenticateRequestData data = new SaslAuthenticateRequestData().setAuthBytes(authBuf.array());
         SaslAuthenticateRequest request = new SaslAuthenticateRequest.Builder(data).build();
@@ -624,7 +624,7 @@ public class SaslAuthenticatorTest {
         KafkaPrincipal owner = SecurityUtils.parseKafkaPrincipal("User:Owner");
         KafkaPrincipal renewer = SecurityUtils.parseKafkaPrincipal("User:Renewer1");
         TokenInformation tokenInfo = new TokenInformation(tokenId, owner, Collections.singleton(renewer),
-            System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
+                System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis());
         server.tokenCache().addToken(tokenId, tokenInfo);
         createAndCheckClientConnectionFailure(securityProtocol, "0");
         server.verifyAuthenticationMetrics(0, 2);
@@ -842,7 +842,7 @@ public class SaslAuthenticatorTest {
     @Test
     public void testForBrokenSaslHandshakeVersionBump() {
         assertEquals(1, ApiKeys.SASL_HANDSHAKE.latestVersion(),
-            "It is not possible to easily bump SASL_HANDSHAKE schema due to improper version negotiation in " +
+                "It is not possible to easily bump SASL_HANDSHAKE schema due to improper version negotiation in " +
             "clients < 2.5. Please see https://issues.apache.org/jira/browse/KAFKA-9577");
     }
 
@@ -1620,7 +1620,7 @@ public class SaslAuthenticatorTest {
         SecurityProtocol securityProtocol = SecurityProtocol.SASL_SSL;
 
         configureMechanisms(OAuthBearerLoginModule.OAUTHBEARER_MECHANISM,
-            List.of(OAuthBearerLoginModule.OAUTHBEARER_MECHANISM));
+                List.of(OAuthBearerLoginModule.OAUTHBEARER_MECHANISM));
         // set a large re-auth timeout in server side
         saslServerConfigs.put(BrokerSecurityConfigs.CONNECTIONS_MAX_REAUTH_MS_CONFIG, Long.MAX_VALUE);
         server = createEchoServer(securityProtocol);
@@ -1651,16 +1651,16 @@ public class SaslAuthenticatorTest {
     @Test
     public void testCorrelationId() {
         SaslClientAuthenticator authenticator = new SaslClientAuthenticator(
-              Collections.emptyMap(),
-              null,
-              "node",
-              null,
-              null,
-              null,
-              "plain",
-              null,
-              null,
-            new LogContext()
+                Collections.emptyMap(),
+                null,
+                "node",
+                null,
+                null,
+                null,
+                "plain",
+                null,
+                null,
+                new LogContext()
         ) {
             @Override
             SaslClient createSaslClient() {
@@ -1669,8 +1669,8 @@ public class SaslAuthenticatorTest {
         };
         int count = (SaslClientAuthenticator.MAX_RESERVED_CORRELATION_ID - SaslClientAuthenticator.MIN_RESERVED_CORRELATION_ID) * 2;
         Set<Integer> ids = IntStream.range(0, count)
-            .mapToObj(i -> authenticator.nextCorrelationId())
-            .collect(Collectors.toSet());
+                .mapToObj(i -> authenticator.nextCorrelationId())
+                .collect(Collectors.toSet());
         assertEquals(SaslClientAuthenticator.MAX_RESERVED_CORRELATION_ID - SaslClientAuthenticator.MIN_RESERVED_CORRELATION_ID + 1, ids.size());
         ids.forEach(id -> {
             assertTrue(id >= SaslClientAuthenticator.MIN_RESERVED_CORRELATION_ID);
@@ -1766,12 +1766,12 @@ public class SaslAuthenticatorTest {
              */
             time.sleep((long) (CONNECTIONS_MAX_REAUTH_MS_VALUE * 1.1));
             AssertionFailedError exception = assertThrows(AssertionFailedError.class,
-                () -> NetworkTestUtils.checkClientConnection(selector, node, 1, 1));
+                    () -> NetworkTestUtils.checkClientConnection(selector, node, 1, 1));
             String expectedResponseTextRegex = "\\w-" + node;
             String receivedResponseTextRegex = ".*" + OAuthBearerLoginModule.OAUTHBEARER_MECHANISM;
             assertTrue(exception.getMessage().matches(
-                ".*<" + expectedResponseTextRegex + ">.*<" + receivedResponseTextRegex + ".*?>"),
-                "Should have received the SaslHandshakeRequest bytes back since we re-authenticated too quickly, " +
+                    ".*<" + expectedResponseTextRegex + ">.*<" + receivedResponseTextRegex + ".*?>"),
+                    "Should have received the SaslHandshakeRequest bytes back since we re-authenticated too quickly, " +
                 "but instead we got our generated message echoed back, implying re-auth succeeded when it should not have: " +
                 exception);
             server.verifyReauthenticationMetrics(1, 0); // unchanged
@@ -1846,9 +1846,9 @@ public class SaslAuthenticatorTest {
                 TestJaasConfig.jaasConfigProperty("OAUTHBEARER", Collections.singletonMap("unsecuredLoginExtension_test", "something")));
 
         Throwable throwable = assertThrows(
-            Throwable.class,
-            () -> createEchoServer(securityProtocol),
-            "Server created with invalid login config containing extensions without a token");
+                Throwable.class,
+                () -> createEchoServer(securityProtocol),
+                "Server created with invalid login config containing extensions without a token");
         assertInstanceOf(LoginException.class, throwable.getCause(), "Unexpected exception " + Utils.stackTrace(throwable));
     }
 
@@ -2084,7 +2084,7 @@ public class SaslAuthenticatorTest {
 
         Function<Short, ApiVersionsResponse> apiVersionSupplier = version -> {
             ApiVersionsResponse defaultApiVersionResponse = TestUtils.defaultApiVersionsResponse(
-                ApiMessageType.ListenerType.BROKER);
+                    ApiMessageType.ListenerType.BROKER);
             ApiVersionCollection apiVersions = new ApiVersionCollection();
             for (ApiVersion apiVersion : defaultApiVersionResponse.data().apiKeys()) {
                 if (apiVersion.apiKey() != ApiKeys.SASL_AUTHENTICATE.id) {
@@ -2095,9 +2095,9 @@ public class SaslAuthenticatorTest {
 
             }
             ApiVersionsResponseData data = new ApiVersionsResponseData()
-                .setErrorCode(Errors.NONE.code())
-                .setThrottleTimeMs(0)
-                .setApiKeys(apiVersions);
+                    .setErrorCode(Errors.NONE.code())
+                    .setThrottleTimeMs(0)
+                    .setApiKeys(apiVersions);
             return new ApiVersionsResponse(data);
         };
 
@@ -2113,7 +2113,7 @@ public class SaslAuthenticatorTest {
                                                                        Map<String, Long> connectionsMaxReauthMsByMechanism,
                                                                        ChannelMetadataRegistry metadataRegistry) {
                 return new SaslServerAuthenticator(configs, callbackHandlers, id, subjects, null, listenerName,
-                    securityProtocol, transportLayer, connectionsMaxReauthMsByMechanism, metadataRegistry, time, apiVersionSupplier) {
+                        securityProtocol, transportLayer, connectionsMaxReauthMsByMechanism, metadataRegistry, time, apiVersionSupplier) {
                     @Override
                     protected void enableKafkaSaslAuthenticateHeaders(boolean flag) {
                         // Don't enable Kafka SASL_AUTHENTICATE headers
@@ -2129,10 +2129,10 @@ public class SaslAuthenticatorTest {
     }
 
     private SaslChannelBuilder saslChannelBuilderWithoutHeader(
-        final SecurityProtocol securityProtocol,
-        final String saslMechanism,
-        final Map<String, JaasContext> jaasContexts,
-        final ListenerName listenerName
+            final SecurityProtocol securityProtocol,
+            final String saslMechanism,
+            final Map<String, JaasContext> jaasContexts,
+            final ListenerName listenerName
     ) {
         return new SaslChannelBuilder(ConnectionMode.CLIENT, jaasContexts,
                 securityProtocol, listenerName, false, saslMechanism,
@@ -2154,6 +2154,7 @@ public class SaslAuthenticatorTest {
                     protected SaslHandshakeRequest createSaslHandshakeRequest(short version) {
                         return buildSaslHandshakeRequest(saslMechanism, (short) 0);
                     }
+
                     @Override
                     protected void setSaslAuthenticateAndHandshakeVersions(ApiVersionsResponse apiVersionsResponse) {
                         // Don't set version so that headers are disabled
@@ -2164,10 +2165,10 @@ public class SaslAuthenticatorTest {
     }
 
     private void createCustomClientConnection(
-        final SecurityProtocol securityProtocol,
-        final String saslMechanism,
-        String node,
-        boolean withSaslAuthenticateHeader
+            final SecurityProtocol securityProtocol,
+            final String saslMechanism,
+            String node,
+            boolean withSaslAuthenticateHeader
     ) throws Exception {
 
         final ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
@@ -2180,8 +2181,8 @@ public class SaslAuthenticatorTest {
             clientChannelBuilder = saslChannelBuilderWithoutHeader(securityProtocol, saslMechanism, jaasContexts, listenerName);
         } else {
             clientChannelBuilder = new SaslChannelBuilder(ConnectionMode.CLIENT, jaasContexts,
-                securityProtocol, listenerName, false, saslMechanism,
-                null, null, null, time, new LogContext(), null) {
+                    securityProtocol, listenerName, false, saslMechanism,
+                    null, null, null, time, new LogContext(), null) {
 
                 @Override
                 protected SaslClientAuthenticator buildClientAuthenticator(Map<String, ?> configs,
@@ -2193,7 +2194,7 @@ public class SaslAuthenticatorTest {
                                                                            Subject subject) {
 
                     return new SaslClientAuthenticator(configs, callbackHandler, id, subject,
-                        servicePrincipal, serverHost, saslMechanism, transportLayer, time, new LogContext());
+                            servicePrincipal, serverHost, saslMechanism, transportLayer, time, new LogContext());
                 }
             };
         }
@@ -2553,6 +2554,7 @@ public class SaslAuthenticatorTest {
         private String contextName;
         private Configuration configuration;
         private Subject subject;
+
         @Override
         public void configure(Map<String, ?> configs, String contextName, Configuration configuration,
                               AuthenticateCallbackHandler callbackHandler) {
@@ -2591,6 +2593,7 @@ public class SaslAuthenticatorTest {
 
     public static class TestLoginCallbackHandler implements AuthenticateCallbackHandler {
         private volatile boolean configured = false;
+
         @Override
         public void configure(Map<String, ?> configs, String saslMechanism, List<AppConfigurationEntry> jaasConfigEntries) {
             if (configured)
@@ -2720,8 +2723,8 @@ public class SaslAuthenticatorTest {
                 String clientSaslMechanism, CredentialCache credentialCache,
                 DelegationTokenCache tokenCache, Time time) {
             super(connectionMode, jaasContexts, securityProtocol, listenerName, isInterBrokerListener, clientSaslMechanism,
-                credentialCache, tokenCache, null, time, new LogContext(),
-                version -> TestUtils.defaultApiVersionsResponse(ApiMessageType.ListenerType.BROKER));
+                    credentialCache, tokenCache, null, time, new LogContext(),
+                    version -> TestUtils.defaultApiVersionsResponse(ApiMessageType.ListenerType.BROKER));
         }
 
         @Override

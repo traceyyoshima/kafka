@@ -212,10 +212,10 @@ public class OffsetFetcher {
             if (subscriptions.partitionEndOffset(topicPartition, isolationLevel) == null &&
                     offsetFetcherUtils.maybeSetPartitionEndOffsetRequest(topicPartition)) {
                 beginningOrEndOffset(
-                    Set.of(topicPartition),
-                    ListOffsetsRequest.LATEST_TIMESTAMP,
-                    time.timer(0L),
-                    true
+                        Set.of(topicPartition),
+                        ListOffsetsRequest.LATEST_TIMESTAMP,
+                        time.timer(0L),
+                        true
                 );
             }
 

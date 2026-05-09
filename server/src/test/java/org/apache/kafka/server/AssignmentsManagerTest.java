@@ -197,8 +197,8 @@ public class AssignmentsManagerTest {
             this.backoff = new ExponentialBackoff(1, 2, 4, 0);
             this.channelManager = new MockNodeToControllerChannelManager();
             this.assignmentsManager = new AssignmentsManager(
-                    backoff, Time.SYSTEM, channelManager, 1, () -> TEST_IMAGE,
-                    Uuid::toString, metricsRegistry);
+                backoff, Time.SYSTEM, channelManager, 1, () -> TEST_IMAGE,
+                Uuid::toString, metricsRegistry);
             this.successes = new HashMap<>();
         }
 
@@ -438,7 +438,7 @@ public class AssignmentsManagerTest {
         assertEquals(Optional.of("Disconnected[Timeout]"),
             AssignmentsManager.globalResponseError(Optional.of(
                 new ClientResponse(null, null, "", 0, 0, true, true,
-                   null, null, null))));
+                    null, null, null))));
     }
 
     @Test
@@ -446,7 +446,7 @@ public class AssignmentsManagerTest {
         assertEquals(Optional.of("EmptyResponse"),
             AssignmentsManager.globalResponseError(Optional.of(
                 new ClientResponse(null, null, "", 0, 0, false, false,
-                        null, null, null))));
+                    null, null, null))));
     }
 
     @Test
@@ -462,8 +462,8 @@ public class AssignmentsManagerTest {
         assertEquals(Optional.of("Response-level error: INVALID_REQUEST"),
             AssignmentsManager.globalResponseError(Optional.of(
                 new ClientResponse(null, null, "", 0, 0, false, false,
-                        null, null, new AssignReplicasToDirsResponse(
-                            new AssignReplicasToDirsResponseData().
+                    null, null, new AssignReplicasToDirsResponse(
+                        new AssignReplicasToDirsResponseData().
                                 setErrorCode(Errors.INVALID_REQUEST.code()))))));
     }
 

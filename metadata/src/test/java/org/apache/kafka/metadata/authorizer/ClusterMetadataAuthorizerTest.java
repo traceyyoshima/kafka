@@ -208,7 +208,7 @@ public class ClusterMetadataAuthorizerTest {
         authorizer.setAclMutator(mutator);
         CompletableFuture<List<AclDeleteResult>> response = new CompletableFuture<>();
         response.complete(List.of(new AclDeleteResult(
-                Set.of(new AclBindingDeleteResult(TEST_BINDINGS.get(0)))),
+            Set.of(new AclBindingDeleteResult(TEST_BINDINGS.get(0)))),
             new AclDeleteResult(new InvalidRequestException("invalid"))));
         mutator.setDeleteAclsResponse(response);
         List<? extends CompletionStage<AclDeleteResult>> results = authorizer.deleteAcls(

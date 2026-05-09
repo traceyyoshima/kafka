@@ -148,8 +148,8 @@ public class RepartitionOptimizingTest {
         final KStream<String, Long> countStream = mappedStream
             .groupByKey(Grouped.as("count-groupByKey"))
             .count(Named.as("count"), Materialized.<String, Long>as(Stores.inMemoryKeyValueStore("count-store"))
-                                                                .withKeySerde(Serdes.String())
-                                                                .withValueSerde(Serdes.Long()))
+                                                                          .withKeySerde(Serdes.String())
+                                                                          .withValueSerde(Serdes.Long()))
             .toStream(Named.as("count-toStream"));
 
         countStream.to(COUNT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()).withName("count-to"));
@@ -160,8 +160,8 @@ public class RepartitionOptimizingTest {
                        aggregator,
                        Named.as("aggregate"),
                        Materialized.<String, Integer>as(Stores.inMemoryKeyValueStore("aggregate-store"))
-                                                    .withKeySerde(Serdes.String())
-                                                    .withValueSerde(Serdes.Integer()))
+                                   .withKeySerde(Serdes.String())
+                                   .withValueSerde(Serdes.Integer()))
             .toStream(Named.as("aggregate-toStream"))
             .to(AGGREGATION_TOPIC, Produced.with(Serdes.String(), Serdes.Integer()).withName("reduce-to"));
 
@@ -181,11 +181,11 @@ public class RepartitionOptimizingTest {
             .join(countStream, (v1, v2) -> v1 + ":" + v2.toString(),
                   JoinWindows.of(ofMillis(5000)),
                   StreamJoined.<String, String, Long>with(Stores.inMemoryWindowStore("join-store", ofDays(1), ofMillis(10000), true),
-                                       Stores.inMemoryWindowStore("other-join-store", ofDays(1), ofMillis(10000), true))
-                          .withName("join")
-                          .withKeySerde(Serdes.String())
-                          .withValueSerde(Serdes.String())
-                          .withOtherValueSerde(Serdes.Long()))
+                                                          Stores.inMemoryWindowStore("other-join-store", ofDays(1), ofMillis(10000), true))
+                              .withName("join")
+                              .withKeySerde(Serdes.String())
+                              .withValueSerde(Serdes.String())
+                              .withOtherValueSerde(Serdes.Long()))
             .to(JOINED_TOPIC, Produced.as("join-to"));
 
         streamsConfiguration.setProperty(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, optimizationConfig);
@@ -231,17 +231,17 @@ public class RepartitionOptimizingTest {
         final StreamsBuilder builder = new StreamsBuilder(new TopologyConfig(new StreamsConfig(streamsConfiguration)));
 
         builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), Serdes.String()).withName("sourceStream"))
-            .map((k, v) -> KeyValue.pair(k.toUpperCase(Locale.getDefault()), v))
-            .processValues(() -> new ContextualFixedKeyProcessor<String, String, Integer>() {
+               .map((k, v) -> KeyValue.pair(k.toUpperCase(Locale.getDefault()), v))
+               .processValues(() -> new ContextualFixedKeyProcessor<String, String, Integer>() {
                 @Override
                 public void process(final FixedKeyRecord<String, String> record) {
                     context().forward(record.withValue(record.value().length()));
                 }
             })
-            .groupByKey(Grouped.valueSerde(new Serdes.IntegerSerde()))
-            .reduce(Integer::sum)
-            .toStream()
-            .to(AGGREGATION_TOPIC);
+               .groupByKey(Grouped.valueSerde(new Serdes.IntegerSerde()))
+               .reduce(Integer::sum)
+               .toStream()
+               .to(AGGREGATION_TOPIC);
 
         final Topology topology = builder.build(streamsConfiguration);
 
@@ -373,7 +373,6 @@ public class RepartitionOptimizingTest {
                                                                   + "      <-- join-merge\n"
                                                                   + "    Sink: reduce-to (topic: outputTopic_1)\n"
                                                                   + "      <-- aggregate-toStream\n\n";
-
 
 
 

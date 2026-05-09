@@ -392,9 +392,9 @@ public class TopologyTestDriver implements Closeable {
         metrics = new Metrics(metricConfig, mockWallClockTime);
 
         final StreamsMetricsImpl streamsMetrics = new StreamsMetricsImpl(
-                metrics,
-                "test-client",
-                mockWallClockTime
+            metrics,
+            "test-client",
+            mockWallClockTime
         );
         TaskMetrics.droppedRecordsSensor(threadId, TASK_ID.toString(), streamsMetrics);
 
@@ -522,10 +522,10 @@ public class TopologyTestDriver implements Closeable {
                 context,
                 logContext,
                 false
-                );
+            );
             task.initializeIfNeeded();
             task.completeRestoration(noOpResetter -> { });
-            for (final TopicPartition tp: task.inputPartitions()) {
+            for (final TopicPartition tp : task.inputPartitions()) {
                 task.updateNextOffsets(tp, new OffsetAndMetadata(0, Optional.empty(), ""));
             }
         } else {
@@ -732,8 +732,8 @@ public class TopologyTestDriver implements Closeable {
         final Queue<ProducerRecord<byte[], byte[]>> outputRecords = outputRecordsByTopic.get(topicName);
         if (outputRecords == null && !processorTopology.sinkTopics().contains(topicName)) {
             log.warn("Unrecognized topic: {}, this can occur if dynamic routing is used and no output has been "
-                         + "sent to this topic yet. If not using a TopicNameExtractor, check that the output topic "
-                         + "is correct.", topicName);
+                     + "sent to this topic yet. If not using a TopicNameExtractor, check that the output topic "
+                     + "is correct.", topicName);
         }
         return outputRecords;
     }
@@ -964,27 +964,27 @@ public class TopologyTestDriver implements Closeable {
     private void throwIfBuiltInStore(final StateStore stateStore) {
         if (stateStore instanceof VersionedKeyValueStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a versioned key-value store and should be accessed via `getVersionedKeyValueStore()`");
+                + " is a versioned key-value store and should be accessed via `getVersionedKeyValueStore()`");
         }
         if (stateStore instanceof TimestampedKeyValueStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a timestamped key-value store and should be accessed via `getTimestampedKeyValueStore()`");
+                + " is a timestamped key-value store and should be accessed via `getTimestampedKeyValueStore()`");
         }
         if (stateStore instanceof ReadOnlyKeyValueStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a key-value store and should be accessed via `getKeyValueStore()`");
+                + " is a key-value store and should be accessed via `getKeyValueStore()`");
         }
         if (stateStore instanceof TimestampedWindowStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a timestamped window store and should be accessed via `getTimestampedWindowStore()`");
+                + " is a timestamped window store and should be accessed via `getTimestampedWindowStore()`");
         }
         if (stateStore instanceof ReadOnlyWindowStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a window store and should be accessed via `getWindowStore()`");
+                + " is a window store and should be accessed via `getWindowStore()`");
         }
         if (stateStore instanceof ReadOnlySessionStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a session store and should be accessed via `getSessionStore()`");
+                + " is a session store and should be accessed via `getSessionStore()`");
         }
     }
 
@@ -1481,8 +1481,8 @@ public class TopologyTestDriver implements Closeable {
 
         @Override
         public WindowStoreIterator<V> backwardFetch(final K key,
-                                                     final long timeFrom,
-                                                     final long timeTo) {
+                                                    final long timeFrom,
+                                                    final long timeTo) {
             return backwardFetch(key, Instant.ofEpochMilli(timeFrom), Instant.ofEpochMilli(timeTo));
         }
 

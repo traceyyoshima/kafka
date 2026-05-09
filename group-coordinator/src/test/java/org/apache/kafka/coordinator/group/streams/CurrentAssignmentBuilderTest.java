@@ -169,7 +169,7 @@ public class CurrentAssignmentBuilderTest {
                 .setMemberEpoch(memberEpoch + 1)
                 .setPreviousMemberEpoch(memberEpoch)
                 .setAssignedTasks(mkTasksTupleWithEpochs(taskRole,
-                    mkTasksWithEpochs(SUBTOPOLOGY_ID1,  Map.of(1, 9, 2, 8, 4, memberEpoch + 1)),
+                    mkTasksWithEpochs(SUBTOPOLOGY_ID1, Map.of(1, 9, 2, 8, 4, memberEpoch + 1)),
                     mkTasksWithEpochs(SUBTOPOLOGY_ID2, Map.of(3, 9, 4, 8, 7, memberEpoch + 1))))
                 .setTasksPendingRevocation(TasksTupleWithEpochs.EMPTY)
                 .build(),
@@ -681,10 +681,12 @@ public class CurrentAssignmentBuilderTest {
             .withCurrentActiveTaskProcessId((subtopologyId, partitionId) -> null)
             .withCurrentStandbyTaskProcessIds(
                 (subtopologyId, partitionId) -> (taskRole == TaskRole.STANDBY)
-                    ? Set.of() : Set.of(PROCESS_ID))
+                    ? Set.of()
+                    : Set.of(PROCESS_ID))
             .withCurrentWarmupTaskProcessIds(
                 (subtopologyId, partitionId) -> (taskRole == TaskRole.STANDBY)
-                    ? Set.of(PROCESS_ID) : Set.of())
+                    ? Set.of(PROCESS_ID)
+                    : Set.of())
             .build();
 
         assertEquals(member, updatedMember);
@@ -724,7 +726,8 @@ public class CurrentAssignmentBuilderTest {
                 mkTasks(SUBTOPOLOGY_ID1, 2, 3, 4),
                 mkTasks(SUBTOPOLOGY_ID2, 5, 6, 7)))
             .withCurrentActiveTaskProcessId((subtopologyId, partitionId) ->
-                (subtopologyId.equals(SUBTOPOLOGY_ID1) && partitionId == 4) ? "anyOtherProcess"
+                (subtopologyId.equals(SUBTOPOLOGY_ID1) && partitionId == 4)
+                    ? "anyOtherProcess"
                     : null)
             .withCurrentStandbyTaskProcessIds(
                 (subtopologyId, partitionId) -> Set.of())

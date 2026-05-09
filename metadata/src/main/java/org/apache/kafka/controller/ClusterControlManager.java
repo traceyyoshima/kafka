@@ -497,7 +497,7 @@ public class ClusterControlManager {
             setZkMigrationReady(false).
             setEndPoints(listenerInfo.toControllerRegistrationRecord()).
             setFeatures(features),
-                (short) 0));
+            (short) 0));
         return ControllerResult.atomicOf(records, null);
     }
 
@@ -524,7 +524,7 @@ public class ClusterControlManager {
         if (!finalizedFeatures.featureNames().contains(feature.name()))
             log.debug("Broker {} registered with version range ({}, {}] of feature {} which controller does not know " +
                     "or has finalized version of 0.",
-                    brokerId, feature.minSupportedVersion(), feature.maxSupportedVersion(), feature.name());
+                brokerId, feature.minSupportedVersion(), feature.maxSupportedVersion(), feature.name());
         return new BrokerFeature().
                 setName(feature.name()).
                 setMinSupportedVersion(feature.minSupportedVersion()).
@@ -557,7 +557,7 @@ public class ClusterControlManager {
 
     public void updateCordonedLogDirs(int brokerId, List<Uuid> cordonedLogDirs) {
         brokerRegistrations.compute(brokerId,
-                (k, brokerRegistration) -> new BrokerRegistration.Builder().
+            (k, brokerRegistration) -> new BrokerRegistration.Builder().
                         setId(brokerId).
                         setEpoch(brokerRegistration.epoch()).
                         setIncarnationId(brokerRegistration.incarnationId()).
@@ -865,7 +865,7 @@ public class ClusterControlManager {
             public Entry<Integer, Map<String, VersionRange>> next() {
                 BrokerRegistration registration = iter.next();
                 return new AbstractMap.SimpleImmutableEntry<>(registration.id(),
-                        registration.supportedFeatures());
+                    registration.supportedFeatures());
             }
         };
     }
@@ -887,7 +887,7 @@ public class ClusterControlManager {
             public Entry<Integer, Map<String, VersionRange>> next() {
                 ControllerRegistration registration = iter.next();
                 return new AbstractMap.SimpleImmutableEntry<>(registration.id(),
-                        registration.supportedFeatures());
+                    registration.supportedFeatures());
             }
         };
     }

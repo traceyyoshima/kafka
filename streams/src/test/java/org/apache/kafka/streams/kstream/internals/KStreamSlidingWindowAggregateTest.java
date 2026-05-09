@@ -110,6 +110,7 @@ public class KStreamSlidingWindowAggregateTest {
             Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, false, true)
         );
     }
+
     public StrategyType type;
     public boolean inOrderIterator;
     public boolean withCache;
@@ -1228,8 +1229,8 @@ public class KStreamSlidingWindowAggregateTest {
         final String topic = "topic";
         final WindowBytesStoreSupplier storeSupplier =
                 inOrderIterator
-                        ? new InOrderMemoryWindowStoreSupplier("InOrder", 500L, 10L, false)
-                        : Stores.inMemoryWindowStore("Reverse", Duration.ofMillis(500), Duration.ofMillis(10), false);
+                    ? new InOrderMemoryWindowStoreSupplier("InOrder", 500L, 10L, false)
+                    : Stores.inMemoryWindowStore("Reverse", Duration.ofMillis(500), Duration.ofMillis(10), false);
 
         final Materialized<String, String, WindowStore<Bytes, byte[]>> materialized = setupMaterialized(emitFinal ? Materialized.as("store-name") : Materialized.as(storeSupplier));
 
@@ -1263,7 +1264,7 @@ public class KStreamSlidingWindowAggregateTest {
         }
         final Comparator<KeyValueTimestamp<Windowed<String>, String>> comparator =
                 Comparator.comparing((KeyValueTimestamp<Windowed<String>, String> o) -> o.key().key())
-                        .thenComparing((KeyValueTimestamp<Windowed<String>, String> o) -> o.key().window().start());
+                          .thenComparing((KeyValueTimestamp<Windowed<String>, String> o) -> o.key().window().start());
 
         final ArrayList<KeyValueTimestamp<Windowed<String>, String>> actual = supplier.theCapturedProcessor().processed();
         actual.sort(comparator);
@@ -1349,8 +1350,8 @@ public class KStreamSlidingWindowAggregateTest {
         final String topic = "topic";
         final WindowBytesStoreSupplier storeSupplier =
                 inOrderIterator
-                        ? new InOrderMemoryWindowStoreSupplier("InOrder", 500L, 10L, false)
-                        : Stores.inMemoryWindowStore("Reverse", Duration.ofMillis(500), Duration.ofMillis(10), false);
+                    ? new InOrderMemoryWindowStoreSupplier("InOrder", 500L, 10L, false)
+                    : Stores.inMemoryWindowStore("Reverse", Duration.ofMillis(500), Duration.ofMillis(10), false);
 
         final Materialized<String, String, WindowStore<Bytes, byte[]>> materialized = setupMaterialized(emitFinal ? Materialized.as("store-name") : Materialized.as(storeSupplier));
 
@@ -1384,7 +1385,7 @@ public class KStreamSlidingWindowAggregateTest {
         }
         final Comparator<KeyValueTimestamp<Windowed<String>, String>> comparator =
                 Comparator.comparing((KeyValueTimestamp<Windowed<String>, String> o) -> o.key().key())
-                        .thenComparing((KeyValueTimestamp<Windowed<String>, String> o) -> o.key().window().start());
+                          .thenComparing((KeyValueTimestamp<Windowed<String>, String> o) -> o.key().window().start());
 
         final ArrayList<KeyValueTimestamp<Windowed<String>, String>> actual = supplier.theCapturedProcessor().processed();
         actual.sort(comparator);
@@ -1542,19 +1543,19 @@ public class KStreamSlidingWindowAggregateTest {
             assertLatenessMetrics(driver, is(7.0), is(185.0), is(77.0));
 
             assertThat(appender.getMessages(), hasItems(
-                    // left window for k@100
+                // left window for k@100
                     "Skipping record for expired window. topic=[topic] partition=[0] offset=[1] timestamp=[100] window=[90,100] expiration=[110] streamTime=[200]",
-                    // left window for k@101
+                // left window for k@101
                     "Skipping record for expired window. topic=[topic] partition=[0] offset=[2] timestamp=[101] window=[91,101] expiration=[110] streamTime=[200]",
-                    // left window for k@102
+                // left window for k@102
                     "Skipping record for expired window. topic=[topic] partition=[0] offset=[3] timestamp=[102] window=[92,102] expiration=[110] streamTime=[200]",
-                    // left window for k@103
+                // left window for k@103
                     "Skipping record for expired window. topic=[topic] partition=[0] offset=[4] timestamp=[103] window=[93,103] expiration=[110] streamTime=[200]",
-                    // left window for k@104
+                // left window for k@104
                     "Skipping record for expired window. topic=[topic] partition=[0] offset=[5] timestamp=[104] window=[94,104] expiration=[110] streamTime=[200]",
-                    // left window for k@105
+                // left window for k@105
                     "Skipping record for expired window. topic=[topic] partition=[0] offset=[6] timestamp=[105] window=[95,105] expiration=[110] streamTime=[200]",
-                    // left window for k@15
+                // left window for k@15
                     "Skipping record for expired window. topic=[topic] partition=[0] offset=[7] timestamp=[15] window=[15,25] expiration=[110] streamTime=[200]"
             ));
             final TestOutputTopic<Windowed<String>, String> outputTopic =
@@ -1638,7 +1639,7 @@ public class KStreamSlidingWindowAggregateTest {
                 ValueAndTimestamp.make("S", 3L),
                 ValueAndTimestamp.make("T", 5L),
                 ValueAndTimestamp.make("U", 8L)
-                );
+            );
 
             Collections.shuffle(input, shuffle);
             try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
@@ -1731,41 +1732,41 @@ public class KStreamSlidingWindowAggregateTest {
         final MetricName latenessMaxMetric;
         final MetricName latenessAvgMetric;
         dropTotalMetric = new MetricName(
-                "dropped-records-total",
-                "stream-task-metrics",
-                "The total number of dropped records",
-                mkMap(
-                        mkEntry("thread-id", threadId),
-                        mkEntry("task-id", "0_0")
+            "dropped-records-total",
+            "stream-task-metrics",
+            "The total number of dropped records",
+            mkMap(
+                  mkEntry("thread-id", threadId),
+                  mkEntry("task-id", "0_0")
                 )
         );
         dropRateMetric = new MetricName(
-                "dropped-records-rate",
-                "stream-task-metrics",
-                "The average number of dropped records per second",
-                mkMap(
-                        mkEntry("thread-id", threadId),
-                        mkEntry("task-id", "0_0")
+            "dropped-records-rate",
+            "stream-task-metrics",
+            "The average number of dropped records per second",
+            mkMap(
+                  mkEntry("thread-id", threadId),
+                  mkEntry("task-id", "0_0")
                 )
         );
         latenessMaxMetric = new MetricName(
-                "record-lateness-max",
-                "stream-task-metrics",
-                "The observed maximum lateness of records in milliseconds, measured by comparing the record "
-                        + "timestamp with the current stream time",
-                mkMap(
-                        mkEntry("thread-id", threadId),
-                        mkEntry("task-id", "0_0")
+            "record-lateness-max",
+            "stream-task-metrics",
+            "The observed maximum lateness of records in milliseconds, measured by comparing the record "
+                + "timestamp with the current stream time",
+            mkMap(
+                  mkEntry("thread-id", threadId),
+                  mkEntry("task-id", "0_0")
                 )
         );
         latenessAvgMetric = new MetricName(
-                "record-lateness-avg",
-                "stream-task-metrics",
-                "The observed average lateness of records in milliseconds, measured by comparing the record "
-                        + "timestamp with the current stream time",
-                mkMap(
-                        mkEntry("thread-id", threadId),
-                        mkEntry("task-id", "0_0")
+            "record-lateness-avg",
+            "stream-task-metrics",
+            "The observed average lateness of records in milliseconds, measured by comparing the record "
+                + "timestamp with the current stream time",
+            mkMap(
+                  mkEntry("thread-id", threadId),
+                  mkEntry("task-id", "0_0")
                 )
         );
         assertThat(driver.metrics().get(dropTotalMetric).metricValue(), dropTotal);
@@ -1776,8 +1777,8 @@ public class KStreamSlidingWindowAggregateTest {
 
     private WindowBytesStoreSupplier setupWindowBytesStoreSupplier(final int index) {
         return inOrderIterator
-                ? new InOrderMemoryWindowStoreSupplier("InOrder" + index, 50000L, 10L, false)
-                : Stores.inMemoryWindowStore("Reverse" + index, Duration.ofMillis(50000L), Duration.ofMillis(10L), false);
+               ? new InOrderMemoryWindowStoreSupplier("InOrder" + index, 50000L, 10L, false)
+               : Stores.inMemoryWindowStore("Reverse" + index, Duration.ofMillis(50000L), Duration.ofMillis(10L), false);
     }
 
     private Materialized<String, String, WindowStore<Bytes, byte[]>> setupMaterialized(final Materialized<String, String, WindowStore<Bytes, byte[]>> materialized) {
@@ -1808,10 +1809,10 @@ public class KStreamSlidingWindowAggregateTest {
 
     private static class InOrderMemoryWindowStore extends InMemoryWindowStore {
         InOrderMemoryWindowStore(final String name,
-                        final long retentionPeriod,
-                        final long windowSize,
-                        final boolean retainDuplicates,
-                        final String metricScope) {
+                                 final long retentionPeriod,
+                                 final long windowSize,
+                                 final boolean retainDuplicates,
+                                 final String metricScope) {
             super(name, retentionPeriod, windowSize, retainDuplicates, metricScope);
         }
 

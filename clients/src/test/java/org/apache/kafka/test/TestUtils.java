@@ -375,10 +375,10 @@ public class TestUtils {
                                             final Class<?> keyDeserializer,
                                             final Class<?> valueDeserializer) {
         return consumerConfig(bootstrapServers,
-            groupId,
-            keyDeserializer,
-            valueDeserializer,
-            new Properties());
+                groupId,
+                keyDeserializer,
+                valueDeserializer,
+                new Properties());
     }
 
     /**
@@ -386,10 +386,10 @@ public class TestUtils {
      */
     public static Properties consumerConfig(final String bootstrapServers, final Class<?> keyDeserializer, final Class<?> valueDeserializer) {
         return consumerConfig(bootstrapServers,
-            UUID.randomUUID().toString(),
-            keyDeserializer,
-            valueDeserializer,
-            new Properties());
+                UUID.randomUUID().toString(),
+                keyDeserializer,
+                valueDeserializer,
+                new Properties());
     }
 
     /**
@@ -434,16 +434,16 @@ public class TestUtils {
      * machines.
      */
     public static void waitForCondition(
-        final TestCondition testCondition,
-        final long maxWaitMs,
-        final long pollIntervalMs,
-        Supplier<String> conditionDetailsSupplier
+            final TestCondition testCondition,
+            final long maxWaitMs,
+            final long pollIntervalMs,
+            Supplier<String> conditionDetailsSupplier
     ) throws InterruptedException {
         retryOnExceptionWithTimeout(maxWaitMs, pollIntervalMs, () -> {
             String conditionDetailsSupplied = conditionDetailsSupplier != null ? conditionDetailsSupplier.get() : null;
             String conditionDetails = conditionDetailsSupplied != null ? conditionDetailsSupplied : "";
             assertTrue(testCondition.conditionMet(),
-                "Condition not met within timeout " + maxWaitMs + ". " + conditionDetails);
+                    "Condition not met within timeout " + maxWaitMs + ". " + conditionDetails);
         });
     }
 
@@ -598,9 +598,9 @@ public class TestUtils {
             // Enable strict type checking.
             // This ensures we're testing for the exact exception type, not its subclasses.
             assertEquals(
-                exceptionCauseClass, 
-                cause.getClass(), 
-                "Expected " + exceptionCauseClass.getSimpleName() + ", but got " + cause.getClass().getSimpleName()
+                    exceptionCauseClass, 
+                    cause.getClass(), 
+                    "Expected " + exceptionCauseClass.getSimpleName() + ", but got " + cause.getClass().getSimpleName()
             );
             return exceptionCauseClass.cast(cause);
         } catch (TimeoutException e) {
@@ -612,9 +612,9 @@ public class TestUtils {
     }
 
     public static <T extends Throwable> void assertFutureThrows(
-        Class<T> expectedCauseClassApiException,
-        Future<?> future,
-        String expectedMessage
+            Class<T> expectedCauseClassApiException,
+            Future<?> future,
+            String expectedMessage
     ) {
         T receivedException = assertFutureThrows(expectedCauseClassApiException, future);
         assertEquals(expectedMessage, receivedException.getMessage());
@@ -642,7 +642,7 @@ public class TestUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T fieldValue(Object o, Class<?> clazz, String fieldName)  {
+    public static <T> T fieldValue(Object o, Class<?> clazz, String fieldName) {
         try {
             Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);

@@ -368,7 +368,7 @@ public class SslTransportLayer implements TransportLayer {
                     throw new EOFException();
                 }
                 log.trace("SSLHandshake NEED_WRAP channelId {}, handshakeResult {}, appReadBuffer pos {}, netReadBuffer pos {}, netWriteBuffer pos {}",
-                       channelId, handshakeResult, appReadBuffer.position(), netReadBuffer.position(), netWriteBuffer.position());
+                    channelId, handshakeResult, appReadBuffer.position(), netReadBuffer.position(), netWriteBuffer.position());
                 //if handshake status is not NEED_UNWRAP or unable to flush netWriteBuffer contents
                 //we will break here otherwise we can do need_unwrap in the same call.
                 if (handshakeStatus != HandshakeStatus.NEED_UNWRAP || !flush(netWriteBuffer)) {
@@ -464,7 +464,7 @@ public class SslTransportLayer implements TransportLayer {
                 state = session.getProtocol().equals(TLS13) ? State.POST_HANDSHAKE : State.READY;
                 key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
                 log.debug("SSL handshake completed successfully with peerHost '{}' peerPort {} peerPrincipal '{}' protocol '{}' cipherSuite '{}'",
-                        session.getPeerHost(), session.getPeerPort(), peerPrincipal(), session.getProtocol(), session.getCipherSuite());
+                          session.getPeerHost(), session.getPeerPort(), peerPrincipal(), session.getProtocol(), session.getCipherSuite());
                 metadataRegistry.registerCipherInformation(
                     new CipherInformation(session.getCipherSuite(),  session.getProtocol()));
             }

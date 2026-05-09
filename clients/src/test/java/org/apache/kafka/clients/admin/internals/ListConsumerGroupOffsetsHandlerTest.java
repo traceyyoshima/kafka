@@ -511,7 +511,7 @@ public class ListConsumerGroupOffsetsHandlerTest {
     }
 
     private void assertUnmappedWithMultipleGroups(
-            AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, OffsetAndMetadata>> result
+        AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, OffsetAndMetadata>> result
     ) {
         assertEquals(emptySet(), result.completedKeys.keySet());
         assertEquals(emptySet(), result.failedKeys.keySet());
@@ -519,7 +519,7 @@ public class ListConsumerGroupOffsetsHandlerTest {
     }
 
     private void assertRetriable(
-            AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, OffsetAndMetadata>> result
+        AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, OffsetAndMetadata>> result
     ) {
         assertEquals(emptySet(), result.completedKeys.keySet());
         assertEquals(emptySet(), result.failedKeys.keySet());
@@ -576,15 +576,15 @@ public class ListConsumerGroupOffsetsHandlerTest {
 
     private Set<CoordinatorKey> coordinatorKeys(String... groups) {
         return Stream.of(groups)
-                .map(CoordinatorKey::byGroupId)
-                .collect(Collectors.toSet());
+            .map(CoordinatorKey::byGroupId)
+            .collect(Collectors.toSet());
     }
 
     private Set<String> requestGroups(OffsetFetchRequest request) {
         return request.data().groups()
-                .stream()
-                .map(OffsetFetchRequestGroup::groupId)
-                .collect(Collectors.toSet());
+            .stream()
+            .map(OffsetFetchRequestGroup::groupId)
+            .collect(Collectors.toSet());
     }
 
     private Map<String, Errors> errorMap(Collection<String> groups, Errors error) {

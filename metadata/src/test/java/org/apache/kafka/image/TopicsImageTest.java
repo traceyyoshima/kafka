@@ -254,7 +254,7 @@ public class TopicsImageTest {
         );
         assertEquals(
             Set.of(new TopicPartition("baz", 1), new TopicPartition("bar", 0),
-                    new TopicPartition("bam", 1)),
+                   new TopicPartition("bam", 1)),
             changes.followers().keySet()
         );
 
@@ -911,7 +911,7 @@ public class TopicsImageTest {
     @Test
     public void testPartitionReplicas() {
         TopicsImage image = topicsImage(List.of(
-                newTopicImage(FOO_0.topic(), FOO_0.topicId(), newPartition(new int[]{0, 1, 2}))
+            newTopicImage(FOO_0.topic(), FOO_0.topicId(), newPartition(new int[]{0, 1, 2}))
         ));
         assertEquals(List.of(0, 1, 2), image.partitionReplicas(FOO_UUID, 0));
     }

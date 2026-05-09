@@ -159,7 +159,7 @@ public class MemoryRecords extends AbstractRecords {
                 continue;
 
             final BatchFilterResult iterationResult = filterBatch(batch, decompressionBufferSupplier, filterResult,
-                filter);
+                    filter);
             List<Record> retainedRecords = iterationResult.retainedRecords;
             boolean containsTombstones = iterationResult.containsTombstones;
             boolean writeOriginalBatch = iterationResult.writeOriginalBatch;
@@ -186,7 +186,7 @@ public class MemoryRecords extends AbstractRecords {
                         int filteredBatchSize = records.sizeInBytes();
                         MemoryRecordsBuilder.RecordsInfo info = builder.info();
                         filterResult.updateRetainedBatchMetadata(info.maxTimestamp, info.shallowOffsetOfMaxTimestamp,
-                            maxOffset, retainedRecords.size(), filteredBatchSize);
+                                maxOffset, retainedRecords.size(), filteredBatchSize);
                     }
                 }
             } else if (batchRetention == BatchRetention.RETAIN_EMPTY) {
@@ -249,6 +249,7 @@ public class MemoryRecords extends AbstractRecords {
         private final boolean writeOriginalBatch;
         private final boolean containsTombstones;
         private final long maxOffset;
+
         private BatchFilterResult(List<Record> retainedRecords,
                                   final boolean writeOriginalBatch,
                                   final boolean containsTombstones,
@@ -367,6 +368,7 @@ public class MemoryRecords extends AbstractRecords {
         public static class BatchRetentionResult {
             public final BatchRetention batchRetention;
             public final boolean containsMarkerForEmptyTxn;
+
             public BatchRetentionResult(final BatchRetention batchRetention,
                                         final boolean containsMarkerForEmptyTxn) {
                 this.batchRetention = batchRetention;
@@ -489,8 +491,8 @@ public class MemoryRecords extends AbstractRecords {
             logAppendTime = System.currentTimeMillis();
 
         return new MemoryRecordsBuilder(buffer, RecordBatch.CURRENT_MAGIC_VALUE, compression, timestampType, baseOffset,
-            logAppendTime, RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH, RecordBatch.NO_SEQUENCE,
-            false, false, RecordBatch.NO_PARTITION_LEADER_EPOCH, maxSize);
+                logAppendTime, RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH, RecordBatch.NO_SEQUENCE,
+                false, false, RecordBatch.NO_PARTITION_LEADER_EPOCH, maxSize);
     }
 
     public static MemoryRecordsBuilder builder(ByteBuffer buffer,
@@ -716,120 +718,115 @@ public class MemoryRecords extends AbstractRecords {
     }
 
     public static MemoryRecords withLeaderChangeMessage(
-        long initialOffset,
-        long timestamp,
-        int leaderEpoch,
-        ByteBuffer buffer,
-        LeaderChangeMessage leaderChangeMessage
+            long initialOffset,
+            long timestamp,
+            int leaderEpoch,
+            ByteBuffer buffer,
+            LeaderChangeMessage leaderChangeMessage
     ) {
         try (MemoryRecordsBuilder builder = createKraftControlRecordBuilder(
                 initialOffset,
                 timestamp,
                 leaderEpoch,
                 buffer
-            )
-        ) {
+        )) {
             builder.appendLeaderChangeMessage(timestamp, leaderChangeMessage);
             return builder.build();
         }
     }
 
     public static MemoryRecords withSnapshotHeaderRecord(
-        long initialOffset,
-        long timestamp,
-        int leaderEpoch,
-        ByteBuffer buffer,
-        SnapshotHeaderRecord snapshotHeaderRecord
+            long initialOffset,
+            long timestamp,
+            int leaderEpoch,
+            ByteBuffer buffer,
+            SnapshotHeaderRecord snapshotHeaderRecord
     ) {
         try (MemoryRecordsBuilder builder = createKraftControlRecordBuilder(
                 initialOffset,
                 timestamp,
                 leaderEpoch,
                 buffer
-            )
-        ) {
+        )) {
             builder.appendSnapshotHeaderMessage(timestamp, snapshotHeaderRecord);
             return builder.build();
         }
     }
 
     public static MemoryRecords withSnapshotFooterRecord(
-        long initialOffset,
-        long timestamp,
-        int leaderEpoch,
-        ByteBuffer buffer,
-        SnapshotFooterRecord snapshotFooterRecord
+            long initialOffset,
+            long timestamp,
+            int leaderEpoch,
+            ByteBuffer buffer,
+            SnapshotFooterRecord snapshotFooterRecord
     ) {
         try (MemoryRecordsBuilder builder = createKraftControlRecordBuilder(
                 initialOffset,
                 timestamp,
                 leaderEpoch,
                 buffer
-            )
-        ) {
+        )) {
             builder.appendSnapshotFooterMessage(timestamp, snapshotFooterRecord);
             return builder.build();
         }
     }
 
     public static MemoryRecords withKRaftVersionRecord(
-        long initialOffset,
-        long timestamp,
-        int leaderEpoch,
-        ByteBuffer buffer,
-        KRaftVersionRecord kraftVersionRecord
+            long initialOffset,
+            long timestamp,
+            int leaderEpoch,
+            ByteBuffer buffer,
+            KRaftVersionRecord kraftVersionRecord
     ) {
         try (MemoryRecordsBuilder builder = createKraftControlRecordBuilder(
                 initialOffset,
                 timestamp,
                 leaderEpoch,
                 buffer
-            )
-        ) {
+        )) {
             builder.appendKRaftVersionMessage(timestamp, kraftVersionRecord);
             return builder.build();
         }
     }
 
     public static MemoryRecords withVotersRecord(
-        long initialOffset,
-        long timestamp,
-        int leaderEpoch,
-        ByteBuffer buffer,
-        VotersRecord votersRecord
+            long initialOffset,
+            long timestamp,
+            int leaderEpoch,
+            ByteBuffer buffer,
+            VotersRecord votersRecord
     ) {
         try (MemoryRecordsBuilder builder = createKraftControlRecordBuilder(
                 initialOffset,
                 timestamp,
                 leaderEpoch,
                 buffer
-            )
-        ) {
+        )) {
             builder.appendVotersMessage(timestamp, votersRecord);
             return builder.build();
         }
     }
 
     private static MemoryRecordsBuilder createKraftControlRecordBuilder(
-        long initialOffset,
-        long timestamp,
-        int leaderEpoch,
-        ByteBuffer buffer
+            long initialOffset,
+            long timestamp,
+            int leaderEpoch,
+            ByteBuffer buffer
     ) {
         return new MemoryRecordsBuilder(
-            buffer,
-            RecordBatch.CURRENT_MAGIC_VALUE,
-            Compression.NONE,
-            TimestampType.CREATE_TIME,
-            initialOffset,
-            timestamp,
-            RecordBatch.NO_PRODUCER_ID,
-            RecordBatch.NO_PRODUCER_EPOCH,
-            RecordBatch.NO_SEQUENCE,
-            false,
-            true,
-            leaderEpoch,
-            buffer.capacity()
+                buffer,
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                Compression.NONE,
+                TimestampType.CREATE_TIME,
+                initialOffset,
+                timestamp,
+                RecordBatch.NO_PRODUCER_ID,
+                RecordBatch.NO_PRODUCER_EPOCH,
+                RecordBatch.NO_SEQUENCE,
+                false,
+                true,
+                leaderEpoch,
+                buffer.capacity()
         );
     }
 }

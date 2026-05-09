@@ -85,7 +85,7 @@ public class MirrorClientConfig extends AbstractConfig {
     ForwardingAdmin forwardingAdmin(Map<String, Object> config) {
         try {
             return Utils.newParameterizedInstance(
-                    getClass(FORWARDING_ADMIN_CLASS).getName(), (Class<Map<String, Object>>) (Class) Map.class, config
+                getClass(FORWARDING_ADMIN_CLASS).getName(), (Class<Map<String, Object>>) (Class) Map.class, config
             );
         } catch (ClassNotFoundException e) {
             throw new KafkaException("Can't create instance of " + get(FORWARDING_ADMIN_CLASS), e);

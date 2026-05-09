@@ -285,7 +285,7 @@ public abstract class TopicCommand {
                 .filter(config -> !config.isDefault())
                 .map(ce -> ce.name() + "=" + ce.value())
                 .collect(Collectors.joining(","));
-            System.out.print("Topic: " +  topic);
+            System.out.print("Topic: " + topic);
             if (!topicId.equals(Uuid.ZERO_UUID))
                 System.out.print("\tTopicId: " + topicId);
             System.out.print("\tPartitionCount: " + numPartitions);
@@ -744,7 +744,7 @@ public abstract class TopicCommand {
             String nl = System.lineSeparator();
 
             String logConfigNames = LogConfig.nonInternalConfigNames().stream().map(config -> "\t" + config).collect(Collectors.joining(nl));
-            configOpt = parser.accepts("config",  "A topic configuration override for the topic being created." +
+            configOpt = parser.accepts("config", "A topic configuration override for the topic being created." +
                             " The following is a list of valid configurations: " + nl + logConfigNames + nl +
                             "See the Kafka documentation for full details on the topic configs." +
                             " It is supported only in combination with --create." +
@@ -767,8 +767,8 @@ public abstract class TopicCommand {
                 .describedAs("replication factor")
                 .ofType(java.lang.Integer.class);
             replicaAssignmentOpt = parser.accepts("replica-assignment", "A list of manual partition-to-broker assignments for the topic being created or altered.")
-                    .withRequiredArg()
-                    .describedAs("broker_id_for_part1_replica1 : broker_id_for_part1_replica2 , " +
+                .withRequiredArg()
+                .describedAs("broker_id_for_part1_replica1 : broker_id_for_part1_replica2 , " +
                             "broker_id_for_part2_replica1 : broker_id_for_part2_replica2 , ...")
                 .ofType(String.class);
             reportUnderReplicatedPartitionsOpt = parser.accepts("under-replicated-partitions",
@@ -789,9 +789,9 @@ public abstract class TopicCommand {
                 "Exclude internal topics when listing or describing topics. By default, the internal topics are included.");
             partitionSizeLimitPerResponseOpt = parser.accepts("partition-size-limit-per-response",
                 "The maximum partition size to be included in one DescribeTopicPartitions response.")
-                    .withRequiredArg()
-                    .describedAs("maximum number of partitions per response")
-                    .ofType(java.lang.Integer.class);
+                .withRequiredArg()
+                .describedAs("maximum number of partitions per response")
+                .ofType(java.lang.Integer.class);
             options = parser.parse(args);
 
             allTopicLevelOpts = Set.of(alterOpt, createOpt, describeOpt, listOpt, deleteOpt);

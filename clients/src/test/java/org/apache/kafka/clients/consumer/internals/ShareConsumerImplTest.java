@@ -157,15 +157,15 @@ public class ShareConsumerImplTest {
 
     private ShareConsumerImpl<String, String> newConsumer(ConsumerConfig config) {
         return new ShareConsumerImpl<>(
-                config,
-                new StringDeserializer(),
-                new StringDeserializer(),
-                time,
-                (a, b, c, d, e, f, g, h, i) -> applicationEventHandler,
-                a -> backgroundEventReaper,
-                (a, b, c, d, e) -> fetchCollector,
-                acknowledgementEventQueue,
-                backgroundEventQueue
+            config,
+            new StringDeserializer(),
+            new StringDeserializer(),
+            time,
+            (a, b, c, d, e, f, g, h, i) -> applicationEventHandler,
+            a -> backgroundEventReaper,
+            (a, b, c, d, e) -> fetchCollector,
+            acknowledgementEventQueue,
+            backgroundEventQueue
         );
     }
 
@@ -173,43 +173,43 @@ public class ShareConsumerImplTest {
         SubscriptionState subscriptions
     ) {
         return newConsumer(
-                mock(ShareFetchBuffer.class),
-                subscriptions,
-                "group-id",
-                "client-id",
-                "implicit");
+            mock(ShareFetchBuffer.class),
+            subscriptions,
+            "group-id",
+            "client-id",
+            "implicit");
     }
 
     private ShareConsumerImpl<String, String> newConsumer(
-            ShareFetchBuffer fetchBuffer,
-            SubscriptionState subscriptions,
-            String groupId,
-            String clientId,
-            String acknowledgementMode
+        ShareFetchBuffer fetchBuffer,
+        SubscriptionState subscriptions,
+        String groupId,
+        String clientId,
+        String acknowledgementMode
     ) {
         final int defaultApiTimeoutMs = 1000;
         final int requestTimeoutMs = 30000;
 
         return new ShareConsumerImpl<>(
-                new LogContext(),
-                clientId,
-                new StringDeserializer(),
-                new StringDeserializer(),
-                fetchBuffer,
-                fetchCollector,
-                shareFetchMetricsManager,
-                time,
-                applicationEventHandler,
-                acknowledgementEventQueue,
-                backgroundEventQueue,
-                backgroundEventReaper,
-                new Metrics(),
-                subscriptions,
-                metadata,
-                requestTimeoutMs,
-                defaultApiTimeoutMs,
-                groupId,
-                acknowledgementMode
+            new LogContext(),
+            clientId,
+            new StringDeserializer(),
+            new StringDeserializer(),
+            fetchBuffer,
+            fetchCollector,
+            shareFetchMetricsManager,
+            time,
+            applicationEventHandler,
+            acknowledgementEventQueue,
+            backgroundEventQueue,
+            backgroundEventReaper,
+            new Metrics(),
+            subscriptions,
+            metadata,
+            requestTimeoutMs,
+            defaultApiTimeoutMs,
+            groupId,
+            acknowledgementMode
         );
     }
 
@@ -377,9 +377,9 @@ public class ShareConsumerImplTest {
         ShareFetch<String, String> firstFetch = ShareFetch.empty();
 
         doReturn(firstFetch)
-                .doReturn(ShareFetch.empty())
-                .when(fetchCollector)
-                .collect(any(ShareFetchBuffer.class));
+            .doReturn(ShareFetch.empty())
+            .when(fetchCollector)
+            .collect(any(ShareFetchBuffer.class));
 
         // Set up subscription
         List<String> topics = List.of(topic);
@@ -418,11 +418,11 @@ public class ShareConsumerImplTest {
         // Set up consumer with explicit acknowledgement mode
         SubscriptionState subscriptions = new SubscriptionState(new LogContext(), AutoOffsetResetStrategy.NONE);
         consumer = newConsumer(
-                mock(ShareFetchBuffer.class),
-                subscriptions,
-                "group-id",
-                "client-id",
-                "explicit");
+            mock(ShareFetchBuffer.class),
+            subscriptions,
+            "group-id",
+            "client-id",
+            "explicit");
 
         // Set up test data
         String topic = "test-topic";
@@ -654,7 +654,7 @@ public class ShareConsumerImplTest {
         // Now we are changing from a non-null callback to null, this should add an event.
         consumer.setAcknowledgementCommitCallback(null);
         verify(applicationEventHandler).add(argThat(event ->
-                event instanceof ShareAcknowledgementCommitCallbackRegistrationEvent &&
+            event instanceof ShareAcknowledgementCommitCallbackRegistrationEvent &&
                 !((ShareAcknowledgementCommitCallbackRegistrationEvent) event).isCallbackRegistered()));
     }
 
@@ -664,7 +664,7 @@ public class ShareConsumerImplTest {
         CompletableFuture<Object> future = CompletableFuture.completedFuture(null);
         consumer = newConsumer();
         assertDoesNotThrow(() -> consumer.completeQuietly(() ->
-                future.get(0, TimeUnit.MILLISECONDS), "test", exception));
+            future.get(0, TimeUnit.MILLISECONDS), "test", exception));
         assertNull(exception.get());
 
         assertDoesNotThrow(() -> consumer.completeQuietly(() -> {
@@ -769,8 +769,8 @@ public class ShareConsumerImplTest {
         final ConsumerConfig config = new ConsumerConfig(props);
 
         final Exception exception = assertThrows(
-                KafkaException.class,
-                () -> consumer = newConsumer(config)
+            KafkaException.class,
+            () -> consumer = newConsumer(config)
         );
 
         assertEquals("Failed to construct Kafka share consumer", exception.getMessage());
@@ -791,8 +791,8 @@ public class ShareConsumerImplTest {
         final ConsumerConfig config = new ConsumerConfig(props);
 
         final Exception exception = assertThrows(
-                KafkaException.class,
-                () -> consumer = newConsumer(config)
+            KafkaException.class,
+            () -> consumer = newConsumer(config)
         );
 
         assertEquals("Failed to construct Kafka share consumer", exception.getMessage());
@@ -810,8 +810,8 @@ public class ShareConsumerImplTest {
         final ShareFetch<String, String> fetch = ShareFetch.empty();
         fetch.add(tip, batch);
         doAnswer(invocation -> fetch)
-                .when(fetchCollector)
-                .collect(Mockito.any(ShareFetchBuffer.class));
+            .when(fetchCollector)
+            .collect(Mockito.any(ShareFetchBuffer.class));
 
         final List<String> subscriptionTopic = List.of("topic");
         completeShareSubscriptionChangeApplicationEventSuccessfully(subscriptions, subscriptionTopic);

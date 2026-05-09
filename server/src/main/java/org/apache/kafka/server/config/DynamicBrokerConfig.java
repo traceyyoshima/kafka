@@ -63,9 +63,9 @@ public class DynamicBrokerConfig {
             DYNAMIC_SECURITY_CONFIGS,
             DynamicListenerConfig.RECONFIGURABLE_CONFIGS,
             Set.of(ServerLogConfigs.CORDONED_LOG_DIRS_CONFIG))
-        .flatMap(Collection::stream)
-        .filter(c -> !CLUSTER_LEVEL_LISTENER_CONFIGS.contains(c))
-        .collect(Collectors.toUnmodifiableSet());
+            .flatMap(Collection::stream)
+            .filter(c -> !CLUSTER_LEVEL_LISTENER_CONFIGS.contains(c))
+            .collect(Collectors.toUnmodifiableSet());
 
     public static final Set<String> ALL_DYNAMIC_CONFIGS = Stream.of(
             DYNAMIC_SECURITY_CONFIGS,
@@ -82,8 +82,8 @@ public class DynamicBrokerConfig {
             GroupCoordinatorConfig.RECONFIGURABLE_CONFIGS,
             DynamicQuotaConfig.RECONFIGURABLE_CONFIGS,
             ShareCoordinatorConfig.RECONFIGURABLE_CONFIGS)
-        .flatMap(Collection::stream)
-        .collect(Collectors.toUnmodifiableSet());
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableSet());
 
     private static final Set<String> LISTENER_MECHANISM_CONFIGS = Set.of(
             SaslConfigs.SASL_JAAS_CONFIG,
@@ -196,8 +196,7 @@ public class DynamicBrokerConfig {
         return ALL_DYNAMIC_CONFIGS.stream().collect(Collectors.toMap(
                 Function.identity(),
                 name -> PER_BROKER_CONFIGS.contains(name) ? "per-broker" : "cluster-wide"
-            )
-        );
+        ));
     }
 
     public static class DynamicLogConfig {
@@ -209,8 +208,8 @@ public class DynamicBrokerConfig {
         public static final Set<String> RECONFIGURABLE_CONFIGS = Stream.of(
                 ServerTopicConfigSynonyms.TOPIC_CONFIG_SYNONYMS.values(),
                 Set.of(ServerLogConfigs.CORDONED_LOG_DIRS_CONFIG))
-            .flatMap(Collection::stream)
-            .collect(Collectors.toUnmodifiableSet());
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     public static class DynamicListenerConfig {

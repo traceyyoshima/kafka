@@ -59,7 +59,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
  */
 public class MeteredTimestampedWindowStoreWithHeaders<K, V>
     extends MeteredWindowStore<K, ValueTimestampHeaders<V>>
-    implements TimestampedWindowStoreWithHeaders<K, V> {
+        implements TimestampedWindowStoreWithHeaders<K, V> {
 
     MeteredTimestampedWindowStoreWithHeaders(
         final WindowStore<Bytes, byte[]> inner,

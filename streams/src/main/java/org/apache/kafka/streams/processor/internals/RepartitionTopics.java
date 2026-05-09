@@ -75,7 +75,7 @@ public class RepartitionTopics {
                 log.info("Skipping the repartition topic validation since there are no repartition topics.");
             } else {
                 log.info("Skipping the repartition topic validation since all topologies containing repartition"
-                             + "topics are missing external user source topics and cannot be processed.");
+                         + "topics are missing external user source topics and cannot be processed.");
             }
         } else {
             // ensure the co-partitioning topics within the group have the same number of partitions,
@@ -112,9 +112,9 @@ public class RepartitionTopics {
 
     public Set<String> missingSourceTopics() {
         return missingInputTopicsBySubtopology.entrySet().stream()
-                .map(entry -> entry.getValue())
-                .flatMap(missingTopicSet -> missingTopicSet.stream())
-                .collect(Collectors.toSet());
+            .map(entry -> entry.getValue())
+            .flatMap(missingTopicSet -> missingTopicSet.stream())
+            .collect(Collectors.toSet());
     }
 
     public Queue<StreamsException> missingSourceTopicExceptions() {

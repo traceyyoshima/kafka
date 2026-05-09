@@ -432,8 +432,8 @@ public class KTableKTableOuterJoinTest {
             join.process(new Record<>(null, new Change<>("new", "old"), 0));
 
             assertThat(
-                appender.getMessages(),
-                hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
+                    appender.getMessages(),
+                    hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
             );
         }
     }

@@ -160,8 +160,8 @@ public class FormatterTest {
             testEnv.newFormatter().formatter.run();
             assertEquals("Log directory " + testEnv.directory(0) + " is already formatted. " +
                 "Use --ignore-formatted to ignore this directory and format the others.",
-                    assertThrows(FormatterException.class,
-                        () -> testEnv.newFormatter().formatter.run()).getMessage());
+                assertThrows(FormatterException.class,
+                    () -> testEnv.newFormatter().formatter.run()).getMessage());
         }
     }
 
@@ -236,8 +236,8 @@ public class FormatterTest {
             testEnv.newFormatter().formatter.setDirectories(List.of(testEnv.directory(0))).run();
             assertEquals("Log directory " + testEnv.directory(0) + " is already formatted. " +
                 "Use --ignore-formatted to ignore this directory and format the others.",
-                    assertThrows(FormatterException.class,
-                        () -> testEnv.newFormatter().formatter.run()).getMessage());
+                assertThrows(FormatterException.class,
+                    () -> testEnv.newFormatter().formatter.run()).getMessage());
         }
     }
 
@@ -386,7 +386,7 @@ public class FormatterTest {
             expected.add(new ApiMessageAndVersion(new FeatureLevelRecord().
                 setName(MetadataVersion.FEATURE_NAME).
                 setFeatureLevel(MetadataVersion.latestProduction().featureLevel()),
-                    (short) 0));
+                (short) 0));
             expected.add(new ApiMessageAndVersion(new FeatureLevelRecord().
                 setName(EligibleLeaderReplicasVersion.FEATURE_NAME).
                 setFeatureLevel(EligibleLeaderReplicasVersion.ELRV_1.featureLevel()), (short) 0));
@@ -568,15 +568,15 @@ public class FormatterTest {
             formatter1.formatter.run();
             assertEquals((short) 0, formatter1.formatter.featureLevels.get(KRaftVersion.FEATURE_NAME));
             assertEquals(List.of(
-                    "Bootstrap metadata: " + formatter1.formatter.bootstrapMetadata(),
-                    String.format("Formatting data directory %s with %s %s.",
-                        testEnv.directory(1),
-                        MetadataVersion.FEATURE_NAME,
-                        MetadataVersion.latestTesting()),
-                    String.format("Formatting metadata directory %s with %s %s.",
-                        testEnv.directory(0),
-                        MetadataVersion.FEATURE_NAME,
-                        MetadataVersion.latestTesting())),
+                "Bootstrap metadata: " + formatter1.formatter.bootstrapMetadata(),
+                String.format("Formatting data directory %s with %s %s.",
+                    testEnv.directory(1),
+                    MetadataVersion.FEATURE_NAME,
+                    MetadataVersion.latestTesting()),
+                String.format("Formatting metadata directory %s with %s %s.",
+                    testEnv.directory(0),
+                    MetadataVersion.FEATURE_NAME,
+                    MetadataVersion.latestTesting())),
                 formatter1.outputLines().stream().sorted().toList());
             MetaPropertiesEnsemble ensemble = new MetaPropertiesEnsemble.Loader().
                 addLogDirs(testEnv.directories).

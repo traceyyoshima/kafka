@@ -87,9 +87,9 @@ public class DeleteTopicTest {
             admin.deleteTopics(List.of(DEFAULT_TOPIC)).all().get();
 
             TestUtils.waitForCondition(() -> cluster.brokers().values()
-                    .stream()
-                    .filter(broker -> broker.config().brokerId() != follower.config().brokerId())
-                    .allMatch(b -> b.logManager().getLog(topicPartition, false).isEmpty()),
+                .stream()
+                .filter(broker -> broker.config().brokerId() != follower.config().brokerId())
+                .allMatch(b -> b.logManager().getLog(topicPartition, false).isEmpty()),
                 "Online replicas have not deleted log.");
 
             follower.startup();
@@ -301,7 +301,7 @@ public class DeleteTopicTest {
                                        TopicPartition topicPartition,
                                        String failMessage) throws InterruptedException {
         TestUtils.waitForCondition(() -> clusters.values().stream().allMatch(broker ->
-                broker.logManager().getLog(topicPartition, false).isPresent()),
+            broker.logManager().getLog(topicPartition, false).isPresent()),
             failMessage);
     }
 
@@ -309,7 +309,7 @@ public class DeleteTopicTest {
                                        TopicPartition newTopicPartition,
                                        String failMessage) throws InterruptedException {
         TestUtils.waitForCondition(() -> clusters.values().stream().allMatch(broker ->
-                broker.logManager().getLog(newTopicPartition, false).isEmpty()),
+            broker.logManager().getLog(newTopicPartition, false).isEmpty()),
             failMessage);
     }
 
@@ -342,9 +342,9 @@ public class DeleteTopicTest {
 
     private Map<Integer, KafkaBroker> findPartitionHostingBrokers(Map<Integer, KafkaBroker> brokers) {
         return brokers.entrySet()
-                .stream()
-                .filter(broker -> expectedReplicaAssignment.get(0).contains(broker.getValue().config().brokerId()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            .stream()
+            .filter(broker -> expectedReplicaAssignment.get(0).contains(broker.getValue().config().brokerId()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private List<int[]> writeDups(int numKeys, int numDups, UnifiedLog log) {

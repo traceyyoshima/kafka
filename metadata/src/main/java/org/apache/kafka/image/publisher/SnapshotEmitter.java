@@ -80,13 +80,13 @@ public class SnapshotEmitter implements SnapshotGenerator.Emitter {
         public SnapshotEmitter build() {
             if (raftClient == null) throw new RuntimeException("You must set the raftClient.");
             if (metrics == null) metrics = new SnapshotEmitterMetrics(
-                    Optional.empty(),
-                    time);
+                Optional.empty(),
+                time);
             return new SnapshotEmitter(time,
-                    nodeId,
-                    raftClient,
-                    batchSize,
-                    metrics);
+                nodeId,
+                raftClient,
+                batchSize,
+                metrics);
         }
     }
 

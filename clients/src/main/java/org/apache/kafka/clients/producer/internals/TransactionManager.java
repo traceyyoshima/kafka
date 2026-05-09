@@ -315,8 +315,8 @@ public class TransactionManager {
     }
 
     synchronized TransactionalRequestResult initializeTransactions(
-        ProducerIdAndEpoch producerIdAndEpoch,
-        boolean keepPreparedTxn
+            ProducerIdAndEpoch producerIdAndEpoch,
+            boolean keepPreparedTxn
     ) {
         maybeFailWithError();
 
@@ -365,8 +365,8 @@ public class TransactionManager {
         maybeFailWithError();
         transitionTo(State.PREPARED_TRANSACTION);
         this.preparedTxnState = new ProducerIdAndEpoch(
-            this.producerIdAndEpoch.producerId,
-            this.producerIdAndEpoch.epoch
+                this.producerIdAndEpoch.producerId,
+                this.producerIdAndEpoch.epoch
         );
     }
 
@@ -396,10 +396,10 @@ public class TransactionManager {
 
         EndTxnRequest.Builder builder = new EndTxnRequest.Builder(
             new EndTxnRequestData()
-                .setTransactionalId(transactionalId)
-                .setProducerId(producerIdAndEpoch.producerId)
-                .setProducerEpoch(producerIdAndEpoch.epoch)
-                .setCommitted(transactionResult.id),
+                    .setTransactionalId(transactionalId)
+                    .setProducerId(producerIdAndEpoch.producerId)
+                    .setProducerEpoch(producerIdAndEpoch.epoch)
+                    .setCommitted(transactionResult.id),
             isTransactionV2Enabled
         );
 
@@ -575,8 +575,8 @@ public class TransactionManager {
      * @param fatalException        The exception in case of a fatal error.
      */
     private void transitionToAbortableErrorOrFatalError(
-        RuntimeException abortableException,
-        RuntimeException fatalException
+            RuntimeException abortableException,
+            RuntimeException fatalException
     ) {
         if (canHandleAbortableError()) {
             if (needToTriggerEpochBumpFromClient())
@@ -860,7 +860,7 @@ public class TransactionManager {
     synchronized void markSequenceUnresolved(ProducerBatch batch) {
         int nextSequence = batch.lastSequence() + 1;
         partitionsWithUnresolvedSequences.compute(batch.topicPartition,
-            (k, v) -> v == null ? nextSequence : Math.max(v, nextSequence));
+                (k, v) -> v == null ? nextSequence : Math.max(v, nextSequence));
         log.debug("Marking partition {} unresolved with next sequence number {}", batch.topicPartition,
                 partitionsWithUnresolvedSequences.get(batch.topicPartition));
     }
@@ -868,7 +868,7 @@ public class TransactionManager {
     // Attempts to resolve unresolved sequences. If all in-flight requests are complete and some partitions are still
     // unresolved, either bump the epoch if possible, or transition to a fatal error
     synchronized void maybeResolveSequences() {
-        for (Iterator<TopicPartition> iter = partitionsWithUnresolvedSequences.keySet().iterator(); iter.hasNext(); ) {
+        for (Iterator<TopicPartition> iter = partitionsWithUnresolvedSequences.keySet().iterator(); iter.hasNext();) {
             TopicPartition topicPartition = iter.next();
             if (!hasInflightBatches(topicPartition)) {
                 // The partition has been fully drained. At this point, the last ack'd sequence should be one less than
@@ -1232,9 +1232,9 @@ public class TransactionManager {
         newPartitionsInTransaction.clear();
         AddPartitionsToTxnRequest.Builder builder =
             AddPartitionsToTxnRequest.Builder.forClient(transactionalId,
-                producerIdAndEpoch.producerId,
-                producerIdAndEpoch.epoch,
-                new ArrayList<>(pendingPartitionsInTransaction));
+                    producerIdAndEpoch.producerId,
+                    producerIdAndEpoch.epoch,
+                    new ArrayList<>(pendingPartitionsInTransaction));
         return new AddPartitionsToTxnHandler(builder);
     }
 
@@ -1250,14 +1250,14 @@ public class TransactionManager {
 
         final TxnOffsetCommitRequest.Builder builder =
             new TxnOffsetCommitRequest.Builder(transactionalId,
-                groupMetadata.groupId(),
-                producerIdAndEpoch.producerId,
-                producerIdAndEpoch.epoch,
-                pendingTxnOffsetCommits,
-                groupMetadata.memberId(),
-                groupMetadata.generationId(),
-                groupMetadata.groupInstanceId(),
-                isTransactionV2Enabled()
+                    groupMetadata.groupId(),
+                    producerIdAndEpoch.producerId,
+                    producerIdAndEpoch.epoch,
+                    pendingTxnOffsetCommits,
+                    groupMetadata.memberId(),
+                    groupMetadata.generationId(),
+                    groupMetadata.groupInstanceId(),
+                    isTransactionV2Enabled()
             );
         if (result == null) {
             // In this case, transaction V2 is in use.
@@ -1272,16 +1272,16 @@ public class TransactionManager {
                 pendingTransition = null;
             } else {
                 throw new IllegalStateException("Cannot attempt operation `" + operation + "` "
-                    + "because the previous call to `" + pendingTransition.operation + "` "
-                    + "timed out and must be retried");
+                        + "because the previous call to `" + pendingTransition.operation + "` "
+                        + "timed out and must be retried");
             }
         }
     }
 
     private TransactionalRequestResult handleCachedTransactionRequestResult(
-        Supplier<TransactionalRequestResult> transactionalRequestResultSupplier,
-        State nextState,
-        String operation
+            Supplier<TransactionalRequestResult> transactionalRequestResultSupplier,
+            State nextState,
+            String operation
     ) {
         ensureTransactional();
 
@@ -1290,8 +1290,8 @@ public class TransactionManager {
                 pendingTransition = null;
             } else if (nextState != pendingTransition.state) {
                 throw new IllegalStateException("Cannot attempt operation `" + operation + "` "
-                    + "because the previous call to `" + pendingTransition.operation + "` "
-                    + "timed out and must be retried");
+                        + "because the previous call to `" + pendingTransition.operation + "` "
+                        + "timed out and must be retried");
             } else {
                 return pendingTransition.result;
             }
@@ -1525,8 +1525,8 @@ public class TransactionManager {
                     // Update the preparedTxnState with the ongoing pid and epoch from the response.
                     // This will be used to complete the transaction later.
                     TransactionManager.this.preparedTxnState = new ProducerIdAndEpoch(
-                        initProducerIdResponse.data().ongoingTxnProducerId(),
-                        initProducerIdResponse.data().ongoingTxnProducerEpoch()
+                            initProducerIdResponse.data().ongoingTxnProducerId(),
+                            initProducerIdResponse.data().ongoingTxnProducerEpoch()
                     );
                 } else {
                     transitionTo(State.READY);
@@ -1778,8 +1778,8 @@ public class TransactionManager {
                 // occurring at the end of beginCompletingTransaction. The next transaction started should be TV2.
                 if (endTxnResponse.data().producerId() != -1) {
                     ProducerIdAndEpoch producerIdAndEpoch = new ProducerIdAndEpoch(
-                        endTxnResponse.data().producerId(),
-                        endTxnResponse.data().producerEpoch()
+                            endTxnResponse.data().producerId(),
+                            endTxnResponse.data().producerEpoch()
                     );
                     setProducerIdAndEpoch(producerIdAndEpoch);
                     resetSequenceNumbers();
@@ -1976,9 +1976,9 @@ public class TransactionManager {
         private final String operation;
 
         private PendingStateTransition(
-            TransactionalRequestResult result,
-            State state,
-            String operation
+                TransactionalRequestResult result,
+                State state,
+                String operation
         ) {
             this.result = result;
             this.state = state;

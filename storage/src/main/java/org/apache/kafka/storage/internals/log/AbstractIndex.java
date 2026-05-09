@@ -199,7 +199,7 @@ public abstract class AbstractIndex implements Closeable {
      */
     public boolean resize(int newSize) throws IOException {
         return inLock(() ->
-                inRemapWriteLock(() -> {
+            inRemapWriteLock(() -> {
                     int roundedNewSize = roundDownToExactMultiple(newSize, entrySize());
 
                     if (length == roundedNewSize) {
@@ -217,7 +217,7 @@ public abstract class AbstractIndex implements Closeable {
                             this.maxEntries = mmap.limit() / entrySize();
                             mmap.position(position);
                             log.debug("Resized {} to {}, position is {} and limit is {}", file.getAbsolutePath(), roundedNewSize,
-                                    mmap.position(), mmap.limit());
+                                      mmap.position(), mmap.limit());
                             return true;
                         } finally {
                             Utils.closeQuietly(raf, "index file " + file.getName());

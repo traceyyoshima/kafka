@@ -212,8 +212,8 @@ public class ConnectorPluginsResourceTest {
         doReturn(TRANSFORMATION_PLUGINS).when(plugins).transformations();
         doReturn(PREDICATE_PLUGINS).when(plugins).predicates();
         RestRequestTimeout requestTimeout = RestRequestTimeout.constant(
-                DEFAULT_REST_REQUEST_TIMEOUT_MS,
-                DEFAULT_HEALTH_CHECK_TIMEOUT_MS
+            DEFAULT_REST_REQUEST_TIMEOUT_MS,
+            DEFAULT_HEALTH_CHECK_TIMEOUT_MS
         );
         connectorPluginsResource = new ConnectorPluginsResource(herder, requestTimeout);
     }
@@ -281,10 +281,10 @@ public class ConnectorPluginsResourceTest {
             configValues.addAll(connectorConfigValues);
 
             ConfigInfos configInfos = AbstractHerder.generateResult(
-                    ConnectorPluginsResourceTestConnector.class.getName(),
-                    resultConfigKeys,
-                    configValues,
-                    List.of("Test")
+                ConnectorPluginsResourceTestConnector.class.getName(),
+                resultConfigKeys,
+                configValues,
+                List.of("Test")
             );
             configInfosCallback.getValue().onCompletion(null, configInfos);
             return null;
@@ -321,10 +321,10 @@ public class ConnectorPluginsResourceTest {
             configValues.addAll(connectorConfigValues);
 
             ConfigInfos configInfos = AbstractHerder.generateResult(
-                    ConnectorPluginsResourceTestConnector.class.getName(),
-                    resultConfigKeys,
-                    configValues,
-                    List.of("Test")
+                ConnectorPluginsResourceTestConnector.class.getName(),
+                resultConfigKeys,
+                configValues,
+                List.of("Test")
             );
             configInfosCallback.getValue().onCompletion(null, configInfos);
             return null;
@@ -359,9 +359,9 @@ public class ConnectorPluginsResourceTest {
     @Test
     public void testListConnectorPlugins() {
         Set<PluginInfo> expectedConnectorPlugins = Stream.of(SINK_CONNECTOR_PLUGINS, SOURCE_CONNECTOR_PLUGINS)
-                .flatMap(Collection::stream)
-                .map(PluginInfo::new)
-                .collect(Collectors.toSet());
+            .flatMap(Collection::stream)
+            .map(PluginInfo::new)
+            .collect(Collectors.toSet());
         Set<PluginInfo> actualConnectorPlugins = new HashSet<>(connectorPluginsResource.listConnectorPlugins(true));
         assertEquals(expectedConnectorPlugins, actualConnectorPlugins);
         verify(herder, atLeastOnce()).plugins();
@@ -419,20 +419,20 @@ public class ConnectorPluginsResourceTest {
     @Test
     public void testListAllPlugins() {
         List<PluginInfo> expectedConnectorPlugins = Stream.of(
-                        SINK_CONNECTOR_PLUGINS,
-                        SOURCE_CONNECTOR_PLUGINS,
-                        CONVERTER_PLUGINS,
-                        HEADER_CONVERTER_PLUGINS,
-                        TRANSFORMATION_PLUGINS,
-                        PREDICATE_PLUGINS
-                ).flatMap(Collection::stream)
-                .map(PluginInfo::new)
-                .distinct()
-                .collect(Collectors.toList());
+            SINK_CONNECTOR_PLUGINS,
+            SOURCE_CONNECTOR_PLUGINS,
+            CONVERTER_PLUGINS,
+            HEADER_CONVERTER_PLUGINS,
+            TRANSFORMATION_PLUGINS,
+            PREDICATE_PLUGINS
+        ).flatMap(Collection::stream)
+            .map(PluginInfo::new)
+            .distinct()
+            .collect(Collectors.toList());
         List<PluginInfo> actualConnectorPlugins = new ArrayList<>(connectorPluginsResource.listConnectorPlugins(false));
         Comparator<PluginInfo> compare = Comparator.comparing(PluginInfo::className)
-                .thenComparing(PluginInfo::type)
-                .thenComparing(PluginInfo::version);
+            .thenComparing(PluginInfo::type)
+            .thenComparing(PluginInfo::version);
         actualConnectorPlugins.sort(compare);
         expectedConnectorPlugins.sort(compare);
         assertEquals(expectedConnectorPlugins, actualConnectorPlugins);

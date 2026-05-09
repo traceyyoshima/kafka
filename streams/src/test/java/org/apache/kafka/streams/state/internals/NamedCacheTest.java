@@ -57,11 +57,11 @@ public class NamedCacheTest {
     @Test
     public void shouldKeepTrackOfMostRecentlyAndLeastRecentlyUsed() {
         final List<KeyValue<String, String>> toInsert = Arrays.asList(
-                new KeyValue<>("K1", "V1"),
-                new KeyValue<>("K2", "V2"),
-                new KeyValue<>("K3", "V3"),
-                new KeyValue<>("K4", "V4"),
-                new KeyValue<>("K5", "V5"));
+            new KeyValue<>("K1", "V1"),
+            new KeyValue<>("K2", "V2"),
+            new KeyValue<>("K3", "V3"),
+            new KeyValue<>("K4", "V4"),
+            new KeyValue<>("K5", "V5"));
         for (final KeyValue<String, String> stringStringKeyValue : toInsert) {
             final byte[] key = stringStringKeyValue.key.getBytes();
             final byte[] value = stringStringKeyValue.value.getBytes();

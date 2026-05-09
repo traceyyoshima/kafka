@@ -69,9 +69,9 @@ public class RequestContextTest {
         assertTrue(request.hasUnsupportedRequestVersion());
 
         Send send = context.buildResponseSend(new ApiVersionsResponse(new ApiVersionsResponseData()
-            .setThrottleTimeMs(0)
-            .setErrorCode(Errors.UNSUPPORTED_VERSION.code())
-            .setApiKeys(new ApiVersionCollection())));
+                .setThrottleTimeMs(0)
+                .setErrorCode(Errors.UNSUPPORTED_VERSION.code())
+                .setApiKeys(new ApiVersionCollection())));
         ByteBufferChannel channel = new ByteBufferChannel(256);
         send.writeTo(channel);
 
@@ -80,11 +80,11 @@ public class RequestContextTest {
         responseBuffer.getInt(); // strip off the size
 
         ResponseHeader responseHeader = ResponseHeader.parse(responseBuffer,
-            ApiKeys.API_VERSIONS.responseHeaderVersion(header.apiVersion()));
+                ApiKeys.API_VERSIONS.responseHeaderVersion(header.apiVersion()));
         assertEquals(correlationId, responseHeader.correlationId());
 
         ApiVersionsResponse response = (ApiVersionsResponse) AbstractResponse.parseResponse(ApiKeys.API_VERSIONS,
-            new ByteBufferAccessor(responseBuffer), (short) 0);
+                new ByteBufferAccessor(responseBuffer), (short) 0);
         assertEquals(Errors.UNSUPPORTED_VERSION.code(), response.data().errorCode());
         assertTrue(response.data().apiKeys().isEmpty());
     }
@@ -94,20 +94,20 @@ public class RequestContextTest {
         CreateTopicsResponseData.CreatableTopicResultCollection collection =
             new CreateTopicsResponseData.CreatableTopicResultCollection();
         collection.add(new CreateTopicsResponseData.CreatableTopicResult()
-            .setTopicConfigErrorCode(Errors.CLUSTER_AUTHORIZATION_FAILED.code())
-            .setNumPartitions(5));
+                .setTopicConfigErrorCode(Errors.CLUSTER_AUTHORIZATION_FAILED.code())
+                .setNumPartitions(5));
         CreateTopicsResponseData expectedResponse = new CreateTopicsResponseData()
-            .setThrottleTimeMs(10)
-            .setTopics(collection);
+                .setThrottleTimeMs(10)
+                .setTopics(collection);
 
         int correlationId = 15;
         String clientId = "clientId";
         RequestHeader header = new RequestHeader(ApiKeys.CREATE_TOPICS, ApiKeys.CREATE_TOPICS.latestVersion(),
-            clientId, correlationId);
+                clientId, correlationId);
 
         RequestContext context = new RequestContext(header, "0", InetAddress.getLocalHost(),
-            KafkaPrincipal.ANONYMOUS, new ListenerName("ssl"), SecurityProtocol.SASL_SSL,
-            ClientInformation.EMPTY, true);
+                KafkaPrincipal.ANONYMOUS, new ListenerName("ssl"), SecurityProtocol.SASL_SSL,
+                ClientInformation.EMPTY, true);
 
         ByteBuffer buffer = context.buildResponseEnvelopePayload(new CreateTopicsResponse(expectedResponse));
         assertEquals(buffer.capacity(), buffer.limit(), "Buffer limit and capacity should be the same");

@@ -582,7 +582,7 @@ public final class QuorumController implements Controller {
             epoch = offsetControl.lastCommittedEpoch();
         }
         String failureMessage = info.failureMessage(epoch, deltaUs,
-                isActiveController(), offsetControl.lastCommittedOffset());
+            isActiveController(), offsetControl.lastCommittedOffset());
         if (info.isTimeoutException() && (deltaUs.isEmpty())) {
             controllerMetrics.incrementOperationsTimedOut();
         }
@@ -915,7 +915,7 @@ public final class QuorumController implements Controller {
                 long offset = appender.apply(records);
                 if (log.isTraceEnabled()) {
                     log.trace("Atomically appended {} record(s) ending with offset {}.",
-                            records.size(), offset);
+                              records.size(), offset);
                 }
                 return offset;
             } else {
@@ -931,7 +931,7 @@ public final class QuorumController implements Controller {
                         long offset = appender.apply(records.subList(startIndex, records.size()));
                         if (log.isTraceEnabled()) {
                             log.trace("Appended {} record(s) in {} batch(es), ending with offset {}.",
-                                    records.size(), numBatches, offset);
+                                      records.size(), numBatches, offset);
                         }
                         return offset;
                     } else {
@@ -1043,13 +1043,13 @@ public final class QuorumController implements Controller {
                         List<ApiMessageAndVersion> messages = batch.records();
 
                         log.debug("Replaying snapshot {} batch with last offset of {}",
-                                snapshotName, offset);
+                                  snapshotName, offset);
 
                         int i = 1;
                         for (ApiMessageAndVersion message : messages) {
                             try {
                                 replay(message.message(), Optional.of(reader.snapshotId()),
-                                        reader.lastContainedLogOffset());
+                                       reader.lastContainedLogOffset());
                             } catch (Throwable e) {
                                 String failureMessage = String.format("Unable to apply %s record " +
                                     "from snapshot %s on standby controller, which was %d of " +
@@ -1215,10 +1215,10 @@ public final class QuorumController implements Controller {
             if (snapshotId.isPresent()) {
                 log.trace("Replaying snapshot {} record {}",
                     Snapshots.filenameFromSnapshotId(snapshotId.get()),
-                        recordRedactor.toLoggableString(message));
+                    recordRedactor.toLoggableString(message));
             } else {
                 log.trace("Replaying log record {} with offset {}",
-                        recordRedactor.toLoggableString(message), offset);
+                          recordRedactor.toLoggableString(message), offset);
             }
         }
         MetadataRecordType type = MetadataRecordType.fromId(message.apiKey());
@@ -1805,7 +1805,7 @@ public final class QuorumController implements Controller {
         controllerMetrics.removeTimeSinceLastHeartbeatMetric(brokerId);
         return appendWriteEvent("unregisterBroker", context.deadlineNs(),
             () -> replicationControl.unregisterBroker(brokerId),
-                EnumSet.noneOf(ControllerOperationFlag.class));
+            EnumSet.noneOf(ControllerOperationFlag.class));
     }
 
     @Override
@@ -2079,7 +2079,7 @@ public final class QuorumController implements Controller {
                 if (context.requestHeader().requestApiVersion() <= 1) {
                     responseData.setResults(new UpdateFeaturesResponseData.UpdatableFeatureResultCollection(request.featureUpdates().size()));
                     request.featureUpdates().forEach(featureName ->
-                            responseData.results().add(
+                        responseData.results().add(
                                     new UpdateFeaturesResponseData.UpdatableFeatureResult()
                                             .setFeature(featureName.feature())
                                             .setErrorCode(result.error().code())
@@ -2148,7 +2148,7 @@ public final class QuorumController implements Controller {
         AssignReplicasToDirsRequestData request
     ) {
         return appendWriteEvent("assignReplicasToDirs", context.deadlineNs(),
-                () -> replicationControl.handleAssignReplicasToDirs(request));
+            () -> replicationControl.handleAssignReplicasToDirs(request));
     }
 
     @Override

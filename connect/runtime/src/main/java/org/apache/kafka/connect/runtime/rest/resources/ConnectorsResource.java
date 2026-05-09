@@ -100,8 +100,8 @@ public class ConnectorsResource {
     @GET
     @Operation(summary = "List all active connectors")
     public Response listConnectors(
-        final @Context UriInfo uriInfo,
-        final @Context HttpHeaders headers
+            final @Context UriInfo uriInfo,
+            final @Context HttpHeaders headers
     ) {
         if (uriInfo.getQueryParameters().containsKey("expand")) {
             Map<String, Map<String, Object>> out = new HashMap<>();
@@ -249,10 +249,10 @@ public class ConnectorsResource {
     @Path("/{connector}/restart")
     @Operation(summary = "Restart the specified connector")
     public Response restartConnector(final @PathParam("connector") String connector,
-                                 final @Context HttpHeaders headers,
-                                 final @DefaultValue("false") @QueryParam("includeTasks") @Parameter(description = "Whether to also restart tasks") Boolean includeTasks,
-                                 final @DefaultValue("false") @QueryParam("onlyFailed") @Parameter(description = "Whether to only restart failed tasks/connectors")Boolean onlyFailed,
-                                 final @Parameter(hidden = true) @QueryParam("forward") Boolean forward) throws Throwable {
+                                     final @Context HttpHeaders headers,
+                                     final @DefaultValue("false") @QueryParam("includeTasks") @Parameter(description = "Whether to also restart tasks") Boolean includeTasks,
+                                     final @DefaultValue("false") @QueryParam("onlyFailed") @Parameter(description = "Whether to only restart failed tasks/connectors")Boolean onlyFailed,
+                                     final @Parameter(hidden = true) @QueryParam("forward") Boolean forward) throws Throwable {
         RestartRequest restartRequest = new RestartRequest(connector, onlyFailed, includeTasks);
         String forwardingPath = "/connectors/" + connector + "/restart";
         if (restartRequest.forceRestartConnectorOnly()) {

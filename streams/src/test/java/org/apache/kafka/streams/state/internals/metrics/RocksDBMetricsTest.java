@@ -463,13 +463,13 @@ public class RocksDBMetricsTest {
         metricAdder.run();
 
         verify(streamsMetrics).addStoreLevelMutableMetric(
-                eq(TASK_ID),
-                eq(STORE_TYPE),
-                eq(STORE_NAME),
-                eq(name),
-                eq(description),
-                eq(RecordingLevel.INFO),
-                eq(VALUE_PROVIDER)
+            eq(TASK_ID),
+            eq(STORE_TYPE),
+            eq(STORE_NAME),
+            eq(name),
+            eq(description),
+            eq(RecordingLevel.INFO),
+            eq(VALUE_PROVIDER)
         );
     }
 
@@ -526,15 +526,15 @@ public class RocksDBMetricsTest {
     private void setupStreamsMetricsMock(final String metricNamePrefix) {
 
         when(streamsMetrics.storeLevelSensor(
-                TASK_ID,
-                STORE_NAME,
-                metricNamePrefix,
-                RecordingLevel.DEBUG
+            TASK_ID,
+            STORE_NAME,
+            metricNamePrefix,
+            RecordingLevel.DEBUG
         )).thenReturn(sensor);
         when(streamsMetrics.storeLevelTagMap(
-                TASK_ID,
-                STORE_TYPE,
-                STORE_NAME
+            TASK_ID,
+            STORE_TYPE,
+            STORE_NAME
         )).thenReturn(tags);
     }
 

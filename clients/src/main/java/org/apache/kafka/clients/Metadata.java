@@ -281,7 +281,7 @@ public class Metadata implements Closeable {
             return partitionMetadata;
         } else {
             return partitionMetadata.filter(metadata ->
-                    metadata.leaderEpoch.orElse(NO_PARTITION_LEADER_EPOCH).equals(epoch));
+                metadata.leaderEpoch.orElse(NO_PARTITION_LEADER_EPOCH).equals(epoch));
         }
     }
 
@@ -388,7 +388,7 @@ public class Metadata implements Closeable {
         // 2. for which corresponding leader's node is missing in the new-nodes.
         // 3. for which the existing metadata doesn't know about the partition.
         List<PartitionMetadata> updatePartitionMetadata = new ArrayList<>();
-        for (Entry<TopicPartition, Metadata.LeaderIdAndEpoch> partitionLeader: partitionLeaders.entrySet()) {
+        for (Entry<TopicPartition, Metadata.LeaderIdAndEpoch> partitionLeader : partitionLeaders.entrySet()) {
             TopicPartition partition = partitionLeader.getKey();
             Metadata.LeaderAndEpoch currentLeader = currentLeader(partition);
             Metadata.LeaderIdAndEpoch newLeader = partitionLeader.getValue();
@@ -523,7 +523,7 @@ public class Metadata implements Closeable {
 
                     if (partitionMetadata.error.exception() instanceof InvalidMetadataException) {
                         log.debug("Requesting metadata update for partition {} due to error {}",
-                                partitionMetadata.topicPartition, partitionMetadata.error);
+                            partitionMetadata.topicPartition, partitionMetadata.error);
                         requestUpdate(false);
                     }
                 }
@@ -555,10 +555,10 @@ public class Metadata implements Closeable {
      * available and reliable) and whether the topic ID changed.
      */
     private Optional<MetadataResponse.PartitionMetadata> updateLatestMetadata(
-            MetadataResponse.PartitionMetadata partitionMetadata,
-            boolean hasReliableLeaderEpoch,
-            Uuid topicId,
-            Uuid oldTopicId) {
+        MetadataResponse.PartitionMetadata partitionMetadata,
+        boolean hasReliableLeaderEpoch,
+        Uuid topicId,
+        Uuid oldTopicId) {
         TopicPartition tp = partitionMetadata.topicPartition;
         if (hasReliableLeaderEpoch && partitionMetadata.leaderEpoch.isPresent()) {
             int newEpoch = partitionMetadata.leaderEpoch.get();
@@ -566,7 +566,7 @@ public class Metadata implements Closeable {
             if (currentEpoch == null) {
                 // We have no previous info, so we can just insert the new epoch info
                 log.debug("Setting the last seen epoch of partition {} to {} since the last known epoch was undefined.",
-                        tp, newEpoch);
+                    tp, newEpoch);
                 lastSeenLeaderEpochs.put(tp, newEpoch);
                 this.equivalentResponseCount = 0;
                 return Optional.of(partitionMetadata);

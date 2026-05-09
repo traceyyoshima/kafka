@@ -171,7 +171,7 @@ public class RangeAssignor extends AbstractPartitionAssignor {
                                         Map<String, List<TopicPartition>> assignment) {
 
         assignmentStates.stream().collect(Collectors.groupingBy(t -> t.consumers)).forEach((consumers, states) ->
-            states.stream().collect(Collectors.groupingBy(t -> t.partitionRacks.size())).forEach((numPartitions, coPartitionedStates) -> {
+                states.stream().collect(Collectors.groupingBy(t -> t.partitionRacks.size())).forEach((numPartitions, coPartitionedStates) -> {
                 if (coPartitionedStates.size() > 1)
                     assignCoPartitionedWithRackMatching(consumers, numPartitions, coPartitionedStates, assignment);
                 else {

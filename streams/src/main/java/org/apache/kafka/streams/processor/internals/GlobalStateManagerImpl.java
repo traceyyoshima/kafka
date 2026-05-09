@@ -184,7 +184,7 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
         for (final StateStore stateStore : topology.globalStateStores()) {
             final List<TopicPartition> storePartitions = topicPartitionsForStore(stateStore);
             final StateStore maybeWrappedStore = LegacyCheckpointingStateStore.maybeWrapStore(
-                    stateStore, eosEnabled, new HashSet<>(storePartitions), stateDirectory, null, logPrefix);
+                stateStore, eosEnabled, new HashSet<>(storePartitions), stateDirectory, null, logPrefix);
             try {
                 maybeWrappedStore.init(globalProcessorContext, maybeWrappedStore);
             } catch (final ProcessorStateException e) {
@@ -284,9 +284,9 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
         );
 
         final Optional<InternalTopologyBuilder.ReprocessFactory<?, ?, ?, ?>> reprocessFactory = topology
-                .storeNameToReprocessOnRestore().getOrDefault(store.name(), Optional.empty());
+            .storeNameToReprocessOnRestore().getOrDefault(store.name(), Optional.empty());
         storeMetadata.put(store.name(), new StateStoreMetadata(
-                store, topicPartitions, reprocessFactory, stateRestoreCallback, converterForStore(store), highWatermarks));
+            store, topicPartitions, reprocessFactory, stateRestoreCallback, converterForStore(store), highWatermarks));
     }
 
     private List<TopicPartition> topicPartitionsForStore(final StateStore store) {
@@ -423,18 +423,18 @@ public class GlobalStateManagerImpl implements GlobalStateManager {
                                     if (!response.deadLetterQueueRecords().isEmpty()) {
                                         log.warn("Dead letter queue records cannot be sent for global state/KTable processors. " +
                                                 "DLQ support for global store/KTable will be added in a future release. " + "Record context: {}",
-                                            errorHandlerContext);
+                                                errorHandlerContext);
                                     }
                                 } catch (final Exception fatalUserException) {
                                     log.error(
-                                            "Processing error callback failed after processing error for record: {}",
-                                            errorHandlerContext,
-                                            processingException
+                                        "Processing error callback failed after processing error for record: {}",
+                                        errorHandlerContext,
+                                        processingException
                                     );
                                     throw new FailedProcessingException(
-                                            "Fatal user code error in processing error callback",
-                                            null,
-                                            fatalUserException
+                                        "Fatal user code error in processing error callback",
+                                        null,
+                                        fatalUserException
                                     );
                                 }
                                 

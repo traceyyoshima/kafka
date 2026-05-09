@@ -105,8 +105,8 @@ public class CoordinatorStrategy implements AdminApiLookupStrategy<CoordinatorKe
                 key = requireSingletonAndType(keys);
             else {
                 key = (type == CoordinatorType.GROUP)
-                        ? CoordinatorKey.byGroupId(coordinator.key())
-                        : CoordinatorKey.byTransactionalId(coordinator.key());
+                      ? CoordinatorKey.byGroupId(coordinator.key())
+                      : CoordinatorKey.byTransactionalId(coordinator.key());
             }
             handleError(Errors.forCode(coordinator.errorCode()),
                         key,

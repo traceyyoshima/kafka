@@ -276,11 +276,11 @@ public class PartitionRegistrationTest {
         }
         if (metadataVersion.isDirectoryAssignmentSupported()) {
             expectRecord.setDirectories(List.of(
-                    DirectoryId.UNASSIGNED,
-                    Uuid.fromString("KBJBm9GVRAG9Ffe25odmmg"),
-                    DirectoryId.LOST,
-                    Uuid.fromString("7DZNT5qBS7yFF7VMMHS7kw"),
-                    Uuid.fromString("cJGPUZsMSEqbidOLYLOIXg")
+                DirectoryId.UNASSIGNED,
+                Uuid.fromString("KBJBm9GVRAG9Ffe25odmmg"),
+                DirectoryId.LOST,
+                Uuid.fromString("7DZNT5qBS7yFF7VMMHS7kw"),
+                Uuid.fromString("cJGPUZsMSEqbidOLYLOIXg")
             ));
         }
         List<UnwritableMetadataException> exceptions = new ArrayList<>();
@@ -381,9 +381,9 @@ public class PartitionRegistrationTest {
         PartitionRegistration partitionRegistration = new PartitionRegistration.Builder().
                 setReplicas(new int[] {3, 2, 1}).
                 setDirectories(new Uuid[]{
-                        Uuid.fromString("FbRuu7CeQtq5YFreEzg16g"),
-                        Uuid.fromString("4rtHTelWSSStAFMODOg3cQ"),
-                        Uuid.fromString("Id1WXzHURROilVxZWJNZlw")
+                    Uuid.fromString("FbRuu7CeQtq5YFreEzg16g"),
+                    Uuid.fromString("4rtHTelWSSStAFMODOg3cQ"),
+                    Uuid.fromString("Id1WXzHURROilVxZWJNZlw")
                 }).
                 setIsr(new int[] {1, 2, 3}).setLeader(1).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).
                 setLeaderEpoch(100).setPartitionEpoch(200).build();

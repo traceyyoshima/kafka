@@ -159,15 +159,15 @@ public class StressTestLog {
         protected void work() throws Exception {
             byte[] value = Long.toString(currentOffset).getBytes(StandardCharsets.UTF_8);
             MemoryRecords records = MemoryRecords.withRecords(
-                    RecordBatch.CURRENT_MAGIC_VALUE,
-                    Compression.NONE,
-                    new SimpleRecord(RecordBatch.NO_TIMESTAMP, null, value));
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                Compression.NONE,
+                new SimpleRecord(RecordBatch.NO_TIMESTAMP, null, value));
             LogAppendInfo logAppendInfo = log.appendAsLeader(records,
-                    0,
-                    AppendOrigin.CLIENT,
-                    RequestLocal.noCaching(),
-                    VerificationGuard.SENTINEL,
-                    TV_UNKNOWN);
+                0,
+                AppendOrigin.CLIENT,
+                RequestLocal.noCaching(),
+                VerificationGuard.SENTINEL,
+                TV_UNKNOWN);
 
             if ((logAppendInfo.firstOffset() != -1 && logAppendInfo.firstOffset() != currentOffset)
                 || logAppendInfo.lastOffset() != currentOffset) {

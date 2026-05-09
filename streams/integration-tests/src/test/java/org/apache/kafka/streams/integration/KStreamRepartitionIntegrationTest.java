@@ -197,9 +197,9 @@ public class KStreamRepartitionIntegrationTest {
             TestUtils.waitForCondition(() -> ks.state() == ERROR, 30_000, "Kafka Streams never went into error state");
             final String expectedMsg = String.format("Number of partitions [%s] of repartition topic [%s] " +
                             "doesn't match number of partitions [%s] of the source topic.",
-                    inputTopicRepartitionedNumOfPartitions,
-                    toRepartitionTopicName(inputTopicRepartitionName),
-                    topicBNumberOfPartitions);
+                inputTopicRepartitionedNumOfPartitions,
+                toRepartitionTopicName(inputTopicRepartitionName),
+                topicBNumberOfPartitions);
             assertNotNull(expectedThrowable.get());
             assertTrue(expectedThrowable.get().getMessage().contains(expectedMsg));
         }
@@ -872,18 +872,18 @@ public class KStreamRepartitionIntegrationTest {
         consumerProperties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "group-" + safeTestName);
         consumerProperties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         consumerProperties.setProperty(
-                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                keySerializer.getClass().getName()
+            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+            keySerializer.getClass().getName()
         );
         consumerProperties.setProperty(
-                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                valueSerializer.getClass().getName()
+            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+            valueSerializer.getClass().getName()
         );
 
         IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-                consumerProperties,
-                outputTopic,
-                expectedRecords
+            consumerProperties,
+            outputTopic,
+            expectedRecords
         );
     }
 

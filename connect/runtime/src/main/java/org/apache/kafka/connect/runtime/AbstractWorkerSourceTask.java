@@ -427,33 +427,33 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
                 final String topic = producerRecord.topic();
                 maybeCreateTopic(topic);
                 producer.send(
-                    producerRecord,
-                    (recordMetadata, e) -> {
-                        if (e != null) {
-                            if (producerClosed) {
-                                log.trace("{} failed to send record to {}; this is expected as the producer has already been closed", AbstractWorkerSourceTask.this, topic, e);
+                        producerRecord,
+                        (recordMetadata, e) -> {
+                            if (e != null) {
+                                if (producerClosed) {
+                                    log.trace("{} failed to send record to {}; this is expected as the producer has already been closed", AbstractWorkerSourceTask.this, topic, e);
+                                } else {
+                                    log.error("{} failed to send record to {}: ", AbstractWorkerSourceTask.this, topic, e);
+                                }
+                                log.trace("{} Failed record: {}", AbstractWorkerSourceTask.this, preTransformRecord);
+                                producerSendFailed(context, false, producerRecord, preTransformRecord, e);
+                                if (retryWithToleranceOperator.getErrorToleranceType() == ToleranceType.ALL) {
+                                    counter.skipRecord();
+                                    submittedRecord.ifPresent(SubmittedRecords.SubmittedRecord::ack);
+                                }
                             } else {
-                                log.error("{} failed to send record to {}: ", AbstractWorkerSourceTask.this, topic, e);
-                            }
-                            log.trace("{} Failed record: {}", AbstractWorkerSourceTask.this, preTransformRecord);
-                            producerSendFailed(context, false, producerRecord, preTransformRecord, e);
-                            if (retryWithToleranceOperator.getErrorToleranceType() == ToleranceType.ALL) {
-                                counter.skipRecord();
+                                counter.completeRecord();
+                                log.trace("{} Wrote record successfully: topic {} partition {} offset {}",
+                                        AbstractWorkerSourceTask.this,
+                                        recordMetadata.topic(), recordMetadata.partition(),
+                                        recordMetadata.offset());
+                                recordSent(preTransformRecord, producerRecord, recordMetadata);
                                 submittedRecord.ifPresent(SubmittedRecords.SubmittedRecord::ack);
+                                if (topicTrackingEnabled) {
+                                    recordActiveTopic(producerRecord.topic());
+                                }
                             }
-                        } else {
-                            counter.completeRecord();
-                            log.trace("{} Wrote record successfully: topic {} partition {} offset {}",
-                                    AbstractWorkerSourceTask.this,
-                                    recordMetadata.topic(), recordMetadata.partition(),
-                                    recordMetadata.offset());
-                            recordSent(preTransformRecord, producerRecord, recordMetadata);
-                            submittedRecord.ifPresent(SubmittedRecords.SubmittedRecord::ack);
-                            if (topicTrackingEnabled) {
-                                recordActiveTopic(producerRecord.topic());
-                            }
-                        }
-                    });
+                        });
                 // Note that this will cause retries to take place within a transaction
             } catch (RetriableException | org.apache.kafka.common.errors.RetriableException e) {
                 log.warn("{} Failed to send record to topic '{}' and partition '{}'. Backing off before retrying: ",
@@ -616,20 +616,24 @@ public abstract class AbstractWorkerSourceTask extends WorkerTask<SourceRecord, 
             counter = batchSize;
             this.metricsGroup = metricsGroup;
         }
+
         public void skipRecord() {
             skipped += 1;
             if (counter > 0 && --counter == 0) {
                 finishedAllWrites();
             }
         }
+
         public void completeRecord() {
             if (counter > 0 && --counter == 0) {
                 finishedAllWrites();
             }
         }
+
         public void retryRemaining() {
             finishedAllWrites();
         }
+
         private void finishedAllWrites() {
             if (!completed) {
                 metricsGroup.recordWrite(batchSize - counter, skipped);

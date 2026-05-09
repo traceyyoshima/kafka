@@ -69,10 +69,10 @@ public class TimestampedWindowStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn(METRICS_SCOPE);
 
         builder = new TimestampedWindowStoreBuilder<>(
-                supplier,
-                Serdes.String(),
-                Serdes.String(),
-                new MockTime());
+            supplier,
+            Serdes.String(),
+            Serdes.String(),
+            new MockTime());
     }
 
     @SuppressWarnings("unchecked")

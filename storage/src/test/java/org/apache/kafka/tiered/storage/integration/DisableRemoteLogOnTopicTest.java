@@ -57,7 +57,7 @@ public final class DisableRemoteLogOnTopicTest extends TieredStorageTestHarness 
         final int maxBatchCountPerSegment = 1;
         final boolean enableRemoteLogStorage = true;
         final Map<Integer, List<Integer>> assignment = mkMap(
-                mkEntry(p0, List.of(broker0, broker1))
+            mkEntry(p0, List.of(broker0, broker1))
         );
         // local.retention.ms/bytes need to set to the same value as retention.ms/bytes when disabling remote log copy
         final Map<String, String> disableRemoteCopy = new HashMap<>();
@@ -76,7 +76,7 @@ public final class DisableRemoteLogOnTopicTest extends TieredStorageTestHarness 
 
         builder
                 .createTopic(topicA, partitionCount, replicationFactor, maxBatchCountPerSegment, assignment,
-                        enableRemoteLogStorage)
+                    enableRemoteLogStorage)
                 // send records to partition 0
                 .expectSegmentToBeOffloaded(broker0, topicA, p0, 0, new KeyValueSpec("k0", "v0"))
                 .expectSegmentToBeOffloaded(broker0, topicA, p0, 1, new KeyValueSpec("k1", "v1"))

@@ -57,26 +57,26 @@ public class MetadataSnapshot {
     private Cluster clusterInstance;
 
     public MetadataSnapshot(String clusterId,
-                  Map<Integer, Node> nodes,
-                  Collection<PartitionMetadata> partitions,
-                  Set<String> unauthorizedTopics,
-                  Set<String> invalidTopics,
-                  Set<String> internalTopics,
-                  Node controller,
-                  Map<String, Uuid> topicIds) {
+            Map<Integer, Node> nodes,
+            Collection<PartitionMetadata> partitions,
+            Set<String> unauthorizedTopics,
+            Set<String> invalidTopics,
+            Set<String> internalTopics,
+            Node controller,
+            Map<String, Uuid> topicIds) {
         this(clusterId, nodes, partitions, unauthorizedTopics, invalidTopics, internalTopics, controller, topicIds, null);
     }
 
     // Visible for testing
     public MetadataSnapshot(String clusterId,
-        Map<Integer, Node> nodes,
-        Collection<PartitionMetadata> partitions,
-        Set<String> unauthorizedTopics,
-        Set<String> invalidTopics,
-        Set<String> internalTopics,
-        Node controller,
-        Map<String, Uuid> topicIds,
-        Cluster clusterInstance) {
+            Map<Integer, Node> nodes,
+            Collection<PartitionMetadata> partitions,
+            Set<String> unauthorizedTopics,
+            Set<String> invalidTopics,
+            Set<String> internalTopics,
+            Node controller,
+            Map<String, Uuid> topicIds,
+            Cluster clusterInstance) {
         this.clusterId = clusterId;
         this.nodes = Collections.unmodifiableMap(nodes);
         this.unauthorizedTopics = Collections.unmodifiableSet(unauthorizedTopics);
@@ -85,7 +85,7 @@ public class MetadataSnapshot {
         this.controller = controller;
         this.topicIds = Collections.unmodifiableMap(topicIds);
         this.topicNames = Collections.unmodifiableMap(
-            topicIds.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey))
+                topicIds.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey))
         );
 
         Map<TopicPartition, PartitionMetadata> tmpMetadataByPartition = new HashMap<>(partitions.size());
@@ -160,14 +160,14 @@ public class MetadataSnapshot {
      * @return the merged metadata snapshot
      */
     MetadataSnapshot mergeWith(String newClusterId,
-                            Map<Integer, Node> newNodes,
-                            Collection<PartitionMetadata> addPartitions,
-                            Set<String> addUnauthorizedTopics,
-                            Set<String> addInvalidTopics,
-                            Set<String> addInternalTopics,
-                            Node newController,
-                            Map<String, Uuid> addTopicIds,
-                            BiPredicate<String, Boolean> retainTopic) {
+                               Map<Integer, Node> newNodes,
+                               Collection<PartitionMetadata> addPartitions,
+                               Set<String> addUnauthorizedTopics,
+                               Set<String> addInvalidTopics,
+                               Set<String> addInternalTopics,
+                               Node newController,
+                               Map<String, Uuid> addTopicIds,
+                               BiPredicate<String, Boolean> retainTopic) {
 
         Predicate<String> shouldRetainTopic = topic -> retainTopic.test(topic, internalTopics.contains(topic));
 

@@ -640,9 +640,11 @@ public final class GroupConfig extends AbstractConfig {
     ) {
         if (parsed.containsKey(sessionKey) || parsed.containsKey(heartbeatKey)) {
             int effectiveSession = parsed.containsKey(sessionKey)
-                ? (Integer) parsed.get(sessionKey) : defaultSession;
+                ? (Integer) parsed.get(sessionKey)
+                : defaultSession;
             int effectiveHeartbeat = parsed.containsKey(heartbeatKey)
-                ? (Integer) parsed.get(heartbeatKey) : defaultHeartbeat;
+                ? (Integer) parsed.get(heartbeatKey)
+                : defaultHeartbeat;
             if (effectiveSession <= effectiveHeartbeat)
                 throw new InvalidConfigurationException(sessionKey + " must be greater than " + heartbeatKey);
         }
@@ -830,8 +832,8 @@ public final class GroupConfig extends AbstractConfig {
         int heartbeat = rawHeartbeat != null ? Integer.parseInt(rawHeartbeat.toString()) : defaultHeartbeat;
         if (session <= heartbeat) {
             LOG.warn("The effective {} ({}) for group '{}' is not greater than {} ({}). "
-                    + "Check that the broker-level min/max bounds for session timeout "
-                    + "and heartbeat interval do not overlap.",
+                     + "Check that the broker-level min/max bounds for session timeout "
+                     + "and heartbeat interval do not overlap.",
                 sessionKey, session, groupId, heartbeatKey, heartbeat);
         }
     }
@@ -860,12 +862,12 @@ public final class GroupConfig extends AbstractConfig {
         if (value < min) {
             LOG.warn("The group config '{}' for group '{}' has value {} which is below the broker's " +
                     "allowed minimum {}. The effective value will be capped to {}.",
-                key, groupId, value, min, min);
+                    key, groupId, value, min, min);
             props.put(key, min);
         } else if (value > max) {
             LOG.warn("The group config '{}' for group '{}' has value {} which exceeds the broker's " +
                     "allowed maximum {}. The effective value will be capped to {}.",
-                key, groupId, value, max, max);
+                    key, groupId, value, max, max);
             props.put(key, max);
         }
     }
@@ -892,7 +894,7 @@ public final class GroupConfig extends AbstractConfig {
         if (value > max) {
             LOG.warn("The group config '{}' for group '{}' has value {} which exceeds the broker's " +
                     "allowed maximum {}. The effective value will be capped to {}.",
-                key, groupId, value, max, max);
+                    key, groupId, value, max, max);
             props.put(key, max);
         }
     }
@@ -919,7 +921,7 @@ public final class GroupConfig extends AbstractConfig {
         if (value < min) {
             LOG.warn("The group config '{}' for group '{}' has value {} which is below the broker's " +
                     "allowed minimum {}. The effective value will be capped to {}.",
-                key, groupId, value, min, min);
+                    key, groupId, value, min, min);
             props.put(key, min);
         }
     }

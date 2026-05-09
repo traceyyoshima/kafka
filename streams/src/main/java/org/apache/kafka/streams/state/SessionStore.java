@@ -49,7 +49,7 @@ public interface SessionStore<K, AGG> extends StateStore, ReadOnlySessionStore<K
     default KeyValueIterator<Windowed<K>, AGG> findSessions(final long earliestSessionEndTime,
                                                             final long latestSessionEndTime) {
         throw new UnsupportedOperationException(
-                "This API is not supported by this implementation of SessionStore.");
+            "This API is not supported by this implementation of SessionStore.");
     }
 
     @Override

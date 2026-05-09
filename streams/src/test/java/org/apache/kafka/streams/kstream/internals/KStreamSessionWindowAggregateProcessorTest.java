@@ -359,7 +359,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
                     new Windowed<>("d", new SessionWindow(0, GAP_MS / 2)),
                     new Change<>(2L, null),
                     GAP_MS / 2)
-                ),
+            ),
                 results);
         } else {
             assertEquals(
@@ -375,7 +375,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
                     new KeyValueTimestamp<>(
                         new Windowed<>("c", new SessionWindow(0, 0)),
                         new Change<>(1L, null),
-                       0L),
+                        0L),
                     new KeyValueTimestamp<>(
                         new Windowed<>("d", new SessionWindow(0, GAP_MS / 2)),
                         new Change<>(2L, null),
@@ -392,8 +392,8 @@ public class KStreamSessionWindowAggregateProcessorTest {
                         "c",
                         new SessionWindow(GAP_MS + 1 + GAP_MS / 2, GAP_MS + 1 + GAP_MS / 2)), new Change<>(1L, null),
                         GAP_MS + 1 + GAP_MS / 2)
-                    ),
-                    results
+                ),
+                results
             );
         }
     }

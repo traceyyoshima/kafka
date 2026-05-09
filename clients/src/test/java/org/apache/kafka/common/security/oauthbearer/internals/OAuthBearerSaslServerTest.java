@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class OAuthBearerSaslServerTest {
     private static final String USER = "user";
     private static final String JAAS_CONFIG_TEXT = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule Required"
-                + " unsecuredLoginStringClaim_sub=\"" + USER + "\";";
+            + " unsecuredLoginStringClaim_sub=\"" + USER + "\";";
     private static final Map<String, ?> CONFIGS = Map.of(SaslConfigs.SASL_JAAS_CONFIG, new Password(JAAS_CONFIG_TEXT));
 
     private static final AuthenticateCallbackHandler LOGIN_CALLBACK_HANDLER;
@@ -174,7 +174,7 @@ public class OAuthBearerSaslServerTest {
         customExtensions.put("secondKey", "value");
 
         assertThrows(SaslAuthenticationException.class,
-            () -> saslServer.evaluateResponse(clientInitialResponse(null, false, customExtensions)));
+                () -> saslServer.evaluateResponse(clientInitialResponse(null, false, customExtensions)));
     }
 
     @Test
@@ -187,7 +187,7 @@ public class OAuthBearerSaslServerTest {
     @Test
     public void authorizationIdNotEqualsAuthenticationId() {
         assertThrows(SaslAuthenticationException.class,
-            () -> saslServer.evaluateResponse(clientInitialResponse(USER + "x")));
+                () -> saslServer.evaluateResponse(clientInitialResponse(USER + "x")));
     }
 
     @Test

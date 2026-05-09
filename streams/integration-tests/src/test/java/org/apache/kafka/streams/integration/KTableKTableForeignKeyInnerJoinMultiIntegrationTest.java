@@ -154,7 +154,7 @@ public class KTableKTableForeignKeyInnerJoinMultiIntegrationTest {
 
         //Partitions pre-computed using the default Murmur2 hash, just to ensure that all 3 partitions will be exercised.
         final List<KeyValue<Integer, String>> table3 = Collections.singletonList(
-                new KeyValue<>(10, "waffle")
+            new KeyValue<>(10, "waffle")
         );
 
         IntegrationTestUtils.produceKeyValuesSynchronously(TABLE_1, table1, PRODUCER_CONFIG_1, MOCK_TIME);
@@ -250,9 +250,9 @@ public class KTableKTableForeignKeyInnerJoinMultiIntegrationTest {
         final Materialized<Integer, String, KeyValueStore<Bytes, byte[]>> materialized;
         if (queryableName != null) {
             materialized = Materialized.<Integer, String, KeyValueStore<Bytes, byte[]>>as(queryableName)
-                    .withKeySerde(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true))
-                    .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
-                    .withCachingDisabled();
+                .withKeySerde(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true))
+                .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
+                .withCachingDisabled();
         } else {
             throw new RuntimeException("Current implementation of joinOnForeignKey requires a materialized store");
         }
@@ -260,9 +260,9 @@ public class KTableKTableForeignKeyInnerJoinMultiIntegrationTest {
         final Materialized<Integer, String, KeyValueStore<Bytes, byte[]>> materializedTwo;
         if (queryableNameTwo != null) {
             materializedTwo = Materialized.<Integer, String, KeyValueStore<Bytes, byte[]>>as(queryableNameTwo)
-                    .withKeySerde(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true))
-                    .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
-                    .withCachingDisabled();
+                .withKeySerde(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true))
+                .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
+                .withCachingDisabled();
         } else {
             throw new RuntimeException("Current implementation of joinOnForeignKey requires a materialized store");
         }

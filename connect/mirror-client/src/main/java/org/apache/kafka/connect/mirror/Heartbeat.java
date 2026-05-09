@@ -71,7 +71,7 @@ public class Heartbeat {
     @Override
     public String toString() {
         return String.format("Heartbeat{sourceClusterAlias=%s, targetClusterAlias=%s, timestamp=%d}",
-            sourceClusterAlias, targetClusterAlias, timestamp);
+                sourceClusterAlias, targetClusterAlias, timestamp);
     }
 
     ByteBuffer serializeValue(short version) {

@@ -124,9 +124,9 @@ public class KTableSourceTest {
 
             assertEquals(
                 asList(new TestRecord<>("A", 1, Instant.ofEpochMilli(10L)),
-                           new TestRecord<>("B", 2, Instant.ofEpochMilli(11L)),
-                           new TestRecord<>("B", 3, Instant.ofEpochMilli(13L)),
-                           new TestRecord<>("A", 1, Instant.ofEpochMilli(9L))),
+                       new TestRecord<>("B", 2, Instant.ofEpochMilli(11L)),
+                       new TestRecord<>("B", 3, Instant.ofEpochMilli(13L)),
+                       new TestRecord<>("A", 1, Instant.ofEpochMilli(9L))),
                 outputTopic.readRecordsToList()
             );
         }

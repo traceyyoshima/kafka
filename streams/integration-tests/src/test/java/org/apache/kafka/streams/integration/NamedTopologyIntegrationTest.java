@@ -713,13 +713,13 @@ public class NamedTopologyIntegrationTest {
         // first check that all partitions in the metadata correspond to the given named topology
         assertThat(
             streams1SourceTopicsForTopology.containsAll(metadata.topicPartitions().stream()
-                                                            .map(TopicPartition::topic)
-                                                            .collect(Collectors.toList())),
+                                                                .map(TopicPartition::topic)
+                                                                .collect(Collectors.toList())),
             is(true));
         assertThat(
             streams2SourceTopicsForTopology.containsAll(metadata.topicPartitions().stream()
-                                                            .map(TopicPartition::topic)
-                                                            .collect(Collectors.toList())),
+                                                                .map(TopicPartition::topic)
+                                                                .collect(Collectors.toList())),
             is(true));
 
         // then verify that only this topology's one store appears if the host has partitions assigned
@@ -761,7 +761,8 @@ public class NamedTopologyIntegrationTest {
         @Override
         public synchronized StreamThreadExceptionResponse handle(final Throwable exception) {
             final String topologyName =
-                exception instanceof StreamsException && ((StreamsException) exception).taskId().isPresent() ?
+                exception instanceof StreamsException && ((StreamsException) exception).taskId().isPresent()
+                    ?
                     ((StreamsException) exception).taskId().get().topologyName()
                     : null;
 

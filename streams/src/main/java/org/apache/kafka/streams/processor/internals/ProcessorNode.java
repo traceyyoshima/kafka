@@ -190,16 +190,16 @@ public class ProcessorNode<KIn, VIn, KOut, VOut> {
             final String keyClass = record.key() == null ? "unknown because key is null" : record.key().getClass().getName();
             final String valueClass = record.value() == null ? "unknown because value is null" : record.value().getClass().getName();
             throw new StreamsException(String.format("ClassCastException invoking processor: %s. Do the Processor's "
-                    + "input types match the deserialized types? Check the Serde setup and change the default Serdes in "
-                    + "StreamConfig or provide correct Serdes via method parameters. Make sure the Processor can accept "
-                    + "the deserialized input of type key: %s, and value: %s.%n"
-                    + "Note that although incorrect Serdes are a common cause of error, the cast exception might have "
-                    + "another cause (in user code, for example). For example, if a processor wires in a store, but casts "
-                    + "the generics incorrectly, a class cast exception could be raised during processing, but the "
-                    + "cause would not be wrong Serdes.",
-                    this.name(),
-                    keyClass,
-                    valueClass),
+                + "input types match the deserialized types? Check the Serde setup and change the default Serdes in "
+                + "StreamConfig or provide correct Serdes via method parameters. Make sure the Processor can accept "
+                + "the deserialized input of type key: %s, and value: %s.%n"
+                + "Note that although incorrect Serdes are a common cause of error, the cast exception might have "
+                + "another cause (in user code, for example). For example, if a processor wires in a store, but casts "
+                + "the generics incorrectly, a class cast exception could be raised during processing, but the "
+                + "cause would not be wrong Serdes.",
+                this.name(),
+                keyClass,
+                valueClass),
                 e);
         } catch (final FailedProcessingException | TaskCorruptedException | TaskMigratedException e) {
             // Rethrow exceptions that should not be handled here
@@ -260,11 +260,11 @@ public class ProcessorNode<KIn, VIn, KOut, VOut> {
                     final RecordCollector collector = ((RecordCollector.Supplier) internalProcessorContext).recordCollector();
                     for (final ProducerRecord<byte[], byte[]> deadLetterQueueRecord : deadLetterQueueRecords) {
                         collector.send(
-                                deadLetterQueueRecord.key(),
-                                deadLetterQueueRecord.value(),
-                                name(),
-                                internalProcessorContext,
-                                deadLetterQueueRecord
+                            deadLetterQueueRecord.key(),
+                            deadLetterQueueRecord.value(),
+                            name(),
+                            internalProcessorContext,
+                            deadLetterQueueRecord
                         );
                     }
                 }

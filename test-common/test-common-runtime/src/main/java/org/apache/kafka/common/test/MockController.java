@@ -369,7 +369,7 @@ public class MockController implements Controller {
     }
 
     private ApiError incrementalAlterResource(ConfigResource resource,
-            Map<String, Entry<AlterConfigOp.OpType, String>> ops, boolean validateOnly) {
+        Map<String, Entry<AlterConfigOp.OpType, String>> ops, boolean validateOnly) {
         for (Entry<String, Entry<AlterConfigOp.OpType, String>> entry : ops.entrySet()) {
             AlterConfigOp.OpType opType = entry.getValue().getKey();
             if (opType != SET && opType != DELETE) {

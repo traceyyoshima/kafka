@@ -597,10 +597,10 @@ public class KStreamImplTest {
         final NullPointerException exception = assertThrows(
             NullPointerException.class,
             () -> testStream.join(
-                  testStream,
-                  (ValueJoiner<? super String, ? super String, ?>) null,
-                  JoinWindows.of(ofMillis(10)),
-                  StreamJoined.as("name")));
+                testStream,
+                (ValueJoiner<? super String, ? super String, ?>) null,
+                JoinWindows.of(ofMillis(10)),
+                StreamJoined.as("name")));
         assertThat(exception.getMessage(), equalTo("joiner cannot be null"));
     }
 
@@ -610,10 +610,10 @@ public class KStreamImplTest {
         final NullPointerException exception = assertThrows(
             NullPointerException.class,
             () -> testStream.join(
-                    testStream,
-                    (ValueJoinerWithKey<? super String, ? super String, ? super String, ?>) null,
-                    JoinWindows.of(ofMillis(10)),
-                    StreamJoined.as("name")));
+                testStream,
+                (ValueJoinerWithKey<? super String, ? super String, ? super String, ?>) null,
+                JoinWindows.of(ofMillis(10)),
+                StreamJoined.as("name")));
         assertThat(exception.getMessage(), equalTo("joiner cannot be null"));
     }
 
@@ -710,9 +710,9 @@ public class KStreamImplTest {
             NullPointerException.class,
             () -> testStream.leftJoin(
                 testStream,
-                    (ValueJoinerWithKey<? super String, ? super String, ? super String, ?>) null,
-                    JoinWindows.of(ofMillis(10)),
-                    StreamJoined.as("name")));
+                (ValueJoinerWithKey<? super String, ? super String, ? super String, ?>) null,
+                JoinWindows.of(ofMillis(10)),
+                StreamJoined.as("name")));
         assertThat(exception.getMessage(), equalTo("joiner cannot be null"));
     }
 
@@ -809,10 +809,10 @@ public class KStreamImplTest {
         final NullPointerException exception = assertThrows(
             NullPointerException.class,
             () -> testStream.outerJoin(
-                    testStream,
-                    (ValueJoinerWithKey<? super String, ? super String, ? super String, ?>) null,
-                    JoinWindows.of(ofMillis(10)),
-                    StreamJoined.as("name")));
+                testStream,
+                (ValueJoinerWithKey<? super String, ? super String, ? super String, ?>) null,
+                JoinWindows.of(ofMillis(10)),
+                StreamJoined.as("name")));
         assertThat(exception.getMessage(), equalTo("joiner cannot be null"));
     }
 
@@ -1034,10 +1034,10 @@ public class KStreamImplTest {
         final NullPointerException exception = assertThrows(
             NullPointerException.class,
             () -> testStream.join(
-                    testGlobalTable,
-                    MockMapper.selectValueMapper(),
-                    (ValueJoiner<? super String, ? super String, ?>) null,
-                    Named.as("name")));
+                testGlobalTable,
+                MockMapper.selectValueMapper(),
+                (ValueJoiner<? super String, ? super String, ?>) null,
+                Named.as("name")));
         assertThat(exception.getMessage(), equalTo("joiner cannot be null"));
     }
 
@@ -1114,10 +1114,10 @@ public class KStreamImplTest {
         final NullPointerException exception = assertThrows(
             NullPointerException.class,
             () -> testStream.leftJoin(
-                    testGlobalTable,
-                    MockMapper.selectValueMapper(),
-                    (ValueJoinerWithKey<? super String, ? super String, ? super String, ?>) null,
-                    Named.as("name")));
+                testGlobalTable,
+                MockMapper.selectValueMapper(),
+                (ValueJoinerWithKey<? super String, ? super String, ? super String, ?>) null,
+                Named.as("name")));
         assertThat(exception.getMessage(), equalTo("joiner cannot be null"));
     }
 
@@ -1518,7 +1518,7 @@ public class KStreamImplTest {
         final org.apache.kafka.streams.processor.api.Processor<String, String, Void, Void> processor =
             processorSupplier.get();
         final IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+            IllegalArgumentException.class,
             () -> testStream.process(() -> processor, "storeName")
         );
         assertThat(exception.getMessage(), containsString("#get() must return a new object each time it is called."));
@@ -1529,7 +1529,7 @@ public class KStreamImplTest {
         final org.apache.kafka.streams.processor.api.Processor<String, String, Void, Void> processor =
             processorSupplier.get();
         final IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+            IllegalArgumentException.class,
             () -> testStream.process(() -> processor, Named.as("processor"))
         );
         assertThat(exception.getMessage(), containsString("#get() must return a new object each time it is called."));
@@ -1540,7 +1540,7 @@ public class KStreamImplTest {
         final org.apache.kafka.streams.processor.api.Processor<String, String, Void, Void> processor =
             processorSupplier.get();
         final IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+            IllegalArgumentException.class,
             () -> testStream.process(() -> processor, Named.as("processor"), "storeName")
         );
         assertThat(exception.getMessage(), containsString("#get() must return a new object each time it is called."));

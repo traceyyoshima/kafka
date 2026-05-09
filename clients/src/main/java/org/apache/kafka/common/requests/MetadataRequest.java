@@ -76,7 +76,7 @@ public class MetadataRequest extends AbstractRequest {
         }
 
         public Builder(List<String> topics, boolean allowAutoTopicCreation) {
-            this(topics, allowAutoTopicCreation, ApiKeys.METADATA.oldestVersion(),  ApiKeys.METADATA.latestVersion());
+            this(topics, allowAutoTopicCreation, ApiKeys.METADATA.oldestVersion(), ApiKeys.METADATA.latestVersion());
         }
 
         public static Builder allTopics() {
@@ -204,9 +204,9 @@ public class MetadataRequest extends AbstractRequest {
             return List.of();
         else
             return data.topics()
-                    .stream()
-                    .map(MetadataRequestTopic::topicId)
-                    .collect(Collectors.toList());
+                       .stream()
+                       .map(MetadataRequestTopic::topicId)
+                       .collect(Collectors.toList());
     }
 
     public boolean allowAutoTopicCreation() {
@@ -226,6 +226,6 @@ public class MetadataRequest extends AbstractRequest {
     public static List<MetadataRequestTopic> convertTopicIdsToMetadataRequestTopic(final Collection<Uuid> topicIds) {
         return topicIds.stream().map(topicId -> new MetadataRequestTopic()
                 .setTopicId(topicId))
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 }

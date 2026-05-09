@@ -75,10 +75,10 @@ public class CoordinatorRequestManager implements RequestManager {
         this.log = logContext.logger(this.getClass());
         this.groupId = groupId;
         this.coordinatorRequestState = new RequestState(
-                logContext,
-                CoordinatorRequestManager.class.getSimpleName(),
-                retryBackoffMs,
-                retryBackoffMaxMs
+            logContext,
+            CoordinatorRequestManager.class.getSimpleName(),
+            retryBackoffMs,
+            retryBackoffMaxMs
         );
     }
 
@@ -189,9 +189,9 @@ public class CoordinatorRequestManager implements RequestManager {
         // for the coordinator in the underlying network client layer
         int coordinatorConnectionId = Integer.MAX_VALUE - coordinator.nodeId();
         this.coordinator = new Node(
-                coordinatorConnectionId,
-                coordinator.host(),
-                coordinator.port());
+            coordinatorConnectionId,
+            coordinator.host(),
+            coordinator.port());
         log.info("Discovered group coordinator {}", coordinator);
         coordinatorRequestState.onSuccessfulAttempt(currentTimeMs);
     }

@@ -202,19 +202,19 @@ public class RecordAccumulator {
 
     private void registerMetrics(Metrics metrics, String metricGrpName) {
         metrics.addMetric(
-            metrics.metricName("waiting-threads", metricGrpName,
-                "The number of user threads blocked waiting for buffer memory to enqueue their records"),
-            (config, now) -> free.queued());
+                metrics.metricName("waiting-threads", metricGrpName,
+                        "The number of user threads blocked waiting for buffer memory to enqueue their records"),
+                (config, now) -> free.queued());
 
         metrics.addMetric(
-            metrics.metricName("buffer-total-bytes", metricGrpName,
-                "The maximum amount of buffer memory the client can use (whether or not it is currently used)."),
-            (config, now) -> free.totalMemory());
+                metrics.metricName("buffer-total-bytes", metricGrpName,
+                        "The maximum amount of buffer memory the client can use (whether or not it is currently used)."),
+                (config, now) -> free.totalMemory());
 
         metrics.addMetric(
-            metrics.metricName("buffer-available-bytes", metricGrpName,
-                "The total amount of buffer memory that is not being used (either unallocated or in the free list)."),
-            (config, now) -> free.availableMemory());
+                metrics.metricName("buffer-available-bytes", metricGrpName,
+                        "The total amount of buffer memory that is not being used (either unallocated or in the free list)."),
+                (config, now) -> free.availableMemory());
     }
 
     private void setPartition(AppendCallbacks callbacks, int partition) {
@@ -454,13 +454,13 @@ public class RecordAccumulator {
     }
 
     public void maybeUpdateNextBatchExpiryTime(ProducerBatch batch) {
-        if (batch.createdMs + deliveryTimeoutMs  > 0) {
+        if (batch.createdMs + deliveryTimeoutMs > 0) {
             // the non-negative check is to guard us against potential overflow due to setting
             // a large value for deliveryTimeoutMs
             nextBatchExpiryTimeMs = Math.min(nextBatchExpiryTimeMs, batch.createdMs + deliveryTimeoutMs);
         } else {
             log.warn("Skipping next batch expiry time update due to addition overflow: "
-                + "batch.createMs={}, deliveryTimeoutMs={}", batch.createdMs, deliveryTimeoutMs);
+                    + "batch.createMs={}, deliveryTimeoutMs={}", batch.createdMs, deliveryTimeoutMs);
         }
     }
 
@@ -741,7 +741,7 @@ public class RecordAccumulator {
                 }
 
                 nextReadyCheckDelayMs = batchReady(exhausted, part, leader, waitedTimeMs, backingOff,
-                    backoffAttempts, full, nextReadyCheckDelayMs, readyNodes);
+                        backoffAttempts, full, nextReadyCheckDelayMs, readyNodes);
             }
         }
 
@@ -807,11 +807,11 @@ public class RecordAccumulator {
         if (log.isTraceEnabled()) {
             if (shouldBackoff) {
                 log.trace(
-                    "For {}, will backoff", batch);
+                        "For {}, will backoff", batch);
             } else {
                 log.trace(
-                    "For {}, will not backoff, shouldWaitMore {}, hasLeaderChanged {}", batch,
-                    shouldWaitMore, hasLeaderChanged);
+                        "For {}, will not backoff, shouldWaitMore {}, hasLeaderChanged {}", batch,
+                        shouldWaitMore, hasLeaderChanged);
             }
         } else if (log.isDebugEnabled() && hasLeaderChanged) {
             // Add less-verbose log at DEBUG.
@@ -927,7 +927,7 @@ public class RecordAccumulator {
                     transactionManager.incrementSequenceNumber(batch.topicPartition, batch.recordCount);
                     log.debug("Assigned producerId {} and producerEpoch {} to batch with base sequence " +
                             "{} being sent to partition {}", producerIdAndEpoch.producerId,
-                        producerIdAndEpoch.epoch, batch.baseSequence(), tp);
+                            producerIdAndEpoch.epoch, batch.baseSequence(), tp);
 
                     transactionManager.addInFlightBatch(batch);
                 }

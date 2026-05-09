@@ -37,7 +37,7 @@ import java.util.Set;
  */
 public class TimelineHashMap<K, V>
         extends SnapshottableHashTable<TimelineHashMap.TimelineHashMapEntry<K, V>>
-        implements Map<K, V> {
+                implements Map<K, V> {
     static class TimelineHashMapEntry<K, V>
             implements SnapshottableHashTable.ElementWithStartEpoch, Map.Entry<K, V> {
         private final K key;
@@ -164,7 +164,7 @@ public class TimelineHashMap<K, V>
     @Override
     public V remove(Object key) {
         TimelineHashMapEntry<K, V> result = snapshottableRemove(
-            new TimelineHashMapEntry<>(key, null));
+                new TimelineHashMapEntry<>(key, null));
         return result == null ? null : result.value;
     }
 

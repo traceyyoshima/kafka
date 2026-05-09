@@ -74,10 +74,10 @@ public class KStreamKStreamLeftJoinTest {
         stream2 = builder.stream(topic2, consumed);
 
         joined = stream1.leftJoin(
-                stream2,
-                MockValueJoiner.TOSTRING_JOINER,
-                JoinWindows.of(ofMillis(100L)),
-                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
+            stream2,
+            MockValueJoiner.TOSTRING_JOINER,
+            JoinWindows.of(ofMillis(100L)),
+            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
         );
         joined.process(supplier);
 
@@ -100,8 +100,8 @@ public class KStreamKStreamLeftJoinTest {
                 inputTopic1.pipeInput(expectedKeys[i], "A" + expectedKeys[i]);
             }
             processor.checkAndClearProcessResult(
-                    new KeyValueTimestamp<>(0, "A0+null", 0L),
-                    new KeyValueTimestamp<>(1, "A1+null", 0L)
+                new KeyValueTimestamp<>(0, "A0+null", 0L),
+                new KeyValueTimestamp<>(1, "A1+null", 0L)
             );
 
             // push two items to the other stream; this should produce two items
@@ -113,8 +113,8 @@ public class KStreamKStreamLeftJoinTest {
                 inputTopic2.pipeInput(expectedKeys[i], "a" + expectedKeys[i]);
             }
             processor.checkAndClearProcessResult(
-                    new KeyValueTimestamp<>(0, "A0+a0", 0L),
-                    new KeyValueTimestamp<>(1, "A1+a1", 0L)
+                new KeyValueTimestamp<>(0, "A0+a0", 0L),
+                new KeyValueTimestamp<>(1, "A1+a1", 0L)
             );
         }
     }
@@ -134,10 +134,10 @@ public class KStreamKStreamLeftJoinTest {
         stream2 = builder.stream(topic2, consumed);
 
         joined = stream1.leftJoin(
-                stream2,
-                MockValueJoiner.TOSTRING_JOINER,
-                JoinWindows.of(ofMillis(100L)).grace(ofMillis(10L)),
-                StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
+            stream2,
+            MockValueJoiner.TOSTRING_JOINER,
+            JoinWindows.of(ofMillis(100L)).grace(ofMillis(10L)),
+            StreamJoined.with(Serdes.Integer(), Serdes.String(), Serdes.String())
         );
         joined.process(supplier);
 
@@ -156,10 +156,10 @@ public class KStreamKStreamLeftJoinTest {
             inputTopic2.pipeInput(0, "a0", 0L);
 
             processor.checkAndClearProcessResult(
-                    new KeyValueTimestamp<>(0, "A0+null", 0L),
-                    new KeyValueTimestamp<>(0, "A0-0+null", 0L),
-                    new KeyValueTimestamp<>(0, "A0+a0", 0L),
-                    new KeyValueTimestamp<>(0, "A0-0+a0", 0L)
+                new KeyValueTimestamp<>(0, "A0+null", 0L),
+                new KeyValueTimestamp<>(0, "A0-0+null", 0L),
+                new KeyValueTimestamp<>(0, "A0+a0", 0L),
+                new KeyValueTimestamp<>(0, "A0-0+a0", 0L)
             );
         }
     }
@@ -496,9 +496,9 @@ public class KStreamKStreamLeftJoinTest {
                 inputTopic1.pipeInput(expectedKeys[i], "A" + expectedKeys[i], time + i);
             }
             processor.checkAndClearProcessResult(
-                    new KeyValueTimestamp<>(0, "A0+null", 1000L),
-                    new KeyValueTimestamp<>(1, "A1+null", 1001L),
-                    new KeyValueTimestamp<>(2, "A2+null", 1002L)
+                new KeyValueTimestamp<>(0, "A0+null", 1000L),
+                new KeyValueTimestamp<>(1, "A1+null", 1001L),
+                new KeyValueTimestamp<>(2, "A2+null", 1002L)
             );
             
             // push four items smaller timestamps (out of window) to the secondary stream; 
@@ -512,10 +512,10 @@ public class KStreamKStreamLeftJoinTest {
                 inputTopic2.pipeInput(expectedKey, "a" + expectedKey, time);
             }
             processor.checkAndClearProcessResult(
-                    new KeyValueTimestamp<>(0, "A0+a0", 1000L),
-                    new KeyValueTimestamp<>(1, "A1+a1", 1001L),
-                    new KeyValueTimestamp<>(2, "A2+a2", 1002L),
-                    new KeyValueTimestamp<>(3, "A3+a3", 1003L)
+                new KeyValueTimestamp<>(0, "A0+a0", 1000L),
+                new KeyValueTimestamp<>(1, "A1+a1", 1001L),
+                new KeyValueTimestamp<>(2, "A2+a2", 1002L),
+                new KeyValueTimestamp<>(3, "A3+a3", 1003L)
             );
 
             // push four items with increased timestamps to the secondary stream; 
@@ -530,10 +530,10 @@ public class KStreamKStreamLeftJoinTest {
                 inputTopic2.pipeInput(expectedKey, "b" + expectedKey, time);
             }
             processor.checkAndClearProcessResult(
-                    new KeyValueTimestamp<>(0, "A0+b0", 1000L),
-                    new KeyValueTimestamp<>(1, "A1+b1", 1001L),
-                    new KeyValueTimestamp<>(2, "A2+b2", 1002L),
-                    new KeyValueTimestamp<>(3, "A3+b3", 1003L)
+                new KeyValueTimestamp<>(0, "A0+b0", 1000L),
+                new KeyValueTimestamp<>(1, "A1+b1", 1001L),
+                new KeyValueTimestamp<>(2, "A2+b2", 1002L),
+                new KeyValueTimestamp<>(3, "A3+b3", 1003L)
             );
 
             // push four items with increased timestamps to the secondary stream; 
@@ -551,9 +551,9 @@ public class KStreamKStreamLeftJoinTest {
                 inputTopic2.pipeInput(expectedKey, "c" + expectedKey, time);
             }
             processor.checkAndClearProcessResult(
-                    new KeyValueTimestamp<>(1, "A1+c1", 1001L),
-                    new KeyValueTimestamp<>(2, "A2+c2", 1002L),
-                    new KeyValueTimestamp<>(3, "A3+c3", 1003L)
+                new KeyValueTimestamp<>(1, "A1+c1", 1001L),
+                new KeyValueTimestamp<>(2, "A2+c2", 1002L),
+                new KeyValueTimestamp<>(3, "A3+c3", 1003L)
             );
 
             // push four items with increased timestamps to the secondary stream;
@@ -573,8 +573,8 @@ public class KStreamKStreamLeftJoinTest {
                 inputTopic2.pipeInput(expectedKey, "d" + expectedKey, time);
             }
             processor.checkAndClearProcessResult(
-                    new KeyValueTimestamp<>(2, "A2+d2", 1002L),
-                    new KeyValueTimestamp<>(3, "A3+d3", 1003L)
+                new KeyValueTimestamp<>(2, "A2+d2", 1002L),
+                new KeyValueTimestamp<>(3, "A3+d3", 1003L)
             );
 
             // push four items with increased timestamps to the secondary stream; 

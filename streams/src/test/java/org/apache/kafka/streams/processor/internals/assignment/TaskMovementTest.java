@@ -176,26 +176,26 @@ public class TaskMovementTest {
         final Map<ProcessId, ClientState> clientStates = getClientStatesMap(client1, client2, client3);
 
         final Map<TaskId, SortedSet<ProcessId>> tasksToCaughtUpClients = mkMap(
-                mkEntry(TASK_0_0, mkSortedSet()),
-                mkEntry(TASK_0_1, mkSortedSet()),
-                mkEntry(TASK_0_2, mkSortedSet())
+            mkEntry(TASK_0_0, mkSortedSet()),
+            mkEntry(TASK_0_1, mkSortedSet()),
+            mkEntry(TASK_0_2, mkSortedSet())
         );
         final Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag = mkMap(
-                mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2, PID_3)),
-                mkEntry(TASK_0_1, mkOrderedSet(PID_3, PID_1, PID_2)),
-                mkEntry(TASK_0_2, mkOrderedSet(PID_2, PID_3, PID_1))
+            mkEntry(TASK_0_0, mkOrderedSet(PID_1, PID_2, PID_3)),
+            mkEntry(TASK_0_1, mkOrderedSet(PID_3, PID_1, PID_2)),
+            mkEntry(TASK_0_2, mkOrderedSet(PID_2, PID_3, PID_1))
         );
 
         assertThat(
-                "should have assigned movements",
-                assignActiveTaskMovements(
-                        tasksToCaughtUpClients,
-                        tasksToClientByLag,
-                        clientStates,
-                        new TreeMap<>(),
-                        new AtomicInteger(maxWarmupReplicas)
-                ),
-                is(2)
+            "should have assigned movements",
+            assignActiveTaskMovements(
+                tasksToCaughtUpClients,
+                tasksToClientByLag,
+                clientStates,
+                new TreeMap<>(),
+                new AtomicInteger(maxWarmupReplicas)
+            ),
+            is(2)
         );
         // The active tasks have changed to the ones that each client is most caught up on
         assertThat(client1, hasProperty("activeTasks", ClientState::activeTasks, Set.of(TASK_0_0)));

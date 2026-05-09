@@ -358,18 +358,18 @@ class ExactlyOnceWorkerSourceTask extends AbstractWorkerSourceTask {
 
     private static boolean isPossibleTransactionTimeoutError(Throwable error) {
         return error instanceof InvalidProducerEpochException
-            || error.getCause() instanceof InvalidProducerEpochException;
+                || error.getCause() instanceof InvalidProducerEpochException;
     }
 
     private ConnectException wrapTransactionTimeoutError(Throwable error) {
         return new ConnectException(
-            "The task " + id + " was unable to finish writing records to Kafka before its producer transaction expired. "
-                + "It may be necessary to reconfigure this connector in order for it to run healthily with exactly-once support. "
-                + "Options for this include: tune the connector's producer configuration for higher throughput, "
-                + "increase the transaction timeout for the connector's producers, "
-                + "decrease the offset commit interval (if using interval-based transaction boundaries), "
-                + "or use the 'poll' transaction boundary (if the connector is not already configured to use it).",
-            error
+                "The task " + id + " was unable to finish writing records to Kafka before its producer transaction expired. "
+                        + "It may be necessary to reconfigure this connector in order for it to run healthily with exactly-once support. "
+                        + "Options for this include: tune the connector's producer configuration for higher throughput, "
+                        + "increase the transaction timeout for the connector's producers, "
+                        + "decrease the offset commit interval (if using interval-based transaction boundaries), "
+                        + "or use the 'poll' transaction boundary (if the connector is not already configured to use it).",
+                error
         );
     }
 

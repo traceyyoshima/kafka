@@ -228,16 +228,16 @@ public class RecordQueue {
                 throw internalFatalExtractorException;
             } catch (final Exception fatalUserException) {
                 throw new StreamsException(
-                        String.format("Fatal user code error in TimestampExtractor callback for record %s.", deserialized),
-                        fatalUserException);
+                    String.format("Fatal user code error in TimestampExtractor callback for record %s.", deserialized),
+                    fatalUserException);
             }
             log.trace("Source node {} extracted timestamp {} for record {}", source.name(), timestamp, deserialized);
 
             // drop message if TS is invalid, i.e., negative
             if (timestamp < 0) {
                 log.warn(
-                        "Skipping record due to negative extracted timestamp. topic=[{}] partition=[{}] offset=[{}] extractedTimestamp=[{}] extractor=[{}]",
-                        deserialized.topic(), deserialized.partition(), deserialized.offset(), timestamp, timestampExtractor.getClass().getCanonicalName()
+                         "Skipping record due to negative extracted timestamp. topic=[{}] partition=[{}] offset=[{}] extractedTimestamp=[{}] extractor=[{}]",
+                         deserialized.topic(), deserialized.partition(), deserialized.offset(), timestamp, timestampExtractor.getClass().getCanonicalName()
                 );
                 droppedRecordsSensor.record();
                 lastCorruptedRecord = raw;

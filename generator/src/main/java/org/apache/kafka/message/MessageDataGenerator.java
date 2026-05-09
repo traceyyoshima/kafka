@@ -127,12 +127,12 @@ public final class MessageDataGenerator implements MessageClassGenerator {
         }
         generateSubclasses(className, struct, parentVersions, isSetElement);
         if (isTopLevel) {
-            for (Iterator<StructSpec> iter = structRegistry.commonStructs(); iter.hasNext(); ) {
+            for (Iterator<StructSpec> iter = structRegistry.commonStructs(); iter.hasNext();) {
                 StructSpec commonStruct = iter.next();
                 generateClass(Optional.empty(),
-                        commonStruct.name(),
-                        commonStruct,
-                        commonStruct.versions());
+                    commonStruct.name(),
+                    commonStruct,
+                    commonStruct.versions());
             }
             buffer.decrementIndent();
             buffer.printf("}%n");
@@ -165,22 +165,22 @@ public final class MessageDataGenerator implements MessageClassGenerator {
     }
 
     private void generateSubclasses(String className, StructSpec struct,
-            Versions parentVersions, boolean isSetElement) throws Exception {
+        Versions parentVersions, boolean isSetElement) throws Exception {
         for (FieldSpec field : struct.fields()) {
             if (field.type().isStructArray()) {
                 FieldType.ArrayType arrayType = (FieldType.ArrayType) field.type();
                 if (!structRegistry.commonStructNames().contains(arrayType.elementName())) {
                     generateClass(Optional.empty(),
-                            arrayType.elementType().toString(),
-                            structRegistry.findStruct(field),
-                            parentVersions.intersect(struct.versions()));
+                        arrayType.elementType().toString(),
+                        structRegistry.findStruct(field),
+                        parentVersions.intersect(struct.versions()));
                 }
             } else if (field.type().isStruct()) {
                 if (!structRegistry.commonStructNames().contains(field.typeString())) {
                     generateClass(Optional.empty(),
-                            field.typeString(),
-                            structRegistry.findStruct(field),
-                            parentVersions.intersect(struct.versions()));
+                        field.typeString(),
+                        structRegistry.findStruct(field),
+                        parentVersions.intersect(struct.versions()));
                 }
             }
         }
@@ -467,7 +467,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
                             ((FieldType.ArrayType) field.type()).elementType().
                                 serializationIsDifferentInFlexibleVersions()) {
                             VersionConditional.forVersions(fieldFlexibleVersions(field),
-                                    presentAndUntaggedVersions).
+                                presentAndUntaggedVersions).
                                 ifMember(callGenerateVariableLengthReader).
                                 ifNotMember(callGenerateVariableLengthReader).
                                 generate(buffer);
@@ -664,7 +664,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
                 headerGenerator.addImport(MessageGenerator.IMPLICIT_LINKED_HASH_MULTI_COLLECTION_CLASS);
                 buffer.printf("%s newCollection = new %s(%s);%n",
                     FieldSpec.collectionType(arrayType.elementType().toString()),
-                        FieldSpec.collectionType(arrayType.elementType().toString()), lengthVar);
+                    FieldSpec.collectionType(arrayType.elementType().toString()), lengthVar);
             } else {
                 headerGenerator.addImport(MessageGenerator.ARRAYLIST_CLASS);
                 String boxedArrayType =
@@ -701,7 +701,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
     }
 
     private void generateClassWriter(String className, StructSpec struct,
-            Versions parentVersions) {
+        Versions parentVersions) {
         headerGenerator.addImport(MessageGenerator.WRITABLE_CLASS);
         headerGenerator.addImport(MessageGenerator.OBJECT_SERIALIZATION_CACHE_CLASS);
         buffer.printf("@Override%n");
@@ -740,7 +740,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
                                     ((FieldType.ArrayType) field.type()).elementType().
                                         serializationIsDifferentInFlexibleVersions()) {
                                     VersionConditional.forVersions(fieldFlexibleVersions(field),
-                                            presentAndUntaggedVersions).
+                                        presentAndUntaggedVersions).
                                         ifMember(callGenerateVariableLengthWriter).
                                         ifNotMember(callGenerateVariableLengthWriter).
                                         generate(buffer);
@@ -1395,7 +1395,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
         } else if (field.type().isRecords()) {
             headerGenerator.addImport(MessageGenerator.OBJECTS_CLASS);
             buffer.printf("if (!Objects.equals(this.%s, other.%s)) return false;%n",
-                    field.camelCaseName(), field.camelCaseName());
+                field.camelCaseName(), field.camelCaseName());
         } else {
             buffer.printf("if (%s != other.%s) return false;%n",
                 field.camelCaseName(), field.camelCaseName());
@@ -1441,7 +1441,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
             if (field.zeroCopy()) {
                 headerGenerator.addImport(MessageGenerator.OBJECTS_CLASS);
                 buffer.printf("hashCode = 31 * hashCode + Objects.hashCode(%s);%n",
-                        field.camelCaseName());
+                    field.camelCaseName());
             } else {
                 headerGenerator.addImport(MessageGenerator.ARRAYS_CLASS);
                 buffer.printf("hashCode = 31 * hashCode + Arrays.hashCode(%s);%n",
@@ -1450,7 +1450,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
         } else if (field.type().isRecords()) {
             headerGenerator.addImport(MessageGenerator.OBJECTS_CLASS);
             buffer.printf("hashCode = 31 * hashCode + Objects.hashCode(%s);%n",
-                    field.camelCaseName());
+                field.camelCaseName());
         } else if (field.type().isStruct()
                    || field.type().isArray()
                    || field.type().isString()) {
@@ -1591,7 +1591,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
             }
         } else if (field.type().isRecords()) {
             buffer.printf("+ \"%s%s=\" + %s%n",
-                    prefix, field.camelCaseName(), field.camelCaseName());
+                prefix, field.camelCaseName(), field.camelCaseName());
         } else if (field.type() instanceof FieldType.UUIDFieldType) {
             buffer.printf("+ \"%s%s=\" + %s.toString()%n",
                 prefix, field.camelCaseName(), field.camelCaseName());

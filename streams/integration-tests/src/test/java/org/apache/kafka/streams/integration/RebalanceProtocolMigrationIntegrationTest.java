@@ -168,7 +168,7 @@ public class RebalanceProtocolMigrationIntegrationTest {
         final Properties props,
         final String key,
         final String value)
-        throws Exception {
+            throws Exception {
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
         kafkaStreams.start();
 
@@ -193,7 +193,7 @@ public class RebalanceProtocolMigrationIntegrationTest {
         final V value,
         final long timestamp,
         final List<KeyValueTimestamp<K, V>> expected)
-        throws Exception {
+            throws Exception {
 
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
             inputTopic,

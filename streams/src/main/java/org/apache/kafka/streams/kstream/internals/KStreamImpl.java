@@ -1060,10 +1060,10 @@ public class KStreamImpl<K, V> extends AbstractStream<K, V> implements KStream<K
 
         if (repartitionRequired) {
             final KStreamImpl<K, V> thisStreamRepartitioned = repartitionForJoin(
-                    name != null ? name : this.name,
-                    joinedInternal.keySerde(),
-                    joinedInternal.leftValueSerde(),
-                    name != null
+                name != null ? name : this.name,
+                joinedInternal.keySerde(),
+                joinedInternal.leftValueSerde(),
+                name != null
             );
             return thisStreamRepartitioned.doStreamTableJoin(table, joiner, joinedInternal, false);
         } else {
@@ -1101,10 +1101,10 @@ public class KStreamImpl<K, V> extends AbstractStream<K, V> implements KStream<K
 
         if (repartitionRequired) {
             final KStreamImpl<K, V> thisStreamRepartitioned = repartitionForJoin(
-                    name != null ? name : this.name,
-                    joinedInternal.keySerde(),
-                    joinedInternal.leftValueSerde(),
-                    name != null
+                name != null ? name : this.name,
+                joinedInternal.keySerde(),
+                joinedInternal.leftValueSerde(),
+                name != null
             );
             return thisStreamRepartitioned.doStreamTableJoin(table, joiner, joinedInternal, true);
         } else {

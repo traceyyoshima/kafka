@@ -246,7 +246,7 @@ public class MeteredSessionStoreTest {
         setUp();
         when(innerStore.findSessions(KEY_BYTES, 0, 0))
                 .thenReturn(new KeyValueIteratorStub<>(
-                        Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, VALUE_BYTES)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, VALUE_BYTES)).iterator()));
         init();
 
         final KeyValueIterator<Windowed<String>, String> iterator = store.findSessions(KEY, 0, 0);
@@ -287,7 +287,7 @@ public class MeteredSessionStoreTest {
         setUp();
         when(innerStore.findSessions(KEY_BYTES, KEY_BYTES, 0, 0))
                 .thenReturn(new KeyValueIteratorStub<>(
-                        Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, VALUE_BYTES)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, VALUE_BYTES)).iterator()));
         init();
 
         final KeyValueIterator<Windowed<String>, String> iterator = store.findSessions(KEY, KEY, 0, 0);
@@ -343,7 +343,7 @@ public class MeteredSessionStoreTest {
         setUp();
         when(innerStore.fetch(KEY_BYTES))
                 .thenReturn(new KeyValueIteratorStub<>(
-                        Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, VALUE_BYTES)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, VALUE_BYTES)).iterator()));
         init();
 
         final KeyValueIterator<Windowed<String>, String> iterator = store.fetch(KEY);
@@ -384,7 +384,7 @@ public class MeteredSessionStoreTest {
         setUp();
         when(innerStore.fetch(KEY_BYTES, KEY_BYTES))
                 .thenReturn(new KeyValueIteratorStub<>(
-                        Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, VALUE_BYTES)).iterator()));
+                    Collections.singleton(KeyValue.pair(WINDOWED_KEY_BYTES, VALUE_BYTES)).iterator()));
         init();
 
         final KeyValueIterator<Windowed<String>, String> iterator = store.fetch(KEY, KEY);

@@ -1323,7 +1323,7 @@ public class ShareConsumerTest extends ShareConsumerTestBase {
         }
 
         CompletableFuture.allOf(Stream.of(consumeMessagesFutures1.stream(), consumeMessagesFutures2.stream(),
-                consumeMessagesFutures3.stream()).flatMap(Function.identity()).toArray(CompletableFuture[]::new))
+            consumeMessagesFutures3.stream()).flatMap(Function.identity()).toArray(CompletableFuture[]::new))
             .get(120, TimeUnit.SECONDS);
 
         int totalResult1 = consumeMessagesFutures1.stream().mapToInt(CompletableFuture::join).sum();

@@ -391,8 +391,8 @@ public class ConsumerPerformance {
 
         private Properties readProps(List<String> commandProperties, String commandConfigFile) throws IOException {
             Properties props = commandConfigFile != null
-                    ? Utils.loadProps(commandConfigFile)
-                    : new Properties();
+                ? Utils.loadProps(commandConfigFile)
+                : new Properties();
             props.putAll(parseKeyValueArgs(commandProperties));
             return props;
         }
@@ -422,20 +422,20 @@ public class ConsumerPerformance {
 
         public Optional<Collection<String>> topic() {
             return options.has(topicOpt)
-                    ? Optional.of(List.of(options.valueOf(topicOpt)))
-                    : Optional.empty();
+                ? Optional.of(List.of(options.valueOf(topicOpt)))
+                : Optional.empty();
         }
 
         public Optional<Pattern> include() {
             return options.has(includeOpt)
-                    ? Optional.of(Pattern.compile(options.valueOf(includeOpt)))
-                    : Optional.empty();
+                ? Optional.of(Pattern.compile(options.valueOf(includeOpt)))
+                : Optional.empty();
         }
 
         public long numRecords() {
             return options.has(numMessagesOpt)
-                    ? options.valueOf(numMessagesOpt)
-                    : options.valueOf(numRecordsOpt);
+                ? options.valueOf(numMessagesOpt)
+                : options.valueOf(numRecordsOpt);
         }
 
         public long reportingIntervalMs() {

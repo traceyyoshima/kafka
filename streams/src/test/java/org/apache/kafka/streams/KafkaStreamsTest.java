@@ -244,22 +244,22 @@ public class KafkaStreamsTest {
         // setup stream threads
         streamThreadMockedStatic = mockStatic(StreamThread.class);
         streamThreadMockedStatic.when(() -> StreamThread.create(
-                any(TopologyMetadata.class),
-                any(StreamsConfig.class),
-                any(KafkaClientSupplier.class),
-                any(Admin.class),
-                any(UUID.class),
-                any(String.class),
-                any(StreamsMetricsImpl.class),
-                any(Time.class),
-                any(StreamsMetadataState.class),
-                anyLong(),
-                any(StateDirectory.class),
-                any(StateRestoreListener.class),
-                any(StandbyUpdateListener.class),
-                anyInt(),
-                any(Runnable.class),
-                any()
+            any(TopologyMetadata.class),
+            any(StreamsConfig.class),
+            any(KafkaClientSupplier.class),
+            any(Admin.class),
+            any(UUID.class),
+            any(String.class),
+            any(StreamsMetricsImpl.class),
+            any(Time.class),
+            any(StreamsMetadataState.class),
+            anyLong(),
+            any(StateDirectory.class),
+            any(StateRestoreListener.class),
+            any(StandbyUpdateListener.class),
+            anyInt(),
+            any(Runnable.class),
+            any()
         )).thenReturn(streamThreadOne).thenReturn(streamThreadTwo);
 
         streamsConfigUtils = mockStatic(StreamsConfigUtils.class);
@@ -271,33 +271,33 @@ public class KafkaStreamsTest {
         final AtomicReference<GlobalStreamThread.State> globalThreadState = new AtomicReference<>(GlobalStreamThread.State.CREATED);
 
         globalStreamThreadMockedConstruction = mockConstruction(GlobalStreamThread.class,
-                (mock, context) -> {
-                    when(mock.state()).thenAnswer(invocation -> globalThreadState.get());
-                    doNothing().when(mock).setStateListener(threadStateListenerCapture.capture());
-                    doAnswer(invocation -> {
-                        globalThreadState.set(GlobalStreamThread.State.RUNNING);
-                        threadStateListenerCapture.getValue().onChange(mock,
-                                GlobalStreamThread.State.RUNNING,
-                                GlobalStreamThread.State.CREATED);
-                        return null;
-                    }).when(mock).start();
-                    doAnswer(invocation -> {
-                        supplier.restoreConsumer.close();
+            (mock, context) -> {
+                when(mock.state()).thenAnswer(invocation -> globalThreadState.get());
+                doNothing().when(mock).setStateListener(threadStateListenerCapture.capture());
+                doAnswer(invocation -> {
+                    globalThreadState.set(GlobalStreamThread.State.RUNNING);
+                    threadStateListenerCapture.getValue().onChange(mock,
+                        GlobalStreamThread.State.RUNNING,
+                        GlobalStreamThread.State.CREATED);
+                    return null;
+                }).when(mock).start();
+                doAnswer(invocation -> {
+                    supplier.restoreConsumer.close();
 
-                        for (final MockProducer<byte[], byte[]> producer : supplier.producers) {
-                            producer.close();
-                        }
-                        globalThreadState.set(GlobalStreamThread.State.DEAD);
-                        threadStateListenerCapture.getValue().onChange(mock,
-                                GlobalStreamThread.State.PENDING_SHUTDOWN,
-                                GlobalStreamThread.State.RUNNING);
-                        threadStateListenerCapture.getValue().onChange(mock,
-                                GlobalStreamThread.State.DEAD,
-                                GlobalStreamThread.State.PENDING_SHUTDOWN);
-                        return null;
-                    }).when(mock).shutdown();
-                    when(mock.stillRunning()).thenReturn(globalThreadState.get() == GlobalStreamThread.State.RUNNING);
-                });
+                    for (final MockProducer<byte[], byte[]> producer : supplier.producers) {
+                        producer.close();
+                    }
+                    globalThreadState.set(GlobalStreamThread.State.DEAD);
+                    threadStateListenerCapture.getValue().onChange(mock,
+                        GlobalStreamThread.State.PENDING_SHUTDOWN,
+                        GlobalStreamThread.State.RUNNING);
+                    threadStateListenerCapture.getValue().onChange(mock,
+                        GlobalStreamThread.State.DEAD,
+                        GlobalStreamThread.State.PENDING_SHUTDOWN);
+                    return null;
+                }).when(mock).shutdown();
+                when(mock.stillRunning()).thenReturn(globalThreadState.get() == GlobalStreamThread.State.RUNNING);
+            });
     }
 
     private AtomicReference<StreamThread.State> prepareStreamThread(final StreamThread thread, final int threadId) {
@@ -336,17 +336,17 @@ public class KafkaStreamsTest {
         doAnswer(invocation -> {
             state.set(StreamThread.State.STARTING);
             threadStateListenerCapture.getValue().onChange(thread,
-                    StreamThread.State.STARTING,
-                    StreamThread.State.CREATED);
+                StreamThread.State.STARTING,
+                StreamThread.State.CREATED);
             threadStateListenerCapture.getValue().onChange(thread,
-                    StreamThread.State.PARTITIONS_REVOKED,
-                    StreamThread.State.STARTING);
+                StreamThread.State.PARTITIONS_REVOKED,
+                StreamThread.State.STARTING);
             threadStateListenerCapture.getValue().onChange(thread,
-                    StreamThread.State.PARTITIONS_ASSIGNED,
-                    StreamThread.State.PARTITIONS_REVOKED);
+                StreamThread.State.PARTITIONS_ASSIGNED,
+                StreamThread.State.PARTITIONS_REVOKED);
             threadStateListenerCapture.getValue().onChange(thread,
-                    StreamThread.State.RUNNING,
-                    StreamThread.State.PARTITIONS_ASSIGNED);
+                StreamThread.State.RUNNING,
+                StreamThread.State.PARTITIONS_ASSIGNED);
             return null;
         }).when(thread).start();
     }
@@ -413,7 +413,7 @@ public class KafkaStreamsTest {
         prepareStreamThread(streamThreadTwo, 2);
 
         try (final MockedConstruction<StateDirectory> constructed = mockConstruction(StateDirectory.class,
-                (mock, context) -> when(mock.initializeProcessId()).thenReturn(UUID.randomUUID()))) {
+            (mock, context) -> when(mock.initializeProcessId()).thenReturn(UUID.randomUUID()))) {
             try (final KafkaStreams streams = new KafkaStreams(getBuilderWithSource().build(), props, supplier, time)) {
                 assertEquals(1, constructed.constructed().size());
                 final StateDirectory stateDirectory = constructed.constructed().get(0);
@@ -877,6 +877,7 @@ public class KafkaStreamsTest {
         }
 
     }
+
     @Test
     public void shouldThrowNullPointerExceptionSettingStreamsUncaughtExceptionHandlerIfNull() {
         prepareStreams();
@@ -1003,7 +1004,7 @@ public class KafkaStreamsTest {
                 "Streams never started.");
 
             final CloseOptions closeOptions = CloseOptions.timeout(Duration.ZERO)
-                    .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
+                .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
 
             streams.close(closeOptions);
             assertThat(streams.state() == State.PENDING_SHUTDOWN, equalTo(true));
@@ -1257,7 +1258,7 @@ public class KafkaStreamsTest {
         when(mockClientSupplier.getAdmin(any())).thenReturn(adminClient);
 
         final CloseOptions closeOptions = CloseOptions.timeout(Duration.ofMillis(10L))
-                .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
+            .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
         try (final KafkaStreams streams = new KafkaStreamsWithTerminableThread(getBuilderWithSource().build(), props, mockClientSupplier)) {
             assertFalse(streams.close(closeOptions));
         }
@@ -1274,7 +1275,7 @@ public class KafkaStreamsTest {
         when(mockClientSupplier.getAdmin(any())).thenReturn(adminClient);
 
         final CloseOptions closeOptions = CloseOptions.timeout(Duration.ofMillis(-1L))
-                .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
+            .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
         try (final KafkaStreams streams = new KafkaStreamsWithTerminableThread(getBuilderWithSource().build(), props, mockClientSupplier, time)) {
             assertThrows(IllegalArgumentException.class, () -> streams.close(closeOptions));
         }
@@ -1292,9 +1293,9 @@ public class KafkaStreamsTest {
         when(mockClientSupplier.getAdmin(any())).thenReturn(adminClient);
 
         final CloseOptions closeOptions = CloseOptions.timeout(null)
-                .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
+            .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
         final KafkaStreams streams = spy(new KafkaStreamsWithTerminableThread(
-                getBuilderWithSource().build(), props, mockClientSupplier, time));
+            getBuilderWithSource().build(), props, mockClientSupplier, time));
 
         doReturn(false).when(streams).close(any(Optional.class), any());
         streams.close(closeOptions);
@@ -1314,7 +1315,7 @@ public class KafkaStreamsTest {
         when(mockClientSupplier.getAdmin(any())).thenReturn(adminClient);
 
         final CloseOptions closeOptions = CloseOptions.timeout(Duration.ZERO)
-                .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
+            .withGroupMembershipOperation(CloseOptions.GroupMembershipOperation.LEAVE_GROUP);
         try (final KafkaStreams streams = new KafkaStreamsWithTerminableThread(getBuilderWithSource().build(), props, mockClientSupplier)) {
             assertFalse(streams.close(closeOptions));
         }
@@ -1332,7 +1333,7 @@ public class KafkaStreamsTest {
             final ScheduledExecutorService rocksDBMetricsRecordingTriggerThread = mock(ScheduledExecutorService.class);
 
             executorsMockedStatic.when(() -> Executors.newSingleThreadScheduledExecutor(
-                    any(ThreadFactory.class))).thenReturn(cleanupSchedule, rocksDBMetricsRecordingTriggerThread);
+                any(ThreadFactory.class))).thenReturn(cleanupSchedule, rocksDBMetricsRecordingTriggerThread);
 
             final StreamsBuilder builder = new StreamsBuilder();
             builder.table("topic", Materialized.as("store"));
@@ -1415,7 +1416,7 @@ public class KafkaStreamsTest {
         try (final MockedStatic<Executors> executorsMockedStatic = mockStatic(Executors.class)) {
             final ScheduledExecutorService cleanupSchedule = mock(ScheduledExecutorService.class);
             executorsMockedStatic.when(() ->
-                    Executors.newSingleThreadScheduledExecutor(any(ThreadFactory.class))).thenReturn(cleanupSchedule);
+                Executors.newSingleThreadScheduledExecutor(any(ThreadFactory.class))).thenReturn(cleanupSchedule);
 
             final StreamsBuilder builder = new StreamsBuilder();
             builder.table("topic", Materialized.as("store"));
@@ -1554,7 +1555,7 @@ public class KafkaStreamsTest {
             streams.start();
             waitForCondition(
                 () -> streams.state() == KafkaStreams.State.RUNNING,
-                    () -> "Streams never started, state is " + streams.state());
+                () -> "Streams never started, state is " + streams.state());
 
             streams.close();
 
@@ -1729,7 +1730,7 @@ public class KafkaStreamsTest {
             final ClientInstanceIds clientInstanceIds = streams.clientInstanceIds(Duration.ZERO);
             assertThat(clientInstanceIds.consumerInstanceIds().size(), equalTo(1));
             assertThat(clientInstanceIds.consumerInstanceIds().get("main-consumer"), equalTo(mainConsumerInstanceId));
-            assertThat(clientInstanceIds.producerInstanceIds().size(),  equalTo(1));
+            assertThat(clientInstanceIds.producerInstanceIds().size(), equalTo(1));
             assertThat(clientInstanceIds.producerInstanceIds().get("some-thread-producer"), equalTo(producerInstanceId));
             assertThat(clientInstanceIds.adminInstanceId(), equalTo(adminInstanceId));
         }
@@ -1887,7 +1888,7 @@ public class KafkaStreamsTest {
         prepareStreamThread(streamThreadTwo, 2);
 
         try (final MockedConstruction<StateDirectory> constructed = mockConstruction(StateDirectory.class,
-                (mock, context) -> when(mock.initializeProcessId()).thenReturn(UUID.randomUUID()))) {
+            (mock, context) -> when(mock.initializeProcessId()).thenReturn(UUID.randomUUID()))) {
             try (final KafkaStreams streams = new KafkaStreams(getBuilderWithSource().build(), props, supplier, time)) {
                 assertEquals(1, constructed.constructed().size());
                 final StateDirectory stateDirectory = constructed.constructed().get(0);
@@ -1904,7 +1905,7 @@ public class KafkaStreamsTest {
         prepareStreamThread(streamThreadTwo, 2);
 
         try (final MockedConstruction<StateDirectory> constructed = mockConstruction(StateDirectory.class,
-                (mock, context) -> when(mock.initializeProcessId()).thenReturn(UUID.randomUUID()))) {
+            (mock, context) -> when(mock.initializeProcessId()).thenReturn(UUID.randomUUID()))) {
             try (final KafkaStreams streams = new KafkaStreams(getBuilderWithSource().build(), props, supplier, time)) {
                 assertEquals(1, constructed.constructed().size());
                 final StateDirectory stateDirectory = constructed.constructed().get(0);
@@ -1991,7 +1992,8 @@ public class KafkaStreamsTest {
                                          final String globalStoreName,
                                          final boolean isPersistentStore) {
         final StoreBuilder<KeyValueStore<String, Long>> storeBuilder = Stores.keyValueStoreBuilder(
-            isPersistentStore ?
+            isPersistentStore
+                ?
                 Stores.persistentKeyValueStore(storeName)
                 : Stores.inMemoryKeyValueStore(storeName),
             Serdes.String(),

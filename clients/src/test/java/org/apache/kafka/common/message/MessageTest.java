@@ -104,7 +104,7 @@ public final class MessageTest {
                 setV3AndBelowProducerId(0xbadcafebadcafeL).
                 setV3AndBelowProducerEpoch((short) 30000).
                 setV3AndBelowTopics(new AddPartitionsToTxnTopicCollection(singletonList(
-                        new AddPartitionsToTxnTopic().
+                    new AddPartitionsToTxnTopic().
                                 setName("Topic").
                                 setPartitions(singletonList(1)))));
         testDuplication(v3AndBelowData);
@@ -112,7 +112,7 @@ public final class MessageTest {
 
         AddPartitionsToTxnRequestData data = new AddPartitionsToTxnRequestData().
                 setTransactions(new AddPartitionsToTxnTransactionCollection(singletonList(
-                       new AddPartitionsToTxnRequestData.AddPartitionsToTxnTransaction().
+                    new AddPartitionsToTxnRequestData.AddPartitionsToTxnTransaction().
                               setTransactionalId("blah").
                               setProducerId(0xbadcafebadcafeL).
                               setProducerEpoch((short) 30000).
@@ -142,9 +142,9 @@ public final class MessageTest {
     @Test
     public void testMetadataVersions() throws Exception {
         testAllMessageRoundTrips(new MetadataRequestData().setTopics(
-                Arrays.asList(new MetadataRequestData.MetadataRequestTopic().setName("foo"),
-                        new MetadataRequestData.MetadataRequestTopic().setName("bar")
-                )));
+            Arrays.asList(new MetadataRequestData.MetadataRequestTopic().setName("foo"),
+                new MetadataRequestData.MetadataRequestTopic().setName("bar")
+            )));
         testAllMessageRoundTripsFromVersion((short) 1, new MetadataRequestData().
                 setTopics(null).
                 setAllowAutoTopicCreation(true).
@@ -160,9 +160,9 @@ public final class MessageTest {
     @Test
     public void testHeartbeatVersions() throws Exception {
         Supplier<HeartbeatRequestData> newRequest = () -> new HeartbeatRequestData()
-                .setGroupId("groupId")
-                .setMemberId(memberId)
-                .setGenerationId(15);
+            .setGroupId("groupId")
+            .setMemberId(memberId)
+            .setGenerationId(15);
         testAllMessageRoundTrips(newRequest.get());
         testAllMessageRoundTrips(newRequest.get().setGroupInstanceId(null));
         testAllMessageRoundTripsFromVersion((short) 3, newRequest.get().setGroupInstanceId("instanceId"));
@@ -171,11 +171,11 @@ public final class MessageTest {
     @Test
     public void testJoinGroupRequestVersions() throws Exception {
         Supplier<JoinGroupRequestData> newRequest = () -> new JoinGroupRequestData()
-                .setGroupId("groupId")
-                .setMemberId(memberId)
-                .setProtocolType("consumer")
-                .setProtocols(new JoinGroupRequestData.JoinGroupRequestProtocolCollection())
-                .setSessionTimeoutMs(10000);
+            .setGroupId("groupId")
+            .setMemberId(memberId)
+            .setProtocolType("consumer")
+            .setProtocols(new JoinGroupRequestData.JoinGroupRequestProtocolCollection())
+            .setSessionTimeoutMs(10000);
         testAllMessageRoundTrips(newRequest.get());
         testAllMessageRoundTripsFromVersion((short) 1, newRequest.get().setRebalanceTimeoutMs(20000));
         testAllMessageRoundTrips(newRequest.get().setGroupInstanceId(null));
@@ -185,13 +185,13 @@ public final class MessageTest {
     @Test
     public void testListOffsetsRequestVersions() throws Exception {
         List<ListOffsetsTopic> v = Collections.singletonList(new ListOffsetsTopic()
-                .setName("topic")
-                .setPartitions(Collections.singletonList(new ListOffsetsPartition()
-                        .setPartitionIndex(0)
-                        .setTimestamp(123L))));
+            .setName("topic")
+            .setPartitions(Collections.singletonList(new ListOffsetsPartition()
+                .setPartitionIndex(0)
+                .setTimestamp(123L))));
         Supplier<ListOffsetsRequestData> newRequest = () -> new ListOffsetsRequestData()
-                .setTopics(v)
-                .setReplicaId(0);
+            .setTopics(v)
+            .setReplicaId(0);
         testAllMessageRoundTrips(newRequest.get());
         testAllMessageRoundTripsFromVersion((short) 2, newRequest.get().setIsolationLevel(IsolationLevel.READ_COMMITTED.id()));
     }
@@ -199,11 +199,11 @@ public final class MessageTest {
     @Test
     public void testListOffsetsResponseVersions() throws Exception {
         ListOffsetsPartitionResponse partition = new ListOffsetsPartitionResponse()
-                .setErrorCode(Errors.NONE.code())
-                .setPartitionIndex(0);
+            .setErrorCode(Errors.NONE.code())
+            .setPartitionIndex(0);
         List<ListOffsetsTopicResponse> topics = Collections.singletonList(new ListOffsetsTopicResponse()
-                .setName("topic")
-                .setPartitions(Collections.singletonList(partition)));
+            .setName("topic")
+            .setPartitions(Collections.singletonList(partition)));
         Supplier<ListOffsetsResponseData> response = () -> new ListOffsetsResponseData()
                 .setTopics(topics);
         for (short version = ApiKeys.LIST_OFFSETS.oldestVersion(); version <= ApiKeys.LIST_OFFSETS.latestVersion(); ++version) {
@@ -224,13 +224,13 @@ public final class MessageTest {
     @Test
     public void testJoinGroupResponseVersions() throws Exception {
         Supplier<JoinGroupResponseData> newResponse = () -> new JoinGroupResponseData()
-                .setMemberId(memberId)
-                .setLeader(memberId)
-                .setGenerationId(1)
-                .setMembers(Collections.singletonList(
-                        new JoinGroupResponseMember()
+            .setMemberId(memberId)
+            .setLeader(memberId)
+            .setGenerationId(1)
+            .setMembers(Collections.singletonList(
+                new JoinGroupResponseMember()
                                 .setMemberId(memberId)
-                ));
+            ));
         testAllMessageRoundTrips(newResponse.get());
         testAllMessageRoundTripsFromVersion((short) 2, newResponse.get().setThrottleTimeMs(1000));
         testAllMessageRoundTrips(newResponse.get().members().get(0).setGroupInstanceId(null));
@@ -247,18 +247,18 @@ public final class MessageTest {
 
         testAllMessageRoundTripsFromVersion((short) 3, newResponse.get().setMembers(
             Collections.singletonList(new MemberResponse()
-            .setMemberId(memberId)
-            .setGroupInstanceId(instanceId))
+                .setMemberId(memberId)
+                .setGroupInstanceId(instanceId))
         ));
     }
 
     @Test
     public void testSyncGroupDefaultGroupInstanceId() throws Exception {
         Supplier<SyncGroupRequestData> request = () -> new SyncGroupRequestData()
-                .setGroupId("groupId")
-                .setMemberId(memberId)
-                .setGenerationId(15)
-                .setAssignments(new ArrayList<>());
+            .setGroupId("groupId")
+            .setMemberId(memberId)
+            .setGenerationId(15)
+            .setAssignments(new ArrayList<>());
         testAllMessageRoundTrips(request.get());
         testAllMessageRoundTrips(request.get().setGroupInstanceId(null));
         testAllMessageRoundTripsFromVersion((short) 3, request.get().setGroupInstanceId(instanceId));
@@ -267,14 +267,14 @@ public final class MessageTest {
     @Test
     public void testOffsetCommitDefaultGroupInstanceId() throws Exception {
         testAllMessageRoundTrips(new OffsetCommitRequestData()
-                .setTopics(new ArrayList<>())
-                .setGroupId("groupId"));
+            .setTopics(new ArrayList<>())
+            .setGroupId("groupId"));
 
         Supplier<OffsetCommitRequestData> request = () -> new OffsetCommitRequestData()
-                .setGroupId("groupId")
-                .setMemberId(memberId)
-                .setTopics(new ArrayList<>())
-                .setGenerationIdOrMemberEpoch(15);
+            .setGroupId("groupId")
+            .setMemberId(memberId)
+            .setTopics(new ArrayList<>())
+            .setGenerationIdOrMemberEpoch(15);
         testAllMessageRoundTripsFromVersion((short) 1, request.get());
         testAllMessageRoundTripsFromVersion((short) 1, request.get().setGroupInstanceId(null));
         testAllMessageRoundTripsFromVersion((short) 7, request.get().setGroupInstanceId(instanceId));
@@ -283,8 +283,8 @@ public final class MessageTest {
     @Test
     public void testDescribeGroupsRequestVersions() throws Exception {
         testAllMessageRoundTrips(new DescribeGroupsRequestData()
-                .setGroups(Collections.singletonList("group"))
-                .setIncludeAuthorizedOperations(false));
+            .setGroups(Collections.singletonList("group"))
+            .setIncludeAuthorizedOperations(false));
     }
 
     @Test
@@ -383,17 +383,17 @@ public final class MessageTest {
         // Version 2 adds optional current leader epoch
         OffsetForLeaderEpochRequestData.OffsetForLeaderPartition partitionDataNoCurrentEpoch =
                 new OffsetForLeaderEpochRequestData.OffsetForLeaderPartition()
-                        .setPartition(0)
-                        .setLeaderEpoch(3);
+                    .setPartition(0)
+                    .setLeaderEpoch(3);
         OffsetForLeaderEpochRequestData.OffsetForLeaderPartition partitionDataWithCurrentEpoch =
                 new OffsetForLeaderEpochRequestData.OffsetForLeaderPartition()
-                        .setPartition(0)
-                        .setLeaderEpoch(3)
-                        .setCurrentLeaderEpoch(5);
+                    .setPartition(0)
+                    .setLeaderEpoch(3)
+                    .setCurrentLeaderEpoch(5);
         OffsetForLeaderEpochRequestData data = new OffsetForLeaderEpochRequestData();
         data.topics().add(new OffsetForLeaderEpochRequestData.OffsetForLeaderTopic()
-                .setTopic("foo")
-                .setPartitions(singletonList(partitionDataNoCurrentEpoch)));
+            .setTopic("foo")
+            .setPartitions(singletonList(partitionDataNoCurrentEpoch)));
 
         testAllMessageRoundTrips(data);
         short lowestVersion = ApiKeys.OFFSET_FOR_LEADER_EPOCH.oldestVersion();
@@ -403,11 +403,11 @@ public final class MessageTest {
         // Version 3 adds the optional replica Id field
         testAllMessageRoundTripsFromVersion((short) 3, new OffsetForLeaderEpochRequestData().setReplicaId(5));
         testAllMessageRoundTripsBeforeVersion((short) 3,
-                new OffsetForLeaderEpochRequestData().setReplicaId(5),
-                new OffsetForLeaderEpochRequestData());
+            new OffsetForLeaderEpochRequestData().setReplicaId(5),
+            new OffsetForLeaderEpochRequestData());
         testAllMessageRoundTripsBeforeVersion((short) 3,
-                new OffsetForLeaderEpochRequestData().setReplicaId(5),
-                new OffsetForLeaderEpochRequestData().setReplicaId(-2));
+            new OffsetForLeaderEpochRequestData().setReplicaId(5),
+            new OffsetForLeaderEpochRequestData().setReplicaId(-2));
     }
 
     @ParameterizedTest
@@ -530,7 +530,7 @@ public final class MessageTest {
         testAllMessageRoundTrips(
             new TxnOffsetCommitResponseData()
                 .setTopics(
-                   singletonList(
+                    singletonList(
                        new TxnOffsetCommitResponseTopic()
                            .setName("topic")
                            .setPartitions(singletonList(
@@ -539,8 +539,8 @@ public final class MessageTest {
                                    .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())
                            ))
                    )
-               )
-               .setThrottleTimeMs(20));
+                )
+                .setThrottleTimeMs(20));
     }
 
     @ParameterizedTest
@@ -649,8 +649,8 @@ public final class MessageTest {
                             .setBaseOffset(baseOffset)))))));
 
         Supplier<ProduceResponseData> response = () -> new ProduceResponseData()
-                .setResponses(new ProduceResponseData.TopicProduceResponseCollection(singletonList(
-                    new ProduceResponseData.TopicProduceResponse()
+            .setResponses(new ProduceResponseData.TopicProduceResponseCollection(singletonList(
+                new ProduceResponseData.TopicProduceResponse()
                         .setPartitionResponses(singletonList(
                              new ProduceResponseData.PartitionProduceResponse()
                                  .setIndex(partitionIndex)
@@ -663,7 +663,7 @@ public final class MessageTest {
                                          .setBatchIndex(batchIndex)
                                          .setBatchIndexErrorMessage(batchIndexErrorMessage)))
                                  .setErrorMessage(errorMessage))))))
-                .setThrottleTimeMs(throttleTimeMs);
+            .setThrottleTimeMs(throttleTimeMs);
 
         for (short version : ApiKeys.PRODUCE.allVersions()) {
             ProduceResponseData responseData = response.get();
@@ -836,7 +836,7 @@ public final class MessageTest {
                     fail("No request message spec found for API " + apiKey);
                 }
                 assertTrue(apiKey.latestVersion() <= message.highestSupportedVersion(),
-                        "Request message spec for " + apiKey + " only " + "supports versions up to " +
+                    "Request message spec for " + apiKey + " only " + "supports versions up to " +
                                 message.highestSupportedVersion());
                 try {
                     message = ApiMessageType.fromApiKey(apiKey.id).newResponse();
@@ -844,7 +844,7 @@ public final class MessageTest {
                     fail("No response message spec found for API " + apiKey);
                 }
                 assertTrue(apiKey.latestVersion() <= message.highestSupportedVersion(),
-                        "Response message spec for " + apiKey + " only " + "supports versions up to " +
+                    "Response message spec for " + apiKey + " only " + "supports versions up to " +
                                 message.highestSupportedVersion());
             }
         }
@@ -860,27 +860,27 @@ public final class MessageTest {
                 new FetchRequestData.ForgottenTopic().setTopic("foo"))));
         verifyWriteSucceeds((short) 5, new FetchRequestData());
         verifyWriteSucceeds((short) 7,
-                new FetchRequestData().setForgottenTopicsData(singletonList(
-                        new FetchRequestData.ForgottenTopic().setTopic("foo"))));
+            new FetchRequestData().setForgottenTopicsData(singletonList(
+                new FetchRequestData.ForgottenTopic().setTopic("foo"))));
     }
 
     @Test
     public void testNonIgnorableFieldWithDefaultNull() {
         // Test non-ignorable string field `groupInstanceId` with default null
         verifyWriteRaisesUve((short) 0, "groupInstanceId", new HeartbeatRequestData()
-                .setGroupId("groupId")
-                .setGenerationId(15)
-                .setMemberId(memberId)
-                .setGroupInstanceId(instanceId));
+            .setGroupId("groupId")
+            .setGenerationId(15)
+            .setMemberId(memberId)
+            .setGroupInstanceId(instanceId));
         verifyWriteSucceeds((short) 0, new HeartbeatRequestData()
-                .setGroupId("groupId")
-                .setGenerationId(15)
-                .setMemberId(memberId)
-                .setGroupInstanceId(null));
+            .setGroupId("groupId")
+            .setGenerationId(15)
+            .setMemberId(memberId)
+            .setGroupInstanceId(null));
         verifyWriteSucceeds((short) 0, new HeartbeatRequestData()
-                .setGroupId("groupId")
-                .setGenerationId(15)
-                .setMemberId(memberId));
+            .setGroupId("groupId")
+            .setGenerationId(15)
+            .setMemberId(memberId));
     }
 
     @Test

@@ -165,11 +165,11 @@ public class ConsumerTaskTest {
         consumerTask.ingestRecords();
         for (final TopicIdPartition idPartition : allPartitions) {
             assertEquals(!removePartitions.contains(idPartition), consumerTask.isUserPartitionAssigned(idPartition),
-                    "Partition " + idPartition + " has not been removed");
+                "Partition " + idPartition + " has not been removed");
         }
         for (TopicIdPartition removePartition : removePartitions) {
             assertTrue(handler.isPartitionCleared.containsKey(removePartition),
-                    "Partition " + removePartition + " has not been cleared");
+                       "Partition " + removePartition + " has not been cleared");
         }
     }
 

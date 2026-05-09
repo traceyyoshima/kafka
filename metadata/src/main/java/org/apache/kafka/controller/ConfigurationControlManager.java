@@ -167,15 +167,15 @@ public class ConfigurationControlManager {
     }
 
     private ConfigurationControlManager(LogContext logContext,
-            SnapshotRegistry snapshotRegistry,
-            KafkaConfigSchema configSchema,
-            Consumer<ConfigResource> existenceChecker,
-            Optional<AlterConfigPolicy> alterConfigPolicy,
-            ConfigurationValidator validator,
-            Map<String, Object> staticConfig,
-            int nodeId,
-            FeatureControlManager featureControl,
-            SupportedConfigChecker supportedConfigChecker
+        SnapshotRegistry snapshotRegistry,
+        KafkaConfigSchema configSchema,
+        Consumer<ConfigResource> existenceChecker,
+        Optional<AlterConfigPolicy> alterConfigPolicy,
+        ConfigurationValidator validator,
+        Map<String, Object> staticConfig,
+        int nodeId,
+        FeatureControlManager featureControl,
+        SupportedConfigChecker supportedConfigChecker
     ) {
         this.log = logContext.logger(ConfigurationControlManager.class);
         this.snapshotRegistry = snapshotRegistry;
@@ -604,7 +604,7 @@ public class ConfigurationControlManager {
     }
 
     public Map<ConfigResource, ResultOrError<Map<String, String>>> describeConfigs(
-            long lastCommittedOffset, Map<ConfigResource, Collection<String>> resources) {
+        long lastCommittedOffset, Map<ConfigResource, Collection<String>> resources) {
         Map<ConfigResource, ResultOrError<Map<String, String>>> results = new HashMap<>();
         for (Entry<ConfigResource, Collection<String>> resourceEntry : resources.entrySet()) {
             ConfigResource resource = resourceEntry.getKey();

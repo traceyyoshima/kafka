@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
 class OrderedBytes {
 
     private static final int MIN_KEY_LENGTH = 1;
+
     /**
      * Returns the upper byte range for a key with a given fixed size maximum suffix
      *

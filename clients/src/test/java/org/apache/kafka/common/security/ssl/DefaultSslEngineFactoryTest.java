@@ -275,7 +275,7 @@ public class DefaultSslEngineFactoryTest {
         assertEquals(List.of("kafka"), aliases);
         assertNotNull(keyStore.getCertificate("kafka"), "Certificate not loaded");
         assertNotNull(keyStore.getKey("kafka", keyPassword == null ? null : keyPassword.value().toCharArray()),
-            "Private key not loaded");
+                "Private key not loaded");
     }
 
     @Test

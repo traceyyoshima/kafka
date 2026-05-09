@@ -120,12 +120,12 @@ public class KafkaStreamsTelemetryIntegrationTest {
 
     static Stream<Arguments> recordingLevelParameters() {
         return Stream.of(
-            Arguments.of("INFO", "classic"),
-            Arguments.of("DEBUG", "classic"),
-            Arguments.of("TRACE", "classic"),
-            Arguments.of("INFO", "streams"),
-            Arguments.of("DEBUG", "streams"),
-            Arguments.of("TRACE", "streams")
+                Arguments.of("INFO", "classic"),
+                Arguments.of("DEBUG", "classic"),
+                Arguments.of("TRACE", "classic"),
+                Arguments.of("INFO", "streams"),
+                Arguments.of("DEBUG", "streams"),
+                Arguments.of("TRACE", "streams")
         );
     }
 
@@ -212,7 +212,7 @@ public class KafkaStreamsTelemetryIntegrationTest {
     @MethodSource("recordingLevelParameters")
     public void shouldPushMetricsToBroker(final String recordingLevel, final String groupProtocol) throws Exception {
         // End-to-end test validating metrics pushed to broker
-        streamsApplicationProperties  = props(groupProtocol);
+        streamsApplicationProperties = props(groupProtocol);
         streamsApplicationProperties.put(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, recordingLevel);
         final Topology topology = simpleTopology(false);
         subscribeForStreamsMetrics();
@@ -236,9 +236,9 @@ public class KafkaStreamsTelemetryIntegrationTest {
                     .findFirst().orElseThrow();
 
             TestUtils.waitForCondition(
-                () -> !TelemetryPluginWithExporter.SUBSCRIBED_METRICS.getOrDefault(mainConsumerInstanceId, Collections.emptyList()).isEmpty(),
-                30_000,
-                "Never received subscribed metrics"
+                    () -> !TelemetryPluginWithExporter.SUBSCRIBED_METRICS.getOrDefault(mainConsumerInstanceId, Collections.emptyList()).isEmpty(),
+                    30_000,
+                    "Never received subscribed metrics"
             );
             final List<String> expectedMetrics = streams.metrics().values().stream().map(Metric::metricName)
                     .filter(metricName -> metricName.tags().containsKey("thread-id")).map(mn -> {
@@ -248,24 +248,24 @@ public class KafkaStreamsTelemetryIntegrationTest {
                     }).filter(name -> !name.equals("org.apache.kafka.stream.thread.state"))// telemetry reporter filters out string metrics
                     .sorted().toList();
             TestUtils.waitForCondition(
-                () -> TelemetryPluginWithExporter.SUBSCRIBED_METRICS.get(mainConsumerInstanceId).size() == expectedMetrics.size(),
-                30_000,
-                "Never received enough metrics"
+                    () -> TelemetryPluginWithExporter.SUBSCRIBED_METRICS.get(mainConsumerInstanceId).size() == expectedMetrics.size(),
+                    30_000,
+                    "Never received enough metrics"
             );
             final List<String> actualMetrics = new ArrayList<>(TelemetryPluginWithExporter.SUBSCRIBED_METRICS.get(mainConsumerInstanceId));
             assertEquals(expectedMetrics, actualMetrics);
 
             TestUtils.waitForCondition(
-                () -> !TelemetryPluginWithExporter.SUBSCRIBED_METRICS.getOrDefault(adminInstanceId, Collections.emptyList()).isEmpty(),
-                30_000,
-                "Never received subscribed metrics"
+                    () -> !TelemetryPluginWithExporter.SUBSCRIBED_METRICS.getOrDefault(adminInstanceId, Collections.emptyList()).isEmpty(),
+                    30_000,
+                    "Never received subscribed metrics"
             );
             final List<String> actualInstanceMetrics = TelemetryPluginWithExporter.SUBSCRIBED_METRICS.get(adminInstanceId);
             final List<String> expectedInstanceMetrics = Arrays.asList(
-                "org.apache.kafka.stream.alive.stream.threads",
-                "org.apache.kafka.stream.client.state",
-                "org.apache.kafka.stream.failed.stream.threads",
-                "org.apache.kafka.stream.recording.level");
+                    "org.apache.kafka.stream.alive.stream.threads",
+                    "org.apache.kafka.stream.client.state",
+                    "org.apache.kafka.stream.failed.stream.threads",
+                    "org.apache.kafka.stream.recording.level");
 
             assertEquals(expectedInstanceMetrics, actualInstanceMetrics);
 
@@ -360,7 +360,7 @@ public class KafkaStreamsTelemetryIntegrationTest {
 
                         return streamOneTaskIds.size() == 2 && streamTwoTasksIds.size() == 2;
                     },
-                    "Task assignment did not complete."
+                        "Task assignment did not complete."
                 );
 
                 final List<MetricName> streamsOneTaskMetrics = streamsOne.metrics().values().stream().map(Metric::metricName)
@@ -454,15 +454,15 @@ public class KafkaStreamsTelemetryIntegrationTest {
 
     private static Stream<Arguments> topologyComplexityAndRebalanceProtocol() {
         return Stream.of(
-            Arguments.of("simple", "classic"),
-            Arguments.of("complex", "classic"),
-            Arguments.of("simple", "streams")
+                Arguments.of("simple", "classic"),
+                Arguments.of("complex", "classic"),
+                Arguments.of("simple", "streams")
         );
     }
 
     private Properties props(final String groupProtocol) {
         return props(mkObjectProperties(mkMap(
-            mkEntry(StreamsConfig.GROUP_PROTOCOL_CONFIG, groupProtocol)
+                mkEntry(StreamsConfig.GROUP_PROTOCOL_CONFIG, groupProtocol)
         )));
     }
 
@@ -494,11 +494,11 @@ public class KafkaStreamsTelemetryIntegrationTest {
 
     private void addGlobalStore(final StreamsBuilder builder) {
         builder.addGlobalStore(
-            Stores.keyValueStoreBuilder(
-                Stores.inMemoryKeyValueStore("iq-test-store"),
-                Serdes.String(),
-                Serdes.String()
-        ),
+                Stores.keyValueStoreBuilder(
+                        Stores.inMemoryKeyValueStore("iq-test-store"),
+                        Serdes.String(),
+                        Serdes.String()
+                ),
                 globalStoreTopic,
                 Consumed.with(Serdes.String(), Serdes.String()),
                 () -> new Processor<>() {
@@ -578,6 +578,7 @@ public class KafkaStreamsTelemetryIntegrationTest {
 
     public interface TestingMetricsInterceptor {
         List<KafkaMetric> passedMetrics();
+
         Map<MetricName, ? extends Metric> metrics();
     }
 
@@ -610,18 +611,18 @@ public class KafkaStreamsTelemetryIntegrationTest {
         private final List<KafkaMetric> passedMetrics = new ArrayList<>();
 
         public TestingMetricsInterceptingAsyncConsumer(
-            final Map<String, Object> configs,
-            final Deserializer<K> keyDeserializer,
-            final Deserializer<V> valueDeserializer,
-            final Optional<StreamsRebalanceData> streamsRebalanceData
+                final Map<String, Object> configs,
+                final Deserializer<K> keyDeserializer,
+                final Deserializer<V> valueDeserializer,
+                final Optional<StreamsRebalanceData> streamsRebalanceData
         ) {
             super(
-                new ConsumerConfig(
-                    ConsumerConfig.appendDeserializerToConfig(configs, keyDeserializer, valueDeserializer)
-                ),
-                keyDeserializer,
-                valueDeserializer,
-                streamsRebalanceData
+                    new ConsumerConfig(
+                            ConsumerConfig.appendDeserializerToConfig(configs, keyDeserializer, valueDeserializer)
+                    ),
+                    keyDeserializer,
+                    valueDeserializer,
+                    streamsRebalanceData
             );
         }
 

@@ -485,8 +485,8 @@ class RemoteTopicCrudTest {
                 ));
             
             assertFutureThrows(InvalidConfigurationException.class,
-                    admin.incrementalAlterConfigs(configs).all(),
-                    "It is invalid to disable remote storage without deleting remote data. " +
+                admin.incrementalAlterConfigs(configs).all(),
+                "It is invalid to disable remote storage without deleting remote data. " +
                         "If you want to keep the remote data and turn to read only, please set `remote.storage.enable=true,remote.log.copy.disable=true`. " +
                         "If you want to disable remote storage and delete all remote data, please set `remote.storage.enable=false,remote.log.delete.on.disable=true`."
             );
@@ -547,7 +547,7 @@ class RemoteTopicCrudTest {
             }, "Topic should be deleted");
 
             TestUtils.waitForCondition(() ->
-                    numPartitions * MyRemoteLogMetadataManager.SEGMENT_COUNT_PER_PARTITION == MyRemoteStorageManager.DELETE_SEGMENT_EVENT_COUNTER.get(), 
+                numPartitions * MyRemoteLogMetadataManager.SEGMENT_COUNT_PER_PARTITION == MyRemoteStorageManager.DELETE_SEGMENT_EVENT_COUNTER.get(), 
                 "Remote log segments should be deleted only once by the leader");
         }
     }
@@ -571,43 +571,43 @@ class RemoteTopicCrudTest {
                 if (topicConfig.containsKey(TopicConfig.LOCAL_LOG_RETENTION_BYTES_CONFIG)) {
                     result = result
                         && Long.parseLong(
-                        topicConfig.get(TopicConfig.LOCAL_LOG_RETENTION_BYTES_CONFIG))
-                        == logBuffer.get(0).config().localRetentionBytes();
+                            topicConfig.get(TopicConfig.LOCAL_LOG_RETENTION_BYTES_CONFIG))
+                            == logBuffer.get(0).config().localRetentionBytes();
                 }
     
                 if (topicConfig.containsKey(TopicConfig.LOCAL_LOG_RETENTION_MS_CONFIG)) {
                     result = result
                         && Long.parseLong(
-                        topicConfig.get(TopicConfig.LOCAL_LOG_RETENTION_MS_CONFIG))
-                        == logBuffer.get(0).config().localRetentionMs();
+                            topicConfig.get(TopicConfig.LOCAL_LOG_RETENTION_MS_CONFIG))
+                            == logBuffer.get(0).config().localRetentionMs();
                 }
     
                 if (topicConfig.containsKey(TopicConfig.RETENTION_MS_CONFIG)) {
                     result = result
                         && Long.parseLong(
-                        topicConfig.get(TopicConfig.RETENTION_MS_CONFIG))
-                        == logBuffer.get(0).config().retentionMs;
+                            topicConfig.get(TopicConfig.RETENTION_MS_CONFIG))
+                            == logBuffer.get(0).config().retentionMs;
                 }
     
                 if (topicConfig.containsKey(TopicConfig.RETENTION_BYTES_CONFIG)) {
                     result = result
                         && Long.parseLong(
-                        topicConfig.get(TopicConfig.RETENTION_BYTES_CONFIG))
-                        == logBuffer.get(0).config().retentionSize;
+                            topicConfig.get(TopicConfig.RETENTION_BYTES_CONFIG))
+                            == logBuffer.get(0).config().retentionSize;
                 }
     
                 if (topicConfig.containsKey(TopicConfig.REMOTE_LOG_COPY_DISABLE_CONFIG)) {
                     result = result
                         && Boolean.parseBoolean(
-                        topicConfig.get(TopicConfig.REMOTE_LOG_COPY_DISABLE_CONFIG))
-                        == logBuffer.get(0).config().remoteLogCopyDisable();
+                            topicConfig.get(TopicConfig.REMOTE_LOG_COPY_DISABLE_CONFIG))
+                            == logBuffer.get(0).config().remoteLogCopyDisable();
                 }
     
                 if (topicConfig.containsKey(TopicConfig.REMOTE_LOG_DELETE_ON_DISABLE_CONFIG)) {
                     result = result
                         && Boolean.parseBoolean(
-                        topicConfig.get(TopicConfig.REMOTE_LOG_DELETE_ON_DISABLE_CONFIG))
-                        == logBuffer.get(0).config().remoteLogDeleteOnDisable();
+                            topicConfig.get(TopicConfig.REMOTE_LOG_DELETE_ON_DISABLE_CONFIG))
+                            == logBuffer.get(0).config().remoteLogDeleteOnDisable();
                 }
             }
             return result;

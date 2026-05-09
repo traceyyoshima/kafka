@@ -129,11 +129,11 @@ public class ShareGroupConfig {
 
     public static ShareGroupConfig fromProps(Map<?, ?> props) {
         return new ShareGroupConfig(
-            new AbstractConfig(
-                Utils.mergeConfigs(Arrays.asList(CONFIG_DEF, GroupCoordinatorConfig.CONFIG_DEF)),
-                props,
-                false
-            )
+                new AbstractConfig(
+                        Utils.mergeConfigs(Arrays.asList(CONFIG_DEF, GroupCoordinatorConfig.CONFIG_DEF)),
+                        props,
+                        false
+                )
         );
     }
 

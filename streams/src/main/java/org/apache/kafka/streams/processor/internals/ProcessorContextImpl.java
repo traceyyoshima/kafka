@@ -67,9 +67,9 @@ public final class ProcessorContextImpl extends AbstractProcessorContext<Object,
         super(id, config, metrics, cache);
         stateManager = stateMgr;
         consistencyEnabled = StreamsConfig.InternalConfig.getBoolean(
-                appConfigs(),
-                IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
-                false);
+            appConfigs(),
+            IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
+            false);
     }
 
     @Override
@@ -275,7 +275,7 @@ public final class ProcessorContextImpl extends AbstractProcessorContext<Object,
                 final ProcessorNode<?, ?, ?, ?> child = currentNode().child(childName);
                 if (child == null) {
                     throw new StreamsException("Unknown downstream node: " + childName
-                                                   + " either does not exist or is not connected to this processor.");
+                                               + " either does not exist or is not connected to this processor.");
                 }
                 forwardInternal((ProcessorNode<K, V, ?, ?>) child, record);
             }
@@ -317,10 +317,10 @@ public final class ProcessorContextImpl extends AbstractProcessorContext<Object,
 
     @Override
     public Cancellable schedule(
-            final Instant startTime,
-            final Duration interval,
-            final PunctuationType type,
-            final Punctuator callback) throws IllegalArgumentException {
+        final Instant startTime,
+        final Duration interval,
+        final PunctuationType type,
+        final Punctuator callback) throws IllegalArgumentException {
         throwUnsupportedOperationExceptionIfStandby("schedule");
         final String msgPrefix = prepareMillisCheckFailMsgPrefix(interval, "interval");
         final long intervalMs = validateMillisecondDuration(interval, msgPrefix);

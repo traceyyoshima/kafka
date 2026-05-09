@@ -267,7 +267,7 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
         if (pollTimer.isExpired()) {
             logger.warn("Time between subsequent calls to poll() was longer than the configured " +
                 "max.poll.interval.ms, exceeded approximately by {} ms. Member {} will rejoin the group now.",
-                pollTimer.isExpiredBy(), membershipManager().memberId());
+                    pollTimer.isExpiredBy(), membershipManager().memberId());
             membershipManager().maybeRejoinStaleMember();
         }
         pollTimer.reset(maxPollIntervalMs);
@@ -326,9 +326,9 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
         if (exception instanceof RetriableException) {
             coordinatorRequestManager.handleCoordinatorDisconnect(exception, responseTimeMs);
             String message = String.format("%s failed because of the retriable exception. Will retry in %s ms: %s",
-                heartbeatRequestName(),
-                heartbeatRequestState.remainingBackoffMs(responseTimeMs),
-                exception.getMessage());
+                    heartbeatRequestName(),
+                    heartbeatRequestState.remainingBackoffMs(responseTimeMs),
+                    exception.getMessage());
             logger.debug(message);
         } else if (!handleSpecificFailure(exception)) {
             logger.error("{} failed due to fatal error: {}", heartbeatRequestName(), exception.getMessage());
@@ -463,9 +463,9 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
 
     protected void logInfo(final String message, final R response, final long currentTimeMs) {
         logger.info("{} in {}ms: {}",
-            message,
-            heartbeatRequestState.remainingBackoffMs(currentTimeMs),
-            errorMessageForResponse(response));
+                message,
+                heartbeatRequestState.remainingBackoffMs(currentTimeMs),
+                errorMessageForResponse(response));
     }
 
     protected void handleFatalFailure(Throwable error) {

@@ -534,7 +534,7 @@ public class TopicAdminTest {
 
             TopicAdmin admin = new TopicAdmin(env.adminClient());
             ConnectException exception = assertThrows(ConnectException.class, () ->
-                admin.retryEndOffsets(tps, Duration.ofMillis(100), 1)
+                    admin.retryEndOffsets(tps, Duration.ofMillis(100), 1)
             );
 
             Throwable cause = exception.getCause();
@@ -604,7 +604,7 @@ public class TopicAdminTest {
         Long offset = null; // response should use error
         Cluster cluster = createCluster(1, topicName, 1);
         try (AdminClientUnitTestEnv env = new AdminClientUnitTestEnv(
-            new MockTime(), cluster, AdminClientConfig.RETRIES_CONFIG, "0"
+                new MockTime(), cluster, AdminClientConfig.RETRIES_CONFIG, "0"
         )) {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
             env.kafkaClient().prepareResponse(prepareMetadataResponse(cluster, Errors.NONE));
@@ -906,10 +906,10 @@ public class TopicAdminTest {
         DescribeTopicPartitionsResponseData response = new DescribeTopicPartitionsResponseData();
         for (NewTopic topic : topics) {
             response.topics().add(new DescribeTopicPartitionsResponseData.DescribeTopicPartitionsResponseTopic()
-                .setErrorCode(error.error().code())
-                .setTopicId(Uuid.ZERO_UUID)
-                .setName(topic.name())
-                .setIsInternal(false)
+                    .setErrorCode(error.error().code())
+                    .setTopicId(Uuid.ZERO_UUID)
+                    .setName(topic.name())
+                    .setIsInternal(false)
             );
         }
         return new DescribeTopicPartitionsResponse(response);
@@ -917,18 +917,18 @@ public class TopicAdminTest {
 
     private DescribeClusterResponse describeClusterResponse(Cluster cluster) {
         DescribeClusterResponseData data = new DescribeClusterResponseData()
-            .setErrorCode(Errors.NONE.code())
-            .setThrottleTimeMs(0)
-            .setControllerId(cluster.nodes().get(0).id())
-            .setClusterId(cluster.clusterResource().clusterId())
-            .setClusterAuthorizedOperations(MetadataResponse.AUTHORIZED_OPERATIONS_OMITTED);
+                .setErrorCode(Errors.NONE.code())
+                .setThrottleTimeMs(0)
+                .setControllerId(cluster.nodes().get(0).id())
+                .setClusterId(cluster.clusterResource().clusterId())
+                .setClusterAuthorizedOperations(MetadataResponse.AUTHORIZED_OPERATIONS_OMITTED);
 
         cluster.nodes().forEach(broker ->
-            data.brokers().add(new DescribeClusterResponseData.DescribeClusterBroker()
-                .setHost(broker.host())
-                .setPort(broker.port())
-                .setBrokerId(broker.id())
-                .setRack(broker.rack())));
+                data.brokers().add(new DescribeClusterResponseData.DescribeClusterBroker()
+                        .setHost(broker.host())
+                        .setPort(broker.port())
+                        .setBrokerId(broker.id())
+                        .setRack(broker.rack())));
 
         return new DescribeClusterResponse(data);
     }

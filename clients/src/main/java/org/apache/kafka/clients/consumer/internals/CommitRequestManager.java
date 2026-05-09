@@ -185,9 +185,9 @@ public class CommitRequestManager implements RequestManager, MemberStateListener
 
             if (closing && pendingRequests.hasUnsentRequests()) {
                 CommitFailedException exception = new CommitFailedException(
-                        "Failed to commit offsets: Coordinator unknown and consumer is closing");
+                    "Failed to commit offsets: Coordinator unknown and consumer is closing");
                 pendingRequests.drainPendingCommits()
-                        .forEach(request -> request.future().completeExceptionally(exception));
+                    .forEach(request -> request.future().completeExceptionally(exception));
             }
 
             return EMPTY;
@@ -381,7 +381,7 @@ public class CommitRequestManager implements RequestManager, MemberStateListener
                 log.debug("Completed auto-commit of offsets {}", allConsumedOffsets);
             } else if (throwable instanceof RetriableCommitFailedException) {
                 log.debug("Auto-commit of offsets {} failed due to retriable error: {}",
-                        allConsumedOffsets, throwable.getMessage());
+                          allConsumedOffsets, throwable.getMessage());
             } else {
                 log.warn("Auto-commit of offsets {} failed", allConsumedOffsets, throwable);
             }
@@ -529,7 +529,7 @@ public class CommitRequestManager implements RequestManager, MemberStateListener
 
     // Visible for testing
     OffsetFetchRequestState createOffsetFetchRequest(final Set<TopicPartition> partitions,
-                                                             final long deadlineMs) {
+                                                     final long deadlineMs) {
         return jitter.isPresent() ?
             new OffsetFetchRequestState(
                 partitions,
@@ -619,8 +619,8 @@ public class CommitRequestManager implements RequestManager, MemberStateListener
      * expires the event with TimeoutException.
      */
     private void handleRetriablePartitionErrors(final OffsetFetchRequestState fetchRequest,
-                                            final CompletableFuture<OffsetFetchResult> result,
-                                            final OffsetFetchResult res) {
+                                                final CompletableFuture<OffsetFetchResult> result,
+                                                final OffsetFetchResult res) {
         long currentTimeMs = time.milliseconds();
 
         // Return partial results if there is no time for another retry.
@@ -829,8 +829,8 @@ public class CommitRequestManager implements RequestManager, MemberStateListener
             }
 
             OffsetCommitRequest.Builder builder = canUseTopicIds
-                    ? OffsetCommitRequest.Builder.forTopicIdsOrNames(data)
-                    : OffsetCommitRequest.Builder.forTopicNames(data);
+                ? OffsetCommitRequest.Builder.forTopicIdsOrNames(data)
+                : OffsetCommitRequest.Builder.forTopicNames(data);
 
             return buildRequestWithResponseHandling(builder);
         }
@@ -1061,7 +1061,7 @@ public class CommitRequestManager implements RequestManager, MemberStateListener
         private final Map<TopicPartition, Errors> retriablePartitionErrors;
 
         public OffsetFetchResult(Map<TopicPartition, OffsetAndMetadata> offsets,
-                                  Map<TopicPartition, Errors> retriablePartitionErrors) {
+                                 Map<TopicPartition, Errors> retriablePartitionErrors) {
             this.offsets = offsets;
             this.retriablePartitionErrors = retriablePartitionErrors;
         }
@@ -1441,7 +1441,7 @@ public class CommitRequestManager implements RequestManager, MemberStateListener
             // Partition the unsent offset fetch requests into sendable and non-sendable lists
             Map<Boolean, List<OffsetFetchRequestState>> partitionedBySendability =
                     unsentOffsetFetches.stream()
-                            .collect(Collectors.partitioningBy(request -> request.canSendRequest(currentTimeMs)));
+                        .collect(Collectors.partitioningBy(request -> request.canSendRequest(currentTimeMs)));
 
             // Add all sendable offset fetch requests to the unsentRequests list and to the inflightOffsetFetches list
             for (OffsetFetchRequestState request : partitionedBySendability.get(true)) {
@@ -1502,9 +1502,9 @@ public class CommitRequestManager implements RequestManager, MemberStateListener
         private final Logger log;
 
         public AutoCommitState(
-                final Time time,
-                final long autoCommitInterval,
-                final LogContext logContext) {
+            final Time time,
+            final long autoCommitInterval,
+            final LogContext logContext) {
             this.autoCommitInterval = autoCommitInterval;
             this.timer = time.timer(autoCommitInterval);
             this.hasInflightCommit = false;

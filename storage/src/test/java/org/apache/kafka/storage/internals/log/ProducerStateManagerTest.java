@@ -1114,37 +1114,37 @@ public class ProducerStateManagerTest {
     public void testRejectNonZeroSequenceForTransactionsV2WithEmptyState() {
         // Create a verification state entry that supports epoch bump (transactions v2)
         VerificationStateEntry verificationEntry = stateManager.maybeCreateVerificationStateEntry(
-            producerId,
-            0,
-            epoch,
-            true
+                producerId,
+                0,
+                epoch,
+                true
         );
         
         // Verify this is actually transactions v2
         assertTrue(
-            verificationEntry.supportsEpochBump(),
-            "Should be using transactions v2 (supports epoch bump)"
+                verificationEntry.supportsEpochBump(),
+                "Should be using transactions v2 (supports epoch bump)"
         );
         
         // Create ProducerAppendInfo with empty producer state
         ProducerAppendInfo appendInfo = new ProducerAppendInfo(
-            partition,
-            producerId,
-            ProducerStateEntry.empty(producerId),
-            AppendOrigin.CLIENT,
-            verificationEntry
+                partition,
+                producerId,
+                ProducerStateEntry.empty(producerId),
+                AppendOrigin.CLIENT,
+                verificationEntry
         );
         
         // Attempting to append with non-zero sequence number should fail for transactions v2
         OutOfOrderSequenceException exception = assertThrows(
-            OutOfOrderSequenceException.class,
-            () -> appendInfo.appendDataBatch(
-                epoch,
-                5,
-                5,
-                time.milliseconds(),
-                new LogOffsetMetadata(0L), 0L, false
-            )
+                OutOfOrderSequenceException.class,
+                () -> appendInfo.appendDataBatch(
+                        epoch,
+                        5,
+                        5,
+                        time.milliseconds(),
+                        new LogOffsetMetadata(0L), 0L, false
+                )
         );
         
         assertTrue(exception.getMessage().contains("Expected sequence 0 for " +
@@ -1154,11 +1154,11 @@ public class ProducerStateManagerTest {
         
         // Attempting to append with sequence 0 should succeed
         assertDoesNotThrow(() -> appendInfo.appendDataBatch(
-            epoch,
-            0,
-            0,
-            time.milliseconds(),
-            new LogOffsetMetadata(0L), 0L, false)
+                epoch,
+                0,
+                0,
+                time.milliseconds(),
+                new LogOffsetMetadata(0L), 0L, false)
         );
     }
 
@@ -1167,35 +1167,35 @@ public class ProducerStateManagerTest {
         // Create a verification state entry that does NOT support epoch bump (transactions v1)
         // Set lowest sequence to 5 to allow our test sequence to pass the verification check
         VerificationStateEntry verificationEntry = stateManager.maybeCreateVerificationStateEntry(
-            producerId + 1,
-            5,
-            epoch,
-            false
+                producerId + 1,
+                5,
+                epoch,
+                false
         );
         
         // Verify this is transactions v1
         assertFalse(
-            verificationEntry.supportsEpochBump(),
-            "Should be using transactions v1 (does not support epoch bump)"
+                verificationEntry.supportsEpochBump(),
+                "Should be using transactions v1 (does not support epoch bump)"
         );
         
         // Create ProducerAppendInfo with empty producer state
         ProducerAppendInfo appendInfo = new ProducerAppendInfo(
-            partition,
-            producerId + 1,
-            ProducerStateEntry.empty(producerId + 1),
-            AppendOrigin.CLIENT,
-            verificationEntry
+                partition,
+                producerId + 1,
+                ProducerStateEntry.empty(producerId + 1),
+                AppendOrigin.CLIENT,
+                verificationEntry
         );
         
         // Attempting to append with non-zero sequence number should succeed for transactions v1
         // (our validation should not trigger)
         assertDoesNotThrow(() -> appendInfo.appendDataBatch(
-            epoch,
-            5,
-            5,
-            time.milliseconds(),
-            new LogOffsetMetadata(0L), 0L, false)
+                epoch,
+                5,
+                5,
+                time.milliseconds(),
+                new LogOffsetMetadata(0L), 0L, false)
         );
     }
 
@@ -1217,11 +1217,11 @@ public class ProducerStateManagerTest {
         // Test Case 1: Epoch bump (0 -> 1) with non-zero sequence should be rejected
         OutOfOrderSequenceException exception = assertThrows(OutOfOrderSequenceException.class,
                 () -> appendInfo.appendDataBatch(
-                    (short) 1,
-                    5,
-                    5,
-                    time.milliseconds(),
-                    new LogOffsetMetadata(3L), 3L, false)
+                        (short) 1,
+                        5,
+                        5,
+                        time.milliseconds(),
+                        new LogOffsetMetadata(3L), 3L, false)
         );
         
         assertTrue(exception.getMessage().contains("Invalid sequence number for new epoch"));
@@ -1321,7 +1321,7 @@ public class ProducerStateManagerTest {
     public void testReadWriteSnapshot() throws IOException {
         Map<Long, ProducerStateEntry> expectedEntryMap = new HashMap<>();
         ProducerStateEntry stateEntry = new ProducerStateEntry(1L, (short) 2, 3,
-            RecordBatch.NO_TIMESTAMP, OptionalLong.of(100L));
+                RecordBatch.NO_TIMESTAMP, OptionalLong.of(100L));
 
         stateEntry.addBatch((short) 2, 1, 2L, 3, RecordBatch.NO_TIMESTAMP);
 

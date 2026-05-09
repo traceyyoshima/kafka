@@ -45,7 +45,7 @@ import static org.apache.kafka.streams.state.internals.ExceptionUtils.throwSuppr
 
 public class CachingSessionStore
     extends WrappedStateStore<SessionStore<Bytes, byte[]>, byte[], byte[]>
-    implements SessionStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
+        implements SessionStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CachingSessionStore.class);
 
@@ -166,8 +166,8 @@ public class CachingSessionStore
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> cacheIterator = wrapped().persistent() ?
             new CacheIteratorWrapper(key, earliestSessionEndTime, latestSessionStartTime, true) :
             internalContext.cache().range(cacheName,
-                        cacheFunction.cacheKey(keySchema.lowerRangeFixedSize(key, earliestSessionEndTime)),
-                        cacheFunction.cacheKey(keySchema.upperRangeFixedSize(key, latestSessionStartTime))
+                cacheFunction.cacheKey(keySchema.lowerRangeFixedSize(key, earliestSessionEndTime)),
+                cacheFunction.cacheKey(keySchema.upperRangeFixedSize(key, latestSessionStartTime))
             );
 
         final KeyValueIterator<Windowed<Bytes>, byte[]> storeIterator = wrapped().findSessions(key,
@@ -235,10 +235,10 @@ public class CachingSessionStore
             keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime
         );
         final HasNextCondition hasNextCondition = keySchema.hasNextCondition(keyFrom,
-                                                                             keyTo,
-                                                                             earliestSessionEndTime,
-                                                                             latestSessionStartTime,
-                                                                     true);
+            keyTo,
+            earliestSessionEndTime,
+            latestSessionStartTime,
+            true);
         final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator =
             new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
         return new MergedSortedCacheSessionStoreIterator(filteredCacheIterator, storeIterator, cacheFunction, true);

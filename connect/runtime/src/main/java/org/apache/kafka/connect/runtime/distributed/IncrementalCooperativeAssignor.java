@@ -584,8 +584,8 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
         return assignments.entrySet()
                 .stream()
                 .collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    e -> IncrementalCooperativeConnectProtocol.serializeAssignment(e.getValue(), sessioned)));
+                        Map.Entry::getKey,
+                        e -> IncrementalCooperativeConnectProtocol.serializeAssignment(e.getValue(), sessioned)));
     }
 
     private static ConnectorsAndTasks diff(ConnectorsAndTasks base,

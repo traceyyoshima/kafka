@@ -195,7 +195,7 @@ public class AssignmentInfo {
                     break;
                 default:
                     throw new IllegalStateException("Unknown metadata version: " + usedVersion
-                            + "; latest commonly supported version: " + commonlySupportedVersion);
+                        + "; latest commonly supported version: " + commonlySupportedVersion);
             }
 
             out.flush();
@@ -469,7 +469,7 @@ public class AssignmentInfo {
     public int hashCode() {
         final int hostMapHashCode = partitionsByHost.hashCode() ^ standbyPartitionsByHost.hashCode();
         return usedVersion ^ commonlySupportedVersion ^ activeTasks.hashCode() ^ standbyTasks.hashCode()
-                ^ hostMapHashCode ^ errCode;
+               ^ hostMapHashCode ^ errCode;
     }
 
     @Override

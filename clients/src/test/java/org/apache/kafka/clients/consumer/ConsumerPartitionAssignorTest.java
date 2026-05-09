@@ -107,8 +107,8 @@ public class ConsumerPartitionAssignorTest {
     @Test
     public void shouldThrowKafkaExceptionOnAssignorsWithSameName() {
         assertThrows(KafkaException.class, () -> getAssignorInstances(
-            Arrays.asList(RangeAssignor.class.getName(), TestConsumerPartitionAssignor.class.getName()),
-            Collections.emptyMap()
+                Arrays.asList(RangeAssignor.class.getName(), TestConsumerPartitionAssignor.class.getName()),
+                Collections.emptyMap()
         ));
     }
 
@@ -116,8 +116,8 @@ public class ConsumerPartitionAssignorTest {
     public void shouldBeConfigurable() {
         Map<String, Object> configs = Collections.singletonMap("key", "value");
         List<ConsumerPartitionAssignor> assignors = getAssignorInstances(
-            Collections.singletonList(TestConsumerPartitionAssignor.class.getName()),
-            configs
+                Collections.singletonList(TestConsumerPartitionAssignor.class.getName()),
+                configs
         );
         assertEquals(1, assignors.size());
         assertInstanceOf(TestConsumerPartitionAssignor.class, assignors.get(0));

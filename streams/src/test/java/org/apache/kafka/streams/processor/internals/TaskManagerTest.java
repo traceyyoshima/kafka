@@ -1844,8 +1844,8 @@ public class TaskManagerTest {
         when(tasks.allInitializedTasksPerId()).thenReturn(mkMap(mkEntry(taskId00, runningStatelessTask)));
 
         assertThat(
-                taskManager.taskOffsetSums(),
-                is(emptyMap())
+                   taskManager.taskOffsetSums(),
+                   is(emptyMap())
         );
     }
 
@@ -1932,9 +1932,9 @@ public class TaskManagerTest {
         when(stateUpdater.tasks()).thenReturn(Set.of(restoringStandbyTask, restoringStatefulTask));
         when(stateDirectory.taskOffsetSums(Set.of(taskId00, taskId01, taskId02)))
                 .thenReturn(mkMap(
-                        mkEntry(taskId00, changelogOffsetOfRunningTask),
-                        mkEntry(taskId01, changelogOffsetOfRestoringStatefulTask),
-                        mkEntry(taskId02, changelogOffsetOfRestoringStandbyTask)
+                    mkEntry(taskId00, changelogOffsetOfRunningTask),
+                    mkEntry(taskId01, changelogOffsetOfRestoringStatefulTask),
+                    mkEntry(taskId02, changelogOffsetOfRestoringStandbyTask)
                 ));
 
         assertThat(
@@ -1963,7 +1963,7 @@ public class TaskManagerTest {
         when(stateUpdater.tasks()).thenReturn(Set.of(restoringStatefulTask));
 
         final Map<TaskId, Long> expectedOffsetSums = mkMap(
-                mkEntry(taskId01, changelogOffsetOfRestoringStandbyTask)
+            mkEntry(taskId01, changelogOffsetOfRestoringStandbyTask)
         );
 
         when(stateDirectory.taskOffsetSums(expectedOffsetSums.keySet())).thenReturn(expectedOffsetSums);

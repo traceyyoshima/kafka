@@ -206,7 +206,7 @@ public class SaslServerAuthenticator implements Authenticator {
         } else {
             try {
                 saslServer = SecurityManagerCompatibility.get().callAs(subject, () ->
-                    Sasl.createSaslServer(saslMechanism, "kafka", serverAddress().getHostName(), configs, callbackHandler));
+                        Sasl.createSaslServer(saslMechanism, "kafka", serverAddress().getHostName(), configs, callbackHandler));
                 if (saslServer == null) {
                     throw new SaslException("Kafka Server failed to create a SaslServer to interact with a client during session authentication with server mechanism " + saslMechanism);
                 }
@@ -464,19 +464,20 @@ public class SaslServerAuthenticator implements Authenticator {
                     reauthInfo.ensurePrincipalUnchanged(principal());
                 // For versions with SASL_AUTHENTICATE header, send a response to SASL_AUTHENTICATE request even if token is empty.
                 byte[] responseBytes = responseToken == null ? new byte[0] : responseToken;
-                long sessionLifetimeMs = !saslServer.isComplete() ? 0L
+                long sessionLifetimeMs = !saslServer.isComplete()
+                        ? 0L
                         : reauthInfo.calcCompletionTimesAndReturnSessionLifetimeMs();
                 sendKafkaResponse(requestContext, new SaslAuthenticateResponse(
                         new SaslAuthenticateResponseData()
-                        .setErrorCode(Errors.NONE.code())
-                        .setAuthBytes(responseBytes)
-                        .setSessionLifetimeMs(sessionLifetimeMs)));
+                                .setErrorCode(Errors.NONE.code())
+                                .setAuthBytes(responseBytes)
+                                .setSessionLifetimeMs(sessionLifetimeMs)));
             } catch (SaslAuthenticationException e) {
                 buildResponseOnAuthenticateFailure(requestContext,
                         new SaslAuthenticateResponse(
                                 new SaslAuthenticateResponseData()
-                                .setErrorCode(Errors.SASL_AUTHENTICATION_FAILED.code())
-                                .setErrorMessage(e.getMessage())));
+                                        .setErrorCode(Errors.SASL_AUTHENTICATION_FAILED.code())
+                                        .setErrorMessage(e.getMessage())));
                 throw e;
             } catch (SaslException e) {
                 KerberosError kerberosError = KerberosError.fromException(e);
@@ -491,8 +492,8 @@ public class SaslServerAuthenticator implements Authenticator {
                             + " due to invalid credentials with SASL mechanism " + saslMechanism;
                     buildResponseOnAuthenticateFailure(requestContext, new SaslAuthenticateResponse(
                             new SaslAuthenticateResponseData()
-                            .setErrorCode(Errors.SASL_AUTHENTICATION_FAILED.code())
-                            .setErrorMessage(errorMessage)));
+                                    .setErrorCode(Errors.SASL_AUTHENTICATION_FAILED.code())
+                                    .setErrorMessage(errorMessage)));
                     throw new SaslAuthenticationException(errorMessage, e);
                 }
             }
@@ -579,7 +580,7 @@ public class SaslServerAuthenticator implements Authenticator {
             sendKafkaResponse(context, apiVersionsRequest.getErrorResponse(0, Errors.INVALID_REQUEST.exception()));
         else {
             metadataRegistry.registerClientInformation(new ClientInformation(apiVersionsRequest.data().clientSoftwareName(),
-                apiVersionsRequest.data().clientSoftwareVersion()));
+                    apiVersionsRequest.data().clientSoftwareVersion()));
             sendKafkaResponse(context, apiVersionSupplier.apply(apiVersionsRequest.version()));
             setSaslState(SaslState.HANDSHAKE_REQUEST);
         }

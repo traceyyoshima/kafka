@@ -78,8 +78,8 @@ public class ClientQuotaControlManager {
     final TimelineHashMap<ClientQuotaEntity, TimelineHashMap<String, Double>> clientQuotaData;
 
     ClientQuotaControlManager(
-        LogContext logContext,
-        SnapshotRegistry snapshotRegistry
+            LogContext logContext,
+            SnapshotRegistry snapshotRegistry
     ) {
         this.log = logContext.logger(ClientQuotaControlManager.class);
         this.snapshotRegistry = snapshotRegistry;
@@ -151,10 +151,10 @@ public class ClientQuotaControlManager {
     }
 
     private void alterClientQuotaEntity(
-        ClientQuotaEntity entity,
-        Map<String, Double> newQuotaConfigs,
-        List<ApiMessageAndVersion> outputRecords,
-        Map<ClientQuotaEntity, ApiError> outputResults
+            ClientQuotaEntity entity,
+            Map<String, Double> newQuotaConfigs,
+            List<ApiMessageAndVersion> outputRecords,
+            Map<ClientQuotaEntity, ApiError> outputResults
     ) {
         // Check entity types and sanitize the names
         Map<String, String> validatedEntityMap = new HashMap<>(3);
@@ -192,7 +192,7 @@ public class ClientQuotaControlManager {
                             .setEntity(recordEntitySupplier.get())
                             .setKey(key)
                             .setRemove(true),
-                        (short) 0));
+                            (short) 0));
                 }
             } else {
                 ApiError validationError = validateQuotaKeyValue(configKeys, key, newValue);
@@ -207,7 +207,7 @@ public class ClientQuotaControlManager {
                                 .setEntity(recordEntitySupplier.get())
                                 .setKey(key)
                                 .setValue(newValue),
-                            (short) 0));
+                                (short) 0));
                     }
                 }
             }
@@ -247,9 +247,9 @@ public class ClientQuotaControlManager {
     }
 
     static ApiError validateQuotaKeyValue(
-        Map<String, ConfigDef.ConfigKey> validKeys,
-        String key,
-        double value
+            Map<String, ConfigDef.ConfigKey> validKeys,
+            String key,
+            double value
     ) {
         // Ensure we have an allowed quota key
         ConfigDef.ConfigKey configKey = validKeys.get(key);
@@ -266,21 +266,21 @@ public class ClientQuotaControlManager {
             case SHORT -> {
                 if (value > Short.MAX_VALUE) {
                     yield new ApiError(Errors.INVALID_REQUEST,
-                        "Proposed value for " + key + " is too large for a SHORT.");
+                            "Proposed value for " + key + " is too large for a SHORT.");
                 }
                 yield getErrorForIntegralQuotaValue(value, key);
             }
             case INT -> {
                 if (value > Integer.MAX_VALUE) {
                     yield new ApiError(Errors.INVALID_REQUEST,
-                        "Proposed value for " + key + " is too large for an INT.");
+                            "Proposed value for " + key + " is too large for an INT.");
                 }
                 yield getErrorForIntegralQuotaValue(value, key);
             }
             case LONG -> {
                 if (value > Long.MAX_VALUE) {
                     yield new ApiError(Errors.INVALID_REQUEST,
-                        "Proposed value for " + key + " is too large for a LONG.");
+                            "Proposed value for " + key + " is too large for a LONG.");
                 }
                 yield getErrorForIntegralQuotaValue(value, key);
             }

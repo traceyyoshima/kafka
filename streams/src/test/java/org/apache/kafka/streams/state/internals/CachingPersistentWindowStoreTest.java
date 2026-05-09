@@ -150,9 +150,9 @@ public class CachingPersistentWindowStoreTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final StoreBuilder<WindowStore<String, String>> storeBuilder = Stores.windowStoreBuilder(
-                Stores.persistentWindowStore("store-name", ofHours(1L), ofMinutes(1L), false),
-                Serdes.String(),
-                Serdes.String())
+            Stores.persistentWindowStore("store-name", ofHours(1L), ofMinutes(1L), false),
+            Serdes.String(),
+            Serdes.String())
             .withCachingEnabled();
 
         builder.addStateStore(storeBuilder);

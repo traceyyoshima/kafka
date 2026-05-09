@@ -57,19 +57,20 @@ public class TestKitNodes {
 
         public Builder() {
             this(BootstrapMetadata.fromVersions(
-                    MetadataVersion.latestTesting(),
-                    Feature.PRODUCTION_FEATURES.stream()
-                            .collect(Collectors.toMap(
-                                    Feature::featureName,
-                                    feature -> feature.defaultLevel(MetadataVersion.latestTesting()),
-                                    (existing, replacement) -> existing,
-                                    TreeMap::new)),
-                    "testkit"));
+                MetadataVersion.latestTesting(),
+                Feature.PRODUCTION_FEATURES.stream()
+                    .collect(Collectors.toMap(
+                        Feature::featureName,
+                        feature -> feature.defaultLevel(MetadataVersion.latestTesting()),
+                        (existing, replacement) -> existing,
+                        TreeMap::new)),
+                "testkit"));
         }
 
         public Builder(BootstrapMetadata bootstrapMetadata) {
             this.bootstrapMetadata = bootstrapMetadata;
         }
+
         // The broker and controller listener name and SecurityProtocol configurations must
         // be kept in sync with the default values in ClusterTest.
         private ListenerName brokerListenerName = ListenerName.normalised(TestKitDefaults.DEFAULT_BROKER_LISTENER_NAME);
@@ -84,7 +85,7 @@ public class TestKitNodes {
 
         public Builder setBootstrapMetadataVersion(MetadataVersion metadataVersion) {
             this.bootstrapMetadata = bootstrapMetadata.copyWithFeatureRecord(
-                    MetadataVersion.FEATURE_NAME, metadataVersion.featureLevel());
+                MetadataVersion.FEATURE_NAME, metadataVersion.featureLevel());
             return this;
         }
 
@@ -176,17 +177,17 @@ public class TestKitNodes {
                 .toList();
 
             String unknownIds = perServerProperties.keySet().stream()
-                    .filter(id -> !controllerNodeIds.contains(id))
-                    .filter(id -> !brokerNodeIds.contains(id))
-                    .map(Object::toString)
-                    .collect(Collectors.joining(", "));
+                .filter(id -> !controllerNodeIds.contains(id))
+                .filter(id -> !brokerNodeIds.contains(id))
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
             if (!unknownIds.isEmpty()) {
                 throw new IllegalArgumentException(
-                        String.format("Unknown server id %s in perServerProperties, the existent server ids are %s",
-                                unknownIds,
-                                Stream.concat(brokerNodeIds.stream(), controllerNodeIds.stream())
-                                        .map(Object::toString)
-                                        .collect(Collectors.joining(", "))));
+                    String.format("Unknown server id %s in perServerProperties, the existent server ids are %s",
+                        unknownIds,
+                        Stream.concat(brokerNodeIds.stream(), controllerNodeIds.stream())
+                            .map(Object::toString)
+                            .collect(Collectors.joining(", "))));
             }
 
             TreeMap<Integer, TestKitNode> controllerNodes = new TreeMap<>();

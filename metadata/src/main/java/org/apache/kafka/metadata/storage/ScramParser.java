@@ -173,9 +173,9 @@ public class ScramParser {
                 return configuredSaltedPassword.get();
             }
             return new ScramFormatter(mechanism).saltedPassword(
-                    configuredPasswordString.get(),
-                    salt,
-                    iterations);
+                configuredPasswordString.get(),
+                salt,
+                iterations);
         }
 
         UserScramCredentialRecord toRecord() throws Exception {

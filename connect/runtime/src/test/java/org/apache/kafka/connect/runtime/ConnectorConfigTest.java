@@ -60,7 +60,7 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
     public abstract static class TestConnector extends Connector {
     }
 
-    public static class SimpleTransformation<R extends ConnectRecord<R>> implements Transformation<R>  {
+    public static class SimpleTransformation<R extends ConnectRecord<R>> implements Transformation<R> {
 
         int magicNumber = 0;
 
@@ -208,6 +208,7 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
             ex.getMessage().contains("This class is abstract and cannot be created.")
         );
     }
+
     @Test
     public void abstractKeyValueTransform() {
         Map<String, String> props = new HashMap<>();
@@ -370,7 +371,7 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
         assertTrue(e.getMessage().contains("there is no config 'transforms.a.predicate' defining a predicate to be negated"));
     }
 
-    public static class TestPredicate<R extends ConnectRecord<R>> implements Predicate<R>  {
+    public static class TestPredicate<R extends ConnectRecord<R>> implements Predicate<R> {
 
         int param;
 
@@ -379,7 +380,7 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
         @Override
         public ConfigDef config() {
             return new ConfigDef().define("int", ConfigDef.Type.INT, 80, ConfigDef.Range.atLeast(80), ConfigDef.Importance.MEDIUM,
-                    "A test parameter");
+                "A test parameter");
         }
 
         @Override
@@ -409,7 +410,7 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
 
     }
 
-    public abstract static class AbstractTransformation<R extends ConnectRecord<R>> implements Transformation<R>  {
+    public abstract static class AbstractTransformation<R extends ConnectRecord<R>> implements Transformation<R> {
 
         @Override
         public String version() {
@@ -418,7 +419,7 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
 
     }
 
-    public abstract static class AbstractKeyValueTransformation<R extends ConnectRecord<R>> implements Transformation<R>  {
+    public abstract static class AbstractKeyValueTransformation<R extends ConnectRecord<R>> implements Transformation<R> {
         @Override
         public R apply(R record) {
             return null;
@@ -465,7 +466,7 @@ public class ConnectorConfigTest<R extends ConnectRecord<R>> {
         props.put(prefix + "type", HasDuplicateConfigTransformation.class.getName());
         Plugins mockPlugins = mock(Plugins.class);
         when(mockPlugins.newPlugin(HasDuplicateConfigTransformation.class.getName(),
-                null, (ClassLoader) null)).thenReturn(new HasDuplicateConfigTransformation());
+            null, (ClassLoader) null)).thenReturn(new HasDuplicateConfigTransformation());
         when(mockPlugins.transformations()).thenReturn(Set.of());
         ConfigDef def = ConnectorConfig.enrich(mockPlugins, new ConfigDef(), props, false);
         assertEnrichedConfigDef(def, prefix, HasDuplicateConfigTransformation.MUST_EXIST_KEY, ConfigDef.Type.BOOLEAN);

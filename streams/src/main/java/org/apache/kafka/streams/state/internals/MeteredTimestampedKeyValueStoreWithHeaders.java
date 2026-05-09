@@ -67,7 +67,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
  */
 public class MeteredTimestampedKeyValueStoreWithHeaders<K, V>
     extends MeteredKeyValueStore<K, ValueTimestampHeaders<V>>
-    implements TimestampedKeyValueStoreWithHeaders<K, V> {
+        implements TimestampedKeyValueStoreWithHeaders<K, V> {
 
     MeteredTimestampedKeyValueStoreWithHeaders(
         final KeyValueStore<Bytes, byte[]> inner,

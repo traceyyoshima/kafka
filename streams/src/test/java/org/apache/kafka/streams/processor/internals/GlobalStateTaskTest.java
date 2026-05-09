@@ -76,6 +76,7 @@ public class GlobalStateTaskTest {
     private final MockSourceNode<String, String> sourceForward = new MockSourceNode<>(new StringDeserializer(), new StringDeserializer()) {
 
         private InternalProcessorContext<String, String> ctx;
+
         @Override
         public void init(final InternalProcessorContext<String, String> context) {
             this.ctx = context;
@@ -426,6 +427,7 @@ public class GlobalStateTaskTest {
             public void configure(final Map<String, ?> configs) {
 
             }
+
             @Override
             public Response handleError(final ErrorHandlerContext context, final Record<?, ?> record, final Exception exception) {
                 handlerInvoked.set(true);
@@ -439,14 +441,14 @@ public class GlobalStateTaskTest {
         final NoOpProcessorContext testContext = createForwardingContext();
 
         globalStateTask = new GlobalStateUpdateTask(
-                logContext,
-                topology,
-                testContext,
-                stateMgr,
-                new LogAndContinueExceptionHandler(),
-                exceptionHandler,
-                time,
-                flushInterval
+            logContext,
+            topology,
+            testContext,
+            stateMgr,
+            new LogAndContinueExceptionHandler(),
+            exceptionHandler,
+            time,
+            flushInterval
         );
         globalStateTask.initialize();
         globalStateTask.update(record(topic1, 1, 1, "foo".getBytes(), "bar".getBytes()));
@@ -461,18 +463,18 @@ public class GlobalStateTaskTest {
         final NoOpProcessorContext testContext = createForwardingContext();
 
         globalStateTask = new GlobalStateUpdateTask(
-                logContext,
-                topology,
-                testContext,
-                stateMgr,
-                new LogAndContinueExceptionHandler(),
-                null,
-                time,
-                flushInterval
+            logContext,
+            topology,
+            testContext,
+            stateMgr,
+            new LogAndContinueExceptionHandler(),
+            null,
+            time,
+            flushInterval
         );
         globalStateTask.initialize();
         final RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> globalStateTask.update(record(topic1, 1, 1, "foo".getBytes(), "bar".getBytes())));
+            () -> globalStateTask.update(record(topic1, 1, 1, "foo".getBytes(), "bar".getBytes())));
         assertEquals("Test processing exception", exception.getMessage());
         assertEquals(1, sourceForward.numReceived);
     }

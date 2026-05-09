@@ -214,16 +214,16 @@ public class PurgeRepartitionTopicIntegrationTest {
 
         // wait until we received more than 1 segment of data, so that we can confirm the purge succeeds in next verification
         TestUtils.waitForCondition(
-            new RepartitionTopicVerified(currentSize -> currentSize > PURGE_SEGMENT_BYTES),
-            60000,
-            "Repartition topic " + REPARTITION_TOPIC + " not received more than " + PURGE_SEGMENT_BYTES + "B of data after 60000 ms."
+                new RepartitionTopicVerified(currentSize -> currentSize > PURGE_SEGMENT_BYTES),
+                60000,
+                "Repartition topic " + REPARTITION_TOPIC + " not received more than " + PURGE_SEGMENT_BYTES + "B of data after 60000 ms."
         );
         
         final long waitForPurgeMs = 60000;
         TestUtils.waitForCondition(
-            new RepartitionTopicVerified(currentSize -> currentSize <= PURGE_SEGMENT_BYTES),
-            waitForPurgeMs,
-            "Repartition topic " + REPARTITION_TOPIC + " not purged data after " + waitForPurgeMs + " ms."
+                new RepartitionTopicVerified(currentSize -> currentSize <= PURGE_SEGMENT_BYTES),
+                waitForPurgeMs,
+                "Repartition topic " + REPARTITION_TOPIC + " not purged data after " + waitForPurgeMs + " ms."
         );
     }
 }

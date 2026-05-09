@@ -296,7 +296,7 @@ public class TransactionsCommandTest {
                 10000,
                 OptionalLong.of(transactionStartTime),
                 Set.of(new TopicPartition("bar", 0))
-        ));
+            ));
 
         Mockito.when(describeResult.description(transactionalId)).thenReturn(describeFuture);
         Mockito.when(admin.describeTransactions(Set.of(transactionalId))).thenReturn(describeResult);

@@ -317,28 +317,28 @@ public class RecordCollectorTest {
         final EvenPartitioner evenPartitioner = new EvenPartitioner();
 
         final SinkNode<?, ?> sinkNode = new SinkNode<>(
-                sinkNodeName,
-                new StaticTopicNameExtractor<>(topic),
-                stringSerializer,
-                byteArraySerializer,
-                evenPartitioner);
+            sinkNodeName,
+            new StaticTopicNameExtractor<>(topic),
+            stringSerializer,
+            byteArraySerializer,
+            evenPartitioner);
         topology = new ProcessorTopology(
-                emptyList(),
-                emptyMap(),
-                singletonMap(topic, sinkNode),
-                emptyList(),
-                emptyList(),
-                emptyMap(),
-                emptySet(),
-                emptyMap()
+            emptyList(),
+            emptyMap(),
+            singletonMap(topic, sinkNode),
+            emptyList(),
+            emptyList(),
+            emptyMap(),
+            emptySet(),
+            emptyMap()
         );
         collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                streamsProducer,
-                productionExceptionHandler,
-                streamsMetrics,
-                topology
+            logContext,
+            taskId,
+            streamsProducer,
+            productionExceptionHandler,
+            streamsMetrics,
+            topology
         );
 
         final Headers headers = new RecordHeaders(new Header[] {new RecordHeader("key", "value".getBytes())});
@@ -378,28 +378,28 @@ public class RecordCollectorTest {
         final BroadcastingPartitioner broadcastingPartitioner = new BroadcastingPartitioner();
 
         final SinkNode<?, ?> sinkNode = new SinkNode<>(
-                sinkNodeName,
-                new StaticTopicNameExtractor<>(topic),
-                stringSerializer,
-                byteArraySerializer,
-                broadcastingPartitioner);
+            sinkNodeName,
+            new StaticTopicNameExtractor<>(topic),
+            stringSerializer,
+            byteArraySerializer,
+            broadcastingPartitioner);
         topology = new ProcessorTopology(
-                emptyList(),
-                emptyMap(),
-                singletonMap(topic, sinkNode),
-                emptyList(),
-                emptyList(),
-                emptyMap(),
-                emptySet(),
-                emptyMap()
+            emptyList(),
+            emptyMap(),
+            singletonMap(topic, sinkNode),
+            emptyList(),
+            emptyList(),
+            emptyMap(),
+            emptySet(),
+            emptyMap()
         );
         collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                streamsProducer,
-                productionExceptionHandler,
-                streamsMetrics,
-                topology
+            logContext,
+            taskId,
+            streamsProducer,
+            productionExceptionHandler,
+            streamsMetrics,
+            topology
         );
 
         final Headers headers = new RecordHeaders(new Header[] {new RecordHeader("key", "value".getBytes())});
@@ -439,40 +439,40 @@ public class RecordCollectorTest {
         final DroppingPartitioner droppingPartitioner = new DroppingPartitioner();
 
         final SinkNode<?, ?> sinkNode = new SinkNode<>(
-                sinkNodeName,
-                new StaticTopicNameExtractor<>(topic),
-                stringSerializer,
-                byteArraySerializer,
-                droppingPartitioner);
+            sinkNodeName,
+            new StaticTopicNameExtractor<>(topic),
+            stringSerializer,
+            byteArraySerializer,
+            droppingPartitioner);
         topology = new ProcessorTopology(
-                emptyList(),
-                emptyMap(),
-                singletonMap(topic, sinkNode),
-                emptyList(),
-                emptyList(),
-                emptyMap(),
-                emptySet(),
-                emptyMap()
+            emptyList(),
+            emptyMap(),
+            singletonMap(topic, sinkNode),
+            emptyList(),
+            emptyList(),
+            emptyMap(),
+            emptySet(),
+            emptyMap()
         );
         collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                streamsProducer,
-                productionExceptionHandler,
-                streamsMetrics,
-                topology
+            logContext,
+            taskId,
+            streamsProducer,
+            productionExceptionHandler,
+            streamsMetrics,
+            topology
         );
 
         final String topic = "topic";
 
         final Metric recordsDropped = streamsMetrics.metrics().get(new MetricName(
-                "dropped-records-total",
-                "stream-task-metrics",
-                "The total number of dropped records",
-                mkMap(
-                        mkEntry("thread-id", Thread.currentThread().getName()),
-                        mkEntry("task-id", taskId.toString())
-                )
+            "dropped-records-total",
+            "stream-task-metrics",
+            "The total number of dropped records",
+            mkMap(
+                mkEntry("thread-id", Thread.currentThread().getName()),
+                mkEntry("task-id", taskId.toString())
+            )
         ));
 
 
@@ -512,28 +512,28 @@ public class RecordCollectorTest {
         final DefaultPartitioner defaultPartitioner = new DefaultPartitioner();
 
         final SinkNode<?, ?> sinkNode = new SinkNode<>(
-                sinkNodeName,
-                new StaticTopicNameExtractor<>(topic),
-                stringSerializer,
-                byteArraySerializer,
-                defaultPartitioner);
+            sinkNodeName,
+            new StaticTopicNameExtractor<>(topic),
+            stringSerializer,
+            byteArraySerializer,
+            defaultPartitioner);
         topology = new ProcessorTopology(
-                emptyList(),
-                emptyMap(),
-                singletonMap(topic, sinkNode),
-                emptyList(),
-                emptyList(),
-                emptyMap(),
-                emptySet(),
-                emptyMap()
+            emptyList(),
+            emptyMap(),
+            singletonMap(topic, sinkNode),
+            emptyList(),
+            emptyList(),
+            emptyMap(),
+            emptySet(),
+            emptyMap()
         );
         collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                streamsProducer,
-                productionExceptionHandler,
-                streamsMetrics,
-                topology
+            logContext,
+            taskId,
+            streamsProducer,
+            productionExceptionHandler,
+            streamsMetrics,
+            topology
         );
 
         final String topic = "topic";
@@ -566,28 +566,28 @@ public class RecordCollectorTest {
                 (topic, key, value, numPartitions) -> Optional.empty();
 
         final SinkNode<?, ?> sinkNode = new SinkNode<>(
-                sinkNodeName,
-                new StaticTopicNameExtractor<>(topic),
-                stringSerializer,
-                byteArraySerializer,
-                streamPartitioner);
+            sinkNodeName,
+            new StaticTopicNameExtractor<>(topic),
+            stringSerializer,
+            byteArraySerializer,
+            streamPartitioner);
         topology = new ProcessorTopology(
-                emptyList(),
-                emptyMap(),
-                singletonMap(topic, sinkNode),
-                emptyList(),
-                emptyList(),
-                emptyMap(),
-                emptySet(),
-                emptyMap()
+            emptyList(),
+            emptyMap(),
+            singletonMap(topic, sinkNode),
+            emptyList(),
+            emptyList(),
+            emptyMap(),
+            emptySet(),
+            emptyMap()
         );
         collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                streamsProducer,
-                productionExceptionHandler,
-                streamsMetrics,
-                topology
+            logContext,
+            taskId,
+            streamsProducer,
+            productionExceptionHandler,
+            streamsMetrics,
+            topology
         );
 
         final String topic = "topic";
@@ -617,28 +617,28 @@ public class RecordCollectorTest {
     public void shouldUseDefaultPartitionerAsStreamPartitionerIsNull() {
 
         final SinkNode<?, ?> sinkNode = new SinkNode<>(
-                sinkNodeName,
-                new StaticTopicNameExtractor<>(topic),
-                stringSerializer,
-                byteArraySerializer,
-                streamPartitioner);
+            sinkNodeName,
+            new StaticTopicNameExtractor<>(topic),
+            stringSerializer,
+            byteArraySerializer,
+            streamPartitioner);
         topology = new ProcessorTopology(
-                emptyList(),
-                emptyMap(),
-                singletonMap(topic, sinkNode),
-                emptyList(),
-                emptyList(),
-                emptyMap(),
-                emptySet(),
-                emptyMap()
+            emptyList(),
+            emptyMap(),
+            singletonMap(topic, sinkNode),
+            emptyList(),
+            emptyList(),
+            emptyMap(),
+            emptySet(),
+            emptyMap()
         );
         collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                streamsProducer,
-                productionExceptionHandler,
-                streamsMetrics,
-                topology
+            logContext,
+            taskId,
+            streamsProducer,
+            productionExceptionHandler,
+            streamsMetrics,
+            topology
         );
 
         final String topic = "topic";
@@ -879,7 +879,7 @@ public class RecordCollectorTest {
         assertThat(
             expected.getMessage(),
             equalTo(
-                "ClassCastException while producing data to topic topic. " +
+                    "ClassCastException while producing data to topic topic. " +
                     "The key serializer org.apache.kafka.common.serialization.LongSerializer " +
                     "is not compatible to the actual key type: java.lang.String. " +
                     "Change the default key serde in StreamConfig or provide the correct key serde via method parameters " +
@@ -907,7 +907,7 @@ public class RecordCollectorTest {
         assertThat(
             expected.getMessage(),
             equalTo(
-                "ClassCastException while producing data to topic topic. " +
+                    "ClassCastException while producing data to topic topic. " +
                     "The key serializer org.apache.kafka.common.serialization.LongSerializer " +
                     "is not compatible to the actual key type: java.lang.String. " +
                     "Change the default key serde in StreamConfig or provide the correct key serde via method parameters " +
@@ -935,7 +935,7 @@ public class RecordCollectorTest {
         assertThat(
             expected.getMessage(),
             equalTo(
-                "ClassCastException while producing data to topic topic. " +
+                    "ClassCastException while producing data to topic topic. " +
                     "The value serializer org.apache.kafka.common.serialization.LongSerializer " +
                     "is not compatible to the actual value type: java.lang.String. " +
                     "Change the default value serde in StreamConfig or provide the correct value serde via method parameters " +
@@ -963,7 +963,7 @@ public class RecordCollectorTest {
         assertThat(
             expected.getMessage(),
             equalTo(
-                "ClassCastException while producing data to topic topic. " +
+                    "ClassCastException while producing data to topic topic. " +
                     "The value serializer org.apache.kafka.common.serialization.LongSerializer " +
                     "is not compatible to the actual value type: java.lang.String. " +
                     "Change the default value serde in StreamConfig or provide the correct value serde via method parameters " +
@@ -1300,7 +1300,7 @@ public class RecordCollectorTest {
                 errorMessage.append("\n - ").append(error);
             }
             assertTrue(messages.get(messages.size() - 1)
-                    .endsWith("Exception handler choose to CONTINUE processing in spite of this error but written offsets would not be recorded."),
+                .endsWith("Exception handler choose to CONTINUE processing in spite of this error but written offsets would not be recorded."),
                 errorMessage.toString());
         }
 
@@ -1952,10 +1952,10 @@ public class RecordCollectorTest {
         final byte[][] sourceRawData = new byte[][]{new byte[]{}, new byte[]{}};
 
         final RecordCollector collector = new RecordCollectorImpl(
-                logContext,
-                taskId,
-                getExceptionalStreamsProducerOnSend(exception),
-                new ProductionExceptionHandler() {
+            logContext,
+            taskId,
+            getExceptionalStreamsProducerOnSend(exception),
+            new ProductionExceptionHandler() {
                     @Override
                     public void configure(final Map<String, ?> configs) {
 
@@ -1969,8 +1969,8 @@ public class RecordCollectorTest {
                         return ProductionExceptionHandlerResponse.CONTINUE;
                     }
                 },
-                streamsMetrics,
-                topology
+            streamsMetrics,
+            topology
         );
 
         collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1984,7 +1984,7 @@ public class RecordCollectorTest {
         final byte[][] sourceRawData = new byte[][]{new byte[]{}, new byte[]{}};
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {
             final RecordCollector collector = newRecordCollector(
-                    new ProductionExceptionHandler() {
+                new ProductionExceptionHandler() {
                         @SuppressWarnings({"deprecation", "rawtypes"})
                         @Override
                         public ProductionExceptionHandlerResponse handleSerializationException(final ErrorHandlerContext context, final ProducerRecord record, final Exception exception, final SerializationExceptionOrigin origin) {

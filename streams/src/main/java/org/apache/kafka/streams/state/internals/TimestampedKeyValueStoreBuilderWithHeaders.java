@@ -102,7 +102,7 @@ public class TimestampedKeyValueStoreBuilderWithHeaders<K, V>
 
     private static final class InMemoryTimestampedKeyValueStoreWithHeadersMarker
         extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
-        implements KeyValueStore<Bytes, byte[]>, HeadersBytesStore {
+            implements KeyValueStore<Bytes, byte[]>, HeadersBytesStore {
 
         private InMemoryTimestampedKeyValueStoreWithHeadersMarker(final KeyValueStore<Bytes, byte[]> wrapped) {
             super(wrapped);

@@ -491,27 +491,27 @@ public class RepartitionTopicNamingTest {
         final KStream<String, String> mappedStream = sourceStream.map((k, v) -> KeyValue.pair(k.toUpperCase(Locale.getDefault()), v));
 
         mappedStream.filter((k, v) -> k.equals("B")).mapValues(v -> v.toUpperCase(Locale.getDefault()))
-                .process(() -> new SimpleProcessor(processorValueCollector));
+            .process(() -> new SimpleProcessor(processorValueCollector));
 
         final KStream<String, Long> countStream = mappedStream.groupByKey(Grouped.as(firstRepartitionTopicName)).count(Materialized.with(Serdes.String(), Serdes.Long())).toStream();
 
         countStream.to(COUNT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
 
         mappedStream.groupByKey(Grouped.as(secondRepartitionTopicName)).aggregate(initializer,
-                aggregator,
-                Materialized.with(Serdes.String(), Serdes.Integer()))
-                .toStream().to(AGGREGATION_TOPIC, Produced.with(Serdes.String(), Serdes.Integer()));
+            aggregator,
+            Materialized.with(Serdes.String(), Serdes.Integer()))
+            .toStream().to(AGGREGATION_TOPIC, Produced.with(Serdes.String(), Serdes.Integer()));
 
         // adding operators for case where the repartition node is further downstream
         mappedStream.filter((k, v) -> true).peek((k, v) -> System.out.println(k + ":" + v)).groupByKey(Grouped.as(thirdRepartitionTopicName))
-                .reduce(reducer, Materialized.with(Serdes.String(), Serdes.String()))
-                .toStream().to(REDUCE_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
+            .reduce(reducer, Materialized.with(Serdes.String(), Serdes.String()))
+            .toStream().to(REDUCE_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         mappedStream.filter((k, v) -> k.equals("A"))
-                .join(countStream, (v1, v2) -> v1 + ":" + v2.toString(),
-                        JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofMillis(5000L)),
-                        StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.Long()).withStoreName(fourthRepartitionTopicName).withName(fourthRepartitionTopicName))
-                .to(JOINED_TOPIC);
+            .join(countStream, (v1, v2) -> v1 + ":" + v2.toString(),
+                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofMillis(5000L)),
+                StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.Long()).withStoreName(fourthRepartitionTopicName).withName(fourthRepartitionTopicName))
+            .to(JOINED_TOPIC);
 
         final Properties properties = new Properties();
 

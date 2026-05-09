@@ -234,8 +234,8 @@ public class FetchRequest extends AbstractRequest {
                 FetchRequestData.ForgottenTopic forgottenTopic = forgottenTopicMap.get(topicIdPartition.topic());
                 if (forgottenTopic == null) {
                     forgottenTopic = new ForgottenTopic()
-                            .setTopic(topicIdPartition.topic())
-                            .setTopicId(topicIdPartition.topicId());
+                        .setTopic(topicIdPartition.topic())
+                        .setTopicId(topicIdPartition.topicId());
                     forgottenTopicMap.put(topicIdPartition.topic(), forgottenTopic);
                 }
                 forgottenTopic.partitions().add(topicIdPartition.partition());
@@ -352,18 +352,18 @@ public class FetchRequest extends AbstractRequest {
         if (version() < 13) {
             data.topics().forEach(topic -> {
                 List<FetchResponseData.PartitionData> partitionResponses = topic.partitions().stream().map(partition ->
-                        FetchResponse.partitionResponse(partition.partition(), error)).collect(Collectors.toList());
+                    FetchResponse.partitionResponse(partition.partition(), error)).collect(Collectors.toList());
                 topicResponseList.add(new FetchResponseData.FetchableTopicResponse()
-                        .setTopic(topic.topic())
-                        .setTopicId(topic.topicId())
-                        .setPartitions(partitionResponses));
+                    .setTopic(topic.topic())
+                    .setTopicId(topic.topicId())
+                    .setPartitions(partitionResponses));
             });
         }
         return FetchResponse.of(new FetchResponseData()
-                .setThrottleTimeMs(throttleTimeMs)
-                .setErrorCode(error.code())
-                .setSessionId(data.sessionId())
-                .setResponses(topicResponseList));
+            .setThrottleTimeMs(throttleTimeMs)
+            .setErrorCode(error.code())
+            .setSessionId(data.sessionId())
+            .setResponses(topicResponseList));
     }
 
     public int replicaId() {

@@ -460,9 +460,9 @@ public class ProcessorStateManagerTest {
         final long checkpointOffset = 10L;
 
         final Map<TopicPartition, Long> offsets = mkMap(
-                mkEntry(persistentStorePartition, checkpointOffset),
-                mkEntry(nonPersistentStorePartition, checkpointOffset),
-                mkEntry(irrelevantPartition, 999L)
+            mkEntry(persistentStorePartition, checkpointOffset),
+            mkEntry(nonPersistentStorePartition, checkpointOffset),
+            mkEntry(irrelevantPartition, 999L)
         );
         checkpoint.write(offsets);
 
@@ -475,15 +475,15 @@ public class ProcessorStateManagerTest {
 
             assertFalse(checkpointFile.exists());
             assertEquals(Set.of(
-                    persistentStorePartition,
-                    persistentStoreTwoPartition,
-                    nonPersistentStorePartition),
-                    stateMgr.changelogPartitions());
+                persistentStorePartition,
+                persistentStoreTwoPartition,
+                nonPersistentStorePartition),
+                stateMgr.changelogPartitions());
             assertEquals(mkMap(
-                    mkEntry(persistentStorePartition, checkpointOffset + 1L),
-                    mkEntry(persistentStoreTwoPartition, 0L),
-                    mkEntry(nonPersistentStorePartition, 0L)),
-                    stateMgr.changelogOffsets()
+                mkEntry(persistentStorePartition, checkpointOffset + 1L),
+                mkEntry(persistentStoreTwoPartition, 0L),
+                mkEntry(nonPersistentStorePartition, 0L)),
+                stateMgr.changelogOffsets()
             );
 
             assertNull(stateMgr.storeMetadata(irrelevantPartition));

@@ -117,9 +117,8 @@ public class TransactionsExpirationTest {
         clusterInstance.createTopic(TOPIC1, 4, (short) 3);
         clusterInstance.createTopic(TOPIC2, 4, (short) 3);
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
-                ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
-            ))
-        ) {
+            ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
+        ))) {
             producer.initTransactions();
             // Start and then abort a transaction to allow the transactional ID to expire.
             producer.beginTransaction();
@@ -145,9 +144,8 @@ public class TransactionsExpirationTest {
 
         // Reinitialize to recover from the fatal error.
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
-                 ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
-             ))
-        ) {
+            ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
+        ))) {
             producer.initTransactions();
             // Proceed with a new transaction after reinitializing.
             producer.beginTransaction();
@@ -170,8 +168,7 @@ public class TransactionsExpirationTest {
 
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
             ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
-        ))
-        ) {
+        ))) {
             producer.initTransactions();
 
             // Start and then abort a transaction to allow the producer ID to expire.
@@ -208,8 +205,7 @@ public class TransactionsExpirationTest {
         // Create a new producer to check that we retain the producer ID in transactional state.
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
             ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
-        ))
-        ) {
+        ))) {
             producer.initTransactions();
 
             // Start a new transaction and attempt to send. This should work since only the producer ID was removed from its mapping in ProducerStateManager.
@@ -287,11 +283,10 @@ public class TransactionsExpirationTest {
         for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             ArrayList<ConsumerRecord<byte[], byte[]>> consumerRecords = new ArrayList<>();
             try (Consumer<byte[], byte[]> consumer = clusterInstance.consumer(Map.of(
-                    ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name(),
-                    ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
-                    ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"
-                )
-            )) {
+                ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name(),
+                ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
+                ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"
+            ))) {
                 consumer.subscribe(topics);
                 TestUtils.waitForCondition(() -> {
                     ConsumerRecords<byte[], byte[]> records = consumer.poll(Duration.ofMillis(100));

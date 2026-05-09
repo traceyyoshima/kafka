@@ -24,7 +24,7 @@ import static org.apache.kafka.streams.state.internals.RocksDbWindowBytesStoreSu
 
 public class RocksDbWindowHeadersBytesStoreSupplier
     extends RocksDbWindowBytesStoreSupplier
-    implements HeadersBytesStoreSupplier {
+        implements HeadersBytesStoreSupplier {
 
     public RocksDbWindowHeadersBytesStoreSupplier(
         final String name,

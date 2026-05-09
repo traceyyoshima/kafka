@@ -77,29 +77,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Integration tests for the consumer that cover basic usage as well as server failures
  */
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = ConsumerBounceTest.BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"), // don't want to lose offset
+        types = {Type.KRAFT},
+        brokers = ConsumerBounceTest.BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"), // don't want to lose offset
         @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "10"), // set small enough session timeout
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "10"), // set small enough session timeout
         @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "0"),
 
-        // Tests will run for CONSUMER and CLASSIC group protocol, so set the group max size property
+                // Tests will run for CONSUMER and CLASSIC group protocol, so set the group max size property
         // required for each.
         @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_MAX_SIZE_CONFIG, value = ConsumerBounceTest.MAX_GROUP_SIZE),
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_MAX_SIZE_CONFIG, value = ConsumerBounceTest.MAX_GROUP_SIZE),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_MAX_SIZE_CONFIG, value = ConsumerBounceTest.MAX_GROUP_SIZE),
 
-        @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
-        @ClusterConfigProperty(key = ServerLogConfigs.LOG_INITIAL_TASK_DELAY_MS_CONFIG, value = "100"),
-        @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "false"),
-        @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
-        @ClusterConfigProperty(key = TopicConfig.FILE_DELETE_DELAY_MS_CONFIG, value = "1000"),
-        @ClusterConfigProperty(key = ReplicationConfigs.UNCLEAN_LEADER_ELECTION_INTERVAL_MS_CONFIG, value = "50"),
+                @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
+                @ClusterConfigProperty(key = ServerLogConfigs.LOG_INITIAL_TASK_DELAY_MS_CONFIG, value = "100"),
+                @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "false"),
+                @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = TopicConfig.FILE_DELETE_DELAY_MS_CONFIG, value = "1000"),
+                @ClusterConfigProperty(key = ReplicationConfigs.UNCLEAN_LEADER_ELECTION_INTERVAL_MS_CONFIG, value = "50"),
 
-        @ClusterConfigProperty(key = KRaftConfigs.BROKER_HEARTBEAT_INTERVAL_MS_CONFIG, value = "50"),
-        @ClusterConfigProperty(key = KRaftConfigs.BROKER_SESSION_TIMEOUT_MS_CONFIG, value = "300")
-    }
+                @ClusterConfigProperty(key = KRaftConfigs.BROKER_HEARTBEAT_INTERVAL_MS_CONFIG, value = "50"),
+                @ClusterConfigProperty(key = KRaftConfigs.BROKER_SESSION_TIMEOUT_MS_CONFIG, value = "300")
+        }
 )
 public class ConsumerBounceTest {
 
@@ -404,12 +404,12 @@ public class ConsumerBounceTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerReceivesFatalExceptionWhenGroupPassesMaxSize() throws Exception {
         testConsumerReceivesFatalExceptionWhenGroupPassesMaxSize(GroupProtocol.CONSUMER);
@@ -764,11 +764,11 @@ public class ConsumerBounceTest {
             long timeTakenMs = System.currentTimeMillis() - startMs;
 
             maxCloseTimeMs.ifPresent(ms ->
-                assertTrue(timeTakenMs < ms + closeGraceTimeMs, "Close took too long " + timeTakenMs)
+                    assertTrue(timeTakenMs < ms + closeGraceTimeMs, "Close took too long " + timeTakenMs)
             );
 
             minCloseTimeMs.ifPresent(ms ->
-                assertTrue(timeTakenMs >= ms, "Close finished too quickly " + timeTakenMs)
+                    assertTrue(timeTakenMs >= ms, "Close finished too quickly " + timeTakenMs)
             );
 
             logger.info("consumer.close() completed in {} ms.", timeTakenMs);
