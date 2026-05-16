@@ -76,12 +76,12 @@ public class AlterShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coord
             var topic = data.topics().find(tp.topic());
             if (topic == null) {
                 topic = new AlterShareGroupOffsetsRequestData.AlterShareGroupOffsetsRequestTopic()
-                        .setTopicName(tp.topic());
+                    .setTopicName(tp.topic());
                 data.topics().add(topic);
             }
             topic.partitions().add(new AlterShareGroupOffsetsRequestData.AlterShareGroupOffsetsRequestPartition()
-                    .setPartitionIndex(tp.partition())
-                    .setStartOffset(offset));
+                .setPartitionIndex(tp.partition())
+                .setStartOffset(offset));
         });
         return new AlterShareGroupOffsetsRequest.Builder(data);
     }

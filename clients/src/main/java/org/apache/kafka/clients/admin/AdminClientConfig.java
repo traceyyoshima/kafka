@@ -55,7 +55,7 @@ public class AdminClientConfig extends AbstractConfig {
      */
     public static final String BOOTSTRAP_CONTROLLERS_CONFIG = "bootstrap.controllers";
     public static final String BOOTSTRAP_CONTROLLERS_DOC = "A list of host/port pairs to use for establishing the initial " +
-            "connection to the KRaft controller quorum. This list should be in the form <code>host1:port1,host2:port2,...</code>.";
+        "connection to the KRaft controller quorum. This list should be in the form <code>host1:port1,host2:port2,...</code>.";
 
     /**
      * <code>client.dns.lookup</code>
@@ -270,7 +270,7 @@ public class AdminClientConfig extends AbstractConfig {
                                         Type.STRING,
                                         DEFAULT_SECURITY_PROTOCOL,
                                         ConfigDef.CaseInsensitiveValidString
-                                                .in(Utils.enumOptions(SecurityProtocol.class)),
+                                        .in(Utils.enumOptions(SecurityProtocol.class)),
                                         Importance.MEDIUM,
                                         SECURITY_PROTOCOL_DOC)
                                 .withClientSslSupport()
@@ -279,7 +279,7 @@ public class AdminClientConfig extends AbstractConfig {
                                         Type.STRING,
                                         DEFAULT_METADATA_RECOVERY_STRATEGY,
                                         ConfigDef.CaseInsensitiveValidString
-                                                .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
+                                        .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
                                         Importance.LOW,
                                         METADATA_RECOVERY_STRATEGY_DOC)
                                 .define(METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_CONFIG,
@@ -293,11 +293,11 @@ public class AdminClientConfig extends AbstractConfig {
                                         true,
                                         Importance.LOW,
                                         METADATA_CLUSTER_CHECK_ENABLE_DOC)
-                                .define(CONFIG_PROVIDERS_CONFIG, 
+                                .define(CONFIG_PROVIDERS_CONFIG,
                                         ConfigDef.Type.LIST,
                                         List.of(),
                                         ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                                        ConfigDef.Importance.LOW, 
+                                        ConfigDef.Importance.LOW,
                                         CONFIG_PROVIDERS_DOC);
     }
 
@@ -321,7 +321,7 @@ public class AdminClientConfig extends AbstractConfig {
     }
 
     public static ConfigDef configDef() {
-        return  new ConfigDef(CONFIG);
+        return new ConfigDef(CONFIG);
     }
 
     public static void main(String[] args) {

@@ -93,10 +93,10 @@ public class FeatureMetadata {
         return String.format(
             "{%s}",
             featureVersionsMap
-                .entrySet()
-                .stream()
-                .map(entry -> String.format("(%s -> %s)", entry.getKey(), entry.getValue()))
-                .collect(joining(", "))
+            .entrySet()
+            .stream()
+            .map(entry -> String.format("(%s -> %s)", entry.getKey(), entry.getValue()))
+            .collect(joining(", "))
         );
     }
 

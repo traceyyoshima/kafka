@@ -35,8 +35,8 @@ public final class AdminUtils {
             .stream()
             .map(AclOperation::fromCode)
             .filter(operation -> operation != AclOperation.UNKNOWN
-                && operation != AclOperation.ALL
-                && operation != AclOperation.ANY)
+            && operation != AclOperation.ALL
+            && operation != AclOperation.ANY)
             .collect(Collectors.toSet());
     }
 }

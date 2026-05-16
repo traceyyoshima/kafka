@@ -135,7 +135,7 @@ public class DescribeProducersHandler extends AdminApiHandler.Batched<TopicParti
                     topicPartition, apiError.exception());
                 failed.put(topicPartition, new InvalidTopicException(
                     "Failed to fetch metadata for partition " + topicPartition
-                        + " due to invalid topic error: " + apiError.messageWithFallback(),
+                    + " due to invalid topic error: " + apiError.messageWithFallback(),
                     Collections.singleton(topicPartition.topic())));
                 break;
 

@@ -73,15 +73,15 @@ public class CoordinatorStrategy implements AdminApiLookupStrategy<CoordinatorKe
         if (batch) {
             ensureSameType(representableKeys);
             FindCoordinatorRequestData data = new FindCoordinatorRequestData()
-                    .setKeyType(type.id())
-                    .setCoordinatorKeys(representableKeys.stream().map(k -> k.idValue).collect(Collectors.toList()));
+                .setKeyType(type.id())
+                .setCoordinatorKeys(representableKeys.stream().map(k -> k.idValue).collect(Collectors.toList()));
             return new FindCoordinatorRequest.Builder(data);
         } else {
             CoordinatorKey key = requireSingletonAndType(representableKeys);
             return new FindCoordinatorRequest.Builder(
                 new FindCoordinatorRequestData()
-                    .setKey(key.idValue)
-                    .setKeyType(key.type.id())
+                .setKey(key.idValue)
+                .setKeyType(key.type.id())
             );
         }
     }

@@ -1051,7 +1051,7 @@ public class KafkaAdminClient extends AdminClient {
          */
         int handleTimeouts(Collection<Call> calls, String msg) {
             int numTimedOut = 0;
-            for (Iterator<Call> iter = calls.iterator(); iter.hasNext(); ) {
+            for (Iterator<Call> iter = calls.iterator(); iter.hasNext();) {
                 Call call = iter.next();
                 int remainingMs = calcTimeoutMsRemainingAsInt(now, call.deadlineMs);
                 if (remainingMs < 0) {
@@ -1246,7 +1246,7 @@ public class KafkaAdminClient extends AdminClient {
          */
         private long sendEligibleCalls(long now) {
             long pollTimeout = Long.MAX_VALUE;
-            for (Iterator<Map.Entry<Node, List<Call>>> iter = callsToSend.entrySet().iterator(); iter.hasNext(); ) {
+            for (Iterator<Map.Entry<Node, List<Call>>> iter = callsToSend.entrySet().iterator(); iter.hasNext();) {
                 Map.Entry<Node, List<Call>> entry = iter.next();
                 List<Call> calls = entry.getValue();
                 if (calls.isEmpty()) {
@@ -1264,7 +1264,7 @@ public class KafkaAdminClient extends AdminClient {
                     if (deadline != null) {
                         if (now >= deadline) {
                             log.info("Disconnecting from {} and revoking {} node assignment(s) " +
-                                    "because the node is taking too long to become ready.",
+                                "because the node is taking too long to become ready.",
                                 node.idString(), calls.size());
                             transitionToPendingAndClearList(calls);
                             client.disconnect(node.idString());
@@ -1357,7 +1357,7 @@ public class KafkaAdminClient extends AdminClient {
                     // If the server returns information about a correlation ID we didn't use yet,
                     // an internal server error has occurred. Close the connection and log an error message.
                     log.error("Internal server error on {}: server returned information about unknown " +
-                            "correlation ID {}, requestHeader = {}", response.destination(), correlationId,
+                        "correlation ID {}, requestHeader = {}", response.destination(), correlationId,
                         response.requestHeader());
                     client.disconnect(response.destination());
                     continue;
@@ -1407,7 +1407,7 @@ public class KafkaAdminClient extends AdminClient {
          *                       be put back in the pendingCalls collection and they will be reassigned
          */
         private void unassignUnsentCalls(Predicate<Node> shouldUnassign) {
-            for (Iterator<Map.Entry<Node, List<Call>>> iter = callsToSend.entrySet().iterator(); iter.hasNext(); ) {
+            for (Iterator<Map.Entry<Node, List<Call>>> iter = callsToSend.entrySet().iterator(); iter.hasNext();) {
                 Map.Entry<Node, List<Call>> entry = iter.next();
                 Node node = entry.getKey();
                 List<Call> awaitingCalls = entry.getValue();
@@ -1809,9 +1809,9 @@ public class KafkaAdminClient extends AdminClient {
             public CreateTopicsRequest.Builder createRequest(int timeoutMs) {
                 return new CreateTopicsRequest.Builder(
                     new CreateTopicsRequestData()
-                        .setTopics(topics)
-                        .setTimeoutMs(timeoutMs)
-                        .setValidateOnly(options.shouldValidateOnly()));
+                    .setTopics(topics)
+                    .setTimeoutMs(timeoutMs)
+                    .setValidateOnly(options.shouldValidateOnly()));
             }
 
             @Override
@@ -1971,8 +1971,8 @@ public class KafkaAdminClient extends AdminClient {
             DeleteTopicsRequest.Builder createRequest(int timeoutMs) {
                 return new DeleteTopicsRequest.Builder(
                     new DeleteTopicsRequestData()
-                        .setTopicNames(topics)
-                        .setTimeoutMs(timeoutMs));
+                    .setTopicNames(topics)
+                    .setTimeoutMs(timeoutMs));
             }
 
             @Override
@@ -2043,9 +2043,9 @@ public class KafkaAdminClient extends AdminClient {
             DeleteTopicsRequest.Builder createRequest(int timeoutMs) {
                 return new DeleteTopicsRequest.Builder(
                     new DeleteTopicsRequestData()
-                        .setTopics(topicIds.stream().map(
+                    .setTopics(topicIds.stream().map(
                             topic -> new DeleteTopicState().setTopicId(topic)).collect(Collectors.toList()))
-                        .setTimeoutMs(timeoutMs));
+                    .setTimeoutMs(timeoutMs));
             }
 
             @Override
@@ -2744,12 +2744,12 @@ public class KafkaAdminClient extends AdminClient {
                 DescribeConfigsRequest.Builder createRequest(int timeoutMs) {
                     return new DescribeConfigsRequest.Builder(new DescribeConfigsRequestData()
                         .setResources(unified.keySet().stream()
-                            .map(config ->
+                        .map(config ->
                                 new DescribeConfigsRequestData.DescribeConfigsResource()
-                                    .setResourceName(config.name())
-                                    .setResourceType(config.type().id())
-                                    .setConfigurationKeys(null))
-                            .collect(Collectors.toList()))
+                        .setResourceName(config.name())
+                        .setResourceType(config.type().id())
+                        .setConfigurationKeys(null))
+                        .collect(Collectors.toList()))
                         .setIncludeSynonyms(options.includeSynonyms())
                         .setIncludeDocumentation(options.includeDocumentation()));
                 }
@@ -2792,9 +2792,9 @@ public class KafkaAdminClient extends AdminClient {
 
         return new DescribeConfigsResult(
             nodeFutures.entrySet()
-                .stream()
-                .flatMap(x -> x.getValue().entrySet().stream())
-                .collect(Collectors.toMap(
+            .stream()
+            .flatMap(x -> x.getValue().entrySet().stream())
+            .collect(Collectors.toMap(
                     Map.Entry::getKey,
                     Map.Entry::getValue,
                     (oldValue, newValue) -> {
@@ -2984,7 +2984,7 @@ public class KafkaAdminClient extends AdminClient {
                     completeUnrealizedFutures(
                         futures.entrySet().stream().filter(entry -> entry.getKey().brokerId() == brokerId),
                         replica -> "The response from broker " + brokerId +
-                            " did not contain a result for replica " + replica);
+                        " did not contain a result for replica " + replica);
                 }
 
                 @Override
@@ -2992,8 +2992,8 @@ public class KafkaAdminClient extends AdminClient {
                     // Only completes the futures of brokerId
                     completeAllExceptionally(
                         futures.entrySet().stream()
-                            .filter(entry -> entry.getKey().brokerId() == brokerId)
-                            .map(Map.Entry::getValue),
+                        .filter(entry -> entry.getKey().brokerId() == brokerId)
+                        .map(Map.Entry::getValue),
                         throwable);
                 }
             }, now);
@@ -3173,8 +3173,8 @@ public class KafkaAdminClient extends AdminClient {
             List<List<Integer>> newAssignments = newPartition.assignments();
             List<CreatePartitionsAssignment> assignments = newAssignments == null ? null :
                 newAssignments.stream()
-                    .map(brokerIds -> new CreatePartitionsAssignment().setBrokerIds(brokerIds))
-                    .collect(Collectors.toList());
+                .map(brokerIds -> new CreatePartitionsAssignment().setBrokerIds(brokerIds))
+                .collect(Collectors.toList());
             topics.add(new CreatePartitionsTopic()
                 .setName(topic)
                 .setCount(newPartition.totalCount())
@@ -3202,9 +3202,9 @@ public class KafkaAdminClient extends AdminClient {
             public CreatePartitionsRequest.Builder createRequest(int timeoutMs) {
                 return new CreatePartitionsRequest.Builder(
                     new CreatePartitionsRequestData()
-                        .setTopics(topics)
-                        .setValidateOnly(options.validateOnly())
-                        .setTimeoutMs(timeoutMs));
+                    .setTopics(topics)
+                    .setValidateOnly(options.validateOnly())
+                    .setTimeoutMs(timeoutMs));
             }
 
             @Override
@@ -3340,8 +3340,8 @@ public class KafkaAdminClient extends AdminClient {
             RenewDelegationTokenRequest.Builder createRequest(int timeoutMs) {
                 return new RenewDelegationTokenRequest.Builder(
                     new RenewDelegationTokenRequestData()
-                        .setHmac(hmac)
-                        .setRenewPeriodMs(options.renewTimePeriodMs()));
+                    .setHmac(hmac)
+                    .setRenewPeriodMs(options.renewTimePeriodMs()));
             }
 
             @Override
@@ -3374,8 +3374,8 @@ public class KafkaAdminClient extends AdminClient {
             ExpireDelegationTokenRequest.Builder createRequest(int timeoutMs) {
                 return new ExpireDelegationTokenRequest.Builder(
                     new ExpireDelegationTokenRequestData()
-                        .setHmac(hmac)
-                        .setExpiryTimePeriodMs(options.expiryTimePeriodMs()));
+                    .setHmac(hmac)
+                    .setExpiryTimePeriodMs(options.expiryTimePeriodMs()));
             }
 
             @Override
@@ -4190,8 +4190,8 @@ public class KafkaAdminClient extends AdminClient {
             } else {
                 List<MemberIdentity> membersToRemove = res.members().stream().map(member ->
                     member.groupInstanceId().map(id -> new MemberIdentity().setGroupInstanceId(id))
-                        .orElseGet(() -> new MemberIdentity().setMemberId(member.consumerId()))
-                        .setReason(reason)
+                    .orElseGet(() -> new MemberIdentity().setMemberId(member.consumerId()))
+                    .setReason(reason)
                 ).collect(Collectors.toList());
 
                 future.complete(membersToRemove);
@@ -4458,15 +4458,15 @@ public class KafkaAdminClient extends AdminClient {
             public AlterUserScramCredentialsRequest.Builder createRequest(int timeoutMs) {
                 return new AlterUserScramCredentialsRequest.Builder(
                     new AlterUserScramCredentialsRequestData().setUpsertions(alterations.stream()
-                            .filter(a -> a instanceof UserScramCredentialUpsertion)
-                            .filter(a -> !userIllegalAlterationExceptions.containsKey(a.user()))
-                            .map(a -> userInsertions.get(a.user()).get(((UserScramCredentialUpsertion) a).credentialInfo().mechanism()))
-                            .collect(Collectors.toList()))
-                        .setDeletions(alterations.stream()
-                            .filter(a -> a instanceof UserScramCredentialDeletion)
-                            .filter(a -> !userIllegalAlterationExceptions.containsKey(a.user()))
-                            .map(d -> getScramCredentialDeletion((UserScramCredentialDeletion) d))
-                            .collect(Collectors.toList())));
+                    .filter(a -> a instanceof UserScramCredentialUpsertion)
+                    .filter(a -> !userIllegalAlterationExceptions.containsKey(a.user()))
+                    .map(a -> userInsertions.get(a.user()).get(((UserScramCredentialUpsertion) a).credentialInfo().mechanism()))
+                    .collect(Collectors.toList()))
+                    .setDeletions(alterations.stream()
+                    .filter(a -> a instanceof UserScramCredentialDeletion)
+                    .filter(a -> !userIllegalAlterationExceptions.containsKey(a.user()))
+                    .map(d -> getScramCredentialDeletion((UserScramCredentialDeletion) d))
+                    .collect(Collectors.toList())));
             }
 
             @Override
@@ -4622,9 +4622,9 @@ public class KafkaAdminClient extends AdminClient {
                 }
                 return new UpdateFeaturesRequest.Builder(
                     new UpdateFeaturesRequestData()
-                        .setTimeoutMs(timeoutMs)
-                        .setValidateOnly(options.validateOnly())
-                        .setFeatureUpdates(featureUpdatesRequestData));
+                    .setTimeoutMs(timeoutMs)
+                    .setValidateOnly(options.validateOnly())
+                    .setFeatureUpdates(featureUpdatesRequestData));
             }
 
             @Override
@@ -4906,11 +4906,11 @@ public class KafkaAdminClient extends AdminClient {
             ListConfigResourcesRequest.Builder createRequest(int timeoutMs) {
                 return new ListConfigResourcesRequest.Builder(
                     new ListConfigResourcesRequestData()
-                        .setResourceTypes(
+                    .setResourceTypes(
                             configResourceTypes
-                                .stream()
-                                .map(ConfigResource.Type::id)
-                                .collect(Collectors.toList())
+                    .stream()
+                    .map(ConfigResource.Type::id)
+                    .collect(Collectors.toList())
                         )
                 );
             }
@@ -4946,7 +4946,7 @@ public class KafkaAdminClient extends AdminClient {
             ListConfigResourcesRequest.Builder createRequest(int timeoutMs) {
                 return new ListConfigResourcesRequest.Builder(
                     new ListConfigResourcesRequestData()
-                        .setResourceTypes(List.of(ConfigResource.Type.CLIENT_METRICS.id()))
+                    .setResourceTypes(List.of(ConfigResource.Type.CLIENT_METRICS.id()))
                 );
             }
 
@@ -5076,7 +5076,6 @@ public class KafkaAdminClient extends AdminClient {
 
         if (clientTelemetryReporter.isEmpty()) {
             throw new IllegalStateException("Telemetry is not enabled. Set config `" + AdminClientConfig.ENABLE_METRICS_PUSH_CONFIG + "` to `true`.");
-
         }
 
         if (clientInstanceId != null) {

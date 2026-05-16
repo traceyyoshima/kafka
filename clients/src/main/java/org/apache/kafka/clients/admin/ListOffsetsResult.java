@@ -53,18 +53,18 @@ public class ListOffsetsResult {
      */
     public KafkaFuture<Map<TopicPartition, ListOffsetsResultInfo>> all() {
         return KafkaFuture.allOf(futures.values().toArray(new KafkaFuture<?>[0]))
-                .thenApply(v -> {
-                    Map<TopicPartition, ListOffsetsResultInfo> offsets = new HashMap<>(futures.size());
-                    for (Map.Entry<TopicPartition, KafkaFuture<ListOffsetsResultInfo>> entry : futures.entrySet()) {
-                        try {
-                            offsets.put(entry.getKey(), entry.getValue().get());
-                        } catch (InterruptedException | ExecutionException e) {
-                            // This should be unreachable, because allOf ensured that all the futures completed successfully.
-                            throw new RuntimeException(e);
-                        }
+            .thenApply(v -> {
+                Map<TopicPartition, ListOffsetsResultInfo> offsets = new HashMap<>(futures.size());
+                for (Map.Entry<TopicPartition, KafkaFuture<ListOffsetsResultInfo>> entry : futures.entrySet()) {
+                    try {
+                        offsets.put(entry.getKey(), entry.getValue().get());
+                    } catch (InterruptedException | ExecutionException e) {
+                        // This should be unreachable, because allOf ensured that all the futures completed successfully.
+                        throw new RuntimeException(e);
                     }
-                    return offsets;
-                });
+                }
+                return offsets;
+            });
     }
 
     public static class ListOffsetsResultInfo {
@@ -94,7 +94,7 @@ public class ListOffsetsResult {
         @Override
         public String toString() {
             return "ListOffsetsResultInfo(offset=" + offset + ", timestamp=" + timestamp + ", leaderEpoch="
-                    + leaderEpoch + ")";
+                + leaderEpoch + ")";
         }
     }
 }

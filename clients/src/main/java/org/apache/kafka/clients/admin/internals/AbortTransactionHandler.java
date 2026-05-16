@@ -147,7 +147,7 @@ public class AbortTransactionHandler extends AdminApiHandler.Batched<TopicPartit
                 log.error("WriteTxnMarkers request for abort spec {} failed cluster authorization", abortSpec);
                 return ApiResult.failed(abortSpec.topicPartition(), new ClusterAuthorizationException(
                     "WriteTxnMarkers request with " + abortSpec + " failed due to cluster " +
-                        "authorization error"));
+                    "authorization error"));
 
             case INVALID_PRODUCER_EPOCH:
                 log.error("WriteTxnMarkers request for abort spec {} failed due to an invalid producer epoch",
@@ -160,15 +160,15 @@ public class AbortTransactionHandler extends AdminApiHandler.Batched<TopicPartit
                     abortSpec);
                 return ApiResult.failed(abortSpec.topicPartition(), new TransactionCoordinatorFencedException(
                     "WriteTxnMarkers request with " + abortSpec + " failed since the provided " +
-                        "coordinator epoch " + abortSpec.coordinatorEpoch() + " has been fenced " +
-                        "by the active coordinator"));
+                    "coordinator epoch " + abortSpec.coordinatorEpoch() + " has been fenced " +
+                    "by the active coordinator"));
 
             case NOT_LEADER_OR_FOLLOWER:
             case REPLICA_NOT_AVAILABLE:
             case BROKER_NOT_AVAILABLE:
             case UNKNOWN_TOPIC_OR_PARTITION:
                 log.debug("WriteTxnMarkers request for abort spec {} failed due to {}. Will retry after attempting to " +
-                        "find the leader again", abortSpec, error);
+                    "find the leader again", abortSpec, error);
                 return ApiResult.unmapped(singletonList(abortSpec.topicPartition()));
 
             default:

@@ -87,13 +87,13 @@ public class DeleteShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coor
             new ArrayList<>();
         topics.forEach(topic -> requestTopics.add(
             new DeleteShareGroupOffsetsRequestData.DeleteShareGroupOffsetsRequestTopic()
-                .setTopicName(topic)
+            .setTopicName(topic)
         ));
 
         return new DeleteShareGroupOffsetsRequest.Builder(
             new DeleteShareGroupOffsetsRequestData()
-                .setGroupId(groupId.idValue)
-                .setTopics(requestTopics)
+            .setGroupId(groupId.idValue)
+            .setTopics(requestTopics)
         );
     }
 

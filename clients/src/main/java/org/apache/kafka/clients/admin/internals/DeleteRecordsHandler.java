@@ -88,13 +88,13 @@ public final class DeleteRecordsHandler extends Batched<TopicPartition, DeletedR
                     key -> new DeleteRecordsRequestData.DeleteRecordsTopic().setName(topicPartition.topic())
             );
             deleteRecords.partitions().add(new DeleteRecordsRequestData.DeleteRecordsPartition()
-                    .setPartitionIndex(topicPartition.partition())
-                    .setOffset(toDelete.beforeOffset()));
+                .setPartitionIndex(topicPartition.partition())
+                .setOffset(toDelete.beforeOffset()));
         }
 
         DeleteRecordsRequestData data = new DeleteRecordsRequestData()
-                .setTopics(new ArrayList<>(deletionsForTopic.values()))
-                .setTimeoutMs(timeout);
+            .setTopics(new ArrayList<>(deletionsForTopic.values()))
+            .setTimeoutMs(timeout);
         return new DeleteRecordsRequest.Builder(data);
     }
 
@@ -111,7 +111,7 @@ public final class DeleteRecordsHandler extends Batched<TopicPartition, DeletedR
         List<TopicPartition> unmapped = new ArrayList<>();
         Set<TopicPartition> retriable = new HashSet<>();
 
-        for (DeleteRecordsResponseData.DeleteRecordsTopicResult topicResult: response.data().topics()) {
+        for (DeleteRecordsResponseData.DeleteRecordsTopicResult topicResult : response.data().topics()) {
             for (DeleteRecordsResponseData.DeleteRecordsPartitionResult partitionResult : topicResult.partitions()) {
                 Errors error = Errors.forCode(partitionResult.errorCode());
                 TopicPartition topicPartition = new TopicPartition(topicResult.name(), partitionResult.partitionIndex());
@@ -126,13 +126,13 @@ public final class DeleteRecordsHandler extends Batched<TopicPartition, DeletedR
         // Sanity-check if the current leader for these partitions returned results for all of them
         for (TopicPartition topicPartition : keys) {
             if (unmapped.isEmpty()
-                    && !completed.containsKey(topicPartition)
-                    && !failed.containsKey(topicPartition)
-                    && !retriable.contains(topicPartition)
+                && !completed.containsKey(topicPartition)
+                && !failed.containsKey(topicPartition)
+                && !retriable.contains(topicPartition)
             ) {
                 ApiException sanityCheckException = new ApiException(
                         "The response from broker " + broker.id() +
-                                " did not contain a result for topic partition " + topicPartition);
+                    " did not contain a result for topic partition " + topicPartition);
                 log.error(
                         "DeleteRecords request for topic partition {} failed sanity check",
                         topicPartition,

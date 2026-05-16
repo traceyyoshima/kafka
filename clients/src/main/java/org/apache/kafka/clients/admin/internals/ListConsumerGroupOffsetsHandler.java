@@ -76,41 +76,41 @@ public class ListConsumerGroupOffsetsHandler implements AdminApiHandler<Coordina
         Set<CoordinatorKey> keys = coordinatorKeys(groupSpecs.keySet());
         if (!keys.containsAll(groupIds)) {
             throw new IllegalArgumentException("Received unexpected group ids " + groupIds +
-                    " (expected one of " + keys + ")");
+                " (expected one of " + keys + ")");
         }
     }
 
     private static Set<CoordinatorKey> coordinatorKeys(Collection<String> groupIds) {
         return groupIds.stream()
-           .map(CoordinatorKey::byGroupId)
-           .collect(Collectors.toSet());
+            .map(CoordinatorKey::byGroupId)
+            .collect(Collectors.toSet());
     }
 
     public OffsetFetchRequest.Builder buildBatchedRequest(Set<CoordinatorKey> groupIds) {
         // Create a request that only contains the consumer groups owned by the coordinator.
         return OffsetFetchRequest.Builder.forTopicNames(
             new OffsetFetchRequestData()
-                .setRequireStable(requireStable)
-                .setGroups(groupIds.stream().map(groupId -> {
-                    ListConsumerGroupOffsetsSpec spec = groupSpecs.get(groupId.idValue);
+            .setRequireStable(requireStable)
+            .setGroups(groupIds.stream().map(groupId -> {
+                ListConsumerGroupOffsetsSpec spec = groupSpecs.get(groupId.idValue);
 
-                    List<OffsetFetchRequestData.OffsetFetchRequestTopics> topics = null;
-                    if (spec.topicPartitions() != null) {
-                        topics = spec.topicPartitions().stream()
-                            .collect(Collectors.groupingBy(TopicPartition::topic))
-                            .entrySet()
-                            .stream()
-                            .map(entry -> new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName(entry.getKey())
-                                .setPartitionIndexes(entry.getValue().stream()
-                                    .map(TopicPartition::partition)
-                                    .collect(Collectors.toList())))
-                            .collect(Collectors.toList());
-                    }
-                    return new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId(groupId.idValue)
-                        .setTopics(topics);
-                }).collect(Collectors.toList())),
+                List<OffsetFetchRequestData.OffsetFetchRequestTopics> topics = null;
+                if (spec.topicPartitions() != null) {
+                    topics = spec.topicPartitions().stream()
+                        .collect(Collectors.groupingBy(TopicPartition::topic))
+                        .entrySet()
+                        .stream()
+                        .map(entry -> new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                        .setName(entry.getKey())
+                        .setPartitionIndexes(entry.getValue().stream()
+                        .map(TopicPartition::partition)
+                        .collect(Collectors.toList())))
+                        .collect(Collectors.toList());
+                }
+                return new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                    .setGroupId(groupId.idValue)
+                    .setTopics(topics);
+            }).collect(Collectors.toList())),
             false
         );
     }

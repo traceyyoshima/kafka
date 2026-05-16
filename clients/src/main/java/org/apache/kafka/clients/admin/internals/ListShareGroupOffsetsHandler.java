@@ -93,8 +93,8 @@ public class ListShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coordi
                 for (TopicPartition tp : spec.topicPartitions()) {
                     requestTopics.computeIfAbsent(tp.topic(), t ->
                             new DescribeShareGroupOffsetsRequestTopic()
-                                .setTopicName(tp.topic())
-                                .setPartitions(new ArrayList<>()))
+                        .setTopicName(tp.topic())
+                        .setPartitions(new ArrayList<>()))
                         .partitions()
                         .add(tp.partition());
                 }

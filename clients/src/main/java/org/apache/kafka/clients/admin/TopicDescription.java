@@ -128,13 +128,13 @@ public class TopicDescription {
     /**
      * authorized operations for this topic, or null if this is not known.
      */
-    public Set<AclOperation>  authorizedOperations() {
+    public Set<AclOperation> authorizedOperations() {
         return authorizedOperations;
     }
 
     @Override
     public String toString() {
         return "(name=" + name + ", internal=" + internal + ", partitions=" +
-                partitions.stream().map(TopicPartitionInfo::toString).collect(Collectors.joining(",")) + ", authorizedOperations=" + authorizedOperations + ")";
+            partitions.stream().map(TopicPartitionInfo::toString).collect(Collectors.joining(",")) + ", authorizedOperations=" + authorizedOperations + ")";
     }
 }

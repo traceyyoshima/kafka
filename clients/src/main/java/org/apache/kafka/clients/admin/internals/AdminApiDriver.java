@@ -273,7 +273,6 @@ public class AdminApiDriver<K, V> {
                 .filter(future.lookupKeys()::contains)
                 .collect(Collectors.toSet());
             retryLookup(keysToUnmap);
-
         } else if (t instanceof NoBatchedFindCoordinatorsException || t instanceof NoBatchedOffsetFetchRequestException) {
             ((CoordinatorStrategy) handler.lookupStrategy()).disableBatch();
             Set<K> keysToUnmap = spec.keys.stream()
