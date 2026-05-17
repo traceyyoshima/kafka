@@ -101,9 +101,9 @@ public class Heartbeat {
         long timestamp = valueStruct.getLong(TIMESTAMP_KEY);
         Struct keyStruct = KEY_SCHEMA.read(ByteBuffer.wrap(record.key()));
         String sourceClusterAlias = keyStruct.getString(SOURCE_CLUSTER_ALIAS_KEY);
-        String targetClusterAlias = keyStruct.getString(TARGET_CLUSTER_ALIAS_KEY); 
-        return new Heartbeat(sourceClusterAlias, targetClusterAlias, timestamp);    
-    } 
+        String targetClusterAlias = keyStruct.getString(TARGET_CLUSTER_ALIAS_KEY);
+        return new Heartbeat(sourceClusterAlias, targetClusterAlias, timestamp);
+    }
 
     private Struct headerStruct(short version) {
         Struct struct = new Struct(HEADER_SCHEMA);

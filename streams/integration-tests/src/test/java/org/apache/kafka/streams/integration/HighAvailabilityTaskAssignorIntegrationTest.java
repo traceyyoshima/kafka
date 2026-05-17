@@ -243,9 +243,9 @@ public class HighAvailabilityTaskAssignorIntegrationTest {
                 assignmentStable::get,
                 120_000L,
                     () -> "Assignment hasn't become stable: " + assignmentsCompleted.get() +
-                    " Note, if this does fail, check and see if the new instance just failed to catch up within" +
-                    " the probing rebalance interval. A full minute should be long enough to read ~500 records" +
-                    " in any test environment, but you never know..."
+                        " Note, if this does fail, check and see if the new instance just failed to catch up within" +
+                        " the probing rebalance interval. A full minute should be long enough to read ~500 records" +
+                        " in any test environment, but you never know..."
             );
 
             restoreCompleteLatch.await();

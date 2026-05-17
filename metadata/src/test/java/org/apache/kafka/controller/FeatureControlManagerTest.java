@@ -120,7 +120,7 @@ public class FeatureControlManagerTest {
         result = manager.updateFeatures(
                 updateMap(TestFeatureVersion.FEATURE_NAME, 1), Map.of(),
                 false, 0);
-        expectedError =  ApiError.NONE;
+        expectedError = ApiError.NONE;
         assertEquals(expectedError, result.response());
         expectedMessages = new ArrayList<>();
         expectedMessages.add(new ApiMessageAndVersion(new FeatureLevelRecord().
@@ -428,7 +428,7 @@ public class FeatureControlManagerTest {
                 List.of())).
                 build();
         manager.replay(new FeatureLevelRecord().setName(MetadataVersion.FEATURE_NAME).setFeatureLevel(MetadataVersion.MINIMUM_VERSION.featureLevel()));
-        ControllerResult<ApiError> result  = manager.updateFeatures(
+        ControllerResult<ApiError> result = manager.updateFeatures(
                 Map.of(Feature.TEST_VERSION.featureName(), (short) 1),
                 Map.of(Feature.TEST_VERSION.featureName(), FeatureUpdate.UpgradeType.UPGRADE),
                 false,
@@ -439,7 +439,7 @@ public class FeatureControlManagerTest {
         RecordTestUtils.replayAll(manager, result.records());
         assertEquals(Optional.of((short) 1), manager.finalizedFeatures(Long.MAX_VALUE).get(Feature.TEST_VERSION.featureName()));
 
-        ControllerResult<ApiError> result2  = manager.updateFeatures(
+        ControllerResult<ApiError> result2 = manager.updateFeatures(
                 Map.of(Feature.TEST_VERSION.featureName(), (short) 0),
                 Map.of(Feature.TEST_VERSION.featureName(), FeatureUpdate.UpgradeType.UNSAFE_DOWNGRADE),
                 false,

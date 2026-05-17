@@ -710,7 +710,7 @@ public class StreamsMembershipManager implements RequestManager {
             maybeCompleteLeaveInProgress();
             return;
         }
-        
+
         updateMemberEpoch(responseData.memberEpoch());
 
         final List<StreamsGroupHeartbeatResponseData.TaskIds> activeTasks = responseData.activeTasks();

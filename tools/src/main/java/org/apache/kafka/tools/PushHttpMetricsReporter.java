@@ -240,18 +240,18 @@ public class PushHttpMetricsReporter implements MetricsReporter {
         }
     }
 
-    private record MetricsReport(@JsonProperty("client") MetricClientInfo client, 
+    private record MetricsReport(@JsonProperty("client") MetricClientInfo client,
                                 @JsonProperty("metrics") Collection<MetricValue> metrics) {
     }
 
-    private record MetricClientInfo(@JsonProperty("host") String host, 
-                                   @JsonProperty("client_id") String clientId, 
+    private record MetricClientInfo(@JsonProperty("host") String host,
+                                   @JsonProperty("client_id") String clientId,
                                    @JsonProperty("time") long time) {
     }
 
-    private record MetricValue(@JsonProperty("name") String name, 
-                              @JsonProperty("group") String group, 
-                              @JsonProperty("tags") Map<String, String> tags, 
+    private record MetricValue(@JsonProperty("name") String name,
+                              @JsonProperty("group") String group,
+                              @JsonProperty("tags") Map<String, String> tags,
                               @JsonProperty("value") Object value) {
     }
 

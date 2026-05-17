@@ -248,26 +248,25 @@ public class LogCleanerManager {
                             !isUncleanablePartition(entry.getValue(), entry.getKey())
                     )
                     .map(entry -> {
-                                // create a LogToClean instance for each
-                                TopicPartition topicPartition = entry.getKey();
-                                UnifiedLog log = entry.getValue();
-                                try {
-                                    Long lastCleanOffset = lastClean.get(topicPartition);
-                                    OffsetsToClean offsetsToClean = cleanableOffsets(log, Optional.ofNullable(lastCleanOffset), now);
-                                    // update checkpoint for logs with invalid checkpointed offsets
-                                    if (offsetsToClean.forceUpdateCheckpoint) {
-                                        updateCheckpoints(log.parentDirFile(), Optional.of(Map.entry(topicPartition, offsetsToClean.firstDirtyOffset)), Optional.empty());
-                                    }
-                                    long compactionDelayMs = maxCompactionDelay(log, offsetsToClean.firstDirtyOffset, now);
-                                    preCleanStats.updateMaxCompactionDelay(compactionDelayMs);
-
-                                    return new LogToClean(log, offsetsToClean.firstDirtyOffset,
-                                            offsetsToClean.firstUncleanableDirtyOffset, compactionDelayMs > 0);
-                                } catch (Throwable e) {
-                                    throw new LogCleaningException(log, "Failed to calculate log cleaning stats for partition " + topicPartition, e);
-                                }
+                        // create a LogToClean instance for each
+                        TopicPartition topicPartition = entry.getKey();
+                        UnifiedLog log = entry.getValue();
+                        try {
+                            Long lastCleanOffset = lastClean.get(topicPartition);
+                            OffsetsToClean offsetsToClean = cleanableOffsets(log, Optional.ofNullable(lastCleanOffset), now);
+                            // update checkpoint for logs with invalid checkpointed offsets
+                            if (offsetsToClean.forceUpdateCheckpoint) {
+                                updateCheckpoints(log.parentDirFile(), Optional.of(Map.entry(topicPartition, offsetsToClean.firstDirtyOffset)), Optional.empty());
                             }
-                    )
+                            long compactionDelayMs = maxCompactionDelay(log, offsetsToClean.firstDirtyOffset, now);
+                            preCleanStats.updateMaxCompactionDelay(compactionDelayMs);
+
+                            return new LogToClean(log, offsetsToClean.firstDirtyOffset,
+                                            offsetsToClean.firstUncleanableDirtyOffset, compactionDelayMs > 0);
+                        } catch (Throwable e) {
+                            throw new LogCleaningException(log, "Failed to calculate log cleaning stats for partition " + topicPartition, e);
+                        }
+                    })
                     .filter(ltc -> ltc.totalBytes() > 0) // skip any empty logs
                     .toList();
 

@@ -184,7 +184,7 @@ public class CoordinatorTest {
             new ExpectedTasks().
                 addTask(new ExpectedTaskBuilder("foo").
                     taskState(new TaskRunning(fooSpec, 11, status1)).
-                    workerState(new WorkerRunning("foo", fooSpec, 11,  new TextNode("active"))).
+                    workerState(new WorkerRunning("foo", fooSpec, 11, new TextNode("active"))).
                     build()).
                 waitFor(coordinatorClient).
                 waitFor(agentClient1).

@@ -180,9 +180,9 @@ public class AbstractConfigTest {
     @Test
     public void testValuesWithSecondaryPrefix() {
         String prefix = "listener.name.listener1.";
-        Password saslJaasConfig1 =  new Password("test.myLoginModule1 required;");
-        Password saslJaasConfig2 =  new Password("test.myLoginModule2 required;");
-        Password saslJaasConfig3 =  new Password("test.myLoginModule3 required;");
+        Password saslJaasConfig1 = new Password("test.myLoginModule1 required;");
+        Password saslJaasConfig2 = new Password("test.myLoginModule2 required;");
+        Password saslJaasConfig3 = new Password("test.myLoginModule3 required;");
         Properties props = new Properties();
         props.put("listener.name.listener1.test-mechanism.sasl.jaas.config", saslJaasConfig1.value());
         props.put("test-mechanism.sasl.jaas.config", saslJaasConfig2.value());
@@ -317,6 +317,7 @@ public class AbstractConfigTest {
             public RestrictedClassLoader() {
                 super(null);
             }
+
             @Override
             protected Class<?> findClass(String name) throws ClassNotFoundException {
                 if (name.equals(ClassTestConfig.DEFAULT_CLASS.getName()) || name.equals(ClassTestConfig.RESTRICTED_CLASS.getName()))
@@ -739,6 +740,7 @@ public class AbstractConfigTest {
 
     public static class ConfiguredFakeMetricsReporter extends FakeMetricsReporter {
         public static final String EXTRA_CONFIG = "metric.extra_config";
+
         @Override
         public void configure(Map<String, ?> configs) {
             // Calling get() should have the side effect of marking that config as used.

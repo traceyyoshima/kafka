@@ -106,7 +106,7 @@ public class JaasContext {
 
     @SuppressWarnings("deprecation")
     // Visible for testing
-     static void throwIfLoginModuleIsNotAllowed(AppConfigurationEntry appConfigurationEntry) {
+    static void throwIfLoginModuleIsNotAllowed(AppConfigurationEntry appConfigurationEntry) {
         String disallowedProperty = System.getProperty(DISALLOWED_LOGIN_MODULES_CONFIG);
         if (disallowedProperty != null) {
             LOG.warn("System property '{}' is deprecated and will be removed in a future release. Use '{}' instead.",

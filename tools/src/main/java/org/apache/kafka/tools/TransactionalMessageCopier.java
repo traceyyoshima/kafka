@@ -166,7 +166,7 @@ public class TransactionalMessageCopier {
                 .metavar("GROUP-MODE")
                 .dest("groupMode")
                 .help("Whether to let consumer subscribe to the input topic or do manual assign. If we do" +
-                          " subscription based consumption, the input partition shall be ignored");
+                    " subscription based consumption, the input partition shall be ignored");
 
         parser.addArgument("--use-group-metadata")
                 .action(storeTrue())

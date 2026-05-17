@@ -103,8 +103,8 @@ public class StreamThreadStateStoreProvider {
             if (!store.isOpen()) {
                 throw new InvalidStateStoreException(
                         "Cannot get state store " + storeName + " for task " + taskId +
-                            " because the store is not open. " +
-                            "The state store may have migrated to another instance.");
+                    " because the store is not open. " +
+                    "The state store may have migrated to another instance.");
             }
             if (store instanceof TimestampedKeyValueStoreWithHeaders) {
                 if (queryableStoreType instanceof QueryableStoreTypes.KeyValueStoreType) {

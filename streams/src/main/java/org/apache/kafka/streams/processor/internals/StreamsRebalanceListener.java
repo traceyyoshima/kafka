@@ -61,7 +61,7 @@ public class StreamsRebalanceListener implements ConsumerRebalanceListener {
             throw new MissingSourceTopicException("One or more source topics were missing during rebalance");
         } else if (assignmentErrorCode.get() == AssignorError.VERSION_PROBING.code()) {
             log.info("Received version probing code {}", AssignorError.VERSION_PROBING);
-        }  else if (assignmentErrorCode.get() == AssignorError.ASSIGNMENT_ERROR.code()) {
+        } else if (assignmentErrorCode.get() == AssignorError.ASSIGNMENT_ERROR.code()) {
             log.error("Received error code {}", AssignorError.ASSIGNMENT_ERROR);
             taskManager.handleRebalanceComplete();
             throw new TaskAssignmentException("Hit an unexpected exception during task assignment phase of rebalance");
@@ -83,8 +83,8 @@ public class StreamsRebalanceListener implements ConsumerRebalanceListener {
     @Override
     public void onPartitionsRevoked(final Collection<TopicPartition> partitions) {
         log.debug("Current state {}: revoked partitions {} because of consumer rebalance.\n" +
-                      "\tcurrently assigned active tasks: {}\n" +
-                      "\tcurrently assigned standby tasks: {}\n",
+            "\tcurrently assigned active tasks: {}\n" +
+            "\tcurrently assigned standby tasks: {}\n",
                   streamThread.state(),
                   partitions,
                   taskManager.activeTaskIds(),
@@ -105,8 +105,8 @@ public class StreamsRebalanceListener implements ConsumerRebalanceListener {
     @Override
     public void onPartitionsLost(final Collection<TopicPartition> partitions) {
         log.info("at state {}: partitions {} lost due to missed rebalance.\n" +
-                     "\tlost active tasks: {}\n" +
-                     "\tlost assigned standby tasks: {}\n",
+            "\tlost active tasks: {}\n" +
+            "\tlost assigned standby tasks: {}\n",
                  streamThread.state(),
                  partitions,
                  taskManager.activeTaskIds(),

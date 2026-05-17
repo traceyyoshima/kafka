@@ -7235,7 +7235,7 @@ public class SharePartitionTest {
         assertNotNull(sharePartition.cachedState().get(2L).batchAcquisitionLockTimeoutTask());
 
         // Check cached offset state map.
-        Map<Long, InFlightState>  expectedOffsetStateMap = new HashMap<>();
+        Map<Long, InFlightState> expectedOffsetStateMap = new HashMap<>();
         expectedOffsetStateMap.put(10L, new InFlightState(RecordState.ACQUIRED, (short) 1, MEMBER_ID));
         expectedOffsetStateMap.put(11L, new InFlightState(RecordState.ACQUIRED, (short) 1, MEMBER_ID));
         expectedOffsetStateMap.put(12L, new InFlightState(RecordState.AVAILABLE, (short) 1, EMPTY_MEMBER_ID));
@@ -7335,7 +7335,7 @@ public class SharePartitionTest {
         mockTimer.advanceClock(DEFAULT_MAX_WAIT_ACQUISITION_LOCK_TIMEOUT_MS);
         TestUtils.waitForCondition(
                 () -> sharePartition.nextFetchOffset() == 7 && sharePartition.cachedState().isEmpty() &&
-                            sharePartition.startOffset() == 7 && sharePartition.endOffset() == 7,
+                    sharePartition.startOffset() == 7 && sharePartition.endOffset() == 7,
                 DEFAULT_MAX_WAIT_ACQUISITION_LOCK_TIMEOUT_MS,
                 () -> assertionFailedMessage(sharePartition, Map.of()));
         assertEquals(0, sharePartition.deliveryCompleteCount());
@@ -9362,16 +9362,16 @@ public class SharePartitionTest {
         // Create 3 batches: first batch (0-8), middle batch with ABORTED transactions (10-18), last batch (20-28), each having
         // a transaction marker at the end.
         ByteBuffer buffer = ByteBuffer.allocate(2048);
-        
+
         // First batch: normal records (0-8)
         newTransactionalRecords(buffer, ControlRecordType.COMMIT, 9, 1, 0);
-        
+
         // Middle batch: ABORTED transaction records (10-18)
         newTransactionalRecords(buffer, ControlRecordType.ABORT, 9, 2, 10);
-        
+
         // Last batch: normal records (20-28)
         newTransactionalRecords(buffer, ControlRecordType.COMMIT, 9, 3, 20);
-        
+
         buffer.flip();
         Records records = MemoryRecords.readableRecords(buffer);
 
@@ -9989,7 +9989,7 @@ public class SharePartitionTest {
         // is run successfully post write state RPC failure.
         mockTimer.advanceClock(DEFAULT_MAX_WAIT_ACQUISITION_LOCK_TIMEOUT_MS);
         TestUtils.waitForCondition(
-            () -> sharePartition.cachedState().get(2L).offsetState().get(3L).state() == RecordState.AVAILABLE  &&
+            () -> sharePartition.cachedState().get(2L).offsetState().get(3L).state() == RecordState.AVAILABLE &&
                 sharePartition.cachedState().get(7L).batchState() == RecordState.AVAILABLE &&
                 sharePartition.cachedState().get(2L).offsetState().get(3L).deliveryCount() == 1 &&
                 sharePartition.cachedState().get(7L).batchDeliveryCount() == 1 &&
@@ -10018,8 +10018,8 @@ public class SharePartitionTest {
         // but the acquisition lock timeout task should be just expired for acknowledged offsets, though
         // the state should not be archived.
         TestUtils.waitForCondition(
-            () -> sharePartition.cachedState().get(2L).offsetState().get(2L).state() == RecordState.ARCHIVED  &&
-                sharePartition.cachedState().get(2L).offsetState().get(3L).state() == RecordState.ACKNOWLEDGED  &&
+            () -> sharePartition.cachedState().get(2L).offsetState().get(2L).state() == RecordState.ARCHIVED &&
+                sharePartition.cachedState().get(2L).offsetState().get(3L).state() == RecordState.ACKNOWLEDGED &&
                 sharePartition.cachedState().get(2L).offsetState().get(3L).acquisitionLockTimeoutTask().hasExpired() &&
                 sharePartition.cachedState().get(7L).batchState() == RecordState.ACKNOWLEDGED &&
                 sharePartition.cachedState().get(7L).batchAcquisitionLockTimeoutTask().hasExpired(),

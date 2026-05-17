@@ -110,6 +110,7 @@ public class TaskManager {
     private final StandbyTaskCreator standbyTaskCreator;
     private final StateUpdater stateUpdater;
     private final DefaultTaskManager schedulingTaskManager;
+
     TaskManager(final Time time,
                 final ChangelogReader changelogReader,
                 final ProcessId processId,
@@ -151,6 +152,7 @@ public class TaskManager {
     void init() {
         this.stateUpdater.start();
     }
+
     void setMainConsumer(final Consumer<byte[], byte[]> mainConsumer) {
         this.mainConsumer = mainConsumer;
     }
@@ -244,7 +246,7 @@ public class TaskManager {
             commitTasksAndMaybeUpdateCommittableOffsets(tasksToCommit, new HashMap<>());
         } catch (final TaskCorruptedException e) {
             log.info("Some additional tasks were found corrupted while trying to commit, these will be added to the " +
-                         "tasks to clean and revive: {}", e.corruptedTasks());
+                "tasks to clean and revive: {}", e.corruptedTasks());
             corruptedActiveTasks.addAll(tasks.initializedTasks(e.corruptedTasks()));
         } catch (final TimeoutException e) {
             log.info("Hit TimeoutException when committing all non-corrupted tasks, these will be closed and revived");
@@ -355,10 +357,10 @@ public class TaskManager {
     public void handleAssignment(final Map<TaskId, Set<TopicPartition>> activeTasks,
                                  final Map<TaskId, Set<TopicPartition>> standbyTasks) {
         log.info("Handle new assignment with:\n" +
-                     "\tNew active tasks: {}\n" +
-                     "\tNew standby tasks: {}\n" +
-                     "\tExisting active tasks: {}\n" +
-                     "\tExisting standby tasks: {}",
+            "\tNew active tasks: {}\n" +
+            "\tNew standby tasks: {}\n" +
+            "\tExisting active tasks: {}\n" +
+            "\tExisting standby tasks: {}",
                  activeTasks.keySet(), standbyTasks.keySet(), activeTaskIds(), standbyTaskIds());
 
         topologyMetadata.addSubscribedTopicsFromAssignment(
@@ -382,7 +384,7 @@ public class TaskManager {
         tasks.clearPendingTasksToCreate();
         tasks.addPendingActiveTasksToCreate(pendingTasksToCreate(activeTasksToCreate));
         tasks.addPendingStandbyTasksToCreate(pendingTasksToCreate(standbyTasksToCreate));
-        
+
         // first rectify all existing tasks:
         // 1. for tasks that are already owned, just update input partitions / resume and skip re-creating them
         // 2. for tasks that have changed active/standby status, just recycle and skip re-creating them
@@ -1053,8 +1055,8 @@ public class TaskManager {
 
         if (!remainingRevokedPartitions.isEmpty()) {
             log.debug("The following revoked partitions {} are missing from the current task partitions. It could "
-                          + "potentially be due to race condition of consumer detecting the heartbeat failure, or the tasks " +
-                         "have been cleaned up by the handleAssignment callback.", remainingRevokedPartitions);
+                + "potentially be due to race condition of consumer detecting the heartbeat failure, or the tasks " +
+                "have been cleaned up by the handleAssignment callback.", remainingRevokedPartitions);
         }
 
         if (revokedTasksNeedCommit) {
@@ -1696,6 +1698,7 @@ public class TaskManager {
             standbyTasksInTaskRegistry
         );
     }
+
     // For testing only.
     int commitAll() {
         return commit(tasks.allInitializedTasks());
@@ -1706,7 +1709,7 @@ public class TaskManager {
      * the corresponding record queues have capacity (again).
      */
     public void resumePollingForPartitionsWithAvailableSpace() {
-        for (final StreamTask t: tasks.activeInitializedTasks()) {
+        for (final StreamTask t : tasks.activeInitializedTasks()) {
             t.resumePollingForPartitionsWithAvailableSpace();
         }
     }
@@ -1715,7 +1718,7 @@ public class TaskManager {
      * Fetches up-to-date lag information from the consumer.
      */
     public void updateLags() {
-        for (final StreamTask t: tasks.activeInitializedTasks()) {
+        for (final StreamTask t : tasks.activeInitializedTasks()) {
             t.updateLags();
         }
     }
@@ -1944,7 +1947,7 @@ public class TaskManager {
      * @throws TaskMigratedException if the task producer got fenced (EOS only)
      */
     int punctuate() {
-        return  taskExecutor.punctuate();
+        return taskExecutor.punctuate();
     }
 
     void maybePurgeCommittedRecords() {

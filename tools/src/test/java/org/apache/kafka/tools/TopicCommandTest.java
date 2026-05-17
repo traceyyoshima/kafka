@@ -235,7 +235,7 @@ public class TopicCommandTest {
     @Test
     public void testParseAssignment() {
         Map<Integer, List<Integer>> actualAssignment = TopicCommand.parseReplicaAssignment("5:4,3:2,1:0");
-        Map<Integer, List<Integer>>  expectedAssignment = new HashMap<>();
+        Map<Integer, List<Integer>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(0, List.of(5, 4));
         expectedAssignment.put(1, List.of(3, 2));
         expectedAssignment.put(2, List.of(1, 0));
@@ -444,7 +444,7 @@ public class TopicCommandTest {
         try (Admin adminClient = clusterInstance.admin()) {
             adminClient.createTopics(List.of(new NewTopic(testTopicName, 2, defaultReplicationFactor)));
             clusterInstance.waitTopicCreation(testTopicName, 2);
-            List<TopicPartitionInfo>  partitions = adminClient
+            List<TopicPartitionInfo> partitions = adminClient
                     .describeTopics(List.of(testTopicName))
                     .allTopicNames()
                     .get()
@@ -1220,7 +1220,7 @@ public class TopicCommandTest {
             ToolsTestUtils.removeReplicationThrottleForPartitions(adminClient, brokerIds, Set.of(tp));
             TestUtils.waitForCondition(
                     () -> adminClient.listPartitionReassignments().reassignments().get().isEmpty(),
-                    CLUSTER_WAIT_MS,  String.format("reassignmet not finished after %s ms", CLUSTER_WAIT_MS)
+                    CLUSTER_WAIT_MS, String.format("reassignmet not finished after %s ms", CLUSTER_WAIT_MS)
             );
         }
     }
@@ -1293,7 +1293,7 @@ public class TopicCommandTest {
             newTopics.add(new NewTopic(fullyReplicatedTopic, fullyReplicatedReplicaAssignmentMap));
 
             adminClient.createTopics(newTopics);
-            for (NewTopic topioc: newTopics) {
+            for (NewTopic topioc : newTopics) {
                 clusterInstance.waitTopicCreation(topioc.name(), partitions);
             }
 
@@ -1309,7 +1309,7 @@ public class TopicCommandTest {
 
             TestUtils.waitForCondition(
                     () -> adminClient.listPartitionReassignments().reassignments().get().isEmpty(),
-                    CLUSTER_WAIT_MS,  String.format("reassignmet not finished after %s ms", CLUSTER_WAIT_MS)
+                    CLUSTER_WAIT_MS, String.format("reassignmet not finished after %s ms", CLUSTER_WAIT_MS)
             );
 
             String output = captureDescribeTopicStandardOut(clusterInstance, buildTopicCommandOptionsWithBootstrap(clusterInstance, "--describe", "--under-min-isr-partitions", "--exclude-internal"));
@@ -1420,7 +1420,7 @@ public class TopicCommandTest {
             assertEquals("1000", internalConfigEntry.value());
 
             CreateTopicsResult nonInternalResult = adminClient.createTopics(List.of(new NewTopic(testTopicName, defaultNumPartitions, defaultReplicationFactor)));
-            
+
             ConfigEntry nonInternalConfigEntry = nonInternalResult.config(testTopicName).get().get(LogConfig.INTERNAL_SEGMENT_BYTES_CONFIG);
             assertNull(nonInternalConfigEntry, "Non-internal config entry should be null");
         }
@@ -1493,7 +1493,7 @@ public class TopicCommandTest {
     private static ReplicaDistributions getReplicaDistribution(Map<Integer, List<Integer>> assignment, Map<Integer, String> brokerRackMapping) {
         Map<Integer, Integer> leaderCount = new HashMap<>();
         Map<Integer, Integer> partitionCount = new HashMap<>();
-        Map<Integer, List<String>>  partitionRackMap = new HashMap<>();
+        Map<Integer, List<String>> partitionRackMap = new HashMap<>();
 
         assignment.forEach((partitionId, replicaList) -> {
             Integer leader = replicaList.get(0);

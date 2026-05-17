@@ -378,7 +378,7 @@ public class WorkerTest {
         when(plugins.newConfigProvider(any(AbstractConfig.class),
                                        eq("config.providers.file"),
                                        any(ClassLoaderUsage.class)))
-               .thenReturn(mockFileConfigProvider);
+            .thenReturn(mockFileConfigProvider);
     }
 
     @ParameterizedTest
@@ -765,7 +765,7 @@ public class WorkerTest {
                 Set.of()
         );
 
-        assertTrue(worker.startExactlyOnceSourceTask(TASK_ID, configState,  connectorConfigs, origProps, taskStatusListener, TargetState.STARTED, preProducer, postProducer));
+        assertTrue(worker.startExactlyOnceSourceTask(TASK_ID, configState, connectorConfigs, origProps, taskStatusListener, TargetState.STARTED, preProducer, postProducer));
         assertStatistics(worker, 0, 1);
         assertEquals(Set.of(TASK_ID), worker.taskIds());
         worker.stopAndAwaitTask(TASK_ID);
@@ -2992,10 +2992,10 @@ public class WorkerTest {
         jsonConverter.configure(Map.of(SCHEMAS_ENABLE_CONFIG, false), false);
 
         when(plugins.newInternalConverter(eq(true), anyString(), anyMap()))
-                       .thenReturn(jsonConverter);
+            .thenReturn(jsonConverter);
 
         when(plugins.newInternalConverter(eq(false), anyString(), anyMap()))
-                       .thenReturn(jsonConverter);
+            .thenReturn(jsonConverter);
     }
 
     private void verifyConverters() {
@@ -3005,7 +3005,7 @@ public class WorkerTest {
 
     private void mockTaskConverter(ClassLoaderUsage classLoaderUsage, String converterClassConfig, Converter returning) {
         when(plugins.newConverter(any(AbstractConfig.class), eq(converterClassConfig), eq(classLoaderUsage)))
-                       .thenReturn(returning);
+            .thenReturn(returning);
     }
 
     private void mockVersionedTaskConverterFromConnector(String converterClassConfig, String converterVersionConfig, Converter returning) {
@@ -3026,7 +3026,7 @@ public class WorkerTest {
 
     private void mockTaskHeaderConverter(ClassLoaderUsage classLoaderUsage, HeaderConverter returning) {
         when(plugins.newHeaderConverter(any(AbstractConfig.class), eq(WorkerConfig.HEADER_CONVERTER_CLASS_CONFIG), eq(classLoaderUsage)))
-               .thenReturn(returning);
+            .thenReturn(returning);
     }
 
     private void verifyTaskHeaderConverter() {
@@ -3035,7 +3035,7 @@ public class WorkerTest {
 
     private void mockVersionedTaskHeaderConverterFromConnector(HeaderConverter returning) {
         when(plugins.newHeaderConverter(any(ConnectorConfig.class), eq(ConnectorConfig.HEADER_CONVERTER_CLASS_CONFIG), eq(ConnectorConfig.HEADER_CONVERTER_VERSION_CONFIG)))
-               .thenReturn(returning);
+            .thenReturn(returning);
     }
 
     private void verifyVersionedTaskHeaderConverterFromConnector() {

@@ -701,8 +701,8 @@ public class DistributedHerder extends AbstractHerder implements Runnable {
                 taskConfigUpdates = new HashSet<>();
             }
         } else {
-            log.trace("Skipping config updates with incremental cooperative rebalancing " 
-                + "since no config rebalance is required " 
+            log.trace("Skipping config updates with incremental cooperative rebalancing "
+                + "since no config rebalance is required "
                 + "and there are no connector config, task config, or target state changes pending");
         }
         return retValue;
@@ -1173,6 +1173,7 @@ public class DistributedHerder extends AbstractHerder implements Runnable {
             );
         }));
     }
+
     @Override
     public void stopConnector(final String connName, final Callback<Void> callback) {
         log.trace("Submitting request to transition connector {} to STOPPED state", connName);
@@ -2595,7 +2596,7 @@ public class DistributedHerder extends AbstractHerder implements Runnable {
         ClusterConfigState snapshot = configBackingStore.snapshot();
         for (String connector : statusBackingStore.connectors()) {
             Set<ConnectorTaskId> remainingTasks = new HashSet<>(snapshot.tasks(connector));
-            
+
             statusBackingStore.getAll(connector).stream()
                 .map(TaskStatus::id)
                 .filter(task -> !remainingTasks.contains(task))
@@ -2610,6 +2611,7 @@ public class DistributedHerder extends AbstractHerder implements Runnable {
     // Rebalances are triggered internally from the group member, so these are always executed in the work thread.
     public class RebalanceListener implements WorkerRebalanceListener {
         private final Time time;
+
         RebalanceListener(Time time) {
             this.time = time;
         }

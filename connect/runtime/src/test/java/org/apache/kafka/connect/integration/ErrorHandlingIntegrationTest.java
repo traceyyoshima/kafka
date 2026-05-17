@@ -71,7 +71,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Tag("integration")
 @Timeout(value = 600)
 public class ErrorHandlingIntegrationTest {
-    
+
     private static final Logger log = LoggerFactory.getLogger(ErrorHandlingIntegrationTest.class);
     private static final String DLQ_TOPIC = "my-connector-errors";
     private static final String CONNECTOR_NAME = "error-conn";
@@ -269,7 +269,7 @@ public class ErrorHandlingIntegrationTest {
             ConnectorStateInfo info = connect.connectorStatus(CONNECTOR_NAME);
             return info != null && info.tasks().size() == NUM_TASKS
                     && connectorHandle.taskHandle(TASK_ID).numPartitionsAssigned() == 1;
-        }  catch (Exception e) {
+        } catch (Exception e) {
             // Log the exception and return that the partitions were not assigned
             log.error("Could not check connector state info.", e);
             return false;

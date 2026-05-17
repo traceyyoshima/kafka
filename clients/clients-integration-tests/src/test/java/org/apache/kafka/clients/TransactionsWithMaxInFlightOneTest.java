@@ -84,8 +84,7 @@ public class TransactionsWithMaxInFlightOneTest {
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
             ProducerConfig.TRANSACTIONAL_ID_CONFIG, "transactional-producer",
             ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 1
-        ))
-        ) {
+        ))) {
             producer.initTransactions();
 
             producer.beginTransaction();

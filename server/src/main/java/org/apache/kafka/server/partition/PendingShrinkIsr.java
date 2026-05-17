@@ -54,7 +54,7 @@ public record PendingShrinkIsr(Set<Integer> outOfSyncReplicaIds,
 
     @Override
     public String toString() {
-        return  "PendingShrinkIsr(outOfSyncReplicaIds=" + outOfSyncReplicaIds +
+        return "PendingShrinkIsr(outOfSyncReplicaIds=" + outOfSyncReplicaIds +
                 ", sentLeaderAndIsr=" + sentLeaderAndIsr +
                 ", leaderRecoveryState=" + leaderRecoveryState() +
                 ", lastCommittedState=" + lastCommittedState +

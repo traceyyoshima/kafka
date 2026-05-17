@@ -376,7 +376,6 @@ public class RepartitionOptimizingTest {
 
 
 
-
     private static final String EXPECTED_UNOPTIMIZED_TOPOLOGY = "Topologies:\n" +
         "   Sub-topology: 0\n" +
         "    Source: sourceStream (topics: [input])\n" +

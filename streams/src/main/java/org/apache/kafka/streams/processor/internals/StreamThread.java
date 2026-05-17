@@ -259,13 +259,13 @@ public class StreamThread extends Thread implements ProcessingThread {
 
             if (state == State.PENDING_SHUTDOWN && newState != State.DEAD) {
                 log.debug("Ignoring request to transit from PENDING_SHUTDOWN to {}: " +
-                              "only DEAD state is a valid next state", newState);
+                    "only DEAD state is a valid next state", newState);
                 // when the state is already in PENDING_SHUTDOWN, all other transitions will be
                 // refused but we do not throw exception here
                 return null;
             } else if (state == State.DEAD) {
                 log.debug("Ignoring request to transit from DEAD to {}: " +
-                              "no valid next state after DEAD", newState);
+                    "no valid next state after DEAD", newState);
                 // when the state is already in NOT_RUNNING, all its transitions
                 // will be refused but we do not throw exception here
                 return null;
@@ -1124,8 +1124,8 @@ public class StreamThread extends Thread implements ProcessingThread {
 
     private void handleTaskMigrated(final TaskMigratedException e) {
         log.warn("Detected that the thread is being fenced. " +
-                     "This implies that this thread missed a rebalance and dropped out of the consumer group. " +
-                     "Will close out all assigned tasks and rejoin the consumer group.", e);
+            "This implies that this thread missed a rebalance and dropped out of the consumer group. " +
+            "Will close out all assigned tasks and rejoin the consumer group.", e);
 
         taskManager.handleLostAll();
         mainConsumer.unsubscribe();
@@ -1454,7 +1454,7 @@ public class StreamThread extends Thread implements ProcessingThread {
 
         final int numRecords = records.count();
 
-        for (final TopicPartition topicPartition: records.partitions()) {
+        for (final TopicPartition topicPartition : records.partitions()) {
             records
                 .records(topicPartition)
                 .stream()

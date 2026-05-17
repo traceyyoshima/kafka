@@ -54,7 +54,7 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
         generateConverters(message.dataClassName(), message.struct(),
             message.validVersions());
         for (Iterator<StructRegistry.StructInfo> iter = structRegistry.structs();
-                iter.hasNext(); ) {
+            iter.hasNext();) {
             StructRegistry.StructInfo info = iter.next();
             buffer.printf("%n");
             buffer.printf("public static class %s {%n",

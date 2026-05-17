@@ -735,7 +735,7 @@ public class RecordCollectorTest {
             taskId,
             streamsProducer,
             productionExceptionHandler,
-            streamsMetrics, 
+            streamsMetrics,
             topology
         );
 
@@ -748,7 +748,7 @@ public class RecordCollectorTest {
         when(streamsProducer.sendException()).thenReturn(new AtomicReference<>(null));
         doNothing().when(streamsProducer).flush();
         final ProcessorTopology topology = mock(ProcessorTopology.class);
-        
+
         final RecordCollector collector = new RecordCollectorImpl(
             logContext,
             taskId,
@@ -826,7 +826,7 @@ public class RecordCollectorTest {
         final StreamsProducer streamsProducer = mock(StreamsProducer.class);
         when(streamsProducer.sendException()).thenReturn(new AtomicReference<>(null));
         final ProcessorTopology topology = mock(ProcessorTopology.class);
-        
+
         final RecordCollector collector = new RecordCollectorImpl(
             logContext,
             taskId,
@@ -835,7 +835,7 @@ public class RecordCollectorTest {
             streamsMetrics,
             topology
         );
-       
+
         collector.closeClean();
     }
 
@@ -846,7 +846,7 @@ public class RecordCollectorTest {
         when(streamsProducer.sendException()).thenReturn(new AtomicReference<>(null));
         doNothing().when(streamsProducer).abortTransaction();
         final ProcessorTopology topology = mock(ProcessorTopology.class);
-        
+
         final RecordCollector collector = new RecordCollectorImpl(
             logContext,
             taskId,
@@ -1167,8 +1167,8 @@ public class RecordCollectorTest {
         assertThat(
             thrown.getMessage(),
             equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
-                        "\norg.apache.kafka.common.KafkaException: KABOOM!" +
-                        "\nException handler choose to FAIL the processing, no more records would be sent.")
+                "\norg.apache.kafka.common.KafkaException: KABOOM!" +
+                "\nException handler choose to FAIL the processing, no more records would be sent.")
         );
     }
 
@@ -1191,8 +1191,8 @@ public class RecordCollectorTest {
         assertThat(
             thrown.getMessage(),
             equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
-                        "\norg.apache.kafka.common.KafkaException: KABOOM!" +
-                        "\nException handler choose to FAIL the processing, no more records would be sent.")
+                "\norg.apache.kafka.common.KafkaException: KABOOM!" +
+                "\nException handler choose to FAIL the processing, no more records would be sent.")
         );
     }
 
@@ -1218,8 +1218,8 @@ public class RecordCollectorTest {
         assertThat(
             thrown.getMessage(),
             equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
-                        "\norg.apache.kafka.common.errors.AuthenticationException: KABOOM!" +
-                        "\nWritten offsets would not be recorded and no more records would be sent since this is a fatal error.")
+                "\norg.apache.kafka.common.errors.AuthenticationException: KABOOM!" +
+                "\nWritten offsets would not be recorded and no more records would be sent since this is a fatal error.")
         );
     }
 
@@ -1242,8 +1242,8 @@ public class RecordCollectorTest {
         assertThat(
             thrown.getMessage(),
             equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
-                        "\norg.apache.kafka.common.errors.AuthenticationException: KABOOM!" +
-                        "\nWritten offsets would not be recorded and no more records would be sent since this is a fatal error.")
+                "\norg.apache.kafka.common.errors.AuthenticationException: KABOOM!" +
+                "\nWritten offsets would not be recorded and no more records would be sent since this is a fatal error.")
         );
     }
 
@@ -1266,8 +1266,8 @@ public class RecordCollectorTest {
         assertThat(
             thrown.getMessage(),
             equalTo("Error encountered sending record to topic topic for task 0_0 due to:" +
-                        "\norg.apache.kafka.common.errors.AuthenticationException: KABOOM!" +
-                        "\nWritten offsets would not be recorded and no more records would be sent since this is a fatal error.")
+                "\norg.apache.kafka.common.errors.AuthenticationException: KABOOM!" +
+                "\nWritten offsets would not be recorded and no more records would be sent since this is a fatal error.")
         );
     }
 
@@ -1288,7 +1288,7 @@ public class RecordCollectorTest {
         );
 
         try (final LogCaptureAppender logCaptureAppender =
-                 LogCaptureAppender.createAndRegister(RecordCollectorImpl.class)) {
+            LogCaptureAppender.createAndRegister(RecordCollectorImpl.class)) {
             logCaptureAppender.addFilter(ThresholdFilter.createFilter(Level.INFO, null, null));
 
             collector.send(topic, "3", "0", null, null, stringSerializer, stringSerializer, sinkNodeName, context, streamPartitioner);
@@ -1633,7 +1633,7 @@ public class RecordCollectorTest {
             );
         }
     }
-    
+
     @Test
     public void shouldNotFailIfRecordContextIsNotAvailableOnSerializationError() {
         try (final ErrorStringSerializer errorSerializer = new ErrorStringSerializer()) {

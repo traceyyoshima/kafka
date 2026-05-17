@@ -359,7 +359,7 @@ public class MockController implements Controller {
     ) {
         Map<ConfigResource, ApiError> results = new HashMap<>();
         for (Entry<ConfigResource, Map<String, Entry<AlterConfigOp.OpType, String>>> entry :
-                configChanges.entrySet()) {
+            configChanges.entrySet()) {
             ConfigResource resource = entry.getKey();
             results.put(resource, incrementalAlterResource(resource, entry.getValue(), validateOnly));
         }

@@ -34,7 +34,7 @@ public class QueryableStoreTypesWithHeadersTest {
                 Stores.inMemoryKeyValueStore("test-store"),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlyKeyValueStore<String, ValueAndTimestamp<String>>> storeType =
             QueryableStoreTypes.timestampedKeyValueStore();
@@ -49,7 +49,7 @@ public class QueryableStoreTypesWithHeadersTest {
                 Stores.inMemoryKeyValueStore("test-store"),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlyKeyValueStore<String, String>> storeType =
             QueryableStoreTypes.keyValueStore();
@@ -64,7 +64,7 @@ public class QueryableStoreTypesWithHeadersTest {
                 Stores.inMemoryKeyValueStore("test-store"),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlyWindowStore<String, String>> storeType =
             QueryableStoreTypes.windowStore();
@@ -83,7 +83,7 @@ public class QueryableStoreTypesWithHeadersTest {
                     false),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlyWindowStore<String, ValueAndTimestamp<String>>> storeType =
             QueryableStoreTypes.timestampedWindowStore();
@@ -102,7 +102,7 @@ public class QueryableStoreTypesWithHeadersTest {
                     false),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlyWindowStore<String, String>> storeType =
             QueryableStoreTypes.windowStore();
@@ -121,7 +121,7 @@ public class QueryableStoreTypesWithHeadersTest {
                     false),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlyKeyValueStore<String, String>> storeType =
             QueryableStoreTypes.keyValueStore();
@@ -136,7 +136,7 @@ public class QueryableStoreTypesWithHeadersTest {
                 Stores.inMemoryKeyValueStore("test-ts-store"),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlyKeyValueStore<String, ValueAndTimestamp<String>>> storeType =
             QueryableStoreTypes.timestampedKeyValueStore();
@@ -170,7 +170,7 @@ public class QueryableStoreTypesWithHeadersTest {
                     false),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlyWindowStore<String, ValueAndTimestamp<String>>> storeType =
             QueryableStoreTypes.timestampedWindowStore();
@@ -206,7 +206,7 @@ public class QueryableStoreTypesWithHeadersTest {
                     Duration.ofMillis(100)),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlySessionStore<String, ValueAndTimestamp<String>>> storeType =
             QueryableStoreTypes.sessionStore();
@@ -223,7 +223,7 @@ public class QueryableStoreTypesWithHeadersTest {
                     Duration.ofMillis(100)),
                 Serdes.String(),
                 Serdes.String())
-            .build();
+                .build();
 
         final QueryableStoreType<ReadOnlySessionStore<String, String>> storeType =
             QueryableStoreTypes.sessionStore();

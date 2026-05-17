@@ -79,7 +79,7 @@ public class PartitionMetadataFile {
                 dirtyTopicIdOpt.ifPresent(topicId -> {
                     try {
                         try (FileOutputStream fileOutputStream = new FileOutputStream(tempPath().toFile());
-                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8))) {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8))) {
                             writer.write(new PartitionMetadata(CURRENT_VERSION, topicId).encode());
                             writer.flush();
                             fileOutputStream.getFD().sync();

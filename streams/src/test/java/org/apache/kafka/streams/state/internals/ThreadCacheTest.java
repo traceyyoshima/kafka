@@ -467,7 +467,7 @@ public class ThreadCacheTest {
                 received.add(dirtyEntry.key().get());
             }
         });
-        final List<byte[]> toInsert =  Arrays.asList(new byte[]{0}, new byte[]{1}, new byte[]{2});
+        final List<byte[]> toInsert = Arrays.asList(new byte[]{0}, new byte[]{1}, new byte[]{2});
         for (final byte[] bytes : toInsert) {
             cache.put(namespace1, Bytes.wrap(bytes), cleanEntry(bytes));
         }
@@ -534,6 +534,7 @@ public class ThreadCacheTest {
         cache.put(namespace, Bytes.wrap(new byte[]{1}), cleanEntry(new byte[]{0}));
         assertEquals(0, received.size());
     }
+
     @Test
     public void shouldPutIfAbsent() {
         final ThreadCache cache = new ThreadCache(logContext, 100000, new MockStreamsMetrics(new Metrics()));

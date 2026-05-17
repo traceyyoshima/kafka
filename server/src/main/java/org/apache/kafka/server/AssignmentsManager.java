@@ -340,7 +340,7 @@ public final class AssignmentsManager {
         Map<TopicIdPartition, Assignment> newInFlight = new HashMap<>();
         int numInvalid = 0;
         for (Iterator<Assignment> iterator = ready.values().iterator();
-             iterator.hasNext() && newInFlight.size() < MAX_ASSIGNMENTS_PER_REQUEST;
+            iterator.hasNext() && newInFlight.size() < MAX_ASSIGNMENTS_PER_REQUEST;
              ) {
             Assignment assignment = iterator.next();
             iterator.remove();

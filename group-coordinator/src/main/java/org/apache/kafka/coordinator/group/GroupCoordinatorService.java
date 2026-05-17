@@ -518,8 +518,8 @@ public class GroupCoordinatorService implements GroupCoordinator {
     private static void throwIfInvalidTopology(
         StreamsGroupHeartbeatRequestData.Topology topology
     ) throws StreamsInvalidTopologyException {
-        for (StreamsGroupHeartbeatRequestData.Subtopology subtopology: topology.subtopologies()) {
-            for (StreamsGroupHeartbeatRequestData.TopicInfo topicInfo: subtopology.stateChangelogTopics()) {
+        for (StreamsGroupHeartbeatRequestData.Subtopology subtopology : topology.subtopologies()) {
+            for (StreamsGroupHeartbeatRequestData.TopicInfo topicInfo : subtopology.stateChangelogTopics()) {
                 if (topicInfo.partitions() != 0) {
                     throw new StreamsInvalidTopologyException(String.format(
                         "Changelog topic %s must have an undefined partition count, but it is set to %d.",
@@ -747,7 +747,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
             });
     }
-    
+
     private AlterShareGroupOffsetsResponseData buildErrorResponse(AlterShareGroupOffsetsResponseData response, InitializeShareGroupStateResult result) {
         AlterShareGroupOffsetsResponseData data = new AlterShareGroupOffsetsResponseData();
         Map<Uuid, Map<Integer, PartitionErrorData>> topicPartitionErrorsMap = result.getErrors();
@@ -1240,7 +1240,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
 
         return FutureUtils.combineFutures(futures, ArrayList::new, List::addAll);
     }
-    
+
     /**
      * See {@link GroupCoordinator#shareGroupDescribe(AuthorizableRequestContext, List)}.
      */
@@ -1305,7 +1305,7 @@ public class GroupCoordinatorService implements GroupCoordinator {
         if (!isActive.get() || metadataImage == null) {
             return CompletableFuture.completedFuture(AlterShareGroupOffsetsRequest.getErrorResponseData(Errors.COORDINATOR_NOT_AVAILABLE));
         }
-        
+
         if (groupId == null || groupId.isEmpty()) {
             return CompletableFuture.completedFuture(AlterShareGroupOffsetsRequest.getErrorResponseData(Errors.INVALID_GROUP_ID));
         }

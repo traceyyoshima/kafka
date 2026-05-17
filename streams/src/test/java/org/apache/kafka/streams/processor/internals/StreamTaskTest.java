@@ -449,15 +449,15 @@ public class StreamTaskTest {
 
         final AtomicReference<AssertionError> shouldNotSeek = new AtomicReference<>();
         try (final MockConsumer<byte[], byte[]> consumer = new MockConsumer<>(AutoOffsetResetStrategy.EARLIEST.name()) {
-                @Override
-                public void seek(final TopicPartition partition, final long offset) {
-                    final AssertionError error = shouldNotSeek.get();
-                    if (error != null) {
-                        throw error;
-                    }
-                    super.seek(partition, offset);
+            @Override
+            public void seek(final TopicPartition partition, final long offset) {
+                final AssertionError error = shouldNotSeek.get();
+                if (error != null) {
+                    throw error;
                 }
-            }) {
+                super.seek(partition, offset);
+            }
+        }) {
 
             consumer.assign(asList(partition1, partition2));
             consumer.updateBeginningOffsets(mkMap(mkEntry(partition1, 0L), mkEntry(partition2, 0L)));
@@ -1575,7 +1575,7 @@ public class StreamTaskTest {
 
         assertThat(task.prepareCommit(true), equalTo(
             mkMap(
-                mkEntry(partition1, new OffsetAndMetadata(1L,  Optional.of(1), expectedMetadata1.encode())),
+                mkEntry(partition1, new OffsetAndMetadata(1L, Optional.of(1), expectedMetadata1.encode())),
                 mkEntry(partition2, new OffsetAndMetadata(2L, Optional.of(1), expectedMetadata2.encode()))
             )));
         task.postCommit(false);
@@ -1674,7 +1674,7 @@ public class StreamTaskTest {
     public void shouldLogNotReadyWhenStaleAfterThreshold() throws Exception {
         when(stateManager.taskId()).thenReturn(taskId);
         when(stateManager.taskType()).thenReturn(TaskType.ACTIVE);
-        
+
         task = createStatelessTask(createConfig("100"));
         task.initializeIfNeeded();
         task.completeRestoration(noOpResetter -> { });
@@ -1683,17 +1683,17 @@ public class StreamTaskTest {
 
         try (final LogCaptureAppender streamTaskAppender = LogCaptureAppender.createAndRegister(StreamTask.class);
              final LogCaptureAppender partitionGroupAppender = LogCaptureAppender.createAndRegister(PartitionGroup.class)) {
-            
+
             // Enable TRACE logging for PartitionGroup to capture the "ready for processing" message
             partitionGroupAppender.setClassLogger(PartitionGroup.class, Level.TRACE);
-            
+
             // Set lastNotReadyLogTime to 100 seconds ago
             final long initialTime = time.milliseconds();
             task.setLastNotReadyLogTime(initialTime - 100_000L);
-            
+
             // Advance time by 19.999 seconds
             long newTime = time.milliseconds() + 19_999L;
-            
+
             // Should not trigger logging after being stale for 119 seconds
             assertFalse(task.isProcessable(newTime));
             List<String> messages = streamTaskAppender.getMessages();
@@ -1704,7 +1704,7 @@ public class StreamTaskTest {
 
             // Should trigger logging after being stale for 120 seconds
             assertFalse(task.isProcessable(newTime));
-            
+
             // Validate INFO log from StreamTask about partition2 not being ready
             messages = streamTaskAppender.getMessages();
             final String expectedNotReadyMessage = "stream-thread [Test worker] task [0_0] Partition topic2-0 has fetched lag of -1\n\tWaiting to fetch data for topic2-0";
@@ -1718,7 +1718,7 @@ public class StreamTaskTest {
                 ))
             );
             assertThat(messages.get(0), equalTo(expectedNotReadyMessage));
-            
+
             // Validate TRACE log from PartitionGroup about partition1 being ready
             assertThat(
                 partitionGroupAppender.getEvents(),
@@ -1838,7 +1838,7 @@ public class StreamTaskTest {
         time.sleep(10);
         assertTrue(task.canPunctuateSystemTime());
         assertTrue(task.maybePunctuateSystemTime());
-        anchoredProcessorSystemTime.mockProcessor.checkAndClearPunctuateResult(PunctuationType.WALL_CLOCK_TIME,  testStartTime + 10, testStartTime + 20);
+        anchoredProcessorSystemTime.mockProcessor.checkAndClearPunctuateResult(PunctuationType.WALL_CLOCK_TIME, testStartTime + 10, testStartTime + 20);
     }
 
     @Test
@@ -2045,7 +2045,7 @@ public class StreamTaskTest {
         when(stateManager.taskType()).thenReturn(TaskType.ACTIVE);
         task = createStatelessTask(createConfig("100"));
         task.processorContext().setCurrentNode(processorStreamTime);
-        task.schedule(Instant.ofEpochMilli(1000), 1,  PunctuationType.STREAM_TIME, timestamp -> { });
+        task.schedule(Instant.ofEpochMilli(1000), 1, PunctuationType.STREAM_TIME, timestamp -> { });
     }
 
     @Test
@@ -3111,7 +3111,7 @@ public class StreamTaskTest {
             Set.of(partition1),
             topology,
             consumer,
-            new TopologyConfig(null,  config, new Properties()).getTaskConfig(),
+            new TopologyConfig(null, config, new Properties()).getTaskConfig(),
             streamsMetrics,
             stateDirectory,
             cache,
@@ -3153,7 +3153,7 @@ public class StreamTaskTest {
             partitions,
             topology,
             consumer,
-            new TopologyConfig(null,  config, new Properties()).getTaskConfig(),
+            new TopologyConfig(null, config, new Properties()).getTaskConfig(),
             streamsMetrics,
             stateDirectory,
             cache,
@@ -3187,7 +3187,7 @@ public class StreamTaskTest {
             partitions,
             topology,
             consumer,
-            new TopologyConfig(null,  config, new Properties()).getTaskConfig(),
+            new TopologyConfig(null, config, new Properties()).getTaskConfig(),
             streamsMetrics,
             stateDirectory,
             cache,
@@ -3226,7 +3226,7 @@ public class StreamTaskTest {
             partitions,
             topology,
             consumer,
-            new TopologyConfig(null,  config, new Properties()).getTaskConfig(),
+            new TopologyConfig(null, config, new Properties()).getTaskConfig(),
             streamsMetrics,
             stateDirectory,
             cache,
@@ -3261,7 +3261,7 @@ public class StreamTaskTest {
             Set.of(partition1),
             topology,
             consumer,
-            new TopologyConfig(null,  config, new Properties()).getTaskConfig(),
+            new TopologyConfig(null, config, new Properties()).getTaskConfig(),
             new StreamsMetricsImpl(metrics, "test", time),
             stateDirectory,
             cache,
@@ -3298,7 +3298,7 @@ public class StreamTaskTest {
             partitions,
             topology,
             consumer,
-            new TopologyConfig(null,  config, new Properties()).getTaskConfig(),
+            new TopologyConfig(null, config, new Properties()).getTaskConfig(),
             new StreamsMetricsImpl(metrics, "test", time),
             stateDirectory,
             cache,
@@ -3313,7 +3313,7 @@ public class StreamTaskTest {
 
     private StreamTask createStatelessTaskWithAnchoredPunctuation(
             final StreamsConfig config,
-            final MockProcessorNode<Integer, Integer, ?, ?>  anchoredProcessorSystemTime
+            final MockProcessorNode<Integer, Integer, ?, ?> anchoredProcessorSystemTime
     ) {
         final ProcessorTopology topology = withSources(
                 asList(source1, source2, anchoredProcessorStreamTime, anchoredProcessorSystemTime),
@@ -3338,7 +3338,7 @@ public class StreamTaskTest {
                 partitions,
                 topology,
                 consumer,
-                new TopologyConfig(null,  config, new Properties()).getTaskConfig(),
+                new TopologyConfig(null, config, new Properties()).getTaskConfig(),
                 new StreamsMetricsImpl(metrics, "test", time),
                 stateDirectory,
                 cache,
@@ -3374,7 +3374,7 @@ public class StreamTaskTest {
             singleton(partition1),
             topology,
             consumer,
-            new TopologyConfig(null,  config, new Properties()).getTaskConfig(),
+            new TopologyConfig(null, config, new Properties()).getTaskConfig(),
             new StreamsMetricsImpl(metrics, "test", time),
             stateDirectory,
             cache,

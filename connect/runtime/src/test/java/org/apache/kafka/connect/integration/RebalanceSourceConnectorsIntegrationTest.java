@@ -71,7 +71,7 @@ public class RebalanceSourceConnectorsIntegrationTest {
     private static final String TOPIC_NAME = "sequential-topic";
 
     private EmbeddedConnectCluster connect;
-    
+
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
@@ -319,7 +319,7 @@ public class RebalanceSourceConnectorsIntegrationTest {
                         .add(connector);
                 info.tasks().forEach(
                     t -> tasks.computeIfAbsent(t.workerId(), k -> new ArrayList<>())
-                           .add(connector + "-" + t.id()));
+                        .add(connector + "-" + t.id()));
             }
 
             int maxConnectors = connectors.values().stream().mapToInt(Collection::size).max().orElse(0);

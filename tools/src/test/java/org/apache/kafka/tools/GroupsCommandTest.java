@@ -112,7 +112,7 @@ public class GroupsCommandTest {
         assertTrue(opts.hasListOption());
         assertTrue(opts.hasShareOption());
     }
-    
+
     @Test
     public void testOptionsListStreamsFilterSucceeds() {
         GroupsCommand.GroupsCommandOptions opts = new GroupsCommand.GroupsCommandOptions(
@@ -206,7 +206,7 @@ public class GroupsCommandTest {
         assertInitializeInvalidOptionsExitCode(1,
             new String[] {"--bootstrap-server", bootstrapServer, "--list", "--share", "--group-type", "classic"});
     }
-    
+
     @Test
     public void testOptionsListStreamsAndProtocolFilterFails() {
         assertInitializeInvalidOptionsExitCode(1,
@@ -218,7 +218,7 @@ public class GroupsCommandTest {
         assertInitializeInvalidOptionsExitCode(1,
             new String[] {"--bootstrap-server", bootstrapServer, "--list", "--streams", "--group-type", "classic"});
     }
-    
+
     @Test
     public void testListGroupsEmpty() {
         Admin adminClient = mock(Admin.class);

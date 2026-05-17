@@ -70,7 +70,7 @@ public class RemoteLogMetadataFormatterTest {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              PrintStream ps = new PrintStream(baos)) {
             try (RemoteLogMetadataSerde.RemoteLogMetadataFormatter formatter =
-                         new RemoteLogMetadataSerde.RemoteLogMetadataFormatter()) {
+                new RemoteLogMetadataSerde.RemoteLogMetadataFormatter()) {
                 formatter.writeTo(metadataRecord, ps);
                 assertEquals(expected, baos.toString());
             }

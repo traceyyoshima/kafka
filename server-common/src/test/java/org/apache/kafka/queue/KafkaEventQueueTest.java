@@ -244,16 +244,16 @@ public class KafkaEventQueueTest {
         queue.close();
         CompletableFuture<Void> future = new CompletableFuture<>();
         queue.append(new EventQueue.Event() {
-                @Override
-                public void run() {
-                    future.complete(null);
-                }
+            @Override
+            public void run() {
+                future.complete(null);
+            }
 
-                @Override
-                public void handleException(Throwable e) {
-                    future.completeExceptionally(e);
-                }
-            });
+            @Override
+            public void handleException(Throwable e) {
+                future.completeExceptionally(e);
+            }
+        });
         assertEquals(RejectedExecutionException.class, assertThrows(
             ExecutionException.class, () -> future.get()).getCause().getClass());
     }

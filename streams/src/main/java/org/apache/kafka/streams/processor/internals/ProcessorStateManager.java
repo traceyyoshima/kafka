@@ -713,7 +713,7 @@ public class ProcessorStateManager implements StateManager {
         return offset != OFFSET_UNKNOWN ? offset : null;
     }
 
-    private  TopicPartition getStorePartition(final String storeName) {
+    private TopicPartition getStorePartition(final String storeName) {
         // NOTE we assume the partition of the topic can always be inferred from the task id;
         // if user ever use a custom partition grouper (deprecated in KIP-528) this would break and
         // it is not a regression (it would always break anyways)

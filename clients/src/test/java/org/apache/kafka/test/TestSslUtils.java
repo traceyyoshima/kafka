@@ -116,7 +116,7 @@ public class TestSslUtils {
      */
     public static X509Certificate generateCertificate(String dn, KeyPair pair,
                                                       int days, String algorithm)
-        throws  CertificateException {
+        throws CertificateException {
         return new CertificateBuilder(days, algorithm).generate(dn, pair);
     }
 
@@ -212,25 +212,25 @@ public class TestSslUtils {
         sslConfigs.put(SslConfigs.SSL_TRUSTMANAGER_ALGORITHM_CONFIG, trustManagerAlgorithm);
         sslConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, List.of());
 
-        List<String> enabledProtocols  = new ArrayList<>();
+        List<String> enabledProtocols = new ArrayList<>();
         enabledProtocols.add(tlsProtocol);
         sslConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, enabledProtocols);
 
         return sslConfigs;
     }
 
-    public static  Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore, ConnectionMode connectionMode, File trustStoreFile, String certAlias)
+    public static Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore, ConnectionMode connectionMode, File trustStoreFile, String certAlias)
         throws IOException, GeneralSecurityException {
         return createSslConfig(useClientCert, trustStore, connectionMode, trustStoreFile, certAlias, "localhost");
     }
 
-    public static  Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore,
+    public static Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore,
             ConnectionMode connectionMode, File trustStoreFile, String certAlias, String cn)
         throws IOException, GeneralSecurityException {
         return createSslConfig(useClientCert, trustStore, connectionMode, trustStoreFile, certAlias, cn, new CertificateBuilder());
     }
 
-    public static  Map<String, Object> createSslConfig(boolean useClientCert, boolean createTrustStore,
+    public static Map<String, Object> createSslConfig(boolean useClientCert, boolean createTrustStore,
             ConnectionMode connectionMode, File trustStoreFile, String certAlias, String cn, CertificateBuilder certBuilder)
             throws IOException, GeneralSecurityException {
         SslConfigsBuilder builder = new SslConfigsBuilder(connectionMode)
@@ -299,7 +299,7 @@ public class TestSslUtils {
 
     private static void writeToFile(String path, Password... entries) throws IOException {
         try (FileOutputStream out = new FileOutputStream(path)) {
-            for (Password entry: entries) {
+            for (Password entry : entries) {
                 out.write(entry.value().getBytes(StandardCharsets.UTF_8));
             }
         }
@@ -475,7 +475,7 @@ public class TestSslUtils {
                 throw new CertificateException(e);
             }
         }
-        
+
         /**
          * @param dn The distinguished name to use
          * @param keyPair A key pair to use
@@ -649,7 +649,7 @@ public class TestSslUtils {
             return this;
         }
 
-        public  Map<String, Object> build() throws IOException, GeneralSecurityException {
+        public Map<String, Object> build() throws IOException, GeneralSecurityException {
             if (usePem) {
                 return buildPem();
             } else
@@ -698,7 +698,7 @@ public class TestSslUtils {
             sslConfigs.put(SslConfigs.SSL_TRUSTMANAGER_ALGORITHM_CONFIG, TrustManagerFactory.getDefaultAlgorithm());
             sslConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, List.of());
 
-            List<String> enabledProtocols  = new ArrayList<>();
+            List<String> enabledProtocols = new ArrayList<>();
             enabledProtocols.add(tlsProtocol);
             sslConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, enabledProtocols);
 
@@ -808,7 +808,7 @@ public class TestSslUtils {
 
         //Generate Intermediate certificates
         for (int intermediateCertIndex = caIndex - 1; intermediateCertIndex > 0; intermediateCertIndex--) {
-            certs[intermediateCertIndex] = TestSslUtils.generateSignedCertificate("CN=Intermediate CA" +  intermediateCertIndex,
+            certs[intermediateCertIndex] = TestSslUtils.generateSignedCertificate("CN=Intermediate CA" + intermediateCertIndex,
                     keyPairs[intermediateCertIndex], 365, 365, certs[intermediateCertIndex + 1].getSubjectX500Principal().getName(),
                     keyPairs[intermediateCertIndex + 1], "SHA512withRSA", true, false, false, hostNames);
         }
@@ -818,14 +818,14 @@ public class TestSslUtils {
                 certs[1].getSubjectX500Principal().getName(), keyPairs[1], "SHA512withRSA", false, true, true, hostNames);
 
         File keystoreStoreFile = TestUtils.tempFile("keystore", ".jks");
-        Password keyStorePassword =  new Password("password");
+        Password keyStorePassword = new Password("password");
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         keyStore.load(null, null);
         keyStore.setKeyEntry("issued-cert", keyPairs[0].getPrivate(), keyStorePassword.value().toCharArray(), certs);
         saveKeyStore(keyStore, keystoreStoreFile.getPath(), keyStorePassword);
 
         File trustStoreFile = TestUtils.tempFile("truststore", ".jks");
-        Password trustStorePassword =  new Password("password");
+        Password trustStorePassword = new Password("password");
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
         trustStore.load(null, null);
         for (X509Certificate cert : certs) {
@@ -847,7 +847,7 @@ public class TestSslUtils {
         sslConfigs.put(SslConfigs.SSL_TRUSTSTORE_TYPE_CONFIG, "JKS");
         sslConfigs.put(SslConfigs.SSL_TRUSTMANAGER_ALGORITHM_CONFIG, TrustManagerFactory.getDefaultAlgorithm());
 
-        List<String> enabledProtocols  = new ArrayList<>();
+        List<String> enabledProtocols = new ArrayList<>();
         enabledProtocols.add(tlsProtocol);
         sslConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, enabledProtocols);
         sslConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, List.of());

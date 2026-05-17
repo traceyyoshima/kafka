@@ -135,11 +135,11 @@ public class KStreamRepartitionIntegrationTest {
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Integer().getClass());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         streamsConfiguration.put(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, topologyOptimization);
-        
+
         if (useNewProtocol) {
             streamsConfiguration.put(StreamsConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.STREAMS.name().toLowerCase(Locale.getDefault()));
         }
-        
+
         return streamsConfiguration;
     }
 
@@ -189,7 +189,7 @@ public class KStreamRepartitionIntegrationTest {
         try (final KafkaStreams ks = new KafkaStreams(builder.build(streamsConfiguration), streamsConfiguration)) {
             ks.setUncaughtExceptionHandler(exception -> {
                 expectedThrowable.set(exception);
-                System.out.println(String.format("[%s Protocol] Exception caught: %s", 
+                System.out.println(String.format("[%s Protocol] Exception caught: %s",
                     useNewProtocol ? "STREAMS" : "CLASSIC", exception.getMessage()));
                 return SHUTDOWN_CLIENT;
             });

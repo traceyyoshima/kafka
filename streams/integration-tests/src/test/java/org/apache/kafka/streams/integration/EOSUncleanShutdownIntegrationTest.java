@@ -120,7 +120,7 @@ public class EOSUncleanShutdownIntegrationTest {
             mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
             mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
         ));
-        final KafkaStreams driver =  new KafkaStreams(builder.build(), STREAMS_CONFIG);
+        final KafkaStreams driver = new KafkaStreams(builder.build(), STREAMS_CONFIG);
         driver.cleanUp();
         driver.start();
 

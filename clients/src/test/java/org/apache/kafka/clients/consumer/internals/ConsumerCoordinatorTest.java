@@ -1815,8 +1815,8 @@ public abstract class ConsumerCoordinatorTest {
                                        LeaveGroupRequest leaveRequest) {
         List<MemberIdentity> members = leaveRequest.data().members();
         return leaveRequest.data().groupId().equals(groupId) &&
-                   members.size() == 1 &&
-                   members.get(0).memberId().equals(consumerId);
+            members.size() == 1 &&
+            members.get(0).memberId().equals(consumerId);
     }
 
     /**
@@ -3314,7 +3314,7 @@ public abstract class ConsumerCoordinatorTest {
         // Wait for the metric poller to observe the final assignment change or raise an error
         TestUtils.waitForCondition(
             () -> observedSize.get() == totalPartitions ||
-            exceptionHolder.get() != null, "Failed to observe expected assignment change");
+                exceptionHolder.get() != null, "Failed to observe expected assignment change");
 
         doStop.set(true);
         poller.join();

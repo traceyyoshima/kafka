@@ -201,7 +201,7 @@ public class ClientState {
         final Map<String, Set<TaskId>> consumerToPreviousStandbyTaskIds = new TreeMap<>();
         final Map<String, Set<TaskId>> consumerToPreviousActiveTaskIds = previousActiveTasks.consumerToTaskIds();
 
-        for (final Map.Entry<String, Set<TaskId>> entry: consumerToPreviousStatefulTaskIds.entrySet()) {
+        for (final Map.Entry<String, Set<TaskId>> entry : consumerToPreviousStatefulTaskIds.entrySet()) {
             final Set<TaskId> standbyTaskIds = new HashSet<>(entry.getValue());
             if (consumerToPreviousActiveTaskIds.containsKey(entry.getKey()))
                 standbyTaskIds.removeAll(consumerToPreviousActiveTaskIds.get(entry.getKey()));
@@ -395,10 +395,10 @@ public class ClientState {
                 taskLagTotals.put(task, UNKNOWN_OFFSET_SUM);
             } else if (endOffsetSum < offsetSum) {
                 LOG.warn("Task " + task + " had endOffsetSum=" + endOffsetSum + " smaller than offsetSum=" +
-                             offsetSum + " on member " + uuid + ". This probably means the task is corrupted," +
-                             " which in turn indicates that it will need to restore from scratch if it gets assigned." +
-                             " The assignor will de-prioritize returning this task to this member in the hopes that" +
-                             " some other member may be able to re-use its state.");
+                    offsetSum + " on member " + uuid + ". This probably means the task is corrupted," +
+                    " which in turn indicates that it will need to restore from scratch if it gets assigned." +
+                    " The assignor will de-prioritize returning this task to this member in the hopes that" +
+                    " some other member may be able to re-use its state.");
                 taskLagTotals.put(task, endOffsetSum);
             } else {
                 taskLagTotals.put(task, endOffsetSum - offsetSum);
@@ -502,7 +502,7 @@ public class ClientState {
 
     public String currentAssignment() {
         return "[activeTasks: (" + assignedActiveTasks.taskIds() +
-               ") standbyTasks: (" + assignedStandbyTasks.taskIds() + ")]";
+            ") standbyTasks: (" + assignedStandbyTasks.taskIds() + ")]";
     }
 
     @Override

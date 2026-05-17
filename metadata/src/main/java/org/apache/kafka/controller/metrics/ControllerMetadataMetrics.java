@@ -236,7 +236,7 @@ public final class ControllerMetadataMetrics implements AutoCloseable {
             BrokerRegistrationState.UNREGISTERED.state()
         );
     }
-    
+
     public void setGlobalTopicCount(int topicCount) {
         this.globalTopicCount.set(topicCount);
     }
@@ -292,7 +292,7 @@ public final class ControllerMetadataMetrics implements AutoCloseable {
     public int metadataErrorCount() {
         return this.metadataErrorCount.get();
     }
-    
+
     public void updateUncleanLeaderElection(int count) {
         this.uncleanLeaderElectionMeter.ifPresent(m -> m.mark(count));
     }

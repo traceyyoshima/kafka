@@ -194,7 +194,7 @@ public class ResetConsumerGroupOffsetTest {
             List<String> groups = generateIds(topic);
             for (String group : groups) {
                 try (AutoCloseable consumerGroupCloseable =
-                             consumerGroupClosable(cluster, 1, topic, group, groupProtocol)) {
+                    consumerGroupClosable(cluster, 1, topic, group, groupProtocol)) {
                     awaitConsumerProgress(cluster, topic, group, 100L);
                 }
             }
@@ -218,7 +218,7 @@ public class ResetConsumerGroupOffsetTest {
             for (int i = 1; i <= 3; i++) {
                 String group = generateRandomGroupId();
                 try (AutoCloseable consumerGroupCloseable =
-                             consumerGroupClosable(cluster, 1, topic, group, groupProtocol)) {
+                    consumerGroupClosable(cluster, 1, topic, group, groupProtocol)) {
                     awaitConsumerProgress(cluster, topic, group, 100L);
                 }
             }
@@ -244,7 +244,7 @@ public class ResetConsumerGroupOffsetTest {
             for (String topic : topics) {
                 for (String group : groups) {
                     try (AutoCloseable consumerGroupCloseable =
-                                 consumerGroupClosable(cluster, 3, topic, group, groupProtocol)) {
+                        consumerGroupClosable(cluster, 3, topic, group, groupProtocol)) {
                         awaitConsumerProgress(cluster, topic, group, 100);
                     }
                 }
@@ -277,7 +277,7 @@ public class ResetConsumerGroupOffsetTest {
             produceMessages(cluster, topic, 100);
 
             try (AutoCloseable consumerGroupCloseable =
-                         consumerGroupClosable(cluster, 1, topic, group, groupProtocol)) {
+                consumerGroupClosable(cluster, 1, topic, group, groupProtocol)) {
                 awaitConsumerProgress(cluster, topic, group, 100L);
             }
 
@@ -301,7 +301,7 @@ public class ResetConsumerGroupOffsetTest {
                     "--execute");
 
             try (AutoCloseable consumerGroupCloseable =
-                         consumerGroupClosable(cluster, 1, topic, group, groupProtocol)) {
+                consumerGroupClosable(cluster, 1, topic, group, groupProtocol)) {
                 awaitConsumerProgress(cluster, topic, group, 100L);
             }
 
@@ -827,7 +827,7 @@ public class ResetConsumerGroupOffsetTest {
                                            GroupProtocol groupProtocol) throws Exception {
         produceMessages(cluster, topic, 100);
         try (AutoCloseable consumerGroupCloseable =
-                     consumerGroupClosable(cluster, numConsumers, topic, group, groupProtocol)) {
+            consumerGroupClosable(cluster, numConsumers, topic, group, groupProtocol)) {
             awaitConsumerProgress(cluster, topic, group, 100);
         }
     }

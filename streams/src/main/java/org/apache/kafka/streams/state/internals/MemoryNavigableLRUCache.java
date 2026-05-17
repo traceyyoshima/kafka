@@ -101,12 +101,12 @@ public class MemoryNavigableLRUCache extends MemoryLRUCache {
     }
 
     @Override
-    public  KeyValueIterator<Bytes, byte[]> all() {
+    public KeyValueIterator<Bytes, byte[]> all() {
         return range(null, null);
     }
 
     @Override
-    public  KeyValueIterator<Bytes, byte[]> reverseAll() {
+    public KeyValueIterator<Bytes, byte[]> reverseAll() {
         return reverseRange(null, null);
     }
 

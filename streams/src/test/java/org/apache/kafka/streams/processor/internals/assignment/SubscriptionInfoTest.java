@@ -394,7 +394,7 @@ public class SubscriptionInfoTest {
                 ACTIVE_TASKS,
                 STANDBY_TASKS,
                 "localhost:80")
-            .encode());
+                .encode());
 
         assertThat(info.taskOffsetSums(), is(expectedOffsetSumsMap));
     }

@@ -313,8 +313,8 @@ public class PlaintextConsumerCallbackTest {
             }
         });
         ClientsTestUtils.pollUntilTrue(
-            consumer, 
-            partitionsAssigned::get, 
+            consumer,
+            partitionsAssigned::get,
             "Timed out before expected rebalance completed"
         );
     }

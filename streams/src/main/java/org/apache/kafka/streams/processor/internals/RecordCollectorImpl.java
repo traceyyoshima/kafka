@@ -171,7 +171,7 @@ public class RecordCollectorImpl implements RecordCollector {
                                 + "topic=[{}]", topic);
                         droppedRecordsSensor.record();
                     } else {
-                        for (final int multicastPartition: multicastPartitions) {
+                        for (final int multicastPartition : multicastPartitions) {
                             send(topic, key, value, headers, multicastPartition, timestamp, keySerializer, valueSerializer, processorNodeId, context);
                         }
                     }
@@ -398,7 +398,7 @@ public class RecordCollectorImpl implements RecordCollector {
         }
 
         log.warn("Unable to serialize record, continue processing. " +
-                    "ProducerRecord(topic=[{}], partition=[{}], timestamp=[{}])",
+            "ProducerRecord(topic=[{}], partition=[{}], timestamp=[{}])",
                 topic,
                 partition,
                 timestamp);
@@ -449,10 +449,10 @@ public class RecordCollectorImpl implements RecordCollector {
             MessageFormat.format(
                 String.format(
                         "ClassCastException while producing data to topic %s. " +
-                            "The {0} serializer %s is not compatible to the actual {0} type: %s. " +
-                            "Change the default {0} serde in StreamConfig or provide the correct {0} serde via method parameters " +
-                            "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with " +
-                            "`Produced.{0}Serde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).",
+                    "The {0} serializer %s is not compatible to the actual {0} type: %s. " +
+                    "Change the default {0} serde in StreamConfig or provide the correct {0} serde via method parameters " +
+                    "(for example if using the DSL, `#to(String topic, Produced<K, V> produced)` with " +
+                    "`Produced.{0}Serde(WindowedSerdes.timeWindowedSerdeFrom(String.class))`).",
                         topic,
                         keyOrValueSerializer.getClass().getName(),
                         keyOrValueClass),

@@ -362,8 +362,7 @@ public class DeadLetterQueueIntegrationTest {
                     throw new RuntimeException("KABOOM");
                 }
                 return v;
-            }
-            )
+            })
             .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         return new KafkaStreams(builder.build(), getProcessingProperties(processingExceptionHandlerClass));

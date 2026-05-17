@@ -107,11 +107,11 @@ public class LogDirsCommand {
         return replicasInfo.entrySet().stream().map(entry -> {
             TopicPartition topicPartition = entry.getKey();
             return new HashMap<String, Object>() {{
-                    put("partition", topicPartition.toString());
-                    put("size", entry.getValue().size());
-                    put("offsetLag", entry.getValue().offsetLag());
-                    put("isFuture", entry.getValue().isFuture());
-                }};
+                put("partition", topicPartition.toString());
+                put("size", entry.getValue().size());
+                put("offsetLag", entry.getValue().offsetLag());
+                put("isFuture", entry.getValue().isFuture());
+            }};
         }).collect(Collectors.toList());
     }
 
@@ -119,30 +119,30 @@ public class LogDirsCommand {
         return logDirInfos.entrySet().stream().map(entry -> {
             String logDir = entry.getKey();
             return new HashMap<String, Object>() {{
-                    put("logDir", logDir);
-                    put("error", entry.getValue().error() != null ? entry.getValue().error().getClass().getName() : null);
-                    put("partitions", fromReplicasInfoToPrintableRepresentation(
+                put("logDir", logDir);
+                put("error", entry.getValue().error() != null ? entry.getValue().error().getClass().getName() : null);
+                put("partitions", fromReplicasInfoToPrintableRepresentation(
                             entry.getValue().replicaInfos().entrySet().stream().filter(entry -> {
                                 TopicPartition topicPartition = entry.getKey();
                                 return topicSet.isEmpty() || topicSet.contains(topicPartition.topic());
                             }).collect(Collectors.toMap(Entry::getKey, Entry::getValue))
                     ));
-                }};
+            }};
         }).collect(Collectors.toList());
     }
 
     private static String formatAsJson(Map<Integer, Map<String, LogDirDescription>> logDirInfosByBroker, Set<String> topicSet) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(new HashMap<String, Object>() {{
-                put("version", 1);
-                put("brokers", logDirInfosByBroker.entrySet().stream().map(entry -> {
+            put("version", 1);
+            put("brokers", logDirInfosByBroker.entrySet().stream().map(entry -> {
                     int broker = entry.getKey();
                     Map<String, LogDirDescription> logDirInfos = entry.getValue();
                     return new HashMap<String, Object>() {{
-                            put("broker", broker);
-                            put("logDirs", fromLogDirInfosToPrintableRepresentation(logDirInfos, topicSet));
-                        }};
+                        put("broker", broker);
+                        put("logDirs", fromLogDirInfosToPrintableRepresentation(logDirInfos, topicSet));
+                    }};
                 }).collect(Collectors.toList()));
-            }});
+        }});
     }
 
     private static Admin createAdminClient(LogDirsCommandOptions options) throws IOException {

@@ -131,7 +131,7 @@ class PartitionGroup extends AbstractPartitionGroup {
             } else {
                 final Long fetchedLag = fetchedLags.getOrDefault(partition, -1L);
                 appendLog(logMessageBuilder, String.format("Partition %s has fetched lag of %d", partition, fetchedLag));
-                
+
                 if (fetchedLag == -1L) {
                     // must wait to fetch metadata for the partition
                     idlePartitionDeadlines.remove(partition);

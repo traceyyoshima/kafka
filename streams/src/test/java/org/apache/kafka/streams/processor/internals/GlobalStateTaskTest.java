@@ -70,12 +70,13 @@ public class GlobalStateTaskTest {
     private final MockSourceNode<String, String> sourceOne = new MockSourceNode<>(
         new StringDeserializer(),
         new StringDeserializer());
-    private final MockSourceNode<Integer, Integer>  sourceTwo = new MockSourceNode<>(
+    private final MockSourceNode<Integer, Integer> sourceTwo = new MockSourceNode<>(
         new IntegerDeserializer(),
         new IntegerDeserializer());
     private final MockSourceNode<String, String> sourceForward = new MockSourceNode<>(new StringDeserializer(), new StringDeserializer()) {
 
         private InternalProcessorContext<String, String> ctx;
+
         @Override
         public void init(final InternalProcessorContext<String, String> context) {
             this.ctx = context;
@@ -426,6 +427,7 @@ public class GlobalStateTaskTest {
             public void configure(final Map<String, ?> configs) {
 
             }
+
             @Override
             public Response handleError(final ErrorHandlerContext context, final Record<?, ?> record, final Exception exception) {
                 handlerInvoked.set(true);

@@ -200,7 +200,7 @@ public class VerifiableProducer implements AutoCloseable {
 
         return parser;
     }
-    
+
     /**
      * Read a properties file from the given path
      * @param filename The path of the file to read
@@ -325,7 +325,7 @@ public class VerifiableProducer implements AutoCloseable {
         printJson(new ShutdownComplete());
     }
 
-    @JsonPropertyOrder({ "timestamp", "name" })
+    @JsonPropertyOrder({"timestamp", "name"})
     private abstract static class ProducerEvent {
         private final long timestamp = System.currentTimeMillis();
 

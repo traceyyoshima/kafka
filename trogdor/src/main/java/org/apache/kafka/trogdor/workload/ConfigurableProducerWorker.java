@@ -106,7 +106,7 @@ public class ConfigurableProducerWorker implements TaskWorker {
                 }
                 List<TopicPartition> active = new ArrayList<>();
                 for (Map.Entry<String, PartitionsSpec> entry :
-                        spec.activeTopic().materialize().entrySet()) {
+                    spec.activeTopic().materialize().entrySet()) {
                     String topicName = entry.getKey();
                     PartitionsSpec partSpec = entry.getValue();
                     newTopics.put(topicName, partSpec.newTopic(topicName));

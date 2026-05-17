@@ -129,7 +129,7 @@ public class ClientsTestUtils {
         Consumer<byte[], byte[]> consumer,
         Duration timeout,
         Supplier<Boolean> testCondition,
-        long waitTimeMs, 
+        long waitTimeMs,
         String msg
     ) throws InterruptedException {
         TestUtils.waitForCondition(() -> {
@@ -472,7 +472,7 @@ public class ClientsTestUtils {
         public byte[] serialize(String topic, byte[] data) {
             return data;
         }
-        
+
         public static void resetCount() {
             UPDATE_PRODUCER_COUNT.set(0);
         }

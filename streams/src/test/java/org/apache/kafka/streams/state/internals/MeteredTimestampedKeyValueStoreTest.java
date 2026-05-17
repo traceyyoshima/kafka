@@ -95,7 +95,7 @@ public class MeteredTimestampedKeyValueStoreTest {
     private InternalProcessorContext<?, ?> context;
     private MockTime mockTime;
 
-    private static final Map<String, Object> CONFIGS =  mkMap(mkEntry(StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE, APPLICATION_ID));
+    private static final Map<String, Object> CONFIGS = mkMap(mkEntry(StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE, APPLICATION_ID));
 
     private MeteredTimestampedKeyValueStore<String, String> metered;
     private final KeyValue<Bytes, byte[]> byteKeyValueTimestampPair = KeyValue.pair(KEY_BYTES,
@@ -131,7 +131,7 @@ public class MeteredTimestampedKeyValueStoreTest {
         when(inner.name()).thenReturn(STORE_NAME);
         when(context.appConfigs()).thenReturn(CONFIGS);
     }
-    
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void setUpWithExpectSerdes() {
         setUp();
@@ -218,6 +218,7 @@ public class MeteredTimestampedKeyValueStoreTest {
             STORE_NAME
         )));
     }
+
     @Test
     public void shouldWriteBytesToInnerStoreAndRecordPutMetric() {
         setUp();

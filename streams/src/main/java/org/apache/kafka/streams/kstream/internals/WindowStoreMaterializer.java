@@ -70,7 +70,7 @@ public class WindowStoreMaterializer<K, V> extends MaterializedStoreFactory<K, V
                 ))
                 : (WindowBytesStoreSupplier) materialized.storeSupplier();
 
-        final StoreBuilder<?>  builder;
+        final StoreBuilder<?> builder;
         if (supplier instanceof HeadersBytesStoreSupplier) {
             builder = Stores.timestampedWindowStoreWithHeadersBuilder(
                 supplier,

@@ -151,7 +151,7 @@ public class TransactionalClientDemo {
         Utils.printOut("Initializing Kafka consumer and producer");
         consumer = createKafkaConsumer();
         producer = createKafkaProducer();
-        
+
         producer.initTransactions();
         Utils.printOut("Producer initialized with transactions");
     }

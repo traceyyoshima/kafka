@@ -377,7 +377,7 @@ public enum MetadataVersion {
     }
 
     public static MetadataVersion fromFeatureLevel(short version) {
-        for (MetadataVersion metadataVersion: MetadataVersion.values()) {
+        for (MetadataVersion metadataVersion : MetadataVersion.values()) {
             if (metadataVersion.featureLevel() == version) {
                 return metadataVersion;
             }

@@ -598,8 +598,8 @@ public class TestUtils {
             // Enable strict type checking.
             // This ensures we're testing for the exact exception type, not its subclasses.
             assertEquals(
-                exceptionCauseClass, 
-                cause.getClass(), 
+                exceptionCauseClass,
+                cause.getClass(),
                 "Expected " + exceptionCauseClass.getSimpleName() + ", but got " + cause.getClass().getSimpleName()
             );
             return exceptionCauseClass.cast(cause);
@@ -642,7 +642,7 @@ public class TestUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T fieldValue(Object o, Class<?> clazz, String fieldName)  {
+    public static <T> T fieldValue(Object o, Class<?> clazz, String fieldName) {
         try {
             Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);

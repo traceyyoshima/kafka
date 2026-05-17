@@ -63,8 +63,8 @@ public class RecordsSerdeTest {
 
     private void testAllRoundTrips(SimpleRecordsMessageData message) {
         for (short version = SimpleRecordsMessageData.LOWEST_SUPPORTED_VERSION;
-             version <= SimpleRecordsMessageData.HIGHEST_SUPPORTED_VERSION;
-             version++) {
+            version <= SimpleRecordsMessageData.HIGHEST_SUPPORTED_VERSION;
+            version++) {
             testRoundTrip(message, version);
         }
     }

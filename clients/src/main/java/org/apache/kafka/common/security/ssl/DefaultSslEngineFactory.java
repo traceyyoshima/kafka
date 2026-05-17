@@ -211,6 +211,7 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
         }
         return sslEngine;
     }
+
     private static SslClientAuth createSslClientAuth(String key) {
         SslClientAuth auth = SslClientAuth.forConfig(key);
         if (auth != null) {
@@ -329,7 +330,9 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
 
     interface SecurityStore {
         KeyStore get();
+
         char[] keyPassword();
+
         boolean modified();
     }
 
@@ -565,7 +568,7 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
 
             String encodingParams = "\\s*[^\\r\\n]*:[^\\r\\n]*[\\r\\n]+";
             String base64Pattern = "([a-zA-Z0-9/+=\\s]*)";
-            String patternStr =  String.format(beginOrEndFormat, "BEGIN", nameIgnoreSpace) +
+            String patternStr = String.format(beginOrEndFormat, "BEGIN", nameIgnoreSpace) +
                 String.format("(?:%s)*", encodingParams) +
                 base64Pattern +
                 String.format(beginOrEndFormat, "END", nameIgnoreSpace);
@@ -574,7 +577,7 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
 
         private List<byte[]> pemEntries(String pem) {
             Matcher matcher = pattern.matcher(pem + "\n"); // allow last newline to be omitted in value
-            List<byte[]>  entries = new ArrayList<>();
+            List<byte[]> entries = new ArrayList<>();
             while (matcher.find()) {
                 String base64Str = matcher.group(1).replaceAll("\\s", "");
                 entries.add(Base64.getDecoder().decode(base64Str));

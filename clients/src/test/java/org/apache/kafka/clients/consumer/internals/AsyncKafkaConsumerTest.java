@@ -2368,7 +2368,7 @@ public class AsyncKafkaConsumerTest {
     public void testCloseInvokesStreamsRebalanceListenerOnTasksRevokedWhenMemberEpochPositive() {
         final String groupId = "streamsGroup";
         final StreamsRebalanceData streamsRebalanceData = new StreamsRebalanceData(UUID.randomUUID(), Optional.empty(), Optional.empty(), Map.of(), Map.of());
-        
+
         try (final MockedStatic<RequestManagers> requestManagers = mockStatic(RequestManagers.class)) {
             consumer = newConsumerWithStreamRebalanceData(requiredConsumerConfigAndGroupId(groupId), streamsRebalanceData);
             StreamsRebalanceListener mockStreamsListener = mock(StreamsRebalanceListener.class);
@@ -2377,18 +2377,18 @@ public class AsyncKafkaConsumerTest {
             final int memberEpoch = 42;
             final String memberId = "memberId";
             groupMetadataUpdateListener.onMemberEpochUpdated(Optional.of(memberEpoch), memberId);
-            
+
             consumer.close(CloseOptions.timeout(Duration.ZERO));
-            
+
             verify(mockStreamsListener).onTasksRevoked(any());
         }
     }
-    
+
     @Test
     public void testCloseInvokesStreamsRebalanceListenerOnAllTasksLostWhenMemberEpochZeroOrNegative() {
         final String groupId = "streamsGroup";
         final StreamsRebalanceData streamsRebalanceData = new StreamsRebalanceData(UUID.randomUUID(), Optional.empty(), Optional.empty(), Map.of(), Map.of());
-        
+
         try (final MockedStatic<RequestManagers> requestManagers = mockStatic(RequestManagers.class)) {
             consumer = newConsumerWithStreamRebalanceData(requiredConsumerConfigAndGroupId(groupId), streamsRebalanceData);
             StreamsRebalanceListener mockStreamsListener = mock(StreamsRebalanceListener.class);
@@ -2397,18 +2397,18 @@ public class AsyncKafkaConsumerTest {
             final int memberEpoch = 0;
             final String memberId = "memberId";
             groupMetadataUpdateListener.onMemberEpochUpdated(Optional.of(memberEpoch), memberId);
-            
+
             consumer.close(CloseOptions.timeout(Duration.ZERO));
-            
+
             verify(mockStreamsListener).onAllTasksLost();
         }
     }
-    
+
     @Test
     public void testCloseWrapsStreamsRebalanceListenerException() {
         final String groupId = "streamsGroup";
         final StreamsRebalanceData streamsRebalanceData = new StreamsRebalanceData(UUID.randomUUID(), Optional.empty(), Optional.empty(), Map.of(), Map.of());
-        
+
         try (final MockedStatic<RequestManagers> requestManagers = mockStatic(RequestManagers.class)) {
             consumer = newConsumerWithStreamRebalanceData(requiredConsumerConfigAndGroupId(groupId), streamsRebalanceData);
             StreamsRebalanceListener mockStreamsListener = mock(StreamsRebalanceListener.class);
@@ -2419,8 +2419,8 @@ public class AsyncKafkaConsumerTest {
             final int memberEpoch = 1;
             final String memberId = "memberId";
             groupMetadataUpdateListener.onMemberEpochUpdated(Optional.of(memberEpoch), memberId);
-            
-            KafkaException thrownException = assertThrows(KafkaException.class, 
+
+            KafkaException thrownException = assertThrows(KafkaException.class,
                 () -> consumer.close(CloseOptions.timeout(Duration.ZERO)));
 
             assertInstanceOf(RuntimeException.class, thrownException.getCause());

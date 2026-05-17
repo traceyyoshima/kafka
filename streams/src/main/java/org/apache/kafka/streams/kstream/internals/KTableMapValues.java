@@ -112,7 +112,7 @@ class KTableMapValues<KIn, VIn, VOut> implements KTableProcessorSupplier<KIn, VI
         return newValue;
     }
 
-    private ValueTimestampHeaders<VOut> computeValueAndTimestamp(final KIn key, final ValueTimestampHeaders<VIn> valueTimestampHeaders, final Headers  contextHeaders) {
+    private ValueTimestampHeaders<VOut> computeValueAndTimestamp(final KIn key, final ValueTimestampHeaders<VIn> valueTimestampHeaders, final Headers contextHeaders) {
 
         VOut newValue = null;
         long timestamp = 0;

@@ -252,7 +252,7 @@ public class SaslAuthenticatorTest {
         sendHandshakeRequestReceiveResponse(node3, ApiKeys.SASL_HANDSHAKE.latestVersion());
 
         // test with sasl authenticate request with large auth_byes string
-        String authString = "\u0000" + TestJaasConfig.USERNAME + "\u0000" +  new String(bytes, StandardCharsets.UTF_8);
+        String authString = "\u0000" + TestJaasConfig.USERNAME + "\u0000" + new String(bytes, StandardCharsets.UTF_8);
         ByteBuffer authBuf = ByteBuffer.wrap(Utils.utf8(authString));
         SaslAuthenticateRequestData data = new SaslAuthenticateRequestData().setAuthBytes(authBuf.array());
         SaslAuthenticateRequest request = new SaslAuthenticateRequest.Builder(data).build();
@@ -463,7 +463,7 @@ public class SaslAuthenticatorTest {
             selector.connect(node3, new InetSocketAddress("localhost", server.port()), BUFFER_SIZE, BUFFER_SIZE);
             NetworkTestUtils.checkClientConnection(selector, node3, 100, 10);
             server.verifyAuthenticationMetrics(3, 0);
-            
+
             /*
              * Now re-authenticate the connections. First we have to sleep long enough so
              * that the next write will cause re-authentication, which we expect to succeed.
@@ -476,7 +476,7 @@ public class SaslAuthenticatorTest {
 
             NetworkTestUtils.checkClientConnection(selector3, node3, 100, 10);
             server.verifyReauthenticationMetrics(2, 0);
-            
+
         } finally {
             if (selector2 != null)
                 selector2.close();
@@ -892,7 +892,7 @@ public class SaslAuthenticatorTest {
         createClientConnection(SecurityProtocol.PLAINTEXT, node1);
         SaslHandshakeRequest request = buildSaslHandshakeRequest("PLAIN", ApiKeys.SASL_HANDSHAKE.latestVersion());
         RequestHeader header = new RequestHeader(ApiKeys.SASL_HANDSHAKE, Short.MAX_VALUE, "someclient", 2);
-        
+
         selector.send(new NetworkSend(node1, request.toSend(header)));
         // This test uses a non-SASL PLAINTEXT client in order to do manual handshake.
         // So the channel is in READY state.
@@ -1583,7 +1583,7 @@ public class SaslAuthenticatorTest {
         server = createEchoServer(securityProtocol);
         createAndCheckClientConnection(securityProtocol, node);
     }
-    
+
     /**
      * Re-authentication must fail if principal changes
      */
@@ -1697,7 +1697,7 @@ public class SaslAuthenticatorTest {
         final RequestHeader header1 = new RequestHeader(LIST_OFFSETS, LIST_OFFSETS.latestVersion(), "id", 1);
         assertThrows(IllegalStateException.class, () -> NetworkClient.parseResponse(buffer.duplicate(), header1));
     }
-    
+
     /**
      * Re-authentication must fail if mechanism changes
      */
@@ -1817,7 +1817,7 @@ public class SaslAuthenticatorTest {
         }
         server.verifyReauthenticationMetrics(desiredNumReauthentications, 0);
     }
-    
+
     /**
      * Tests OAUTHBEARER client channels without tokens for the server.
      */
@@ -2154,6 +2154,7 @@ public class SaslAuthenticatorTest {
                     protected SaslHandshakeRequest createSaslHandshakeRequest(short version) {
                         return buildSaslHandshakeRequest(saslMechanism, (short) 0);
                     }
+
                     @Override
                     protected void setSaslAuthenticateAndHandshakeVersions(ApiVersionsResponse apiVersionsResponse) {
                         // Don't set version so that headers are disabled
@@ -2328,7 +2329,7 @@ public class SaslAuthenticatorTest {
         InetSocketAddress addr = new InetSocketAddress("localhost", server.port());
         selector.connect(node, addr, BUFFER_SIZE, BUFFER_SIZE);
     }
-    
+
     private void checkClientConnection(String node) throws Exception {
         NetworkTestUtils.checkClientConnection(selector, node, 100, 10);
     }
@@ -2429,7 +2430,7 @@ public class SaslAuthenticatorTest {
 
     private ApiVersionsResponse sendVersionRequestReceiveResponse(String node) throws Exception {
         ApiVersionsRequest handshakeRequest = createApiVersionsRequestV0();
-        ApiVersionsResponse response =  (ApiVersionsResponse) sendKafkaRequestReceiveResponse(node, ApiKeys.API_VERSIONS, handshakeRequest);
+        ApiVersionsResponse response = (ApiVersionsResponse) sendKafkaRequestReceiveResponse(node, ApiKeys.API_VERSIONS, handshakeRequest);
         assertEquals(Errors.NONE.code(), response.data().errorCode());
         return response;
     }
@@ -2553,6 +2554,7 @@ public class SaslAuthenticatorTest {
         private String contextName;
         private Configuration configuration;
         private Subject subject;
+
         @Override
         public void configure(Map<String, ?> configs, String contextName, Configuration configuration,
                               AuthenticateCallbackHandler callbackHandler) {
@@ -2591,6 +2593,7 @@ public class SaslAuthenticatorTest {
 
     public static class TestLoginCallbackHandler implements AuthenticateCallbackHandler {
         private volatile boolean configured = false;
+
         @Override
         public void configure(Map<String, ?> configs, String saslMechanism, List<AppConfigurationEntry> jaasConfigEntries) {
             if (configured)

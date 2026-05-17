@@ -598,9 +598,9 @@ public class ImplicitLinkedHashCollectionTest {
     @Test
     public void testRemovals() {
         ImplicitLinkedHashCollection<TestElement> coll = new ImplicitLinkedHashCollection<>();
-        List<TestElement> elements  = new ArrayList<>();
+        List<TestElement> elements = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            TestElement element  = new TestElement(i, i);
+            TestElement element = new TestElement(i, i);
             elements.add(element);
             coll.add(element);
         }

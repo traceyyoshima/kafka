@@ -135,7 +135,7 @@ public class RestoreIntegrationTest {
     @BeforeAll
     public static void startCluster() throws IOException {
         CLUSTER.start();
-        
+
         final Properties adminConfig = new Properties();
         adminConfig.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
         admin = Admin.create(adminConfig);
@@ -926,7 +926,7 @@ public class RestoreIntegrationTest {
         producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers());
 
         try (final KafkaProducer<Integer, Integer> producer =
-                     new KafkaProducer<>(producerConfig, new IntegerSerializer(), new IntegerSerializer())) {
+            new KafkaProducer<>(producerConfig, new IntegerSerializer(), new IntegerSerializer())) {
 
             for (int i = 0; i < numberOfKeys; i++) {
                 final int offset = startingOffset + i;

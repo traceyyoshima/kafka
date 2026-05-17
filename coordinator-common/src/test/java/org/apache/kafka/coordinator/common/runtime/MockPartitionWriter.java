@@ -126,8 +126,8 @@ public class MockPartitionWriter extends InMemoryPartitionWriter {
                 if (currentEpoch != null) {
                     // TV2: markerEpoch must be > currentEpoch (strict validation)
                     // TV1/TV0: markerEpoch must be >= currentEpoch
-                    boolean invalidEpoch = (transactionVersion >= 2) 
-                        ? (markerEpoch <= currentEpoch) 
+                    boolean invalidEpoch = (transactionVersion >= 2)
+                        ? (markerEpoch <= currentEpoch)
                         : (markerEpoch < currentEpoch);
 
                     if (invalidEpoch) {

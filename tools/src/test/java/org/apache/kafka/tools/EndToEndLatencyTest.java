@@ -68,7 +68,7 @@ public class EndToEndLatencyTest {
 
     private static class ArgsBuilder {
         private final Map<String, String> params = new LinkedHashMap<>();
-        
+
         private ArgsBuilder() {
             params.put("--bootstrap-server", "localhost:9092");
             params.put("--topic", "test-topic");
@@ -76,16 +76,16 @@ public class EndToEndLatencyTest {
             params.put("--producer-acks", "1");
             params.put("--record-size", "200");
         }
-        
+
         public static ArgsBuilder defaults() {
             return new ArgsBuilder();
         }
-        
+
         public ArgsBuilder with(String param, String value) {
             params.put(param, value);
             return this;
         }
-        
+
         public String[] build() {
             return params.entrySet().stream()
                     .flatMap(entry -> Stream.of(entry.getKey(), entry.getValue()))
@@ -95,7 +95,7 @@ public class EndToEndLatencyTest {
         public ArgsBuilder withNegative(String param) {
             return with(param, "-1");
         }
-        
+
         public ArgsBuilder withZero(String param) {
             return with(param, "0");
         }

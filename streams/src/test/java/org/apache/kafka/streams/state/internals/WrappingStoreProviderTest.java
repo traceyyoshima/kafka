@@ -74,7 +74,7 @@ public class WrappingStoreProviderTest {
         wrappingStoreProvider.setStoreQueryParameters(StoreQueryParameters.fromNameAndType("window", windowStore()));
         final List<ReadOnlyWindowStore<Object, Object>>
                 windowStores =
-                wrappingStoreProvider.stores("window", windowStore());
+                    wrappingStoreProvider.stores("window", windowStore());
         assertEquals(2, windowStores.size());
     }
 

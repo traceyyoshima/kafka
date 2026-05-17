@@ -128,7 +128,7 @@ public class TopicDescription {
     /**
      * authorized operations for this topic, or null if this is not known.
      */
-    public Set<AclOperation>  authorizedOperations() {
+    public Set<AclOperation> authorizedOperations() {
         return authorizedOperations;
     }
 

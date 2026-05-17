@@ -322,7 +322,7 @@ public class GlobalKTableEOSIntegrationTest {
         produceAbortedMessages();
 
         startStreams(withHeaders);
-        
+
         final Map<Long, String> expected = new HashMap<>();
         expected.put(1L, "A");
         expected.put(2L, "B");
@@ -355,7 +355,7 @@ public class GlobalKTableEOSIntegrationTest {
         CLUSTER.createTopics(streamTopic);
         CLUSTER.createTopic(globalTableTopic, 2, 1);
     }
-    
+
     private void startStreams(final boolean withHeaders) {
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(streamsConfiguration, withHeaders);
         startStreams(null);

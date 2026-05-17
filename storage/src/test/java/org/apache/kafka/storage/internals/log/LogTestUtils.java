@@ -418,7 +418,7 @@ public class LogTestUtils {
             return new LogConfig(configs);
         }
     }
-    
+
     public static class FakeOffsetMap implements OffsetMap {
 
         private final Map<String, Long> map = new HashMap<>();
@@ -428,36 +428,36 @@ public class LogTestUtils {
         public int slots() {
             return Integer.MAX_VALUE;
         }
-        
+
         @Override
         public void put(ByteBuffer key, long offset) {
             latestOff = offset;
             map.put(new String(Utils.readBytes(key.duplicate()), StandardCharsets.UTF_8), offset);
         }
-        
+
         @Override
         public long get(ByteBuffer key) {
             return map.getOrDefault(new String(Utils.readBytes(key.duplicate()), StandardCharsets.UTF_8), -1L);
         }
-        
+
         @Override
         public void updateLatestOffset(long offset) {
             latestOff = offset;
         }
-        
+
         @Override
         public void clear() {
             map.clear();
         }
-        
+
         @Override
         public int size() {
             return map.size();
         }
-        
+
         @Override
         public long latestOffset() {
             return latestOff;
         }
-    } 
+    }
 }

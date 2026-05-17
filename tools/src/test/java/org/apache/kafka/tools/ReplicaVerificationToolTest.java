@@ -36,10 +36,10 @@ public class ReplicaVerificationToolTest {
     void testReplicaBufferVerifyChecksum() {
         StringBuilder sb = new StringBuilder();
         final Map<TopicPartition, Integer> expectedReplicasPerTopicAndPartition = new HashMap<TopicPartition, Integer>() {{
-                put(new TopicPartition("a", 0), 3);
-                put(new TopicPartition("a", 1), 3);
-                put(new TopicPartition("b", 0), 2);
-            }};
+            put(new TopicPartition("a", 0), 3);
+            put(new TopicPartition("a", 1), 3);
+            put(new TopicPartition("b", 0), 2);
+        }};
 
         ReplicaVerificationTool.ReplicaBuffer replicaBuffer =
             new ReplicaVerificationTool.ReplicaBuffer(expectedReplicasPerTopicAndPartition, Map.of(), 2, 0);

@@ -87,14 +87,14 @@ public class LogCompactionTester {
 
     public static class Options {
         public final OptionSpec<Long> numMessagesOpt;
-        public final OptionSpec<String>  messageCompressionOpt;
+        public final OptionSpec<String> messageCompressionOpt;
         public final OptionSpec<Integer> compressionLevelOpt;
         public final OptionSpec<Integer> numDupsOpt;
-        public final OptionSpec<String>  brokerOpt;
+        public final OptionSpec<String> brokerOpt;
         public final OptionSpec<Integer> topicsOpt;
         public final OptionSpec<Integer> percentDeletesOpt;
         public final OptionSpec<Integer> sleepSecsOpt;
-        public final OptionSpec<Void>    helpOpt;
+        public final OptionSpec<Void> helpOpt;
 
         public Options(OptionParser parser) {
             numMessagesOpt = parser
@@ -372,7 +372,7 @@ public class LogCompactionTester {
                 "sort", "--key=1,2", "--stable", "--buffer-size=20%",
                 "--temporary-directory=" + tempDir.toString(), file.getAbsolutePath());
         builder.redirectError(ProcessBuilder.Redirect.INHERIT);
-        
+
         Process process;
         try {
             process = builder.start();
@@ -412,7 +412,7 @@ public class LogCompactionTester {
         producerProps.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, String.valueOf(Long.MAX_VALUE));
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokerUrl);
         producerProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, compressionType.name);
-        
+
         if (compressionLevel != null) {
             switch (compressionType) {
                 case GZIP -> producerProps.put(ProducerConfig.COMPRESSION_GZIP_LEVEL_CONFIG, compressionLevel);

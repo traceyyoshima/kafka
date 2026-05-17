@@ -860,7 +860,7 @@ public abstract class AbstractRocksDBSegmentedBytesStoreTest<S extends Segment> 
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[0])).get(), serializeValue(50L), headers, Optional.empty()));
 
         headers.remove(ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY);
@@ -869,7 +869,7 @@ public abstract class AbstractRocksDBSegmentedBytesStoreTest<S extends Segment> 
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[2])).get(), serializeValue(100L), headers, Optional.empty()));
 
         headers.remove(ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY);
@@ -878,7 +878,7 @@ public abstract class AbstractRocksDBSegmentedBytesStoreTest<S extends Segment> 
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[3])).get(), serializeValue(200L), headers, Optional.empty()));
 
         return records;
@@ -895,7 +895,7 @@ public abstract class AbstractRocksDBSegmentedBytesStoreTest<S extends Segment> 
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[0])).get(), serializeValue(50L), headers, Optional.empty()));
 
         headers.remove(ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY);
@@ -904,7 +904,7 @@ public abstract class AbstractRocksDBSegmentedBytesStoreTest<S extends Segment> 
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[2])).get(), serializeValue(100L), headers, Optional.empty()));
 
         headers.remove(ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY);
@@ -913,7 +913,7 @@ public abstract class AbstractRocksDBSegmentedBytesStoreTest<S extends Segment> 
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[3])).get(), serializeValue(200L), headers, Optional.empty()));
 
         return records;
@@ -929,7 +929,7 @@ public abstract class AbstractRocksDBSegmentedBytesStoreTest<S extends Segment> 
         headers.add(new RecordHeader(
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position).array()));
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[0])).get(), serializeValue(50L), headers, Optional.empty()));
 
         position = position.withComponent("A", 0, 2);
@@ -937,7 +937,7 @@ public abstract class AbstractRocksDBSegmentedBytesStoreTest<S extends Segment> 
         headers.add(new RecordHeader(
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position).array()));
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[2])).get(), null, headers, Optional.empty()));
 
         return records;
@@ -948,7 +948,7 @@ public abstract class AbstractRocksDBSegmentedBytesStoreTest<S extends Segment> 
         records.add(new ConsumerRecord<>("", 0, 0L, serializeKey(new Windowed<>("a", windows[2])).get(), serializeValue(50L)));
         return records;
     }
-    
+
     @ParameterizedTest
     @MethodSource("getKeySchemas")
     public void shouldMeasureExpiredRecords(final SegmentedBytesStore.KeySchema schema) {

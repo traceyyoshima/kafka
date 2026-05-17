@@ -51,7 +51,7 @@ public class ConnectClusterStateImplTest {
     protected ConnectClusterStateImpl connectClusterState;
     protected long herderRequestTimeoutMs = TimeUnit.SECONDS.toMillis(10);
     protected Collection<String> expectedConnectors;
-    
+
     @BeforeEach
     public void setUp() {
         expectedConnectors = List.of("sink1", "source1", "source2");
@@ -61,7 +61,7 @@ public class ConnectClusterStateImplTest {
             herder
         );
     }
-    
+
     @Test
     public void connectors() {
         @SuppressWarnings("unchecked")

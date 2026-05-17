@@ -57,7 +57,7 @@ public class MirrorClientConfig extends AbstractConfig {
     public static final String REPLICATION_POLICY_SEPARATOR_DEFAULT =
         DefaultReplicationPolicy.SEPARATOR_DEFAULT;
 
-    public static final String INTERNAL_TOPIC_SEPARATOR_ENABLED =  "replication.policy.internal.topic.separator.enabled";
+    public static final String INTERNAL_TOPIC_SEPARATOR_ENABLED = "replication.policy.internal.topic.separator.enabled";
     public static final String INTERNAL_TOPIC_SEPARATOR_ENABLED_DOC =
             "Whether to use replication.policy.separator to control the names of topics used for checkpoints and offset syncs. " +
                     "By default, custom separators are used in these topic names; however, if upgrading MirrorMaker 2 from older versions " +

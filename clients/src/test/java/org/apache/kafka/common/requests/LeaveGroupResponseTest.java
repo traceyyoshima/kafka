@@ -199,7 +199,7 @@ public class LeaveGroupResponseTest {
             assertEquals(memberResponses, response.memberResponses());
         }
     }
-    
+
     @ParameterizedTest
     @ApiKeyVersionsSource(apiKey = ApiKeys.LEAVE_GROUP)
     public void testErrorResponses(short version) {
@@ -209,11 +209,11 @@ public class LeaveGroupResponseTest {
 
         LeaveGroupResponse responseNoMembers = new LeaveGroupResponse(dataNoMembers, version);
         assertEquals(Errors.GROUP_ID_NOT_FOUND, responseNoMembers.topLevelError());
-        
+
         LeaveGroupResponseData dataMembers = new LeaveGroupResponseData()
             .setErrorCode(Errors.GROUP_ID_NOT_FOUND.code())
             .setMembers(memberResponses);
-        
+
         LeaveGroupResponse responseMembers = new LeaveGroupResponse(dataMembers, version);
         assertEquals(Errors.GROUP_ID_NOT_FOUND, responseMembers.topLevelError());
     }

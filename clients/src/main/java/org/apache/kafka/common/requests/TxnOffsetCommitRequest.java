@@ -106,8 +106,8 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
 
         private boolean groupMetadataSet() {
             return !data.memberId().equals(JoinGroupRequest.UNKNOWN_MEMBER_ID) ||
-                       data.generationId() != JoinGroupRequest.UNKNOWN_GENERATION_ID ||
-                       data.groupInstanceId() != null;
+                data.generationId() != JoinGroupRequest.UNKNOWN_GENERATION_ID ||
+                data.groupInstanceId() != null;
         }
 
         @Override
@@ -248,8 +248,8 @@ public class TxnOffsetCommitRequest extends AbstractRequest {
             CommittedOffset otherOffset = (CommittedOffset) other;
 
             return this.offset == otherOffset.offset
-                       && this.leaderEpoch.equals(otherOffset.leaderEpoch)
-                       && Objects.equals(this.metadata, otherOffset.metadata);
+                && this.leaderEpoch.equals(otherOffset.leaderEpoch)
+                && Objects.equals(this.metadata, otherOffset.metadata);
         }
 
         @Override

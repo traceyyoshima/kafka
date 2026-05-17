@@ -113,7 +113,7 @@ public class GlobalKTableIntegrationTest {
     public void before(final TestInfo testInfo) throws Exception {
         TestGlobalProcessingExceptionHandler.handlerInvoked.set(false);
         TestGlobalProcessingExceptionHandler.shouldResume = false;
-        
+
         builder = new StreamsBuilder();
         final String safeTestName = safeUniqueTestName(testInfo);
         createTopics(safeTestName);
@@ -459,7 +459,7 @@ public class GlobalKTableIntegrationTest {
         startStreams();
         waitForApplicationState(singletonList(kafkaStreams), State.RUNNING, Duration.ofSeconds(30));
         produceInitialGlobalTableValues();
-        
+
         TestUtils.waitForCondition(
             () -> TestGlobalProcessingExceptionHandler.handlerInvoked.get(),
             Duration.ofSeconds(30).toMillis(),

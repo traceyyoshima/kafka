@@ -94,7 +94,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
 
     private static final String METRICS_SCOPE = "metrics-scope";
-    
+
     private long windowSizeForTimeWindow = 500;
     private InternalMockProcessorContext<?, ?> context;
     private AbstractDualSchemaRocksDBSegmentedBytesStore<KeyValueSegment> bytesStore;
@@ -116,7 +116,7 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
         SessionSchemaWithIndex,
         SessionSchemaWithoutIndex
     }
-    
+
     @BeforeEach
     public void before() {
         if (getBaseSchema() instanceof TimeFirstSessionKeySchema) {
@@ -1485,7 +1485,7 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[0]), true).get(), serializeValue(50L), headers, Optional.empty()));
 
         headers.remove(ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY);
@@ -1494,7 +1494,7 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[2]), true).get(), serializeValue(100L), headers, Optional.empty()));
 
         headers.remove(ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY);
@@ -1503,7 +1503,7 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[3]), true).get(), serializeValue(200L), headers, Optional.empty()));
 
         return records;
@@ -1520,7 +1520,7 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[0]), true).get(), serializeValue(50L), headers, Optional.empty()));
 
         headers.remove(ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY);
@@ -1529,7 +1529,7 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[2]), true).get(), serializeValue(100L), headers, Optional.empty()));
 
         headers.remove(ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY);
@@ -1538,7 +1538,7 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position1).array())
         );
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[3]), true).get(), serializeValue(200L), headers, Optional.empty()));
 
         return records;
@@ -1554,7 +1554,7 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
         headers.add(new RecordHeader(
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position).array()));
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[0]), true).get(), serializeValue(50L), headers, Optional.empty()));
 
         position = position.withComponent("A", 0, 2);
@@ -1562,7 +1562,7 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStoreTest {
         headers.add(new RecordHeader(
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position).array()));
-        records.add(new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        records.add(new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 serializeKey(new Windowed<>("a", windows[2]), true).get(), null, headers, Optional.empty()));
 
         return records;

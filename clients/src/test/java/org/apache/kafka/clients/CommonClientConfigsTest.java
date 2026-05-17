@@ -97,17 +97,17 @@ public class CommonClientConfigsTest {
                 defaultConf.getLong(CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG));
 
         TestConfig bothSetConfig = new TestConfig(new HashMap<String, Object>() {{
-                put(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG, "123");
-                put(CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG, "12345");
-            }});
+            put(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG, "123");
+            put(CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG, "12345");
+        }});
         assertEquals(Long.valueOf(123L),
                 bothSetConfig.getLong(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG));
         assertEquals(Long.valueOf(12345L),
                 bothSetConfig.getLong(CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG));
 
         TestConfig reconnectBackoffSetConf = new TestConfig(new HashMap<String, Object>() {{
-                put(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG, "123");
-            }});
+            put(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG, "123");
+        }});
         assertEquals(Long.valueOf(123L),
                 reconnectBackoffSetConf.getLong(CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG));
         assertEquals(Long.valueOf(123L),

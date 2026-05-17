@@ -124,7 +124,7 @@ public class TaskAssignorIntegrationTest {
 
             final Field threads = KafkaStreams.class.getDeclaredField("threads");
             threads.setAccessible(true);
-            final  List<StreamThread> streamThreads = (List<StreamThread>) threads.get(kafkaStreams);
+            final List<StreamThread> streamThreads = (List<StreamThread>) threads.get(kafkaStreams);
             final StreamThread streamThread = streamThreads.get(0);
 
             final Field mainConsumer = StreamThread.class.getDeclaredField("mainConsumer");
@@ -133,7 +133,7 @@ public class TaskAssignorIntegrationTest {
 
             final Field delegate = KafkaConsumer.class.getDeclaredField("delegate");
             delegate.setAccessible(true);
-            final Consumer<?, ?> consumer = (Consumer<?, ?>)  delegate.get(parentConsumer);
+            final Consumer<?, ?> consumer = (Consumer<?, ?>) delegate.get(parentConsumer);
             assertThat(consumer, instanceOf(ClassicKafkaConsumer.class));
 
             final Field assignors = ClassicKafkaConsumer.class.getDeclaredField("assignors");

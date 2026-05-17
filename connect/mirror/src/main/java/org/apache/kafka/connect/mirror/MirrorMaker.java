@@ -350,7 +350,7 @@ public class MirrorMaker {
             Properties props = Utils.loadProps(configFile.getPath());
             Map<String, String> config = Utils.propsToStringMap(props);
             MirrorMaker mirrorMaker = new MirrorMaker(config, clusters);
-            
+
             try {
                 mirrorMaker.start();
             } catch (Exception e) {

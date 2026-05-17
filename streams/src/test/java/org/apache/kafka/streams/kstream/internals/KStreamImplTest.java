@@ -1998,14 +1998,14 @@ public class KStreamImplTest {
         assertThat(
             topologyDescription,
             equalTo("Topologies:\n" +
-                        "   Sub-topology: 0\n" +
-                        "    Source: KSTREAM-SOURCE-0000000000 (topics: [input])\n" +
-                        "      --> fkp\n" +
-                        "    Processor: fkp (stores: [])\n" +
-                        "      --> KSTREAM-SINK-0000000001\n" +
-                        "      <-- KSTREAM-SOURCE-0000000000\n" +
-                        "    Sink: KSTREAM-SINK-0000000001 (topic: output)\n" +
-                        "      <-- fkp\n\n")
+                "   Sub-topology: 0\n" +
+                "    Source: KSTREAM-SOURCE-0000000000 (topics: [input])\n" +
+                "      --> fkp\n" +
+                "    Processor: fkp (stores: [])\n" +
+                "      --> KSTREAM-SINK-0000000001\n" +
+                "      <-- KSTREAM-SOURCE-0000000000\n" +
+                "    Sink: KSTREAM-SINK-0000000001 (topic: output)\n" +
+                "      <-- fkp\n\n")
         );
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
@@ -2360,7 +2360,7 @@ public class KStreamImplTest {
         final String outputTopic = "output";
 
         final KStream<String, String> stream = builder.stream(streamTopic, consumed);
-        final KTable<String, String> table =  builder.stream(tableTopic, consumed).toTable();
+        final KTable<String, String> table = builder.stream(tableTopic, consumed).toTable();
 
         stream.join(table, MockValueJoiner.TOSTRING_JOINER).to(outputTopic);
 

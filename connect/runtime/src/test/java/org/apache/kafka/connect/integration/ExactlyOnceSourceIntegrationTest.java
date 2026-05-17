@@ -206,7 +206,7 @@ public class ExactlyOnceSourceIntegrationTest {
         validation = connect.validateConnectorConfig(TestableSourceConnector.class.getSimpleName(), props);
         assertEquals(1, validation.errorCount(), "Preflight validation should have exactly one error");
         propertyValidation = findConfigInfo(EXACTLY_ONCE_SUPPORT_CONFIG, validation);
-        assertFalse(propertyValidation.configValue().errors().isEmpty(), 
+        assertFalse(propertyValidation.configValue().errors().isEmpty(),
                 "Preflight validation for exactly-once support property should have at least one error message");
 
         // Connector will throw an exception from SourceConnector::exactlyOnceSupport
@@ -246,7 +246,7 @@ public class ExactlyOnceSourceIntegrationTest {
         validation = connect.validateConnectorConfig(TestableSourceConnector.class.getSimpleName(), props);
         assertEquals(1, validation.errorCount(), "Preflight validation should have exactly one error");
         propertyValidation = findConfigInfo(TRANSACTION_BOUNDARY_CONFIG, validation);
-        assertFalse(propertyValidation.configValue().errors().isEmpty(), 
+        assertFalse(propertyValidation.configValue().errors().isEmpty(),
                 "Preflight validation for transaction boundary property should have at least one error message");
 
         // Connector will return SUPPORTED from SourceConnector::canDefineTransactionBoundaries

@@ -49,9 +49,9 @@ public abstract class RestServerConfig extends AbstractConfig {
     public static final String LISTENERS_CONFIG = "listeners";
     private static final String LISTENERS_DOC
             = "List of comma-separated URIs the REST API will listen on. The supported protocols are HTTP and HTTPS.\n" +
-            " Specify hostname as 0.0.0.0 to bind to all interfaces.\n" +
-            " Leave hostname empty to bind to default interface.\n" +
-            " Examples of legal listener lists: HTTP://myhost:8083,HTTPS://myhost:8084";
+                " Specify hostname as 0.0.0.0 to bind to all interfaces.\n" +
+                " Leave hostname empty to bind to default interface.\n" +
+                " Examples of legal listener lists: HTTP://myhost:8083,HTTPS://myhost:8084";
     // Visible for testing
     static final List<String> LISTENERS_DEFAULT = List.of("http://:8083");
 
@@ -389,6 +389,7 @@ public abstract class RestServerConfig extends AbstractConfig {
     private static class PublicConfig extends RestServerConfig {
 
         private final Integer rebalanceTimeoutMs;
+
         private static ConfigDef config() {
             ConfigDef result = new ConfigDef().withClientSslSupport();
             addPublicConfig(result);

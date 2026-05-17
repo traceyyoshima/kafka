@@ -671,8 +671,8 @@ public class StateDirectoryTest {
             assertThat(
                 appender.getMessages(),
                 hasItem("Using an OS temp directory in the state.dir property can cause failures with writing the" +
-                            " checkpoint file due to the fact that this directory can be cleared by the OS." +
-                            " Resolved state.dir: [" + System.getProperty("java.io.tmpdir") + "/kafka-streams]")
+                    " checkpoint file due to the fact that this directory can be cleared by the OS." +
+                    " Resolved state.dir: [" + System.getProperty("java.io.tmpdir") + "/kafka-streams]")
             );
         }
     }

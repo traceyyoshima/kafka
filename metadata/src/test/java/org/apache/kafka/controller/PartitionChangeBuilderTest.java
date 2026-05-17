@@ -92,7 +92,7 @@ public class PartitionChangeBuilderTest {
         assertFalse(
             changeRecordIsNoOp(
                 new PartitionChangeRecord()
-                  .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value())
+                    .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value())
             )
         );
         assertFalse(changeRecordIsNoOp(new PartitionChangeRecord().setDirectories(List.of(

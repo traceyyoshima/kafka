@@ -164,7 +164,7 @@ public class DelegationTokenControlManager {
     ) {
         long now = time.milliseconds();
         KafkaPrincipal owner = context.principal();
-        if ((requestData.ownerPrincipalName() != null) && 
+        if ((requestData.ownerPrincipalName() != null) &&
             (!requestData.ownerPrincipalName().isEmpty())) {
 
             owner = new KafkaPrincipal(requestData.ownerPrincipalType(), requestData.ownerPrincipalName());
@@ -318,7 +318,7 @@ public class DelegationTokenControlManager {
                 setTokenId(myTokenInformation.tokenId()), (short) 0));
         } else if (myTokenInformation.maxTimestamp() < now || myTokenInformation.expiryTimestamp() < now) {
             responseData.setErrorCode(DELEGATION_TOKEN_EXPIRED.code());
-        }  else {
+        } else {
             long expiryTimestamp = Math.min(myTokenInformation.maxTimestamp(), sum(now, requestData.expiryTimePeriodMs()));
 
             responseData
@@ -338,7 +338,7 @@ public class DelegationTokenControlManager {
         long now = time.milliseconds();
         List<ApiMessageAndVersion> records = new ArrayList<>(0);
 
-        for (TokenInformation oldTokenInformation: tokenCache.tokens()) {
+        for (TokenInformation oldTokenInformation : tokenCache.tokens()) {
             if ((oldTokenInformation.maxTimestamp() < now) ||
                 (oldTokenInformation.expiryTimestamp() < now)) {
                 log.info("Delegation token expired for token: {} for owner: {}",

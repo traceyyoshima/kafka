@@ -112,7 +112,7 @@ public class CachedSharePartition implements ImplicitLinkedHashCollection.Elemen
     }
 
     public String toString() {
-        return  "CachedSharePartition(topic=" + topic +
+        return "CachedSharePartition(topic=" + topic +
                 ", topicId=" + topicId +
                 ", partition=" + partition +
                 ", leaderEpoch=" + leaderEpoch +

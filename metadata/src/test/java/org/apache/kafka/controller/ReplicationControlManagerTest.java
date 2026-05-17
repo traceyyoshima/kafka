@@ -245,7 +245,7 @@ public class ReplicationControlManagerTest {
                 setFeatureLevel(metadataVersion.featureLevel()));
             featureControl.replay(new FeatureLevelRecord()
                 .setName(EligibleLeaderReplicasVersion.FEATURE_NAME)
-                    .setFeatureLevel(isElrEnabled ?
+                .setFeatureLevel(isElrEnabled ?
                         EligibleLeaderReplicasVersion.ELRV_1.featureLevel() :
                         EligibleLeaderReplicasVersion.ELRV_0.featureLevel())
             );
@@ -2329,10 +2329,10 @@ public class ReplicationControlManagerTest {
                 setErrorMessage(null).
                 setResponses(List.of(
                     new ReassignableTopicResponse().setName("foo").setPartitions(List.of(
-                        new ReassignablePartitionResponse().setPartitionIndex(0).setErrorMessage(null), 
-                        new ReassignablePartitionResponse().setPartitionIndex(1).setErrorMessage(null), 
+                        new ReassignablePartitionResponse().setPartitionIndex(0).setErrorMessage(null),
+                        new ReassignablePartitionResponse().setPartitionIndex(1).setErrorMessage(null),
                         new ReassignablePartitionResponse().setPartitionIndex(2).setErrorCode(INVALID_REPLICA_ASSIGNMENT.code()).
-                            setErrorMessage("The manual partition assignment includes broker 5, but no such broker is registered."), 
+                            setErrorMessage("The manual partition assignment includes broker 5, but no such broker is registered."),
                         new ReassignablePartitionResponse().setPartitionIndex(3).setErrorCode(INVALID_REPLICA_ASSIGNMENT.code()).
                             setErrorMessage("The manual partition assignment includes an empty replica list."))),
                     new ReassignableTopicResponse().setName("bar").setPartitions(List.of(
@@ -3272,34 +3272,34 @@ public class ReplicationControlManagerTest {
         Uuid topicC = ctx.createTestTopic("c", new int[][]{new int[]{2}}).topicId();
 
         ControllerResult<AssignReplicasToDirsResponseData> controllerResult = ctx.assignReplicasToDirs(1, new HashMap<>() {{
-                put(new TopicIdPartition(topicA, 0), dir1b1);
-                put(new TopicIdPartition(topicA, 1), dir2b1);
-                put(new TopicIdPartition(topicA, 2), offlineDir); // unknown/offline dir
+            put(new TopicIdPartition(topicA, 0), dir1b1);
+            put(new TopicIdPartition(topicA, 1), dir2b1);
+            put(new TopicIdPartition(topicA, 2), offlineDir); // unknown/offline dir
                 put(new TopicIdPartition(topicB, 0), dir1b1);
-                put(new TopicIdPartition(topicB, 1), DirectoryId.LOST);
-                put(new TopicIdPartition(Uuid.fromString("nLU9hKNXSZuMe5PO2A4dVQ"), 1), dir2b1); // expect UNKNOWN_TOPIC_ID
+            put(new TopicIdPartition(topicB, 1), DirectoryId.LOST);
+            put(new TopicIdPartition(Uuid.fromString("nLU9hKNXSZuMe5PO2A4dVQ"), 1), dir2b1); // expect UNKNOWN_TOPIC_ID
                 put(new TopicIdPartition(topicA, 137), dir1b1); // expect UNKNOWN_TOPIC_OR_PARTITION
                 put(new TopicIdPartition(topicC, 0), dir1b1); // expect NOT_LEADER_OR_FOLLOWER
             }});
 
         assertEquals(AssignmentsHelper.normalize(AssignmentsHelper.buildResponseData((short) 0, 0, new HashMap<>() {{
-                put(dir1b1, new HashMap<>() {{
-                        put(new TopicIdPartition(topicA, 0), NONE);
-                        put(new TopicIdPartition(topicA, 137), UNKNOWN_TOPIC_OR_PARTITION);
-                        put(new TopicIdPartition(topicB, 0), NONE);
-                        put(new TopicIdPartition(topicC, 0), NOT_LEADER_OR_FOLLOWER);
-                    }});
-                put(dir2b1, new HashMap<>() {{
-                        put(new TopicIdPartition(topicA, 1), NONE);
-                        put(new TopicIdPartition(Uuid.fromString("nLU9hKNXSZuMe5PO2A4dVQ"), 1), UNKNOWN_TOPIC_ID);
-                    }});
-                put(offlineDir, new HashMap<>() {{
-                        put(new TopicIdPartition(topicA, 2), NONE);
-                    }});
-                put(DirectoryId.LOST, new HashMap<>() {{
-                        put(new TopicIdPartition(topicB, 1), NONE);
-                    }});
-            }})), AssignmentsHelper.normalize(controllerResult.response()));
+            put(dir1b1, new HashMap<>() {{
+                put(new TopicIdPartition(topicA, 0), NONE);
+                put(new TopicIdPartition(topicA, 137), UNKNOWN_TOPIC_OR_PARTITION);
+                put(new TopicIdPartition(topicB, 0), NONE);
+                put(new TopicIdPartition(topicC, 0), NOT_LEADER_OR_FOLLOWER);
+            }});
+            put(dir2b1, new HashMap<>() {{
+                put(new TopicIdPartition(topicA, 1), NONE);
+                put(new TopicIdPartition(Uuid.fromString("nLU9hKNXSZuMe5PO2A4dVQ"), 1), UNKNOWN_TOPIC_ID);
+            }});
+            put(offlineDir, new HashMap<>() {{
+                put(new TopicIdPartition(topicA, 2), NONE);
+            }});
+            put(DirectoryId.LOST, new HashMap<>() {{
+                put(new TopicIdPartition(topicB, 1), NONE);
+            }});
+        }})), AssignmentsHelper.normalize(controllerResult.response()));
         short recordVersion = ctx.featureControl.metadataVersionOrThrow().partitionChangeRecordVersion();
         assertEquals(sortPartitionChangeRecords(List.of(
                 new ApiMessageAndVersion(
@@ -3332,15 +3332,15 @@ public class ReplicationControlManagerTest {
 
         ctx.replay(controllerResult.records());
         assertEquals(new HashSet<TopicIdPartition>() {{
-                add(new TopicIdPartition(topicA, 0));
-                add(new TopicIdPartition(topicA, 1));
-                add(new TopicIdPartition(topicB, 0));
-            }}, RecordTestUtils.iteratorToSet(ctx.replicationControl.brokersToIsrs().iterator(1, true)));
+            add(new TopicIdPartition(topicA, 0));
+            add(new TopicIdPartition(topicA, 1));
+            add(new TopicIdPartition(topicB, 0));
+        }}, RecordTestUtils.iteratorToSet(ctx.replicationControl.brokersToIsrs().iterator(1, true)));
         assertEquals(new HashSet<TopicIdPartition>() {{
-                add(new TopicIdPartition(topicA, 2));
-                add(new TopicIdPartition(topicB, 1));
-                add(new TopicIdPartition(topicC, 0));
-            }},
+            add(new TopicIdPartition(topicA, 2));
+            add(new TopicIdPartition(topicB, 1));
+            add(new TopicIdPartition(topicC, 0));
+        }},
             RecordTestUtils.iteratorToSet(ctx.replicationControl.brokersToIsrs().iterator(2, true)));
     }
 
@@ -3357,17 +3357,17 @@ public class ReplicationControlManagerTest {
         Uuid topicA = ctx.createTestTopic("a", new int[][]{new int[]{b1, b2}, new int[]{b1, b2}}).topicId();
         Uuid topicB = ctx.createTestTopic("b", new int[][]{new int[]{b1, b2}, new int[]{b1, b2}}).topicId();
         ctx.assignReplicasToDirs(b1, new HashMap<>() {{
-                put(new TopicIdPartition(topicA, 0), dir1b1);
-                put(new TopicIdPartition(topicA, 1), dir2b1);
-                put(new TopicIdPartition(topicB, 0), dir1b1);
-                put(new TopicIdPartition(topicB, 1), dir2b1);
-            }});
+            put(new TopicIdPartition(topicA, 0), dir1b1);
+            put(new TopicIdPartition(topicA, 1), dir2b1);
+            put(new TopicIdPartition(topicB, 0), dir1b1);
+            put(new TopicIdPartition(topicB, 1), dir2b1);
+        }});
         ctx.assignReplicasToDirs(b2, new HashMap<>() {{
-                put(new TopicIdPartition(topicA, 0), dir1b2);
-                put(new TopicIdPartition(topicA, 1), dir2b2);
-                put(new TopicIdPartition(topicB, 0), dir1b2);
-                put(new TopicIdPartition(topicB, 1), dir2b2);
-            }});
+            put(new TopicIdPartition(topicA, 0), dir1b2);
+            put(new TopicIdPartition(topicA, 1), dir2b2);
+            put(new TopicIdPartition(topicB, 0), dir1b2);
+            put(new TopicIdPartition(topicB, 1), dir2b2);
+        }});
         List<ApiMessageAndVersion> records = new ArrayList<>();
         ctx.replicationControl.handleDirectoriesOffline(b1, defaultBrokerEpoch(b1), List.of(
                 dir1b1,

@@ -60,10 +60,10 @@ public class TableSourceNode<K, V> extends SourceGraphNode<K, V> {
     @Override
     public String toString() {
         return "TableSourceNode{" +
-               ", processorParameters=" + processorParameters +
-               ", sourceName='" + sourceName + '\'' +
-               ", isGlobalKTable=" + isGlobalKTable +
-               "} " + super.toString();
+            ", processorParameters=" + processorParameters +
+            ", sourceName='" + sourceName + '\'' +
+            ", isGlobalKTable=" + isGlobalKTable +
+            "} " + super.toString();
     }
 
     public static <K, V> TableSourceNodeBuilder<K, V> tableSourceNodeBuilder() {

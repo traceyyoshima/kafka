@@ -80,14 +80,14 @@ public class StreamTableJoinWithGraceIntegrationTest extends AbstractJoinIntegra
             null,
             null,
             null,
-            Collections.singletonList(new TestRecord<>(ANY_UNIQUE_KEY, "D-b", null,  6L)),
+            Collections.singletonList(new TestRecord<>(ANY_UNIQUE_KEY, "D-b", null, 6L)),
             null,
             null,
             null,
             null,
             null,
             null,
-            Collections.singletonList(new TestRecord<>(ANY_UNIQUE_KEY, "F-a", null,  4L)),
+            Collections.singletonList(new TestRecord<>(ANY_UNIQUE_KEY, "F-a", null, 4L)),
             null
         );
 
@@ -129,7 +129,7 @@ public class StreamTableJoinWithGraceIntegrationTest extends AbstractJoinIntegra
             Collections.singletonList(new TestRecord<>(ANY_UNIQUE_KEY, "C-null", null, 9L)),
             null,
             null,
-            Collections.singletonList(new TestRecord<>(ANY_UNIQUE_KEY, "F-a", null,  4L)),
+            Collections.singletonList(new TestRecord<>(ANY_UNIQUE_KEY, "F-a", null, 4L)),
             null
         );
 

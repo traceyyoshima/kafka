@@ -118,7 +118,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("integration")
 public class MirrorConnectorsIntegrationBaseTest {
     private static final Logger log = LoggerFactory.getLogger(MirrorConnectorsIntegrationBaseTest.class);
-    
+
     protected static final int NUM_RECORDS_PER_PARTITION = 10;
     protected static final int NUM_PARTITIONS = 10;
     protected static final int NUM_RECORDS_PRODUCED = NUM_PARTITIONS * NUM_RECORDS_PER_PARTITION;
@@ -154,7 +154,7 @@ public class MirrorConnectorsIntegrationBaseTest {
     protected Boolean createReplicatedTopicsUpfront = false; // enable to speed up the test cases
     protected Exit.Procedure exitProcedure;
     private Exit.Procedure haltProcedure;
-    
+
     protected Properties primaryBrokerProps = new Properties();
     protected Properties backupBrokerProps = new Properties();
     protected Map<String, String> primaryWorkerProps = new HashMap<>();
@@ -163,8 +163,8 @@ public class MirrorConnectorsIntegrationBaseTest {
     @BeforeEach
     public void startClusters() throws Exception {
         startClusters(new HashMap<>() {{
-                put("topics", "test-topic-.*, primary.test-topic-.*, backup.test-topic-.*");
-            }});
+            put("topics", "test-topic-.*, primary.test-topic-.*, backup.test-topic-.*");
+        }});
     }
 
     public void startClusters(Map<String, String> additionalMM2Config) throws Exception {
@@ -195,7 +195,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         // we don't want to exit the JVM and instead simply want to fail the test
         Exit.setExitProcedure(exitProcedure);
         Exit.setHaltProcedure(haltProcedure);
-        
+
         primaryBrokerProps.put("auto.create.topics.enable", "false");
         backupBrokerProps.put("auto.create.topics.enable", "false");
 
@@ -234,7 +234,7 @@ public class MirrorConnectorsIntegrationBaseTest {
                 .maskExitProcedures(false)
                 .clientProps(additionalBackupClusterClientsConfigs)
                 .build();
-        
+
         primary.start();
 
         waitForTopicCreated(primary, "mm2-status.backup.internal");
@@ -254,17 +254,17 @@ public class MirrorConnectorsIntegrationBaseTest {
         waitForTopicCreated(backup, "test-topic-1");
         waitForTopicCreated(primary, "test-topic-1");
         warmUpConsumer(Map.of("group.id", "consumer-group-dummy"));
-        
+
         log.info(PRIMARY_CLUSTER_ALIAS + " REST service: {}", primary.endpointForResource("connectors"));
         log.info(BACKUP_CLUSTER_ALIAS + " REST service: {}", backup.endpointForResource("connectors"));
         log.info(PRIMARY_CLUSTER_ALIAS + " brokers: {}", primary.kafka().bootstrapServers());
         log.info(BACKUP_CLUSTER_ALIAS + " brokers: {}", backup.kafka().bootstrapServers());
-        
+
         // now that the brokers are running, we can finish setting up the Connectors
         mm2Props.put(PRIMARY_CLUSTER_ALIAS + ".bootstrap.servers", primary.kafka().bootstrapServers());
         mm2Props.put(BACKUP_CLUSTER_ALIAS + ".bootstrap.servers", backup.kafka().bootstrapServers());
     }
-    
+
     @AfterEach
     public void shutdownClusters() throws Exception {
         try {
@@ -290,7 +290,7 @@ public class MirrorConnectorsIntegrationBaseTest {
             }
         }
     }
-    
+
     @Test
     public void testReplication() throws Exception {
         produceMessages(primaryProducer, "test-topic-1");
@@ -303,7 +303,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         Map<String, Object> consumerProps = Map.of("group.id", consumerGroupName);
         // warm up consumers before starting the connectors, so we don't need to wait for discovery
         warmUpConsumer(consumerProps);
-        
+
         mm2Config = new MirrorMakerConfig(mm2Props);
 
         waitUntilMirrorMakerIsRunning(backup, CONNECTOR_LIST, mm2Config, PRIMARY_CLUSTER_ALIAS, BACKUP_CLUSTER_ALIAS);
@@ -364,7 +364,7 @@ public class MirrorConnectorsIntegrationBaseTest {
             assertTrue(primary.kafka().consume(1, RECORD_TRANSFER_DURATION_MS, "backup.heartbeats").count() > 0,
                     "Heartbeats were not replicated downstream to primary cluster.");
         }
-        
+
         assertTrue(backupClient.upstreamClusters().contains(PRIMARY_CLUSTER_ALIAS), "Did not find upstream primary cluster.");
         assertEquals(1, backupClient.replicationHops(PRIMARY_CLUSTER_ALIAS), "Did not calculate replication hops correctly.");
         assertTrue(backup.kafka().consume(1, CHECKPOINT_DURATION_MS, "primary.checkpoints.internal").count() > 0,
@@ -392,7 +392,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         }
 
         assertMonotonicCheckpoints(backup, "primary.checkpoints.internal");
- 
+
         primaryClient.close();
         backupClient.close();
 
@@ -445,7 +445,7 @@ public class MirrorConnectorsIntegrationBaseTest {
     @Test
     public void testReplicationWithEmptyPartition() throws Exception {
         String consumerGroupName = "consumer-group-testReplicationWithEmptyPartition";
-        Map<String, Object> consumerProps  = Map.of("group.id", consumerGroupName);
+        Map<String, Object> consumerProps = Map.of("group.id", consumerGroupName);
 
         // create topic
         String topic = "test-topic-with-empty-partition";
@@ -503,12 +503,12 @@ public class MirrorConnectorsIntegrationBaseTest {
         produceMessages(primaryProducer, "test-topic-1");
         String backupTopic1 = remoteTopicName("test-topic-1", PRIMARY_CLUSTER_ALIAS);
         String consumerGroupName = "consumer-group-testOneWayReplicationWithAutoOffsetSync";
-        Map<String, Object> consumerProps  = new HashMap<>() {{
-                put("group.id", consumerGroupName);
-                put("auto.offset.reset", "earliest");
-            }};
+        Map<String, Object> consumerProps = new HashMap<>() {{
+            put("group.id", consumerGroupName);
+            put("auto.offset.reset", "earliest");
+        }};
         // create consumers before starting the connectors, so we don't need to wait for discovery
-        try (Consumer<byte[], byte[]> primaryConsumer = primary.kafka().createConsumerAndSubscribeTo(consumerProps, 
+        try (Consumer<byte[], byte[]> primaryConsumer = primary.kafka().createConsumerAndSubscribeTo(consumerProps,
                 "test-topic-1")) {
             // we need to wait for consuming all the records for MM2 replicating the expected offsets
             waitForConsumingAllRecords(primaryConsumer, NUM_RECORDS_PRODUCED);
@@ -1161,13 +1161,13 @@ public class MirrorConnectorsIntegrationBaseTest {
      * launch the connectors on kafka connect cluster and check if they are running
      */
     protected static void waitUntilMirrorMakerIsRunning(EmbeddedConnectCluster connectCluster,
-            List<Class<? extends Connector>> connectorClasses, MirrorMakerConfig mm2Config, 
+            List<Class<? extends Connector>> connectorClasses, MirrorMakerConfig mm2Config,
             String primary, String backup) throws InterruptedException {
         for (Class<? extends Connector> connector : connectorClasses) {
             connectCluster.configureConnector(connector.getSimpleName(), mm2Config.connectorBaseConfig(
                 new SourceAndTarget(primary, backup), connector));
         }
-        
+
         // we wait for the connector and tasks to come up for each connector, so that when we do the
         // actual testing, we are certain that the tasks are up and running; this will prevent
         // flaky tests where the connector and tasks didn't start up in time for the tests to be run
@@ -1177,7 +1177,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         }
     }
 
-    protected static void restartMirrorMakerConnectors(EmbeddedConnectCluster connectCluster, List<Class<? extends Connector>> connectorClasses)  {
+    protected static void restartMirrorMakerConnectors(EmbeddedConnectCluster connectCluster, List<Class<? extends Connector>> connectorClasses) {
         for (Class<? extends Connector> connector : connectorClasses) {
             connectCluster.restartConnectorAndTasks(connector.getSimpleName(), false, true, false);
         }
@@ -1459,7 +1459,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         // After a full sync, there should be at most offset.lag.max records per partition consumed by both upstream and downstream consumers.
         for (TopicPartition tp : records.partitions()) {
             int count = records.records(tp).size();
-            assertTrue(count < offsetLagMax,  "downstream consumer is re-reading more than " + offsetLagMax + " records from" + tp);
+            assertTrue(count < offsetLagMax, "downstream consumer is re-reading more than " + offsetLagMax + " records from" + tp);
         }
     }
 
@@ -1475,7 +1475,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         }, RECORD_CONSUME_DURATION_MS, "Consumer cannot consume all records in time");
         consumer.commitSync();
     }
-   
+
     /*
      * MM2 config to use in integration tests
      */
@@ -1499,7 +1499,7 @@ public class MirrorConnectorsIntegrationBaseTest {
         mm2Props.put(BACKUP_CLUSTER_ALIAS + ".offset.flush.interval.ms", "5000");
         return mm2Props;
     }
-    
+
     private void createTopics() {
         // to verify topic config will be sync-ed across clusters
         Map<String, String> topicConfig = Map.of(TopicConfig.CLEANUP_POLICY_CONFIG, TopicConfig.CLEANUP_POLICY_COMPACT);
@@ -1615,7 +1615,7 @@ public class MirrorConnectorsIntegrationBaseTest {
 
     public static class CollectAllMetricsReporter extends MockMetricsReporter {
 
-        public static final Map<MetricName, KafkaMetric> METRICS = new  HashMap<>();
+        public static final Map<MetricName, KafkaMetric> METRICS = new HashMap<>();
 
         @Override
         public void init(List<KafkaMetric> metrics) {

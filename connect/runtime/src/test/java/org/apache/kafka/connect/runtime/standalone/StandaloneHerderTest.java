@@ -901,8 +901,8 @@ public class StandaloneHerderTest {
         assertInstanceOf(BadRequestException.class, cause);
         assertEquals(
                 "Connector configuration is invalid and contains the following 1 error(s):\n" +
-                    error + "\n" +
-                    "You can also find the above list of errors at the endpoint `/connector-plugins/{connectorType}/config/validate`",
+            error + "\n" +
+            "You can also find the above list of errors at the endpoint `/connector-plugins/{connectorType}/config/validate`",
                 cause.getMessage()
         );
         verify(loaderSwap).close();
@@ -1107,6 +1107,7 @@ public class StandaloneHerderTest {
     private void expectAdd(SourceSink sourceSink) {
         expectAdd(sourceSink, true);
     }
+
     private void expectAdd(SourceSink sourceSink, boolean mockStartConnector) {
         expectAdd(sourceSink, mockStartConnector, true, true);
     }

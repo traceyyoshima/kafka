@@ -2026,7 +2026,7 @@ class DefaultStateUpdaterTest {
             },
             VERIFICATION_TIMEOUT,
             () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
-                        + expectedFailedTasks + ", actual: " + failedTasks
+                + expectedFailedTasks + ", actual: " + failedTasks
         );
     }
 

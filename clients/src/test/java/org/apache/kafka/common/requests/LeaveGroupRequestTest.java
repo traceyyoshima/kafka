@@ -70,7 +70,7 @@ public class LeaveGroupRequestTest {
                 LeaveGroupRequest request = builder.build(version);
                 if (version <= 2) {
                     fail("Older version " + version +
-                             " request data should not be created due to non-single members");
+                        " request data should not be created due to non-single members");
                 }
                 assertEquals(expectedData, request.data());
                 assertEquals(members, request.members());

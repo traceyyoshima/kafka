@@ -498,7 +498,7 @@ public class GroupCoordinatorRecordHelpers {
         if (expireTimestampMs) {
             return 1;
         } else {
-            return  4;
+            return 4;
         }
     }
 

@@ -424,7 +424,7 @@ public class MeteredWindowStoreTest {
 
         final RecordHeaders headers = new RecordHeaders();
         headers.add(headerKey, "new".getBytes(StandardCharsets.UTF_8));
-        
+
         context.setRecordContext(new ProcessorRecordContext(TIMESTAMP, 0L, 0, "topic", headers));
         metered.put(KEY, "value", TIMESTAMP);
 

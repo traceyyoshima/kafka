@@ -139,7 +139,7 @@ public final class BrokerLocalStorage {
      */
     private boolean isOffsetPresentInFirstLocalSegment(TopicPartition topicPartition,
                                                        Long firstLogFileBaseOffset,
-                                                       Long offsetToSearch)  {
+                                                       Long offsetToSearch) {
         if (offsetToSearch < firstLogFileBaseOffset) {
             return false;
         }
@@ -150,7 +150,7 @@ public final class BrokerLocalStorage {
                 .filter(dir -> dirContainsTopicPartition(topicPartition, dir))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("[BrokerId=%d] Directory for the topic-partition %s " +
-                "was not found", brokerId, topicPartition)));
+                    "was not found", brokerId, topicPartition)));
         File partitionDir = new File(logDir.getAbsolutePath(), topicPartition.toString());
         File firstSegmentFile = new File(partitionDir.getAbsolutePath(),
                 LogFileUtils.filenamePrefixFromOffset(firstLogFileBaseOffset) + LogFileUtils.LOG_FILE_SUFFIX);

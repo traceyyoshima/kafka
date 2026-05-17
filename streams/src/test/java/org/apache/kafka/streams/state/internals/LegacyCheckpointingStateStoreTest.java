@@ -491,7 +491,7 @@ public class LegacyCheckpointingStateStoreTest {
         Utils.delete(stateDirectory.getOrCreateDirectoryForTask(taskId));
 
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(LegacyCheckpointingStateStore.class)) {
+            LogCaptureAppender.createAndRegister(LegacyCheckpointingStateStore.class)) {
             store.checkpoint(); // should log a warning, not throw
 
             assertThat(appender.getMessages(),
@@ -626,7 +626,7 @@ public class LegacyCheckpointingStateStoreTest {
 
         // Use a raw MockKeyValueStore (managesOffsets() == false, not wrapped in LCSS)
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(LegacyCheckpointingStateStore.class)) {
+            LogCaptureAppender.createAndRegister(LegacyCheckpointingStateStore.class)) {
             LegacyCheckpointingStateStore.migrateLegacyOffsets(
                 LOG_PREFIX, stateDirectory, taskId, Collections.singletonMap(partition, persistentStore));
 

@@ -1514,6 +1514,7 @@ public interface Admin extends AutoCloseable {
      */
     AlterUserScramCredentialsResult alterUserScramCredentials(List<UserScramCredentialAlteration> alterations,
                                                               AlterUserScramCredentialsOptions options);
+
     /**
      * Describes finalized as well as supported features.
      * <p>
@@ -2161,6 +2162,6 @@ public interface Admin extends AutoCloseable {
      * @param options               The options to use when terminating the transaction.
      * @return The TerminateTransactionResult.
      */
-    TerminateTransactionResult forceTerminateTransaction(String transactionalId, 
+    TerminateTransactionResult forceTerminateTransaction(String transactionalId,
                                                          TerminateTransactionOptions options);
 }

@@ -196,7 +196,7 @@ public class ConnectionStressWorker implements TaskWorker {
         }
     }
 
-    static class FetchMetadataStressor  implements Stressor {
+    static class FetchMetadataStressor implements Stressor {
         private final Properties props;
 
         FetchMetadataStressor(ConnectionStressSpec spec) {
@@ -209,7 +209,7 @@ public class ConnectionStressWorker implements TaskWorker {
         public boolean tryConnect() {
             try (Admin client = Admin.create(this.props)) {
                 client.describeCluster().nodes().get();
-            } catch (ExecutionException | InterruptedException  e) {
+            } catch (ExecutionException | InterruptedException e) {
                 return false;
             }
             return true;

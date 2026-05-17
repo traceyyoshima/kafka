@@ -586,7 +586,7 @@ public class StreamsGroupHeartbeatRequestManager implements RequestManager {
             case COORDINATOR_LOAD_IN_PROGRESS:
                 logInfo(
                     String.format("StreamsGroupHeartbeatRequest failed because the group coordinator %s is still loading. " +
-                    "Will retry", coordinatorRequestManager.coordinator()),
+                        "Will retry", coordinatorRequestManager.coordinator()),
                     response,
                     currentTimeMs
                 );

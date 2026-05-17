@@ -147,7 +147,7 @@ public class Serdes {
             super(new ListSerializer<>(), new ListDeserializer<>());
         }
 
-        public <L extends List<Inner>> ListSerde(Class<L> listClass, Serde<Inner> serde) {
+        public <L extends List<Inner>>ListSerde(Class<L> listClass, Serde<Inner> serde) {
             super(new ListSerializer<>(serde.serializer()), new ListDeserializer<>(listClass, serde.deserializer()));
         }
 

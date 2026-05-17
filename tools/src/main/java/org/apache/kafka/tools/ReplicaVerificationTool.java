@@ -665,9 +665,9 @@ public class ReplicaVerificationTool {
                 time,
                 "replica-fetcher",
                 new HashMap<String, String>() {{
-                        put("broker-id", sourceNode.idString());
-                        put("fetcher-id", String.valueOf(fetcherId));
-                    }},
+                    put("broker-id", sourceNode.idString());
+                    put("fetcher-id", String.valueOf(fetcherId));
+                }},
                 false,
                 channelBuilder,
                 logContext

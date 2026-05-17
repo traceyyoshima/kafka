@@ -186,7 +186,7 @@ public class FeatureTest {
         "UNIT_TEST_VERSION_6",
         "UNIT_TEST_VERSION_7"}, mode = EnumSource.Mode.EXCLUDE)
     public void testLatestProductionDependencyIsProductionReady(Feature feature) {
-        for (Map.Entry<String, Short> dependency: feature.latestProduction.dependencies().entrySet()) {
+        for (Map.Entry<String, Short> dependency : feature.latestProduction.dependencies().entrySet()) {
             String featureName = dependency.getKey();
             if (!featureName.equals(MetadataVersion.FEATURE_NAME)) {
                 Feature dependencyFeature = Feature.featureFromName(featureName);
@@ -206,7 +206,7 @@ public class FeatureTest {
         "UNIT_TEST_VERSION_6",
         "UNIT_TEST_VERSION_7"}, mode = EnumSource.Mode.EXCLUDE)
     public void testDefaultVersionDependencyIsDefaultReady(Feature feature) {
-        for (Map.Entry<String, Short> dependency: feature.defaultVersion(MetadataVersion.LATEST_PRODUCTION).dependencies().entrySet()) {
+        for (Map.Entry<String, Short> dependency : feature.defaultVersion(MetadataVersion.LATEST_PRODUCTION).dependencies().entrySet()) {
             String featureName = dependency.getKey();
             if (!featureName.equals(MetadataVersion.FEATURE_NAME)) {
                 Feature dependencyFeature = Feature.featureFromName(featureName);

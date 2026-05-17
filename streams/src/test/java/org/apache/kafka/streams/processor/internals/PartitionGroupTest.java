@@ -911,7 +911,7 @@ public class PartitionGroupTest {
         assertFalse(result.isReady());
         assertTrue(result.getLogMessage().isPresent() &&
             result.getLogMessage().get().contains(String.format("Partition %s has current lag 0 and current time is %d. "
-            + "Waiting for new data to be produced for configured idle time", partition, 0L)));
+                + "Waiting for new data to be produced for configured idle time", partition, 0L)));
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -920,7 +920,7 @@ public class PartitionGroupTest {
         assertFalse(result.isReady());
         assertTrue(result.getLogMessage().isPresent() &&
             result.getLogMessage().get().contains(String.format("Partition %s has current lag %d, but no data is buffered locally. "
-            + "Waiting to buffer some records.", partition, lag)));
+                + "Waiting to buffer some records.", partition, lag)));
     }
 
 

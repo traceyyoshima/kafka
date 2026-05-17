@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MockConsumerTest {
-    
+
     private final MockConsumer<String, String> consumer = new MockConsumer<>(AutoOffsetResetStrategy.EARLIEST.name());
 
     @Test
@@ -187,7 +187,7 @@ public class MockConsumerTest {
         assertEquals(1, revoked.size());
         assertTrue(revoked.contains(topicPartitionList.get(0)));
     }
-    
+
     @Test
     public void testRe2JPatternSubscription() {
         assertThrows(IllegalArgumentException.class, () -> consumer.subscribe((SubscriptionPattern) null));

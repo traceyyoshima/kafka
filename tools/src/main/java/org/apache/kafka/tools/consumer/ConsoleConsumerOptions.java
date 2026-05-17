@@ -100,7 +100,7 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .withRequiredArg()
                 .describedAs("consumer_prop")
                 .ofType(String.class);
-        @Deprecated(since = "4.2", forRemoval = true) 
+        @Deprecated(since = "4.2", forRemoval = true)
         OptionSpec<String> consumerConfigOpt = parser.accepts("consumer.config", "(DEPRECATED) Consumer config properties file. Note that " + commandPropertyOpt + " takes precedence over this config. " +
                         "This option will be removed in a future version. Use --command-config instead.")
                 .withRequiredArg()
