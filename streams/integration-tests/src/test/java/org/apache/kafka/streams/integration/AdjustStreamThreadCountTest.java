@@ -151,7 +151,7 @@ public class AdjustStreamThreadCountTest {
                 final String value = "value-" + i;
                 producer.send(new ProducerRecord<>(inputTopic, key, value));
             }
-        } 
+        }
     }
 
     private void startStreamsAndWaitForRunning(final KafkaStreams kafkaStreams) throws InterruptedException {
@@ -290,7 +290,7 @@ public class AdjustStreamThreadCountTest {
                     DEFAULT_DURATION.toMillis(),
                     "Kafka Streams did not stabilize at the expected thread count and RUNNING state."
                 );
-                
+
                 threadMetadata = kafkaStreams.metadataForLocalThreads();
                 assertThat(threadMetadata.size(), equalTo(oldThreadCount));
             } catch (final AssertionError e) {
@@ -494,7 +494,7 @@ public class AdjustStreamThreadCountTest {
 
         final AtomicBoolean injectError = new AtomicBoolean(false);
 
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<String, String> stream = builder.stream(inputTopic);
         stream.process(() -> new Processor<String, String, String, String>() {
             ProcessorContext<String, String> context;

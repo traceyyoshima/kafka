@@ -85,7 +85,7 @@ public class StateDirectoryIntegrationTest {
         ));
 
         try (final KafkaProducer<String, String> producer =
-                 new KafkaProducer<>(producerConfig, Serdes.String().serializer(), Serdes.String().serializer())) {
+            new KafkaProducer<>(producerConfig, Serdes.String().serializer(), Serdes.String().serializer())) {
             // Create Test Records
             producer.send(new ProducerRecord<>(input, "a"));
             producer.send(new ProducerRecord<>(input, "b"));
@@ -162,11 +162,11 @@ public class StateDirectoryIntegrationTest {
             // case 3: The state directory is not cleaned up, for it includes a checkpoint file but it is empty.
             assertTrue(appDir.exists()
                 || Arrays.stream(appDir.listFiles())
-                    .filter(
+            .filter(
                         (File f) -> f.isDirectory() && f.listFiles().length > 0 && !(new File(f, ".checkpoint")).exists()
                     ).findFirst().isPresent()
                 || Arrays.stream(appDir.listFiles())
-                    .filter(
+            .filter(
                         (File f) -> f.isDirectory() && (new File(f, ".checkpoint")).length() == 0L
                     ).findFirst().isPresent()
             );
@@ -191,7 +191,7 @@ public class StateDirectoryIntegrationTest {
         ));
 
         try (final KafkaProducer<String, String> producer =
-                 new KafkaProducer<>(producerConfig, Serdes.String().serializer(), Serdes.String().serializer())) {
+            new KafkaProducer<>(producerConfig, Serdes.String().serializer(), Serdes.String().serializer())) {
             // Create Test Records
             producer.send(new ProducerRecord<>(input, "a"));
             producer.send(new ProducerRecord<>(input, "b"));

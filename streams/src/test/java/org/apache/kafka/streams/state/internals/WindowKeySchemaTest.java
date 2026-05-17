@@ -204,7 +204,7 @@ public class WindowKeySchemaTest {
             assertThat(results, equalTo(asList(1, 2, 3, 4, 5, 6)));
         }
     }
-    
+
     @EnumSource(SchemaType.class)
     @ParameterizedTest
     public void testUpperBoundWithLargeTimestamps(final SchemaType type) {
@@ -549,7 +549,7 @@ public class WindowKeySchemaTest {
         final BiFunction<byte[], Long, Windowed<Bytes>> fromStoreBytesKey = getFromStorageKey();
         assertEquals(windowedBytesKey, fromStoreBytesKey.apply(serialized.get(), endTime - startTime));
     }
-    
+
     @EnumSource(SchemaType.class)
     @ParameterizedTest
     public void shouldConvertFromNonPrefixWindowKey(final SchemaType type) {

@@ -50,7 +50,7 @@ class SegmentedCacheFunctionTest {
                 .putLong(END_TIMESTAMP / SEGMENT_INTERVAL)
                 .put(THE_SESSION_KEY.get()).array()
     );
-    
+
     private SegmentedCacheFunction createCacheFunction(final SegmentedBytesStore.KeySchema keySchema) {
         return new SegmentedCacheFunction(keySchema, SEGMENT_INTERVAL);
     }
@@ -75,7 +75,7 @@ class SegmentedCacheFunctionTest {
 
         final Bytes lowerKeyInSameSegmentWindow = WindowKeySchema.toStoreKeyBinary(new byte[]{0xA, 0xB, 0xB}, START_TIMESTAMP - 1, 0);
         final Bytes lowerKeyInSameSegmentSession = toStoreKeyBinary(new byte[]{0xA, 0xB, 0xB}, END_TIMESTAMP - 1, START_TIMESTAMP + 1);
-        
+
         return Stream.of(
                 Arguments.of(THE_WINDOW_KEY, new WindowKeySchema(), sameKeyInPriorSegmentWindow, lowerKeyInSameSegmentWindow),
                 Arguments.of(THE_SESSION_KEY, new SessionKeySchema(), sameKeyInPriorSegmentSession, lowerKeyInSameSegmentSession)

@@ -89,7 +89,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KStreamSlidingWindowAggregateTest {
-    
+
     public static Stream<Arguments> testParameters() {
         return Stream.of(
             Arguments.of(StrategyType.ON_WINDOW_UPDATE, true, true, false),
@@ -110,6 +110,7 @@ public class KStreamSlidingWindowAggregateTest {
             Arguments.of(StrategyType.ON_WINDOW_CLOSE, false, false, true)
         );
     }
+
     public StrategyType type;
     public boolean inOrderIterator;
     public boolean withCache;
@@ -119,7 +120,7 @@ public class KStreamSlidingWindowAggregateTest {
 
     private final Properties props = StreamsTestUtils.getStreamsConfig(Serdes.String(), Serdes.String());
     private final String threadId = Thread.currentThread().getName();
-    
+
     public void setup(final StrategyType inputType, final boolean inputInOrderIterator, final boolean inputWithCache, final boolean withHeaders) {
         type = inputType;
         inOrderIterator = inputInOrderIterator;
@@ -339,7 +340,7 @@ public class KStreamSlidingWindowAggregateTest {
             inputTopic1.pipeInput("C", "3", 16L);
             inputTopic1.pipeInput("C", "4", 21);
             inputTopic1.pipeInput("C", "5", 23L);
-            
+
             inputTopic1.pipeInput("D", "4", 11L); // skip for emit final [1, 11], close time 15
             inputTopic1.pipeInput("D", "2", 12L); // skip for emit final [2, 12], close time 15
             inputTopic1.pipeInput("D", "3", 29L);

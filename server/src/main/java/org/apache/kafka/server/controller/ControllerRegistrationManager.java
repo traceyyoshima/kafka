@@ -53,7 +53,7 @@ import java.util.concurrent.TimeUnit;
  * each variable, most mutable state can be accessed only from that event queue thread.
  */
 public class ControllerRegistrationManager implements MetadataPublisher {
-    
+
     private final Logger logger;
     private final int nodeId;
     private final Time time;
@@ -118,7 +118,7 @@ public class ControllerRegistrationManager implements MetadataPublisher {
             Uuid incarnationId,
             ListenerInfo listenerInfo,
             ExponentialBackoff resendExponentialBackoff
-    )  {
+    ) {
         this.nodeId = nodeId;
         this.time = time;
         this.supportedFeatures = supportedFeatures;
@@ -135,15 +135,15 @@ public class ControllerRegistrationManager implements MetadataPublisher {
                 threadNamePrefix + "registration-manager-",
                 new ShutdownEvent());
     }
-    
-    @Override 
+
+    @Override
     public String name() {
         return "ControllerRegistrationManager";
     }
 
     private class ShutdownEvent implements EventQueue.Event {
-        
-        @Override 
+
+        @Override
         public void run() {
             try {
                 logger.info("shutting down.");
@@ -184,13 +184,13 @@ public class ControllerRegistrationManager implements MetadataPublisher {
     /**
      * Shut down the ControllerRegistrationManager and block until all threads are joined.
      */
-    @Override 
+    @Override
     public void close() throws Exception {
         beginShutdown();
         eventQueue.close();
     }
 
-    @Override 
+    @Override
     public void onMetadataUpdate(MetadataDelta delta, MetadataImage newImage, LoaderManifest manifest) {
         if (delta.featuresDelta() != null ||
                 (delta.clusterDelta() != null && delta.clusterDelta().changedControllers().containsKey(nodeId))) {
@@ -207,8 +207,8 @@ public class ControllerRegistrationManager implements MetadataPublisher {
             this.delta = delta;
             this.newImage = newImage;
         }
-            
-        @Override 
+
+        @Override
         public void run() {
             try {
                 if (delta.featuresDelta() != null) {
@@ -274,8 +274,8 @@ public class ControllerRegistrationManager implements MetadataPublisher {
     }
 
     private class RegistrationResponseHandler implements ControllerRequestCompletionHandler {
-        
-        @Override 
+
+        @Override
         public void onComplete(ClientResponse response) {
             eventQueue.append(new RequestCompleteEvent(response));
         }
@@ -289,12 +289,12 @@ public class ControllerRegistrationManager implements MetadataPublisher {
     private class RequestCompleteEvent implements EventQueue.Event {
 
         private final ClientResponse response;
-        
+
         RequestCompleteEvent(ClientResponse response) {
             this.response = response;
         }
-        
-        @Override 
+
+        @Override
         public void run() {
             pendingRpc = false;
             if (response.authenticationException() != null) {
@@ -324,8 +324,8 @@ public class ControllerRegistrationManager implements MetadataPublisher {
     }
 
     private class RequestTimeoutEvent implements EventQueue.Event {
-        
-        @Override 
+
+        @Override
         public void run() {
             pendingRpc = false;
             logger.error("RegistrationResponseHandler: channel manager timed out before sending the request.");

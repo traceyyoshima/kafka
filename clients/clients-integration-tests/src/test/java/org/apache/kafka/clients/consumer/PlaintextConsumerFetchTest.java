@@ -373,7 +373,7 @@ public class PlaintextConsumerFetchTest {
     }
 
     private void checkFetchHonoursSizeIfLargeRecordNotFirst(
-        Map<String, Object> config, 
+        Map<String, Object> config,
         int largeProducerRecordSize
     ) throws ExecutionException, InterruptedException {
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config);
@@ -397,7 +397,7 @@ public class PlaintextConsumerFetchTest {
 
             // we should only get the small record in the first `poll`
             consumer.assign(List.of(tp));
-            
+
             var records = consumeRecords(consumer, 1);
             assertEquals(1, records.size());
             var consumerRecord = records.iterator().next();
@@ -430,7 +430,7 @@ public class PlaintextConsumerFetchTest {
             // Avoid a rebalance while the records are being sent (the default is 6 seconds)
             MAX_POLL_INTERVAL_MS_CONFIG, 20000
         );
-        
+
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config);
              Producer<byte[], byte[]> producer = cluster.producer()
         ) {

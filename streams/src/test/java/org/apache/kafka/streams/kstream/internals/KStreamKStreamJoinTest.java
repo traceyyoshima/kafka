@@ -163,7 +163,7 @@ public class KStreamKStreamJoinTest {
         final StreamJoined<String, String, String> streamJoined = StreamJoined.with(Serdes.String(), Serdes.String(), Serdes.String());
         newStream.join(stream2, (value1, value2) -> value1 + value2, JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)), streamJoined.withName("first-join")).to("out-one");
         newStream.join(stream3, (value1, value2) -> value1 + value2, JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(100)), streamJoined.withName("second-join")).to("out-two");
-        final Topology topology =  builder.build(props);
+        final Topology topology = builder.build(props);
         System.out.println(topology.describe().toString());
         assertEquals(expectedTopologyWithUserNamedRepartitionTopics, topology.describe().toString());
     }
@@ -1977,7 +1977,7 @@ public class KStreamKStreamJoinTest {
                                                                    final long retentionPeriod,
                                                                    final long windowSize,
                                                                    final boolean retainDuplicates) {
-        return  Stores.inMemoryWindowStore(name,
+        return Stores.inMemoryWindowStore(name,
                                            Duration.ofMillis(retentionPeriod),
                                            Duration.ofMillis(windowSize),
                                            retainDuplicates);

@@ -224,7 +224,7 @@ public class FeatureControlManager {
             new IllegalStateException("Unknown metadata version for FeatureControlManager"));
     }
 
-    @SuppressWarnings({ "CyclomaticComplexity" })
+    @SuppressWarnings({"CyclomaticComplexity"})
     private ApiError updateFeature(
         String featureName,
         short newVersion,
@@ -329,7 +329,7 @@ public class FeatureControlManager {
         numControllersChecked++;
         for (Iterator<Entry<Integer, Map<String, VersionRange>>> iter =
             clusterSupportDescriber.brokerSupported();
-                iter.hasNext(); ) {
+            iter.hasNext();) {
             Entry<Integer, Map<String, VersionRange>> entry = iter.next();
             reason = QuorumFeatures.reasonNotSupported(newVersion,
                     "Broker " + entry.getKey(),
@@ -342,8 +342,8 @@ public class FeatureControlManager {
         foundControllers.add(quorumFeatures.nodeId());
         if (metadataVersionOrThrow().isControllerRegistrationSupported()) {
             for (Iterator<Entry<Integer, Map<String, VersionRange>>> iter =
-                 clusterSupportDescriber.controllerSupported();
-                 iter.hasNext(); ) {
+                clusterSupportDescriber.controllerSupported();
+                iter.hasNext();) {
                 Entry<Integer, Map<String, VersionRange>> entry = iter.next();
                 if (entry.getKey() == quorumFeatures.nodeId()) {
                     // No need to re-check the features supported by this controller, since we
@@ -402,7 +402,7 @@ public class FeatureControlManager {
             if (!metadataChanged) {
                 log.warn("Downgrading metadata.version from {} to {}.", currentVersion, newVersion);
             } else if (allowUnsafeDowngrade) {
-                return unsupportedMetadataDowngrade(currentVersion, newVersion, 
+                return unsupportedMetadataDowngrade(currentVersion, newVersion,
                         "Unsafe metadata downgrade is not supported in this version.");
             } else {
                 // The phrase "Retry using UNSAFE_DOWNGRADE if you want to force the downgrade to proceed." has been removed
@@ -429,7 +429,7 @@ public class FeatureControlManager {
     }
 
     private ApiError unsupportedMetadataDowngrade(MetadataVersion currentVersion, MetadataVersion targetVersion, String message) {
-        String errorMessage = String.format("Unsupported metadata.version downgrade from %s to %s. %s", 
+        String errorMessage = String.format("Unsupported metadata.version downgrade from %s to %s. %s",
                 currentVersion.featureLevel(), targetVersion.featureLevel(), message);
         log.warn(errorMessage);
         return new ApiError(Errors.INVALID_UPDATE_VERSION, errorMessage);

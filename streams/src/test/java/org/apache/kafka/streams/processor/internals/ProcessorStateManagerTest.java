@@ -1145,7 +1145,7 @@ public class ProcessorStateManagerTest {
             processorStateException.getMessage(),
             containsString(
                 "process-state-manager-test Exception caught while trying to checkpoint store,"
-                    + " changelog partition test-application-My-Topology-persistentStore-changelog-1"
+            + " changelog partition test-application-My-Topology-persistentStore-changelog-1"
             )
         );
         assertThat(processorStateException.getCause(), is(ioException));

@@ -1289,7 +1289,7 @@ public class DistributedHerderTest {
         FutureCallback<ConnectorStateInfo> callback = new FutureCallback<>();
         herder.restartConnectorAndTasks(restartRequest, callback);
         herder.tick();
-        assertEquals(connectorStateInfo,  callback.get(1000L, TimeUnit.MILLISECONDS));
+        assertEquals(connectorStateInfo, callback.get(1000L, TimeUnit.MILLISECONDS));
 
         verifyNoMoreInteractions(restartPlan, worker, member, configBackingStore, statusBackingStore);
     }
@@ -1340,7 +1340,7 @@ public class DistributedHerderTest {
         ConnectorStatus status = new ConnectorStatus(CONN1, AbstractStatus.State.RESTARTING, WORKER_ID, 0);
         doNothing().when(statusBackingStore).put(eq(status));
 
-        ArgumentCaptor<Callback<TargetState>>  stateCallback = ArgumentCaptor.forClass(Callback.class);
+        ArgumentCaptor<Callback<TargetState>> stateCallback = ArgumentCaptor.forClass(Callback.class);
         doAnswer(invocation -> {
             stateCallback.getValue().onCompletion(null, TargetState.STARTED);
             return true;
@@ -1406,7 +1406,7 @@ public class DistributedHerderTest {
         ConnectorStatus status = new ConnectorStatus(CONN1, AbstractStatus.State.RESTARTING, WORKER_ID, 0);
         doNothing().when(statusBackingStore).put(eq(status));
 
-        ArgumentCaptor<Callback<TargetState>>  stateCallback = ArgumentCaptor.forClass(Callback.class);
+        ArgumentCaptor<Callback<TargetState>> stateCallback = ArgumentCaptor.forClass(Callback.class);
         doAnswer(invocation -> {
             stateCallback.getValue().onCompletion(null, TargetState.STARTED);
             return true;
@@ -2579,7 +2579,7 @@ public class DistributedHerderTest {
 
         expectRebalance(2, List.of(), List.of());
         SessionKey initialKey = new SessionKey(mock(SecretKey.class), 0);
-        ClusterConfigState snapshotWithKey =  new ClusterConfigState(
+        ClusterConfigState snapshotWithKey = new ClusterConfigState(
                 2,
                 initialKey,
                 Map.of(CONN1, 3),
@@ -2626,7 +2626,7 @@ public class DistributedHerderTest {
         when(initialSecretKey.getAlgorithm()).thenReturn(DistributedConfig.INTER_WORKER_KEY_GENERATION_ALGORITHM_DEFAULT);
         when(initialSecretKey.getEncoded()).thenReturn(new byte[32]);
         SessionKey initialKey = new SessionKey(initialSecretKey, time.milliseconds());
-        ClusterConfigState snapshotWithKey =  new ClusterConfigState(
+        ClusterConfigState snapshotWithKey = new ClusterConfigState(
                 1,
                 initialKey,
                 Map.of(CONN1, 3),
@@ -4153,6 +4153,7 @@ public class DistributedHerderTest {
                                  final List<ConnectorTaskId> assignedTasks) {
         expectRebalance(revokedConnectors, revokedTasks, error, offset, assignedConnectors, assignedTasks, 0);
     }
+
     // Handles common initial part of rebalance callback. Does not handle instantiation of connectors and tasks.
     private void expectRebalance(final Collection<String> revokedConnectors,
                                  final List<ConnectorTaskId> revokedTasks,

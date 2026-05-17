@@ -302,7 +302,7 @@ public class KStreamSessionWindowAggregate<KIn, VIn, VAgg> implements KStreamAgg
             // Only time ordered (indexed) session store should have implemented
             // this function, otherwise a not-supported exception would throw
             try (final KeyValueIterator<Windowed<KIn>, AggregationWithHeaders<VAgg>> windowToEmit =
-                     store.findSessions(emitRangeLowerBound, emitRangeUpperBound)) {
+                store.findSessions(emitRangeLowerBound, emitRangeUpperBound)) {
 
                 while (windowToEmit.hasNext()) {
                     emittedCount++;
@@ -402,7 +402,7 @@ public class KStreamSessionWindowAggregate<KIn, VIn, VAgg> implements KStreamAgg
     private class KTableSessionWindowValueGetter implements KTableValueGetter<Windowed<KIn>, VAgg> {
 
         private SessionStore<KIn, AggregationWithHeaders<VAgg>> store;
-        
+
         @Override
         public void init(final ProcessorContext<?, ?> context) {
             try {

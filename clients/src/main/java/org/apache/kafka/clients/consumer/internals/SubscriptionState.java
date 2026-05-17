@@ -580,7 +580,7 @@ public class SubscriptionState {
                           "no longer matches the position {} when the request was sent",
                           tp, currentPosition, requestPosition);
             } else if (epochEndOffset.endOffset() == UNDEFINED_EPOCH_OFFSET ||
-                        epochEndOffset.leaderEpoch() == UNDEFINED_EPOCH) {
+                epochEndOffset.leaderEpoch() == UNDEFINED_EPOCH) {
                 if (hasDefaultOffsetResetPolicy()) {
                     log.info("Truncation detected for partition {} at offset {}, resetting offset",
                              tp, currentPosition);
@@ -903,7 +903,7 @@ public class SubscriptionState {
     }
 
     public synchronized boolean hasPartitionsNeedingValidation(long nowMs) {
-        for (TopicPartitionState tps  : assignment.partitionStateValues()) {
+        for (TopicPartitionState tps : assignment.partitionStateValues()) {
             if (tps.awaitingValidation() && !tps.awaitingRetryBackoff(nowMs) && tps.position != null) {
                 return true;
             }
@@ -973,7 +973,7 @@ public class SubscriptionState {
      * Set the set of topic IDs that have been assigned to the consumer by the coordinator.
      * This is used for topic IDs received in an assignment when using the new consumer rebalance protocol (KIP-848).
      */
-    public synchronized  void setAssignedTopicIds(Set<Uuid> assignedTopicIds) {
+    public synchronized void setAssignedTopicIds(Set<Uuid> assignedTopicIds) {
         this.assignedTopicIds = assignedTopicIds;
     }
 
@@ -1024,7 +1024,7 @@ public class SubscriptionState {
         private Integer preferredReadReplica;
         private Long preferredReadReplicaExpireTimeMs;
         private boolean endOffsetRequested;
-        
+
         TopicPartitionState() {
             this.paused = false;
             this.pendingRevocation = false;

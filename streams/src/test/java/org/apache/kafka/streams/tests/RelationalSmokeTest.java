@@ -610,7 +610,7 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                     (key, value) -> new KeyValue<>(value.getArticleId(), (short) 1),
                     Grouped.with(Serdes.Integer(), Serdes.Short())
                 )
-                .count();
+                    .count();
 
             articles
                 .leftJoin(
@@ -706,7 +706,7 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                         Stream.concat(
                             articlePartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition())),
                             augmentedArticlePartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition()))
-                        ), 
+                        ),
                         Stream.concat(
                             commentPartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition())),
                             augmentedCommentPartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition()))
@@ -856,7 +856,7 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                 "Mismatched comments size between augmented comments (size "
                     + consumedAugmentedComments.size() +
                     ") and consumed comments (size " +
-                    consumedComments.size() + ")", 
+                    consumedComments.size() + ")",
                 consumedAugmentedComments.size() == consumedComments.size()
             );
 

@@ -2112,9 +2112,9 @@ public class KafkaStreams implements AutoCloseable {
                                     QueryResult.forFailure(
                                         FailureReason.NOT_ACTIVE,
                                         "Query requires a running active task,"
-                                            + " but partition was in state "
-                                            + state + " and was "
-                                            + (active ? "active" : "not active") + "."
+                                    + " but partition was in state "
+                                    + state + " and was "
+                                    + (active ? "active" : "not active") + "."
                                     )
                                 );
                             } else {

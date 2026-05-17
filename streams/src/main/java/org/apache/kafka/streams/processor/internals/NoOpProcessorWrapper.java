@@ -41,7 +41,7 @@ public class NoOpProcessorWrapper implements ProcessorWrapper {
         return ProcessorWrapper.asWrappedFixedKey(processorSupplier);
     }
 
-    public static class WrappedProcessorSupplierImpl<KIn, VIn, KOut, VOut> implements  WrappedProcessorSupplier<KIn, VIn, KOut, VOut> {
+    public static class WrappedProcessorSupplierImpl<KIn, VIn, KOut, VOut> implements WrappedProcessorSupplier<KIn, VIn, KOut, VOut> {
 
         private final ProcessorSupplier<KIn, VIn, KOut, VOut> delegate;
 

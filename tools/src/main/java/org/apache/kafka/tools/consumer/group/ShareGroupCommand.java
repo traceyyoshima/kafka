@@ -656,7 +656,7 @@ public class ShareGroupCommand {
             assignment.topicPartitions().forEach(tp ->
                 grouped
                    .computeIfAbsent(tp.topic(), key -> new ArrayList<>())
-                    .add(tp)
+                   .add(tp)
             );
             return grouped.entrySet().stream().map(entry -> {
                 String topicName = entry.getKey();

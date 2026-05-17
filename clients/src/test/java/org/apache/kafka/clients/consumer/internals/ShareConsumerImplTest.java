@@ -285,7 +285,7 @@ public class ShareConsumerImplTest {
         final ShareInFlightBatch<String, String> batch = new ShareInFlightBatch<>(0, tip, DEFAULT_ACQUISITION_LOCK_TIMEOUT_MS);
         // Add GAP without adding any records
         batch.addGap(1);
-        
+
         final ShareFetch<String, String> fetchWithOnlyGap = ShareFetch.empty();
         fetchWithOnlyGap.add(tip, batch);
         doReturn(fetchWithOnlyGap).when(fetchCollector).collect(any(ShareFetchBuffer.class));
@@ -298,7 +298,7 @@ public class ShareConsumerImplTest {
                 return false;
             }
             ShareAcknowledgeAsyncEvent shareAcknowledgeAsyncEvent = (ShareAcknowledgeAsyncEvent) event;
-            
+
             // Acknowledgements map should contain the GAP for offset 1
             Map<TopicIdPartition, NodeAcknowledgements> controlRecordAcks = shareAcknowledgeAsyncEvent.acknowledgementsMap();
             return controlRecordAcks.containsKey(tip) &&
@@ -476,14 +476,14 @@ public class ShareConsumerImplTest {
 
         // Verify that after acknowledging all records, poll succeeds
         consumer.acknowledge(iterator.next());
-        
+
         // Set up second fetch to return new records
         ShareFetch<String, String> secondFetch = ShareFetch.empty();
         ShareInFlightBatch<String, String> newBatch = new ShareInFlightBatch<>(2, tip, DEFAULT_ACQUISITION_LOCK_TIMEOUT_MS);
         newBatch.addRecord(new ConsumerRecord<>(topic, partition, 2, "key3", "value3"));
         newBatch.addRecord(new ConsumerRecord<>(topic, partition, 3, "key4", "value4"));
         secondFetch.add(tip, newBatch);
-        
+
         // Reset mock to return new records
         doReturn(secondFetch)
             .when(fetchCollector)
@@ -866,7 +866,7 @@ public class ShareConsumerImplTest {
 
         // Complete the acknowledge on close event successfully
         completeShareAcknowledgeOnCloseApplicationEventSuccessfully();
-        
+
         // Complete the unsubscribe event successfully
         completeShareUnsubscribeApplicationEventSuccessfully(subscriptions);
 

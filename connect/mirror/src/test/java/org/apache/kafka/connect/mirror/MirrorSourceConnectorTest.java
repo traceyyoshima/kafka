@@ -336,7 +336,7 @@ public class MirrorSourceConnectorTest {
         filter.configure(filterConfig);
 
         MirrorSourceConnector connector = new MirrorSourceConnector(new SourceAndTarget("source", "target"),
-                new DefaultReplicationPolicy(),  x -> true, filter);
+                new DefaultReplicationPolicy(), x -> true, filter);
         List<ConfigEntry> entries = new ArrayList<>();
         entries.add(new ConfigEntry("name-1", "value-1"));
         // When "use.defaults.from" explicitly set to "source", the config with default value should be replicated

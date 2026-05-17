@@ -707,7 +707,7 @@ public abstract class AbstractCoordinator implements Closeable {
                 // for join-group request, even if the generation has changed we would not expect the instance id
                 // gets fenced, and hence we always treat this as a fatal error
                 log.error("JoinGroup failed: The group instance id {} has been fenced by another instance. " +
-                              "Sent generation was {}", rebalanceConfig.groupInstanceId, sentGeneration);
+                    "Sent generation was {}", rebalanceConfig.groupInstanceId, sentGeneration);
                 future.raise(error);
             } else if (error == Errors.INCONSISTENT_GROUP_PROTOCOL
                     || error == Errors.INVALID_SESSION_TIMEOUT
@@ -733,7 +733,7 @@ public abstract class AbstractCoordinator implements Closeable {
                 // and send another join group request in next cycle.
                 String memberId = joinResponse.data().memberId();
                 log.debug("JoinGroup failed due to non-fatal error: {}. Will set the member id as {} and then rejoin. " +
-                              "Sent generation was {}", error, memberId, sentGeneration);
+                    "Sent generation was {}", error, memberId, sentGeneration);
                 synchronized (AbstractCoordinator.this) {
                     AbstractCoordinator.this.generation = new Generation(OffsetCommitRequest.DEFAULT_GENERATION_ID, memberId, null);
                 }
@@ -873,7 +873,7 @@ public abstract class AbstractCoordinator implements Closeable {
                     future.raise(GroupAuthorizationException.forGroupId(rebalanceConfig.groupId));
                 } else if (error == Errors.REBALANCE_IN_PROGRESS) {
                     log.info("SyncGroup failed: The group began another rebalance. Need to re-join the group. " +
-                                 "Sent generation was {}", sentGeneration);
+                        "Sent generation was {}", sentGeneration);
                     future.raise(error);
                 } else if (error == Errors.FENCED_INSTANCE_ID) {
                     // for sync-group request, even if the generation has changed we would not expect the instance id
@@ -1412,7 +1412,7 @@ public abstract class AbstractCoordinator implements Closeable {
                 metrics.metricName("rebalance-total",
                     this.metricGrpName,
                     "The total number of successful rebalance events, each event is composed of " +
-                        "several failed re-trials until it succeeded"),
+                "several failed re-trials until it succeeded"),
                 new CumulativeCount()
             );
             this.successfulRebalanceSensor.add(
@@ -1420,7 +1420,7 @@ public abstract class AbstractCoordinator implements Closeable {
                     "rebalance-rate-per-hour",
                     this.metricGrpName,
                     "The number of successful rebalance events per hour, each event is composed of " +
-                        "several failed re-trials until it succeeded"),
+                "several failed re-trials until it succeeded"),
                 new Rate(TimeUnit.HOURS, new WindowedCount(), 1)
             );
 

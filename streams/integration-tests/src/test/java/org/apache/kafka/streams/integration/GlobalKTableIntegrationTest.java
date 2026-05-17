@@ -113,7 +113,7 @@ public class GlobalKTableIntegrationTest {
     public void before(final TestInfo testInfo) throws Exception {
         TestGlobalProcessingExceptionHandler.handlerInvoked.set(false);
         TestGlobalProcessingExceptionHandler.shouldResume = false;
-        
+
         builder = new StreamsBuilder();
         final String safeTestName = safeUniqueTestName(testInfo);
         createTopics(safeTestName);
@@ -127,7 +127,7 @@ public class GlobalKTableIntegrationTest {
         globalTable = builder.globalTable(globalTableTopic, Consumed.with(Serdes.Long(), Serdes.String()),
                                           Materialized.<Long, String, KeyValueStore<Bytes, byte[]>>as(globalStore)
                                                   .withKeySerde(Serdes.Long())
-                                                  .withValueSerde(Serdes.String()));
+                                          .withValueSerde(Serdes.String()));
         final Consumed<String, Long> stringLongConsumed = Consumed.with(Serdes.String(), Serdes.Long());
         stream = builder.stream(streamTopic, stringLongConsumed);
         supplier = new MockApiProcessorSupplier<>();
@@ -459,7 +459,7 @@ public class GlobalKTableIntegrationTest {
         startStreams();
         waitForApplicationState(singletonList(kafkaStreams), State.RUNNING, Duration.ofSeconds(30));
         produceInitialGlobalTableValues();
-        
+
         TestUtils.waitForCondition(
             () -> TestGlobalProcessingExceptionHandler.handlerInvoked.get(),
             Duration.ofSeconds(30).toMillis(),

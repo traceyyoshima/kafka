@@ -59,7 +59,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class ProduceBenchWorker implements TaskWorker {
     private static final Logger log = LoggerFactory.getLogger(ProduceBenchWorker.class);
-    
+
     private static final int THROTTLE_PERIOD_MS = 100;
 
     private final String id;
@@ -102,7 +102,7 @@ public class ProduceBenchWorker implements TaskWorker {
                 Map<String, NewTopic> newTopics = new HashMap<>();
                 HashSet<TopicPartition> active = new HashSet<>();
                 for (Map.Entry<String, PartitionsSpec> entry :
-                        spec.activeTopics().materialize().entrySet()) {
+                    spec.activeTopics().materialize().entrySet()) {
                     String topicName = entry.getKey();
                     PartitionsSpec partSpec = entry.getValue();
                     newTopics.put(topicName, partSpec.newTopic(topicName));
@@ -114,7 +114,7 @@ public class ProduceBenchWorker implements TaskWorker {
                     throw new RuntimeException("You must specify at least one active topic.");
                 }
                 for (Map.Entry<String, PartitionsSpec> entry :
-                        spec.inactiveTopics().materialize().entrySet()) {
+                    spec.inactiveTopics().materialize().entrySet()) {
                     String topicName = entry.getKey();
                     PartitionsSpec partSpec = entry.getValue();
                     newTopics.put(topicName, partSpec.newTopic(topicName));

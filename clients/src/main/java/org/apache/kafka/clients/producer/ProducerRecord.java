@@ -109,7 +109,7 @@ public class ProducerRecord<K, V> {
     public ProducerRecord(String topic, Integer partition, K key, V value, Iterable<Header> headers) {
         this(topic, partition, null, key, value, headers);
     }
-    
+
     /**
      * Creates a record to be sent to a specified topic and partition
      *
@@ -121,7 +121,7 @@ public class ProducerRecord<K, V> {
     public ProducerRecord(String topic, Integer partition, K key, V value) {
         this(topic, partition, null, key, value, null);
     }
-    
+
     /**
      * Create a record to be sent to Kafka
      * 
@@ -132,7 +132,7 @@ public class ProducerRecord<K, V> {
     public ProducerRecord(String topic, K key, V value) {
         this(topic, null, null, key, value, null);
     }
-    
+
     /**
      * Create a record with no key
      * 

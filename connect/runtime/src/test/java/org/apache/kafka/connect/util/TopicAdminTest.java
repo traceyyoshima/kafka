@@ -100,7 +100,7 @@ public class TopicAdminTest {
             assertTrue(admin.createOrFindTopics(newTopic).isEmpty());
         }
     }
-    
+
     @Test
     public void returnEmptyWithClusterAuthorizationFailureOnCreate() {
         final NewTopic newTopic = TopicAdmin.defineTopic("myTopic").partitions(1).compacted().build();
@@ -731,7 +731,7 @@ public class TopicAdminTest {
         for (String topic : cluster.topics()) {
             List<MetadataResponseData.MetadataResponsePartition> pms = new ArrayList<>();
             for (PartitionInfo pInfo : cluster.availablePartitionsForTopic(topic)) {
-                MetadataResponseData.MetadataResponsePartition pm  = new MetadataResponseData.MetadataResponsePartition()
+                MetadataResponseData.MetadataResponsePartition pm = new MetadataResponseData.MetadataResponsePartition()
                         .setErrorCode(partitionError.code())
                         .setPartitionIndex(pInfo.partition())
                         .setLeaderId(pInfo.leader().id())

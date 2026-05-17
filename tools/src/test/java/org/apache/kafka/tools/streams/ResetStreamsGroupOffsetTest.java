@@ -195,7 +195,7 @@ public class ResetStreamsGroupOffsetTest {
         final String appId = generateRandomAppId();
         final String topic1 = generateRandomTopic();
         final String topic2 = generateRandomTopic();
-        final int  numOfPartitions = 2;
+        final int numOfPartitions = 2;
         String[] args;
         produceConsumeShutdown(appId, topic1, topic2, RECORD_TOTAL * numOfPartitions * 2);
         produceMessagesOnTwoPartitions(RECORD_TOTAL, topic1);
@@ -389,7 +389,7 @@ public class ResetStreamsGroupOffsetTest {
         }
         adminClient.alterStreamsGroupOffsets(appId, offsets).all().get();
         Map<TopicPartition, Long> committedOffsets = committedOffsets(List.of(topics), appId);
-        for (TopicPartition tp: offsets.keySet()) {
+        for (TopicPartition tp : offsets.keySet()) {
             assertEquals(desiredOffset, committedOffsets.get(tp));
         }
     }
@@ -402,7 +402,7 @@ public class ResetStreamsGroupOffsetTest {
             .mapToObj(partition -> new TopicPartition(topic, partition))
             .toList();
         Map<TopicPartition, Long> committedOffsets = committedOffsets(List.of(topic), appId);
-        for (TopicPartition tp: affectedTPs) {
+        for (TopicPartition tp : affectedTPs) {
             assertEquals(expectedCommittedOffset, committedOffsets.get(tp));
         }
     }
@@ -594,7 +594,7 @@ public class ResetStreamsGroupOffsetTest {
                                                           long expectedOffset,
                                                           long expectedCommittedOffset,
                                                           int... partitions) throws ExecutionException, InterruptedException {
-        resetOffsetsAndAssert(addTo(args, "--dry-run"), appId, topic,  expectedOffset, expectedCommittedOffset, partitions);
+        resetOffsetsAndAssert(addTo(args, "--dry-run"), appId, topic, expectedOffset, expectedCommittedOffset, partitions);
         resetOffsetsAndAssert(addTo(args, "--execute"), appId, topic, expectedOffset, expectedOffset, partitions);
     }
 
@@ -696,7 +696,7 @@ public class ResetStreamsGroupOffsetTest {
         });
 
 
-        final KafkaStreams streams =  new KafkaStreams(builder.build(), STREAMS_CONFIG);
+        final KafkaStreams streams = new KafkaStreams(builder.build(), STREAMS_CONFIG);
         streams.cleanUp();
         streams.start();
 

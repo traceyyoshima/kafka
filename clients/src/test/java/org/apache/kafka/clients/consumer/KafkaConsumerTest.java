@@ -534,6 +534,7 @@ public class KafkaConsumerTest {
         int recordIndex = recordNumber - 1;
         return new StringDeserializer() {
             int i = 0;
+
             @Override
             public String deserialize(String topic, byte[] data) {
                 if (i == recordIndex) {
@@ -877,7 +878,7 @@ public class KafkaConsumerTest {
             Properties props = new Properties();
             props.setProperty(ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name());
             props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9999");
-            props.setProperty(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, 
+            props.setProperty(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG,
                     CloseInterceptor.class.getName() + "," + MockConsumerInterceptor.class.getName());
 
             MockConsumerInterceptor.setThrowOnConfigExceptionThreshold(targetInterceptor);
@@ -916,7 +917,7 @@ public class KafkaConsumerTest {
 
     @ParameterizedTest
     @EnumSource(GroupProtocol.class)
-    public void testConsumerJmxPrefix(GroupProtocol groupProtocol) throws  Exception {
+    public void testConsumerJmxPrefix(GroupProtocol groupProtocol) throws Exception {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name());
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9999");
@@ -1763,7 +1764,7 @@ public class KafkaConsumerTest {
         assertEquals(Set.of(tp0), consumer.assignment());
 
         // the auto commit is disabled, so no offset commit request should be sent
-        for (ClientRequest req: client.requests())
+        for (ClientRequest req : client.requests())
             assertNotSame(ApiKeys.OFFSET_COMMIT, req.requestBuilder().apiKey());
 
         // subscription change
@@ -1774,7 +1775,7 @@ public class KafkaConsumerTest {
         assertEquals(Collections.emptySet(), consumer.assignment());
 
         // the auto commit is disabled, so no offset commit request should be sent
-        for (ClientRequest req: client.requests())
+        for (ClientRequest req : client.requests())
             assertNotSame(ApiKeys.OFFSET_COMMIT, req.requestBuilder().apiKey());
 
         client.requests().clear();
@@ -3592,7 +3593,7 @@ public class KafkaConsumerTest {
 
     @ParameterizedTest
     @EnumSource(GroupProtocol.class)
-public void testPollIdleRatio(GroupProtocol groupProtocol) {
+    public void testPollIdleRatio(GroupProtocol groupProtocol) {
         ConsumerMetadata metadata = createMetadata(subscription);
         MockClient client = new MockClient(time, metadata);
         initMetadata(client, Map.of(topic, 1));

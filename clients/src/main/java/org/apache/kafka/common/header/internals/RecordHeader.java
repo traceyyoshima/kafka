@@ -39,7 +39,7 @@ public class RecordHeader implements Header {
         this.keyBuffer = Objects.requireNonNull(keyBuffer, "Null header keys are not permitted");
         this.valueBuffer = valueBuffer;
     }
-    
+
     public String key() {
         if (key == null) {
             synchronized (this) {

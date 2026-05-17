@@ -618,7 +618,7 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
         } else if (minReceivedMetadataVersion >= EARLIEST_PROBEABLE_VERSION) {
             versionProbing = true;
             log.info("Received a future (version probing) subscription (version: {})."
-                         + " Sending assignment back (with supported version {}).",
+                + " Sending assignment back (with supported version {}).",
                 futureMetadataVersion,
                 minSupportedMetadataVersion);
 
@@ -728,10 +728,10 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
                         partitionInfo.partition());
                     if (!allAssignedPartitions.contains(partition)) {
                         log.warn("Partition {} is not assigned to any tasks: {}"
-                                     + " Possible causes of a partition not getting assigned"
-                                     + " is that another topic defined in the topology has not been"
-                                     + " created when starting your streams application,"
-                                     + " resulting in no tasks created for this topology at all.", partition,
+                            + " Possible causes of a partition not getting assigned"
+                            + " is that another topic defined in the topology has not been"
+                            + " created when starting your streams application,"
+                            + " resulting in no tasks created for this topology at all.", partition,
                             partitionsForTask);
                     }
                 }
@@ -778,13 +778,13 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
                  clientStates.entrySet().stream()
                      .sorted(comparingByKey())
                      .map(entry -> entry.getKey() + ": " + entry.getValue().consumers())
-                     .collect(Collectors.joining(Utils.NL)));
+                 .collect(Collectors.joining(Utils.NL)));
 
         final Set<TaskId> allTasks = partitionsForTask.keySet();
         statefulTasks.addAll(changelogTopics.statefulTaskIds());
 
         log.info("Assigning stateful tasks: {}\n"
-                     + "and stateless tasks: {}",
+            + "and stateless tasks: {}",
                  statefulTasks,
                  allTasks.stream().filter(t -> !statefulTasks.contains(t)).collect(Collectors.toSet()));
         log.debug("Assigning tasks and {} standby replicas to client nodes {}",
@@ -852,7 +852,7 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
                  clientStates.entrySet().stream()
                      .sorted(comparingByKey())
                      .map(entry -> entry.getKey() + "=" + entry.getValue().currentAssignment())
-                     .collect(Collectors.joining(Utils.NL)));
+                 .collect(Collectors.joining(Utils.NL)));
         return customTaskAssignmentListener;
     }
 
@@ -866,7 +866,7 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
             return taskAssignor;
         } else {
             log.info("Failed to fetch end offsets for changelogs, will return previous assignment to clients and "
-                         + "trigger another rebalance to retry.");
+                + "trigger another rebalance to retry.");
             return new FallbackPriorTaskAssignor();
         }
     }
@@ -1269,7 +1269,7 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
             // all of the accumulated state in the case of in-memory stores)
             if (clientState.previouslyOwnedStandby(task) && allStatefulTasks.contains(task)) {
                 log.info("Adding removed stateful active task {} as a standby for {} until it is revoked and can "
-                             + "be transitioned to active in a followup rebalance", task, consumer);
+                    + "be transitioned to active in a followup rebalance", task, consumer);
 
                 // This has no effect on the assignment, as we'll never consult the ClientState again, but
                 // it does perform a useful assertion that the it's legal to assign this task as a standby to this instance
@@ -1636,7 +1636,7 @@ public class StreamsPartitionAssignor implements ConsumerPartitionAssignor, Conf
             throw new TaskAssignmentException(
                 String.format(
                     "%sNumber of assigned partitions %d is not equal to "
-                        + "the number of active taskIds %d, assignmentInfo=%s",
+                + "the number of active taskIds %d, assignmentInfo=%s",
                     logPrefix, partitions.size(),
                     info.activeTasks().size(), info
                 )

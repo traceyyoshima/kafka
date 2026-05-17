@@ -75,12 +75,12 @@ abstract class BaseJoinProcessorNode<K, V1, V2, VR> extends GraphNode {
     @Override
     public String toString() {
         return "BaseJoinProcessorNode{" +
-               "joinThisProcessorParameters=" + joinThisProcessorParameters +
-               ", joinOtherProcessorParameters=" + joinOtherProcessorParameters +
-               ", joinMergeProcessorParameters=" + joinMergeProcessorParameters +
-               ", valueJoiner=" + valueJoiner +
-               ", thisJoinSideNodeName='" + thisJoinSideNodeName + '\'' +
-               ", otherJoinSideNodeName='" + otherJoinSideNodeName + '\'' +
-               "} " + super.toString();
+            "joinThisProcessorParameters=" + joinThisProcessorParameters +
+            ", joinOtherProcessorParameters=" + joinOtherProcessorParameters +
+            ", joinMergeProcessorParameters=" + joinMergeProcessorParameters +
+            ", valueJoiner=" + valueJoiner +
+            ", thisJoinSideNodeName='" + thisJoinSideNodeName + '\'' +
+            ", otherJoinSideNodeName='" + otherJoinSideNodeName + '\'' +
+            "} " + super.toString();
     }
 }

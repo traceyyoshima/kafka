@@ -36,7 +36,7 @@ public final class AddPartitionsToTxnConfig {
     public static final String ADD_PARTITIONS_TO_TXN_RETRY_BACKOFF_MS_DOC = "The server-side retry backoff when the server attempts" +
         "to add the partition to the transaction";
 
-    public static final ConfigDef CONFIG_DEF =  new ConfigDef()
+    public static final ConfigDef CONFIG_DEF = new ConfigDef()
         .define(ADD_PARTITIONS_TO_TXN_RETRY_BACKOFF_MAX_MS_CONFIG, INT, ADD_PARTITIONS_TO_TXN_RETRY_BACKOFF_MAX_MS_DEFAULT, atLeast(0), HIGH, ADD_PARTITIONS_TO_TXN_RETRY_BACKOFF_MAX_MS_DOC)
         .define(ADD_PARTITIONS_TO_TXN_RETRY_BACKOFF_MS_CONFIG, INT, ADD_PARTITIONS_TO_TXN_RETRY_BACKOFF_MS_DEFAULT, atLeast(1), HIGH, ADD_PARTITIONS_TO_TXN_RETRY_BACKOFF_MS_DOC);
 
@@ -47,9 +47,11 @@ public final class AddPartitionsToTxnConfig {
         addPartitionsToTxnRetryBackoffMaxMs = config.getInt(AddPartitionsToTxnConfig.ADD_PARTITIONS_TO_TXN_RETRY_BACKOFF_MAX_MS_CONFIG);
         addPartitionsToTxnRetryBackoffMs = config.getInt(AddPartitionsToTxnConfig.ADD_PARTITIONS_TO_TXN_RETRY_BACKOFF_MS_CONFIG);
     }
+
     public int addPartitionsToTxnRetryBackoffMaxMs() {
         return addPartitionsToTxnRetryBackoffMaxMs;
     }
+
     public int addPartitionsToTxnRetryBackoffMs() {
         return addPartitionsToTxnRetryBackoffMs;
     }

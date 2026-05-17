@@ -211,8 +211,8 @@ public class ConnectAssertions {
                 ).orElse(false),
                 VALIDATION_DURATION_MS,
                 "Topic " + topicName + " does not exist or does not have exactly "
-                        + partitions + " partitions or at least "
-                        + replicas + " per partition");
+                + partitions + " partitions or at least "
+                + replicas + " per partition");
         } catch (AssertionError e) {
             throw new AssertionError(detailMessage, e);
         }
@@ -562,7 +562,7 @@ public class ConnectAssertions {
                         if (lastInfo.get() != null) {
                             return result + " When last checked, " + stateSummary(lastInfo.get());
                         } else if (lastInfoError.get() != null) {
-                            result +=  " The last attempt to check the connector state failed: " + lastInfoError.get().getClass();
+                            result += " The last attempt to check the connector state failed: " + lastInfoError.get().getClass();
                             String exceptionMessage = lastInfoError.get().getMessage();
                             if (exceptionMessage != null) {
                                 result += ": " + exceptionMessage;

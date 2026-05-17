@@ -284,10 +284,9 @@ public class MockProcessorContextTest {
             return null;
         }).when(mockInternalProcessorContext).register(any(), any());
         when(mockInternalProcessorContext.getStateStore(anyString())).thenAnswer(invocation -> {
-                final String name = invocation.getArgument(0);
-                return stateStores.get(name);
-            }
-        );
+            final String name = invocation.getArgument(0);
+            return stateStores.get(name);
+        });
         when(mockInternalProcessorContext.metrics()).thenReturn(new StreamsMetricsImpl(
             new Metrics(new MetricConfig()),
             Thread.currentThread().getName(),

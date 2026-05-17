@@ -372,6 +372,7 @@ public class KafkaShareConsumerMetricsTest {
 
         return new ShareConsumerConfig(configs);
     }
+
     private void initMetadata(MockClient mockClient, Map<String, Integer> partitionCounts) {
         Map<String, Uuid> metadataIds = new HashMap<>();
         for (String name : partitionCounts.keySet()) {

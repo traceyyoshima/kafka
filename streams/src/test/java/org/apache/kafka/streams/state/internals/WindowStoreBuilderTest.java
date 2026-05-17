@@ -140,7 +140,7 @@ public class WindowStoreBuilderTest {
             Serdes.String(),
             new MockTime()
         ).withCachingEnabled();
-        
+
         builder.build();
 
         assertFalse(((AbstractStoreBuilder<String, String, WindowStore<String, String>>) builder).enableCaching);

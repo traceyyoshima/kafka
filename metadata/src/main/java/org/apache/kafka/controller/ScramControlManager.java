@@ -258,7 +258,7 @@ public class ScramControlManager {
     }
 
     static ApiError finishUpsertion(List<ApiMessageAndVersion> records, ScramCredentialUpsertion upsertion) {
-        org.apache.kafka.common.security.scram.internals.ScramMechanism internalMechanism = 
+        org.apache.kafka.common.security.scram.internals.ScramMechanism internalMechanism =
                 org.apache.kafka.common.security.scram.internals.ScramMechanism.forMechanismName(
                 ScramMechanism.fromType(upsertion.mechanism()).mechanismName());
 

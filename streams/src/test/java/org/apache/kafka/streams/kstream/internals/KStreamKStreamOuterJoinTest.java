@@ -628,7 +628,7 @@ public class KStreamKStreamOuterJoinTest {
             );
         }
     }
-    
+
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void testOuterJoinWithInMemoryCustomSuppliers(final boolean withHeaders) {

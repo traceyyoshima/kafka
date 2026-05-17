@@ -162,7 +162,7 @@ public class ReassignPartitionsUnitTest {
             reassignments.put(new TopicPartition("foo", 0), List.of(0, 1, 3));
             reassignments.put(new TopicPartition("quux", 0), List.of(1, 2, 3));
 
-            Map<TopicPartition, Throwable> reassignmentResult = alterPartitionReassignments(adminClient, reassignments,  false);
+            Map<TopicPartition, Throwable> reassignmentResult = alterPartitionReassignments(adminClient, reassignments, false);
 
             assertEquals(1, reassignmentResult.size());
             assertEquals(UnknownTopicOrPartitionException.class, reassignmentResult.get(new TopicPartition("quux", 0)).getClass());
@@ -590,21 +590,21 @@ public class ReassignPartitionsUnitTest {
         assertStartsWith("Partition reassignment contains duplicate topic partitions",
             assertThrows(AdminCommandFailedException.class, () -> parseExecuteAssignmentArgs(
                 "{\"version\":1,\"partitions\":" +
-                    "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1],\"log_dirs\":[\"any\",\"any\"]}," +
-                    "{\"topic\":\"foo\",\"partition\":0,\"replicas\":[2,3,4],\"log_dirs\":[\"any\",\"any\",\"any\"]}" +
-                    "]}"), "Expected to detect a partition list with duplicate entries").getMessage());
+            "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1],\"log_dirs\":[\"any\",\"any\"]}," +
+            "{\"topic\":\"foo\",\"partition\":0,\"replicas\":[2,3,4],\"log_dirs\":[\"any\",\"any\",\"any\"]}" +
+            "]}"), "Expected to detect a partition list with duplicate entries").getMessage());
         assertStartsWith("Partition reassignment contains duplicate topic partitions",
             assertThrows(AdminCommandFailedException.class, () -> parseExecuteAssignmentArgs(
                 "{\"version\":1,\"partitions\":" +
-                    "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1],\"log_dirs\":[\"/abc\",\"/def\"]}," +
-                    "{\"topic\":\"foo\",\"partition\":0,\"replicas\":[2,3],\"log_dirs\":[\"/abc\",\"/def\"]}" +
-                    "]}"), "Expected to detect a partition replica list with duplicate entries").getMessage());
+            "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1],\"log_dirs\":[\"/abc\",\"/def\"]}," +
+            "{\"topic\":\"foo\",\"partition\":0,\"replicas\":[2,3],\"log_dirs\":[\"/abc\",\"/def\"]}" +
+            "]}"), "Expected to detect a partition replica list with duplicate entries").getMessage());
         assertStartsWith("Partition replica lists may not contain duplicate entries",
             assertThrows(AdminCommandFailedException.class, () -> parseExecuteAssignmentArgs(
                 "{\"version\":1,\"partitions\":" +
-                    "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,0],\"log_dirs\":[\"/abc\",\"/def\"]}," +
-                    "{\"topic\":\"foo\",\"partition\":1,\"replicas\":[2,3],\"log_dirs\":[\"/abc\",\"/def\"]}" +
-                    "]}"), "Expected to detect a partition replica list with duplicate entries").getMessage());
+            "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,0],\"log_dirs\":[\"/abc\",\"/def\"]}," +
+            "{\"topic\":\"foo\",\"partition\":1,\"replicas\":[2,3],\"log_dirs\":[\"/abc\",\"/def\"]}" +
+            "]}"), "Expected to detect a partition replica list with duplicate entries").getMessage());
 
         Map<TopicPartition, List<Integer>> partitionsToBeReassigned = new HashMap<>();
 
@@ -642,9 +642,9 @@ public class ReassignPartitionsUnitTest {
             assertStartsWith("Topic quux not found",
                 assertThrows(ExecutionException.class, () -> executeAssignment(adminClient, false,
                     "{\"version\":1,\"partitions\":" +
-                        "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1],\"log_dirs\":[\"any\",\"any\"]}," +
-                        "{\"topic\":\"quux\",\"partition\":0,\"replicas\":[2,3,4],\"log_dirs\":[\"any\",\"any\",\"any\"]}" +
-                        "]}", -1L, -1L, 10000L, Time.SYSTEM, false), "Expected reassignment with non-existent topic to fail").getCause().getMessage());
+                "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1],\"log_dirs\":[\"any\",\"any\"]}," +
+                "{\"topic\":\"quux\",\"partition\":0,\"replicas\":[2,3,4],\"log_dirs\":[\"any\",\"any\",\"any\"]}" +
+                "]}", -1L, -1L, 10000L, Time.SYSTEM, false), "Expected reassignment with non-existent topic to fail").getCause().getMessage());
         }
     }
 
@@ -655,9 +655,9 @@ public class ReassignPartitionsUnitTest {
             assertStartsWith("Unknown broker id 4",
                 assertThrows(AdminCommandFailedException.class, () -> executeAssignment(adminClient, false,
                     "{\"version\":1,\"partitions\":" +
-                        "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1],\"log_dirs\":[\"any\",\"any\"]}," +
-                        "{\"topic\":\"foo\",\"partition\":1,\"replicas\":[2,3,4],\"log_dirs\":[\"any\",\"any\",\"any\"]}" +
-                        "]}", -1L, -1L, 10000L, Time.SYSTEM, false), "Expected reassignment with non-existent broker id to fail").getMessage());
+                "[{\"topic\":\"foo\",\"partition\":0,\"replicas\":[0,1],\"log_dirs\":[\"any\",\"any\"]}," +
+                "{\"topic\":\"foo\",\"partition\":1,\"replicas\":[2,3,4],\"log_dirs\":[\"any\",\"any\",\"any\"]}" +
+                "]}", -1L, -1L, 10000L, Time.SYSTEM, false), "Expected reassignment with non-existent broker id to fail").getMessage());
         }
     }
 

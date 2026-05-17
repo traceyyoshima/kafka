@@ -251,13 +251,13 @@ public class BootstrapControllersIntegrationTest {
                         )
                 );
                 admin.incrementalAlterConfigs(alterations).all().get(1, TimeUnit.MINUTES);
-                
+
                 // Verify per-broker configs: MAX_CONNECTIONS_CONFIG and MAX_CONNECTION_CREATION_RATE_CONFIG
                 verifyConfigValue(admin, nodeResource, SocketServerConfigs.MAX_CONNECTIONS_CONFIG,
                         DYNAMIC_BROKER_CONFIG, nodeMaxConnectionsValue);
                 verifyConfigValue(admin, nodeResource, SocketServerConfigs.MAX_CONNECTION_CREATION_RATE_CONFIG,
                         DYNAMIC_DEFAULT_BROKER_CONFIG, defaultConnectionRateValue);
-                
+
                 // Verify default broker configs: MAX_CONNECTIONS_CONFIG and MAX_CONNECTION_CREATION_RATE_CONFIG
                 verifyConfigValue(admin, defaultResource, SocketServerConfigs.MAX_CONNECTIONS_CONFIG,
                         DYNAMIC_DEFAULT_BROKER_CONFIG, defaultMaxConnectionsValue);
@@ -285,7 +285,7 @@ public class BootstrapControllersIntegrationTest {
                 "SocketServer ConnectionQuotas.brokerMaxConnections should be " + expectedMaxConnections +
                 " but was " + actualMaxConnections);
     }
-    
+
     private void verifySocketServerMaxConnectionCreationRateUpdated(Object node, int expectedMaxConnectionCreationRate) throws Exception {
         Metrics metrics = (Metrics) node.getClass().getMethod("metrics").invoke(node);
         KafkaMetric metric = metrics.metrics().entrySet().stream()
@@ -297,7 +297,7 @@ public class BootstrapControllersIntegrationTest {
         assertEquals(expectedMaxConnectionCreationRate, actualBound,
                 "Connection creation rate quota should be " + expectedMaxConnectionCreationRate + " but was " + actualBound);
     }
-    
+
     private void verifyConfigValue(Admin admin, ConfigResource resource, String configName,
                                    org.apache.kafka.clients.admin.ConfigEntry.ConfigSource expectedSource,
                                    String expectedValue) throws Exception {

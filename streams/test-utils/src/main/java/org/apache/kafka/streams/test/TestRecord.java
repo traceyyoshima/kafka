@@ -100,7 +100,7 @@ public class TestRecord<K, V> {
         this.headers = new RecordHeaders(headers);
         this.recordTime = null;
     }
-    
+
     /**
      * Creates a record.
      *

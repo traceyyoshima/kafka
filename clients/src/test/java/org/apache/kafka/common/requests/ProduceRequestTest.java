@@ -330,7 +330,7 @@ public class ProduceRequestTest {
         return ProduceRequest.builder(new ProduceRequestData()
             .setTopicData(new ProduceRequestData.TopicProduceDataCollection(Collections.singletonList(
                 new ProduceRequestData.TopicProduceData()
-                     .setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
+                    .setTopicId(Uuid.fromString("H3Emm3vW7AKKO4NTRPaCWt"))
                     .setPartitionData(Collections.singletonList(new ProduceRequestData.PartitionProduceData()
                         .setIndex(1)
                         .setRecords(MemoryRecords.withRecords(Compression.NONE, simpleRecord)))))

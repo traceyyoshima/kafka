@@ -44,7 +44,9 @@ public @interface ClusterConfigProperty {
      * If the id doesn't correspond to any broker/controller server, throw IllegalArgumentException
      * @return the controller/broker id
      */
-    int id() default -1;
+    int id()default -1;
+
     String key();
+
     String value();
 }

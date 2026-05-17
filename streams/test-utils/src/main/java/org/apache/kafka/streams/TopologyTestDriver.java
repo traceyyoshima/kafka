@@ -372,10 +372,10 @@ public class TopologyTestDriver implements Closeable {
         final Long taskIdleTime = streamsConfig.getLong(StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
         if (taskIdleTime > 0) {
             log.info("Detected {} config in use with TopologyTestDriver (set to {}ms)." +
-                         " This means you might need to use TopologyTestDriver#advanceWallClockTime()" +
-                         " or enqueue records on all partitions to allow Steams to make progress." +
-                         " TopologyTestDriver will log a message each time it cannot process enqueued" +
-                         " records due to {}.",
+                " This means you might need to use TopologyTestDriver#advanceWallClockTime()" +
+                " or enqueue records on all partitions to allow Steams to make progress." +
+                " TopologyTestDriver will log a message each time it cannot process enqueued" +
+                " records due to {}.",
                      StreamsConfig.MAX_TASK_IDLE_MS_CONFIG,
                      taskIdleTime,
                      StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
@@ -450,7 +450,7 @@ public class TopologyTestDriver implements Closeable {
 
             @SuppressWarnings("deprecation")
             final boolean globalEnabled = streamsConfig.getBoolean(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG);
-            final ProcessingExceptionHandler processingExceptionHandler = 
+            final ProcessingExceptionHandler processingExceptionHandler =
                 globalEnabled ? streamsConfig.processingExceptionHandler() : null;
 
             globalStateTask = new GlobalStateUpdateTask(
@@ -525,7 +525,7 @@ public class TopologyTestDriver implements Closeable {
                 );
             task.initializeIfNeeded();
             task.completeRestoration(noOpResetter -> { });
-            for (final TopicPartition tp: task.inputPartitions()) {
+            for (final TopicPartition tp : task.inputPartitions()) {
                 task.updateNextOffsets(tp, new OffsetAndMetadata(0, Optional.empty(), ""));
             }
         } else {
@@ -609,9 +609,9 @@ public class TopologyTestDriver implements Closeable {
             }
             if (task.hasRecordsQueued()) {
                 log.info("Due to the {} configuration, there are currently some records" +
-                             " that cannot be processed. Advancing wall-clock time or" +
-                             " enqueuing records on the empty topics will allow" +
-                             " Streams to process more.",
+                    " that cannot be processed. Advancing wall-clock time or" +
+                    " enqueuing records on the empty topics will allow" +
+                    " Streams to process more.",
                          StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
             }
         }
@@ -732,8 +732,8 @@ public class TopologyTestDriver implements Closeable {
         final Queue<ProducerRecord<byte[], byte[]>> outputRecords = outputRecordsByTopic.get(topicName);
         if (outputRecords == null && !processorTopology.sinkTopics().contains(topicName)) {
             log.warn("Unrecognized topic: {}, this can occur if dynamic routing is used and no output has been "
-                         + "sent to this topic yet. If not using a TopicNameExtractor, check that the output topic "
-                         + "is correct.", topicName);
+                + "sent to this topic yet. If not using a TopicNameExtractor, check that the output topic "
+                + "is correct.", topicName);
         }
         return outputRecords;
     }
@@ -1300,7 +1300,7 @@ public class TopologyTestDriver implements Closeable {
         completeAllProcessableWork();
         if (task != null && task.hasRecordsQueued()) {
             log.warn("Found some records that cannot be processed due to the" +
-                         " {} configuration during TopologyTestDriver#close().",
+                " {} configuration during TopologyTestDriver#close().",
                      StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
         }
         producer.close();

@@ -372,7 +372,7 @@ public class FeatureCommandTest {
 
         );
         assertEquals("Could not upgrade metadata.version to 18. The update failed for all features since the following feature had an error:" +
-             " Invalid update version 18 for feature metadata.version. Can't downgrade the version of this feature without setting the upgrade type to either safe or unsafe downgrade.", commandOutput);
+            " Invalid update version 18 for feature metadata.version. Can't downgrade the version of this feature without setting the upgrade type to either safe or unsafe downgrade.", commandOutput);
 
         commandOutput = ToolsTestUtils.captureStandardOut(() ->
                 assertEquals(0, FeatureCommand.mainNoExit("--bootstrap-server", cluster.bootstrapServers(),

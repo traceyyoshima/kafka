@@ -870,6 +870,7 @@ public class FetcherTest {
         // so that we can verify that our position does not advance after raising
         ByteArrayDeserializer deserializer = new ByteArrayDeserializer() {
             int i = 0;
+
             @Override
             public byte[] deserialize(String topic, byte[] data) {
                 if (i++ % 2 == 1) {
@@ -2869,7 +2870,7 @@ public class FetcherTest {
                             verifySessionPartitions();
                             handler.handleError(t);
                         }
-                        
+
                         @Override
                         public Map<Uuid, String> sessionTopicNames() {
                             return handler.sessionTopicNames();
@@ -3655,7 +3656,7 @@ public class FetcherTest {
         // Validate subscription is still valid & fetch-able for tp1.
         assertTrue(subscriptions.isFetchable(tp1));
     }
-    
+
     @Test
     public void testFetcherDontCacheAnyData() {
         short version = 17;

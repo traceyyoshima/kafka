@@ -190,7 +190,7 @@ public class TaskExecutor {
                                           .keySet()
                                           .stream()
                                           .map(t -> t.id().toString())
-                                          .collect(Collectors.joining(", "))),
+                                      .collect(Collectors.joining(", "))),
                         timeoutException
                     );
                     offsetsPerTask
@@ -217,7 +217,7 @@ public class TaskExecutor {
                                           .keySet()
                                           .stream()
                                           .map(t -> t.id().toString())
-                                          .collect(Collectors.joining(", "))),
+                                      .collect(Collectors.joining(", "))),
                         timeoutException
                     );
                     throw timeoutException;

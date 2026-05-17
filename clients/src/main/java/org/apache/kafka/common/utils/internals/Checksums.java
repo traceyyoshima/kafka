@@ -66,7 +66,7 @@ public final class Checksums {
             }
         }
     }
-    
+
     public static void updateInt(Checksum checksum, int input) {
         checksum.update((byte) (input >> 24));
         checksum.update((byte) (input >> 16));

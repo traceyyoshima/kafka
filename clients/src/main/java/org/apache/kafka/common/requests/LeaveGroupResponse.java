@@ -160,7 +160,7 @@ public class LeaveGroupResponse extends AbstractResponse {
     @Override
     public boolean equals(Object other) {
         return other instanceof LeaveGroupResponse &&
-                   ((LeaveGroupResponse) other).data.equals(this.data);
+            ((LeaveGroupResponse) other).data.equals(this.data);
     }
 
     @Override

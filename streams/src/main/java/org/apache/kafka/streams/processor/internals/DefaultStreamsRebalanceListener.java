@@ -56,7 +56,7 @@ public class DefaultStreamsRebalanceListener implements StreamsRebalanceListener
         this.streamsRebalanceData = streamsRebalanceData;
         this.streamThread = streamThread;
         this.taskManager = taskManager;
-        
+
         // Create sensors for rebalance metrics
         this.tasksRevokedSensor = RebalanceListenerMetrics.tasksRevokedSensor(threadId, streamsMetrics);
         this.tasksAssignedSensor = RebalanceListenerMetrics.tasksAssignedSensor(threadId, streamsMetrics);

@@ -163,7 +163,7 @@ public class VerifiableProducer implements AutoCloseable {
             .type(String.class)
             .metavar("CONFIG-FILE")
             .help("(DEPRECATED) Producer config properties file. " +
-                    "This option will be removed in a future version. Use --command-config instead.");
+            "This option will be removed in a future version. Use --command-config instead.");
 
         parser.addArgument("--message-create-time")
             .action(store())
@@ -200,7 +200,7 @@ public class VerifiableProducer implements AutoCloseable {
 
         return parser;
     }
-    
+
     /**
      * Read a properties file from the given path
      * @param filename The path of the file to read
@@ -325,7 +325,7 @@ public class VerifiableProducer implements AutoCloseable {
         printJson(new ShutdownComplete());
     }
 
-    @JsonPropertyOrder({ "timestamp", "name" })
+    @JsonPropertyOrder({"timestamp", "name"})
     private abstract static class ProducerEvent {
         private final long timestamp = System.currentTimeMillis();
 

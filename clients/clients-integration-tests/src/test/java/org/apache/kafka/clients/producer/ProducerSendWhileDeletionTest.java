@@ -244,10 +244,10 @@ public class ProducerSendWhileDeletionTest {
         );
 
         // ensure that the topic-partition has been deleted from all brokers' replica managers
-        TestUtils.waitForCondition(() -> 
+        TestUtils.waitForCondition(() ->
             cluster.brokers().values().stream()
                 .allMatch(broker -> topicPartitions.stream()
-                        .allMatch(tp -> broker.replicaManager().onlinePartition(tp).isEmpty())
+                .allMatch(tp -> broker.replicaManager().onlinePartition(tp).isEmpty())
             ), "Replica manager's should have deleted all of this topic's partitions");
 
         // ensure that logs from all replicas are deleted
@@ -305,7 +305,7 @@ public class ProducerSendWhileDeletionTest {
                     .allTopicNames()
                     .get()
                     .get(topic);
-            
+
         }
     }
 

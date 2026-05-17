@@ -62,7 +62,7 @@ public class DescribeReplicaLogDirsResult {
     }
 
     public static class ReplicaLogDirInfo {
-        
+
         private final String currentReplicaLogDir;
         private final long currentReplicaOffsetLag;
         private final String futureReplicaLogDir;

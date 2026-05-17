@@ -124,7 +124,7 @@ public class ConfigEntry {
      * The list is empty if synonyms were not requested using {@link DescribeConfigsOptions#includeSynonyms(boolean)}
      */
     public List<ConfigSynonym> synonyms() {
-        return  synonyms;
+        return synonyms;
     }
 
     /**

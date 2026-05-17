@@ -1142,7 +1142,7 @@ public class OffsetMetadataManager {
     private void appendOffsetCommitTombstone(
         String groupId,
         String topic,
-        int partition, 
+        int partition,
         List<CoordinatorRecord> records
     ) {
         records.add(GroupCoordinatorRecordHelpers.newOffsetCommitTombstoneRecord(groupId, topic, partition));

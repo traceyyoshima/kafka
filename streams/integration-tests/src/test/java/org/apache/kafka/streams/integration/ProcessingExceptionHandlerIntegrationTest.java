@@ -461,9 +461,9 @@ public class ProcessingExceptionHandlerIntegrationTest {
         cacheTableTopologyBuilder
             .table("TOPIC_NAME", Consumed.with(Serdes.String(), Serdes.String()),
                 Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("table")
-                .withKeySerde(Serdes.String())
-                .withValueSerde(Serdes.String())
-                .withCachingEnabled())
+                    .withKeySerde(Serdes.String())
+                    .withValueSerde(Serdes.String())
+                    .withCachingEnabled())
             .mapValues(value -> {
                 throw new RuntimeException("Error");
             });

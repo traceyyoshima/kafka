@@ -1099,10 +1099,10 @@ public class SslTransportLayerTest {
         NetworkTestUtils.checkClientConnection(oldClientSelector, oldNode, 100, 10);
 
         CertStores invalidCertStores = certBuilder(true, "server", args.useInlinePem).addHostName("127.0.0.1").build();
-        Map<String, Object>  invalidConfigs = args.getTrustingConfig(invalidCertStores, args.clientCertStores);
+        Map<String, Object> invalidConfigs = args.getTrustingConfig(invalidCertStores, args.clientCertStores);
         verifyInvalidReconfigure(reconfigurableBuilder, invalidConfigs);
 
-        Map<String, Object>  missingStoreConfigs = new HashMap<>();
+        Map<String, Object> missingStoreConfigs = new HashMap<>();
         missingStoreConfigs.put(SslConfigs.SSL_KEYSTORE_TYPE_CONFIG, "PKCS12");
         missingStoreConfigs.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "some.keystore.path");
         missingStoreConfigs.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, new Password("some.keystore.password"));
@@ -1225,11 +1225,11 @@ public class SslTransportLayerTest {
         // Verify that old client continues to work
         NetworkTestUtils.checkClientConnection(oldClientSelector, oldNode, 100, 10);
 
-        Map<String, Object>  invalidConfigs = new HashMap<>(newTruststoreConfigs);
+        Map<String, Object> invalidConfigs = new HashMap<>(newTruststoreConfigs);
         invalidConfigs.put(SslConfigs.SSL_TRUSTSTORE_TYPE_CONFIG, "INVALID_TYPE");
         verifyInvalidReconfigure(reconfigurableBuilder, invalidConfigs);
 
-        Map<String, Object>  missingStoreConfigs = new HashMap<>();
+        Map<String, Object> missingStoreConfigs = new HashMap<>();
         missingStoreConfigs.put(SslConfigs.SSL_TRUSTSTORE_TYPE_CONFIG, "PKCS12");
         missingStoreConfigs.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "some.truststore.path");
         missingStoreConfigs.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, new Password("some.truststore.password"));
@@ -1284,7 +1284,7 @@ public class SslTransportLayerTest {
     }
 
     private void verifyInvalidReconfigure(ListenerReconfigurable reconfigurable,
-                                          Map<String, Object>  invalidConfigs) {
+                                          Map<String, Object> invalidConfigs) {
         assertThrows(KafkaException.class, () -> reconfigurable.validateReconfiguration(invalidConfigs));
         assertThrows(KafkaException.class, () -> reconfigurable.reconfigure(invalidConfigs));
     }
@@ -1509,9 +1509,11 @@ public class SslTransportLayerTest {
 
         static class ResizeableBufferSize {
             private Integer bufSizeOverride;
+
             ResizeableBufferSize(Integer bufSizeOverride) {
                 this.bufSizeOverride = bufSizeOverride;
             }
+
             int updateAndGet(int actualSize, boolean update) {
                 int size = actualSize;
                 if (bufSizeOverride != null) {

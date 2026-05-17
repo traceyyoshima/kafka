@@ -259,7 +259,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             "CommitTransaction timed out - did not complete EndTxn with the transaction coordinator within max.block.ms";
     private static final String ABORT_TXN_TIMEOUT_MSG =
             "AbortTransaction timed out - did not complete EndTxn(abort) with the transaction coordinator within max.block.ms";
-    
+
     private final String clientId;
     // Visible for testing
     final Metrics metrics;
@@ -615,7 +615,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             final boolean enable2PC = config.getBoolean(ProducerConfig.TRANSACTION_TWO_PHASE_COMMIT_ENABLE_CONFIG);
             final int transactionTimeoutMs = config.getInt(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG);
             final long retryBackoffMs = config.getLong(ProducerConfig.RETRY_BACKOFF_MS_CONFIG);
-            
+
             transactionManager = new TransactionManager(
                 logContext,
                 transactionalId,
@@ -917,16 +917,16 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     public void completeTransaction(PreparedTxnState preparedTxnState) throws ProducerFencedException {
         throwIfNoTransactionManager();
         throwIfProducerClosed();
-        
+
         if (!transactionManager.isPrepared()) {
             throw new InvalidTxnStateException("Cannot complete transaction because no transaction has been prepared. " +
                 "Call prepareTransaction() first, or make sure initTransaction(true) was called.");
         }
-        
+
         // Get the current prepared transaction state
         ProducerIdAndEpoch currentProducerIdAndEpoch = transactionManager.preparedTransactionState();
         PreparedTxnState currentPreparedState = new PreparedTxnState(currentProducerIdAndEpoch.producerId, currentProducerIdAndEpoch.epoch);
-        
+
         // Compare the prepared transaction state token and commit or abort accordingly
         if (currentPreparedState.equals(preparedTxnState)) {
             commitTransaction();
@@ -1277,6 +1277,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             String.format("Partition %d of topic %s with partition count %d is not present in metadata after %d ms.",
                 partition, topic, partitionsCount, maxWaitMs);
     }
+
     /**
      * Validate that the record size isn't too large
      */
@@ -1414,7 +1415,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     public void registerMetricForSubscription(KafkaMetric metric) {
         if (!metrics().containsKey(metric.metricName())) {
             clientTelemetryReporter.ifPresent(reporter -> reporter.metricChange(metric));
-        }  else {
+        } else {
             log.debug("Skipping registration for metric {}. Existing producer metrics cannot be overwritten.", metric.metricName());
         }
     }
@@ -1637,6 +1638,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     private static class ClusterAndWaitTime {
         final Cluster cluster;
         final long waitedOnMetadataMs;
+
         ClusterAndWaitTime(Cluster cluster, long waitedOnMetadataMs) {
             this.cluster = cluster;
             this.waitedOnMetadataMs = waitedOnMetadataMs;

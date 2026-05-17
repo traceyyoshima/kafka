@@ -497,7 +497,7 @@ public class KafkaChannel implements AutoCloseable {
     public String toString() {
         return super.toString() + " id=" + id;
     }
-    
+
     /**
      * Return the number of times this instance has successfully authenticated. This
      * value can only exceed 1 when re-authentication is enabled and it has
@@ -613,7 +613,7 @@ public class KafkaChannel implements AutoCloseable {
         receive = null;
         return true;
     }
-    
+
     /**
      * Return the number of milliseconds that elapsed while re-authenticating this
      * session from the perspective of this instance, if applicable, otherwise null.
@@ -642,7 +642,7 @@ public class KafkaChannel implements AutoCloseable {
         Long serverSessionExpirationTimeNanos = authenticator.serverSessionExpirationTimeNanos();
         return serverSessionExpirationTimeNanos != null && nowNanos - serverSessionExpirationTimeNanos > 0;
     }
-    
+
     /**
      * Return the (always non-null but possibly empty) client-side
      * {@link NetworkReceive} response that arrived during re-authentication but
@@ -658,7 +658,7 @@ public class KafkaChannel implements AutoCloseable {
     public Optional<NetworkReceive> pollResponseReceivedDuringReauthentication() {
         return authenticator.pollResponseReceivedDuringReauthentication();
     }
-    
+
     /**
      * Return true if this is a server-side channel and the connected client has
      * indicated that it supports re-authentication, otherwise false

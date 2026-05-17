@@ -404,11 +404,13 @@ public class SelectorTest {
         AtomicInteger closedChannelsCount = new AtomicInteger(0);
         ChannelBuilder channelBuilder = new PlaintextChannelBuilder(null) {
             private int channelIndex = 0;
+
             @Override
             KafkaChannel buildChannel(String id, TransportLayer transportLayer, Supplier<Authenticator> authenticatorCreator,
                                       int maxReceiveSize, MemoryPool memoryPool, ChannelMetadataRegistry metadataRegistry) {
                 return new KafkaChannel(id, transportLayer, authenticatorCreator, maxReceiveSize, memoryPool, metadataRegistry) {
                     private final int index = channelIndex++;
+
                     @Override
                     public void close() throws IOException {
                         closedChannelsCount.getAndIncrement();
@@ -436,7 +438,7 @@ public class SelectorTest {
                 any(ChannelMetadataRegistry.class))).thenThrow(new RuntimeException("Test exception"));
 
         try (MockedConstruction<Selector.SelectorChannelMetadataRegistry> mockedMetadataRegistry =
-                     mockConstruction(Selector.SelectorChannelMetadataRegistry.class)) {
+            mockConstruction(Selector.SelectorChannelMetadataRegistry.class)) {
             Selector selector = new Selector(CONNECTION_MAX_IDLE_MS, new Metrics(), new MockTime(), "MetricGroup", channelBuilder, new LogContext());
             final SocketChannel socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(false);
@@ -907,7 +909,7 @@ public class SelectorTest {
         }
         assertNotNull(selector.lowestPriorityChannel());
         for (int i = conns - 1; i >= 0; i--) {
-            if (i != 2) 
+            if (i != 2)
                 assertEquals("", blockingRequest(String.valueOf(i), ""));
             time.sleep(10);
         }

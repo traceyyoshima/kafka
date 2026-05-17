@@ -259,7 +259,7 @@ public class ReassignPartitionsCommand {
     }
 
     static int compareTopicPartitionReplicas(TopicPartitionReplica a, TopicPartitionReplica b) {
-        int brokerOrder =  Integer.compare(a.brokerId(), b.brokerId());
+        int brokerOrder = Integer.compare(a.brokerId(), b.brokerId());
 
         if (brokerOrder != 0)
             return brokerOrder;
@@ -978,7 +978,7 @@ public class ReassignPartitionsCommand {
         options.allowReplicationFactorChange(!disallowReplicationFactorChange);
         Map<TopicPartition, KafkaFuture<Void>> results = adminClient.alterPartitionReassignments(args, options).values();
         Map<TopicPartition, Throwable> errors = new HashMap<>();
-        for (Entry<TopicPartition, KafkaFuture<Void>> e :  results.entrySet()) {
+        for (Entry<TopicPartition, KafkaFuture<Void>> e : results.entrySet()) {
             try {
                 e.getValue().get();
             } catch (ExecutionException t) {
@@ -1002,7 +1002,7 @@ public class ReassignPartitionsCommand {
 
         Map<TopicPartition, KafkaFuture<Void>> results = adminClient.alterPartitionReassignments(args).values();
         Map<TopicPartition, Throwable> errors = new HashMap<>();
-        for (Entry<TopicPartition, KafkaFuture<Void>> e :  results.entrySet()) {
+        for (Entry<TopicPartition, KafkaFuture<Void>> e : results.entrySet()) {
             try {
                 e.getValue().get();
             } catch (ExecutionException t) {

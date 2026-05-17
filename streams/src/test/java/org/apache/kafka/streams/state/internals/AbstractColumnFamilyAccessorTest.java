@@ -61,6 +61,7 @@ abstract class AbstractColumnFamilyAccessorTest {
     protected AbstractColumnFamilyAccessor accessor;
 
     abstract AbstractColumnFamilyAccessor createColumnFamilyAccessor();
+
     private final LongSerializer offsetSerializer = new LongSerializer();
     private final StringSerializer keySerializer = new StringSerializer();
     private final byte[] openValue = toBytes(1L);
@@ -166,7 +167,7 @@ abstract class AbstractColumnFamilyAccessorTest {
     private byte[] toBytes(final String s) {
         return keySerializer.serialize("", s);
     }
-    
+
     private byte[] toBytes(final long l) {
         return offsetSerializer.serialize("", l);
     }

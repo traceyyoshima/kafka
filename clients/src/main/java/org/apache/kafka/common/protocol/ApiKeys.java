@@ -292,9 +292,9 @@ public enum ApiKeys {
         // API is entirely disabled if latestStableVersion is smaller than oldestVersion.
         if (latestVersion >= oldestVersion) {
             return Optional.of(new ApiVersionsResponseData.ApiVersion()
-               .setApiKey(messageType.apiKey())
-               .setMinVersion(oldestVersion)
-               .setMaxVersion(latestVersion));
+                .setApiKey(messageType.apiKey())
+                .setMinVersion(oldestVersion)
+                .setMaxVersion(latestVersion));
         } else {
             return Optional.empty();
         }

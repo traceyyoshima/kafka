@@ -215,7 +215,7 @@ public class ClassicGroupMemberTest {
         assertTrue(member.isStaticMember());
         assertEquals(Optional.of("group-instance-id"), member.groupInstanceId());
     }
-    
+
     @Test
     public void testPlainProtocolSet() {
         JoinGroupRequestProtocolCollection protocolCollection =

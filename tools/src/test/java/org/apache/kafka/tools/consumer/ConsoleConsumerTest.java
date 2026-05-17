@@ -297,17 +297,17 @@ public class ConsoleConsumerTest {
             admin.createTopics(Set.of(newTopic));
             produceMessagesWithTxn(cluster);
 
-            String[] transactionLogMessageFormatter = createConsoleConsumerArgs(cluster, 
-                    Topic.TRANSACTION_STATE_TOPIC_NAME, 
+            String[] transactionLogMessageFormatter = createConsoleConsumerArgs(cluster,
+                    Topic.TRANSACTION_STATE_TOPIC_NAME,
                     "org.apache.kafka.tools.consumer.TransactionLogMessageFormatter");
 
             ConsoleConsumerOptions options = new ConsoleConsumerOptions(transactionLogMessageFormatter);
             ConsoleConsumer.ConsumerWrapper consumerWrapper = new ConsoleConsumer.ConsumerWrapper(options, createTxnConsumer(cluster));
-            
+
             try (ByteArrayOutputStream out = new ByteArrayOutputStream();
                  PrintStream output = new PrintStream(out)) {
                 ConsoleConsumer.process(1, options.formatter(), consumerWrapper, output, true);
-                
+
                 JsonNode jsonNode = objectMapper.reader().readTree(out.toByteArray());
                 JsonNode keyNode = jsonNode.get("key");
 
@@ -336,14 +336,14 @@ public class ConsoleConsumerTest {
             admin.createTopics(Set.of(newTopic));
             produceMessages(cluster);
 
-            String[] offsetsMessageFormatter = createConsoleConsumerArgs(cluster, 
-                    Topic.GROUP_METADATA_TOPIC_NAME, 
+            String[] offsetsMessageFormatter = createConsoleConsumerArgs(cluster,
+                    Topic.GROUP_METADATA_TOPIC_NAME,
                     "org.apache.kafka.tools.consumer.OffsetsMessageFormatter");
 
             ConsoleConsumerOptions options = new ConsoleConsumerOptions(offsetsMessageFormatter);
             ConsoleConsumer.ConsumerWrapper consumerWrapper = new ConsoleConsumer.ConsumerWrapper(options, createOffsetConsumer(cluster));
 
-            try (ByteArrayOutputStream out = new ByteArrayOutputStream(); 
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream();
                  PrintStream output = new PrintStream(out)) {
                 ConsoleConsumer.process(1, options.formatter(), consumerWrapper, output, true);
 
@@ -378,12 +378,12 @@ public class ConsoleConsumerTest {
             admin.createTopics(Set.of(newTopic));
             produceMessages(cluster);
 
-            String[] groupMetadataMessageFormatter = createConsoleConsumerArgs(cluster, 
-                    Topic.GROUP_METADATA_TOPIC_NAME, 
+            String[] groupMetadataMessageFormatter = createConsoleConsumerArgs(cluster,
+                    Topic.GROUP_METADATA_TOPIC_NAME,
                     "org.apache.kafka.tools.consumer.GroupMetadataMessageFormatter");
 
             ConsoleConsumerOptions options = new ConsoleConsumerOptions(groupMetadataMessageFormatter);
-            ConsoleConsumer.ConsumerWrapper consumerWrapper = 
+            ConsoleConsumer.ConsumerWrapper consumerWrapper =
                     new ConsoleConsumer.ConsumerWrapper(options, createGroupMetaDataConsumer(cluster));
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -428,7 +428,7 @@ public class ConsoleConsumerTest {
             producer.send(new ProducerRecord<>(topic, new byte[1_000 * 100]));
         }
     }
-    
+
     private String[] createConsoleConsumerArgs(ClusterInstance cluster, String topic, String formatter) {
         return new String[]{
             "--bootstrap-server", cluster.bootstrapServers(),
@@ -463,7 +463,7 @@ public class ConsoleConsumerTest {
         props.put(AUTO_OFFSET_RESET_CONFIG, "earliest");
         return new KafkaConsumer<>(props);
     }
-    
+
     private Properties producerProps(ClusterInstance cluster) {
         Properties props = new Properties();
         props.put(BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers());
@@ -471,7 +471,7 @@ public class ConsoleConsumerTest {
         props.put(VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
         return props;
     }
-    
+
     private Properties consumerProps(ClusterInstance cluster) {
         Properties props = new Properties();
         props.put(BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers());

@@ -218,7 +218,7 @@ public class PurgeRepartitionTopicIntegrationTest {
             60000,
             "Repartition topic " + REPARTITION_TOPIC + " not received more than " + PURGE_SEGMENT_BYTES + "B of data after 60000 ms."
         );
-        
+
         final long waitForPurgeMs = 60000;
         TestUtils.waitForCondition(
             new RepartitionTopicVerified(currentSize -> currentSize <= PURGE_SEGMENT_BYTES),

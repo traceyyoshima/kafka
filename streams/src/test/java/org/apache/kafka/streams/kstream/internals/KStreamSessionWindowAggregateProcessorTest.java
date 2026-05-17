@@ -194,7 +194,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>("john", "second", 500L));
 
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> values =
-                 sessionStore.findSessions("john", 0, 2000)) {
+            sessionStore.findSessions("john", 0, 2000)) {
             assertTrue(values.hasNext());
             assertEquals(Long.valueOf(2), AggregationWithHeaders.getAggregationOrNull(values.next().value));
         }
@@ -223,7 +223,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>(sessionId, "third", GAP_MS / 2));
 
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> iterator =
-                 sessionStore.findSessions(sessionId, 0, GAP_MS + 1)) {
+            sessionStore.findSessions(sessionId, 0, GAP_MS + 1)) {
             final KeyValue<Windowed<String>, AggregationWithHeaders<Long>> kv = iterator.next();
 
             assertEquals(Long.valueOf(3), AggregationWithHeaders.getAggregationOrNull(kv.value));
@@ -238,7 +238,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>("mel", "first", 0L));
         processor.process(new Record<>("mel", "second", 0L));
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> iterator =
-                 sessionStore.findSessions("mel", 0, 0)) {
+            sessionStore.findSessions("mel", 0, 0)) {
             assertEquals(Long.valueOf(2L), AggregationWithHeaders.getAggregationOrNull(iterator.next().value));
             assertFalse(iterator.hasNext());
         }
@@ -305,7 +305,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
 
         // first ensure it is in the store
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> a1 =
-                 sessionStore.findSessions("a", 0, 0)) {
+            sessionStore.findSessions("a", 0, 0)) {
             final KeyValue<Windowed<String>, AggregationWithHeaders<Long>> next = a1.next();
             assertEquals(new Windowed<>("a", new SessionWindow(0, 0)), next.key);
             assertEquals(1L, AggregationWithHeaders.getAggregationOrNull(next.value));
@@ -316,7 +316,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         // a1 from above should have been removed
         // should have merged session in store
         try (final KeyValueIterator<Windowed<String>, AggregationWithHeaders<Long>> a2 =
-                 sessionStore.findSessions("a", 0, 100)) {
+            sessionStore.findSessions("a", 0, 100)) {
             final KeyValue<Windowed<String>, AggregationWithHeaders<Long>> next = a2.next();
             assertEquals(new Windowed<>("a", new SessionWindow(0, 100)), next.key);
             assertEquals(2L, AggregationWithHeaders.getAggregationOrNull(next.value));
@@ -486,7 +486,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         );
 
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
+            LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
 
             processor.process(new Record<>(null, "1", 0L));
 
@@ -532,7 +532,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.process(new Record<>("dummy", "dummy", 11L));
 
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
+            LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
 
             // record is late
             mockContext.setRecordContext(new ProcessorRecordContext(0, -2, -3, "topic", new RecordHeaders()));
@@ -587,7 +587,7 @@ public class KStreamSessionWindowAggregateProcessorTest {
         processor.init(mockContext);
 
         try (final LogCaptureAppender appender =
-                 LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
+            LogCaptureAppender.createAndRegister(KStreamSessionWindowAggregate.class)) {
 
             // dummy record to establish stream time = 0
             mockContext.setRecordContext(new ProcessorRecordContext(0, -2, -3, "topic", new RecordHeaders()));

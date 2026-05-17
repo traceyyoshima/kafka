@@ -1815,8 +1815,8 @@ public abstract class ConsumerCoordinatorTest {
                                        LeaveGroupRequest leaveRequest) {
         List<MemberIdentity> members = leaveRequest.data().members();
         return leaveRequest.data().groupId().equals(groupId) &&
-                   members.size() == 1 &&
-                   members.get(0).memberId().equals(consumerId);
+            members.size() == 1 &&
+            members.get(0).memberId().equals(consumerId);
     }
 
     /**

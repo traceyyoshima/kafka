@@ -103,7 +103,7 @@ public class WorkerConnectorTest {
                 throw new IllegalStateException("Unexpected connector type: " + connectorType);
         }
     }
-    
+
     public void setup(ConnectorType connectorType) {
         setConnector(connectorType);
         connectorConfig = new ConnectorConfig(plugins, CONFIG);

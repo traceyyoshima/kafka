@@ -139,7 +139,9 @@ public class SustainedConnectionWorker implements TaskWorker {
 
     private interface SustainedConnection extends AutoCloseable {
         boolean needsRefresh(long milliseconds);
+
         void refresh();
+
         void claim();
     }
 
@@ -264,8 +266,8 @@ public class SustainedConnectionWorker implements TaskWorker {
                     // Create the producer, fetch the specified topic's partitions and randomize them.
                     this.producer = new KafkaProducer<>(this.props, new ByteArraySerializer(), new ByteArraySerializer());
                     this.partitions = this.producer.partitionsFor(this.topicName).stream()
-                             .map(partitionInfo -> new TopicPartition(partitionInfo.topic(), partitionInfo.partition()))
-                             .collect(Collectors.toList());
+                        .map(partitionInfo -> new TopicPartition(partitionInfo.topic(), partitionInfo.partition()))
+                        .collect(Collectors.toList());
                     Collections.shuffle(this.partitions);
                 }
 

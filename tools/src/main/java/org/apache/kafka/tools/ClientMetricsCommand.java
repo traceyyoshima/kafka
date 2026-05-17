@@ -223,7 +223,7 @@ public class ClientMetricsCommand {
         private final ArgumentAcceptingOptionSpec<String> matchOpt;
 
         private final ArgumentAcceptingOptionSpec<String> metricsOpt;
-  
+
         public ClientMetricsCommandOptions(String[] args) {
             super(args);
             bootstrapServerOpt = parser.accepts("bootstrap-server", "REQUIRED: The Kafka server to connect to.")
@@ -369,7 +369,7 @@ public class ClientMetricsCommand {
             CommandLineUtils.checkInvalidArgs(parser, options, deleteOpt, generateNameOpt, intervalOpt, matchOpt, metricsOpt);
             CommandLineUtils.checkInvalidArgs(parser, options, describeOpt, generateNameOpt, intervalOpt, matchOpt, metricsOpt);
             CommandLineUtils.checkInvalidArgs(parser, options, listOpt, nameOpt, generateNameOpt, intervalOpt, matchOpt, metricsOpt);
-          
+
             boolean isNamePresent = has(nameOpt);
 
             if (has(alterOpt)) {

@@ -39,7 +39,7 @@ public class RelationalSmokeTestTest extends SmokeTestUtil {
     @Test
     public void verifySmokeTestLogic() {
         try (final TopologyTestDriver driver =
-                 new TopologyTestDriver(RelationalSmokeTest.App.getTopology(),
+            new TopologyTestDriver(RelationalSmokeTest.App.getTopology(),
                                         RelationalSmokeTest.App.getConfig(
                                             "nothing:0",
                                             "test",

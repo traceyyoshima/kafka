@@ -44,9 +44,9 @@ public interface EventQueue extends AutoCloseable {
 
     class NoDeadlineFunction implements UnaryOperator<OptionalLong> {
         public static final NoDeadlineFunction INSTANCE = new NoDeadlineFunction();
-        
+
         private NoDeadlineFunction() {
-            
+
         }
 
         @Override
@@ -89,11 +89,11 @@ public interface EventQueue extends AutoCloseable {
 
     class VoidEvent implements Event {
         public static final VoidEvent INSTANCE = new VoidEvent();
-        
+
         private VoidEvent() {
-            
+
         }
-        
+
         @Override
         public void run() throws Exception {
         }

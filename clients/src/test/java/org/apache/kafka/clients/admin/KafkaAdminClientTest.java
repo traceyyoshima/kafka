@@ -721,7 +721,7 @@ public class KafkaAdminClientTest {
         for (String topic : cluster.topics()) {
             List<MetadataResponsePartition> pms = new ArrayList<>();
             for (PartitionInfo pInfo : cluster.availablePartitionsForTopic(topic)) {
-                MetadataResponsePartition pm  = new MetadataResponsePartition()
+                MetadataResponsePartition pm = new MetadataResponsePartition()
                     .setErrorCode(partitionError.code())
                     .setPartitionIndex(pInfo.partition())
                     .setLeaderId(pInfo.leader().id())
@@ -1565,7 +1565,7 @@ public class KafkaAdminClientTest {
         try (AdminClientUnitTestEnv env = mockClientEnv()) {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
             String topicName0 = "test-0";
-            Uuid topicId =  Uuid.randomUuid();
+            Uuid topicId = Uuid.randomUuid();
 
             int authorisedOperations = Utils.to32BitField(Set.of(AclOperation.DESCRIBE.code(), AclOperation.ALTER.code()));
             env.kafkaClient().prepareResponse(
@@ -1602,7 +1602,7 @@ public class KafkaAdminClientTest {
         try (AdminClientUnitTestEnv env = mockClientEnv()) {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
             String topicName0 = "test-0";
-            Uuid topicId =  Uuid.randomUuid();
+            Uuid topicId = Uuid.randomUuid();
 
             int authorisedOperations = Utils.to32BitField(Set.of(AclOperation.DESCRIBE.code(), AclOperation.ALTER.code()));
             env.kafkaClient().prepareResponse(
@@ -2052,7 +2052,7 @@ public class KafkaAdminClientTest {
     }
 
     @Test
-    public void testElectLeaders()  throws Exception {
+    public void testElectLeaders() throws Exception {
         TopicPartition topic1 = new TopicPartition("topic", 0);
         TopicPartition topic2 = new TopicPartition("topic", 2);
         try (AdminClientUnitTestEnv env = mockClientEnv()) {
@@ -2204,11 +2204,11 @@ public class KafkaAdminClientTest {
             env.kafkaClient().prepareResponse(new DescribeConfigsResponse(
                 new DescribeConfigsResponseData().setResults(asList(
                     new DescribeConfigsResponseData.DescribeConfigsResult()
-                    .setResourceName(resource.name()).setResourceType(resource.type().id()).setErrorCode(Errors.NONE.code())
-                    .setConfigs(emptyList()),
+                        .setResourceName(resource.name()).setResourceType(resource.type().id()).setErrorCode(Errors.NONE.code())
+                        .setConfigs(emptyList()),
                     new DescribeConfigsResponseData.DescribeConfigsResult()
-                    .setResourceName(resource1.name()).setResourceType(resource1.type().id()).setErrorCode(Errors.NONE.code())
-                    .setConfigs(emptyList())))));
+                        .setResourceName(resource1.name()).setResourceType(resource1.type().id()).setErrorCode(Errors.NONE.code())
+                        .setConfigs(emptyList())))));
             Map<ConfigResource, KafkaFuture<Config>> result = env.adminClient().describeConfigs(asList(
                 resource,
                 resource1)).values();
@@ -4391,8 +4391,8 @@ public class KafkaAdminClientTest {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             // Retriable FindCoordinatorResponse errors should be retried
-            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE,  Node.noNode()));
-            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS,  Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE, Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS, Node.noNode()));
 
             env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.NONE, env.cluster().controller()));
 
@@ -5255,7 +5255,7 @@ public class KafkaAdminClientTest {
 
     private Map<String, ListConsumerGroupOffsetsSpec> batchedListConsumerGroupOffsetsSpec() {
         Set<TopicPartition> groupAPartitions = Collections.singleton(new TopicPartition("A", 1));
-        Set<TopicPartition> groupBPartitions =  Collections.singleton(new TopicPartition("B", 2));
+        Set<TopicPartition> groupBPartitions = Collections.singleton(new TopicPartition("B", 2));
 
         ListConsumerGroupOffsetsSpec groupASpec = new ListConsumerGroupOffsetsSpec().topicPartitions(groupAPartitions);
         ListConsumerGroupOffsetsSpec groupBSpec = new ListConsumerGroupOffsetsSpec().topicPartitions(groupBPartitions);
@@ -5264,7 +5264,7 @@ public class KafkaAdminClientTest {
 
     private Map<String, ListStreamsGroupOffsetsSpec> batchedListStreamsGroupOffsetsSpec() {
         Set<TopicPartition> groupAPartitions = Collections.singleton(new TopicPartition("A", 1));
-        Set<TopicPartition> groupBPartitions =  Collections.singleton(new TopicPartition("B", 2));
+        Set<TopicPartition> groupBPartitions = Collections.singleton(new TopicPartition("B", 2));
 
         ListStreamsGroupOffsetsSpec groupASpec = new ListStreamsGroupOffsetsSpec().topicPartitions(groupAPartitions);
         ListStreamsGroupOffsetsSpec groupBSpec = new ListStreamsGroupOffsetsSpec().topicPartitions(groupBPartitions);
@@ -5548,7 +5548,7 @@ public class KafkaAdminClientTest {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create(asList(findCoordinatorV3, describeGroups)));
 
             // Retriable FindCoordinatorResponse errors should be retried
-            env.kafkaClient().prepareResponse(prepareOldFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE,  Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareOldFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE, Node.noNode()));
             env.kafkaClient().prepareResponse(prepareOldFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS, Node.noNode()));
 
             env.kafkaClient().prepareResponse(prepareOldFindCoordinatorResponse(Errors.NONE, env.cluster().controller()));
@@ -5644,7 +5644,7 @@ public class KafkaAdminClientTest {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create(asList(findCoordinatorV3, describeGroups)));
 
             // Retriable FindCoordinatorResponse errors should be retried
-            env.kafkaClient().prepareResponse(prepareOldFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE,  Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareOldFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE, Node.noNode()));
             env.kafkaClient().prepareResponse(prepareOldFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS, Node.noNode()));
 
             env.kafkaClient().prepareResponse(prepareOldFindCoordinatorResponse(Errors.NONE, env.cluster().controller()));
@@ -6261,7 +6261,7 @@ public class KafkaAdminClientTest {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             env.kafkaClient().prepareResponse(
-                prepareFindCoordinatorResponse(Errors.GROUP_AUTHORIZATION_FAILED,  Node.noNode()));
+                prepareFindCoordinatorResponse(Errors.GROUP_AUTHORIZATION_FAILED, Node.noNode()));
 
             final DeleteConsumerGroupOffsetsResult errorResult = env.adminClient()
                 .deleteConsumerGroupOffsets(GROUP_ID, Stream.of(tp1).collect(Collectors.toSet()));
@@ -6281,7 +6281,7 @@ public class KafkaAdminClientTest {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             env.kafkaClient().prepareResponse(
-                prepareFindCoordinatorResponse(Errors.GROUP_AUTHORIZATION_FAILED,  Node.noNode()));
+                prepareFindCoordinatorResponse(Errors.GROUP_AUTHORIZATION_FAILED, Node.noNode()));
 
             final DeleteStreamsGroupOffsetsResult errorResult = env.adminClient()
                 .deleteStreamsGroupOffsets(GROUP_ID, Stream.of(tp1).collect(Collectors.toSet()));
@@ -6297,8 +6297,8 @@ public class KafkaAdminClientTest {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             // Retriable FindCoordinatorResponse errors should be retried
-            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE,  Node.noNode()));
-            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS,  Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE, Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS, Node.noNode()));
             env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.NONE, env.cluster().controller()));
 
             StreamsGroupDescribeResponseData data = new StreamsGroupDescribeResponseData();
@@ -6700,15 +6700,15 @@ public class KafkaAdminClientTest {
             TestUtils.assertFutureThrows(UnsupportedVersionException.class, result.all());
         }
     }
-    
+
     @Test
     public void testDescribeShareGroups() throws Exception {
         try (AdminClientUnitTestEnv env = new AdminClientUnitTestEnv(mockCluster(1, 0))) {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             // Retriable FindCoordinatorResponse errors should be retried
-            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE,  Node.noNode()));
-            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS,  Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE, Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS, Node.noNode()));
             env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.NONE, env.cluster().controller()));
 
             ShareGroupDescribeResponseData data = new ShareGroupDescribeResponseData();
@@ -7117,8 +7117,8 @@ public class KafkaAdminClientTest {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             // Retriable FindCoordinatorResponse errors should be retried
-            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE,  Node.noNode()));
-            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS,  Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_NOT_AVAILABLE, Node.noNode()));
+            env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.COORDINATOR_LOAD_IN_PROGRESS, Node.noNode()));
             env.kafkaClient().prepareResponse(prepareFindCoordinatorResponse(Errors.NONE, env.cluster().controller()));
 
             DescribeGroupsResponseData data = new DescribeGroupsResponseData();
@@ -7283,12 +7283,12 @@ public class KafkaAdminClientTest {
     }
 
     @Test
-    public void testIncrementalAlterConfigs()  throws Exception {
+    public void testIncrementalAlterConfigs() throws Exception {
         try (AdminClientUnitTestEnv env = mockClientEnv()) {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             //test error scenarios
-            IncrementalAlterConfigsResponseData responseData =  new IncrementalAlterConfigsResponseData();
+            IncrementalAlterConfigsResponseData responseData = new IncrementalAlterConfigsResponseData();
             responseData.responses().add(new AlterConfigsResourceResponse()
                     .setResourceName("")
                     .setResourceType(ConfigResource.Type.BROKER.id())
@@ -7349,7 +7349,7 @@ public class KafkaAdminClientTest {
             TestUtils.assertFutureThrows(InvalidConfigurationException.class, result.values().get(groupResource));
 
             // Test a call where there are no errors.
-            responseData =  new IncrementalAlterConfigsResponseData();
+            responseData = new IncrementalAlterConfigsResponseData();
             responseData.responses().add(new AlterConfigsResourceResponse()
                     .setResourceName("")
                     .setResourceType(ConfigResource.Type.BROKER.id())
@@ -7377,12 +7377,12 @@ public class KafkaAdminClientTest {
     }
 
     @Test
-    public void testIncrementalAlterConfigsToController()  throws Exception {
+    public void testIncrementalAlterConfigsToController() throws Exception {
         try (AdminClientUnitTestEnv env = mockClientEnv(AdminClientConfig.BOOTSTRAP_CONTROLLERS_CONFIG, "dummy")) {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             //test NOT_CONTROLLER error scenarios
-            IncrementalAlterConfigsResponseData responseData =  new IncrementalAlterConfigsResponseData();
+            IncrementalAlterConfigsResponseData responseData = new IncrementalAlterConfigsResponseData();
             responseData.responses().add(new AlterConfigsResourceResponse()
                     .setResourceName("")
                     .setResourceType(ConfigResource.Type.BROKER.id())
@@ -7401,7 +7401,7 @@ public class KafkaAdminClientTest {
                             true)
             );
 
-            IncrementalAlterConfigsResponseData responseData2 =  new IncrementalAlterConfigsResponseData();
+            IncrementalAlterConfigsResponseData responseData2 = new IncrementalAlterConfigsResponseData();
             responseData2.responses().add(new AlterConfigsResourceResponse()
                     .setResourceName("")
                     .setResourceType(ConfigResource.Type.BROKER.id())
@@ -8156,7 +8156,7 @@ public class KafkaAdminClientTest {
                 env.kafkaClient().prepareResponse(prepareOffsetCommitResponse(tp1, error));
 
                 Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
-                offsets.put(tp1,  new OffsetAndMetadata(123L));
+                offsets.put(tp1, new OffsetAndMetadata(123L));
                 AlterConsumerGroupOffsetsResult errorResult = env.adminClient()
                     .alterConsumerGroupOffsets(GROUP_ID, offsets);
 
@@ -8184,7 +8184,7 @@ public class KafkaAdminClientTest {
                 env.kafkaClient().prepareResponse(prepareOffsetCommitResponse(tp1, error));
 
                 Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
-                offsets.put(tp1,  new OffsetAndMetadata(123L));
+                offsets.put(tp1, new OffsetAndMetadata(123L));
                 AlterStreamsGroupOffsetsResult errorResult = env.adminClient()
                     .alterStreamsGroupOffsets(GROUP_ID, offsets);
 
@@ -8215,7 +8215,7 @@ public class KafkaAdminClientTest {
                 prepareOffsetCommitResponse(tp1, Errors.NONE));
 
             Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
-            offsets.put(tp1,  new OffsetAndMetadata(123L));
+            offsets.put(tp1, new OffsetAndMetadata(123L));
             final AlterConsumerGroupOffsetsResult result = env.adminClient()
                 .alterConsumerGroupOffsets(GROUP_ID, offsets);
 
@@ -8245,7 +8245,7 @@ public class KafkaAdminClientTest {
                 prepareOffsetCommitResponse(tp1, Errors.NONE));
 
             Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
-            offsets.put(tp1,  new OffsetAndMetadata(123L));
+            offsets.put(tp1, new OffsetAndMetadata(123L));
             final AlterStreamsGroupOffsetsResult result = env.adminClient()
                 .alterStreamsGroupOffsets(GROUP_ID, offsets);
 
@@ -8264,10 +8264,10 @@ public class KafkaAdminClientTest {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             env.kafkaClient().prepareResponse(
-                prepareFindCoordinatorResponse(Errors.GROUP_AUTHORIZATION_FAILED,  Node.noNode()));
+                prepareFindCoordinatorResponse(Errors.GROUP_AUTHORIZATION_FAILED, Node.noNode()));
 
             Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
-            offsets.put(tp1,  new OffsetAndMetadata(123L));
+            offsets.put(tp1, new OffsetAndMetadata(123L));
             final AlterConsumerGroupOffsetsResult errorResult = env.adminClient()
                 .alterConsumerGroupOffsets(GROUP_ID, offsets);
 
@@ -8286,10 +8286,10 @@ public class KafkaAdminClientTest {
             env.kafkaClient().setNodeApiVersions(NodeApiVersions.create());
 
             env.kafkaClient().prepareResponse(
-                prepareFindCoordinatorResponse(Errors.GROUP_AUTHORIZATION_FAILED,  Node.noNode()));
+                prepareFindCoordinatorResponse(Errors.GROUP_AUTHORIZATION_FAILED, Node.noNode()));
 
             Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
-            offsets.put(tp1,  new OffsetAndMetadata(123L));
+            offsets.put(tp1, new OffsetAndMetadata(123L));
             final AlterStreamsGroupOffsetsResult errorResult = env.adminClient()
                 .alterStreamsGroupOffsets(GROUP_ID, offsets);
 
@@ -8540,9 +8540,9 @@ public class KafkaAdminClientTest {
                 new ListOffsetsResponse(responseData), node);
 
             ListOffsetsResult result = env.adminClient().listOffsets(new HashMap<>() {{
-                    put(tp0, OffsetSpec.maxTimestamp());
-                    put(tp1, OffsetSpec.latest());
-                }});
+                put(tp0, OffsetSpec.maxTimestamp());
+                put(tp1, OffsetSpec.latest());
+            }});
 
             TestUtils.assertFutureThrows(UnsupportedVersionException.class, result.partitionResult(tp0));
 
@@ -8802,8 +8802,8 @@ public class KafkaAdminClientTest {
 
     private Map<String, FeatureUpdate> makeTestFeatureUpdates() {
         return Map.of(
-            "test_feature_1", new FeatureUpdate((short) 2,  FeatureUpdate.UpgradeType.UPGRADE),
-            "test_feature_2", new FeatureUpdate((short) 3,  FeatureUpdate.UpgradeType.SAFE_DOWNGRADE));
+            "test_feature_1", new FeatureUpdate((short) 2, FeatureUpdate.UpgradeType.UPGRADE),
+            "test_feature_2", new FeatureUpdate((short) 3, FeatureUpdate.UpgradeType.SAFE_DOWNGRADE));
     }
 
     private void testUpdateFeatures(Map<String, FeatureUpdate> featureUpdates,
@@ -8872,8 +8872,8 @@ public class KafkaAdminClientTest {
                 env.cluster().nodeById(controllerId));
             final KafkaFuture<Void> future = env.adminClient().updateFeatures(
                 Map.of(
-                    "test_feature_1", new FeatureUpdate((short) 2,  FeatureUpdate.UpgradeType.UPGRADE),
-                    "test_feature_2", new FeatureUpdate((short) 3,  FeatureUpdate.UpgradeType.SAFE_DOWNGRADE)),
+                    "test_feature_1", new FeatureUpdate((short) 2, FeatureUpdate.UpgradeType.UPGRADE),
+                    "test_feature_2", new FeatureUpdate((short) 3, FeatureUpdate.UpgradeType.SAFE_DOWNGRADE)),
                 new UpdateFeaturesOptions().timeoutMs(10000)
             ).all();
             future.get();
@@ -8895,8 +8895,8 @@ public class KafkaAdminClientTest {
             assertThrows(
                 IllegalArgumentException.class,
                 () -> env.adminClient().updateFeatures(
-                    Map.of("feature", new FeatureUpdate((short) 2,  FeatureUpdate.UpgradeType.UPGRADE),
-                        "", new FeatureUpdate((short) 2,  FeatureUpdate.UpgradeType.UPGRADE))));
+                    Map.of("feature", new FeatureUpdate((short) 2, FeatureUpdate.UpgradeType.UPGRADE),
+                        "", new FeatureUpdate((short) 2, FeatureUpdate.UpgradeType.UPGRADE))));
         }
     }
 
@@ -8904,7 +8904,7 @@ public class KafkaAdminClientTest {
     public void testUpdateFeaturesShouldFailRequestInClientWhenDowngradeFlagIsNotSetDuringDeletion() {
         assertThrows(
             IllegalArgumentException.class,
-            () -> new FeatureUpdate((short) 0,  FeatureUpdate.UpgradeType.UPGRADE));
+            () -> new FeatureUpdate((short) 0, FeatureUpdate.UpgradeType.UPGRADE));
     }
 
     @Test
@@ -9840,7 +9840,7 @@ public class KafkaAdminClientTest {
             AlterUserScramCredentialsResponseData responseData = new AlterUserScramCredentialsResponseData();
             responseData.setResults(Stream.of(user0Name, user1Name, user2Name).map(u ->
                     new AlterUserScramCredentialsResponseData.AlterUserScramCredentialsResult()
-                    .setUser(u).setErrorCode(Errors.NONE.code())).collect(Collectors.toList()));
+                        .setUser(u).setErrorCode(Errors.NONE.code())).collect(Collectors.toList()));
 
             env.kafkaClient().prepareResponse(new AlterUserScramCredentialsResponse(responseData));
 
@@ -10671,7 +10671,7 @@ public class KafkaAdminClientTest {
             ClientTelemetryReporter clientTelemetryReporter = mock(ClientTelemetryReporter.class);
             clientTelemetryReporter.configure(any());
             mockedCommonClientConfigs.when(() -> CommonClientConfigs.telemetryReporter(anyString(), any())).thenReturn(Optional.of(clientTelemetryReporter));
-            
+
             try (AdminClientUnitTestEnv env = mockClientEnv(AdminClientConfig.ENABLE_METRICS_PUSH_CONFIG, "true")) {
                 ClientTelemetrySender clientTelemetrySender = mock(ClientTelemetrySender.class);
                 Uuid expectedUuid = Uuid.randomUuid();
@@ -11006,7 +11006,7 @@ public class KafkaAdminClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
+    @CsvSource({"false, false", "false, true", "true, false", "true, true"})
     public void testAddRaftVoterRequest(boolean fail, boolean sendClusterId) throws Exception {
         try (AdminClientUnitTestEnv env = mockClientEnv(AdminClientConfig.BOOTSTRAP_CONTROLLERS_CONFIG, "dummy")) {
             AddRaftVoterResponseData responseData = new AddRaftVoterResponseData();
@@ -11092,7 +11092,7 @@ public class KafkaAdminClientTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
+    @CsvSource({"false, false", "false, true", "true, false", "true, true"})
     public void testRemoveRaftVoterRequest(boolean fail, boolean sendClusterId) throws Exception {
         try (AdminClientUnitTestEnv env = mockClientEnv(AdminClientConfig.BOOTSTRAP_CONTROLLERS_CONFIG, "dummy")) {
             RemoveRaftVoterResponseData responseData = new RemoveRaftVoterResponseData();

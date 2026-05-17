@@ -252,7 +252,7 @@ public class CoordinatorRequestManager implements RequestManager {
     public Optional<Node> coordinator() {
         return Optional.ofNullable(this.coordinator);
     }
-    
+
     public Optional<Throwable> getAndClearFatalError() {
         Optional<Throwable> fatalError = this.fatalError;
         this.fatalError = Optional.empty();

@@ -476,7 +476,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
             }
 
             if (!candidateWorkerLoad.isEmpty()) {
-                log.debug("Assigning lost tasks to {} candidate workers: {}", 
+                log.debug("Assigning lost tasks to {} candidate workers: {}",
                         candidateWorkerLoad.size(),
                         candidateWorkerLoad.stream().map(WorkerLoad::worker).collect(Collectors.joining(",")));
                 Iterator<WorkerLoad> candidateWorkerIterator = candidateWorkerLoad.iterator();

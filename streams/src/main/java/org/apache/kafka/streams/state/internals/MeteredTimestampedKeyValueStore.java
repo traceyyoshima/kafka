@@ -55,7 +55,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
  * @param <V>
  */
 public class MeteredTimestampedKeyValueStore<K, V>
-    extends MeteredKeyValueStore<K, ValueAndTimestamp<V>> 
+    extends MeteredKeyValueStore<K, ValueAndTimestamp<V>>
     implements TimestampedKeyValueStore<K, V> {
 
     MeteredTimestampedKeyValueStore(
@@ -126,6 +126,7 @@ public class MeteredTimestampedKeyValueStore<K, V>
     static class RawAndDeserializedValue<ValueType> {
         final byte[] rawValue;
         final ValueAndTimestamp<ValueType> value;
+
         RawAndDeserializedValue(final byte[] rawValue, final ValueAndTimestamp<ValueType> value) {
             this.rawValue = rawValue;
             this.value = value;
@@ -255,7 +256,7 @@ public class MeteredTimestampedKeyValueStore<K, V>
     }
 
     @SuppressWarnings("unchecked")
-    private  <R> QueryResult<R> runRangeQuery(
+    private <R> QueryResult<R> runRangeQuery(
         final Query<R> query,
         final PositionBound positionBound,
         final QueryConfig config
@@ -343,6 +344,7 @@ public class MeteredTimestampedKeyValueStore<K, V>
                 valueAndTimestampDeserializer.apply(keyValue.value)
             );
         }
+
         @Override
         public void close() {
             try {

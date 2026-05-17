@@ -259,13 +259,13 @@ public class StreamThread extends Thread implements ProcessingThread {
 
             if (state == State.PENDING_SHUTDOWN && newState != State.DEAD) {
                 log.debug("Ignoring request to transit from PENDING_SHUTDOWN to {}: " +
-                              "only DEAD state is a valid next state", newState);
+                    "only DEAD state is a valid next state", newState);
                 // when the state is already in PENDING_SHUTDOWN, all other transitions will be
                 // refused but we do not throw exception here
                 return null;
             } else if (state == State.DEAD) {
                 log.debug("Ignoring request to transit from DEAD to {}: " +
-                              "no valid next state after DEAD", newState);
+                    "no valid next state after DEAD", newState);
                 // when the state is already in NOT_RUNNING, all its transitions
                 // will be refused but we do not throw exception here
                 return null;
@@ -791,52 +791,52 @@ public class StreamThread extends Thread implements ProcessingThread {
                         final StreamsMetadataState streamsMetadataState,
                         final StreamsThreadMetricsDelegatingReporter metricsReporter
                         ) {
-        super(threadId);
-        this.stateLock = new Object();
-        this.adminClient = adminClient;
-        this.streamsMetrics = streamsMetrics;
-        this.commitSensor = ThreadMetrics.commitSensor(threadId, streamsMetrics);
-        this.pollSensor = ThreadMetrics.pollSensor(threadId, streamsMetrics);
-        this.pollRecordsSensor = ThreadMetrics.pollRecordsSensor(threadId, streamsMetrics);
-        this.pollRatioSensor = ThreadMetrics.pollRatioSensor(threadId, streamsMetrics);
-        this.processLatencySensor = ThreadMetrics.processLatencySensor(threadId, streamsMetrics);
-        this.processRecordsSensor = ThreadMetrics.processRecordsSensor(threadId, streamsMetrics);
-        this.processRateSensor = ThreadMetrics.processRateSensor(threadId, streamsMetrics);
-        this.processRatioSensor = ThreadMetrics.processRatioSensor(threadId, streamsMetrics);
-        this.punctuateSensor = ThreadMetrics.punctuateSensor(threadId, streamsMetrics);
-        this.punctuateRatioSensor = ThreadMetrics.punctuateRatioSensor(threadId, streamsMetrics);
-        this.commitRatioSensor = ThreadMetrics.commitRatioSensor(threadId, streamsMetrics);
-        this.failedStreamThreadSensor = ClientMetrics.failedStreamThreadSensor(streamsMetrics);
-        this.assignmentErrorCode = assignmentErrorCode;
-        this.shutdownErrorHook = shutdownErrorHook;
-        this.streamsUncaughtExceptionHandler = streamsUncaughtExceptionHandler;
-        this.cacheResizer = cacheResizer;
-        this.metricsConfig = streamsMetrics.metricsRegistry().config();
-        this.metricsReporter = metricsReporter;
+                            super(threadId);
+                            this.stateLock = new Object();
+                            this.adminClient = adminClient;
+                            this.streamsMetrics = streamsMetrics;
+                            this.commitSensor = ThreadMetrics.commitSensor(threadId, streamsMetrics);
+                            this.pollSensor = ThreadMetrics.pollSensor(threadId, streamsMetrics);
+                            this.pollRecordsSensor = ThreadMetrics.pollRecordsSensor(threadId, streamsMetrics);
+                            this.pollRatioSensor = ThreadMetrics.pollRatioSensor(threadId, streamsMetrics);
+                            this.processLatencySensor = ThreadMetrics.processLatencySensor(threadId, streamsMetrics);
+                            this.processRecordsSensor = ThreadMetrics.processRecordsSensor(threadId, streamsMetrics);
+                            this.processRateSensor = ThreadMetrics.processRateSensor(threadId, streamsMetrics);
+                            this.processRatioSensor = ThreadMetrics.processRatioSensor(threadId, streamsMetrics);
+                            this.punctuateSensor = ThreadMetrics.punctuateSensor(threadId, streamsMetrics);
+                            this.punctuateRatioSensor = ThreadMetrics.punctuateRatioSensor(threadId, streamsMetrics);
+                            this.commitRatioSensor = ThreadMetrics.commitRatioSensor(threadId, streamsMetrics);
+                            this.failedStreamThreadSensor = ClientMetrics.failedStreamThreadSensor(streamsMetrics);
+                            this.assignmentErrorCode = assignmentErrorCode;
+                            this.shutdownErrorHook = shutdownErrorHook;
+                            this.streamsUncaughtExceptionHandler = streamsUncaughtExceptionHandler;
+                            this.cacheResizer = cacheResizer;
+                            this.metricsConfig = streamsMetrics.metricsRegistry().config();
+                            this.metricsReporter = metricsReporter;
 
-        // The following sensors are created here but their references are not stored in this object, since within
+                            // The following sensors are created here but their references are not stored in this object, since within
         // this object they are not recorded. The sensors are created here so that the stream threads starts with all
         // its metrics initialised. Otherwise, those sensors would have been created during processing, which could
         // lead to missing metrics. If no task were created, the metrics for created and closed
         // tasks would never be added to the metrics.
-        ThreadMetrics.createTaskSensor(threadId, streamsMetrics);
-        ThreadMetrics.closeTaskSensor(threadId, streamsMetrics);
+                            ThreadMetrics.createTaskSensor(threadId, streamsMetrics);
+                            ThreadMetrics.closeTaskSensor(threadId, streamsMetrics);
 
-        ThreadMetrics.addThreadStartTimeMetric(
+                            ThreadMetrics.addThreadStartTimeMetric(
             threadId,
             streamsMetrics,
             time.milliseconds()
         );
-        ThreadMetrics.addThreadStateTelemetryMetric(
+                            ThreadMetrics.addThreadStateTelemetryMetric(
             processId.toString(),
             threadId,
             streamsMetrics,
             (metricConfig, now) -> this.state().ordinal());
-        ThreadMetrics.addThreadStateMetric(
+                            ThreadMetrics.addThreadStateMetric(
             threadId,
             streamsMetrics,
             (metricConfig, now) -> this.state().name());
-        ThreadMetrics.addThreadBlockedTimeMetric(
+                            ThreadMetrics.addThreadBlockedTimeMetric(
             threadId,
             new StreamThreadTotalBlockedTime(
                 mainConsumer,
@@ -846,13 +846,13 @@ public class StreamThread extends Thread implements ProcessingThread {
             streamsMetrics
         );
 
-        this.time = time;
-        this.topologyMetadata = topologyMetadata;
-        this.topologyMetadata.registerThread(getName());
-        this.logPrefix = logContext.logPrefix();
-        this.log = logContext.logger(StreamThread.class);
-        this.rebalanceListener = new StreamsRebalanceListener(time, taskManager, this, this.log, this.assignmentErrorCode);
-        this.defaultStreamsRebalanceListener = streamsRebalanceData.map(data ->
+                            this.time = time;
+                            this.topologyMetadata = topologyMetadata;
+                            this.topologyMetadata.registerThread(getName());
+                            this.logPrefix = logContext.logPrefix();
+                            this.log = logContext.logger(StreamThread.class);
+                            this.rebalanceListener = new StreamsRebalanceListener(time, taskManager, this, this.log, this.assignmentErrorCode);
+                            this.defaultStreamsRebalanceListener = streamsRebalanceData.map(data ->
             new DefaultStreamsRebalanceListener(
                 this.log,
                 time,
@@ -863,31 +863,31 @@ public class StreamThread extends Thread implements ProcessingThread {
                 getName()
             )
         );
-        this.taskManager = taskManager;
-        this.stateUpdater = stateUpdater;
-        this.restoreConsumer = restoreConsumer;
-        this.mainConsumer = mainConsumer;
-        this.changelogReader = changelogReader;
-        this.originalReset = originalReset;
-        this.nextProbingRebalanceMs = nextProbingRebalanceMs;
-        this.nonFatalExceptionsToHandle = nonFatalExceptionsToHandle;
-        this.groupInstanceID = mainConsumer.groupMetadata().groupInstanceId();
+                            this.taskManager = taskManager;
+                            this.stateUpdater = stateUpdater;
+                            this.restoreConsumer = restoreConsumer;
+                            this.mainConsumer = mainConsumer;
+                            this.changelogReader = changelogReader;
+                            this.originalReset = originalReset;
+                            this.nextProbingRebalanceMs = nextProbingRebalanceMs;
+                            this.nonFatalExceptionsToHandle = nonFatalExceptionsToHandle;
+                            this.groupInstanceID = mainConsumer.groupMetadata().groupInstanceId();
 
-        this.pollTime = Duration.ofMillis(config.getLong(StreamsConfig.POLL_MS_CONFIG));
-        final int dummyThreadIdx = 1;
-        this.maxPollTimeMs = new InternalConsumerConfig(config.getMainConsumerConfigs("dummyGroupId", "dummyClientId", dummyThreadIdx))
+                            this.pollTime = Duration.ofMillis(config.getLong(StreamsConfig.POLL_MS_CONFIG));
+                            final int dummyThreadIdx = 1;
+                            this.maxPollTimeMs = new InternalConsumerConfig(config.getMainConsumerConfigs("dummyGroupId", "dummyClientId", dummyThreadIdx))
             .getInt(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG);
-        this.commitTimeMs = config.getLong(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG);
-        this.purgeTimeMs = config.getLong(StreamsConfig.REPARTITION_PURGE_INTERVAL_MS_CONFIG);
+                            this.commitTimeMs = config.getLong(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG);
+                            this.purgeTimeMs = config.getLong(StreamsConfig.REPARTITION_PURGE_INTERVAL_MS_CONFIG);
 
-        this.numIterations = 1;
-        this.eosEnabled = eosEnabled(config);
-        this.processingThreadsEnabled = InternalConfig.processingThreadsEnabled(config.originals());
-        this.logSummaryIntervalMs = config.getLong(StreamsConfig.LOG_SUMMARY_INTERVAL_MS_CONFIG);
+                            this.numIterations = 1;
+                            this.eosEnabled = eosEnabled(config);
+                            this.processingThreadsEnabled = InternalConfig.processingThreadsEnabled(config.originals());
+                            this.logSummaryIntervalMs = config.getLong(StreamsConfig.LOG_SUMMARY_INTERVAL_MS_CONFIG);
 
-        this.streamsRebalanceData = streamsRebalanceData;
-        this.streamsMetadataState = streamsMetadataState;
-    }
+                            this.streamsRebalanceData = streamsRebalanceData;
+                            this.streamsMetadataState = streamsMetadataState;
+                        }
 
     private static final class InternalConsumerConfig extends ConsumerConfig {
         private InternalConsumerConfig(final Map<String, Object> props) {
@@ -1124,8 +1124,8 @@ public class StreamThread extends Thread implements ProcessingThread {
 
     private void handleTaskMigrated(final TaskMigratedException e) {
         log.warn("Detected that the thread is being fenced. " +
-                     "This implies that this thread missed a rebalance and dropped out of the consumer group. " +
-                     "Will close out all assigned tasks and rejoin the consumer group.", e);
+            "This implies that this thread missed a rebalance and dropped out of the consumer group. " +
+            "Will close out all assigned tasks and rejoin the consumer group.", e);
 
         taskManager.handleLostAll();
         mainConsumer.unsubscribe();
@@ -1454,7 +1454,7 @@ public class StreamThread extends Thread implements ProcessingThread {
 
         final int numRecords = records.count();
 
-        for (final TopicPartition topicPartition: records.partitions()) {
+        for (final TopicPartition topicPartition : records.partitions()) {
             records
                 .records(topicPartition)
                 .stream()

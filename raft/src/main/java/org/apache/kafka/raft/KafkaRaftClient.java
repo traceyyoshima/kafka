@@ -165,7 +165,7 @@ import static org.apache.kafka.snapshot.Snapshots.BOOTSTRAP_SNAPSHOT_ID;
  *    as FileRecords, but we use {@link UnalignedRecords} in FetchSnapshotResponse because the records
  *    are not necessarily offset-aligned.
  */
-@SuppressWarnings({ "ClassDataAbstractionCoupling", "ClassFanOutComplexity", "ParameterNumber", "NPathComplexity", "JavaNCSS" })
+@SuppressWarnings({"ClassDataAbstractionCoupling", "ClassFanOutComplexity", "ParameterNumber", "NPathComplexity", "JavaNCSS"})
 public final class KafkaRaftClient<T> implements RaftClient<T> {
     private static final int MAX_NUMBER_OF_BATCHES = 10;
     private static final int MAX_FETCH_WAIT_MS = 500;
@@ -2783,6 +2783,7 @@ public final class KafkaRaftClient<T> implements RaftClient<T> {
             })
             .orElse(true);
     }
+
     /**
      * Validate a request which is intended for the current quorum leader.
      * If an error is present in the returned value, it should be returned
@@ -2863,7 +2864,7 @@ public final class KafkaRaftClient<T> implements RaftClient<T> {
         long currentTimeMs,
         Node destination,
         Supplier<ApiMessage> requestSupplier
-    )  {
+    ) {
         var requestSent = false;
 
         if (requestManager.isBackingOff(destination, currentTimeMs)) {
@@ -2946,7 +2947,7 @@ public final class KafkaRaftClient<T> implements RaftClient<T> {
         Function<ReplicaKey, ApiMessage> requestSupplier
     ) {
         long minBackoffMs = Long.MAX_VALUE;
-        for (ReplicaKey voter: remoteVoters) {
+        for (ReplicaKey voter : remoteVoters) {
             long backoffMs = maybeSendRequest(
                 currentTimeMs,
                 destinationSupplier.apply(voter.id()),

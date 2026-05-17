@@ -940,8 +940,8 @@ public final class RaftClientTestContext {
     }
 
     private ApiMessage roundTripApiMessage(ApiMessage message, short version) {
-        ObjectSerializationCache cache =  new ObjectSerializationCache();
-        ByteArrayOutputStream  buffer = new ByteArrayOutputStream(message.size(cache, version));
+        ObjectSerializationCache cache = new ObjectSerializationCache();
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream(message.size(cache, version));
 
         // Encode the message to a byte array with the given version
         DataOutputStreamWritable writer = new DataOutputStreamWritable(new DataOutputStream(buffer));
@@ -2434,7 +2434,7 @@ public final class RaftClientTestContext {
         boolean isHwmInFetchSupported() {
             return isAtLeast(KIP_1166_PROTOCOL);
         }
-      
+
         boolean isAutoJoinSupported() {
             return isAtLeast(KIP_1186_PROTOCOL);
         }

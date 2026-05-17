@@ -108,7 +108,7 @@ public class KafkaStreamsTelemetryIntegrationTest {
     private Uuid globalStoreConsumerInstanceId;
     private Properties streamsApplicationProperties = new Properties();
     private Properties streamsSecondApplicationProperties = new Properties();
-    private  KeyValueIterator<String, String> globalStoreIterator;
+    private KeyValueIterator<String, String> globalStoreIterator;
 
     private static EmbeddedKafkaCluster cluster;
     private static final List<TestingMetricsInterceptor> INTERCEPTING_CONSUMERS = new ArrayList<>();
@@ -212,7 +212,7 @@ public class KafkaStreamsTelemetryIntegrationTest {
     @MethodSource("recordingLevelParameters")
     public void shouldPushMetricsToBroker(final String recordingLevel, final String groupProtocol) throws Exception {
         // End-to-end test validating metrics pushed to broker
-        streamsApplicationProperties  = props(groupProtocol);
+        streamsApplicationProperties = props(groupProtocol);
         streamsApplicationProperties.put(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG, recordingLevel);
         final Topology topology = simpleTopology(false);
         subscribeForStreamsMetrics();
@@ -352,14 +352,14 @@ public class KafkaStreamsTelemetryIntegrationTest {
                 final List<String> streamOneTaskIds = new ArrayList<>();
                 final List<String> streamTwoTasksIds = new ArrayList<>();
                 waitForCondition(() -> {
-                        streamOneTaskIds.clear();
-                        streamTwoTasksIds.clear();
+                    streamOneTaskIds.clear();
+                    streamTwoTasksIds.clear();
 
-                        streamOneTaskIds.addAll(getTaskIdsAsStrings(streamsOne));
-                        streamTwoTasksIds.addAll(getTaskIdsAsStrings(streamsTwo));
+                    streamOneTaskIds.addAll(getTaskIdsAsStrings(streamsOne));
+                    streamTwoTasksIds.addAll(getTaskIdsAsStrings(streamsTwo));
 
-                        return streamOneTaskIds.size() == 2 && streamTwoTasksIds.size() == 2;
-                    },
+                    return streamOneTaskIds.size() == 2 && streamTwoTasksIds.size() == 2;
+                },
                     "Task assignment did not complete."
                 );
 
@@ -416,7 +416,7 @@ public class KafkaStreamsTelemetryIntegrationTest {
     public void passedMetricsShouldNotLeakIntoClientMetrics(final String groupProtocol) throws Exception {
         // Streams metrics should not be visible in client metrics
         streamsApplicationProperties = props(groupProtocol);
-        final Topology topology =  complexTopology();
+        final Topology topology = complexTopology();
 
         try (final KafkaStreams streams = new KafkaStreams(topology, streamsApplicationProperties)) {
             IntegrationTestUtils.startApplicationAndWaitUntilRunning(streams);

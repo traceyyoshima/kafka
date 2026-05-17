@@ -308,7 +308,7 @@ public class MeteredKeyValueStore<K, V>
     }
 
     @SuppressWarnings("unchecked")
-    private  <R> QueryResult<R> runKeyQuery(final Query<R> query,
+    private <R> QueryResult<R> runKeyQuery(final Query<R> query,
                                             final PositionBound positionBound,
                                             final QueryConfig config) {
         final QueryResult<R> result;
@@ -465,7 +465,7 @@ public class MeteredKeyValueStore<K, V>
     protected void maybeRecordE2ELatency() {
         if (e2eLatencySensor.shouldRecord() && internalContext != null) {
             final long currentTime = time.milliseconds();
-            final long e2eLatency =  currentTime - internalContext.recordContext().timestamp();
+            final long e2eLatency = currentTime - internalContext.recordContext().timestamp();
             e2eLatencySensor.record(e2eLatency, currentTime);
         }
     }

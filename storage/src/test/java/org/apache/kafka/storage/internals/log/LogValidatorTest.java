@@ -198,6 +198,7 @@ public class LogValidatorTest {
 
         assertTrue(metricsRecorder.recordInvalidMagicCount > 0);
     }
+
     @Test
     public void testCreateTimeUpConversionV1ToV2() {
         long timestamp = System.currentTimeMillis();
@@ -429,7 +430,7 @@ public class LogValidatorTest {
     @ParameterizedTest
     @CsvSource({"0,none,none", "1,none,none", "0,none,gzip", "1,none,gzip"})
     public void checkAllowMultiBatch(Byte magic, String sourceCompression, String targetCompression) {
-        validateMessages(createTwoBatchedRecords(magic,  Compression.of(sourceCompression).build()), magic,
+        validateMessages(createTwoBatchedRecords(magic, Compression.of(sourceCompression).build()), magic,
                 CompressionType.forName(sourceCompression), Compression.of(targetCompression).build());
     }
 

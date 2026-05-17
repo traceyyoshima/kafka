@@ -90,7 +90,7 @@ public final class ProduceBenchSpec extends TaskSpec {
                          @JsonProperty("adminClientConf") Map<String, String> adminClientConf,
                          @JsonProperty("activeTopics") TopicsSpec activeTopics,
                          @JsonProperty("inactiveTopics") TopicsSpec inactiveTopics,
-                         @JsonProperty("useConfiguredPartitioner") boolean useConfiguredPartitioner, 
+                         @JsonProperty("useConfiguredPartitioner") boolean useConfiguredPartitioner,
                          @JsonProperty("skipFlush") boolean skipFlush) {
         super(startMs, durationMs);
         this.producerNode = (producerNode == null) ? "" : producerNode;

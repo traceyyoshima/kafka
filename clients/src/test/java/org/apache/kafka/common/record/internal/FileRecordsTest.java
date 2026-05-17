@@ -272,7 +272,7 @@ public class FileRecordsTest {
             fileRecords.searchForOffsetFromPosition(3, position),
             "Should be able to find fourth message from a non-existent offset");
         assertEquals(new FileRecords.LogOffsetPosition(50L, position, message4Size),
-            fileRecords.searchForOffsetFromPosition(50,  position),
+            fileRecords.searchForOffsetFromPosition(50, position),
             "Should be able to find fourth message by correct offset");
     }
 
@@ -438,7 +438,7 @@ public class FileRecordsTest {
 
             // Slice from fourth message until the end.
             int position = IntStream.range(0, 3).map(i -> items.get(i).sizeInBytes()).sum();
-            Records sliced  = fileRecords.slice(position, fileRecords.sizeInBytes() - position);
+            Records sliced = fileRecords.slice(position, fileRecords.sizeInBytes() - position);
             assertEquals(fileRecords.sizeInBytes() - position, sliced.sizeInBytes());
             assertEquals(items.subList(3, items.size()), batches(sliced), "Read starting from the fourth message");
 

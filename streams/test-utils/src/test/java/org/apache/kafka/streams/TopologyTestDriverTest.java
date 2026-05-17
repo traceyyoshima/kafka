@@ -166,11 +166,11 @@ public abstract class TopologyTestDriverTest {
         @Override
         public String toString() {
             return "key: " + key +
-                   ", value: " + value +
-                   ", timestamp: " + timestamp +
-                   ", offset: " + offset +
-                   ", topic: " + topic +
-                   ", num.headers: " + (headers == null ? "null" : headers.toArray().length);
+                ", value: " + value +
+                ", timestamp: " + timestamp +
+                ", offset: " + offset +
+                ", topic: " + topic +
+                ", num.headers: " + (headers == null ? "null" : headers.toArray().length);
         }
 
         @Override
@@ -1644,9 +1644,9 @@ public abstract class TopologyTestDriverTest {
     @Test
     public void shouldProcessFromSourcesThatMatchMultiplePattern() {
 
-        final  Pattern pattern2Source1 = Pattern.compile("source-topic-\\d");
-        final  Pattern pattern2Source2 = Pattern.compile("source-topic-[A-Z]");
-        final  String consumerTopic2 = "source-topic-Z";
+        final Pattern pattern2Source1 = Pattern.compile("source-topic-\\d");
+        final Pattern pattern2Source2 = Pattern.compile("source-topic-[A-Z]");
+        final String consumerTopic2 = "source-topic-Z";
 
         final TestRecord<byte[], byte[]> consumerRecord2 = new TestRecord<>(key2, value2, null, timestamp2);
 

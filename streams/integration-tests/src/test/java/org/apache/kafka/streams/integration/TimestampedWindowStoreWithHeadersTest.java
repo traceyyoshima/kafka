@@ -471,7 +471,7 @@ public class TimestampedWindowStoreWithHeadersTest {
 
                     // validate fetch from store
                     try (final WindowStoreIterator<ValueTimestampHeaders<String>> iterator =
-                             store.fetch(key, windowStartTime, windowStartTime)) {
+                        store.fetch(key, windowStartTime, windowStartTime)) {
                         final ValueTimestampHeaders<String> actualValueTimestampHeaders =
                             iterator.hasNext() ? iterator.next().value : null;
                         if (!Objects.equals(actualValueTimestampHeaders, expectedValueTimestampHeaders)) {
@@ -536,7 +536,7 @@ public class TimestampedWindowStoreWithHeadersTest {
 
                     // validate fetch from store
                     try (final WindowStoreIterator<ValueAndTimestamp<String>> iterator =
-                             store.fetch(key, windowStartTime, windowStartTime)) {
+                        store.fetch(key, windowStartTime, windowStartTime)) {
                         final ValueAndTimestamp<String> actualValueAndTimestamp =
                             iterator.hasNext() ? iterator.next().value : null;
                         if (!Objects.equals(actualValueAndTimestamp, expectedValueAndTimestamp)) {

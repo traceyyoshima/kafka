@@ -206,13 +206,13 @@ public class TransactionManager {
             this.priority = priority;
         }
     }
-    
+
     private enum TransactionOperation {
         SEND("send"),
         BEGIN_TRANSACTION("beginTransaction"),
         PREPARE_TRANSACTION("prepareTransaction"),
         SEND_OFFSETS_TO_TRANSACTION("sendOffsetsToTransaction");
-        
+
         final String displayName;
 
         TransactionOperation(String displayName) {
@@ -869,7 +869,7 @@ public class TransactionManager {
     // Attempts to resolve unresolved sequences. If all in-flight requests are complete and some partitions are still
     // unresolved, either bump the epoch if possible, or transition to a fatal error
     synchronized void maybeResolveSequences() {
-        for (Iterator<TopicPartition> iter = partitionsWithUnresolvedSequences.keySet().iterator(); iter.hasNext(); ) {
+        for (Iterator<TopicPartition> iter = partitionsWithUnresolvedSequences.keySet().iterator(); iter.hasNext();) {
             TopicPartition topicPartition = iter.next();
             if (!hasInflightBatches(topicPartition)) {
                 // The partition has been fully drained. At this point, the last ack'd sequence should be one less than
@@ -1138,7 +1138,7 @@ public class TransactionManager {
 
     private void transitionTo(State target, RuntimeException error) {
         if (!currentState.isTransitionValid(currentState, target)) {
-            String idString = transactionalId == null ?  "" : "TransactionalId " + transactionalId + ": ";
+            String idString = transactionalId == null ? "" : "TransactionalId " + transactionalId + ": ";
             String message = idString + "Invalid transition attempted from state "
                     + currentState.name() + " to state " + target.name();
 

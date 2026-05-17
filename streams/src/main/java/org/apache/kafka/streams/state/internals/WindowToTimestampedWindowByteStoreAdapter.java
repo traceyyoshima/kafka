@@ -107,7 +107,7 @@ public class WindowToTimestampedWindowByteStoreAdapter implements WindowStore<By
     public KeyValueIterator<Windowed<Bytes>, byte[]> fetch(final Bytes keyFrom,
                                                            final Bytes keyTo,
                                                            final Instant timeFrom,
-                                                           final Instant timeTo)  throws IllegalArgumentException {
+                                                           final Instant timeTo) throws IllegalArgumentException {
         return new KeyValueToTimestampedKeyValueIteratorAdapter<>(store.fetch(keyFrom, keyTo, timeFrom, timeTo));
     }
 

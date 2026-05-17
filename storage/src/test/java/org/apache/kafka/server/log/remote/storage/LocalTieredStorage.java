@@ -153,7 +153,7 @@ public final class LocalTieredStorage implements RemoteStorageManager {
         public void transfer(ByteBuffer from, File to) throws IOException {
             if (from != null && from.hasRemaining()) {
                 try (FileOutputStream fileOutputStream = new FileOutputStream(to, false);
-                     FileChannel channel = fileOutputStream.getChannel()) {
+        FileChannel channel = fileOutputStream.getChannel()) {
                     channel.write(from);
                 }
             }

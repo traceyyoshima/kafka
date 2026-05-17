@@ -1422,7 +1422,7 @@ public class StreamThreadTest {
 
             throw taskMigratedException;
         });
-        
+
 
         final StreamsMetricsImpl streamsMetrics =
             new StreamsMetricsImpl(metrics, CLIENT_ID, mockTime);
@@ -1646,6 +1646,7 @@ public class StreamThreadTest {
     public void shouldNotCloseTaskAndRemoveFromTaskManagerIfProducerGotFencedInCommitTransactionWhenSuspendingTasks(final boolean processingThreadsEnabled) throws Exception {
         testThrowingDuringCommitTransactionException(new ProducerFencedException("Producer is fenced"), processingThreadsEnabled);
     }
+
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void shouldNotCloseTaskAndRemoveFromTaskManagerIfInvalidPidMappingOccurredInCommitTransactionWhenSuspendingTasks(final boolean processingThreadsEnabled) throws Exception {
@@ -2485,6 +2486,7 @@ public class StreamThreadTest {
                 setState(State.PENDING_SHUTDOWN);
                 throw new TaskCorruptedException(corruptedTasks);
             }
+
             @Override
             void runOnceWithoutProcessingThreads() {
                 setState(State.PENDING_SHUTDOWN);
@@ -2547,6 +2549,7 @@ public class StreamThreadTest {
                 setState(State.PENDING_SHUTDOWN);
                 throw new TaskCorruptedException(corruptedTasks);
             }
+
             @Override
             void runOnceWithoutProcessingThreads() {
                 setState(State.PENDING_SHUTDOWN);
@@ -2617,6 +2620,7 @@ public class StreamThreadTest {
                 setState(State.PENDING_SHUTDOWN);
                 throw new TaskCorruptedException(corruptedTasks);
             }
+
             @Override
             void runOnceWithoutProcessingThreads() {
                 setState(State.PENDING_SHUTDOWN);
@@ -2684,6 +2688,7 @@ public class StreamThreadTest {
                 setState(State.PENDING_SHUTDOWN);
                 throw new TaskCorruptedException(corruptedTasks);
             }
+
             @Override
             void runOnceWithoutProcessingThreads() {
                 setState(State.PENDING_SHUTDOWN);
@@ -2748,6 +2753,7 @@ public class StreamThreadTest {
                 setState(State.PENDING_SHUTDOWN);
                 throw new TaskCorruptedException(corruptedTasks);
             }
+
             @Override
             void runOnceWithoutProcessingThreads() {
                 setState(State.PENDING_SHUTDOWN);
@@ -2894,11 +2900,11 @@ public class StreamThreadTest {
 
     private void waitForCommit(final MockConsumer<byte[], byte[]> mockConsumer, final long expectedOffset) throws Exception {
         waitForCondition(() -> {
-                mockTime.sleep(10L);
-                runOnce(true);
-                final Map<TopicPartition, OffsetAndMetadata> committed = mockConsumer.committed(Collections.singleton(t1p1));
-                return !committed.isEmpty() && committed.get(t1p1).offset() == expectedOffset;
-            },
+            mockTime.sleep(10L);
+            runOnce(true);
+            final Map<TopicPartition, OffsetAndMetadata> committed = mockConsumer.committed(Collections.singleton(t1p1));
+            return !committed.isEmpty() && committed.get(t1p1).offset() == expectedOffset;
+        },
             "Never committed offset " + expectedOffset
         );
 
@@ -3043,6 +3049,7 @@ public class StreamThreadTest {
                     throw new StreamsException(Thread.currentThread().getName());
                 }
             }
+
             @Override
             void runOnceWithoutProcessingThreads() {
                 setState(StreamThread.State.PENDING_SHUTDOWN);

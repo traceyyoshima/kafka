@@ -809,10 +809,10 @@ public class ShareGroupCommandTest {
 
                 List<String> errorLine = new ArrayList<>(error);
                 List<String> expectedResultHeader = List.of("TOPIC", "STATUS");
-                List<String> expectedResultValue1 =  new ArrayList<>();
+                List<String> expectedResultValue1 = new ArrayList<>();
                 expectedResultValue1.add(firstTopic);
                 expectedResultValue1.addAll(error);
-                List<String> expectedResultValue2 =  new ArrayList<>();
+                List<String> expectedResultValue2 = new ArrayList<>();
                 expectedResultValue2.add(secondTopic);
                 expectedResultValue2.addAll(error);
 
@@ -860,8 +860,8 @@ public class ShareGroupCommandTest {
                 ).toList();
 
                 List<String> expectedResultHeader = List.of("TOPIC", "STATUS");
-                List<String> expectedResultValue1 =  List.of(firstTopic, "Successful");
-                List<String> expectedResultValue2 =  new ArrayList<>();
+                List<String> expectedResultValue1 = List.of(firstTopic, "Successful");
+                List<String> expectedResultValue2 = new ArrayList<>();
                 expectedResultValue2.add(secondTopic);
                 expectedResultValue2.addAll(error);
 
@@ -1110,7 +1110,7 @@ public class ShareGroupCommandTest {
             assertEquals(expectedResults, service.deleteShareGroups());
         }
     }
-    
+
     @Test
     public void testAlterShareGroupMultipleTopicsSuccess() {
         String group = "share-group";
@@ -1130,7 +1130,7 @@ public class ShareGroupCommandTest {
             )
         );
         when(adminClient.listShareGroupOffsets(any(), any(ListShareGroupOffsetsOptions.class))).thenReturn(listShareGroupOffsetsResult);
-        
+
         AlterShareGroupOffsetsResult alterShareGroupOffsetsResult = mockAlterShareGroupOffsets(adminClient, group);
         TopicPartition tp0 = new TopicPartition(topic1, 0);
         TopicPartition tp1 = new TopicPartition(topic1, 1);
@@ -1419,7 +1419,7 @@ public class ShareGroupCommandTest {
             assertTrue(exited.get());
         }
     }
-    
+
     @Test
     public void testAlterShareGroupUnsubscribedTopicSuccess() {
         String group = "share-group";

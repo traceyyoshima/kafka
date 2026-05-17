@@ -175,7 +175,7 @@ public class AclCommand {
     private static void printResourceAcls(Map<ResourcePattern, Set<AccessControlEntry>> resourceToAcls) {
         resourceToAcls.forEach((resource, acls) ->
             System.out.println("Current ACLs for resource `" + resource + "`:" + NL +
-                    acls.stream().map(acl -> "\t" + acl).collect(Collectors.joining(NL)) + NL)
+            acls.stream().map(acl -> "\t" + acl).collect(Collectors.joining(NL)) + NL)
         );
     }
 

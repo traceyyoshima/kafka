@@ -203,14 +203,14 @@ public class KTableKTableForeignKeyInnerJoinCustomPartitionerIntegrationTest {
 
         final List<KafkaStreams> kafkaStreamsList = asList(streams, streamsTwo, streamsThree);
 
-        for (final KafkaStreams stream: kafkaStreamsList) {
+        for (final KafkaStreams stream : kafkaStreamsList) {
             stream.setUncaughtExceptionHandler(e -> {
                 assertThat(e.getCause().getMessage(), equalTo("The partitions returned by StreamPartitioner#partitions method when used for FK join should be a singleton set"));
                 return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_CLIENT;
             });
         }
 
-        for (final KafkaStreams stream: kafkaStreamsList) {
+        for (final KafkaStreams stream : kafkaStreamsList) {
             stream.start();
         }
 

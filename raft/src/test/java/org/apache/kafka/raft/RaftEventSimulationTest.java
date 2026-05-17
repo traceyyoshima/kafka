@@ -1221,7 +1221,7 @@ public class RaftEventSimulationTest {
             for (Map.Entry<Integer, PersistentState> nodeEntry : cluster.nodes.entrySet()) {
                 int nodeId = nodeEntry.getKey();
                 RaftLog log = nodeEntry.getValue().log;
-                log.earliestSnapshotId().ifPresent(earliestSnapshotId  -> {
+                log.earliestSnapshotId().ifPresent(earliestSnapshotId -> {
                     long logStartOffset = log.startOffset();
                     ValidOffsetAndEpoch validateOffsetAndEpoch = log.validateOffsetAndEpoch(
                         earliestSnapshotId.offset(),

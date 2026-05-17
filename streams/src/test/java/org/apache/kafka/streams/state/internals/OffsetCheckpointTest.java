@@ -162,7 +162,7 @@ public class OffsetCheckpointTest {
 
         final File notExistedFile = new File("/not_existed_dir/not_existed_file");
         final OffsetCheckpoint checkpoint = new OffsetCheckpoint(notExistedFile);
-        
+
         final IOException e = assertThrows(IOException.class, () -> checkpoint.write(offsetsToWrite));
         assertThat(e.getMessage(), containsString("No such file or directory"));
     }

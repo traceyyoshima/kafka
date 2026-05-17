@@ -99,7 +99,7 @@ public class SessionedProtocolIntegrationTest {
         // We haven't created the connector yet, but this should still return a 400 instead of a 404
         // if the endpoint is secured
         log.info(
-            "Making a POST request to the {} endpoint with no connector started and no signature header; " 
+            "Making a POST request to the {} endpoint with no connector started and no signature header; "
                 + "expecting 400 error response",
             connectorTasksEndpoint
         );

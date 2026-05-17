@@ -736,7 +736,7 @@ public class TopologyTest {
     @SuppressWarnings("deprecation")
     @Test
     public void streamStreamJoinTopologyWithDefaultStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -779,7 +779,7 @@ public class TopologyTest {
     @SuppressWarnings("deprecation")
     @Test
     public void streamStreamJoinTopologyWithCustomStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -823,7 +823,7 @@ public class TopologyTest {
     @SuppressWarnings("deprecation")
     @Test
     public void streamStreamJoinTopologyWithCustomStoresSuppliers() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -877,7 +877,7 @@ public class TopologyTest {
 
     @Test
     public void streamStreamLeftJoinTopologyWithDefaultStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -919,7 +919,7 @@ public class TopologyTest {
 
     @Test
     public void streamStreamLeftJoinTopologyWithCustomStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -962,7 +962,7 @@ public class TopologyTest {
 
     @Test
     public void streamStreamLeftJoinTopologyWithCustomStoresSuppliers() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -1016,7 +1016,7 @@ public class TopologyTest {
 
     @Test
     public void streamStreamOuterJoinTopologyWithDefaultStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -1058,7 +1058,7 @@ public class TopologyTest {
 
     @Test
     public void streamStreamOuterJoinTopologyWithCustomStoresNames() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -1101,7 +1101,7 @@ public class TopologyTest {
 
     @Test
     public void streamStreamOuterJoinTopologyWithCustomStoresSuppliers() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
         final KStream<Integer, String> stream1;
         final KStream<Integer, String> stream2;
 
@@ -1155,7 +1155,7 @@ public class TopologyTest {
 
     @Test
     public void topologyWithDynamicRoutingShouldDescribeExtractorClass() {
-        final StreamsBuilder builder  = new StreamsBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
 
         final TopicNameExtractor<Object, Object> topicNameExtractor = new TopicNameExtractor<>() {
             @Override

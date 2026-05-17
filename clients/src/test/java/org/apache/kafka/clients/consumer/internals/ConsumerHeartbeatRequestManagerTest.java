@@ -963,7 +963,7 @@ public class ConsumerHeartbeatRequestManagerTest {
         NetworkClientDelegate.PollResult pollAgain = heartbeatRequestManager.poll(time.milliseconds());
         assertEquals(0, pollAgain.unsentRequests.size());
     }
-    
+
     @ParameterizedTest
     @ApiKeyVersionsSource(apiKey = ApiKeys.CONSUMER_GROUP_HEARTBEAT)
     public void testConsumerAcksReconciledAssignmentAfterAckLost(final short version) {
@@ -974,28 +974,28 @@ public class ConsumerHeartbeatRequestManagerTest {
         Map<Uuid, SortedSet<Integer>> testAssignment = Collections.singletonMap(
                 topicId, mkSortedSet(partition)
         );
-        
+
         // complete reconciliation
         createHeartbeatStateAndRequestManager();
         when(subscriptions.subscription()).thenReturn(topics);
         subscriptions.subscribe(topics, Optional.empty());
         mockReconcilingMemberData(testAssignment);
-        
+
         // send heartbeat1 to ack assignment tp0
         time.sleep(DEFAULT_HEARTBEAT_INTERVAL_MS);
         NetworkClientDelegate.PollResult result = heartbeatRequestManager.poll(time.milliseconds());
-        
+
         // HB1 times out
         assertFalse(result.unsentRequests.isEmpty());
         result.unsentRequests.get(0)
                 .handler()
                 .onFailure(time.milliseconds(), new TimeoutException("timeout"));
-        
+
         // heartbeat request manager resets the sentFields to null HeartbeatState.reset()
         time.sleep(DEFAULT_MAX_POLL_INTERVAL_MS);
         assertHeartbeat(heartbeatRequestManager, DEFAULT_HEARTBEAT_INTERVAL_MS);
         verify(heartbeatRequestState).reset();
-        
+
         // following HB will include tp0 (and act as ack), tp0 != null
         result = heartbeatRequestManager.poll(time.milliseconds());
         NetworkClientDelegate.UnsentRequest request = result.unsentRequests.get(0);
@@ -1004,7 +1004,7 @@ public class ConsumerHeartbeatRequestManagerTest {
 
         assertEquals(Collections.singletonList(topic), heartbeatRequest.data().subscribedTopicNames());
         assertEquals(testAssignment.size(), heartbeatRequest.data().topicPartitions().size());
-        ConsumerGroupHeartbeatRequestData.TopicPartitions topicPartitions = 
+        ConsumerGroupHeartbeatRequestData.TopicPartitions topicPartitions =
                 heartbeatRequest.data().topicPartitions().get(0);
         assertEquals(topicId, topicPartitions.topicId());
         assertEquals(Collections.singletonList(partition), topicPartitions.partitions());
@@ -1273,7 +1273,7 @@ public class ConsumerHeartbeatRequestManagerTest {
         when(membershipManager.memberEpoch()).thenReturn(DEFAULT_MEMBER_EPOCH);
         when(membershipManager.serverAssignor()).thenReturn(Optional.of(DEFAULT_REMOTE_ASSIGNOR));
     }
-    
+
     private void mockReconcilingMemberData(Map<Uuid, SortedSet<Integer>> assignment) {
         when(membershipManager.state()).thenReturn(MemberState.RECONCILING);
         when(membershipManager.currentAssignment()).thenReturn(new LocalAssignment(0, assignment));

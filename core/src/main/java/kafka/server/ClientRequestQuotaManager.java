@@ -50,9 +50,9 @@ public class ClientRequestQuotaManager extends ClientQuotaManager {
     private final Sensor exemptSensor;
 
     public ClientRequestQuotaManager(
-            ClientQuotaManagerConfig config, 
-            Metrics metrics, Time time, 
-            String threadNamePrefix, 
+            ClientQuotaManagerConfig config,
+            Metrics metrics, Time time,
+            String threadNamePrefix,
             Optional<Plugin<ClientQuotaCallback>> quotaCallbackPlugin
     ) {
         super(config, metrics, QuotaType.REQUEST, time, threadNamePrefix, quotaCallbackPlugin);

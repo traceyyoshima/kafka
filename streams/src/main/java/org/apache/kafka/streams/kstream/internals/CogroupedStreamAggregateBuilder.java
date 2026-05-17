@@ -62,13 +62,13 @@ class CogroupedStreamAggregateBuilder<K, VOut> {
         processRepartitions(groupPatterns, storeFactory.storeName(), queryableName);
         final Collection<GraphNode> processors = new ArrayList<>();
         final Collection<KStreamAggProcessorSupplier> parentProcessors = new ArrayList<>();
-        
+
         int counter = 0;
         for (final Entry<KGroupedStreamImpl<K, ?>, Aggregator<? super K, Object, VOut>> kGroupedStream : groupPatterns.entrySet()) {
             final KStreamAggProcessorSupplier<K, ?, K, ?> parentProcessor =
                 new KStreamAggregate<>(storeFactory, initializer, kGroupedStream.getValue());
             parentProcessors.add(parentProcessor);
-            
+
             final String kStreamAggProcessorName = named.suffixWithOrElseGet(
                 "-cogroup-agg-" + counter++,
                 builder,
@@ -100,7 +100,7 @@ class CogroupedStreamAggregateBuilder<K, VOut> {
         final Collection<KStreamAggProcessorSupplier> parentProcessors = new ArrayList<>();
         int counter = 0;
         for (final Entry<KGroupedStreamImpl<K, ?>, Aggregator<? super K, Object, VOut>> kGroupedStream : groupPatterns.entrySet()) {
-            final KStreamAggProcessorSupplier<K, ?, K, ?>  parentProcessor =
+            final KStreamAggProcessorSupplier<K, ?, K, ?> parentProcessor =
                 (KStreamAggProcessorSupplier<K, ?, K, ?>) new KStreamWindowAggregate<K, K, VOut, W>(
                     windows,
                     storeFactory,
@@ -108,7 +108,7 @@ class CogroupedStreamAggregateBuilder<K, VOut> {
                     initializer,
                     kGroupedStream.getValue());
             parentProcessors.add(parentProcessor);
-            
+
             final String kStreamAggProcessorName = named.suffixWithOrElseGet(
                 "-cogroup-agg-" + counter++,
                 builder,

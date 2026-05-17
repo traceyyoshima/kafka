@@ -452,7 +452,7 @@ public class ThreadMetricsTest {
                 threadStateProvider
         );
     }
-    
+
 
     @Test
     public void shouldAddTotalBlockedTimeMetric() {

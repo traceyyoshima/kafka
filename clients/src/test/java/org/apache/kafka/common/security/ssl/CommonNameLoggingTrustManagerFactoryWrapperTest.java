@@ -525,21 +525,21 @@ public class CommonNameLoggingTrustManagerFactoryWrapperTest {
 
     @Test
     public void testSortChainWithMultipleEndCertificate() {
-        assertThrows(CertificateException.class, 
+        assertThrows(CertificateException.class,
                 () -> CommonNameLoggingTrustManager.sortChainAnWrapEndCertificate(chainWithMultipleEndCertificates));
     }
 
     @Test
     public void testCalcDigestForCertificateChain() {
-        ByteBuffer digestForValidChain = 
+        ByteBuffer digestForValidChain =
             assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithValidEndCertificate));
-        ByteBuffer digestForValidChainAgain = 
+        ByteBuffer digestForValidChainAgain =
             assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithValidEndCertificate));
         assertEquals(digestForValidChain, digestForValidChainAgain);
-        ByteBuffer digestForInvalidChain = 
+        ByteBuffer digestForInvalidChain =
             assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithInvalidEndCertificate));
         assertNotEquals(digestForValidChain, digestForInvalidChain);
-        ByteBuffer digestForExpiredChain = 
+        ByteBuffer digestForExpiredChain =
             assertDoesNotThrow(() -> CommonNameLoggingTrustManager.calcDigestForCertificateChain(chainWithExpiredEndCertificate));
         assertNotEquals(digestForValidChain, digestForExpiredChain);
         assertNotEquals(digestForInvalidChain, digestForExpiredChain);

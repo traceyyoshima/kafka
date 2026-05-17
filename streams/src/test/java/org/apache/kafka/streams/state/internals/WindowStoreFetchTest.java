@@ -87,9 +87,9 @@ public class WindowStoreFetchTest {
     private String innerLowBetween;
     private String innerHighBetween;
 
-    public void setup(final StoreType storeType, 
-                      final boolean enableLogging, 
-                      final boolean enableCaching, 
+    public void setup(final StoreType storeType,
+                      final boolean enableLogging,
+                      final boolean enableCaching,
                       final boolean forward) {
         this.storeType = storeType;
         this.enableLogging = enableLogging;

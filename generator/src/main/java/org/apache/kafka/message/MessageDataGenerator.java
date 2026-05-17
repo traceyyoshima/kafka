@@ -127,7 +127,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
         }
         generateSubclasses(className, struct, parentVersions, isSetElement);
         if (isTopLevel) {
-            for (Iterator<StructSpec> iter = structRegistry.commonStructs(); iter.hasNext(); ) {
+            for (Iterator<StructSpec> iter = structRegistry.commonStructs(); iter.hasNext();) {
                 StructSpec commonStruct = iter.next();
                 generateClass(Optional.empty(),
                         commonStruct.name(),
@@ -1422,13 +1422,13 @@ public final class MessageDataGenerator implements MessageClassGenerator {
             buffer.printf("hashCode = 31 * hashCode + (%s ? 1231 : 1237);%n",
                 field.camelCaseName());
         } else if ((field.type() instanceof FieldType.Int8FieldType) ||
-                    (field.type() instanceof FieldType.Int16FieldType) ||
-                    (field.type() instanceof FieldType.Uint16FieldType) ||
-                    (field.type() instanceof FieldType.Int32FieldType)) {
+            (field.type() instanceof FieldType.Int16FieldType) ||
+            (field.type() instanceof FieldType.Uint16FieldType) ||
+            (field.type() instanceof FieldType.Int32FieldType)) {
             buffer.printf("hashCode = 31 * hashCode + %s;%n",
                 field.camelCaseName());
         } else if (field.type() instanceof FieldType.Int64FieldType ||
-                    (field.type() instanceof FieldType.Uint32FieldType)) {
+            (field.type() instanceof FieldType.Uint32FieldType)) {
             buffer.printf("hashCode = 31 * hashCode + ((int) (%s >> 32) ^ (int) %s);%n",
                 field.camelCaseName(), field.camelCaseName());
         } else if (field.type() instanceof FieldType.UUIDFieldType) {
@@ -1452,7 +1452,7 @@ public final class MessageDataGenerator implements MessageClassGenerator {
             buffer.printf("hashCode = 31 * hashCode + Objects.hashCode(%s);%n",
                     field.camelCaseName());
         } else if (field.type().isStruct()
-                   || field.type().isArray()
+            || field.type().isArray()
                    || field.type().isString()) {
             buffer.printf("hashCode = 31 * hashCode + (%s == null ? 0 : %s.hashCode());%n",
                           field.camelCaseName(), field.camelCaseName());

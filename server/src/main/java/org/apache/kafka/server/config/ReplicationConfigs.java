@@ -132,10 +132,10 @@ public class ReplicationConfigs {
     public static final String INTER_BROKER_SECURITY_PROTOCOL_CONFIG = "security.inter.broker.protocol";
     public static final String INTER_BROKER_SECURITY_PROTOCOL_DEFAULT = SecurityProtocol.PLAINTEXT.toString();
     public static final String INTER_BROKER_LISTENER_NAME_CONFIG = "inter.broker.listener.name";
-    public static final String INTER_BROKER_SECURITY_PROTOCOL_DOC = "Security protocol used to communicate between brokers. " + 
+    public static final String INTER_BROKER_SECURITY_PROTOCOL_DOC = "Security protocol used to communicate between brokers. " +
             "It is an error to set this and " + INTER_BROKER_LISTENER_NAME_CONFIG + " properties at the same time.";
     public static final String INTER_BROKER_LISTENER_NAME_DOC = "Name of listener used for communication between brokers. If this is unset, the listener name is defined by " + INTER_BROKER_SECURITY_PROTOCOL_CONFIG +
-           ". It is an error to set this and " + INTER_BROKER_SECURITY_PROTOCOL_CONFIG + " properties at the same time.";
+        ". It is an error to set this and " + INTER_BROKER_SECURITY_PROTOCOL_CONFIG + " properties at the same time.";
 
     public static final String REPLICA_SELECTOR_CLASS_CONFIG = "replica.selector.class";
     public static final String REPLICA_SELECTOR_CLASS_DOC = "The fully qualified class name that implements ReplicaSelector. This is used by the broker to find the preferred read replica. By default, we use an implementation that returns the leader.";
@@ -148,7 +148,7 @@ public class ReplicationConfigs {
     public static final boolean AUTO_LEADER_REBALANCE_ENABLE_DEFAULT = true;
     public static final String AUTO_LEADER_REBALANCE_ENABLE_DOC = String.format("Enables auto leader balancing. A background thread checks the distribution of partition leaders at regular intervals, configurable by %s. If the leader is imbalanced, leader rebalance to the preferred leader for partitions is triggered.",
            LEADER_IMBALANCE_CHECK_INTERVAL_SECONDS_CONFIG);
-    public static final ConfigDef CONFIG_DEF =  new ConfigDef()
+    public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(CONTROLLER_SOCKET_TIMEOUT_MS_CONFIG, INT, CONTROLLER_SOCKET_TIMEOUT_MS_DEFAULT, MEDIUM, CONTROLLER_SOCKET_TIMEOUT_MS_DOC)
             .define(DEFAULT_REPLICATION_FACTOR_CONFIG, INT, REPLICATION_FACTOR_DEFAULT, MEDIUM, DEFAULT_REPLICATION_FACTOR_DOC)
             .define(REPLICA_LAG_TIME_MAX_MS_CONFIG, LONG, REPLICA_LAG_TIME_MAX_MS_DEFAULT, HIGH, REPLICA_LAG_TIME_MAX_MS_DOC)

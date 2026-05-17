@@ -163,7 +163,7 @@ public class MirrorSourceTaskTest {
         byte[] value1 = "fgh".getBytes();
         byte[] key2 = "123".getBytes();
         byte[] value2 = "456".getBytes();
-        List<ConsumerRecord<byte[], byte[]>> consumerRecordsList =  new ArrayList<>();
+        List<ConsumerRecord<byte[], byte[]>> consumerRecordsList = new ArrayList<>();
         String topicName = "test";
         String headerKey = "key";
         RecordHeaders headers = new RecordHeaders(new Header[] {

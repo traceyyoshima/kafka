@@ -325,7 +325,7 @@ public class MetadataTest {
     public void testRequestUpdate() {
         assertFalse(metadata.updateRequested());
 
-        int[] epochs =           {42,   42,    41,    41,    42,    43,   43,    42,    41,    44};
+        int[] epochs = {42,   42,    41,    41,    42,    43,   43,    42,    41,    44};
         boolean[] updateResult = {true, false, false, false, false, true, false, false, false, true};
         TopicPartition tp = new TopicPartition("topic", 0);
 
@@ -643,11 +643,11 @@ public class MetadataTest {
         Time time = new MockTime();
 
         metadata = new Metadata(refreshBackoffMs, refreshBackoffMaxMs, metadataExpireMs, new LogContext(), new ClusterResourceListeners()) {
-                @Override
-                protected MetadataRequest.Builder newMetadataRequestBuilderForNewTopics() {
-                    return newMetadataRequestBuilder();
-                }
-            };
+            @Override
+            protected MetadataRequest.Builder newMetadataRequestBuilderForNewTopics() {
+                return newMetadataRequestBuilder();
+            }
+        };
 
         assertFalse(metadata.updateRequested());
 
@@ -918,11 +918,11 @@ public class MetadataTest {
 
         final AtomicReference<Set<String>> retainTopics = new AtomicReference<>(new HashSet<>());
         metadata = new Metadata(refreshBackoffMs, refreshBackoffMaxMs, metadataExpireMs, new LogContext(), new ClusterResourceListeners()) {
-                @Override
-                protected boolean retainTopic(String topic, boolean isInternal, long nowMs) {
-                    return retainTopics.get().contains(topic);
-                }
-            };
+            @Override
+            protected boolean retainTopic(String topic, boolean isInternal, long nowMs) {
+                return retainTopics.get().contains(topic);
+            }
+        };
 
         // Initialize a metadata instance with two topic variants "old" and "keep". Both will be retained.
         String oldClusterId = "oldClusterId";

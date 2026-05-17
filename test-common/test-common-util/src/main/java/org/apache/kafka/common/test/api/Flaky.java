@@ -36,5 +36,5 @@ public @interface Flaky {
     /**
      * Optional comment describing the reason.
      */
-    String comment() default "";
+    String comment()default "";
 }

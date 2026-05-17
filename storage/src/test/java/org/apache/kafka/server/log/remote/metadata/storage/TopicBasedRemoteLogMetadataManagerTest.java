@@ -119,14 +119,14 @@ public class TopicBasedRemoteLogMetadataManagerTest {
         Admin mockAdmin = mock(Admin.class);
         DescribeTopicsResult mockDescribeTopicsResult = mock(DescribeTopicsResult.class);
         KafkaFuture<TopicDescription> mockFuture = mock(KafkaFuture.class);
-        
+
         String topic = "test-topic";
-        
+
         // Set up the mock to throw a RuntimeException wrapped in ExecutionException
         when(mockAdmin.describeTopics(anySet())).thenReturn(mockDescribeTopicsResult);
         when(mockDescribeTopicsResult.topicNameValues()).thenReturn(Map.of(topic, mockFuture));
         when(mockFuture.get()).thenThrow(new ExecutionException("Admin client connection error", new RuntimeException("Connection failed")));
-        
+
         // The method should re-throw the ExecutionException since it's not an UnknownTopicOrPartitionException
         TopicBasedRemoteLogMetadataManager rlmm = topicBasedRlmm();
         assertThrows(ExecutionException.class, () -> rlmm.doesTopicExist(mockAdmin, topic));
@@ -349,7 +349,7 @@ public class TopicBasedRemoteLogMetadataManagerTest {
         // Set up a custom exit procedure for testing
         final AtomicBoolean exitCalled = new AtomicBoolean(false);
         final AtomicInteger exitCode = new AtomicInteger(-1);
-        
+
         // Set custom exit procedure that won't actually exit the process
         Exit.setExitProcedure((statusCode, message) -> {
             exitCalled.set(true);
@@ -364,11 +364,11 @@ public class TopicBasedRemoteLogMetadataManagerTest {
             );
             rlmm.configure(configs);
             rlmm.onBrokerReady();
-            
+
             // Wait for initialization failure and exit procedure to be called
-            TestUtils.waitForCondition(() -> exitCalled.get(), 
+            TestUtils.waitForCondition(() -> exitCalled.get(),
                 "Exit procedure should be called due to initialization failure");
-            
+
             // Verify exit code
             assertEquals(1, exitCode.get(), "Exit code should be 1");
         } finally {
@@ -407,13 +407,13 @@ public class TopicBasedRemoteLogMetadataManagerTest {
                                                         throws ExecutionException, InterruptedException {
         try (Admin admin = clusterInstance.admin()) {
             String metadataTopic = TopicBasedRemoteLogMetadataManagerConfig.REMOTE_LOG_METADATA_TOPIC_NAME;
-            
+
             // Wait for the topic to be created
             clusterInstance.waitTopicCreation(metadataTopic, RemoteLogMetadataManagerTestUtils.METADATA_TOPIC_PARTITIONS_COUNT);
-            
+
             // Verify the topic exists
             assertTrue(rlmm.doesTopicExist(admin, metadataTopic));
-            
+
             // Describe the topic configs to verify min.insync.replicas
             ConfigResource topicResource = new ConfigResource(ConfigResource.Type.TOPIC, metadataTopic);
             DescribeConfigsResult describeResult = admin.describeConfigs(List.of(topicResource));
@@ -422,7 +422,7 @@ public class TopicBasedRemoteLogMetadataManagerTest {
             assertNotNull(config, "Topic config should not be null");
             ConfigEntry minIsrEntry = config.get(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG);
             assertNotNull(minIsrEntry, "min.insync.replicas config should exist");
-            assertEquals(String.valueOf(expectedMinIsr), minIsrEntry.value(), 
+            assertEquals(String.valueOf(expectedMinIsr), minIsrEntry.value(),
                 "min.insync.replicas should be " + expectedMinIsr + " (" + valueDescription + ")");
         }
     }

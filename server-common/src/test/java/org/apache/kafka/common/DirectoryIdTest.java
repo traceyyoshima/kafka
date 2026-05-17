@@ -49,11 +49,11 @@ public class DirectoryIdTest {
                 DirectoryId.createAssignmentMap(new int[]{1, 2}, DirectoryId.unassignedArray(3)));
         assertEquals(
             new HashMap<Integer, Uuid>() {{
-                    put(1, Uuid.fromString("upjfkCrUR9GNn1i94ip1wg"));
-                    put(2, Uuid.fromString("bCF3l0RIQjOKhUqgbivHZA"));
-                    put(3, Uuid.fromString("Fg3mFhcVQlqCWRk4dZazxw"));
-                    put(4, Uuid.fromString("bv9TEYi4TqOm52hLmrxT5w"));
-                }},
+                put(1, Uuid.fromString("upjfkCrUR9GNn1i94ip1wg"));
+                put(2, Uuid.fromString("bCF3l0RIQjOKhUqgbivHZA"));
+                put(3, Uuid.fromString("Fg3mFhcVQlqCWRk4dZazxw"));
+                put(4, Uuid.fromString("bv9TEYi4TqOm52hLmrxT5w"));
+            }},
             DirectoryId.createAssignmentMap(
                     new int[] {1, 2, 3, 4},
                     new Uuid[] {

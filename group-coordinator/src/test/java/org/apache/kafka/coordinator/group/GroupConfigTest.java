@@ -760,7 +760,7 @@ public class GroupConfigTest {
             entry.getValue().ifPresent(brokerConfigName ->
                 assertTrue(brokerConfigNames.contains(brokerConfigName),
                     "ALL_GROUP_CONFIG_SYNONYMS maps '" + entry.getKey() + "' to '" +
-                        brokerConfigName + "' but this broker config does not exist."));
+                brokerConfigName + "' but this broker config does not exist."));
         }
     }
 

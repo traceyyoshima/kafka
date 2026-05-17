@@ -51,7 +51,7 @@ public class ClientMetrics {
     private static final String DEFAULT_VALUE = "unknown";
     private static final String FAILED_STREAM_THREADS = "failed-stream-threads";
     private static final String RECORDING_LEVEL = "recording-level";
-    
+
 
     static {
         final Properties props = new Properties();

@@ -2360,7 +2360,7 @@ public class KStreamImplTest {
         final String outputTopic = "output";
 
         final KStream<String, String> stream = builder.stream(streamTopic, consumed);
-        final KTable<String, String> table =  builder.stream(tableTopic, consumed).toTable();
+        final KTable<String, String> table = builder.stream(tableTopic, consumed).toTable();
 
         stream.join(table, MockValueJoiner.TOSTRING_JOINER).to(outputTopic);
 

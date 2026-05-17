@@ -56,7 +56,7 @@ public class KStreamSelectKeyTest {
             new KeyValueTimestamp<>("THREE", 3, 0)};
         final int[] expectedValues = new int[]{1, 2, 3};
 
-        final KStream<String, Integer>  stream =
+        final KStream<String, Integer> stream =
             builder.stream(topicName, Consumed.with(Serdes.String(), Serdes.Integer()));
         final MockApiProcessorSupplier<String, Integer, Void, Void> supplier = new MockApiProcessorSupplier<>();
         stream.selectKey((key, value) -> keyMap.get(value)).process(supplier);

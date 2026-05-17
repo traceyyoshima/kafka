@@ -258,7 +258,7 @@ public class TasksTupleWithEpochsTest {
         );
 
         String result = tuple.toString();
-        
+
         // Verify the exact toString format
         assertEquals(
             "(active=[1-1@10, 1-2@11, 2-3@20], " +

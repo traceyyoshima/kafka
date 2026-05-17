@@ -245,7 +245,7 @@ public class KafkaClusterTestKit implements AutoCloseable {
                     new JaasUtils.JaasSection(JaasUtils.KAFKA_SERVER_CONTEXT_NAME,
                         List.of(
                             JaasModule.plainLoginModule(
-                                JaasUtils.KAFKA_PLAIN_ADMIN, 
+                                JaasUtils.KAFKA_PLAIN_ADMIN,
                                 JaasUtils.KAFKA_PLAIN_ADMIN_PASSWORD,
                                 true,
                                 Map.of(
@@ -449,11 +449,11 @@ public class KafkaClusterTestKit implements AutoCloseable {
                     futures.add(executorService.submit(() -> formatNode(broker.sharedServer().metaPropsEnsemble())));
                 }
             }
-            for (Future<?> future: futures) {
+            for (Future<?> future : futures) {
                 future.get();
             }
         } catch (Exception e) {
-            for (Future<?> future: futures) {
+            for (Future<?> future : futures) {
                 future.cancel(true);
             }
             throw e;
@@ -532,11 +532,11 @@ public class KafkaClusterTestKit implements AutoCloseable {
             for (BrokerServer broker : brokers.values()) {
                 futures.add(executorService.submit(broker::startup));
             }
-            for (Future<?> future: futures) {
+            for (Future<?> future : futures) {
                 future.get();
             }
         } catch (Exception e) {
-            for (Future<?> future: futures) {
+            for (Future<?> future : futures) {
                 future.cancel(true);
             }
             throw e;
@@ -748,7 +748,7 @@ public class KafkaClusterTestKit implements AutoCloseable {
 
     private void waitForAllThreads() throws InterruptedException {
         TestUtils.waitForCondition(() -> Thread.getAllStackTraces().keySet()
-                    .stream().noneMatch(t -> threadFactory.getThreadIds().contains(t.getId())),
+            .stream().noneMatch(t -> threadFactory.getThreadIds().contains(t.getId())),
                 "Failed to wait for all threads to shut down.");
     }
 }

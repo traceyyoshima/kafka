@@ -323,7 +323,7 @@ public class AclControlManagerTest {
         assertEquals(2, deleteResult.response().size());
         Set<AclBinding> deleted = new HashSet<>();
         for (AclDeleteResult.AclBindingDeleteResult result :
-                deleteResult.response().get(0).aclBindingDeleteResults()) {
+            deleteResult.response().get(0).aclBindingDeleteResults()) {
             assertEquals(Optional.empty(), result.exception());
             deleted.add(result.aclBinding());
         }

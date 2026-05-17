@@ -289,7 +289,7 @@ public class StreamsResetter {
         config.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 
         try (final KafkaConsumer<byte[], byte[]> client =
-                 new KafkaConsumer<>(config, new ByteArrayDeserializer(), new ByteArrayDeserializer())) {
+            new KafkaConsumer<>(config, new ByteArrayDeserializer(), new ByteArrayDeserializer())) {
 
             final Collection<TopicPartition> partitions = topicsToSubscribe.stream().map(client::partitionsFor)
                     .flatMap(Collection::stream)
@@ -574,9 +574,9 @@ public class StreamsResetter {
     // visible for testing
     public static boolean matchesInternalTopicFormat(final String topicName) {
         return topicName.endsWith("-changelog") || topicName.endsWith("-repartition")
-               || topicName.endsWith("-subscription-registration-topic")
-               || topicName.endsWith("-subscription-response-topic")
-               || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-\\d+-topic")
+            || topicName.endsWith("-subscription-registration-topic")
+            || topicName.endsWith("-subscription-response-topic")
+            || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-\\d+-topic")
                || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-\\d+-topic");
     }
 

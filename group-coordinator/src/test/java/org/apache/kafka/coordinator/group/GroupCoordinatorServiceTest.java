@@ -576,6 +576,7 @@ public class GroupCoordinatorServiceTest {
             future.get(5, TimeUnit.SECONDS)
         );
     }
+
     @Test
     public void testStreamsGroupHeartbeatFailsForUnsupportedFeatures() throws Exception {
 
@@ -5201,7 +5202,7 @@ public class GroupCoordinatorServiceTest {
             .setGroupId(groupId)
             .setTopics(List.of(
                 new DeleteShareGroupOffsetsRequestData.DeleteShareGroupOffsetsRequestTopic()
-                .setTopicName(TOPIC_NAME),
+                    .setTopicName(TOPIC_NAME),
                 new DeleteShareGroupOffsetsRequestData.DeleteShareGroupOffsetsRequestTopic()
                     .setTopicName(badTopicName)
             ));
@@ -5308,7 +5309,7 @@ public class GroupCoordinatorServiceTest {
                     .setTopicId(TOPIC_ID)
                     .setPartitions(List.of(
                         new DeleteShareGroupStateResponseData.PartitionResult()
-                        .setPartition(partition)
+                            .setPartition(partition)
                             .setErrorCode(Errors.NONE.code())
                             .setErrorMessage(null)
                     ))

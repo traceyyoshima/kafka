@@ -58,7 +58,7 @@ public class ListDeserializer<Inner> implements Deserializer<List<Inner>> {
 
     public ListDeserializer() {}
 
-    public <L extends List<Inner>> ListDeserializer(Class<L> listClass, Deserializer<Inner> inner) {
+    public <L extends List<Inner>>ListDeserializer(Class<L> listClass, Deserializer<Inner> inner) {
         if (listClass == null || inner == null) {
             log.error("Could not construct ListDeserializer as not all required parameters were present -- listClass: {}, inner: {}", listClass, inner);
             throw new IllegalArgumentException("ListDeserializer requires both \"listClass\" and \"innerDeserializer\" parameters to be provided during initialization");

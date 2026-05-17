@@ -540,7 +540,7 @@ public final class MessageTest {
                            ))
                    )
                )
-               .setThrottleTimeMs(20));
+                .setThrottleTimeMs(20));
     }
 
     @ParameterizedTest
@@ -814,7 +814,7 @@ public final class MessageTest {
     private static String jsonConverterTypeName(String source) {
         int outerClassIndex = source.lastIndexOf('$');
         if (outerClassIndex == -1) {
-            return  source + "JsonConverter";
+            return source + "JsonConverter";
         } else {
             return source.substring(0, outerClassIndex) + "JsonConverter$" +
                 source.substring(outerClassIndex + 1) + "JsonConverter";

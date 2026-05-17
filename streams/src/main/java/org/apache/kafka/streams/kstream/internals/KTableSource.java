@@ -152,7 +152,7 @@ public class KTableSource<KIn, VIn> implements ProcessorSupplier<KIn, VIn, KIn, 
                                     + "topic=[{}] partition=[{}] offset=[{}].",
                                 store.name(),
                                 oldValueAndTimestamp.timestamp(), record.timestamp(),
-                                recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset() 
+                                recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                             );
                         } else {
                             LOG.warn(

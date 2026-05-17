@@ -363,7 +363,7 @@ public class CachingInMemoryKeyValueStoreTest extends AbstractKeyValueStoreTest 
         final List<Bytes> results = new ArrayList<>();
 
         try (final KeyValueIterator<Bytes, byte[]> range =
-                 store.range(bytesKey(String.valueOf(0)), bytesKey(String.valueOf(items)))) {
+            store.range(bytesKey(String.valueOf(0)), bytesKey(String.valueOf(items)))) {
             while (range.hasNext()) {
                 results.add(range.next().key);
             }
@@ -383,7 +383,7 @@ public class CachingInMemoryKeyValueStoreTest extends AbstractKeyValueStoreTest 
         final List<Bytes> results = new ArrayList<>();
 
         try (final KeyValueIterator<Bytes, byte[]> range =
-                 store.reverseRange(bytesKey(String.valueOf(0)), bytesKey(String.valueOf(items)))) {
+            store.reverseRange(bytesKey(String.valueOf(0)), bytesKey(String.valueOf(items)))) {
             while (range.hasNext()) {
                 results.add(range.next().key);
             }

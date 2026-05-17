@@ -346,7 +346,7 @@ public class MirrorCheckpointTaskTest {
         assertEquals(1, checkpoints2.size());
         assertEquals(new Checkpoint("group1", sourceT1p0, 400, 376, ""), checkpoints2.get(sourceT1p0));
     }
-    
+
     @Test
     public void testCheckpointStoreInitialized() throws InterruptedException {
         CheckpointStore checkpointStore = mock(CheckpointStore.class);

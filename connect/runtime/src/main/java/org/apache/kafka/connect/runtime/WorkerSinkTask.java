@@ -224,7 +224,7 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
             while (!isStopping())
                 iteration();
         } catch (WakeupException e) {
-            log.trace("Consumer woken up during initial offset commit attempt, " 
+            log.trace("Consumer woken up during initial offset commit attempt, "
                 + "but succeeded during a later attempt");
         }
     }
@@ -664,7 +664,7 @@ class WorkerSinkTask extends WorkerTask<ConsumerRecord<byte[], byte[]>, SinkReco
         if (offsets.isEmpty()) {
             return;
         }
-        for (Map.Entry<TopicPartition, Long> entry: offsets.entrySet()) {
+        for (Map.Entry<TopicPartition, Long> entry : offsets.entrySet()) {
             TopicPartition tp = entry.getKey();
             Long offset = entry.getValue();
             if (offset != null) {

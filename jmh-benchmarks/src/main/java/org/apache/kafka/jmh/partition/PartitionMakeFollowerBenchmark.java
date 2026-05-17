@@ -82,7 +82,7 @@ public class PartitionMakeFollowerBenchmark {
     private final KafkaScheduler scheduler = new KafkaScheduler(1, true, "scheduler");
     private final int[] replicas = {0, 1, 2};
     private final OffsetCheckpoints offsetCheckpoints = Mockito.mock(OffsetCheckpoints.class);
-    private final DelayedOperations delayedOperations  = Mockito.mock(DelayedOperations.class);
+    private final DelayedOperations delayedOperations = Mockito.mock(DelayedOperations.class);
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Option<Uuid> topicId;
     private Partition partition;
@@ -133,7 +133,7 @@ public class PartitionMakeFollowerBenchmark {
             };
             int initialOffSet = 0;
             while (true) {
-                MemoryRecords memoryRecords =  MemoryRecords.withRecords(initialOffSet, Compression.NONE, 0, simpleRecords);
+                MemoryRecords memoryRecords = MemoryRecords.withRecords(initialOffSet, Compression.NONE, 0, simpleRecords);
                 partition.appendRecordsToFollowerOrFutureReplica(memoryRecords, false, Integer.MAX_VALUE);
                 initialOffSet = initialOffSet + 2;
             }

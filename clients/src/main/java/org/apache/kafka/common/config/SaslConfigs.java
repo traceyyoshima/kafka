@@ -276,7 +276,7 @@ public class SaslConfigs {
         + " <code>sasl.oauthbearer.assertion.</code>* configurations are ignored.</p>";
 
     public static final String SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE = "sasl.oauthbearer.assertion.private.key.file";
-    public static final String SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE_DOC =  "<p>File that contains a private key in the standard PEM format which is used to"
+    public static final String SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE_DOC = "<p>File that contains a private key in the standard PEM format which is used to"
         + " sign the JWT assertion sent to the identity provider.</p>"
         + "<p>The underlying implementation caches the file contents to avoid the performance hit of loading the file on each access. The caching mechanism will detect when"
         + " the file changes to allow for the file to be reloaded on modifications. This allows for &quot;live&quot; private key rotation without restarting the Kafka client.</p>"
@@ -366,6 +366,7 @@ public class SaslConfigs {
     public static final boolean DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE = false;
     public static final String SASL_OAUTHBEARER_HEADER_URLENCODE_DOC = "The (optional) setting to enable the OAuth client to URL-encode the client_id and client_secret in the authorization header"
             + " in accordance with RFC6749, see <a href=\"https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1\">here</a> for more details. The default value is set to 'false' for backward compatibility";
+
     public static void addClientSaslSupport(ConfigDef config) {
         config.define(SaslConfigs.SASL_KERBEROS_SERVICE_NAME, ConfigDef.Type.STRING, null, ConfigDef.Importance.MEDIUM, SaslConfigs.SASL_KERBEROS_SERVICE_NAME_DOC)
                 .define(SaslConfigs.SASL_KERBEROS_KINIT_CMD, ConfigDef.Type.STRING, SaslConfigs.DEFAULT_KERBEROS_KINIT_CMD, ConfigDef.Importance.LOW, SaslConfigs.SASL_KERBEROS_KINIT_CMD_DOC)

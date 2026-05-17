@@ -135,7 +135,7 @@ public class TransactionManagerTest {
 
     private static final String SENDER_TIMEOUT_MSG = "The request has not been sent, or no server response has been received yet.";
     private static final String TEST_TIMEOUT_MSG = "Unexpected time out during the test.";
-    
+
     private final String topic = "test";
     private static final Uuid TOPIC_ID = Uuid.fromString("y2J9jXHhfIkQ1wK8mMKXx1");
     private final TopicPartition tp0 = new TopicPartition(topic, 0);
@@ -1663,7 +1663,7 @@ public class TransactionManagerTest {
         runUntil(() -> transactionManager.transactionContainsPartition(tp0));
 
         TransactionalRequestResult result = transactionManager.beginAbort();
-        var timoutEx = assertThrows(TimeoutException.class, () -> 
+        var timoutEx = assertThrows(TimeoutException.class, () ->
                 result.await(0, TimeUnit.MILLISECONDS, TEST_TIMEOUT_MSG)
         );
         assertTrue(timoutEx.getMessage().contains(TEST_TIMEOUT_MSG));
@@ -1702,7 +1702,7 @@ public class TransactionManagerTest {
         TransactionalRequestResult result = transactionManager.beginCommit();
         var timeoutEx = assertThrows(TimeoutException.class, () -> result.await(0, TimeUnit.MILLISECONDS, TEST_TIMEOUT_MSG));
         assertTrue(timeoutEx.getMessage().contains(TEST_TIMEOUT_MSG));
-        
+
         prepareEndTxnResponse(Errors.NONE, TransactionResult.COMMIT, producerId, epoch);
         runUntil(transactionManager::isReady);
         assertTrue(result.isSuccessful());
@@ -2978,10 +2978,10 @@ public class TransactionManagerTest {
             assertThrows(ExecutionException.class, responseFuture::get).getCause(),
             "Expected to get a TimeoutException since the queued ProducerBatch should have been expired");
         assertTrue(timeoutEx1.getMessage().contains(SENDER_TIMEOUT_MSG));
-        
+
         runUntil(commitResult::isCompleted);  // the commit shouldn't be completed without being sent since the produce request failed.
         assertFalse(commitResult.isSuccessful());  // the commit shouldn't succeed since the produce request failed.
-        var timeoutEx2 = assertInstanceOf(TimeoutException.class, assertThrows(TransactionAbortableException.class, 
+        var timeoutEx2 = assertInstanceOf(TimeoutException.class, assertThrows(TransactionAbortableException.class,
                 () -> commitResult.await(Long.MAX_VALUE, TimeUnit.MILLISECONDS, TEST_TIMEOUT_MSG)).getCause());
         assertTrue(timeoutEx2.getMessage().contains(SENDER_TIMEOUT_MSG));
 
@@ -4108,14 +4108,14 @@ public class TransactionManagerTest {
     public void testInitPidResponseWithKeepPreparedTrueAndOngoingTransaction() {
         // Initialize transaction manager with 2PC enabled
         initializeTransactionManager(Optional.of(transactionalId), true, true);
-        
+
         // Start initializeTransactions with keepPreparedTxn=true
         TransactionalRequestResult result = transactionManager.initializeTransactions(true);
-        
+
         // Prepare coordinator response
         prepareFindCoordinatorResponse(Errors.NONE, false, CoordinatorType.TRANSACTION, transactionalId);
         runUntil(() -> transactionManager.coordinator(CoordinatorType.TRANSACTION) != null);
-        
+
         // Simulate InitProducerId response with ongoing transaction
         long ongoingPid = 12345L;
         short ongoingEpoch = 5;
@@ -4129,16 +4129,16 @@ public class TransactionManagerTest {
             ongoingPid,
             ongoingEpoch
         );
-        
+
         runUntil(transactionManager::hasProducerId);
         transactionManager.maybeUpdateTransactionV2Enabled(true);
 
         result.await(Long.MAX_VALUE, TimeUnit.MILLISECONDS, TEST_TIMEOUT_MSG);
         assertTrue(result.isSuccessful());
-        
+
         // Verify transaction manager transitioned to PREPARED_TRANSACTION state
         assertTrue(transactionManager.isPrepared());
-        
+
         // Verify preparedTxnState was set with ongoing producer ID and epoch
         ProducerIdAndEpoch preparedState = transactionManager.preparedTransactionState();
         assertNotNull(preparedState);
@@ -4151,14 +4151,14 @@ public class TransactionManagerTest {
         // Initialize transaction manager without 2PC enabled
         // keepPrepared can be true even when enable2Pc is false, and we expect the same behavior
         initializeTransactionManager(Optional.of(transactionalId), true, false);
-        
+
         // Start initializeTransactions with keepPreparedTxn=true
         TransactionalRequestResult result = transactionManager.initializeTransactions(true);
-        
+
         // Prepare coordinator response
         prepareFindCoordinatorResponse(Errors.NONE, false, CoordinatorType.TRANSACTION, transactionalId);
         runUntil(() -> transactionManager.coordinator(CoordinatorType.TRANSACTION) != null);
-        
+
         // Simulate InitProducerId response without ongoing transaction
         prepareInitPidResponse(
             Errors.NONE,
@@ -4170,17 +4170,17 @@ public class TransactionManagerTest {
             RecordBatch.NO_PRODUCER_ID,
             RecordBatch.NO_PRODUCER_EPOCH
         );
-        
+
         runUntil(transactionManager::hasProducerId);
         transactionManager.maybeUpdateTransactionV2Enabled(true);
 
         result.await(Long.MAX_VALUE, TimeUnit.MILLISECONDS, TEST_TIMEOUT_MSG);
         assertTrue(result.isSuccessful());
-        
+
         // Verify transaction manager transitioned to READY state (not PREPARED_TRANSACTION)
         assertFalse(transactionManager.isPrepared());
         assertTrue(transactionManager.isReady());
-        
+
         // Verify preparedTxnState was not set or is empty
         ProducerIdAndEpoch preparedState = transactionManager.preparedTransactionState();
         assertEquals(ProducerIdAndEpoch.NONE, preparedState);
@@ -4324,7 +4324,7 @@ public class TransactionManagerTest {
             return true;
         };
     }
-    
+
     private List<TopicPartition> getPartitionsFromV3Request(AddPartitionsToTxnRequest request) {
         return AddPartitionsToTxnRequest.getPartitions(request.data().v3AndBelowTopics());
     }

@@ -281,7 +281,7 @@ public class SmokeTestClient extends SmokeTestUtil {
                 .aggregate(agg.init(), agg.adder(), agg.remover(),
                            Materialized.<String, Long>as(Stores.inMemoryKeyValueStore("cntByCnt"))
                                .withKeySerde(Serdes.String())
-                               .withValueSerde(Serdes.Long()))
+                           .withValueSerde(Serdes.Long()))
                 .toStream()
                 .to("tagg", Produced.with(stringSerde, longSerde));
 

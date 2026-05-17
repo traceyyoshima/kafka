@@ -151,7 +151,7 @@ public class RemoteLogSegmentMetadata extends RemoteLogMetadata {
         this.startOffset = startOffset;
 
         if (endOffset < startOffset) {
-            throw new IllegalArgumentException("Unexpected end offset = " + endOffset + 
+            throw new IllegalArgumentException("Unexpected end offset = " + endOffset +
                                                ". EndOffset for a remote segment cannot be less than startOffset = " + startOffset);
         }
         this.endOffset = endOffset;

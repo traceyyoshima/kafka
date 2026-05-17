@@ -410,7 +410,7 @@ public class LogManager {
      */
     public void handleLogDirFailure(String dir) {
         LOG.warn("Stopping serving logs in dir {}", dir);
-        synchronized (logCreationOrDeletionLock)  {
+        synchronized (logCreationOrDeletionLock) {
             liveLogDirs.remove(new File(dir));
             directoryIds.remove(dir);
             if (liveLogDirs.isEmpty()) {
@@ -783,7 +783,7 @@ public class LogManager {
 
     // Visible for testing
     public Map<String, LogConfig> fetchTopicConfigOverrides(LogConfig defaultConfig, Set<String> topicNames) {
-        Map<String, LogConfig> topicConfigOverrides = new  HashMap<>();
+        Map<String, LogConfig> topicConfigOverrides = new HashMap<>();
         Map<String, Object> defaultProps = defaultConfig.originals();
         topicNames.forEach(topicName -> {
             Properties overrides = configRepository.topicConfig(topicName);
@@ -1503,7 +1503,7 @@ public class LogManager {
      * @param topicPartition TopicPartition that needs to be swapped
      */
     public void replaceCurrentWithFutureLog(TopicPartition topicPartition) throws IOException {
-        synchronized (logCreationOrDeletionLock)  {
+        synchronized (logCreationOrDeletionLock) {
             UnifiedLog sourceLog = currentLogs.get(topicPartition);
             UnifiedLog destLog = futureLogs.get(topicPartition);
 
@@ -1588,7 +1588,7 @@ public class LogManager {
      */
     public Optional<UnifiedLog> asyncDelete(TopicPartition topicPartition, boolean isFuture, boolean checkpoint, boolean isStray) {
         Optional<UnifiedLog> removedLogOpt;
-        synchronized (logCreationOrDeletionLock)  {
+        synchronized (logCreationOrDeletionLock) {
             removedLogOpt = removeLogAndMetrics(isFuture ? futureLogs : currentLogs, topicPartition);
         }
         if (removedLogOpt.isPresent()) {

@@ -122,7 +122,7 @@ public class SubscriptionWrapperSerde<KLeft> extends WrappingNullableSerde<Subsc
                 primaryKeySerializationPseudoTopic = primaryKeySerializationPseudoTopicSupplier.get();
             }
 
-            return  primaryKeySerializer.serialize(
+            return primaryKeySerializer.serialize(
                 primaryKeySerializationPseudoTopic,
                 headers,
                 data.primaryKey()

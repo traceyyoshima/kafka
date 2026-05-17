@@ -2801,7 +2801,7 @@ public class OffsetMetadataManagerTest {
 
         verifyFetchWithUnknownMemberId(context);
     }
-    
+
     @Test
     public void testStreamsGroupOffsetFetchWithUnknownMemberId() {
         OffsetMetadataManagerTestContext context = new OffsetMetadataManagerTestContext.Builder().build();
@@ -2839,7 +2839,7 @@ public class OffsetMetadataManagerTest {
 
         verifyOffsetFetchWithStaleMemberEpoch(context);
     }
-    
+
     @Test
     public void testStreamsGroupOffsetFetchWithStaleMemberEpoch() {
         OffsetMetadataManagerTestContext context = new OffsetMetadataManagerTestContext.Builder().build();
@@ -2941,7 +2941,7 @@ public class OffsetMetadataManagerTest {
         );
         verifyOffsetDelete(context, group);
     }
-    
+
     @Test
     public void testStreamsGroupOffsetDelete() {
         OffsetMetadataManagerTestContext context = new OffsetMetadataManagerTestContext.Builder().build();
@@ -2971,7 +2971,7 @@ public class OffsetMetadataManagerTest {
         group.updateMember(member1);
         verifyOffsetDeleteWithErrors(context, group);
     }
-    
+
     @Test
     public void testStreamsGroupOffsetDeleteWithErrors() {
         OffsetMetadataManagerTestContext context = new OffsetMetadataManagerTestContext.Builder().build();
@@ -3011,7 +3011,7 @@ public class OffsetMetadataManagerTest {
         );
         verifyOffsetDeleteWithPendingTransactionalOffsets(context, group);
     }
-    
+
     @Test
     public void testStreamsGroupOffsetDeleteWithPendingTransactionalOffsets() {
         OffsetMetadataManagerTestContext context = new OffsetMetadataManagerTestContext.Builder().build();

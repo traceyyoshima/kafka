@@ -846,10 +846,10 @@ public class ShareConsumerTest extends ShareConsumerTestBase {
             shareConsumer.subscribe(Set.of(tp.topic()));
             AtomicReference<ConsumerRecords<byte[], byte[]>> recordsAtomic = new AtomicReference<>();
             waitForCondition(() -> {
-                    ConsumerRecords<byte[], byte[]> recs = shareConsumer.poll(Duration.ofMillis(2500L));
-                    recordsAtomic.set(recs);
-                    return recs.count() == 1;
-                },
+                ConsumerRecords<byte[], byte[]> recs = shareConsumer.poll(Duration.ofMillis(2500L));
+                recordsAtomic.set(recs);
+                return recs.count() == 1;
+            },
                 DEFAULT_MAX_WAIT_MS,
                 500L,
                 () -> "records not found"
@@ -1722,93 +1722,92 @@ public class ShareConsumerTest extends ShareConsumerTestBase {
         ClientState prodState = new ClientState();
         final Set<String> produced = new HashSet<>();
         service.execute(() -> {
-                int i = 0;
-                try (Producer<String, String> producer = createProducer(Map.of(
+            int i = 0;
+            try (Producer<String, String> producer = createProducer(Map.of(
                     ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
                     ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()
                 ))) {
-                    while (!prodState.done().get()) {
-                        String key = "key-" + (i++);
-                        ProducerRecord<String, String> record = new ProducerRecord<>(
+                while (!prodState.done().get()) {
+                    String key = "key-" + (i++);
+                    ProducerRecord<String, String> record = new ProducerRecord<>(
                             tpMulti.topic(),
                             tpMulti.partition(),
                             null,
                             key,
                             "value"
                         );
-                        try {
-                            producer.send(record);
-                            producer.flush();
-                            // count only correctly produced records
-                            prodState.count().incrementAndGet();
-                            produced.add(key);
-                        } catch (Exception e) {
+                    try {
+                        producer.send(record);
+                        producer.flush();
+                        // count only correctly produced records
+                        prodState.count().incrementAndGet();
+                        produced.add(key);
+                    } catch (Exception e) {
                             // ignore
-                        }
                     }
                 }
             }
-        );
+        });
 
         // consume messages - start after small delay
         ClientState consState = new ClientState();
         // using map here if we want to debug specific keys
         Map<String, Integer> consumed = new HashMap<>();
         service.schedule(() -> {
-                try (ShareConsumer<String, String> shareConsumer = createShareConsumer(groupId, Map.of(
+            try (ShareConsumer<String, String> shareConsumer = createShareConsumer(groupId, Map.of(
                     ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName(),
                     ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()
                 ))) {
-                    shareConsumer.subscribe(List.of(topicName));
-                    while (!consState.done().get()) {
-                        ConsumerRecords<String, String> records = shareConsumer.poll(Duration.ofMillis(2000L));
-                        consState.count().addAndGet(records.count());
-                        records.forEach(rec -> consumed.compute(rec.key(), (k, v) -> v == null ? 1 : v + 1));
-                        if (prodState.done().get() && records.count() == 0) {
-                            consState.done().set(true);
-                        }
+                shareConsumer.subscribe(List.of(topicName));
+                while (!consState.done().get()) {
+                    ConsumerRecords<String, String> records = shareConsumer.poll(Duration.ofMillis(2000L));
+                    consState.count().addAndGet(records.count());
+                    records.forEach(rec -> consumed.compute(rec.key(), (k, v) -> v == null ? 1 : v + 1));
+                    if (prodState.done().get() && records.count() == 0) {
+                        consState.done().set(true);
                     }
                 }
-            }, 100L, TimeUnit.MILLISECONDS
+            }
+        }, 100L, TimeUnit.MILLISECONDS
         );
 
         // To be closer to real world scenarios, we will execute after
         // some time has elapsed since the producer and consumer started
         // working.
         service.schedule(() -> {
-                // Get the current node hosting the __share_group_state partition
+            // Get the current node hosting the __share_group_state partition
                 // on which tpMulti is hosted. Then shut down this node and wait
                 // for it to be gracefully shutdown. Then fetch the coordinator again
                 // and verify that it has moved to some other broker.
-                try (Admin admin = createAdminClient()) {
-                    SharePartitionKey key = SharePartitionKey.getInstance(groupId, new TopicIdPartition(topicId, tpMulti));
-                    int shareGroupStateTp = Utils.abs(key.asCoordinatorKey().hashCode()) % 3;
-                    List<Integer> curShareCoordNodeId = null;
-                    try {
-                        curShareCoordNodeId = topicPartitionLeader(admin, Topic.SHARE_GROUP_STATE_TOPIC_NAME, shareGroupStateTp);
-                    } catch (Exception e) {
-                        fail(e);
-                    }
-                    assertEquals(1, curShareCoordNodeId.size());
-
-                    // shutdown the coordinator
-                    KafkaBroker broker = cluster.brokers().get(curShareCoordNodeId.get(0));
-                    cluster.shutdownBroker(curShareCoordNodeId.get(0));
-
-                    // wait for it to be completely shutdown
-                    broker.awaitShutdown();
-
-                    List<Integer> newShareCoordNodeId = null;
-                    try {
-                        newShareCoordNodeId = topicPartitionLeader(admin, Topic.SHARE_GROUP_STATE_TOPIC_NAME, shareGroupStateTp);
-                    } catch (Exception e) {
-                        fail(e);
-                    }
-
-                    assertEquals(1, newShareCoordNodeId.size());
-                    assertNotEquals(curShareCoordNodeId.get(0), newShareCoordNodeId.get(0));
+            try (Admin admin = createAdminClient()) {
+                SharePartitionKey key = SharePartitionKey.getInstance(groupId, new TopicIdPartition(topicId, tpMulti));
+                int shareGroupStateTp = Utils.abs(key.asCoordinatorKey().hashCode()) % 3;
+                List<Integer> curShareCoordNodeId = null;
+                try {
+                    curShareCoordNodeId = topicPartitionLeader(admin, Topic.SHARE_GROUP_STATE_TOPIC_NAME, shareGroupStateTp);
+                } catch (Exception e) {
+                    fail(e);
                 }
-            }, 5L, TimeUnit.SECONDS
+                assertEquals(1, curShareCoordNodeId.size());
+
+                // shutdown the coordinator
+                KafkaBroker broker = cluster.brokers().get(curShareCoordNodeId.get(0));
+                cluster.shutdownBroker(curShareCoordNodeId.get(0));
+
+                // wait for it to be completely shutdown
+                broker.awaitShutdown();
+
+                List<Integer> newShareCoordNodeId = null;
+                try {
+                    newShareCoordNodeId = topicPartitionLeader(admin, Topic.SHARE_GROUP_STATE_TOPIC_NAME, shareGroupStateTp);
+                } catch (Exception e) {
+                    fail(e);
+                }
+
+                assertEquals(1, newShareCoordNodeId.size());
+                assertNotEquals(curShareCoordNodeId.get(0), newShareCoordNodeId.get(0));
+            }
+        }, 5L, TimeUnit.SECONDS
         );
 
         // top the producer after some time (but after coordinator shutdown)

@@ -154,7 +154,7 @@ class MirrorSourceLegacyMetrics implements AutoCloseable {
 
             Map<String, String> tags = new LinkedHashMap<>();
             tags.put("source", source);
-            tags.put("target", target); 
+            tags.put("target", target);
             tags.put("topic", topicPartition.topic());
             tags.put("partition", Integer.toString(topicPartition.partition()));
 

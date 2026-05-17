@@ -150,8 +150,8 @@ public class MirrorConnectorsWithCustomForwardingAdminIntegrationTest extends Mi
         backupWorkerProps.putAll(superUserConfig());
 
         Map<String, String> additionalConfig = new HashMap<>(superUserConfig()) {{
-                put(FORWARDING_ADMIN_CLASS, FakeForwardingAdminWithLocalMetadata.class.getName());
-            }};
+            put(FORWARDING_ADMIN_CLASS, FakeForwardingAdminWithLocalMetadata.class.getName());
+        }};
 
         superUserConfig().forEach((property, value) -> {
             additionalConfig.put(CONNECTOR_CLIENT_CONSUMER_OVERRIDES_PREFIX + property, value);

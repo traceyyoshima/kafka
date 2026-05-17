@@ -364,7 +364,7 @@ public class StreamsUncaughtExceptionHandlerIntegrationTest {
 
         final Topology topology = builder.build();
         final MockTime time = new MockTime(0L);
-        
+
         try (final KafkaStreams kafkaStreams1 = new KafkaStreams(topology, properties, time);
              final KafkaStreams kafkaStreams2 = new KafkaStreams(topology, properties, time);
              final LogCaptureAppender logCaptureAppender = LogCaptureAppender.createAndRegister()) {

@@ -119,7 +119,7 @@ public class MeteredSessionStoreTest {
     private InternalProcessorContext<?, ?> context;
 
     private Map<String, String> tags;
-    
+
     public void setUpWithoutContext() {
         mockTime = new MockTime();
         store = new MeteredSessionStore<>(

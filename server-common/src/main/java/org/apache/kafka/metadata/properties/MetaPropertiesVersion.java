@@ -39,7 +39,7 @@ public enum MetaPropertiesVersion {
         int number;
         try {
             number = Integer.parseInt(numberString.trim());
-        } catch (NumberFormatException  e) {
+        } catch (NumberFormatException e) {
             throw new RuntimeException("Invalid meta.properties version string '" +
                     numberString + "'");
         }

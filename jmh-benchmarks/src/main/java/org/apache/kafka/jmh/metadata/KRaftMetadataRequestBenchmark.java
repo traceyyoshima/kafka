@@ -179,7 +179,7 @@ public class KRaftMetadataRequestBenchmark {
     }
 
     private KafkaApis createKafkaApis() {
-        Properties kafkaProps =  new Properties();
+        Properties kafkaProps = new Properties();
         kafkaProps.put(KRaftConfigs.NODE_ID_CONFIG, brokerId + "");
         kafkaProps.put(KRaftConfigs.PROCESS_ROLES_CONFIG, "broker");
         kafkaProps.put(QuorumConfig.QUORUM_VOTERS_CONFIG, "9000@foo:8092");

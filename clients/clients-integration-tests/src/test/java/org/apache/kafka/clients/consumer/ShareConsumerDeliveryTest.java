@@ -1042,7 +1042,7 @@ public class ShareConsumerDeliveryTest extends ShareConsumerTestBase {
                 records.forEach(record -> {
                     if (!offsetToDeliveryCountMap.containsKey(record.offset())) {
                         offsetToDeliveryCountMap.put(record.offset(), 1);
-                    } else  {
+                    } else {
                         offsetToDeliveryCountMap.put(record.offset(), offsetToDeliveryCountMap.get(record.offset()) + 1);
                     }
                 });
@@ -1055,24 +1055,24 @@ public class ShareConsumerDeliveryTest extends ShareConsumerTestBase {
 
             // Validate every offset is delivered at most till delivery limit.
             waitForCondition(() -> {
-                    ConsumerRecords<byte[], byte[]> records = shareConsumer.poll(Duration.ofMillis(2500L));
-                    if (!records.isEmpty()) {
-                        records.forEach(record -> {
-                            if (!offsetToDeliveryCountMap.containsKey(record.offset())) {
-                                offsetToDeliveryCountMap.put(record.offset(), 1);
-                            } else  {
-                                offsetToDeliveryCountMap.put(record.offset(), offsetToDeliveryCountMap.get(record.offset()) + 1);
-                            }
-                        });
-                        records.forEach(record -> shareConsumer.acknowledge(record, AcknowledgeType.RELEASE));
-                        Map<TopicIdPartition, Optional<KafkaException>> result = shareConsumer.commitSync();
-                        assertEquals(1, result.size());
-                        assertEquals(Optional.empty(),
+                ConsumerRecords<byte[], byte[]> records = shareConsumer.poll(Duration.ofMillis(2500L));
+                if (!records.isEmpty()) {
+                    records.forEach(record -> {
+                        if (!offsetToDeliveryCountMap.containsKey(record.offset())) {
+                            offsetToDeliveryCountMap.put(record.offset(), 1);
+                        } else {
+                            offsetToDeliveryCountMap.put(record.offset(), offsetToDeliveryCountMap.get(record.offset()) + 1);
+                        }
+                    });
+                    records.forEach(record -> shareConsumer.acknowledge(record, AcknowledgeType.RELEASE));
+                    Map<TopicIdPartition, Optional<KafkaException>> result = shareConsumer.commitSync();
+                    assertEquals(1, result.size());
+                    assertEquals(Optional.empty(),
                             result.get(new TopicIdPartition(tpId, tp.partition(), tp.topic())));
-                    }
-                    return offsetToDeliveryCountMap.size() == 500 &&
+                }
+                return offsetToDeliveryCountMap.size() == 500 &&
                         offsetToDeliveryCountMap.values().stream().allMatch(deliveryCount -> deliveryCount == 10);
-                },
+            },
                 120000L, // 120 seconds.
                 50L,
                 () -> "failed to get records till delivery limit"

@@ -303,7 +303,7 @@ public class NetworkClientTest {
         long rebootstrapTriggerMs = 1000;
         int defaultRequestTimeoutMs = 5000;
         AtomicInteger rebootstrapCount = new AtomicInteger();
-        Metadata metadata = new Metadata(refreshBackoffMs, refreshBackoffMs, 5000, new LogContext(), new ClusterResourceListeners())  {
+        Metadata metadata = new Metadata(refreshBackoffMs, refreshBackoffMs, 5000, new LogContext(), new ClusterResourceListeners()) {
             @Override
             public synchronized void rebootstrap() {
                 super.rebootstrap();
@@ -1454,10 +1454,10 @@ public class NetworkClientTest {
     @Test
     public void testStickyNodeDoesNotUseStaleIpOnReconnect() throws UnknownHostException {
         String staleIp = "10.200.20.100";
-        String freshIp  = "10.200.20.200";
+        String freshIp = "10.200.20.200";
         // Both nodes share the same id to simulate a broker whose IP changed (e.g. pod replacement).
-        Node staleNode  = new Node(0, staleIp, 9092);
-        Node freshNode  = new Node(0, freshIp, 9092);
+        Node staleNode = new Node(0, staleIp, 9092);
+        Node freshNode = new Node(0, freshIp, 9092);
 
         List<InetSocketAddress> connectAttempts = new ArrayList<>();
         // boolean array so the anonymous subclass can mutate it

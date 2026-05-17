@@ -2410,7 +2410,7 @@ public class KafkaRaftClientReconfigTest {
     void testKRaftUpgradeVersion() throws Exception {
         var local = replicaKey(randomReplicaId(), true);
         var voter1 = replicaKey(local.id() + 1, true);
-        var voter2  = replicaKey(local.id() + 2, true);
+        var voter2 = replicaKey(local.id() + 2, true);
 
         VoterSet startingVoters = VoterSetTest.voterSet(
             VoterSetTest.voterMap(IntStream.of(local.id(), voter1.id(), voter2.id()), false)
@@ -2481,7 +2481,7 @@ public class KafkaRaftClientReconfigTest {
     void testUpdateVoterAfterKRaftVersionUpgrade() throws Exception {
         var local = replicaKey(randomReplicaId(), true);
         var voter1 = replicaKey(local.id() + 1, true);
-        var voter2  = replicaKey(local.id() + 2, true);
+        var voter2 = replicaKey(local.id() + 2, true);
 
         VoterSet startingVoters = VoterSetTest.voterSet(
             VoterSetTest.voterMap(IntStream.of(local.id(), voter1.id(), voter2.id()), false)
@@ -2588,7 +2588,7 @@ public class KafkaRaftClientReconfigTest {
     void testInvalidKRaftUpgradeVersion() throws Exception {
         var local = replicaKey(randomReplicaId(), true);
         var voter1 = replicaKey(local.id() + 1, true);
-        var voter2  = replicaKey(local.id() + 2, true);
+        var voter2 = replicaKey(local.id() + 2, true);
 
         VoterSet startingVoters = VoterSetTest.voterSet(
             VoterSetTest.voterMap(IntStream.of(local.id(), voter1.id(), voter2.id()), false)

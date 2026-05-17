@@ -330,7 +330,7 @@ public class RocksDBTimestampedStoreTest extends RocksDBStoreTest {
         }
 
         try (final KeyValueIterator<Bytes, byte[]> it =
-                 rocksDBStore.reverseRange(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
+            rocksDBStore.reverseRange(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
             {
                 final KeyValue<Bytes, byte[]> keyValue = it.next();
                 assertArrayEquals("key5".getBytes(), keyValue.key.get());

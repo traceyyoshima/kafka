@@ -176,20 +176,20 @@ public class KafkaConfigSchemaTest {
             "internal", "internal,change"
         );
         Map<String, ConfigEntry> expected = Map.of(
-            "abc", new ConfigEntry("abc", null, 
-                    ConfigEntry.ConfigSource.DEFAULT_CONFIG, false, false, List.of(), 
+            "abc", new ConfigEntry("abc", null,
+                    ConfigEntry.ConfigSource.DEFAULT_CONFIG, false, false, List.of(),
                     ConfigEntry.ConfigType.LIST, "abc doc"),
-            "def", new ConfigEntry("def", null, 
-                    ConfigEntry.ConfigSource.DEFAULT_CONFIG, false, false, List.of(), 
+            "def", new ConfigEntry("def", null,
+                    ConfigEntry.ConfigSource.DEFAULT_CONFIG, false, false, List.of(),
                     ConfigEntry.ConfigType.LONG, "def doc"),
-            "ghi", new ConfigEntry("ghi", "true", 
-                    ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(), 
+            "ghi", new ConfigEntry("ghi", "true",
+                    ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(),
                     ConfigEntry.ConfigType.BOOLEAN, "ghi doc"),
-            "xyz", new ConfigEntry("xyz", "thedefault", 
-                    ConfigEntry.ConfigSource.DEFAULT_CONFIG, true, false, List.of(), 
+            "xyz", new ConfigEntry("xyz", "thedefault",
+                    ConfigEntry.ConfigSource.DEFAULT_CONFIG, true, false, List.of(),
                     ConfigEntry.ConfigType.PASSWORD, "xyz doc"),
-            "internal", new ConfigEntry("internal", "internal,change", 
-                    ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(), 
+            "internal", new ConfigEntry("internal", "internal,change",
+                    ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(),
                     ConfigEntry.ConfigType.STRING, "internal doc")
         );
         assertEquals(expected, SCHEMA.resolveEffectiveTopicConfigs(Map.of(), Map.of(), Map.of(), dynamicTopicConfigs));
