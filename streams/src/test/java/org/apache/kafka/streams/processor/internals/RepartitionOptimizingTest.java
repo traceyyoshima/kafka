@@ -161,7 +161,7 @@ public class RepartitionOptimizingTest {
                        Named.as("aggregate"),
                        Materialized.<String, Integer>as(Stores.inMemoryKeyValueStore("aggregate-store"))
                                                     .withKeySerde(Serdes.String())
-                                                    .withValueSerde(Serdes.Integer()))
+                       .withValueSerde(Serdes.Integer()))
             .toStream(Named.as("aggregate-toStream"))
             .to(AGGREGATION_TOPIC, Produced.with(Serdes.String(), Serdes.Integer()).withName("reduce-to"));
 
@@ -185,7 +185,7 @@ public class RepartitionOptimizingTest {
                           .withName("join")
                           .withKeySerde(Serdes.String())
                           .withValueSerde(Serdes.String())
-                          .withOtherValueSerde(Serdes.Long()))
+                  .withOtherValueSerde(Serdes.Long()))
             .to(JOINED_TOPIC, Produced.as("join-to"));
 
         streamsConfiguration.setProperty(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, optimizationConfig);
@@ -373,7 +373,6 @@ public class RepartitionOptimizingTest {
                                                                   + "      <-- join-merge\n"
                                                                   + "    Sink: reduce-to (topic: outputTopic_1)\n"
                                                                   + "      <-- aggregate-toStream\n\n";
-
 
 
 

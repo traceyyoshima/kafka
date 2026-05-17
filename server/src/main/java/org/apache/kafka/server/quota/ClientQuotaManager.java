@@ -119,10 +119,12 @@ public class ClientQuotaManager {
         public ClientQuotaEntity.ConfigEntityType entityType() {
             return ClientQuotaEntity.ConfigEntityType.DEFAULT_CLIENT_ID;
         }
+
         @Override
         public String name() {
             return DEFAULT_NAME;
         }
+
         @Override
         public String toString() {
             return "default client-id";
@@ -262,6 +264,7 @@ public class ClientQuotaManager {
     protected Metrics metrics() {
         return metrics;
     }
+
     protected Time time() {
         return time;
     }

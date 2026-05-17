@@ -428,9 +428,9 @@ public class CurrentAssignmentBuilder {
             newActiveTasksPendingAssignment,
             (subtopologyId, partitionId) ->
                 currentActiveTaskProcessId.apply(subtopologyId, partitionId) != null ||
-                    currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
+            currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
                         .contains(member.processId()) ||
-                    currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
+            currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
                         .contains(member.processId())
         );
 
@@ -443,9 +443,9 @@ public class CurrentAssignmentBuilder {
             (subtopologyId, partitionId) ->
                 Objects.equals(currentActiveTaskProcessId.apply(subtopologyId, partitionId),
                     member.processId()) ||
-                    currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
+            currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
                         .contains(member.processId()) ||
-                    currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
+            currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
                         .contains(member.processId())
         );
 
@@ -458,9 +458,9 @@ public class CurrentAssignmentBuilder {
             (subtopologyId, partitionId) ->
                 Objects.equals(currentActiveTaskProcessId.apply(subtopologyId, partitionId),
                     member.processId()) ||
-                    currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
+            currentStandbyTaskProcessIds.apply(subtopologyId, partitionId)
                         .contains(member.processId()) ||
-                    currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
+            currentWarmupTaskProcessIds.apply(subtopologyId, partitionId)
                         .contains(member.processId())
         );
 

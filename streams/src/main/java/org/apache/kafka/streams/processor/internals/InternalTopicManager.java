@@ -516,7 +516,7 @@ public class InternalTopicManager {
         final Set<String> topicsNotYetCreated = identifyTopicsNotCreated(topics, tempUnknownTopics);
 
         final Set<NewTopic> topicsToCreate = new HashSet<>();
-        
+
         for (final String topicName : topicsNotYetCreated) {
             // Topic already exists or non-deterministic result
             if (tempUnknownTopics.contains(topicName) || topics.get(topicName) == null) {
@@ -554,7 +554,7 @@ public class InternalTopicManager {
                 createTopicResult.getValue().get();
                 topicsNotReady.remove(topicName);
                 createdTopics.add(topicName);
-                
+
             } catch (final InterruptedException fatalException) {
                 // this should not happen; if it ever happens it indicate a bug
                 Thread.currentThread().interrupt();
@@ -615,10 +615,10 @@ public class InternalTopicManager {
                 );
                 Utils.sleep(retryBackOffMs);
             }
-        } 
+        }
         return createdTopics;
-    } 
-        
+    }
+
 
     /**
      * Try to get the partition information for the given topics; return the partition info for topics that already exists.
@@ -859,7 +859,7 @@ public class InternalTopicManager {
                                 log.error("Unexpected error during cleanup of internal topics: ", cause);
                                 throw new StreamsException(
                                     String.format("Could not clean up internal topics %s, because during the cleanup " +
-                                            "of topic %s the following error occurred: ",
+                                    "of topic %s the following error occurred: ",
                                         topicsStillToCleanup, topicName),
                                     cause
                                 );
@@ -897,7 +897,7 @@ public class InternalTopicManager {
 
         log.info("Completed cleanup of internal topics {}.", topicsToCleanUp);
     }
-   
+
     private void maybeThrowTimeout(final TimeoutContext context) {
         if (!context.pendingItems.isEmpty() && time.milliseconds() >= context.deadline) {
             log.error("{}: {}", context.prefix, context.errorDetails);

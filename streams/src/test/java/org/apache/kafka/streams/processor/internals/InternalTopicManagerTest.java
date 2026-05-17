@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package org.apache.kafka.streams.processor.internals;
+
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.Config;
 import org.apache.kafka.clients.admin.ConfigEntry;
@@ -313,11 +314,11 @@ public class InternalTopicManagerTest {
         assertThat(
             exception.getMessage(),
             is("Setup timeout: Could not create internal topics within " +
-                    (Integer) config.get(StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG)) / 2 +
+            (Integer) config.get(StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG)) / 2 +
                 " milliseconds. This can happen if the Kafka cluster is temporarily not available or a topic is marked" +
-                    " for deletion and the broker did not complete its deletion within the timeout." +
-                    " The last errors seen per topic are:" +
-                    " {" + topic1 + "=org.apache.kafka.common.errors.TopicExistsException: Topic test_topic exists already.}")
+            " for deletion and the broker did not complete its deletion within the timeout." +
+            " The last errors seen per topic are:" +
+            " {" + topic1 + "=org.apache.kafka.common.errors.TopicExistsException: Topic test_topic exists already.}")
         );
     }
 
@@ -869,6 +870,7 @@ public class InternalTopicManagerTest {
                     "This can happen if the Kafka cluster is temporarily not available."));
         }
     }
+
     @Test
     public void shouldLogWhenTopicNotFoundAndNotThrowException() {
         mockAdminClient.addTopic(
@@ -925,7 +927,7 @@ public class InternalTopicManagerTest {
                 Collections.singletonMap(topic1, topicDescriptionUnknownTopicFuture)));
         when(admin.createTopics(Collections.singleton(
                 new NewTopic(topic1, Optional.of(1), Optional.of((short) 1))
-            .configs(mkMap(mkEntry(TopicConfig.CLEANUP_POLICY_CONFIG, TopicConfig.CLEANUP_POLICY_DELETE),
+                    .configs(mkMap(mkEntry(TopicConfig.CLEANUP_POLICY_CONFIG, TopicConfig.CLEANUP_POLICY_DELETE),
                 mkEntry(TopicConfig.MESSAGE_TIMESTAMP_TYPE_CONFIG, "CreateTime"),
                 mkEntry(TopicConfig.SEGMENT_BYTES_CONFIG, "52428800"),
                 mkEntry(TopicConfig.RETENTION_MS_CONFIG, "-1"))))))

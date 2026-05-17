@@ -60,7 +60,7 @@ public class WorkerConfig extends AbstractConfig {
 
     public static final String BOOTSTRAP_SERVERS_CONFIG = "bootstrap.servers";
     public static final String BOOTSTRAP_SERVERS_DOC =
-                "A list of host/port pairs used to establish the initial connection to the Kafka cluster. "
+        "A list of host/port pairs used to establish the initial connection to the Kafka cluster. "
                         + "Clients use this list to bootstrap and discover the full set of Kafka brokers. "
                         + "While the order of servers in the list does not matter, we recommend including more than one server to ensure resilience if any servers are down. "
                         + "This list does not need to contain the entire set of brokers, as Kafka clients automatically manage and update connections to the cluster efficiently. "
@@ -121,9 +121,9 @@ public class WorkerConfig extends AbstractConfig {
     public static final String OFFSET_COMMIT_TIMEOUT_MS_CONFIG = "offset.flush.timeout.ms";
     private static final String OFFSET_COMMIT_TIMEOUT_MS_DOC
             = "Maximum number of milliseconds to wait for records to flush and partition offset data to be"
-            + " committed to offset storage before cancelling the process and restoring the offset "
-            + "data to be committed in a future attempt. This property has no effect for source connectors "
-            + "running with exactly-once support.";
+                + " committed to offset storage before cancelling the process and restoring the offset "
+                + "data to be committed in a future attempt. This property has no effect for source connectors "
+                + "running with exactly-once support.";
     public static final long OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5000L;
 
     public static final String PLUGIN_PATH_CONFIG = "plugin.path";

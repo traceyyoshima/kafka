@@ -60,8 +60,8 @@ public class ImageWriterOptionsTest {
         String expectedMessage = "stuff";
 
         for (int i = MetadataVersion.MINIMUM_VERSION.ordinal();
-             i < MetadataVersion.VERSIONS.length;
-             i++) {
+            i < MetadataVersion.VERSIONS.length;
+            i++) {
             MetadataVersion version = MetadataVersion.VERSIONS[i];
             String formattedMessage = String.format("Metadata has been lost because the following could not be represented in metadata.version %s: %s", version, expectedMessage);
             Consumer<UnwritableMetadataException> customLossHandler = e -> assertEquals(formattedMessage, e.getMessage());

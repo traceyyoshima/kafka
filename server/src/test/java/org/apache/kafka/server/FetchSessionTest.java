@@ -1567,9 +1567,9 @@ public class FetchSessionTest {
             0,
             0,
             fetchData)
-        .metadata(metadata)
-        .removed(toForget)
-        .build();
+            .metadata(metadata)
+            .removed(toForget)
+            .build();
     }
 
     private FetchRequest createRequestWithoutTopicIds(FetchMetadata metadata,
@@ -1582,9 +1582,9 @@ public class FetchSessionTest {
             0,
             0,
             fetchData)
-        .metadata(metadata)
-        .removed(List.of())
-        .build();
+            .metadata(metadata)
+            .removed(List.of())
+            .build();
     }
 
     private FetchContext newContext(FetchManager fetchManager, FetchRequest request, Map<Uuid, String> topicNames) {

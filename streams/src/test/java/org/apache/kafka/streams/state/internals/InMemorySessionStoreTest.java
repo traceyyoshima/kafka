@@ -115,7 +115,7 @@ public class InMemorySessionStoreTest extends AbstractSessionBytesStoreTest {
         iterator.close();
 
         try (final KeyValueIterator<Windowed<String>, Long> it =
-             sessionStore.findSessions("a", "b", 0L, 20L)) {
+            sessionStore.findSessions("a", "b", 0L, 20L)) {
             assertFalse(it.hasNext());
         }
     }

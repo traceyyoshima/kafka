@@ -116,7 +116,7 @@ public class ShareHeartbeatRequestManager extends AbstractHeartbeatRequestManage
             // custom message for it. Note that the case where the protocol is not supported at all should fail
             // on the client side when building the request and checking supporting APIs (handled on onFailure).
             case UNSUPPORTED_VERSION:
-                logger.error("{} failed due to unsupported version: {}", 
+                logger.error("{} failed due to unsupported version: {}",
                     heartbeatRequestName(), SHARE_PROTOCOL_NOT_SUPPORTED_MSG);
                 handleFatalFailure(error.exception(SHARE_PROTOCOL_NOT_SUPPORTED_MSG));
                 errorHandled = true;

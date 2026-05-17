@@ -86,7 +86,7 @@ public class AddPartitionsToTxnManagerTest {
     private final AbstractKafkaConfig config = new AbstractKafkaConfig(
             AbstractKafkaConfig.CONFIG_DEF,
             Map.of(
-                KRaftConfigs.PROCESS_ROLES_CONFIG, "broker", 
+                KRaftConfigs.PROCESS_ROLES_CONFIG, "broker",
                 KRaftConfigs.NODE_ID_CONFIG, "1",
                 KRaftConfigs.CONTROLLER_LISTENER_NAMES_CONFIG, "CONTROLLER"),
             Map.of(),

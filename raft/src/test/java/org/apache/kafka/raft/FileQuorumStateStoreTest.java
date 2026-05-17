@@ -149,7 +149,7 @@ public class FileQuorumStateStoreTest {
     }
 
     @Test
-    void testReload()  throws IOException {
+    void testReload() throws IOException {
         final File stateFile = TestUtils.tempFile();
         FileQuorumStateStore stateStore = new FileQuorumStateStore(stateFile);
 

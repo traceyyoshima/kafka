@@ -785,7 +785,7 @@ public class IQv2StoreIntegrationTest {
                 shouldCollectExecutionInfoUnderFailure();
                 if (storeToTest.keyValue()) {
                     if (storeToTest.timestamped()) {
-                        shouldHandleKeyQuery(2,  5);
+                        shouldHandleKeyQuery(2, 5);
                         shouldHandleTimestampedKeyQuery(2, ValueAndTimestamp.makeAllowNullable(5, WINDOW_START + Duration.ofMinutes(2).toMillis() * 5));
                         shouldHandleRangeQueries();
                         shouldHandleTimestampedRangeQueries(true);
@@ -1624,9 +1624,9 @@ public class IQv2StoreIntegrationTest {
                     queryResult.getFailureMessage(),
                     matchesPattern(
                         "This store (.*)"
-                            + " doesn't know how to execute the given query"
-                            + " (.*)."
-                            + " Contact the store maintainer if you need support for a new query type."
+                    + " doesn't know how to execute the given query"
+                    + " (.*)."
+                    + " Contact the store maintainer if you need support for a new query type."
                     )
                 );
                 assertThrows(IllegalArgumentException.class, queryResult::getResult);

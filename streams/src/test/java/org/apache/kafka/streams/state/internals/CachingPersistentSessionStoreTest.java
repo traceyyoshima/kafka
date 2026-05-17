@@ -128,7 +128,7 @@ public class CachingPersistentSessionStoreTest {
         assertEquals(3, cache.size());
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> a =
-                 cachingStore.findSessions(keyA, 0, 0);
+            cachingStore.findSessions(keyA, 0, 0);
              final KeyValueIterator<Windowed<Bytes>, byte[]> b =
                  cachingStore.findSessions(keyB, 0, 0)) {
 
@@ -138,6 +138,7 @@ public class CachingPersistentSessionStoreTest {
             assertFalse(b.hasNext());
         }
     }
+
     @Test
     public void shouldMatchPositionAfterPutWithFlushListener() {
         cachingStore.setFlushListener(record -> { }, false);
@@ -187,7 +188,7 @@ public class CachingPersistentSessionStoreTest {
         assertEquals(3, cache.size());
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> all =
-                 cachingStore.fetch(keyA, keyB)) {
+            cachingStore.fetch(keyA, keyB)) {
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
@@ -196,7 +197,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyFrom fetch
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> all =
-                 cachingStore.fetch(null, keyB)) {
+            cachingStore.fetch(null, keyB)) {
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
@@ -205,7 +206,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyTo fetch
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> all =
-                 cachingStore.fetch(keyA, null)) {
+            cachingStore.fetch(keyA, null)) {
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
@@ -214,7 +215,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyFrom and keyTo fetch
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> all =
-                 cachingStore.fetch(null, null)) {
+            cachingStore.fetch(null, null)) {
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
@@ -231,7 +232,7 @@ public class CachingPersistentSessionStoreTest {
         assertEquals(3, cache.size());
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> all =
-                 cachingStore.backwardFetch(keyA, keyB)) {
+            cachingStore.backwardFetch(keyA, keyB)) {
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
@@ -240,7 +241,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyFrom fetch
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> all =
-                 cachingStore.backwardFetch(null, keyB)) {
+            cachingStore.backwardFetch(null, keyB)) {
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
@@ -249,7 +250,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyTo fetch
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> all =
-                 cachingStore.backwardFetch(keyA, null)) {
+            cachingStore.backwardFetch(keyA, null)) {
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
@@ -258,7 +259,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyFrom and keyTo fetch
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> all =
-                 cachingStore.backwardFetch(null, null)) {
+            cachingStore.backwardFetch(null, null)) {
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(all.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
@@ -321,7 +322,7 @@ public class CachingPersistentSessionStoreTest {
         assertEquals(3, cache.size());
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> some =
-                 cachingStore.findSessions(keyAA, keyB, 0, 0)) {
+            cachingStore.findSessions(keyAA, keyB, 0, 0)) {
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
             assertFalse(some.hasNext());
@@ -329,7 +330,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyFrom case
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> some =
-                 cachingStore.findSessions(null, keyAA, 0, 0)) {
+            cachingStore.findSessions(null, keyAA, 0, 0)) {
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             assertFalse(some.hasNext());
@@ -337,7 +338,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyTo case
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> some =
-                 cachingStore.findSessions(keyAA, keyB, 0, 0)) {
+            cachingStore.findSessions(keyAA, keyB, 0, 0)) {
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
             assertFalse(some.hasNext());
@@ -345,7 +346,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyFrom and keyTo case
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> some =
-                 cachingStore.findSessions(null, null, 0, 0)) {
+            cachingStore.findSessions(null, null, 0, 0)) {
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
@@ -362,7 +363,7 @@ public class CachingPersistentSessionStoreTest {
         assertEquals(3, cache.size());
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> some =
-                 cachingStore.backwardFindSessions(keyAA, keyB, 0, 0)) {
+            cachingStore.backwardFindSessions(keyAA, keyB, 0, 0)) {
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             assertFalse(some.hasNext());
@@ -370,7 +371,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyFrom case
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> some =
-                 cachingStore.backwardFindSessions(null, keyAA, 0, 0)) {
+            cachingStore.backwardFindSessions(null, keyAA, 0, 0)) {
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
             assertFalse(some.hasNext());
@@ -378,7 +379,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyTo case
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> some =
-                 cachingStore.backwardFindSessions(keyAA, keyB, 0, 0)) {
+            cachingStore.backwardFindSessions(keyAA, keyB, 0, 0)) {
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             assertFalse(some.hasNext());
@@ -386,7 +387,7 @@ public class CachingPersistentSessionStoreTest {
 
         // infinite keyFrom and keyTo case
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> some =
-                 cachingStore.backwardFindSessions(null, null, 0, 0)) {
+            cachingStore.backwardFindSessions(null, null, 0, 0)) {
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyB, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyAA, new SessionWindow(0, 0)), "1");
             verifyWindowedKeyValue(some.next(), new Windowed<>(keyA, new SessionWindow(0, 0)), "1");
@@ -438,7 +439,7 @@ public class CachingPersistentSessionStoreTest {
         final List<KeyValue<Windowed<Bytes>, byte[]>> added = addSessionsUntilOverflow("a", "b", "c", "d");
         assertEquals(added.size() - 1, cache.size());
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.findSessions(added.get(0).key.key(), 0, 0)) {
+            cachingStore.findSessions(added.get(0).key.key(), 0, 0)) {
             final KeyValue<Windowed<Bytes>, byte[]> next = iterator.next();
             assertEquals(added.get(0).key, next.key);
             assertArrayEquals(added.get(0).value, next.value);
@@ -465,7 +466,7 @@ public class CachingPersistentSessionStoreTest {
         cachingStore.remove(a);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> rangeIter =
-                 cachingStore.findSessions(keyA, 0, 0)) {
+            cachingStore.findSessions(keyA, 0, 0)) {
             assertFalse(rangeIter.hasNext());
         }
 
@@ -490,7 +491,7 @@ public class CachingPersistentSessionStoreTest {
         cachingStore.put(a5, "5".getBytes());
         cachingStore.put(a6, "6".getBytes());
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> results =
-                 cachingStore.findSessions(keyA, 0, SEGMENT_INTERVAL * 5)) {
+            cachingStore.findSessions(keyA, 0, SEGMENT_INTERVAL * 5)) {
             assertEquals(a1, results.next().key);
             assertEquals(a2, results.next().key);
             assertEquals(a3, results.next().key);
@@ -517,7 +518,7 @@ public class CachingPersistentSessionStoreTest {
         cachingStore.put(a5, "5".getBytes());
         cachingStore.put(a6, "6".getBytes());
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> results =
-                 cachingStore.backwardFindSessions(keyA, 0, SEGMENT_INTERVAL * 5)) {
+            cachingStore.backwardFindSessions(keyA, 0, SEGMENT_INTERVAL * 5)) {
             assertEquals(a6, results.next().key);
             assertEquals(a5, results.next().key);
             assertEquals(a4, results.next().key);
@@ -726,7 +727,7 @@ public class CachingPersistentSessionStoreTest {
         cachingStore.put(new Windowed<>(keyB, new SessionWindow(6, 7)), "4".getBytes());
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> singleKeyIterator =
-                 cachingStore.findSessions(keyAA, 0L, 10L);
+            cachingStore.findSessions(keyAA, 0L, 10L);
              final KeyValueIterator<Windowed<Bytes>, byte[]> keyRangeIterator =
                  cachingStore.findSessions(keyAA, keyAA, 0L, 10L)) {
 
@@ -745,7 +746,7 @@ public class CachingPersistentSessionStoreTest {
         cachingStore.put(new Windowed<>(keyB, new SessionWindow(6, 7)), "4".getBytes());
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> singleKeyIterator =
-                 cachingStore.backwardFindSessions(keyAA, 0L, 10L);
+            cachingStore.backwardFindSessions(keyAA, 0L, 10L);
              final KeyValueIterator<Windowed<Bytes>, byte[]> keyRangeIterator =
                  cachingStore.backwardFindSessions(keyAA, keyAA, 0L, 10L)) {
 

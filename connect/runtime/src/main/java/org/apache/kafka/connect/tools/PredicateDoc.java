@@ -31,7 +31,7 @@ public class PredicateDoc {
         final String overview;
         final ConfigDef configDef;
 
-        private <P extends Predicate<?>> DocInfo(Class<P> predicateClass, String overview, ConfigDef configDef) {
+        private <P extends Predicate<?>>DocInfo(Class<P> predicateClass, String overview, ConfigDef configDef) {
             this.predicateName = predicateClass.getName();
             this.overview = overview;
             this.configDef = configDef;

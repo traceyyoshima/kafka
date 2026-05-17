@@ -319,7 +319,7 @@ public class StreamsProducerTest {
 
     @Test
     public void shouldThrowStreamsExceptionOnSendError() {
-        nonEosMockProducer.sendException  = new KafkaException("KABOOM!");
+        nonEosMockProducer.sendException = new KafkaException("KABOOM!");
 
         final StreamsException thrown = assertThrows(
             StreamsException.class,
@@ -574,7 +574,7 @@ public class StreamsProducerTest {
         assertThat(
             thrown.getMessage(),
             is("Producer got fenced trying to begin a new transaction [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+            " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -635,7 +635,7 @@ public class StreamsProducerTest {
         assertThat(
             thrown.getMessage(),
             is("Producer got fenced trying to send a record [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+            " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -654,7 +654,7 @@ public class StreamsProducerTest {
         assertThat(
             thrown.getMessage(),
             is("Producer got fenced trying to send a record [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+            " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -692,7 +692,7 @@ public class StreamsProducerTest {
         assertThat(
             thrown.getMessage(),
             is("Producer got fenced trying to add offsets to a transaction [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+            " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -760,7 +760,7 @@ public class StreamsProducerTest {
         assertThat(
             thrown.getMessage(),
             is("Producer got fenced trying to commit a transaction [test];" +
-                   " it means all tasks belonging to this thread should be migrated.")
+            " it means all tasks belonging to this thread should be migrated.")
         );
     }
 
@@ -909,7 +909,7 @@ public class StreamsProducerTest {
         );
 
         final double expectedTotalBlocked = BUFFER_POOL_WAIT_TIME + FLUSH_TME + TXN_INIT_TIME +
-            TXN_BEGIN_TIME + TXN_SEND_OFFSETS_TIME +  TXN_COMMIT_TIME + TXN_ABORT_TIME +
+            TXN_BEGIN_TIME + TXN_SEND_OFFSETS_TIME + TXN_COMMIT_TIME + TXN_ABORT_TIME +
             METADATA_WAIT_TIME;
         assertThat(nonEosStreamsProducer.totalBlockedTime(), closeTo(expectedTotalBlocked, 0.01));
     }
@@ -928,7 +928,7 @@ public class StreamsProducerTest {
             METADATA_WAIT_TIME
         );
         final double expectedTotalBlocked = BUFFER_POOL_WAIT_TIME + FLUSH_TME + TXN_INIT_TIME +
-            TXN_BEGIN_TIME + TXN_SEND_OFFSETS_TIME +  TXN_COMMIT_TIME + TXN_ABORT_TIME +
+            TXN_BEGIN_TIME + TXN_SEND_OFFSETS_TIME + TXN_COMMIT_TIME + TXN_ABORT_TIME +
             METADATA_WAIT_TIME;
         assertThat(eosStreamsProducer.totalBlockedTime(), equalTo(expectedTotalBlocked));
         final long closeStart = 1L;

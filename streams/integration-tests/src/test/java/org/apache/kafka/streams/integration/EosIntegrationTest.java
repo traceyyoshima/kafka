@@ -1142,73 +1142,73 @@ public class EosIntegrationTest {
 
         final KStream<Long, Long> input = builder.stream(MULTI_PARTITION_INPUT_TOPIC);
         input.process(() -> new Processor<Long, Long, Long, Long>() {
-                ProcessorContext<Long, Long> context;
-                KeyValueStore<Long, Long> state = null;
+            ProcessorContext<Long, Long> context;
+            KeyValueStore<Long, Long> state = null;
 
-                @Override
-                public void init(final ProcessorContext<Long, Long> context) {
-                    this.context = context;
+            @Override
+            public void init(final ProcessorContext<Long, Long> context) {
+                this.context = context;
 
-                    if (withState) {
-                        state = context.getStateStore(storeName);
-                    }
+                if (withState) {
+                    state = context.getStateStore(storeName);
                 }
+            }
 
-                @Override
-                public void process(final Record<Long, Long> record) {
-                    if (stallInjected.compareAndSet(true, false)) {
-                        LOG.info(dummyHostName + " is executing the injected stall");
-                        stallingHost.set(dummyHostName);
-                        while (doStall) {
-                            final Thread thread = Thread.currentThread();
-                            if (thread.isInterrupted()) {
+            @Override
+            public void process(final Record<Long, Long> record) {
+                if (stallInjected.compareAndSet(true, false)) {
+                    LOG.info(dummyHostName + " is executing the injected stall");
+                    stallingHost.set(dummyHostName);
+                    while (doStall) {
+                        final Thread thread = Thread.currentThread();
+                        if (thread.isInterrupted()) {
+                            throw new RuntimeException("Detected we've been interrupted.");
+                        }
+                        if (!processingThreadsEnabled) {
+                            if (!((StreamThread) thread).isRunning()) {
                                 throw new RuntimeException("Detected we've been interrupted.");
                             }
-                            if (!processingThreadsEnabled) {
-                                if (!((StreamThread) thread).isRunning()) {
-                                    throw new RuntimeException("Detected we've been interrupted.");
-                                }
-                            }
-                            try {
-                                Thread.sleep(100);
-                            } catch (final InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
                         }
-                    }
-
-                    final long key = record.key();
-                    final long value = record.value();
-
-                    if ((value + 1) % 10 == 0) {
-                        context.commit();
-                        commitRequested.incrementAndGet();
-                    }
-
-                    if (state != null) {
-                        Long sum = state.get(key);
-
-                        if (sum == null) {
-                            sum = value;
-                        } else {
-                            sum += value;
+                        try {
+                            Thread.sleep(100);
+                        } catch (final InterruptedException e) {
+                            throw new RuntimeException(e);
                         }
-                        state.put(key, sum);
-                    }
-
-
-                    if (errorInjected.compareAndSet(true, false)) {
-                        // only tries to fail once on one of the task
-                        throw new RuntimeException("Injected test exception.");
-                    }
-
-                    if (state != null) {
-                        context.forward(record.withValue(state.get(key)));
-                    } else {
-                        context.forward(record);
                     }
                 }
-            }, storeNames)
+
+                final long key = record.key();
+                final long value = record.value();
+
+                if ((value + 1) % 10 == 0) {
+                    context.commit();
+                    commitRequested.incrementAndGet();
+                }
+
+                if (state != null) {
+                    Long sum = state.get(key);
+
+                    if (sum == null) {
+                        sum = value;
+                    } else {
+                        sum += value;
+                    }
+                    state.put(key, sum);
+                }
+
+
+                if (errorInjected.compareAndSet(true, false)) {
+                    // only tries to fail once on one of the task
+                    throw new RuntimeException("Injected test exception.");
+                }
+
+                if (state != null) {
+                    context.forward(record.withValue(state.get(key)));
+                } else {
+                    context.forward(record);
+                }
+            }
+        }, storeNames)
             .to(SINGLE_PARTITION_OUTPUT_TOPIC);
 
         stateTmpDir = TestUtils.tempDirectory().getPath() + File.separator;
@@ -1394,7 +1394,7 @@ public class EosIntegrationTest {
         final StateQueryResult<KeyValueIterator<Long, Long>> result =
                 IntegrationTestUtils.iqv2WaitForResult(streams, request);
 
-        for (final QueryResult<KeyValueIterator<Long, Long>> partitionResult: result.getPartitionResults().values()) {
+        for (final QueryResult<KeyValueIterator<Long, Long>> partitionResult : result.getPartitionResults().values()) {
             try (final KeyValueIterator<Long, Long> it = partitionResult.getResult()) {
                 while (it.hasNext()) {
                     assertTrue(expectedStoreContent.remove(it.next()), reason);

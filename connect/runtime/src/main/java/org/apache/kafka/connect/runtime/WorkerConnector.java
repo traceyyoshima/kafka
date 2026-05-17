@@ -443,8 +443,8 @@ public class WorkerConnector implements Runnable {
     @Override
     public String toString() {
         return "WorkerConnector{" +
-                       "id=" + connName +
-                       '}';
+            "id=" + connName +
+            '}';
     }
 
     class ConnectorMetricsGroup implements ConnectorStatus.Listener, AutoCloseable {

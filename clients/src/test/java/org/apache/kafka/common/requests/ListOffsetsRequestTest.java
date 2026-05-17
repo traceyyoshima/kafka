@@ -73,7 +73,7 @@ public class ListOffsetsRequestTest {
                     .setTargetTimes(topics)
                     .build(version);
             ListOffsetsResponse response = (ListOffsetsResponse) request.getErrorResponse(0, Errors.NOT_LEADER_OR_FOLLOWER.exception());
-    
+
             List<ListOffsetsTopicResponse> v = Collections.singletonList(
                     new ListOffsetsTopicResponse()
                         .setName("topic")

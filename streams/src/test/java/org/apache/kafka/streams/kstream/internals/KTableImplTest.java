@@ -427,8 +427,8 @@ public class KTableImplTest {
     }
 
     private void assertTopologyContainsProcessor(final Topology topology, final String processorName) {
-        for (final Subtopology subtopology: topology.describe().subtopologies()) {
-            for (final TopologyDescription.Node node: subtopology.nodes()) {
+        for (final Subtopology subtopology : topology.describe().subtopologies()) {
+            for (final TopologyDescription.Node node : subtopology.nodes()) {
                 if (node.name().equals(processorName)) {
                     return;
                 }

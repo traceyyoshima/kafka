@@ -92,7 +92,7 @@ public class ControllerMetadataMetricsPublisher implements MetadataPublisher {
         ControllerMetricsChanges changes = new ControllerMetricsChanges();
         if (delta.clusterDelta() != null) {
             for (Entry<Integer, Optional<BrokerRegistration>> entry :
-                    delta.clusterDelta().changedBrokers().entrySet()) {
+                delta.clusterDelta().changedBrokers().entrySet()) {
                 changes.handleBrokerChange(
                     prevImage.cluster().brokers().get(entry.getKey()),
                     entry.getValue().orElse(null),

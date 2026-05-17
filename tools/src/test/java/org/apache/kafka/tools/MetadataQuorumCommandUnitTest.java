@@ -181,7 +181,7 @@ public class MetadataQuorumCommandUnitTest {
     @Test
     public void testGetMetadataDirectoryIdWhenThereIsNoId() throws Exception {
         try (MetadataQuorumCommandUnitTestEnv testEnv =
-                 new MetadataQuorumCommandUnitTestEnv(Optional.empty())) {
+            new MetadataQuorumCommandUnitTestEnv(Optional.empty())) {
             assertEquals("No directory id found in " + testEnv.metadataDir.getAbsolutePath(),
                 assertThrows(TerseException.class,
                     () -> MetadataQuorumCommand.getMetadataDirectoryId(testEnv.metadataDir.getAbsolutePath())).
@@ -192,7 +192,7 @@ public class MetadataQuorumCommandUnitTest {
     @Test
     public void testGetMetadataDirectoryIdWhenThereIsNoDirectory() throws Exception {
         try (MetadataQuorumCommandUnitTestEnv testEnv =
-                     new MetadataQuorumCommandUnitTestEnv(Optional.empty())) {
+            new MetadataQuorumCommandUnitTestEnv(Optional.empty())) {
             testEnv.close();
             assertEquals("Unable to read meta.properties from " + testEnv.metadataDir.getAbsolutePath(),
                     assertThrows(TerseException.class,
@@ -246,7 +246,7 @@ public class MetadataQuorumCommandUnitTest {
     @Test
     public void testAddControllerDryRun() throws Exception {
         try (MetadataQuorumCommandUnitTestEnv testEnv =
-                 new MetadataQuorumCommandUnitTestEnv(Optional.
+            new MetadataQuorumCommandUnitTestEnv(Optional.
                      of(Uuid.fromString("wZoXPqWoSu6F6c8MkmdyAg")))) {
             File propsFile = testEnv.writePropertiesFile();
             List<String> outputs = List.of(

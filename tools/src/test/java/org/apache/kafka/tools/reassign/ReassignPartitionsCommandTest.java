@@ -312,7 +312,7 @@ public class ReassignPartitionsCommandTest {
         removeReplicationThrottleForPartitions(part);
         Map<TopicPartition, PartitionReassignmentState> finalAssignment = Map.of(part,
                 new PartitionReassignmentState(List.of(3, 2, 1), List.of(3, 2, 1), true));
-        try (Admin admin = Admin.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers())))  {
+        try (Admin admin = Admin.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers()))) {
             waitForVerifyAssignment(admin, assignment, false,
                     new VerifyAssignmentResult(finalAssignment));
         }
@@ -526,7 +526,7 @@ public class ReassignPartitionsCommandTest {
             generateAssignment(admin, topicsToMoveJson, "1,2,3", false);
         }
     }
-    
+
     @ClusterTest(types = {Type.KRAFT})
     public void testExecuteAssignmentWithOneBootstrapServerShutdownWontTimeout() throws Exception {
         var brokerIdToShutdown = 0;
@@ -544,7 +544,7 @@ public class ReassignPartitionsCommandTest {
             "]}";
         runExecuteAssignment(false, assignment, -1L, -1L);
     }
-    
+
     private void createTopics() {
         try (Admin admin = Admin.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers()))) {
             Map<Integer, List<Integer>> fooReplicasAssignments = new HashMap<>();

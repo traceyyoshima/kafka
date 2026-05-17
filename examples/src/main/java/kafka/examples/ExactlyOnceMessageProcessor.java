@@ -50,7 +50,7 @@ import static java.time.Duration.ofMillis;
  */
 public class ExactlyOnceMessageProcessor extends Thread implements ConsumerRebalanceListener, AutoCloseable {
     private static final int MAX_RETRIES = 5;
-    
+
     private final String bootstrapServers;
     private final String inputTopic;
     private final String outputTopic;
@@ -233,7 +233,7 @@ public class ExactlyOnceMessageProcessor extends Thread implements ConsumerRebal
             Utils.printErr("The number of retries must be greater than zero");
             shutdown();
         }
-        
+
         if (retries < MAX_RETRIES) {
             // retry: reset fetch offset
             // the consumer fetch position needs to be restored to the committed offset before the transaction started

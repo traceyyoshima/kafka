@@ -73,7 +73,7 @@ public class KStreamProcessorApiTest {
         try (TopologyTestDriver testDriver = new TopologyTestDriver(builder.build())) {
             final TestInputTopic<String, String>
                     testDriverInputTopic =
-                    testDriver.createInputTopic("input", Serdes.String().serializer(), Serdes.String().serializer());
+                        testDriver.createInputTopic("input", Serdes.String().serializer(), Serdes.String().serializer());
 
             words.forEach(clk -> testDriverInputTopic.pipeInput(clk.key, clk.value));
 
@@ -91,9 +91,10 @@ public class KStreamProcessorApiTest {
             Assertions.assertEquals("bazUpdated", stateStore.get("c"));
         }
     }
-    
+
     private static class TransformerSupplier implements FixedKeyProcessorSupplier<String, String, String> {
         private final StoreBuilder<?> storeBuilder;
+
         public TransformerSupplier(final StoreBuilder<?> storeBuilder) {
             this.storeBuilder = storeBuilder;
         }
@@ -121,6 +122,7 @@ public class KStreamProcessorApiTest {
 
             };
         }
+
         @Override
         public Set<StoreBuilder<?>> stores() {
             if (storeBuilder != null) {

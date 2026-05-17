@@ -176,6 +176,7 @@ public class AbstractProcessorContextTest {
             equalTo("user-supplied-value")
         );
     }
+
     @Test
     public void shouldThrowErrorIfSerdeDefaultNotSet() {
         final Properties config = getStreamsConfig();

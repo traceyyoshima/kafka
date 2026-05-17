@@ -164,7 +164,7 @@ public class FetchRequest extends AbstractRequest {
 
         public static Builder forConsumer(short maxVersion, int maxWait, int minBytes, Map<TopicPartition, PartitionData> fetchData) {
             return new Builder(ApiKeys.FETCH.oldestVersion(), maxVersion,
-                CONSUMER_REPLICA_ID,  -1, maxWait, minBytes, fetchData);
+                CONSUMER_REPLICA_ID, -1, maxWait, minBytes, fetchData);
         }
 
         public static Builder forReplica(short allowedVersion, int replicaId, long replicaEpoch, int maxWait, int minBytes,
@@ -284,9 +284,9 @@ public class FetchRequest extends AbstractRequest {
 
                 if (fetchTopic == null || !topicPartition.topic().equals(fetchTopic.topic())) {
                     fetchTopic = new FetchRequestData.FetchTopic()
-                       .setTopic(topicPartition.topic())
-                       .setTopicId(partitionData.topicId)
-                       .setPartitions(new ArrayList<>());
+                        .setTopic(topicPartition.topic())
+                        .setTopicId(partitionData.topicId)
+                        .setPartitions(new ArrayList<>());
                     fetchRequestData.topics().add(fetchTopic);
                 }
 

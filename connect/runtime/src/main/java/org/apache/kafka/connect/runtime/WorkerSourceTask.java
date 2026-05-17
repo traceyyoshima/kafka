@@ -230,8 +230,8 @@ class WorkerSourceTask extends AbstractWorkerSourceTask {
         }
 
         if (offsetsToCommit.isEmpty()) {
-            log.debug("{} Either no records were produced by the task since the last offset commit, " 
-                    + "or every record has been filtered out by a transformation " 
+            log.debug("{} Either no records were produced by the task since the last offset commit, "
+                    + "or every record has been filtered out by a transformation "
                     + "or dropped due to transformation or conversion errors.",
                     this
             );

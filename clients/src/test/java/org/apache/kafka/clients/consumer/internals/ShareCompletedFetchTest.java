@@ -374,7 +374,7 @@ public class ShareCompletedFetchTest {
         acquiredRecords.add(acquiredRecords(10L, 5).get(0));
 
         ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-            .setRecords(newRecords(startingOffset,  10))
+            .setRecords(newRecords(startingOffset, 10))
             .setAcquiredRecords(acquiredRecords); // Acquire only records 0-4 and 10-14
 
         Deserializers<String, String> deserializers = newStringDeserializers();
@@ -547,11 +547,11 @@ public class ShareCompletedFetchTest {
         // Fetch records and verify that only 15 unique records are returned (0-14)
         ShareInFlightBatch<String, String> batch = completedFetch.fetchRecords(deserializers, 20, true);
         List<ConsumerRecord<String, String>> records = batch.getInFlightRecords();
-        
+
         // Should get 15 unique records: 0-9 from first range (with deliveryCount=1)
         // and 10-14 from second range (with deliveryCount=2)
         assertEquals(15, records.size());
-        
+
         // Verify first occurrence (offset 5 should have deliveryCount=1 from first range)
         ConsumerRecord<String, String> record5 = records.stream()
             .filter(r -> r.offset() == 5L)
@@ -559,7 +559,7 @@ public class ShareCompletedFetchTest {
             .orElse(null);
         assertNotNull(record5);
         assertEquals(Optional.of((short) 1), record5.deliveryCount());
-        
+
         // Verify offset 10 has deliveryCount=2 from second range
         ConsumerRecord<String, String> record10 = records.stream()
             .filter(r -> r.offset() == 10L)
@@ -567,7 +567,7 @@ public class ShareCompletedFetchTest {
             .orElse(null);
         assertNotNull(record10);
         assertEquals(Optional.of((short) 2), record10.deliveryCount());
-        
+
         // Verify all offsets are unique
         Set<Long> offsetSet = new HashSet<>();
         for (ConsumerRecord<String, String> record : records) {

@@ -466,7 +466,7 @@ public class SslTransportLayer implements TransportLayer {
                 log.debug("SSL handshake completed successfully with peerHost '{}' peerPort {} peerPrincipal '{}' protocol '{}' cipherSuite '{}'",
                         session.getPeerHost(), session.getPeerPort(), peerPrincipal(), session.getProtocol(), session.getCipherSuite());
                 metadataRegistry.registerCipherInformation(
-                    new CipherInformation(session.getCipherSuite(),  session.getProtocol()));
+                    new CipherInformation(session.getCipherSuite(), session.getProtocol()));
             }
 
             log.trace("SSLHandshake FINISHED channelId {}, appReadBuffer pos {}, netReadBuffer pos {}, netWriteBuffer pos {} ",

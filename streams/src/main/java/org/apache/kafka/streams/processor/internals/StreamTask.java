@@ -137,7 +137,7 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
                       final LogContext logContext,
                       final boolean processingThreadsEnabled
                       ) {
-        super(
+                          super(
             id,
             topology,
             stateDirectory,
@@ -147,60 +147,60 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
             "task",
             StreamTask.class
         );
-        this.mainConsumer = mainConsumer;
+                          this.mainConsumer = mainConsumer;
 
-        this.processorContext = processorContext;
-        processorContext.transitionToActive(this, recordCollector, cache);
+                          this.processorContext = processorContext;
+                          processorContext.transitionToActive(this, recordCollector, cache);
 
-        this.time = time;
-        this.recordCollector = recordCollector;
-        this.eosEnabled = config.eosEnabled;
+                          this.time = time;
+                          this.recordCollector = recordCollector;
+                          this.eosEnabled = config.eosEnabled;
 
-        final String threadId = Thread.currentThread().getName();
-        this.streamsMetrics = streamsMetrics;
-        closeTaskSensor = ThreadMetrics.closeTaskSensor(threadId, streamsMetrics);
-        final String taskId = id.toString();
-        restoreSensor = TaskMetrics.restoreSensor(threadId, taskId, streamsMetrics);
-        restoreRemainingSensor = TaskMetrics.restoreRemainingRecordsSensor(threadId, taskId, streamsMetrics);
-        processRatioSensor = TaskMetrics.activeProcessRatioSensor(threadId, taskId, streamsMetrics);
-        processLatencySensor = TaskMetrics.processLatencySensor(threadId, taskId, streamsMetrics);
-        punctuateLatencySensor = TaskMetrics.punctuateSensor(threadId, taskId, streamsMetrics);
-        bufferedRecordsSensor = TaskMetrics.activeBufferedRecordsSensor(threadId, taskId, streamsMetrics);
-        droppedRecordsSensor = TaskMetrics.droppedRecordsSensor(threadId, taskId, streamsMetrics);
+                          final String threadId = Thread.currentThread().getName();
+                          this.streamsMetrics = streamsMetrics;
+                          closeTaskSensor = ThreadMetrics.closeTaskSensor(threadId, streamsMetrics);
+                          final String taskId = id.toString();
+                          restoreSensor = TaskMetrics.restoreSensor(threadId, taskId, streamsMetrics);
+                          restoreRemainingSensor = TaskMetrics.restoreRemainingRecordsSensor(threadId, taskId, streamsMetrics);
+                          processRatioSensor = TaskMetrics.activeProcessRatioSensor(threadId, taskId, streamsMetrics);
+                          processLatencySensor = TaskMetrics.processLatencySensor(threadId, taskId, streamsMetrics);
+                          punctuateLatencySensor = TaskMetrics.punctuateSensor(threadId, taskId, streamsMetrics);
+                          bufferedRecordsSensor = TaskMetrics.activeBufferedRecordsSensor(threadId, taskId, streamsMetrics);
+                          droppedRecordsSensor = TaskMetrics.droppedRecordsSensor(threadId, taskId, streamsMetrics);
 
-        for (final String terminalNodeName : topology.terminalNodes()) {
-            e2eLatencySensors.put(
+                          for (final String terminalNodeName : topology.terminalNodes()) {
+                              e2eLatencySensors.put(
                 terminalNodeName,
                 ProcessorNodeMetrics.e2ELatencySensor(threadId, taskId, terminalNodeName, streamsMetrics)
             );
-        }
+                          }
 
-        for (final ProcessorNode<?, ?, ?, ?> sourceNode : topology.sources()) {
-            final String sourceNodeName = sourceNode.name();
-            e2eLatencySensors.put(
+                          for (final ProcessorNode<?, ?, ?, ?> sourceNode : topology.sources()) {
+                              final String sourceNodeName = sourceNode.name();
+                              e2eLatencySensors.put(
                 sourceNodeName,
                 ProcessorNodeMetrics.e2ELatencySensor(threadId, taskId, sourceNodeName, streamsMetrics)
             );
-        }
+                          }
 
-        streamTimePunctuationQueue = new PunctuationQueue();
-        systemTimePunctuationQueue = new PunctuationQueue();
-        maxBufferedSize = config.maxBufferedSize;
+                          streamTimePunctuationQueue = new PunctuationQueue();
+                          systemTimePunctuationQueue = new PunctuationQueue();
+                          maxBufferedSize = config.maxBufferedSize;
 
-        // initialize the consumed and committed offset cache
-        consumedOffsets = new HashMap<>();
-        resetOffsetsForPartitions = new HashSet<>();
-        partitionsToResume = new HashSet<>();
+                          // initialize the consumed and committed offset cache
+                          consumedOffsets = new HashMap<>();
+                          resetOffsetsForPartitions = new HashSet<>();
+                          partitionsToResume = new HashSet<>();
 
-        recordQueueCreator = new RecordQueueCreator(this.logContext, config.timestampExtractor, config.deserializationExceptionHandler);
+                          recordQueueCreator = new RecordQueueCreator(this.logContext, config.timestampExtractor, config.deserializationExceptionHandler);
 
-        recordInfo = new RecordInfo();
+                          recordInfo = new RecordInfo();
 
-        final Sensor enforcedProcessingSensor;
-        enforcedProcessingSensor = TaskMetrics.enforcedProcessingSensor(threadId, taskId, streamsMetrics);
-        final long maxTaskIdleMs = config.maxTaskIdleMs;
-        if (processingThreadsEnabled) {
-            partitionGroup = new SynchronizedPartitionGroup(new PartitionGroup(
+                          final Sensor enforcedProcessingSensor;
+                          enforcedProcessingSensor = TaskMetrics.enforcedProcessingSensor(threadId, taskId, streamsMetrics);
+                          final long maxTaskIdleMs = config.maxTaskIdleMs;
+                          if (processingThreadsEnabled) {
+                              partitionGroup = new SynchronizedPartitionGroup(new PartitionGroup(
                 logContext,
                 createPartitionQueues(),
                 mainConsumer::currentLag,
@@ -208,8 +208,8 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
                 enforcedProcessingSensor,
                 maxTaskIdleMs
             ));
-        } else {
-            partitionGroup = new PartitionGroup(
+                          } else {
+                              partitionGroup = new PartitionGroup(
                 logContext,
                 createPartitionQueues(),
                 mainConsumer::currentLag,
@@ -217,19 +217,19 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
                 enforcedProcessingSensor,
                 maxTaskIdleMs
             );
-        }
+                          }
 
-        stateMgr.registerGlobalStateStores(topology.globalStateStores());
-        committedOffsets = new HashMap<>();
-        highWatermark = new HashMap<>();
-        for (final TopicPartition topicPartition: inputPartitions) {
-            committedOffsets.put(topicPartition, -1L);
-            highWatermark.put(topicPartition, -1L);
-        }
-        timeCurrentIdlingStarted = Optional.empty();
-        lastNotReadyLogTime = Optional.empty();
-        processingExceptionHandler = config.processingExceptionHandler;
-    }
+                          stateMgr.registerGlobalStateStores(topology.globalStateStores());
+                          committedOffsets = new HashMap<>();
+                          highWatermark = new HashMap<>();
+                          for (final TopicPartition topicPartition : inputPartitions) {
+                              committedOffsets.put(topicPartition, -1L);
+                              highWatermark.put(topicPartition, -1L);
+                          }
+                          timeCurrentIdlingStarted = Optional.empty();
+                          lastNotReadyLogTime = Optional.empty();
+                          processingExceptionHandler = config.processingExceptionHandler;
+                      }
 
     // create queues for each assigned partition and associate them
     // to corresponding source nodes in the processor topology
@@ -636,7 +636,7 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
         // closeClean in handleAssignment. We should throw if we detect this to force the TaskManager to closeDirty
         if (commitNeeded) {
             log.debug("Tried to close clean but there was pending uncommitted data, this means we failed to"
-                          + " commit and should close as dirty instead");
+                + " commit and should close as dirty instead");
             throw new TaskMigratedException("Tried to close dirty task as clean");
         }
     }

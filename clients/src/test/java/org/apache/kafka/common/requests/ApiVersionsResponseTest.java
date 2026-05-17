@@ -166,7 +166,7 @@ public class ApiVersionsResponseTest {
             build();
         verifyApiKeysForTelemetry(response, 0);
     }
-    
+
     @Test
     public void testBrokerApisAreEnabled() {
         ApiVersionsResponse response = new ApiVersionsResponse.Builder().

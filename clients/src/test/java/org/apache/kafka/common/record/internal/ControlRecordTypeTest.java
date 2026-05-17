@@ -65,7 +65,7 @@ public class ControlRecordTypeTest {
             return;
         }
         for (short version = ControlRecordTypeSchema.LOWEST_SUPPORTED_VERSION;
-             version <= ControlRecordTypeSchema.HIGHEST_SUPPORTED_VERSION; version++) {
+            version <= ControlRecordTypeSchema.HIGHEST_SUPPORTED_VERSION; version++) {
             ByteBuffer buffer = expected.recordKey();
             ControlRecordType deserializedKey = ControlRecordType.parse(buffer);
             assertEquals(expected, deserializedKey);
@@ -76,7 +76,7 @@ public class ControlRecordTypeTest {
     @EnumSource(value = ControlRecordType.class)
     public void testValueControlRecordKeySize(ControlRecordType type) {
         for (short version = ControlRecordTypeSchema.LOWEST_SUPPORTED_VERSION;
-             version <= ControlRecordTypeSchema.HIGHEST_SUPPORTED_VERSION; version++) {
+            version <= ControlRecordTypeSchema.HIGHEST_SUPPORTED_VERSION; version++) {
             assertEquals(4, type.controlRecordKeySize());
         }
     }
@@ -85,7 +85,7 @@ public class ControlRecordTypeTest {
     @EnumSource(value = ControlRecordType.class)
     public void testBackwardDeserializeCompatibility(ControlRecordType type) {
         for (short version = ControlRecordTypeSchema.LOWEST_SUPPORTED_VERSION;
-             version <= ControlRecordTypeSchema.HIGHEST_SUPPORTED_VERSION; version++) {
+            version <= ControlRecordTypeSchema.HIGHEST_SUPPORTED_VERSION; version++) {
             Struct struct = new Struct(v0Schema);
             struct.set("version", version);
             struct.set("type", type.type());
@@ -106,7 +106,7 @@ public class ControlRecordTypeTest {
             return;
         }
         for (short version = ControlRecordTypeSchema.LOWEST_SUPPORTED_VERSION;
-             version <= ControlRecordTypeSchema.HIGHEST_SUPPORTED_VERSION; version++) {
+            version <= ControlRecordTypeSchema.HIGHEST_SUPPORTED_VERSION; version++) {
             ByteBuffer newVersionBuffer = type.recordKey();
 
             Struct struct = v0Schema.read(newVersionBuffer);

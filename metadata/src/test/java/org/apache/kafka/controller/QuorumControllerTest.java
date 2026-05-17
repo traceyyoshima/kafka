@@ -308,14 +308,14 @@ public class QuorumControllerTest {
 
             // Fence some of the brokers
             TestUtils.waitForCondition(() -> {
-                    sendBrokerHeartbeatToUnfenceBrokers(active, brokersToKeepUnfenced, brokerEpochs);
-                    for (Integer brokerId : brokersToFence) {
-                        if (active.clusterControl().isUnfenced(brokerId)) {
-                            return false;
-                        }
+                sendBrokerHeartbeatToUnfenceBrokers(active, brokersToKeepUnfenced, brokerEpochs);
+                for (Integer brokerId : brokersToFence) {
+                    if (active.clusterControl().isUnfenced(brokerId)) {
+                        return false;
                     }
-                    return true;
-                }, sessionTimeoutMillis * 3,
+                }
+                return true;
+            }, sessionTimeoutMillis * 3,
                 "Fencing of brokers did not process within expected time"
             );
 
@@ -348,7 +348,7 @@ public class QuorumControllerTest {
     }
 
     @Test
-    public  void testElrEnabledByDefault() throws Throwable {
+    public void testElrEnabledByDefault() throws Throwable {
         long sessionTimeoutMillis = 500;
         try (
             MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).
@@ -435,13 +435,13 @@ public class QuorumControllerTest {
 
             // Fence all the brokers
             TestUtils.waitForCondition(() -> {
-                    for (Integer brokerId : allBrokers) {
-                        if (active.clusterControl().isUnfenced(brokerId)) {
-                            return false;
-                        }
+                for (Integer brokerId : allBrokers) {
+                    if (active.clusterControl().isUnfenced(brokerId)) {
+                        return false;
                     }
-                    return true;
-                }, sessionTimeoutMillis * 30,
+                }
+                return true;
+            }, sessionTimeoutMillis * 30,
                 "Fencing of brokers did not process within expected time"
             );
 
@@ -617,8 +617,8 @@ public class QuorumControllerTest {
         long sessionTimeoutMillis = 300;
 
         try (
-                MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).build();
-                QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
+            MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).build();
+            QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
                 setSessionTimeoutMillis(OptionalLong.of(sessionTimeoutMillis)).
                 setBootstrapMetadata(BootstrapMetadata.fromVersion(MetadataVersion.IBP_4_0_IV1, "test-provided bootstrap ELR enabled")).
                 build()
@@ -673,14 +673,14 @@ public class QuorumControllerTest {
 
             // Fence brokers
             TestUtils.waitForCondition(() -> {
-                    sendBrokerHeartbeatToUnfenceBrokers(active, brokersToKeepUnfenced, brokerEpochs);
-                    for (Integer brokerId : brokersToFence) {
-                        if (active.clusterControl().isUnfenced(brokerId)) {
-                            return false;
-                        }
+                sendBrokerHeartbeatToUnfenceBrokers(active, brokersToKeepUnfenced, brokerEpochs);
+                for (Integer brokerId : brokersToFence) {
+                    if (active.clusterControl().isUnfenced(brokerId)) {
+                        return false;
                     }
-                    return true;
-                }, sessionTimeoutMillis * 30,
+                }
+                return true;
+            }, sessionTimeoutMillis * 30,
                 "Fencing of brokers did not process within expected time"
             );
 
@@ -1267,8 +1267,8 @@ public class QuorumControllerTest {
     @Test
     public void testTimeouts() throws Throwable {
         try (
-                MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).build();
-                QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
+            MockRaftClientTestEnv clientEnv = new MockRaftClientTestEnv.Builder(1).build();
+            QuorumControllerTestEnv controlEnv = new QuorumControllerTestEnv.Builder(clientEnv).
                 build()
         ) {
             QuorumController controller = controlEnv.activeController();
@@ -1412,7 +1412,7 @@ public class QuorumControllerTest {
         ) {
             QuorumController active = controlEnv.activeController();
             ConfigResourceExistenceChecker checker = active.new ConfigResourceExistenceChecker();
-            
+
             // Register dynamic controller with ID 100
             active.registerController(ANONYMOUS_CONTEXT,
                 new ControllerRegistrationRequestData()
@@ -1421,9 +1421,9 @@ public class QuorumControllerTest {
                     .setZkMigrationReady(false)
                     .setListeners(new ControllerRegistrationRequestData.ListenerCollection())
                     .setFeatures(new ControllerRegistrationRequestData.FeatureCollection())).get();
-            
+
             checker.accept(new ConfigResource(BROKER, "100"));
-            
+
             // Unregistered node should throw exception
             assertThrows(BrokerIdNotRegisteredException.class,
                 () -> checker.accept(new ConfigResource(BROKER, "999")));
@@ -1566,7 +1566,7 @@ public class QuorumControllerTest {
         }
     }
 
-    static class TestAppender implements Function<List<ApiMessageAndVersion>, Long>  {
+    static class TestAppender implements Function<List<ApiMessageAndVersion>, Long> {
         private long offset = 0;
 
         @Override

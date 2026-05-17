@@ -1261,7 +1261,7 @@ public class StreamsGroup implements Group {
         // Retrieve topology once for all partitions - not per partition!
         final StreamsTopology streamsTopology = topology.get().orElseThrow(() ->
             new StaleMemberEpochException("Topology is not available for offset commit validation."));
-        
+
         final TasksTupleWithEpochs assignedTasks = member.assignedTasks();
         final TasksTupleWithEpochs tasksPendingRevocation = member.tasksPendingRevocation();
 

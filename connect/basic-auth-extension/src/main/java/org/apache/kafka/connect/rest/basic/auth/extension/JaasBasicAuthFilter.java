@@ -165,7 +165,7 @@ public class JaasBasicAuthFilter implements ContainerRequestFilter {
 
             @Override
             public boolean isSecure() {
-                return  "https".equalsIgnoreCase(requestContext.getUriInfo().getRequestUri().getScheme());
+                return "https".equalsIgnoreCase(requestContext.getUriInfo().getRequestUri().getScheme());
             }
 
             @Override

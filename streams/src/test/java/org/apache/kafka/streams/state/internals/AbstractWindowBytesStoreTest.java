@@ -99,9 +99,10 @@ public abstract class AbstractWindowBytesStoreTest {
                                                        final boolean retainDuplicates,
                                                        final Serde<K> keySerde,
                                                        final Serde<V> valueSerde);
+
     @BeforeEach
     protected void setup() {
-        
+
         windowStore = buildWindowStore(RETENTION_PERIOD, WINDOW_SIZE, false, Serdes.Integer(), Serdes.String());
 
         recordCollector = new MockRecordCollector();
@@ -258,7 +259,7 @@ public abstract class AbstractWindowBytesStoreTest {
 
     @Test
     public void shouldGetAll() {
-        
+
         putFirstBatch(windowStore, defaultStartTime, context);
 
         assertEquals(
@@ -463,7 +464,7 @@ public abstract class AbstractWindowBytesStoreTest {
 
     @Test
     public void testBackwardFetchRange() {
-        
+
         putFirstBatch(windowStore, defaultStartTime, context);
 
         assertEquals(
@@ -821,7 +822,7 @@ public abstract class AbstractWindowBytesStoreTest {
 
     @Test
     public void shouldCloseOpenIteratorsWhenStoreIsClosedAndNotThrowInvalidStateStoreExceptionOnHasNext() {
-        
+
         windowStore.put(1, "one", 1L);
         windowStore.put(1, "two", 2L);
         windowStore.put(1, "three", 3L);

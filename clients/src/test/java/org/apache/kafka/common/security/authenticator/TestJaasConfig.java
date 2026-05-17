@@ -128,7 +128,7 @@ public class TestJaasConfig extends Configuration {
                 return defaultClientOptions();
         }
     }
-    
+
     public static Map<String, Object> defaultClientOptions() {
         Map<String, Object> options = new HashMap<>();
         options.put("username", USERNAME);

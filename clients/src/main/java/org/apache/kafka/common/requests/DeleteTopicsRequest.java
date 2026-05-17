@@ -45,7 +45,7 @@ public class DeleteTopicsRequest extends AbstractRequest {
             }
             return new DeleteTopicsRequest(data, version);
         }
-        
+
         private List<DeleteTopicState> groupByTopic(List<String> topics) {
             List<DeleteTopicState> topicStates = new ArrayList<>();
             for (String topic : topics) {
@@ -87,11 +87,11 @@ public class DeleteTopicsRequest extends AbstractRequest {
         }
         return new DeleteTopicsResponse(response);
     }
-    
+
     public List<String> topicNames() {
         if (version() >= 6)
             return data.topics().stream().map(DeleteTopicState::name).collect(Collectors.toList());
-        return data.topicNames(); 
+        return data.topicNames();
     }
 
     public int numberOfTopics() {
@@ -99,17 +99,17 @@ public class DeleteTopicsRequest extends AbstractRequest {
             return data.topics().size();
         return data.topicNames().size();
     }
-    
+
     public List<Uuid> topicIds() {
         if (version() >= 6)
             return data.topics().stream().map(DeleteTopicState::topicId).collect(Collectors.toList());
         return List.of();
     }
-    
+
     public List<DeleteTopicState> topics() {
         if (version() >= 6)
             return data.topics();
-        return data.topicNames().stream().map(name -> new DeleteTopicState().setName(name)).collect(Collectors.toList()); 
+        return data.topicNames().stream().map(name -> new DeleteTopicState().setName(name)).collect(Collectors.toList());
     }
 
     public static DeleteTopicsRequest parse(Readable readable, short version) {

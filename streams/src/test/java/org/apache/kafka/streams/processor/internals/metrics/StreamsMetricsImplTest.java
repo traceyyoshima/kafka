@@ -136,7 +136,7 @@ public class StreamsMetricsImplTest {
     private final MetricName metricName2 =
         new MetricName(METRIC_NAME1, CLIENT_LEVEL_GROUP, DESCRIPTION2, clientLevelTags);
     private final MockTime time = new MockTime(0);
-    private final StreamsMetricsImpl streamsMetrics = new StreamsMetricsImpl(metrics, CLIENT_ID,  time);
+    private final StreamsMetricsImpl streamsMetrics = new StreamsMetricsImpl(metrics, CLIENT_ID, time);
 
     private static MetricConfig eqMetricConfig(final MetricConfig metricConfig) {
         final StringBuffer message = new StringBuffer();

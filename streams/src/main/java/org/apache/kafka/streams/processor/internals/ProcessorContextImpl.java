@@ -158,7 +158,7 @@ public final class ProcessorContextImpl extends AbstractProcessorContext<Object,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <S extends StateStore> S  getStateStore(final String name) {
+    public <S extends StateStore> S getStateStore(final String name) {
         throwUnsupportedOperationExceptionIfStandby("getStateStore");
         if (currentNode() == null) {
             throw new StreamsException("Accessing from an unknown node");

@@ -228,7 +228,7 @@ public class UnifiedLogTest {
 
     @Test
     public void shouldTruncateLeaderEpochsWhenDeletingSegments() throws IOException {
-        Supplier<MemoryRecords>  records = () -> singletonRecords("test".getBytes());
+        Supplier<MemoryRecords> records = () -> singletonRecords("test".getBytes());
         LogConfig config = new LogTestUtils.LogConfigBuilder()
                 .segmentBytes(records.get().sizeInBytes() * 5)
                 .retentionBytes(records.get().sizeInBytes() * 10L)
@@ -791,7 +791,7 @@ public class UnifiedLogTest {
         assertEquals(simpleRecords.size(), secondAppendInfo.firstOffset());
 
         log.roll();
-        LogAppendInfo afterRollAppendInfo =  log.appendAsLeader(LogTestUtils.records(simpleRecords), 0);
+        LogAppendInfo afterRollAppendInfo = log.appendAsLeader(LogTestUtils.records(simpleRecords), 0);
         assertEquals(simpleRecords.size() * 2, afterRollAppendInfo.firstOffset());
     }
 
@@ -1455,6 +1455,7 @@ public class UnifiedLogTest {
             public MemoryRecords.RecordFilter.BatchRetentionResult checkBatchRetention(RecordBatch batch) {
                 return new MemoryRecords.RecordFilter.BatchRetentionResult(MemoryRecords.RecordFilter.BatchRetention.DELETE_EMPTY, false);
             }
+
             @Override
             public boolean shouldRetainRecord(RecordBatch recordBatch, Record record) {
                 return !record.hasKey();
@@ -1508,6 +1509,7 @@ public class UnifiedLogTest {
             public MemoryRecords.RecordFilter.BatchRetentionResult checkBatchRetention(RecordBatch batch) {
                 return new MemoryRecords.RecordFilter.BatchRetentionResult(MemoryRecords.RecordFilter.BatchRetention.RETAIN_EMPTY, true);
             }
+
             @Override public boolean shouldRetainRecord(RecordBatch recordBatch, Record record) {
                 return false;
             }
@@ -1561,6 +1563,7 @@ public class UnifiedLogTest {
             @Override public MemoryRecords.RecordFilter.BatchRetentionResult checkBatchRetention(RecordBatch batch) {
                 return new MemoryRecords.RecordFilter.BatchRetentionResult(MemoryRecords.RecordFilter.BatchRetention.DELETE_EMPTY, false);
             }
+
             @Override public boolean shouldRetainRecord(RecordBatch recordBatch, Record record) {
                 return !record.hasKey();
             }
@@ -3733,9 +3736,9 @@ public class UnifiedLogTest {
         int msgPerSeg = 10;
         int segmentSize = msgPerSeg * setSize; // each segment will be 10 messages
         LogConfig logConfig = new LogTestUtils.LogConfigBuilder()
-                .segmentBytes(segmentSize)
-                .indexIntervalBytes(setSize - 1)
-                .build();
+        .segmentBytes(segmentSize)
+        .indexIntervalBytes(setSize - 1)
+        .build();
         UnifiedLog log = createLog(logDir, logConfig);
         assertEquals(1, log.numberOfSegments(), "There should be exactly 1 segment.");
 

@@ -54,7 +54,7 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
         generateConverters(message.dataClassName(), message.struct(),
             message.validVersions());
         for (Iterator<StructRegistry.StructInfo> iter = structRegistry.structs();
-                iter.hasNext(); ) {
+            iter.hasNext();) {
             StructRegistry.StructInfo info = iter.next();
             buffer.printf("%n");
             buffer.printf("public static class %s {%n",
@@ -107,7 +107,7 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
             Versions mandatoryVersions = field.versions().subtract(field.taggedVersions());
             VersionConditional.forVersions(mandatoryVersions, curVersions).
                 ifMember(__ -> buffer.printf("throw new RuntimeException(\"%s: unable to locate " +
-                        "field '%s', which is mandatory in version \" + _version);%n",
+                "field '%s', which is mandatory in version \" + _version);%n",
                     className, field.camelCaseName())).
                 ifNotMember(__ -> buffer.printf("_object.%s = %s;%n", field.camelCaseName(),
                     field.fieldDefault(headerGenerator, structRegistry))).
@@ -121,7 +121,7 @@ public final class JsonConverterGenerator implements MessageClassGenerator {
                         className,
                     input -> String.format("_object.%s = %s", field.camelCaseName(), input)),
                     curVersions)).ifNotMember(__ -> buffer.printf("throw new RuntimeException(\"%s: field '%s' is not " +
-                        "supported in version \" + _version);%n",
+                "supported in version \" + _version);%n",
                         className, field.camelCaseName())).generate(buffer);
             buffer.decrementIndent();
             buffer.printf("}%n");

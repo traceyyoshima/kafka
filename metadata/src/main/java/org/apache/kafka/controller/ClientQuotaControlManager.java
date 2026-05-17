@@ -107,7 +107,7 @@ public class ClientQuotaControlManager {
                 if (alterations.containsKey(op.key())) {
                     outputResults.put(quotaAlteration.entity(), ApiError.fromThrowable(
                             new InvalidRequestException("Duplicate quota key " + op.key() +
-                                " not updating quota for this entity " + quotaAlteration.entity())));
+                        " not updating quota for this entity " + quotaAlteration.entity())));
                 } else {
                     alterations.put(op.key(), op.value());
                 }

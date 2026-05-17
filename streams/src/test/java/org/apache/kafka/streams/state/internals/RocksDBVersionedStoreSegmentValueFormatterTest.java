@@ -39,6 +39,7 @@ public class RocksDBVersionedStoreSegmentValueFormatterTest {
     private static final long INSERT_VALID_FROM_TIMESTAMP = 10L;
     private static final long INSERT_VALID_TO_TIMESTAMP = 13L;
     private static final byte[] INSERT_VALUE = "new".getBytes();
+
     /**
      * Non-exceptional scenarios which are expected to occur during regular store operation.
      */
@@ -59,7 +60,7 @@ public class RocksDBVersionedStoreSegmentValueFormatterTest {
             Arguments.of(new TestCase("records with empty bytes (e, e, r)", 10, new TestRecord(new byte[0], 8), new TestRecord(new byte[0], 2), new TestRecord("foo".getBytes(), 1)))
         );
     }
-    
+
     /**
      * These scenarios may only be hit in the event of an earlier exception, such as failure to
      * write to a particular segment store of {@link RocksDBVersionedStore} resulting in an

@@ -4084,12 +4084,12 @@ public class GroupMetadataManager {
                     assignor,
                     assignmentConfigs
                 )
-                .withTime(time)
-                .withMembers(group.members())
-                .withTopology(configuredTopology)
-                .withStaticMembers(group.staticMembers())
-                .withMetadataImage(metadataImage)
-                .withTargetAssignment(group.targetAssignment());
+                    .withTime(time)
+                    .withMembers(group.members())
+                    .withTopology(configuredTopology)
+                    .withStaticMembers(group.staticMembers())
+                    .withMetadataImage(metadataImage)
+                    .withTargetAssignment(group.targetAssignment());
 
             updatedMember.ifPresent(member ->
                 assignmentResultBuilder.addOrUpdateMember(member.memberId(), member)
@@ -6307,7 +6307,7 @@ public class GroupMetadataManager {
     ) {
         String groupId = key.group();
 
-        if (value == null)  {
+        if (value == null) {
             // Tombstone. Group should be removed.
             removeGroup(groupId);
         } else {
@@ -7458,7 +7458,7 @@ public class GroupMetadataManager {
                 // 2) using the number of awaiting members allows to kick out the last rejoining
                 //    members of the group.
                 (group.hasMember(memberId) && group.member(memberId).isAwaitingJoin()) ||
-                        group.numAwaitingJoinResponse() < config.classicGroupMaxSize();
+                group.numAwaitingJoinResponse() < config.classicGroupMaxSize();
             case COMPLETING_REBALANCE, STABLE ->
                 // An existing member is accepted. New members are accepted up to the max group size.
                 // Note that the group size is used here. When the group transitions to CompletingRebalance,
@@ -8158,7 +8158,7 @@ public class GroupMetadataManager {
 
         List<MemberResponse> memberResponses = new ArrayList<>();
 
-        for (MemberIdentity member: request.members()) {
+        for (MemberIdentity member : request.members()) {
             String reason = member.reason() != null ? member.reason() : "not provided";
             // The LeaveGroup API allows administrative removal of members by GroupInstanceId
             // in which case we expect the MemberId to be undefined.
@@ -8765,7 +8765,7 @@ public class GroupMetadataManager {
         }
         return false;
     }
-    
+
     /**
      * Delete and write tombstones for the group if it's empty and is a streams group.
      *

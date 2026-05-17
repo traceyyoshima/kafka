@@ -52,7 +52,7 @@ public class StickyTaskAssignor implements TaskAssignor {
     @Override
     public GroupAssignment assign(final GroupSpec groupSpec, final TopologyDescriber topologyDescriber) throws TaskAssignorException {
         initialize(groupSpec, topologyDescriber);
-        final GroupAssignment assignments =  doAssign(groupSpec, topologyDescriber);
+        final GroupAssignment assignments = doAssign(groupSpec, topologyDescriber);
         localState = null;
         return assignments;
     }
@@ -219,7 +219,7 @@ public class StickyTaskAssignor implements TaskAssignor {
         // 3. assign any remaining unassigned tasks
         final PriorityQueue<ProcessState> processByLoad = new PriorityQueue<>(Comparator.comparingDouble(ProcessState::load));
         processByLoad.addAll(localState.processIdToState.values());
-        for (final TaskId task: activeTasks) {
+        for (final TaskId task : activeTasks) {
             final ProcessState processWithLeastLoad = processByLoad.poll();
             if (processWithLeastLoad == null) {
                 throw new TaskAssignorException(String.format("No process available to assign active task %s.", task));
@@ -318,7 +318,7 @@ public class StickyTaskAssignor implements TaskAssignor {
 
     private void assignStandby(final LinkedList<TaskId> standbyTasks) {
         final ArrayList<StandbyToAssign> toLeastLoaded = new ArrayList<>(standbyTasks.size() * localState.numStandbyReplicas);
-        
+
         // Assuming our current assignment is range-based, we want to sort by partition first.
         standbyTasks.sort(Comparator.comparing(TaskId::partition).thenComparing(TaskId::subtopologyId).reversed());
 

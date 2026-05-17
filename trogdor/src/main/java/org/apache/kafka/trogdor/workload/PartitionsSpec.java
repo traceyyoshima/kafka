@@ -45,7 +45,7 @@ public class PartitionsSpec extends Message {
     public PartitionsSpec(@JsonProperty("numPartitions") int numPartitions,
             @JsonProperty("replicationFactor") short replicationFactor,
             @JsonProperty("partitionAssignments") Map<Integer, List<Integer>> partitionAssignments,
-            @JsonProperty("configs")  Map<String, String> configs) {
+            @JsonProperty("configs") Map<String, String> configs) {
         this.numPartitions = numPartitions;
         this.replicationFactor = replicationFactor;
         HashMap<Integer, List<Integer>> partMap = new HashMap<>();

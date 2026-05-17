@@ -1124,7 +1124,7 @@ public class ConsumerGroupTest {
     public void testValidateOffsetFetch() {
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         ConsumerGroup group = new ConsumerGroup(
-            new LogContext(), 
+            new LogContext(),
             snapshotRegistry,
             "group-foo"
         );
@@ -1503,7 +1503,7 @@ public class ConsumerGroupTest {
         );
 
         ConsumerGroup expectedConsumerGroup = new ConsumerGroup(
-            new LogContext(), 
+            new LogContext(),
             new SnapshotRegistry(logContext),
             groupId
         );

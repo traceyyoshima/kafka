@@ -194,7 +194,7 @@ public class SessionKeySchemaTest {
         final List<Integer> results = getValues(hasNextCondition);
         assertThat(results, equalTo(asList(1, 2, 3, 4, 5, 6)));
     }
-    
+
     @ParameterizedTest
     @EnumSource(SchemaType.class)
     public void testUpperBoundWithLargeTimestamps(final SchemaType type) {

@@ -306,7 +306,7 @@ public class QueryableStateIntegrationTest {
             final Map<String, Exception> exceptionalKeys = new TreeMap<>();
             final StringSerializer serializer = new StringSerializer();
 
-            for (final String key: keys) {
+            for (final String key : keys) {
                 try {
                     final KeyQueryMetadata queryMetadata = streams.queryMetadataForKey(storeName, key, serializer);
                     if (queryMetadata == null || queryMetadata.equals(KeyQueryMetadata.NOT_AVAILABLE)) {
@@ -360,7 +360,7 @@ public class QueryableStateIntegrationTest {
             final Map<String, Exception> exceptionalKeys = new TreeMap<>();
             final StringSerializer serializer = new StringSerializer();
 
-            for (final String key: keys) {
+            for (final String key : keys) {
                 try {
                     final KeyQueryMetadata queryMetadata = streams.queryMetadataForKey(storeName, key, serializer);
                     if (queryMetadata == null || queryMetadata.equals(KeyQueryMetadata.NOT_AVAILABLE)) {
@@ -519,9 +519,9 @@ public class QueryableStateIntegrationTest {
                 exception.getMessage(),
                 is(
                     "Cannot get state store " + storeName + " because the queryable store type" +
-                        " [class org.apache.kafka.streams.state.QueryableStoreTypes$SessionStoreType]" +
-                        " does not accept the actual store type" +
-                        " [class org.apache.kafka.streams.state.internals.MeteredTimestampedKeyValueStore]."
+                " [class org.apache.kafka.streams.state.QueryableStoreTypes$SessionStoreType]" +
+                " does not accept the actual store type" +
+                " [class org.apache.kafka.streams.state.internals.MeteredTimestampedKeyValueStore]."
                 )
             );
         }
@@ -1237,7 +1237,7 @@ public class QueryableStateIntegrationTest {
     private Set<KeyValue<String, Long>> fetch(final ReadOnlyWindowStore<String, Long> store,
                                               final String key) {
         try (final WindowStoreIterator<Long> fetch =
-                 store.fetch(key, ofEpochMilli(0), ofEpochMilli(System.currentTimeMillis()))) {
+            store.fetch(key, ofEpochMilli(0), ofEpochMilli(System.currentTimeMillis()))) {
             if (fetch.hasNext()) {
                 final KeyValue<Long, Long> next = fetch.next();
                 return Collections.singleton(KeyValue.pair(key, next.value));
@@ -1281,7 +1281,7 @@ public class QueryableStateIntegrationTest {
             producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
             try (final KafkaProducer<String, String> producer =
-                     new KafkaProducer<>(producerConfig, new StringSerializer(), new StringSerializer())) {
+                new KafkaProducer<>(producerConfig, new StringSerializer(), new StringSerializer())) {
 
                 while (getCurrIteration() < numIterations) {
                     for (final String value : inputValues) {

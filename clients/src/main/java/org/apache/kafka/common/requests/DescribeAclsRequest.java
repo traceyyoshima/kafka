@@ -111,7 +111,7 @@ public class DescribeAclsRequest extends AbstractRequest {
                 ResourceType.fromCode(data.resourceTypeFilter()),
                 data.resourceNameFilter(),
                 PatternType.fromCode(data.patternTypeFilter()));
-        AccessControlEntryFilter acef =  new AccessControlEntryFilter(
+        AccessControlEntryFilter acef = new AccessControlEntryFilter(
                 data.principalFilter(),
                 data.hostFilter(),
                 AclOperation.fromCode(data.operation()),

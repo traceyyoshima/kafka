@@ -101,7 +101,7 @@ public class ConsistencyVectorIntegrationTest {
 
         builder.table(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()),
                       Materialized.<Integer, Integer, KeyValueStore<Bytes, byte[]>>as(TABLE_NAME)
-                                  .withCachingDisabled()
+                      .withCachingDisabled()
                )
                .toStream()
                .peek((k, v) -> semaphore.release());

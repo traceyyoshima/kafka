@@ -104,7 +104,7 @@ public class SlidingWindowStoreMaterializer<K, V> extends MaterializedStoreFacto
 
     @Override
     public final long retentionPeriod() {
-        return  materialized.retention() != null
+        return materialized.retention() != null
                 ? materialized.retention().toMillis()
                 : windows.gracePeriodMs() + 2 * windows.timeDifferenceMs();
     }

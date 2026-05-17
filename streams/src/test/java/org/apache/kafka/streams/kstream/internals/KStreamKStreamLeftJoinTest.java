@@ -458,7 +458,7 @@ public class KStreamKStreamLeftJoinTest {
         final MockApiProcessorSupplier<Integer, String, Void, Void> supplier = new MockApiProcessorSupplier<>();
         stream1 = builder.stream(topic1, consumed);
         stream2 = builder.stream(topic2, consumed);
-        
+
         joined = stream1.leftJoin(
             stream2,
             MockValueJoiner.TOSTRING_JOINER,
@@ -483,7 +483,7 @@ public class KStreamKStreamLeftJoinTest {
             final MockApiProcessor<Integer, String, Void, Void> processor = supplier.theCapturedProcessor();
 
             processor.init(null);
-            
+
             // push four items with increasing timestamps to the primary stream; the other window is empty; 
             // this should emit the first three left-joined items;
             // A3 is not triggered yet
@@ -500,7 +500,7 @@ public class KStreamKStreamLeftJoinTest {
                     new KeyValueTimestamp<>(1, "A1+null", 1001L),
                     new KeyValueTimestamp<>(2, "A2+null", 1002L)
             );
-            
+
             // push four items smaller timestamps (out of window) to the secondary stream; 
             // this should produce four joined items
             // w1 = { 0:A0 (ts: 1000), 1:A1 (ts: 1001), 2:A2 (ts: 1002), 3:A3 (ts: 1003) }

@@ -286,7 +286,7 @@ public class NamedTopologyIntegrationTest {
 
         final String countTopicPrefix = TOPIC_PREFIX + "-" + countTopologyName;
         final String fkjTopicPrefix = TOPIC_PREFIX + "-" + fkjTopologyName;
-        final  Set<String> internalTopics = CLUSTER
+        final Set<String> internalTopics = CLUSTER
             .getAllTopicsInCluster().stream()
             .filter(t -> t.contains(TOPIC_PREFIX))
             .filter(t -> t.endsWith("-repartition") || t.endsWith("-changelog") || t.endsWith("-topic"))
@@ -424,7 +424,7 @@ public class NamedTopologyIntegrationTest {
             CLUSTER.deleteTopics(SINGLE_PARTITION_INPUT_STREAM, SINGLE_PARTITION_OUTPUT_STREAM);
         }
     }
-    
+
     @Test
     public void shouldAddNamedTopologyToRunningApplicationWithEmptyInitialTopology() throws Exception {
         topology1Builder.stream(INPUT_STREAM_1).groupBy((k, v) -> k).count(IN_MEMORY_STORE).toStream().to(OUTPUT_STREAM_1);
@@ -574,7 +574,7 @@ public class NamedTopologyIntegrationTest {
             CLUSTER.deleteTopics(DELAYED_INPUT_STREAM_1);
         }
     }
-    
+
     @Test
     public void shouldAllowPatternSubscriptionWithMultipleNamedTopologies() throws Exception {
         topology1Builder.stream(Pattern.compile(INPUT_STREAM_1)).groupBy((k, v) -> k).count().toStream().to(OUTPUT_STREAM_1);

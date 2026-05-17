@@ -186,10 +186,10 @@ public class ProducerPerformanceTest {
         doReturn(producerMock).when(producerPerformanceSpy).createKafkaProducer(any(Properties.class));
 
         String[] args = new String[] {
-            "--topic", "Hello-Kafka", 
-            "--num-records", "5", 
-            "--throughput", "100", 
-            "--record-size", "100", 
+            "--topic", "Hello-Kafka",
+            "--num-records", "5",
+            "--throughput", "100",
+            "--record-size", "100",
             "--bootstrap-server", "localhost:9000"};
         producerPerformanceSpy.start(args);
         verify(producerMock, times(5)).send(any(), any());
@@ -267,7 +267,7 @@ public class ProducerPerformanceTest {
             "--payload-monotonic",
             "--bootstrap-server", "localhost:9000"};
         ArgumentParser parser1 = ProducerPerformance.argParser();
-        ArgumentParserException thrown = assertThrows(ArgumentParserException.class, () ->  parser1.parseArgs(args1));
+        ArgumentParserException thrown = assertThrows(ArgumentParserException.class, () -> parser1.parseArgs(args1));
         assertEquals("argument --payload-monotonic: not allowed with argument --record-size", thrown.getMessage());
 
         String[] args2 = new String[] {
@@ -285,10 +285,10 @@ public class ProducerPerformanceTest {
     @Test
     public void testUnexpectedArg() {
         String[] args = new String[] {
-            "--test", "test", 
-            "--topic", "Hello-Kafka", 
-            "--num-records", "5", 
-            "--throughput", "100", 
+            "--test", "test",
+            "--topic", "Hello-Kafka",
+            "--num-records", "5",
+            "--throughput", "100",
             "--record-size", "100",
             "--bootstrap-server", "localhost:9000"};
         ArgumentParser parser = ProducerPerformance.argParser();
@@ -360,7 +360,7 @@ public class ProducerPerformanceTest {
     }
 
     @Test
-    public void testClientIdOverride()  throws Exception {
+    public void testClientIdOverride() throws Exception {
         List<String> producerProps = List.of("client.id=producer-1");
 
         Properties prop = ProducerPerformance.readProps(producerProps, null);

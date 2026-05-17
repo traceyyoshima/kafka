@@ -421,7 +421,7 @@ public class SerializationTest {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { true, false })
+    @ValueSource(booleans = {true, false})
     public void testBooleanSerializer(Boolean dataToSerialize) {
         byte[] testData = new byte[1];
         testData[0] = (byte) (dataToSerialize ? 1 : 0);
@@ -431,7 +431,7 @@ public class SerializationTest {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { true, false })
+    @ValueSource(booleans = {true, false})
     public void testBooleanDeserializer(Boolean dataToDeserialize) {
         byte[] testData = new byte[1];
         testData[0] = (byte) (dataToDeserialize ? 1 : 0);

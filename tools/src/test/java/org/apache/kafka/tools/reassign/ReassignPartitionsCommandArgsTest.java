@@ -289,7 +289,7 @@ public class ReassignPartitionsCommandArgsTest {
             "--preserve-throttles"};
         shouldFailWith("Missing required argument \"[reassignment-json-file]\"", args);
     }
-    
+
     @Test
     public void shouldAllowBootstrapControllerArg() {
         String[] args = new String[] {

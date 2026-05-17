@@ -83,7 +83,7 @@ public class DescribeConsumerGroupsHandlerTest {
     private final Node coordinator = new Node(1, "host", 1234);
     private final Set<TopicPartition> tps = Set.of(
         new TopicPartition("foo", 0),
-        new TopicPartition("bar",  1)
+        new TopicPartition("bar", 1)
     );
 
     @ParameterizedTest

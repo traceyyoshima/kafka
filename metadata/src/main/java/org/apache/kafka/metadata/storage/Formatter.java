@@ -367,7 +367,7 @@ public class Formatter {
         }
     }
 
-    BootstrapMetadata calculateBootstrapMetadata() throws  Exception {
+    BootstrapMetadata calculateBootstrapMetadata() throws Exception {
         BootstrapMetadata bootstrapMetadata = BootstrapMetadata.
             fromVersions(releaseVersion, featureLevels, "format command");
         List<ApiMessageAndVersion> bootstrapRecords = new ArrayList<>(bootstrapMetadata.records());

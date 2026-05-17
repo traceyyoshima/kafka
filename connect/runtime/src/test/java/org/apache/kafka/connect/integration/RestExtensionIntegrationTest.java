@@ -156,7 +156,7 @@ public class RestExtensionIntegrationTest {
     ) {
         ConnectClusterState clusterState =
             IntegrationTestRestExtension.instance.restPluginContext.clusterState();
-        
+
         ConnectorHealth actualHealth = clusterState.connectorHealth(connectorName);
         if (actualHealth.tasksState().isEmpty()) {
             // Happens if the task has been started but its status has not yet been picked up from
@@ -187,15 +187,15 @@ public class RestExtensionIntegrationTest {
             // successfully registered
             restPluginContext.configurable().register(new IntegrationTestRestExtensionResource());
         }
-    
+
         @Override
         public void close() {
         }
-    
+
         @Override
         public void configure(Map<String, ?> configs) {
         }
-    
+
         @Override
         public String version() {
             return "test";

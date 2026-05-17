@@ -277,7 +277,7 @@ public class VerifiableConsumer implements Closeable, OffsetCommitCallback, Cons
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name" })
+    @JsonPropertyOrder({"timestamp", "name"})
     private abstract static class ConsumerEvent {
         private final long timestamp = System.currentTimeMillis();
 
@@ -375,7 +375,7 @@ public class VerifiableConsumer implements Closeable, OffsetCommitCallback, Cons
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "key", "value", "topic", "partition", "offset" })
+    @JsonPropertyOrder({"timestamp", "name", "key", "value", "topic", "partition", "offset"})
     public static class RecordData extends ConsumerEvent {
 
         private final ConsumerRecord<String, String> record;
@@ -626,7 +626,7 @@ public class VerifiableConsumer implements Closeable, OffsetCommitCallback, Cons
             .type(String.class)
             .metavar("CONFIG-FILE")
             .help("(DEPRECATED) Consumer config properties file. " +
-                    "This option will be removed in a future version. Use --command-config instead");
+            "This option will be removed in a future version. Use --command-config instead");
 
         parser.addArgument("--command-config")
             .action(store())

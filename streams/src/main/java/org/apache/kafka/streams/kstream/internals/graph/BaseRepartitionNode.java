@@ -82,15 +82,15 @@ public abstract class BaseRepartitionNode<K, V> extends GraphNode {
     @Override
     public String toString() {
         return "BaseRepartitionNode{" +
-               "keySerde=" + keySerde +
-               ", valueSerde=" + valueSerde +
-               ", sinkName='" + sinkName + '\'' +
-               ", sourceName='" + sourceName + '\'' +
-               ", repartitionTopic='" + repartitionTopic + '\'' +
-               ", processorParameters=" + processorParameters + '\'' +
-               ", partitioner=" + partitioner +
-               ", internalTopicProperties=" + internalTopicProperties +
-               "} " + super.toString();
+            "keySerde=" + keySerde +
+            ", valueSerde=" + valueSerde +
+            ", sinkName='" + sinkName + '\'' +
+            ", sourceName='" + sourceName + '\'' +
+            ", repartitionTopic='" + repartitionTopic + '\'' +
+            ", processorParameters=" + processorParameters + '\'' +
+            ", partitioner=" + partitioner +
+            ", internalTopicProperties=" + internalTopicProperties +
+            "} " + super.toString();
     }
 
     public abstract static class BaseRepartitionNodeBuilder<K, V, RepartitionNode extends BaseRepartitionNode<K, V>> {

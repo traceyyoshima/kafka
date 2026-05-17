@@ -492,7 +492,7 @@ public class GroupMetadataManagerTestContext {
             this.streamsGroupBuilders.add(builder);
             return this;
         }
-        
+
         public Builder withShareGroup(ShareGroupBuilder builder) {
             this.shareGroupBuilders.add(builder);
             return this;
@@ -507,7 +507,7 @@ public class GroupMetadataManagerTestContext {
             this.authorizerPlugin = Optional.of(authorizerPlugin);
             return this;
         }
-        
+
         public Builder withStreamsGroupTaskAssignors(List<TaskAssignor> assignors) {
             this.streamsGroupAssignors = assignors;
             return this;
@@ -666,7 +666,7 @@ public class GroupMetadataManagerTestContext {
             .getMemberOrThrow(memberId)
             .state();
     }
-    
+
     public CoordinatorResult<ConsumerGroupHeartbeatResponseData, CoordinatorRecord> consumerGroupHeartbeat(
         ConsumerGroupHeartbeatRequestData request
     ) {

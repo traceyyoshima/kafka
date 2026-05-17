@@ -310,9 +310,9 @@ public class SubscriptionInfo {
     private static Set<TaskId> taskOffsetSumMapToTaskSet(final Map<TaskId, Long> taskOffsetSums,
                                                          final boolean getActiveTasks) {
         return taskOffsetSums.entrySet().stream()
-                   .filter(t -> getActiveTasks == (t.getValue() == Task.LATEST_OFFSET))
-                   .map(Map.Entry::getKey)
-                   .collect(Collectors.toSet());
+            .filter(t -> getActiveTasks == (t.getValue() == Task.LATEST_OFFSET))
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toSet());
     }
 
     /**

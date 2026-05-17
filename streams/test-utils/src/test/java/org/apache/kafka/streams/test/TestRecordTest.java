@@ -138,7 +138,7 @@ public class TestRecordTest {
     @Test
     public void testInvalidRecords() {
         assertThrows(IllegalArgumentException.class,
-            () -> new TestRecord<>(key, value, headers,  -1L));
+            () -> new TestRecord<>(key, value, headers, -1L));
     }
 
     @Test

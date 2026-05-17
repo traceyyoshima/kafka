@@ -949,7 +949,7 @@ public final class TaskAssignmentUtils {
             return (source, destination, sourceTask, kafkaStreamsAssignments) -> {
                 final Set<KeyValue<String, String>> tagsWithSource = new HashSet<>();
                 final Set<KeyValue<String, String>> tagsWithDestination = new HashSet<>();
-                for (final KafkaStreamsAssignment assignment: kafkaStreamsAssignments.values()) {
+                for (final KafkaStreamsAssignment assignment : kafkaStreamsAssignments.values()) {
                     final boolean hasAssignedTask = assignment.tasks().containsKey(sourceTask);
                     final boolean isSourceProcess = assignment.processId().equals(source.processId());
                     final boolean isDestinationProcess = assignment.processId().equals(destination.processId());

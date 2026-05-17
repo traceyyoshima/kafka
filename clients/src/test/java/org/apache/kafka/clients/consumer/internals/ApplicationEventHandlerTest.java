@@ -47,7 +47,7 @@ import static org.mockito.Mockito.verify;
 public class ApplicationEventHandlerTest {
     private final Time time = new MockTime();
     private final int initializationTimeoutMs = 50;
-    private final BlockingQueue<ApplicationEvent> applicationEventsQueue =  new LinkedBlockingQueue<>();
+    private final BlockingQueue<ApplicationEvent> applicationEventsQueue = new LinkedBlockingQueue<>();
     private final ApplicationEventProcessor applicationEventProcessor = mock(ApplicationEventProcessor.class);
     private final NetworkClientDelegate networkClientDelegate = mock(NetworkClientDelegate.class);
     private final RequestManagers requestManagers = mock(RequestManagers.class);

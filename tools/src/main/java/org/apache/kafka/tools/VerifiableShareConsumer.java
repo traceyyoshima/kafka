@@ -178,7 +178,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name" })
+    @JsonPropertyOrder({"timestamp", "name"})
     private abstract static class ShareConsumerEvent {
         private final long timestamp = System.currentTimeMillis();
 
@@ -199,7 +199,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "offsetResetStrategy" })
+    @JsonPropertyOrder({"timestamp", "name", "offsetResetStrategy"})
     protected static class OffsetResetStrategySet extends ShareConsumerEvent {
 
         private final String offsetResetStrategy;
@@ -235,7 +235,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "count", "partitions" })
+    @JsonPropertyOrder({"timestamp", "name", "count", "partitions"})
     public static class RecordsConsumed extends ShareConsumerEvent {
         private final long count;
         private final List<RecordSetSummary> partitionSummaries;
@@ -261,7 +261,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "count", "partitions", "success", "error" })
+    @JsonPropertyOrder({"timestamp", "name", "count", "partitions", "success", "error"})
     protected static class OffsetsAcknowledged extends ShareConsumerEvent {
 
         private final long count;
@@ -304,7 +304,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
 
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "key", "value", "topic", "partition", "offset" })
+    @JsonPropertyOrder({"timestamp", "name", "key", "value", "topic", "partition", "offset"})
     public static class RecordData extends ShareConsumerEvent {
 
         private final ConsumerRecord<String, String> record;

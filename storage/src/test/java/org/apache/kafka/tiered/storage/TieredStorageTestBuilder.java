@@ -159,7 +159,7 @@ public final class TieredStorageTestBuilder {
                                                                KeyValueSpec... keyValues) {
         TopicPartition topicPartition = new TopicPartition(topic, partition);
         List<ProducerRecord<String, String>> records = new ArrayList<>();
-        for (KeyValueSpec kv: keyValues) {
+        for (KeyValueSpec kv : keyValues) {
             records.add(new ProducerRecord<>(topic, partition, kv.getTimestamp(), kv.getKey(), kv.getValue()));
         }
         offloadables.computeIfAbsent(topicPartition, k -> new ArrayList<>())
@@ -324,11 +324,11 @@ public final class TieredStorageTestBuilder {
                 List<ProducerRecord<String, String>> recordsToProduce = new ArrayList<>(producableSpec.getRecords());
                 List<OffloadedSegmentSpec> offloadedSegmentSpecs =
                         offloadables.computeIfAbsent(topicPartition, k -> new ArrayList<>())
-                        .stream()
-                        .map(spec ->
+                            .stream()
+                            .map(spec ->
                                 new OffloadedSegmentSpec(spec.sourceBrokerId(), topicPartition, spec.baseOffset(),
                                         spec.records()))
-                        .toList();
+                            .toList();
                 ProduceAction action = new ProduceAction(topicPartition, offloadedSegmentSpecs, recordsToProduce,
                         producableSpec.getBatchSize(), producableSpec.getEarliestLocalLogOffset());
                 actions.add(action);

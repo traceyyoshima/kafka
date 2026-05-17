@@ -530,7 +530,7 @@ public final class DistributedConfig extends WorkerConfig {
                     ConfigDef.Type.STRING,
                     DEFAULT_METADATA_RECOVERY_STRATEGY,
                     ConfigDef.CaseInsensitiveValidString
-                            .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
+                    .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
                     ConfigDef.Importance.LOW,
                     METADATA_RECOVERY_STRATEGY_DOC)
             .define(METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_CONFIG,

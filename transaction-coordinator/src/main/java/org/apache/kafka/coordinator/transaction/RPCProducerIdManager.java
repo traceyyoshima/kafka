@@ -60,7 +60,7 @@ public class RPCProducerIdManager implements ProducerIdManager {
     final AtomicReference<ProducerIdsBlock> nextProducerIdBlock = new AtomicReference<>(null);
     final AtomicReference<ProducerIdsBlock> currentProducerIdBlock = new AtomicReference<>(ProducerIdsBlock.EMPTY);
     private final AtomicBoolean requestInFlight = new AtomicBoolean(false);
-    
+
     // Setting the value of backoffDeadlineMs should be handled only in the response handler thread.
     // Otherwise, consider using compareAndSet() instead of set().
     private final AtomicLong backoffDeadlineMs = new AtomicLong(NO_RETRY);
@@ -181,7 +181,7 @@ public class RPCProducerIdManager implements ProducerIdManager {
             case BROKER_ID_NOT_REGISTERED:
                 log.warn("{} Our broker ID is not yet known by the controller, trying again.", logPrefix);
                 break;
-            default :
+            default:
                 log.error("{} Received error code {} from the controller.", logPrefix, errors);
         }
         if (!successfulResponse) {

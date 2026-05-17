@@ -426,11 +426,11 @@ public abstract class ShareConsumerTestBase {
                 consumer.seekToBeginning(sgsTopicPartitions);
                 Set<ConsumerRecord<byte[], byte[]>> records = new HashSet<>();
                 TestUtils.waitForCondition(() -> {
-                        ConsumerRecords<byte[], byte[]> msgs = consumer.poll(Duration.ofMillis(5000L));
-                        if (msgs.count() > 0) {
-                            msgs.records(Topic.SHARE_GROUP_STATE_TOPIC_NAME).forEach(records::add);
-                        }
-                        return records.size() > 2; // +2 because of extra warmup records
+                    ConsumerRecords<byte[], byte[]> msgs = consumer.poll(Duration.ofMillis(5000L));
+                    if (msgs.count() > 0) {
+                        msgs.records(Topic.SHARE_GROUP_STATE_TOPIC_NAME).forEach(records::add);
+                    }
+                    return records.size() > 2; // +2 because of extra warmup records
                     },
                     30000L,
                     200L,
@@ -667,13 +667,13 @@ public abstract class ShareConsumerTestBase {
         AtomicReference<ConsumerRecords<byte[], byte[]>> recordsAtomic = new AtomicReference<>();
         try {
             waitForCondition(() -> {
-                    ConsumerRecords<byte[], byte[]> recs = shareConsumer.poll(Duration.ofMillis(pollMs));
-                    recordsAtomic.set(recs);
-                    if (checkAssignment) {
-                        waitForAssignment(groupId, tps);
-                    }
-                    return recs.count() == recordCount;
-                },
+                ConsumerRecords<byte[], byte[]> recs = shareConsumer.poll(Duration.ofMillis(pollMs));
+                recordsAtomic.set(recs);
+                if (checkAssignment) {
+                    waitForAssignment(groupId, tps);
+                }
+                return recs.count() == recordCount;
+            },
                 DEFAULT_MAX_WAIT_MS,
                 500L,
                 () -> "failed to get records"
@@ -716,21 +716,21 @@ public abstract class ShareConsumerTestBase {
     protected void waitForAssignment(String groupId, List<TopicPartition> tps) {
         try {
             waitForCondition(() -> {
-                    try (Admin admin = createAdminClient()) {
-                        Collection<ShareMemberDescription> members = admin.describeShareGroups(List.of(groupId),
+                try (Admin admin = createAdminClient()) {
+                    Collection<ShareMemberDescription> members = admin.describeShareGroups(List.of(groupId),
                             new DescribeShareGroupsOptions().includeAuthorizedOperations(true)
                         ).describedGroups().get(groupId).get().members();
-                        Set<TopicPartition> assigned = new HashSet<>();
-                        members.forEach(desc -> {
-                            if (desc.assignment() != null) {
-                                assigned.addAll(desc.assignment().topicPartitions());
-                            }
-                        });
-                        return assigned.containsAll(tps);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                },
+                    Set<TopicPartition> assigned = new HashSet<>();
+                    members.forEach(desc -> {
+                        if (desc.assignment() != null) {
+                            assigned.addAll(desc.assignment().topicPartitions());
+                        }
+                    });
+                    return assigned.containsAll(tps);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            },
                 DEFAULT_MAX_WAIT_MS,
                 1000L,
                 () -> "tps not assigned to members"

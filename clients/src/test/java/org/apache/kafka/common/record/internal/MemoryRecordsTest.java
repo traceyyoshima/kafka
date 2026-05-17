@@ -99,7 +99,7 @@ public class MemoryRecordsTest {
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
             List<Arguments> arguments = new ArrayList<>();
             for (long firstOffset : asList(0L, 57L))
-                for (CompressionType type: CompressionType.values()) {
+                for (CompressionType type : CompressionType.values()) {
                     List<Byte> magics = type == CompressionType.ZSTD
                             ? Collections.singletonList(RecordBatch.MAGIC_VALUE_V2)
                             : asList(RecordBatch.MAGIC_VALUE_V0, RecordBatch.MAGIC_VALUE_V1, RecordBatch.MAGIC_VALUE_V2);
@@ -115,7 +115,7 @@ public class MemoryRecordsTest {
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
             List<Arguments> arguments = new ArrayList<>();
             for (long firstOffset : asList(0L, 57L))
-                for (CompressionType type: CompressionType.values()) {
+                for (CompressionType type : CompressionType.values()) {
                     arguments.add(Arguments.of(new Args(RecordBatch.MAGIC_VALUE_V2, firstOffset, Compression.of(type).build())));
                 }
             return arguments.stream();
@@ -1198,7 +1198,7 @@ public class MemoryRecordsTest {
 
         // Slice from third message until the end.
         int position = IntStream.range(0, 2).map(i -> items.get(i).sizeInBytes()).sum();
-        Records sliced  = records.slice(position, records.sizeInBytes() - position);
+        Records sliced = records.slice(position, records.sizeInBytes() - position);
         assertEquals(records.sizeInBytes() - position, sliced.sizeInBytes());
         assertEquals(items.subList(2, items.size()), batches(sliced), "Read starting from the third message");
 

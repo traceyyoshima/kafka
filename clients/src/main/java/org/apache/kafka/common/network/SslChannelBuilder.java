@@ -137,6 +137,7 @@ public class SslChannelBuilder implements ChannelBuilder, ListenerReconfigurable
             this.principalBuilder = ChannelBuilders.createPrincipalBuilder(configs, null, sslPrincipalMapper);
             this.listenerName = listenerName;
         }
+
         /**
          * No-Op for plaintext authenticator
          */

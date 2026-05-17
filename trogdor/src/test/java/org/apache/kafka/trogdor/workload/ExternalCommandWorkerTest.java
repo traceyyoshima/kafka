@@ -171,7 +171,7 @@ public class ExternalCommandWorkerTest {
                 }
             }
             CompletableFuture<String> statusFuture = new CompletableFuture<>();
-            final WorkerStatusTracker statusTracker = status -> statusFuture .complete(status.textValue());
+            final WorkerStatusTracker statusTracker = status -> statusFuture.complete(status.textValue());
             ExternalCommandWorker worker = new ExternalCommandWorkerBuilder("testForceKillTask").
                 shutdownGracePeriodMs(1).
                 command("bash", tempFile.getAbsolutePath()).

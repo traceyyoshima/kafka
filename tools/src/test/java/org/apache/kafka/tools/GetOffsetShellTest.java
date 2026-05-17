@@ -219,8 +219,7 @@ public class GetOffsetShellTest {
             List<Row> offsets = executeAndParse("--topic", getTopicName(i));
 
             assertEquals(expectedOffsetsForTopic(i), offsets, () -> "Offset output did not match for " + getTopicName(i));
-            }
-        );
+        });
     }
 
     @ClusterTest

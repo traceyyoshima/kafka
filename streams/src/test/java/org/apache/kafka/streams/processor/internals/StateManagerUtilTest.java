@@ -177,7 +177,7 @@ public class StateManagerUtilTest {
     }
 
     @Test
-    public void  shouldStillWipeStateStoresIfCloseThrowsException() {
+    public void shouldStillWipeStateStoresIfCloseThrowsException() {
         final File randomFile = new File("/random/path");
 
         when(stateManager.taskId()).thenReturn(taskId);

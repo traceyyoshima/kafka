@@ -671,7 +671,7 @@ public class ConsumerConfig extends AbstractConfig {
                                         Type.STRING,
                                         CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL,
                                         ConfigDef.CaseInsensitiveValidString
-                                                .in(Utils.enumOptions(SecurityProtocol.class)),
+                                        .in(Utils.enumOptions(SecurityProtocol.class)),
                                         Importance.MEDIUM,
                                         CommonClientConfigs.SECURITY_PROTOCOL_DOC)
                                 .withClientSslSupport()
@@ -680,7 +680,7 @@ public class ConsumerConfig extends AbstractConfig {
                                         Type.STRING,
                                         CommonClientConfigs.DEFAULT_METADATA_RECOVERY_STRATEGY,
                                         ConfigDef.CaseInsensitiveValidString
-                                                .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
+                                        .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
                                         Importance.LOW,
                                         CommonClientConfigs.METADATA_RECOVERY_STRATEGY_DOC)
                                 .define(CommonClientConfigs.METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_CONFIG,

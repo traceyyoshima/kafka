@@ -181,7 +181,7 @@ public class ClientUtilsTest {
 
         assertThrows(StreamsException.class, () -> fetchEndOffsets(PARTITIONS, adminClient));
     }
-    
+
     @Test
     public void shouldComputeSizeInBytesForConsumerRecord() {
         final ConsumerRecord<byte[], byte[]> record = new ConsumerRecord<>(

@@ -71,7 +71,7 @@ public class AlterReplicaLogDirsRequestTest {
                                                 .setPartitions(asList(0, 1)),
                                                new AlterReplicaLogDirTopic()
                                                 .setName("topic2")
-                                                .setPartitions(singletonList(7))))),
+                                               .setPartitions(singletonList(7))))),
                                 new AlterReplicaLogDir()
                                         .setPath("/data1")
                                         .setTopics(new AlterReplicaLogDirTopicCollection(

@@ -284,7 +284,7 @@ public class FlattenTest {
         innerValue.put("baz", nestedValue);
         Struct value = new Struct(structSchema);
         value.put("foo", List.of(innerValue));
-        SourceRecord transformed = xformValue.apply(new SourceRecord(null, null, "topic", null, null, structSchema, value)); 
+        SourceRecord transformed = xformValue.apply(new SourceRecord(null, null, "topic", null, null, structSchema, value));
         assertEquals(value, transformed.value());
         assertEquals(structSchema, transformed.valueSchema());
     }

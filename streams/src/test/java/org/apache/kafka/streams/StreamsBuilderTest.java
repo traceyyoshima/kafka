@@ -2688,7 +2688,7 @@ public class StreamsBuilderTest {
         assertTrue(e.getMessage().contains("Following repartition topic(s) has not been named: KSTREAM-KEY-SELECT-0000000004-repartition"));
     }
 
-    private StreamsBuilder buildKStreamKTableJoinTopology(final Joined<String, String, String> joined, 
+    private StreamsBuilder buildKStreamKTableJoinTopology(final Joined<String, String, String> joined,
                                                           final Materialized<String, String, KeyValueStore<Bytes, byte[]>> materialized) {
 
         final Map<Object, Object> props = dummyStreamsConfigMap();
@@ -2747,7 +2747,7 @@ public class StreamsBuilderTest {
                 (value1, value2) -> value1,
                 joined.withGracePeriod(Duration.ofHours(1))
             )
-                .to("test-topic");
+            .to("test-topic");
         return builder;
     }
 

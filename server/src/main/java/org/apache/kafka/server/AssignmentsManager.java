@@ -340,16 +340,16 @@ public final class AssignmentsManager {
         Map<TopicIdPartition, Assignment> newInFlight = new HashMap<>();
         int numInvalid = 0;
         for (Iterator<Assignment> iterator = ready.values().iterator();
-             iterator.hasNext() && newInFlight.size() < MAX_ASSIGNMENTS_PER_REQUEST;
+            iterator.hasNext() && newInFlight.size() < MAX_ASSIGNMENTS_PER_REQUEST;
              ) {
-            Assignment assignment = iterator.next();
-            iterator.remove();
-            if (assignment.valid(nodeId, image)) {
-                newInFlight.put(assignment.topicIdPartition(), assignment);
-            } else {
-                numInvalid++;
-            }
-        }
+                 Assignment assignment = iterator.next();
+                 iterator.remove();
+                 if (assignment.valid(nodeId, image)) {
+                     newInFlight.put(assignment.topicIdPartition(), assignment);
+                 } else {
+                     numInvalid++;
+                 }
+             }
         log.info("maybeSendAssignments: sending {} assignments; invalidated {} assignments " +
             "prior to sending.", newInFlight.size(), numInvalid);
         if (!newInFlight.isEmpty()) {

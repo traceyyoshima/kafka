@@ -698,7 +698,7 @@ public class MockAdminClient extends AdminClient {
         if (tokenFound) {
             allTokens.removeAll(tokensToRemove);
             future.complete(expiryTimestamp);
-        }   else {
+        } else {
             future.completeExceptionally(new DelegationTokenNotFoundException(""));
         }
 
@@ -900,7 +900,7 @@ public class MockAdminClient extends AdminClient {
             AlterConfigsOptions options) {
         Map<ConfigResource, KafkaFuture<Void>> futures = new HashMap<>();
         for (Map.Entry<ConfigResource, Collection<AlterConfigOp>> entry :
-                configs.entrySet()) {
+            configs.entrySet()) {
             ConfigResource resource = entry.getKey();
             KafkaFutureImpl<Void> future = new KafkaFutureImpl<>();
             futures.put(resource, future);
@@ -1145,7 +1145,7 @@ public class MockAdminClient extends AdminClient {
             AlterPartitionReassignmentsOptions options) {
         Map<TopicPartition, KafkaFuture<Void>> futures = new HashMap<>();
         for (Map.Entry<TopicPartition, Optional<NewPartitionReassignment>> entry :
-                newReassignments.entrySet()) {
+            newReassignments.entrySet()) {
             TopicPartition partition = entry.getKey();
             Optional<NewPartitionReassignment> newReassignment = entry.getValue();
             KafkaFutureImpl<Void> future = new KafkaFutureImpl<>();
@@ -1474,7 +1474,7 @@ public class MockAdminClient extends AdminClient {
     public synchronized DescribeStreamsGroupsResult describeStreamsGroups(Collection<String> groupIds, DescribeStreamsGroupsOptions options) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
-    
+
     @Override
     public synchronized DescribeClassicGroupsResult describeClassicGroups(Collection<String> groupIds, DescribeClassicGroupsOptions options) {
         throw new UnsupportedOperationException("Not implemented yet");

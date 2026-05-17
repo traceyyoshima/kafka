@@ -387,9 +387,9 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
             ProcessorStateException.class,
             () -> rocksDBStore.openDB(context.appConfigs(), context.stateDir()),
             "The used block-based table format configuration does not expose the " +
-                    "block cache. Use the BlockBasedTableConfig instance provided by Options#tableFormatConfig() to configure " +
-                    "the block-based table format of RocksDB. Do not provide a new instance of BlockBasedTableConfig to " +
-                    "the RocksDB options."
+            "block cache. Use the BlockBasedTableConfig instance provided by Options#tableFormatConfig() to configure " +
+            "the block-based table format of RocksDB. Do not provide a new instance of BlockBasedTableConfig to " +
+            "the RocksDB options."
         );
     }
 
@@ -1295,7 +1295,7 @@ public class RocksDBStoreTest extends AbstractKeyValueStoreTest {
         headers.add(new RecordHeader(
                 ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
                 PositionSerde.serialize(position).array()));
-        return new ConsumerRecord<>("", 0, 0L,  RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
+        return new ConsumerRecord<>("", 0, 0L, RecordBatch.NO_TIMESTAMP, TimestampType.NO_TIMESTAMP_TYPE, -1, -1,
                 key, value, headers, Optional.empty());
     }
 

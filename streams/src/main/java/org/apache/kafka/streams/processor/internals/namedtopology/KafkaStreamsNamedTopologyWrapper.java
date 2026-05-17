@@ -209,7 +209,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
         if (hasStartedOrFinishedShuttingDown()) {
             log.error("Attempted to remove topology {} from while the Kafka Streams was in state {}, "
-                          + "topologies cannot be modified if the application has begun or completed shutting down.",
+                + "topologies cannot be modified if the application has begun or completed shutting down.",
                       topologyToRemove, state
             );
             removeTopologyFuture.completeExceptionally(
@@ -217,7 +217,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
             );
         } else if (getTopologyByName(topologyToRemove).isEmpty()) {
             log.error("Attempted to remove unknown topology {}. This application currently contains the"
-                          + "following topologies: {}.", topologyToRemove, topologyMetadata.namedTopologiesView()
+                + "following topologies: {}.", topologyToRemove, topologyMetadata.namedTopologiesView()
             );
             removeTopologyFuture.completeExceptionally(
                 new UnknownTopologyException("Unable to remove topology", topologyToRemove)

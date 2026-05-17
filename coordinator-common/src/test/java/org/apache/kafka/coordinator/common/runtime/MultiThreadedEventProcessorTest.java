@@ -408,9 +408,9 @@ public class MultiThreadedEventProcessorTest {
             // Enqueue the other event.
             FutureEvent<Integer> otherEvent = new FutureEvent<>(
                 new TopicPartition("foo", 0), () -> {
-                mockTime.sleep(5000L);
-                return numEventsExecuted.incrementAndGet();
-            },
+                    mockTime.sleep(5000L);
+                    return numEventsExecuted.incrementAndGet();
+                },
                 false,
                 mockTime.milliseconds()
             );

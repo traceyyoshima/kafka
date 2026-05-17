@@ -3368,8 +3368,8 @@ public class RequestResponseTest {
         ListPartitionReassignmentsResponseData data = new ListPartitionReassignmentsResponseData();
         data.setTopics(singletonList(
             new ListPartitionReassignmentsResponseData.OngoingTopicReassignment()
-                        .setName("topic")
-                        .setPartitions(singletonList(
+                .setName("topic")
+                .setPartitions(singletonList(
                                 new ListPartitionReassignmentsResponseData.OngoingPartitionReassignment()
                                         .setPartitionIndex(0)
                                         .setReplicas(asList(1, 2))
@@ -3461,8 +3461,8 @@ public class RequestResponseTest {
                             .setEntityType(ClientQuotaEntity.USER)
                             .setEntityName("user")))
                         .setValues(singletonList(new DescribeClientQuotasResponseData.ValueData()
-                            .setKey("request_percentage")
-                            .setValue(1.0)))));
+                    .setKey("request_percentage")
+                    .setValue(1.0)))));
         return new DescribeClientQuotasResponse(data);
     }
 
@@ -3831,9 +3831,9 @@ public class RequestResponseTest {
             .setGroups(Collections.singletonList(new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseGroup()
                 .setGroupId("group")
                 .setTopics(Collections.singletonList(new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponseTopic()
-                .setTopicName("topic-1")
-                .setTopicId(Uuid.randomUuid())
-                .setPartitions(Collections.singletonList(new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponsePartition()
+                    .setTopicName("topic-1")
+                    .setTopicId(Uuid.randomUuid())
+                    .setPartitions(Collections.singletonList(new DescribeShareGroupOffsetsResponseData.DescribeShareGroupOffsetsResponsePartition()
                     .setPartitionIndex(0)
                     .setErrorCode(Errors.NONE.code())
                     .setStartOffset(0)

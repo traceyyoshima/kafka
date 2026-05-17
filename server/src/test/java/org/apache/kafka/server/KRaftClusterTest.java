@@ -1502,7 +1502,7 @@ public class KRaftClusterTest {
                     new NewTopic("foo", 3, (short) 3))).all().get();
 
                 // Wait until foo-0 is created on broker0.
-                TestUtils.retryOnExceptionWithTimeout(60000, () -> 
+                TestUtils.retryOnExceptionWithTimeout(60000, () ->
                     assertTrue(broker0.logManager().getLog(foo0, false).isPresent()));
 
                 // Shut down broker0 and wait until the ISR of foo-0 is set to [1, 2]

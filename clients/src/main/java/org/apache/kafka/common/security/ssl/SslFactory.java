@@ -305,7 +305,7 @@ public class SslFactory implements Reconfigurable, Closeable {
             List<CertificateEntries> entries = new ArrayList<>();
             while (aliases.hasMoreElements()) {
                 String alias = aliases.nextElement();
-                Certificate cert  = keystore.getCertificate(alias);
+                Certificate cert = keystore.getCertificate(alias);
                 if (cert instanceof X509Certificate)
                     entries.add(new CertificateEntries(alias, (X509Certificate) cert));
             }
@@ -450,6 +450,7 @@ public class SslFactory implements Reconfigurable, Closeable {
         void beginHandshake() throws SSLException {
             sslEngine.beginHandshake();
         }
+
         void handshake(SslEngineValidator peerValidator) throws SSLException {
             SSLEngineResult.HandshakeStatus handshakeStatus = sslEngine.getHandshakeStatus();
             while (true) {

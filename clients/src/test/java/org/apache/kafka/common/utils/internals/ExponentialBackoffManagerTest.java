@@ -55,7 +55,7 @@ class ExponentialBackoffManagerTest {
         manager.incrementAttempt();
         manager.incrementAttempt();
         assertEquals(3, manager.attempts());
-        
+
         manager.resetAttempts();
         assertEquals(0, manager.attempts());
         assertTrue(manager.canAttempt());

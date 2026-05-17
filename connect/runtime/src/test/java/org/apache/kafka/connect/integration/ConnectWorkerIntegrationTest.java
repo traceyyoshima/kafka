@@ -898,7 +898,7 @@ public class ConnectWorkerIntegrationTest {
                     logCaptureAppender.getEvents().stream().anyMatch(e ->
                         // Ensure that the tick thread is blocked on the stage which we expect it to be, i.e restarting the task.
                         e.getMessage().contains("worker poll timeout has expired") &&
-                        e.getMessage().contains("The last known action being performed by the worker is : restarting task " + CONNECTOR_NAME + "-0")
+                e.getMessage().contains("The last known action being performed by the worker is : restarting task " + CONNECTOR_NAME + "-0")
                     ),
                 "Coordinator did not poll for rebalance.timeout.ms");
             // This clean up ensures that the test ends quickly as o/w we will wait for task#stop.

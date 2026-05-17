@@ -76,7 +76,7 @@ public class ClientUtilsTest {
             inetAddress.when(() -> InetAddress.getAllByName(hostname))
                 .thenReturn(new InetAddress[]{inetAddress1, inetAddress2});
             try (MockedConstruction<InetSocketAddress> inetSocketAddress =
-                     mockConstruction(
+                mockConstruction(
                          InetSocketAddress.class,
                          (mock, context) -> {
                              when(mock.isUnresolved()).thenReturn(false);
@@ -140,7 +140,7 @@ public class ClientUtilsTest {
     @Test
     public void testOnlyBadHostname() {
         try (MockedConstruction<InetSocketAddress> inetSocketAddress =
-                 mockConstruction(
+            mockConstruction(
                      InetSocketAddress.class,
                      (mock, context) -> when(mock.isUnresolved()).thenReturn(true)
                  )

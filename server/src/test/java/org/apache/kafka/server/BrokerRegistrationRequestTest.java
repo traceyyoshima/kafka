@@ -55,16 +55,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class BrokerRegistrationRequestTest {
     private final ClusterInstance clusterInstance;
+
     public BrokerRegistrationRequestTest(ClusterInstance clusterInstance) {
         this.clusterInstance = clusterInstance;
     }
-    
+
     @ClusterTest(types = {Type.KRAFT}, controllers = 1, metadataVersion = MetadataVersion.IBP_3_3_IV3)
     public void shouldRejectZkMigratingBrokerWhenFeatureLevelDoesNotSupportMigration() throws Exception {
         try (ChannelEnv env = openChannel()) {
             assertEquals(
-                    Errors.BROKER_ID_NOT_REGISTERED, 
-                    registerBroker(env.channelManager, 1L, 
+                    Errors.BROKER_ID_NOT_REGISTERED,
+                    registerBroker(env.channelManager, 1L,
                             new BrokerRegistrationRequestData.Feature()
                                     .setName(MetadataVersion.FEATURE_NAME)
                                     .setMinSupportedVersion(MetadataVersionTestUtils.IBP_3_3_IV0_FEATURE_LEVEL)
@@ -102,7 +103,7 @@ class BrokerRegistrationRequestTest {
         try (ChannelEnv env = openChannel()) {
             assertEquals(
                     Errors.NONE,
-                    registerBroker(env.channelManager, null, 
+                    registerBroker(env.channelManager, null,
                             new BrokerRegistrationRequestData.Feature()
                                     .setName(MetadataVersion.FEATURE_NAME)
                                     .setMinSupportedVersion(MetadataVersion.IBP_3_3_IV3.featureLevel())
@@ -219,7 +220,7 @@ class BrokerRegistrationRequestTest {
                     clusterInstance.controllerBoundPorts().get(0)
             ));
         }
-        
+
         public ListenerName listenerName() {
             return clusterInstance.controllerListenerName();
         }

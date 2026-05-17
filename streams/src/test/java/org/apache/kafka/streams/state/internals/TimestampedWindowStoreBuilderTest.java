@@ -82,7 +82,7 @@ public class TimestampedWindowStoreBuilderTest {
         when(supplier.get()).thenReturn(inner);
         setUpWithoutInner(storeName);
     }
-    
+
     @ValueSource(strings = {TIMESTAMP_STORE_NAME, TIMEORDERED_STORE_NAME})
     @ParameterizedTest
     public void shouldHaveMeteredStoreAsOuterStore(final String storeName) {

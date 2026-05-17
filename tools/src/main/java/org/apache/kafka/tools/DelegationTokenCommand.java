@@ -265,11 +265,11 @@ public class DelegationTokenCommand {
         }
 
         public long maxLifeTime() {
-            return  options.valueOf(maxLifeTimeOpt);
+            return options.valueOf(maxLifeTimeOpt);
         }
 
         public long renewTimePeriod() {
-            return  options.valueOf(renewTimePeriodOpt);
+            return options.valueOf(renewTimePeriodOpt);
         }
 
         public long expiryTimePeriod() {
@@ -279,7 +279,7 @@ public class DelegationTokenCommand {
         public String hmac() {
             return options.valueOf(hmacOpt);
         }
-        
+
         public void checkArgs() {
             // check required args
             CommandLineUtils.checkRequiredArgs(parser, options, bootstrapServerOpt, commandConfigOpt);

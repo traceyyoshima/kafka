@@ -371,8 +371,8 @@ public class FetchSessionHandlerTest {
 
             // A FETCH_SESSION_ID_NOT_FOUND response triggers us to close the session.
             // The next request is a session establishing FULL request.
-            FetchResponse resp2 = FetchResponse.of(Errors.FETCH_SESSION_ID_NOT_FOUND, 0, INVALID_SESSION_ID, 
-                    respMap(), 
+            FetchResponse resp2 = FetchResponse.of(Errors.FETCH_SESSION_ID_NOT_FOUND, 0, INVALID_SESSION_ID,
+                    respMap(),
                     List.of());
             handler.handleResponse(resp2, version);
 

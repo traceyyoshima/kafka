@@ -80,11 +80,11 @@ public class SensorTest {
 
     @Test
     public void testShouldRecordForInfoLevelSensor() {
-        Sensor infoSensor = new Sensor(null, "infoSensor", null, INFO_CONFIG,  Time.SYSTEM,
+        Sensor infoSensor = new Sensor(null, "infoSensor", null, INFO_CONFIG, Time.SYSTEM,
             0, Sensor.RecordingLevel.INFO);
         assertTrue(infoSensor.shouldRecord());
 
-        infoSensor = new Sensor(null, "infoSensor", null, DEBUG_CONFIG,  Time.SYSTEM,
+        infoSensor = new Sensor(null, "infoSensor", null, DEBUG_CONFIG, Time.SYSTEM,
             0, Sensor.RecordingLevel.INFO);
         assertTrue(infoSensor.shouldRecord());
 

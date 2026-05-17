@@ -28,7 +28,7 @@ public final class PlaintextSender extends Thread {
     public PlaintextSender(final InetSocketAddress serverAddress, final byte[] payload) {
         super(() -> {
             try (Socket connection = new Socket(serverAddress.getAddress(), serverAddress.getPort());
-                 OutputStream os = connection.getOutputStream()) {
+            OutputStream os = connection.getOutputStream()) {
                 os.write(payload);
                 os.flush();
             } catch (Exception e) {

@@ -48,7 +48,7 @@ public class StreamStreamJoinNode<K, V1, V2, VR> extends BaseJoinProcessorNode<K
               null);
 
         this.thisWindowedStreamProcessorName = thisWindowedStreamProcessorName;
-        this.otherWindowedStreamProcessorName =  otherWindowedStreamProcessorName;
+        this.otherWindowedStreamProcessorName = otherWindowedStreamProcessorName;
         this.selfJoinProcessorParameters = selfJoinProcessorParameters;
     }
 
@@ -57,7 +57,7 @@ public class StreamStreamJoinNode<K, V1, V2, VR> extends BaseJoinProcessorNode<K
         return "StreamStreamJoinNode{" +
             "thisWindowedStreamProcessorName=" + thisWindowedStreamProcessorName +
             ", otherWindowedStreamProcessorName=" + otherWindowedStreamProcessorName +
-               "} " + super.toString();
+            "} " + super.toString();
     }
 
     @SuppressWarnings("unchecked")
@@ -162,7 +162,6 @@ public class StreamStreamJoinNode<K, V1, V2, VR> extends BaseJoinProcessorNode<K
                                               selfJoinProcessorParameters,
                                               thisWindowedStreamProcessorName,
                                               otherWindowedStreamProcessorName);
-
 
         }
     }

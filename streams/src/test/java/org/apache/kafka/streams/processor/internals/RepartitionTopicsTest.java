@@ -96,7 +96,7 @@ public class RepartitionTopicsTest {
         mkMap(mkEntry(REPARTITION_TOPIC_NAME1, REPARTITION_TOPIC_CONFIG1)),
         Collections.emptyMap()
     );
-    final  StreamsConfig config = new DummyStreamsConfig();
+    final StreamsConfig config = new DummyStreamsConfig();
 
     @Mock
     InternalTopologyBuilder internalTopologyBuilder;

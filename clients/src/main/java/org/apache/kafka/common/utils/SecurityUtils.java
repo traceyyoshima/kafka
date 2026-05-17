@@ -55,7 +55,7 @@ public class SecurityUtils {
             NAME_TO_OPERATIONS.put(operationName.toUpperCase(Locale.ROOT), operation);
         }
         for (AclPermissionType permissionType : AclPermissionType.values()) {
-            String permissionName  = toPascalCase(permissionType.name());
+            String permissionName = toPascalCase(permissionType.name());
             NAME_TO_PERMISSION_TYPES.put(permissionName, permissionType);
             NAME_TO_PERMISSION_TYPES.put(permissionName.toUpperCase(Locale.ROOT), permissionType);
         }

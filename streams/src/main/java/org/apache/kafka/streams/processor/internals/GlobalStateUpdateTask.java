@@ -62,16 +62,16 @@ public class GlobalStateUpdateTask implements GlobalStateMaintainer {
                                  final Time time,
                                  final long flushInterval
                                  ) {
-        this.logContext = logContext;
-        this.log = logContext.logger(getClass());
-        this.topology = topology;
-        this.stateMgr = stateMgr;
-        this.processorContext = processorContext;
-        this.deserializationExceptionHandler = deserializationExceptionHandler;
-        this.processingExceptionHandler = processingExceptionHandler;
-        this.time = time;
-        this.flushInterval = flushInterval;
-    }
+                                     this.logContext = logContext;
+                                     this.log = logContext.logger(getClass());
+                                     this.topology = topology;
+                                     this.stateMgr = stateMgr;
+                                     this.processorContext = processorContext;
+                                     this.deserializationExceptionHandler = deserializationExceptionHandler;
+                                     this.processingExceptionHandler = processingExceptionHandler;
+                                     this.time = time;
+                                     this.flushInterval = flushInterval;
+                                 }
 
     /**
      * @throws IllegalStateException If store gets registered after initialized is already finished

@@ -158,12 +158,12 @@ public abstract class ConnectRecord<R extends ConnectRecord<R>> {
         ConnectRecord<?> that = (ConnectRecord<?>) o;
 
         return Objects.equals(kafkaPartition, that.kafkaPartition)
-               && Objects.equals(topic, that.topic)
-               && Objects.equals(keySchema, that.keySchema)
-               && Objects.equals(key, that.key)
-               && Objects.equals(valueSchema, that.valueSchema)
-               && Objects.equals(value, that.value)
-               && Objects.equals(timestamp, that.timestamp)
+            && Objects.equals(topic, that.topic)
+            && Objects.equals(keySchema, that.keySchema)
+            && Objects.equals(key, that.key)
+            && Objects.equals(valueSchema, that.valueSchema)
+            && Objects.equals(value, that.value)
+            && Objects.equals(timestamp, that.timestamp)
                && Objects.equals(headers, that.headers);
     }
 

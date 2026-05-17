@@ -249,9 +249,9 @@ public class FetchRequestTest {
         Uuid topicId = Uuid.randomUuid();
         int partition = 0;
         TopicIdPartition tp = new TopicIdPartition(topicId, partition, "topic");
-        
+
         FetchRequest fetchRequest = createFetchRequestByVersion(version, topicId, tp);
-        
+
         Map<Uuid, String> topicNames = Collections.singletonMap(topicId, tp.topic());
         List<TopicIdPartition> requestsWithTopicsName = fetchRequest.forgottenTopics(topicNames);
         assertEquals(topicNames.size(), requestsWithTopicsName.size());

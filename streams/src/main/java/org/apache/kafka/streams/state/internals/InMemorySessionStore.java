@@ -73,7 +73,7 @@ public class InMemorySessionStore implements SessionStore<Bytes, byte[]> {
         "Note that the built-in numerical serdes do not follow this for negative numbers";
 
     private final ConcurrentNavigableMap<Long, ConcurrentNavigableMap<Bytes, ConcurrentNavigableMap<Long, byte[]>>> endTimeMap = new ConcurrentSkipListMap<>();
-    private final Set<InMemorySessionStoreIterator> openIterators  = ConcurrentHashMap.newKeySet();
+    private final Set<InMemorySessionStoreIterator> openIterators = ConcurrentHashMap.newKeySet();
 
     private volatile boolean open = false;
 

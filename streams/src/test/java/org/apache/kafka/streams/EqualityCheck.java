@@ -77,7 +77,7 @@ public final class EqualityCheck {
             throw new AssertionError(
                 String.format(
                     "o1[%s].hash[%d] was equal to o2[%s].hash[%d], even though !o1.equals(o2). " +
-                        "This is NOT A BUG, but it is undesirable for hash collection performance.",
+                "This is NOT A BUG, but it is undesirable for hash collection performance.",
                     o1,
                     o1.hashCode(),
                     o2,

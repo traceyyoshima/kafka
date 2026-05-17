@@ -49,8 +49,8 @@ public class RemoteLogSegmentMetadataSnapshotTransform implements RemoteLogMetad
     private List<RemoteLogSegmentMetadataSnapshotRecord.SegmentLeaderEpochEntry> createSegmentLeaderEpochsEntry(Map<Integer, Long> leaderEpochs) {
         return leaderEpochs.entrySet().stream()
                            .map(entry -> new RemoteLogSegmentMetadataSnapshotRecord.SegmentLeaderEpochEntry()
-                           .setLeaderEpoch(entry.getKey())
-                           .setOffset(entry.getValue()))
+                               .setLeaderEpoch(entry.getKey())
+                               .setOffset(entry.getValue()))
                            .toList();
     }
 

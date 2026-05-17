@@ -73,9 +73,9 @@ public class LeaveGroupRequest extends AbstractRequest {
         @Override
         public String toString() {
             return "(type=LeaveGroupRequest" +
-                       ", groupId=" + groupId +
-                       ", members=" + MessageUtil.deepToString(members.iterator()) +
-                       ")";
+                ", groupId=" + groupId +
+                ", members=" + MessageUtil.deepToString(members.iterator()) +
+                ")";
         }
     }
     private final LeaveGroupRequestData data;

@@ -226,7 +226,7 @@ public final class WorkerUtils {
             }
             if (Time.SYSTEM.milliseconds() > startMs + CREATE_TOPICS_CALL_TIMEOUT) {
                 String str = "Unable to create topic(s): " +
-                             String.join(", ", topicsToCreate) + "after " + tries + " attempt(s)";
+                    String.join(", ", topicsToCreate) + "after " + tries + " attempt(s)";
                 log.warn(str);
                 throw new TimeoutException(str);
             }
@@ -256,13 +256,13 @@ public final class WorkerUtils {
         Map<String, TopicDescription> topicDescriptionMap = topicDescriptions(topicsToVerify, adminClient,
                 retryCount, retryBackoffMs);
 
-        for (TopicDescription desc: topicDescriptionMap.values()) {
+        for (TopicDescription desc : topicDescriptionMap.values()) {
             // map will always contain the topic since all topics in 'topicsExists' are in given
             // 'topics' map
             int partitions = topicsInfo.get(desc.name()).numPartitions();
             if (partitions != CreateTopicsRequest.NO_NUM_PARTITIONS && desc.partitions().size() != partitions) {
                 String str = "Topic '" + desc.name() + "' exists, but has "
-                             + desc.partitions().size() + " partitions, while requested "
+                    + desc.partitions().size() + " partitions, while requested "
                              + " number of partitions is " + partitions;
                 log.warn(str);
                 throw new RuntimeException(str);
@@ -310,7 +310,7 @@ public final class WorkerUtils {
         ListTopicsResult res = adminClient.listTopics(
             new ListTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
         Map<String, TopicListing> topicListingMap = res.namesToListings().get();
-        for (Map.Entry<String, TopicListing> topicListingEntry: topicListingMap.entrySet()) {
+        for (Map.Entry<String, TopicListing> topicListingEntry : topicListingMap.entrySet()) {
             if (!topicListingEntry.getValue().isInternal()
                 && topicNamePattern.matcher(topicListingEntry.getKey()).matches()) {
                 matchedTopics.add(topicListingEntry.getKey());
@@ -322,9 +322,9 @@ public final class WorkerUtils {
         DescribeTopicsResult topicsResult = adminClient.describeTopics(
             matchedTopics, new DescribeTopicsOptions().timeoutMs(ADMIN_REQUEST_TIMEOUT));
         Map<String, TopicDescription> topicDescriptionMap = topicsResult.allTopicNames().get();
-        for (TopicDescription desc: topicDescriptionMap.values()) {
+        for (TopicDescription desc : topicDescriptionMap.values()) {
             List<TopicPartitionInfo> partitions = desc.partitions();
-            for (TopicPartitionInfo info: partitions) {
+            for (TopicPartitionInfo info : partitions) {
                 if ((info.partition() >= startPartition) && (info.partition() <= endPartition)) {
                     out.add(new TopicPartition(desc.name(), info.partition()));
                 }

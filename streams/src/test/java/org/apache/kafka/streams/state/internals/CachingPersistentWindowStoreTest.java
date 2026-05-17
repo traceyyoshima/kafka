@@ -325,7 +325,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("b"), bytesValue("b"), DEFAULT_TIMESTAMP);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.fetch(bytesKey("a"), bytesKey("b"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP))) {
+            cachingStore.fetch(bytesKey("a"), bytesKey("b"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP))) {
             final List<Windowed<Bytes>> expectedKeys = Arrays.asList(
                 new Windowed<>(bytesKey("a"), new TimeWindow(DEFAULT_TIMESTAMP, DEFAULT_TIMESTAMP + WINDOW_SIZE)),
                 new Windowed<>(bytesKey("b"), new TimeWindow(DEFAULT_TIMESTAMP, DEFAULT_TIMESTAMP + WINDOW_SIZE))
@@ -347,7 +347,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("e"), bytesValue("e"), DEFAULT_TIMESTAMP + 20L);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.fetch(null, bytesKey("d"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
+            cachingStore.fetch(null, bytesKey("d"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
             final List<Windowed<Bytes>> expectedKeys = Arrays.asList(
                 new Windowed<>(bytesKey("a"), new TimeWindow(DEFAULT_TIMESTAMP, DEFAULT_TIMESTAMP + WINDOW_SIZE)),
                 new Windowed<>(bytesKey("b"), new TimeWindow(DEFAULT_TIMESTAMP, DEFAULT_TIMESTAMP + WINDOW_SIZE)),
@@ -370,7 +370,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("e"), bytesValue("e"), DEFAULT_TIMESTAMP + 20L);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.fetch(bytesKey("b"), null, ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
+            cachingStore.fetch(bytesKey("b"), null, ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
             final List<Windowed<Bytes>> expectedKeys = Arrays.asList(
                 new Windowed<>(bytesKey("b"), new TimeWindow(DEFAULT_TIMESTAMP, DEFAULT_TIMESTAMP + WINDOW_SIZE)),
                 new Windowed<>(bytesKey("c"), new TimeWindow(DEFAULT_TIMESTAMP + 10L, DEFAULT_TIMESTAMP + 10L + WINDOW_SIZE)),
@@ -393,7 +393,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("e"), bytesValue("e"), DEFAULT_TIMESTAMP + 20L);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.fetch(null, null, ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
+            cachingStore.fetch(null, null, ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
             final List<Windowed<Bytes>> expectedKeys = Arrays.asList(
                 new Windowed<>(bytesKey("a"), new TimeWindow(DEFAULT_TIMESTAMP, DEFAULT_TIMESTAMP + WINDOW_SIZE)),
                 new Windowed<>(bytesKey("b"), new TimeWindow(DEFAULT_TIMESTAMP, DEFAULT_TIMESTAMP + WINDOW_SIZE)),
@@ -417,7 +417,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("e"), bytesValue("e"), DEFAULT_TIMESTAMP + 20L);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.backwardFetch(null, bytesKey("c"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
+            cachingStore.backwardFetch(null, bytesKey("c"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
             final List<Windowed<Bytes>> expectedKeys = Arrays.asList(
                 new Windowed<>(bytesKey("c"), new TimeWindow(DEFAULT_TIMESTAMP + 10L, DEFAULT_TIMESTAMP + 10L + WINDOW_SIZE)),
                 new Windowed<>(bytesKey("b"), new TimeWindow(DEFAULT_TIMESTAMP, DEFAULT_TIMESTAMP + WINDOW_SIZE)),
@@ -439,7 +439,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("e"), bytesValue("e"), DEFAULT_TIMESTAMP + 20L);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.backwardFetch(bytesKey("c"), null, ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
+            cachingStore.backwardFetch(bytesKey("c"), null, ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
             final List<Windowed<Bytes>> expectedKeys = Arrays.asList(
                 new Windowed<>(bytesKey("e"), new TimeWindow(DEFAULT_TIMESTAMP + 20L, DEFAULT_TIMESTAMP + 20L + WINDOW_SIZE)),
                 new Windowed<>(bytesKey("d"), new TimeWindow(DEFAULT_TIMESTAMP + 20L, DEFAULT_TIMESTAMP + 20L + WINDOW_SIZE)),
@@ -461,7 +461,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("e"), bytesValue("e"), DEFAULT_TIMESTAMP + 20L);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.backwardFetch(null, null, ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
+            cachingStore.backwardFetch(null, null, ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + 20L))) {
             final List<Windowed<Bytes>> expectedKeys = Arrays.asList(
                 new Windowed<>(bytesKey("e"), new TimeWindow(DEFAULT_TIMESTAMP + 20L, DEFAULT_TIMESTAMP + 20L + WINDOW_SIZE)),
                 new Windowed<>(bytesKey("d"), new TimeWindow(DEFAULT_TIMESTAMP + 20L, DEFAULT_TIMESTAMP + 20L + WINDOW_SIZE)),
@@ -530,7 +530,7 @@ public class CachingPersistentWindowStoreTest {
         }
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.fetchAll(ofEpochMilli(0), ofEpochMilli(7))) {
+            cachingStore.fetchAll(ofEpochMilli(0), ofEpochMilli(7))) {
             for (int i = 0; i < array.length; i++) {
                 final String str = array[i];
                 verifyWindowedKeyValue(
@@ -542,7 +542,7 @@ public class CachingPersistentWindowStoreTest {
         }
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator1 =
-                 cachingStore.fetchAll(ofEpochMilli(2), ofEpochMilli(4))) {
+            cachingStore.fetchAll(ofEpochMilli(2), ofEpochMilli(4))) {
             for (int i = 2; i <= 4; i++) {
                 final String str = array[i];
                 verifyWindowedKeyValue(
@@ -554,7 +554,7 @@ public class CachingPersistentWindowStoreTest {
         }
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator2 =
-                 cachingStore.fetchAll(ofEpochMilli(5), ofEpochMilli(7))) {
+            cachingStore.fetchAll(ofEpochMilli(5), ofEpochMilli(7))) {
             for (int i = 5; i <= 7; i++) {
                 final String str = array[i];
                 verifyWindowedKeyValue(
@@ -574,7 +574,7 @@ public class CachingPersistentWindowStoreTest {
         }
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator =
-                 cachingStore.backwardFetchAll(ofEpochMilli(0), ofEpochMilli(7))) {
+            cachingStore.backwardFetchAll(ofEpochMilli(0), ofEpochMilli(7))) {
             for (int i = array.length - 1; i >= 0; i--) {
                 final String str = array[i];
                 verifyWindowedKeyValue(
@@ -586,7 +586,7 @@ public class CachingPersistentWindowStoreTest {
         }
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator1 =
-                 cachingStore.backwardFetchAll(ofEpochMilli(2), ofEpochMilli(4))) {
+            cachingStore.backwardFetchAll(ofEpochMilli(2), ofEpochMilli(4))) {
             for (int i = 4; i >= 2; i--) {
                 final String str = array[i];
                 verifyWindowedKeyValue(
@@ -598,7 +598,7 @@ public class CachingPersistentWindowStoreTest {
         }
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> iterator2 =
-                 cachingStore.backwardFetchAll(ofEpochMilli(5), ofEpochMilli(7))) {
+            cachingStore.backwardFetchAll(ofEpochMilli(5), ofEpochMilli(7))) {
             for (int i = 7; i >= 5; i--) {
                 final String str = array[i];
                 verifyWindowedKeyValue(
@@ -709,7 +709,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("1"), bytesValue("b"), DEFAULT_TIMESTAMP);
 
         try (final WindowStoreIterator<byte[]> fetch =
-                 cachingStore.fetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP))) {
+            cachingStore.fetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP))) {
             verifyKeyValue(fetch.next(), DEFAULT_TIMESTAMP, "b");
             assertFalse(fetch.hasNext());
         }
@@ -721,7 +721,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("1"), bytesValue("b"), DEFAULT_TIMESTAMP + WINDOW_SIZE);
 
         try (final WindowStoreIterator<byte[]> fetch =
-                 cachingStore.fetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
+            cachingStore.fetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
             verifyKeyValue(fetch.next(), DEFAULT_TIMESTAMP, "a");
             verifyKeyValue(fetch.next(), DEFAULT_TIMESTAMP + WINDOW_SIZE, "b");
             assertFalse(fetch.hasNext());
@@ -734,7 +734,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("1"), bytesValue("b"), DEFAULT_TIMESTAMP + WINDOW_SIZE);
 
         try (final WindowStoreIterator<byte[]> fetch =
-                 cachingStore.backwardFetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
+            cachingStore.backwardFetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
             verifyKeyValue(fetch.next(), DEFAULT_TIMESTAMP + WINDOW_SIZE, "b");
             verifyKeyValue(fetch.next(), DEFAULT_TIMESTAMP, "a");
             assertFalse(fetch.hasNext());
@@ -747,7 +747,7 @@ public class CachingPersistentWindowStoreTest {
         bytesStore.put(WindowKeySchema.toStoreKeyBinary(key, DEFAULT_TIMESTAMP, 0), "a".getBytes());
         cachingStore.put(key, bytesValue("b"), DEFAULT_TIMESTAMP + WINDOW_SIZE);
         try (final WindowStoreIterator<byte[]> fetch =
-                 cachingStore.fetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
+            cachingStore.fetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
             verifyKeyValue(fetch.next(), DEFAULT_TIMESTAMP, "a");
             verifyKeyValue(fetch.next(), DEFAULT_TIMESTAMP + WINDOW_SIZE, "b");
             assertFalse(fetch.hasNext());
@@ -760,7 +760,7 @@ public class CachingPersistentWindowStoreTest {
         bytesStore.put(WindowKeySchema.toStoreKeyBinary(key, DEFAULT_TIMESTAMP, 0), "a".getBytes());
         cachingStore.put(key, bytesValue("b"), DEFAULT_TIMESTAMP + WINDOW_SIZE);
         try (final WindowStoreIterator<byte[]> fetch =
-                 cachingStore.backwardFetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
+            cachingStore.backwardFetch(bytesKey("1"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
             verifyKeyValue(fetch.next(), DEFAULT_TIMESTAMP + WINDOW_SIZE, "b");
             verifyKeyValue(fetch.next(), DEFAULT_TIMESTAMP, "a");
             assertFalse(fetch.hasNext());
@@ -774,7 +774,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(key, bytesValue("b"), DEFAULT_TIMESTAMP + WINDOW_SIZE);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> fetchRange =
-                 cachingStore.fetch(key, bytesKey("2"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
+            cachingStore.fetch(key, bytesKey("2"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
             verifyWindowedKeyValue(
                 fetchRange.next(),
                 new Windowed<>(key, new TimeWindow(DEFAULT_TIMESTAMP, DEFAULT_TIMESTAMP + WINDOW_SIZE)),
@@ -794,7 +794,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(key, bytesValue("b"), DEFAULT_TIMESTAMP + WINDOW_SIZE);
 
         try (final KeyValueIterator<Windowed<Bytes>, byte[]> fetchRange =
-                 cachingStore.backwardFetch(key, bytesKey("2"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
+            cachingStore.backwardFetch(key, bytesKey("2"), ofEpochMilli(DEFAULT_TIMESTAMP), ofEpochMilli(DEFAULT_TIMESTAMP + WINDOW_SIZE))) {
             verifyWindowedKeyValue(
                 fetchRange.next(),
                 new Windowed<>(key, new TimeWindow(DEFAULT_TIMESTAMP + WINDOW_SIZE, DEFAULT_TIMESTAMP + WINDOW_SIZE + WINDOW_SIZE)),
@@ -968,7 +968,7 @@ public class CachingPersistentWindowStoreTest {
         cachingStore.put(bytesKey("aaa"), bytesValue("0004"), 3);
 
         try (final WindowStoreIterator<byte[]> singleKeyIterator =
-                 cachingStore.backwardFetch(bytesKey("aa"), Instant.ofEpochMilli(0L), Instant.ofEpochMilli(5L));
+            cachingStore.backwardFetch(bytesKey("aa"), Instant.ofEpochMilli(0L), Instant.ofEpochMilli(5L));
              final KeyValueIterator<Windowed<Bytes>, byte[]> keyRangeIterator =
                  cachingStore.backwardFetch(bytesKey("aa"), bytesKey("aa"), Instant.ofEpochMilli(0L), Instant.ofEpochMilli(5L))) {
 

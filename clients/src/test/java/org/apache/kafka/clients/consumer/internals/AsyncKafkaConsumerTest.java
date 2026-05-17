@@ -1536,42 +1536,42 @@ public class AsyncKafkaConsumerTest {
                                             int expectedLostCount,
                                             Optional<RuntimeException> expectedException
                                             ) {
-        consumer = newConsumer();
-        CounterConsumerRebalanceListener consumerRebalanceListener = new CounterConsumerRebalanceListener(
+                                                consumer = newConsumer();
+                                                CounterConsumerRebalanceListener consumerRebalanceListener = new CounterConsumerRebalanceListener(
                 revokedError,
                 assignedError,
                 lostError
         );
-        doReturn(Fetch.empty()).when(fetchCollector).collectFetch(any(FetchBuffer.class));
-        completeTopicSubscriptionChangeEventSuccessfully();
-        consumer.subscribe(Collections.singletonList("topic"), consumerRebalanceListener);
-        SortedSet<TopicPartition> partitions = Collections.emptySortedSet();
+                                                doReturn(Fetch.empty()).when(fetchCollector).collectFetch(any(FetchBuffer.class));
+                                                completeTopicSubscriptionChangeEventSuccessfully();
+                                                consumer.subscribe(Collections.singletonList("topic"), consumerRebalanceListener);
+                                                SortedSet<TopicPartition> partitions = Collections.emptySortedSet();
 
-        for (ConsumerRebalanceListenerMethodName methodName : methodNames) {
-            CompletableBackgroundEvent<Void> e;
-            if (methodName == ON_PARTITIONS_ASSIGNED) {
-                e = new PartitionsAssignedEvent(Set.of(), partitions);
-            } else {
-                e = new PartitionsRemovedEvent(methodName, partitions);
-            }
-            backgroundEventQueue.add(e);
-        }
+                                                for (ConsumerRebalanceListenerMethodName methodName : methodNames) {
+                                                    CompletableBackgroundEvent<Void> e;
+                                                    if (methodName == ON_PARTITIONS_ASSIGNED) {
+                                                        e = new PartitionsAssignedEvent(Set.of(), partitions);
+                                                    } else {
+                                                        e = new PartitionsRemovedEvent(methodName, partitions);
+                                                    }
+                                                    backgroundEventQueue.add(e);
+                                                }
 
-        completeAsyncPollEventSuccessfully();
-        // This will trigger the background event queue to process our background event message.
+                                                completeAsyncPollEventSuccessfully();
+                                                // This will trigger the background event queue to process our background event message.
         // If any error is happening inside the rebalance callbacks, we expect the first exception to be thrown from poll.
-        if (expectedException.isPresent()) {
-            Exception exception = assertThrows(expectedException.get().getClass(), () -> consumer.poll(Duration.ZERO));
-            assertEquals(expectedException.get().getMessage(), exception.getMessage());
-            assertEquals(expectedException.get().getCause(), exception.getCause());
-        } else {
-            assertDoesNotThrow(() -> consumer.poll(Duration.ZERO));
-        }
+                                                if (expectedException.isPresent()) {
+                                                    Exception exception = assertThrows(expectedException.get().getClass(), () -> consumer.poll(Duration.ZERO));
+                                                    assertEquals(expectedException.get().getMessage(), exception.getMessage());
+                                                    assertEquals(expectedException.get().getCause(), exception.getCause());
+                                                } else {
+                                                    assertDoesNotThrow(() -> consumer.poll(Duration.ZERO));
+                                                }
 
-        assertEquals(expectedRevokedCount, consumerRebalanceListener.revokedCount());
-        assertEquals(expectedAssignedCount, consumerRebalanceListener.assignedCount());
-        assertEquals(expectedLostCount, consumerRebalanceListener.lostCount());
-    }
+                                                assertEquals(expectedRevokedCount, consumerRebalanceListener.revokedCount());
+                                                assertEquals(expectedAssignedCount, consumerRebalanceListener.assignedCount());
+                                                assertEquals(expectedLostCount, consumerRebalanceListener.lostCount());
+                                            }
 
     private static Stream<Arguments> listenerCallbacksInvokeSource() {
         Optional<RuntimeException> empty = Optional.empty();
@@ -2368,7 +2368,7 @@ public class AsyncKafkaConsumerTest {
     public void testCloseInvokesStreamsRebalanceListenerOnTasksRevokedWhenMemberEpochPositive() {
         final String groupId = "streamsGroup";
         final StreamsRebalanceData streamsRebalanceData = new StreamsRebalanceData(UUID.randomUUID(), Optional.empty(), Optional.empty(), Map.of(), Map.of());
-        
+
         try (final MockedStatic<RequestManagers> requestManagers = mockStatic(RequestManagers.class)) {
             consumer = newConsumerWithStreamRebalanceData(requiredConsumerConfigAndGroupId(groupId), streamsRebalanceData);
             StreamsRebalanceListener mockStreamsListener = mock(StreamsRebalanceListener.class);
@@ -2377,18 +2377,18 @@ public class AsyncKafkaConsumerTest {
             final int memberEpoch = 42;
             final String memberId = "memberId";
             groupMetadataUpdateListener.onMemberEpochUpdated(Optional.of(memberEpoch), memberId);
-            
+
             consumer.close(CloseOptions.timeout(Duration.ZERO));
-            
+
             verify(mockStreamsListener).onTasksRevoked(any());
         }
     }
-    
+
     @Test
     public void testCloseInvokesStreamsRebalanceListenerOnAllTasksLostWhenMemberEpochZeroOrNegative() {
         final String groupId = "streamsGroup";
         final StreamsRebalanceData streamsRebalanceData = new StreamsRebalanceData(UUID.randomUUID(), Optional.empty(), Optional.empty(), Map.of(), Map.of());
-        
+
         try (final MockedStatic<RequestManagers> requestManagers = mockStatic(RequestManagers.class)) {
             consumer = newConsumerWithStreamRebalanceData(requiredConsumerConfigAndGroupId(groupId), streamsRebalanceData);
             StreamsRebalanceListener mockStreamsListener = mock(StreamsRebalanceListener.class);
@@ -2397,18 +2397,18 @@ public class AsyncKafkaConsumerTest {
             final int memberEpoch = 0;
             final String memberId = "memberId";
             groupMetadataUpdateListener.onMemberEpochUpdated(Optional.of(memberEpoch), memberId);
-            
+
             consumer.close(CloseOptions.timeout(Duration.ZERO));
-            
+
             verify(mockStreamsListener).onAllTasksLost();
         }
     }
-    
+
     @Test
     public void testCloseWrapsStreamsRebalanceListenerException() {
         final String groupId = "streamsGroup";
         final StreamsRebalanceData streamsRebalanceData = new StreamsRebalanceData(UUID.randomUUID(), Optional.empty(), Optional.empty(), Map.of(), Map.of());
-        
+
         try (final MockedStatic<RequestManagers> requestManagers = mockStatic(RequestManagers.class)) {
             consumer = newConsumerWithStreamRebalanceData(requiredConsumerConfigAndGroupId(groupId), streamsRebalanceData);
             StreamsRebalanceListener mockStreamsListener = mock(StreamsRebalanceListener.class);
@@ -2419,8 +2419,8 @@ public class AsyncKafkaConsumerTest {
             final int memberEpoch = 1;
             final String memberId = "memberId";
             groupMetadataUpdateListener.onMemberEpochUpdated(Optional.of(memberEpoch), memberId);
-            
-            KafkaException thrownException = assertThrows(KafkaException.class, 
+
+            KafkaException thrownException = assertThrows(KafkaException.class,
                 () -> consumer.close(CloseOptions.timeout(Duration.ZERO)));
 
             assertInstanceOf(RuntimeException.class, thrownException.getCause());

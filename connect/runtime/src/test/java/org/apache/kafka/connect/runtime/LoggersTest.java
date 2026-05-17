@@ -49,7 +49,7 @@ public class LoggersTest {
         time = new MockTime(0, INITIAL_TIME, 0);
         loggers = (Loggers.Log4jLoggers) Loggers.newInstance(time);
     }
-    
+
     @AfterEach
     public void tearDown() {
         // Reset LoggerContext to its initial configuration.

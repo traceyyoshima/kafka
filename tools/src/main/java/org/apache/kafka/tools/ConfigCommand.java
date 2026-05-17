@@ -637,7 +637,7 @@ public class ConfigCommand {
         ConfigResource configResource = new ConfigResource(configResourceType, entityName);
         DescribeConfigsOptions describeOptions = new DescribeConfigsOptions().includeSynonyms(includeSynonyms);
         Map<ConfigResource, Config> configs = adminClient.describeConfigs(Collections.singleton(configResource), describeOptions)
-                    .all().get(30, TimeUnit.SECONDS);
+            .all().get(30, TimeUnit.SECONDS);
 
         return configs.get(configResource).entries().stream()
                 .filter(entry -> configSourceFilter.isEmpty() || entry.source() == configSourceFilter.get())

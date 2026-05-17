@@ -233,7 +233,7 @@ public class LeaderElectionCommand {
             partitions.add(new TopicPartition(topic, partition));
         }
 
-        Set<TopicPartition> duplicatePartitions  = partitions.stream()
+        Set<TopicPartition> duplicatePartitions = partitions.stream()
             .filter(i -> Collections.frequency(partitions, i) > 1)
             .collect(Collectors.toSet());
 
@@ -255,6 +255,7 @@ public class LeaderElectionCommand {
         private final ArgumentAcceptingOptionSpec<Integer> partition;
         private final OptionSpecBuilder allTopicPartitions;
         private final ArgumentAcceptingOptionSpec<ElectionType> electionType;
+
         public LeaderElectionCommandOptions(String[] args) {
             super(args);
             bootstrapServer = parser

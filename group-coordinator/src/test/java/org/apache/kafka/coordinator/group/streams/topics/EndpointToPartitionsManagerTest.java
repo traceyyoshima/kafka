@@ -67,7 +67,7 @@ class EndpointToPartitionsManagerTest {
         streamsGroupMember = mock(StreamsGroupMember.class);
         configuredTopology = mock(ConfiguredTopology.class);
         configuredSubtopologyOne = new ConfiguredSubtopology(1, Set.of("Topic-A"), new HashMap<>(), new HashSet<>(), new HashMap<>());
-        Map<String, ConfiguredInternalTopic> repartitionSourceTopics = Map.of("Topic-B",  new ConfiguredInternalTopic("Topic-B", 1, Optional.of((short) 1), Collections.emptyMap()));
+        Map<String, ConfiguredInternalTopic> repartitionSourceTopics = Map.of("Topic-B", new ConfiguredInternalTopic("Topic-B", 1, Optional.of((short) 1), Collections.emptyMap()));
         configuredSubtopologyTwo = new ConfiguredSubtopology(1, new HashSet<>(), repartitionSourceTopics, new HashSet<>(), new HashMap<>());
         SortedMap<String, ConfiguredSubtopology> configuredSubtopologyOneMap = new TreeMap<>();
         configuredSubtopologyOneMap.put("0", configuredSubtopologyOne);
@@ -127,40 +127,40 @@ class EndpointToPartitionsManagerTest {
                                                                      List<Integer> topicBExpectedPartitions,
                                                                      String testName
                                                                      ) {
-        MetadataImage metadataImage = new MetadataImageBuilder()
+                                                                         MetadataImage metadataImage = new MetadataImageBuilder()
             .addTopic(Uuid.randomUuid(), "Topic-A", topicAPartitions)
             .addTopic(Uuid.randomUuid(), "Topic-B", topicBPartitions)
             .build();
-        configuredSubtopologyOne = new ConfiguredSubtopology(Math.max(topicAPartitions, topicBPartitions), Set.of("Topic-A", "Topic-B"), new HashMap<>(), new HashSet<>(), new HashMap<>());
+                                                                         configuredSubtopologyOne = new ConfiguredSubtopology(Math.max(topicAPartitions, topicBPartitions), Set.of("Topic-A", "Topic-B"), new HashMap<>(), new HashSet<>(), new HashMap<>());
 
-        when(streamsGroupMember.assignedTasks()).thenReturn(
+                                                                         when(streamsGroupMember.assignedTasks()).thenReturn(
             new TasksTupleWithEpochs(
                 mkTasksPerSubtopologyWithCommonEpoch(0, mkEntry("0", Set.of(0, 1, 2, 3, 4))),
                 Map.of(),
                 Map.of()
             )
         );
-        when(streamsGroup.configuredTopology()).thenReturn(Optional.of(configuredTopology));
-        SortedMap<String, ConfiguredSubtopology> configuredSubtopologyOneMap = new TreeMap<>();
-        configuredSubtopologyOneMap.put("0", configuredSubtopologyOne);
-        when(configuredTopology.subtopologies()).thenReturn(Optional.of(configuredSubtopologyOneMap));
+                                                                         when(streamsGroup.configuredTopology()).thenReturn(Optional.of(configuredTopology));
+                                                                         SortedMap<String, ConfiguredSubtopology> configuredSubtopologyOneMap = new TreeMap<>();
+                                                                         configuredSubtopologyOneMap.put("0", configuredSubtopologyOne);
+                                                                         when(configuredTopology.subtopologies()).thenReturn(Optional.of(configuredSubtopologyOneMap));
 
-        StreamsGroupHeartbeatResponseData.EndpointToPartitions result = EndpointToPartitionsManager.endpointToPartitions(streamsGroupMember, responseEndpoint, streamsGroup, new KRaftCoordinatorMetadataImage(metadataImage));
+                                                                         StreamsGroupHeartbeatResponseData.EndpointToPartitions result = EndpointToPartitionsManager.endpointToPartitions(streamsGroupMember, responseEndpoint, streamsGroup, new KRaftCoordinatorMetadataImage(metadataImage));
 
-        assertEquals(responseEndpoint, result.userEndpoint());
-        assertEquals(2, result.activePartitions().size());
+                                                                         assertEquals(responseEndpoint, result.userEndpoint());
+                                                                         assertEquals(2, result.activePartitions().size());
 
-        List<StreamsGroupHeartbeatResponseData.TopicPartition> topicPartitions = result.activePartitions();
-        topicPartitions.sort(Comparator.comparing(StreamsGroupHeartbeatResponseData.TopicPartition::topic));
+                                                                         List<StreamsGroupHeartbeatResponseData.TopicPartition> topicPartitions = result.activePartitions();
+                                                                         topicPartitions.sort(Comparator.comparing(StreamsGroupHeartbeatResponseData.TopicPartition::topic));
 
-        StreamsGroupHeartbeatResponseData.TopicPartition topicAPartition = result.activePartitions().get(0);
-        assertEquals("Topic-A", topicAPartition.topic());
-        assertEquals(topicAExpectedPartitions, topicAPartition.partitions().stream().sorted().toList());
-        
-        StreamsGroupHeartbeatResponseData.TopicPartition topicBPartition = result.activePartitions().get(1);
-        assertEquals("Topic-B", topicBPartition.topic());
-        assertEquals(topicBExpectedPartitions, topicBPartition.partitions().stream().sorted().toList());
-    }
+                                                                         StreamsGroupHeartbeatResponseData.TopicPartition topicAPartition = result.activePartitions().get(0);
+                                                                         assertEquals("Topic-A", topicAPartition.topic());
+                                                                         assertEquals(topicAExpectedPartitions, topicAPartition.partitions().stream().sorted().toList());
+
+                                                                         StreamsGroupHeartbeatResponseData.TopicPartition topicBPartition = result.activePartitions().get(1);
+                                                                         assertEquals("Topic-B", topicBPartition.topic());
+                                                                         assertEquals(topicBExpectedPartitions, topicBPartition.partitions().stream().sorted().toList());
+                                                                     }
 
     static Stream<Arguments> argsProvider() {
         return Stream.of(

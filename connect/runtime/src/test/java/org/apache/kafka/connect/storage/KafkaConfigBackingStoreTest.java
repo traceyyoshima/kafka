@@ -310,9 +310,9 @@ public class KafkaConfigBackingStoreTest {
                 .doAnswer(expectReadToEnd(Map.of(CONNECTOR_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(1))))
                 // Config deletion
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>() {{
-                            put(configKey, null);
-                            put(targetStateKey, null);
-                        }})
+                    put(configKey, null);
+                    put(targetStateKey, null);
+                }})
                 ).when(configLog).readToEnd();
 
         // Writing should block until it is written and read back from Kafka
@@ -376,9 +376,9 @@ public class KafkaConfigBackingStoreTest {
         assertNull(configState.targetState(CONNECTOR_IDS.get(0)));
 
         doAnswer(expectReadToEnd(new LinkedHashMap<>() {{
-                    put(TARGET_STATE_KEYS.get(0), TARGET_STATES_SERIALIZED.get(2));
-                    put(CONNECTOR_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0));
-                }})
+            put(TARGET_STATE_KEYS.get(0), TARGET_STATES_SERIALIZED.get(2));
+            put(CONNECTOR_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0));
+        }})
         ).when(configLog).readToEnd();
 
         // We expect to write the target state first, followed by the config write and then a read to end
@@ -762,7 +762,7 @@ public class KafkaConfigBackingStoreTest {
     }
 
     @Test
-    public void testRestoreZeroTasks()  {
+    public void testRestoreZeroTasks() {
         // Restoring data should notify only of the latest values after loading is complete. This also validates
         // that inconsistent state is ignored.
 
@@ -1458,8 +1458,8 @@ public class KafkaConfigBackingStoreTest {
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>()))
                 .doAnswer(expectReadToEnd(serializedConfigs))
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>() {{
-                            put(CONNECTOR_TASK_COUNT_RECORD_KEYS.get(0), CONFIGS_SERIALIZED.get(3));
-                        }})
+                    put(CONNECTOR_TASK_COUNT_RECORD_KEYS.get(0), CONFIGS_SERIALIZED.get(3));
+                }})
                 )
                 .when(configLog).readToEnd();
 
@@ -1525,10 +1525,10 @@ public class KafkaConfigBackingStoreTest {
         doAnswer(expectReadToEnd(new LinkedHashMap<>()))
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>()))
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>() {{
-                        put(TASK_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0));
-                        put(TASK_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(1));
-                        put(COMMIT_TASKS_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(2));
-                    }})
+                    put(TASK_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0));
+                    put(TASK_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(1));
+                    put(COMMIT_TASKS_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(2));
+                }})
                 )
                 .when(configLog).readToEnd();
 
@@ -1583,17 +1583,17 @@ public class KafkaConfigBackingStoreTest {
         doAnswer(expectReadToEnd(new LinkedHashMap<>()))
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>()))
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>() {{
-                            put(TASK_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0));
-                            put(TASK_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(1));
-                            put(COMMIT_TASKS_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(2));
-                        }})
+                    put(TASK_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0));
+                    put(TASK_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(1));
+                    put(COMMIT_TASKS_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(2));
+                }})
                 )
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>()))
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>()))
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>() {{
-                            put(TASK_CONFIG_KEYS.get(2), CONFIGS_SERIALIZED.get(3));
-                            put(COMMIT_TASKS_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(4));
-                        }})
+                    put(TASK_CONFIG_KEYS.get(2), CONFIGS_SERIALIZED.get(3));
+                    put(COMMIT_TASKS_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(4));
+                }})
                 )
                 .when(configLog).readToEnd();
 

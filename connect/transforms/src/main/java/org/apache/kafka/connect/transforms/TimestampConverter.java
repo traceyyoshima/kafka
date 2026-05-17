@@ -97,7 +97,7 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
                     "The desired timestamp representation: string, unix, Date, Time, or Timestamp")
             .define(FORMAT_CONFIG, ConfigDef.Type.STRING, FORMAT_DEFAULT, ConfigDef.Importance.MEDIUM,
                     "A SimpleDateFormat-compatible format for the timestamp. Used to generate the output when type=string "
-                            + "or used to parse the input if the input is a string.")
+                    + "or used to parse the input if the input is a string.")
             .define(UNIX_PRECISION_CONFIG, ConfigDef.Type.STRING, UNIX_PRECISION_DEFAULT,
                     ConfigDef.ValidString.in(
                             UNIX_PRECISION_NANOS, UNIX_PRECISION_MICROS,
@@ -276,6 +276,7 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
             this.format = format;
             this.unixPrecision = unixPrecision;
         }
+
         String field;
         String type;
         SimpleDateFormat format;

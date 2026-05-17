@@ -92,9 +92,9 @@ public class PauseResumeIntegrationTest {
     private static final List<KeyValue<String, Long>> COUNT_OUTPUT_DATA2 =
         asList(pair("A", 3L), pair("B", 2L), pair("A", 4L), pair("C", 3L), pair("C", 4L));
     private static final List<KeyValue<String, Long>> COUNT_OUTPUT_DATA_ALL = new ArrayList<KeyValue<String, Long>>() {{
-            addAll(COUNT_OUTPUT_DATA);
-            addAll(COUNT_OUTPUT_DATA2);
-        }};
+        addAll(COUNT_OUTPUT_DATA);
+        addAll(COUNT_OUTPUT_DATA2);
+    }};
 
     private String appId;
     private KafkaStreams kafkaStreams, kafkaStreams2;

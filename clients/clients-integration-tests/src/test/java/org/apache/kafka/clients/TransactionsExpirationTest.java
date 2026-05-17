@@ -170,8 +170,7 @@ public class TransactionsExpirationTest {
 
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
             ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
-        ))
-        ) {
+        ))) {
             producer.initTransactions();
 
             // Start and then abort a transaction to allow the producer ID to expire.
@@ -208,8 +207,7 @@ public class TransactionsExpirationTest {
         // Create a new producer to check that we retain the producer ID in transactional state.
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
             ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
-        ))
-        ) {
+        ))) {
             producer.initTransactions();
 
             // Start a new transaction and attempt to send. This should work since only the producer ID was removed from its mapping in ProducerStateManager.

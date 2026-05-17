@@ -42,7 +42,7 @@ class TransactionLogConfigTest {
                 .peek(field -> field.setAccessible(true))
                 .map(field -> assertDoesNotThrow(() -> (String) field.get(null)))
                 .collect(Collectors.toSet());
-        assertEquals(declaredConfigs,  TransactionLogConfig.CONFIG_DEF.names());
+        assertEquals(declaredConfigs, TransactionLogConfig.CONFIG_DEF.names());
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -57,7 +57,7 @@ class TransactionLogConfigTest {
         doReturn(6).when(config).getInt(TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_CONFIG);
         doReturn(false).when(config).getBoolean(TransactionLogConfig.TRANSACTION_PARTITION_VERIFICATION_ENABLE_CONFIG);
         doReturn(88).when(config).getInt(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_CONFIG);
-        
+
         TransactionLogConfig transactionLogConfig = new TransactionLogConfig(config);
 
         assertEquals(1, transactionLogConfig.transactionTopicMinISR());

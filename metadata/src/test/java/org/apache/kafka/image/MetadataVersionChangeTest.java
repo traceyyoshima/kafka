@@ -61,19 +61,19 @@ public class MetadataVersionChangeTest {
 
     @Test
     public void testConstructorThrowsExceptionWhenOldVersionIsNull() {
-        assertThrows(NullPointerException.class, () -> 
+        assertThrows(NullPointerException.class, () ->
             new MetadataVersionChange(null, MetadataVersion.MINIMUM_VERSION));
     }
 
     @Test
     public void testConstructorThrowsExceptionWhenNewVersionIsNull() {
-        assertThrows(NullPointerException.class, () -> 
+        assertThrows(NullPointerException.class, () ->
             new MetadataVersionChange(MetadataVersion.MINIMUM_VERSION, null));
     }
 
     @Test
     public void testConstructorThrowsExceptionWhenBothVersionsAreNull() {
-        assertThrows(NullPointerException.class, () -> 
+        assertThrows(NullPointerException.class, () ->
             new MetadataVersionChange(null, null));
     }
 }

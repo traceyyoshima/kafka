@@ -124,7 +124,7 @@ public class ForeignTableJoinProcessorSupplier<KLeft, KRight, VRight>
 
             //Perform the prefixScan and propagate the results
             try (final KeyValueIterator<Bytes, ValueTimestampHeaders<SubscriptionWrapper<KLeft>>> prefixScanResults =
-                     subscriptionStore.range(prefixBytes, ByteUtils.increment(prefixBytes))) {
+                subscriptionStore.range(prefixBytes, ByteUtils.increment(prefixBytes))) {
 
                 while (prefixScanResults.hasNext()) {
                     final KeyValue<Bytes, ValueTimestampHeaders<SubscriptionWrapper<KLeft>>> next = prefixScanResults.next();
