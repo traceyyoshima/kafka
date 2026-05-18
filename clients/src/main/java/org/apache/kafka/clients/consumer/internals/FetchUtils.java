@@ -37,12 +37,12 @@ public class FetchUtils {
      *         information that may be present.
      *     </li>
      * </ol>
-     *
+     * <p>
      * This utility method should be invoked if the client detects (or is told by a node in the broker) that an
      * attempt was made to fetch from a node that isn't the leader or preferred replica.
      *
-     * @param metadata {@link ConsumerMetadata} for which to request an update
-     * @param subscriptions {@link SubscriptionState} to clear any internal read replica node
+     * @param metadata       {@link ConsumerMetadata} for which to request an update
+     * @param subscriptions  {@link SubscriptionState} to clear any internal read replica node
      * @param topicPartition {@link TopicPartition} for which this state change is related
      */
     static void requestMetadataUpdate(final Metadata metadata,

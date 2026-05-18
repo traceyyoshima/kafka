@@ -52,28 +52,28 @@ public class ApiErrorTest {
         List<Arguments> arguments = new ArrayList<>();
 
         arguments.add(Arguments.of(
-            new UnknownServerException("Don't leak sensitive information "), Errors.UNKNOWN_SERVER_ERROR, null));
+                new UnknownServerException("Don't leak sensitive information "), Errors.UNKNOWN_SERVER_ERROR, null));
 
         arguments.add(Arguments.of(
-            new NotEnoughReplicasException(), Errors.NOT_ENOUGH_REPLICAS, null));
+                new NotEnoughReplicasException(), Errors.NOT_ENOUGH_REPLICAS, null));
 
         // avoid populating the error message if it's a generic one
         arguments.add(Arguments.of(
-            new UnknownTopicOrPartitionException(Errors.UNKNOWN_TOPIC_OR_PARTITION.message()), Errors.UNKNOWN_TOPIC_OR_PARTITION, null));
+                new UnknownTopicOrPartitionException(Errors.UNKNOWN_TOPIC_OR_PARTITION.message()), Errors.UNKNOWN_TOPIC_OR_PARTITION, null));
 
         String notCoordinatorErrorMsg = "Not coordinator";
         arguments.add(Arguments.of(
-            new NotCoordinatorException(notCoordinatorErrorMsg), Errors.NOT_COORDINATOR, notCoordinatorErrorMsg));
+                new NotCoordinatorException(notCoordinatorErrorMsg), Errors.NOT_COORDINATOR, notCoordinatorErrorMsg));
 
         String notControllerErrorMsg = "Not controller";
         // test the NotControllerException is wrapped in the CompletionException, should return correct error
         arguments.add(Arguments.of(
-            new CompletionException(new NotControllerException(notControllerErrorMsg)), Errors.NOT_CONTROLLER, notControllerErrorMsg));
+                new CompletionException(new NotControllerException(notControllerErrorMsg)), Errors.NOT_CONTROLLER, notControllerErrorMsg));
 
         String requestTimeoutErrorMsg = "request time out";
         // test the TimeoutException is wrapped in the ExecutionException, should return correct error
         arguments.add(Arguments.of(
-            new ExecutionException(new TimeoutException(requestTimeoutErrorMsg)), Errors.REQUEST_TIMED_OUT, requestTimeoutErrorMsg));
+                new ExecutionException(new TimeoutException(requestTimeoutErrorMsg)), Errors.REQUEST_TIMED_OUT, requestTimeoutErrorMsg));
 
         // test the exception not in the Errors list, should return UNKNOWN_SERVER_ERROR
         arguments.add(Arguments.of(new IOException(), Errors.UNKNOWN_SERVER_ERROR, null));

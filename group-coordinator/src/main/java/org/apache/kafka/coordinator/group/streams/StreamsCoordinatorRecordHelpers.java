@@ -45,33 +45,33 @@ import java.util.Set;
 public class StreamsCoordinatorRecordHelpers {
 
     public static CoordinatorRecord newStreamsGroupMemberRecord(
-        String groupId,
-        StreamsGroupMember member
+            String groupId,
+            StreamsGroupMember member
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
         Objects.requireNonNull(member, "member should not be null here");
 
         return CoordinatorRecord.record(
-            new StreamsGroupMemberMetadataKey()
-                .setGroupId(groupId)
-                .setMemberId(member.memberId()),
-            new ApiMessageAndVersion(
-                new StreamsGroupMemberMetadataValue()
-                    .setRackId(member.rackId().orElse(null))
-                    .setInstanceId(member.instanceId().orElse(null))
-                    .setClientId(member.clientId())
-                    .setClientHost(member.clientHost())
-                    .setRebalanceTimeoutMs(member.rebalanceTimeoutMs())
-                    .setTopologyEpoch(member.topologyEpoch())
-                    .setProcessId(member.processId())
-                    .setUserEndpoint(member.userEndpoint().orElse(null))
-                    .setClientTags(member.clientTags().entrySet().stream().map(e ->
-                        new StreamsGroupMemberMetadataValue.KeyValue()
-                            .setKey(e.getKey())
-                            .setValue(e.getValue())
-                    ).sorted(Comparator.comparing(StreamsGroupMemberMetadataValue.KeyValue::key)).toList()),
-                (short) 0
-            )
+                new StreamsGroupMemberMetadataKey()
+                        .setGroupId(groupId)
+                        .setMemberId(member.memberId()),
+                new ApiMessageAndVersion(
+                        new StreamsGroupMemberMetadataValue()
+                                .setRackId(member.rackId().orElse(null))
+                                .setInstanceId(member.instanceId().orElse(null))
+                                .setClientId(member.clientId())
+                                .setClientHost(member.clientHost())
+                                .setRebalanceTimeoutMs(member.rebalanceTimeoutMs())
+                                .setTopologyEpoch(member.topologyEpoch())
+                                .setProcessId(member.processId())
+                                .setUserEndpoint(member.userEndpoint().orElse(null))
+                                .setClientTags(member.clientTags().entrySet().stream().map(e ->
+                                        new StreamsGroupMemberMetadataValue.KeyValue()
+                                                .setKey(e.getKey())
+                                                .setValue(e.getValue())
+                                ).sorted(Comparator.comparing(StreamsGroupMemberMetadataValue.KeyValue::key)).toList()),
+                        (short) 0
+                )
         );
     }
 
@@ -83,46 +83,46 @@ public class StreamsCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newStreamsGroupMemberTombstoneRecord(
-        String groupId,
-        String memberId
+            String groupId,
+            String memberId
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
         Objects.requireNonNull(memberId, "memberId should not be null here");
 
         return CoordinatorRecord.tombstone(
-            new StreamsGroupMemberMetadataKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId)
+                new StreamsGroupMemberMetadataKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId)
         );
     }
 
     public static CoordinatorRecord newStreamsGroupMetadataRecord(
-        String groupId,
-        int newGroupEpoch,
-        long metadataHash,
-        int validatedTopologyEpoch,
-        Map<String, String> assignmentConfigs
+            String groupId,
+            int newGroupEpoch,
+            long metadataHash,
+            int validatedTopologyEpoch,
+            Map<String, String> assignmentConfigs
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
         Objects.requireNonNull(assignmentConfigs, "assignmentConfigs should not be null here");
 
         List<StreamsGroupMetadataValue.LastAssignmentConfig> assignmentConfigList = assignmentConfigs.entrySet().stream()
-            .map(entry -> new StreamsGroupMetadataValue.LastAssignmentConfig()
-                .setKey(entry.getKey())
-                .setValue(entry.getValue()))
-            .toList();
+                .map(entry -> new StreamsGroupMetadataValue.LastAssignmentConfig()
+                        .setKey(entry.getKey())
+                        .setValue(entry.getValue()))
+                .toList();
 
         return CoordinatorRecord.record(
-            new StreamsGroupMetadataKey()
-                .setGroupId(groupId),
-            new ApiMessageAndVersion(
-                new StreamsGroupMetadataValue()
-                    .setEpoch(newGroupEpoch)
-                    .setMetadataHash(metadataHash)
-                    .setValidatedTopologyEpoch(validatedTopologyEpoch)
-                    .setLastAssignmentConfigs(assignmentConfigList),
-                (short) 0
-            )
+                new StreamsGroupMetadataKey()
+                        .setGroupId(groupId),
+                new ApiMessageAndVersion(
+                        new StreamsGroupMetadataValue()
+                                .setEpoch(newGroupEpoch)
+                                .setMetadataHash(metadataHash)
+                                .setValidatedTopologyEpoch(validatedTopologyEpoch)
+                                .setLastAssignmentConfigs(assignmentConfigList),
+                        (short) 0
+                )
         );
     }
 
@@ -133,20 +133,20 @@ public class StreamsCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newStreamsGroupEpochTombstoneRecord(
-        String groupId
+            String groupId
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
 
         return CoordinatorRecord.tombstone(
-            new StreamsGroupMetadataKey()
-                .setGroupId(groupId)
+                new StreamsGroupMetadataKey()
+                        .setGroupId(groupId)
         );
     }
 
     public static CoordinatorRecord newStreamsGroupTargetAssignmentRecord(
-        String groupId,
-        String memberId,
-        TasksTuple assignment
+            String groupId,
+            String memberId,
+            TasksTuple assignment
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
         Objects.requireNonNull(memberId, "memberId should not be null here");
@@ -155,42 +155,42 @@ public class StreamsCoordinatorRecordHelpers {
         List<StreamsGroupTargetAssignmentMemberValue.TaskIds> activeTaskIds = new ArrayList<>(assignment.activeTasks().size());
         for (Map.Entry<String, Set<Integer>> entry : assignment.activeTasks().entrySet()) {
             activeTaskIds.add(
-                new StreamsGroupTargetAssignmentMemberValue.TaskIds()
-                    .setSubtopologyId(entry.getKey())
-                    .setPartitions(entry.getValue().stream().sorted().toList())
+                    new StreamsGroupTargetAssignmentMemberValue.TaskIds()
+                            .setSubtopologyId(entry.getKey())
+                            .setPartitions(entry.getValue().stream().sorted().toList())
             );
         }
         activeTaskIds.sort(Comparator.comparing(StreamsGroupTargetAssignmentMemberValue.TaskIds::subtopologyId));
         List<StreamsGroupTargetAssignmentMemberValue.TaskIds> standbyTaskIds = new ArrayList<>(assignment.standbyTasks().size());
         for (Map.Entry<String, Set<Integer>> entry : assignment.standbyTasks().entrySet()) {
             standbyTaskIds.add(
-                new StreamsGroupTargetAssignmentMemberValue.TaskIds()
-                    .setSubtopologyId(entry.getKey())
-                    .setPartitions(entry.getValue().stream().sorted().toList())
+                    new StreamsGroupTargetAssignmentMemberValue.TaskIds()
+                            .setSubtopologyId(entry.getKey())
+                            .setPartitions(entry.getValue().stream().sorted().toList())
             );
         }
         standbyTaskIds.sort(Comparator.comparing(StreamsGroupTargetAssignmentMemberValue.TaskIds::subtopologyId));
         List<StreamsGroupTargetAssignmentMemberValue.TaskIds> warmupTaskIds = new ArrayList<>(assignment.warmupTasks().size());
         for (Map.Entry<String, Set<Integer>> entry : assignment.warmupTasks().entrySet()) {
             warmupTaskIds.add(
-                new StreamsGroupTargetAssignmentMemberValue.TaskIds()
-                    .setSubtopologyId(entry.getKey())
-                    .setPartitions(entry.getValue().stream().sorted().toList())
+                    new StreamsGroupTargetAssignmentMemberValue.TaskIds()
+                            .setSubtopologyId(entry.getKey())
+                            .setPartitions(entry.getValue().stream().sorted().toList())
             );
         }
         warmupTaskIds.sort(Comparator.comparing(StreamsGroupTargetAssignmentMemberValue.TaskIds::subtopologyId));
 
         return CoordinatorRecord.record(
-            new StreamsGroupTargetAssignmentMemberKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId),
-            new ApiMessageAndVersion(
-                new StreamsGroupTargetAssignmentMemberValue()
-                    .setActiveTasks(activeTaskIds)
-                    .setStandbyTasks(standbyTaskIds)
-                    .setWarmupTasks(warmupTaskIds),
-                (short) 0
-            )
+                new StreamsGroupTargetAssignmentMemberKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId),
+                new ApiMessageAndVersion(
+                        new StreamsGroupTargetAssignmentMemberValue()
+                                .setActiveTasks(activeTaskIds)
+                                .setStandbyTasks(standbyTaskIds)
+                                .setWarmupTasks(warmupTaskIds),
+                        (short) 0
+                )
         );
     }
 
@@ -202,16 +202,16 @@ public class StreamsCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newStreamsGroupTargetAssignmentTombstoneRecord(
-        String groupId,
-        String memberId
+            String groupId,
+            String memberId
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
         Objects.requireNonNull(memberId, "memberId should not be null here");
 
         return CoordinatorRecord.tombstone(
-            new StreamsGroupTargetAssignmentMemberKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId)
+                new StreamsGroupTargetAssignmentMemberKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId)
         );
     }
 
@@ -224,21 +224,21 @@ public class StreamsCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newStreamsGroupTargetAssignmentMetadataRecord(
-        String groupId,
-        int assignmentEpoch,
-        long assignmentTimestamp
+            String groupId,
+            int assignmentEpoch,
+            long assignmentTimestamp
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
 
         return CoordinatorRecord.record(
-            new StreamsGroupTargetAssignmentMetadataKey()
-                .setGroupId(groupId),
-            new ApiMessageAndVersion(
-                new StreamsGroupTargetAssignmentMetadataValue()
-                    .setAssignmentEpoch(assignmentEpoch)
-                    .setAssignmentTimestamp(assignmentTimestamp),
-                (short) 0
-            )
+                new StreamsGroupTargetAssignmentMetadataKey()
+                        .setGroupId(groupId),
+                new ApiMessageAndVersion(
+                        new StreamsGroupTargetAssignmentMetadataValue()
+                                .setAssignmentEpoch(assignmentEpoch)
+                                .setAssignmentTimestamp(assignmentTimestamp),
+                        (short) 0
+                )
         );
     }
 
@@ -249,40 +249,40 @@ public class StreamsCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newStreamsGroupTargetAssignmentMetadataTombstoneRecord(
-        String groupId
+            String groupId
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
 
         return CoordinatorRecord.tombstone(
-            new StreamsGroupTargetAssignmentMetadataKey()
-                .setGroupId(groupId)
+                new StreamsGroupTargetAssignmentMetadataKey()
+                        .setGroupId(groupId)
         );
     }
 
     public static CoordinatorRecord newStreamsGroupCurrentAssignmentRecord(
-        String groupId,
-        StreamsGroupMember member
+            String groupId,
+            StreamsGroupMember member
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
         Objects.requireNonNull(member, "member should not be null here");
 
         return CoordinatorRecord.record(
-            new StreamsGroupCurrentMemberAssignmentKey()
-                .setGroupId(groupId)
-                .setMemberId(member.memberId()),
-            new ApiMessageAndVersion(
-                new StreamsGroupCurrentMemberAssignmentValue()
-                    .setMemberEpoch(member.memberEpoch())
-                    .setPreviousMemberEpoch(member.previousMemberEpoch())
-                    .setState(member.state().value())
-                    .setActiveTasks(toTaskIdsWithEpochs(member.assignedTasks().activeTasksWithEpochs()))
-                    .setStandbyTasks(toTaskIds(member.assignedTasks().standbyTasks()))
-                    .setWarmupTasks(toTaskIds(member.assignedTasks().warmupTasks()))
-                    .setActiveTasksPendingRevocation(toTaskIdsWithEpochs(member.tasksPendingRevocation().activeTasksWithEpochs()))
-                    .setStandbyTasksPendingRevocation(toTaskIds(member.tasksPendingRevocation().standbyTasks()))
-                    .setWarmupTasksPendingRevocation(toTaskIds(member.tasksPendingRevocation().warmupTasks())),
-                (short) 0
-            )
+                new StreamsGroupCurrentMemberAssignmentKey()
+                        .setGroupId(groupId)
+                        .setMemberId(member.memberId()),
+                new ApiMessageAndVersion(
+                        new StreamsGroupCurrentMemberAssignmentValue()
+                                .setMemberEpoch(member.memberEpoch())
+                                .setPreviousMemberEpoch(member.previousMemberEpoch())
+                                .setState(member.state().value())
+                                .setActiveTasks(toTaskIdsWithEpochs(member.assignedTasks().activeTasksWithEpochs()))
+                                .setStandbyTasks(toTaskIds(member.assignedTasks().standbyTasks()))
+                                .setWarmupTasks(toTaskIds(member.assignedTasks().warmupTasks()))
+                                .setActiveTasksPendingRevocation(toTaskIdsWithEpochs(member.tasksPendingRevocation().activeTasksWithEpochs()))
+                                .setStandbyTasksPendingRevocation(toTaskIds(member.tasksPendingRevocation().standbyTasks()))
+                                .setWarmupTasksPendingRevocation(toTaskIds(member.tasksPendingRevocation().warmupTasks())),
+                        (short) 0
+                )
         );
     }
 
@@ -294,54 +294,54 @@ public class StreamsCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newStreamsGroupCurrentAssignmentTombstoneRecord(
-        String groupId,
-        String memberId
+            String groupId,
+            String memberId
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
         Objects.requireNonNull(memberId, "memberId should not be null here");
 
         return CoordinatorRecord.tombstone(
-            new StreamsGroupCurrentMemberAssignmentKey()
-                .setGroupId(groupId)
-                .setMemberId(memberId)
+                new StreamsGroupCurrentMemberAssignmentKey()
+                        .setGroupId(groupId)
+                        .setMemberId(memberId)
         );
     }
 
     private static List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> toTaskIds(
-        Map<String, Set<Integer>> tasks
+            Map<String, Set<Integer>> tasks
     ) {
         List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> taskIds = new ArrayList<>(tasks.size());
         tasks.forEach((subtopologyId, partitions) ->
-            taskIds.add(new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
-                .setSubtopologyId(subtopologyId)
-                .setPartitions(partitions.stream().sorted().toList()))
+                taskIds.add(new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
+                        .setSubtopologyId(subtopologyId)
+                        .setPartitions(partitions.stream().sorted().toList()))
         );
         taskIds.sort(Comparator.comparing(StreamsGroupCurrentMemberAssignmentValue.TaskIds::subtopologyId));
         return taskIds;
     }
 
     private static List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> toTaskIdsWithEpochs(
-        Map<String, Map<Integer, Integer>> tasksWithEpochs
+            Map<String, Map<Integer, Integer>> tasksWithEpochs
     ) {
         List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> taskIds = new ArrayList<>(tasksWithEpochs.size());
         tasksWithEpochs.forEach((subtopologyId, partitionEpochMap) -> {
             // Sort by partition for consistent ordering
             List<Map.Entry<Integer, Integer>> sortedEntries = partitionEpochMap.entrySet().stream()
-                .sorted(Comparator.comparingInt(Map.Entry::getKey))
-                .toList();
-            
+                    .sorted(Comparator.comparingInt(Map.Entry::getKey))
+                    .toList();
+
             List<Integer> partitions = new ArrayList<>(sortedEntries.size());
             List<Integer> epochs = new ArrayList<>(sortedEntries.size());
-            
+
             for (Map.Entry<Integer, Integer> entry : sortedEntries) {
                 partitions.add(entry.getKey());
                 epochs.add(entry.getValue());
             }
-            
+
             taskIds.add(new StreamsGroupCurrentMemberAssignmentValue.TaskIds()
-                .setSubtopologyId(subtopologyId)
-                .setPartitions(partitions)
-                .setAssignmentEpochs(epochs));
+                    .setSubtopologyId(subtopologyId)
+                    .setPartitions(partitions)
+                    .setAssignmentEpochs(epochs));
         });
         taskIds.sort(Comparator.comparing(StreamsGroupCurrentMemberAssignmentValue.TaskIds::subtopologyId));
         return taskIds;
@@ -374,9 +374,9 @@ public class StreamsCoordinatorRecordHelpers {
         Objects.requireNonNull(value, "value should not be null here");
 
         return CoordinatorRecord.record(
-            new StreamsGroupTopologyKey()
-                .setGroupId(groupId),
-            new ApiMessageAndVersion(value, (short) 0)
+                new StreamsGroupTopologyKey()
+                        .setGroupId(groupId),
+                new ApiMessageAndVersion(value, (short) 0)
         );
     }
 
@@ -393,33 +393,33 @@ public class StreamsCoordinatorRecordHelpers {
         value.setEpoch(topology.epoch());
         topology.subtopologies().forEach(subtopology -> {
             List<StreamsGroupTopologyValue.TopicInfo> repartitionSourceTopics =
-                subtopology.repartitionSourceTopics().stream()
-                    .map(StreamsCoordinatorRecordHelpers::convertToTopicInfo)
-                    .toList();
+                    subtopology.repartitionSourceTopics().stream()
+                            .map(StreamsCoordinatorRecordHelpers::convertToTopicInfo)
+                            .toList();
 
             List<StreamsGroupTopologyValue.TopicInfo> stateChangelogTopics =
-                subtopology.stateChangelogTopics().stream()
-                    .map(StreamsCoordinatorRecordHelpers::convertToTopicInfo)
-                    .toList();
+                    subtopology.stateChangelogTopics().stream()
+                            .map(StreamsCoordinatorRecordHelpers::convertToTopicInfo)
+                            .toList();
 
             List<StreamsGroupTopologyValue.CopartitionGroup> copartitionGroups =
-                subtopology.copartitionGroups().stream()
-                    .map(copartitionGroup -> new StreamsGroupTopologyValue.CopartitionGroup()
-                        .setSourceTopics(copartitionGroup.sourceTopics())
-                        .setSourceTopicRegex(copartitionGroup.sourceTopicRegex())
-                        .setRepartitionSourceTopics(copartitionGroup.repartitionSourceTopics())
-                    )
-                    .toList();
+                    subtopology.copartitionGroups().stream()
+                            .map(copartitionGroup -> new StreamsGroupTopologyValue.CopartitionGroup()
+                                    .setSourceTopics(copartitionGroup.sourceTopics())
+                                    .setSourceTopicRegex(copartitionGroup.sourceTopicRegex())
+                                    .setRepartitionSourceTopics(copartitionGroup.repartitionSourceTopics())
+                            )
+                            .toList();
 
             value.subtopologies().add(
-                new StreamsGroupTopologyValue.Subtopology()
-                    .setSubtopologyId(subtopology.subtopologyId())
-                    .setSourceTopics(subtopology.sourceTopics())
-                    .setSourceTopicRegex(subtopology.sourceTopicRegex())
-                    .setRepartitionSinkTopics(subtopology.repartitionSinkTopics())
-                    .setRepartitionSourceTopics(repartitionSourceTopics)
-                    .setStateChangelogTopics(stateChangelogTopics)
-                    .setCopartitionGroups(copartitionGroups)
+                    new StreamsGroupTopologyValue.Subtopology()
+                            .setSubtopologyId(subtopology.subtopologyId())
+                            .setSourceTopics(subtopology.sourceTopics())
+                            .setSourceTopicRegex(subtopology.sourceTopicRegex())
+                            .setRepartitionSinkTopics(subtopology.repartitionSinkTopics())
+                            .setRepartitionSourceTopics(repartitionSourceTopics)
+                            .setStateChangelogTopics(stateChangelogTopics)
+                            .setCopartitionGroups(copartitionGroups)
             );
         });
         return value;
@@ -427,13 +427,13 @@ public class StreamsCoordinatorRecordHelpers {
 
     private static StreamsGroupTopologyValue.TopicInfo convertToTopicInfo(StreamsGroupHeartbeatRequestData.TopicInfo topicInfo) {
         List<StreamsGroupTopologyValue.TopicConfig> topicConfigs = topicInfo.topicConfigs() != null ? topicInfo.topicConfigs().stream()
-            .map(config -> new StreamsGroupTopologyValue.TopicConfig().setKey(config.key()).setValue(config.value()))
-            .toList() : null;
+                                                                                                      .map(config -> new StreamsGroupTopologyValue.TopicConfig().setKey(config.key()).setValue(config.value()))
+                                                                                                      .toList() : null;
         return new StreamsGroupTopologyValue.TopicInfo()
-            .setName(topicInfo.name())
-            .setTopicConfigs(topicConfigs)
-            .setPartitions(topicInfo.partitions())
-            .setReplicationFactor(topicInfo.replicationFactor());
+                .setName(topicInfo.name())
+                .setTopicConfigs(topicConfigs)
+                .setPartitions(topicInfo.partitions())
+                .setReplicationFactor(topicInfo.replicationFactor());
     }
 
     /**
@@ -443,13 +443,13 @@ public class StreamsCoordinatorRecordHelpers {
      * @return The record.
      */
     public static CoordinatorRecord newStreamsGroupTopologyRecordTombstone(
-        String groupId
+            String groupId
     ) {
         Objects.requireNonNull(groupId, "groupId should not be null here");
 
         return CoordinatorRecord.tombstone(
-            new StreamsGroupTopologyKey()
-                .setGroupId(groupId)
+                new StreamsGroupTopologyKey()
+                        .setGroupId(groupId)
         );
     }
 }

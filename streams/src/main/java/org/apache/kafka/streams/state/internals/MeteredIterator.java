@@ -18,7 +18,7 @@ package org.apache.kafka.streams.state.internals;
 
 /**
  * Common super-interface of all Metered Iterator types.
- *
+ * <p>
  * This enables tracking the timestamp the Iterator was first created, for the oldest-iterator-open-since-ms metric.
  */
 public interface MeteredIterator {

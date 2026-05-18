@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * An interface to that allows developers to customize the RocksDB settings for a given Store.
  * Please read the <a href="https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide">RocksDB Tuning Guide</a>.
- *
+ * <p>
  * Note: if you choose to modify the {@code org.rocksdb.BlockBasedTableConfig} you should retrieve a reference to
  * the existing one (rather than create a new BlockBasedTableConfig object) so as to not lose the other default settings.
  * This can be done as {@code BlockBasedTableConfig tableConfig = (BlockBasedTableConfig) options.tableFormatConfig();}
@@ -36,10 +36,10 @@ public interface RocksDBConfigSetter {
 
     /**
      * Set the rocks db options for the provided storeName.
-     * 
-     * @param storeName     the name of the store being configured
-     * @param options       the RocksDB options
-     * @param configs       the configuration supplied to {@link org.apache.kafka.streams.StreamsConfig}
+     *
+     * @param storeName the name of the store being configured
+     * @param options   the RocksDB options
+     * @param configs   the configuration supplied to {@link org.apache.kafka.streams.StreamsConfig}
      */
     void setConfig(final String storeName, final Options options, final Map<String, Object> configs);
 
@@ -53,8 +53,8 @@ public interface RocksDBConfigSetter {
      * <p>
      * Example objects needing to be closed include {@code org.rocksdb.Filter} and {@code org.rocksdb.Cache}.
      *
-     * @param storeName     the name of the store being configured
-     * @param options       the RocksDB options
+     * @param storeName the name of the store being configured
+     * @param options   the RocksDB options
      */
     void close(final String storeName, final Options options);
 }

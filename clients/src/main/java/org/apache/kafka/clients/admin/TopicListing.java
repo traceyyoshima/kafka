@@ -30,8 +30,8 @@ public class TopicListing {
     /**
      * Create an instance with the specified parameters.
      *
-     * @param name The topic name
-     * @param topicId The topic id.
+     * @param name     The topic name
+     * @param topicId  The topic id.
      * @param internal Whether the topic is internal to Kafka
      */
     public TopicListing(String name, Uuid topicId, boolean internal) {
@@ -64,6 +64,6 @@ public class TopicListing {
 
     @Override
     public String toString() {
-        return "(name=" + name + ", topicId=" + topicId +  ", internal=" + internal + ")";
+        return "(name=" + name + ", topicId=" + topicId + ", internal=" + internal + ")";
     }
 }

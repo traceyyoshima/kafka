@@ -75,7 +75,7 @@ public class RangeQueryIntegrationTest {
     private static final String TABLE_NAME = "mytable";
     private static final int DATA_SIZE = 5;
 
-    private enum StoreType { InMemory, RocksDB, Timed }
+    private enum StoreType {InMemory, RocksDB, Timed}
 
     private final LinkedList<KeyValue<String, String>> records;
 

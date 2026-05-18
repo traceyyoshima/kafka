@@ -52,6 +52,7 @@ public class Connect<H extends Herder> {
 
     /**
      * Track task status which have been submitted to work thread.
+     *
      * @return {@link DistributedHerder#herderTask} to track status or null if the herder type doesn't have a separate work thread
      */
     public Future<?> herderTask() {

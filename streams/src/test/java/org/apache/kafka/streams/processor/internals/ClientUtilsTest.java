@@ -73,64 +73,61 @@ public class ClientUtilsTest {
     private static final int VALUE_BYTES = 5;
 
     private static final Headers HEADERS = new RecordHeaders(asList(
-        new RecordHeader("h1", "headerVal1".getBytes()),   // 2 + 10 --> 12 bytes
-        new RecordHeader("h2", "headerVal2".getBytes())    // 2 + 10 --> 12 bytes
+            new RecordHeader("h1", "headerVal1".getBytes()),   // 2 + 10 --> 12 bytes
+            new RecordHeader("h2", "headerVal2".getBytes())    // 2 + 10 --> 12 bytes
     ));
     private static final int HEADERS_BYTES = 24;
 
     // 20 bytes
     private static final int RECORD_METADATA_BYTES =
-        8 + // timestamp
-        8 + // offset
-        4;  // partition
+            8 + // timestamp
+                    8 + // offset
+                    4;  // partition
 
     // 57 bytes
     private static final long SIZE_IN_BYTES =
-        KEY_BYTES +
-        VALUE_BYTES +
-        TOPIC_BYTES +
-        HEADERS_BYTES +
-        RECORD_METADATA_BYTES;
+            KEY_BYTES +
+                    VALUE_BYTES +
+                    TOPIC_BYTES +
+                    HEADERS_BYTES +
+                    RECORD_METADATA_BYTES;
 
     // 54 bytes
     private static final long NULL_KEY_SIZE_IN_BYTES =
-        VALUE_BYTES +
-        TOPIC_BYTES +
-        HEADERS_BYTES +
-        RECORD_METADATA_BYTES;
+            VALUE_BYTES +
+                    TOPIC_BYTES +
+                    HEADERS_BYTES +
+                    RECORD_METADATA_BYTES;
 
     // 52 bytes
     private static final long TOMBSTONE_SIZE_IN_BYTES =
-        KEY_BYTES +
-        TOPIC_BYTES +
-        HEADERS_BYTES +
-        RECORD_METADATA_BYTES;
+            KEY_BYTES +
+                    TOPIC_BYTES +
+                    HEADERS_BYTES +
+                    RECORD_METADATA_BYTES;
 
     private static final Set<TopicPartition> PARTITIONS = Set.of(
-        new TopicPartition(TOPIC, 1),
-        new TopicPartition(TOPIC, 2)
+            new TopicPartition(TOPIC, 1),
+            new TopicPartition(TOPIC, 2)
     );
 
     @Test
     public void fetchCommittedOffsetsShouldRethrowKafkaExceptionAsStreamsException() {
-        @SuppressWarnings("unchecked")
-        final Consumer<byte[], byte[]> consumer = mock(Consumer.class);
+        @SuppressWarnings("unchecked") final Consumer<byte[], byte[]> consumer = mock(Consumer.class);
         when(consumer.committed(PARTITIONS)).thenThrow(new KafkaException());
         assertThrows(StreamsException.class, () -> fetchCommittedOffsets(PARTITIONS, consumer));
     }
 
     @Test
     public void fetchCommittedOffsetsShouldRethrowTimeoutException() {
-        @SuppressWarnings("unchecked")
-        final Consumer<byte[], byte[]> consumer = mock(Consumer.class);
+        @SuppressWarnings("unchecked") final Consumer<byte[], byte[]> consumer = mock(Consumer.class);
         when(consumer.committed(PARTITIONS)).thenThrow(new TimeoutException());
         assertThrows(TimeoutException.class, () -> fetchCommittedOffsets(PARTITIONS, consumer));
     }
 
     @Test
     public void fetchCommittedOffsetsShouldReturnEmptyMapIfPartitionsAreEmpty() {
-        @SuppressWarnings("unchecked")
-        final Consumer<byte[], byte[]> consumer = mock(Consumer.class);
+        @SuppressWarnings("unchecked") final Consumer<byte[], byte[]> consumer = mock(Consumer.class);
         assertTrue(fetchCommittedOffsets(emptySet(), consumer).isEmpty());
     }
 
@@ -144,8 +141,7 @@ public class ClientUtilsTest {
     public void fetchEndOffsetsShouldRethrowRuntimeExceptionAsStreamsException() throws Exception {
         final Admin adminClient = mock(AdminClient.class);
         final ListOffsetsResult result = mock(ListOffsetsResult.class);
-        @SuppressWarnings("unchecked")
-        final KafkaFuture<Map<TopicPartition, ListOffsetsResultInfo>> allFuture = mock(KafkaFuture.class);
+        @SuppressWarnings("unchecked") final KafkaFuture<Map<TopicPartition, ListOffsetsResultInfo>> allFuture = mock(KafkaFuture.class);
 
         when(adminClient.listOffsets(any())).thenReturn(result);
         when(result.all()).thenReturn(allFuture);
@@ -158,8 +154,7 @@ public class ClientUtilsTest {
     public void fetchEndOffsetsShouldRethrowInterruptedExceptionAsStreamsException() throws Exception {
         final Admin adminClient = mock(AdminClient.class);
         final ListOffsetsResult result = mock(ListOffsetsResult.class);
-        @SuppressWarnings("unchecked")
-        final KafkaFuture<Map<TopicPartition, ListOffsetsResultInfo>> allFuture = mock(KafkaFuture.class);
+        @SuppressWarnings("unchecked") final KafkaFuture<Map<TopicPartition, ListOffsetsResultInfo>> allFuture = mock(KafkaFuture.class);
 
         when(adminClient.listOffsets(any())).thenReturn(result);
         when(result.all()).thenReturn(allFuture);
@@ -172,8 +167,7 @@ public class ClientUtilsTest {
     public void fetchEndOffsetsShouldRethrowExecutionExceptionAsStreamsException() throws Exception {
         final Admin adminClient = mock(AdminClient.class);
         final ListOffsetsResult result = mock(ListOffsetsResult.class);
-        @SuppressWarnings("unchecked")
-        final KafkaFuture<Map<TopicPartition, ListOffsetsResultInfo>> allFuture = mock(KafkaFuture.class);
+        @SuppressWarnings("unchecked") final KafkaFuture<Map<TopicPartition, ListOffsetsResultInfo>> allFuture = mock(KafkaFuture.class);
 
         when(adminClient.listOffsets(any())).thenReturn(result);
         when(result.all()).thenReturn(allFuture);
@@ -181,21 +175,21 @@ public class ClientUtilsTest {
 
         assertThrows(StreamsException.class, () -> fetchEndOffsets(PARTITIONS, adminClient));
     }
-    
+
     @Test
     public void shouldComputeSizeInBytesForConsumerRecord() {
         final ConsumerRecord<byte[], byte[]> record = new ConsumerRecord<>(
-            TOPIC,
-            1,
-            0L,
-            0L,
-            TimestampType.CREATE_TIME,
-            KEY_BYTES,
-            VALUE_BYTES,
-            KEY,
-            VALUE,
-            HEADERS,
-            Optional.empty()
+                TOPIC,
+                1,
+                0L,
+                0L,
+                TimestampType.CREATE_TIME,
+                KEY_BYTES,
+                VALUE_BYTES,
+                KEY,
+                VALUE,
+                HEADERS,
+                Optional.empty()
         );
 
         assertThat(consumerRecordSizeInBytes(record), equalTo(SIZE_IN_BYTES));
@@ -204,12 +198,12 @@ public class ClientUtilsTest {
     @Test
     public void shouldComputeSizeInBytesForProducerRecord() {
         final ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(
-            TOPIC,
-            1,
-            0L,
-            KEY,
-            VALUE,
-            HEADERS
+                TOPIC,
+                1,
+                0L,
+                KEY,
+                VALUE,
+                HEADERS
         );
         assertThat(producerRecordSizeInBytes(record), equalTo(SIZE_IN_BYTES));
     }
@@ -217,17 +211,17 @@ public class ClientUtilsTest {
     @Test
     public void shouldComputeSizeInBytesForConsumerRecordWithNullKey() {
         final ConsumerRecord<byte[], byte[]> record = new ConsumerRecord<>(
-            TOPIC,
-            1,
-            0,
-            0L,
-            TimestampType.CREATE_TIME,
-            0,
-            5,
-            null,
-            VALUE,
-            HEADERS,
-            Optional.empty()
+                TOPIC,
+                1,
+                0,
+                0L,
+                TimestampType.CREATE_TIME,
+                0,
+                5,
+                null,
+                VALUE,
+                HEADERS,
+                Optional.empty()
         );
         assertThat(consumerRecordSizeInBytes(record), equalTo(NULL_KEY_SIZE_IN_BYTES));
     }
@@ -235,12 +229,12 @@ public class ClientUtilsTest {
     @Test
     public void shouldComputeSizeInBytesForProducerRecordWithNullKey() {
         final ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(
-            TOPIC,
-            1,
-            0L,
-            null,
-            VALUE,
-            HEADERS
+                TOPIC,
+                1,
+                0L,
+                null,
+                VALUE,
+                HEADERS
         );
         assertThat(producerRecordSizeInBytes(record), equalTo(NULL_KEY_SIZE_IN_BYTES));
     }
@@ -248,17 +242,17 @@ public class ClientUtilsTest {
     @Test
     public void shouldComputeSizeInBytesForConsumerRecordWithNullValue() {
         final ConsumerRecord<byte[], byte[]> record = new ConsumerRecord<>(
-            TOPIC,
-            1,
-            0,
-            0L,
-            TimestampType.CREATE_TIME,
-            KEY_BYTES,
-            0,
-            KEY,
-            null,
-            HEADERS,
-            Optional.empty()
+                TOPIC,
+                1,
+                0,
+                0L,
+                TimestampType.CREATE_TIME,
+                KEY_BYTES,
+                0,
+                KEY,
+                null,
+                HEADERS,
+                Optional.empty()
         );
         assertThat(consumerRecordSizeInBytes(record), equalTo(TOMBSTONE_SIZE_IN_BYTES));
     }
@@ -266,12 +260,12 @@ public class ClientUtilsTest {
     @Test
     public void shouldComputeSizeInBytesForProducerRecordWithNullValue() {
         final ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(
-            TOPIC,
-            1,
-            0L,
-            KEY,
-            null,
-            HEADERS
+                TOPIC,
+                1,
+                0L,
+                KEY,
+                null,
+                HEADERS
         );
         assertThat(producerRecordSizeInBytes(record), equalTo(TOMBSTONE_SIZE_IN_BYTES));
     }

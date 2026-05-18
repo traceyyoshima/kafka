@@ -34,9 +34,9 @@ public record ProducerIdsImage(long nextProducerId) {
     public void write(ImageWriter writer) {
         if (nextProducerId >= 0) {
             writer.write(0, new ProducerIdsRecord().
-                setBrokerId(-1).
-                setBrokerEpoch(-1).
-                setNextProducerId(nextProducerId));
+                    setBrokerId(-1).
+                    setBrokerEpoch(-1).
+                    setNextProducerId(nextProducerId));
         }
     }
 

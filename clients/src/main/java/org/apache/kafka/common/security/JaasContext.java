@@ -46,7 +46,7 @@ public class JaasContext {
 
     /**
      * Returns an instance of this class.
-     *
+     * <p>
      * The context will contain the configuration specified by the JAAS configuration property
      * {@link SaslConfigs#SASL_JAAS_CONFIG} with prefix `listener.name.{listenerName}.{mechanism}.`
      * with listenerName and mechanism in lower case. The context `KafkaServer` will be returned
@@ -77,7 +77,7 @@ public class JaasContext {
 
     /**
      * Returns an instance of this class.
-     *
+     * <p>
      * If JAAS configuration property {@link SaslConfigs#SASL_JAAS_CONFIG} is specified,
      * the configuration object is created by parsing the property value. Otherwise, the default Configuration
      * is returned. The context name is always `KafkaClient`.
@@ -106,7 +106,7 @@ public class JaasContext {
 
     @SuppressWarnings("deprecation")
     // Visible for testing
-     static void throwIfLoginModuleIsNotAllowed(AppConfigurationEntry appConfigurationEntry) {
+    static void throwIfLoginModuleIsNotAllowed(AppConfigurationEntry appConfigurationEntry) {
         String disallowedProperty = System.getProperty(DISALLOWED_LOGIN_MODULES_CONFIG);
         if (disallowedProperty != null) {
             LOG.warn("System property '{}' is deprecated and will be removed in a future release. Use '{}' instead.",
@@ -132,9 +132,9 @@ public class JaasContext {
                 .collect(Collectors.toSet());
         if (disallowedLoginModuleList.contains(loginModuleName)) {
             throw new IllegalArgumentException(loginModuleName + " is not allowed. "
-                + "The system property '" + DISALLOWED_LOGIN_MODULES_CONFIG + "' is deprecated. "
-                + "Use the " + ALLOWED_LOGIN_MODULES_CONFIG + " to allow this module. e.g.,"
-                + "-D" + ALLOWED_LOGIN_MODULES_CONFIG + "=" + loginModuleName);
+                    + "The system property '" + DISALLOWED_LOGIN_MODULES_CONFIG + "' is deprecated. "
+                    + "Use the " + ALLOWED_LOGIN_MODULES_CONFIG + " to allow this module. e.g.,"
+                    + "-D" + ALLOWED_LOGIN_MODULES_CONFIG + "=" + loginModuleName);
         }
     }
 
@@ -183,7 +183,7 @@ public class JaasContext {
      * The type of the SASL login context, it should be SERVER for the broker and CLIENT for the clients (consumer, producer,
      * etc.). This is used to validate behaviour (e.g. some functionality is only available in the broker or clients).
      */
-    public enum Type { CLIENT, SERVER }
+    public enum Type {CLIENT, SERVER}
 
     private final String name;
     private final Type type;

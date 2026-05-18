@@ -89,7 +89,7 @@ import javax.security.sasl.SaslException;
  *      unsecuredLoginExtension_traceId="123";
  * };
  * </pre>
- *
+ * <p>
  * This class is the default when the SASL mechanism is OAUTHBEARER and no value
  * is explicitly set via either the {@code sasl.login.callback.handler.class}
  * client configuration property or the
@@ -122,8 +122,7 @@ public class OAuthBearerUnsecuredLoginCallbackHandler implements AuthenticateCal
     /**
      * For testing
      *
-     * @param time
-     *            the mandatory time to set
+     * @param time the mandatory time to set
      */
     void time(Time time) {
         this.time = Objects.requireNonNull(time);
@@ -219,8 +218,8 @@ public class OAuthBearerUnsecuredLoginCallbackHandler implements AuthenticateCal
     }
 
     /**
-     *  Add and validate all the configured extensions.
-     *  Token keys, apart from passing regex validation, must not be equal to the reserved key {@link OAuthBearerClientInitialResponse#AUTH_KEY}
+     * Add and validate all the configured extensions.
+     * Token keys, apart from passing regex validation, must not be equal to the reserved key {@link OAuthBearerClientInitialResponse#AUTH_KEY}
      */
     private void handleExtensionsCallback(SaslExtensionsCallback callback) {
         Map<String, String> extensions = new HashMap<>();

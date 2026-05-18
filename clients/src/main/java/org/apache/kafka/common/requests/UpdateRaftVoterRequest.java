@@ -59,13 +59,13 @@ public class UpdateRaftVoterRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new UpdateRaftVoterResponse(new UpdateRaftVoterResponseData().
-            setErrorCode(Errors.forException(e).code()).
-            setThrottleTimeMs(throttleTimeMs));
+                setErrorCode(Errors.forException(e).code()).
+                setThrottleTimeMs(throttleTimeMs));
     }
 
     public static UpdateRaftVoterRequest parse(Readable readable, short version) {
         return new UpdateRaftVoterRequest(
-            new UpdateRaftVoterRequestData(readable, version),
-            version);
+                new UpdateRaftVoterRequestData(readable, version),
+                version);
     }
 }

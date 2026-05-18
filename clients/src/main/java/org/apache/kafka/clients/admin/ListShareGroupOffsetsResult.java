@@ -34,7 +34,7 @@ public class ListShareGroupOffsetsResult {
 
     ListShareGroupOffsetsResult(final Map<CoordinatorKey, KafkaFuture<Map<TopicPartition, SharePartitionOffsetInfo>>> futures) {
         this.futures = futures.entrySet().stream()
-            .collect(Collectors.toMap(e -> e.getKey().idValue, Map.Entry::getValue));
+                .collect(Collectors.toMap(e -> e.getKey().idValue, Map.Entry::getValue));
     }
 
     /**
@@ -44,19 +44,19 @@ public class ListShareGroupOffsetsResult {
      */
     public KafkaFuture<Map<String, Map<TopicPartition, SharePartitionOffsetInfo>>> all() {
         return KafkaFuture.allOf(futures.values().toArray(new KafkaFuture<?>[0])).thenApply(
-            nil -> {
-                Map<String, Map<TopicPartition, SharePartitionOffsetInfo>> offsets = new HashMap<>(futures.size());
-                futures.forEach((groupId, future) -> {
-                    try {
-                        offsets.put(groupId, future.get());
-                    } catch (InterruptedException | ExecutionException e) {
-                        // This should be unreachable, since the KafkaFuture#allOf already ensured
-                        // that all the futures completed successfully.
-                        throw new RuntimeException(e);
-                    }
+                nil -> {
+                    Map<String, Map<TopicPartition, SharePartitionOffsetInfo>> offsets = new HashMap<>(futures.size());
+                    futures.forEach((groupId, future) -> {
+                        try {
+                            offsets.put(groupId, future.get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            // This should be unreachable, since the KafkaFuture#allOf already ensured
+                            // that all the futures completed successfully.
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    return offsets;
                 });
-                return offsets;
-            });
     }
 
     /**

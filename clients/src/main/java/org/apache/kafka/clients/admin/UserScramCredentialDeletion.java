@@ -28,7 +28,7 @@ public class UserScramCredentialDeletion extends UserScramCredentialAlteration {
     private final ScramMechanism mechanism;
 
     /**
-     * @param user the mandatory user
+     * @param user      the mandatory user
      * @param mechanism the mandatory mechanism
      */
     public UserScramCredentialDeletion(String user, ScramMechanism mechanism) {

@@ -35,17 +35,17 @@ import java.util.Set;
 /**
  * The homogeneous uniform assignment builder is used to generate the target assignment for a consumer group with
  * all its members subscribed to the same set of topics.
- *
+ * <p>
  * Assignments are done according to the following principles:
  *
  * <li> Balance:          Ensure partitions are distributed equally among all members.
- *                        The difference in assignments sizes between any two members
- *                        should not exceed one partition. </li>
+ * The difference in assignments sizes between any two members
+ * should not exceed one partition. </li>
  * <li> Stickiness:       Minimize partition movements among members by retaining
- *                        as much of the existing assignment as possible. </li>
- *
+ * as much of the existing assignment as possible. </li>
+ * <p>
  * The assignment builder prioritizes the properties in the following order:
- *      Balance > Stickiness.
+ * Balance > Stickiness.
  */
 public class UniformHomogeneousAssignmentBuilder {
     /**
@@ -88,7 +88,7 @@ public class UniformHomogeneousAssignmentBuilder {
     /**
      * The number of members to receive an extra partition beyond the minimum quota.
      * Example: If there are 11 partitions to be distributed among 3 members,
-     *          each member gets 3 (11 / 3) [minQuota] partitions and 2 (11 % 3) members get an extra partition.
+     * each member gets 3 (11 / 3) [minQuota] partitions and 2 (11 % 3) members get an extra partition.
      */
     private int remainingMembersToGetAnExtraPartition;
 
@@ -96,7 +96,7 @@ public class UniformHomogeneousAssignmentBuilder {
         this.groupSpec = groupSpec;
         this.subscribedTopicDescriber = subscribedTopicDescriber;
         this.subscribedTopicIds = new HashSet<>(groupSpec.memberSubscription(groupSpec.memberIds().iterator().next())
-            .subscribedTopicIds());
+                .subscribedTopicIds());
         this.unfilledMembers = new ArrayList<>();
         this.unassignedPartitions = new ArrayList<>();
 
@@ -117,7 +117,7 @@ public class UniformHomogeneousAssignmentBuilder {
             int partitionCount = subscribedTopicDescriber.numPartitions(topicId);
             if (partitionCount == -1) {
                 throw new PartitionAssignorException(
-                    "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
+                        "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
                 );
             } else {
                 for (int i = 0; i < partitionCount; i++) {
@@ -148,7 +148,7 @@ public class UniformHomogeneousAssignmentBuilder {
     /**
      * Revoke the partitions that either are not part of the member's subscriptions or
      * exceed the maximum quota assigned to each member.
-     *
+     * <p>
      * This method ensures that the original assignment is not copied if it is not
      * altered.
      */
@@ -215,8 +215,8 @@ public class UniformHomogeneousAssignmentBuilder {
             }
 
             if (quota > 0 &&
-                quotaHasExtraPartition &&
-                memberCount - memberIndex > remainingMembersToGetAnExtraPartition) {
+                    quotaHasExtraPartition &&
+                    memberCount - memberIndex > remainingMembersToGetAnExtraPartition) {
                 // Give up the extra partition quota for another member to claim,
                 // unless this member is one of the last remainingMembersToGetAnExtraPartition
                 // members in the list and must take the extra partition.
@@ -262,8 +262,8 @@ public class UniformHomogeneousAssignmentBuilder {
                 TopicIdPartition unassignedTopicIdPartition = unassignedPartitions.get(unassignedPartitionIndex);
                 unassignedPartitionIndex++;
                 newAssignment
-                    .computeIfAbsent(unassignedTopicIdPartition.topicId(), __ -> new HashSet<>())
-                    .add(unassignedTopicIdPartition.partitionId());
+                        .computeIfAbsent(unassignedTopicIdPartition.topicId(), __ -> new HashSet<>())
+                        .add(unassignedTopicIdPartition.partitionId());
             }
         }
 

@@ -48,7 +48,7 @@ public class KStreamMapTest {
     public void testMap() {
         final StreamsBuilder builder = new StreamsBuilder();
         final String topicName = "topic";
-        final int[] expectedKeys = new int[] {0, 1, 2, 3};
+        final int[] expectedKeys = new int[]{0, 1, 2, 3};
 
         final MockApiProcessorSupplier<String, Integer, Void, Void> supplier = new MockApiProcessorSupplier<>();
         final KStream<Integer, String> stream = builder.stream(topicName, Consumed.with(Serdes.Integer(), Serdes.String()));
@@ -62,10 +62,10 @@ public class KStreamMapTest {
             }
         }
 
-        final KeyValueTimestamp[] expected = new KeyValueTimestamp[] {new KeyValueTimestamp<>("V0", 0, 10),
-            new KeyValueTimestamp<>("V1", 1, 9),
-            new KeyValueTimestamp<>("V2", 2, 8),
-            new KeyValueTimestamp<>("V3", 3, 7)};
+        final KeyValueTimestamp[] expected = new KeyValueTimestamp[]{new KeyValueTimestamp<>("V0", 0, 10),
+                new KeyValueTimestamp<>("V1", 1, 9),
+                new KeyValueTimestamp<>("V2", 2, 8),
+                new KeyValueTimestamp<>("V3", 3, 7)};
         assertEquals(4, supplier.theCapturedProcessor().processed().size());
         for (int i = 0; i < expected.length; i++) {
             assertEquals(expected[i], supplier.theCapturedProcessor().processed().get(i));
@@ -83,8 +83,8 @@ public class KStreamMapTest {
     @Test
     public void testTypeVariance() {
         new StreamsBuilder()
-            .<Integer, String>stream("numbers")
-            .map((key, value) -> KeyValue.pair(key, key + ":" + value))
-            .to("strings");
+                .<Integer, String>stream("numbers")
+                .map((key, value) -> KeyValue.pair(key, key + ":" + value))
+                .to("strings");
     }
 }

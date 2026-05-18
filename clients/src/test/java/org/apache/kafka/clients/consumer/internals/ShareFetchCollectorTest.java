@@ -140,8 +140,8 @@ public class ShareFetchCollectorTest {
         subscribeAndAssign(topicAPartition0);
 
         ShareCompletedFetch completedFetch = completedFetchBuilder
-            .recordCount(recordCount)
-            .build();
+                .recordCount(recordCount)
+                .build();
 
         // Validate that the buffer is empty until after we add the fetch data.
         assertTrue(fetchBuffer.isEmpty());

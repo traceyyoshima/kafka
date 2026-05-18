@@ -25,21 +25,21 @@ import java.util.List;
 /**
  * A memory-efficient hash multiset which tracks the order of insertion of elements.
  * See org.apache.kafka.common.utils.internals.ImplicitLinkedHashCollection for implementation details.
- *
+ * <p>
  * This class is a multi-set because it allows multiple elements to be inserted that
  * have equivalent keys.
- *
+ * <p>
  * We use reference equality when adding elements to the set.  A new element A can
  * be added if there is no existing element B such that A == B.  If an element B
  * exists such that A.elementKeysAreEqual(B), A will still be added.
- *
+ * <p>
  * When deleting an element A from the set, we will try to delete the element B such
  * that A == B.  If no such element can be found, we will try to delete an element B
  * such that A.elementKeysAreEqual(B).
- *
+ * <p>
  * contains() and find() are unchanged from the base class-- they will look for element
  * based on object equality via elementKeysAreEqual, not reference equality.
- *
+ * <p>
  * This multiset does not allow null elements.  It does not have internal synchronization.
  */
 public class ImplicitLinkedHashMultiCollection<E extends ImplicitLinkedHashCollection.Element>
@@ -60,10 +60,10 @@ public class ImplicitLinkedHashMultiCollection<E extends ImplicitLinkedHashColle
     /**
      * Adds a new element to the appropriate place in the elements array.
      *
-     * @param newElement    The new element to add.
-     * @param addElements   The elements array.
-     * @return              The index at which the element was inserted, or INVALID_INDEX
-     *                      if the element could not be inserted.
+     * @param newElement  The new element to add.
+     * @param addElements The elements array.
+     * @return The index at which the element was inserted, or INVALID_INDEX
+     * if the element could not be inserted.
      */
     @Override
     int addInternal(Element newElement, Element[] addElements) {
@@ -85,9 +85,8 @@ public class ImplicitLinkedHashMultiCollection<E extends ImplicitLinkedHashColle
     /**
      * Find an element matching an example element.
      *
-     * @param key               The element to match.
-     *
-     * @return                  The match index, or INVALID_INDEX if no match was found.
+     * @param key The element to match.
+     * @return The match index, or INVALID_INDEX if no match was found.
      */
     @Override
     int findElementToRemove(Object key) {
@@ -115,9 +114,8 @@ public class ImplicitLinkedHashMultiCollection<E extends ImplicitLinkedHashColle
      * Returns all of the elements e in the collection such that
      * key.elementKeysAreEqual(e) and key.hashCode() == e.hashCode().
      *
-     * @param key       The element to match.
-     *
-     * @return          All of the matching elements.
+     * @param key The element to match.
+     * @return All of the matching elements.
      */
     public final List<E> findAll(E key) {
         if (key == null || size() == 0) {

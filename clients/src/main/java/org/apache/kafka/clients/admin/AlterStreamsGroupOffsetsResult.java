@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * The result of the {@link AdminClient#alterStreamsGroupOffsets(String, Map)} call.
- *
+ * <p>
  * The API of this class is evolving, see {@link AdminClient} for details.
  */
 @InterfaceStability.Evolving

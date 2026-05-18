@@ -48,10 +48,10 @@ import java.util.stream.Collectors;
 
 /**
  * A collection of meta.properties information for Kafka log directories.
- *
+ * <p>
  * Directories are categorized into empty, error, and normal. Each directory must appear in only
  * one category, corresponding to emptyLogDirs, errorLogDirs, and logDirProps.
- *
+ * <p>
  * This class is immutable. Modified copies can be made with the Copier class.
  */
 public final class MetaPropertiesEnsemble {
@@ -64,9 +64,9 @@ public final class MetaPropertiesEnsemble {
      * A completely empty MetaPropertiesEnsemble object.
      */
     public static final MetaPropertiesEnsemble EMPTY = new MetaPropertiesEnsemble(Set.of(),
-        Set.of(),
-        Map.of(),
-        Optional.empty());
+            Set.of(),
+            Map.of(),
+            Optional.empty());
 
     /**
      * The name of the meta.properties file within each log directory.
@@ -108,14 +108,14 @@ public final class MetaPropertiesEnsemble {
         public Loader addMetadataLogDir(String metadataLogDir) {
             if (this.metadataLogDir.isPresent()) {
                 throw new RuntimeException("Cannot specify more than one metadata log directory. " +
-                    "Already specified " + this.metadataLogDir.get());
+                        "Already specified " + this.metadataLogDir.get());
             }
             this.metadataLogDir = Optional.of(metadataLogDir);
             logDirs.add(metadataLogDir);
             return this;
         }
 
-        public MetaPropertiesEnsemble load() throws IOException  {
+        public MetaPropertiesEnsemble load() throws IOException {
             if (logDirs.isEmpty()) {
                 throw new RuntimeException("You must specify at least one log directory.");
             }
@@ -141,16 +141,16 @@ public final class MetaPropertiesEnsemble {
 
     public interface WriteErrorHandler {
         void handle(
-            String logDir,
-            IOException e
+                String logDir,
+                IOException e
         ) throws IOException;
     }
 
     public interface PreWriteHandler {
         void handle(
-            String logDir,
-            boolean isNew,
-            MetaProperties metaProperties
+                String logDir,
+                boolean isNew,
+                MetaProperties metaProperties
         ) throws IOException;
     }
 
@@ -190,8 +190,8 @@ public final class MetaPropertiesEnsemble {
         /**
          * Set the Random object to use for generating IDs.
          *
-         * @param random    The Random object to use for generating IDs.
-         * @return          This copier
+         * @param random The Random object to use for generating IDs.
+         * @return This copier
          */
         public Copier setRandom(Random random) {
             this.random = random;
@@ -201,7 +201,7 @@ public final class MetaPropertiesEnsemble {
         /**
          * Access the mutable empty log directories set.
          *
-         * @return          The mutable empty log directories set.
+         * @return The mutable empty log directories set.
          */
         public Set<String> emptyLogDirs() {
             return emptyLogDirs;
@@ -210,7 +210,7 @@ public final class MetaPropertiesEnsemble {
         /**
          * Access the mutable error log directories set.
          *
-         * @return          The mutable error log directories set.
+         * @return The mutable error log directories set.
          */
         public Set<String> errorLogDirs() {
             return errorLogDirs;
@@ -219,7 +219,7 @@ public final class MetaPropertiesEnsemble {
         /**
          * Access the mutable logDirProps map.
          *
-         * @return          The mutable error log directories map.
+         * @return The mutable error log directories map.
          */
         public Map<String, MetaProperties> logDirProps() {
             return logDirProps;
@@ -230,8 +230,7 @@ public final class MetaPropertiesEnsemble {
          *
          * @param logDir    The log directory path.
          * @param metaProps The properties to set.
-         *
-         * @return          This copier.
+         * @return This copier.
          */
         public Copier setLogDirProps(String logDir, MetaProperties metaProps) {
             emptyLogDirs.remove(logDir);
@@ -247,9 +246,8 @@ public final class MetaPropertiesEnsemble {
         /**
          * Set the current metadata log directory.
          *
-         * @param metaLogDir    The metadata log directory, or Optional.empty if there is none.
-         *
-         * @return              This copier.
+         * @param metaLogDir The metadata log directory, or Optional.empty if there is none.
+         * @return This copier.
          */
         public Copier setMetaLogDir(Optional<String> metaLogDir) {
             this.metaLogDir = metaLogDir;
@@ -259,7 +257,7 @@ public final class MetaPropertiesEnsemble {
         /**
          * Generate a random directory ID that is safe and not used by any other directory.
          *
-         * @return          A new random directory ID.
+         * @return A new random directory ID.
          */
         public Uuid generateValidDirectoryId() {
             while (true) {
@@ -282,8 +280,8 @@ public final class MetaPropertiesEnsemble {
         /**
          * Set the pre-write handler.
          *
-         * @param preWriteHandler  A handler that will be called before we try to write to a
-         *                         directory.
+         * @param preWriteHandler A handler that will be called before we try to write to a
+         *                        directory.
          */
         public Copier setPreWriteHandler(PreWriteHandler preWriteHandler) {
             this.preWriteHandler = preWriteHandler;
@@ -310,11 +308,11 @@ public final class MetaPropertiesEnsemble {
             for (String logDir : emptyLogDirs) {
                 if (errorLogDirs.contains(logDir)) {
                     throw new RuntimeException("Error: log directory " + logDir +
-                        " is in both emptyLogDirs and errorLogDirs.");
+                            " is in both emptyLogDirs and errorLogDirs.");
                 }
                 if (logDirProps.containsKey(logDir)) {
                     throw new RuntimeException("Error: log directory " + logDir +
-                        " is in both emptyLogDirs and logDirProps.");
+                            " is in both emptyLogDirs and logDirProps.");
                 }
             }
             for (String logDir : errorLogDirs) {
@@ -328,7 +326,7 @@ public final class MetaPropertiesEnsemble {
                         logDirProps.containsKey(m) ||
                         errorLogDirs.contains(m))) {
                     throw new RuntimeException("Error: metaLogDir " + m + " does not appear " +
-                        "in emptyLogDirs, errorLogDirs, or logDirProps.");
+                            "in emptyLogDirs, errorLogDirs, or logDirProps.");
                 }
             });
         }
@@ -359,7 +357,7 @@ public final class MetaPropertiesEnsemble {
                 try {
                     preWriteHandler.handle(logDir, newSet.contains(logDir), metaProps);
                     PropertiesUtils.writePropertiesFile(metaProps.toProperties(),
-                        metaPropsPath, true);
+                            metaPropsPath, true);
                 } catch (IOException e) {
                     errorLogDirs.add(logDir);
                     logDirProps.remove(logDir);
@@ -371,21 +369,21 @@ public final class MetaPropertiesEnsemble {
         /**
          * Create a new immutable MetaPropertiesEnsemble file.
          *
-         * @return  A new MetaPropertiesEnsemble file containing the changes we made in this Copier.
+         * @return A new MetaPropertiesEnsemble file containing the changes we made in this Copier.
          */
         public MetaPropertiesEnsemble copy() {
             return new MetaPropertiesEnsemble(emptyLogDirs,
-                errorLogDirs,
-                logDirProps,
-                metaLogDir);
+                    errorLogDirs,
+                    logDirProps,
+                    metaLogDir);
         }
     }
 
     MetaPropertiesEnsemble(
-        Set<String> emptyLogDirs,
-        Set<String> errorLogDirs,
-        Map<String, MetaProperties> logDirProps,
-        Optional<String> metadataLogDir
+            Set<String> emptyLogDirs,
+            Set<String> errorLogDirs,
+            Map<String, MetaProperties> logDirProps,
+            Optional<String> metadataLogDir
     ) {
         this.emptyLogDirs = Collections.unmodifiableSet(new TreeSet<>(emptyLogDirs));
         this.errorLogDirs = Collections.unmodifiableSet(new TreeSet<>(errorLogDirs));
@@ -454,25 +452,25 @@ public final class MetaPropertiesEnsemble {
 
     /**
      * Verify that the metadata properties ensemble is valid.
-     *
+     * <p>
      * We verify that v1 meta.properties files always have cluster.id set. v0 files may or may not
      * have it set. If it is set, the cluster ID must be the same in all directories.
-     *
+     * <p>
      * We verify that v1 meta.properties files always have node.id set. v0 files may or may not have
      * it set. If it is set in v0, it will be called broker.id rather than node.id. Node ID must be
      * the same in call directories.
-     *
+     * <p>
      * directory.id may or may not be set, in both v0 and v1. If it is set, it must not be the same
      * in multiple directories, and it must be safe.
      *
-     * @param expectedClusterId     The cluster ID to expect, or the empty string if we don't know yet.
-     * @param expectedNodeId        The node ID to expect, or -1 if we don't know yet.
-     * @param verificationFlags     The flags to use.
+     * @param expectedClusterId The cluster ID to expect, or the empty string if we don't know yet.
+     * @param expectedNodeId    The node ID to expect, or -1 if we don't know yet.
+     * @param verificationFlags The flags to use.
      */
     public void verify(
-        Optional<String> expectedClusterId,
-        OptionalInt expectedNodeId,
-        EnumSet<VerificationFlag> verificationFlags
+            Optional<String> expectedClusterId,
+            OptionalInt expectedNodeId,
+            EnumSet<VerificationFlag> verificationFlags
     ) {
         Map<Uuid, String> seenUuids = new HashMap<>();
         if (verificationFlags.contains(VerificationFlag.REQUIRE_AT_LEAST_ONE_VALID)) {
@@ -487,20 +485,20 @@ public final class MetaPropertiesEnsemble {
             if (verificationFlags.contains(VerificationFlag.REQUIRE_V0)) {
                 if (!metaProps.version().equals(MetaPropertiesVersion.V0)) {
                     throw new RuntimeException("Found unexpected version in " + path + ". " +
-                        "ZK-based brokers that are not migrating only support version 0 " +
-                        "(which is implicit when the `version` field is missing).");
+                            "ZK-based brokers that are not migrating only support version 0 " +
+                            "(which is implicit when the `version` field is missing).");
                 }
             }
             if (metaProps.clusterId().isEmpty()) {
                 if (metaProps.version().alwaysHasClusterId()) {
                     throw new RuntimeException("cluster.id was not specified in the v1 file: " +
-                        path);
+                            path);
                 }
             } else if (expectedClusterId.isEmpty()) {
                 expectedClusterId = metaProps.clusterId();
             } else if (!metaProps.clusterId().get().equals(expectedClusterId.get())) {
                 throw new RuntimeException("Invalid cluster.id in: " + path + ". Expected " +
-                    expectedClusterId.get() + ", but read " + metaProps.clusterId().get());
+                        expectedClusterId.get() + ", but read " + metaProps.clusterId().get());
             }
             if (metaProps.nodeId().isEmpty()) {
                 if (metaProps.version().alwaysHasNodeId()) {
@@ -510,21 +508,21 @@ public final class MetaPropertiesEnsemble {
                 expectedNodeId = metaProps.nodeId();
             } else if (metaProps.nodeId().getAsInt() != expectedNodeId.getAsInt()) {
                 throw new RuntimeException("Stored node id " + metaProps.nodeId().getAsInt() +
-                    " doesn't match previous node id " + expectedNodeId.getAsInt() + " in " + path +
-                    ". If you moved your data, make sure your configured node id matches. If you " +
-                    "intend to create a new node, you should remove all data in your data " +
-                    "directories.");
+                        " doesn't match previous node id " + expectedNodeId.getAsInt() + " in " + path +
+                        ". If you moved your data, make sure your configured node id matches. If you " +
+                        "intend to create a new node, you should remove all data in your data " +
+                        "directories.");
             }
             if (metaProps.directoryId().isPresent()) {
                 if (DirectoryId.reserved(metaProps.directoryId().get())) {
                     throw new RuntimeException("Invalid reserved directory ID " +
-                        metaProps.directoryId().get() + " found in " + logDir);
+                            metaProps.directoryId().get() + " found in " + logDir);
                 }
                 String prevLogDir = seenUuids.put(metaProps.directoryId().get(), logDir);
                 if (prevLogDir != null) {
                     throw new RuntimeException("Duplicate directory ID " + metaProps.directoryId() +
-                        " found. It was the ID of " + prevLogDir + ", " + "but also of " +
-                        logDir);
+                            " found. It was the ID of " + prevLogDir + ", " + "but also of " +
+                            logDir);
                 }
             }
         }
@@ -544,7 +542,7 @@ public final class MetaPropertiesEnsemble {
     /**
      * Find the node ID of this meta.properties ensemble.
      *
-     * @return  The node ID, or OptionalInt.empty if none could be found.
+     * @return The node ID, or OptionalInt.empty if none could be found.
      */
     public OptionalInt nodeId() {
         for (MetaProperties metaProps : logDirProps.values()) {
@@ -558,7 +556,7 @@ public final class MetaPropertiesEnsemble {
     /**
      * Find the cluster ID of this meta.properties ensemble.
      *
-     * @return  The cluster ID, or Optional.empty if none could be found.
+     * @return The cluster ID, or Optional.empty if none could be found.
      */
     public Optional<String> clusterId() {
         for (MetaProperties metaProps : logDirProps.values()) {
@@ -576,17 +574,17 @@ public final class MetaPropertiesEnsemble {
         }
         MetaPropertiesEnsemble other = (MetaPropertiesEnsemble) o;
         return emptyLogDirs.equals(other.emptyLogDirs) &&
-            errorLogDirs.equals(other.errorLogDirs) &&
-            logDirProps.equals(other.logDirProps) &&
-            metadataLogDir.equals(other.metadataLogDir);
+                errorLogDirs.equals(other.errorLogDirs) &&
+                logDirProps.equals(other.logDirProps) &&
+                metadataLogDir.equals(other.metadataLogDir);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(emptyLogDirs,
-            errorLogDirs,
-            logDirProps,
-            metadataLogDir);
+                errorLogDirs,
+                logDirProps,
+                metadataLogDir);
     }
 
     @Override
@@ -596,10 +594,10 @@ public final class MetaPropertiesEnsemble {
         errorLogDirs.forEach(e -> outputMap.put(e, "ERROR"));
         logDirProps.forEach((key, value) -> outputMap.put(key, value.toString()));
         return "MetaPropertiesEnsemble" +
-            "(metadataLogDir=" + metadataLogDir +
-            ", dirs={" + outputMap.entrySet().stream().
-            map(e -> e.getKey() + ": " + e.getValue()).
-            collect(Collectors.joining(", ")) +
-            "})";
+                "(metadataLogDir=" + metadataLogDir +
+                ", dirs={" + outputMap.entrySet().stream().
+                map(e -> e.getKey() + ": " + e.getValue()).
+                collect(Collectors.joining(", ")) +
+                "})";
     }
 }

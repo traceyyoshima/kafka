@@ -48,9 +48,9 @@ public class ListConsumerGroupOffsetsHandler implements AdminApiHandler<Coordina
     private final CoordinatorStrategy lookupStrategy;
 
     public ListConsumerGroupOffsetsHandler(
-        Map<String, ListConsumerGroupOffsetsSpec> groupSpecs,
-        boolean requireStable,
-        LogContext logContext
+            Map<String, ListConsumerGroupOffsetsSpec> groupSpecs,
+            boolean requireStable,
+            LogContext logContext
     ) {
         this.log = logContext.logger(ListConsumerGroupOffsetsHandler.class);
         this.lookupStrategy = new CoordinatorStrategy(CoordinatorType.GROUP, logContext);
@@ -82,36 +82,36 @@ public class ListConsumerGroupOffsetsHandler implements AdminApiHandler<Coordina
 
     private static Set<CoordinatorKey> coordinatorKeys(Collection<String> groupIds) {
         return groupIds.stream()
-           .map(CoordinatorKey::byGroupId)
-           .collect(Collectors.toSet());
+                .map(CoordinatorKey::byGroupId)
+                .collect(Collectors.toSet());
     }
 
     public OffsetFetchRequest.Builder buildBatchedRequest(Set<CoordinatorKey> groupIds) {
         // Create a request that only contains the consumer groups owned by the coordinator.
         return OffsetFetchRequest.Builder.forTopicNames(
-            new OffsetFetchRequestData()
-                .setRequireStable(requireStable)
-                .setGroups(groupIds.stream().map(groupId -> {
-                    ListConsumerGroupOffsetsSpec spec = groupSpecs.get(groupId.idValue);
+                new OffsetFetchRequestData()
+                        .setRequireStable(requireStable)
+                        .setGroups(groupIds.stream().map(groupId -> {
+                            ListConsumerGroupOffsetsSpec spec = groupSpecs.get(groupId.idValue);
 
-                    List<OffsetFetchRequestData.OffsetFetchRequestTopics> topics = null;
-                    if (spec.topicPartitions() != null) {
-                        topics = spec.topicPartitions().stream()
-                            .collect(Collectors.groupingBy(TopicPartition::topic))
-                            .entrySet()
-                            .stream()
-                            .map(entry -> new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName(entry.getKey())
-                                .setPartitionIndexes(entry.getValue().stream()
-                                    .map(TopicPartition::partition)
-                                    .collect(Collectors.toList())))
-                            .collect(Collectors.toList());
-                    }
-                    return new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId(groupId.idValue)
-                        .setTopics(topics);
-                }).collect(Collectors.toList())),
-            false
+                            List<OffsetFetchRequestData.OffsetFetchRequestTopics> topics = null;
+                            if (spec.topicPartitions() != null) {
+                                topics = spec.topicPartitions().stream()
+                                        .collect(Collectors.groupingBy(TopicPartition::topic))
+                                        .entrySet()
+                                        .stream()
+                                        .map(entry -> new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                                .setName(entry.getKey())
+                                                .setPartitionIndexes(entry.getValue().stream()
+                                                        .map(TopicPartition::partition)
+                                                        .collect(Collectors.toList())))
+                                        .collect(Collectors.toList());
+                            }
+                            return new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                                    .setGroupId(groupId.idValue)
+                                    .setTopics(topics);
+                        }).collect(Collectors.toList())),
+                false
         );
     }
 
@@ -133,9 +133,9 @@ public class ListConsumerGroupOffsetsHandler implements AdminApiHandler<Coordina
 
     @Override
     public ApiResult<CoordinatorKey, Map<TopicPartition, OffsetAndMetadata>> handleResponse(
-        Node coordinator,
-        Set<CoordinatorKey> groupIds,
-        AbstractResponse abstractResponse
+            Node coordinator,
+            Set<CoordinatorKey> groupIds,
+            AbstractResponse abstractResponse
     ) {
         validateKeys(groupIds);
 
@@ -151,34 +151,34 @@ public class ListConsumerGroupOffsetsHandler implements AdminApiHandler<Coordina
 
             if (error != Errors.NONE) {
                 handleGroupError(
-                    coordinatorKey,
-                    error,
-                    failed,
-                    unmapped
+                        coordinatorKey,
+                        error,
+                        failed,
+                        unmapped
                 );
             } else {
                 var offsets = new HashMap<TopicPartition, OffsetAndMetadata>();
 
                 group.topics().forEach(topic ->
-                    topic.partitions().forEach(partition -> {
-                        var tp = new TopicPartition(topic.name(), partition.partitionIndex());
-                        var partitionError = Errors.forCode(partition.errorCode());
+                        topic.partitions().forEach(partition -> {
+                            var tp = new TopicPartition(topic.name(), partition.partitionIndex());
+                            var partitionError = Errors.forCode(partition.errorCode());
 
-                        if (partitionError == Errors.NONE) {
-                            // Negative offset indicates that the group has no committed offset for this partition.
-                            if (partition.committedOffset() < 0) {
-                                offsets.put(tp, null);
+                            if (partitionError == Errors.NONE) {
+                                // Negative offset indicates that the group has no committed offset for this partition.
+                                if (partition.committedOffset() < 0) {
+                                    offsets.put(tp, null);
+                                } else {
+                                    offsets.put(tp, new OffsetAndMetadata(
+                                            partition.committedOffset(),
+                                            RequestUtils.getLeaderEpoch(partition.committedLeaderEpoch()),
+                                            partition.metadata()
+                                    ));
+                                }
                             } else {
-                                offsets.put(tp, new OffsetAndMetadata(
-                                    partition.committedOffset(),
-                                    RequestUtils.getLeaderEpoch(partition.committedLeaderEpoch()),
-                                    partition.metadata()
-                                ));
+                                log.warn("Skipping return offset for {} due to error {}.", tp, partitionError);
                             }
-                        } else {
-                            log.warn("Skipping return offset for {} due to error {}.", tp, partitionError);
-                        }
-                    })
+                        })
                 );
 
                 completed.put(coordinatorKey, offsets);
@@ -189,10 +189,10 @@ public class ListConsumerGroupOffsetsHandler implements AdminApiHandler<Coordina
     }
 
     private void handleGroupError(
-        CoordinatorKey groupId,
-        Errors error,
-        Map<CoordinatorKey, Throwable> failed,
-        List<CoordinatorKey> groupsToUnmap
+            CoordinatorKey groupId,
+            Errors error,
+            Map<CoordinatorKey, Throwable> failed,
+            List<CoordinatorKey> groupsToUnmap
     ) {
         switch (error) {
             case GROUP_AUTHORIZATION_FAILED:
@@ -204,7 +204,7 @@ public class ListConsumerGroupOffsetsHandler implements AdminApiHandler<Coordina
             case COORDINATOR_LOAD_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("`OffsetFetch` request for group id {} failed because the coordinator " +
-                    "is still in the process of loading state. Will retry", groupId.idValue);
+                        "is still in the process of loading state. Will retry", groupId.idValue);
                 break;
 
             case COORDINATOR_NOT_AVAILABLE:
@@ -212,7 +212,7 @@ public class ListConsumerGroupOffsetsHandler implements AdminApiHandler<Coordina
                 // If the coordinator is unavailable or there was a coordinator change, then we unmap
                 // the key so that we retry the `FindCoordinator` request
                 log.debug("`OffsetFetch` request for group id {} returned error {}. " +
-                    "Will attempt to find the coordinator again and retry", groupId.idValue, error);
+                        "Will attempt to find the coordinator again and retry", groupId.idValue, error);
                 groupsToUnmap.add(groupId);
                 break;
 

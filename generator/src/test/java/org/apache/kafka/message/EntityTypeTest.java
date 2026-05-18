@@ -27,13 +27,13 @@ public class EntityTypeTest {
 
     @Test
     public void testUnknownEntityType() {
-        for (FieldType type : new FieldType[] {
-            FieldType.StringFieldType.INSTANCE,
-            FieldType.Int8FieldType.INSTANCE,
-            FieldType.Int16FieldType.INSTANCE,
-            FieldType.Int32FieldType.INSTANCE,
-            FieldType.Int64FieldType.INSTANCE,
-            new FieldType.ArrayType(FieldType.StringFieldType.INSTANCE)}) {
+        for (FieldType type : new FieldType[]{
+                FieldType.StringFieldType.INSTANCE,
+                FieldType.Int8FieldType.INSTANCE,
+                FieldType.Int16FieldType.INSTANCE,
+                FieldType.Int32FieldType.INSTANCE,
+                FieldType.Int64FieldType.INSTANCE,
+                new FieldType.ArrayType(FieldType.StringFieldType.INSTANCE)}) {
             EntityType.UNKNOWN.verifyTypeMatches("unknown", type);
         }
     }
@@ -41,25 +41,25 @@ public class EntityTypeTest {
     @Test
     public void testVerifyTypeMatches() {
         EntityType.TRANSACTIONAL_ID.verifyTypeMatches("transactionalIdField",
-            FieldType.StringFieldType.INSTANCE);
+                FieldType.StringFieldType.INSTANCE);
         EntityType.TRANSACTIONAL_ID.verifyTypeMatches("transactionalIdField",
-            new FieldType.ArrayType(FieldType.StringFieldType.INSTANCE));
+                new FieldType.ArrayType(FieldType.StringFieldType.INSTANCE));
         EntityType.PRODUCER_ID.verifyTypeMatches("producerIdField",
-            FieldType.Int64FieldType.INSTANCE);
+                FieldType.Int64FieldType.INSTANCE);
         EntityType.PRODUCER_ID.verifyTypeMatches("producerIdField",
-            new FieldType.ArrayType(FieldType.Int64FieldType.INSTANCE));
+                new FieldType.ArrayType(FieldType.Int64FieldType.INSTANCE));
         EntityType.GROUP_ID.verifyTypeMatches("groupIdField",
-            FieldType.StringFieldType.INSTANCE);
+                FieldType.StringFieldType.INSTANCE);
         EntityType.GROUP_ID.verifyTypeMatches("groupIdField",
-            new FieldType.ArrayType(FieldType.StringFieldType.INSTANCE));
+                new FieldType.ArrayType(FieldType.StringFieldType.INSTANCE));
         EntityType.TOPIC_NAME.verifyTypeMatches("topicNameField",
-            FieldType.StringFieldType.INSTANCE);
+                FieldType.StringFieldType.INSTANCE);
         EntityType.TOPIC_NAME.verifyTypeMatches("topicNameField",
-            new FieldType.ArrayType(FieldType.StringFieldType.INSTANCE));
+                new FieldType.ArrayType(FieldType.StringFieldType.INSTANCE));
         EntityType.BROKER_ID.verifyTypeMatches("brokerIdField",
-            FieldType.Int32FieldType.INSTANCE);
+                FieldType.Int32FieldType.INSTANCE);
         EntityType.BROKER_ID.verifyTypeMatches("brokerIdField",
-            new FieldType.ArrayType(FieldType.Int32FieldType.INSTANCE));
+                new FieldType.ArrayType(FieldType.Int32FieldType.INSTANCE));
     }
 
     private static void expectException(Runnable r) {
@@ -69,15 +69,15 @@ public class EntityTypeTest {
     @Test
     public void testVerifyTypeMismatches() {
         expectException(() -> EntityType.TRANSACTIONAL_ID.
-            verifyTypeMatches("transactionalIdField", FieldType.Int32FieldType.INSTANCE));
+                verifyTypeMatches("transactionalIdField", FieldType.Int32FieldType.INSTANCE));
         expectException(() -> EntityType.PRODUCER_ID.
-            verifyTypeMatches("producerIdField", FieldType.StringFieldType.INSTANCE));
+                verifyTypeMatches("producerIdField", FieldType.StringFieldType.INSTANCE));
         expectException(() -> EntityType.GROUP_ID.
-            verifyTypeMatches("groupIdField", FieldType.Int8FieldType.INSTANCE));
+                verifyTypeMatches("groupIdField", FieldType.Int8FieldType.INSTANCE));
         expectException(() -> EntityType.TOPIC_NAME.
-            verifyTypeMatches("topicNameField",
-                new FieldType.ArrayType(FieldType.Int64FieldType.INSTANCE)));
+                verifyTypeMatches("topicNameField",
+                        new FieldType.ArrayType(FieldType.Int64FieldType.INSTANCE)));
         expectException(() -> EntityType.BROKER_ID.
-            verifyTypeMatches("brokerIdField", FieldType.Int64FieldType.INSTANCE));
+                verifyTypeMatches("brokerIdField", FieldType.Int64FieldType.INSTANCE));
     }
 }

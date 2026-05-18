@@ -125,7 +125,7 @@ public class ScramSaslClient implements SaslClient {
                     if (!serverFirstMessage.nonce().startsWith(clientNonce))
                         throw new SaslException("Invalid server nonce: does not start with client nonce");
                     if (serverFirstMessage.iterations() < mechanism.minIterations())
-                        throw new SaslException("Requested iterations " + serverFirstMessage.iterations() +  " is less than the minimum " + mechanism.minIterations() + " for " + mechanism);
+                        throw new SaslException("Requested iterations " + serverFirstMessage.iterations() + " is less than the minimum " + mechanism.minIterations() + " for " + mechanism);
                     PasswordCallback passwordCallback = new PasswordCallback("Password:", false);
                     try {
                         callbackHandler.handle(new Callback[]{passwordCallback});
@@ -217,11 +217,11 @@ public class ScramSaslClient implements SaslClient {
 
         @Override
         public SaslClient createSaslClient(String[] mechanisms,
-                String authorizationId,
-                String protocol,
-                String serverName,
-                Map<String, ?> props,
-                CallbackHandler cbh) throws SaslException {
+                                           String authorizationId,
+                                           String protocol,
+                                           String serverName,
+                                           Map<String, ?> props,
+                                           CallbackHandler cbh) throws SaslException {
 
             ScramMechanism mechanism = null;
             for (String mech : mechanisms) {

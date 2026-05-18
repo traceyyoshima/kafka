@@ -40,7 +40,7 @@ public interface VersionedBytesStoreSupplier extends KeyValueBytesStoreSupplier 
      * This value is used to set compaction configs on store changelog topics (if relevant).
      *
      * @return history retention, i.e., length of time that old record versions are available for
-     *         query from a versioned store
+     * query from a versioned store
      */
     long historyRetentionMs();
 }

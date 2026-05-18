@@ -30,6 +30,7 @@ public class CompressionRatioEstimatorTest {
         class EstimationsObservedRatios {
             final float currentEstimation;
             final float observedRatio;
+
             EstimationsObservedRatios(float currentEstimation, float observedRatio) {
                 this.currentEstimation = currentEstimation;
                 this.observedRatio = observedRatio;
@@ -41,10 +42,10 @@ public class CompressionRatioEstimatorTest {
         // 0.005. There are four cases,and updatedCompressionRatio shouldn't smaller than observedRatio in all of cases.
         // Refer to non test code for more details.
         List<EstimationsObservedRatios> estimationsObservedRatios = Arrays.asList(
-            new EstimationsObservedRatios(0.8f, 0.84f),
-            new EstimationsObservedRatios(0.6f, 0.7f),
-            new EstimationsObservedRatios(0.6f, 0.4f),
-            new EstimationsObservedRatios(0.004f, 0.001f));
+                new EstimationsObservedRatios(0.8f, 0.84f),
+                new EstimationsObservedRatios(0.6f, 0.7f),
+                new EstimationsObservedRatios(0.6f, 0.4f),
+                new EstimationsObservedRatios(0.004f, 0.001f));
         for (EstimationsObservedRatios estimationsObservedRatio : estimationsObservedRatios) {
             String topic = "tp";
             CompressionRatioEstimator.setEstimation(topic, CompressionType.ZSTD, estimationsObservedRatio.currentEstimation);

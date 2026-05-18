@@ -37,14 +37,13 @@ public class StreamsAssignorBenchmarkUtils {
     /**
      * Creates a GroupSpec from the given StreamsGroupMembers.
      *
-     * @param members               The StreamsGroupMembers.
-     * @param assignmentConfigs     The assignment configs.
-     *
+     * @param members           The StreamsGroupMembers.
+     * @param assignmentConfigs The assignment configs.
      * @return The new GroupSpec.
      */
     public static GroupSpec createGroupSpec(
-        Map<String, StreamsGroupMember> members,
-        Map<String, String> assignmentConfigs
+            Map<String, StreamsGroupMember> members,
+            Map<String, String> assignmentConfigs
     ) {
         Map<String, AssignmentMemberSpec> memberSpecs = new HashMap<>();
 
@@ -54,35 +53,34 @@ public class StreamsAssignorBenchmarkUtils {
             StreamsGroupMember member = memberEntry.getValue();
 
             memberSpecs.put(memberId, new AssignmentMemberSpec(
-                member.instanceId(),
-                member.rackId(),
-                Map.of(),
-                Map.of(),
-                Map.of(),
-                member.processId(),
-                member.clientTags(),
-                Map.of(),
-                Map.of()
+                    member.instanceId(),
+                    member.rackId(),
+                    Map.of(),
+                    Map.of(),
+                    Map.of(),
+                    member.processId(),
+                    member.clientTags(),
+                    Map.of(),
+                    Map.of()
             ));
         }
 
         return new GroupSpecImpl(
-            memberSpecs,
-            assignmentConfigs
+                memberSpecs,
+                assignmentConfigs
         );
     }
 
     /**
      * Creates a StreamsGroupMembers map where all members have the same topic subscriptions.
      *
-     * @param memberCount           The number of members in the group.
-     * @param membersPerProcess     The number of members per process.
-     *
+     * @param memberCount       The number of members in the group.
+     * @param membersPerProcess The number of members per process.
      * @return The new StreamsGroupMembers map.
      */
     public static Map<String, StreamsGroupMember> createStreamsMembers(
-        int memberCount,
-        int membersPerProcess
+            int memberCount,
+            int membersPerProcess
     ) {
         Map<String, StreamsGroupMember> members = new HashMap<>();
 
@@ -102,29 +100,29 @@ public class StreamsAssignorBenchmarkUtils {
      * Creates a subtopology map with the given number of partitions per topic and a list of topic names.
      * For simplicity, each subtopology is associated with a single topic, and every second subtopology
      * is stateful (i.e., has a changelog topic).
-     *
+     * <p>
      * The number of topics a subtopology is associated with is irrelevant, and
      * so is the number of changelog topics.
      *
      * @param partitionsPerTopic The number of partitions per topic, implies the number of tasks for the subtopology.
-     * @param allTopicNames All topics names.
+     * @param allTopicNames      All topics names.
      * @return A sorted map of subtopology IDs to ConfiguredSubtopology objects.
      */
     public static SortedMap<String, ConfiguredSubtopology> createSubtopologyMap(
-        int partitionsPerTopic,
-        List<String> allTopicNames
+            int partitionsPerTopic,
+            List<String> allTopicNames
     ) {
         TreeMap<String, ConfiguredSubtopology> subtopologyMap = new TreeMap<>();
         for (int i = 0; i < allTopicNames.size(); i++) {
             String topicName = allTopicNames.get(i);
             if (i % 2 == 0) {
                 subtopologyMap.put(topicName + "_subtopology", new ConfiguredSubtopology(partitionsPerTopic, Set.of(topicName), Map.of(), Set.of(), Map.of(
-                    topicName + "_changelog", new ConfiguredInternalTopic(
-                        topicName + "_changelog",
-                        partitionsPerTopic,
-                        Optional.empty(),
-                        Map.of()
-                    )
+                        topicName + "_changelog", new ConfiguredInternalTopic(
+                                topicName + "_changelog",
+                                partitionsPerTopic,
+                                Optional.empty(),
+                                Map.of()
+                        )
                 )));
             } else {
                 subtopologyMap.put(topicName + "_subtopology", new ConfiguredSubtopology(partitionsPerTopic, Set.of(topicName), Map.of(), Set.of(), Map.of()));

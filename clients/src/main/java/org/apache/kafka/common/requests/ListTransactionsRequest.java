@@ -40,7 +40,7 @@ public class ListTransactionsRequest extends AbstractRequest {
             }
             if (data.transactionalIdPattern() != null && version < 2) {
                 throw new UnsupportedVersionException("Transactional ID pattern filter can be set only when using API version 2 or higher." +
-                    " If client is connected to an older broker, do not specify the pattern filter.");
+                        " If client is connected to an older broker, do not specify the pattern filter.");
             }
             return new ListTransactionsRequest(data, version);
         }
@@ -66,14 +66,14 @@ public class ListTransactionsRequest extends AbstractRequest {
     public ListTransactionsResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         Errors error = Errors.forException(e);
         ListTransactionsResponseData response = new ListTransactionsResponseData()
-            .setErrorCode(error.code())
-            .setThrottleTimeMs(throttleTimeMs);
+                .setErrorCode(error.code())
+                .setThrottleTimeMs(throttleTimeMs);
         return new ListTransactionsResponse(response);
     }
 
     public static ListTransactionsRequest parse(Readable readable, short version) {
         return new ListTransactionsRequest(new ListTransactionsRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     @Override

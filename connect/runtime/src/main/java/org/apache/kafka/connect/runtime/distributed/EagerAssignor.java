@@ -163,7 +163,7 @@ public class EagerAssignor implements ConnectAssignor {
         }
 
         log.debug("Max config offset root: {}, local snapshot config offsets root: {}",
-                  maxOffset, coordinator.configSnapshot().offset());
+                maxOffset, coordinator.configSnapshot().offset());
         return maxOffset;
     }
 

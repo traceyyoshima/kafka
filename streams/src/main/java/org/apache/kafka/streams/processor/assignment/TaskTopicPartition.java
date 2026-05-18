@@ -37,21 +37,21 @@ public interface TaskTopicPartition {
     /**
      *
      * @return whether the underlying topic is a source topic or not. Source changelog topics
-     *         are both source topics and changelog topics.
+     * are both source topics and changelog topics.
      */
     boolean isSource();
 
     /**
      *
      * @return whether the underlying topic is a changelog topic or not. Source changelog topics
-     *         are both source topics and changelog topics.
+     * are both source topics and changelog topics.
      */
     boolean isChangelog();
 
     /**
      *
      * @return the broker rack ids on which this topic partition resides. If no information could
-     *         be found, this will return an empty optional value.
+     * be found, this will return an empty optional value.
      */
     Optional<Set<String>> rackIds();
 }

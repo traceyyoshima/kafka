@@ -100,7 +100,7 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .withRequiredArg()
                 .describedAs("consumer_prop")
                 .ofType(String.class);
-        @Deprecated(since = "4.2", forRemoval = true) 
+        @Deprecated(since = "4.2", forRemoval = true)
         OptionSpec<String> consumerConfigOpt = parser.accepts("consumer.config", "(DEPRECATED) Consumer config properties file. Note that " + commandPropertyOpt + " takes precedence over this config. " +
                         "This option will be removed in a future version. Use --command-config instead.")
                 .withRequiredArg()
@@ -117,42 +117,42 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
                 .defaultsTo(DefaultMessageFormatter.class.getName());
         messageFormatterArgOptDeprecated = parser.accepts("property",
                         "(DEPRECATED) The properties to initialize the message formatter. Default properties include: \n" +
-                            " print.timestamp=true|false\n" +
-                            " print.key=true|false\n" +
-                            " print.offset=true|false\n" +
-                            " print.epoch=true|false\n" +
-                            " print.partition=true|false\n" +
-                            " print.headers=true|false\n" +
-                            " print.value=true|false\n" +
-                            " key.separator=<key.separator>\n" +
-                            " line.separator=<line.separator>\n" +
-                            " headers.separator=<headers.separator>\n" +
-                            " null.literal=<null.literal>\n" +
-                            " key.deserializer=<key.deserializer>\n" +
-                            " value.deserializer=<value.deserializer>\n" +
-                            " header.deserializer=<header.deserializer>\n" +
-                            "\nUsers can also pass in customized properties for their formatter; more specifically, users can pass in properties keyed with 'key.deserializer.', 'value.deserializer.' and 'headers.deserializer.' prefixes to configure their deserializers. " +
+                                " print.timestamp=true|false\n" +
+                                " print.key=true|false\n" +
+                                " print.offset=true|false\n" +
+                                " print.epoch=true|false\n" +
+                                " print.partition=true|false\n" +
+                                " print.headers=true|false\n" +
+                                " print.value=true|false\n" +
+                                " key.separator=<key.separator>\n" +
+                                " line.separator=<line.separator>\n" +
+                                " headers.separator=<headers.separator>\n" +
+                                " null.literal=<null.literal>\n" +
+                                " key.deserializer=<key.deserializer>\n" +
+                                " value.deserializer=<value.deserializer>\n" +
+                                " header.deserializer=<header.deserializer>\n" +
+                                "\nUsers can also pass in customized properties for their formatter; more specifically, users can pass in properties keyed with 'key.deserializer.', 'value.deserializer.' and 'headers.deserializer.' prefixes to configure their deserializers. " +
                                 "\nThis option will be removed in a future version. Use --formatter-property instead.")
                 .withRequiredArg()
                 .describedAs("prop")
                 .ofType(String.class);
         messageFormatterArgOpt = parser.accepts("formatter-property",
                         "The properties to initialize the message formatter. Default properties include: \n" +
-                            " print.timestamp=true|false\n" +
-                            " print.key=true|false\n" +
-                            " print.offset=true|false\n" +
-                            " print.epoch=true|false\n" +
-                            " print.partition=true|false\n" +
-                            " print.headers=true|false\n" +
-                            " print.value=true|false\n" +
-                            " key.separator=<key.separator>\n" +
-                            " line.separator=<line.separator>\n" +
-                            " headers.separator=<headers.separator>\n" +
-                            " null.literal=<null.literal>\n" +
-                            " key.deserializer=<key.deserializer>\n" +
-                            " value.deserializer=<value.deserializer>\n" +
-                            " header.deserializer=<header.deserializer>\n" +
-                            "\nUsers can also pass in customized properties for their formatter; more specifically, users can pass in properties keyed with 'key.deserializer.', 'value.deserializer.' and 'headers.deserializer.' prefixes to configure their deserializers.")
+                                " print.timestamp=true|false\n" +
+                                " print.key=true|false\n" +
+                                " print.offset=true|false\n" +
+                                " print.epoch=true|false\n" +
+                                " print.partition=true|false\n" +
+                                " print.headers=true|false\n" +
+                                " print.value=true|false\n" +
+                                " key.separator=<key.separator>\n" +
+                                " line.separator=<line.separator>\n" +
+                                " headers.separator=<headers.separator>\n" +
+                                " null.literal=<null.literal>\n" +
+                                " key.deserializer=<key.deserializer>\n" +
+                                " value.deserializer=<value.deserializer>\n" +
+                                " header.deserializer=<header.deserializer>\n" +
+                                "\nUsers can also pass in customized properties for their formatter; more specifically, users can pass in properties keyed with 'key.deserializer.', 'value.deserializer.' and 'headers.deserializer.' prefixes to configure their deserializers.")
                 .withRequiredArg()
                 .describedAs("prop")
                 .ofType(String.class);
@@ -303,9 +303,9 @@ public final class ConsoleConsumerOptions extends CommandDefaultOptions {
     /**
      * Used to retrieve the correct value for the consumer parameter 'auto.offset.reset'.
      * Order of priority is:
-     *   1. Explicitly set parameter via --consumer.property command line parameter
-     *   2. Explicit --from-beginning given -> 'earliest'
-     *   3. Default value of 'latest'
+     * 1. Explicitly set parameter via --consumer.property command line parameter
+     * 2. Explicit --from-beginning given -> 'earliest'
+     * 3. Default value of 'latest'
      * In case both --from-beginning and an explicit value are specified an error is thrown if these
      * are conflicting.
      */

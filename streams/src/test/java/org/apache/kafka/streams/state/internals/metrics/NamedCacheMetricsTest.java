@@ -55,15 +55,15 @@ public class NamedCacheMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = NamedCacheMetrics.hitRatioSensor(streamsMetrics, THREAD_ID, TASK_ID, STORE_NAME);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMinAndMaxToSensor(
-                    expectedSensor,
-                    StreamsMetricsImpl.CACHE_LEVEL_GROUP,
-                    tagMap,
-                    hitRatio,
-                    HIT_RATIO_AVG_DESCRIPTION,
-                    HIT_RATIO_MIN_DESCRIPTION,
-                    HIT_RATIO_MAX_DESCRIPTION
-                )
+                    () -> StreamsMetricsImpl.addAvgAndMinAndMaxToSensor(
+                            expectedSensor,
+                            StreamsMetricsImpl.CACHE_LEVEL_GROUP,
+                            tagMap,
+                            hitRatio,
+                            HIT_RATIO_AVG_DESCRIPTION,
+                            HIT_RATIO_MIN_DESCRIPTION,
+                            HIT_RATIO_MAX_DESCRIPTION
+                    )
             );
             assertThat(sensor, is(expectedSensor));
         }

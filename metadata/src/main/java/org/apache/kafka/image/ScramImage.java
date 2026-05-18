@@ -113,7 +113,7 @@ public record ScramImage(Map<ScramMechanism, Map<String, ScramCredentialData>> m
                     Map<String, ScramCredentialData> credentialDataSet = mechanismsEntry.getValue();
                     if (credentialDataSet.containsKey(user.getKey())) {
                         credentialInfos.add(new CredentialInfo().setMechanism(mechanismsEntry.getKey().type())
-                            .setIterations(credentialDataSet.get(user.getKey()).iterations()));
+                                .setIterations(credentialDataSet.get(user.getKey()).iterations()));
                         dataFound = true;
                     }
                 }
@@ -121,11 +121,11 @@ public record ScramImage(Map<ScramMechanism, Map<String, ScramCredentialData>> m
                     result.setCredentialInfos(credentialInfos);
                 } else {
                     result.setErrorCode(Errors.RESOURCE_NOT_FOUND.code())
-                        .setErrorMessage(DESCRIBE_USER_THAT_DOES_NOT_EXIST + user.getKey());
+                            .setErrorMessage(DESCRIBE_USER_THAT_DOES_NOT_EXIST + user.getKey());
                 }
             } else {
                 result.setErrorCode(Errors.DUPLICATE_RESOURCE.code())
-                    .setErrorMessage(DESCRIBE_DUPLICATE_USER + user.getKey());
+                        .setErrorMessage(DESCRIBE_DUPLICATE_USER + user.getKey());
             }
             retval.results().add(result);
         }

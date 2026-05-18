@@ -95,17 +95,17 @@ public class KTableFilterTest {
         final List<MockApiProcessor<String, Integer, Void, Void>> processors = supplier.capturedProcessors(2);
 
         processors.get(0).checkAndClearProcessResult(new KeyValueTimestamp<>("A", null, 10),
-            new KeyValueTimestamp<>("B", 2, 5),
-            new KeyValueTimestamp<>("C", null, 8),
-            new KeyValueTimestamp<>("D", 4, 14),
-            new KeyValueTimestamp<>("A", null, 18),
-            new KeyValueTimestamp<>("B", null, 15));
+                new KeyValueTimestamp<>("B", 2, 5),
+                new KeyValueTimestamp<>("C", null, 8),
+                new KeyValueTimestamp<>("D", 4, 14),
+                new KeyValueTimestamp<>("A", null, 18),
+                new KeyValueTimestamp<>("B", null, 15));
         processors.get(1).checkAndClearProcessResult(new KeyValueTimestamp<>("A", 1, 10),
-            new KeyValueTimestamp<>("B", null, 5),
-            new KeyValueTimestamp<>("C", 3, 8),
-            new KeyValueTimestamp<>("D", null, 14),
-            new KeyValueTimestamp<>("A", null, 18),
-            new KeyValueTimestamp<>("B", null, 15));
+                new KeyValueTimestamp<>("B", null, 5),
+                new KeyValueTimestamp<>("C", 3, 8),
+                new KeyValueTimestamp<>("D", null, 14),
+                new KeyValueTimestamp<>("A", null, 18),
+                new KeyValueTimestamp<>("B", null, 15));
     }
 
     @ParameterizedTest
@@ -222,13 +222,13 @@ public class KTableFilterTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, Integer, Integer> table1 =
-            (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
+                (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
         final KTableImpl<String, Integer, Integer> table2 =
-            (KTableImpl<String, Integer, Integer>) table1.filter(predicate, Materialized.as("store2"));
+                (KTableImpl<String, Integer, Integer>) table1.filter(predicate, Materialized.as("store2"));
         final KTableImpl<String, Integer, Integer> table3 =
-            (KTableImpl<String, Integer, Integer>) table1.filterNot(predicate, Materialized.as("store3"));
+                (KTableImpl<String, Integer, Integer>) table1.filterNot(predicate, Materialized.as("store3"));
         final KTableImpl<String, Integer, Integer> table4 =
-            (KTableImpl<String, Integer, Integer>) table1.filterNot(predicate);
+                (KTableImpl<String, Integer, Integer>) table1.filterNot(predicate);
 
         assertNull(table1.queryableStoreName());
         assertEquals("store2", table2.queryableStoreName());
@@ -258,19 +258,19 @@ public class KTableFilterTest {
             final List<MockApiProcessor<String, Integer, Void, Void>> processors = supplier.capturedProcessors(2);
 
             processors.get(0).checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(1, null), 5),
-                new KeyValueTimestamp<>("B", new Change<>(1, null), 10),
-                new KeyValueTimestamp<>("C", new Change<>(1, null), 15));
+                    new KeyValueTimestamp<>("B", new Change<>(1, null), 10),
+                    new KeyValueTimestamp<>("C", new Change<>(1, null), 15));
             processors.get(1).checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(null, null), 5),
-                new KeyValueTimestamp<>("B", new Change<>(null, null), 10),
-                new KeyValueTimestamp<>("C", new Change<>(null, null), 15));
+                    new KeyValueTimestamp<>("B", new Change<>(null, null), 10),
+                    new KeyValueTimestamp<>("C", new Change<>(null, null), 15));
 
             inputTopic.pipeInput("A", 2, 15L);
             inputTopic.pipeInput("B", 2, 8L);
 
             processors.get(0).checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(2, null), 15),
-                new KeyValueTimestamp<>("B", new Change<>(2, null), 8));
+                    new KeyValueTimestamp<>("B", new Change<>(2, null), 8));
             processors.get(1).checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(2, null), 15),
-                new KeyValueTimestamp<>("B", new Change<>(2, null), 8));
+                    new KeyValueTimestamp<>("B", new Change<>(2, null), 8));
 
             inputTopic.pipeInput("A", 3, 20L);
 
@@ -280,9 +280,9 @@ public class KTableFilterTest {
             inputTopic.pipeInput("B", null, 20L);
 
             processors.get(0).checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(null, null), 10),
-                new KeyValueTimestamp<>("B", new Change<>(null, null), 20));
+                    new KeyValueTimestamp<>("B", new Change<>(null, null), 20));
             processors.get(1).checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(null, null), 10),
-                new KeyValueTimestamp<>("B", new Change<>(null, null), 20));
+                    new KeyValueTimestamp<>("B", new Change<>(null, null), 20));
         }
     }
 
@@ -295,7 +295,7 @@ public class KTableFilterTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, Integer, Integer> table1 =
-            (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
+                (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
         final KTableImpl<String, Integer, Integer> table2 = (KTableImpl<String, Integer, Integer>) table1.filter(predicate);
 
         doTestNotSendingOldValue(builder, table1, table2, topic1);
@@ -309,9 +309,9 @@ public class KTableFilterTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, Integer, Integer> table1 =
-            (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
+                (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
         final KTableImpl<String, Integer, Integer> table2 =
-            (KTableImpl<String, Integer, Integer>) table1.filter(predicate, Materialized.as("store2"));
+                (KTableImpl<String, Integer, Integer>) table1.filter(predicate, Materialized.as("store2"));
 
         doTestNotSendingOldValue(builder, table1, table2, topic1);
     }
@@ -324,7 +324,7 @@ public class KTableFilterTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, Integer, Integer> table1 =
-            (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
+                (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
         final KTableImpl<String, Integer, Integer> table2 = (KTableImpl<String, Integer, Integer>) table1.filter(predicate);
 
         table2.enableSendingOldValues(false);
@@ -357,9 +357,9 @@ public class KTableFilterTest {
             final MockApiProcessor<String, Integer, Void, Void> table2Output = processors.get(1);
 
             table1Output.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(1, null), 5),
-                new KeyValueTimestamp<>("B", new Change<>(1, null), 10),
-                new KeyValueTimestamp<>("C", new Change<>(1, null), 15)
+                    new KeyValueTimestamp<>("A", new Change<>(1, null), 5),
+                    new KeyValueTimestamp<>("B", new Change<>(1, null), 10),
+                    new KeyValueTimestamp<>("C", new Change<>(1, null), 15)
             );
             table2Output.checkEmptyAndClearProcessResult();
 
@@ -367,32 +367,32 @@ public class KTableFilterTest {
             inputTopic.pipeInput("B", 2, 8L);
 
             table1Output.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(2, parentSendOldVals ? 1 : null), 15),
-                new KeyValueTimestamp<>("B", new Change<>(2, parentSendOldVals ? 1 : null), 8)
+                    new KeyValueTimestamp<>("A", new Change<>(2, parentSendOldVals ? 1 : null), 15),
+                    new KeyValueTimestamp<>("B", new Change<>(2, parentSendOldVals ? 1 : null), 8)
             );
             table2Output.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(2, null), 15),
-                new KeyValueTimestamp<>("B", new Change<>(2, null), 8)
+                    new KeyValueTimestamp<>("A", new Change<>(2, null), 15),
+                    new KeyValueTimestamp<>("B", new Change<>(2, null), 8)
             );
 
             inputTopic.pipeInput("A", 3, 20L);
 
             table1Output.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(3, parentSendOldVals ? 2 : null), 20)
+                    new KeyValueTimestamp<>("A", new Change<>(3, parentSendOldVals ? 2 : null), 20)
             );
             table2Output.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(null, 2), 20)
+                    new KeyValueTimestamp<>("A", new Change<>(null, 2), 20)
             );
 
             inputTopic.pipeInput("A", null, 10L);
             inputTopic.pipeInput("B", null, 20L);
 
             table1Output.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(null, parentSendOldVals ? 3 : null), 10),
-                new KeyValueTimestamp<>("B", new Change<>(null, parentSendOldVals ? 2 : null), 20)
+                    new KeyValueTimestamp<>("A", new Change<>(null, parentSendOldVals ? 3 : null), 10),
+                    new KeyValueTimestamp<>("B", new Change<>(null, parentSendOldVals ? 2 : null), 20)
             );
             table2Output.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("B", new Change<>(null, 2), 20)
+                    new KeyValueTimestamp<>("B", new Change<>(null, 2), 20)
             );
         }
     }
@@ -405,9 +405,9 @@ public class KTableFilterTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, Integer, Integer> table1 =
-            (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
+                (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
         final KTableImpl<String, Integer, Integer> table2 =
-            (KTableImpl<String, Integer, Integer>) table1.filter(predicate);
+                (KTableImpl<String, Integer, Integer>) table1.filter(predicate);
 
         table2.enableSendingOldValues(true);
 
@@ -425,9 +425,9 @@ public class KTableFilterTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, Integer, Integer> table1 =
-            (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
+                (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed);
         final KTableImpl<String, Integer, Integer> table2 =
-            (KTableImpl<String, Integer, Integer>) table1.filter(predicate, Materialized.as("store2"));
+                (KTableImpl<String, Integer, Integer>) table1.filter(predicate, Materialized.as("store2"));
 
         table2.enableSendingOldValues(true);
 
@@ -445,9 +445,9 @@ public class KTableFilterTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, Integer, Integer> table1 =
-            (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed, Materialized.as("store2"));
+                (KTableImpl<String, Integer, Integer>) builder.table(topic1, consumed, Materialized.as("store2"));
         final KTableImpl<String, Integer, Integer> table2 =
-            (KTableImpl<String, Integer, Integer>) table1.filter(predicate);
+                (KTableImpl<String, Integer, Integer>) table1.filter(predicate);
 
         table2.enableSendingOldValues(false);
 
@@ -479,14 +479,14 @@ public class KTableFilterTest {
 
         final List<MockApiProcessor<String, String, Void, Void>> processors = supplier.capturedProcessors(2);
         processors.get(0).checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>("reject", null), 5),
-            new KeyValueTimestamp<>("B", new Change<>("reject", null), 10),
-            new KeyValueTimestamp<>("C", new Change<>("reject", null), 20));
+                new KeyValueTimestamp<>("B", new Change<>("reject", null), 10),
+                new KeyValueTimestamp<>("C", new Change<>("reject", null), 20));
         if (shouldSkip) {
             processors.get(1).checkEmptyAndClearProcessResult();
         } else {
             processors.get(1).checkAndClearProcessResult(new KeyValueTimestamp<>("A", new Change<>(null, null), 5),
-                new KeyValueTimestamp<>("B", new Change<>(null, null), 10),
-                new KeyValueTimestamp<>("C", new Change<>(null, null), 20));
+                    new KeyValueTimestamp<>("B", new Change<>(null, null), 10),
+                    new KeyValueTimestamp<>("C", new Change<>(null, null), 20));
         }
     }
 
@@ -501,11 +501,11 @@ public class KTableFilterTest {
 
         final Consumed<String, String> consumed = Consumed.with(Serdes.String(), Serdes.String());
         final KTableImpl<String, String, String> table1 =
-            (KTableImpl<String, String, String>) builder.table(topic1, consumed);
+                (KTableImpl<String, String, String>) builder.table(topic1, consumed);
         final KTableImpl<String, String, String> table2 =
-            (KTableImpl<String, String, String>) table1.filter((key, value) -> value.equalsIgnoreCase("accept"));
+                (KTableImpl<String, String, String>) table1.filter((key, value) -> value.equalsIgnoreCase("accept"));
         table2.groupBy(MockMapper.noOpKeyValueMapper())
-            .reduce(MockReducer.STRING_ADDER, MockReducer.STRING_REMOVER);
+                .reduce(MockReducer.STRING_ADDER, MockReducer.STRING_REMOVER);
 
         doTestSkipNullOnMaterialization(builder, table1, table2, topic1, true);
     }
@@ -521,11 +521,11 @@ public class KTableFilterTest {
 
         final Consumed<String, String> consumed = Consumed.with(Serdes.String(), Serdes.String());
         final KTableImpl<String, String, String> table1 =
-            (KTableImpl<String, String, String>) builder.table(topic1, consumed);
+                (KTableImpl<String, String, String>) builder.table(topic1, consumed);
         final KTableImpl<String, String, String> table2 =
-            (KTableImpl<String, String, String>) table1.filter((key, value) -> value.equalsIgnoreCase("accept"), Materialized.as("store2"));
+                (KTableImpl<String, String, String>) table1.filter((key, value) -> value.equalsIgnoreCase("accept"), Materialized.as("store2"));
         table2.groupBy(MockMapper.noOpKeyValueMapper())
-            .reduce(MockReducer.STRING_ADDER, MockReducer.STRING_REMOVER, Materialized.as("mock-result"));
+                .reduce(MockReducer.STRING_ADDER, MockReducer.STRING_REMOVER, Materialized.as("mock-result"));
 
         doTestSkipNullOnMaterialization(builder, table1, table2, topic1, true);
     }
@@ -540,15 +540,15 @@ public class KTableFilterTest {
 
         final String topic1 = "topic1";
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> versionedMaterialize =
-            Materialized.as(Stores.persistentVersionedKeyValueStore("versioned", Duration.ofMinutes(5)));
+                Materialized.as(Stores.persistentVersionedKeyValueStore("versioned", Duration.ofMinutes(5)));
         final Consumed<String, String> consumed = Consumed.with(Serdes.String(), Serdes.String());
 
         final KTableImpl<String, String, String> table1 =
-            (KTableImpl<String, String, String>) builder.table(topic1, consumed, versionedMaterialize);
+                (KTableImpl<String, String, String>) builder.table(topic1, consumed, versionedMaterialize);
         final KTableImpl<String, String, String> table2 =
-            (KTableImpl<String, String, String>) table1.filter((key, value) -> value.equalsIgnoreCase("accept"));
+                (KTableImpl<String, String, String>) table1.filter((key, value) -> value.equalsIgnoreCase("accept"));
         table2.groupBy(MockMapper.noOpKeyValueMapper())
-            .reduce(MockReducer.STRING_ADDER, MockReducer.STRING_REMOVER);
+                .reduce(MockReducer.STRING_ADDER, MockReducer.STRING_REMOVER);
 
         doTestSkipNullOnMaterialization(builder, table1, table2, topic1, false);
     }
@@ -564,15 +564,15 @@ public class KTableFilterTest {
 
         final String topic1 = "topic1";
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> versionedMaterialize =
-            Materialized.as(Stores.persistentVersionedKeyValueStore("versioned", Duration.ofMinutes(5)));
+                Materialized.as(Stores.persistentVersionedKeyValueStore("versioned", Duration.ofMinutes(5)));
         final Consumed<String, String> consumed = Consumed.with(Serdes.String(), Serdes.String());
 
         final KTableImpl<String, String, String> table1 =
-            (KTableImpl<String, String, String>) builder.table(topic1, consumed, Materialized.as("store"));
+                (KTableImpl<String, String, String>) builder.table(topic1, consumed, Materialized.as("store"));
         final KTableImpl<String, String, String> table2 =
-            (KTableImpl<String, String, String>) table1.filter((key, value) -> value.equalsIgnoreCase("accept"), versionedMaterialize);
+                (KTableImpl<String, String, String>) table1.filter((key, value) -> value.equalsIgnoreCase("accept"), versionedMaterialize);
         table2.groupBy(MockMapper.noOpKeyValueMapper())
-            .reduce(MockReducer.STRING_ADDER, MockReducer.STRING_REMOVER);
+                .reduce(MockReducer.STRING_ADDER, MockReducer.STRING_REMOVER);
 
         doTestSkipNullOnMaterialization(builder, table1, table2, topic1, true);
     }
@@ -584,10 +584,10 @@ public class KTableFilterTest {
         final Predicate<Number, Object> numberKeyPredicate = (key, value) -> false;
 
         new StreamsBuilder()
-            .<Integer, String>table("empty")
-            .filter(numberKeyPredicate)
-            .filterNot(numberKeyPredicate)
-            .toStream()
-            .to("nirvana");
+                .<Integer, String>table("empty")
+                .filter(numberKeyPredicate)
+                .filterNot(numberKeyPredicate)
+                .toStream()
+                .to("nirvana");
     }
 }

@@ -64,13 +64,13 @@ public class BatchBuilder<T> {
     private boolean isOpenForAppends = true;
 
     public BatchBuilder(
-        ByteBuffer buffer,
-        RecordSerde<T> serde,
-        Compression compression,
-        long baseOffset,
-        long appendTime,
-        int leaderEpoch,
-        int maxBytes
+            ByteBuffer buffer,
+            RecordSerde<T> serde,
+            Compression compression,
+            long baseOffset,
+            long appendTime,
+            int leaderEpoch,
+            int maxBytes
     ) {
         this.initialBuffer = buffer;
         this.batchOutput = new ByteBufferOutputStream(buffer);
@@ -89,14 +89,14 @@ public class BatchBuilder<T> {
         batchOutput.position(initialPosition + batchHeaderSizeInBytes);
 
         this.recordOutput = new DataOutputStreamWritable(new DataOutputStream(
-            compression.wrapForOutput(this.batchOutput, RecordBatch.MAGIC_VALUE_V2)));
+                compression.wrapForOutput(this.batchOutput, RecordBatch.MAGIC_VALUE_V2)));
     }
 
     /**
      * Append a record to this batch. The caller must first verify there is room for the batch
      * using {@link #bytesNeeded(Collection, ObjectSerializationCache)}.
      *
-     * @param record the record to append
+     * @param record             the record to append
      * @param serializationCache serialization cache for use in {@link RecordSerde#write(Object, ObjectSerializationCache, Writable)}
      * @return the offset of the appended batch
      */
@@ -107,14 +107,14 @@ public class BatchBuilder<T> {
 
         if (nextOffset - baseOffset > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("Cannot include more than " + Integer.MAX_VALUE +
-                " records in a single batch");
+                    " records in a single batch");
         }
 
         long offset = nextOffset++;
         int recordSizeInBytes = writeRecord(
-            offset,
-            record,
-            serializationCache
+                offset,
+                record,
+                serializationCache
         );
         unflushedBytes += recordSizeInBytes;
         records.add(record);
@@ -123,19 +123,19 @@ public class BatchBuilder<T> {
 
     /**
      * Check whether the batch has enough room for all the record values.
-     *
+     * <p>
      * Returns an empty {@link OptionalInt} if the batch builder has room for this list of records.
      * Otherwise, it returns the expected number of bytes needed for a batch to contain these records.
      *
-     * @param records the records to use when checking for room
+     * @param records            the records to use when checking for room
      * @param serializationCache serialization cache for computing sizes
      * @return empty {@link OptionalInt} if there is room for the records to be appended, otherwise
-     *         returns the number of bytes needed
+     * returns the number of bytes needed
      */
     public OptionalInt bytesNeeded(Collection<T> records, ObjectSerializationCache serializationCache) {
         int bytesNeeded = bytesNeededForRecords(
-            records,
-            serializationCache
+                records,
+                serializationCache
         );
 
         if (!isOpenForAppends) {
@@ -224,6 +224,7 @@ public class BatchBuilder<T> {
 
     /**
      * Get a list of the records appended to the batch.
+     *
      * @return a list of records
      */
     public List<T> records() {
@@ -239,23 +240,23 @@ public class BatchBuilder<T> {
         int lastOffsetDelta = (int) (lastOffset() - baseOffset);
 
         DefaultRecordBatch.writeHeader(
-            buffer,
-            baseOffset,
-            lastOffsetDelta,
-            size,
-            RecordBatch.MAGIC_VALUE_V2,
-            compression.type(),
-            TimestampType.CREATE_TIME,
-            appendTime,
-            appendTime,
-            RecordBatch.NO_PRODUCER_ID,
-            RecordBatch.NO_PRODUCER_EPOCH,
-            RecordBatch.NO_SEQUENCE,
-            false,
-            false,
-            false,
-            leaderEpoch,
-            numRecords()
+                buffer,
+                baseOffset,
+                lastOffsetDelta,
+                size,
+                RecordBatch.MAGIC_VALUE_V2,
+                compression.type(),
+                TimestampType.CREATE_TIME,
+                appendTime,
+                appendTime,
+                RecordBatch.NO_PRODUCER_ID,
+                RecordBatch.NO_PRODUCER_EPOCH,
+                RecordBatch.NO_SEQUENCE,
+                false,
+                false,
+                false,
+                leaderEpoch,
+                numRecords()
         );
 
         buffer.position(lastPosition);
@@ -272,20 +273,20 @@ public class BatchBuilder<T> {
     }
 
     public int writeRecord(
-        long offset,
-        T payload,
-        ObjectSerializationCache serializationCache
+            long offset,
+            T payload,
+            ObjectSerializationCache serializationCache
     ) {
         int offsetDelta = (int) (offset - baseOffset);
         long timestampDelta = 0;
 
         int payloadSize = serde.recordSize(payload, serializationCache);
         int sizeInBytes = DefaultRecord.sizeOfBodyInBytes(
-            offsetDelta,
-            timestampDelta,
-            -1,
-            payloadSize,
-            DefaultRecord.EMPTY_HEADERS
+                offsetDelta,
+                timestampDelta,
+                -1,
+                payloadSize,
+                DefaultRecord.EMPTY_HEADERS
         );
         recordOutput.writeVarint(sizeInBytes);
 
@@ -310,35 +311,35 @@ public class BatchBuilder<T> {
 
     private int batchHeaderSizeInBytes() {
         return AbstractRecords.recordBatchHeaderSizeInBytes(
-            RecordBatch.MAGIC_VALUE_V2,
-            compression.type()
+                RecordBatch.MAGIC_VALUE_V2,
+                compression.type()
         );
     }
 
     private int bytesNeededForRecords(
-        Collection<T> records,
-        ObjectSerializationCache serializationCache
+            Collection<T> records,
+            ObjectSerializationCache serializationCache
     ) {
         long expectedNextOffset = nextOffset;
         int bytesNeeded = 0;
         for (T record : records) {
             if (expectedNextOffset - baseOffset >= Integer.MAX_VALUE) {
                 throw new IllegalArgumentException(
-                    String.format(
-                        "Adding %d records to a batch with base offset of %d and next offset of %d",
-                        records.size(),
-                        baseOffset,
-                        expectedNextOffset
-                    )
+                        String.format(
+                                "Adding %d records to a batch with base offset of %d and next offset of %d",
+                                records.size(),
+                                baseOffset,
+                                expectedNextOffset
+                        )
                 );
             }
 
             int recordSizeInBytes = DefaultRecord.sizeOfBodyInBytes(
-                (int) (expectedNextOffset  - baseOffset),
-                0,
-                -1,
-                serde.recordSize(record, serializationCache),
-                DefaultRecord.EMPTY_HEADERS
+                    (int) (expectedNextOffset - baseOffset),
+                    0,
+                    -1,
+                    serde.recordSize(record, serializationCache),
+                    DefaultRecord.EMPTY_HEADERS
             );
 
             bytesNeeded = Math.addExact(bytesNeeded, ByteUtils.sizeOfVarint(recordSizeInBytes));

@@ -68,7 +68,7 @@ public class AbstractConnectCliTest {
 
             // Verify the restricted classloader cannot load the ConfigProvider class
             assertThrows(ClassNotFoundException.class, () ->
-                restrictedClassLoader.loadClass(providerClassName));
+                    restrictedClassLoader.loadClass(providerClassName));
 
             // Config creation should fail when ConfigProvider class cannot be loaded
             assertThrows(ConfigException.class, () -> new DistributedConfig(workerProps));
@@ -78,11 +78,11 @@ public class AbstractConnectCliTest {
 
             // Mock ConnectRestServer to avoid actual server initialization
             try (MockedConstruction<ConnectRestServer> mockRestServer = mockConstruction(
-                ConnectRestServer.class,
-                (mock, context) -> {
-                    doReturn(URI.create("http://localhost:8083")).when(mock).advertisedUrl();
-                    doNothing().when(mock).initializeServer();
-                })) {
+                    ConnectRestServer.class,
+                    (mock, context) -> {
+                        doReturn(URI.create("http://localhost:8083")).when(mock).advertisedUrl();
+                        doNothing().when(mock).initializeServer();
+                    })) {
 
                 // If order is correct, createConfig succeeds and we reach createHerder which throws ExpectedException
                 assertThrows(ExpectedException.class, () -> testConnectCli.startConnect(workerProps));

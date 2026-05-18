@@ -56,7 +56,8 @@ final class StateManagerUtil {
     static final String CHECKPOINT_FILE_NAME = ".checkpoint";
     static final long OFFSET_DELTA_THRESHOLD_FOR_CHECKPOINT = 10_000L;
 
-    private StateManagerUtil() {}
+    private StateManagerUtil() {
+    }
 
     static RecordConverter converterForStore(final StateStore store) {
         // First check if the top-level store implements HeadersBytesStore or TimestampedBytesStore
@@ -121,7 +122,7 @@ final class StateManagerUtil {
 
     /**
      * @throws TaskCorruptedException if the state cannot be reused (with EOS) and needs to be reset
-     * @throws StreamsException If the store's changelog does not contain the partition
+     * @throws StreamsException       If the store's changelog does not contain the partition
      */
     static void registerStateStores(final Logger log,
                                     final String logPrefix,
@@ -166,7 +167,7 @@ final class StateManagerUtil {
         // With transactional state stores, uncommitted data is never written to the base store,
         // so wiping is only needed when stores have been marked as corrupted (e.g. InvalidOffsetException).
         final boolean wipeStateStore = !closeClean && eosEnabled
-            && (!transactionalStateStoresEnabled || stateMgr.hasCorruptedStores());
+                && (!transactionalStateStoresEnabled || stateMgr.hasCorruptedStores());
 
         final TaskId id = stateMgr.taskId();
         log.trace("Closing state manager for {} task {}", taskType, id);
@@ -197,7 +198,7 @@ final class StateManagerUtil {
             }
         } catch (final IOException e) {
             final ProcessorStateException exception = new ProcessorStateException(
-                String.format("%sFatal error while trying to close the state manager for task %s", logPrefix, id), e
+                    String.format("%sFatal error while trying to close the state manager for task %s", logPrefix, id), e
             );
             firstException.compareAndSet(null, exception);
         }
@@ -209,10 +210,10 @@ final class StateManagerUtil {
     }
 
     /**
-     *  Parse the task directory name (of the form topicGroupId_partition) and construct the TaskId with the
-     *  optional namedTopology (may be null)
+     * Parse the task directory name (of the form topicGroupId_partition) and construct the TaskId with the
+     * optional namedTopology (may be null)
      *
-     *  @throws TaskIdFormatException if the taskIdStr is not a valid {@link TaskId}
+     * @throws TaskIdFormatException if the taskIdStr is not a valid {@link TaskId}
      */
     static TaskId parseTaskDirectoryName(final String taskIdStr, final String namedTopology) {
         final int index = taskIdStr.indexOf('_');
@@ -232,7 +233,7 @@ final class StateManagerUtil {
 
     /**
      * @return The string representation of the subtopology and partition metadata, ie the task id string without
-     *         the named topology, which defines the innermost task directory name of this task's state
+     * the named topology, which defines the innermost task directory name of this task's state
      */
     static String toTaskDirString(final TaskId taskId) {
         return taskId.subtopology() + "_" + taskId.partition();

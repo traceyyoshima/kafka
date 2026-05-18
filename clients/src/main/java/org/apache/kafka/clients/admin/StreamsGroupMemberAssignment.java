@@ -33,9 +33,9 @@ public class StreamsGroupMemberAssignment {
     private final List<TaskIds> warmupTasks;
 
     public StreamsGroupMemberAssignment(
-        final List<TaskIds> activeTasks,
-        final List<TaskIds> standbyTasks,
-        final List<TaskIds> warmupTasks
+            final List<TaskIds> activeTasks,
+            final List<TaskIds> standbyTasks,
+            final List<TaskIds> warmupTasks
     ) {
         this.activeTasks = activeTasks;
         this.standbyTasks = standbyTasks;
@@ -73,26 +73,26 @@ public class StreamsGroupMemberAssignment {
         }
         final StreamsGroupMemberAssignment that = (StreamsGroupMemberAssignment) o;
         return Objects.equals(activeTasks, that.activeTasks)
-            && Objects.equals(standbyTasks, that.standbyTasks)
-            && Objects.equals(warmupTasks, that.warmupTasks);
+                && Objects.equals(standbyTasks, that.standbyTasks)
+                && Objects.equals(warmupTasks, that.warmupTasks);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-            activeTasks,
-            standbyTasks,
-            warmupTasks
+                activeTasks,
+                standbyTasks,
+                warmupTasks
         );
     }
 
     @Override
     public String toString() {
         return "(" +
-            "activeTasks=" + activeTasks.stream().map(TaskIds::toString).collect(Collectors.joining(",")) +
-            ", standbyTasks=" + standbyTasks.stream().map(TaskIds::toString).collect(Collectors.joining(",")) +
-            ", warmupTasks=" + warmupTasks.stream().map(TaskIds::toString).collect(Collectors.joining(",")) +
-            ')';
+                "activeTasks=" + activeTasks.stream().map(TaskIds::toString).collect(Collectors.joining(",")) +
+                ", standbyTasks=" + standbyTasks.stream().map(TaskIds::toString).collect(Collectors.joining(",")) +
+                ", warmupTasks=" + warmupTasks.stream().map(TaskIds::toString).collect(Collectors.joining(",")) +
+                ')';
     }
 
     /**
@@ -131,14 +131,14 @@ public class StreamsGroupMemberAssignment {
             }
             final TaskIds taskIds = (TaskIds) o;
             return Objects.equals(subtopologyId, taskIds.subtopologyId)
-                && Objects.equals(partitions, taskIds.partitions);
+                    && Objects.equals(partitions, taskIds.partitions);
         }
 
         @Override
         public int hashCode() {
             return Objects.hash(
-                subtopologyId,
-                partitions
+                    subtopologyId,
+                    partitions
             );
         }
 

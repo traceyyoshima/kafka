@@ -72,7 +72,7 @@ public class InMemoryLRUCacheStoreTest extends AbstractKeyValueStoreTest {
                 KeyValue.pair(3, "3"));
 
         store.putAll(kvPairs);
-        
+
 
         final List<KeyValue<Integer, String>> updatedKvPairs = Arrays.asList(KeyValue.pair(1, "ONE"),
                 KeyValue.pair(2, "TWO"),
@@ -81,7 +81,7 @@ public class InMemoryLRUCacheStoreTest extends AbstractKeyValueStoreTest {
         store.putAll(updatedKvPairs);
 
         assertThat(store.approximateNumEntries(), equalTo(3L));
-        
+
         for (final KeyValue<Integer, String> kvPair : updatedKvPairs) {
             assertThat(store.get(kvPair.key), equalTo(kvPair.value));
         }

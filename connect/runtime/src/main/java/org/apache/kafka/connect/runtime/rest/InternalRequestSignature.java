@@ -56,7 +56,7 @@ public class InternalRequestSignature {
         Mac mac;
         try {
             mac = crypto.mac(signatureAlgorithm);
-        }  catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new ConnectException(e);
         }
         byte[] requestSignature = sign(mac, key, requestBody);
@@ -69,9 +69,9 @@ public class InternalRequestSignature {
     /**
      * Extract a signature from a request.
      *
-     * @param crypto        the cryptography library used to generate {@link Mac} instances, may not be null
-     * @param requestBody   the body of the request; may not be null
-     * @param headers       the headers for the request; may be null
+     * @param crypto      the cryptography library used to generate {@link Mac} instances, may not be null
+     * @param requestBody the body of the request; may not be null
+     * @param headers     the headers for the request; may be null
      * @return the signature extracted from the request, or null if one or more request signature
      * headers was not present
      */
@@ -101,9 +101,9 @@ public class InternalRequestSignature {
         }
 
         return new InternalRequestSignature(
-            requestBody,
-            mac,
-            decodedSignature
+                requestBody,
+                mac,
+                decodedSignature
         );
     }
 
@@ -139,10 +139,10 @@ public class InternalRequestSignature {
             return false;
         InternalRequestSignature that = (InternalRequestSignature) o;
         return MessageDigest.isEqual(requestBody, that.requestBody)
-            && mac.getAlgorithm().equals(that.mac.getAlgorithm())
-            && mac.getMacLength() == that.mac.getMacLength()
-            && mac.getProvider().equals(that.mac.getProvider())
-            && MessageDigest.isEqual(requestSignature, that.requestSignature);
+                && mac.getAlgorithm().equals(that.mac.getAlgorithm())
+                && mac.getMacLength() == that.mac.getMacLength()
+                && mac.getProvider().equals(that.mac.getProvider())
+                && MessageDigest.isEqual(requestSignature, that.requestSignature);
     }
 
     @Override

@@ -22,8 +22,8 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 /**
- *  Maintain the save and retrieval of quorum state information, so far only supports
- *  read and write of election states.
+ * Maintain the save and retrieval of quorum state information, so far only supports
+ * read and write of election states.
  */
 public interface QuorumStateStore {
     /**
@@ -35,10 +35,10 @@ public interface QuorumStateStore {
 
     /**
      * Persist the updated election state.
-     *
+     * <p>
      * This must be atomic, both writing the full updated state and replacing the old state.
      *
-     * @param latest the latest election state
+     * @param latest       the latest election state
      * @param kraftVersion the finalized kraft.version
      */
     void writeElectionState(ElectionState latest, KRaftVersion kraftVersion);

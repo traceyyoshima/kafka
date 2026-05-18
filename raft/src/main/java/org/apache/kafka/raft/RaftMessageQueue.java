@@ -20,7 +20,7 @@ package org.apache.kafka.raft;
  * This class is used to serialize inbound requests or responses to outbound requests.
  * It basically just allows us to wrap a blocking queue so that we can have a mocked
  * implementation which does not depend on system time.
- *
+ * <p>
  * See {@link org.apache.kafka.raft.internals.BlockingMessageQueue}.
  */
 public interface RaftMessageQueue {
@@ -30,7 +30,7 @@ public interface RaftMessageQueue {
      *
      * @param timeoutMs timeout in milliseconds to wait for a new event
      * @return the event or null if either the timeout was reached or there was
-     *     a call to {@link #wakeup()} before any events became available
+     * a call to {@link #wakeup()} before any events became available
      */
     RaftMessage poll(long timeoutMs);
 

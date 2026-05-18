@@ -48,14 +48,10 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
     /**
      * Create a {@link Grouped} instance with the provided name used as part of the repartition topic if required.
      *
-     * @param name
-     *        the name used for a repartition topic if required
-     *
-     * @param <K> the key type
-     * @param <V> the value type
-     *
+     * @param name the name used for a repartition topic if required
+     * @param <K>  the key type
+     * @param <V>  the value type
      * @return a new {@link Grouped} configured with the name
-     *
      * @see KStream#groupByKey(Grouped)
      * @see KStream#groupBy(KeyValueMapper, Grouped)
      * @see KTable#groupBy(KeyValueMapper, Grouped)
@@ -68,14 +64,10 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
     /**
      * Create a {@link Grouped} instance with the provided keySerde. If {@code null} the default key serde from config will be used.
      *
-     * @param keySerde
-     *        the Serde used for serializing the key. If {@code null} the default key serde from config will be used
-     *
-     * @param <K> the key type
-     * @param <V> the value type
-     *
+     * @param keySerde the Serde used for serializing the key. If {@code null} the default key serde from config will be used
+     * @param <K>      the key type
+     * @param <V>      the value type
      * @return a new {@link Grouped} configured with the keySerde
-     *
      * @see KStream#groupByKey(Grouped)
      * @see KStream#groupBy(KeyValueMapper, Grouped)
      * @see KTable#groupBy(KeyValueMapper, Grouped)
@@ -88,14 +80,10 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
     /**
      * Create a {@link Grouped} instance with the provided valueSerde.  If {@code null} the default value serde from config will be used.
      *
-     * @param valueSerde
-     *        the {@link Serde} used for serializing the value. If {@code null} the default value serde from config will be used
-     *
-     * @param <K> the key type
-     * @param <V> the value type
-     *
+     * @param valueSerde the {@link Serde} used for serializing the value. If {@code null} the default value serde from config will be used
+     * @param <K>        the key type
+     * @param <V>        the value type
      * @return a new {@link Grouped} configured with the valueSerde
-     *
      * @see KStream#groupByKey(Grouped)
      * @see KStream#groupBy(KeyValueMapper, Grouped)
      * @see KTable#groupBy(KeyValueMapper, Grouped)
@@ -108,18 +96,12 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
      * Create a {@link Grouped} instance with the provided  name, keySerde, and valueSerde. If the keySerde and/or the valueSerde is
      * {@code null} the default value for the respective serde from config will be used.
      *
-     * @param name
-     *        the name used as part of the repartition topic name if required
-     * @param keySerde
-     *        the {@link Serde} used for serializing the key. If {@code null} the default key serde from config will be used
-     * @param valueSerde
-     *        the {@link Serde} used for serializing the value. If {@code null} the default value serde from config will be used
-     *
-     * @param <K> the key type
-     * @param <V> the value type
-     *
+     * @param name       the name used as part of the repartition topic name if required
+     * @param keySerde   the {@link Serde} used for serializing the key. If {@code null} the default key serde from config will be used
+     * @param valueSerde the {@link Serde} used for serializing the value. If {@code null} the default value serde from config will be used
+     * @param <K>        the key type
+     * @param <V>        the value type
      * @return a new {@link Grouped} configured with the name, keySerde, and valueSerde
-     *
      * @see KStream#groupByKey(Grouped)
      * @see KStream#groupBy(KeyValueMapper, Grouped)
      * @see KTable#groupBy(KeyValueMapper, Grouped)
@@ -135,16 +117,11 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
      * Create a {@link Grouped} instance with the provided keySerde and valueSerde.  If the keySerde and/or the valueSerde is
      * {@code null} the default value for the respective serde from config will be used.
      *
-     * @param keySerde
-     *         the {@link Serde} used for serializing the key. If {@code null} the default key serde from config will be used
-     * @param valueSerde
-     *        the {@link Serde} used for serializing the value. If {@code null} the default value serde from config will be used
-     *
-     * @param <K> the key type
-     * @param <V> the value type
-     *
+     * @param keySerde   the {@link Serde} used for serializing the key. If {@code null} the default key serde from config will be used
+     * @param valueSerde the {@link Serde} used for serializing the value. If {@code null} the default value serde from config will be used
+     * @param <K>        the key type
+     * @param <V>        the value type
      * @return a new {@link Grouped} configured with the keySerde, and valueSerde
-     *
      * @see KStream#groupByKey(Grouped)
      * @see KStream#groupBy(KeyValueMapper, Grouped)
      * @see KTable#groupBy(KeyValueMapper, Grouped)
@@ -158,11 +135,10 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
      * Perform the grouping operation with the name for a repartition topic if required.  Note
      * that Kafka Streams does not always create repartition topics for grouping operations.
      *
-     * @param name
-     *        the name used for the processor name and as part of the repartition topic name if required
-     *
+     * @param name the name used for the processor name and as part of the repartition topic name if required
      * @return a new {@link Grouped} instance configured with the name
-     * */
+     *
+     */
     @Override
     public Grouped<K, V> withName(final String name) {
         return new Grouped<>(name, keySerde, valueSerde);
@@ -171,9 +147,7 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
     /**
      * Perform the grouping operation using the provided keySerde for serializing the key.
      *
-     * @param keySerde
-     *        {@link Serde} to use for serializing the key. If {@code null} the default key serde from config will be used
-     *
+     * @param keySerde {@link Serde} to use for serializing the key. If {@code null} the default key serde from config will be used
      * @return a new {@link Grouped} instance configured with the keySerde
      */
     public Grouped<K, V> withKeySerde(final Serde<K> keySerde) {
@@ -183,9 +157,7 @@ public class Grouped<K, V> implements NamedOperation<Grouped<K, V>> {
     /**
      * Perform the grouping operation using the provided valueSerde for serializing the value.
      *
-     * @param valueSerde
-     *        {@link Serde} to use for serializing the value. If {@code null} the default value serde from config will be used
-     *
+     * @param valueSerde {@link Serde} to use for serializing the value. If {@code null} the default value serde from config will be used
      * @return a new {@link Grouped} instance configured with the valueSerde
      */
     public Grouped<K, V> withValueSerde(final Serde<V> valueSerde) {

@@ -38,15 +38,10 @@ public interface DeserializationExceptionHandler extends Configurable {
      * However, it cannot be used to emit records via {@link ProcessorContext#forward(Object, Object)};
      * calling {@code forward()} (and some other methods) would result in a runtime exception.
      *
-     * @param context
-     *     Processor context.
-     * @param record
-     *     Record that failed deserialization.
-     * @param exception
-     *     The actual exception.
-     *
+     * @param context   Processor context.
+     * @param record    Record that failed deserialization.
+     * @param exception The actual exception.
      * @return Whether to continue or stop processing.
-     *
      * @deprecated Since 3.9. Use {@link #handle(ErrorHandlerContext, ConsumerRecord, Exception)} instead.
      */
     @Deprecated
@@ -59,15 +54,10 @@ public interface DeserializationExceptionHandler extends Configurable {
     /**
      * Inspect a record and the exception received.
      *
-     * @param context
-     *     Error handler context.
-     * @param record
-     *     Record that failed deserialization.
-     * @param exception
-     *     The actual exception.
-     *
+     * @param context   Error handler context.
+     * @param record    Record that failed deserialization.
+     * @param exception The actual exception.
      * @return Whether to continue or stop processing.
-     *
      * @deprecated Use {@link #handleError(ErrorHandlerContext, ConsumerRecord, Exception)} instead.
      */
     @Deprecated
@@ -80,26 +70,27 @@ public interface DeserializationExceptionHandler extends Configurable {
     /**
      * Inspects a record and the exception received during deserialization.
      *
-     * @param context
-     *     Error handler context.
-     * @param record
-     *     Record that failed deserialization.
-     * @param exception
-     *     The actual exception.
-     *
+     * @param context   Error handler context.
+     * @param record    Record that failed deserialization.
+     * @param exception The actual exception.
      * @return a {@link Response} object
      */
     default Response handleError(final ErrorHandlerContext context, final ConsumerRecord<byte[], byte[]> record, final Exception exception) {
         return new Response(Result.from(handle(context, record, exception)), Collections.emptyList());
     }
+
     /**
      * Enumeration that describes the response from the exception handler.
      */
     @Deprecated
     enum DeserializationHandlerResponse {
-        /** Continue processing. */
+        /**
+         * Continue processing.
+         */
         CONTINUE(0, "CONTINUE"),
-        /** Fail processing. */
+        /**
+         * Fail processing.
+         */
         FAIL(1, "FAIL");
 
         /**
@@ -122,9 +113,13 @@ public interface DeserializationExceptionHandler extends Configurable {
      * Enumeration that describes the response from the exception handler.
      */
     enum Result {
-        /** Continue processing. */
+        /**
+         * Continue processing.
+         */
         RESUME(0, "RESUME"),
-        /** Fail processing. */
+        /**
+         * Fail processing.
+         */
         FAIL(1, "FAIL");
 
         /**
@@ -178,8 +173,8 @@ public interface DeserializationExceptionHandler extends Configurable {
         /**
          * Constructs a new {@code DeserializationExceptionResponse} object.
          *
-         * @param result the result indicating whether processing should continue or fail;
-         *                                  must not be {@code null}.
+         * @param result                 the result indicating whether processing should continue or fail;
+         *                               must not be {@code null}.
          * @param deadLetterQueueRecords the list of records to be sent to the dead letter queue; may be {@code null}.
          */
         private Response(final Result result,
@@ -242,7 +237,7 @@ public interface DeserializationExceptionHandler extends Configurable {
          * </p>
          *
          * @return an unmodifiable list of {@link ProducerRecord} instances
-         *         for the dead letter queue, or an empty list if no records are available.
+         * for the dead letter queue, or an empty list if no records are available.
          */
         public List<ProducerRecord<byte[], byte[]>> deadLetterQueueRecords() {
             if (deadLetterQueueRecords == null) {

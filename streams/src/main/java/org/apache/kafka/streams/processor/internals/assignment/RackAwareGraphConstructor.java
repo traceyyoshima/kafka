@@ -33,6 +33,7 @@ import java.util.function.BiPredicate;
 
 /**
  * Construct graph for rack aware task assignor
+ *
  * @param <T> represents a KafkaStreams client and its currently-assigned tasks
  */
 public interface RackAwareGraphConstructor<T> {
@@ -45,40 +46,40 @@ public interface RackAwareGraphConstructor<T> {
     int getClientIndex(final int clientNodeId, final List<TaskId> taskIdList, final List<ProcessId> clientList, final int topicGroupIndex);
 
     Graph<Integer> constructTaskGraph(
-        final List<ProcessId> clientList,
-        final List<TaskId> taskIdList,
-        final Map<ProcessId, T> clientStates,
-        final Map<TaskId, ProcessId> taskClientMap,
-        final Map<ProcessId, Integer> originalAssignedTaskNumber,
-        final BiPredicate<T, TaskId> hasAssignedTask,
-        final CostFunction costFunction,
-        final int trafficCost,
-        final int nonOverlapCost,
-        final boolean hasReplica,
-        final boolean isStandby);
+            final List<ProcessId> clientList,
+            final List<TaskId> taskIdList,
+            final Map<ProcessId, T> clientStates,
+            final Map<TaskId, ProcessId> taskClientMap,
+            final Map<ProcessId, Integer> originalAssignedTaskNumber,
+            final BiPredicate<T, TaskId> hasAssignedTask,
+            final CostFunction costFunction,
+            final int trafficCost,
+            final int nonOverlapCost,
+            final boolean hasReplica,
+            final boolean isStandby);
 
     boolean assignTaskFromMinCostFlow(
-        final Graph<Integer> graph,
-        final List<ProcessId> clientList,
-        final List<TaskId> taskIdList,
-        final Map<ProcessId, T> clientStates,
-        final Map<ProcessId, Integer> originalAssignedTaskNumber,
-        final Map<TaskId, ProcessId> taskClientMap,
-        final BiConsumer<T, TaskId> assignTask,
-        final BiConsumer<T, TaskId> unAssignTask,
-        final BiPredicate<T, TaskId> hasAssignedTask);
+            final Graph<Integer> graph,
+            final List<ProcessId> clientList,
+            final List<TaskId> taskIdList,
+            final Map<ProcessId, T> clientStates,
+            final Map<ProcessId, Integer> originalAssignedTaskNumber,
+            final Map<TaskId, ProcessId> taskClientMap,
+            final BiConsumer<T, TaskId> assignTask,
+            final BiConsumer<T, TaskId> unAssignTask,
+            final BiPredicate<T, TaskId> hasAssignedTask);
 
     default KeyValue<Boolean, Integer> assignTaskToClient(
-        final Graph<Integer> graph,
-        final TaskId taskId,
-        final int taskNodeId,
-        final int topicGroupIndex,
-        final Map<ProcessId, T> clientStates,
-        final List<ProcessId> clientList,
-        final List<TaskId> taskIdList,
-        final Map<TaskId, ProcessId> taskClientMap,
-        final BiConsumer<T, TaskId> assignTask,
-        final BiConsumer<T, TaskId> unAssignTask
+            final Graph<Integer> graph,
+            final TaskId taskId,
+            final int taskNodeId,
+            final int topicGroupIndex,
+            final Map<ProcessId, T> clientStates,
+            final List<ProcessId> clientList,
+            final List<TaskId> taskIdList,
+            final Map<TaskId, ProcessId> taskClientMap,
+            final BiConsumer<T, TaskId> assignTask,
+            final BiConsumer<T, TaskId> unAssignTask
     ) {
         int tasksAssigned = 0;
         boolean taskMoved = false;
@@ -104,16 +105,16 @@ public interface RackAwareGraphConstructor<T> {
     }
 
     default void validateAssignedTask(
-        final List<TaskId> taskIdList,
-        final int tasksAssigned,
-        final Map<ProcessId, T> clientStates,
-        final Map<ProcessId, Integer> originalAssignedTaskNumber,
-        final BiPredicate<T, TaskId> hasAssignedTask
+            final List<TaskId> taskIdList,
+            final int tasksAssigned,
+            final Map<ProcessId, T> clientStates,
+            final Map<ProcessId, Integer> originalAssignedTaskNumber,
+            final BiPredicate<T, TaskId> hasAssignedTask
     ) {
         // Validate task assigned
         if (tasksAssigned != taskIdList.size()) {
             throw new IllegalStateException("Computed active task assignment number "
-                + tasksAssigned + " is different size " + taskIdList.size());
+                    + tasksAssigned + " is different size " + taskIdList.size());
         }
 
         // Validate original assigned task number matches
@@ -128,16 +129,16 @@ public interface RackAwareGraphConstructor<T> {
 
         if (originalAssignedTaskNumber.size() != assignedTaskNumber.size()) {
             throw new IllegalStateException("There are " + originalAssignedTaskNumber.size() + " clients have "
-                + " active tasks before assignment, but " + assignedTaskNumber.size() + " clients have"
-                + " active tasks after assignment");
+                    + " active tasks before assignment, but " + assignedTaskNumber.size() + " clients have"
+                    + " active tasks after assignment");
         }
 
         for (final Entry<ProcessId, Integer> originalCapacity : originalAssignedTaskNumber.entrySet()) {
             final int capacity = assignedTaskNumber.getOrDefault(originalCapacity.getKey(), 0);
             if (!Objects.equals(originalCapacity.getValue(), capacity)) {
                 throw new IllegalStateException("There are " + originalCapacity.getValue() + " tasks assigned to"
-                    + " client " + originalCapacity.getKey() + " before assignment, but " + capacity + " tasks "
-                    + " are assigned to it after assignment");
+                        + " client " + originalCapacity.getKey() + " before assignment, but " + capacity + " tasks "
+                        + " are assigned to it after assignment");
             }
         }
     }

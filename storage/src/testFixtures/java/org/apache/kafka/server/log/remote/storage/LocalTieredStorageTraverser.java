@@ -26,6 +26,7 @@ public interface LocalTieredStorageTraverser {
 
     /**
      * Called when a new topic-partition stored on the remote storage is discovered.
+     *
      * @param topicIdPartition The new topic-partition discovered.
      */
     void visitTopicIdPartition(TopicIdPartition topicIdPartition);

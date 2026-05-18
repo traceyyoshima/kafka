@@ -46,11 +46,11 @@ public class LogicalKeyValueSegmentsTest extends AbstractSegmentsTest<LogicalKey
     @Override
     public LogicalKeyValueSegments getSegments() {
         return new LogicalKeyValueSegments(
-            STORE_NAME,
-            DB_FILE_DIR,
-            RETENTION_PERIOD,
-            SEGMENT_INTERVAL,
-            new RocksDBMetricsRecorder(METRICS_SCOPE, STORE_NAME)
+                STORE_NAME,
+                DB_FILE_DIR,
+                RETENTION_PERIOD,
+                SEGMENT_INTERVAL,
+                new RocksDBMetricsRecorder(METRICS_SCOPE, STORE_NAME)
         );
     }
 

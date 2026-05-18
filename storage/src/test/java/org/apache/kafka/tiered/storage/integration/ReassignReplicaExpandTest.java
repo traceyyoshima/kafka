@@ -22,6 +22,7 @@ public final class ReassignReplicaExpandTest extends BaseReassignReplicaTest {
 
     /**
      * Expand the replication factor of the topic by changing the replica list from 0 to 0, 1
+     *
      * @return the replica-ids of the topic
      */
     @Override

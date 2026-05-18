@@ -113,8 +113,8 @@ public class StreamsMetadataState {
         Objects.requireNonNull(storeName, "storeName cannot be null");
         if (topologyMetadata.hasNamedTopologies()) {
             throw new IllegalArgumentException("Cannot invoke the allMetadataForStore(storeName) method when"
-                                                   + "using named topologies, please use the overload that accepts"
-                                                   + "a topologyName parameter to identify the correct store");
+                    + "using named topologies, please use the overload that accepts"
+                    + "a topologyName parameter to identify the correct store");
         }
 
         if (!isInitialized()) {
@@ -142,7 +142,7 @@ public class StreamsMetadataState {
     /**
      * Find all of the {@link StreamsMetadata}s for a given storeName in the given topology
      *
-     * @param storeName the storeName to find metadata for
+     * @param storeName    the storeName to find metadata for
      * @param topologyName the storeName to find metadata for
      * @return A collection of {@link StreamsMetadata} that have the provided storeName
      */
@@ -163,7 +163,7 @@ public class StreamsMetadataState {
         for (final StreamsMetadata metadata : allMetadata) {
             final String metadataTopologyName = ((StreamsMetadataImpl) metadata).topologyName();
             if (metadataTopologyName != null && metadataTopologyName.equals(topologyName)
-                && metadata.stateStoreNames().contains(storeName) || metadata.standbyStateStoreNames().contains(storeName)) {
+                    && metadata.stateStoreNames().contains(storeName) || metadata.standbyStateStoreNames().contains(storeName)) {
                 results.add(metadata);
             }
         }
@@ -191,7 +191,7 @@ public class StreamsMetadataState {
      * Find the {@link KeyQueryMetadata}s for a given storeName and key. This method will use the
      * {@link DefaultStreamPartitioner} to locate the store. If a custom partitioner has been used
      * please use {@link StreamsMetadataState#keyQueryMetadataForKey(String, Object, StreamPartitioner)} instead.
-     *
+     * <p>
      * Note: the key may not exist in the {@link org.apache.kafka.streams.processor.StateStore},
      * this method provides a way of finding which {@link KeyQueryMetadata} it would exist on.
      *
@@ -209,12 +209,12 @@ public class StreamsMetadataState {
         Objects.requireNonNull(keySerializer, "keySerializer can't be null");
         if (topologyMetadata.hasNamedTopologies()) {
             throw new IllegalArgumentException("Cannot invoke the KeyQueryMetadataForKey(storeName, key, keySerializer)"
-                                                   + "method when using named topologies, please use the overload that"
-                                                   + "accepts a topologyName parameter to identify the correct store");
+                    + "method when using named topologies, please use the overload that"
+                    + "accepts a topologyName parameter to identify the correct store");
         }
         return keyQueryMetadataForKey(storeName,
-                                      key,
-                                      new DefaultStreamPartitioner<>(keySerializer));
+                key,
+                new DefaultStreamPartitioner<>(keySerializer));
     }
 
     /**
@@ -226,14 +226,14 @@ public class StreamsMetadataState {
                                                                     final String topologyName) {
         Objects.requireNonNull(keySerializer, "keySerializer can't be null");
         return keyQueryMetadataForKey(storeName,
-                                      key,
-                                      new DefaultStreamPartitioner<>(keySerializer),
-                                      topologyName);
+                key,
+                new DefaultStreamPartitioner<>(keySerializer),
+                topologyName);
     }
 
     /**
      * Find the {@link KeyQueryMetadata}s for a given storeName and key
-     *
+     * <p>
      * Note: the key may not exist in the {@link StateStore},this method provides a way of finding which
      * {@link StreamsMetadata} it would exist on.
      *
@@ -252,8 +252,8 @@ public class StreamsMetadataState {
         Objects.requireNonNull(partitioner, "partitioner can't be null");
         if (topologyMetadata.hasNamedTopologies()) {
             throw new IllegalArgumentException("Cannot invoke the keyQueryMetadataForKey(storeName, key, partitioner)"
-                                                   + "method when using named topologies, please use the overload that"
-                                                   + "accepts a topologyName parameter to identify the correct store");
+                    + "method when using named topologies, please use the overload that"
+                    + "accepts a topologyName parameter to identify the correct store");
         }
 
         if (!isInitialized()) {
@@ -345,81 +345,81 @@ public class StreamsMetadataState {
         if (activePartitionHostMap.isEmpty() && standbyPartitionHostMap.isEmpty()) {
             allMetadata = Collections.emptyList();
             localMetadata.set(new StreamsMetadataImpl(
-                thisHost,
-                Collections.emptySet(),
-                Collections.emptySet(),
-                Collections.emptySet(),
-                Collections.emptySet()
+                    thisHost,
+                    Collections.emptySet(),
+                    Collections.emptySet(),
+                    Collections.emptySet(),
+                    Collections.emptySet()
             ));
             return;
         }
 
         allMetadata = topologyMetadata.hasNamedTopologies() ?
-            rebuildMetadataForNamedTopologies(activePartitionHostMap, standbyPartitionHostMap) :
-            rebuildMetadataForSingleTopology(activePartitionHostMap, standbyPartitionHostMap);
+                rebuildMetadataForNamedTopologies(activePartitionHostMap, standbyPartitionHostMap) :
+                rebuildMetadataForSingleTopology(activePartitionHostMap, standbyPartitionHostMap);
     }
 
     private List<StreamsMetadata> rebuildMetadataForNamedTopologies(final Map<HostInfo, Set<TopicPartition>> activePartitionHostMap,
                                                                     final Map<HostInfo, Set<TopicPartition>> standbyPartitionHostMap) {
         final List<StreamsMetadata> rebuiltMetadata = new ArrayList<>();
         Stream.concat(activePartitionHostMap.keySet().stream(), standbyPartitionHostMap.keySet().stream())
-            .distinct()
-            .sorted(Comparator.comparing(HostInfo::host).thenComparingInt(HostInfo::port))
-            .forEach(hostInfo -> {
-                for (final String topologyName : topologyMetadata.namedTopologiesView()) {
-                    final Map<String, List<String>> storeToSourceTopics =
-                        topologyMetadata.stateStoreNameToSourceTopicsForTopology(topologyName);
+                .distinct()
+                .sorted(Comparator.comparing(HostInfo::host).thenComparingInt(HostInfo::port))
+                .forEach(hostInfo -> {
+                    for (final String topologyName : topologyMetadata.namedTopologiesView()) {
+                        final Map<String, List<String>> storeToSourceTopics =
+                                topologyMetadata.stateStoreNameToSourceTopicsForTopology(topologyName);
 
-                    final Set<TopicPartition> activePartitionsOnHost = new HashSet<>();
-                    final Set<String> activeStoresOnHost = new HashSet<>();
-                    if (activePartitionHostMap.containsKey(hostInfo)) {
-                        // filter out partitions for topics that are not connected to this topology
-                        activePartitionsOnHost.addAll(
-                            activePartitionHostMap.get(hostInfo).stream()
-                                .filter(tp -> topologyMetadata.fullSourceTopicNamesForTopology(topologyName).contains(tp.topic()))
-                                .collect(Collectors.toSet())
+                        final Set<TopicPartition> activePartitionsOnHost = new HashSet<>();
+                        final Set<String> activeStoresOnHost = new HashSet<>();
+                        if (activePartitionHostMap.containsKey(hostInfo)) {
+                            // filter out partitions for topics that are not connected to this topology
+                            activePartitionsOnHost.addAll(
+                                    activePartitionHostMap.get(hostInfo).stream()
+                                            .filter(tp -> topologyMetadata.fullSourceTopicNamesForTopology(topologyName).contains(tp.topic()))
+                                            .collect(Collectors.toSet())
+                            );
+                            activeStoresOnHost.addAll(getStoresOnHost(storeToSourceTopics, activePartitionsOnHost));
+                        }
+
+                        final Set<TopicPartition> standbyPartitionsOnHost = new HashSet<>();
+                        final Set<String> standbyStoresOnHost = new HashSet<>();
+                        if (standbyPartitionHostMap.containsKey(hostInfo)) {
+                            standbyPartitionsOnHost.addAll(
+                                    standbyPartitionHostMap.get(hostInfo).stream()
+                                            .filter(tp -> topologyMetadata.fullSourceTopicNamesForTopology(topologyName).contains(tp.topic()))
+                                            .collect(Collectors.toSet()));
+                            standbyStoresOnHost.addAll(getStoresOnHost(storeToSourceTopics, standbyPartitionsOnHost));
+                        }
+
+                        final StreamsMetadata metadata = new StreamsMetadataImpl(
+                                hostInfo,
+                                activeStoresOnHost,
+                                activePartitionsOnHost,
+                                standbyStoresOnHost,
+                                standbyPartitionsOnHost,
+                                topologyName
                         );
-                        activeStoresOnHost.addAll(getStoresOnHost(storeToSourceTopics, activePartitionsOnHost));
+
+                        rebuiltMetadata.add(metadata);
+                        if (hostInfo.equals(thisHost)) {
+                            localMetadata.set(metadata);
+                        }
                     }
 
-                    final Set<TopicPartition> standbyPartitionsOnHost = new HashSet<>();
-                    final Set<String> standbyStoresOnHost = new HashSet<>();
-                    if (standbyPartitionHostMap.containsKey(hostInfo)) {
-                        standbyPartitionsOnHost.addAll(
-                            standbyPartitionHostMap.get(hostInfo).stream()
-                                .filter(tp -> topologyMetadata.fullSourceTopicNamesForTopology(topologyName).contains(tp.topic()))
-                                .collect(Collectors.toSet()));
-                        standbyStoresOnHost.addAll(getStoresOnHost(storeToSourceTopics, standbyPartitionsOnHost));
-                    }
+                    // Construct metadata across all topologies on this host for the `localMetadata` field
+                    final Map<String, List<String>> storeToSourceTopics = topologyMetadata.stateStoreNameToSourceTopics();
+                    final Set<TopicPartition> localActivePartitions = activePartitionHostMap.get(thisHost);
+                    final Set<TopicPartition> localStandbyPartitions = standbyPartitionHostMap.get(thisHost);
 
-                    final StreamsMetadata metadata = new StreamsMetadataImpl(
-                        hostInfo,
-                        activeStoresOnHost,
-                        activePartitionsOnHost,
-                        standbyStoresOnHost,
-                        standbyPartitionsOnHost,
-                        topologyName
+                    localMetadata.set(
+                            new StreamsMetadataImpl(thisHost,
+                                    getStoresOnHost(storeToSourceTopics, localActivePartitions),
+                                    localActivePartitions,
+                                    getStoresOnHost(storeToSourceTopics, localStandbyPartitions),
+                                    localStandbyPartitions)
                     );
-
-                    rebuiltMetadata.add(metadata);
-                    if (hostInfo.equals(thisHost)) {
-                        localMetadata.set(metadata);
-                    }
-                }
-
-                // Construct metadata across all topologies on this host for the `localMetadata` field
-                final Map<String, List<String>> storeToSourceTopics = topologyMetadata.stateStoreNameToSourceTopics();
-                final Set<TopicPartition> localActivePartitions = activePartitionHostMap.get(thisHost);
-                final Set<TopicPartition> localStandbyPartitions = standbyPartitionHostMap.get(thisHost);
-
-                localMetadata.set(
-                    new StreamsMetadataImpl(thisHost,
-                                            getStoresOnHost(storeToSourceTopics, localActivePartitions),
-                                            localActivePartitions,
-                                            getStoresOnHost(storeToSourceTopics, localStandbyPartitions),
-                                            localStandbyPartitions)
-                );
-            });
+                });
         return rebuiltMetadata;
     }
 
@@ -428,37 +428,37 @@ public class StreamsMetadataState {
         final List<StreamsMetadata> rebuiltMetadata = new ArrayList<>();
         final Map<String, List<String>> storeToSourceTopics = topologyMetadata.stateStoreNameToSourceTopics();
         Stream.concat(activePartitionHostMap.keySet().stream(), standbyPartitionHostMap.keySet().stream())
-            .distinct()
-            .sorted(Comparator.comparing(HostInfo::host).thenComparingInt(HostInfo::port))
-            .forEach(hostInfo -> {
-                final Set<TopicPartition> activePartitionsOnHost = new HashSet<>();
-                final Set<String> activeStoresOnHost = new HashSet<>();
-                if (activePartitionHostMap.containsKey(hostInfo)) {
-                    activePartitionsOnHost.addAll(activePartitionHostMap.get(hostInfo));
-                    activeStoresOnHost.addAll(getStoresOnHost(storeToSourceTopics, activePartitionsOnHost));
-                }
-                activeStoresOnHost.addAll(globalStores);
+                .distinct()
+                .sorted(Comparator.comparing(HostInfo::host).thenComparingInt(HostInfo::port))
+                .forEach(hostInfo -> {
+                    final Set<TopicPartition> activePartitionsOnHost = new HashSet<>();
+                    final Set<String> activeStoresOnHost = new HashSet<>();
+                    if (activePartitionHostMap.containsKey(hostInfo)) {
+                        activePartitionsOnHost.addAll(activePartitionHostMap.get(hostInfo));
+                        activeStoresOnHost.addAll(getStoresOnHost(storeToSourceTopics, activePartitionsOnHost));
+                    }
+                    activeStoresOnHost.addAll(globalStores);
 
-                final Set<TopicPartition> standbyPartitionsOnHost = new HashSet<>();
-                final Set<String> standbyStoresOnHost = new HashSet<>();
-                if (standbyPartitionHostMap.containsKey(hostInfo)) {
-                    standbyPartitionsOnHost.addAll(standbyPartitionHostMap.get(hostInfo));
-                    standbyStoresOnHost.addAll(getStoresOnHost(storeToSourceTopics, standbyPartitionsOnHost));
-                }
+                    final Set<TopicPartition> standbyPartitionsOnHost = new HashSet<>();
+                    final Set<String> standbyStoresOnHost = new HashSet<>();
+                    if (standbyPartitionHostMap.containsKey(hostInfo)) {
+                        standbyPartitionsOnHost.addAll(standbyPartitionHostMap.get(hostInfo));
+                        standbyStoresOnHost.addAll(getStoresOnHost(storeToSourceTopics, standbyPartitionsOnHost));
+                    }
 
-                final StreamsMetadata metadata = new StreamsMetadataImpl(
-                    hostInfo,
-                    activeStoresOnHost,
-                    activePartitionsOnHost,
-                    standbyStoresOnHost,
-                    standbyPartitionsOnHost
-                );
+                    final StreamsMetadata metadata = new StreamsMetadataImpl(
+                            hostInfo,
+                            activeStoresOnHost,
+                            activePartitionsOnHost,
+                            standbyStoresOnHost,
+                            standbyPartitionsOnHost
+                    );
 
-                rebuiltMetadata.add(metadata);
-                if (hostInfo.equals(thisHost)) {
-                    localMetadata.set(metadata);
-                }
-            });
+                    rebuiltMetadata.add(metadata);
+                    if (hostInfo.equals(thisHost)) {
+                        localMetadata.set(metadata);
+                    }
+                });
         return rebuiltMetadata;
     }
 

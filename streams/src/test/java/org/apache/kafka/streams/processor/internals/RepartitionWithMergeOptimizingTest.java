@@ -75,9 +75,9 @@ public class RepartitionWithMergeOptimizingTest {
     private TopologyTestDriver topologyTestDriver;
 
     private final List<KeyValue<String, Long>> expectedCountKeyValues =
-        Arrays.asList(KeyValue.pair("A", 6L), KeyValue.pair("B", 6L), KeyValue.pair("C", 6L));
+            Arrays.asList(KeyValue.pair("A", 6L), KeyValue.pair("B", 6L), KeyValue.pair("C", 6L));
     private final List<KeyValue<String, String>> expectedStringCountKeyValues =
-        Arrays.asList(KeyValue.pair("A", "6"), KeyValue.pair("B", "6"), KeyValue.pair("C", "6"));
+            Arrays.asList(KeyValue.pair("A", "6"), KeyValue.pair("B", "6"), KeyValue.pair("C", "6"));
 
     @BeforeEach
     public void setUp() {
@@ -109,30 +109,30 @@ public class RepartitionWithMergeOptimizingTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KStream<String, String> sourceAStream =
-            builder.stream(INPUT_A_TOPIC, Consumed.with(Serdes.String(), Serdes.String()).withName("sourceAStream"));
+                builder.stream(INPUT_A_TOPIC, Consumed.with(Serdes.String(), Serdes.String()).withName("sourceAStream"));
 
         final KStream<String, String> sourceBStream =
-            builder.stream(INPUT_B_TOPIC, Consumed.with(Serdes.String(), Serdes.String()).withName("sourceBStream"));
+                builder.stream(INPUT_B_TOPIC, Consumed.with(Serdes.String(), Serdes.String()).withName("sourceBStream"));
 
         final KStream<String, String> mappedAStream =
-            sourceAStream.map((k, v) -> KeyValue.pair(v.split(":")[0], v), Named.as("mappedAStream"));
+                sourceAStream.map((k, v) -> KeyValue.pair(v.split(":")[0], v), Named.as("mappedAStream"));
         final KStream<String, String> mappedBStream =
-            sourceBStream.map((k, v) -> KeyValue.pair(v.split(":")[0], v), Named.as("mappedBStream"));
+                sourceBStream.map((k, v) -> KeyValue.pair(v.split(":")[0], v), Named.as("mappedBStream"));
 
         final KStream<String, String> mergedStream = mappedAStream.merge(mappedBStream, Named.as("mergedStream"));
 
         mergedStream
-            .groupByKey(Grouped.as("long-groupByKey"))
-            .count(Named.as("long-count"), Materialized.as(Stores.inMemoryKeyValueStore("long-store")))
-            .toStream(Named.as("long-toStream"))
-            .to(COUNT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()).withName("long-to"));
+                .groupByKey(Grouped.as("long-groupByKey"))
+                .count(Named.as("long-count"), Materialized.as(Stores.inMemoryKeyValueStore("long-store")))
+                .toStream(Named.as("long-toStream"))
+                .to(COUNT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()).withName("long-to"));
 
         mergedStream
-            .groupByKey(Grouped.as("string-groupByKey"))
-            .count(Named.as("string-count"), Materialized.as(Stores.inMemoryKeyValueStore("string-store")))
-            .toStream(Named.as("string-toStream"))
-            .mapValues(v -> v.toString(), Named.as("string-mapValues"))
-            .to(STRING_COUNT_TOPIC, Produced.with(Serdes.String(), Serdes.String()).withName("string-to"));
+                .groupByKey(Grouped.as("string-groupByKey"))
+                .count(Named.as("string-count"), Materialized.as(Stores.inMemoryKeyValueStore("string-store")))
+                .toStream(Named.as("string-toStream"))
+                .mapValues(v -> v.toString(), Named.as("string-mapValues"))
+                .to(STRING_COUNT_TOPIC, Produced.with(Serdes.String(), Serdes.String()).withName("string-to"));
 
         final Topology topology = builder.build(streamsConfiguration);
 
@@ -194,101 +194,101 @@ public class RepartitionWithMergeOptimizingTest {
     }
 
     private static final String EXPECTED_OPTIMIZED_TOPOLOGY = "Topologies:\n"
-                                                              + "   Sub-topology: 0\n"
-                                                              + "    Source: sourceAStream (topics: [inputA])\n"
-                                                              + "      --> mappedAStream\n"
-                                                              + "    Source: sourceBStream (topics: [inputB])\n"
-                                                              + "      --> mappedBStream\n"
-                                                              + "    Processor: mappedAStream (stores: [])\n"
-                                                              + "      --> mergedStream\n"
-                                                              + "      <-- sourceAStream\n"
-                                                              + "    Processor: mappedBStream (stores: [])\n"
-                                                              + "      --> mergedStream\n"
-                                                              + "      <-- sourceBStream\n"
-                                                              + "    Processor: mergedStream (stores: [])\n"
-                                                              + "      --> long-groupByKey-repartition-filter\n"
-                                                              + "      <-- mappedAStream, mappedBStream\n"
-                                                              + "    Processor: long-groupByKey-repartition-filter (stores: [])\n"
-                                                              + "      --> long-groupByKey-repartition-sink\n"
-                                                              + "      <-- mergedStream\n"
-                                                              + "    Sink: long-groupByKey-repartition-sink (topic: long-groupByKey-repartition)\n"
-                                                              + "      <-- long-groupByKey-repartition-filter\n"
-                                                              + "\n"
-                                                              + "  Sub-topology: 1\n"
-                                                              + "    Source: long-groupByKey-repartition-source (topics: [long-groupByKey-repartition])\n"
-                                                              + "      --> long-count, string-count\n"
-                                                              + "    Processor: string-count (stores: [string-store])\n"
-                                                              + "      --> string-toStream\n"
-                                                              + "      <-- long-groupByKey-repartition-source\n"
-                                                              + "    Processor: long-count (stores: [long-store])\n"
-                                                              + "      --> long-toStream\n"
-                                                              + "      <-- long-groupByKey-repartition-source\n"
-                                                              + "    Processor: string-toStream (stores: [])\n"
-                                                              + "      --> string-mapValues\n"
-                                                              + "      <-- string-count\n"
-                                                              + "    Processor: long-toStream (stores: [])\n"
-                                                              + "      --> long-to\n"
-                                                              + "      <-- long-count\n"
-                                                              + "    Processor: string-mapValues (stores: [])\n"
-                                                              + "      --> string-to\n"
-                                                              + "      <-- string-toStream\n"
-                                                              + "    Sink: long-to (topic: outputTopic_0)\n"
-                                                              + "      <-- long-toStream\n"
-                                                              + "    Sink: string-to (topic: outputTopic_1)\n"
-                                                              + "      <-- string-mapValues\n\n";
+            + "   Sub-topology: 0\n"
+            + "    Source: sourceAStream (topics: [inputA])\n"
+            + "      --> mappedAStream\n"
+            + "    Source: sourceBStream (topics: [inputB])\n"
+            + "      --> mappedBStream\n"
+            + "    Processor: mappedAStream (stores: [])\n"
+            + "      --> mergedStream\n"
+            + "      <-- sourceAStream\n"
+            + "    Processor: mappedBStream (stores: [])\n"
+            + "      --> mergedStream\n"
+            + "      <-- sourceBStream\n"
+            + "    Processor: mergedStream (stores: [])\n"
+            + "      --> long-groupByKey-repartition-filter\n"
+            + "      <-- mappedAStream, mappedBStream\n"
+            + "    Processor: long-groupByKey-repartition-filter (stores: [])\n"
+            + "      --> long-groupByKey-repartition-sink\n"
+            + "      <-- mergedStream\n"
+            + "    Sink: long-groupByKey-repartition-sink (topic: long-groupByKey-repartition)\n"
+            + "      <-- long-groupByKey-repartition-filter\n"
+            + "\n"
+            + "  Sub-topology: 1\n"
+            + "    Source: long-groupByKey-repartition-source (topics: [long-groupByKey-repartition])\n"
+            + "      --> long-count, string-count\n"
+            + "    Processor: string-count (stores: [string-store])\n"
+            + "      --> string-toStream\n"
+            + "      <-- long-groupByKey-repartition-source\n"
+            + "    Processor: long-count (stores: [long-store])\n"
+            + "      --> long-toStream\n"
+            + "      <-- long-groupByKey-repartition-source\n"
+            + "    Processor: string-toStream (stores: [])\n"
+            + "      --> string-mapValues\n"
+            + "      <-- string-count\n"
+            + "    Processor: long-toStream (stores: [])\n"
+            + "      --> long-to\n"
+            + "      <-- long-count\n"
+            + "    Processor: string-mapValues (stores: [])\n"
+            + "      --> string-to\n"
+            + "      <-- string-toStream\n"
+            + "    Sink: long-to (topic: outputTopic_0)\n"
+            + "      <-- long-toStream\n"
+            + "    Sink: string-to (topic: outputTopic_1)\n"
+            + "      <-- string-mapValues\n\n";
 
 
     private static final String EXPECTED_UNOPTIMIZED_TOPOLOGY = "Topologies:\n"
-                                                                    + "   Sub-topology: 0\n"
-                                                                    + "    Source: sourceAStream (topics: [inputA])\n"
-                                                                    + "      --> mappedAStream\n"
-                                                                    + "    Source: sourceBStream (topics: [inputB])\n"
-                                                                    + "      --> mappedBStream\n"
-                                                                    + "    Processor: mappedAStream (stores: [])\n"
-                                                                    + "      --> mergedStream\n"
-                                                                    + "      <-- sourceAStream\n"
-                                                                    + "    Processor: mappedBStream (stores: [])\n"
-                                                                    + "      --> mergedStream\n"
-                                                                    + "      <-- sourceBStream\n"
-                                                                    + "    Processor: mergedStream (stores: [])\n"
-                                                                    + "      --> long-groupByKey-repartition-filter, string-groupByKey-repartition-filter\n"
-                                                                    + "      <-- mappedAStream, mappedBStream\n"
-                                                                    + "    Processor: long-groupByKey-repartition-filter (stores: [])\n"
-                                                                    + "      --> long-groupByKey-repartition-sink\n"
-                                                                    + "      <-- mergedStream\n"
-                                                                    + "    Processor: string-groupByKey-repartition-filter (stores: [])\n"
-                                                                    + "      --> string-groupByKey-repartition-sink\n"
-                                                                    + "      <-- mergedStream\n"
-                                                                    + "    Sink: long-groupByKey-repartition-sink (topic: long-groupByKey-repartition)\n"
-                                                                    + "      <-- long-groupByKey-repartition-filter\n"
-                                                                    + "    Sink: string-groupByKey-repartition-sink (topic: string-groupByKey-repartition)\n"
-                                                                    + "      <-- string-groupByKey-repartition-filter\n"
-                                                                    + "\n"
-                                                                    + "  Sub-topology: 1\n"
-                                                                    + "    Source: long-groupByKey-repartition-source (topics: [long-groupByKey-repartition])\n"
-                                                                    + "      --> long-count\n"
-                                                                    + "    Processor: long-count (stores: [long-store])\n"
-                                                                    + "      --> long-toStream\n"
-                                                                    + "      <-- long-groupByKey-repartition-source\n"
-                                                                    + "    Processor: long-toStream (stores: [])\n"
-                                                                    + "      --> long-to\n"
-                                                                    + "      <-- long-count\n"
-                                                                    + "    Sink: long-to (topic: outputTopic_0)\n"
-                                                                    + "      <-- long-toStream\n"
-                                                                    + "\n"
-                                                                    + "  Sub-topology: 2\n"
-                                                                    + "    Source: string-groupByKey-repartition-source (topics: [string-groupByKey-repartition])\n"
-                                                                    + "      --> string-count\n"
-                                                                    + "    Processor: string-count (stores: [string-store])\n"
-                                                                    + "      --> string-toStream\n"
-                                                                    + "      <-- string-groupByKey-repartition-source\n"
-                                                                    + "    Processor: string-toStream (stores: [])\n"
-                                                                    + "      --> string-mapValues\n"
-                                                                    + "      <-- string-count\n"
-                                                                    + "    Processor: string-mapValues (stores: [])\n"
-                                                                    + "      --> string-to\n"
-                                                                    + "      <-- string-toStream\n"
-                                                                    + "    Sink: string-to (topic: outputTopic_1)\n"
-                                                                    + "      <-- string-mapValues\n\n";
+            + "   Sub-topology: 0\n"
+            + "    Source: sourceAStream (topics: [inputA])\n"
+            + "      --> mappedAStream\n"
+            + "    Source: sourceBStream (topics: [inputB])\n"
+            + "      --> mappedBStream\n"
+            + "    Processor: mappedAStream (stores: [])\n"
+            + "      --> mergedStream\n"
+            + "      <-- sourceAStream\n"
+            + "    Processor: mappedBStream (stores: [])\n"
+            + "      --> mergedStream\n"
+            + "      <-- sourceBStream\n"
+            + "    Processor: mergedStream (stores: [])\n"
+            + "      --> long-groupByKey-repartition-filter, string-groupByKey-repartition-filter\n"
+            + "      <-- mappedAStream, mappedBStream\n"
+            + "    Processor: long-groupByKey-repartition-filter (stores: [])\n"
+            + "      --> long-groupByKey-repartition-sink\n"
+            + "      <-- mergedStream\n"
+            + "    Processor: string-groupByKey-repartition-filter (stores: [])\n"
+            + "      --> string-groupByKey-repartition-sink\n"
+            + "      <-- mergedStream\n"
+            + "    Sink: long-groupByKey-repartition-sink (topic: long-groupByKey-repartition)\n"
+            + "      <-- long-groupByKey-repartition-filter\n"
+            + "    Sink: string-groupByKey-repartition-sink (topic: string-groupByKey-repartition)\n"
+            + "      <-- string-groupByKey-repartition-filter\n"
+            + "\n"
+            + "  Sub-topology: 1\n"
+            + "    Source: long-groupByKey-repartition-source (topics: [long-groupByKey-repartition])\n"
+            + "      --> long-count\n"
+            + "    Processor: long-count (stores: [long-store])\n"
+            + "      --> long-toStream\n"
+            + "      <-- long-groupByKey-repartition-source\n"
+            + "    Processor: long-toStream (stores: [])\n"
+            + "      --> long-to\n"
+            + "      <-- long-count\n"
+            + "    Sink: long-to (topic: outputTopic_0)\n"
+            + "      <-- long-toStream\n"
+            + "\n"
+            + "  Sub-topology: 2\n"
+            + "    Source: string-groupByKey-repartition-source (topics: [string-groupByKey-repartition])\n"
+            + "      --> string-count\n"
+            + "    Processor: string-count (stores: [string-store])\n"
+            + "      --> string-toStream\n"
+            + "      <-- string-groupByKey-repartition-source\n"
+            + "    Processor: string-toStream (stores: [])\n"
+            + "      --> string-mapValues\n"
+            + "      <-- string-count\n"
+            + "    Processor: string-mapValues (stores: [])\n"
+            + "      --> string-to\n"
+            + "      <-- string-toStream\n"
+            + "    Sink: string-to (topic: outputTopic_1)\n"
+            + "      <-- string-mapValues\n\n";
 
 }

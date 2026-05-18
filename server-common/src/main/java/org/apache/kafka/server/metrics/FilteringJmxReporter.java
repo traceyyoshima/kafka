@@ -44,14 +44,14 @@ public class FilteringJmxReporter extends JmxReporter {
         this.metricPredicate = predicate;
         // re-register metrics on update
         getMetricsRegistry()
-            .allMetrics()
-            .forEach((name, metric) -> {
-                if (metricPredicate.test(name)) {
-                    super.onMetricAdded(name, metric);
-                } else {
-                    super.onMetricRemoved(name);
-                }
-            }
-            );
+                .allMetrics()
+                .forEach((name, metric) -> {
+                            if (metricPredicate.test(name)) {
+                                super.onMetricAdded(name, metric);
+                            } else {
+                                super.onMetricRemoved(name);
+                            }
+                        }
+                );
     }
 }

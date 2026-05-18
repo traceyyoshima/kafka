@@ -60,8 +60,8 @@ public class GlobalKTableJoinsTest {
     public void shouldLeftJoinWithStream() {
         final MockApiProcessorSupplier<String, String, Void, Void> supplier = new MockApiProcessorSupplier<>();
         stream
-            .leftJoin(global, keyValueMapper, MockValueJoiner.TOSTRING_JOINER)
-            .process(supplier);
+                .leftJoin(global, keyValueMapper, MockValueJoiner.TOSTRING_JOINER)
+                .process(supplier);
 
         final Map<String, ValueAndTimestamp<String>> expected = new HashMap<>();
         expected.put("1", ValueAndTimestamp.make("a+A", 2L));
@@ -75,8 +75,8 @@ public class GlobalKTableJoinsTest {
     public void shouldInnerJoinWithStream() {
         final MockApiProcessorSupplier<String, String, Void, Void> supplier = new MockApiProcessorSupplier<>();
         stream
-            .join(global, keyValueMapper, MockValueJoiner.TOSTRING_JOINER)
-            .process(supplier);
+                .join(global, keyValueMapper, MockValueJoiner.TOSTRING_JOINER)
+                .process(supplier);
 
         final Map<String, ValueAndTimestamp<String>> expected = new HashMap<>();
         expected.put("1", ValueAndTimestamp.make("a+A", 2L));

@@ -47,7 +47,7 @@ public class BufferValueTest {
 
     @Test
     public void shouldDeduplicateEqualValues() {
-        final BufferValue bufferValue = new BufferValue(new byte[] {(byte) 0}, new byte[] {(byte) 0}, null, null);
+        final BufferValue bufferValue = new BufferValue(new byte[]{(byte) 0}, new byte[]{(byte) 0}, null, null);
         assertSame(bufferValue.priorValue(), bufferValue.oldValue());
     }
 
@@ -85,13 +85,13 @@ public class BufferValueTest {
     public void shouldAccountForDeduplicationInSizeEstimate() {
         final ProcessorRecordContext context = new ProcessorRecordContext(0L, 0L, 0, "topic", new RecordHeaders());
         assertEquals(25L, new BufferValue(null, null, null, context).residentMemorySizeEstimate());
-        assertEquals(26L, new BufferValue(new byte[] {(byte) 0}, null, null, context).residentMemorySizeEstimate());
-        assertEquals(26L, new BufferValue(null, new byte[] {(byte) 0}, null, context).residentMemorySizeEstimate());
-        assertEquals(26L, new BufferValue(new byte[] {(byte) 0}, new byte[] {(byte) 0}, null, context).residentMemorySizeEstimate());
-        assertEquals(27L, new BufferValue(new byte[] {(byte) 0}, new byte[] {(byte) 1}, null, context).residentMemorySizeEstimate());
+        assertEquals(26L, new BufferValue(new byte[]{(byte) 0}, null, null, context).residentMemorySizeEstimate());
+        assertEquals(26L, new BufferValue(null, new byte[]{(byte) 0}, null, context).residentMemorySizeEstimate());
+        assertEquals(26L, new BufferValue(new byte[]{(byte) 0}, new byte[]{(byte) 0}, null, context).residentMemorySizeEstimate());
+        assertEquals(27L, new BufferValue(new byte[]{(byte) 0}, new byte[]{(byte) 1}, null, context).residentMemorySizeEstimate());
 
         // new value should get counted, but doesn't get deduplicated
-        assertEquals(28L, new BufferValue(new byte[] {(byte) 0}, new byte[] {(byte) 1}, new byte[] {(byte) 0}, context).residentMemorySizeEstimate());
+        assertEquals(28L, new BufferValue(new byte[]{(byte) 0}, new byte[]{(byte) 1}, new byte[]{(byte) 0}, context).residentMemorySizeEstimate());
     }
 
     @Test
@@ -154,9 +154,9 @@ public class BufferValueTest {
         final byte[] serializedContext = context.serialize();
         final byte[] priorValue = {(byte) 5};
         final ByteBuffer serialValue =
-            ByteBuffer
-                .allocate(serializedContext.length + Integer.BYTES * 3 + priorValue.length)
-                .put(serializedContext).putInt(1).put(priorValue).putInt(-1).putInt(-1);
+                ByteBuffer
+                        .allocate(serializedContext.length + Integer.BYTES * 3 + priorValue.length)
+                        .put(serializedContext).putInt(1).put(priorValue).putInt(-1).putInt(-1);
         serialValue.position(0);
 
         final BufferValue deserialize = BufferValue.deserialize(serialValue);
@@ -169,9 +169,9 @@ public class BufferValueTest {
         final byte[] serializedContext = context.serialize();
         final byte[] oldValue = {(byte) 5};
         final ByteBuffer serialValue =
-            ByteBuffer
-                .allocate(serializedContext.length + Integer.BYTES * 3 + oldValue.length)
-                .put(serializedContext).putInt(-1).putInt(1).put(oldValue).putInt(-1);
+                ByteBuffer
+                        .allocate(serializedContext.length + Integer.BYTES * 3 + oldValue.length)
+                        .put(serializedContext).putInt(-1).putInt(1).put(oldValue).putInt(-1);
         serialValue.position(0);
 
         assertThat(BufferValue.deserialize(serialValue), is(new BufferValue(null, oldValue, null, context)));
@@ -183,9 +183,9 @@ public class BufferValueTest {
         final byte[] serializedContext = context.serialize();
         final byte[] newValue = {(byte) 5};
         final ByteBuffer serialValue =
-            ByteBuffer
-                .allocate(serializedContext.length + Integer.BYTES * 3 + newValue.length)
-                .put(serializedContext).putInt(-1).putInt(-1).putInt(1).put(newValue);
+                ByteBuffer
+                        .allocate(serializedContext.length + Integer.BYTES * 3 + newValue.length)
+                        .put(serializedContext).putInt(-1).putInt(-1).putInt(1).put(newValue);
         serialValue.position(0);
 
         assertThat(BufferValue.deserialize(serialValue), is(new BufferValue(null, null, newValue, context)));
@@ -197,9 +197,9 @@ public class BufferValueTest {
         final byte[] serializedContext = context.serialize();
         final byte[] duplicate = {(byte) 5};
         final ByteBuffer serialValue =
-            ByteBuffer
-                .allocate(serializedContext.length + Integer.BYTES * 3 + duplicate.length)
-                .put(serializedContext).putInt(1).put(duplicate).putInt(-2).putInt(-1);
+                ByteBuffer
+                        .allocate(serializedContext.length + Integer.BYTES * 3 + duplicate.length)
+                        .put(serializedContext).putInt(1).put(duplicate).putInt(-2).putInt(-1);
         serialValue.position(0);
 
         final BufferValue bufferValue = BufferValue.deserialize(serialValue);

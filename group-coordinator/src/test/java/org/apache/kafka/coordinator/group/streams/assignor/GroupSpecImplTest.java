@@ -36,20 +36,20 @@ public class GroupSpecImplTest {
         members = new HashMap<>();
 
         members.put("test-member", new AssignmentMemberSpec(
-            Optional.of("test-instance"),
-            Optional.of("test-rack"),
-            Map.of(),
-            Map.of(),
-            Map.of(),
-            "test-process",
-            Map.of(),
-            Map.of(),
-            Map.of()
+                Optional.of("test-instance"),
+                Optional.of("test-rack"),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                "test-process",
+                Map.of(),
+                Map.of(),
+                Map.of()
         ));
 
         groupSpec = new GroupSpecImpl(
-            members,
-            new HashMap<>()
+                members,
+                new HashMap<>()
         );
     }
 

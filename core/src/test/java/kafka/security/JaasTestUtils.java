@@ -124,15 +124,15 @@ public class JaasTestUtils {
 
     public static String clientLoginModule(String mechanism, Optional<File> keytabLocation, String serviceName) {
         return kafkaClientModule(
-            mechanism,
-            keytabLocation,
-            KAFKA_CLIENT_PRINCIPAL,
-            KAFKA_PLAIN_USER,
-            KAFKA_PLAIN_PASSWORD,
-            KAFKA_SCRAM_USER,
-            KAFKA_SCRAM_PASSWORD,
-            KAFKA_OAUTH_BEARER_USER,
-            serviceName
+                mechanism,
+                keytabLocation,
+                KAFKA_CLIENT_PRINCIPAL,
+                KAFKA_PLAIN_USER,
+                KAFKA_PLAIN_PASSWORD,
+                KAFKA_SCRAM_USER,
+                KAFKA_SCRAM_PASSWORD,
+                KAFKA_OAUTH_BEARER_USER,
+                serviceName
         ).toString();
     }
 
@@ -142,15 +142,15 @@ public class JaasTestUtils {
 
     public static String adminLoginModule(String mechanism, Optional<File> keytabLocation, String serviceName) {
         return kafkaClientModule(
-            mechanism,
-            keytabLocation,
-            KAFKA_SERVER_PRINCIPAL,
-            KAFKA_PLAIN_ADMIN,
-            KAFKA_PLAIN_ADMIN_PASSWORD,
-            KAFKA_SCRAM_ADMIN,
-            KAFKA_SCRAM_ADMIN_PASSWORD,
-            KAFKA_OAUTH_BEARER_ADMIN,
-            serviceName
+                mechanism,
+                keytabLocation,
+                KAFKA_SERVER_PRINCIPAL,
+                KAFKA_PLAIN_ADMIN,
+                KAFKA_PLAIN_ADMIN_PASSWORD,
+                KAFKA_SCRAM_ADMIN,
+                KAFKA_SCRAM_ADMIN_PASSWORD,
+                KAFKA_OAUTH_BEARER_ADMIN,
+                serviceName
         ).toString();
     }
 
@@ -316,18 +316,19 @@ public class JaasTestUtils {
         return securityConfigs(connectionMode, securityProtocol, trustStoreFile, certAlias, certCn, saslProperties,
                 TestSslUtils.DEFAULT_TLS_PROTOCOL_FOR_TESTS, Optional.empty());
     }
+
     /**
      * Returns security configuration options for broker or clients
      *
-     * @param connectionMode Client or server mode
+     * @param connectionMode   Client or server mode
      * @param securityProtocol Security protocol which indicates if SASL or SSL or both configs are included
-     * @param trustStoreFile Trust store file must be provided for SSL and SASL_SSL
-     * @param certAlias Alias of certificate in SSL key store
-     * @param certCn CN for certificate
-     * @param saslProperties SASL configs if security protocol is SASL_SSL or SASL_PLAINTEXT
-     * @param tlsProtocol TLS version
-     * @param needsClientCert If not empty, a flag which indicates if client certificates are required. By default,
-     *                        client certificates are generated only if securityProtocol is SSL (not for SASL_SSL).
+     * @param trustStoreFile   Trust store file must be provided for SSL and SASL_SSL
+     * @param certAlias        Alias of certificate in SSL key store
+     * @param certCn           CN for certificate
+     * @param saslProperties   SASL configs if security protocol is SASL_SSL or SASL_PLAINTEXT
+     * @param tlsProtocol      TLS version
+     * @param needsClientCert  If not empty, a flag which indicates if client certificates are required. By default,
+     *                         client certificates are generated only if securityProtocol is SSL (not for SASL_SSL).
      */
     public static Properties securityConfigs(ConnectionMode connectionMode,
                                              SecurityProtocol securityProtocol,

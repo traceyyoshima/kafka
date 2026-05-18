@@ -23,7 +23,8 @@ import org.apache.kafka.common.record.TimestampType;
 import java.util.Optional;
 
 public final class ConsumerRecordUtil {
-    private ConsumerRecordUtil() {}
+    private ConsumerRecordUtil() {
+    }
 
     public static <K, V> ConsumerRecord<K, V> record(final String topic,
                                                      final int partition,
@@ -34,17 +35,17 @@ public final class ConsumerRecordUtil {
         // timestamp to -1, which is an invalid configuration. Here,
         // we initialize it to 0.
         return new ConsumerRecord<>(
-            topic,
-            partition,
-            offset,
-            0L,
-            TimestampType.CREATE_TIME,
-            0,
-            0,
-            key,
-            value,
-            new RecordHeaders(),
-            Optional.empty()
+                topic,
+                partition,
+                offset,
+                0L,
+                TimestampType.CREATE_TIME,
+                0,
+                0,
+                key,
+                value,
+                new RecordHeaders(),
+                Optional.empty()
         );
     }
 }

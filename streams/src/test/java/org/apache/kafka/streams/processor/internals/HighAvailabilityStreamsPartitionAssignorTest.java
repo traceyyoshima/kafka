@@ -81,24 +81,24 @@ import static org.mockito.Mockito.when;
 public class HighAvailabilityStreamsPartitionAssignorTest {
 
     private final List<PartitionInfo> infos = asList(
-        new PartitionInfo("topic1", 0, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic1", 1, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic1", 2, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic2", 0, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic2", 1, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic2", 2, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic3", 0, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic3", 1, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic3", 2, Node.noNode(), new Node[0], new Node[0]),
-        new PartitionInfo("topic3", 3, Node.noNode(), new Node[0], new Node[0])
+            new PartitionInfo("topic1", 0, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic1", 1, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic1", 2, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic2", 0, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic2", 1, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic2", 2, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic3", 0, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic3", 1, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic3", 2, Node.noNode(), new Node[0], new Node[0]),
+            new PartitionInfo("topic3", 3, Node.noNode(), new Node[0], new Node[0])
     );
 
     private final Cluster metadata = new Cluster(
-        "cluster",
-        singletonList(Node.noNode()),
-        infos,
-        emptySet(),
-        emptySet());
+            "cluster",
+            singletonList(Node.noNode()),
+            infos,
+            emptySet(),
+            emptySet());
 
     private final StreamsPartitionAssignor partitionAssignor = new StreamsPartitionAssignor();
     private final MockClientSupplier mockClientSupplier = new MockClientSupplier();
@@ -155,10 +155,10 @@ public class HighAvailabilityStreamsPartitionAssignorTest {
 
     private void overwriteInternalTopicManagerWithMock() {
         final MockInternalTopicManager mockInternalTopicManager = new MockInternalTopicManager(
-            time,
-            streamsConfig,
-            mockClientSupplier.restoreConsumer,
-            false
+                time,
+                streamsConfig,
+                mockClientSupplier.restoreConsumer,
+                false
         );
         partitionAssignor.setInternalTopicManager(mockInternalTopicManager);
     }
@@ -181,19 +181,19 @@ public class HighAvailabilityStreamsPartitionAssignorTest {
         final String newConsumer = "consumer2";
 
         subscriptions.put(firstConsumer,
-                          new Subscription(
-                              singletonList("source1"),
-                              getInfo(PID_1, allTasks).encode()
-                          ));
+                new Subscription(
+                        singletonList("source1"),
+                        getInfo(PID_1, allTasks).encode()
+                ));
         subscriptions.put(newConsumer,
-                          new Subscription(
-                              singletonList("source1"),
-                              getInfo(PID_2, EMPTY_TASKS).encode()
-                          ));
+                new Subscription(
+                        singletonList("source1"),
+                        getInfo(PID_2, EMPTY_TASKS).encode()
+                ));
 
         final Map<String, Assignment> assignments = partitionAssignor
-            .assign(metadata, new GroupSubscription(subscriptions))
-            .groupAssignment();
+                .assign(metadata, new GroupSubscription(subscriptions))
+                .groupAssignment();
 
         final AssignmentInfo firstConsumerUserData = AssignmentInfo.decode(assignments.get(firstConsumer).userData());
         final List<TaskId> firstConsumerActiveTasks = firstConsumerUserData.activeTasks();
@@ -208,11 +208,11 @@ public class HighAvailabilityStreamsPartitionAssignorTest {
 
         // There is a rebalance scheduled
         assertThat(
-            time.milliseconds() + rebalanceInterval,
-            anyOf(
-                is(firstConsumerUserData.nextRebalanceMs()),
-                is(newConsumerUserData.nextRebalanceMs())
-            )
+                time.milliseconds() + rebalanceInterval,
+                anyOf(
+                        is(firstConsumerUserData.nextRebalanceMs()),
+                        is(newConsumerUserData.nextRebalanceMs())
+                )
         );
     }
 
@@ -227,33 +227,33 @@ public class HighAvailabilityStreamsPartitionAssignorTest {
 
         createMockTaskManager();
         adminClient = createMockAdminClientForAssignor(getTopicPartitionOffsetsMap(
-                singletonList(APPLICATION_ID + "-store1-changelog"),
-                singletonList(3)),
-            true);
+                        singletonList(APPLICATION_ID + "-store1-changelog"),
+                        singletonList(3)),
+                true);
         configurePartitionAssignorWith(singletonMap(StreamsConfig.PROBING_REBALANCE_INTERVAL_MS_CONFIG, rebalanceInterval));
 
         final String firstConsumer = "consumer1";
         final String newConsumer = "consumer2";
 
         subscriptions.put(firstConsumer,
-                          new Subscription(
-                              singletonList("source1"),
-                              getInfo(PID_1, allTasks).encode()
-                          ));
+                new Subscription(
+                        singletonList("source1"),
+                        getInfo(PID_1, allTasks).encode()
+                ));
         subscriptions.put(newConsumer,
-                          new Subscription(
-                              singletonList("source1"),
-                              getInfo(PID_2, EMPTY_TASKS).encode()
-                          ));
+                new Subscription(
+                        singletonList("source1"),
+                        getInfo(PID_2, EMPTY_TASKS).encode()
+                ));
 
         final Map<String, Assignment> assignments = partitionAssignor
-            .assign(metadata, new GroupSubscription(subscriptions))
-            .groupAssignment();
+                .assign(metadata, new GroupSubscription(subscriptions))
+                .groupAssignment();
 
         final List<TaskId> firstConsumerActiveTasks =
-            AssignmentInfo.decode(assignments.get(firstConsumer).userData()).activeTasks();
+                AssignmentInfo.decode(assignments.get(firstConsumer).userData()).activeTasks();
         final List<TaskId> newConsumerActiveTasks =
-            AssignmentInfo.decode(assignments.get(newConsumer).userData()).activeTasks();
+                AssignmentInfo.decode(assignments.get(newConsumer).userData()).activeTasks();
 
         final ArrayList<TaskId> sortedExpectedTasks = new ArrayList<>(allTasks);
         Collections.sort(sortedExpectedTasks);
@@ -263,9 +263,9 @@ public class HighAvailabilityStreamsPartitionAssignorTest {
         assertThat(referenceContainer.assignmentErrorCode.get(), equalTo(AssignorError.NONE.code()));
 
         final long nextScheduledRebalanceOnThisClient =
-            AssignmentInfo.decode(assignments.get(firstConsumer).userData()).nextRebalanceMs();
+                AssignmentInfo.decode(assignments.get(firstConsumer).userData()).nextRebalanceMs();
         final long nextScheduledRebalanceOnOtherClient =
-            AssignmentInfo.decode(assignments.get(newConsumer).userData()).nextRebalanceMs();
+                AssignmentInfo.decode(assignments.get(newConsumer).userData()).nextRebalanceMs();
 
         assertThat(nextScheduledRebalanceOnThisClient, equalTo(time.milliseconds() + rebalanceInterval));
         assertThat(nextScheduledRebalanceOnOtherClient, equalTo(Long.MAX_VALUE));
@@ -274,15 +274,16 @@ public class HighAvailabilityStreamsPartitionAssignorTest {
 
     /**
      * Helper for building the input to createMockAdminClient in cases where we don't care about the actual offsets
-     * @param changelogTopics The names of all changelog topics in the topology
+     *
+     * @param changelogTopics     The names of all changelog topics in the topology
      * @param topicsNumPartitions The number of partitions for the corresponding changelog topic, such that the number
-     *            of partitions of the ith topic in changelogTopics is given by the ith element of topicsNumPartitions
+     *                            of partitions of the ith topic in changelogTopics is given by the ith element of topicsNumPartitions
      */
     private static Map<TopicPartition, Long> getTopicPartitionOffsetsMap(final List<String> changelogTopics,
                                                                          final List<Integer> topicsNumPartitions) {
         if (changelogTopics.size() != topicsNumPartitions.size()) {
             throw new IllegalStateException("Passed in " + changelogTopics.size() + " changelog topic names, but " +
-                                                topicsNumPartitions.size() + " different numPartitions for the topics");
+                    topicsNumPartitions.size() + " different numPartitions for the topics");
         }
         final Map<TopicPartition, Long> changelogEndOffsets = new HashMap<>();
         for (int i = 0; i < changelogTopics.size(); ++i) {
@@ -298,7 +299,7 @@ public class HighAvailabilityStreamsPartitionAssignorTest {
     private static SubscriptionInfo getInfo(final ProcessId processId,
                                             final Set<TaskId> prevTasks) {
         return new SubscriptionInfo(
-            LATEST_SUPPORTED_VERSION, LATEST_SUPPORTED_VERSION, processId, null, getTaskOffsetSums(prevTasks), (byte) 0, 0, Collections.emptyMap());
+                LATEST_SUPPORTED_VERSION, LATEST_SUPPORTED_VERSION, processId, null, getTaskOffsetSums(prevTasks), (byte) 0, 0, Collections.emptyMap());
     }
 
     // Stub offset sums for when we only care about the prev/standby task sets, not the actual offsets

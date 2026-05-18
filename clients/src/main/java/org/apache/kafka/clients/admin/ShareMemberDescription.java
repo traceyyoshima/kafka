@@ -32,19 +32,19 @@ public class ShareMemberDescription {
     private final int memberEpoch;
 
     public ShareMemberDescription(
-        String memberId,
-        Optional<String> rackId,
-        String clientId,
-        String host,
-        ShareMemberAssignment assignment,
-        int memberEpoch
+            String memberId,
+            Optional<String> rackId,
+            String clientId,
+            String host,
+            ShareMemberAssignment assignment,
+            int memberEpoch
     ) {
         this.memberId = memberId == null ? "" : memberId;
         this.rackId = rackId;
         this.clientId = clientId == null ? "" : clientId;
         this.host = host == null ? "" : host;
         this.assignment = assignment == null ?
-            new ShareMemberAssignment(Collections.emptySet()) : assignment;
+                new ShareMemberAssignment(Collections.emptySet()) : assignment;
         this.memberEpoch = memberEpoch;
     }
 
@@ -54,11 +54,11 @@ public class ShareMemberDescription {
         if (o == null || getClass() != o.getClass()) return false;
         ShareMemberDescription that = (ShareMemberDescription) o;
         return memberId.equals(that.memberId) &&
-            rackId.equals(that.rackId) &&
-            clientId.equals(that.clientId) &&
-            host.equals(that.host) &&
-            assignment.equals(that.assignment) &&
-            memberEpoch == that.memberEpoch;
+                rackId.equals(that.rackId) &&
+                clientId.equals(that.clientId) &&
+                host.equals(that.host) &&
+                assignment.equals(that.assignment) &&
+                memberEpoch == that.memberEpoch;
     }
 
     @Override
@@ -111,11 +111,11 @@ public class ShareMemberDescription {
     @Override
     public String toString() {
         return "(memberId=" + memberId +
-            ", rackId=" + rackId.orElse("null") +
-            ", clientId=" + clientId +
-            ", host=" + host +
-            ", assignment=" + assignment +
-            ", memberEpoch=" + memberEpoch +
-            ")";
+                ", rackId=" + rackId.orElse("null") +
+                ", clientId=" + clientId +
+                ", host=" + host +
+                ", assignment=" + assignment +
+                ", memberEpoch=" + memberEpoch +
+                ")";
     }
 }

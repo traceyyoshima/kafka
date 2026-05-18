@@ -59,7 +59,6 @@ public interface LeaderEndPoint {
      * the results from fetching from the leader.
      *
      * @param fetchRequest The fetch request we want to carry out
-     *
      * @return A map of topic partition -> fetch data
      */
     Map<TopicPartition, FetchResponseData.PartitionData> fetch(FetchRequest.Builder fetchRequest);
@@ -67,9 +66,8 @@ public interface LeaderEndPoint {
     /**
      * Fetches the epoch and log start offset of the given topic partition from the leader.
      *
-     * @param topicPartition The topic partition that we want to fetch from
+     * @param topicPartition     The topic partition that we want to fetch from
      * @param currentLeaderEpoch An int representing the current leader epoch of the requester
-     *
      * @return An OffsetAndEpoch object representing the earliest offset and epoch in the leader's topic partition.
      */
     OffsetAndEpoch fetchEarliestOffset(TopicPartition topicPartition, int currentLeaderEpoch);
@@ -77,9 +75,8 @@ public interface LeaderEndPoint {
     /**
      * Fetches the epoch and log end offset of the given topic partition from the leader.
      *
-     * @param topicPartition The topic partition that we want to fetch from
+     * @param topicPartition     The topic partition that we want to fetch from
      * @param currentLeaderEpoch An int representing the current leader epoch of the requester
-     *
      * @return An OffsetAndEpoch object representing the latest offset and epoch in the leader's topic partition.
      */
     OffsetAndEpoch fetchLatestOffset(TopicPartition topicPartition, int currentLeaderEpoch);
@@ -88,7 +85,6 @@ public interface LeaderEndPoint {
      * Fetches offset for leader epoch from the leader for each given topic partition
      *
      * @param partitions A map of topic partition -> leader epoch of the replica
-     *
      * @return A map of topic partition -> end offset for a requested leader epoch
      */
     Map<TopicPartition, EpochEndOffset> fetchEpochEndOffsets(Map<TopicPartition, OffsetForLeaderPartition> partitions);
@@ -96,9 +92,8 @@ public interface LeaderEndPoint {
     /**
      * Fetches the epoch and local log start offset from the leader for the given partition and the current leader-epoch
      *
-     * @param topicPartition  The topic partition that we want to fetch from
+     * @param topicPartition     The topic partition that we want to fetch from
      * @param currentLeaderEpoch An int representing the current leader epoch of the requester
-     *
      * @return An OffsetAndEpoch object representing the earliest local offset and epoch in the leader's topic partition.
      */
     OffsetAndEpoch fetchEarliestLocalOffset(TopicPartition topicPartition, int currentLeaderEpoch);
@@ -118,7 +113,6 @@ public interface LeaderEndPoint {
      * Builds a fetch request, given a partition map.
      *
      * @param partitions A map of topic partitions to their respective partition fetch state
-     *
      * @return A ResultWithPartitions, used to create the fetchRequest for fetch.
      */
     ResultWithPartitions<Optional<ReplicaFetch>> buildFetch(Map<TopicPartition, PartitionFetchState> partitions);

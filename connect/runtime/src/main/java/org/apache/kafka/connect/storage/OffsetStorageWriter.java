@@ -91,8 +91,9 @@ public class OffsetStorageWriter {
 
     /**
      * Set an offset for a partition using Connect data values
+     *
      * @param partition the partition to store an offset for
-     * @param offset the offset
+     * @param offset    the offset
      */
     @SuppressWarnings("unchecked")
     public synchronized void offset(Map<String, ?> partition, Map<String, ?> offset) {
@@ -128,11 +129,11 @@ public class OffsetStorageWriter {
      * <p>If and only if this method returns true, the caller must call {@link #doFlush(Callback)}
      * or {@link #cancelFlush()} to finish the flush operation and allow later calls to complete.
      *
-     * @param timeout A maximum duration to wait for previous flushes to finish before giving up on waiting
+     * @param timeout  A maximum duration to wait for previous flushes to finish before giving up on waiting
      * @param timeUnit Units of the timeout argument
      * @return true if a flush was initiated, false if no data was available
      * @throws InterruptedException if this thread was interrupted while waiting for the previous flush to complete
-     * @throws TimeoutException if the {@code timeout} elapses before previous flushes are complete.
+     * @throws TimeoutException     if the {@code timeout} elapses before previous flushes are complete.
      */
     public boolean beginFlush(long timeout, TimeUnit timeUnit) throws InterruptedException, TimeoutException {
         if (flushInProgress.tryAcquire(Math.max(0, timeout), timeUnit)) {

@@ -37,16 +37,16 @@ public final class MetadataCacheFixtures {
         if (cache instanceof KRaftMetadataCache c) {
             MetadataImage image = c.currentImage();
             MetadataImage partialImage = new MetadataImage(
-                new MetadataProvenance(100L, 10, 1000L, true),
-                image.features(),
-                image.cluster(),
-                image.topics(),
-                image.configs(),
-                image.clientQuotas(),
-                image.producerIds(),
-                image.acls(),
-                image.scram(),
-                image.delegationTokens()
+                    new MetadataProvenance(100L, 10, 1000L, true),
+                    image.features(),
+                    image.cluster(),
+                    image.topics(),
+                    image.configs(),
+                    image.clientQuotas(),
+                    image.producerIds(),
+                    image.acls(),
+                    image.scram(),
+                    image.delegationTokens()
             );
             MetadataDelta delta = new MetadataDelta.Builder().setImage(partialImage).build();
             for (ApiMessage record : records) {

@@ -44,7 +44,7 @@ import static org.apache.kafka.streams.state.internals.RocksDBStore.incrementWit
  *   <li>oldColumnFamily: contains legacy data in the old format</li>
  *   <li>newColumnFamily: contains data in the new format</li>
  * </ul>
- *
+ * <p>
  * When reading, it first checks the new column family, then falls back to the old column family
  * and converts values on-the-fly using the provided conversion function.
  */
@@ -59,10 +59,10 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
      * Constructs a DualColumnFamilyAccessor.
      *
      * @param offsetColumnFamily the column family for the managed offsets
-     * @param oldColumnFamily the column family containing legacy data
-     * @param newColumnFamily the column family for new format data
-     * @param valueConverter  function to convert old format values to new format
-     * @param store           the RocksDBStore instance (for accessing position, context, and name)
+     * @param oldColumnFamily    the column family containing legacy data
+     * @param newColumnFamily    the column family for new format data
+     * @param valueConverter     function to convert old format values to new format
+     * @param store              the RocksDBStore instance (for accessing position, context, and name)
      */
     DualColumnFamilyAccessor(final ColumnFamilyHandle offsetColumnFamily,
                              final ColumnFamilyHandle oldColumnFamily,
@@ -120,20 +120,20 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
 
     @Override
     public byte[] get(final DBAccessor accessor, final byte[] key)
-        throws RocksDBException {
+            throws RocksDBException {
         return get(accessor, key, Optional.empty());
     }
 
     @Override
     public byte[] get(final DBAccessor accessor, final byte[] key,
                       final ReadOptions readOptions)
-        throws RocksDBException {
+            throws RocksDBException {
         return get(accessor, key, Optional.of(readOptions));
     }
 
     private byte[] get(final DBAccessor accessor, final byte[] key,
                        final Optional<ReadOptions> readOptions)
-        throws RocksDBException {
+            throws RocksDBException {
         final byte[] valueInNewFormat = readOptions.isPresent()
                 ? accessor.get(newColumnFamily, readOptions.get(), key)
                 : accessor.get(newColumnFamily, key);
@@ -178,10 +178,12 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
                                                         final boolean forward) {
         final ManagedKeyValueIterator<Bytes, byte[]> iterNew =
                 accessor.range(newColumnFamily, store.name(), from, to, forward, true);
-        iterNew.onClose(() -> { });
+        iterNew.onClose(() -> {
+        });
         final ManagedKeyValueIterator<Bytes, byte[]> iterOld =
                 accessor.range(oldColumnFamily, store.name(), from, to, forward, true);
-        iterOld.onClose(() -> { });
+        iterOld.onClose(() -> {
+        });
         return new RocksDBDualCFIterator(store.name(), iterNew, iterOld, forward, valueConverter);
     }
 
@@ -204,10 +206,12 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
                                                       final boolean forward) {
         final ManagedKeyValueIterator<Bytes, byte[]> iterNew =
                 accessor.all(newColumnFamily, store.name(), forward);
-        iterNew.onClose(() -> { });
+        iterNew.onClose(() -> {
+        });
         final ManagedKeyValueIterator<Bytes, byte[]> iterOld =
                 accessor.all(oldColumnFamily, store.name(), forward);
-        iterOld.onClose(() -> { });
+        iterOld.onClose(() -> {
+        });
         return new RocksDBDualCFIterator(store.name(), iterNew, iterOld, forward, valueConverter);
     }
 
@@ -217,16 +221,18 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
         final Bytes to = incrementWithoutOverflow(prefix);
         final ManagedKeyValueIterator<Bytes, byte[]> iterNew =
                 accessor.prefixScan(newColumnFamily, store.name(), prefix, to);
-        iterNew.onClose(() -> { });
+        iterNew.onClose(() -> {
+        });
         final ManagedKeyValueIterator<Bytes, byte[]> iterOld =
                 accessor.prefixScan(oldColumnFamily, store.name(), prefix, to);
-        iterOld.onClose(() -> { });
+        iterOld.onClose(() -> {
+        });
         return new RocksDBDualCFIterator(store.name(), iterNew, iterOld, true, valueConverter);
     }
 
     @Override
     public long approximateNumEntries(final DBAccessor accessor)
-        throws RocksDBException {
+            throws RocksDBException {
         return accessor.approximateNumEntries(oldColumnFamily)
                 + accessor.approximateNumEntries(newColumnFamily);
     }
@@ -252,8 +258,8 @@ class DualColumnFamilyAccessor extends AbstractColumnFamilyAccessor {
     }
 
     private static class RocksDBDualCFIterator
-        extends AbstractIterator<KeyValue<Bytes, byte[]>>
-        implements ManagedKeyValueIterator<Bytes, byte[]> {
+            extends AbstractIterator<KeyValue<Bytes, byte[]>>
+            implements ManagedKeyValueIterator<Bytes, byte[]> {
 
         // RocksDB's JNI interface does not expose getters/setters that allow the
         // comparator to be pluggable, and the default is lexicographic, so it's

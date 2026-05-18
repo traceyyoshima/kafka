@@ -79,7 +79,7 @@ class StreamsClientMetricsDelegatingReporterTest {
         streamsClientMetricsDelegatingReporter.init(metrics);
         final List<KafkaMetric> expectedMetrics = Arrays.asList(streamClientMetricOne, streamClientMetricTwo, streamClientMetricThree);
         assertEquals(expectedMetrics, mockAdminClient.addedMetrics(),
-            "Should register metrics from init method");
+                "Should register metrics from init method");
     }
 
     @Test
@@ -89,7 +89,7 @@ class StreamsClientMetricsDelegatingReporterTest {
 
         streamsClientMetricsDelegatingReporter.metricChange(streamClientMetricOne);
         assertEquals(1, mockAdminClient.addedMetrics().size(),
-            "Should register client instance metrics only");
+                "Should register client instance metrics only");
     }
 
     @Test
@@ -101,6 +101,6 @@ class StreamsClientMetricsDelegatingReporterTest {
 
         streamsClientMetricsDelegatingReporter.metricRemoval(streamClientMetricOne);
         assertEquals(2, mockAdminClient.addedMetrics().size(),
-            "Should remove client instance metrics");
+                "Should remove client instance metrics");
     }
 }

@@ -24,9 +24,9 @@ import java.util.function.Supplier;
  * The underlying mechanism for ensuring that the close only happens once <em>and</em> is thread safe
  * is via the {@link AtomicBoolean#compareAndSet(boolean, boolean)}. Users can provide callbacks (via optional
  * {@link Runnable}s) for either the <em>initial</em> close and/or any <em>subsequent</em> closes.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Here's an example:
  *
  * <pre>
@@ -110,9 +110,9 @@ public class IdempotentCloser implements AutoCloseable {
 
     /**
      * Closes the resource in a thread-safe manner.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * After the execution has completed, calls to {@link #isClosed()} will return {@code false} and calls to
      * {@link #assertOpen(String)} and {@link #assertOpen(Supplier)}
      * will throw an {@link IllegalStateException}.
@@ -124,9 +124,9 @@ public class IdempotentCloser implements AutoCloseable {
 
     /**
      * Closes the resource in a thread-safe manner.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * After the execution has completed, calls to {@link #isClosed()} will return {@code false} and calls to
      * {@link #assertOpen(String)} and {@link #assertOpen(Supplier)}
      * will throw an {@link IllegalStateException}.
@@ -141,9 +141,9 @@ public class IdempotentCloser implements AutoCloseable {
 
     /**
      * Closes the resource in a thread-safe manner.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * After the execution has completed, calls to {@link #isClosed()} will return {@code false} and calls to
      * {@link #assertOpen(String)} and {@link #assertOpen(Supplier)}
      * will throw an {@link IllegalStateException}.

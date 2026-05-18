@@ -72,6 +72,7 @@ public final class VersionedKeyQuery<K, V> implements Query<VersionedRecord<V>> 
 
     /**
      * The key that was specified for this query.
+     *
      * @return The specified {@code key} of the query.
      */
     public K key() {
@@ -80,6 +81,7 @@ public final class VersionedKeyQuery<K, V> implements Query<VersionedRecord<V>> 
 
     /**
      * The timestamp of the query, if specified.
+     *
      * @return The specified {@code asOfTimestamp} of the query.
      */
     public Optional<Instant> asOfTimestamp() {

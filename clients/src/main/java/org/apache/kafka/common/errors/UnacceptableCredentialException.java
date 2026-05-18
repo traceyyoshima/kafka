@@ -36,7 +36,7 @@ public class UnacceptableCredentialException extends ApiException {
     /**
      *
      * @param message the exception's message
-     * @param cause the exception's cause
+     * @param cause   the exception's cause
      */
     public UnacceptableCredentialException(String message, Throwable cause) {
         super(message, cause);

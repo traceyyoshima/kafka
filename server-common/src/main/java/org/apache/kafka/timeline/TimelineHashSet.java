@@ -29,7 +29,7 @@ import java.util.Set;
  * <br>
  * This class requires external synchronization.  Null values are not supported.
  *
- * @param <T>   The value type of the set.
+ * @param <T> The value type of the set.
  */
 public class TimelineHashSet<T>
         extends SnapshottableHashTable<TimelineHashSet.TimelineHashSetEntry<T>>
@@ -247,7 +247,7 @@ public class TimelineHashSet<T>
             return false;
         try {
             return containsAll(c);
-        } catch (ClassCastException unused)   {
+        } catch (ClassCastException unused) {
             return false;
         }
     }

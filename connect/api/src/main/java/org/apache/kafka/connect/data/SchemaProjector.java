@@ -30,8 +30,8 @@ import java.util.Set;
 
 /**
  * <p>
- *     SchemaProjector is a utility to project a value between compatible schemas and throw exceptions
- *     when non compatible schemas are provided.
+ * SchemaProjector is a utility to project a value between compatible schemas and throw exceptions
+ * when non compatible schemas are provided.
  * </p>
  */
 
@@ -50,6 +50,7 @@ public class SchemaProjector {
 
     /**
      * This method projects a value between compatible schemas and throws exceptions when non-compatible schemas are provided
+     *
      * @param source the schema used to construct the record
      * @param record the value to project from source schema to target schema
      * @param target the schema to project the record to
@@ -80,7 +81,7 @@ public class SchemaProjector {
     private static Object projectRequiredSchema(Schema source, Object record, Schema target) throws SchemaProjectorException {
         return switch (target.type()) {
             case INT8, INT16, INT32, INT64, FLOAT32, FLOAT64, BOOLEAN, BYTES, STRING ->
-                projectPrimitive(source, record, target);
+                    projectPrimitive(source, record, target);
             case STRUCT -> projectStruct(source, (Struct) record, target);
             case ARRAY -> projectArray(source, record, target);
             case MAP -> projectMap(source, record, target);
@@ -105,7 +106,7 @@ public class SchemaProjector {
             } else if (targetField.schema().defaultValue() != null) {
                 targetStruct.put(fieldName, targetField.schema().defaultValue());
             } else {
-                throw new SchemaProjectorException("Required field `" +  fieldName + "` is missing from source schema: " + source);
+                throw new SchemaProjectorException("Required field `" + fieldName + "` is missing from source schema: " + source);
             }
         }
         return targetStruct;

@@ -23,7 +23,6 @@ import java.util.concurrent.ExecutionException;
  * Simple interface to abstract out the call that is made so that it can be retried.
  *
  * @param <R> Result type
- *
  * @see Retry
  * @see UnretryableException
  */
@@ -34,7 +33,6 @@ public interface Retryable<R> {
      * Perform the operation and return the data from the response.
      *
      * @return Return response data, formatted in the given data type
-     *
      * @throws ExecutionException   Thrown on errors connecting, writing, reading, timeouts, etc.
      *                              that can likely be tried again
      * @throws UnretryableException Thrown on errors that we can determine should not be tried again

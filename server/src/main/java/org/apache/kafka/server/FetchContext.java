@@ -213,9 +213,9 @@ public sealed interface FetchContext {
                                                            List<Node> nodeEndpoints) {
             FetchSessionCacheShard cacheShard = cache.getNextCacheShard();
             int responseSessionId = cacheShard.maybeCreateSession(time.milliseconds(), isFromFollower,
-                updates.size(), usesTopicIds, () -> createNewSession(updates));
+                    updates.size(), usesTopicIds, () -> createNewSession(updates));
             LOGGER.debug("Full fetch context with session id {} returning {}",
-                responseSessionId, partitionsToLogString(updates.keySet(), LOGGER.isTraceEnabled()));
+                    responseSessionId, partitionsToLogString(updates.keySet(), LOGGER.isTraceEnabled()));
 
             return FetchResponse.of(Errors.NONE, 0, responseSessionId, updates, nodeEndpoints);
         }
@@ -244,9 +244,9 @@ public sealed interface FetchContext {
         private final Map<Uuid, String> topicNames;
 
         /**
-         * @param reqMetadata  The request metadata
-         * @param session      The incremental fetch request session
-         * @param topicNames   A mapping from topic ID to topic name used to resolve partitions already in the session
+         * @param reqMetadata The request metadata
+         * @param session     The incremental fetch request session
+         * @param topicNames  A mapping from topic ID to topic name used to resolve partitions already in the session
          */
         public IncrementalFetchContext(FetchMetadata reqMetadata,
                                        FetchSession session,
@@ -351,7 +351,7 @@ public sealed interface FetchContext {
                 int expectedEpoch = FetchMetadata.nextEpoch(reqMetadata.epoch());
                 if (session.epoch() != expectedEpoch) {
                     LOGGER.info("Incremental fetch session {} expected epoch {}, but got {}. Possible duplicate request.",
-                        session.id(), expectedEpoch, session.epoch());
+                            session.id(), expectedEpoch, session.epoch());
                     return FetchResponse.of(Errors.INVALID_FETCH_SESSION_EPOCH, 0, session.id(), new LinkedHashMap<>(), nodeEndpoints);
                 } else {
                     // Iterate over the update list using PartitionIterator. This will prune updates which don't need to be sent
@@ -360,7 +360,7 @@ public sealed interface FetchContext {
                         partitionIter.next();
                     }
                     LOGGER.debug("Incremental fetch context with session id {} returning {}", session.id(),
-                        partitionsToLogString(updates.keySet(), LOGGER.isTraceEnabled()));
+                            partitionsToLogString(updates.keySet(), LOGGER.isTraceEnabled()));
                     return FetchResponse.of(Errors.NONE, 0, session.id(), updates, nodeEndpoints);
                 }
             }
@@ -374,7 +374,7 @@ public sealed interface FetchContext {
                 int expectedEpoch = FetchMetadata.nextEpoch(reqMetadata.epoch());
                 if (session.epoch() != expectedEpoch) {
                     LOGGER.info("Incremental fetch session {} expected epoch {}, but got {}. Possible duplicate request.",
-                        session.id(), expectedEpoch, session.epoch());
+                            session.id(), expectedEpoch, session.epoch());
                     return FetchResponse.of(Errors.INVALID_FETCH_SESSION_EPOCH, throttleTimeMs, session.id(), new LinkedHashMap<>(), nodeEndpoints);
                 } else {
                     return FetchResponse.of(Errors.NONE, throttleTimeMs, session.id(), new LinkedHashMap<>(), nodeEndpoints);

@@ -180,8 +180,9 @@ public final class TieredStorageTestContext implements AutoCloseable {
      * Send the given records trying to honor the batch size. This is attempted
      * with a large producer linger and the use of an explicit flush every time
      * the number of a "group" of records reaches the batch size.
+     *
      * @param recordsToProduce the records to produce
-     * @param batchSize the batch size
+     * @param batchSize        the batch size
      */
     public void produce(List<ProducerRecord<String, String>> recordsToProduce, Integer batchSize) {
         int counter = 1;
@@ -205,14 +206,14 @@ public final class TieredStorageTestContext implements AutoCloseable {
         String sep = System.lineSeparator();
         List<ConsumerRecord<String, String>> records = new ArrayList<>();
         TestUtils.waitForCondition(
-            () -> {
-                consumer.poll(Duration.ofMillis(pollTimeoutMs)).forEach(records::add);
-                return records.size() >= expectedTotalCount;
-            },
-            timeoutMs,
-            () -> String.format("Could not consume %d records of %s from offset %d in %d ms. %d message(s) consumed:%s%s",
-                    expectedTotalCount, topicPartition, fetchOffset, timeoutMs, records.size(), sep,
-                    records.stream().map(Object::toString).collect(Collectors.joining(sep)))
+                () -> {
+                    consumer.poll(Duration.ofMillis(pollTimeoutMs)).forEach(records::add);
+                    return records.size() >= expectedTotalCount;
+                },
+                timeoutMs,
+                () -> String.format("Could not consume %d records of %s from offset %d in %d ms. %d message(s) consumed:%s%s",
+                        expectedTotalCount, topicPartition, fetchOffset, timeoutMs, records.size(), sep,
+                        records.stream().map(Object::toString).collect(Collectors.joining(sep)))
         );
         return records;
     }

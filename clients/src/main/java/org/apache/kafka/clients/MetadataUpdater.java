@@ -48,10 +48,10 @@ public interface MetadataUpdater extends Closeable {
     /**
      * Starts a cluster metadata update if needed and possible. Returns the time until the metadata update (which would
      * be 0 if an update has been started as a result of this call).
-     *
+     * <p>
      * If the implementation relies on `NetworkClient` to send requests, `handleSuccessfulResponse` will be
      * invoked after the metadata response is received.
-     *
+     * <p>
      * The semantics of `needed` and `possible` are implementation-dependent and may take into account a number of
      * factors like node availability, how long since the last metadata update, etc.
      */
@@ -59,12 +59,12 @@ public interface MetadataUpdater extends Closeable {
 
     /**
      * Handle a server disconnect.
-     *
+     * <p>
      * This provides a mechanism for the `MetadataUpdater` implementation to use the NetworkClient instance for its own
      * requests with special handling for disconnections of such requests.
      *
-     * @param now Current time in milliseconds
-     * @param nodeId The id of the node that disconnected
+     * @param now                Current time in milliseconds
+     * @param nodeId             The id of the node that disconnected
      * @param maybeAuthException Optional authentication error
      */
     void handleServerDisconnect(long now, String nodeId, Optional<AuthenticationException> maybeAuthException);
@@ -72,14 +72,14 @@ public interface MetadataUpdater extends Closeable {
     /**
      * Handle a metadata request failure.
      *
-     * @param now Current time in milliseconds
+     * @param now                 Current time in milliseconds
      * @param maybeFatalException Optional fatal error (e.g. {@link UnsupportedVersionException})
      */
     void handleFailedRequest(long now, Optional<KafkaException> maybeFatalException);
 
     /**
      * Handle responses for metadata requests.
-     *
+     * <p>
      * This provides a mechanism for the `MetadataUpdater` implementation to use the NetworkClient instance for its own
      * requests with special handling for completed receives of such requests.
      */
@@ -88,7 +88,7 @@ public interface MetadataUpdater extends Closeable {
     /**
      * Returns true if metadata couldn't be fetched for `rebootstrapTriggerMs` or if server requested rebootstrap.
      *
-     * @param now Current time in milliseconds
+     * @param now                  Current time in milliseconds
      * @param rebootstrapTriggerMs Configured timeout after which rebootstrap is triggered
      */
     default boolean needsRebootstrap(long now, long rebootstrapTriggerMs) {
@@ -100,7 +100,8 @@ public interface MetadataUpdater extends Closeable {
      *
      * @param now Current time in milliseconds
      */
-    default void rebootstrap(long now) {}
+    default void rebootstrap(long now) {
+    }
 
     /**
      * Close this updater.

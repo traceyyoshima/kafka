@@ -30,8 +30,8 @@ import java.util.List;
  * @param <R> The result type of the query.
  */
 public final class SucceededQueryResult<R>
-    extends AbstractQueryResult<R>
-    implements QueryResult<R> {
+        extends AbstractQueryResult<R>
+        implements QueryResult<R> {
 
     private final R result;
 
@@ -73,7 +73,7 @@ public final class SucceededQueryResult<R>
      */
     public FailureReason getFailureReason() {
         throw new IllegalArgumentException(
-            "Cannot get failure reason because this query did not fail."
+                "Cannot get failure reason because this query did not fail."
         );
     }
 
@@ -84,7 +84,7 @@ public final class SucceededQueryResult<R>
      */
     public String getFailureMessage() {
         throw new IllegalArgumentException(
-            "Cannot get failure message because this query did not fail."
+                "Cannot get failure message because this query did not fail."
         );
     }
 
@@ -103,9 +103,9 @@ public final class SucceededQueryResult<R>
     @Override
     public String toString() {
         return "SucceededQueryResult{" +
-            "result=" + result +
-            ", executionInfo=" + getExecutionInfo() +
-            ", position=" + getPosition() +
-            '}';
+                "result=" + result +
+                ", executionInfo=" + getExecutionInfo() +
+                ", position=" + getPosition() +
+                '}';
     }
 }

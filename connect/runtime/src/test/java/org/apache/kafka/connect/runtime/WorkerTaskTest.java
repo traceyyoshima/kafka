@@ -59,19 +59,28 @@ import static org.mockito.Mockito.when;
 public class WorkerTaskTest {
 
     private static final Map<String, String> TASK_PROPS = new HashMap<>();
+
     static {
         TASK_PROPS.put(TaskConfig.TASK_CLASS_CONFIG, TestSinkTask.class.getName());
     }
+
     private static final TaskConfig TASK_CONFIG = new TaskConfig(TASK_PROPS);
 
-    @Mock private TaskStatus.Listener statusListener;
-    @Mock private ClassLoader loader;
-    @Mock private StatusBackingStore statusBackingStore;
+    @Mock
+    private TaskStatus.Listener statusListener;
+    @Mock
+    private ClassLoader loader;
+    @Mock
+    private StatusBackingStore statusBackingStore;
     private ConnectMetrics metrics;
-    @Mock private ErrorHandlingMetrics errorHandlingMetrics;
-    @Mock private RetryWithToleranceOperator<Object> retryWithToleranceOperator;
-    @Mock private TransformationChain<Object, SourceRecord> transformationChain;
-    @Mock private Supplier<List<ErrorReporter<Object>>> errorReportersSupplier;
+    @Mock
+    private ErrorHandlingMetrics errorHandlingMetrics;
+    @Mock
+    private RetryWithToleranceOperator<Object> retryWithToleranceOperator;
+    @Mock
+    private TransformationChain<Object, SourceRecord> transformationChain;
+    @Mock
+    private Supplier<List<ErrorReporter<Object>>> errorReportersSupplier;
 
     @BeforeEach
     public void setup() {

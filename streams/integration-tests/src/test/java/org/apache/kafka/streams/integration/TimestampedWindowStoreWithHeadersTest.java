@@ -80,12 +80,12 @@ public class TimestampedWindowStoreWithHeadersTest {
     private static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(1);
 
     private static final Headers HEADERS1 = new RecordHeaders()
-        .add("source", "test".getBytes())
-        .add("version", "1.0".getBytes());
+            .add("source", "test".getBytes())
+            .add("version", "1.0".getBytes());
 
     private static final Headers HEADERS2 = new RecordHeaders()
-        .add("source", "test".getBytes())
-        .add("version", "2.0".getBytes());
+            .add("source", "test".getBytes())
+            .add("version", "2.0".getBytes());
 
     private static final Headers EMPTY_HEADERS = new RecordHeaders();
 
@@ -126,15 +126,15 @@ public class TimestampedWindowStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
+                        Stores.timestampedWindowStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         final Properties props = props();
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
@@ -145,24 +145,24 @@ public class TimestampedWindowStoreWithHeadersTest {
 
         // Window 1: [baseTimestamp, baseTimestamp + WINDOW_SIZE_MS)
         numRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp, HEADERS1,
-            KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
+                KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
 
         // Window 1: updates in same window
         numRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp + 50, HEADERS2,
-            KeyValue.pair(1, "a50"), KeyValue.pair(2, null), KeyValue.pair(3, "c50"));
+                KeyValue.pair(1, "a50"), KeyValue.pair(2, null), KeyValue.pair(3, "c50"));
 
         // Window 2: [baseTimestamp + WINDOW_SIZE_MS, baseTimestamp + 2 * WINDOW_SIZE_MS)
         numRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp + WINDOW_SIZE_MS,
-            EMPTY_HEADERS,
-            KeyValue.pair(1, "a100"), KeyValue.pair(2, "b100"), KeyValue.pair(3, null));
+                EMPTY_HEADERS,
+                KeyValue.pair(1, "a100"), KeyValue.pair(2, "b100"), KeyValue.pair(3, null));
 
         final List<KeyValue<Integer, Integer>> receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            numRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                numRecordsProduced);
 
         receivedRecords.forEach(receivedRecord -> assertEquals(0, receivedRecord.value));
     }
@@ -172,15 +172,15 @@ public class TimestampedWindowStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
+                        Stores.timestampedWindowStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(false), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(false), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         final Properties props = props();
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
@@ -189,12 +189,12 @@ public class TimestampedWindowStoreWithHeadersTest {
         produceDataToTopicWithHeaders(inputStream, baseTimestamp, new RecordHeaders(), KeyValue.pair(0, "foo"));
 
         IntegrationTestUtils.waitUntilMinRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            1);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                1);
 
         // verify changelog topic properties
         final String changelogTopic = props.getProperty(StreamsConfig.APPLICATION_ID_CONFIG) + "-" + STORE_NAME + "-changelog";
@@ -207,15 +207,15 @@ public class TimestampedWindowStoreWithHeadersTest {
         StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
+                        Stores.timestampedWindowStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         final Properties props = props();
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
@@ -224,21 +224,21 @@ public class TimestampedWindowStoreWithHeadersTest {
         int initialRecordsProduced = 0;
 
         initialRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp, HEADERS1,
-            KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
+                KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
 
         initialRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp + 50, HEADERS2,
-            KeyValue.pair(1, "a50"), KeyValue.pair(2, null), KeyValue.pair(3, "c50"));
+                KeyValue.pair(1, "a50"), KeyValue.pair(2, null), KeyValue.pair(3, "c50"));
 
         initialRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp + WINDOW_SIZE_MS, EMPTY_HEADERS,
-            KeyValue.pair(1, "a100"), KeyValue.pair(2, "b100"), KeyValue.pair(3, "c100"));
+                KeyValue.pair(1, "a100"), KeyValue.pair(2, "b100"), KeyValue.pair(3, "c100"));
 
         IntegrationTestUtils.waitUntilMinRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced);
 
         // wipe out state store to trigger restore process on restart
         kafkaStreams.close();
@@ -248,15 +248,15 @@ public class TimestampedWindowStoreWithHeadersTest {
         streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
+                        Stores.timestampedWindowStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
         kafkaStreams.start();
@@ -264,15 +264,15 @@ public class TimestampedWindowStoreWithHeadersTest {
         // produce additional records to verify restored store works correctly
         final Headers finalHeaders = new RecordHeaders().add("final", "true".getBytes());
         final int additionalRecordsProduced = produceDataToTopicWithHeaders(inputStream, baseTimestamp + 2 * WINDOW_SIZE_MS, finalHeaders,
-            KeyValue.pair(1, "a200"), KeyValue.pair(2, "b200"), KeyValue.pair(3, "c200"));
+                KeyValue.pair(1, "a200"), KeyValue.pair(2, "b200"), KeyValue.pair(3, "c200"));
 
         final List<KeyValue<Integer, Integer>> receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced + additionalRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced + additionalRecordsProduced);
 
         receivedRecords.forEach(receivedRecord -> assertEquals(0, receivedRecord.value));
     }
@@ -282,15 +282,15 @@ public class TimestampedWindowStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder.addStateStore(
-                Stores.timestampedWindowStoreBuilder(
-                    Stores.persistentTimestampedWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
+                        Stores.timestampedWindowStoreBuilder(
+                                Stores.persistentTimestampedWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(TimestampedWindowStoreContentCheckerProcessor::new, STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(TimestampedWindowStoreContentCheckerProcessor::new, STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         shouldManualUpgradeFromTimestampedToHeaders(streamsBuilder.build());
     }
@@ -304,19 +304,19 @@ public class TimestampedWindowStoreWithHeadersTest {
         // produce source data to legacy timestamped store (without headers)
         int initialRecordsProduced = 0;
         initialRecordsProduced += produceDataToTopic(inputStream, baseTimestamp,
-            KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
+                KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
         initialRecordsProduced += produceDataToTopic(inputStream, baseTimestamp + 50,
-            KeyValue.pair(1, "a50"), KeyValue.pair(2, null), KeyValue.pair(3, "c50"));
+                KeyValue.pair(1, "a50"), KeyValue.pair(2, null), KeyValue.pair(3, "c50"));
         initialRecordsProduced += produceDataToTopic(inputStream, baseTimestamp + WINDOW_SIZE_MS,
-            KeyValue.pair(1, "a100"), KeyValue.pair(2, "b100"), KeyValue.pair(3, null));
+                KeyValue.pair(1, "a100"), KeyValue.pair(2, "b100"), KeyValue.pair(3, null));
 
         List<KeyValue<Integer, Integer>> receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced);
 
         receivedRecords.forEach(receivedRecord -> assertEquals(0, receivedRecord.value));
 
@@ -329,16 +329,16 @@ public class TimestampedWindowStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder
-            .addStateStore(
-                Stores.timestampedWindowStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
-                    Serdes.Integer(),
-                    Serdes.String()
+                .addStateStore(
+                        Stores.timestampedWindowStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedWindowStoreWithHeaders(STORE_NAME, Duration.ofMillis(RETENTION_MS), Duration.ofMillis(WINDOW_SIZE_MS), false),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedWindowStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
         kafkaStreams.start();
@@ -346,15 +346,15 @@ public class TimestampedWindowStoreWithHeadersTest {
         // produce additional records with headers to verify upgraded store works
         final Headers upgradedHeaders = new RecordHeaders().add("upgraded", "true".getBytes());
         final int additionalRecordsProduced = produceDataToTopicWithHeaders(inputStream, baseTimestamp + 2 * WINDOW_SIZE_MS, upgradedHeaders,
-            KeyValue.pair(1, "a200"), KeyValue.pair(2, "b200"), KeyValue.pair(3, "c200"));
+                KeyValue.pair(1, "a200"), KeyValue.pair(2, "b200"), KeyValue.pair(3, "c200"));
 
         receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced + additionalRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced + additionalRecordsProduced);
 
         receivedRecords.forEach(receivedRecord -> assertEquals(0, receivedRecord.value));
     }
@@ -379,12 +379,12 @@ public class TimestampedWindowStoreWithHeadersTest {
                                    final long timestamp,
                                    final KeyValue<Integer, String>... keyValues) {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            topic,
-            Arrays.asList(keyValues),
-            TestUtils.producerConfig(CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                StringSerializer.class),
-            timestamp);
+                topic,
+                Arrays.asList(keyValues),
+                TestUtils.producerConfig(CLUSTER.bootstrapServers(),
+                        IntegerSerializer.class,
+                        StringSerializer.class),
+                timestamp);
         return keyValues.length;
     }
 
@@ -400,14 +400,14 @@ public class TimestampedWindowStoreWithHeadersTest {
                                               final Headers headers,
                                               final KeyValue<Integer, String>... keyValues) {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            topic,
-            Arrays.asList(keyValues),
-            TestUtils.producerConfig(CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                StringSerializer.class),
-            headers,
-            timestamp,
-            false);
+                topic,
+                Arrays.asList(keyValues),
+                TestUtils.producerConfig(CLUSTER.bootstrapServers(),
+                        IntegerSerializer.class,
+                        StringSerializer.class),
+                headers,
+                timestamp,
+                false);
         return keyValues.length;
     }
 
@@ -443,7 +443,7 @@ public class TimestampedWindowStoreWithHeadersTest {
 
             if (writeToStore) {
                 final ValueTimestampHeaders<String> valueTimestampHeaders =
-                    ValueTimestampHeaders.make(record.value(), record.timestamp(), record.headers());
+                        ValueTimestampHeaders.make(record.value(), record.timestamp(), record.headers());
                 store.put(record.key(), valueTimestampHeaders, windowStartTime);
 
                 data.computeIfAbsent(record.key(), k -> new HashMap<>());
@@ -457,6 +457,7 @@ public class TimestampedWindowStoreWithHeadersTest {
 
         /**
          * Check expected contents of store, and signal completion by writing number of failures to downstream
+         *
          * @return number of failed checks
          */
         private int checkStoreContents() {
@@ -467,13 +468,13 @@ public class TimestampedWindowStoreWithHeadersTest {
                 for (final Map.Entry<Long, Optional<ValueTimestampHeaders<String>>> windowEntry : keyEntry.getValue().entrySet()) {
                     final Long windowStartTime = windowEntry.getKey();
                     final ValueTimestampHeaders<String> expectedValueTimestampHeaders =
-                        windowEntry.getValue().orElse(null);
+                            windowEntry.getValue().orElse(null);
 
                     // validate fetch from store
                     try (final WindowStoreIterator<ValueTimestampHeaders<String>> iterator =
-                             store.fetch(key, windowStartTime, windowStartTime)) {
+                                 store.fetch(key, windowStartTime, windowStartTime)) {
                         final ValueTimestampHeaders<String> actualValueTimestampHeaders =
-                            iterator.hasNext() ? iterator.next().value : null;
+                                iterator.hasNext() ? iterator.next().value : null;
                         if (!Objects.equals(actualValueTimestampHeaders, expectedValueTimestampHeaders)) {
                             failedChecks++;
                         }
@@ -523,6 +524,7 @@ public class TimestampedWindowStoreWithHeadersTest {
 
         /**
          * Check expected contents of store, and signal completion by writing
+         *
          * @return number of failed checks
          */
         private int checkStoreContents() {
@@ -536,9 +538,9 @@ public class TimestampedWindowStoreWithHeadersTest {
 
                     // validate fetch from store
                     try (final WindowStoreIterator<ValueAndTimestamp<String>> iterator =
-                             store.fetch(key, windowStartTime, windowStartTime)) {
+                                 store.fetch(key, windowStartTime, windowStartTime)) {
                         final ValueAndTimestamp<String> actualValueAndTimestamp =
-                            iterator.hasNext() ? iterator.next().value : null;
+                                iterator.hasNext() ? iterator.next().value : null;
                         if (!Objects.equals(actualValueAndTimestamp, expectedValueAndTimestamp)) {
                             failedChecks++;
                         }

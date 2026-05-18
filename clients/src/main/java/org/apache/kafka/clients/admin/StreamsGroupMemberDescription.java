@@ -48,21 +48,21 @@ public class StreamsGroupMemberDescription {
 
     @SuppressWarnings("ParameterNumber")
     public StreamsGroupMemberDescription(
-        final String memberId,
-        final int memberEpoch,
-        final Optional<String> instanceId,
-        final Optional<String> rackId,
-        final String clientId,
-        final String clientHost,
-        final int topologyEpoch,
-        final String processId,
-        final Optional<Endpoint> userEndpoint,
-        final Map<String, String> clientTags,
-        final List<TaskOffset> taskOffsets,
-        final List<TaskOffset> taskEndOffsets,
-        final StreamsGroupMemberAssignment assignment,
-        final StreamsGroupMemberAssignment targetAssignment,
-        final boolean isClassic
+            final String memberId,
+            final int memberEpoch,
+            final Optional<String> instanceId,
+            final Optional<String> rackId,
+            final String clientId,
+            final String clientHost,
+            final int topologyEpoch,
+            final String processId,
+            final Optional<Endpoint> userEndpoint,
+            final Map<String, String> clientTags,
+            final List<TaskOffset> taskOffsets,
+            final List<TaskOffset> taskEndOffsets,
+            final StreamsGroupMemberAssignment assignment,
+            final StreamsGroupMemberAssignment targetAssignment,
+            final boolean isClassic
     ) {
         this.memberId = Objects.requireNonNull(memberId);
         this.memberEpoch = memberEpoch;
@@ -197,62 +197,62 @@ public class StreamsGroupMemberDescription {
         }
         final StreamsGroupMemberDescription that = (StreamsGroupMemberDescription) o;
         return memberEpoch == that.memberEpoch
-            && topologyEpoch == that.topologyEpoch
-            && isClassic == that.isClassic
-            && Objects.equals(memberId, that.memberId)
-            && Objects.equals(instanceId, that.instanceId)
-            && Objects.equals(rackId, that.rackId)
-            && Objects.equals(clientId, that.clientId)
-            && Objects.equals(clientHost, that.clientHost)
-            && Objects.equals(processId, that.processId)
-            && Objects.equals(userEndpoint, that.userEndpoint)
-            && Objects.equals(clientTags, that.clientTags)
-            && Objects.equals(taskOffsets, that.taskOffsets)
-            && Objects.equals(taskEndOffsets, that.taskEndOffsets)
-            && Objects.equals(assignment, that.assignment)
-            && Objects.equals(targetAssignment, that.targetAssignment);
+                && topologyEpoch == that.topologyEpoch
+                && isClassic == that.isClassic
+                && Objects.equals(memberId, that.memberId)
+                && Objects.equals(instanceId, that.instanceId)
+                && Objects.equals(rackId, that.rackId)
+                && Objects.equals(clientId, that.clientId)
+                && Objects.equals(clientHost, that.clientHost)
+                && Objects.equals(processId, that.processId)
+                && Objects.equals(userEndpoint, that.userEndpoint)
+                && Objects.equals(clientTags, that.clientTags)
+                && Objects.equals(taskOffsets, that.taskOffsets)
+                && Objects.equals(taskEndOffsets, that.taskEndOffsets)
+                && Objects.equals(assignment, that.assignment)
+                && Objects.equals(targetAssignment, that.targetAssignment);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-            memberId,
-            memberEpoch,
-            instanceId,
-            rackId,
-            clientId,
-            clientHost,
-            topologyEpoch,
-            processId,
-            userEndpoint,
-            clientTags,
-            taskOffsets,
-            taskEndOffsets,
-            assignment,
-            targetAssignment,
-            isClassic
+                memberId,
+                memberEpoch,
+                instanceId,
+                rackId,
+                clientId,
+                clientHost,
+                topologyEpoch,
+                processId,
+                userEndpoint,
+                clientTags,
+                taskOffsets,
+                taskEndOffsets,
+                assignment,
+                targetAssignment,
+                isClassic
         );
     }
 
     @Override
     public String toString() {
         return "(" +
-            "memberId=" + memberId +
-            ", memberEpoch=" + memberEpoch +
-            ", instanceId=" + instanceId.orElse("null") +
-            ", rackId=" + rackId.orElse("null") +
-            ", clientId=" + clientId +
-            ", clientHost=" + clientHost +
-            ", topologyEpoch=" + topologyEpoch +
-            ", processId=" + processId +
-            ", userEndpoint=" + userEndpoint.map(Endpoint::toString).orElse("null") +
-            ", clientTags=" + clientTags +
-            ", taskOffsets=" + taskOffsets.stream().map(TaskOffset::toString).collect(Collectors.joining(",")) +
-            ", taskEndOffsets=" + taskEndOffsets.stream().map(TaskOffset::toString).collect(Collectors.joining(",")) +
-            ", assignment=" + assignment +
-            ", targetAssignment=" + targetAssignment +
-            ", isClassic=" + isClassic +
-            ')';
+                "memberId=" + memberId +
+                ", memberEpoch=" + memberEpoch +
+                ", instanceId=" + instanceId.orElse("null") +
+                ", rackId=" + rackId.orElse("null") +
+                ", clientId=" + clientId +
+                ", clientHost=" + clientHost +
+                ", topologyEpoch=" + topologyEpoch +
+                ", processId=" + processId +
+                ", userEndpoint=" + userEndpoint.map(Endpoint::toString).orElse("null") +
+                ", clientTags=" + clientTags +
+                ", taskOffsets=" + taskOffsets.stream().map(TaskOffset::toString).collect(Collectors.joining(",")) +
+                ", taskEndOffsets=" + taskEndOffsets.stream().map(TaskOffset::toString).collect(Collectors.joining(",")) +
+                ", assignment=" + assignment +
+                ", targetAssignment=" + targetAssignment +
+                ", isClassic=" + isClassic +
+                ')';
     }
 
     /**
@@ -296,9 +296,9 @@ public class StreamsGroupMemberDescription {
         @Override
         public String toString() {
             return "(" +
-                "host=" + host +
-                ", port=" + port +
-                ')';
+                    "host=" + host +
+                    ", port=" + port +
+                    ')';
         }
     }
 
@@ -348,24 +348,24 @@ public class StreamsGroupMemberDescription {
             }
             final TaskOffset that = (TaskOffset) o;
             return partition == that.partition
-                && offset == that.offset
-                && Objects.equals(subtopologyId, that.subtopologyId);
+                    && offset == that.offset
+                    && Objects.equals(subtopologyId, that.subtopologyId);
         }
 
         @Override
         public int hashCode() {
             return Objects.hash(
-                subtopologyId,
-                partition,
-                offset
+                    subtopologyId,
+                    partition,
+                    offset
             );
         }
 
         @Override
         public String toString() {
             return subtopologyId +
-                "_" + partition +
-                "=" + offset;
+                    "_" + partition +
+                    "=" + offset;
         }
     }
 }

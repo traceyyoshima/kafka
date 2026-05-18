@@ -36,6 +36,7 @@ public abstract class InternalTopicConfig {
     private Optional<Integer> numberOfPartitions = Optional.empty();
 
     static final Map<String, String> INTERNAL_TOPIC_DEFAULT_OVERRIDES = new HashMap<>();
+
     static {
         INTERNAL_TOPIC_DEFAULT_OVERRIDES.put(TopicConfig.MESSAGE_TIMESTAMP_TYPE_CONFIG, "CreateTime");
     }

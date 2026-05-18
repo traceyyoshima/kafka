@@ -41,9 +41,9 @@ public class CodeBufferTest {
         StringWriter stringWriter = new StringWriter();
         buffer.write(stringWriter);
         assertEquals(
-            String.format("public static void main(String[] args) throws Exception {%n") +
-            String.format("    System.out.println(\"hello world\");%n") +
-            String.format("}%n"), stringWriter.toString());
+                String.format("public static void main(String[] args) throws Exception {%n") +
+                        String.format("    System.out.println(\"hello world\");%n") +
+                        String.format("}%n"), stringWriter.toString());
     }
 
     @Test

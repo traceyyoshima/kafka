@@ -30,7 +30,7 @@ public class ClientQuotaAlteration {
         private final Double value;
 
         /**
-         * @param key the quota type to alter
+         * @param key   the quota type to alter
          * @param value if set then the existing value is updated,
          *              otherwise if null, the existing value is cleared
          */
@@ -48,7 +48,7 @@ public class ClientQuotaAlteration {
 
         /**
          * @return if set then the existing value is updated,
-         *         otherwise if null, the existing value is cleared
+         * otherwise if null, the existing value is cleared
          */
         public Double value() {
             return this.value;
@@ -78,7 +78,7 @@ public class ClientQuotaAlteration {
 
     /**
      * @param entity the entity whose config will be modified
-     * @param ops the alteration to perform
+     * @param ops    the alteration to perform
      */
     public ClientQuotaAlteration(ClientQuotaEntity entity, Collection<Op> ops) {
         this.entity = entity;

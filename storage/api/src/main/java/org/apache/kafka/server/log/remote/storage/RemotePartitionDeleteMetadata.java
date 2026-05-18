@@ -63,11 +63,11 @@ public class RemotePartitionDeleteMetadata extends RemoteLogMetadata {
     @Override
     public String toString() {
         return "RemotePartitionDeleteMetadata{" +
-               "topicPartition=" + topicIdPartition +
-               ", state=" + state +
-               ", eventTimestampMs=" + eventTimestampMs() +
-               ", brokerId=" + brokerId() +
-               '}';
+                "topicPartition=" + topicIdPartition +
+                ", state=" + state +
+                ", eventTimestampMs=" + eventTimestampMs() +
+                ", brokerId=" + brokerId() +
+                '}';
     }
 
     @Override

@@ -59,7 +59,7 @@ public class ListPartitionReassignmentsRequest extends AbstractRequest {
 
     public static ListPartitionReassignmentsRequest parse(Readable readable, short version) {
         return new ListPartitionReassignmentsRequest(new ListPartitionReassignmentsRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     @Override

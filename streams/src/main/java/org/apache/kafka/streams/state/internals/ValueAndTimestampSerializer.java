@@ -103,10 +103,10 @@ public class ValueAndTimestampSerializer<V> implements WrappingNullableSerialize
 
         final byte[] rawTimestamp = timestampSerializer.serialize(topic, headers, timestamp);
         return ByteBuffer
-            .allocate(rawTimestamp.length + rawValue.length)
-            .put(rawTimestamp)
-            .put(rawValue)
-            .array();
+                .allocate(rawTimestamp.length + rawValue.length)
+                .put(rawTimestamp)
+                .put(rawValue)
+                .array();
     }
 
     @Override

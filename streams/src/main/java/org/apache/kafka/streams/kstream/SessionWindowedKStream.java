@@ -45,7 +45,6 @@ import java.time.Duration;
  *
  * @param <K> the key type of this session-windowed stream
  * @param <V> the value type of this session-windowed stream
- *
  * @see TimeWindowedKStream
  */
 public interface SessionWindowedKStream<K, V> {
@@ -105,7 +104,7 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param named  a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
+     * @param named a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys and {@link Long} values
      * that represent the latest (rolling) count (i.e., number of records) for each key per session
      */
@@ -150,9 +149,9 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param materialized  an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
-     *                      Note: the valueSerde will be automatically set to {@link org.apache.kafka.common.serialization.Serdes#Long() Serdes#Long()}
-     *                      if there is no valueSerde provided
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
+     *                     Note: the valueSerde will be automatically set to {@link org.apache.kafka.common.serialization.Serdes#Long() Serdes#Long()}
+     *                     if there is no valueSerde provided
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys and {@link Long} values
      * that represent the latest (rolling) count (i.e., number of records) for each key per session
      */
@@ -197,10 +196,10 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param named         a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
-     * @param materialized  an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
-     *                      Note: the valueSerde will be automatically set to {@link org.apache.kafka.common.serialization.Serdes#Long() Serdes#Long()}
-     *                      if there is no valueSerde provided
+     * @param named        a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
+     *                     Note: the valueSerde will be automatically set to {@link org.apache.kafka.common.serialization.Serdes#Long() Serdes#Long()}
+     *                     if there is no valueSerde provided
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys and {@link Long} values
      * that represent the latest (rolling) count (i.e., number of records) for each key per session
      */
@@ -246,7 +245,7 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param reducer  a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
+     * @param reducer a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key per session
      */
@@ -291,8 +290,8 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param reducer  a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
-     * @param named    a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
+     * @param reducer a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
+     * @param named   a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key per session
      */
@@ -351,8 +350,8 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param reducer       a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
-     * @param materialized  a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
+     * @param reducer      a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
+     * @param materialized a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key per session
      */
@@ -412,9 +411,9 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param reducer       a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
-     * @param named         a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
-     * @param materialized  a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
+     * @param reducer      a {@link Reducer} that computes a new aggregate result. Cannot be {@code null}.
+     * @param named        a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
+     * @param materialized a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key per session
      */
@@ -460,10 +459,10 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer    an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param aggregator     an {@link Aggregator} that computes a new aggregate result. Cannot be {@code null}.
-     * @param sessionMerger  a {@link Merger} that combines two aggregation results. Cannot be {@code null}.
-     * @param <VOut>           the value type of the resulting {@link KTable}
+     * @param initializer   an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param aggregator    an {@link Aggregator} that computes a new aggregate result. Cannot be {@code null}.
+     * @param sessionMerger a {@link Merger} that combines two aggregation results. Cannot be {@code null}.
+     * @param <VOut>        the value type of the resulting {@link KTable}
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key per session
      */
@@ -509,11 +508,11 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer    an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param aggregator     an {@link Aggregator} that computes a new aggregate result. Cannot be {@code null}.
-     * @param sessionMerger  a {@link Merger} that combines two aggregation results. Cannot be {@code null}.
-     * @param named          a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
-     * @param <VOut>           the value type of the resulting {@link KTable}
+     * @param initializer   an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param aggregator    an {@link Aggregator} that computes a new aggregate result. Cannot be {@code null}.
+     * @param sessionMerger a {@link Merger} that combines two aggregation results. Cannot be {@code null}.
+     * @param named         a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
+     * @param <VOut>        the value type of the resulting {@link KTable}
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key per session
      */
@@ -571,11 +570,11 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer    an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param aggregator     an {@link Aggregator} that computes a new aggregate result. Cannot be {@code null}.
-     * @param sessionMerger  a {@link Merger} that combines two aggregation results. Cannot be {@code null}.
-     * @param materialized   a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
-     * @param <VOut>           the value type of the resulting {@link KTable}
+     * @param initializer   an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param aggregator    an {@link Aggregator} that computes a new aggregate result. Cannot be {@code null}.
+     * @param sessionMerger a {@link Merger} that combines two aggregation results. Cannot be {@code null}.
+     * @param materialized  a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
+     * @param <VOut>        the value type of the resulting {@link KTable}
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key per session
      */
@@ -633,12 +632,12 @@ public interface SessionWindowedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer    an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param aggregator     an {@link Aggregator} that computes a new aggregate result. Cannot be {@code null}.
-     * @param sessionMerger  a {@link Merger} that combines two aggregation results. Cannot be {@code null}.
-     * @param named          a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
-     * @param materialized   a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
-     * @param <VOut>           the value type of the resulting {@link KTable}
+     * @param initializer   an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param aggregator    an {@link Aggregator} that computes a new aggregate result. Cannot be {@code null}.
+     * @param sessionMerger a {@link Merger} that combines two aggregation results. Cannot be {@code null}.
+     * @param named         a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
+     * @param materialized  a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
+     * @param <VOut>        the value type of the resulting {@link KTable}
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key per session
      */

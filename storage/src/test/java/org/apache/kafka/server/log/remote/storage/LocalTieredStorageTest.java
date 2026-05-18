@@ -219,7 +219,7 @@ public final class LocalTieredStorageTest {
         }
         tieredStorage.deletePartition(topicIdPartition);
         remoteStorageVerifier.assertFileDoesNotExist(remoteStorageVerifier.expectedPartitionPath());
-        for (RemoteLogSegmentMetadata segmentMetadata: segmentMetadatas) {
+        for (RemoteLogSegmentMetadata segmentMetadata : segmentMetadatas) {
             remoteStorageVerifier.verifyLogSegmentFilesAbsent(segmentMetadata);
         }
     }
@@ -335,7 +335,7 @@ public final class LocalTieredStorageTest {
         final RemoteLogSegmentMetadata metadata = newRemoteLogSegmentMetadata(newRemoteLogSegmentId());
 
         assertThrows(RemoteResourceNotFoundException.class,
-            () -> tieredStorage.fetchLogSegment(metadata, 0, metadata.segmentSizeInBytes()));
+                () -> tieredStorage.fetchLogSegment(metadata, 0, metadata.segmentSizeInBytes()));
         assertThrows(RemoteResourceNotFoundException.class, () -> tieredStorage.fetchIndex(metadata, OFFSET));
         assertThrows(RemoteResourceNotFoundException.class, () -> tieredStorage.fetchIndex(metadata, TIMESTAMP));
         assertThrows(RemoteResourceNotFoundException.class, () -> tieredStorage.fetchIndex(metadata, LEADER_EPOCH));
@@ -368,7 +368,7 @@ public final class LocalTieredStorageTest {
         final FileRecords records = FileRecords.open(snapshot.getFile(id, SEGMENT));
         final List<ByteBuffer> buffers = new ArrayList<>();
 
-        for (Record record: records.records()) {
+        for (Record record : records.records()) {
             buffers.add(record.value());
         }
 
@@ -444,7 +444,7 @@ public final class LocalTieredStorageTest {
          * This method does not fetch from the remote storage.
          *
          * @param metadata The metadata of the remote log segment and associated resources (e.g. offset and time indexes).
-         * @param seg The segment stored on Kafka's local storage.
+         * @param seg      The segment stored on Kafka's local storage.
          */
         public void verifyRemoteLogSegmentMatchesLocal(final RemoteLogSegmentMetadata metadata, final LogSegmentData seg) {
             final Path remoteSegmentPath = expectedPaths(metadata).get(0);
@@ -454,9 +454,9 @@ public final class LocalTieredStorageTest {
         /**
          * Verifies the content of the remote segment matches with the {@code expected} array.
          *
-         * @param id The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
+         * @param id            The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
          * @param startPosition The position in the segment to fetch from.
-         * @param expected The expected content.
+         * @param expected      The expected content.
          */
         public void verifyFetchedLogSegment(final RemoteLogSegmentId id, final int startPosition, final byte[] expected) {
             try (final InputStream in = remoteStorage.fetchLogSegment(newMetadata(id), startPosition)) {
@@ -474,7 +474,7 @@ public final class LocalTieredStorageTest {
         /**
          * Verifies the content of the remote offset index matches with the {@code expected} array.
          *
-         * @param id The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
+         * @param id       The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
          * @param expected The expected content.
          */
         public void verifyFetchedOffsetIndex(final RemoteLogSegmentId id, final byte[] expected) {
@@ -484,7 +484,7 @@ public final class LocalTieredStorageTest {
         /**
          * Verifies the content of the remote time index matches with the {@code expected} array.
          *
-         * @param id The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
+         * @param id       The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
          * @param expected The expected content.
          */
         public void verifyFetchedTimeIndex(final RemoteLogSegmentId id, final byte[] expected) {
@@ -494,7 +494,7 @@ public final class LocalTieredStorageTest {
         /**
          * Verifies the content of the remote transaction index matches with the {@code expected} array.
          *
-         * @param id The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
+         * @param id       The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
          * @param expected The expected content.
          */
         public void verifyFetchedTransactionIndex(final RemoteLogSegmentId id, final byte[] expected) {
@@ -504,7 +504,7 @@ public final class LocalTieredStorageTest {
         /**
          * Verifies the content of the remote leader epoch checkpoint matches with the {@code expected} array.
          *
-         * @param id The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
+         * @param id       The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
          * @param expected The expected content.
          */
         public void verifyLeaderEpochCheckpoint(final RemoteLogSegmentId id, final byte[] expected) {
@@ -514,7 +514,7 @@ public final class LocalTieredStorageTest {
         /**
          * Verifies the content of the remote producer snapshot matches with the {@code expected} array.
          *
-         * @param id The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
+         * @param id       The unique ID of the remote log segment and associated resources (e.g. offset and time indexes).
          * @param expected The expected content.
          */
         public void verifyProducerSnapshot(final RemoteLogSegmentId id, final byte[] expected) {

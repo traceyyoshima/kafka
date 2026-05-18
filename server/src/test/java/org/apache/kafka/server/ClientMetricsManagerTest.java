@@ -83,8 +83,8 @@ public class ClientMetricsManagerTest {
     public static void ensureNoThreadLeak() throws InterruptedException {
         TestUtils.waitForCondition(
                 () -> Thread.getAllStackTraces().keySet().stream()
-                    .map(Thread::getName)
-                    .noneMatch(t -> t.contains(ClientMetricsManager.CLIENT_METRICS_REAPER_THREAD_NAME) || t.contains(SystemTimer.SYSTEM_TIMER_THREAD_PREFIX)),
+                        .map(Thread::getName)
+                        .noneMatch(t -> t.contains(ClientMetricsManager.CLIENT_METRICS_REAPER_THREAD_NAME) || t.contains(SystemTimer.SYSTEM_TIMER_THREAD_PREFIX)),
                 "Thread leak detected"
         );
 
@@ -120,14 +120,14 @@ public class ClientMetricsManagerTest {
         // Validate metrics.
         assertEquals(ClientMetricsTestUtils.METRICS_TEST_DEFAULT.split(",").length, metrics.size());
         Arrays.stream(ClientMetricsTestUtils.METRICS_TEST_DEFAULT.split(",")).forEach(metric ->
-            assertTrue(metrics.contains(metric)));
+                assertTrue(metrics.contains(metric)));
         // Validate push interval.
         assertEquals(ClientMetricsTestUtils.defaultTestProperties().getProperty(ClientMetricsConfigs.INTERVAL_MS_CONFIG),
-            String.valueOf(subscriptionInfo.intervalMs()));
+                String.valueOf(subscriptionInfo.intervalMs()));
 
         // Validate match patterns.
         assertEquals(ClientMetricsTestUtils.MATCH_TEST_DEFAULT.size(),
-            subscriptionInfo.matchPattern().size());
+                subscriptionInfo.matchPattern().size());
         ClientMetricsTestUtils.MATCH_TEST_DEFAULT.forEach(pattern -> {
             String[] split = pattern.split("=");
             assertTrue(subscriptionInfo.matchPattern().containsKey(split[0]));
@@ -157,7 +157,7 @@ public class ClientMetricsManagerTest {
         assertEquals(0, clientMetricsManager.subscriptionUpdateVersion());
         // Properties shouldn't be passed as null.
         assertThrows(NullPointerException.class, () ->
-            clientMetricsManager.updateSubscription("sub-1", null));
+                clientMetricsManager.updateSubscription("sub-1", null));
         assertEquals(0, clientMetricsManager.subscriptions().size());
         assertEquals(0, clientMetricsManager.subscriptionUpdateVersion());
     }
@@ -195,17 +195,17 @@ public class ClientMetricsManagerTest {
         assertEquals(1, clientMetricsManager.subscriptions().size());
 
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertNotNull(response.data().clientInstanceId());
         assertTrue(response.data().subscriptionId() != 0);
 
         assertEquals(ClientMetricsTestUtils.METRICS_TEST_DEFAULT.split(",").length, response.data().requestedMetrics().size());
         Arrays.stream(ClientMetricsTestUtils.METRICS_TEST_DEFAULT.split(",")).forEach(metric ->
-            assertTrue(response.data().requestedMetrics().contains(metric)));
+                assertTrue(response.data().requestedMetrics().contains(metric)));
 
         assertEquals(4, response.data().acceptedCompressionTypes().size());
         // validate compression types order.
@@ -243,10 +243,10 @@ public class ClientMetricsManagerTest {
         assertTrue(clientMetricsManager.subscriptions().isEmpty());
 
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertNotNull(response.data().clientInstanceId());
         assertTrue(response.data().subscriptionId() != 0);
@@ -265,10 +265,10 @@ public class ClientMetricsManagerTest {
     @Test
     public void testGetTelemetryAfterPushIntervalTime() throws UnknownHostException {
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertNotNull(response.data().clientInstanceId());
         assertEquals(Errors.NONE, response.error());
@@ -276,10 +276,10 @@ public class ClientMetricsManagerTest {
         time.sleep(ClientMetricsConfigs.INTERVAL_MS_DEFAULT);
 
         request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(response.data().clientInstanceId()), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(response.data().clientInstanceId()), true).build();
 
         response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
         assertNotNull(response.data().clientInstanceId());
         assertEquals(Errors.NONE, response.error());
     }
@@ -294,10 +294,10 @@ public class ClientMetricsManagerTest {
         assertEquals(2, clientMetricsManager.subscriptions().size());
 
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertNotNull(response.data().clientInstanceId());
         assertTrue(response.data().subscriptionId() != 0);
@@ -319,19 +319,19 @@ public class ClientMetricsManagerTest {
     @Test
     public void testGetTelemetrySameClientImmediateRetryFail() throws Exception {
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         Uuid clientInstanceId = response.data().clientInstanceId();
         assertNotNull(clientInstanceId);
         assertEquals(Errors.NONE, response.error());
 
         request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(clientInstanceId), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(clientInstanceId), true).build();
         response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.THROTTLING_QUOTA_EXCEEDED, response.error());
         assertEquals((double) 1, getMetric(ClientMetricsManager.ClientMetricsStats.INSTANCE_COUNT).metricValue());
@@ -343,10 +343,10 @@ public class ClientMetricsManagerTest {
     @Test
     public void testGetTelemetrySameClientImmediateRetryAfterPushFail() throws Exception {
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         Uuid clientInstanceId = response.data().clientInstanceId();
         assertNotNull(clientInstanceId);
@@ -391,10 +391,10 @@ public class ClientMetricsManagerTest {
         assertEquals(1, clientMetricsManager.subscriptions().size());
 
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         Uuid clientInstanceId = response.data().clientInstanceId();
         int subscriptionId = response.data().subscriptionId();
@@ -409,10 +409,10 @@ public class ClientMetricsManagerTest {
         assertEquals(2, clientMetricsManager.subscriptions().size());
 
         request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(clientInstanceId), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(clientInstanceId), true).build();
 
         response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         // No throttle error as the subscription has changed.
         assertEquals(Errors.NONE, response.error());
@@ -423,7 +423,7 @@ public class ClientMetricsManagerTest {
     @Test
     public void testGetTelemetryConcurrentRequestNewClientInstance() throws Exception {
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(Uuid.randomUuid()), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(Uuid.randomUuid()), true).build();
 
         CountDownLatch lock = new CountDownLatch(2);
         List<GetTelemetrySubscriptionsResponse> responses = Collections.synchronizedList(new ArrayList<>());
@@ -431,7 +431,7 @@ public class ClientMetricsManagerTest {
         Thread thread = new Thread(() -> {
             try {
                 GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-                    request, ClientMetricsTestUtils.requestContext());
+                        request, ClientMetricsTestUtils.requestContext());
 
                 responses.add(response);
             } catch (UnknownHostException e) {
@@ -444,7 +444,7 @@ public class ClientMetricsManagerTest {
         Thread thread1 = new Thread(() -> {
             try {
                 GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-                    request, ClientMetricsTestUtils.requestContext());
+                        request, ClientMetricsTestUtils.requestContext());
 
                 responses.add(response);
             } catch (UnknownHostException e) {
@@ -479,10 +479,10 @@ public class ClientMetricsManagerTest {
     @Test
     public void testGetTelemetryConcurrentRequestAfterSubscriptionUpdate() throws Exception {
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(Uuid.randomUuid()), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(Uuid.randomUuid()), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
         assertNotNull(instance);
@@ -496,7 +496,7 @@ public class ClientMetricsManagerTest {
         Thread thread = new Thread(() -> {
             try {
                 GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-                    request, ClientMetricsTestUtils.requestContext());
+                        request, ClientMetricsTestUtils.requestContext());
 
                 responses.add(response);
             } catch (UnknownHostException e) {
@@ -509,7 +509,7 @@ public class ClientMetricsManagerTest {
         Thread thread1 = new Thread(() -> {
             try {
                 GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-                    request, ClientMetricsTestUtils.requestContext());
+                        request, ClientMetricsTestUtils.requestContext());
 
                 responses.add(response);
             } catch (UnknownHostException e) {
@@ -547,23 +547,23 @@ public class ClientMetricsManagerTest {
         assertEquals(1, clientMetricsManager.subscriptions().size());
 
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
         assertNotNull(instance);
 
         PushTelemetryRequest request = new Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setCompressionType(CompressionType.NONE.id)
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setCompressionType(CompressionType.NONE.id)
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.NONE, response.error());
         assertFalse(instance.terminating());
@@ -587,10 +587,10 @@ public class ClientMetricsManagerTest {
     @Test
     public void testPushTelemetryOnNewServer() throws Exception {
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         // Create new client metrics manager which simulates a new server as it will not have any
         // client instance information but request should succeed as subscription id should match
@@ -631,27 +631,27 @@ public class ClientMetricsManagerTest {
         assertEquals(1, clientMetricsManager.subscriptions().size());
 
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         PushTelemetryRequest request = new Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setCompressionType(CompressionType.NONE.id)
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setCompressionType(CompressionType.NONE.id)
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.NONE, response.error());
 
         time.sleep(ClientMetricsTestUtils.INTERVAL_MS_TEST_DEFAULT);
 
         response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.NONE, response.error());
     }
@@ -660,19 +660,19 @@ public class ClientMetricsManagerTest {
     public void testPushTelemetryClientInstanceIdInvalid() throws UnknownHostException {
         // Null client instance id
         PushTelemetryRequest request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData().setClientInstanceId(null), true).build();
+                new PushTelemetryRequestData().setClientInstanceId(null), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.INVALID_REQUEST, response.error());
 
         // Zero client instance id
         request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData().setClientInstanceId(Uuid.ZERO_UUID), true).build();
+                new PushTelemetryRequestData().setClientInstanceId(Uuid.ZERO_UUID), true).build();
 
         response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.INVALID_REQUEST, response.error());
     }
@@ -680,24 +680,24 @@ public class ClientMetricsManagerTest {
     @Test
     public void testPushTelemetryThrottleError() throws Exception {
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         PushTelemetryRequest request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
         // Immediate push request should succeed.
         assertEquals(Errors.NONE, response.error());
 
         response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
         // Second push request should fail with throttle error.
         assertEquals(Errors.THROTTLING_QUOTA_EXCEEDED, response.error());
 
@@ -718,32 +718,32 @@ public class ClientMetricsManagerTest {
     @Test
     public void testPushTelemetryTerminatingFlag() throws Exception {
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         PushTelemetryRequest request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.NONE, response.error());
 
         // Push telemetry with terminating flag set to true.
         request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8)))
-                .setTerminating(true), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8)))
+                        .setTerminating(true), true).build();
 
         response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.NONE, response.error());
 
@@ -762,35 +762,35 @@ public class ClientMetricsManagerTest {
     @Test
     public void testPushTelemetryNextRequestPostTerminatingFlag() throws UnknownHostException {
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
         assertNotNull(instance);
 
         PushTelemetryRequest request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setTerminating(true), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setTerminating(true), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.NONE, response.error());
         assertTrue(instance.terminating());
         assertEquals(Errors.NONE, instance.lastKnownError());
 
         request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setTerminating(true), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setTerminating(true), true).build();
 
         response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.INVALID_REQUEST, response.error());
         assertTrue(instance.terminating());
@@ -800,22 +800,22 @@ public class ClientMetricsManagerTest {
     @Test
     public void testPushTelemetrySubscriptionIdInvalid() throws Exception {
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
         assertNotNull(instance);
 
         PushTelemetryRequest request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8)))
-                .setSubscriptionId(1234), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8)))
+                        .setSubscriptionId(1234), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.UNKNOWN_SUBSCRIPTION_ID, response.error());
         assertFalse(instance.terminating());
@@ -831,22 +831,22 @@ public class ClientMetricsManagerTest {
     @Test
     public void testPushTelemetryCompressionTypeInvalid() throws UnknownHostException {
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
         assertNotNull(instance);
 
         PushTelemetryRequest request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setCompressionType((byte) 100), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setCompressionType((byte) 100), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.UNSUPPORTED_COMPRESSION_TYPE, response.error());
         assertFalse(instance.terminating());
@@ -856,22 +856,22 @@ public class ClientMetricsManagerTest {
     @Test
     public void testPushTelemetryNullMetricsData() throws Exception {
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
         assertNotNull(instance);
 
         PushTelemetryRequest request = new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setMetrics(null), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setMetrics(null), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         // Should not report any error though no metrics will be exported.
         assertEquals(Errors.NONE, response.error());
@@ -924,20 +924,20 @@ public class ClientMetricsManagerTest {
     @Test
     public void testPushTelemetryConcurrentRequestNewClientInstance() throws Exception {
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
         assertNotNull(instance);
 
         PushTelemetryRequest request = new Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setCompressionType(CompressionType.NONE.id)
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setCompressionType(CompressionType.NONE.id)
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
 
         CountDownLatch lock = new CountDownLatch(2);
         List<PushTelemetryResponse> responses = Collections.synchronizedList(new ArrayList<>());
@@ -1000,20 +1000,20 @@ public class ClientMetricsManagerTest {
     @Test
     public void testPushTelemetryConcurrentRequestAfterSubscriptionUpdate() throws Exception {
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
         assertNotNull(instance);
 
         PushTelemetryRequest request = new Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setCompressionType(CompressionType.NONE.id)
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setCompressionType(CompressionType.NONE.id)
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
 
         clientMetricsManager.updateSubscription("sub-1", ClientMetricsTestUtils.defaultTestProperties());
         assertEquals(1, clientMetricsManager.subscriptions().size());
@@ -1024,7 +1024,7 @@ public class ClientMetricsManagerTest {
         Thread thread = new Thread(() -> {
             try {
                 PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-                    request, ClientMetricsTestUtils.requestContext());
+                        request, ClientMetricsTestUtils.requestContext());
                 responses.add(response);
             } catch (UnknownHostException e) {
                 LOG.error("Error processing request", e);
@@ -1036,7 +1036,7 @@ public class ClientMetricsManagerTest {
         Thread thread1 = new Thread(() -> {
             try {
                 PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-                    request, ClientMetricsTestUtils.requestContext());
+                        request, ClientMetricsTestUtils.requestContext());
                 responses.add(response);
             } catch (UnknownHostException e) {
                 LOG.error("Error processing request", e);
@@ -1129,10 +1129,10 @@ public class ClientMetricsManagerTest {
         assertEquals(1, clientMetricsManager.subscriptions().size());
 
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         Properties properties = new Properties();
         properties.put("interval.ms", "100");
@@ -1140,14 +1140,14 @@ public class ClientMetricsManagerTest {
         assertEquals(2, clientMetricsManager.subscriptions().size());
 
         PushTelemetryRequest request = new Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setCompressionType(CompressionType.NONE.id)
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setCompressionType(CompressionType.NONE.id)
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.UNKNOWN_SUBSCRIPTION_ID, response.error());
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
@@ -1155,9 +1155,9 @@ public class ClientMetricsManagerTest {
         assertEquals(Errors.UNKNOWN_SUBSCRIPTION_ID, instance.lastKnownError());
 
         subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(subscriptionsResponse.data().clientInstanceId()), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(subscriptionsResponse.data().clientInstanceId()), true).build();
         subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
         assertEquals(Errors.NONE, subscriptionsResponse.error());
     }
 
@@ -1167,20 +1167,20 @@ public class ClientMetricsManagerTest {
         assertEquals(1, clientMetricsManager.subscriptions().size());
 
         GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
         PushTelemetryRequest request = new Builder(
-            new PushTelemetryRequestData()
-                .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                .setCompressionType((byte) 10) // // Invalid compression type
-                .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
+                new PushTelemetryRequestData()
+                        .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                        .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                        .setCompressionType((byte) 10) // // Invalid compression type
+                        .setMetrics(ByteBuffer.wrap("test-data".getBytes(StandardCharsets.UTF_8))), true).build();
 
         PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
 
         assertEquals(Errors.UNSUPPORTED_COMPRESSION_TYPE, response.error());
         ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
@@ -1188,36 +1188,36 @@ public class ClientMetricsManagerTest {
         assertEquals(Errors.UNSUPPORTED_COMPRESSION_TYPE, instance.lastKnownError());
 
         subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(subscriptionsResponse.data().clientInstanceId()), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(subscriptionsResponse.data().clientInstanceId()), true).build();
         subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
         assertEquals(Errors.NONE, subscriptionsResponse.error());
     }
 
     @Test
     public void testGetTelemetrySubscriptionAfterPushTelemetryBytesExceptionFails() throws Exception {
         try (
-            Metrics kafkaMetrics = new Metrics();
-            ClientMetricsManager clientMetricsManager = new ClientMetricsManager(clientTelemetryExporterPlugin, 1, time, kafkaMetrics)
+                Metrics kafkaMetrics = new Metrics();
+                ClientMetricsManager clientMetricsManager = new ClientMetricsManager(clientTelemetryExporterPlugin, 1, time, kafkaMetrics)
         ) {
             GetTelemetrySubscriptionsRequest subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-                new GetTelemetrySubscriptionsRequestData(), true).build();
+                    new GetTelemetrySubscriptionsRequestData(), true).build();
 
             GetTelemetrySubscriptionsResponse subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                    subscriptionsRequest, ClientMetricsTestUtils.requestContext());
 
             byte[] metrics = "ab".getBytes(StandardCharsets.UTF_8);
             assertEquals(2, metrics.length);
 
             PushTelemetryRequest request = new PushTelemetryRequest.Builder(
-                new PushTelemetryRequestData()
-                    .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
-                    .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
-                    .setMetrics(ByteBuffer.wrap(metrics)), true).build();
+                    new PushTelemetryRequestData()
+                            .setClientInstanceId(subscriptionsResponse.data().clientInstanceId())
+                            .setSubscriptionId(subscriptionsResponse.data().subscriptionId())
+                            .setMetrics(ByteBuffer.wrap(metrics)), true).build();
 
             // Set the max bytes 1 to force the error.
             PushTelemetryResponse response = clientMetricsManager.processPushTelemetryRequest(
-                request, ClientMetricsTestUtils.requestContext());
+                    request, ClientMetricsTestUtils.requestContext());
 
             assertEquals(Errors.TELEMETRY_TOO_LARGE, response.error());
             ClientMetricsInstance instance = clientMetricsManager.clientInstance(subscriptionsResponse.data().clientInstanceId());
@@ -1225,9 +1225,9 @@ public class ClientMetricsManagerTest {
             assertEquals(Errors.TELEMETRY_TOO_LARGE, instance.lastKnownError());
 
             subscriptionsRequest = new GetTelemetrySubscriptionsRequest.Builder(
-                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(subscriptionsResponse.data().clientInstanceId()), true).build();
+                    new GetTelemetrySubscriptionsRequestData().setClientInstanceId(subscriptionsResponse.data().clientInstanceId()), true).build();
             subscriptionsResponse = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-                subscriptionsRequest, ClientMetricsTestUtils.requestContext());
+                    subscriptionsRequest, ClientMetricsTestUtils.requestContext());
             assertEquals(Errors.THROTTLING_QUOTA_EXCEEDED, subscriptionsResponse.error());
         }
     }
@@ -1240,10 +1240,10 @@ public class ClientMetricsManagerTest {
         clientMetricsManager.updateSubscription("sub-1", properties);
 
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
         assertEquals(Errors.NONE, response.error());
 
         // Metrics for instance should exist.
@@ -1259,7 +1259,7 @@ public class ClientMetricsManagerTest {
         assertTimeoutPreemptively(Duration.ofMillis(300), () -> {
             // Validate that cache eviction happens and client instance is removed from cache.
             while (clientMetricsManager.expirationTimer().size() != 0 ||
-                clientMetricsManager.clientInstance(response.data().clientInstanceId()) != null) {
+                    clientMetricsManager.clientInstance(response.data().clientInstanceId()) != null) {
                 // Wait for cache eviction to happen.
                 Thread.sleep(50);
             }
@@ -1280,14 +1280,14 @@ public class ClientMetricsManagerTest {
         clientMetricsManager.updateSubscription("sub-1", properties);
 
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response1 = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
         assertEquals(Errors.NONE, response1.error());
 
         GetTelemetrySubscriptionsResponse response2 = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContext());
+                request, ClientMetricsTestUtils.requestContext());
         assertEquals(Errors.NONE, response2.error());
 
         // Metrics for both instances should exist.
@@ -1304,8 +1304,8 @@ public class ClientMetricsManagerTest {
         assertTimeoutPreemptively(Duration.ofMillis(300), () -> {
             // Validate that cache eviction happens and client instance is removed from cache.
             while (clientMetricsManager.expirationTimer().size() != 0 ||
-                clientMetricsManager.clientInstance(response1.data().clientInstanceId()) != null ||
-                clientMetricsManager.clientInstance(response2.data().clientInstanceId()) != null) {
+                    clientMetricsManager.clientInstance(response1.data().clientInstanceId()) != null ||
+                    clientMetricsManager.clientInstance(response2.data().clientInstanceId()) != null) {
                 // Wait for cache eviction to happen.
                 Thread.sleep(50);
             }
@@ -1321,10 +1321,10 @@ public class ClientMetricsManagerTest {
     @Test
     public void testCacheExpirationTaskCancelledOnInstanceUpdate() throws Exception {
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContextWithConnectionId("conn-1"));
+                request, ClientMetricsTestUtils.requestContextWithConnectionId("conn-1"));
         assertEquals(Errors.NONE, response.error());
         Uuid clientInstanceId = response.data().clientInstanceId();
         int subscriptionId = response.data().subscriptionId();
@@ -1339,10 +1339,10 @@ public class ClientMetricsManagerTest {
         assertEquals(1, clientMetricsManager.subscriptions().size());
 
         request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData().setClientInstanceId(clientInstanceId), true).build();
+                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(clientInstanceId), true).build();
 
         response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContextWithConnectionId("conn-1"));
+                request, ClientMetricsTestUtils.requestContextWithConnectionId("conn-1"));
         assertEquals(Errors.NONE, response.error());
         assertTrue(subscriptionId != response.data().subscriptionId());
 
@@ -1364,10 +1364,10 @@ public class ClientMetricsManagerTest {
     @Test
     public void testRemoveConnection() throws Exception {
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContextWithConnectionId("conn-1"));
+                request, ClientMetricsTestUtils.requestContextWithConnectionId("conn-1"));
         assertEquals(Errors.NONE, response.error());
         Uuid clientInstanceId = response.data().clientInstanceId();
 
@@ -1390,10 +1390,10 @@ public class ClientMetricsManagerTest {
     @Test
     public void testRemoveConnectionUnknownConnectionId() throws Exception {
         GetTelemetrySubscriptionsRequest request = new GetTelemetrySubscriptionsRequest.Builder(
-            new GetTelemetrySubscriptionsRequestData(), true).build();
+                new GetTelemetrySubscriptionsRequestData(), true).build();
 
         GetTelemetrySubscriptionsResponse response = clientMetricsManager.processGetTelemetrySubscriptionRequest(
-            request, ClientMetricsTestUtils.requestContextWithConnectionId("conn-1"));
+                request, ClientMetricsTestUtils.requestContextWithConnectionId("conn-1"));
         assertEquals(Errors.NONE, response.error());
         Uuid clientInstanceId = response.data().clientInstanceId();
 
@@ -1419,8 +1419,8 @@ public class ClientMetricsManagerTest {
 
     private KafkaMetric getMetric(Metrics kafkaMetrics, String name) throws Exception {
         Optional<Entry<MetricName, KafkaMetric>> metric = kafkaMetrics.metrics().entrySet().stream()
-            .filter(entry -> entry.getKey().name().equals(name))
-            .findFirst();
+                .filter(entry -> entry.getKey().name().equals(name))
+                .findFirst();
         if (metric.isEmpty())
             throw new Exception(String.format("Could not find metric called %s", name));
 

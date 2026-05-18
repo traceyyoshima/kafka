@@ -51,7 +51,8 @@ public final class Cluster {
 
     /**
      * Create a new cluster with the given id, nodes and partitions
-     * @param nodes The nodes in the cluster
+     *
+     * @param nodes      The nodes in the cluster
      * @param partitions Information about a subset of the topic-partitions this cluster hosts
      */
     public Cluster(String clusterId,
@@ -64,7 +65,8 @@ public final class Cluster {
 
     /**
      * Create a new cluster with the given id, nodes and partitions
-     * @param nodes The nodes in the cluster
+     *
+     * @param nodes      The nodes in the cluster
      * @param partitions Information about a subset of the topic-partitions this cluster hosts
      */
     public Cluster(String clusterId,
@@ -78,7 +80,8 @@ public final class Cluster {
 
     /**
      * Create a new cluster with the given id, nodes and partitions
-     * @param nodes The nodes in the cluster
+     *
+     * @param nodes      The nodes in the cluster
      * @param partitions Information about a subset of the topic-partitions this cluster hosts
      */
     public Cluster(String clusterId,
@@ -93,7 +96,8 @@ public final class Cluster {
 
     /**
      * Create a new cluster with the given id, nodes, partitions and topicIds
-     * @param nodes The nodes in the cluster
+     *
+     * @param nodes      The nodes in the cluster
      * @param partitions Information about a subset of the topic-partitions this cluster hosts
      */
     public Cluster(String clusterId,
@@ -200,11 +204,12 @@ public final class Cluster {
      */
     public static Cluster empty() {
         return new Cluster(null, new ArrayList<>(0), new ArrayList<>(0), Collections.emptySet(),
-            Collections.emptySet(), null);
+                Collections.emptySet(), null);
     }
 
     /**
      * Create a "bootstrap" cluster using the given list of host/ports
+     *
      * @param addresses The addresses
      * @return A cluster for these hosts/ports
      */
@@ -214,7 +219,7 @@ public final class Cluster {
         for (InetSocketAddress address : addresses)
             nodes.add(new Node(nodeId--, address.getHostString(), address.getPort()));
         return new Cluster(null, true, nodes, new ArrayList<>(0),
-            Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), null, Collections.emptyMap());
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), null, Collections.emptyMap());
     }
 
     /**
@@ -237,6 +242,7 @@ public final class Cluster {
 
     /**
      * Get the node by the node id (or null if the node is not online or does not exist)
+     *
      * @param id The id of the node
      * @return The node, or null if the node is not online or does not exist
      */
@@ -246,8 +252,9 @@ public final class Cluster {
 
     /**
      * Get the node by node id if the replica for the given partition is online
+     *
      * @param partition The TopicPartition
-     * @param id The node id
+     * @param id        The node id
      * @return the node
      */
     public Optional<Node> nodeIfOnline(TopicPartition partition, int id) {
@@ -255,8 +262,8 @@ public final class Cluster {
         PartitionInfo partitionInfo = partition(partition);
 
         if (node != null && partitionInfo != null &&
-            !Arrays.asList(partitionInfo.offlineReplicas()).contains(node) &&
-            Arrays.asList(partitionInfo.replicas()).contains(node)) {
+                !Arrays.asList(partitionInfo.offlineReplicas()).contains(node) &&
+                Arrays.asList(partitionInfo.replicas()).contains(node)) {
 
             return Optional.of(node);
         } else {
@@ -266,6 +273,7 @@ public final class Cluster {
 
     /**
      * Get the current leader for the given topic-partition
+     *
      * @param topicPartition The topic and partition we want to know the leader for
      * @return The node that is the leader for this topic-partition, or null if there is currently no leader
      */
@@ -279,6 +287,7 @@ public final class Cluster {
 
     /**
      * Get the metadata for the specified partition
+     *
      * @param topicPartition The topic and partition to fetch info for
      * @return The metadata about the given topic and partition, or null if none is found
      */
@@ -288,6 +297,7 @@ public final class Cluster {
 
     /**
      * Get the list of partitions for this topic
+     *
      * @param topic The topic name
      * @return A list of partitions
      */
@@ -297,6 +307,7 @@ public final class Cluster {
 
     /**
      * Get the number of partitions for the given topic.
+     *
      * @param topic The topic to get the number of partitions for
      * @return The number of partitions or null if there is no corresponding metadata
      */
@@ -307,6 +318,7 @@ public final class Cluster {
 
     /**
      * Get the list of available partitions for this topic
+     *
      * @param topic The topic name
      * @return A list of partitions
      */
@@ -316,6 +328,7 @@ public final class Cluster {
 
     /**
      * Get the list of partitions whose leader is this node
+     *
      * @param nodeId The node id
      * @return A list of partitions
      */
@@ -325,6 +338,7 @@ public final class Cluster {
 
     /**
      * Get all topics.
+     *
      * @return a set of all topics
      */
     public Set<String> topics() {
@@ -370,7 +384,7 @@ public final class Cluster {
     @Override
     public String toString() {
         return "Cluster(id = " + clusterResource.clusterId() + ", nodes = " + this.nodes +
-            ", partitions = " + this.partitionsByTopicPartition.values() + ", controller = " + controller + ")";
+                ", partitions = " + this.partitionsByTopicPartition.values() + ", controller = " + controller + ")";
     }
 
     @Override

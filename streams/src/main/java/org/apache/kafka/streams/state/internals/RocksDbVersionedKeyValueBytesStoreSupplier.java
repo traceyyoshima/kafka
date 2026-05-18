@@ -58,7 +58,7 @@ public class RocksDbVersionedKeyValueBytesStoreSupplier implements VersionedByte
     @Override
     public KeyValueStore<Bytes, byte[]> get() {
         return new VersionedKeyValueToBytesStoreAdapter(
-            new RocksDBVersionedStore(name, metricsScope(), historyRetentionMs, segmentIntervalMs)
+                new RocksDBVersionedStore(name, metricsScope(), historyRetentionMs, segmentIntervalMs)
         );
     }
 

@@ -110,34 +110,34 @@ public class AlterConsumerGroupOffsetsHandlerTest {
     }
 
     private AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> handleResponse(
-        CoordinatorKey groupKey,
-        Map<TopicPartition, OffsetAndMetadata> partitions,
-        Map<TopicPartition, Errors> partitionResults
+            CoordinatorKey groupKey,
+            Map<TopicPartition, OffsetAndMetadata> partitions,
+            Map<TopicPartition, Errors> partitionResults
     ) {
         AlterConsumerGroupOffsetsHandler handler =
-            new AlterConsumerGroupOffsetsHandler(groupKey.idValue, partitions, logContext);
+                new AlterConsumerGroupOffsetsHandler(groupKey.idValue, partitions, logContext);
         OffsetCommitResponse response = new OffsetCommitResponse(0, partitionResults);
         return handler.handleResponse(node, singleton(groupKey), response);
     }
 
     private Map<TopicPartition, Errors> partitionErrors(
-        Errors error
+            Errors error
     ) {
         Map<TopicPartition, Errors> partitionErrors = new HashMap<>();
         partitions.keySet().forEach(partition ->
-            partitionErrors.put(partition, error)
+                partitionErrors.put(partition, error)
         );
         return partitionErrors;
     }
 
     private void assertFatalError(
-        Map<TopicPartition, Errors> partitionResults
+            Map<TopicPartition, Errors> partitionResults
     ) {
         CoordinatorKey groupKey = CoordinatorKey.byGroupId(groupId);
         AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> result = handleResponse(
-            groupKey,
-            partitions,
-            partitionResults
+                groupKey,
+                partitions,
+                partitionResults
         );
 
         assertEquals(singleton(groupKey), result.completedKeys.keySet());
@@ -147,13 +147,13 @@ public class AlterConsumerGroupOffsetsHandlerTest {
     }
 
     private void assertRetriableError(
-        Map<TopicPartition, Errors> partitionResults
+            Map<TopicPartition, Errors> partitionResults
     ) {
         CoordinatorKey groupKey = CoordinatorKey.byGroupId(groupId);
         AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> result = handleResponse(
-            groupKey,
-            partitions,
-            partitionResults
+                groupKey,
+                partitions,
+                partitionResults
         );
 
         assertEquals(emptySet(), result.completedKeys.keySet());
@@ -162,13 +162,13 @@ public class AlterConsumerGroupOffsetsHandlerTest {
     }
 
     private void assertUnmappedKey(
-        Map<TopicPartition, Errors> partitionResults
+            Map<TopicPartition, Errors> partitionResults
     ) {
         CoordinatorKey groupKey = CoordinatorKey.byGroupId(groupId);
         AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> result = handleResponse(
-            groupKey,
-            partitions,
-            partitionResults
+                groupKey,
+                partitions,
+                partitionResults
         );
 
         assertEquals(emptySet(), result.completedKeys.keySet());
@@ -177,8 +177,8 @@ public class AlterConsumerGroupOffsetsHandlerTest {
     }
 
     private void assertCompleted(
-        AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> result,
-        Map<TopicPartition, Errors> expected
+            AdminApiHandler.ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> result,
+            Map<TopicPartition, Errors> expected
     ) {
         CoordinatorKey key = CoordinatorKey.byGroupId(groupId);
         assertEquals(emptySet(), result.failedKeys.keySet());

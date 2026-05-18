@@ -168,15 +168,15 @@ public final class RocksDBStoreTestingUtils {
      * Finds all RocksDB store directories for the given store name across all task directories.
      * Returns an empty list if no task directories exist.
      *
-     * @param stateDir the root state directory
-     * @param appId    the application ID
+     * @param stateDir  the root state directory
+     * @param appId     the application ID
      * @param storeName the store name
      * @return list of store directories
      */
     public static List<File> findAllStoreDirs(final File stateDir, final String appId, final String storeName) {
         final File appDir = new File(stateDir, appId);
         final File[] taskDirs = appDir.listFiles(file ->
-            file.isDirectory() && !file.getName().startsWith("."));
+                file.isDirectory() && !file.getName().startsWith("."));
 
         if (taskDirs == null || taskDirs.length == 0) {
             return Collections.emptyList();
@@ -197,15 +197,15 @@ public final class RocksDBStoreTestingUtils {
     }
 
     private static List<ColumnFamilyDescriptor> listCfDescriptors(final File dbDir,
-                                                                   final ColumnFamilyOptions cfOptions) throws RocksDBException {
+                                                                  final ColumnFamilyOptions cfOptions) throws RocksDBException {
         return RocksDB.listColumnFamilies(new Options(), dbDir.getAbsolutePath())
-            .stream()
-            .map(name -> new ColumnFamilyDescriptor(name, cfOptions))
-            .collect(Collectors.toList());
+                .stream()
+                .map(name -> new ColumnFamilyDescriptor(name, cfOptions))
+                .collect(Collectors.toList());
     }
 
     private static ColumnFamilyHandle findOffsetsCf(final List<ColumnFamilyHandle> handles,
-                                                     final List<ColumnFamilyDescriptor> descriptors) {
+                                                    final List<ColumnFamilyDescriptor> descriptors) {
         for (int i = 0; i < descriptors.size(); i++) {
             if (Arrays.equals(descriptors.get(i).getName(), OFFSETS_COLUMN_FAMILY_NAME)) {
                 return handles.get(i);

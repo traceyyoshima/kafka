@@ -77,9 +77,9 @@ public class FetchSessionCacheShard {
      * if one exists with the same name. It's safe for concurrent use because Meter is thread-safe.
      */
     private final Meter evictionsMeter = FetchSession.FetchSessionCache.METRICS_GROUP.newMeter(
-        FetchSession.INCREMENTAL_FETCH_SESSIONS_EVICTIONS_PER_SEC,
-        FetchSession.EVICTIONS,
-        TimeUnit.SECONDS
+            FetchSession.INCREMENTAL_FETCH_SESSIONS_EVICTIONS_PER_SEC,
+            FetchSession.EVICTIONS,
+            TimeUnit.SECONDS
     );
 
     private final int maxEntries;
@@ -88,11 +88,11 @@ public class FetchSessionCacheShard {
     private final int shardNum;
 
     /**
-     * @param maxEntries The maximum number of entries that can be in the cache
-     * @param evictionMs The minimum time that an entry must be unused in order to be evictable
+     * @param maxEntries     The maximum number of entries that can be in the cache
+     * @param evictionMs     The minimum time that an entry must be unused in order to be evictable
      * @param sessionIdRange The number of sessionIds each cache shard handles.
      *                       For a given instance, Math.max(1, shardNum * sessionIdRange) <= sessionId < (shardNum + 1) * sessionIdRange always holds.
-     * @param shardNum Identifier for this shard
+     * @param shardNum       Identifier for this shard
      */
     public FetchSessionCacheShard(int maxEntries,
                                   long evictionMs,
@@ -117,8 +117,8 @@ public class FetchSessionCacheShard {
     /**
      * Get a session by session ID.
      *
-     * @param sessionId  The session ID.
-     * @return           The session, or an empty Optional if no such session was found.
+     * @param sessionId The session ID.
+     * @return The session, or an empty Optional if no such session was found.
      */
     synchronized Optional<FetchSession> get(int sessionId) {
         return Optional.ofNullable(sessions.get(sessionId));
@@ -141,7 +141,7 @@ public class FetchSessionCacheShard {
     /**
      * Creates a new random session ID.  The new session ID will be positive and unique on this broker.
      *
-     * @return   The new session ID.
+     * @return The new session ID.
      */
     synchronized int newSessionId() {
         int id;
@@ -155,13 +155,13 @@ public class FetchSessionCacheShard {
     /**
      * Try to create a new session.
      *
-     * @param now                The current time in milliseconds.
-     * @param privileged         True if the new entry we are trying to create is privileged.
-     * @param size               The number of cached partitions in the new entry we are trying to create.
-     * @param usesTopicIds       True if this session should use topic IDs.
-     * @param createPartitions   A callback function which creates the map of cached partitions and the mapping from
-     *                           topic name to topic ID for the topics.
-     * @return                   If we created a session, the ID; INVALID_SESSION_ID otherwise.
+     * @param now              The current time in milliseconds.
+     * @param privileged       True if the new entry we are trying to create is privileged.
+     * @param size             The number of cached partitions in the new entry we are trying to create.
+     * @param usesTopicIds     True if this session should use topic IDs.
+     * @param createPartitions A callback function which creates the map of cached partitions and the mapping from
+     *                         topic name to topic ID for the topics.
+     * @return If we created a session, the ID; INVALID_SESSION_ID otherwise.
      */
     synchronized int maybeCreateSession(long now,
                                         boolean privileged,
@@ -172,7 +172,7 @@ public class FetchSessionCacheShard {
         if ((sessions.size() < maxEntries) || tryEvict(privileged, new EvictableKey(privileged, size, 0), now)) {
             ImplicitLinkedHashCollection<FetchSession.CachedPartition> partitionMap = createPartitions.get();
             FetchSession session = new FetchSession(newSessionId(), privileged, partitionMap, usesTopicIds,
-                now, now, FetchMetadata.nextEpoch(INITIAL_EPOCH));
+                    now, now, FetchMetadata.nextEpoch(INITIAL_EPOCH));
             logger.debug("Created fetch session {}", session);
             sessions.put(session.id(), session);
             touch(session, now);
@@ -199,7 +199,7 @@ public class FetchSessionCacheShard {
      * @param privileged True if the new entry we would like to add is privileged
      * @param key        The EvictableKey for the new entry we would like to add
      * @param now        The current time in milliseconds
-     * @return           True if an entry was evicted; false otherwise.
+     * @return True if an entry was evicted; false otherwise.
      */
     private synchronized boolean tryEvict(boolean privileged, EvictableKey key, long now) {
         // Try to evict an entry which is stale.
@@ -241,9 +241,8 @@ public class FetchSessionCacheShard {
     /**
      * Remove an entry from the session cache.
      *
-     * @param session  The session.
-     *
-     * @return         The removed session, or an empty Optional if there was no such session.
+     * @param session The session.
+     * @return The removed session, or an empty Optional if there was no such session.
      */
     synchronized Optional<FetchSession> remove(FetchSession session) {
         EvictableKey evictableKey;
@@ -265,8 +264,8 @@ public class FetchSessionCacheShard {
     /**
      * Update a session's position in the lastUsed and evictable trees.
      *
-     * @param session  The session
-     * @param now      The current time in milliseconds
+     * @param session The session
+     * @param now     The current time in milliseconds
      */
     synchronized void touch(FetchSession session, long now) {
         synchronized (session) {

@@ -145,7 +145,7 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
      * Returns {@link CompletableFuture} which will complete only after publishing of the given {@code remoteLogMetadata} into
      * the remote log metadata topic and the internal consumer is caught up until the produced record's offset.
      *
-     *  @param remoteLogMetadata RemoteLogMetadata to be stored.
+     * @param remoteLogMetadata RemoteLogMetadata to be stored.
      * @return a future with acknowledge and potentially waiting also for consumer to catch up.
      * This ensures cache is synchronized with backing topic.
      * @throws RemoteStorageException if there are any storage errors occur.
@@ -210,7 +210,7 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
         Objects.requireNonNull(leaderPartitions, "leaderPartitions can not be null");
         Objects.requireNonNull(followerPartitions, "followerPartitions can not be null");
         log.info("Received leadership notifications with leader partitions {} and follower partitions {}",
-                 leaderPartitions, followerPartitions);
+                leaderPartitions, followerPartitions);
         lock.readLock().lock();
         try {
             if (closing.get()) {
@@ -423,7 +423,7 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
         int topicPartitionsSize = topicDescription.partitions().size();
         if (topicPartitionsSize != metadataTopicPartitionCount) {
             log.error("Existing topic partition count {} is not same as the expected partition count {}",
-                      topicPartitionsSize, metadataTopicPartitionCount);
+                    topicPartitionsSize, metadataTopicPartitionCount);
             return false;
         }
         return true;
@@ -436,8 +436,8 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
         topicConfigs.put(TopicConfig.REMOTE_LOG_STORAGE_ENABLE_CONFIG, "false");
         topicConfigs.put(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, Short.toString(rlmmConfig.metadataTopicMinIsr()));
         return new NewTopic(rlmmConfig.remoteLogMetadataTopicName(),
-                            rlmmConfig.metadataTopicPartitionsCount(),
-                            rlmmConfig.metadataTopicReplicationFactor()).configs(topicConfigs);
+                rlmmConfig.metadataTopicPartitionsCount(),
+                rlmmConfig.metadataTopicReplicationFactor()).configs(topicConfigs);
     }
 
     /**
@@ -484,7 +484,7 @@ public class TopicBasedRemoteLogMetadataManager implements BrokerReadyCallback, 
     private void ensureInitializedAndNotClosed() {
         if (closing.get() || !initialized.get()) {
             throw new IllegalStateException("This instance is in invalid state, initialized: " + initialized +
-                                                    " close: " + closing);
+                    " close: " + closing);
         }
     }
 

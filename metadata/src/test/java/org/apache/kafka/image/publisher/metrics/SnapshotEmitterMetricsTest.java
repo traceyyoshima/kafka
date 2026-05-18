@@ -50,14 +50,15 @@ public class SnapshotEmitterMetricsTest {
             this.metrics = new SnapshotEmitterMetrics(Optional.of(registry), time);
         }
 
-        @SuppressWarnings("unchecked") // suppress warning about Gauge typecast
+        @SuppressWarnings("unchecked")
+            // suppress warning about Gauge typecast
         long readLongGauge(String name) {
             MetricName metricName = new MetricName(
-                "kafka.server",
-                "SnapshotEmitter",
-                name,
-                null,
-                "kafka.server:type=SnapshotEmitter,name=" + name
+                    "kafka.server",
+                    "SnapshotEmitter",
+                    name,
+                    null,
+                    "kafka.server:type=SnapshotEmitter,name=" + name
             );
             return ((Gauge<Long>) registry.allMetrics().get(metricName)).value();
         }
@@ -76,10 +77,10 @@ public class SnapshotEmitterMetricsTest {
     public void testMetricNames() {
         try (SnapshotEmitterMetricsTestContext ctx = new SnapshotEmitterMetricsTestContext()) {
             ControllerMetricsTestUtils.assertMetricsForTypeEqual(ctx.registry, "kafka.server:",
-                Set.of(
-                    "kafka.server:type=SnapshotEmitter,name=LatestSnapshotGeneratedBytes",
-                    "kafka.server:type=SnapshotEmitter,name=LatestSnapshotGeneratedAgeMs"
-                ));
+                    Set.of(
+                            "kafka.server:type=SnapshotEmitter,name=LatestSnapshotGeneratedBytes",
+                            "kafka.server:type=SnapshotEmitter,name=LatestSnapshotGeneratedAgeMs"
+                    ));
             ctx.metrics.close();
             ControllerMetricsTestUtils.assertMetricsForTypeEqual(ctx.registry, "KafkaController",
                     Set.of());

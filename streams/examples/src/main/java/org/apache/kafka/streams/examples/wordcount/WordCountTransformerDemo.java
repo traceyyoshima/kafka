@@ -106,9 +106,9 @@ public final class WordCountTransformerDemo {
         @Override
         public Set<StoreBuilder<?>> stores() {
             return Collections.singleton(Stores.keyValueStoreBuilder(
-                Stores.inMemoryKeyValueStore("Counts"),
-                Serdes.String(),
-                Serdes.Integer()));
+                    Stores.inMemoryKeyValueStore("Counts"),
+                    Serdes.String(),
+                    Serdes.Integer()));
         }
     }
 

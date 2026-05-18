@@ -100,9 +100,9 @@ public final class TopologyConfig extends AbstractConfig {
                 return Boolean.parseBoolean((String) value);
             } else {
                 log.warn(
-                    "Invalid value ({}) on internal configuration '{}'. Please specify a true/false value.",
-                    value,
-                    key
+                        "Invalid value ({}) on internal configuration '{}'. Please specify a true/false value.",
+                        value,
+                        key
                 );
                 return defaultValue;
             }
@@ -110,70 +110,72 @@ public final class TopologyConfig extends AbstractConfig {
     }
 
     private static final ConfigDef CONFIG;
+
     static {
         CONFIG = new ConfigDef()
-            .define(PROCESSOR_WRAPPER_CLASS_CONFIG,
-                    Type.CLASS,
-                    NoOpProcessorWrapper.class.getName(),
-                    Importance.LOW,
-                    PROCESSOR_WRAPPER_CLASS_DOC)
-            .define(BUFFERED_RECORDS_PER_PARTITION_CONFIG,
-                Type.INT,
-                null,
-                Importance.LOW,
-                BUFFERED_RECORDS_PER_PARTITION_DOC)
-            .define(CACHE_MAX_BYTES_BUFFERING_CONFIG,
-                    Type.LONG,
-                    null,
-                    Importance.MEDIUM,
-                    CACHE_MAX_BYTES_BUFFERING_DOC)
-            .define(STATESTORE_CACHE_MAX_BYTES_CONFIG,
-                Type.LONG,
-                null,
-                Importance.MEDIUM,
-                STATESTORE_CACHE_MAX_BYTES_DOC)
-            .define(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,
-                Type.CLASS,
-                null,
-                Importance.MEDIUM,
-                DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC)
-            .define(DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG,
-                Type.CLASS,
-                null,
-                Importance.MEDIUM,
-                DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_DOC)
-            .define(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,
-                Type.CLASS,
-                null,
-                Importance.MEDIUM,
-                DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC)
-            .define(MAX_TASK_IDLE_MS_CONFIG,
-                Type.LONG,
-                null,
-                Importance.MEDIUM,
-                MAX_TASK_IDLE_MS_DOC)
-            .define(TASK_TIMEOUT_MS_CONFIG,
-                Type.LONG,
-                null,
-                Importance.MEDIUM,
-                TASK_TIMEOUT_MS_DOC)
-            .define(DEFAULT_DSL_STORE_CONFIG,
-                Type.STRING,
-                ROCKS_DB,
-                in(ROCKS_DB, IN_MEMORY),
-                Importance.LOW,
-                DEFAULT_DSL_STORE_DOC)
-            .define(DSL_STORE_SUPPLIERS_CLASS_CONFIG,
-                Type.CLASS,
-                DSL_STORE_SUPPLIERS_CLASS_DEFAULT,
-                Importance.LOW,
-                DSL_STORE_SUPPLIERS_CLASS_DOC)
-            .define(ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_CONFIG,
-                Type.BOOLEAN,
-                false,
-                Importance.HIGH,
-                ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_DOC);
+                .define(PROCESSOR_WRAPPER_CLASS_CONFIG,
+                        Type.CLASS,
+                        NoOpProcessorWrapper.class.getName(),
+                        Importance.LOW,
+                        PROCESSOR_WRAPPER_CLASS_DOC)
+                .define(BUFFERED_RECORDS_PER_PARTITION_CONFIG,
+                        Type.INT,
+                        null,
+                        Importance.LOW,
+                        BUFFERED_RECORDS_PER_PARTITION_DOC)
+                .define(CACHE_MAX_BYTES_BUFFERING_CONFIG,
+                        Type.LONG,
+                        null,
+                        Importance.MEDIUM,
+                        CACHE_MAX_BYTES_BUFFERING_DOC)
+                .define(STATESTORE_CACHE_MAX_BYTES_CONFIG,
+                        Type.LONG,
+                        null,
+                        Importance.MEDIUM,
+                        STATESTORE_CACHE_MAX_BYTES_DOC)
+                .define(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,
+                        Type.CLASS,
+                        null,
+                        Importance.MEDIUM,
+                        DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC)
+                .define(DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG,
+                        Type.CLASS,
+                        null,
+                        Importance.MEDIUM,
+                        DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_DOC)
+                .define(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,
+                        Type.CLASS,
+                        null,
+                        Importance.MEDIUM,
+                        DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC)
+                .define(MAX_TASK_IDLE_MS_CONFIG,
+                        Type.LONG,
+                        null,
+                        Importance.MEDIUM,
+                        MAX_TASK_IDLE_MS_DOC)
+                .define(TASK_TIMEOUT_MS_CONFIG,
+                        Type.LONG,
+                        null,
+                        Importance.MEDIUM,
+                        TASK_TIMEOUT_MS_DOC)
+                .define(DEFAULT_DSL_STORE_CONFIG,
+                        Type.STRING,
+                        ROCKS_DB,
+                        in(ROCKS_DB, IN_MEMORY),
+                        Importance.LOW,
+                        DEFAULT_DSL_STORE_DOC)
+                .define(DSL_STORE_SUPPLIERS_CLASS_CONFIG,
+                        Type.CLASS,
+                        DSL_STORE_SUPPLIERS_CLASS_DEFAULT,
+                        Importance.LOW,
+                        DSL_STORE_SUPPLIERS_CLASS_DOC)
+                .define(ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_CONFIG,
+                        Type.BOOLEAN,
+                        false,
+                        Importance.HIGH,
+                        ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_DOC);
     }
+
     private static final Logger log = LoggerFactory.getLogger(TopologyConfig.class);
 
     private final StreamsConfig globalAppConfigs;
@@ -281,9 +283,9 @@ public final class TopologyConfig extends AbstractConfig {
 
 
         final String deserializationExceptionHandlerKey = (globalAppConfigs.originals().containsKey(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG)
-            || originals().containsKey(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG)) ?
-            DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG :
-            DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG;
+                || originals().containsKey(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG)) ?
+                DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG :
+                DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG;
 
         if (isTopologyOverride(deserializationExceptionHandlerKey, topologyOverrides)) {
             deserializationExceptionHandlerSupplier = () -> getConfiguredInstance(deserializationExceptionHandlerKey, DeserializationExceptionHandler.class);
@@ -308,8 +310,8 @@ public final class TopologyConfig extends AbstractConfig {
 
         ensureExplicitInternalResourceNaming = globalAppConfigs.getBoolean(ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_CONFIG);
         this.transactionalStateStoresEnabled = Boolean.parseBoolean(
-            String.valueOf(globalAppConfigs.originals()
-                .getOrDefault(StreamsConfig.TRANSACTIONAL_STATE_STORES_CONFIG, "false")));
+                String.valueOf(globalAppConfigs.originals()
+                        .getOrDefault(StreamsConfig.TRANSACTIONAL_STATE_STORES_CONFIG, "false")));
     }
 
     @Deprecated
@@ -319,7 +321,7 @@ public final class TopologyConfig extends AbstractConfig {
 
     /**
      * @return the DslStoreSuppliers if the value was explicitly configured (either by
-     *         {@link StreamsConfig#DEFAULT_DSL_STORE} or {@link StreamsConfig#DSL_STORE_SUPPLIERS_CLASS_CONFIG})
+     * {@link StreamsConfig#DEFAULT_DSL_STORE} or {@link StreamsConfig#DSL_STORE_SUPPLIERS_CLASS_CONFIG})
      */
     public Optional<DslStoreSuppliers> resolveDslStoreSuppliers() {
         if (isTopologyOverride(DSL_STORE_SUPPLIERS_CLASS_CONFIG, topologyOverrides) || globalAppConfigs.originals().containsKey(DSL_STORE_SUPPLIERS_CLASS_CONFIG)) {
@@ -337,7 +339,7 @@ public final class TopologyConfig extends AbstractConfig {
 
     /**
      * @return true if there is an override for this config in the properties of this NamedTopology. Applications that
-     *         don't use named topologies will just refer to the global defaults regardless of the topology properties
+     * don't use named topologies will just refer to the global defaults regardless of the topology properties
      */
     private boolean isTopologyOverride(final String config, final Properties topologyOverrides) {
         // TODO KAFKA-13283: eventually we should always have the topology props override the global ones regardless
@@ -347,14 +349,14 @@ public final class TopologyConfig extends AbstractConfig {
 
     public TaskConfig getTaskConfig() {
         return new TaskConfig(
-            maxTaskIdleMs,
-            taskTimeoutMs,
-            maxBufferedSize,
-            timestampExtractorSupplier.get(),
-            deserializationExceptionHandlerSupplier.get(),
-            processingExceptionHandlerSupplier.get(),
-            eosEnabled,
-            transactionalStateStoresEnabled
+                maxTaskIdleMs,
+                taskTimeoutMs,
+                maxBufferedSize,
+                timestampExtractorSupplier.get(),
+                deserializationExceptionHandlerSupplier.get(),
+                processingExceptionHandlerSupplier.get(),
+                eosEnabled,
+                transactionalStateStoresEnabled
         );
     }
 

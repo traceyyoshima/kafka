@@ -79,18 +79,18 @@ public class LegacyCheckpointingStateStore<S extends StateStore, K, V> extends W
 
     /**
      * Writes a consolidated per-task {@code .checkpoint} file for downgrade support.
-     *
+     * <p>
      * When {@code upgradeFrom} is set to a version older than 4.3, this method writes the offsets into the legacy
      * per-task checkpoint file so that an older Kafka Streams version can find its offsets after a downgrade.
-     *
+     * <p>
      * This is a no-op if {@code upgradeFrom} is {@code null} or refers to version 4.3 or later.
      *
-     * @param logPrefix Log prefix to use for log messages.
-     * @param upgradeFrom The configured {@code upgrade.from} value, or {@code null} if not set.
+     * @param logPrefix      Log prefix to use for log messages.
+     * @param upgradeFrom    The configured {@code upgrade.from} value, or {@code null} if not set.
      * @param stateDirectory The singleton {@link StateDirectory} used for looking up state directories.
-     * @param taskId Either the task ID for regular stores, or {@code null} for global stores.
-     * @param offsets The offsets to write to the checkpoint file. Entries with {@code null} values are written as
-     *                {@link OffsetCheckpoint#OFFSET_UNKNOWN}.
+     * @param taskId         Either the task ID for regular stores, or {@code null} for global stores.
+     * @param offsets        The offsets to write to the checkpoint file. Entries with {@code null} values are written as
+     *                       {@link OffsetCheckpoint#OFFSET_UNKNOWN}.
      */
     public static void maybeDowngradeOffsets(final String logPrefix,
                                              final UpgradeFromValues upgradeFrom,
@@ -124,19 +124,19 @@ public class LegacyCheckpointingStateStore<S extends StateStore, K, V> extends W
 
     /**
      * Migrates offsets stored in a legacy, global/per-task .checkpoint file into the {@code stores}.
-     *
+     * <p>
      * The {@code stores} <em>MUST</em> manage their own offsets (i.e. {@link #managesOffsets()} must be {@code true}.
      * They can either do this themselves, or be wrapped in a {@link LegacyCheckpointingStateStore} implementation.
-     *
+     * <p>
      * Once this method successfully returns, the legacy {@code .checkpoint} file for the given {@link TaskId} (or the
      * global checkpoint, when {@code taskId} is {@code null}), will have been migrated and deleted from the filesystem.
      *
-     * @param logPrefix Log prefix to use for log messages.
+     * @param logPrefix      Log prefix to use for log messages.
      * @param stateDirectory The singleton {@link StateDirectory} used for looking up existing checkpoint files.
-     * @param taskId Either the task ID for regular stores, or {@code null} to migrate global stores.
-     * @param stores A {@link Map} of {@link TopicPartition changelog partitions} to their {@link StateStore}. For global
-     *               stores, which may have multiple {@link TopicPartition changelog partitions}, stores may appear
-     *               multiple times, once for each of its {@link TopicPartition changelog partitions}.
+     * @param taskId         Either the task ID for regular stores, or {@code null} to migrate global stores.
+     * @param stores         A {@link Map} of {@link TopicPartition changelog partitions} to their {@link StateStore}. For global
+     *                       stores, which may have multiple {@link TopicPartition changelog partitions}, stores may appear
+     *                       multiple times, once for each of its {@link TopicPartition changelog partitions}.
      */
     @SuppressWarnings("deprecation")
     public static void migrateLegacyOffsets(final String logPrefix,
@@ -308,16 +308,16 @@ public class LegacyCheckpointingStateStore<S extends StateStore, K, V> extends W
         return taskId == null ?
                 // global store
                 (store == null ?
-                        // legacy, global file
-                        new File(stateDirectory.globalStateDir(), CHECKPOINT_FILE_NAME) :
-                        // per-store file
-                        new File(stateDirectory.globalStateDir(), CHECKPOINT_FILE_NAME + "_" + store.name())
+                 // legacy, global file
+                 new File(stateDirectory.globalStateDir(), CHECKPOINT_FILE_NAME) :
+                 // per-store file
+                 new File(stateDirectory.globalStateDir(), CHECKPOINT_FILE_NAME + "_" + store.name())
                 ) :
                 (store == null ?
-                        // legacy, per-task file
-                        new File(stateDirectory.getOrCreateDirectoryForTask(taskId), CHECKPOINT_FILE_NAME) :
-                        // per-store file
-                        new File(stateDirectory.getOrCreateDirectoryForTask(taskId), CHECKPOINT_FILE_NAME + "_" + store.name())
+                 // legacy, per-task file
+                 new File(stateDirectory.getOrCreateDirectoryForTask(taskId), CHECKPOINT_FILE_NAME) :
+                 // per-store file
+                 new File(stateDirectory.getOrCreateDirectoryForTask(taskId), CHECKPOINT_FILE_NAME + "_" + store.name())
                 );
     }
 

@@ -30,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * An interface implemented by the QuorumController to implement ACL create and delete
  * operations for ClusterMetadataAuthorizer instances.
- *
+ * <p>
  * These methods must all be thread-safe.
  */
 public interface AclMutator {
@@ -38,26 +38,24 @@ public interface AclMutator {
      * Create the specified ACLs. If any ACL already exists, nothing will be done for that
      * one, and we will return a success result for it.
      *
-     * @param context       The controller request context.
-     * @param aclBindings   The ACLs to create.
-     *
-     * @return              The results for each AclBinding, in the order they were passed.
+     * @param context     The controller request context.
+     * @param aclBindings The ACLs to create.
+     * @return The results for each AclBinding, in the order they were passed.
      */
     CompletableFuture<List<AclCreateResult>> createAcls(
-        ControllerRequestContext context,
-        List<AclBinding> aclBindings
+            ControllerRequestContext context,
+            List<AclBinding> aclBindings
     );
 
     /**
      * Delete some ACLs based on the set of filters that is passed in.
      *
-     * @param context               The controller request context.
-     * @param aclBindingFilters     The filters.
-     *
-     * @return                      The results for each filter, in the order they were passed.
+     * @param context           The controller request context.
+     * @param aclBindingFilters The filters.
+     * @return The results for each filter, in the order they were passed.
      */
     CompletableFuture<List<AclDeleteResult>> deleteAcls(
-        ControllerRequestContext context,
-        List<AclBindingFilter> aclBindingFilters
+            ControllerRequestContext context,
+            List<AclBindingFilter> aclBindingFilters
     );
 }

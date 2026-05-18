@@ -24,7 +24,7 @@ import java.nio.ByteOrder;
 
 /**
  * A PayloadGenerator which generates a sequentially increasing payload.
- *
+ * <p>
  * The generated number will wrap around to 0 after the maximum value is reached.
  * Payloads bigger than 8 bytes will always just be padded with zeros after byte 8.
  */

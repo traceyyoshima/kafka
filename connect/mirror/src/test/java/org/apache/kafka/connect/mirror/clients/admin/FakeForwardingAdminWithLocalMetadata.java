@@ -35,9 +35,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.Map;
 
-/** Customised ForwardingAdmin for testing only.
+/**
+ * Customised ForwardingAdmin for testing only.
  * The class create/alter topics, partitions and ACLs in Kafka then store metadata in {@link FakeLocalMetadataStore}.
- * */
+ *
+ */
 
 public class FakeForwardingAdminWithLocalMetadata extends ForwardingAdmin {
     private static final Logger log = LoggerFactory.getLogger(FakeForwardingAdminWithLocalMetadata.class);

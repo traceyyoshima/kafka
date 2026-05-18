@@ -49,11 +49,11 @@ public class DefaultApiVersionManagerTest {
     private static KRaftMetadataCache createMetadataCache() {
         var cache = new KRaftMetadataCache(1, () -> KRaftVersion.LATEST_PRODUCTION);
         var delta = new MetadataDelta.Builder()
-            .setImage(MetadataImage.EMPTY)
-            .build();
+                .setImage(MetadataImage.EMPTY)
+                .build();
         delta.replay(new FeatureLevelRecord()
-            .setName(MetadataVersion.FEATURE_NAME)
-            .setFeatureLevel(MetadataVersion.latestProduction().featureLevel())
+                .setName(MetadataVersion.FEATURE_NAME)
+                .setFeatureLevel(MetadataVersion.latestProduction().featureLevel())
         );
         cache.setImage(delta.apply(MetadataProvenance.EMPTY));
         return cache;
@@ -64,12 +64,12 @@ public class DefaultApiVersionManagerTest {
     public void testApiScope(ListenerType apiScope) {
         Supplier<Optional<NodeApiVersions>> nodeApiVersionsSupplier = Optional::empty;
         var versionManager = new DefaultApiVersionManager(
-            apiScope,
-            nodeApiVersionsSupplier,
-            brokerFeatures,
-            metadataCache,
-            true,
-            Optional.empty()
+                apiScope,
+                nodeApiVersionsSupplier,
+                brokerFeatures,
+                metadataCache,
+                true,
+                Optional.empty()
         );
         for (ApiKeys apiKey : ApiKeys.apisForListener(apiScope)) {
             for (short version : apiKey.allVersions()) {
@@ -83,12 +83,12 @@ public class DefaultApiVersionManagerTest {
     public void testDisabledApis(ListenerType apiScope) {
         Supplier<Optional<NodeApiVersions>> nodeApiVersionsSupplier = Optional::empty;
         var versionManager = new DefaultApiVersionManager(
-            apiScope,
-            nodeApiVersionsSupplier,
-            brokerFeatures,
-            metadataCache,
-            false,
-            Optional.empty()
+                apiScope,
+                nodeApiVersionsSupplier,
+                brokerFeatures,
+                metadataCache,
+                false,
+                Optional.empty()
         );
 
         for (ApiKeys apiKey : ApiKeys.apisForListener(apiScope)) {
@@ -102,8 +102,8 @@ public class DefaultApiVersionManagerTest {
                 assertTrue(apiKey.messageType.latestVersionUnstable());
             } else if (apiKey.messageType.latestVersionUnstable()) {
                 assertFalse(
-                    versionManager.isApiEnabled(apiKey, apiKey.latestVersion()),
-                    apiKey + " version " + apiKey.latestVersion() + " should be disabled."
+                        versionManager.isApiEnabled(apiKey, apiKey.latestVersion()),
+                        apiKey + " version " + apiKey.latestVersion() + " should be disabled."
                 );
             }
         }
@@ -116,18 +116,18 @@ public class DefaultApiVersionManagerTest {
 
         Supplier<Optional<NodeApiVersions>> nodeApiVersionsSupplier = () -> Optional.of(
                 NodeApiVersions.create(
-                    ApiKeys.CREATE_TOPICS.id,
-                    controllerMinVersion,
-                    controllerMaxVersion
-        ));
+                        ApiKeys.CREATE_TOPICS.id,
+                        controllerMinVersion,
+                        controllerMaxVersion
+                ));
 
         var versionManager = new DefaultApiVersionManager(
-            ListenerType.BROKER,
-            nodeApiVersionsSupplier,
-            brokerFeatures,
-            metadataCache,
-            true,
-            Optional.empty()
+                ListenerType.BROKER,
+                nodeApiVersionsSupplier,
+                brokerFeatures,
+                metadataCache,
+                true,
+                Optional.empty()
         );
 
         var apiVersionsResponse = versionManager.apiVersionResponse(0, false);
@@ -142,12 +142,12 @@ public class DefaultApiVersionManagerTest {
         Supplier<Optional<NodeApiVersions>> nodeApiVersionsSupplier = Optional::empty;
 
         DefaultApiVersionManager versionManager = new DefaultApiVersionManager(
-            ListenerType.BROKER,
-            nodeApiVersionsSupplier,
-            brokerFeatures,
-            metadataCache,
-            true,
-            Optional.empty()
+                ListenerType.BROKER,
+                nodeApiVersionsSupplier,
+                brokerFeatures,
+                metadataCache,
+                true,
+                Optional.empty()
         );
         assertFalse(versionManager.isApiEnabled(ApiKeys.ENVELOPE, ApiKeys.ENVELOPE.latestVersion()));
         assertFalse(ApiKeys.apisForListener(versionManager.listenerType()).contains(ApiKeys.ENVELOPE));

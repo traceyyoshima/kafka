@@ -82,37 +82,37 @@ public class InMemoryStoreMetricsIntegrationTest {
         final CountDownLatch finishLatch = new CountDownLatch(1);
 
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder = Stores.keyValueStoreBuilder(
-                new KeyValueBytesStoreSupplier() {
-                    @Override
-                    public String name() {
-                        return "store";
-                    }
-
-                    @Override
-                    public KeyValueStore<Bytes, byte[]> get() {
-                        return new InMemoryKeyValueStore(name()) {
+                        new KeyValueBytesStoreSupplier() {
                             @Override
-                            public void init(final StateStoreContext stateStoreContext, final StateStore root) {
-                                initLatch.countDown();
-                                try {
-                                    finishLatch.await();
-                                } catch (final InterruptedException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                super.init(stateStoreContext, root);
+                            public String name() {
+                                return "store";
                             }
-                        };
-                    }
 
-                    @Override
-                    public String metricsScope() {
-                        return "in-memory";
-                    }
-                },
-                Serdes.String(),
-                Serdes.String())
-            .withCachingEnabled()
-            .withLoggingEnabled(Collections.emptyMap());
+                            @Override
+                            public KeyValueStore<Bytes, byte[]> get() {
+                                return new InMemoryKeyValueStore(name()) {
+                                    @Override
+                                    public void init(final StateStoreContext stateStoreContext, final StateStore root) {
+                                        initLatch.countDown();
+                                        try {
+                                            finishLatch.await();
+                                        } catch (final InterruptedException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                        super.init(stateStoreContext, root);
+                                    }
+                                };
+                            }
+
+                            @Override
+                            public String metricsScope() {
+                                return "in-memory";
+                            }
+                        },
+                        Serdes.String(),
+                        Serdes.String())
+                .withCachingEnabled()
+                .withLoggingEnabled(Collections.emptyMap());
 
         test(storeBuilder, initLatch, finishLatch);
     }
@@ -125,47 +125,47 @@ public class InMemoryStoreMetricsIntegrationTest {
         final long retentionMs = 60_000L;
 
         final StoreBuilder<SessionStore<String, String>> storeBuilder = Stores.sessionStoreBuilder(
-                new SessionBytesStoreSupplier() {
-                    @Override
-                    public String name() {
-                        return "store";
-                    }
-
-                    @Override
-                    public SessionStore<Bytes, byte[]> get() {
-                        return new InMemorySessionStore(name(), retentionMs, metricsScope()) {
+                        new SessionBytesStoreSupplier() {
                             @Override
-                            public void init(final StateStoreContext stateStoreContext, final StateStore root) {
-                                initLatch.countDown();
-                                try {
-                                    finishLatch.await();
-                                } catch (final InterruptedException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                super.init(stateStoreContext, root);
+                            public String name() {
+                                return "store";
                             }
-                        };
-                    }
 
-                    @Override
-                    public String metricsScope() {
-                        return "in-memory-session";
-                    }
+                            @Override
+                            public SessionStore<Bytes, byte[]> get() {
+                                return new InMemorySessionStore(name(), retentionMs, metricsScope()) {
+                                    @Override
+                                    public void init(final StateStoreContext stateStoreContext, final StateStore root) {
+                                        initLatch.countDown();
+                                        try {
+                                            finishLatch.await();
+                                        } catch (final InterruptedException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                        super.init(stateStoreContext, root);
+                                    }
+                                };
+                            }
 
-                    @Override
-                    public long segmentIntervalMs() {
-                        return 1L;
-                    }
+                            @Override
+                            public String metricsScope() {
+                                return "in-memory-session";
+                            }
 
-                    @Override
-                    public long retentionPeriod() {
-                        return retentionMs;
-                    }
-                },
-                Serdes.String(),
-                Serdes.String())
-            .withCachingEnabled()
-            .withLoggingEnabled(Collections.emptyMap());
+                            @Override
+                            public long segmentIntervalMs() {
+                                return 1L;
+                            }
+
+                            @Override
+                            public long retentionPeriod() {
+                                return retentionMs;
+                            }
+                        },
+                        Serdes.String(),
+                        Serdes.String())
+                .withCachingEnabled()
+                .withLoggingEnabled(Collections.emptyMap());
 
         test(storeBuilder, initLatch, finishLatch);
     }
@@ -179,57 +179,57 @@ public class InMemoryStoreMetricsIntegrationTest {
         final long windowMs = 1_000L;
 
         final StoreBuilder<WindowStore<String, String>> storeBuilder = Stores.windowStoreBuilder(
-                new WindowBytesStoreSupplier() {
-                    @Override
-                    public String name() {
-                        return "store";
-                    }
-
-                    @Override
-                    public WindowStore<Bytes, byte[]> get() {
-                        return new InMemoryWindowStore(name(), retentionMs, windowMs, false, metricsScope()) {
+                        new WindowBytesStoreSupplier() {
                             @Override
-                            public void init(final StateStoreContext stateStoreContext, final StateStore root) {
-                                initLatch.countDown();
-                                try {
-                                    finishLatch.await();
-                                } catch (final InterruptedException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                super.init(stateStoreContext, root);
+                            public String name() {
+                                return "store";
                             }
-                        };
-                    }
 
-                    @Override
-                    public String metricsScope() {
-                        return "in-memory-window";
-                    }
+                            @Override
+                            public WindowStore<Bytes, byte[]> get() {
+                                return new InMemoryWindowStore(name(), retentionMs, windowMs, false, metricsScope()) {
+                                    @Override
+                                    public void init(final StateStoreContext stateStoreContext, final StateStore root) {
+                                        initLatch.countDown();
+                                        try {
+                                            finishLatch.await();
+                                        } catch (final InterruptedException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                        super.init(stateStoreContext, root);
+                                    }
+                                };
+                            }
 
-                    @Override
-                    public long segmentIntervalMs() {
-                        return 1L;
-                    }
+                            @Override
+                            public String metricsScope() {
+                                return "in-memory-window";
+                            }
 
-                    @Override
-                    public long windowSize() {
-                        return windowMs;
-                    }
+                            @Override
+                            public long segmentIntervalMs() {
+                                return 1L;
+                            }
 
-                    @Override
-                    public boolean retainDuplicates() {
-                        return false;
-                    }
+                            @Override
+                            public long windowSize() {
+                                return windowMs;
+                            }
 
-                    @Override
-                    public long retentionPeriod() {
-                        return retentionMs;
-                    }
-                },
-                Serdes.String(),
-                Serdes.String())
-            .withCachingEnabled()
-            .withLoggingEnabled(Collections.emptyMap());
+                            @Override
+                            public boolean retainDuplicates() {
+                                return false;
+                            }
+
+                            @Override
+                            public long retentionPeriod() {
+                                return retentionMs;
+                            }
+                        },
+                        Serdes.String(),
+                        Serdes.String())
+                .withCachingEnabled()
+                .withLoggingEnabled(Collections.emptyMap());
 
         test(storeBuilder, initLatch, finishLatch);
     }
@@ -240,7 +240,7 @@ public class InMemoryStoreMetricsIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
         builder.addStateStore(storeBuilder);
         builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), Serdes.String()))
-            .process(new MockApiProcessorSupplier<>(), "store");
+                .process(new MockApiProcessorSupplier<>(), "store");
 
         final Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, safeTestName);

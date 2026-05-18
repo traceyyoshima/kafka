@@ -190,7 +190,7 @@ public class RPCProducerIdManager implements ProducerIdManager {
             case BROKER_ID_NOT_REGISTERED:
                 log.warn("{} Our broker ID is not yet known by the controller, trying again.", logPrefix);
                 break;
-            default :
+            default:
                 log.error("{} Received error code {} from the controller.", logPrefix, errors);
         }
         if (!successfulResponse) {
@@ -209,7 +209,7 @@ public class RPCProducerIdManager implements ProducerIdManager {
         }
         return false;
     }
-    
+
     private void clearRequestInFlight(long newBackoffDeadlineMs) {
         // KAFKA-20114 - Update the backoff before clearing requestInFlight. maybeRequestNextBlock
         // relies on this ordering when it acquires requestInFlight before reading the deadline.

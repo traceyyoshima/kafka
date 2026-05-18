@@ -29,75 +29,75 @@ public enum ClassicGroupState {
     /**
      * Group has no more members, but lingers until all offsets have expired. This state
      * also represents groups which use Kafka only for offset commits and have no members.
-     *
+     * <p>
      * action: respond normally to join group from new members
-     *         respond to sync group with UNKNOWN_MEMBER_ID
-     *         respond to heartbeat with UNKNOWN_MEMBER_ID
-     *         respond to leave group with UNKNOWN_MEMBER_ID
-     *         respond to offset commit with UNKNOWN_MEMBER_ID
-     *         allow offset fetch requests
+     * respond to sync group with UNKNOWN_MEMBER_ID
+     * respond to heartbeat with UNKNOWN_MEMBER_ID
+     * respond to leave group with UNKNOWN_MEMBER_ID
+     * respond to offset commit with UNKNOWN_MEMBER_ID
+     * allow offset fetch requests
      * transition: last offsets removed in periodic expiration task => DEAD
-     *             join group from a new member => PREPARING_REBALANCE
-     *             group is removed by partition emigration => DEAD
-     *             group is removed by expiration => DEAD
+     * join group from a new member => PREPARING_REBALANCE
+     * group is removed by partition emigration => DEAD
+     * group is removed by expiration => DEAD
      */
     EMPTY("Empty"),
 
     /**
      * Group is preparing to rebalance.
-     *
+     * <p>
      * action: respond to heartbeats with REBALANCE_IN_PROGRESS
-     *         respond to sync group with REBALANCE_IN_PROGRESS
-     *         remove member on leave group request
-     *         park join group requests from new or existing members until all expected members have joined
-     *         allow offset commits from previous generation
-     *         allow offset fetch requests
+     * respond to sync group with REBALANCE_IN_PROGRESS
+     * remove member on leave group request
+     * park join group requests from new or existing members until all expected members have joined
+     * allow offset commits from previous generation
+     * allow offset fetch requests
      * transition: some members have joined by the timeout => COMPLETING_REBALANCE
-     *             all members have left the group => EMPTY
-     *             group is removed by partition emigration => DEAD
+     * all members have left the group => EMPTY
+     * group is removed by partition emigration => DEAD
      */
     PREPARING_REBALANCE("PreparingRebalance"),
 
     /**
      * Group is awaiting state assignment from the leader.
-     *
+     * <p>
      * action: respond to heartbeats with REBALANCE_IN_PROGRESS
-     *         respond to offset commits with REBALANCE_IN_PROGRESS
-     *         park sync group requests from followers until transition to STABLE
-     *         allow offset fetch requests
+     * respond to offset commits with REBALANCE_IN_PROGRESS
+     * park sync group requests from followers until transition to STABLE
+     * allow offset fetch requests
      * transition: sync group with state assignment received from leader => STABLE
-     *             join group from new member or existing member with updated metadata => PREPARING_REBALANCE
-     *             leave group from existing member => PREPARING_REBALANCE
-     *             member failure detected => PREPARING_REBALANCE
-     *             group is removed by partition emigration => DEAD
+     * join group from new member or existing member with updated metadata => PREPARING_REBALANCE
+     * leave group from existing member => PREPARING_REBALANCE
+     * member failure detected => PREPARING_REBALANCE
+     * group is removed by partition emigration => DEAD
      */
     COMPLETING_REBALANCE("CompletingRebalance"),
 
     /**
      * Group is stable.
-     *
+     * <p>
      * action: respond to member heartbeats normally
-     *         respond to sync group from any member with current assignment
-     *         respond to join group from followers with matching metadata with current group metadata
-     *         allow offset commits from member of current generation
-     *         allow offset fetch requests
+     * respond to sync group from any member with current assignment
+     * respond to join group from followers with matching metadata with current group metadata
+     * allow offset commits from member of current generation
+     * allow offset fetch requests
      * transition: member failure detected via heartbeat => PREPARING_REBALANCE
-     *             leave group from existing member => PREPARING_REBALANCE
-     *             leader join-group received => PREPARING_REBALANCE
-     *             follower join-group with new metadata => PREPARING_REBALANCE
-     *             group is removed by partition emigration => DEAD
+     * leave group from existing member => PREPARING_REBALANCE
+     * leader join-group received => PREPARING_REBALANCE
+     * follower join-group with new metadata => PREPARING_REBALANCE
+     * group is removed by partition emigration => DEAD
      */
     STABLE("Stable"),
 
     /**
      * Group has no more members and its metadata is being removed.
-     *
+     * <p>
      * action: respond to join group with UNKNOWN_MEMBER_ID
-     *         respond to sync group with UNKNOWN_MEMBER_ID
-     *         respond to heartbeat with UNKNOWN_MEMBER_ID
-     *         respond to leave group with UNKNOWN_MEMBER_ID
-     *         respond to offset commit with UNKNOWN_MEMBER_ID
-     *         allow offset fetch requests
+     * respond to sync group with UNKNOWN_MEMBER_ID
+     * respond to heartbeat with UNKNOWN_MEMBER_ID
+     * respond to leave group with UNKNOWN_MEMBER_ID
+     * respond to offset commit with UNKNOWN_MEMBER_ID
+     * allow offset fetch requests
      * transition: DEAD is a final state before group metadata is cleaned up, so there are no transitions
      */
     DEAD("Dead");

@@ -97,7 +97,7 @@ public abstract class AbstractKStreamTimeWindowAggregateProcessor<KIn, VIn, VAgg
                 final StateStore store = context.getStateStore(storeName);
                 final String storeType = store == null ? "null" : store.getClass().getName();
                 throw new InvalidStateStoreException("Windowed-KTable state store must implement either "
-                    + "TimestampedWindowStore, or TimestampedWindowStoreWithHeaders. Got: " + storeType);
+                        + "TimestampedWindowStore, or TimestampedWindowStoreWithHeaders. Got: " + storeType);
             }
         }
 
@@ -109,19 +109,19 @@ public abstract class AbstractKStreamTimeWindowAggregateProcessor<KIn, VIn, VAgg
                 this.lastEmitWindowCloseTime = lastEmitWindowCloseTime;
             }
             final long emitInterval = StreamsConfig.InternalConfig.getLong(
-                context.appConfigs(),
-                EMIT_INTERVAL_MS_KSTREAMS_WINDOWED_AGGREGATION,
-                1000L
+                    context.appConfigs(),
+                    EMIT_INTERVAL_MS_KSTREAMS_WINDOWED_AGGREGATION,
+                    1000L
             );
             timeTracker.setEmitInterval(emitInterval);
 
             tupleForwarder = new TimestampedTupleForwarder<>(context, sendOldValues);
         } else {
             tupleForwarder = new TimestampedTupleForwarder<>(
-                windowStore,
-                context,
-                isHeadersStore ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                sendOldValues);
+                    windowStore,
+                    context,
+                    isHeadersStore ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                    sendOldValues);
         }
     }
 
@@ -135,9 +135,9 @@ public abstract class AbstractKStreamTimeWindowAggregateProcessor<KIn, VIn, VAgg
         }
 
         tupleForwarder.maybeForward(
-            record.withKey(new Windowed<>(record.key(), window))
-                .withValue(new Change<>(newAgg, sendOldValues ? oldAgg : null))
-                .withTimestamp(newTimestamp));
+                record.withKey(new Windowed<>(record.key(), window))
+                        .withValue(new Change<>(newAgg, sendOldValues ? oldAgg : null))
+                        .withTimestamp(newTimestamp));
     }
 
     protected void maybeForwardFinalResult(final Record<KIn, VIn> record, final long windowCloseTime) {
@@ -163,31 +163,31 @@ public abstract class AbstractKStreamTimeWindowAggregateProcessor<KIn, VIn, VAgg
         if (context().recordMetadata().isPresent()) {
             final RecordMetadata recordMetadata = context().recordMetadata().get();
             log.warn("Skipping record for expired window. " +
-                "topic=[{}] " +
-                "partition=[{}] " +
-                "offset=[{}] " +
-                "timestamp=[{}] " +
-                "window={} " +
-                "expiration=[{}] " +
-                "streamTime=[{}]",
-                recordMetadata.topic(),
-                recordMetadata.partition(),
-                recordMetadata.offset(),
-                timestamp,
-                window,
-                windowExpire,
-                observedStreamTime
+                            "topic=[{}] " +
+                            "partition=[{}] " +
+                            "offset=[{}] " +
+                            "timestamp=[{}] " +
+                            "window={} " +
+                            "expiration=[{}] " +
+                            "streamTime=[{}]",
+                    recordMetadata.topic(),
+                    recordMetadata.partition(),
+                    recordMetadata.offset(),
+                    timestamp,
+                    window,
+                    windowExpire,
+                    observedStreamTime
             );
         } else {
             log.warn("Skipping record for expired window. Topic, partition, and offset not known. " +
-                "timestamp=[{}] " +
-                "window={} " +
-                "expiration=[{}] " +
-                "streamTime=[{}]",
-                timestamp,
-                window,
-                windowExpire,
-                observedStreamTime
+                            "timestamp=[{}] " +
+                            "window={} " +
+                            "expiration=[{}] " +
+                            "streamTime=[{}]",
+                    timestamp,
+                    window,
+                    windowExpire,
+                    observedStreamTime
             );
         }
         droppedRecordsSensor.record();
@@ -224,7 +224,7 @@ public abstract class AbstractKStreamTimeWindowAggregateProcessor<KIn, VIn, VAgg
         final long startMs = time.milliseconds();
 
         try (final KeyValueIterator<Windowed<KIn>, ValueTimestampHeaders<VAgg>> windowToEmit
-                 = windowStore.fetchAll(emitRangeLowerBound, emitRangeUpperBound)) {
+                     = windowStore.fetchAll(emitRangeLowerBound, emitRangeUpperBound)) {
 
             int emittedCount = 0;
             while (windowToEmit.hasNext()) {
@@ -232,10 +232,10 @@ public abstract class AbstractKStreamTimeWindowAggregateProcessor<KIn, VIn, VAgg
                 final KeyValue<Windowed<KIn>, ValueTimestampHeaders<VAgg>> kv = windowToEmit.next();
 
                 tupleForwarder.maybeForward(
-                    record.withKey(kv.key)
-                        .withValue(new Change<>(kv.value.value(), null))
-                        .withTimestamp(kv.value.timestamp())
-                        .withHeaders(record.headers()));
+                        record.withKey(kv.key)
+                                .withValue(new Change<>(kv.value.value(), null))
+                                .withTimestamp(kv.value.timestamp())
+                                .withHeaders(record.headers()));
             }
             emittedRecordsSensor.record(emittedCount);
             emitFinalLatencySensor.record(time.milliseconds() - startMs);

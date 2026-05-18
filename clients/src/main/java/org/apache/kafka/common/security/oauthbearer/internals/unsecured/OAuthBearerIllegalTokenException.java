@@ -30,10 +30,9 @@ public class OAuthBearerIllegalTokenException extends KafkaException {
 
     /**
      * Constructor
-     * 
-     * @param reason
-     *            the mandatory reason for the validation failure; it must indicate
-     *            failure
+     *
+     * @param reason the mandatory reason for the validation failure; it must indicate
+     *               failure
      */
     public OAuthBearerIllegalTokenException(OAuthBearerValidationResult reason) {
         super(Objects.requireNonNull(reason).failureDescription());
@@ -44,7 +43,7 @@ public class OAuthBearerIllegalTokenException extends KafkaException {
 
     /**
      * Return the (always non-null) reason for the validation failure
-     * 
+     *
      * @return the reason for the validation failure
      */
     public OAuthBearerValidationResult reason() {

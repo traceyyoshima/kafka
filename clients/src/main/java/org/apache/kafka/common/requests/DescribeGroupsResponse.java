@@ -35,7 +35,7 @@ public class DescribeGroupsResponse extends AbstractResponse {
 
     /**
      * Possible per-group error codes:
-     *
+     * <p>
      * COORDINATOR_LOAD_IN_PROGRESS (14)
      * COORDINATOR_NOT_AVAILABLE (15)
      * NOT_COORDINATOR (16)
@@ -50,70 +50,70 @@ public class DescribeGroupsResponse extends AbstractResponse {
     }
 
     public static DescribedGroupMember groupMember(
-        final String memberId,
-        final String groupInstanceId,
-        final String clientId,
-        final String clientHost,
-        final byte[] assignment,
-        final byte[] metadata) {
+            final String memberId,
+            final String groupInstanceId,
+            final String clientId,
+            final String clientHost,
+            final byte[] assignment,
+            final byte[] metadata) {
         return new DescribedGroupMember()
-            .setMemberId(memberId)
-            .setGroupInstanceId(groupInstanceId)
-            .setClientId(clientId)
-            .setClientHost(clientHost)
-            .setMemberAssignment(assignment)
-            .setMemberMetadata(metadata);
+                .setMemberId(memberId)
+                .setGroupInstanceId(groupInstanceId)
+                .setClientId(clientId)
+                .setClientHost(clientHost)
+                .setMemberAssignment(assignment)
+                .setMemberMetadata(metadata);
     }
 
     public static DescribedGroup groupMetadata(
-        final String groupId,
-        final Errors error,
-        final String state,
-        final String protocolType,
-        final String protocol,
-        final List<DescribedGroupMember> members,
-        final Set<Byte> authorizedOperations) {
+            final String groupId,
+            final Errors error,
+            final String state,
+            final String protocolType,
+            final String protocol,
+            final List<DescribedGroupMember> members,
+            final Set<Byte> authorizedOperations) {
         DescribedGroup groupMetadata = new DescribedGroup();
         groupMetadata.setGroupId(groupId)
-            .setErrorCode(error.code())
-            .setGroupState(state)
-            .setProtocolType(protocolType)
-            .setProtocolData(protocol)
-            .setMembers(members)
-            .setAuthorizedOperations(Utils.to32BitField(authorizedOperations));
-        return  groupMetadata;
+                .setErrorCode(error.code())
+                .setGroupState(state)
+                .setProtocolType(protocolType)
+                .setProtocolData(protocol)
+                .setMembers(members)
+                .setAuthorizedOperations(Utils.to32BitField(authorizedOperations));
+        return groupMetadata;
     }
 
     public static DescribedGroup groupMetadata(
-        final String groupId,
-        final Errors error,
-        final String state,
-        final String protocolType,
-        final String protocol,
-        final List<DescribedGroupMember> members,
-        final int authorizedOperations
+            final String groupId,
+            final Errors error,
+            final String state,
+            final String protocolType,
+            final String protocol,
+            final List<DescribedGroupMember> members,
+            final int authorizedOperations
     ) {
         return new DescribedGroup()
-            .setGroupId(groupId)
-            .setErrorCode(error.code())
-            .setGroupState(state)
-            .setProtocolType(protocolType)
-            .setProtocolData(protocol)
-            .setMembers(members)
-            .setAuthorizedOperations(authorizedOperations);
+                .setGroupId(groupId)
+                .setErrorCode(error.code())
+                .setGroupState(state)
+                .setProtocolType(protocolType)
+                .setProtocolData(protocol)
+                .setMembers(members)
+                .setAuthorizedOperations(authorizedOperations);
     }
 
     public static DescribedGroup groupError(String groupId, Errors error) {
         return groupMetadata(groupId, error, DescribeGroupsResponse.UNKNOWN_STATE, DescribeGroupsResponse.UNKNOWN_PROTOCOL_TYPE,
-            DescribeGroupsResponse.UNKNOWN_PROTOCOL, List.of(), AUTHORIZED_OPERATIONS_OMITTED);
+                DescribeGroupsResponse.UNKNOWN_PROTOCOL, List.of(), AUTHORIZED_OPERATIONS_OMITTED);
     }
 
     public static DescribedGroup groupError(String groupId, Errors error, String errorMessage) {
         return new DescribedGroup()
-            .setGroupId(groupId)
-            .setGroupState(DescribeGroupsResponse.UNKNOWN_STATE)
-            .setErrorCode(error.code())
-            .setErrorMessage(errorMessage);
+                .setGroupId(groupId)
+                .setGroupState(DescribeGroupsResponse.UNKNOWN_STATE)
+                .setErrorCode(error.code())
+                .setErrorMessage(errorMessage);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class DescribeGroupsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         data.groups().forEach(describedGroup ->
-            updateErrorCounts(errorCounts, Errors.forCode(describedGroup.errorCode())));
+                updateErrorCounts(errorCounts, Errors.forCode(describedGroup.errorCode())));
         return errorCounts;
     }
 

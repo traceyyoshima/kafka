@@ -46,8 +46,8 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
                 int recvBufferSize
         ) throws IOException {
             ServerSocketChannel socketChannel = getSocketForListenerAndMarkAsUsed(
-                nodeId,
-                listenerName);
+                    nodeId,
+                    listenerName);
 
             if (socketChannel != null) {
                 if (socketChannel.isOpen()) {
@@ -67,10 +67,10 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
                 return socketChannel;
             }
             return ServerSocketFactory.INSTANCE.openServerSocket(
-                listenerName,
-                socketAddress,
-                listenBacklogSize,
-                recvBufferSize);
+                    listenerName,
+                    socketAddress,
+                    listenBacklogSize,
+                    recvBufferSize);
         }
     }
 
@@ -100,14 +100,13 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
     /**
      * Get a socket from this manager, mark it as used, and return it.
      *
-     * @param nodeId        The ID of the node.
-     * @param listener      The listener for the socket.
-     *
-     * @return              null if the socket was not found; the socket, otherwise.
+     * @param nodeId   The ID of the node.
+     * @param listener The listener for the socket.
+     * @return null if the socket was not found; the socket, otherwise.
      */
     public synchronized ServerSocketChannel getSocketForListenerAndMarkAsUsed(
-        int nodeId,
-        String listener
+            int nodeId,
+            String listener
     ) {
         Map<String, ServerSocketChannel> socketsForNode = sockets.get(nodeId);
         if (socketsForNode == null) {
@@ -124,9 +123,8 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
     /**
      * Get or create a socket factory object associated with a given node ID.
      *
-     * @param nodeId        The ID of the node.
-     *
-     * @return              The socket factory.
+     * @param nodeId The ID of the node.
+     * @return The socket factory.
      */
     public synchronized ServerSocketFactory getOrCreateSocketFactory(int nodeId) {
         return factories.computeIfAbsent(nodeId, __ -> new PreboundSocketFactory(nodeId));
@@ -135,27 +133,26 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
     /**
      * Get a specific port number. The port will be created if it does not already exist.
      *
-     * @param nodeId        The ID of the node.
-     * @param listener      The listener for the socket.
-     *
-     * @return              The port number.
+     * @param nodeId   The ID of the node.
+     * @param listener The listener for the socket.
+     * @return The port number.
      */
     public synchronized int getOrCreatePortForListener(
-        int nodeId,
-        String listener
+            int nodeId,
+            String listener
     ) throws IOException {
         Map<String, ServerSocketChannel> socketsForNode =
-            sockets.computeIfAbsent(nodeId, __ -> new HashMap<>());
+                sockets.computeIfAbsent(nodeId, __ -> new HashMap<>());
         ServerSocketChannel socketChannel = socketsForNode.get(listener);
         if (socketChannel == null) {
             if (closed) {
                 throw new RuntimeException("Cannot open new socket: manager is closed.");
             }
             socketChannel = ServerSocketFactory.INSTANCE.openServerSocket(
-                listener,
-                new InetSocketAddress(0),
-                -1,
-                -1);
+                    listener,
+                    new InetSocketAddress(0),
+                    -1,
+                    -1);
             socketsForNode.put(listener, socketChannel);
         }
         InetSocketAddress socketAddress = (InetSocketAddress) socketChannel.getLocalAddress();
@@ -173,7 +170,7 @@ public class PreboundSocketFactoryManager implements AutoCloseable {
         // SocketServer.)
         for (Entry<Integer, Map<String, ServerSocketChannel>> socketsEntry : sockets.entrySet()) {
             Set<String> usedListeners = usedSockets.getOrDefault(
-                socketsEntry.getKey(), Set.of());
+                    socketsEntry.getKey(), Set.of());
             for (Entry<String, ServerSocketChannel> entry : socketsEntry.getValue().entrySet()) {
                 if (!usedListeners.contains(entry.getKey())) {
                     Utils.closeQuietly(entry.getValue(), "serverSocketChannel");

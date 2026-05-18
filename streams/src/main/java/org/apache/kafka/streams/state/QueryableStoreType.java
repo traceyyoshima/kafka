@@ -32,7 +32,7 @@ public interface QueryableStoreType<T> {
      * Called when searching for {@link StateStore}s to see if they
      * match the type expected by implementors of this interface.
      *
-     * @param stateStore    The stateStore
+     * @param stateStore The stateStore
      * @return true if it is a match
      */
     boolean accepts(final StateStore stateStore);
@@ -41,10 +41,10 @@ public interface QueryableStoreType<T> {
      * Create an instance of {@code T} (usually a facade) that developers can use
      * to query the underlying {@link StateStore}s.
      *
-     * @param storeProvider     provides access to all the underlying StateStore instances
-     * @param storeName         The name of the Store
+     * @param storeProvider provides access to all the underlying StateStore instances
+     * @param storeName     The name of the Store
      * @return a read-only interface over a {@code StateStore}
-     *        (cf. {@link QueryableStoreTypes.KeyValueStoreType})
+     * (cf. {@link QueryableStoreTypes.KeyValueStoreType})
      */
     T create(final StateStoreProvider storeProvider,
              final String storeName);

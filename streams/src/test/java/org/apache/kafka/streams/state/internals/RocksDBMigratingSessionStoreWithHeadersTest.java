@@ -55,9 +55,9 @@ public class RocksDBMigratingSessionStoreWithHeadersTest extends RocksDBStoreTes
     private final Serializer<String> stringSerializer = new StringSerializer();
     private final Deserializer<Long> longDeserializer = new LongDeserializer();
     private final AggregationWithHeadersSerializer<String> aggSerializer =
-        new AggregationWithHeadersSerializer<>(new StringSerializer());
+            new AggregationWithHeadersSerializer<>(new StringSerializer());
     private final AggregationWithHeadersDeserializer<String> aggDeserializer =
-        new AggregationWithHeadersDeserializer<>(new StringDeserializer());
+            new AggregationWithHeadersDeserializer<>(new StringDeserializer());
     private final byte[] sessionStoreHeaderColumnFamilyName = RocksDBMigratingSessionStoreWithHeaders.SESSION_STORE_HEADERS_VALUES_COLUMN_FAMILY_NAME;
 
     RocksDBStore getRocksDBStore() {
@@ -170,7 +170,7 @@ public class RocksDBMigratingSessionStoreWithHeadersTest extends RocksDBStoreTes
         // putIfAbsent() - tests migration on conditional write
         final byte[] key11Value = serializeAggWithHeaders("11111111111", testHeaders());
         assertNull(rocksDBStore.putIfAbsent(new Bytes("key11new".getBytes()), key11Value),
-            "Expected null return value for putIfAbsent on non-existing key11new");
+                "Expected null return value for putIfAbsent on non-existing key11new");
 
         final byte[] key5Result = rocksDBStore.putIfAbsent(new Bytes("key5".getBytes()), null);
         assertMigratedValue(key5Result, "55555");
@@ -233,7 +233,7 @@ public class RocksDBMigratingSessionStoreWithHeadersTest extends RocksDBStoreTes
         }
 
         try (final KeyValueIterator<Bytes, byte[]> it =
-                          rocksDBStore.range(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
+                     rocksDBStore.range(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
             {
                 final KeyValue<Bytes, byte[]> keyValue = it.next();
                 assertArrayEquals("key2".getBytes(), keyValue.key.get());
@@ -292,7 +292,7 @@ public class RocksDBMigratingSessionStoreWithHeadersTest extends RocksDBStoreTes
         }
 
         try (final KeyValueIterator<Bytes, byte[]> it =
-                          rocksDBStore.reverseRange(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
+                     rocksDBStore.reverseRange(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
             {
                 final KeyValue<Bytes, byte[]> keyValue = it.next();
                 assertArrayEquals("key5".getBytes(), keyValue.key.get());
@@ -521,9 +521,9 @@ public class RocksDBMigratingSessionStoreWithHeadersTest extends RocksDBStoreTes
         final Headers headers = Utils.headers(value);
         assertFalse(headers.iterator().hasNext(), "Migrated value should have empty headers");
         assertArrayEquals(
-            expectedAggregation.getBytes(StandardCharsets.UTF_8),
-            Utils.rawAggregation(value),
-            "Migrated value should preserve original aggregation: " + expectedAggregation);
+                expectedAggregation.getBytes(StandardCharsets.UTF_8),
+                Utils.rawAggregation(value),
+                "Migrated value should preserve original aggregation: " + expectedAggregation);
     }
 
     private void assertValueWithHeaders(final byte[] value, final String expectedAggregation, final Headers expectedHeaders) {
@@ -531,9 +531,9 @@ public class RocksDBMigratingSessionStoreWithHeadersTest extends RocksDBStoreTes
         assertEquals(expectedAggregation, deserialized.aggregation());
         for (final Header header : expectedHeaders) {
             assertArrayEquals(
-                header.value(),
-                deserialized.headers().lastHeader(header.key()).value(),
-                "Expected header '" + header.key() + "' to match");
+                    header.value(),
+                    deserialized.headers().lastHeader(header.key()).value(),
+                    "Expected header '" + header.key() + "' to match");
         }
     }
 }

@@ -58,8 +58,8 @@ public class ShareCoordinatorOffsetsManager {
      * share partition key. It then calculates the minimum offset, if possible,
      * below which all offsets are redundant.
      *
-     * @param key    - represents {@link SharePartitionKey} whose offset needs updating
-     * @param offset - represents the latest partition offset for provided key
+     * @param key      - represents {@link SharePartitionKey} whose offset needs updating
+     * @param offset   - represents the latest partition offset for provided key
      * @param isDelete - true if the offset is for a tombstone record
      */
     public void updateState(SharePartitionKey key, long offset, boolean isDelete) {
@@ -111,6 +111,7 @@ public class ShareCoordinatorOffsetsManager {
     /**
      * Most recent last redundant offset. This method is to be used
      * when the caller wants to query the value of such offset.
+     *
      * @return Optional of type Long representing the offset or empty for invalid offset values
      */
     public Optional<Long> lastRedundantOffset() {

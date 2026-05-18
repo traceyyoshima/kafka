@@ -65,8 +65,8 @@ public final class CatCommandHandler implements Commands.Handler {
         @Override
         public void addArguments(ArgumentParser parser) {
             parser.addArgument("targets").
-                nargs("+").
-                help("The metadata files to display.");
+                    nargs("+").
+                    help("The metadata files to display.");
         }
 
         @Override
@@ -76,9 +76,9 @@ public final class CatCommandHandler implements Commands.Handler {
 
         @Override
         public void completeNext(
-            MetadataShellState state,
-            List<String> nextWords,
-            List<Candidate> candidates
+                MetadataShellState state,
+                List<String> nextWords,
+                List<Candidate> candidates
         ) throws Exception {
             CommandUtils.completePath(state, nextWords.get(nextWords.size() - 1), candidates);
         }
@@ -92,9 +92,9 @@ public final class CatCommandHandler implements Commands.Handler {
 
     @Override
     public void run(
-        Optional<InteractiveShell> shell,
-        PrintWriter writer,
-        MetadataShellState state
+            Optional<InteractiveShell> shell,
+            PrintWriter writer,
+            MetadataShellState state
     ) throws Exception {
         log.trace("cat " + targets);
         for (String target : targets) {

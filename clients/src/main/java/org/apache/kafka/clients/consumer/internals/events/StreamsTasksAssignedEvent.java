@@ -38,8 +38,8 @@ public class StreamsTasksAssignedEvent extends CompletableBackgroundEvent<Void> 
      * Constructor for the streams partitions assigned event.
      *
      * @param assignedPartitions The full partition assignment to apply
-     * @param addedPartitions The newly added partitions
-     * @param assignment The task assignment for the callback
+     * @param addedPartitions    The newly added partitions
+     * @param assignment         The task assignment for the callback
      */
     public StreamsTasksAssignedEvent(final SortedSet<TopicPartition> assignedPartitions,
                                      final SortedSet<TopicPartition> addedPartitions,

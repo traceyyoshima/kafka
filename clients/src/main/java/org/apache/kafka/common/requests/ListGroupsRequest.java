@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * Possible error codes:
- *
+ * <p>
  * COORDINATOR_LOAD_IN_PROGRESS (14)
  * COORDINATOR_NOT_AVAILABLE (15)
  * AUTHORIZATION_FAILED (29)
@@ -61,8 +61,8 @@ public class ListGroupsRequest extends AbstractRequest {
                 boolean containedConsumer = typesCopy.remove(GroupType.CONSUMER.toString());
                 if (!typesCopy.isEmpty() || (!containedClassic && containedConsumer)) {
                     throw new UnsupportedVersionException("The broker only supports ListGroups " +
-                        "v" + version + ", but we need v5 or newer to request groups by type. " +
-                        "Requested group types: [" + String.join(", ", data.typesFilter()) + "].");
+                            "v" + version + ", but we need v5 or newer to request groups by type. " +
+                            "Requested group types: [" + String.join(", ", data.typesFilter()) + "].");
                 }
                 return new ListGroupsRequest(data.duplicate().setTypesFilter(List.of()), version);
             }
@@ -85,8 +85,8 @@ public class ListGroupsRequest extends AbstractRequest {
     @Override
     public ListGroupsResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         ListGroupsResponseData listGroupsResponseData = new ListGroupsResponseData().
-            setGroups(List.of()).
-            setErrorCode(Errors.forException(e).code());
+                setGroups(List.of()).
+                setErrorCode(Errors.forException(e).code());
         if (version() >= 1) {
             listGroupsResponseData.setThrottleTimeMs(throttleTimeMs);
         }

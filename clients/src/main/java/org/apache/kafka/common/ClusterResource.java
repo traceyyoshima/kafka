@@ -29,6 +29,7 @@ public class ClusterResource {
     /**
      * Create {@link ClusterResource} with a cluster id. Note that cluster id may be {@code null} if the
      * metadata request was sent to a broker without support for cluster ids.
+     *
      * @param clusterId The cluster id
      */
     public ClusterResource(String clusterId) {

@@ -21,7 +21,9 @@ import org.apache.kafka.common.Configurable;
 
 import java.util.Map;
 
-/** Defines which topics should be replicated. */
+/**
+ * Defines which topics should be replicated.
+ */
 public interface TopicFilter extends Configurable, AutoCloseable {
 
     boolean shouldReplicateTopic(String topic);

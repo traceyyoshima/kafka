@@ -42,9 +42,9 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
 
     @Override
     public int getSinkNodeID(
-        final List<TaskId> taskIdList,
-        final List<ProcessId> clientList,
-        final Collection<Set<TaskId>> taskSetsPerTopicGroup
+            final List<TaskId> taskIdList,
+            final List<ProcessId> clientList,
+            final Collection<Set<TaskId>> taskSetsPerTopicGroup
     ) {
         return clientList.size() + taskIdList.size() + clientList.size() * taskSetsPerTopicGroup.size();
     }
@@ -66,17 +66,17 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
 
     @Override
     public Graph<Integer> constructTaskGraph(
-        final List<ProcessId> clientList,
-        final List<TaskId> taskIdList,
-        final Map<ProcessId, T> clientStates,
-        final Map<TaskId, ProcessId> taskClientMap,
-        final Map<ProcessId, Integer> originalAssignedTaskNumber,
-        final BiPredicate<T, TaskId> hasAssignedTask,
-        final CostFunction costFunction,
-        final int trafficCost,
-        final int nonOverlapCost,
-        final boolean hasReplica,
-        final boolean isStandby
+            final List<ProcessId> clientList,
+            final List<TaskId> taskIdList,
+            final Map<ProcessId, T> clientStates,
+            final Map<TaskId, ProcessId> taskClientMap,
+            final Map<ProcessId, Integer> originalAssignedTaskNumber,
+            final BiPredicate<T, TaskId> hasAssignedTask,
+            final CostFunction costFunction,
+            final int trafficCost,
+            final int nonOverlapCost,
+            final boolean hasReplica,
+            final boolean isStandby
     ) {
         validateTasks(taskIdList);
 
@@ -91,18 +91,18 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
         }
 
         constructEdges(
-            graph,
-            taskIdList,
-            clientList,
-            clientStates,
-            taskClientMap,
-            originalAssignedTaskNumber,
-            hasAssignedTask,
-            costFunction,
-            trafficCost,
-            nonOverlapCost,
-            hasReplica,
-            isStandby
+                graph,
+                taskIdList,
+                clientList,
+                clientStates,
+                taskClientMap,
+                originalAssignedTaskNumber,
+                hasAssignedTask,
+                costFunction,
+                trafficCost,
+                nonOverlapCost,
+                hasReplica,
+                isStandby
         );
 
         // Run max flow algorithm to get a solution first
@@ -116,15 +116,15 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
 
     @Override
     public boolean assignTaskFromMinCostFlow(
-        final Graph<Integer> graph,
-        final List<ProcessId> clientList,
-        final List<TaskId> taskIdList,
-        final Map<ProcessId, T> clientStates,
-        final Map<ProcessId, Integer> originalAssignedTaskNumber,
-        final Map<TaskId, ProcessId> taskClientMap,
-        final BiConsumer<T, TaskId> assignTask,
-        final BiConsumer<T, TaskId> unAssignTask,
-        final BiPredicate<T, TaskId> hasAssignedTask
+            final Graph<Integer> graph,
+            final List<ProcessId> clientList,
+            final List<TaskId> taskIdList,
+            final Map<ProcessId, T> clientStates,
+            final Map<ProcessId, Integer> originalAssignedTaskNumber,
+            final Map<TaskId, ProcessId> taskClientMap,
+            final BiConsumer<T, TaskId> assignTask,
+            final BiConsumer<T, TaskId> unAssignTask,
+            final BiPredicate<T, TaskId> hasAssignedTask
     ) {
         final Set<TaskId> taskIdSet = new HashSet<>(taskIdList);
 
@@ -139,7 +139,7 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
                     continue;
                 }
                 final KeyValue<Boolean, Integer> movedAndAssigned = assignTaskToClient(graph, taskId, taskNodeId, topicGroupIndex,
-                    clientStates, clientList, taskIdList, taskClientMap, assignTask, unAssignTask);
+                        clientStates, clientList, taskIdList, taskClientMap, assignTask, unAssignTask);
                 taskMoved |= movedAndAssigned.key;
                 tasksAssigned += movedAndAssigned.value;
                 taskNodeId++;
@@ -154,7 +154,7 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
 
     private void validateTasks(final List<TaskId> taskIdList) {
         final Set<TaskId> tasksInSubtopology = taskSetsPerTopicGroup.stream().flatMap(
-            Collection::stream).collect(Collectors.toSet());
+                Collection::stream).collect(Collectors.toSet());
         for (final TaskId taskId : taskIdList) {
             if (!tasksInSubtopology.contains(taskId)) {
                 throw new IllegalStateException("Task " + taskId + " not in tasksForTopicGroup");
@@ -163,18 +163,18 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
     }
 
     private void constructEdges(
-        final Graph<Integer> graph,
-        final List<TaskId> taskIdList,
-        final List<ProcessId> clientList,
-        final Map<ProcessId, T> clientStates,
-        final Map<TaskId, ProcessId> taskClientMap,
-        final Map<ProcessId, Integer> originalAssignedTaskNumber,
-        final BiPredicate<T, TaskId> hasAssignedTask,
-        final CostFunction costFunction,
-        final int trafficCost,
-        final int nonOverlapCost,
-        final boolean hasReplica,
-        final boolean isStandby
+            final Graph<Integer> graph,
+            final List<TaskId> taskIdList,
+            final List<ProcessId> clientList,
+            final Map<ProcessId, T> clientStates,
+            final Map<TaskId, ProcessId> taskClientMap,
+            final Map<ProcessId, Integer> originalAssignedTaskNumber,
+            final BiPredicate<T, TaskId> hasAssignedTask,
+            final CostFunction costFunction,
+            final int trafficCost,
+            final int nonOverlapCost,
+            final boolean hasReplica,
+            final boolean isStandby
     ) {
         final Set<TaskId> taskIdSet = new HashSet<>(taskIdList);
         final int sinkId = getSinkNodeID(taskIdList, clientList, taskSetsPerTopicGroup);
@@ -201,7 +201,7 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
                     if (inCurrentAssignment) {
                         if (!hasReplica && taskClientMap.containsKey(taskId)) {
                             throw new IllegalArgumentException("Task " + taskId + " assigned to multiple clients "
-                                + processId + ", " + taskClientMap.get(taskId));
+                                    + processId + ", " + taskClientMap.get(taskId));
                         }
                         taskClientMap.put(taskId, processId);
                     }
@@ -209,10 +209,10 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
 
                 if (validTaskCount > 0) {
                     final int secondStageClientNodeId = getSecondStageClientNodeId(taskIdList,
-                        clientList, taskSetsPerTopicGroup, clientIndex);
+                            clientList, taskSetsPerTopicGroup, clientIndex);
                     final int capacity =
-                        originalAssignedTaskNumber.containsKey(processId) ?
-                            (int) Math.ceil(originalAssignedTaskNumber.get(processId) * 1.0 / taskIdList.size() * validTaskCount) : 0;
+                            originalAssignedTaskNumber.containsKey(processId) ?
+                                    (int) Math.ceil(originalAssignedTaskNumber.get(processId) * 1.0 / taskIdList.size() * validTaskCount) : 0;
                     graph.addEdge(clientNodeId, secondStageClientNodeId, capacity, 0, 0);
                 }
             }
@@ -239,7 +239,7 @@ public class BalanceSubtopologyGraphConstructor<T> implements RackAwareGraphCons
             final ProcessId processId = clientList.get(clientIndex);
             final int capacity = originalAssignedTaskNumber.getOrDefault(processId, 0);
             final int secondStageClientNodeId = getSecondStageClientNodeId(taskIdList, clientList,
-                taskSetsPerTopicGroup, clientIndex);
+                    taskSetsPerTopicGroup, clientIndex);
             graph.addEdge(secondStageClientNodeId, sinkId, capacity, 0, 0);
         }
 

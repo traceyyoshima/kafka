@@ -185,11 +185,11 @@ public class ShareSessionHandler {
 
         if (log.isDebugEnabled()) {
             log.debug("Build ShareFetch {} for node {}. Added {}, removed {}, replaced {} out of {}",
-                nextMetadata, node,
-                topicIdPartitionsToLogString(added),
-                topicIdPartitionsToLogString(removed),
-                topicIdPartitionsToLogString(replaced),
-                topicIdPartitionsToLogString(sessionPartitions.values()));
+                    nextMetadata, node,
+                    topicIdPartitionsToLogString(added),
+                    topicIdPartitionsToLogString(removed),
+                    topicIdPartitionsToLogString(replaced),
+                    topicIdPartitionsToLogString(sessionPartitions.values()));
         }
 
         if (hasRenewAcknowledgements) {
@@ -197,24 +197,24 @@ public class ShareSessionHandler {
             // and potentially update the share session. The parameters for wait time, number of bytes and number of
             // records are all zero.
             return ShareFetchRequest.Builder.forConsumer(
-                groupId, nextMetadata, 0,
-                0, 0, 0,
-                0, shareFetchConfig.shareAcquireMode.id, true,
-                added, removed, acknowledgementBatches);
+                    groupId, nextMetadata, 0,
+                    0, 0, 0,
+                    0, shareFetchConfig.shareAcquireMode.id, true,
+                    added, removed, acknowledgementBatches);
         } else if (canSkipIfRequestEmpty) {
             // The request contains changes to the share session or acknowledgements only. The parameters for wait time,
             // number of bytes and number of records are all zero.
             return ShareFetchRequest.Builder.forConsumer(
-                groupId, nextMetadata, 0,
-                0, 0, 0,
-                0, shareFetchConfig.shareAcquireMode.id, false,
-                added, removed, acknowledgementBatches);
+                    groupId, nextMetadata, 0,
+                    0, 0, 0,
+                    0, shareFetchConfig.shareAcquireMode.id, false,
+                    added, removed, acknowledgementBatches);
         } else {
             return ShareFetchRequest.Builder.forConsumer(
-                groupId, nextMetadata, shareFetchConfig.maxWaitMs,
-                shareFetchConfig.minBytes, shareFetchConfig.maxBytes, shareFetchConfig.maxPollRecords,
-                shareFetchConfig.maxPollRecords, shareFetchConfig.shareAcquireMode.id, false,
-                added, removed, acknowledgementBatches);
+                    groupId, nextMetadata, shareFetchConfig.maxWaitMs,
+                    shareFetchConfig.minBytes, shareFetchConfig.maxBytes, shareFetchConfig.maxPollRecords,
+                    shareFetchConfig.maxPollRecords, shareFetchConfig.shareAcquireMode.id, false,
+                    added, removed, acknowledgementBatches);
         }
     }
 
@@ -255,10 +255,10 @@ public class ShareSessionHandler {
     /**
      * Handle the ShareFetch response.
      *
-     * @param response  The response.
-     * @param version   The version of the request.
-     * @return          True if the response is well-formed; false if it can't be processed
-     *                  because of missing or unexpected partitions.
+     * @param response The response.
+     * @param version  The version of the request.
+     * @return True if the response is well-formed; false if it can't be processed
+     * because of missing or unexpected partitions.
      */
     public boolean handleResponse(ShareFetchResponse response, short version) {
         if ((response.error() == Errors.SHARE_SESSION_NOT_FOUND) ||
@@ -288,10 +288,10 @@ public class ShareSessionHandler {
     /**
      * Handle the ShareAcknowledge response.
      *
-     * @param response  The response.
-     * @param version   The version of the request.
-     * @return          True if the response is well-formed; false if it can't be processed
-     *                  because of missing or unexpected partitions.
+     * @param response The response.
+     * @param version  The version of the request.
+     * @return True if the response is well-formed; false if it can't be processed
+     * because of missing or unexpected partitions.
      */
     public boolean handleResponse(ShareAcknowledgeResponse response, short version) {
         if ((response.error() == Errors.SHARE_SESSION_NOT_FOUND) ||
@@ -331,7 +331,7 @@ public class ShareSessionHandler {
      * When a network error occurs, we close any existing share session on our next request,
      * and try to create a new session.
      *
-     * @param t     The exception.
+     * @param t The exception.
      */
     public void handleError(Throwable t) {
         log.info("Error sending fetch request {} to node {}:", nextMetadata, node, t);

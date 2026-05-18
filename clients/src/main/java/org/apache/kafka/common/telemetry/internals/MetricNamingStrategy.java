@@ -25,19 +25,19 @@ import org.apache.kafka.common.MetricName;
  * (name and tags) representation.
  *
  * <p>
- *
+ * <p>
  * Each strategy may define its own conventions for how the resulting metric should be named,
  * including things such conforming name and tags to use specific casing and separators for
  * different parts of the metric name.
  *
  * <p>
- *
+ * <p>
  * In general, a {@code MetricNamingStrategy} implementation is closely managed by another entity,
  * referred to as the "telemetry reporter", as that reporter handles the conversion between different
  * representations of metric names and keys.
  *
  * <p>
- *
+ * <p>
  * This class is primarily used by the telemetry reporter, {@link MetricsCollector}, and
  * {@link MetricsEmitter} layers.
  */
@@ -55,28 +55,28 @@ public interface MetricNamingStrategy<T> {
      * Creates a derived {@link MetricKey} from an existing {@link MetricKey}.
      *
      * <p>
-     *
+     * <p>
      * Some metrics may include multiple components derived from the same underlying source
      * of data (e.g. a Meter that exposes multiple rates and a counter) in which case it may
      * be desirable to create a new metric key derived from the primary one, with a different
      * name for each component of the metric.
      *
      * <p>
-     *
+     * <p>
      * Some metrics may be derived from others by the collector itself. For example, a delta
      * metric might be created from a cumulative counter.
      *
      * <p>
-     *
+     * <p>
      * This method exists so each strategy can define its own convention for how to name
      * derived metrics keys.
      *
      * <p>
-     *
+     * <p>
      * The derived key should have the same tags as the input key, and its name new name
      * will typically be composed of the input key name and the component name.
      *
-     * @param key Input {@link MetricKey} used to construct the derived key
+     * @param key              Input {@link MetricKey} used to construct the derived key
      * @param derivedComponent Name to use for the derived component of the input metric
      * @return Derived {@link MetricKey} with a new metric name composed of the input key
      * name and the additional name

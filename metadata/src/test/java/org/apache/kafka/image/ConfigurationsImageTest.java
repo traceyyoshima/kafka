@@ -82,9 +82,9 @@ public class ConfigurationsImageTest {
 
         ConfigurationDelta delta = new ConfigurationDelta(image, supportedConfigChecker);
         delta.replay(new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0")
-            .setName("bar").setValue("value2"));
+                .setName("bar").setValue("value2"));
         delta.replay(new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0")
-            .setName("qux").setValue("value3"));
+                .setName("qux").setValue("value3"));
 
         ConfigurationImage result = delta.apply();
 
@@ -100,7 +100,7 @@ public class ConfigurationsImageTest {
 
         ConfigurationDelta delta = new ConfigurationDelta(image, SupportedConfigChecker.TRUE);
         delta.replay(new ConfigRecord().setResourceType(BROKER.id()).setResourceName("0")
-            .setName("baz").setValue("value3"));
+                .setName("baz").setValue("value3"));
 
         ConfigurationImage result = delta.apply();
 
@@ -120,8 +120,8 @@ public class ConfigurationsImageTest {
     private static void testToImage(ConfigurationsImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> ConfigurationsImage.EMPTY,
-            img -> new ConfigurationsDelta(img, SupportedConfigChecker.TRUE)
+                () -> ConfigurationsImage.EMPTY,
+                img -> new ConfigurationsDelta(img, SupportedConfigChecker.TRUE)
         ).test(image, fromRecords);
     }
 

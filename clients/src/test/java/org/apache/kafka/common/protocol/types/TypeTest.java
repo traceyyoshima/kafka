@@ -52,8 +52,8 @@ public class TypeTest {
     @Test
     public void testRecordsSerde() {
         MemoryRecords records = MemoryRecords.withRecords(Compression.NONE,
-            new SimpleRecord("foo".getBytes()),
-            new SimpleRecord("bar".getBytes()));
+                new SimpleRecord("foo".getBytes()),
+                new SimpleRecord("bar".getBytes()));
         ByteBuffer buffer = ByteBuffer.allocate(Type.RECORDS.sizeOf(records));
         Type.RECORDS.write(buffer, records);
         buffer.flip();
@@ -83,8 +83,8 @@ public class TypeTest {
     @Test
     public void testCompactRecordsSerde() {
         MemoryRecords records = MemoryRecords.withRecords(Compression.NONE,
-            new SimpleRecord("foo".getBytes()),
-            new SimpleRecord("bar".getBytes()));
+                new SimpleRecord("foo".getBytes()),
+                new SimpleRecord("bar".getBytes()));
         ByteBuffer buffer = ByteBuffer.allocate(Type.COMPACT_RECORDS.sizeOf(records));
         Type.COMPACT_RECORDS.write(buffer, records);
         buffer.flip();

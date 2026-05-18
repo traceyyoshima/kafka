@@ -73,7 +73,7 @@ public class ResultOrError<T> {
         }
         ResultOrError<?> other = (ResultOrError<?>) o;
         return Objects.equals(error, other.error) &&
-            Objects.equals(result, other.result);
+                Objects.equals(result, other.result);
     }
 
     @Override

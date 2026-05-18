@@ -48,7 +48,6 @@ public interface JwtRetriever extends OAuthBearerConfigurable {
      * which this is ultimately called does not provide an asynchronous approach.
      *
      * @return Non-<code>null</code> JWT access token string
-     *
      * @throws JwtRetrieverException Thrown on errors related to IO during retrieval
      */
 

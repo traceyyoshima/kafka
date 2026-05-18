@@ -33,19 +33,19 @@ import java.util.Map;
 
 /**
  * Possible error codes:
- *
- *   - {@link Errors#CORRUPT_MESSAGE}
- *   - {@link Errors#INVALID_PRODUCER_EPOCH}
- *   - {@link Errors#UNKNOWN_TOPIC_OR_PARTITION}
- *   - {@link Errors#NOT_LEADER_OR_FOLLOWER}
- *   - {@link Errors#MESSAGE_TOO_LARGE}
- *   - {@link Errors#RECORD_LIST_TOO_LARGE}
- *   - {@link Errors#NOT_ENOUGH_REPLICAS}
- *   - {@link Errors#NOT_ENOUGH_REPLICAS_AFTER_APPEND}
- *   - {@link Errors#INVALID_REQUIRED_ACKS}
- *   - {@link Errors#TRANSACTION_COORDINATOR_FENCED}
- *   - {@link Errors#REQUEST_TIMED_OUT}
- *   - {@link Errors#CLUSTER_AUTHORIZATION_FAILED}
+ * <p>
+ * - {@link Errors#CORRUPT_MESSAGE}
+ * - {@link Errors#INVALID_PRODUCER_EPOCH}
+ * - {@link Errors#UNKNOWN_TOPIC_OR_PARTITION}
+ * - {@link Errors#NOT_LEADER_OR_FOLLOWER}
+ * - {@link Errors#MESSAGE_TOO_LARGE}
+ * - {@link Errors#RECORD_LIST_TOO_LARGE}
+ * - {@link Errors#NOT_ENOUGH_REPLICAS}
+ * - {@link Errors#NOT_ENOUGH_REPLICAS_AFTER_APPEND}
+ * - {@link Errors#INVALID_REQUIRED_ACKS}
+ * - {@link Errors#TRANSACTION_COORDINATOR_FENCED}
+ * - {@link Errors#REQUEST_TIMED_OUT}
+ * - {@link Errors#CLUSTER_AUTHORIZATION_FAILED}
  */
 public class WriteTxnMarkersResponse extends AbstractResponse {
 
@@ -61,21 +61,21 @@ public class WriteTxnMarkersResponse extends AbstractResponse {
                 String topicName = topicPartition.topic();
 
                 WritableTxnMarkerTopicResult topic =
-                    responseTopicDataMap.getOrDefault(topicName, new WritableTxnMarkerTopicResult().setName(topicName));
+                        responseTopicDataMap.getOrDefault(topicName, new WritableTxnMarkerTopicResult().setName(topicName));
                 topic.partitions().add(new WritableTxnMarkerPartitionResult()
-                                           .setErrorCode(topicEntry.getValue().code())
-                                           .setPartitionIndex(topicPartition.partition())
+                        .setErrorCode(topicEntry.getValue().code())
+                        .setPartitionIndex(topicPartition.partition())
                 );
                 responseTopicDataMap.put(topicName, topic);
             }
 
             markers.add(new WritableTxnMarkerResult()
-                            .setProducerId(markerEntry.getKey())
-                            .setTopics(new ArrayList<>(responseTopicDataMap.values()))
+                    .setProducerId(markerEntry.getKey())
+                    .setTopics(new ArrayList<>(responseTopicDataMap.values()))
             );
         }
         this.data = new WriteTxnMarkersResponseData()
-                        .setMarkers(markers);
+                .setMarkers(markers);
     }
 
     public WriteTxnMarkersResponse(WriteTxnMarkersResponseData data) {

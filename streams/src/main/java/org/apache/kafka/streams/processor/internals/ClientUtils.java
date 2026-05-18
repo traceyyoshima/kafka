@@ -107,7 +107,7 @@ public class ClientUtils {
     }
 
     /**
-     * @throws StreamsException if the consumer throws an exception
+     * @throws StreamsException                                if the consumer throws an exception
      * @throws org.apache.kafka.common.errors.TimeoutException if the request times out
      */
     public static Map<TopicPartition, Long> fetchCommittedOffsets(final Set<TopicPartition> partitions,
@@ -120,7 +120,7 @@ public class ClientUtils {
         try {
             // those which do not have a committed offset would default to 0
             committedOffsets = consumer.committed(partitions).entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() == null ? 0L : e.getValue().offset()));
+                    .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() == null ? 0L : e.getValue().offset()));
         } catch (final TimeoutException timeoutException) {
             LOG.warn("The committed offsets request timed out, try increasing the consumer client's default.api.timeout.ms", timeoutException);
             throw timeoutException;
@@ -135,14 +135,14 @@ public class ClientUtils {
     public static KafkaFuture<Map<TopicPartition, ListOffsetsResultInfo>> fetchEndOffsetsFuture(final Collection<TopicPartition> partitions,
                                                                                                 final Admin adminClient) {
         return adminClient.listOffsets(
-            partitions.stream().collect(Collectors.toMap(Function.identity(), tp -> OffsetSpec.latest()))
+                partitions.stream().collect(Collectors.toMap(Function.identity(), tp -> OffsetSpec.latest()))
         ).all();
     }
 
     public static ListOffsetsResult fetchEndOffsetsResult(final Collection<TopicPartition> partitions,
                                                           final Admin adminClient) {
         return adminClient.listOffsets(
-            partitions.stream().collect(Collectors.toMap(Function.identity(), tp -> OffsetSpec.latest()))
+                partitions.stream().collect(Collectors.toMap(Function.identity(), tp -> OffsetSpec.latest()))
         );
     }
 
@@ -175,6 +175,7 @@ public class ClientUtils {
 
     /**
      * A helper method that wraps the {@code Future#get} call and rethrows any thrown exception as a StreamsException
+     *
      * @throws StreamsException if the admin client request throws an exception
      */
     public static Map<TopicPartition, ListOffsetsResultInfo> getEndOffsets(final KafkaFuture<Map<TopicPartition, ListOffsetsResultInfo>> endOffsetsFuture) {
@@ -199,19 +200,19 @@ public class ClientUtils {
 
     public static long producerRecordSizeInBytes(final ProducerRecord<byte[], byte[]> record) {
         return recordSizeInBytes(
-            record.key() == null ? 0 : record.key().length,
-            record.value() == null ? 0 : record.value().length,
-            record.topic(),
-            record.headers()
+                record.key() == null ? 0 : record.key().length,
+                record.value() == null ? 0 : record.value().length,
+                record.topic(),
+                record.headers()
         );
     }
 
     public static long consumerRecordSizeInBytes(final ConsumerRecord<byte[], byte[]> record) {
         return recordSizeInBytes(
-            record.serializedKeySize(),
-            record.serializedValueSize(),
-            record.topic(),
-            record.headers()
+                record.serializedKeySize(),
+                record.serializedValueSize(),
+                record.topic(),
+                record.headers()
         );
     }
 
@@ -231,11 +232,11 @@ public class ClientUtils {
         }
 
         return keyBytes +
-            valueBytes +
-            8L + // timestamp
-            8L + // offset
-            Utils.utf8(topic).length +
-            4L + // partition
-            headerSizeInBytes;
+                valueBytes +
+                8L + // timestamp
+                8L + // offset
+                Utils.utf8(topic).length +
+                4L + // partition
+                headerSizeInBytes;
     }
 }

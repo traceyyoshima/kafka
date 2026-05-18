@@ -34,8 +34,8 @@ public record TaskId(String subtopologyId, int partition) implements Comparable<
     @Override
     public int compareTo(final TaskId other) {
         return Comparator.comparing(TaskId::subtopologyId)
-            .thenComparingInt(TaskId::partition)
-            .compare(this, other);
+                .thenComparingInt(TaskId::partition)
+                .compare(this, other);
     }
 
     @Override

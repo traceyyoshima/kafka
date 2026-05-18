@@ -25,14 +25,14 @@ import java.util.function.Supplier;
 
 /**
  * Interface for sending KRaft requests.
- *
+ * <p>
  * Responsible for managing the connection state and sending request when the connection is
  * available.
  */
 public interface RequestSender {
     /**
      * The name of the listener used for sending request.
-     *
+     * <p>
      * This is generally the default (first) listener.
      */
     ListenerName listenerName();
@@ -40,14 +40,14 @@ public interface RequestSender {
     /**
      * Send a KRaft request to the destination.
      *
-     * @param destination the destination for the request
+     * @param destination     the destination for the request
      * @param requestSupplier the default constructor for the request
-     * @param currentTimeMs the current time
+     * @param currentTimeMs   the current time
      * @return the request timeout if the request was sent; otherwise {@code Optional.empty()}
      */
     OptionalLong send(
-        Node destination,
-        Supplier<ApiMessage> requestSupplier,
-        long currentTimeMs
+            Node destination,
+            Supplier<ApiMessage> requestSupplier,
+            long currentTimeMs
     );
 }

@@ -64,70 +64,70 @@ public class ClientQuotasRequestTest {
     @ClusterTest
     public void testAlterClientQuotasRequest() throws InterruptedException {
         ClientQuotaEntity entity = new ClientQuotaEntity(
-            Map.of(ClientQuotaEntity.USER, "user", ClientQuotaEntity.CLIENT_ID, "client-id"));
+                Map.of(ClientQuotaEntity.USER, "user", ClientQuotaEntity.CLIENT_ID, "client-id"));
 
         // Expect an empty configuration.
         verifyDescribeEntityQuotas(entity, Map.of());
 
         // Add two configuration entries.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.0),
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0)
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.0),
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0)
         ), false);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 10000.0,
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 10000.0,
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
         ));
 
         // Update an existing entry.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(15000.0)
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(15000.0)
         ), false);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 15000.0,
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 15000.0,
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
         ));
 
         // Remove an existing configuration entry.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.empty()
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.empty()
         ), false);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
         ));
 
         // Remove a non-existent configuration entry.  This should make no changes.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.empty()
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.empty()
         ), false);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
         ));
 
         // Add back a deleted configuration entry.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(5000.0)
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(5000.0)
         ), false);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 5000.0,
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 5000.0,
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
         ));
 
         // Perform a mixed update.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0),
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.empty(),
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.3)
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0),
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.empty(),
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.3)
         ), false);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 12.3
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 12.3
         ));
     }
 
@@ -137,55 +137,55 @@ public class ClientQuotasRequestTest {
 
         // Set up a configuration.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0),
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(23.45)
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0),
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(23.45)
         ), false);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
         ));
 
         // Validate-only addition.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(50000.0)
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(50000.0)
         ), true);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
         ));
 
         // Validate-only modification.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.0)
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.0)
         ), true);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
         ));
 
         // Validate-only removal.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.empty()
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.empty()
         ), true);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
         ));
 
         // Validate-only mixed update.
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.0),
-            QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(50000.0),
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.empty()
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.0),
+                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(50000.0),
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.empty()
         ), true);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
-            QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0,
+                QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, 23.45
         ));
     }
 
@@ -195,7 +195,7 @@ public class ClientQuotasRequestTest {
 
         try (Admin admin = cluster.admin()) {
             AlterUserScramCredentialsResult results = admin.alterUserScramCredentials(List.of(
-                new UserScramCredentialUpsertion(userName, new ScramCredentialInfo(ScramMechanism.SCRAM_SHA_256, 4096), "password")));
+                    new UserScramCredentialUpsertion(userName, new ScramCredentialInfo(ScramMechanism.SCRAM_SHA_256, 4096), "password")));
             results.all().get();
 
             ClientQuotaEntity entity = new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, userName));
@@ -203,13 +203,13 @@ public class ClientQuotasRequestTest {
             verifyDescribeEntityQuotas(entity, Map.of());
 
             alterEntityQuotas(entity, Map.of(
-                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.0),
-                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0)
+                    QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.0),
+                    QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0)
             ), false);
 
             verifyDescribeEntityQuotas(entity, Map.of(
-                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 10000.0,
-                QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
+                    QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 10000.0,
+                    QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
             ));
         }
     }
@@ -252,11 +252,11 @@ public class ClientQuotasRequestTest {
     }
 
     private void verifyIpQuotas(ClientQuotaFilterComponent entityFilter, Map<ClientQuotaEntity, Double> expectedMatches,
-        String unknownHost) throws InterruptedException {
+                                String unknownHost) throws InterruptedException {
 
         TestUtils.retryOnExceptionWithTimeout(5000L, () -> {
             Map<ClientQuotaEntity, Map<String, Double>> result = describeClientQuotas(
-                ClientQuotaFilter.containsOnly(List.of(entityFilter))).get();
+                    ClientQuotaFilter.containsOnly(List.of(entityFilter))).get();
             assertEquals(expectedMatches.keySet(), result.keySet());
 
             for (Map.Entry<ClientQuotaEntity, Map<String, Double>> entry : result.entrySet()) {
@@ -267,17 +267,17 @@ public class ClientQuotasRequestTest {
                 String entityName = entity.entries().get(ClientQuotaEntity.IP);
                 // ClientQuotaEntity with null name maps to default entity
                 InetAddress entityIp = entityName == null
-                    ? InetAddress.getByName(unknownHost)
-                    : InetAddress.getByName(entityName);
+                        ? InetAddress.getByName(unknownHost)
+                        : InetAddress.getByName(entityName);
                 int currentServerQuota = cluster.brokers()
-                    .values()
-                    .iterator()
-                    .next()
-                    .socketServer()
-                    .connectionQuotas()
-                    .connectionRateForIp(entityIp);
+                        .values()
+                        .iterator()
+                        .next()
+                        .socketServer()
+                        .connectionQuotas()
+                        .connectionRateForIp(entityIp);
                 assertTrue(Math.abs(expectedMatches.get(entity) - currentServerQuota) < 0.01,
-                    String.format("Connection quota of %s is not %s but %s", entity, expectedMatches.get(entity), currentServerQuota));
+                        String.format("Connection quota of %s is not %s but %s", entity, expectedMatches.get(entity), currentServerQuota));
             }
         });
     }
@@ -286,77 +286,77 @@ public class ClientQuotasRequestTest {
     public void testAlterClientQuotasInvalidRequests() {
         final ClientQuotaEntity entity1 = new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, ""));
         TestUtils.assertFutureThrows(InvalidRequestException.class,
-            alterEntityQuotas(entity1, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true));
+                alterEntityQuotas(entity1, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true));
 
         final ClientQuotaEntity entity2 = new ClientQuotaEntity(Map.of(ClientQuotaEntity.CLIENT_ID, ""));
         TestUtils.assertFutureThrows(InvalidRequestException.class,
-            alterEntityQuotas(entity2, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true));
+                alterEntityQuotas(entity2, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true));
 
         final ClientQuotaEntity entity3 = new ClientQuotaEntity(Map.of("", "name"));
         TestUtils.assertFutureThrows(InvalidRequestException.class,
-            alterEntityQuotas(entity3, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true));
+                alterEntityQuotas(entity3, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true));
 
         final ClientQuotaEntity entity4 = new ClientQuotaEntity(Map.of());
         TestUtils.assertFutureThrows(InvalidRequestException.class,
-            alterEntityQuotas(entity4, Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.5)), true));
+                alterEntityQuotas(entity4, Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.5)), true));
 
         final ClientQuotaEntity entity5 = new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "user"));
         TestUtils.assertFutureThrows(InvalidRequestException.class,
-            alterEntityQuotas(entity5, Map.of("bad", Optional.of(1.0)), true));
+                alterEntityQuotas(entity5, Map.of("bad", Optional.of(1.0)), true));
 
         final ClientQuotaEntity entity6 = new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "user"));
         TestUtils.assertFutureThrows(InvalidRequestException.class,
-            alterEntityQuotas(entity6, Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.5)), true));
+                alterEntityQuotas(entity6, Map.of(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(10000.5)), true));
     }
 
     private void expectInvalidRequestWithMessage(Future<?> future, String expectedMessage) {
         InvalidRequestException exception = TestUtils.assertFutureThrows(InvalidRequestException.class, future);
         assertNotNull(exception);
         assertTrue(
-            exception.getMessage().contains(expectedMessage),
-            String.format("Expected message %s to contain %s", exception, expectedMessage)
+                exception.getMessage().contains(expectedMessage),
+                String.format("Expected message %s to contain %s", exception, expectedMessage)
         );
     }
 
     @ClusterTest
     public void testAlterClientQuotasInvalidEntityCombination() {
         ClientQuotaEntity userAndIpEntity = new ClientQuotaEntity(
-            Map.of(ClientQuotaEntity.USER, "user", ClientQuotaEntity.IP, "1.2.3.4")
+                Map.of(ClientQuotaEntity.USER, "user", ClientQuotaEntity.IP, "1.2.3.4")
         );
         ClientQuotaEntity clientAndIpEntity = new ClientQuotaEntity(
-            Map.of(ClientQuotaEntity.CLIENT_ID, "client", ClientQuotaEntity.IP, "1.2.3.4")
+                Map.of(ClientQuotaEntity.CLIENT_ID, "client", ClientQuotaEntity.IP, "1.2.3.4")
         );
         final String expectedExceptionMessage = "Invalid quota entity combination";
 
         expectInvalidRequestWithMessage(
-            alterEntityQuotas(userAndIpEntity, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true),
-            expectedExceptionMessage
+                alterEntityQuotas(userAndIpEntity, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true),
+                expectedExceptionMessage
         );
 
         expectInvalidRequestWithMessage(
-            alterEntityQuotas(clientAndIpEntity, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true),
-            expectedExceptionMessage
+                alterEntityQuotas(clientAndIpEntity, Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(12.34)), true),
+                expectedExceptionMessage
         );
     }
 
     @ClusterTest
     public void testAlterClientQuotasBadIp() {
         ClientQuotaEntity invalidHostPatternEntity = new ClientQuotaEntity(
-            Map.of(ClientQuotaEntity.IP, "not a valid host because it has spaces")
+                Map.of(ClientQuotaEntity.IP, "not a valid host because it has spaces")
         );
         ClientQuotaEntity unresolvableHostEntity = new ClientQuotaEntity(
-            Map.of(ClientQuotaEntity.IP, "RFC2606.invalid")
+                Map.of(ClientQuotaEntity.IP, "RFC2606.invalid")
         );
         final String expectedExceptionMessage = "not a valid IP";
 
         expectInvalidRequestWithMessage(
-            alterEntityQuotas(invalidHostPatternEntity, Map.of(QuotaConfig.IP_CONNECTION_RATE_OVERRIDE_CONFIG, Optional.of(50.0)), true),
-            expectedExceptionMessage
+                alterEntityQuotas(invalidHostPatternEntity, Map.of(QuotaConfig.IP_CONNECTION_RATE_OVERRIDE_CONFIG, Optional.of(50.0)), true),
+                expectedExceptionMessage
         );
 
         expectInvalidRequestWithMessage(
-            alterEntityQuotas(unresolvableHostEntity, Map.of(QuotaConfig.IP_CONNECTION_RATE_OVERRIDE_CONFIG, Optional.of(50.0)), true),
-            expectedExceptionMessage
+                alterEntityQuotas(unresolvableHostEntity, Map.of(QuotaConfig.IP_CONNECTION_RATE_OVERRIDE_CONFIG, Optional.of(50.0)), true),
+                expectedExceptionMessage
         );
     }
 
@@ -368,45 +368,45 @@ public class ClientQuotasRequestTest {
         final String expectedExceptionMessage = "Invalid entity filter component combination";
 
         expectInvalidRequestWithMessage(
-            describeClientQuotas(ClientQuotaFilter.contains(List.of(ipFilterComponent, userFilterComponent))),
-            expectedExceptionMessage
+                describeClientQuotas(ClientQuotaFilter.contains(List.of(ipFilterComponent, userFilterComponent))),
+                expectedExceptionMessage
         );
         expectInvalidRequestWithMessage(
-            describeClientQuotas(ClientQuotaFilter.contains(List.of(ipFilterComponent, clientIdFilterComponent))),
-            expectedExceptionMessage
+                describeClientQuotas(ClientQuotaFilter.contains(List.of(ipFilterComponent, clientIdFilterComponent))),
+                expectedExceptionMessage
         );
     }
 
     // Entities to be matched against.
     private final Map<ClientQuotaEntity, Double> matchUserClientEntities = new HashMap<>(Map.ofEntries(
-        Map.entry(toClientEntity(toUserMap("user-1"), toClientIdMap("client-id-1")), 50.50),
-        Map.entry(toClientEntity(toUserMap("user-2"), toClientIdMap("client-id-1")), 51.51),
-        Map.entry(toClientEntity(toUserMap("user-3"), toClientIdMap("client-id-2")), 52.52),
-        Map.entry(toClientEntity(toUserMap(null), toClientIdMap("client-id-1")), 53.53),
-        Map.entry(toClientEntity(toUserMap("user-1"), toClientIdMap(null)), 54.54),
-        Map.entry(toClientEntity(toUserMap("user-3"), toClientIdMap(null)), 55.55),
-        Map.entry(toClientEntity(toUserMap("user-1")), 56.56),
-        Map.entry(toClientEntity(toUserMap("user-2")), 57.57),
-        Map.entry(toClientEntity(toUserMap("user-3")), 58.58),
-        Map.entry(toClientEntity(toUserMap(null)), 59.59),
-        Map.entry(toClientEntity(toClientIdMap("client-id-2")), 60.60)
+            Map.entry(toClientEntity(toUserMap("user-1"), toClientIdMap("client-id-1")), 50.50),
+            Map.entry(toClientEntity(toUserMap("user-2"), toClientIdMap("client-id-1")), 51.51),
+            Map.entry(toClientEntity(toUserMap("user-3"), toClientIdMap("client-id-2")), 52.52),
+            Map.entry(toClientEntity(toUserMap(null), toClientIdMap("client-id-1")), 53.53),
+            Map.entry(toClientEntity(toUserMap("user-1"), toClientIdMap(null)), 54.54),
+            Map.entry(toClientEntity(toUserMap("user-3"), toClientIdMap(null)), 55.55),
+            Map.entry(toClientEntity(toUserMap("user-1")), 56.56),
+            Map.entry(toClientEntity(toUserMap("user-2")), 57.57),
+            Map.entry(toClientEntity(toUserMap("user-3")), 58.58),
+            Map.entry(toClientEntity(toUserMap(null)), 59.59),
+            Map.entry(toClientEntity(toClientIdMap("client-id-2")), 60.60)
     ));
 
     private final Map<ClientQuotaEntity, Double> matchIpEntities = Map.of(
-        toIpEntity(Optional.of("1.2.3.4")), 10.0,
-        toIpEntity(Optional.of("2.3.4.5")), 20.0
+            toIpEntity(Optional.of("1.2.3.4")), 10.0,
+            toIpEntity(Optional.of("2.3.4.5")), 20.0
     );
 
     private void setupDescribeClientQuotasMatchTest() {
         Map<ClientQuotaEntity, Map<String, Optional<Double>>> userClientQuotas = matchUserClientEntities.entrySet()
-            .stream()
-            .collect(Collectors.toMap(Map.Entry::getKey,
-                e -> Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(e.getValue()))));
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> Map.of(QuotaConfig.REQUEST_PERCENTAGE_OVERRIDE_CONFIG, Optional.of(e.getValue()))));
 
         Map<ClientQuotaEntity, Map<String, Optional<Double>>> ipQuotas = matchIpEntities.entrySet()
-            .stream()
-            .collect(Collectors.toMap(Map.Entry::getKey,
-                e -> Map.of(QuotaConfig.IP_CONNECTION_RATE_OVERRIDE_CONFIG, Optional.of(e.getValue()))));
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> Map.of(QuotaConfig.IP_CONNECTION_RATE_OVERRIDE_CONFIG, Optional.of(e.getValue()))));
 
         Map<ClientQuotaEntity, Map<String, Optional<Double>>> allQuotas = new HashMap<>();
         allQuotas.putAll(userClientQuotas);
@@ -430,7 +430,7 @@ public class ClientQuotasRequestTest {
     }
 
     private Map<ClientQuotaEntity, Map<String, Double>> matchEntity(ClientQuotaEntity entity)
-        throws ExecutionException, InterruptedException {
+            throws ExecutionException, InterruptedException {
         List<ClientQuotaFilterComponent> components = entity.entries().entrySet().stream().map(entry -> {
             if (entry.getValue() == null) {
                 return ClientQuotaFilterComponent.ofDefaultEntity(entry.getKey());
@@ -463,13 +463,13 @@ public class ClientQuotasRequestTest {
 
         // Entities not contained in `matchEntityList`.
         List<ClientQuotaEntity> notMatchEntities = List.of(
-            toClientEntity(toUserMap("user-1"), toClientIdMap("client-id-2")),
-            toClientEntity(toUserMap("user-3"), toClientIdMap("client-id-1")),
-            toClientEntity(toUserMap("user-2"), toClientIdMap(null)),
-            toClientEntity(toUserMap("user-4")),
-            toClientEntity(toUserMap(null), toClientIdMap("client-id-2")),
-            toClientEntity(toClientIdMap("client-id-1")),
-            toClientEntity(toClientIdMap("client-id-3"))
+                toClientEntity(toUserMap("user-1"), toClientIdMap("client-id-2")),
+                toClientEntity(toUserMap("user-3"), toClientIdMap("client-id-1")),
+                toClientEntity(toUserMap("user-2"), toClientIdMap(null)),
+                toClientEntity(toUserMap("user-4")),
+                toClientEntity(toUserMap(null), toClientIdMap("client-id-2")),
+                toClientEntity(toClientIdMap("client-id-1")),
+                toClientEntity(toClientIdMap("client-id-3"))
         );
 
         // Verify exact matches of the non-matches returns empty.
@@ -481,22 +481,22 @@ public class ClientQuotasRequestTest {
 
     @SuppressWarnings("unchecked")
     private void testMatchEntities(ClientQuotaFilter filter, int expectedMatchSize, Predicate<ClientQuotaEntity> partition)
-        throws InterruptedException {
+            throws InterruptedException {
         TestUtils.retryOnExceptionWithTimeout(5000L, () -> {
             Map<ClientQuotaEntity, Map<String, Double>> result = describeClientQuotas(filter).get();
             List<Map.Entry<ClientQuotaEntity, Double>> expectedMatches = matchUserClientEntities.entrySet()
-                .stream()
-                .collect(Collectors.partitioningBy(entry -> partition.test(entry.getKey())))
-                .get(true);
+                    .stream()
+                    .collect(Collectors.partitioningBy(entry -> partition.test(entry.getKey())))
+                    .get(true);
             expectedMatches.addAll(matchIpEntities.entrySet()
-                .stream()
-                .collect(Collectors.partitioningBy(entry -> partition.test(entry.getKey())))
-                .get(true));
+                    .stream()
+                    .collect(Collectors.partitioningBy(entry -> partition.test(entry.getKey())))
+                    .get(true));
 
             // for test verification
             assertEquals(expectedMatchSize, expectedMatches.size());
             assertEquals(expectedMatchSize, result.size(),
-                "Failed to match " + expectedMatchSize + "entities for " + filter);
+                    "Failed to match " + expectedMatchSize + "entities for " + filter);
             Map<Object, Object> expectedMatchesMap = Map.ofEntries(expectedMatches.toArray(new Map.Entry[0]));
             matchUserClientEntities.forEach((entity, expectedValue) -> {
                 if (expectedMatchesMap.containsKey(entity)) {
@@ -529,79 +529,79 @@ public class ClientQuotasRequestTest {
 
         // Match open-ended existing user.
         testMatchEntities(
-            ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.USER, "user-1"))),
-            3,
-            entity -> Objects.equals(entity.entries().get(ClientQuotaEntity.USER), "user-1")
+                ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.USER, "user-1"))),
+                3,
+                entity -> Objects.equals(entity.entries().get(ClientQuotaEntity.USER), "user-1")
         );
 
         // Match open-ended non-existent user.
         testMatchEntities(
-            ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.USER, "unknown"))),
-            0,
-            entity -> false
+                ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.USER, "unknown"))),
+                0,
+                entity -> false
         );
 
         // Match open-ended existing client ID.
         testMatchEntities(
-            ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.CLIENT_ID, "client-id-2"))),
-            2,
-            entity -> Objects.equals(entity.entries().get(ClientQuotaEntity.CLIENT_ID), "client-id-2")
+                ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.CLIENT_ID, "client-id-2"))),
+                2,
+                entity -> Objects.equals(entity.entries().get(ClientQuotaEntity.CLIENT_ID), "client-id-2")
         );
 
         // Match open-ended default user.
         testMatchEntities(
-            ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofDefaultEntity(ClientQuotaEntity.USER))),
-            2,
-            entity -> entity.entries().containsKey(ClientQuotaEntity.USER) && entity.entries().get(ClientQuotaEntity.USER) == null
+                ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofDefaultEntity(ClientQuotaEntity.USER))),
+                2,
+                entity -> entity.entries().containsKey(ClientQuotaEntity.USER) && entity.entries().get(ClientQuotaEntity.USER) == null
         );
 
         // Match close-ended existing user.
         testMatchEntities(
-            ClientQuotaFilter.containsOnly(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.USER, "user-2"))),
-            1,
-            entity -> Objects.equals(entity.entries().get(ClientQuotaEntity.USER), "user-2") && !entity.entries().containsKey(ClientQuotaEntity.CLIENT_ID)
+                ClientQuotaFilter.containsOnly(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.USER, "user-2"))),
+                1,
+                entity -> Objects.equals(entity.entries().get(ClientQuotaEntity.USER), "user-2") && !entity.entries().containsKey(ClientQuotaEntity.CLIENT_ID)
         );
 
         // Match close-ended existing client ID that has no matching entity.
         testMatchEntities(
-            ClientQuotaFilter.containsOnly(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.CLIENT_ID, "client-id-1"))),
-            0,
-            entity -> false
+                ClientQuotaFilter.containsOnly(List.of(ClientQuotaFilterComponent.ofEntity(ClientQuotaEntity.CLIENT_ID, "client-id-1"))),
+                0,
+                entity -> false
         );
 
         // Match against all entities with the user type in a close-ended match.
         testMatchEntities(
-            ClientQuotaFilter.containsOnly(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.USER))),
-            4,
-            entity -> entity.entries().containsKey(ClientQuotaEntity.USER) && !entity.entries().containsKey(ClientQuotaEntity.CLIENT_ID)
+                ClientQuotaFilter.containsOnly(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.USER))),
+                4,
+                entity -> entity.entries().containsKey(ClientQuotaEntity.USER) && !entity.entries().containsKey(ClientQuotaEntity.CLIENT_ID)
         );
 
         // Match against all entities with the user type in an open-ended match.
         testMatchEntities(
-            ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.USER))),
-            10,
-            entity -> entity.entries().containsKey(ClientQuotaEntity.USER)
+                ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.USER))),
+                10,
+                entity -> entity.entries().containsKey(ClientQuotaEntity.USER)
         );
 
         // Match against all entities with the client ID type in a close-ended match.
         testMatchEntities(
-            ClientQuotaFilter.containsOnly(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.CLIENT_ID))),
-            1,
-            entity -> entity.entries().containsKey(ClientQuotaEntity.CLIENT_ID) && !entity.entries().containsKey(ClientQuotaEntity.USER)
+                ClientQuotaFilter.containsOnly(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.CLIENT_ID))),
+                1,
+                entity -> entity.entries().containsKey(ClientQuotaEntity.CLIENT_ID) && !entity.entries().containsKey(ClientQuotaEntity.USER)
         );
 
         // Match against all entities with the client ID type in an open-ended match.
         testMatchEntities(
-            ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.CLIENT_ID))),
-            7,
-            entity -> entity.entries().containsKey(ClientQuotaEntity.CLIENT_ID)
+                ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.CLIENT_ID))),
+                7,
+                entity -> entity.entries().containsKey(ClientQuotaEntity.CLIENT_ID)
         );
 
         // Match against all entities with IP type in an open-ended match.
         testMatchEntities(
-            ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.IP))),
-            2,
-            entity -> entity.entries().containsKey(ClientQuotaEntity.IP)
+                ClientQuotaFilter.contains(List.of(ClientQuotaFilterComponent.ofEntityType(ClientQuotaEntity.IP))),
+                2,
+                entity -> entity.entries().containsKey(ClientQuotaEntity.IP)
         );
 
         // Match open-ended empty filter List. This should match all entities.
@@ -615,7 +615,7 @@ public class ClientQuotasRequestTest {
     public void testClientQuotasUnsupportedEntityTypes() {
         ClientQuotaEntity entity = new ClientQuotaEntity(Map.of("other", "name"));
         KafkaFuture<Map<ClientQuotaEntity, Map<String, Double>>> future = describeClientQuotas(
-            ClientQuotaFilter.containsOnly(getComponents(entity)));
+                ClientQuotaFilter.containsOnly(getComponents(entity)));
 
         TestUtils.assertFutureThrows(UnsupportedVersionException.class, future);
     }
@@ -626,11 +626,11 @@ public class ClientQuotasRequestTest {
         ClientQuotaEntity entity = new ClientQuotaEntity(Map.of(ClientQuotaEntity.USER, "user with spaces"));
 
         alterEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0)
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, Optional.of(20000.0)
         ), false);
 
         verifyDescribeEntityQuotas(entity, Map.of(
-            QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
+                QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG, 20000.0
         ));
     }
 
@@ -658,11 +658,11 @@ public class ClientQuotasRequestTest {
     }
 
     private void verifyDescribeEntityQuotas(ClientQuotaEntity entity, Map<String, Double> quotas)
-        throws InterruptedException {
+            throws InterruptedException {
         TestUtils.retryOnExceptionWithTimeout(5000L, () -> {
 
             Map<ClientQuotaEntity, Map<String, Double>> describe = describeClientQuotas(
-                ClientQuotaFilter.containsOnly(getComponents(entity))).get();
+                    ClientQuotaFilter.containsOnly(getComponents(entity))).get();
             if (quotas.isEmpty()) {
                 assertEquals(0, describe.size());
             } else {
@@ -685,8 +685,8 @@ public class ClientQuotasRequestTest {
             String entityType = entry.getKey();
             String entityName = entry.getValue();
             return Optional.ofNullable(entityName)
-                .map(name -> ClientQuotaFilterComponent.ofEntity(entityType, name))
-                .orElseGet(() -> ClientQuotaFilterComponent.ofDefaultEntity(entityType));
+                    .map(name -> ClientQuotaFilterComponent.ofEntity(entityType, name))
+                    .orElseGet(() -> ClientQuotaFilterComponent.ofDefaultEntity(entityType));
         }).toList();
     }
 
@@ -702,23 +702,23 @@ public class ClientQuotasRequestTest {
     }
 
     private Map<ClientQuotaEntity, KafkaFuture<Void>> alterClientQuotas(Map<ClientQuotaEntity, Map<String,
-        Optional<Double>>> request, boolean validateOnly) {
+            Optional<Double>>> request, boolean validateOnly) {
 
         List<ClientQuotaAlteration> entries = request.entrySet().stream().map(entry -> {
             ClientQuotaEntity entity = entry.getKey();
             Map<String, Optional<Double>> alter = entry.getValue();
 
             List<ClientQuotaAlteration.Op> ops = alter.entrySet()
-                .stream()
-                .map(configEntry -> new ClientQuotaAlteration.Op(configEntry.getKey(),
-                    configEntry.getValue().orElse(null)))
-                .toList();
+                    .stream()
+                    .map(configEntry -> new ClientQuotaAlteration.Op(configEntry.getKey(),
+                            configEntry.getValue().orElse(null)))
+                    .toList();
             return new ClientQuotaAlteration(entity, ops);
         }).toList();
 
         try (Admin admin = cluster.admin()) {
             Map<ClientQuotaEntity, KafkaFuture<Void>> result = admin.alterClientQuotas(entries,
-                new AlterClientQuotasOptions().validateOnly(validateOnly)).values();
+                    new AlterClientQuotasOptions().validateOnly(validateOnly)).values();
             assertEquals(request.size(), result.size());
             request.forEach((e, r) -> assertTrue(result.containsKey(e)));
             return result;

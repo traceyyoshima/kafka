@@ -74,9 +74,9 @@ public class CompletableEventReaper {
      *         {@link CompletableFuture#isDone() done} state, it will be removed from the list of tracked events.
      *     </li>
      * </ol>
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * This method should be called at regular intervals, based upon the needs of the resource that owns the reaper.
      *
      * @param currentTimeMs <em>Current</em> time with which to compare against the
@@ -125,13 +125,13 @@ public class CompletableEventReaper {
      * It is possible for the {@link AsyncKafkaConsumer#close() consumer to close} before completing the processing of
      * all the events in the queue. In this case, we need to
      * {@link CompletableFuture#completeExceptionally(Throwable) expire} any remaining events.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * Check each of the {@link #add(CompletableEvent) previously-added} {@link CompletableEvent completable events},
      * and for any that are incomplete, expire them. Also check the core event queue for any incomplete events and
      * likewise expire them.
-     *
+     * <p>
      * <p/>
      *
      * <em>Note</em>: because this is called in the context of {@link AsyncKafkaConsumer#close() closing consumer},
@@ -180,7 +180,6 @@ public class CompletableEventReaper {
      * @param events Collection of objects, assumed to be subclasses of {@link ApplicationEvent} or
      *               {@link BackgroundEvent}, but will only perform completion for any
      *               unfinished {@link CompletableEvent}s
-     *
      * @return Number of events closed
      */
     private long completeEventsExceptionallyOnClose(Collection<?> events) {

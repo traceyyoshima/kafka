@@ -76,6 +76,7 @@ public interface SamplingTestPlugin {
     /**
      * Log the parent method call as a child sample.
      * Stores only the last invocation of each method if there are multiple invocations.
+     *
      * @param samples The collection of samples to which this method call should be added
      */
     default void logMethodCall(Map<String, SamplingTestPlugin> samples) {
@@ -89,9 +90,9 @@ public interface SamplingTestPlugin {
         StackTraceElement caller = stackTraces[2];
 
         samples.put(caller.getMethodName(), new MethodCallSample(
-            caller,
-            Thread.currentThread().getContextClassLoader(),
-            getClass().getClassLoader()
+                caller,
+                Thread.currentThread().getContextClassLoader(),
+                getClass().getClassLoader()
         ));
     }
 
@@ -102,9 +103,9 @@ public interface SamplingTestPlugin {
         private final ClassLoader dynamicClassLoader;
 
         public MethodCallSample(
-            StackTraceElement caller,
-            ClassLoader staticClassLoader,
-            ClassLoader dynamicClassLoader
+                StackTraceElement caller,
+                ClassLoader staticClassLoader,
+                ClassLoader dynamicClassLoader
         ) {
             this.caller = caller;
             this.staticClassLoader = staticClassLoader;

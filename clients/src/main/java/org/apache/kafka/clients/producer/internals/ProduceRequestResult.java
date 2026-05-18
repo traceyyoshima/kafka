@@ -62,7 +62,7 @@ public class ProduceRequestResult {
     /**
      * Set the result of the produce request.
      *
-     * @param baseOffset The base offset assigned to the record
+     * @param baseOffset    The base offset assigned to the record
      * @param logAppendTime The log append time or -1 if CreateTime is being used
      * @param errorsByIndex Function mapping the batch index to the exception, or null if the response was successful
      */
@@ -96,13 +96,13 @@ public class ProduceRequestResult {
 
     /**
      * Await the completion of this request.
-     *
+     * <p>
      * This only waits for THIS request's latch and not dependent results.
      * When a batch is split into multiple batches, dependent results are created and tracked
      * separately, but this method does not wait for them. Individual record futures automatically
      * handle waiting for their respective split batch via {@link FutureRecordMetadata#chain(FutureRecordMetadata)},
      * which redirects the future to point to the correct split batch's result.
-     *
+     * <p>
      * For flush() semantics that require waiting for all dependent results, use
      * {@link #awaitAllDependents()}.
      */
@@ -112,8 +112,9 @@ public class ProduceRequestResult {
 
     /**
      * Await the completion of this request (up to the given time interval)
+     *
      * @param timeout The maximum time to wait
-     * @param unit The unit for the max time
+     * @param unit    The unit for the max time
      * @return true if the request completed, false if we timed out
      */
     public boolean await(long timeout, TimeUnit unit) throws InterruptedException {
@@ -122,7 +123,7 @@ public class ProduceRequestResult {
 
     /**
      * Await the completion of this request and all the dependent requests.
-     *
+     * <p>
      * This method is used by flush() to ensure all split batches have completed before
      * returning. This method waits for all dependent {@link ProduceRequestResult}s that
      * were created when the batch was split.
@@ -189,13 +190,13 @@ public class ProduceRequestResult {
 
     /**
      * Has the request completed?
-     *
+     * <p>
      * This method only checks if THIS request has completed and not its dependent results.
      * When a batch is split into multiple batches, the dependent split batches are tracked
      * separately. Individual record futures handle waiting for their respective split
      * batch via {@link FutureRecordMetadata#chain(FutureRecordMetadata)}, which updates the
      * {@code nextRecordMetadata} pointer to follow the correct split batch.
-     *
+     * <p>
      * For flush() semantics that require waiting for all dependent results, use
      * {@link #awaitAllDependents()}.
      */

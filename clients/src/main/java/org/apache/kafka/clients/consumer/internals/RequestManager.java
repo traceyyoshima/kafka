@@ -33,7 +33,7 @@ public interface RequestManager {
      * This method is called within a single-threaded context from
      * {@link ConsumerNetworkThread the consumer's network I/O thread}. As such, there should be no need for
      * synchronization protection in this method's implementation.
-     *
+     * <p>
      * <p/>
      *
      * <em>Note</em>: no network I/O occurs in this method. The method itself should not block for any reason. This
@@ -50,7 +50,7 @@ public interface RequestManager {
      * can signal that by returning the {@link PollResult close} requests here. Like {@link #poll(long)}, this method
      * is called within a single-threaded context from {@link ConsumerNetworkThread the consumer's network I/O thread}.
      * As such, there should be no need for synchronization protection in this method's implementation.
-     *
+     * <p>
      * <p/>
      *
      * <em>Note</em>: no network I/O occurs in this method. The method itself should not block for any reason. This
@@ -73,7 +73,6 @@ public interface RequestManager {
      *
      * @param currentTimeMs The current system time at which the method was called; useful for determining if
      *                      time-sensitive operations should be performed
-     *
      * @return The maximum delay in milliseconds
      */
     default long maximumTimeToWait(long currentTimeMs) {
@@ -83,5 +82,6 @@ public interface RequestManager {
     /**
      * Signals the request manager that the consumer is closing to prepare for the proper actions to be taken.
      */
-    default void signalClose() { }
+    default void signalClose() {
+    }
 }

@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * A special task assignor implementation to be used as a fallback in case the
  * configured assignor couldn't be invoked.
- *
+ * <p>
  * Specifically, this assignor must:
  * 1. ignore the task lags in the ClientState map
  * 2. always return true, indicating that a follow-up rebalance is needed

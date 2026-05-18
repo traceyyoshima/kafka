@@ -280,7 +280,7 @@ public class TopicAdmin implements AutoCloseable {
         return result != null ? result.toString() : null;
     }
 
-   /**
+    /**
      * Attempt to create the topic described by the given definition, returning true if the topic was created or false
      * if the topic already existed.
      *
@@ -308,8 +308,8 @@ public class TopicAdmin implements AutoCloseable {
      *
      * @param topics the specifications of the topics
      * @return the names of the topics that were created by this operation; never null but possibly empty
-     * @throws ConnectException            if an error occurs, the operation takes too long, or the thread is interrupted while
-     *                                     attempting to perform this operation
+     * @throws ConnectException if an error occurs, the operation takes too long, or the thread is interrupted while
+     *                          attempting to perform this operation
      */
     public Set<String> createTopics(NewTopic... topics) {
         return createOrFindTopics(topics).createdTopics();
@@ -386,7 +386,7 @@ public class TopicAdmin implements AutoCloseable {
      *
      * @param topics the specifications of the topics
      * @return the {@link TopicCreationResponse} with the names of the newly created and existing topics;
-     *         never null but possibly empty
+     * never null but possibly empty
      * @throws ConnectException if an error occurs, the operation takes too long, or the thread is interrupted while
      *                          attempting to perform this operation
      */
@@ -424,13 +424,13 @@ public class TopicAdmin implements AutoCloseable {
                 }
                 if (cause instanceof UnsupportedVersionException) {
                     log.debug("Unable to create topic(s) '{}' since the brokers at {} do not support the CreateTopics API." +
-                            " Falling back to assume topic(s) exist or will be auto-created by the broker.",
+                                    " Falling back to assume topic(s) exist or will be auto-created by the broker.",
                             topicNameList, bootstrapServers);
                     return EMPTY_CREATION;
                 }
                 if (cause instanceof ClusterAuthorizationException) {
                     log.debug("Not authorized to create topic(s) '{}' upon the brokers {}." +
-                            " Falling back to assume topic(s) exist or will be auto-created by the broker.",
+                                    " Falling back to assume topic(s) exist or will be auto-created by the broker.",
                             topicNameList, bootstrapServers);
                     return EMPTY_CREATION;
                 }
@@ -467,8 +467,8 @@ public class TopicAdmin implements AutoCloseable {
      * @param topics the topics to describe
      * @return a map of topic names to topic descriptions of the topics that were requested; never null but possibly empty
      * @throws RetriableException if a retriable error occurs, the operation takes too long, or the
-     * thread is interrupted while attempting to perform this operation
-     * @throws ConnectException if a non retriable error occurs
+     *                            thread is interrupted while attempting to perform this operation
+     * @throws ConnectException   if a non retriable error occurs
      */
     public Map<String, TopicDescription> describeTopics(String... topics) {
         if (topics == null) {
@@ -520,19 +520,19 @@ public class TopicAdmin implements AutoCloseable {
      * @param topic             the name of the topic
      * @param workerTopicConfig the name of the worker configuration that specifies the topic name
      * @return true if the admin client could be used to verify the topic setting, or false if
-     *         the verification could not be performed, likely because the admin client principal
-     *         did not have the required permissions or because the broker was older than 0.11.0.0
+     * the verification could not be performed, likely because the admin client principal
+     * did not have the required permissions or because the broker was older than 0.11.0.0
      * @throws ConfigException if the actual topic setting did not match the required setting
      */
     public boolean verifyTopicCleanupPolicyOnlyCompact(String topic, String workerTopicConfig,
-            String topicPurpose) {
+                                                       String topicPurpose) {
         Set<String> cleanupPolicies = topicCleanupPolicy(topic);
         if (cleanupPolicies.isEmpty()) {
             log.info("Unable to use admin client to verify the cleanup policy of '{}' "
-                      + "topic is '{}', either because the broker is an older "
-                      + "version or because the Kafka principal used for Connect "
-                      + "internal topics does not have the required permission to "
-                      + "describe topic configurations.", topic, TopicConfig.CLEANUP_POLICY_COMPACT);
+                    + "topic is '{}', either because the broker is an older "
+                    + "version or because the Kafka principal used for Connect "
+                    + "internal topics does not have the required permission to "
+                    + "describe topic configurations.", topic, TopicConfig.CLEANUP_POLICY_COMPACT);
             return false;
         }
         Set<String> expectedPolicies = Set.of(TopicConfig.CLEANUP_POLICY_COMPACT);
@@ -540,11 +540,11 @@ public class TopicAdmin implements AutoCloseable {
             String expectedPolicyStr = String.join(",", expectedPolicies);
             String cleanupPolicyStr = String.join(",", cleanupPolicies);
             String msg = String.format("Topic '%s' supplied via the '%s' property is required "
-                    + "to have '%s=%s' to guarantee consistency and durability of "
-                    + "%s, but found the topic currently has '%s=%s'. Continuing would likely "
-                    + "result in eventually losing %s and problems restarting this Connect "
-                    + "cluster in the future. Change the '%s' property in the "
-                    + "Connect worker configurations to use a topic with '%s=%s'.",
+                            + "to have '%s=%s' to guarantee consistency and durability of "
+                            + "%s, but found the topic currently has '%s=%s'. Continuing would likely "
+                            + "result in eventually losing %s and problems restarting this Connect "
+                            + "cluster in the future. Change the '%s' property in the "
+                            + "Connect worker configurations to use a topic with '%s=%s'.",
                     topic, workerTopicConfig, TopicConfig.CLEANUP_POLICY_CONFIG, expectedPolicyStr,
                     topicPurpose, TopicConfig.CLEANUP_POLICY_CONFIG, cleanupPolicyStr, topicPurpose,
                     workerTopicConfig, TopicConfig.CLEANUP_POLICY_CONFIG, expectedPolicyStr);
@@ -558,7 +558,7 @@ public class TopicAdmin implements AutoCloseable {
      *
      * @param topic the name of the topic
      * @return the set of cleanup policies set for the topic; may be empty if the topic does not
-     *         exist or the topic's cleanup policy could not be retrieved
+     * exist or the topic's cleanup policy could not be retrieved
      */
     public Set<String> topicCleanupPolicy(String topic) {
         Config topicConfig = describeTopicConfig(topic);
@@ -572,10 +572,10 @@ public class TopicAdmin implements AutoCloseable {
             String policyStr = entry.value();
             log.debug("Found cleanup.policy={} for topic '{}'", policyStr, topic);
             return Arrays.stream(policyStr.split(","))
-                         .map(String::trim)
-                         .filter(s -> !s.isEmpty())
-                         .map(String::toLowerCase)
-                         .collect(Collectors.toSet());
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toSet());
         }
         // This is unexpected, as the topic config should include the cleanup.policy even if
         // the topic settings don't override the broker's log.cleanup.policy. But just to be safe.
@@ -594,8 +594,8 @@ public class TopicAdmin implements AutoCloseable {
      * @param topic the name of the topic for which the topic configuration should be obtained
      * @return the topic configuration if the topic exists, or null if the topic did not exist
      * @throws RetriableException if a retriable error occurs, the operation takes too long, or the
-     *         thread is interrupted while attempting to perform this operation
-     * @throws ConnectException if a non retriable error occurs
+     *                            thread is interrupted while attempting to perform this operation
+     * @throws ConnectException   if a non retriable error occurs
      */
     public Config describeTopicConfig(String topic) {
         return describeTopicConfigs(topic).get(topic);
@@ -614,25 +614,25 @@ public class TopicAdmin implements AutoCloseable {
      * @return the map of topic configurations for each existing topic, or an empty map if none
      * of the topics exist
      * @throws RetriableException if a retriable error occurs, the operation takes too long, or the
-     *         thread is interrupted while attempting to perform this operation
-     * @throws ConnectException if a non retriable error occurs
+     *                            thread is interrupted while attempting to perform this operation
+     * @throws ConnectException   if a non retriable error occurs
      */
     public Map<String, Config> describeTopicConfigs(String... topicNames) {
         if (topicNames == null) {
             return Map.of();
         }
         Collection<String> topics = Arrays.stream(topicNames)
-                                          .filter(Objects::nonNull)
-                                          .map(String::trim)
-                                          .filter(s -> !s.isEmpty())
-                                          .collect(Collectors.toList());
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
         if (topics.isEmpty()) {
             return Map.of();
         }
         String topicNameList = String.join(", ", topics);
         Collection<ConfigResource> resources = topics.stream()
-                                                     .map(t -> new ConfigResource(ConfigResource.Type.TOPIC, t))
-                                                     .collect(Collectors.toList());
+                .map(t -> new ConfigResource(ConfigResource.Type.TOPIC, t))
+                .collect(Collectors.toList());
 
         Map<ConfigResource, KafkaFuture<Config>> newResults = admin.describeConfigs(resources, new DescribeConfigsOptions()).values();
 
@@ -674,14 +674,14 @@ public class TopicAdmin implements AutoCloseable {
      *
      * @param partitions the topic partitions
      * @return the map of offset for each topic partition, or an empty map if the supplied partitions
-     *         are null or empty
+     * are null or empty
      * @throws UnsupportedVersionException if the admin client cannot read end offsets
-     * @throws TimeoutException if the offset metadata could not be fetched before the amount of time allocated
-     *         by {@code request.timeout.ms} expires, and this call can be retried
+     * @throws TimeoutException            if the offset metadata could not be fetched before the amount of time allocated
+     *                                     by {@code request.timeout.ms} expires, and this call can be retried
      * @throws LeaderNotAvailableException if the leader was not available and this call can be retried
-     * @throws RetriableException if a retriable error occurs, or the thread is interrupted while attempting
-     *         to perform this operation
-     * @throws ConnectException if a non retriable error occurs
+     * @throws RetriableException          if a retriable error occurs, or the thread is interrupted while attempting
+     *                                     to perform this operation
+     * @throws ConnectException            if a non retriable error occurs
      */
     public Map<TopicPartition, Long> endOffsets(Set<TopicPartition> partitions) {
         if (partitions == null || partitions.isEmpty()) {
@@ -731,15 +731,15 @@ public class TopicAdmin implements AutoCloseable {
      * Fetch the most recent offset for each of the supplied {@link TopicPartition} objects, and performs retry when
      * {@link org.apache.kafka.connect.errors.RetriableException} is thrown.
      *
-     * @param partitions        the topic partitions
-     * @param timeoutDuration   timeout duration; may not be null
-     * @param retryBackoffMs    the number of milliseconds to delay upon receiving a
-     *                          {@link org.apache.kafka.connect.errors.RetriableException} before retrying again;
-     *                          must be 0 or more
-     * @return                  the map of offset for each topic partition, or an empty map if the supplied partitions
-     *                          are null or empty
+     * @param partitions      the topic partitions
+     * @param timeoutDuration timeout duration; may not be null
+     * @param retryBackoffMs  the number of milliseconds to delay upon receiving a
+     *                        {@link org.apache.kafka.connect.errors.RetriableException} before retrying again;
+     *                        must be 0 or more
+     * @return the map of offset for each topic partition, or an empty map if the supplied partitions
+     * are null or empty
      * @throws UnsupportedVersionException if the broker is too old to support the admin client API to read end offsets
-     * @throws ConnectException if {@code timeoutDuration} is exhausted
+     * @throws ConnectException            if {@code timeoutDuration} is exhausted
      * @see TopicAdmin#endOffsets(Set)
      */
     public Map<TopicPartition, Long> retryEndOffsets(Set<TopicPartition> partitions, Duration timeoutDuration, long retryBackoffMs) {

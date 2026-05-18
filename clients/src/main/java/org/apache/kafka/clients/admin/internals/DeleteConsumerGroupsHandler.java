@@ -21,7 +21,7 @@ import org.apache.kafka.common.utils.internals.LogContext;
 public class DeleteConsumerGroupsHandler extends DeleteGroupsHandler {
 
     public DeleteConsumerGroupsHandler(
-        LogContext logContext
+            LogContext logContext
     ) {
         super(logContext, DeleteConsumerGroupsHandler.class);
     }

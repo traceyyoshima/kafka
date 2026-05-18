@@ -51,9 +51,9 @@ public class ConsumerGroupMetadata {
     @Deprecated(since = "4.2", forRemoval = true)
     public ConsumerGroupMetadata(String groupId) {
         this(groupId,
-            JoinGroupRequest.UNKNOWN_GENERATION_ID,
-            JoinGroupRequest.UNKNOWN_MEMBER_ID,
-            Optional.empty());
+                JoinGroupRequest.UNKNOWN_GENERATION_ID,
+                JoinGroupRequest.UNKNOWN_MEMBER_ID,
+                Optional.empty());
     }
 
     /**
@@ -95,10 +95,10 @@ public class ConsumerGroupMetadata {
     @Override
     public String toString() {
         return String.format("GroupMetadata(groupId = %s, generationId = %d, memberId = %s, groupInstanceId = %s)",
-            groupId,
-            generationId,
-            memberId,
-            groupInstanceId.orElse(""));
+                groupId,
+                generationId,
+                memberId,
+                groupInstanceId.orElse(""));
     }
 
     @Override
@@ -107,9 +107,9 @@ public class ConsumerGroupMetadata {
         if (o == null || getClass() != o.getClass()) return false;
         final ConsumerGroupMetadata that = (ConsumerGroupMetadata) o;
         return generationId == that.generationId &&
-            Objects.equals(groupId, that.groupId) &&
-            Objects.equals(memberId, that.memberId) &&
-            Objects.equals(groupInstanceId, that.groupInstanceId);
+                Objects.equals(groupId, that.groupId) &&
+                Objects.equals(memberId, that.memberId) &&
+                Objects.equals(groupInstanceId, that.groupInstanceId);
     }
 
     @Override

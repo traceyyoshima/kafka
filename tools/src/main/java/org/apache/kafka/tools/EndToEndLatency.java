@@ -186,10 +186,10 @@ public class EndToEndLatency {
             if (!record.headers().iterator().hasNext()) {
                 commitAndThrow(consumer, "Expected message headers but received none");
             }
-            
+
             Iterator<Header> sentIterator = sentHeaders.iterator();
             Iterator<Header> receivedIterator = record.headers().iterator();
-            
+
             while (sentIterator.hasNext() && receivedIterator.hasNext()) {
                 Header sentHeader = sentIterator.next();
                 Header receivedHeader = receivedIterator.next();
@@ -200,7 +200,7 @@ public class EndToEndLatency {
                             "] did not match the message header sent [" + sentHeader.key() + ":" + sentValueStr + "]");
                 }
             }
-            
+
             if (sentIterator.hasNext() || receivedIterator.hasNext()) {
                 commitAndThrow(consumer, "Header count mismatch between sent and received messages");
             }
@@ -306,7 +306,7 @@ public class EndToEndLatency {
      * @return converted named arguments
      * @throws Exception if the legacy arguments are invalid
      * @deprecated Positional argument usage is deprecated and will be removed in Apache Kafka 5.0.
-     *             Use named arguments instead: --bootstrap-server, --topic, --num-records, --producer-acks, --record-size, --command-config
+     * Use named arguments instead: --bootstrap-server, --topic, --num-records, --producer-acks, --record-size, --command-config
      */
     @Deprecated(since = "4.2", forRemoval = true)
     static String[] convertLegacyArgsIfNeeded(String[] args) throws Exception {
@@ -314,12 +314,12 @@ public class EndToEndLatency {
             return args;
         }
 
-        boolean hasRequiredNamedArgs = Arrays.stream(args).anyMatch(arg -> 
-            arg.equals("--bootstrap-server") || 
-            arg.equals("--topic") || 
-            arg.equals("--num-records") || 
-            arg.equals("--producer-acks") || 
-            arg.equals("--record-size"));
+        boolean hasRequiredNamedArgs = Arrays.stream(args).anyMatch(arg ->
+                arg.equals("--bootstrap-server") ||
+                        arg.equals("--topic") ||
+                        arg.equals("--num-records") ||
+                        arg.equals("--producer-acks") ||
+                        arg.equals("--record-size"));
         if (hasRequiredNamedArgs) {
             return args;
         }

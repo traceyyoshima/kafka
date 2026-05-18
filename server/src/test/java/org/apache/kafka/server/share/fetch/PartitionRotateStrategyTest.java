@@ -64,14 +64,14 @@ public class PartitionRotateStrategyTest {
 
         List<TopicIdPartition> partitions = createPartitions(3);
         List<TopicIdPartition> result = strategy.rotate(
-            partitions,
-            new PartitionRotateMetadata(ShareRequestMetadata.INITIAL_EPOCH));
+                partitions,
+                new PartitionRotateMetadata(ShareRequestMetadata.INITIAL_EPOCH));
         assertEquals(3, result.size());
         validateRotatedListEquals(partitions, result, 0);
 
         result = strategy.rotate(
-            partitions,
-            new PartitionRotateMetadata(ShareRequestMetadata.FINAL_EPOCH));
+                partitions,
+                new PartitionRotateMetadata(ShareRequestMetadata.FINAL_EPOCH));
         assertEquals(3, result.size());
         validateRotatedListEquals(partitions, result, 0);
     }
@@ -87,6 +87,7 @@ public class PartitionRotateStrategyTest {
 
     /**
      * Create a list of topic partitions.
+     *
      * @param size The number of topic-partitions to create.
      * @return The list of topic partitions.
      */

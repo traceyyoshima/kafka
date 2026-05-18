@@ -61,8 +61,8 @@ public final class FindCommandHandler implements Commands.Handler {
         @Override
         public void addArguments(ArgumentParser parser) {
             parser.addArgument("paths").
-                nargs("*").
-                help("The paths to start at.");
+                    nargs("*").
+                    help("The paths to start at.");
         }
 
         @Override
@@ -72,9 +72,9 @@ public final class FindCommandHandler implements Commands.Handler {
 
         @Override
         public void completeNext(
-            MetadataShellState state,
-            List<String> nextWords,
-            List<Candidate> candidates
+                MetadataShellState state,
+                List<String> nextWords,
+                List<Candidate> candidates
         ) throws Exception {
             CommandUtils.completePath(state, nextWords.get(nextWords.size() - 1), candidates);
         }
@@ -88,9 +88,9 @@ public final class FindCommandHandler implements Commands.Handler {
 
     @Override
     public void run(
-        Optional<InteractiveShell> shell,
-        PrintWriter writer,
-        MetadataShellState state
+            Optional<InteractiveShell> shell,
+            PrintWriter writer,
+            MetadataShellState state
     ) throws Exception {
         for (String path : CommandUtils.getEffectivePaths(paths)) {
             new GlobVisitor(path, entryOption -> {

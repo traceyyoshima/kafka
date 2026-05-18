@@ -82,7 +82,7 @@ public class MeteredTimestampedKeyValueStoreTest {
     private static final String KEY = "key";
     private static final Bytes KEY_BYTES = Bytes.wrap(KEY.getBytes());
     private static final ValueAndTimestamp<String> VALUE_AND_TIMESTAMP =
-        ValueAndTimestamp.make("value", 97L);
+            ValueAndTimestamp.make("value", 97L);
     // timestamp is 97 what is ASCII of 'a'
     private static final byte[] VALUE_AND_TIMESTAMP_BYTES = "\0\0\0\0\0\0\0avalue".getBytes();
 
@@ -95,11 +95,11 @@ public class MeteredTimestampedKeyValueStoreTest {
     private InternalProcessorContext<?, ?> context;
     private MockTime mockTime;
 
-    private static final Map<String, Object> CONFIGS =  mkMap(mkEntry(StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE, APPLICATION_ID));
+    private static final Map<String, Object> CONFIGS = mkMap(mkEntry(StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE, APPLICATION_ID));
 
     private MeteredTimestampedKeyValueStore<String, String> metered;
     private final KeyValue<Bytes, byte[]> byteKeyValueTimestampPair = KeyValue.pair(KEY_BYTES,
-        VALUE_AND_TIMESTAMP_BYTES
+            VALUE_AND_TIMESTAMP_BYTES
     );
     private final Metrics metrics = new Metrics();
     private Map<String, String> tags;
@@ -125,13 +125,13 @@ public class MeteredTimestampedKeyValueStoreTest {
         setUpWithoutContext();
         when(context.applicationId()).thenReturn(APPLICATION_ID);
         when(context.metrics())
-            .thenReturn(new StreamsMetricsImpl(metrics, "test", mockTime));
+                .thenReturn(new StreamsMetricsImpl(metrics, "test", mockTime));
         when(context.taskId()).thenReturn(taskId);
         when(context.changelogFor(STORE_NAME)).thenReturn(CHANGELOG_TOPIC);
         when(inner.name()).thenReturn(STORE_NAME);
         when(context.appConfigs()).thenReturn(CONFIGS);
     }
-    
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void setUpWithExpectSerdes() {
         setUp();
@@ -147,11 +147,11 @@ public class MeteredTimestampedKeyValueStoreTest {
     public void shouldDelegateInit() {
         setUp();
         final MeteredTimestampedKeyValueStore<String, String> outer = new MeteredTimestampedKeyValueStore<>(
-            inner,
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new ValueAndTimestampSerde<>(Serdes.String())
+                inner,
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new ValueAndTimestampSerde<>(Serdes.String())
         );
         doNothing().when(inner).init(context, outer);
         outer.init(context, outer);
@@ -187,11 +187,11 @@ public class MeteredTimestampedKeyValueStoreTest {
         when(context.headers()).thenReturn(new RecordHeaders());
         when(inner.get(KEY_BYTES)).thenReturn(VALUE_AND_TIMESTAMP_BYTES);
         metered = new MeteredTimestampedKeyValueStore<>(
-            inner,
-            STORE_TYPE,
-            new MockTime(),
-            keySerde,
-            valueSerde
+                inner,
+                STORE_TYPE,
+                new MockTime(),
+                keySerde,
+                valueSerde
         );
         metered.init(context, metered);
 
@@ -209,15 +209,16 @@ public class MeteredTimestampedKeyValueStoreTest {
 
         metrics.addReporter(reporter);
         assertTrue(reporter.containsMbean(String.format(
-            "kafka.streams:type=%s,%s=%s,task-id=%s,%s-state-id=%s",
-            STORE_LEVEL_GROUP,
-            THREAD_ID_TAG_KEY,
-            threadId,
-            taskId,
-            STORE_TYPE,
-            STORE_NAME
+                "kafka.streams:type=%s,%s=%s,task-id=%s,%s-state-id=%s",
+                STORE_LEVEL_GROUP,
+                THREAD_ID_TAG_KEY,
+                threadId,
+                taskId,
+                STORE_TYPE,
+                STORE_NAME
         )));
     }
+
     @Test
     public void shouldWriteBytesToInnerStoreAndRecordPutMetric() {
         setUp();
@@ -315,7 +316,7 @@ public class MeteredTimestampedKeyValueStoreTest {
     public void shouldGetRangeFromInnerStoreAndRecordRangeMetric() {
         setUp();
         when(inner.range(KEY_BYTES, KEY_BYTES)).thenReturn(
-            new KeyValueIteratorStub<>(Collections.singletonList(byteKeyValueTimestampPair).iterator()));
+                new KeyValueIteratorStub<>(Collections.singletonList(byteKeyValueTimestampPair).iterator()));
         init();
 
         final KeyValueIterator<String, ValueAndTimestamp<String>> iterator = metered.range(KEY, KEY);
@@ -331,7 +332,7 @@ public class MeteredTimestampedKeyValueStoreTest {
     public void shouldGetAllFromInnerStoreAndRecordAllMetric() {
         setUp();
         when(inner.all())
-            .thenReturn(new KeyValueIteratorStub<>(Collections.singletonList(byteKeyValueTimestampPair).iterator()));
+                .thenReturn(new KeyValueIteratorStub<>(Collections.singletonList(byteKeyValueTimestampPair).iterator()));
         init();
 
         final KeyValueIterator<String, ValueAndTimestamp<String>> iterator = metered.all();
@@ -355,7 +356,8 @@ public class MeteredTimestampedKeyValueStoreTest {
         assertTrue((Double) commitMetric.metricValue() > 0);
     }
 
-    private interface CachedKeyValueStore extends KeyValueStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> { }
+    private interface CachedKeyValueStore extends KeyValueStore<Bytes, byte[]>, CachedStateStore<byte[], byte[]> {
+    }
 
     @SuppressWarnings("unchecked")
     @Test
@@ -366,11 +368,11 @@ public class MeteredTimestampedKeyValueStoreTest {
         when(cachedKeyValueStore.setFlushListener(any(CacheFlushListener.class), eq(false))).thenReturn(true);
 
         metered = new MeteredTimestampedKeyValueStore<>(
-            cachedKeyValueStore,
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new ValueAndTimestampSerde<>(Serdes.String()));
+                cachedKeyValueStore,
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new ValueAndTimestampSerde<>(Serdes.String()));
         assertTrue(metered.setFlushListener(null, false));
     }
 
@@ -388,11 +390,11 @@ public class MeteredTimestampedKeyValueStoreTest {
     public void shouldNotThrowExceptionIfSerdesCorrectlySetFromProcessorContext() {
         setUpWithExpectSerdes();
         final MeteredTimestampedKeyValueStore<String, Long> store = new MeteredTimestampedKeyValueStore<>(
-            inner,
-            STORE_TYPE,
-            new MockTime(),
-            null,
-            null
+                inner,
+                STORE_TYPE,
+                new MockTime(),
+                null,
+                null
         );
         store.init(context, inner);
 
@@ -401,8 +403,8 @@ public class MeteredTimestampedKeyValueStoreTest {
         } catch (final StreamsException exception) {
             if (exception.getCause() instanceof ClassCastException) {
                 throw new AssertionError(
-                    "Serdes are not correctly set from processor context.",
-                    exception
+                        "Serdes are not correctly set from processor context.",
+                        exception
                 );
             } else {
                 throw exception;
@@ -414,11 +416,11 @@ public class MeteredTimestampedKeyValueStoreTest {
     public void shouldNotThrowExceptionIfSerdesCorrectlySetFromConstructorParameters() {
         setUp();
         final MeteredTimestampedKeyValueStore<String, Long> store = new MeteredTimestampedKeyValueStore<>(
-            inner,
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new ValueAndTimestampSerde<>(Serdes.Long())
+                inner,
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new ValueAndTimestampSerde<>(Serdes.Long())
         );
         store.init(context, inner);
 

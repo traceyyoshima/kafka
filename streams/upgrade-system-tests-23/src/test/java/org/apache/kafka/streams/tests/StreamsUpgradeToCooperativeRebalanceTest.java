@@ -62,18 +62,18 @@ public class StreamsUpgradeToCooperativeRebalanceTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.<String, String>stream(sourceTopic)
-            .peek(new ForeachAction<String, String>() {
-                int recordCounter = 0;
+                .peek(new ForeachAction<String, String>() {
+                          int recordCounter = 0;
 
-                @Override
-                public void apply(final String key, final String value) {
-                    if (recordCounter++ % reportInterval == 0) {
-                        System.out.printf("Processed %d records so far%n", recordCounter);
-                        System.out.flush();
-                    }
-                }
-            }
-            ).to(sinkTopic);
+                          @Override
+                          public void apply(final String key, final String value) {
+                              if (recordCounter++ % reportInterval == 0) {
+                                  System.out.printf("Processed %d records so far%n", recordCounter);
+                                  System.out.flush();
+                              }
+                          }
+                      }
+                ).to(sinkTopic);
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), config);
 

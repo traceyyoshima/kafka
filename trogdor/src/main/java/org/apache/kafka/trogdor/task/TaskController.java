@@ -28,9 +28,8 @@ public interface TaskController {
     /**
      * Get the agent nodes which this task is targeting.
      *
-     * @param topology      The topology to use.
-     *
-     * @return              A set of target node names.
+     * @param topology The topology to use.
+     * @return A set of target node names.
      */
     Set<String> targetNodes(Topology topology);
 }

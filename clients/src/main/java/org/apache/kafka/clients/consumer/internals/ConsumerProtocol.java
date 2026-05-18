@@ -36,7 +36,7 @@ import java.util.Optional;
 /**
  * ConsumerProtocol contains the schemas for consumer subscriptions and assignments for use with
  * Kafka's generalized group management protocol.
- *
+ * <p>
  * The current implementation assumes that future versions will not break compatibility. When
  * it encounters a newer version, it parses it using the current format. This basically means
  * that new versions cannot remove or reorder any of the existing fields.
@@ -49,12 +49,12 @@ public class ConsumerProtocol {
         if (ConsumerProtocolSubscription.LOWEST_SUPPORTED_VERSION
                 != ConsumerProtocolAssignment.LOWEST_SUPPORTED_VERSION)
             throw new IllegalStateException("Subscription and Assignment schemas must have the " +
-                "same lowest version");
+                    "same lowest version");
 
         if (ConsumerProtocolSubscription.HIGHEST_SUPPORTED_VERSION
                 != ConsumerProtocolAssignment.HIGHEST_SUPPORTED_VERSION)
             throw new IllegalStateException("Subscription and Assignment schemas must have the " +
-                "same highest version");
+                    "same highest version");
     }
 
     public static short deserializeVersion(final ByteBuffer buffer) {
@@ -101,7 +101,7 @@ public class ConsumerProtocol {
 
         try {
             ConsumerProtocolSubscription data =
-                new ConsumerProtocolSubscription(new ByteBufferAccessor(buffer), version);
+                    new ConsumerProtocolSubscription(new ByteBufferAccessor(buffer), version);
 
             List<TopicPartition> ownedPartitions = new ArrayList<>();
             for (ConsumerProtocolSubscription.TopicPartition tp : data.ownedPartitions()) {
@@ -111,11 +111,11 @@ public class ConsumerProtocol {
             }
 
             return new Subscription(
-                data.topics(),
-                data.userData() != null ? data.userData().duplicate() : null,
-                ownedPartitions,
-                data.generationId(),
-                data.rackId() == null || data.rackId().isEmpty() ? Optional.empty() : Optional.of(data.rackId()));
+                    data.topics(),
+                    data.userData() != null ? data.userData().duplicate() : null,
+                    ownedPartitions,
+                    data.generationId(),
+                    data.rackId() == null || data.rackId().isEmpty() ? Optional.empty() : Optional.of(data.rackId()));
         } catch (BufferUnderflowException e) {
             throw new SchemaException("Buffer underflow while parsing consumer protocol's subscription", e);
         }
@@ -126,8 +126,8 @@ public class ConsumerProtocol {
     }
 
     public static ConsumerProtocolSubscription deserializeConsumerProtocolSubscription(
-        final ByteBuffer buffer,
-        short version
+            final ByteBuffer buffer,
+            short version
     ) {
         version = checkSubscriptionVersion(version);
 
@@ -139,7 +139,7 @@ public class ConsumerProtocol {
     }
 
     public static ConsumerProtocolSubscription deserializeConsumerProtocolSubscription(
-        final ByteBuffer buffer
+            final ByteBuffer buffer
     ) {
         return deserializeConsumerProtocolSubscription(buffer, deserializeVersion(buffer));
     }
@@ -174,7 +174,7 @@ public class ConsumerProtocol {
 
         try {
             ConsumerProtocolAssignment data =
-                new ConsumerProtocolAssignment(new ByteBufferAccessor(buffer), version);
+                    new ConsumerProtocolAssignment(new ByteBufferAccessor(buffer), version);
 
             List<TopicPartition> assignedPartitions = new ArrayList<>();
             for (ConsumerProtocolAssignment.TopicPartition tp : data.assignedPartitions()) {
@@ -184,8 +184,8 @@ public class ConsumerProtocol {
             }
 
             return new Assignment(
-                assignedPartitions,
-                data.userData() != null ? data.userData().duplicate() : null);
+                    assignedPartitions,
+                    data.userData() != null ? data.userData().duplicate() : null);
         } catch (BufferUnderflowException e) {
             throw new SchemaException("Buffer underflow while parsing consumer protocol's assignment", e);
         }
@@ -196,8 +196,8 @@ public class ConsumerProtocol {
     }
 
     public static ConsumerProtocolAssignment deserializeConsumerProtocolAssignment(
-        final ByteBuffer buffer,
-        short version
+            final ByteBuffer buffer,
+            short version
     ) {
         version = checkAssignmentVersion(version);
 

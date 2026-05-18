@@ -87,8 +87,8 @@ class NodeToControllerRequestThreadTest {
             MockTime time,
             long retryTimeoutMs) {
         NodeToControllerRequestThread thread = new NodeToControllerRequestThread(
-            mockClient, new ManualMetadataUpdater(),
-            controllerNodeProvider, ReplicationConfigs.CONTROLLER_SOCKET_TIMEOUT_MS_DEFAULT, time, "", retryTimeoutMs);
+                mockClient, new ManualMetadataUpdater(),
+                controllerNodeProvider, ReplicationConfigs.CONTROLLER_SOCKET_TIMEOUT_MS_DEFAULT, time, "", retryTimeoutMs);
         thread.setStarted(true);
         return thread;
     }
@@ -110,14 +110,14 @@ class NodeToControllerRequestThreadTest {
 
         long retryTimeoutMs = 30000;
         NodeToControllerRequestThread testRequestThread = createAndStartRequestThread(
-            mockClient, controllerNodeProvider, time, retryTimeoutMs);
+                mockClient, controllerNodeProvider, time, retryTimeoutMs);
 
         TestControllerRequestCompletionHandler completionHandler =
-            new TestControllerRequestCompletionHandler(null);
+                new TestControllerRequestCompletionHandler(null);
         NodeToControllerQueueItem queueItem = new NodeToControllerQueueItem(
-            time.milliseconds(),
-            new MetadataRequest.Builder(new MetadataRequestData()),
-            completionHandler
+                time.milliseconds(),
+                new MetadataRequest.Builder(new MetadataRequestData()),
+                completionHandler
         );
 
         testRequestThread.enqueue(queueItem);
@@ -141,19 +141,19 @@ class NodeToControllerRequestThreadTest {
 
         Node activeController = new Node(controllerId, "host", 1234);
         Supplier<ControllerInformation> controllerNodeProvider =
-            () -> controllerInfo(Optional.of(activeController));
+                () -> controllerInfo(Optional.of(activeController));
 
         MetadataResponse expectedResponse = RequestTestUtils.metadataUpdateWith(2, Map.of("a", 2));
         NodeToControllerRequestThread testRequestThread = createAndStartRequestThread(
-            mockClient, controllerNodeProvider, time);
+                mockClient, controllerNodeProvider, time);
         mockClient.prepareResponse(expectedResponse);
 
         TestControllerRequestCompletionHandler completionHandler =
-            new TestControllerRequestCompletionHandler(expectedResponse);
+                new TestControllerRequestCompletionHandler(expectedResponse);
         NodeToControllerQueueItem queueItem = new NodeToControllerQueueItem(
-            time.milliseconds(),
-            new MetadataRequest.Builder(new MetadataRequestData()),
-            completionHandler
+                time.milliseconds(),
+                new MetadataRequest.Builder(new MetadataRequestData()),
+                completionHandler
         );
 
         testRequestThread.enqueue(queueItem);
@@ -181,19 +181,19 @@ class NodeToControllerRequestThreadTest {
         Node oldController = new Node(oldControllerId, "host1", 1234);
         Node newController = new Node(newControllerId, "host2", 1234);
         Supplier<ControllerInformation> controllerNodeProvider = sequentialProvider(
-            controllerInfo(Optional.of(oldController)),
-            controllerInfo(Optional.of(newController)));
+                controllerInfo(Optional.of(oldController)),
+                controllerInfo(Optional.of(newController)));
 
         MetadataResponse expectedResponse = RequestTestUtils.metadataUpdateWith(3, Map.of("a", 2));
         NodeToControllerRequestThread testRequestThread = createAndStartRequestThread(
-            mockClient, controllerNodeProvider, time);
+                mockClient, controllerNodeProvider, time);
 
         TestControllerRequestCompletionHandler completionHandler =
-            new TestControllerRequestCompletionHandler(expectedResponse);
+                new TestControllerRequestCompletionHandler(expectedResponse);
         NodeToControllerQueueItem queueItem = new NodeToControllerQueueItem(
-            time.milliseconds(),
-            new MetadataRequest.Builder(new MetadataRequestData()),
-            completionHandler
+                time.milliseconds(),
+                new MetadataRequest.Builder(new MetadataRequestData()),
+                completionHandler
         );
 
         testRequestThread.enqueue(queueItem);
@@ -227,23 +227,23 @@ class NodeToControllerRequestThreadTest {
         Node oldController = new Node(oldControllerId, "host1", port);
         Node newController = new Node(newControllerId, "host2", port);
         Supplier<ControllerInformation> controllerNodeProvider = sequentialProvider(
-            controllerInfo(Optional.of(oldController)),
-            controllerInfo(Optional.of(newController)));
+                controllerInfo(Optional.of(oldController)),
+                controllerInfo(Optional.of(newController)));
 
         MetadataResponse responseWithNotControllerError = RequestTestUtils.metadataUpdateWith("cluster1", 2,
-            Map.of("a", Errors.NOT_CONTROLLER),
-            Map.of("a", 2));
+                Map.of("a", Errors.NOT_CONTROLLER),
+                Map.of("a", 2));
         MetadataResponse expectedResponse = RequestTestUtils.metadataUpdateWith(3, Map.of("a", 2));
         NodeToControllerRequestThread testRequestThread = createAndStartRequestThread(
-            mockClient, controllerNodeProvider, time);
+                mockClient, controllerNodeProvider, time);
 
         TestControllerRequestCompletionHandler completionHandler =
-            new TestControllerRequestCompletionHandler(expectedResponse);
+                new TestControllerRequestCompletionHandler(expectedResponse);
         NodeToControllerQueueItem queueItem = new NodeToControllerQueueItem(
-            time.milliseconds(),
-            new MetadataRequest.Builder(new MetadataRequestData()
-                .setAllowAutoTopicCreation(true)),
-            completionHandler
+                time.milliseconds(),
+                new MetadataRequest.Builder(new MetadataRequestData()
+                        .setAllowAutoTopicCreation(true)),
+                completionHandler
         );
         testRequestThread.enqueue(queueItem);
         // initialize to the controller
@@ -254,8 +254,8 @@ class NodeToControllerRequestThreadTest {
 
         // send and process the request
         mockClient.prepareResponse(
-            body -> body instanceof MetadataRequest && ((MetadataRequest) body).allowAutoTopicCreation(),
-            responseWithNotControllerError);
+                body -> body instanceof MetadataRequest && ((MetadataRequest) body).allowAutoTopicCreation(),
+                responseWithNotControllerError);
         testRequestThread.doWork();
         assertEquals(Optional.empty(), testRequestThread.activeControllerAddress());
         // reinitialize the controller to a different node
@@ -285,32 +285,32 @@ class NodeToControllerRequestThreadTest {
         Node oldController = new Node(oldControllerId, "host1", port);
         Node newController = new Node(newControllerId, "host2", port);
         Supplier<ControllerInformation> controllerNodeProvider = sequentialProvider(
-            controllerInfo(Optional.of(oldController)),
-            controllerInfo(Optional.of(newController)));
+                controllerInfo(Optional.of(oldController)),
+                controllerInfo(Optional.of(newController)));
 
         // create an envelopeResponse with NOT_CONTROLLER error
         EnvelopeResponse envelopeResponseWithNotControllerError = new EnvelopeResponse(
-            new EnvelopeResponseData().setErrorCode(Errors.NOT_CONTROLLER.code()));
+                new EnvelopeResponseData().setErrorCode(Errors.NOT_CONTROLLER.code()));
 
         // response for retry request after receiving NOT_CONTROLLER error
         MetadataResponse expectedResponse = RequestTestUtils.metadataUpdateWith(3, Map.of("a", 2));
 
         NodeToControllerRequestThread testRequestThread = createAndStartRequestThread(
-            mockClient, controllerNodeProvider, time);
+                mockClient, controllerNodeProvider, time);
 
         TestControllerRequestCompletionHandler completionHandler =
-            new TestControllerRequestCompletionHandler(expectedResponse);
+                new TestControllerRequestCompletionHandler(expectedResponse);
         KafkaPrincipal kafkaPrincipal = new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "principal", true);
         DefaultKafkaPrincipalBuilder kafkaPrincipalBuilder = new DefaultKafkaPrincipalBuilder(null, null);
 
         // build an EnvelopeRequest by dummy data
         EnvelopeRequest.Builder envelopeRequestBuilder = new EnvelopeRequest.Builder(ByteBuffer.allocate(0),
-            kafkaPrincipalBuilder.serialize(kafkaPrincipal), "client-address".getBytes());
+                kafkaPrincipalBuilder.serialize(kafkaPrincipal), "client-address".getBytes());
 
         NodeToControllerQueueItem queueItem = new NodeToControllerQueueItem(
-            time.milliseconds(),
-            envelopeRequestBuilder,
-            completionHandler
+                time.milliseconds(),
+                envelopeRequestBuilder,
+                completionHandler
         );
 
         testRequestThread.enqueue(queueItem);
@@ -322,8 +322,8 @@ class NodeToControllerRequestThreadTest {
 
         // send and process the envelope request
         mockClient.prepareResponse(
-            body -> body instanceof EnvelopeRequest,
-            envelopeResponseWithNotControllerError);
+                body -> body instanceof EnvelopeRequest,
+                envelopeResponseWithNotControllerError);
         testRequestThread.doWork();
         // expect to reset the activeControllerAddress after finding the NOT_CONTROLLER error
         assertEquals(Optional.empty(), testRequestThread.activeControllerAddress());
@@ -349,22 +349,22 @@ class NodeToControllerRequestThreadTest {
 
         Node controller = new Node(controllerId, "host1", 1234);
         Supplier<ControllerInformation> controllerNodeProvider =
-            () -> controllerInfo(Optional.of(controller));
+                () -> controllerInfo(Optional.of(controller));
 
         long retryTimeoutMs = 30000;
         MetadataResponse responseWithNotControllerError = RequestTestUtils.metadataUpdateWith("cluster1", 2,
-            Map.of("a", Errors.NOT_CONTROLLER),
-            Map.of("a", 2));
+                Map.of("a", Errors.NOT_CONTROLLER),
+                Map.of("a", 2));
         NodeToControllerRequestThread testRequestThread = createAndStartRequestThread(
-            mockClient, controllerNodeProvider, time, retryTimeoutMs);
+                mockClient, controllerNodeProvider, time, retryTimeoutMs);
 
         TestControllerRequestCompletionHandler completionHandler =
-            new TestControllerRequestCompletionHandler();
+                new TestControllerRequestCompletionHandler();
         NodeToControllerQueueItem queueItem = new NodeToControllerQueueItem(
-            time.milliseconds(),
-            new MetadataRequest.Builder(new MetadataRequestData()
-                .setAllowAutoTopicCreation(true)),
-            completionHandler
+                time.milliseconds(),
+                new MetadataRequest.Builder(new MetadataRequestData()
+                        .setAllowAutoTopicCreation(true)),
+                completionHandler
         );
 
         testRequestThread.enqueue(queueItem);
@@ -376,8 +376,8 @@ class NodeToControllerRequestThreadTest {
 
         // send and process the request
         mockClient.prepareResponse(
-            body -> body instanceof MetadataRequest && ((MetadataRequest) body).allowAutoTopicCreation(),
-            responseWithNotControllerError);
+                body -> body instanceof MetadataRequest && ((MetadataRequest) body).allowAutoTopicCreation(),
+                responseWithNotControllerError);
 
         testRequestThread.doWork();
 
@@ -394,7 +394,7 @@ class NodeToControllerRequestThreadTest {
 
         Node activeController = new Node(controllerId, "host", 1234);
         Supplier<ControllerInformation> controllerNodeProvider =
-            () -> controllerInfo(Optional.of(activeController));
+                () -> controllerInfo(Optional.of(activeController));
 
         AtomicReference<ClientResponse> callbackResponse = new AtomicReference<>();
         ControllerRequestCompletionHandler completionHandler = new ControllerRequestCompletionHandler() {
@@ -410,15 +410,15 @@ class NodeToControllerRequestThreadTest {
         };
 
         NodeToControllerQueueItem queueItem = new NodeToControllerQueueItem(
-            time.milliseconds(),
-            new MetadataRequest.Builder(new MetadataRequestData()),
-            completionHandler
+                time.milliseconds(),
+                new MetadataRequest.Builder(new MetadataRequestData()),
+                completionHandler
         );
 
         mockClient.prepareUnsupportedVersionResponse(request -> request.apiKey() == ApiKeys.METADATA);
 
         NodeToControllerRequestThread testRequestThread = createAndStartRequestThread(
-            mockClient, controllerNodeProvider, time);
+                mockClient, controllerNodeProvider, time);
 
         testRequestThread.enqueue(queueItem);
         pollUntil(testRequestThread, () -> callbackResponse.get() != null);
@@ -435,7 +435,7 @@ class NodeToControllerRequestThreadTest {
 
         Node activeController = new Node(controllerId, "host", 1234);
         Supplier<ControllerInformation> controllerNodeProvider =
-            () -> controllerInfo(Optional.of(activeController));
+                () -> controllerInfo(Optional.of(activeController));
 
         AtomicReference<ClientResponse> callbackResponse = new AtomicReference<>();
         ControllerRequestCompletionHandler completionHandler = new ControllerRequestCompletionHandler() {
@@ -451,15 +451,15 @@ class NodeToControllerRequestThreadTest {
         };
 
         NodeToControllerQueueItem queueItem = new NodeToControllerQueueItem(
-            time.milliseconds(),
-            new MetadataRequest.Builder(new MetadataRequestData()),
-            completionHandler
+                time.milliseconds(),
+                new MetadataRequest.Builder(new MetadataRequestData()),
+                completionHandler
         );
 
         mockClient.createPendingAuthenticationError(activeController, 50);
 
         NodeToControllerRequestThread testRequestThread = createAndStartRequestThread(
-            mockClient, controllerNodeProvider, time);
+                mockClient, controllerNodeProvider, time);
 
         testRequestThread.enqueue(queueItem);
         pollUntil(testRequestThread, () -> callbackResponse.get() != null);
@@ -478,15 +478,15 @@ class NodeToControllerRequestThreadTest {
         Supplier<ControllerInformation> controllerNodeProvider = NodeToControllerRequestThreadTest::emptyControllerInfo;
 
         NodeToControllerRequestThread testRequestThread = new NodeToControllerRequestThread(
-            mockClient, new ManualMetadataUpdater(),
-            controllerNodeProvider, ReplicationConfigs.CONTROLLER_SOCKET_TIMEOUT_MS_DEFAULT, time, "", Long.MAX_VALUE);
+                mockClient, new ManualMetadataUpdater(),
+                controllerNodeProvider, ReplicationConfigs.CONTROLLER_SOCKET_TIMEOUT_MS_DEFAULT, time, "", Long.MAX_VALUE);
 
         TestControllerRequestCompletionHandler completionHandler =
-            new TestControllerRequestCompletionHandler(null);
+                new TestControllerRequestCompletionHandler(null);
         NodeToControllerQueueItem queueItem = new NodeToControllerQueueItem(
-            time.milliseconds(),
-            new MetadataRequest.Builder(new MetadataRequestData()),
-            completionHandler
+                time.milliseconds(),
+                new MetadataRequest.Builder(new MetadataRequestData()),
+                completionHandler
         );
 
         assertThrows(IllegalStateException.class, () -> testRequestThread.enqueue(queueItem));

@@ -74,13 +74,13 @@ public class KafkaPostDiscoveryFilter implements PostDiscoveryFilter {
     @SuppressWarnings("unused")
     public KafkaPostDiscoveryFilter() {
         runNew = System.getProperty(RUN_NEW_PROP, "false")
-            .equalsIgnoreCase("true");
+                .equalsIgnoreCase("true");
 
         runFlaky = System.getProperty(RUN_FLAKY_PROP, "false")
-            .equalsIgnoreCase("true");
+                .equalsIgnoreCase("true");
 
         verbose = System.getProperty(VERBOSE_PROP, "false")
-            .equalsIgnoreCase("true");
+                .equalsIgnoreCase("true");
 
         String testCatalogFileName = System.getProperty(CATALOG_FILE_PROP);
         catalogFilter = CatalogTestFilter.create(testCatalogFileName);
@@ -88,9 +88,9 @@ public class KafkaPostDiscoveryFilter implements PostDiscoveryFilter {
 
     // Visible for tests
     KafkaPostDiscoveryFilter(
-        Filter<TestDescriptor> catalogFilter,
-        boolean runNew,
-        boolean runFlaky
+            Filter<TestDescriptor> catalogFilter,
+            boolean runNew,
+            boolean runFlaky
     ) {
         this.catalogFilter = catalogFilter;
         this.runNew = runNew;
@@ -139,12 +139,12 @@ public class KafkaPostDiscoveryFilter implements PostDiscoveryFilter {
 
         if (verbose) {
             log.info(
-                "{} Test '{}' with reason '{}'. Flaky tag is {}, catalog filter has {} this test.",
-                result.included() ? "Including" : "Excluding",
-                testDescriptor.getDisplayName(),
-                result.getReason().orElse("null"),
-                hasFlakyTag ? "present" : "not present",
-                catalogFilterResult.included() ? "included" : "not included"
+                    "{} Test '{}' with reason '{}'. Flaky tag is {}, catalog filter has {} this test.",
+                    result.included() ? "Including" : "Excluding",
+                    testDescriptor.getDisplayName(),
+                    result.getReason().orElse("null"),
+                    hasFlakyTag ? "present" : "not present",
+                    catalogFilterResult.included() ? "included" : "not included"
             );
         }
         return result;

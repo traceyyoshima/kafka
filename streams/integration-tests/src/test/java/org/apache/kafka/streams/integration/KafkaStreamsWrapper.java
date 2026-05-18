@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- *  This class allows to access the {@link KafkaStreams} a {@link StreamThread.StateListener} object.
+ * This class allows to access the {@link KafkaStreams} a {@link StreamThread.StateListener} object.
  *
  */
 public class KafkaStreamsWrapper extends KafkaStreams {
@@ -56,7 +56,7 @@ public class KafkaStreamsWrapper extends KafkaStreams {
             }
         } else {
             throw new IllegalStateException("Can only set StateListener in CREATED state. " +
-                "Current state is: " + state);
+                    "Current state is: " + state);
         }
     }
 }

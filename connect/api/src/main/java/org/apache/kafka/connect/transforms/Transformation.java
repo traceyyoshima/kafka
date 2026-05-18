@@ -64,7 +64,9 @@ public interface Transformation<R extends ConnectRecord<R>> extends Configurable
         return "undefined";
     }
 
-    /** Signal that this transformation instance will no longer will be used. */
+    /**
+     * Signal that this transformation instance will no longer will be used.
+     */
     @Override
     void close();
 

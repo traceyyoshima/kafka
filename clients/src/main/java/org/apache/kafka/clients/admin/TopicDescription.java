@@ -43,9 +43,9 @@ public class TopicDescription {
         if (o == null || getClass() != o.getClass()) return false;
         final TopicDescription that = (TopicDescription) o;
         return internal == that.internal &&
-            Objects.equals(name, that.name) &&
-            Objects.equals(partitions, that.partitions) &&
-            Objects.equals(authorizedOperations, that.authorizedOperations);
+                Objects.equals(name, that.name) &&
+                Objects.equals(partitions, that.partitions) &&
+                Objects.equals(authorizedOperations, that.authorizedOperations);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class TopicDescription {
     /**
      * Create an instance with the specified parameters.
      *
-     * @param name The topic name
-     * @param internal Whether the topic is internal to Kafka
+     * @param name       The topic name
+     * @param internal   Whether the topic is internal to Kafka
      * @param partitions A list of partitions where the index represents the partition id and the element contains
      *                   leadership and replica information for that partition.
      */
@@ -68,10 +68,10 @@ public class TopicDescription {
     /**
      * Create an instance with the specified parameters.
      *
-     * @param name The topic name
-     * @param internal Whether the topic is internal to Kafka
-     * @param partitions A list of partitions where the index represents the partition id and the element contains
-     *                   leadership and replica information for that partition.
+     * @param name                 The topic name
+     * @param internal             Whether the topic is internal to Kafka
+     * @param partitions           A list of partitions where the index represents the partition id and the element contains
+     *                             leadership and replica information for that partition.
      * @param authorizedOperations authorized operations for this topic, or empty set if this is not known.
      */
     public TopicDescription(String name, boolean internal, List<TopicPartitionInfo> partitions,
@@ -82,12 +82,12 @@ public class TopicDescription {
     /**
      * Create an instance with the specified parameters.
      *
-     * @param name The topic name
-     * @param internal Whether the topic is internal to Kafka
-     * @param partitions A list of partitions where the index represents the partition id and the element contains
-     *                   leadership and replica information for that partition.
+     * @param name                 The topic name
+     * @param internal             Whether the topic is internal to Kafka
+     * @param partitions           A list of partitions where the index represents the partition id and the element contains
+     *                             leadership and replica information for that partition.
      * @param authorizedOperations authorized operations for this topic, or empty set if this is not known.
-     * @param topicId the topic id
+     * @param topicId              the topic id
      */
     public TopicDescription(String name, boolean internal, List<TopicPartitionInfo> partitions,
                             Set<AclOperation> authorizedOperations, Uuid topicId) {
@@ -128,7 +128,7 @@ public class TopicDescription {
     /**
      * authorized operations for this topic, or null if this is not known.
      */
-    public Set<AclOperation>  authorizedOperations() {
+    public Set<AclOperation> authorizedOperations() {
         return authorizedOperations;
     }
 

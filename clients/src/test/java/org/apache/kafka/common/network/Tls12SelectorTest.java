@@ -37,9 +37,9 @@ public class Tls12SelectorTest extends SslSelectorTest {
 
     @Override
     protected Map<String, Object> createSslClientConfigs(File trustStoreFile)
-        throws GeneralSecurityException, IOException {
+            throws GeneralSecurityException, IOException {
         Map<String, Object> configs = TestSslUtils.createSslConfig(false, false, ConnectionMode.CLIENT,
-            trustStoreFile, "client");
+                trustStoreFile, "client");
         configs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, Collections.singletonList("TLSv1.2"));
         return configs;
     }

@@ -60,13 +60,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = OFFSETS_TOPIC_PARTITIONS),
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = OFFSETS_TOPIC_REPLICATION),
-        @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
-    }
+        types = {Type.KRAFT},
+        brokers = BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = OFFSETS_TOPIC_PARTITIONS),
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = OFFSETS_TOPIC_REPLICATION),
+                @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
+        }
 )
 public class PlaintextConsumerCommitTest {
 
@@ -231,9 +231,9 @@ public class PlaintextConsumerCommitTest {
      * Tests that calling consumer.committed() for a deleted topic returns null.
      * As per the Javadoc for committed(): "If any of the partitions requested do not exist, the result
      * map will contain null as the value for that partition."
-     *
+     * <p>
      * For Classic consumer (topic names only), the GroupCoordinator returns no error for deleted topics (offsets -1).
-     *
+     * <p>
      * For Async consumer (topic IDs and topic names), the GroupCoordinator returns UNKNOWN_TOPIC_ID for the deleted topic
      * when the client uses topic IDs.
      * The consumer handles this as a retriable partition error and eventually returns null,
@@ -259,12 +259,12 @@ public class PlaintextConsumerCommitTest {
 
             // Eventually, the response should return null for the deleted topic partition.
             TestUtils.waitForCondition(
-                () -> {
-                    var committed = consumer.committed(Set.of(tpToDelete), Duration.ofMillis(5000));
-                    return committed.get(tpToDelete) == null;
-                },
-                10000,
-                "Expected null for deleted topic partition"
+                    () -> {
+                        var committed = consumer.committed(Set.of(tpToDelete), Duration.ofMillis(5000));
+                        return committed.get(tpToDelete) == null;
+                    },
+                    10000,
+                    "Expected null for deleted topic partition"
             );
         }
     }
@@ -283,9 +283,9 @@ public class PlaintextConsumerCommitTest {
         // Ensure the __consumer_offsets topic is created to prevent transient issues,
         // such as RetriableCommitFailedException during async offset commits.
         cluster.createTopic(
-            Topic.GROUP_METADATA_TOPIC_NAME,
-            Integer.parseInt(OFFSETS_TOPIC_PARTITIONS),
-            Short.parseShort(OFFSETS_TOPIC_REPLICATION)
+                Topic.GROUP_METADATA_TOPIC_NAME,
+                Integer.parseInt(OFFSETS_TOPIC_PARTITIONS),
+                Short.parseShort(OFFSETS_TOPIC_REPLICATION)
         );
         try (var consumer = createConsumer(groupProtocol, false)) {
             consumer.assign(List.of(tp));
@@ -296,9 +296,9 @@ public class PlaintextConsumerCommitTest {
                 consumer.commitAsync(Map.of(tp, new OffsetAndMetadata(i)), callback);
 
             ClientsTestUtils.pollUntilTrue(
-                consumer,
-                () -> callback.successCount >= count || callback.lastError.isPresent(),
-                "Failed to observe commit callback before timeout"
+                    consumer,
+                    () -> callback.successCount >= count || callback.lastError.isPresent(),
+                    "Failed to observe commit callback before timeout"
             );
 
             assertEquals(Optional.empty(), callback.lastError);
@@ -324,9 +324,9 @@ public class PlaintextConsumerCommitTest {
         try (var producer = cluster.producer();
              // create consumer with interceptor
              Consumer<byte[], byte[]> consumer = cluster.consumer(Map.of(
-                 GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-                 ENABLE_AUTO_COMMIT_CONFIG, "true",
-                 INTERCEPTOR_CLASSES_CONFIG, "org.apache.kafka.test.MockConsumerInterceptor"
+                     GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                     ENABLE_AUTO_COMMIT_CONFIG, "true",
+                     INTERCEPTOR_CLASSES_CONFIG, "org.apache.kafka.test.MockConsumerInterceptor"
              ))
         ) {
             // produce records
@@ -340,6 +340,7 @@ public class PlaintextConsumerCommitTest {
                     // keep partitions paused in this test so that we can verify the commits based on specific seeks
                     consumer.pause(partitions);
                 }
+
                 @Override
                 public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
                     // No-op
@@ -347,10 +348,10 @@ public class PlaintextConsumerCommitTest {
             };
 
             changeConsumerSubscriptionAndValidateAssignment(
-                consumer,
-                List.of(topic),
-                Set.of(tp, tp1),
-                rebalanceListener
+                    consumer,
+                    List.of(topic),
+                    Set.of(tp, tp1),
+                    rebalanceListener
             );
             consumer.seek(tp, 10);
             consumer.seek(tp1, 20);
@@ -359,10 +360,10 @@ public class PlaintextConsumerCommitTest {
             var commitCountBeforeRebalance = MockConsumerInterceptor.ON_COMMIT_COUNT.intValue();
             var expectedAssignment = Set.of(tp, tp1, new TopicPartition(topic2, 0), new TopicPartition(topic2, 1));
             changeConsumerSubscriptionAndValidateAssignment(
-                consumer,
-                List.of(topic, topic2),
-                expectedAssignment,
-                rebalanceListener
+                    consumer,
+                    List.of(topic, topic2),
+                    expectedAssignment,
+                    rebalanceListener
             );
 
             // after rebalancing, we should have reset to the committed positions
@@ -647,23 +648,23 @@ public class PlaintextConsumerCommitTest {
 
     private Consumer<byte[], byte[]> createConsumer(GroupProtocol protocol, boolean enableAutoCommit) {
         return cluster.consumer(Map.of(
-            GROUP_ID_CONFIG, "test-group",
-            GROUP_PROTOCOL_CONFIG, protocol.name().toLowerCase(Locale.ROOT),
-            ENABLE_AUTO_COMMIT_CONFIG, enableAutoCommit
+                GROUP_ID_CONFIG, "test-group",
+                GROUP_PROTOCOL_CONFIG, protocol.name().toLowerCase(Locale.ROOT),
+                ENABLE_AUTO_COMMIT_CONFIG, enableAutoCommit
         ));
     }
 
     private void sendAndAwaitAsyncCommit(
-        Consumer<byte[], byte[]> consumer,
-        Map<TopicPartition, OffsetAndMetadata> offsetsOpt
+            Consumer<byte[], byte[]> consumer,
+            Map<TopicPartition, OffsetAndMetadata> offsetsOpt
     ) throws InterruptedException {
         var commitCallback = new RetryCommitCallback(consumer, offsetsOpt);
 
         commitCallback.sendAsyncCommit();
         ClientsTestUtils.pollUntilTrue(
-            consumer,
-            () -> commitCallback.isComplete,
-            "Failed to observe commit callback before timeout"
+                consumer,
+                () -> commitCallback.isComplete,
+                "Failed to observe commit callback before timeout"
         );
 
         assertEquals(Optional.empty(), commitCallback.error);
@@ -677,8 +678,8 @@ public class PlaintextConsumerCommitTest {
         private final Map<TopicPartition, OffsetAndMetadata> offsetsOpt;
 
         public RetryCommitCallback(
-            Consumer<byte[], byte[]> consumer,
-            Map<TopicPartition, OffsetAndMetadata> offsetsOpt
+                Consumer<byte[], byte[]> consumer,
+                Map<TopicPartition, OffsetAndMetadata> offsetsOpt
         ) {
             this.consumer = consumer;
             this.offsetsOpt = offsetsOpt;
@@ -716,10 +717,10 @@ public class PlaintextConsumerCommitTest {
     }
 
     private void changeConsumerSubscriptionAndValidateAssignment(
-        Consumer<byte[], byte[]> consumer,
-        List<String> topicsToSubscribe,
-        Set<TopicPartition> expectedAssignment,
-        ConsumerRebalanceListener rebalanceListener
+            Consumer<byte[], byte[]> consumer,
+            List<String> topicsToSubscribe,
+            Set<TopicPartition> expectedAssignment,
+            ConsumerRebalanceListener rebalanceListener
     ) throws InterruptedException {
         consumer.subscribe(topicsToSubscribe, rebalanceListener);
         awaitAssignment(consumer, expectedAssignment);

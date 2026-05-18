@@ -76,7 +76,7 @@ public class SessionToHeadersStoreAdapterTest {
         final SessionStore<Bytes, byte[]> nonPersistentStore = mock(SessionStore.class);
         when(nonPersistentStore.persistent()).thenReturn(false);
         assertThrows(IllegalArgumentException.class,
-            () -> new SessionToHeadersStoreAdapter(nonPersistentStore));
+                () -> new SessionToHeadersStoreAdapter(nonPersistentStore));
     }
 
     @Test
@@ -128,7 +128,7 @@ public class SessionToHeadersStoreAdapterTest {
         final KeyValueIterator<Windowed<Bytes>, byte[]> innerIter = mock(KeyValueIterator.class);
         when(innerStore.findSessions(KEY_FROM, KEY_TO, 10L, 20L)).thenReturn(innerIter);
         final KeyValueIterator<Windowed<Bytes>, byte[]> result =
-            adapter.findSessions(KEY_FROM, KEY_TO, 10L, 20L);
+                adapter.findSessions(KEY_FROM, KEY_TO, 10L, 20L);
         assertInstanceOf(SessionToHeadersIteratorAdapter.class, result);
     }
 
@@ -138,7 +138,7 @@ public class SessionToHeadersStoreAdapterTest {
         final KeyValueIterator<Windowed<Bytes>, byte[]> innerIter = mock(KeyValueIterator.class);
         when(innerStore.backwardFindSessions(KEY_FROM, KEY_TO, 10L, 20L)).thenReturn(innerIter);
         final KeyValueIterator<Windowed<Bytes>, byte[]> result =
-            adapter.backwardFindSessions(KEY_FROM, KEY_TO, 10L, 20L);
+                adapter.backwardFindSessions(KEY_FROM, KEY_TO, 10L, 20L);
         assertInstanceOf(SessionToHeadersIteratorAdapter.class, result);
     }
 
@@ -219,11 +219,12 @@ public class SessionToHeadersStoreAdapterTest {
     @Test
     public void shouldDelegateQueryToInnerStore() {
         final QueryResult<Void> expectedResult = QueryResult.forFailure(
-            FailureReason.UNKNOWN_QUERY_TYPE, "unknown");
+                FailureReason.UNKNOWN_QUERY_TYPE, "unknown");
         when(innerStore.query(any(Query.class), any(PositionBound.class), any(QueryConfig.class)))
-            .thenReturn(expectedResult);
+                .thenReturn(expectedResult);
 
-        final Query<Void> query = new Query<Void>() { };
+        final Query<Void> query = new Query<Void>() {
+        };
         final QueryResult<Void> result = adapter.query(query, PositionBound.unbounded(), new QueryConfig(false));
         assertTrue(result.isFailure());
         assertEquals(FailureReason.UNKNOWN_QUERY_TYPE, result.getFailureReason());
@@ -233,14 +234,15 @@ public class SessionToHeadersStoreAdapterTest {
     @Test
     public void shouldAddExecutionInfoOnQuery() {
         final QueryResult<Void> expectedResult = QueryResult.forFailure(
-            FailureReason.UNKNOWN_QUERY_TYPE, "unknown");
+                FailureReason.UNKNOWN_QUERY_TYPE, "unknown");
         when(innerStore.query(any(Query.class), any(PositionBound.class), any(QueryConfig.class)))
-            .thenReturn(expectedResult);
+                .thenReturn(expectedResult);
 
-        final Query<Void> query = new Query<Void>() { };
+        final Query<Void> query = new Query<Void>() {
+        };
         final QueryResult<Void> result = adapter.query(query, PositionBound.unbounded(), new QueryConfig(true));
         assertTrue(result.getExecutionInfo().stream()
-            .anyMatch(info -> info.contains("SessionToHeadersStoreAdapter")));
+                .anyMatch(info -> info.contains("SessionToHeadersStoreAdapter")));
     }
 
     @Test

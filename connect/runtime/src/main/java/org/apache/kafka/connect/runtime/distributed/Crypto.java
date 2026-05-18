@@ -39,7 +39,7 @@ public interface Crypto {
      * @param algorithm the standard name of the requested MAC algorithm.
      * @return the new {@code Mac} object
      * @throws NoSuchAlgorithmException if no {@code Provider} supports a
-     *         {@code MacSpi} implementation for the specified algorithm
+     *                                  {@code MacSpi} implementation for the specified algorithm
      */
     Mac mac(String algorithm) throws NoSuchAlgorithmException;
 
@@ -50,8 +50,8 @@ public interface Crypto {
      * @param algorithm the standard name of the requested key algorithm.
      * @return the new {@code KeyGenerator} object
      * @throws NoSuchAlgorithmException if no {@code Provider} supports a
-     *         {@code KeyGeneratorSpi} implementation for the
-     *         specified algorithm
+     *                                  {@code KeyGeneratorSpi} implementation for the
+     *                                  specified algorithm
      */
     KeyGenerator keyGenerator(String algorithm) throws NoSuchAlgorithmException;
 

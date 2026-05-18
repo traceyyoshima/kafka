@@ -31,18 +31,18 @@ import static org.apache.kafka.streams.kstream.internals.WrappingNullableUtils.i
 
 /**
  * Serializer for ValueTimestampHeaders.
- *
+ * <p>
  * Serialization format (per KIP-1271):
  * [headersSize(varint)][headersBytes][timestamp(8)][value]
- *
+ * <p>
  * Where:
  * - headersSize: Size of the headersBytes section in bytes, encoded as varint
  * - headersBytes:
- *   - For null/empty headers: headersSize = 0, headersBytes is omitted (0 bytes)
- *   - For non-empty headers: headersSize > 0, serialized headers ([count(varint)][header1][header2]...) from HeadersSerializer
+ * - For null/empty headers: headersSize = 0, headersBytes is omitted (0 bytes)
+ * - For non-empty headers: headersSize > 0, serialized headers ([count(varint)][header1][header2]...) from HeadersSerializer
  * - timestamp: 8-byte long timestamp
  * - value: Serialized value using the provided value serializer
- *
+ * <p>
  * This is used by KIP-1271 to serialize values with timestamps and headers for state stores.
  */
 class ValueTimestampHeadersSerializer<V> implements WrappingNullableSerializer<ValueTimestampHeaders<V>, Void, V> {
@@ -92,9 +92,9 @@ class ValueTimestampHeadersSerializer<V> implements WrappingNullableSerializer<V
 
         // empty (byte[0]) for null/empty headers, or [count][header1][header2]... for non-empty
         return HeadersSerializer.serialize(preSerializedHeaders, buffer)
-            .putLong(timestamp)
-            .put(rawValue)
-            .array();
+                .putLong(timestamp)
+                .put(rawValue)
+                .array();
     }
 
     @Override

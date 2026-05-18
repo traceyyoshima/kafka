@@ -34,7 +34,7 @@ public class GroupConfigManager implements AutoCloseable {
 
     /**
      * The group configs for each group.
-     *
+     * <p>
      * Groups are only present in this map when they have config overrides.
      */
     private final Map<String, GroupConfig> configMap;
@@ -56,8 +56,8 @@ public class GroupConfigManager implements AutoCloseable {
      * @param shareGroupConfig       The share group config.
      */
     public GroupConfigManager(
-        GroupCoordinatorConfig groupCoordinatorConfig,
-        ShareGroupConfig shareGroupConfig
+            GroupCoordinatorConfig groupCoordinatorConfig,
+            ShareGroupConfig shareGroupConfig
     ) {
         this.configMap = new ConcurrentHashMap<>();
         this.groupCoordinatorConfig = Objects.requireNonNull(groupCoordinatorConfig);
@@ -66,7 +66,7 @@ public class GroupConfigManager implements AutoCloseable {
 
     /**
      * Update the configuration of the provided group.
-     *
+     * <p>
      * This method evaluates all configuration values within broker-level bounds.
      *
      * @param groupId        The group id.
@@ -86,7 +86,7 @@ public class GroupConfigManager implements AutoCloseable {
         // values are pre-validated so this is effectively a no-op. For the broker startup
         // path, configs from metadata may need evaluation if bounds have changed.
         Properties evaluatedProps = GroupConfig.evaluate(
-            newGroupConfig, groupId, groupCoordinatorConfig, shareGroupConfig);
+                newGroupConfig, groupId, groupCoordinatorConfig, shareGroupConfig);
 
         final GroupConfig newConfig = new GroupConfig(evaluatedProps);
         configMap.put(groupId, newConfig);
@@ -96,7 +96,7 @@ public class GroupConfigManager implements AutoCloseable {
      * Get the group config if it has any overrides, otherwise return {@link Optional#empty()}.
      * The returned config has already been evaluated within broker-level bounds.
      *
-     * @param groupId  The group id.
+     * @param groupId The group id.
      * @return The group config.
      */
     public Optional<GroupConfig> groupConfig(String groupId) {

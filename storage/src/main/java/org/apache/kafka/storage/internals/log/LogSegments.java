@@ -45,7 +45,7 @@ public class LogSegments implements Closeable {
      * Create new instance.
      *
      * @param topicPartition the TopicPartition associated with the segments
-     *                        (useful for logging purposes)
+     *                       (useful for logging purposes)
      */
     public LogSegments(TopicPartition topicPartition) {
         this.topicPartition = topicPartition;
@@ -53,7 +53,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Return true if the segments are empty, false otherwise.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public boolean isEmpty() {
@@ -62,7 +62,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Return true if the segments are non-empty, false otherwise.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public boolean nonEmpty() {
@@ -71,7 +71,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Add the given segment, or replace an existing entry.
-     *
+     * <p>
      * This method is thread-safe.
      *
      * @param segment the segment to add
@@ -82,7 +82,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Remove the segment at the provided offset.
-     *
+     * <p>
      * This method is thread-safe.
      *
      * @param offset the offset to be removed
@@ -93,7 +93,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Clears all entries.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public void clear() {
@@ -145,7 +145,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Return true if a segment exists at the provided offset, false otherwise.
-     *
+     * <p>
      * This method is thread-safe.
      *
      * @param offset the segment to be checked
@@ -156,11 +156,10 @@ public class LogSegments implements Closeable {
 
     /**
      * Retrieves a segment at the specified offset.
-     *
+     * <p>
      * This method is thread-safe.
      *
      * @param offset the segment to be retrieved
-     *
      * @return the segment if it exists, otherwise Empty.
      */
     public Optional<LogSegment> get(long offset) {
@@ -176,7 +175,7 @@ public class LogSegments implements Closeable {
 
     /**
      * @return An iterator to all segments beginning with the segment that includes "from" and ending
-     *         with the segment that includes up to "to-1" or the end of the log (if to > end of log).
+     * with the segment that includes up to "to-1" or the end of the log (if to > end of log).
      */
     public Collection<LogSegment> values(long from, long to) {
         if (from == to) {
@@ -204,7 +203,7 @@ public class LogSegments implements Closeable {
     /**
      * Return the entry associated with the greatest offset less than or equal to the given offset,
      * if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     private Optional<Map.Entry<Long, LogSegment>> floorEntry(long offset) {
@@ -214,7 +213,7 @@ public class LogSegments implements Closeable {
     /**
      * Return the log segment with the greatest offset less than or equal to the given offset,
      * if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public Optional<LogSegment> floorSegment(long offset) {
@@ -224,7 +223,7 @@ public class LogSegments implements Closeable {
     /**
      * Return the entry associated with the greatest offset strictly less than the given offset,
      * if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     private Optional<Map.Entry<Long, LogSegment>> lowerEntry(long offset) {
@@ -234,7 +233,7 @@ public class LogSegments implements Closeable {
     /**
      * Return the log segment with the greatest offset strictly less than the given offset,
      * if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public Optional<LogSegment> lowerSegment(long offset) {
@@ -244,7 +243,7 @@ public class LogSegments implements Closeable {
     /**
      * Return the entry associated with the smallest offset strictly greater than the given offset,
      * if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public Optional<Map.Entry<Long, LogSegment>> higherEntry(long offset) {
@@ -254,7 +253,7 @@ public class LogSegments implements Closeable {
     /**
      * Return the log segment with the smallest offset strictly greater than the given offset,
      * if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public Optional<LogSegment> higherSegment(long offset) {
@@ -263,7 +262,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Return the entry associated with the smallest offset, if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public Optional<Map.Entry<Long, LogSegment>> firstEntry() {
@@ -272,7 +271,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Return the log segment associated with the smallest offset, if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public Optional<LogSegment> firstSegment() {
@@ -289,7 +288,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Return the entry associated with the greatest offset, if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public Optional<Map.Entry<Long, LogSegment>> lastEntry() {
@@ -298,7 +297,7 @@ public class LogSegments implements Closeable {
 
     /**
      * Return the log segment with the greatest offset, if it exists.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public Optional<LogSegment> lastSegment() {
@@ -307,7 +306,7 @@ public class LogSegments implements Closeable {
 
     /**
      * @return an iterable with log segments ordered from lowest base offset to highest,
-     *         each segment returned has a base offset strictly greater than the provided baseOffset.
+     * each segment returned has a base offset strictly greater than the provided baseOffset.
      */
     public Collection<LogSegment> higherSegments(long baseOffset) {
         Long higherOffset = segments.higherKey(baseOffset);

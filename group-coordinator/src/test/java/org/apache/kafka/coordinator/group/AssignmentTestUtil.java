@@ -34,22 +34,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AssignmentTestUtil {
     public static Map.Entry<Uuid, Set<Integer>> mkTopicAssignment(
-        Uuid topicId,
-        Integer... partitions
+            Uuid topicId,
+            Integer... partitions
     ) {
         return new AbstractMap.SimpleEntry<>(
-            topicId,
-            new HashSet<>(Arrays.asList(partitions))
+                topicId,
+                new HashSet<>(Arrays.asList(partitions))
         );
     }
 
     public static Map.Entry<Uuid, Set<Integer>> mkOrderedTopicAssignment(
-        Uuid topicId,
-        Integer... partitions
+            Uuid topicId,
+            Integer... partitions
     ) {
         return new AbstractMap.SimpleEntry<>(
-            topicId,
-            new LinkedHashSet<>(Arrays.asList(partitions))
+                topicId,
+                new LinkedHashSet<>(Arrays.asList(partitions))
         );
     }
 
@@ -72,9 +72,9 @@ public class AssignmentTestUtil {
     }
 
     public static Map.Entry<Uuid, Map<Integer, Integer>> mkTopicAssignmentWithEpochs(
-        Uuid topicId,
-        int epoch,
-        Integer... partitions
+            Uuid topicId,
+            int epoch,
+            Integer... partitions
     ) {
         Map<Integer, Integer> partitionEpochs = new HashMap<>();
         for (Integer partition : partitions) {
@@ -85,7 +85,7 @@ public class AssignmentTestUtil {
 
     @SafeVarargs
     public static Map<Uuid, Map<Integer, Integer>> mkAssignmentWithEpochs(
-        Map.Entry<Uuid, Map<Integer, Integer>>... entries
+            Map.Entry<Uuid, Map<Integer, Integer>>... entries
     ) {
         Map<Uuid, Map<Integer, Integer>> assignment = new HashMap<>();
         for (Map.Entry<Uuid, Map<Integer, Integer>> entry : entries) {
@@ -99,8 +99,8 @@ public class AssignmentTestUtil {
      * Verifies that the expected assignment is equal to the computed assignment for every member in the group.
      */
     public static void assertAssignment(
-        Map<String, Map<Uuid, Set<Integer>>> expectedAssignment,
-        GroupAssignment computedGroupAssignment
+            Map<String, Map<Uuid, Set<Integer>>> expectedAssignment,
+            GroupAssignment computedGroupAssignment
     ) {
         assertEquals(expectedAssignment.size(), computedGroupAssignment.members().size());
         computedGroupAssignment.members().forEach((memberId, memberAssignment) -> {
@@ -112,11 +112,11 @@ public class AssignmentTestUtil {
     /**
      * Generate a reverse look up map of partition to member target assignments from the given metadata.
      *
-     * @param members       The member subscription specs.
+     * @param members The member subscription specs.
      * @return Map of topic partition to member assignments.
      */
     public static Map<Uuid, Map<Integer, String>> invertedTargetAssignment(
-        Map<String, MemberSubscriptionAndAssignmentImpl> members
+            Map<String, MemberSubscriptionAndAssignmentImpl> members
     ) {
         Map<Uuid, Map<Integer, String>> invertedTargetAssignment = new HashMap<>();
         for (Map.Entry<String, MemberSubscriptionAndAssignmentImpl> memberEntry : members.entrySet()) {

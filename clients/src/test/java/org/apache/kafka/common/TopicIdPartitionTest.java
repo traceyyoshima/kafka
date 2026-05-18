@@ -32,19 +32,19 @@ class TopicIdPartitionTest {
     private final TopicPartition topicPartition0 = new TopicPartition(topicName0, partition1);
     private final TopicIdPartition topicIdPartition0 = new TopicIdPartition(topicId0, topicPartition0);
     private final TopicIdPartition topicIdPartition1 = new TopicIdPartition(topicId0,
-        partition1, topicName0);
+            partition1, topicName0);
 
     private final TopicIdPartition topicIdPartitionWithNullTopic0 = new TopicIdPartition(topicId0,
-        partition1, null);
+            partition1, null);
     private final TopicIdPartition topicIdPartitionWithNullTopic1 = new TopicIdPartition(topicId0,
-        new TopicPartition(null, partition1));
+            new TopicPartition(null, partition1));
 
     private final Uuid topicId1 = new Uuid(7759286116672424028L, -5081215629859775948L);
     private final String topicName1 = "another_topic_name";
     private final TopicIdPartition topicIdPartition2 = new TopicIdPartition(topicId1,
-        partition1, topicName1);
+            partition1, topicName1);
     private final TopicIdPartition topicIdPartitionWithNullTopic2 = new TopicIdPartition(topicId1,
-        new TopicPartition(null, partition1));
+            new TopicPartition(null, partition1));
 
     @Test
     public void testEquals() {
@@ -61,11 +61,11 @@ class TopicIdPartitionTest {
     @Test
     public void testHashCode() {
         assertEquals(Objects.hash(topicIdPartition0.topicId(), topicIdPartition0.topicPartition()),
-            topicIdPartition0.hashCode());
+                topicIdPartition0.hashCode());
         assertEquals(topicIdPartition0.hashCode(), topicIdPartition1.hashCode());
 
         assertEquals(Objects.hash(topicIdPartitionWithNullTopic0.topicId(),
-            new TopicPartition(null, partition1)), topicIdPartitionWithNullTopic0.hashCode());
+                new TopicPartition(null, partition1)), topicIdPartitionWithNullTopic0.hashCode());
         assertEquals(topicIdPartitionWithNullTopic0.hashCode(), topicIdPartitionWithNullTopic1.hashCode());
 
         assertNotEquals(topicIdPartition0.hashCode(), topicIdPartition2.hashCode());

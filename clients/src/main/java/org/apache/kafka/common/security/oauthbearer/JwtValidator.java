@@ -24,7 +24,7 @@ import org.apache.kafka.common.security.oauthbearer.internals.secured.OAuthBeare
  * An instance of <code>JwtValidator</code> acts as a function object that, given an access
  * token in base-64 encoded JWT format, can parse the data, perform validation, and construct an
  * {@link OAuthBearerToken} for use by the caller.
- *
+ * <p>
  * The primary reason for this abstraction is that client and broker may have different libraries
  * available to them to perform these operations. Additionally, the exact steps for validation may
  * differ between implementations. To put this more concretely: the implementation in the Kafka
@@ -32,7 +32,7 @@ import org.apache.kafka.common.security.oauthbearer.internals.secured.OAuthBeare
  * responsibility of the client to perform vigorous validation. However, the Kafka broker ships with
  * a richer set of library dependencies that can perform more substantial validation and is also
  * expected to perform a trust-but-verify test of the access token's signature.
- *
+ * <p>
  * See:
  *
  * <ul>
@@ -43,7 +43,7 @@ import org.apache.kafka.common.security.oauthbearer.internals.secured.OAuthBeare
  *
  * @see ClientJwtValidator A basic JwtValidator used by client-side login authentication
  * @see BrokerJwtValidator A more robust JwtValidator that is used on the broker to validate the token's
- *                         contents and verify the signature
+ * contents and verify the signature
  */
 
 public interface JwtValidator extends OAuthBearerConfigurable {
@@ -53,9 +53,7 @@ public interface JwtValidator extends OAuthBearerConfigurable {
      * OAuthBearerToken.
      *
      * @param accessToken Non-<code>null</code> JWT access token
-     *
      * @return {@link OAuthBearerToken}
-     *
      * @throws JwtValidatorException Thrown on errors performing validation of given token
      */
 

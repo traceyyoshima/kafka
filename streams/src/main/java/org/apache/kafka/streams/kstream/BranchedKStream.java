@@ -40,7 +40,7 @@ import java.util.Map;
  * optional {@link #defaultBranch(Branched)} or {@link #noDefaultBranch()} method call.
  *
  * <h6>Rules of forming the resulting {@link Map}</h6>
- *
+ * <p>
  * The keys of the {@link Map Map&lt;String, KStream&lt;K, V&gt;&gt;} entries returned by
  * {@link #defaultBranch(Branched)} or {@link #noDefaultBranch()} are defined by the following rules:
  * <ul>
@@ -52,7 +52,7 @@ import java.util.Map;
  *       a decimal number, starting from {@code "1"}.</li>
  *   <li>If a name is not provided for the {@link #defaultBranch()}, then the key defaults to {@code prefix + "0"}.</li>
  * </ul>
- *
+ * <p>
  * The values of the respective {@link Map Map&lt;Stream, KStream&lt;K, V&gt;&gt;} entries are formed as following:
  * <ul>
  *   <li>If no {@link java.util.function.Function chain function} or {@link java.util.function.Consumer consumer} is
@@ -65,7 +65,7 @@ import java.util.Map;
  *   <li>If a {@link java.util.function.Consumer consumer} is provided for a given branch,
  *       then no entry is added to the {@link Map}.</li>
  * </ul>
- *
+ * <p>
  * For example:
  * <pre>{@code
  * Map<String, KStream<..., ...>> result =
@@ -81,7 +81,7 @@ import java.util.Map;
  * <h4><a name="examples">Usage examples</a></h4>
  *
  * <h6>Direct branch processing</h6>
- *
+ * <p>
  * If no single scope for all the branches is required, and each branch can be processed completely
  * independently of others, 'consuming' lambdas or method references in {@link Branched} parameter can be used:
  * <pre>{@code
@@ -92,7 +92,7 @@ import java.util.Map;
  * }</pre>
  *
  * <h6>Collecting branches in a single scope</h6>
- *
+ * <p>
  * If multiple branches need to be processed in the same scope, for example for merging or joining branches again after
  * splitting, the {@link Map} returned by {@link #defaultBranch()} or {@link #noDefaultBranch()} methods provides
  * access to all the branches in the same scope:
@@ -105,7 +105,7 @@ import java.util.Map;
  * }</pre>
  *
  * <h6>Dynamic branching</h6>
- *
+ * <p>
  * There is also a case when dynamic branch creating is needed, e.g., one branch per enum value:
  * <pre>{@code
  * BranchedKStream branched = stream.split();
@@ -121,12 +121,10 @@ public interface BranchedKStream<K, V> {
     /**
      * Define a branch for records that match the predicate.
      *
-     * @param predicate
-     *        A {@link Predicate} instance, against which each record will be evaluated.
-     *        If this predicate returns {@code true} for a given record, the record will be
-     *        routed to the current branch and will not be evaluated against the predicates
-     *        for the remaining branches.
-     *
+     * @param predicate A {@link Predicate} instance, against which each record will be evaluated.
+     *                  If this predicate returns {@code true} for a given record, the record will be
+     *                  routed to the current branch and will not be evaluated against the predicates
+     *                  for the remaining branches.
      * @return {@code this} to facilitate method chaining
      */
     BranchedKStream<K, V> branch(Predicate<? super K, ? super V> predicate);
@@ -134,16 +132,13 @@ public interface BranchedKStream<K, V> {
     /**
      * Define a branch for records that match the predicate.
      *
-     * @param predicate
-     *        A {@link Predicate} instance, against which each record will be evaluated.
-     *        If this predicate returns {@code true} for a given record, the record will be
-     *        routed to the current branch and will not be evaluated against the predicates
-     *        for the remaining branches.
-     * @param branched
-     *        A {@link Branched} parameter, that allows to define a branch name, an in-place
-     *        branch consumer or branch mapper (see <a href="#examples">code examples</a>
-     *        for {@link BranchedKStream})
-     *
+     * @param predicate A {@link Predicate} instance, against which each record will be evaluated.
+     *                  If this predicate returns {@code true} for a given record, the record will be
+     *                  routed to the current branch and will not be evaluated against the predicates
+     *                  for the remaining branches.
+     * @param branched  A {@link Branched} parameter, that allows to define a branch name, an in-place
+     *                  branch consumer or branch mapper (see <a href="#examples">code examples</a>
+     *                  for {@link BranchedKStream})
      * @return {@code this} to facilitate method chaining
      */
     BranchedKStream<K, V> branch(Predicate<? super K, ? super V> predicate, Branched<K, V> branched);
@@ -161,11 +156,9 @@ public interface BranchedKStream<K, V> {
      * Finalize the construction of branches and defines the default branch for the messages not intercepted
      * by other branches. Calling {@code defaultBranch} or {@link #noDefaultBranch()} is optional.
      *
-     * @param branched
-     *        A {@link Branched} parameter, that allows to define a branch name, an in-place
-     *        branch consumer or branch mapper (see <a href="#examples">code examples</a>
-     *        for {@link BranchedKStream})
-     *
+     * @param branched A {@link Branched} parameter, that allows to define a branch name, an in-place
+     *                 branch consumer or branch mapper (see <a href="#examples">code examples</a>
+     *                 for {@link BranchedKStream})
      * @return {@link Map} of named branches. For rules of forming the resulting map, see {@link BranchedKStream}
      * <a href="#maprules">description</a>.
      */

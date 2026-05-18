@@ -57,13 +57,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = "log.flush.interval.messages", value = "1"),
-        @ClusterConfigProperty(key = "num.partitions", value = "20"),
-        @ClusterConfigProperty(key = "log.retention.hours", value = "10"),
-        @ClusterConfigProperty(key = "log.retention.check.interval.ms", value = "300000")
-    }
+        types = {Type.KRAFT},
+        serverProperties = {
+                @ClusterConfigProperty(key = "log.flush.interval.messages", value = "1"),
+                @ClusterConfigProperty(key = "num.partitions", value = "20"),
+                @ClusterConfigProperty(key = "log.retention.hours", value = "10"),
+                @ClusterConfigProperty(key = "log.retention.check.interval.ms", value = "300000")
+        }
 )
 public class LogOffsetTest {
 
@@ -77,9 +77,9 @@ public class LogOffsetTest {
     public void testGetOffsetsForUnknownTopic() throws IOException {
         TopicPartition topicPartition = new TopicPartition("foo", 0);
         ListOffsetsRequest request = ListOffsetsRequest.Builder
-            .forConsumer(false, IsolationLevel.READ_UNCOMMITTED)
-            .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.LATEST_TIMESTAMP))
-            .build((short) 1);
+                .forConsumer(false, IsolationLevel.READ_UNCOMMITTED)
+                .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.LATEST_TIMESTAMP))
+                .build((short) 1);
         ListOffsetsResponse response = sendListOffsetsRequest(request);
         assertEquals(Errors.UNKNOWN_TOPIC_OR_PARTITION.code(), findPartition(response.topics(), topicPartition).errorCode());
     }
@@ -100,14 +100,14 @@ public class LogOffsetTest {
         log.deleteOldSegments();
 
         Optional<Long> offset = log.fetchOffsetByTimestamp(ListOffsetsRequest.LATEST_TIMESTAMP, Optional.empty())
-            .timestampAndOffsetOpt().map(t -> t.offset);
+                .timestampAndOffsetOpt().map(t -> t.offset);
         assertEquals(Optional.of(20L), offset);
 
         awaitLeaderChange(clusterInstance, topicPartition, Optional.of(broker().config().brokerId()));
         ListOffsetsRequest request = ListOffsetsRequest.Builder
-            .forReplica((short) 1, 1)
-            .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.LATEST_TIMESTAMP))
-            .build();
+                .forReplica((short) 1, 1)
+                .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.LATEST_TIMESTAMP))
+                .build();
         long consumerOffset = findPartition(sendListOffsetsRequest(request).topics(), topicPartition).offset();
         assertEquals(20L, consumerOffset);
     }
@@ -126,15 +126,15 @@ public class LogOffsetTest {
         log.updateHighWatermark(log.logEndOffset());
 
         Optional<FileRecords.TimestampAndOffset> firstOffset = log
-            .fetchOffsetByTimestamp(ListOffsetsRequest.MAX_TIMESTAMP, Optional.empty())
-            .timestampAndOffsetOpt();
+                .fetchOffsetByTimestamp(ListOffsetsRequest.MAX_TIMESTAMP, Optional.empty())
+                .timestampAndOffsetOpt();
         assertEquals(19L, firstOffset.get().offset);
         assertEquals(19L, firstOffset.get().timestamp);
 
         log.truncateTo(0);
 
         assertEquals(Optional.empty(),
-            log.fetchOffsetByTimestamp(ListOffsetsRequest.MAX_TIMESTAMP, Optional.empty()).timestampAndOffsetOpt());
+                log.fetchOffsetByTimestamp(ListOffsetsRequest.MAX_TIMESTAMP, Optional.empty()).timestampAndOffsetOpt());
     }
 
     @ClusterTest
@@ -151,8 +151,8 @@ public class LogOffsetTest {
         log.updateHighWatermark(log.logEndOffset());
 
         Optional<FileRecords.TimestampAndOffset> maxTimestampOffset = log
-            .fetchOffsetByTimestamp(ListOffsetsRequest.MAX_TIMESTAMP, Optional.empty())
-            .timestampAndOffsetOpt();
+                .fetchOffsetByTimestamp(ListOffsetsRequest.MAX_TIMESTAMP, Optional.empty())
+                .timestampAndOffsetOpt();
         assertEquals(7L, log.logEndOffset());
         assertEquals(5L, maxTimestampOffset.get().offset);
         assertEquals(6L, maxTimestampOffset.get().timestamp);
@@ -173,26 +173,26 @@ public class LogOffsetTest {
         log.flush(false);
 
         Optional<Long> offset = log.fetchOffsetByTimestamp(ListOffsetsRequest.LATEST_TIMESTAMP, Optional.empty())
-            .timestampAndOffsetOpt().map(t -> t.offset);
+                .timestampAndOffsetOpt().map(t -> t.offset);
         assertEquals(Optional.of(20L), offset);
 
         awaitLeaderChange(clusterInstance, topicPartition, Optional.of(broker().config().brokerId()));
         ListOffsetsRequest request = ListOffsetsRequest.Builder
-            .forReplica((short) 1, 1)
-            .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.LATEST_TIMESTAMP))
-            .build();
+                .forReplica((short) 1, 1)
+                .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.LATEST_TIMESTAMP))
+                .build();
         long consumerOffset = findPartition(sendListOffsetsRequest(request).topics(), topicPartition).offset();
         assertEquals(20L, consumerOffset);
 
         // try to fetch using latest offset
         FetchRequest fetchRequest = FetchRequest.Builder.forConsumer(
-            ApiKeys.FETCH.latestVersion(), 0, 1,
-            Map.of(topicPartition, new FetchRequest.PartitionData(topicId, consumerOffset,
-                FetchRequest.INVALID_LOG_START_OFFSET, 300 * 1024, Optional.empty()))
+                ApiKeys.FETCH.latestVersion(), 0, 1,
+                Map.of(topicPartition, new FetchRequest.PartitionData(topicId, consumerOffset,
+                        FetchRequest.INVALID_LOG_START_OFFSET, 300 * 1024, Optional.empty()))
         ).build();
         FetchResponse fetchResponse = sendFetchRequest(fetchRequest);
         assertFalse(FetchResponse.recordsOrFail(
-            fetchResponse.responseData(topicNames, ApiKeys.FETCH.latestVersion()).get(topicPartition))
+                        fetchResponse.responseData(topicNames, ApiKeys.FETCH.latestVersion()).get(topicPartition))
                 .batches().iterator().hasNext());
     }
 
@@ -203,9 +203,9 @@ public class LogOffsetTest {
         clusterInstance.createTopic(topic, 1, (short) 1);
 
         ListOffsetsRequest request = ListOffsetsRequest.Builder
-            .forReplica((short) 1, 1)
-            .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.EARLIEST_TIMESTAMP))
-            .build();
+                .forReplica((short) 1, 1)
+                .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.EARLIEST_TIMESTAMP))
+                .build();
         long consumerOffset = findPartition(sendListOffsetsRequest(request).topics(), topicPartition).offset();
         assertEquals(0L, consumerOffset);
     }
@@ -237,14 +237,14 @@ public class LogOffsetTest {
         log.flush(false);
 
         Optional<Long> offset = log.fetchOffsetByTimestamp(ListOffsetsRequest.EARLIEST_TIMESTAMP, Optional.empty())
-            .timestampAndOffsetOpt().map(t -> t.offset);
+                .timestampAndOffsetOpt().map(t -> t.offset);
         assertEquals(Optional.of(0L), offset);
 
         awaitLeaderChange(clusterInstance, topicPartition, Optional.of(broker().config().brokerId()));
         ListOffsetsRequest request = ListOffsetsRequest.Builder
-            .forReplica((short) 1, 1)
-            .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.EARLIEST_TIMESTAMP))
-            .build();
+                .forReplica((short) 1, 1)
+                .setTargetTimes(buildTargetTimes(topicPartition, ListOffsetsRequest.EARLIEST_TIMESTAMP))
+                .build();
         long offsetFromResponse = findPartition(sendListOffsetsRequest(request).topics(), topicPartition).offset();
         assertEquals(0L, offsetFromResponse);
     }
@@ -263,24 +263,24 @@ public class LogOffsetTest {
 
     private List<ListOffsetsTopic> buildTargetTimes(TopicPartition tp, long timestamp) {
         return List.of(new ListOffsetsTopic()
-            .setName(tp.topic())
-            .setPartitions(List.of(new ListOffsetsPartition()
-                .setPartitionIndex(tp.partition())
-                .setTimestamp(timestamp))));
+                .setName(tp.topic())
+                .setPartitions(List.of(new ListOffsetsPartition()
+                        .setPartitionIndex(tp.partition())
+                        .setTimestamp(timestamp))));
     }
 
     private ListOffsetsPartitionResponse findPartition(List<ListOffsetsTopicResponse> topics, TopicPartition tp) {
         return topics.stream()
-            .filter(t -> t.name().equals(tp.topic())).findFirst().get()
-            .partitions().stream()
-            .filter(p -> p.partitionIndex() == tp.partition()).findFirst().get();
+                .filter(t -> t.name().equals(tp.topic())).findFirst().get()
+                .partitions().stream()
+                .filter(p -> p.partitionIndex() == tp.partition()).findFirst().get();
     }
 
     private UnifiedLog createTopicAndGetLog(String topic, TopicPartition topicPartition) throws Exception {
         clusterInstance.createTopic(topic, 1, (short) 1);
 
         TestUtils.waitForCondition(() -> broker().logManager().getLog(topicPartition).isPresent(),
-            "Log for partition [topic,0] should be created");
+                "Log for partition [topic,0] should be created");
         return broker().logManager().getLog(topicPartition).get();
     }
 

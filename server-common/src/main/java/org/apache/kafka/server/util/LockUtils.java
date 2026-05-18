@@ -30,6 +30,7 @@ public class LockUtils {
     public interface ThrowingSupplier<T, E extends Exception> {
         T get() throws E;
     }
+
     @FunctionalInterface
     public interface ThrowingRunnable<E extends Exception> {
         void run() throws E;
@@ -45,7 +46,7 @@ public class LockUtils {
      * @param lock     the lock to be acquired and released
      * @param supplier the supplier to be executed within the lock context
      * @return the result of the supplier
-     * @throws E if an exception occurs during the execution of the supplier
+     * @throws E                    if an exception occurs during the execution of the supplier
      * @throws NullPointerException if either {@code lock} or {@code supplier} is null
      */
     public static <T, E extends Exception> T inLock(Lock lock, ThrowingSupplier<T, E> supplier) throws E {
@@ -84,7 +85,7 @@ public class LockUtils {
      * @param <E>      the type of exception that may be thrown by the runnable
      * @param lock     the lock to be acquired and released
      * @param runnable the runnable to be executed within the lock context
-     * @throws E if an exception occurs during the execution of the runnable
+     * @throws E                    if an exception occurs during the execution of the runnable
      * @throws NullPointerException if either {@code lock} or {@code runnable} is null
      */
     public static <E extends Exception> void inLock(Lock lock, ThrowingRunnable<E> runnable) throws E {

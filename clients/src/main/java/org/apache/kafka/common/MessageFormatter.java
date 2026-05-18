@@ -24,9 +24,9 @@ import java.util.Map;
 
 /**
  * This interface allows to define Formatters that can be used to parse and format records read by a
- *  Consumer instance for display.
+ * Consumer instance for display.
  * The kafka-console-consumer has built-in support for MessageFormatter, via the --formatter flag.
- *
+ * <p>
  * Kafka provides a few implementations to display records of internal topics such as __consumer_offsets,
  * __transaction_state and the MirrorMaker2 topics.
  *
@@ -35,19 +35,23 @@ public interface MessageFormatter extends Configurable, Closeable {
 
     /**
      * Configures the MessageFormatter
+     *
      * @param configs Map to configure the formatter
      */
-    default void configure(Map<String, ?> configs) {}
+    default void configure(Map<String, ?> configs) {
+    }
 
     /**
      * Parses and formats a record for display
+     *
      * @param consumerRecord the record to format
-     * @param output the print stream used to output the record
+     * @param output         the print stream used to output the record
      */
     void writeTo(ConsumerRecord<byte[], byte[]> consumerRecord, PrintStream output);
 
     /**
      * Closes the formatter
      */
-    default void close() {}
+    default void close() {
+    }
 }

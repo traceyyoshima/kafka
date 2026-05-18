@@ -39,9 +39,9 @@ public class BrokerHeartbeatTrackerTest {
     }
 
     private static final Set<BrokerIdAndEpoch> TEST_BROKERS = Set.of(
-        new BrokerIdAndEpoch(0, 0L),
-        new BrokerIdAndEpoch(1, 100L),
-        new BrokerIdAndEpoch(2, 200L)
+            new BrokerIdAndEpoch(0, 0L),
+            new BrokerIdAndEpoch(1, 100L),
+            new BrokerIdAndEpoch(2, 200L)
     );
 
     @Test

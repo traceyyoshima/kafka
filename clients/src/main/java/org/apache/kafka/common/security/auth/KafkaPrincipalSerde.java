@@ -35,6 +35,7 @@ public interface KafkaPrincipalSerde {
 
     /**
      * Deserialize a {@link KafkaPrincipal} from byte array.
+     *
      * @param bytes byte array to be deserialized
      * @return the deserialized principal
      * @throws SerializationException

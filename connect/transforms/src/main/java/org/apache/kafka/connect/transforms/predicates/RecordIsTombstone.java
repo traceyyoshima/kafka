@@ -24,6 +24,7 @@ import java.util.Map;
 
 /**
  * A predicate which is true for records which are tombstones (i.e. have null value).
+ *
  * @param <R> The type of connect record.
  */
 public class RecordIsTombstone<R extends ConnectRecord<R>> implements Predicate<R> {

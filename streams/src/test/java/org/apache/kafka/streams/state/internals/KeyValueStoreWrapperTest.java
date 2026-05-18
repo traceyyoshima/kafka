@@ -56,7 +56,7 @@ public class KeyValueStoreWrapperTest {
     private static final String STORE_NAME = "kvStore";
     private static final String KEY = "k";
     private static final ValueTimestampHeaders<String> VALUE_TIMESTAMP_HEADERS
-        = ValueTimestampHeaders.make("v", 8L, new RecordHeaders());
+            = ValueTimestampHeaders.make("v", 8L, new RecordHeaders());
 
     @Mock
     private TimestampedKeyValueStoreWithHeaders<String, String> headersStore;
@@ -96,9 +96,9 @@ public class KeyValueStoreWrapperTest {
     public void shouldGetFromVersionedStore() {
         givenWrapperWithVersionedStore();
         when(versionedStore.get(KEY)).thenReturn(
-            new VersionedRecord<>(
-                VALUE_TIMESTAMP_HEADERS.value(),
-                VALUE_TIMESTAMP_HEADERS.timestamp())
+                new VersionedRecord<>(
+                        VALUE_TIMESTAMP_HEADERS.value(),
+                        VALUE_TIMESTAMP_HEADERS.timestamp())
         );
 
         assertThat(wrapper.get(KEY), equalTo(VALUE_TIMESTAMP_HEADERS));

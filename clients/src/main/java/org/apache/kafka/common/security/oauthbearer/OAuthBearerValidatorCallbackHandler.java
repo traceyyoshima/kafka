@@ -70,7 +70,7 @@ import static org.apache.kafka.common.security.oauthbearer.internals.secured.Con
  * <code>
  * listener.name.<listener name>.oauthbearer.sasl.oauthbearer.jwks.endpoint.url=https://example.com/oauth2/v1/keys
  * </code>
- *
+ * <p>
  * Please see the OAuth/OIDC providers documentation for the JWKS endpoint URL.
  * </p>
  *
@@ -105,11 +105,11 @@ public class OAuthBearerValidatorCallbackHandler implements AuthenticateCallback
     @Override
     public void configure(Map<String, ?> configs, String saslMechanism, List<AppConfigurationEntry> jaasConfigEntries) {
         jwtValidator = getConfiguredInstance(
-            configs,
-            saslMechanism,
-            jaasConfigEntries,
-            SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
-            JwtValidator.class
+                configs,
+                saslMechanism,
+                jaasConfigEntries,
+                SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
+                JwtValidator.class
         );
     }
 

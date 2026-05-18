@@ -26,10 +26,14 @@ import java.util.Locale;
  * </ul>
  */
 public enum GroupProtocol {
-    /** Classic group protocol.  */
+    /**
+     * Classic group protocol.
+     */
     CLASSIC("CLASSIC"),
 
-    /** Consumer group protocol */
+    /**
+     * Consumer group protocol
+     */
     CONSUMER("CONSUMER");
 
     /**

@@ -107,13 +107,13 @@ public abstract class ConnectRecord<R extends ConnectRecord<R>> {
      * Create a new record of the same type as itself, with the specified parameter values. All other fields in this record will be copied
      * over to the new record. Since the headers are mutable, the resulting record will have a copy of this record's headers.
      *
-     * @param topic the name of the topic; may be null
+     * @param topic          the name of the topic; may be null
      * @param kafkaPartition the partition number for the Kafka topic; may be null
-     * @param keySchema the schema for the key; may be null
-     * @param key the key; may be null
-     * @param valueSchema the schema for the value; may be null
-     * @param value the value; may be null
-     * @param timestamp the timestamp; may be null
+     * @param keySchema      the schema for the key; may be null
+     * @param key            the key; may be null
+     * @param valueSchema    the schema for the value; may be null
+     * @param value          the value; may be null
+     * @param timestamp      the timestamp; may be null
      * @return the new record
      */
     public abstract R newRecord(String topic, Integer kafkaPartition, Schema keySchema, Object key, Schema valueSchema, Object value, Long timestamp);
@@ -122,14 +122,14 @@ public abstract class ConnectRecord<R extends ConnectRecord<R>> {
      * Create a new record of the same type as itself, with the specified parameter values. All other fields in this record will be copied
      * over to the new record.
      *
-     * @param topic the name of the topic; may be null
+     * @param topic          the name of the topic; may be null
      * @param kafkaPartition the partition number for the Kafka topic; may be null
-     * @param keySchema the schema for the key; may be null
-     * @param key the key; may be null
-     * @param valueSchema the schema for the value; may be null
-     * @param value the value; may be null
-     * @param timestamp the timestamp; may be null
-     * @param headers the headers; may be null or empty
+     * @param keySchema      the schema for the key; may be null
+     * @param key            the key; may be null
+     * @param valueSchema    the schema for the value; may be null
+     * @param value          the value; may be null
+     * @param timestamp      the timestamp; may be null
+     * @param headers        the headers; may be null or empty
      * @return the new record
      */
     public abstract R newRecord(String topic, Integer kafkaPartition, Schema keySchema, Object key, Schema valueSchema, Object value, Long timestamp, Iterable<Header> headers);
@@ -158,13 +158,13 @@ public abstract class ConnectRecord<R extends ConnectRecord<R>> {
         ConnectRecord<?> that = (ConnectRecord<?>) o;
 
         return Objects.equals(kafkaPartition, that.kafkaPartition)
-               && Objects.equals(topic, that.topic)
-               && Objects.equals(keySchema, that.keySchema)
-               && Objects.equals(key, that.key)
-               && Objects.equals(valueSchema, that.valueSchema)
-               && Objects.equals(value, that.value)
-               && Objects.equals(timestamp, that.timestamp)
-               && Objects.equals(headers, that.headers);
+                && Objects.equals(topic, that.topic)
+                && Objects.equals(keySchema, that.keySchema)
+                && Objects.equals(key, that.key)
+                && Objects.equals(valueSchema, that.valueSchema)
+                && Objects.equals(value, that.value)
+                && Objects.equals(timestamp, that.timestamp)
+                && Objects.equals(headers, that.headers);
     }
 
     @Override

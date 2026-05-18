@@ -35,9 +35,9 @@ public enum GroupVersion implements FeatureVersion {
     private final Map<String, Short> dependencies;
 
     GroupVersion(
-        int featureLevel,
-        MetadataVersion bootstrapMetadataVersion,
-        Map<String, Short> dependencies
+            int featureLevel,
+            MetadataVersion bootstrapMetadataVersion,
+            Map<String, Short> dependencies
     ) {
         this.featureLevel = (short) featureLevel;
         this.bootstrapMetadataVersion = bootstrapMetadataVersion;

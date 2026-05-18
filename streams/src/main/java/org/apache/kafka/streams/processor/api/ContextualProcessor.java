@@ -19,8 +19,8 @@ package org.apache.kafka.streams.processor.api;
 /**
  * An abstract implementation of {@link Processor} that manages the {@link ProcessorContext} instance.
  *
- * @param <KIn> the type of input keys
- * @param <VIn> the type of input values
+ * @param <KIn>  the type of input keys
+ * @param <VIn>  the type of input values
  * @param <KOut> the type of output keys
  * @param <VOut> the type of output values
  */
@@ -28,7 +28,8 @@ public abstract class ContextualProcessor<KIn, VIn, KOut, VOut> implements Proce
 
     private ProcessorContext<KOut, VOut> context;
 
-    protected ContextualProcessor() {}
+    protected ContextualProcessor() {
+    }
 
     @Override
     public void init(final ProcessorContext<KOut, VOut> context) {

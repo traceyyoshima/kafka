@@ -107,37 +107,37 @@ public class TestSslUtils {
      * Create a self-signed X.509 Certificate.
      * From http://bfo.com/blog/2011/03/08/odds_and_ends_creating_a_new_x_509_certificate.html.
      *
-     * @param dn the X.509 Distinguished Name, eg "CN=Test, L=London, C=GB"
-     * @param pair the KeyPair
-     * @param days how many days from now the Certificate is valid for, or - for negative values - how many days before now
+     * @param dn        the X.509 Distinguished Name, eg "CN=Test, L=London, C=GB"
+     * @param pair      the KeyPair
+     * @param days      how many days from now the Certificate is valid for, or - for negative values - how many days before now
      * @param algorithm the signing algorithm, eg "SHA256withRSA"
      * @return the self-signed certificate
      * @throws CertificateException thrown if a security error or an IO error occurred.
      */
     public static X509Certificate generateCertificate(String dn, KeyPair pair,
                                                       int days, String algorithm)
-        throws  CertificateException {
+            throws CertificateException {
         return new CertificateBuilder(days, algorithm).generate(dn, pair);
     }
 
     /**
      * Generate a signed certificate. Self-signed, if no issuer and parentKeyPair are supplied
-     * 
-     * @param dn The distinguished name of this certificate
-     * @param keyPair A key pair
+     *
+     * @param dn            The distinguished name of this certificate
+     * @param keyPair       A key pair
      * @param daysBeforeNow how many days before now the Certificate is valid for
-     * @param daysAfterNow how many days from now the Certificate is valid for
-     * @param issuer The issuer who signs the certificate. Leave null if you want to generate a root
-     *        CA.
+     * @param daysAfterNow  how many days from now the Certificate is valid for
+     * @param issuer        The issuer who signs the certificate. Leave null if you want to generate a root
+     *                      CA.
      * @param parentKeyPair The key pair of the issuer. Leave null if you want to generate a root
-     *        CA.
-     * @param algorithm the signing algorithm, eg "SHA256withRSA"
+     *                      CA.
+     * @param algorithm     the signing algorithm, eg "SHA256withRSA"
      * @return the signed certificate
      * @throws CertificateException
      */
     public static X509Certificate generateSignedCertificate(String dn, KeyPair keyPair,
-            int daysBeforeNow, int daysAfterNow, String issuer, KeyPair parentKeyPair,
-            String algorithm, boolean isCA, boolean isServerCert, boolean isClientCert) throws CertificateException {
+                                                            int daysBeforeNow, int daysAfterNow, String issuer, KeyPair parentKeyPair,
+                                                            String algorithm, boolean isCA, boolean isServerCert, boolean isClientCert) throws CertificateException {
         return new CertificateBuilder(0, algorithm).generateSignedCertificate(dn, keyPair,
                 daysBeforeNow, daysAfterNow, issuer, parentKeyPair, isCA, isServerCert, isClientCert);
     }
@@ -172,14 +172,14 @@ public class TestSslUtils {
     /**
      * Creates a keystore with a single key and saves it to a file.
      *
-     * @param filename String file to save
-     * @param password String store password to set on keystore
+     * @param filename    String file to save
+     * @param password    String store password to set on keystore
      * @param keyPassword String key password to set on key
-     * @param alias String alias to use for the key
-     * @param privateKey Key to save in keystore
-     * @param cert Certificate to use as certificate chain associated to key
+     * @param alias       String alias to use for the key
+     * @param privateKey  Key to save in keystore
+     * @param cert        Certificate to use as certificate chain associated to key
      * @throws GeneralSecurityException for any error with the security APIs
-     * @throws IOException if there is an I/O error saving the file
+     * @throws IOException              if there is an I/O error saving the file
      */
     public static void createKeyStore(String filename,
                                       Password password, Password keyPassword, String alias,
@@ -212,26 +212,26 @@ public class TestSslUtils {
         sslConfigs.put(SslConfigs.SSL_TRUSTMANAGER_ALGORITHM_CONFIG, trustManagerAlgorithm);
         sslConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, List.of());
 
-        List<String> enabledProtocols  = new ArrayList<>();
+        List<String> enabledProtocols = new ArrayList<>();
         enabledProtocols.add(tlsProtocol);
         sslConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, enabledProtocols);
 
         return sslConfigs;
     }
 
-    public static  Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore, ConnectionMode connectionMode, File trustStoreFile, String certAlias)
-        throws IOException, GeneralSecurityException {
+    public static Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore, ConnectionMode connectionMode, File trustStoreFile, String certAlias)
+            throws IOException, GeneralSecurityException {
         return createSslConfig(useClientCert, trustStore, connectionMode, trustStoreFile, certAlias, "localhost");
     }
 
-    public static  Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore,
-            ConnectionMode connectionMode, File trustStoreFile, String certAlias, String cn)
-        throws IOException, GeneralSecurityException {
+    public static Map<String, Object> createSslConfig(boolean useClientCert, boolean trustStore,
+                                                      ConnectionMode connectionMode, File trustStoreFile, String certAlias, String cn)
+            throws IOException, GeneralSecurityException {
         return createSslConfig(useClientCert, trustStore, connectionMode, trustStoreFile, certAlias, cn, new CertificateBuilder());
     }
 
-    public static  Map<String, Object> createSslConfig(boolean useClientCert, boolean createTrustStore,
-            ConnectionMode connectionMode, File trustStoreFile, String certAlias, String cn, CertificateBuilder certBuilder)
+    public static Map<String, Object> createSslConfig(boolean useClientCert, boolean createTrustStore,
+                                                      ConnectionMode connectionMode, File trustStoreFile, String certAlias, String cn, CertificateBuilder certBuilder)
             throws IOException, GeneralSecurityException {
         SslConfigsBuilder builder = new SslConfigsBuilder(connectionMode)
                 .useClientCert(useClientCert)
@@ -299,7 +299,7 @@ public class TestSslUtils {
 
     private static void writeToFile(String path, Password... entries) throws IOException {
         try (FileOutputStream out = new FileOutputStream(path)) {
-            for (Password entry: entries) {
+            for (Password entry : entries) {
                 out.write(entry.value().getBytes(StandardCharsets.UTF_8));
             }
         }
@@ -475,20 +475,20 @@ public class TestSslUtils {
                 throw new CertificateException(e);
             }
         }
-        
+
         /**
-         * @param dn The distinguished name to use
-         * @param keyPair A key pair to use
+         * @param dn            The distinguished name to use
+         * @param keyPair       A key pair to use
          * @param daysBeforeNow how many days before now the Certificate is valid for
-         * @param daysAfterNow how many days from now the Certificate is valid for
-         * @param issuer The issuer name. if null, "dn" is used
+         * @param daysAfterNow  how many days from now the Certificate is valid for
+         * @param issuer        The issuer name. if null, "dn" is used
          * @param parentKeyPair The parent key pair used to sign this certificate. If null, create
-         *        self-signed certificate authority (CA)
+         *                      self-signed certificate authority (CA)
          * @return A (self-) signed certificate
          * @throws CertificateException
          */
         public X509Certificate generateSignedCertificate(String dn, KeyPair keyPair,
-                int daysBeforeNow, int daysAfterNow, String issuer, KeyPair parentKeyPair, boolean isCA, boolean isServerCert, boolean isClientCert)
+                                                         int daysBeforeNow, int daysAfterNow, String issuer, KeyPair parentKeyPair, boolean isCA, boolean isServerCert, boolean isClientCert)
                 throws CertificateException {
             X500Name issuerOrDn = (issuer != null) ? new X500Name(issuer) : new X500Name(dn);
             return generateSignedCertificate(new X500Name(dn), keyPair, daysBeforeNow, daysAfterNow,
@@ -496,19 +496,19 @@ public class TestSslUtils {
         }
 
         /**
-         * 
-         * @param dn The distinguished name to use
-         * @param keyPair A key pair to use
+         *
+         * @param dn            The distinguished name to use
+         * @param keyPair       A key pair to use
          * @param daysBeforeNow how many days before now the Certificate is valid for
-         * @param daysAfterNow how many days from now the Certificate is valid for
-         * @param issuer The issuer name. if null, "dn" is used
+         * @param daysAfterNow  how many days from now the Certificate is valid for
+         * @param issuer        The issuer name. if null, "dn" is used
          * @param parentKeyPair The parent key pair used to sign this certificate. If null, create
-         *        self-signed certificate authority (CA)
+         *                      self-signed certificate authority (CA)
          * @return A (self-) signed certificate
          * @throws CertificateException
          */
         public X509Certificate generateSignedCertificate(X500Name dn, KeyPair keyPair,
-                int daysBeforeNow, int daysAfterNow, X500Name issuer, KeyPair parentKeyPair, boolean isCA, boolean isServerCert, boolean isClientCert)
+                                                         int daysBeforeNow, int daysAfterNow, X500Name issuer, KeyPair parentKeyPair, boolean isCA, boolean isServerCert, boolean isClientCert)
                 throws CertificateException {
             try {
                 Security.addProvider(new BouncyCastleProvider());
@@ -649,7 +649,7 @@ public class TestSslUtils {
             return this;
         }
 
-        public  Map<String, Object> build() throws IOException, GeneralSecurityException {
+        public Map<String, Object> build() throws IOException, GeneralSecurityException {
             if (usePem) {
                 return buildPem();
             } else
@@ -698,7 +698,7 @@ public class TestSslUtils {
             sslConfigs.put(SslConfigs.SSL_TRUSTMANAGER_ALGORITHM_CONFIG, TrustManagerFactory.getDefaultAlgorithm());
             sslConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, List.of());
 
-            List<String> enabledProtocols  = new ArrayList<>();
+            List<String> enabledProtocols = new ArrayList<>();
             enabledProtocols.add(tlsProtocol);
             sslConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, enabledProtocols);
 
@@ -783,6 +783,7 @@ public class TestSslUtils {
     /**
      * method to generate ssl configs for keystore with large number of entries. This is used to verify large key stores and
      * post-handshake messages in SslEngineValidator with TLSv3/JDK17+
+     *
      * @param tlsProtocol
      * @return ssl configs
      * @throws Exception
@@ -808,7 +809,7 @@ public class TestSslUtils {
 
         //Generate Intermediate certificates
         for (int intermediateCertIndex = caIndex - 1; intermediateCertIndex > 0; intermediateCertIndex--) {
-            certs[intermediateCertIndex] = TestSslUtils.generateSignedCertificate("CN=Intermediate CA" +  intermediateCertIndex,
+            certs[intermediateCertIndex] = TestSslUtils.generateSignedCertificate("CN=Intermediate CA" + intermediateCertIndex,
                     keyPairs[intermediateCertIndex], 365, 365, certs[intermediateCertIndex + 1].getSubjectX500Principal().getName(),
                     keyPairs[intermediateCertIndex + 1], "SHA512withRSA", true, false, false, hostNames);
         }
@@ -818,14 +819,14 @@ public class TestSslUtils {
                 certs[1].getSubjectX500Principal().getName(), keyPairs[1], "SHA512withRSA", false, true, true, hostNames);
 
         File keystoreStoreFile = TestUtils.tempFile("keystore", ".jks");
-        Password keyStorePassword =  new Password("password");
+        Password keyStorePassword = new Password("password");
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         keyStore.load(null, null);
         keyStore.setKeyEntry("issued-cert", keyPairs[0].getPrivate(), keyStorePassword.value().toCharArray(), certs);
         saveKeyStore(keyStore, keystoreStoreFile.getPath(), keyStorePassword);
 
         File trustStoreFile = TestUtils.tempFile("truststore", ".jks");
-        Password trustStorePassword =  new Password("password");
+        Password trustStorePassword = new Password("password");
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
         trustStore.load(null, null);
         for (X509Certificate cert : certs) {
@@ -847,7 +848,7 @@ public class TestSslUtils {
         sslConfigs.put(SslConfigs.SSL_TRUSTSTORE_TYPE_CONFIG, "JKS");
         sslConfigs.put(SslConfigs.SSL_TRUSTMANAGER_ALGORITHM_CONFIG, TrustManagerFactory.getDefaultAlgorithm());
 
-        List<String> enabledProtocols  = new ArrayList<>();
+        List<String> enabledProtocols = new ArrayList<>();
         enabledProtocols.add(tlsProtocol);
         sslConfigs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, enabledProtocols);
         sslConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, List.of());

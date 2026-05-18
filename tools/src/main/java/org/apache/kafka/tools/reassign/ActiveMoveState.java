@@ -19,6 +19,7 @@ package org.apache.kafka.tools.reassign;
 
 /**
  * A replica log directory move state where the move is in progress.
+ *
  * @param currentLogDir The current log directory.
  * @param futureLogDir  The log directory that the replica is moving to.
  * @param targetLogDir  The log directory that we wanted the replica to move to.

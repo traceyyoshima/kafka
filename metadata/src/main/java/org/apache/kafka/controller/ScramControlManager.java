@@ -75,7 +75,7 @@ public class ScramControlManager {
             if (logContext == null) logContext = new LogContext();
             if (snapshotRegistry == null) snapshotRegistry = new SnapshotRegistry(logContext);
             return new ScramControlManager(logContext,
-                snapshotRegistry);
+                    snapshotRegistry);
         }
     }
 
@@ -99,15 +99,15 @@ public class ScramControlManager {
             if (!(o.getClass() == this.getClass())) return false;
             ScramCredentialKey other = (ScramCredentialKey) o;
             return username.equals(other.username) &&
-                mechanism.equals(other.mechanism);
+                    mechanism.equals(other.mechanism);
         }
 
         @Override
         public String toString() {
             return "ScramCredentialKey" +
-                "(username=" + username +
-                ", mechanism=" + mechanism +
-                ")";
+                    "(username=" + username +
+                    ", mechanism=" + mechanism +
+                    ")";
         }
     }
 
@@ -118,10 +118,10 @@ public class ScramControlManager {
         private final int iterations;
 
         ScramCredentialValue(
-            byte[] salt,
-            byte[] storedKey,
-            byte[] serverKey,
-            int iterations
+                byte[] salt,
+                byte[] storedKey,
+                byte[] serverKey,
+                int iterations
         ) {
             this.salt = salt;
             this.storedKey = storedKey;
@@ -132,10 +132,10 @@ public class ScramControlManager {
         @Override
         public int hashCode() {
             return Objects.hash(
-                Arrays.hashCode(salt),
-                Arrays.hashCode(storedKey),
-                Arrays.hashCode(serverKey),
-                iterations
+                    Arrays.hashCode(salt),
+                    Arrays.hashCode(storedKey),
+                    Arrays.hashCode(serverKey),
+                    iterations
             );
         }
 
@@ -145,19 +145,19 @@ public class ScramControlManager {
             if (!(o.getClass() == this.getClass())) return false;
             ScramCredentialValue other = (ScramCredentialValue) o;
             return Arrays.equals(salt, other.salt) &&
-                Arrays.equals(storedKey, other.storedKey) &&
-                Arrays.equals(serverKey, other.serverKey) &&
-                iterations == other.iterations;
+                    Arrays.equals(storedKey, other.storedKey) &&
+                    Arrays.equals(serverKey, other.serverKey) &&
+                    iterations == other.iterations;
         }
 
         @Override
         public String toString() {
             return "ScramCredentialValue" +
-                "(salt=" + "[hidden]" +
-                ", storedKey=" + "[hidden]" +
-                ", serverKey=" + "[hidden]" +
-                ", iterations=" + "[hidden]" +
-                ")";
+                    "(salt=" + "[hidden]" +
+                    ", storedKey=" + "[hidden]" +
+                    ", serverKey=" + "[hidden]" +
+                    ", iterations=" + "[hidden]" +
+                    ")";
         }
     }
 
@@ -165,20 +165,20 @@ public class ScramControlManager {
     private final TimelineHashMap<ScramCredentialKey, ScramCredentialValue> credentials;
 
     private ScramControlManager(
-        LogContext logContext,
-        SnapshotRegistry snapshotRegistry
+            LogContext logContext,
+            SnapshotRegistry snapshotRegistry
     ) {
         this.log = logContext.logger(ScramControlManager.class);
         this.credentials = new TimelineHashMap<>(snapshotRegistry, 0);
     }
 
     /*
-     * Pass in the MetadataVersion so that we can return a response to the caller 
+     * Pass in the MetadataVersion so that we can return a response to the caller
      * if the current metadataVersion is too low.
      */
     public ControllerResult<AlterUserScramCredentialsResponseData> alterCredentials(
-        AlterUserScramCredentialsRequestData request,
-        MetadataVersion metadataVersion
+            AlterUserScramCredentialsRequestData request,
+            MetadataVersion metadataVersion
     ) {
         boolean scramIsSupported = metadataVersion.isScramSupported();
         Map<String, ScramCredentialDeletion> userToDeletion = new HashMap<>();
@@ -189,11 +189,11 @@ public class ScramControlManager {
             if (!userToError.containsKey(deletion.name())) {
                 if (userToDeletion.remove(deletion.name()) != null) {
                     userToError.put(deletion.name(), new ApiError(DUPLICATE_RESOURCE,
-                        "A user credential cannot be altered twice in the same request"));
+                            "A user credential cannot be altered twice in the same request"));
                 } else {
                     if (!scramIsSupported) {
                         userToError.put(deletion.name(), new ApiError(UNSUPPORTED_VERSION,
-                            "The current metadata.version does not support SCRAM"));
+                                "The current metadata.version does not support SCRAM"));
                     } else {
                         ApiError error = validateDeletion(deletion);
                         if (error.isFailure()) {
@@ -210,11 +210,11 @@ public class ScramControlManager {
                 if (userToDeletion.remove(upsertion.name()) != null ||
                         userToUpsert.remove(upsertion.name()) != null) {
                     userToError.put(upsertion.name(), new ApiError(DUPLICATE_RESOURCE,
-                        "A user credential cannot be altered twice in the same request"));
+                            "A user credential cannot be altered twice in the same request"));
                 } else {
                     if (!scramIsSupported) {
                         userToError.put(upsertion.name(), new ApiError(UNSUPPORTED_VERSION,
-                            "The current metadata.version does not support SCRAM"));
+                                "The current metadata.version does not support SCRAM"));
                     } else {
                         ApiError error = validateUpsertion(upsertion);
                         if (error.isFailure()) {
@@ -230,50 +230,50 @@ public class ScramControlManager {
         List<ApiMessageAndVersion> records = new ArrayList<>();
         for (ScramCredentialDeletion deletion : userToDeletion.values()) {
             response.results().add(new AlterUserScramCredentialsResult().
-                setUser(deletion.name()).
-                setErrorCode(NONE.code()).
-                setErrorMessage(null));
+                    setUser(deletion.name()).
+                    setErrorCode(NONE.code()).
+                    setErrorMessage(null));
             records.add(new ApiMessageAndVersion(new RemoveUserScramCredentialRecord().
-                setName(deletion.name()).
-                setMechanism(deletion.mechanism()), (short) 0));
+                    setName(deletion.name()).
+                    setMechanism(deletion.mechanism()), (short) 0));
         }
         for (ScramCredentialUpsertion upsertion : userToUpsert.values()) {
             ApiError error = finishUpsertion(records, upsertion);
             if (!error.isFailure()) {
                 response.results().add(new AlterUserScramCredentialsResult().
-                    setUser(upsertion.name()).
-                    setErrorCode(NONE.code()).
-                    setErrorMessage(null));
+                        setUser(upsertion.name()).
+                        setErrorCode(NONE.code()).
+                        setErrorMessage(null));
             } else {
                 userToError.put(upsertion.name(), error);
             }
         }
         for (Entry<String, ApiError> entry : userToError.entrySet()) {
             response.results().add(new AlterUserScramCredentialsResult().
-                setUser(entry.getKey()).
-                setErrorCode(entry.getValue().error().code()).
-                setErrorMessage(entry.getValue().message()));
+                    setUser(entry.getKey()).
+                    setErrorCode(entry.getValue().error().code()).
+                    setErrorMessage(entry.getValue().message()));
         }
         return ControllerResult.atomicOf(records, response);
     }
 
     static ApiError finishUpsertion(List<ApiMessageAndVersion> records, ScramCredentialUpsertion upsertion) {
-        org.apache.kafka.common.security.scram.internals.ScramMechanism internalMechanism = 
+        org.apache.kafka.common.security.scram.internals.ScramMechanism internalMechanism =
                 org.apache.kafka.common.security.scram.internals.ScramMechanism.forMechanismName(
-                ScramMechanism.fromType(upsertion.mechanism()).mechanismName());
+                        ScramMechanism.fromType(upsertion.mechanism()).mechanismName());
 
         try { // Convert from saltedPassword to storedKey and serverKey
             ScramFormatter formatter = new ScramFormatter(internalMechanism);
 
             records.add(new ApiMessageAndVersion(new UserScramCredentialRecord().
-                setName(upsertion.name()).
-                setMechanism(upsertion.mechanism()).
-                setSalt(upsertion.salt()).
+                    setName(upsertion.name()).
+                    setMechanism(upsertion.mechanism()).
+                    setSalt(upsertion.salt()).
 
-                // Convert from saltedPassword to storedKey and serverKey
-                setStoredKey(formatter.storedKey(formatter.clientKey(upsertion.saltedPassword()))).
-                setServerKey(formatter.serverKey(upsertion.saltedPassword())).
-                setIterations(upsertion.iterations()), (short) 0));
+                    // Convert from saltedPassword to storedKey and serverKey
+                            setStoredKey(formatter.storedKey(formatter.clientKey(upsertion.saltedPassword()))).
+                    setServerKey(formatter.serverKey(upsertion.saltedPassword())).
+                    setIterations(upsertion.iterations()), (short) 0));
 
         } catch (Throwable e) {
             return ApiError.fromThrowable(e);
@@ -286,7 +286,7 @@ public class ScramControlManager {
         ApiError error = validateScramUsernameAndMechanism(upsertion.name(), mechanism);
         if (error.isFailure()) return error;
         org.apache.kafka.common.security.scram.internals.ScramMechanism internalMechanism =
-            org.apache.kafka.common.security.scram.internals.ScramMechanism.forMechanismName(mechanism.mechanismName());
+                org.apache.kafka.common.security.scram.internals.ScramMechanism.forMechanismName(mechanism.mechanismName());
         if (upsertion.iterations() < internalMechanism.minIterations()) {
             return new ApiError(UNACCEPTABLE_CREDENTIAL, "Too few iterations");
         } else if (upsertion.iterations() > MAX_ITERATIONS) {
@@ -297,20 +297,20 @@ public class ScramControlManager {
 
     ApiError validateDeletion(ScramCredentialDeletion deletion) {
         ApiError error = validateScramUsernameAndMechanism(deletion.name(),
-            ScramMechanism.fromType(deletion.mechanism()));
+                ScramMechanism.fromType(deletion.mechanism()));
         if (error.isFailure()) return error;
         ScramCredentialKey key = new ScramCredentialKey(deletion.name(),
-            ScramMechanism.fromType(deletion.mechanism()));
+                ScramMechanism.fromType(deletion.mechanism()));
         if (!credentials.containsKey(key)) {
             return new ApiError(RESOURCE_NOT_FOUND,
-                "Attempt to delete a user credential that does not exist");
+                    "Attempt to delete a user credential that does not exist");
         }
         return ApiError.NONE;
     }
 
     static ApiError validateScramUsernameAndMechanism(
-        String username,
-        ScramMechanism mechanism
+            String username,
+            ScramMechanism mechanism
     ) {
         if (username.isEmpty()) {
             return new ApiError(UNACCEPTABLE_CREDENTIAL, "Username must not be empty");
@@ -323,27 +323,27 @@ public class ScramControlManager {
 
     public void replay(RemoveUserScramCredentialRecord record) {
         ScramCredentialKey key = new ScramCredentialKey(record.name(),
-            ScramMechanism.fromType(record.mechanism()));
+                ScramMechanism.fromType(record.mechanism()));
         if (credentials.remove(key) == null) {
             throw new RuntimeException("Unable to find credential to delete: " + key);
         }
         log.info("Replayed RemoveUserScramCredentialRecord for {} with mechanism {}.",
-            key.username, key.mechanism);
+                key.username, key.mechanism);
     }
 
     public void replay(UserScramCredentialRecord record) {
         ScramCredentialKey key = new ScramCredentialKey(record.name(),
-            ScramMechanism.fromType(record.mechanism()));
+                ScramMechanism.fromType(record.mechanism()));
         ScramCredentialValue value = new ScramCredentialValue(record.salt(),
-            record.storedKey(),
-            record.serverKey(),
-            record.iterations());
+                record.storedKey(),
+                record.serverKey(),
+                record.iterations());
         if (credentials.put(key, value) == null) {
             log.info("Replayed UserScramCredentialRecord creating new entry for {} with " +
-                "mechanism {}.", key.username, key.mechanism);
+                    "mechanism {}.", key.username, key.mechanism);
         } else {
             log.info("Replayed UserScramCredentialRecord modifying existing entry for {} " +
-                "with mechanism {}.", key.username, key.mechanism);
+                    "with mechanism {}.", key.username, key.mechanism);
         }
     }
 

@@ -77,6 +77,7 @@ public class KerberosShortNamer {
     /**
      * Get the translation of the principal name into an operating system
      * user name.
+     *
      * @return the short name
      * @throws IOException
      */

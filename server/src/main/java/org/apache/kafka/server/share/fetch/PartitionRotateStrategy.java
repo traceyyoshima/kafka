@@ -45,8 +45,7 @@ public interface PartitionRotateStrategy {
      * Rotate the partitions based on the strategy.
      *
      * @param topicIdPartitions the topicIdPartitions to rotate
-     * @param metadata the metadata to rotate
-     *
+     * @param metadata          the metadata to rotate
      * @return the rotated topicIdPartitions
      */
     List<TopicIdPartition> rotate(List<TopicIdPartition> topicIdPartitions, PartitionRotateMetadata metadata);
@@ -61,13 +60,12 @@ public interface PartitionRotateStrategy {
      * Rotate the partitions based on the round-robin strategy.
      *
      * @param topicIdPartitions the topicIdPartitions to rotate
-     * @param metadata the metadata to rotate
-     *
+     * @param metadata          the metadata to rotate
      * @return the rotated topicIdPartitions
      */
     static List<TopicIdPartition> rotateRoundRobin(
-        List<TopicIdPartition> topicIdPartitions,
-        PartitionRotateMetadata metadata
+            List<TopicIdPartition> topicIdPartitions,
+            PartitionRotateMetadata metadata
     ) {
         if (topicIdPartitions.isEmpty() || topicIdPartitions.size() == 1 || metadata.sessionEpoch < 1) {
             // No need to rotate the partitions if there are no partitions, only one partition or the
@@ -94,5 +92,6 @@ public interface PartitionRotateStrategy {
      *
      * @param sessionEpoch the share session epoch.
      */
-    record PartitionRotateMetadata(int sessionEpoch) { }
+    record PartitionRotateMetadata(int sessionEpoch) {
+    }
 }

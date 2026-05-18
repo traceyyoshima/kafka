@@ -86,7 +86,7 @@ public class EnvVarConfigProvider implements ConfigProvider {
     }
 
     /**
-     * @param path    path, not used for environment variables
+     * @param path path, not used for environment variables
      * @param keys the keys whose values will be retrieved.
      * @return the configuration data.
      */

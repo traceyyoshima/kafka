@@ -29,11 +29,12 @@ import java.util.Optional;
 /**
  * Interactive query for issuing range queries and scans over {@link TimestampedKeyValueStore}
  * <p>
- *  A range query retrieves a set of records, specified using an upper and/or lower bound on the keys.
+ * A range query retrieves a set of records, specified using an upper and/or lower bound on the keys.
  * <p>
- *  A scan query retrieves all records contained in the store.
+ * A scan query retrieves all records contained in the store.
  * <p>
- *  Keys' order is based on the serialized byte[] of the keys, not the 'logical' key order.
+ * Keys' order is based on the serialized byte[] of the keys, not the 'logical' key order.
+ *
  * @param <K> Type of keys
  * @param <V> Type of values
  */
@@ -53,10 +54,11 @@ public final class TimestampedRangeQuery<K, V> implements Query<KeyValueIterator
 
     /**
      * Interactive range query using a lower and upper bound to filter the keys returned.
+     *
      * @param lower The key that specifies the lower bound of the range
      * @param upper The key that specifies the upper bound of the range
-     * @param <K> The key type
-     * @param <V> The value type
+     * @param <K>   The key type
+     * @param <V>   The value type
      */
     public static <K, V> TimestampedRangeQuery<K, V> withRange(final K lower, final K upper) {
         return new TimestampedRangeQuery<>(Optional.ofNullable(lower), Optional.ofNullable(upper), ResultOrder.ANY);
@@ -65,9 +67,10 @@ public final class TimestampedRangeQuery<K, V> implements Query<KeyValueIterator
     /**
      * Interactive range query using an upper bound to filter the keys returned.
      * If both {@code <K,V>} are null, RangQuery returns a full range scan.
+     *
      * @param upper The key that specifies the upper bound of the range
-     * @param <K> The key type
-     * @param <V> The value type
+     * @param <K>   The key type
+     * @param <V>   The value type
      */
     public static <K, V> TimestampedRangeQuery<K, V> withUpperBound(final K upper) {
         return new TimestampedRangeQuery<>(Optional.empty(), Optional.of(upper), ResultOrder.ANY);
@@ -75,9 +78,10 @@ public final class TimestampedRangeQuery<K, V> implements Query<KeyValueIterator
 
     /**
      * Interactive range query using a lower bound to filter the keys returned.
+     *
      * @param lower The key that specifies the lower bound of the range
-     * @param <K> The key type
-     * @param <V> The value type
+     * @param <K>   The key type
+     * @param <V>   The value type
      */
     public static <K, V> TimestampedRangeQuery<K, V> withLowerBound(final K lower) {
         return new TimestampedRangeQuery<>(Optional.of(lower), Optional.empty(), ResultOrder.ANY);
@@ -86,6 +90,7 @@ public final class TimestampedRangeQuery<K, V> implements Query<KeyValueIterator
     /**
      * Determines if the serialized byte[] of the keys in ascending or descending or unordered order.
      * Order is based on the serialized byte[] of the keys, not the 'logical' key order.
+     *
      * @return return the order of return records base on the serialized byte[] of the keys (can be unordered, or in ascending, or in descending order).
      */
     public ResultOrder resultOrder() {
@@ -95,6 +100,7 @@ public final class TimestampedRangeQuery<K, V> implements Query<KeyValueIterator
     /**
      * Set the query to return the serialized byte[] of the keys in descending order.
      * Order is based on the serialized byte[] of the keys, not the 'logical' key order.
+     *
      * @return a new RangeQuery instance with descending flag set.
      */
     public TimestampedRangeQuery<K, V> withDescendingKeys() {
@@ -104,6 +110,7 @@ public final class TimestampedRangeQuery<K, V> implements Query<KeyValueIterator
     /**
      * Set the query to return the serialized byte[] of the keys in ascending order.
      * Order is based on the serialized byte[] of the keys, not the 'logical' key order.
+     *
      * @return a new RangeQuery instance with ascending flag set.
      */
     public TimestampedRangeQuery<K, V> withAscendingKeys() {
@@ -112,6 +119,7 @@ public final class TimestampedRangeQuery<K, V> implements Query<KeyValueIterator
 
     /**
      * Interactive scan query that returns all records in the store.
+     *
      * @param <K> The key type
      * @param <V> The value type
      */

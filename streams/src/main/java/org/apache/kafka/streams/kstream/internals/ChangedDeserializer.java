@@ -123,9 +123,9 @@ public class ChangedDeserializer<T> implements Deserializer<Change<T>>, Wrapping
         }
 
         return new Change<>(
-            inner.deserialize(topic, headers, newData),
-            inner.deserialize(topic, headers, oldData),
-            isLatest);
+                inner.deserialize(topic, headers, newData),
+                inner.deserialize(topic, headers, oldData),
+                isLatest);
     }
 
     private boolean readIsLatestFlag(final ByteBuffer buffer) {

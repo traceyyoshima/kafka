@@ -52,6 +52,7 @@ public interface StateStore {
 
     /**
      * The name of this store.
+     *
      * @return the storage name
      */
     String name();
@@ -70,7 +71,7 @@ public interface StateStore {
      * let users implement bulk-load restoration logic instead of restoring one record at a time.
      *
      * @throws IllegalStateException If store gets registered after initialized is already finished
-     * @throws StreamsException if the store's change log does not contain the partition
+     * @throws StreamsException      if the store's change log does not contain the partition
      */
     void init(final StateStoreContext stateStoreContext, final StateStore root);
 
@@ -78,7 +79,7 @@ public interface StateStore {
      * Flush any cached data
      *
      * @deprecated Use {@link org.apache.kafka.streams.processor.api.ProcessingContext#commit() ProcessorContext#commit()}
-     *             instead.
+     * instead.
      */
     @Deprecated
     default void flush() {
@@ -130,8 +131,8 @@ public interface StateStore {
      *
      * @param partition The partition to get the committed offset for.
      * @return The last {@link #commit(Map) committed} offset for the {@code partition}; or {@code null} if no offset
-     *         has been committed for the partition, or if either {@link #persistent()} or {@link #managesOffsets()}
-     *         return {@code false}.
+     * has been committed for the partition, or if either {@link #persistent()} or {@link #managesOffsets()}
+     * return {@code false}.
      */
     default Long committedOffset(final TopicPartition partition) {
         return null;
@@ -150,7 +151,7 @@ public interface StateStore {
     /**
      * Return if the storage is persistent or not.
      *
-     * @return  {@code true} if the storage is persistent&mdash;{@code false} otherwise
+     * @return {@code true} if the storage is persistent&mdash;{@code false} otherwise
      */
     boolean persistent();
 
@@ -171,9 +172,9 @@ public interface StateStore {
      * should upgrade to managing their own offsets as soon as possible, as the legacy offset management is deprecated
      * and will be removed in a future version.
      *
-     * @deprecated New implementations should always return {@code true} and manage their own offsets. In the future,
-     *             this method will be removed and it will be assumed to always return {@code true}.
      * @return Whether this StateStore manages its own offsets.
+     * @deprecated New implementations should always return {@code true} and manage their own offsets. In the future,
+     * this method will be removed and it will be assumed to always return {@code true}.
      */
     @Deprecated
     default boolean managesOffsets() {
@@ -182,6 +183,7 @@ public interface StateStore {
 
     /**
      * Is this store open for reading and writing
+     *
      * @return {@code true} if the store is open
      */
     boolean isOpen();
@@ -200,17 +202,18 @@ public interface StateStore {
      * anything but {@link PositionBound#unbounded()}. Be sure to explain in the failure message
      * that bounded positions are not supported.
      * <p>
-     * @param query The query to execute
+     *
+     * @param query         The query to execute
      * @param positionBound The position the store must be at or past
-     * @param config Per query configuration parameters, such as whether the store should collect detailed execution
-     * info for the query
-     * @param <R> The result type
+     * @param config        Per query configuration parameters, such as whether the store should collect detailed execution
+     *                      info for the query
+     * @param <R>           The result type
      */
     @Evolving
     default <R> QueryResult<R> query(
-        final Query<R> query,
-        final PositionBound positionBound,
-        final QueryConfig config) {
+            final Query<R> query,
+            final PositionBound positionBound,
+            final QueryConfig config) {
         // If a store doesn't implement a query handler, then all queries are unknown.
         return QueryResult.forUnknownQueryType(query, this);
     }
@@ -221,7 +224,7 @@ public interface StateStore {
     @Evolving
     default Position getPosition() {
         throw new UnsupportedOperationException(
-            "getPosition is not implemented by this StateStore (" + getClass() + ")"
+                "getPosition is not implemented by this StateStore (" + getClass() + ")"
         );
     }
 }

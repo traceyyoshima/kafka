@@ -25,7 +25,7 @@ import org.apache.kafka.server.common.KRaftVersion;
 interface KRaftVersionAccessor {
     /**
      * Returns the latest kraft version.
-     *
+     * <p>
      * The latest version may be uncommitted.
      */
     KRaftVersion kraftVersion();
@@ -33,8 +33,8 @@ interface KRaftVersionAccessor {
     /**
      * Upgrade the kraft version.
      *
-     * @param epoch the current epoch
-     * @param newVersion the new kraft version to upgrade to
+     * @param epoch        the current epoch
+     * @param newVersion   the new kraft version to upgrade to
      * @param validateOnly whether to just validate the change and not persist it
      */
     void upgradeKRaftVersion(int epoch, KRaftVersion newVersion, boolean validateOnly);

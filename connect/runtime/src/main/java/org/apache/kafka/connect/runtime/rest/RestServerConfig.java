@@ -135,6 +135,7 @@ public abstract class RestServerConfig extends AbstractConfig {
      * <p>
      * This automatically adds the properties for intra-cluster communication; it is not necessary to
      * invoke both {@link #addInternalConfig(ConfigDef)} and this method on the same {@link ConfigDef}.
+     *
      * @param configDef the {@link ConfigDef} to add the properties to; may not be null
      */
     public static void addPublicConfig(ConfigDef configDef) {
@@ -155,6 +156,7 @@ public abstract class RestServerConfig extends AbstractConfig {
 
     /**
      * Add the properties related to an internal-only server to the given {@link ConfigDef}.
+     *
      * @param configDef the {@link ConfigDef} to add the properties to; may not be null
      */
     public static void addInternalConfig(ConfigDef configDef) {
@@ -389,6 +391,7 @@ public abstract class RestServerConfig extends AbstractConfig {
     private static class PublicConfig extends RestServerConfig {
 
         private final Integer rebalanceTimeoutMs;
+
         private static ConfigDef config() {
             ConfigDef result = new ConfigDef().withClientSslSupport();
             addPublicConfig(result);

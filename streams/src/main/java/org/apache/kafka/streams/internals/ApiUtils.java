@@ -34,7 +34,8 @@ public final class ApiUtils {
 
     /**
      * Validates that milliseconds from {@code duration} can be retrieved.
-     * @param duration Duration to check.
+     *
+     * @param duration      Duration to check.
      * @param messagePrefix Prefix text for an error message.
      * @return Milliseconds from {@code duration}.
      */
@@ -52,7 +53,8 @@ public final class ApiUtils {
 
     /**
      * Validates that milliseconds from {@code instant} can be retrieved.
-     * @param instant Instant to check.
+     *
+     * @param instant       Instant to check.
      * @param messagePrefix Prefix text for an error message.
      * @return Milliseconds from {@code instant}.
      */
@@ -70,8 +72,9 @@ public final class ApiUtils {
 
     /**
      * Generates the prefix message for validateMillisecondXXXXXX() utility
+     *
      * @param value Object to be converted to milliseconds
-     * @param name Object name
+     * @param name  Object name
      * @return Error message prefix to use in exception
      */
     public static String prepareMillisCheckFailMsgPrefix(final Object value, final String name) {

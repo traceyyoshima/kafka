@@ -104,13 +104,13 @@ public class PartitionChangeBuilder {
     private boolean useLastKnownLeaderInBalancedRecovery = true;
 
     public PartitionChangeBuilder(
-        PartitionRegistration partition,
-        Uuid topicId,
-        int partitionId,
-        IntPredicate isAcceptableLeader,
-        MetadataVersion metadataVersion,
-        int minISR,
-        boolean eligibleLeaderReplicasEnabled
+            PartitionRegistration partition,
+            Uuid topicId,
+            int partitionId,
+            IntPredicate isAcceptableLeader,
+            MetadataVersion metadataVersion,
+            int minISR,
+            boolean eligibleLeaderReplicasEnabled
     ) {
         this.partition = partition;
         this.topicId = topicId;
@@ -140,10 +140,10 @@ public class PartitionChangeBuilder {
 
     public PartitionChangeBuilder setTargetIsrWithBrokerStates(List<BrokerState> targetIsrWithEpoch) {
         return setTargetIsr(
-            targetIsrWithEpoch
-              .stream()
-              .map(BrokerState::brokerId)
-              .collect(Collectors.toList())
+                targetIsrWithEpoch
+                        .stream()
+                        .map(BrokerState::brokerId)
+                        .collect(Collectors.toList())
         );
     }
 
@@ -208,9 +208,10 @@ public class PartitionChangeBuilder {
     }
 
     // VisibleForTesting
+
     /**
      * Perform leader election based on the partition state and leader election type.
-     *
+     * <p>
      * See documentation for the Election type to see more details on the election types supported.
      */
     ElectionResult electLeader() {
@@ -236,9 +237,9 @@ public class PartitionChangeBuilder {
         }
 
         Optional<Integer> onlineLeader = targetReplicas.stream()
-            .skip(1)
-            .filter(this::isValidNewLeader)
-            .findFirst();
+                .skip(1)
+                .filter(this::isValidNewLeader)
+                .findFirst();
         if (onlineLeader.isPresent()) {
             return new ElectionResult(onlineLeader.get(), false);
         }
@@ -260,8 +261,8 @@ public class PartitionChangeBuilder {
         }
 
         Optional<Integer> onlineLeader = targetReplicas.stream()
-            .filter(this::isValidNewLeader)
-            .findFirst();
+                .filter(this::isValidNewLeader)
+                .findFirst();
         if (onlineLeader.isPresent()) {
             return new ElectionResult(onlineLeader.get(), false);
         }
@@ -273,8 +274,8 @@ public class PartitionChangeBuilder {
         if (election == Election.UNCLEAN) {
             // Attempt unclean leader election
             Optional<Integer> uncleanLeader = targetReplicas.stream()
-                .filter(isAcceptableLeader::test)
-                .findFirst();
+                    .filter(isAcceptableLeader::test)
+                    .findFirst();
             if (uncleanLeader.isPresent()) {
                 return new ElectionResult(uncleanLeader.get(), true);
             }
@@ -318,7 +319,7 @@ public class PartitionChangeBuilder {
     private boolean isValidNewLeader(int replica) {
         // The valid new leader should be in either ISR or in ELR when ISR is empty.
         return (targetIsr.contains(replica) || (targetIsr.isEmpty() && targetElr.contains(replica))) &&
-            isAcceptableLeader.test(replica);
+                isAcceptableLeader.test(replica);
     }
 
     private void tryElection(PartitionChangeRecord record) {
@@ -330,15 +331,15 @@ public class PartitionChangeBuilder {
             if (targetElr.contains(electionResult.node)) {
                 targetIsr = List.of(electionResult.node);
                 targetElr = targetElr.stream().filter(replica -> replica != electionResult.node)
-                    .collect(Collectors.toList());
+                        .collect(Collectors.toList());
                 log.info("Setting new leader for topicId {}, partition {} to {} using ELR. Previous partition: {}, change record: {}",
                         topicId, partitionId, electionResult.node, partition, record);
             } else if (electionResult.unclean) {
                 log.info("Setting new leader for topicId {}, partition {} to {} using an unclean election. Previous partition: {}, change record: {}",
-                    topicId, partitionId, electionResult.node, partition, record);
+                        topicId, partitionId, electionResult.node, partition, record);
             } else {
                 log.trace("Setting new leader for topicId {}, partition {} to {} using a clean election",
-                    topicId, partitionId, electionResult.node);
+                        topicId, partitionId, electionResult.node);
             }
             record.setLeader(electionResult.node);
             if (electionResult.unclean) {
@@ -357,7 +358,7 @@ public class PartitionChangeBuilder {
 
     /**
      * Trigger a leader epoch bump if one is needed because of replica reassignment.
-     *
+     * <p>
      * Note that if the leader epoch increases, the partition epoch will always increase as well; there is no
      * case where the partition epoch increases more slowly than the leader epoch.
      */
@@ -375,7 +376,7 @@ public class PartitionChangeBuilder {
 
     /**
      * Trigger a leader epoch bump if one is needed because of an ISR shrink.
-     *
+     * <p>
      * Note that it's important to call this function only after we have set the ISR field in
      * the PartitionChangeRecord.
      */
@@ -404,13 +405,13 @@ public class PartitionChangeBuilder {
 
     private void completeReassignmentIfNeeded() {
         PartitionReassignmentReplicas reassignmentReplicas =
-            new PartitionReassignmentReplicas(
-                targetRemoving,
-                targetAdding,
-                targetReplicas);
+                new PartitionReassignmentReplicas(
+                        targetRemoving,
+                        targetAdding,
+                        targetReplicas);
 
         Optional<PartitionReassignmentReplicas.CompletedReassignment> completedReassignmentOpt =
-            reassignmentReplicas.maybeCompleteReassignment(targetIsr);
+                reassignmentReplicas.maybeCompleteReassignment(targetIsr);
         if (completedReassignmentOpt.isEmpty()) {
             return;
         }
@@ -425,8 +426,8 @@ public class PartitionChangeBuilder {
 
     public Optional<ApiMessageAndVersion> build() {
         PartitionChangeRecord record = new PartitionChangeRecord().
-            setTopicId(topicId).
-            setPartitionId(partitionId);
+                setTopicId(topicId).
+                setPartitionId(partitionId);
 
         completeReassignmentIfNeeded();
 
@@ -440,7 +441,7 @@ public class PartitionChangeBuilder {
 
         // If ELR is enabled, the ISR is allowed to be empty.
         if (record.isr() == null && (!targetIsr.isEmpty() || eligibleLeaderReplicasEnabled) &&
-            !targetIsr.equals(Replicas.toList(partition.isr))) {
+                !targetIsr.equals(Replicas.toList(partition.isr))) {
             // Set the new ISR if it is different from the current ISR and unclean leader election didn't already set it.
             if (targetIsr.isEmpty()) {
                 log.debug("A partition will have an empty ISR. {}", this);
@@ -549,35 +550,35 @@ public class PartitionChangeBuilder {
         Set<Integer> candidateSet = new HashSet<>(targetElr);
         Arrays.stream(partition.isr).forEach(candidateSet::add);
         targetElr = candidateSet.stream()
-            .filter(replica -> !targetIsrSet.contains(replica))
-            .filter(replica -> uncleanShutdownReplicas == null || !uncleanShutdownReplicas.contains(replica))
-            .collect(Collectors.toList());
+                .filter(replica -> !targetIsrSet.contains(replica))
+                .filter(replica -> uncleanShutdownReplicas == null || !uncleanShutdownReplicas.contains(replica))
+                .collect(Collectors.toList());
 
         // Calculate the new last known ELR. Includes any ISR members since the ISR size drops below min ISR.
         // In order to reduce the metadata usage, the last known ELR excludes the members in ELR and current ISR.
         candidateSet.addAll(targetLastKnownElr);
         targetLastKnownElr = candidateSet.stream()
-            .filter(replica -> !targetIsrSet.contains(replica))
-            .filter(replica -> !targetElr.contains(replica))
-            .collect(Collectors.toList());
+                .filter(replica -> !targetIsrSet.contains(replica))
+                .filter(replica -> !targetElr.contains(replica))
+                .collect(Collectors.toList());
     }
 
     @Override
     public String toString() {
         return "PartitionChangeBuilder(" +
-            "partition=" + partition +
-            ", topicId=" + topicId +
-            ", partitionId=" + partitionId +
-            ", isAcceptableLeader=" + isAcceptableLeader +
-            ", targetIsr=" + targetIsr +
-            ", targetReplicas=" + targetReplicas +
-            ", targetRemoving=" + targetRemoving +
-            ", targetAdding=" + targetAdding +
-            ", targetElr=" + targetElr +
-            ", targetLastKnownElr=" + targetLastKnownElr +
-            ", uncleanShutdownReplicas=" + uncleanShutdownReplicas +
-            ", election=" + election +
-            ", targetLeaderRecoveryState=" + targetLeaderRecoveryState +
-            ')';
+                "partition=" + partition +
+                ", topicId=" + topicId +
+                ", partitionId=" + partitionId +
+                ", isAcceptableLeader=" + isAcceptableLeader +
+                ", targetIsr=" + targetIsr +
+                ", targetReplicas=" + targetReplicas +
+                ", targetRemoving=" + targetRemoving +
+                ", targetAdding=" + targetAdding +
+                ", targetElr=" + targetElr +
+                ", targetLastKnownElr=" + targetLastKnownElr +
+                ", uncleanShutdownReplicas=" + uncleanShutdownReplicas +
+                ", election=" + election +
+                ", targetLeaderRecoveryState=" + targetLeaderRecoveryState +
+                ')';
     }
 }

@@ -22,7 +22,7 @@ import org.apache.kafka.common.TopicPartition;
  * A CoordinatorMetricsShard is mapped to a single CoordinatorShard. The metrics shard records sensors that have been
  * defined in {@link CoordinatorMetrics}. Coordinator specific gauges and related methods are exposed in the
  * implementation of CoordinatorMetricsShard (such as GroupCoordinatorMetricsShard and ShareCoordinatorMetricsShard).
- *
+ * <p>
  * For sensors, each shard individually records the observed values.
  */
 public interface CoordinatorMetricsShard {
@@ -37,7 +37,7 @@ public interface CoordinatorMetricsShard {
      * Record a sensor with a value.
      *
      * @param sensorName the sensor name.
-     * @param val the value to record.
+     * @param val        the value to record.
      */
     void record(String sensorName, double val);
 

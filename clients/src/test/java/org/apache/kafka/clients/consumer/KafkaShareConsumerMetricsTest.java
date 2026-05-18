@@ -337,7 +337,7 @@ public class KafkaShareConsumerMetricsTest {
     }
 
     private ShareConsumerConfig newConsumerConfig(String groupId,
-                                             Deserializer<String> valueDeserializer) {
+                                                  Deserializer<String> valueDeserializer) {
         String clientId = "mock-consumer";
         long retryBackoffMs = 100;
         long retryBackoffMaxMs = 1000;
@@ -372,6 +372,7 @@ public class KafkaShareConsumerMetricsTest {
 
         return new ShareConsumerConfig(configs);
     }
+
     private void initMetadata(MockClient mockClient, Map<String, Integer> partitionCounts) {
         Map<String, Uuid> metadataIds = new HashMap<>();
         for (String name : partitionCounts.keySet()) {

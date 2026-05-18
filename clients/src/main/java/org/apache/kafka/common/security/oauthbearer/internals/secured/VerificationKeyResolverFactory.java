@@ -60,13 +60,13 @@ public class VerificationKeyResolverFactory {
         VerificationKeyResolverKey key = new VerificationKeyResolverKey(configs, saslMechanism, jaasConfigEntries);
 
         return CACHE.computeIfAbsent(key, k ->
-            new RefCountingVerificationKeyResolver(
-                create(
-                    configs,
-                    saslMechanism,
-                    jaasConfigEntries
+                new RefCountingVerificationKeyResolver(
+                        create(
+                                configs,
+                                saslMechanism,
+                                jaasConfigEntries
+                        )
                 )
-            )
         );
     }
 
@@ -97,10 +97,10 @@ public class VerificationKeyResolverFactory {
             }
 
             RefreshingHttpsJwks refreshingHttpsJwks = new RefreshingHttpsJwks(Time.SYSTEM,
-                httpsJwks,
-                refreshIntervalMs,
-                cu.validateLong(SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MS),
-                cu.validateLong(SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MAX_MS));
+                    httpsJwks,
+                    refreshIntervalMs,
+                    cu.validateLong(SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MS),
+                    cu.validateLong(SASL_OAUTHBEARER_JWKS_ENDPOINT_RETRY_BACKOFF_MAX_MS));
             resolver = new RefreshingHttpsJwksVerificationKeyResolver(refreshingHttpsJwks);
         }
 

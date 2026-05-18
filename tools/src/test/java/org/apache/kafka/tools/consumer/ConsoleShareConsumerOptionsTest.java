@@ -42,8 +42,8 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void shouldParseValidConsumerValidConfig() throws IOException {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -62,9 +62,9 @@ public class ConsoleShareConsumerOptionsTest {
         });
 
         String[] args = new String[]{
-            "--new-consumer",
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test"
+                "--new-consumer",
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test"
         };
 
         try {
@@ -77,9 +77,9 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void shouldParseValidConsumerConfigWithSessionTimeoutDeprecated() throws IOException {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--consumer-property", "session.timeout.ms=10000"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--consumer-property", "session.timeout.ms=10000"
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -97,9 +97,9 @@ public class ConsoleShareConsumerOptionsTest {
         configs.put("group.id", "group1");
         File propsFile = ToolsTestUtils.tempPropertiesFile(configs);
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--consumer-config", propsFile.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--consumer-config", propsFile.getAbsolutePath()
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -121,11 +121,11 @@ public class ConsoleShareConsumerOptionsTest {
             // different in all three places
             File propsFile = ToolsTestUtils.tempPropertiesFile(Map.of("group.id", "group-from-file"));
             final String[] args = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "group-from-arguments",
-                "--consumer-property", "group.id=group-from-properties",
-                "--consumer-config", propsFile.getAbsolutePath()
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "group-from-arguments",
+                    "--consumer-property", "group.id=group-from-properties",
+                    "--consumer-config", propsFile.getAbsolutePath()
             };
 
             assertThrows(IllegalArgumentException.class, () -> new ConsoleShareConsumerOptions(args));
@@ -133,11 +133,11 @@ public class ConsoleShareConsumerOptionsTest {
             // the same in all three places
             propsFile = ToolsTestUtils.tempPropertiesFile(Map.of("group.id", "test-group"));
             final String[] args1 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "test-group",
-                "--consumer-property", "group.id=test-group",
-                "--consumer-config", propsFile.getAbsolutePath()
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "test-group",
+                    "--consumer-property", "group.id=test-group",
+                    "--consumer-config", propsFile.getAbsolutePath()
             };
 
             ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args1);
@@ -147,20 +147,20 @@ public class ConsoleShareConsumerOptionsTest {
             // different via --consumer-property and --consumer-config
             propsFile = ToolsTestUtils.tempPropertiesFile(Map.of("group.id", "group-from-file"));
             final String[] args2 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--consumer-property", "group.id=group-from-properties",
-                "--consumer-config", propsFile.getAbsolutePath()
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--consumer-property", "group.id=group-from-properties",
+                    "--consumer-config", propsFile.getAbsolutePath()
             };
 
             assertThrows(IllegalArgumentException.class, () -> new ConsoleShareConsumerOptions(args2));
 
             // different via --consumer-property and --group
             final String[] args3 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "group-from-arguments",
-                "--consumer-property", "group.id=group-from-properties"
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "group-from-arguments",
+                    "--consumer-property", "group.id=group-from-properties"
             };
 
             assertThrows(IllegalArgumentException.class, () -> new ConsoleShareConsumerOptions(args3));
@@ -168,18 +168,18 @@ public class ConsoleShareConsumerOptionsTest {
             // different via --group and --consumer-config
             propsFile = ToolsTestUtils.tempPropertiesFile(Map.of("group.id", "group-from-file"));
             final String[] args4 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "group-from-arguments",
-                "--consumer-config", propsFile.getAbsolutePath()
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "group-from-arguments",
+                    "--consumer-config", propsFile.getAbsolutePath()
             };
             assertThrows(IllegalArgumentException.class, () -> new ConsoleShareConsumerOptions(args4));
 
             // via --group only
             final String[] args5 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "group-from-arguments"
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "group-from-arguments"
             };
 
             config = new ConsoleShareConsumerOptions(args5);
@@ -197,7 +197,7 @@ public class ConsoleShareConsumerOptionsTest {
         });
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092"
+                "--bootstrap-server", "localhost:9092"
         };
 
         try {
@@ -210,9 +210,9 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void testClientIdOverrideDeprecated() throws IOException {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--consumer-property", "client.id=consumer-1"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--consumer-property", "client.id=consumer-1"
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -224,11 +224,11 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void testCustomPropertyShouldBePassedToConfigureMethodDeprecated() throws Exception {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--property", "print.key=true",
-            "--property", "key.deserializer=org.apache.kafka.test.MockDeserializer",
-            "--property", "key.deserializer.my-props=abc"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--property", "print.key=true",
+                "--property", "key.deserializer=org.apache.kafka.test.MockDeserializer",
+                "--property", "key.deserializer.my-props=abc"
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -247,11 +247,11 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void testCustomPropertyShouldBePassedToConfigureMethod() throws Exception {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--formatter-property", "print.key=true",
-            "--formatter-property", "key.deserializer=org.apache.kafka.test.MockDeserializer",
-            "--formatter-property", "key.deserializer.my-props=abc"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--formatter-property", "print.key=true",
+                "--formatter-property", "key.deserializer=org.apache.kafka.test.MockDeserializer",
+                "--formatter-property", "key.deserializer.my-props=abc"
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -274,11 +274,11 @@ public class ConsoleShareConsumerOptionsTest {
         configs.put("print.key", "false");
         File propsFile = ToolsTestUtils.tempPropertiesFile(configs);
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--property", "print.key=true",
-            "--property", "key.deserializer=org.apache.kafka.test.MockDeserializer",
-            "--formatter-config", propsFile.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--property", "print.key=true",
+                "--property", "key.deserializer=org.apache.kafka.test.MockDeserializer",
+                "--formatter-config", propsFile.getAbsolutePath()
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -301,11 +301,11 @@ public class ConsoleShareConsumerOptionsTest {
         configs.put("print.key", "false");
         File propsFile = ToolsTestUtils.tempPropertiesFile(configs);
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--formatter-property", "print.key=true",
-            "--formatter-property", "key.deserializer=org.apache.kafka.test.MockDeserializer",
-            "--formatter-config", propsFile.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--formatter-property", "print.key=true",
+                "--formatter-property", "key.deserializer=org.apache.kafka.test.MockDeserializer",
+                "--formatter-config", propsFile.getAbsolutePath()
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -324,8 +324,8 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void testDefaultClientId() throws IOException {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -337,9 +337,9 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void testRejectOption() throws IOException {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--reject"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--reject"
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -349,9 +349,9 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void testReleaseOption() throws IOException {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--release"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--release"
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -364,10 +364,10 @@ public class ConsoleShareConsumerOptionsTest {
             throw new IllegalArgumentException(message);
         });
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--reject",
-            "--release"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--reject",
+                "--release"
         };
 
         try {
@@ -384,10 +384,10 @@ public class ConsoleShareConsumerOptionsTest {
         });
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--consumer-property", "session.timeout.ms=10000",
-            "--command-property", "request.timeout.ms=30000"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--consumer-property", "session.timeout.ms=10000",
+                "--command-property", "request.timeout.ms=30000"
         };
 
         try {
@@ -412,10 +412,10 @@ public class ConsoleShareConsumerOptionsTest {
         File propsFile2 = ToolsTestUtils.tempPropertiesFile(configs2);
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--consumer-config", propsFile.getAbsolutePath(),
-            "--command-config", propsFile2.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--consumer-config", propsFile.getAbsolutePath(),
+                "--command-config", propsFile2.getAbsolutePath()
         };
 
         try {
@@ -428,9 +428,9 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void shouldParseValidConsumerConfigWithSessionTimeout() throws IOException {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--command-property", "session.timeout.ms=10000"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--command-property", "session.timeout.ms=10000"
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -448,9 +448,9 @@ public class ConsoleShareConsumerOptionsTest {
         configs.put("group.id", "group1");
         File propsFile = ToolsTestUtils.tempPropertiesFile(configs);
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--command-config", propsFile.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--command-config", propsFile.getAbsolutePath()
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);
@@ -472,11 +472,11 @@ public class ConsoleShareConsumerOptionsTest {
             // different in all three places
             File propsFile = ToolsTestUtils.tempPropertiesFile(Map.of("group.id", "group-from-file"));
             final String[] args = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "group-from-arguments",
-                "--command-property", "group.id=group-from-properties",
-                "--command-config", propsFile.getAbsolutePath()
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "group-from-arguments",
+                    "--command-property", "group.id=group-from-properties",
+                    "--command-config", propsFile.getAbsolutePath()
             };
 
             assertThrows(IllegalArgumentException.class, () -> new ConsoleShareConsumerOptions(args));
@@ -484,11 +484,11 @@ public class ConsoleShareConsumerOptionsTest {
             // the same in all three places
             propsFile = ToolsTestUtils.tempPropertiesFile(Map.of("group.id", "test-group"));
             final String[] args1 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "test-group",
-                "--command-property", "group.id=test-group",
-                "--command-config", propsFile.getAbsolutePath()
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "test-group",
+                    "--command-property", "group.id=test-group",
+                    "--command-config", propsFile.getAbsolutePath()
             };
 
             ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args1);
@@ -498,20 +498,20 @@ public class ConsoleShareConsumerOptionsTest {
             // different via --command-property and --command-config
             propsFile = ToolsTestUtils.tempPropertiesFile(Map.of("group.id", "group-from-file"));
             final String[] args2 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--command-property", "group.id=group-from-properties",
-                "--command-config", propsFile.getAbsolutePath()
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--command-property", "group.id=group-from-properties",
+                    "--command-config", propsFile.getAbsolutePath()
             };
 
             assertThrows(IllegalArgumentException.class, () -> new ConsoleShareConsumerOptions(args2));
 
             // different via --command-property and --group
             final String[] args3 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "group-from-arguments",
-                "--command-property", "group.id=group-from-properties"
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "group-from-arguments",
+                    "--command-property", "group.id=group-from-properties"
             };
 
             assertThrows(IllegalArgumentException.class, () -> new ConsoleShareConsumerOptions(args3));
@@ -519,18 +519,18 @@ public class ConsoleShareConsumerOptionsTest {
             // different via --group and --command-config
             propsFile = ToolsTestUtils.tempPropertiesFile(Map.of("group.id", "group-from-file"));
             final String[] args4 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "group-from-arguments",
-                "--command-config", propsFile.getAbsolutePath()
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "group-from-arguments",
+                    "--command-config", propsFile.getAbsolutePath()
             };
             assertThrows(IllegalArgumentException.class, () -> new ConsoleShareConsumerOptions(args4));
 
             // via --group only
             final String[] args5 = new String[]{
-                "--bootstrap-server", "localhost:9092",
-                "--topic", "test",
-                "--group", "group-from-arguments"
+                    "--bootstrap-server", "localhost:9092",
+                    "--topic", "test",
+                    "--group", "group-from-arguments"
             };
 
             config = new ConsoleShareConsumerOptions(args5);
@@ -544,9 +544,9 @@ public class ConsoleShareConsumerOptionsTest {
     @Test
     public void testClientIdOverride() throws IOException {
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--command-property", "client.id=consumer-1"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--command-property", "client.id=consumer-1"
         };
 
         ConsoleShareConsumerOptions config = new ConsoleShareConsumerOptions(args);

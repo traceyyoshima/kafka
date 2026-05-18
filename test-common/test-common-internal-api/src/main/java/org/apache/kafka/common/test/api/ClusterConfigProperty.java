@@ -40,11 +40,14 @@ public @interface ClusterConfigProperty {
      *  {@link org.apache.kafka.common.test.api.TestKitDefaults#BROKER_ID_OFFSET 0}
      *  and increases by 1 with each additional broker/controller.</li>
      * </ul>
-     *
+     * <p>
      * If the id doesn't correspond to any broker/controller server, throw IllegalArgumentException
+     *
      * @return the controller/broker id
      */
     int id() default -1;
+
     String key();
+
     String value();
 }

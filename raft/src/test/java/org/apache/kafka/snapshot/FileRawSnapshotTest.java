@@ -179,8 +179,8 @@ public final class FileRawSnapshotTest {
         try (FileRawSnapshotWriter snapshot = createSnapshotWriter(tempDir, offsetAndEpoch)) {
             for (int i = 0; i < numberOfBatches; i++) {
                 ByteBuffer[] buffers = IntStream
-                    .range(0, batchSize)
-                    .mapToObj(ignore -> ByteBuffer.wrap(randomBytes(bufferSize))).toArray(ByteBuffer[]::new);
+                        .range(0, batchSize)
+                        .mapToObj(ignore -> ByteBuffer.wrap(randomBytes(bufferSize))).toArray(ByteBuffer[]::new);
 
                 snapshot.append(buildRecords(buffers));
             }
@@ -225,8 +225,8 @@ public final class FileRawSnapshotTest {
         try (FileRawSnapshotWriter snapshot = createSnapshotWriter(tempDir, offsetAndEpoch)) {
             for (int i = 0; i < numberOfBatches; i++) {
                 ByteBuffer[] buffers = IntStream
-                    .range(0, batchSize)
-                    .mapToObj(ignore -> ByteBuffer.wrap(randomBytes(bufferSize))).toArray(ByteBuffer[]::new);
+                        .range(0, batchSize)
+                        .mapToObj(ignore -> ByteBuffer.wrap(randomBytes(bufferSize))).toArray(ByteBuffer[]::new);
 
                 UnalignedMemoryRecords records = buildRecords(buffers);
                 snapshot.append(records);
@@ -343,16 +343,16 @@ public final class FileRawSnapshotTest {
     }
 
     private static UnalignedMemoryRecords buildRecords(ByteBuffer... buffers) {
-        MemoryRecords records =  MemoryRecords.withRecords(
-            Compression.NONE,
-            Arrays.stream(buffers).map(SimpleRecord::new).toArray(SimpleRecord[]::new)
+        MemoryRecords records = MemoryRecords.withRecords(
+                Compression.NONE,
+                Arrays.stream(buffers).map(SimpleRecord::new).toArray(SimpleRecord[]::new)
         );
         return new UnalignedMemoryRecords(records.buffer());
     }
 
     private static FileRawSnapshotWriter createSnapshotWriter(
-        Path dir,
-        OffsetAndEpoch snapshotId
+            Path dir,
+            OffsetAndEpoch snapshotId
     ) {
         return FileRawSnapshotWriter.create(dir, snapshotId);
     }

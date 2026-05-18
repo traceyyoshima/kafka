@@ -53,7 +53,7 @@ public class BoundedList<E> implements List<E> {
 
         if (underlying.size() > maxLength) {
             throw new BoundedListTooLongException("Cannot wrap list, because it is longer than " +
-                "the maximum length " + maxLength);
+                    "the maximum length " + maxLength);
         }
         this.maxLength = maxLength;
         this.underlying = underlying;
@@ -93,7 +93,7 @@ public class BoundedList<E> implements List<E> {
     public boolean add(E e) {
         if (underlying.size() >= maxLength) {
             throw new BoundedListTooLongException("Cannot add another element to the list " +
-                "because it would exceed the maximum length of " + maxLength);
+                    "because it would exceed the maximum length of " + maxLength);
         }
         return underlying.add(e);
     }
@@ -113,8 +113,8 @@ public class BoundedList<E> implements List<E> {
         int numToAdd = c.size();
         if (underlying.size() > maxLength - numToAdd) {
             throw new BoundedListTooLongException("Cannot add another " + numToAdd +
-                " element(s) to the list because it would exceed the maximum length of " +
-                maxLength);
+                    " element(s) to the list because it would exceed the maximum length of " +
+                    maxLength);
         }
         return underlying.addAll(c);
     }
@@ -124,8 +124,8 @@ public class BoundedList<E> implements List<E> {
         int numToAdd = c.size();
         if (underlying.size() > maxLength - numToAdd) {
             throw new BoundedListTooLongException("Cannot add another " + numToAdd +
-                " element(s) to the list because it would exceed the maximum length of " +
-                maxLength);
+                    " element(s) to the list because it would exceed the maximum length of " +
+                    maxLength);
         }
         return underlying.addAll(index, c);
     }

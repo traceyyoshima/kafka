@@ -82,7 +82,7 @@ public class ShareFetchRequest extends AbstractRequest {
                     ShareFetchRequestData.FetchPartition fetchPartition = fetchTopic.partitions().find(tip.partition());
                     if (fetchPartition == null) {
                         fetchPartition = new ShareFetchRequestData.FetchPartition()
-                            .setPartitionIndex(tip.partition());
+                                .setPartitionIndex(tip.partition());
                         fetchTopic.partitions().add(fetchPartition);
                     }
                 }

@@ -23,7 +23,7 @@ import java.util.Set;
 
 /**
  * Options for {@link Admin#electLeaders(ElectionType, Set, ElectLeadersOptions)}.
- *
+ * <p>
  * The API of this class is evolving, see {@link Admin} for details.
  */
 public final class ElectLeadersOptions extends AbstractOptions<ElectLeadersOptions> {

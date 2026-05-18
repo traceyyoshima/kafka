@@ -19,6 +19,7 @@ package org.apache.kafka.tools.reassign;
 
 /**
  * The completed replica log directory move state.
+ *
  * @param targetLogDir The log directory that we wanted the replica to move to.
  */
 record CompletedMoveState(String targetLogDir) implements LogDirMoveState {

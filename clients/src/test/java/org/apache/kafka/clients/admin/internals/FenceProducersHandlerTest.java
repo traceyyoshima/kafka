@@ -67,11 +67,11 @@ public class FenceProducersHandlerTest {
         short epoch = 57;
         long producerId = 7;
         InitProducerIdResponse response = new InitProducerIdResponse(new InitProducerIdResponseData()
-            .setProducerEpoch(epoch)
-            .setProducerId(producerId));
+                .setProducerEpoch(epoch)
+                .setProducerId(producerId));
 
         ApiResult<CoordinatorKey, ProducerIdAndEpoch> result = handler.handleSingleResponse(
-            node, key, response);
+                node, key, response);
 
         assertEquals(emptyList(), result.unmappedKeys);
         assertEquals(emptyMap(), result.failedKeys);
@@ -98,9 +98,9 @@ public class FenceProducersHandlerTest {
     }
 
     private void assertFatalError(
-        FenceProducersHandler handler,
-        String transactionalId,
-        Errors error
+            FenceProducersHandler handler,
+            String transactionalId,
+            Errors error
     ) {
         CoordinatorKey key = CoordinatorKey.byTransactionalId(transactionalId);
         ApiResult<CoordinatorKey, ProducerIdAndEpoch> result = handleResponseError(handler, transactionalId, error);
@@ -112,9 +112,9 @@ public class FenceProducersHandlerTest {
     }
 
     private void assertRetriableError(
-        FenceProducersHandler handler,
-        String transactionalId,
-        Errors error
+            FenceProducersHandler handler,
+            String transactionalId,
+            Errors error
     ) {
         ApiResult<CoordinatorKey, ProducerIdAndEpoch> result = handleResponseError(handler, transactionalId, error);
         assertEquals(emptyList(), result.unmappedKeys);
@@ -122,9 +122,9 @@ public class FenceProducersHandlerTest {
     }
 
     private void assertUnmappedKey(
-        FenceProducersHandler handler,
-        String transactionalId,
-        Errors error
+            FenceProducersHandler handler,
+            String transactionalId,
+            Errors error
     ) {
         CoordinatorKey key = CoordinatorKey.byTransactionalId(transactionalId);
         ApiResult<CoordinatorKey, ProducerIdAndEpoch> result = handleResponseError(handler, transactionalId, error);
@@ -133,15 +133,15 @@ public class FenceProducersHandlerTest {
     }
 
     private ApiResult<CoordinatorKey, ProducerIdAndEpoch> handleResponseError(
-        FenceProducersHandler handler,
-        String transactionalId,
-        Errors error
+            FenceProducersHandler handler,
+            String transactionalId,
+            Errors error
     ) {
         CoordinatorKey key = CoordinatorKey.byTransactionalId(transactionalId);
         Set<CoordinatorKey> keys = Set.of(key);
 
         InitProducerIdResponse response = new InitProducerIdResponse(new InitProducerIdResponseData()
-            .setErrorCode(error.code()));
+                .setErrorCode(error.code()));
 
         ApiResult<CoordinatorKey, ProducerIdAndEpoch> result = handler.handleResponse(node, keys, response);
         assertEquals(emptyMap(), result.completedKeys);

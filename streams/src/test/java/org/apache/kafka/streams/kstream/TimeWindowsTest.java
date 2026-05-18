@@ -162,18 +162,18 @@ public class TimeWindowsTest {
         verifyInEquality(TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(9)), TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(4)));
 
         verifyInEquality(
-            TimeWindows.ofSizeAndGrace(ofMillis(4), ofMillis(2)).advanceBy(ofMillis(2)),
-            TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(2)).advanceBy(ofMillis(2))
+                TimeWindows.ofSizeAndGrace(ofMillis(4), ofMillis(2)).advanceBy(ofMillis(2)),
+                TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(2)).advanceBy(ofMillis(2))
         );
 
         verifyInEquality(
-            TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(2)).advanceBy(ofMillis(1)),
-            TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(2)).advanceBy(ofMillis(2))
+                TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(2)).advanceBy(ofMillis(1)),
+                TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(2)).advanceBy(ofMillis(2))
         );
 
         assertNotEquals(
-            TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(1)).advanceBy(ofMillis(2)),
-            TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(2)).advanceBy(ofMillis(2))
+                TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(1)).advanceBy(ofMillis(2)),
+                TimeWindows.ofSizeAndGrace(ofMillis(3), ofMillis(2)).advanceBy(ofMillis(2))
         );
     }
 }

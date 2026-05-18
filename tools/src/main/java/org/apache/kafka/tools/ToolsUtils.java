@@ -32,7 +32,8 @@ import java.util.stream.Collectors;
 public class ToolsUtils {
     /**
      * print out the metrics in alphabetical order
-     * @param metrics   the metrics to be printed out
+     *
+     * @param metrics the metrics to be printed out
      */
     public static void printMetrics(Map<MetricName, ? extends Metric> metrics) {
         if (metrics != null && !metrics.isEmpty()) {
@@ -60,9 +61,9 @@ public class ToolsUtils {
     }
 
     private static void appendColumnValue(
-        StringBuilder rowBuilder,
-        String value,
-        int length
+            StringBuilder rowBuilder,
+            String value,
+            int length
     ) {
         int padLength = length - value.length();
         rowBuilder.append(value);
@@ -71,9 +72,9 @@ public class ToolsUtils {
     }
 
     private static void printRow(
-        List<Integer> columnLengths,
-        List<String> row,
-        PrintStream out
+            List<Integer> columnLengths,
+            List<String> row,
+            PrintStream out
     ) {
         StringBuilder rowBuilder = new StringBuilder();
         for (int i = 0; i < row.size(); i++) {
@@ -86,13 +87,13 @@ public class ToolsUtils {
     }
 
     public static void prettyPrintTable(
-        List<String> headers,
-        List<List<String>> rows,
-        PrintStream out
+            List<String> headers,
+            List<List<String>> rows,
+            PrintStream out
     ) {
         List<Integer> columnLengths = headers.stream()
-            .map(String::length)
-            .collect(Collectors.toList());
+                .map(String::length)
+                .collect(Collectors.toList());
 
         for (List<String> row : rows) {
             for (int i = 0; i < headers.size(); i++) {
@@ -114,7 +115,7 @@ public class ToolsUtils {
         if (hostPort.contains(",")) {
             hostPorts = hostPort.split(",");
         } else {
-            hostPorts = new String[] {hostPort};
+            hostPorts = new String[]{hostPort};
         }
 
         String[] validHostPort = Arrays.stream(hostPorts)
@@ -142,10 +143,10 @@ public class ToolsUtils {
     }
 
     /**
-     * @param set Source set.
+     * @param set      Source set.
      * @param toRemove Elements to remove.
+     * @param <T>      Element type.
      * @return {@code set} copy without {@code toRemove} elements.
-     * @param <T> Element type.
      */
     @SuppressWarnings("unchecked")
     public static <T> Set<T> minus(Set<T> set, T... toRemove) {

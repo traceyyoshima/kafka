@@ -122,14 +122,14 @@ public class KTableKTableForeignKeyInnerJoinCustomPartitionerIntegrationTest {
         PRODUCER_CONFIG_2.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
         final List<KeyValue<String, String>> table1 = asList(
-            new KeyValue<>("ID123-1", "ID123-A1"),
-            new KeyValue<>("ID123-2", "ID123-A2"),
-            new KeyValue<>("ID123-3", "ID123-A3"),
-            new KeyValue<>("ID123-4", "ID123-A4")
+                new KeyValue<>("ID123-1", "ID123-A1"),
+                new KeyValue<>("ID123-2", "ID123-A2"),
+                new KeyValue<>("ID123-3", "ID123-A3"),
+                new KeyValue<>("ID123-4", "ID123-A4")
         );
 
         final List<KeyValue<String, String>> table2 = Collections.singletonList(
-            new KeyValue<>("ID123", "BBB")
+                new KeyValue<>("ID123", "BBB")
         );
 
         IntegrationTestUtils.produceKeyValuesSynchronously(TABLE_1, table1, PRODUCER_CONFIG_1, MOCK_TIME);
@@ -203,14 +203,14 @@ public class KTableKTableForeignKeyInnerJoinCustomPartitionerIntegrationTest {
 
         final List<KafkaStreams> kafkaStreamsList = asList(streams, streamsTwo, streamsThree);
 
-        for (final KafkaStreams stream: kafkaStreamsList) {
+        for (final KafkaStreams stream : kafkaStreamsList) {
             stream.setUncaughtExceptionHandler(e -> {
                 assertThat(e.getCause().getMessage(), equalTo("The partitions returned by StreamPartitioner#partitions method when used for FK join should be a singleton set"));
                 return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_CLIENT;
             });
         }
 
-        for (final KafkaStreams stream: kafkaStreamsList) {
+        for (final KafkaStreams stream : kafkaStreamsList) {
             stream.start();
         }
 
@@ -234,9 +234,9 @@ public class KTableKTableForeignKeyInnerJoinCustomPartitionerIntegrationTest {
         startApplicationAndWaitUntilRunning(kafkaStreamsList, ofSeconds(120));
 
         final Set<KeyValue<String, String>> result = new HashSet<>(waitUntilMinKeyValueRecordsReceived(
-            CONSUMER_CONFIG,
-            OUTPUT,
-            expectedResult.size()));
+                CONSUMER_CONFIG,
+                OUTPUT,
+                expectedResult.size()));
 
         assertThat(expectedResult, equalTo(result));
     }
@@ -258,22 +258,22 @@ public class KTableKTableForeignKeyInnerJoinCustomPartitionerIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KTable<String, String> table1 = builder.stream(TABLE_1,
-            Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true), serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)))
-            .repartition(repartitionA())
-            .toTable(Named.as("table.a"));
+                        Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true), serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)))
+                .repartition(repartitionA())
+                .toTable(Named.as("table.a"));
 
         final KTable<String, String> table2 = builder
-            .stream(TABLE_2,
-                Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true), serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)))
-            .repartition(repartitionB())
-            .toTable(Named.as("table.b"));
+                .stream(TABLE_2,
+                        Consumed.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true), serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)))
+                .repartition(repartitionB())
+                .toTable(Named.as("table.b"));
 
         final Materialized<String, String, KeyValueStore<Bytes, byte[]>> materialized;
         if (queryableName != null) {
             materialized = Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as(queryableName)
-                .withKeySerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true))
-                .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
-                .withCachingDisabled();
+                    .withKeySerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true))
+                    .withValueSerde(serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
+                    .withCachingDisabled();
         } else {
             throw new RuntimeException("Current implementation of joinOnForeignKey requires a materialized store");
         }
@@ -281,15 +281,15 @@ public class KTableKTableForeignKeyInnerJoinCustomPartitionerIntegrationTest {
         final ValueJoiner<String, String, String> joiner = (value1, value2) -> "value1=" + value1 + ",value2=" + value2;
 
         final TableJoined<String, String> tableJoined = TableJoined.with(
-            (topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Math.abs(getKeyB(key).hashCode()) % numPartitions)),
-            (topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Math.abs(key.hashCode()) % numPartitions))
+                (topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Math.abs(getKeyB(key).hashCode()) % numPartitions)),
+                (topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Math.abs(key.hashCode()) % numPartitions))
         );
 
         table1.join(table2, KTableKTableForeignKeyInnerJoinCustomPartitionerIntegrationTest::getKeyB, joiner, tableJoined, materialized)
-            .toStream()
-            .to(OUTPUT,
-                Produced.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
-                    serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)));
+                .toStream()
+                .to(OUTPUT,
+                        Produced.with(serdeScope.decorateSerde(Serdes.String(), streamsConfig, true),
+                                serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)));
 
         return new KafkaStreams(builder.build(streamsConfig), streamsConfig);
     }
@@ -339,15 +339,15 @@ public class KTableKTableForeignKeyInnerJoinCustomPartitionerIntegrationTest {
     private static Repartitioned<String, String> repartitionA() {
         final Repartitioned<String, String> repartitioned = Repartitioned.as("a");
         return repartitioned.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
-            .withStreamPartitioner((topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Math.abs(getKeyB(key).hashCode()) % numPartitions)))
-            .withNumberOfPartitions(4);
+                .withStreamPartitioner((topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Math.abs(getKeyB(key).hashCode()) % numPartitions)))
+                .withNumberOfPartitions(4);
     }
 
     private static Repartitioned<String, String> repartitionB() {
         final Repartitioned<String, String> repartitioned = Repartitioned.as("b");
         return repartitioned.withKeySerde(Serdes.String()).withValueSerde(Serdes.String())
-            .withStreamPartitioner((topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Math.abs(key.hashCode()) % numPartitions)))
-            .withNumberOfPartitions(4);
+                .withStreamPartitioner((topic, key, value, numPartitions) -> Optional.of(Collections.singleton(Math.abs(key.hashCode()) % numPartitions)))
+                .withNumberOfPartitions(4);
     }
 
     private static String getKeyB(final String value) {

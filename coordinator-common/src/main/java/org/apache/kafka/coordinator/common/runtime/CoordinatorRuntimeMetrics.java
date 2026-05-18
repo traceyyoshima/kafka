@@ -27,6 +27,7 @@ public interface CoordinatorRuntimeMetrics extends AutoCloseable {
 
     /**
      * Called when the partition state changes.
+     *
      * @param oldState The old state.
      * @param newState The new state to transition to.
      */
@@ -34,6 +35,7 @@ public interface CoordinatorRuntimeMetrics extends AutoCloseable {
 
     /**
      * Record the partition load metric.
+     *
      * @param startTimeMs The partition load start time.
      * @param endTimeMs   The partition load end time.
      */
@@ -56,7 +58,7 @@ public interface CoordinatorRuntimeMetrics extends AutoCloseable {
     /**
      * Record the event purgatory time.
      *
-     * @param durationMs    The time the event was completed.
+     * @param durationMs The time the event was completed.
      */
     void recordEventPurgatoryTime(long durationMs);
 
@@ -76,6 +78,7 @@ public interface CoordinatorRuntimeMetrics extends AutoCloseable {
 
     /**
      * Record the thread idle time.
+     *
      * @param idleTimeMs The idle time in milliseconds.
      */
     void recordThreadIdleTime(double idleTimeMs);
@@ -96,6 +99,7 @@ public interface CoordinatorRuntimeMetrics extends AutoCloseable {
 
     /**
      * Record the background thread busy time.
+     *
      * @param busyTimeMs The busy time in milliseconds.
      */
     void recordBackgroundThreadBusyTime(double busyTimeMs);

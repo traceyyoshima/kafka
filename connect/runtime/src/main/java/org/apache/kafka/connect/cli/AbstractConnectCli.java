@@ -65,21 +65,21 @@ public abstract class AbstractConnectCli<H extends Herder, T extends WorkerConfi
      * The first CLI argument is assumed to be the Connect worker properties file and is processed by default. This method
      * can be overridden if there are more arguments that need to be processed.
      *
-     * @param connect the {@link Connect} instance that can be stopped (via {@link Connect#stop()}) if there's an error
-     *                encountered while processing the additional CLI arguments.
+     * @param connect   the {@link Connect} instance that can be stopped (via {@link Connect#stop()}) if there's an error
+     *                  encountered while processing the additional CLI arguments.
      * @param extraArgs the extra CLI arguments that need to be processed
      */
     public void processExtraArgs(Connect<H> connect, String[] extraArgs) {
     }
 
     protected abstract H createHerder(T config, String workerId, Plugins plugins,
-                                           ConnectorClientConfigOverridePolicy connectorClientConfigOverridePolicy,
-                                           RestServer restServer, RestClient restClient);
+                                      ConnectorClientConfigOverridePolicy connectorClientConfigOverridePolicy,
+                                      RestServer restServer, RestClient restClient);
 
     protected abstract T createConfig(Map<String, String> workerProps);
 
     /**
-     *  Validate {@link #args}, process worker properties from the first CLI argument, and start {@link Connect}
+     * Validate {@link #args}, process worker properties from the first CLI argument, and start {@link Connect}
      */
     public void run() {
         if (args.length < 1 || List.of(args).contains("--help")) {

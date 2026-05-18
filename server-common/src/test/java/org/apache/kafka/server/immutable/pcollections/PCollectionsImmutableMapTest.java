@@ -72,120 +72,120 @@ public class PCollectionsImmutableMapTest {
     @Test
     public void testDelegationOfUpdated() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(mock -> mock.plus(eq(this), eq(this)), SINGLETON_MAP)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.updated(this, this), identity())
-            .expectWrapperToWrapMockFunctionReturnValue()
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(mock -> mock.plus(eq(this), eq(this)), SINGLETON_MAP)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.updated(this, this), identity())
+                .expectWrapperToWrapMockFunctionReturnValue()
+                .doFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfRemoved() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(mock -> mock.minus(eq(this)), SINGLETON_MAP)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.removed(this), identity())
-            .expectWrapperToWrapMockFunctionReturnValue()
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(mock -> mock.minus(eq(this)), SINGLETON_MAP)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.removed(this), identity())
+                .expectWrapperToWrapMockFunctionReturnValue()
+                .doFunctionDelegationCheck();
     }
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2})
     public void testDelegationOfSize(int mockFunctionReturnValue) {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(HashPMap::size, mockFunctionReturnValue)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::size, identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(HashPMap::size, mockFunctionReturnValue)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::size, identity())
+                .doFunctionDelegationCheck();
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void testDelegationOfIsEmpty(boolean mockFunctionReturnValue) {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(HashPMap::isEmpty, mockFunctionReturnValue)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::isEmpty, identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(HashPMap::isEmpty, mockFunctionReturnValue)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::isEmpty, identity())
+                .doFunctionDelegationCheck();
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void testDelegationOfContainsKey(boolean mockFunctionReturnValue) {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(mock -> mock.containsKey(eq(this)), mockFunctionReturnValue)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.containsKey(this), identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(mock -> mock.containsKey(eq(this)), mockFunctionReturnValue)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.containsKey(this), identity())
+                .doFunctionDelegationCheck();
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void testDelegationOfContainsValue(boolean mockFunctionReturnValue) {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(mock -> mock.containsValue(eq(this)), mockFunctionReturnValue)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.containsValue(this), identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(mock -> mock.containsValue(eq(this)), mockFunctionReturnValue)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.containsValue(this), identity())
+                .doFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfGet() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(mock -> mock.get(eq(this)), new Object())
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.get(this), identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(mock -> mock.get(eq(this)), new Object())
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.get(this), identity())
+                .doFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionPut() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForUnsupportedFunction(mock -> mock.put(eq(this), eq(this)))
-            .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.put(this, this))
-            .doUnsupportedFunctionDelegationCheck();
+                .defineMockConfigurationForUnsupportedFunction(mock -> mock.put(eq(this), eq(this)))
+                .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.put(this, this))
+                .doUnsupportedFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionRemoveByKey() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForUnsupportedFunction(mock -> mock.remove(eq(this)))
-            .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.remove(this))
-            .doUnsupportedFunctionDelegationCheck();
+                .defineMockConfigurationForUnsupportedFunction(mock -> mock.remove(eq(this)))
+                .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.remove(this))
+                .doUnsupportedFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionPutAll() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForVoidMethodInvocation(mock -> mock.putAll(eq(Map.of())))
-            .defineWrapperVoidMethodInvocation(wrapper -> wrapper.putAll(Map.of()))
-            .doUnsupportedVoidFunctionDelegationCheck();
+                .defineMockConfigurationForVoidMethodInvocation(mock -> mock.putAll(eq(Map.of())))
+                .defineWrapperVoidMethodInvocation(wrapper -> wrapper.putAll(Map.of()))
+                .doUnsupportedVoidFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionClear() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForVoidMethodInvocation(HashPMap::clear)
-            .defineWrapperVoidMethodInvocation(PCollectionsImmutableMap::clear)
-            .doUnsupportedVoidFunctionDelegationCheck();
+                .defineMockConfigurationForVoidMethodInvocation(HashPMap::clear)
+                .defineWrapperVoidMethodInvocation(PCollectionsImmutableMap::clear)
+                .doUnsupportedVoidFunctionDelegationCheck();
     }
 
 
     @Test
     public void testDelegationOfKeySet() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(HashPMap::keySet, Set.of())
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::keySet, identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(HashPMap::keySet, Set.of())
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::keySet, identity())
+                .doFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfValues() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(HashPMap::values, Set.of())
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::values, identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(HashPMap::values, Set.of())
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::values, identity())
+                .doFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfEntrySet() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(HashPMap::entrySet, Set.of())
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::entrySet, identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(HashPMap::entrySet, Set.of())
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::entrySet, identity())
+                .doFunctionDelegationCheck();
     }
 
     @Test
@@ -207,106 +207,106 @@ public class PCollectionsImmutableMapTest {
     @Test
     public void testDelegationOfGetOrDefault() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(mock -> mock.getOrDefault(eq(this), eq(this)), this)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.getOrDefault(this, this), identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(mock -> mock.getOrDefault(eq(this), eq(this)), this)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.getOrDefault(this, this), identity())
+                .doFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfForEach() {
         final BiConsumer<Object, Object> mockBiConsumer = mock(BiConsumer.class);
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForVoidMethodInvocation(mock -> mock.forEach(eq(mockBiConsumer)))
-            .defineWrapperVoidMethodInvocation(wrapper -> wrapper.forEach(mockBiConsumer))
-            .doVoidMethodDelegationCheck();
+                .defineMockConfigurationForVoidMethodInvocation(mock -> mock.forEach(eq(mockBiConsumer)))
+                .defineWrapperVoidMethodInvocation(wrapper -> wrapper.forEach(mockBiConsumer))
+                .doVoidMethodDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionReplaceAll() {
         final BiFunction<Object, Object, Object> mockBiFunction = mock(BiFunction.class);
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForVoidMethodInvocation(mock -> mock.replaceAll(eq(mockBiFunction)))
-            .defineWrapperVoidMethodInvocation(wrapper -> wrapper.replaceAll(mockBiFunction))
-            .doUnsupportedVoidFunctionDelegationCheck();
+                .defineMockConfigurationForVoidMethodInvocation(mock -> mock.replaceAll(eq(mockBiFunction)))
+                .defineWrapperVoidMethodInvocation(wrapper -> wrapper.replaceAll(mockBiFunction))
+                .doUnsupportedVoidFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionPutIfAbsent() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForUnsupportedFunction(mock -> mock.putIfAbsent(eq(this), eq(this)))
-            .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.putIfAbsent(this, this))
-            .doUnsupportedFunctionDelegationCheck();
+                .defineMockConfigurationForUnsupportedFunction(mock -> mock.putIfAbsent(eq(this), eq(this)))
+                .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.putIfAbsent(this, this))
+                .doUnsupportedFunctionDelegationCheck();
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void testDelegationOfUnsupportedFunctionRemoveByKeyAndValue(boolean mockFunctionReturnValue) {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(mock -> mock.remove(eq(this), eq(this)), mockFunctionReturnValue)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.remove(this, this), identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(mock -> mock.remove(eq(this), eq(this)), mockFunctionReturnValue)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.remove(this, this), identity())
+                .doFunctionDelegationCheck();
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void testDelegationOfUnsupportedFunctionReplaceWhenMappedToSpecificValue(boolean mockFunctionReturnValue) {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(mock -> mock.replace(eq(this), eq(this), eq(this)), mockFunctionReturnValue)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.replace(this, this, this), identity())
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(mock -> mock.replace(eq(this), eq(this), eq(this)), mockFunctionReturnValue)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(wrapper -> wrapper.replace(this, this, this), identity())
+                .doFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionReplaceWhenMappedToAnyValue() {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForUnsupportedFunction(mock -> mock.replace(eq(this), eq(this)))
-            .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.replace(this, this))
-            .doUnsupportedFunctionDelegationCheck();
+                .defineMockConfigurationForUnsupportedFunction(mock -> mock.replace(eq(this), eq(this)))
+                .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.replace(this, this))
+                .doUnsupportedFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionComputeIfAbsent() {
         final Function<Object, Object> mockFunction = mock(Function.class);
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForUnsupportedFunction(mock -> mock.computeIfAbsent(eq(this), eq(mockFunction)))
-            .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.computeIfAbsent(this, mockFunction))
-            .doUnsupportedFunctionDelegationCheck();
+                .defineMockConfigurationForUnsupportedFunction(mock -> mock.computeIfAbsent(eq(this), eq(mockFunction)))
+                .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.computeIfAbsent(this, mockFunction))
+                .doUnsupportedFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionComputeIfPresent() {
         final BiFunction<Object, Object, Object> mockBiFunction = mock(BiFunction.class);
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForUnsupportedFunction(mock -> mock.computeIfPresent(eq(this), eq(mockBiFunction)))
-            .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.computeIfPresent(this, mockBiFunction))
-            .doUnsupportedFunctionDelegationCheck();
+                .defineMockConfigurationForUnsupportedFunction(mock -> mock.computeIfPresent(eq(this), eq(mockBiFunction)))
+                .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.computeIfPresent(this, mockBiFunction))
+                .doUnsupportedFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionCompute() {
         final BiFunction<Object, Object, Object> mockBiFunction = mock(BiFunction.class);
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForUnsupportedFunction(mock -> mock.compute(eq(this), eq(mockBiFunction)))
-            .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.compute(this, mockBiFunction))
-            .doUnsupportedFunctionDelegationCheck();
+                .defineMockConfigurationForUnsupportedFunction(mock -> mock.compute(eq(this), eq(mockBiFunction)))
+                .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.compute(this, mockBiFunction))
+                .doUnsupportedFunctionDelegationCheck();
     }
 
     @Test
     public void testDelegationOfUnsupportedFunctionMerge() {
         final BiFunction<Object, Object, Object> mockBiFunction = mock(BiFunction.class);
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForUnsupportedFunction(mock -> mock.merge(eq(this), eq(this), eq(mockBiFunction)))
-            .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.merge(this, this, mockBiFunction))
-            .doUnsupportedFunctionDelegationCheck();
+                .defineMockConfigurationForUnsupportedFunction(mock -> mock.merge(eq(this), eq(this), eq(mockBiFunction)))
+                .defineWrapperUnsupportedFunctionInvocation(wrapper -> wrapper.merge(this, this, mockBiFunction))
+                .doUnsupportedFunctionDelegationCheck();
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"a", "b"})
     public void testDelegationOfToString(String mockFunctionReturnValue) {
         new PCollectionsHashMapWrapperDelegationChecker<>()
-            .defineMockConfigurationForFunctionInvocation(HashPMap::toString, mockFunctionReturnValue)
-            .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::toString,
-                text -> "PCollectionsImmutableMap{underlying=" + text + "}")
-            .doFunctionDelegationCheck();
+                .defineMockConfigurationForFunctionInvocation(HashPMap::toString, mockFunctionReturnValue)
+                .defineWrapperFunctionInvocationAndMockReturnValueTransformation(PCollectionsImmutableMap::toString,
+                        text -> "PCollectionsImmutableMap{underlying=" + text + "}")
+                .doFunctionDelegationCheck();
     }
 }

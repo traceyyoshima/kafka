@@ -137,9 +137,9 @@ public class KTableSourceTopicRestartIntegrationTest {
             produceKeyValues("f", "g", "h");
 
             assertNumberValuesRead(
-                readKeyValues,
-                expectedResultsWithDataWrittenDuringRestoreMap,
-                "Table did not get all values after restart");
+                    readKeyValues,
+                    expectedResultsWithDataWrittenDuringRestoreMap,
+                    "Table did not get all values after restart");
         } finally {
             streams.close(Duration.ofSeconds(5));
         }
@@ -165,9 +165,9 @@ public class KTableSourceTopicRestartIntegrationTest {
             produceKeyValues("f", "g", "h");
 
             assertNumberValuesRead(
-                readKeyValues,
-                expectedResultsWithDataWrittenDuringRestoreMap,
-                "Table did not get all values after restart");
+                    readKeyValues,
+                    expectedResultsWithDataWrittenDuringRestoreMap,
+                    "Table did not get all values after restart");
         } finally {
             streams.close(Duration.ofSeconds(5));
         }
@@ -199,9 +199,9 @@ public class KTableSourceTopicRestartIntegrationTest {
                                         final Map<String, String> expectedMap,
                                         final String errorMessage) throws InterruptedException {
         TestUtils.waitForCondition(
-            () -> valueMap.equals(expectedMap),
-            30 * 1000L,
-            errorMessage);
+                () -> valueMap.equals(expectedMap),
+                30 * 1000L,
+                errorMessage);
     }
 
     private void produceKeyValues(final String... keys) {
@@ -212,9 +212,9 @@ public class KTableSourceTopicRestartIntegrationTest {
         }
 
         IntegrationTestUtils.produceKeyValuesSynchronously(sourceTopic,
-                                                           keyValueList,
-                                                           PRODUCER_CONFIG,
-                                                           time);
+                keyValueList,
+                PRODUCER_CONFIG,
+                time);
     }
 
     private Map<String, String> createExpectedResultsMap(final String... keys) {

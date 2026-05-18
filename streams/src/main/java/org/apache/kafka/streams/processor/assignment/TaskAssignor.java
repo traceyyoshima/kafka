@@ -52,9 +52,7 @@ public interface TaskAssignor extends Configurable {
 
     /**
      * @param applicationState the metadata for this Kafka Streams application
-     *
      * @return the assignment of active and standby tasks to KafkaStreams clients
-     *
      * @throws TaskAssignmentException If an error occurs during assignment, and you wish for the rebalance to be retried,
      *                                 you can throw this exception to keep the assignment unchanged and automatically
      *                                 schedule an immediate followup rebalance.
@@ -78,10 +76,12 @@ public interface TaskAssignor extends Configurable {
      * @param error        the corresponding error type if one was detected while processing the returned assignment,
      *                     or AssignmentError.NONE if the returned assignment was valid
      */
-    default void onAssignmentComputed(final GroupAssignment assignment, final GroupSubscription subscription, final AssignmentError error) {}
+    default void onAssignmentComputed(final GroupAssignment assignment, final GroupSubscription subscription, final AssignmentError error) {
+    }
 
     @Override
-    default void configure(final Map<String, ?> configs) {}
+    default void configure(final Map<String, ?> configs) {
+    }
 
     /**
      * Wrapper class for the final assignment of active and standbys tasks to individual

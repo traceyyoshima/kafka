@@ -49,8 +49,9 @@ public class Plugin<T> implements Supplier<T>, AutoCloseable {
 
     /**
      * Wrap an instance into a Plugin.
-     * @param instance the instance to wrap
-     * @param metrics the metrics
+     *
+     * @param instance     the instance to wrap
+     * @param metrics      the metrics
      * @param tagsSupplier supplier to retrieve the tags
      * @return the plugin
      */
@@ -65,9 +66,10 @@ public class Plugin<T> implements Supplier<T>, AutoCloseable {
 
     /**
      * Wrap an instance into a Plugin.
+     *
      * @param instance the instance to wrap
-     * @param metrics the metrics
-     * @param key the value for the <code>config</code> tag
+     * @param metrics  the metrics
+     * @param key      the value for the <code>config</code> tag
      * @return the plugin
      */
     public static <T> Plugin<T> wrapInstance(T instance, Metrics metrics, String key) {
@@ -76,11 +78,12 @@ public class Plugin<T> implements Supplier<T>, AutoCloseable {
 
     /**
      * Wrap an instance into a Plugin.
+     *
      * @param instance the instance to wrap
-     * @param metrics the metrics
-     * @param name extra tag name to add
-     * @param value extra tag value to add
-     * @param key the value for the <code>config</code> tag
+     * @param metrics  the metrics
+     * @param name     extra tag name to add
+     * @param value    extra tag value to add
+     * @param key      the value for the <code>config</code> tag
      * @return the plugin
      */
     public static <T> Plugin<T> wrapInstance(T instance, Metrics metrics, String key, String name, String value) {
@@ -101,9 +104,10 @@ public class Plugin<T> implements Supplier<T>, AutoCloseable {
 
     /**
      * Wrap a list of instances into Plugins.
+     *
      * @param instances the instances to wrap
-     * @param metrics the metrics
-     * @param key the value for the <code>config</code> tag
+     * @param metrics   the metrics
+     * @param key       the value for the <code>config</code> tag
      * @return the list of plugins
      */
     public static <T> List<Plugin<T>> wrapInstances(List<T> instances, Metrics metrics, String key) {

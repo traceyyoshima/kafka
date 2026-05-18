@@ -26,7 +26,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/** An interface for a time ordered buffer.
+/**
+ * An interface for a time ordered buffer.
  *
  * @param <K> Key type
  * @param <V> Value type
@@ -72,8 +73,8 @@ public interface TimeOrderedKeyValueBuffer<K, V, T> extends StateStore {
             if (o == null || getClass() != o.getClass()) return false;
             final Eviction<?, ?> eviction = (Eviction<?, ?>) o;
             return Objects.equals(key, eviction.key) &&
-                Objects.equals(value, eviction.value) &&
-                Objects.equals(recordContext, eviction.recordContext);
+                    Objects.equals(value, eviction.value) &&
+                    Objects.equals(recordContext, eviction.recordContext);
         }
 
         @Override

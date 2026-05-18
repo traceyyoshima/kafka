@@ -59,6 +59,7 @@ import java.util.function.Supplier;
  * asynchronous (e.g. pause/resume). For example, changing the state to paused could cause a race
  * if the task fails at the same time. To protect from these cases, we synchronize status updates
  * using the WorkerTask's monitor.
+ *
  * @param <T> The type of record initially entering the processing pipeline from the source or consumer
  * @param <R> The type of record during transformations (must be an implementation of {@link ConnectRecord})
  */
@@ -430,7 +431,7 @@ abstract class WorkerTask<T, R extends ConnectRecord<R>> implements Runnable {
             metricGroup.close();
 
             metricGroup.addValueMetric(registry.taskStatus, now ->
-                taskStateTimer.currentState().toString().toLowerCase(Locale.getDefault())
+                    taskStateTimer.currentState().toString().toLowerCase(Locale.getDefault())
             );
 
             addRatioMetric(State.RUNNING, registry.taskRunningRatio);

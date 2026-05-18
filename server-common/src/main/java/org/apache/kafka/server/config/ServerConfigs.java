@@ -38,7 +38,9 @@ import static org.apache.kafka.common.config.ConfigDef.Type.LONG;
 import static org.apache.kafka.common.config.ConfigDef.Type.STRING;
 
 public class ServerConfigs {
-    /** ********* General Configuration ***********/
+    /**
+     * ******** General Configuration
+     ***********/
     public static final String BROKER_ID_CONFIG = "broker.id";
     public static final int BROKER_ID_DEFAULT = -1;
     public static final String BROKER_ID_DOC = "The broker id for this server.";
@@ -92,12 +94,16 @@ public class ServerConfigs {
     public static final String BROKER_RACK_CONFIG = "broker.rack";
     public static final String BROKER_RACK_DOC = "Rack of the broker. This will be used in rack aware replication assignment for fault tolerance. Examples: <code>RACK1</code>, <code>us-east-1d</code>";
 
-    /** ********* Controlled shutdown configuration ***********/
+    /**
+     * ******** Controlled shutdown configuration
+     ***********/
     public static final String CONTROLLED_SHUTDOWN_ENABLE_CONFIG = "controlled.shutdown.enable";
     public static final boolean CONTROLLED_SHUTDOWN_ENABLE_DEFAULT = true;
     public static final String CONTROLLED_SHUTDOWN_ENABLE_DOC = "Enable controlled shutdown of the server.";
 
-    /** ********* Fetch Configuration **************/
+    /**
+     * ******** Fetch Configuration
+     **************/
     public static final String MAX_INCREMENTAL_FETCH_SESSION_CACHE_SLOTS_CONFIG = "max.incremental.fetch.session.cache.slots";
     public static final int MAX_INCREMENTAL_FETCH_SESSION_CACHE_SLOTS_DEFAULT = 1000;
     public static final String MAX_INCREMENTAL_FETCH_SESSION_CACHE_SLOTS_DOC = "The maximum number of total incremental fetch sessions that we will maintain. FetchSessionCache is sharded into 8 shards and the limit is equally divided among all shards. Sessions are allocated to each shard in round-robin. Only entries within a shard are considered eligible for eviction.";
@@ -106,12 +112,16 @@ public class ServerConfigs {
     public static final int FETCH_MAX_BYTES_DEFAULT = 55 * 1024 * 1024;
     public static final String FETCH_MAX_BYTES_DOC = "The maximum number of bytes we will return for a fetch request. Must be at least 1024.";
 
-    /** ********* Request Limit Configuration **************/
+    /**
+     * ******** Request Limit Configuration
+     **************/
     public static final String MAX_REQUEST_PARTITION_SIZE_LIMIT_CONFIG = "max.request.partition.size.limit";
     public static final int MAX_REQUEST_PARTITION_SIZE_LIMIT_DEFAULT = 2000;
     public static final String MAX_REQUEST_PARTITION_SIZE_LIMIT_DOC = "The maximum number of partitions can be served in one request.";
 
-    /** Internal Configurations **/
+    /**
+     * Internal Configurations
+     **/
     public static final String UNSTABLE_API_VERSIONS_ENABLE_CONFIG = "unstable.api.versions.enable";
     public static final String UNSTABLE_FEATURE_VERSIONS_ENABLE_CONFIG = "unstable.feature.versions.enable";
 
@@ -119,13 +129,13 @@ public class ServerConfigs {
     public static final String AUTHORIZER_CLASS_NAME_CONFIG = "authorizer.class.name";
     public static final String AUTHORIZER_CLASS_NAME_DEFAULT = "";
     public static final String AUTHORIZER_CLASS_NAME_DOC = "The fully qualified name of a class that implements <code>" +
-           Authorizer.class.getName() + "</code> interface, which is used by the broker for authorization.";
+            Authorizer.class.getName() + "</code> interface, which is used by the broker for authorization.";
     public static final String EARLY_START_LISTENERS_CONFIG = "early.start.listeners";
     public static final String EARLY_START_LISTENERS_DOC = "A comma-separated list of listener names which may be started before the authorizer has finished " +
             "initialization. This is useful when the authorizer is dependent on the cluster itself for bootstrapping, as is the case for " +
             "the StandardAuthorizer (which stores ACLs in the metadata log.) By default, all listeners included in controller.listener.names " +
             "will also be early start listeners. A listener should not appear in this list if it accepts external traffic.";
-    public static final ConfigDef CONFIG_DEF =  new ConfigDef()
+    public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(BROKER_ID_CONFIG, INT, BROKER_ID_DEFAULT, HIGH, BROKER_ID_DOC)
             .define(MESSAGE_MAX_BYTES_CONFIG, INT, ServerLogConfigs.MAX_MESSAGE_BYTES_DEFAULT, atLeast(0), HIGH, MESSAGE_MAX_BYTES_DOC)
             .define(NUM_IO_THREADS_CONFIG, INT, NUM_IO_THREADS_DEFAULT, atLeast(1), HIGH, NUM_IO_THREADS_DOC)

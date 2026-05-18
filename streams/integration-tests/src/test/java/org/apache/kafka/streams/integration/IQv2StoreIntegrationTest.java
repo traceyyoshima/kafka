@@ -136,13 +136,14 @@ public class IQv2StoreIntegrationTest {
 
     private static final long RECORD_TIME = System.currentTimeMillis();
     private static final long WINDOW_START =
-        (RECORD_TIME / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis();
+            (RECORD_TIME / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis();
 
     public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(NUM_BROKERS);
     private static final Position POSITION_0 =
-        Position.fromMap(mkMap(mkEntry(INPUT_TOPIC_NAME, mkMap(mkEntry(0, 5L)))));
+            Position.fromMap(mkMap(mkEntry(INPUT_TOPIC_NAME, mkMap(mkEntry(0, 5L)))));
 
-    public static class UnknownQuery implements Query<Void> { }
+    public static class UnknownQuery implements Query<Void> {
+    }
 
     private KafkaStreams kafkaStreams;
 
@@ -269,7 +270,7 @@ public class IQv2StoreIntegrationTest {
             @Override
             public StoreSupplier<?> supplier() {
                 return Stores.inMemoryWindowStore(STORE_NAME, Duration.ofDays(1), WINDOW_SIZE,
-                                                  false
+                        false
                 );
             }
 
@@ -282,7 +283,7 @@ public class IQv2StoreIntegrationTest {
             @Override
             public StoreSupplier<?> supplier() {
                 return Stores.persistentWindowStore(STORE_NAME, Duration.ofDays(1), WINDOW_SIZE,
-                                                    false
+                        false
                 );
             }
 
@@ -300,7 +301,7 @@ public class IQv2StoreIntegrationTest {
             @Override
             public StoreSupplier<?> supplier() {
                 return Stores.persistentTimestampedWindowStore(STORE_NAME, Duration.ofDays(1),
-                                                               WINDOW_SIZE, false
+                        WINDOW_SIZE, false
                 );
             }
 
@@ -386,7 +387,7 @@ public class IQv2StoreIntegrationTest {
 
     @BeforeAll
     public static void before()
-        throws InterruptedException, IOException, ExecutionException, TimeoutException {
+            throws InterruptedException, IOException, ExecutionException, TimeoutException {
 
         CLUSTER.start();
         CLUSTER.deleteAllTopics();
@@ -404,14 +405,14 @@ public class IQv2StoreIntegrationTest {
                 final int key = i / 2;
                 final int partition = key % partitions;
                 final Future<RecordMetadata> send = producer.send(
-                    new ProducerRecord<>(
-                        INPUT_TOPIC_NAME,
-                        partition,
-                        WINDOW_START + Duration.ofMinutes(2).toMillis() * i,
-                        key,
-                        i,
-                        null
-                    )
+                        new ProducerRecord<>(
+                                INPUT_TOPIC_NAME,
+                                partition,
+                                WINDOW_START + Duration.ofMinutes(2).toMillis() * i,
+                                key,
+                                i,
+                                null
+                        )
                 );
                 futures.add(send);
                 Time.SYSTEM.sleep(1L);
@@ -422,30 +423,30 @@ public class IQv2StoreIntegrationTest {
                 final RecordMetadata recordMetadata = future.get(1, TimeUnit.MINUTES);
                 assertThat(recordMetadata.hasOffset(), is(true));
                 INPUT_POSITION.withComponent(
-                    recordMetadata.topic(),
-                    recordMetadata.partition(),
-                    recordMetadata.offset()
+                        recordMetadata.topic(),
+                        recordMetadata.partition(),
+                        recordMetadata.offset()
                 );
             }
         }
 
         assertThat(INPUT_POSITION, equalTo(
-            Position
-                .emptyPosition()
-                .withComponent(INPUT_TOPIC_NAME, 0, 5L)
-                .withComponent(INPUT_TOPIC_NAME, 1, 3L)
+                Position
+                        .emptyPosition()
+                        .withComponent(INPUT_TOPIC_NAME, 0, 5L)
+                        .withComponent(INPUT_TOPIC_NAME, 1, 3L)
         ));
     }
 
     public void setup(final boolean cache, final boolean log, final StoresToTest storeToTest, final String kind, final String groupProtocol, final boolean withHeaders) {
         final StoreSupplier<?> supplier = storeToTest.supplier();
         final Properties streamsConfig = streamsConfiguration(
-            cache,
-            log,
-            storeToTest.name(),
-            kind,
-            groupProtocol,
-            withHeaders
+                cache,
+                log,
+                storeToTest.name(),
+                kind,
+                groupProtocol,
+                withHeaders
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
@@ -469,11 +470,11 @@ public class IQv2StoreIntegrationTest {
         // get a valid response.
 
         kafkaStreams =
-            IntegrationTestUtils.getStartedStreams(
-                streamsConfig,
-                builder,
-                true
-            );
+                IntegrationTestUtils.getStartedStreams(
+                        streamsConfig,
+                        builder,
+                        true
+                );
     }
 
     private void setUpSessionDSLTopology(final SessionBytesStoreSupplier supplier,
@@ -481,7 +482,7 @@ public class IQv2StoreIntegrationTest {
                                          final boolean cache,
                                          final boolean log) {
         final Materialized<Integer, Integer, SessionStore<Bytes, byte[]>> materialized =
-            Materialized.as(supplier);
+                Materialized.as(supplier);
 
         if (cache) {
             materialized.withCachingEnabled();
@@ -496,15 +497,15 @@ public class IQv2StoreIntegrationTest {
         }
 
         builder
-            .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-            .groupByKey()
-            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(WINDOW_SIZE))
-            .aggregate(
-                () -> 0,
-                (key, value, aggregate) -> aggregate + value,
-                (aggKey, aggOne, aggTwo) -> aggOne + aggTwo,
-                materialized
-            );
+                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                .groupByKey()
+                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(WINDOW_SIZE))
+                .aggregate(
+                        () -> 0,
+                        (key, value, aggregate) -> aggregate + value,
+                        (aggKey, aggOne, aggTwo) -> aggOne + aggTwo,
+                        materialized
+                );
     }
 
     private void setUpWindowDSLTopology(final WindowBytesStoreSupplier supplier,
@@ -512,7 +513,7 @@ public class IQv2StoreIntegrationTest {
                                         final boolean cache,
                                         final boolean log) {
         final Materialized<Integer, Integer, WindowStore<Bytes, byte[]>> materialized =
-            Materialized.as(supplier);
+                Materialized.as(supplier);
 
         if (cache) {
             materialized.withCachingEnabled();
@@ -527,14 +528,14 @@ public class IQv2StoreIntegrationTest {
         }
 
         builder
-            .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-            .groupByKey()
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(WINDOW_SIZE))
-            .aggregate(
-                () -> 0,
-                (key, value, aggregate) -> aggregate + value,
-                materialized
-            );
+                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                .groupByKey()
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(WINDOW_SIZE))
+                .aggregate(
+                        () -> 0,
+                        (key, value, aggregate) -> aggregate + value,
+                        materialized
+                );
     }
 
     private void setUpKeyValueDSLTopology(final KeyValueBytesStoreSupplier supplier,
@@ -543,7 +544,7 @@ public class IQv2StoreIntegrationTest {
                                           final boolean log,
                                           final StoresToTest storeToTest) {
         final Materialized<Integer, Integer, KeyValueStore<Bytes, byte[]>> materialized =
-            Materialized.as(supplier);
+                Materialized.as(supplier);
 
         if (cache) {
             materialized.withCachingEnabled();
@@ -559,15 +560,15 @@ public class IQv2StoreIntegrationTest {
 
         if (storeToTest.global()) {
             builder.globalTable(
-                INPUT_TOPIC_NAME,
-                Consumed.with(Serdes.Integer(), Serdes.Integer()),
-                materialized
+                    INPUT_TOPIC_NAME,
+                    Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                    materialized
             );
         } else {
             builder.table(
-                INPUT_TOPIC_NAME,
-                Consumed.with(Serdes.Integer(), Serdes.Integer()),
-                materialized
+                    INPUT_TOPIC_NAME,
+                    Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                    materialized
             );
         }
     }
@@ -581,38 +582,38 @@ public class IQv2StoreIntegrationTest {
         final ProcessorSupplier<Integer, Integer, Void, Void> processorSupplier;
         if (storeToTest.timestamped()) {
             keyValueStoreStoreBuilder = Stores.timestampedKeyValueStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier = () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
                 @Override
                 public void process(final Record<Integer, Integer> record) {
                     final TimestampedKeyValueStore<Integer, Integer> stateStore =
-                        context().getStateStore(keyValueStoreStoreBuilder.name());
+                            context().getStateStore(keyValueStoreStoreBuilder.name());
                     stateStore.put(
-                        record.key(),
-                        ValueAndTimestamp.make(
-                            record.value(), record.timestamp()
-                        )
+                            record.key(),
+                            ValueAndTimestamp.make(
+                                    record.value(), record.timestamp()
+                            )
                     );
                 }
             };
         } else {
             keyValueStoreStoreBuilder = Stores.keyValueStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier =
-                () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
-                    @Override
-                    public void process(final Record<Integer, Integer> record) {
-                        final KeyValueStore<Integer, Integer> stateStore =
-                            context().getStateStore(keyValueStoreStoreBuilder.name());
-                        stateStore.put(record.key(), record.value());
-                    }
-                };
+                    () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
+                        @Override
+                        public void process(final Record<Integer, Integer> record) {
+                            final KeyValueStore<Integer, Integer> stateStore =
+                                    context().getStateStore(keyValueStoreStoreBuilder.name());
+                            stateStore.put(record.key(), record.value());
+                        }
+                    };
         }
         if (cache) {
             keyValueStoreStoreBuilder.withCachingEnabled();
@@ -626,16 +627,16 @@ public class IQv2StoreIntegrationTest {
         }
         if (storeToTest.global()) {
             builder.addGlobalStore(
-                keyValueStoreStoreBuilder,
-                INPUT_TOPIC_NAME,
-                Consumed.with(Serdes.Integer(), Serdes.Integer()),
-                processorSupplier
+                    keyValueStoreStoreBuilder,
+                    INPUT_TOPIC_NAME,
+                    Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                    processorSupplier
             );
         } else {
             builder.addStateStore(keyValueStoreStoreBuilder);
             builder
-                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-                .process(processorSupplier, keyValueStoreStoreBuilder.name());
+                    .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                    .process(processorSupplier, keyValueStoreStoreBuilder.name());
         }
 
     }
@@ -649,41 +650,41 @@ public class IQv2StoreIntegrationTest {
         final ProcessorSupplier<Integer, Integer, Void, Void> processorSupplier;
         if (storeToTest.timestamped()) {
             windowStoreStoreBuilder = Stores.timestampedWindowStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier = () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
                 @Override
                 public void process(final Record<Integer, Integer> record) {
                     final TimestampedWindowStore<Integer, Integer> stateStore =
-                        context().getStateStore(windowStoreStoreBuilder.name());
+                            context().getStateStore(windowStoreStoreBuilder.name());
                     // We don't re-implement the DSL logic (which implements sum) but instead just keep the lasted value per window
                     stateStore.put(
-                        record.key(),
-                        ValueAndTimestamp.make(
-                            record.value(), record.timestamp()
-                        ),
-                        (record.timestamp() / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis()
+                            record.key(),
+                            ValueAndTimestamp.make(
+                                    record.value(), record.timestamp()
+                            ),
+                            (record.timestamp() / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis()
                     );
                 }
             };
         } else {
             windowStoreStoreBuilder = Stores.windowStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier =
-                () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
-                    @Override
-                    public void process(final Record<Integer, Integer> record) {
-                        final WindowStore<Integer, Integer> stateStore =
-                            context().getStateStore(windowStoreStoreBuilder.name());
-                        // We don't re-implement the DSL logic (which implements sum) but instead just keep the lasted value per window
-                        stateStore.put(record.key(), record.value(), (record.timestamp() / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis());
-                    }
-                };
+                    () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
+                        @Override
+                        public void process(final Record<Integer, Integer> record) {
+                            final WindowStore<Integer, Integer> stateStore =
+                                    context().getStateStore(windowStoreStoreBuilder.name());
+                            // We don't re-implement the DSL logic (which implements sum) but instead just keep the lasted value per window
+                            stateStore.put(record.key(), record.value(), (record.timestamp() / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis());
+                        }
+                    };
         }
         if (cache) {
             windowStoreStoreBuilder.withCachingEnabled();
@@ -697,16 +698,16 @@ public class IQv2StoreIntegrationTest {
         }
         if (storeToTest.global()) {
             builder.addGlobalStore(
-                windowStoreStoreBuilder,
-                INPUT_TOPIC_NAME,
-                Consumed.with(Serdes.Integer(), Serdes.Integer()),
-                processorSupplier
+                    windowStoreStoreBuilder,
+                    INPUT_TOPIC_NAME,
+                    Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                    processorSupplier
             );
         } else {
             builder.addStateStore(windowStoreStoreBuilder);
             builder
-                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-                .process(processorSupplier, windowStoreStoreBuilder.name());
+                    .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                    .process(processorSupplier, windowStoreStoreBuilder.name());
         }
 
     }
@@ -719,20 +720,20 @@ public class IQv2StoreIntegrationTest {
         final StoreBuilder<?> sessionStoreStoreBuilder;
         final ProcessorSupplier<Integer, Integer, Void, Void> processorSupplier;
         sessionStoreStoreBuilder = Stores.sessionStoreBuilder(
-            supplier,
-            Serdes.Integer(),
-            Serdes.Integer()
+                supplier,
+                Serdes.Integer(),
+                Serdes.Integer()
         );
         processorSupplier = () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
             @Override
             public void process(final Record<Integer, Integer> record) {
                 final SessionStore<Integer, Integer> stateStore =
-                    context().getStateStore(sessionStoreStoreBuilder.name());
+                        context().getStateStore(sessionStoreStoreBuilder.name());
                 stateStore.put(
-                    // we do not re-implement the actual session-window logic from the DSL here to keep the test simple,
-                    // but instead just put each record into it's own session
-                    new Windowed<>(record.key(), new SessionWindow(record.timestamp(), record.timestamp())),
-                    record.value()
+                        // we do not re-implement the actual session-window logic from the DSL here to keep the test simple,
+                        // but instead just put each record into it's own session
+                        new Windowed<>(record.key(), new SessionWindow(record.timestamp(), record.timestamp())),
+                        record.value()
                 );
             }
         };
@@ -748,16 +749,16 @@ public class IQv2StoreIntegrationTest {
         }
         if (storeToTest.global()) {
             builder.addGlobalStore(
-                sessionStoreStoreBuilder,
-                INPUT_TOPIC_NAME,
-                Consumed.with(Serdes.Integer(), Serdes.Integer()),
-                processorSupplier
+                    sessionStoreStoreBuilder,
+                    INPUT_TOPIC_NAME,
+                    Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                    processorSupplier
             );
         } else {
             builder.addStateStore(sessionStoreStoreBuilder);
             builder
-                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-                .process(processorSupplier, sessionStoreStoreBuilder.name());
+                    .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                    .process(processorSupplier, sessionStoreStoreBuilder.name());
         }
 
     }
@@ -790,7 +791,7 @@ public class IQv2StoreIntegrationTest {
                 shouldCollectExecutionInfoUnderFailure();
                 if (storeToTest.keyValue()) {
                     if (storeToTest.timestamped()) {
-                        shouldHandleKeyQuery(2,  5);
+                        shouldHandleKeyQuery(2, 5);
                         shouldHandleTimestampedKeyQuery(2, ValueAndTimestamp.makeAllowNullable(5, WINDOW_START + Duration.ofMinutes(2).toMillis() * 5));
                         shouldHandleRangeQueries();
                         shouldHandleTimestampedRangeQueries(true);
@@ -817,7 +818,7 @@ public class IQv2StoreIntegrationTest {
                 if (storeToTest.isWindowed()) {
                     if (storeToTest.timestamped()) {
                         final Function<ValueAndTimestamp<Integer>, Integer> valueExtractor =
-                            ValueAndTimestamp::value;
+                                ValueAndTimestamp::value;
                         if (kind.equals("DSL")) {
                             shouldHandleWindowKeyDSLQueries(valueExtractor);
                             shouldHandleWindowRangeDSLQueries(valueExtractor);
@@ -856,266 +857,266 @@ public class IQv2StoreIntegrationTest {
 
     private <T> void shouldHandleRangeQueries() {
         shouldHandleRangeQuery(
-            Optional.of(0),
-            Optional.of(4),
-            true,
-            Arrays.asList(1, 5, 9, 3, 7)
+                Optional.of(0),
+                Optional.of(4),
+                true,
+                Arrays.asList(1, 5, 9, 3, 7)
         );
 
         shouldHandleRangeQuery(
-            Optional.of(1),
-            Optional.of(3),
-            true,
-            Arrays.asList(5, 3, 7)
+                Optional.of(1),
+                Optional.of(3),
+                true,
+                Arrays.asList(5, 3, 7)
         );
 
         shouldHandleRangeQuery(
-            Optional.of(3),
-            Optional.empty(),
-            true,
-            Arrays.asList(9, 7)
+                Optional.of(3),
+                Optional.empty(),
+                true,
+                Arrays.asList(9, 7)
         );
 
         shouldHandleRangeQuery(
-            Optional.empty(),
-            Optional.of(3),
-            true,
-            Arrays.asList(1, 5, 3, 7)
+                Optional.empty(),
+                Optional.of(3),
+                true,
+                Arrays.asList(1, 5, 3, 7)
         );
 
         shouldHandleRangeQuery(
-            Optional.empty(),
-            Optional.empty(),
-            true,
-            Arrays.asList(1, 5, 9, 3, 7)
+                Optional.empty(),
+                Optional.empty(),
+                true,
+                Arrays.asList(1, 5, 9, 3, 7)
         );
 
         shouldHandleRangeQuery(
-            Optional.of(0),
-            Optional.of(4),
-            false,
-            Arrays.asList(9, 5, 1, 7, 3)
+                Optional.of(0),
+                Optional.of(4),
+                false,
+                Arrays.asList(9, 5, 1, 7, 3)
         );
 
         shouldHandleRangeQuery(
-            Optional.of(1),
-            Optional.of(3),
-            false,
-            Arrays.asList(5, 7, 3)
+                Optional.of(1),
+                Optional.of(3),
+                false,
+                Arrays.asList(5, 7, 3)
         );
 
         shouldHandleRangeQuery(
-            Optional.of(3),
-            Optional.empty(),
-            false,
-            Arrays.asList(9, 7)
+                Optional.of(3),
+                Optional.empty(),
+                false,
+                Arrays.asList(9, 7)
         );
 
         shouldHandleRangeQuery(
-            Optional.empty(),
-            Optional.of(3),
-            false,
-            Arrays.asList(5, 1, 7, 3)
+                Optional.empty(),
+                Optional.of(3),
+                false,
+                Arrays.asList(5, 1, 7, 3)
         );
 
         shouldHandleRangeQuery(
-            Optional.empty(),
-            Optional.empty(),
-            false,
-            Arrays.asList(9, 5, 1, 7, 3)
+                Optional.empty(),
+                Optional.empty(),
+                false,
+                Arrays.asList(9, 5, 1, 7, 3)
         );
     }
 
     private <T> void shouldHandleTimestampedRangeQueries(final boolean isTimestamped) {
         shouldHandleTimestampedRangeQuery(
-            Optional.of(0),
-            Optional.of(4),
-            true,
-            Arrays.asList(ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
-                          ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
-                          ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
-                          ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
+                Optional.of(0),
+                Optional.of(4),
+                true,
+                Arrays.asList(ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
+                        ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
+                        ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
+                        ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
 
         shouldHandleTimestampedRangeQuery(
-            Optional.of(1),
-            Optional.of(3),
-            true,
-            Arrays.asList(ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
-                          ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
+                Optional.of(1),
+                Optional.of(3),
+                true,
+                Arrays.asList(ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
+                        ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
 
         shouldHandleTimestampedRangeQuery(
-            Optional.of(3),
-            Optional.empty(),
-            true,
-            Arrays.asList(ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L))
+                Optional.of(3),
+                Optional.empty(),
+                true,
+                Arrays.asList(ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L))
         );
 
         shouldHandleTimestampedRangeQuery(
-            Optional.empty(),
-            Optional.of(3),
-            true,
-            Arrays.asList(ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
-                          ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
-                          ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
+                Optional.empty(),
+                Optional.of(3),
+                true,
+                Arrays.asList(ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
+                        ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
+                        ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
 
         shouldHandleTimestampedRangeQuery(
-            Optional.empty(),
-            Optional.empty(),
-            true,
-            Arrays.asList(ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
-                          ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
-                          ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
-                          ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
+                Optional.empty(),
+                Optional.empty(),
+                true,
+                Arrays.asList(ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
+                        ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
+                        ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
+                        ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
 
         shouldHandleTimestampedRangeQuery(
-            Optional.of(0),
-            Optional.of(4),
-            false,
-            Arrays.asList(ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
-                          ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
-                          ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L),
-                          ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L)));
+                Optional.of(0),
+                Optional.of(4),
+                false,
+                Arrays.asList(ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
+                        ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
+                        ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L),
+                        ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L)));
 
         shouldHandleTimestampedRangeQuery(
-            Optional.of(1),
-            Optional.of(3),
-            false,
-            Arrays.asList(ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L),
-                          ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L)));
+                Optional.of(1),
+                Optional.of(3),
+                false,
+                Arrays.asList(ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L),
+                        ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L)));
 
         shouldHandleTimestampedRangeQuery(
-            Optional.of(3),
-            Optional.empty(),
-            false,
-            Arrays.asList(ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
+                Optional.of(3),
+                Optional.empty(),
+                false,
+                Arrays.asList(ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L)));
 
         shouldHandleTimestampedRangeQuery(
-            Optional.empty(),
-            Optional.of(3),
-            false,
-            Arrays.asList(ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
-                          ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L),
-                          ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L)));
+                Optional.empty(),
+                Optional.of(3),
+                false,
+                Arrays.asList(ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
+                        ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L),
+                        ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L)));
 
         shouldHandleTimestampedRangeQuery(
-            Optional.empty(),
-            Optional.empty(),
-            false,
-            Arrays.asList(ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
-                          ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
-                          ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
-                          ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L),
-                          ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L)));
+                Optional.empty(),
+                Optional.empty(),
+                false,
+                Arrays.asList(ValueAndTimestamp.make(9, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 9 : -1L),
+                        ValueAndTimestamp.make(5, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 5 : -1L),
+                        ValueAndTimestamp.make(1, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() : -1L),
+                        ValueAndTimestamp.make(7, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 7 : -1L),
+                        ValueAndTimestamp.make(3, isTimestamped ? WINDOW_START + Duration.ofMinutes(2).toMillis() * 3 : -1L)));
     }
 
     private <T> void shouldHandleWindowKeyDSLQueries(final Function<T, Integer> extractor) {
 
         // tightest possible start range
         shouldHandleWindowKeyQuery(
-            0,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START),
-            extractor,
-            Set.of(1)
+                0,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START),
+                extractor,
+                Set.of(1)
         );
 
         // miss the window start range
         shouldHandleWindowKeyQuery(
-            0,
-            Instant.ofEpochMilli(WINDOW_START - 1),
-            Instant.ofEpochMilli(WINDOW_START - 1),
-            extractor,
-            Set.of()
+                0,
+                Instant.ofEpochMilli(WINDOW_START - 1),
+                Instant.ofEpochMilli(WINDOW_START - 1),
+                extractor,
+                Set.of()
         );
 
         // do the window key query at the first window and the key of record which we want to query is 2
         shouldHandleWindowKeyQuery(
-            2,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START),
-            extractor,
-            Set.of()
+                2,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START),
+                extractor,
+                Set.of()
         );
 
         // miss the key
         shouldHandleWindowKeyQuery(
-            999,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START),
-            extractor,
-            Set.of()
+                999,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START),
+                extractor,
+                Set.of()
         );
 
         // miss both
         shouldHandleWindowKeyQuery(
-            999,
-            Instant.ofEpochMilli(WINDOW_START - 1),
-            Instant.ofEpochMilli(WINDOW_START - 1),
-            extractor,
-            Set.of()
+                999,
+                Instant.ofEpochMilli(WINDOW_START - 1),
+                Instant.ofEpochMilli(WINDOW_START - 1),
+                extractor,
+                Set.of()
         );
 
         // do the window key query at the first and the second windows and the key of record which we want to query is 0
         shouldHandleWindowKeyQuery(
-            0,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
-            extractor,
-            Set.of(1)
+                0,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
+                extractor,
+                Set.of(1)
         );
 
         // do the window key query at the first window and the key of record which we want to query is 1
         shouldHandleWindowKeyQuery(
-            1,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START),
-            extractor,
-            Set.of(2)
+                1,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START),
+                extractor,
+                Set.of(2)
         );
 
         // do the window key query at the second and the third windows and the key of record which we want to query is 2
         shouldHandleWindowKeyQuery(
-            2,
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(10).toMillis()),
-            extractor,
-            Set.of(4, 5)
+                2,
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(10).toMillis()),
+                extractor,
+                Set.of(4, 5)
         );
 
         // do the window key query at the second and the third windows and the key of record which we want to query is 3
         shouldHandleWindowKeyQuery(
-            3,
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(10).toMillis()),
-            extractor,
-            Set.of(13)
+                3,
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(10).toMillis()),
+                extractor,
+                Set.of(13)
         );
 
         // do the window key query at the fourth and the fifth windows and the key of record which we want to query is 4
         shouldHandleWindowKeyQuery(
-            4,
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(15).toMillis()),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(20).toMillis()),
-            extractor,
-            Set.of(17)
+                4,
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(15).toMillis()),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(20).toMillis()),
+                extractor,
+                Set.of(17)
         );
 
         // do the window key query at the fifth window and the key of record which we want to query is 4
         shouldHandleWindowKeyQuery(
-            4,
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(20).toMillis()),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(24).toMillis()),
-            extractor,
-            Set.of()
+                4,
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(20).toMillis()),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(24).toMillis()),
+                extractor,
+                Set.of()
         );
     }
 
@@ -1123,101 +1124,101 @@ public class IQv2StoreIntegrationTest {
 
         // tightest possible start range
         shouldHandleWindowKeyQuery(
-            0,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START),
-            extractor,
-            Set.of(1)
+                0,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START),
+                extractor,
+                Set.of(1)
         );
 
         // miss the window start range
         shouldHandleWindowKeyQuery(
-            0,
-            Instant.ofEpochMilli(WINDOW_START - 1),
-            Instant.ofEpochMilli(WINDOW_START - 1),
-            extractor,
-            Set.of()
+                0,
+                Instant.ofEpochMilli(WINDOW_START - 1),
+                Instant.ofEpochMilli(WINDOW_START - 1),
+                extractor,
+                Set.of()
         );
 
         // do the window key query at the first window and the key of record which we want to query is 2
         shouldHandleWindowKeyQuery(
-            2,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START),
-            extractor,
-            Set.of()
+                2,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START),
+                extractor,
+                Set.of()
         );
 
         // miss the key
         shouldHandleWindowKeyQuery(
-            999,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START),
-            extractor,
-            Set.of()
+                999,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START),
+                extractor,
+                Set.of()
         );
 
         // miss both
         shouldHandleWindowKeyQuery(
-            999,
-            Instant.ofEpochMilli(WINDOW_START - 1),
-            Instant.ofEpochMilli(WINDOW_START - 1),
-            extractor,
-            Set.of()
+                999,
+                Instant.ofEpochMilli(WINDOW_START - 1),
+                Instant.ofEpochMilli(WINDOW_START - 1),
+                extractor,
+                Set.of()
         );
 
         // do the window key query at the first and the second windows and the key of record which we want to query is 0
         shouldHandleWindowKeyQuery(
-            0,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
-            extractor,
-            Set.of(1)
+                0,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
+                extractor,
+                Set.of(1)
         );
 
         // do the window key query at the first window and the key of record which we want to query is 1
         shouldHandleWindowKeyQuery(
-            1,
-            Instant.ofEpochMilli(WINDOW_START),
-            Instant.ofEpochMilli(WINDOW_START),
-            extractor,
-            Set.of(2)
+                1,
+                Instant.ofEpochMilli(WINDOW_START),
+                Instant.ofEpochMilli(WINDOW_START),
+                extractor,
+                Set.of(2)
         );
 
         // do the window key query at the second and the third windows and the key of record which we want to query is 2
         shouldHandleWindowKeyQuery(
-            2,
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(10).toMillis()),
-            extractor,
-            Set.of(4, 5)
+                2,
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(10).toMillis()),
+                extractor,
+                Set.of(4, 5)
         );
 
         // do the window key query at the second and the third windows and the key of record which we want to query is 3
         shouldHandleWindowKeyQuery(
-            3,
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(10).toMillis()),
-            extractor,
-            Set.of(7)
+                3,
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(5).toMillis()),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(10).toMillis()),
+                extractor,
+                Set.of(7)
         );
 
         // do the window key query at the fourth and the fifth windows and the key of record which we want to query is 4
         shouldHandleWindowKeyQuery(
-            4,
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(15).toMillis()),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(20).toMillis()),
-            extractor,
-            Set.of(9)
+                4,
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(15).toMillis()),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(20).toMillis()),
+                extractor,
+                Set.of(9)
         );
 
         // do the window key query at the fifth window and the key of record which we want to query is 4
         shouldHandleWindowKeyQuery(
-            4,
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(20).toMillis()),
-            Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(24).toMillis()),
-            extractor,
-            Set.of()
+                4,
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(20).toMillis()),
+                Instant.ofEpochMilli(WINDOW_START + Duration.ofMinutes(24).toMillis()),
+                extractor,
+                Set.of()
         );
     }
 
@@ -1227,108 +1228,108 @@ public class IQv2StoreIntegrationTest {
 
         // miss the window start
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart - 1),
-            Instant.ofEpochMilli(windowStart - 1),
-            extractor,
-            Set.of()
+                Instant.ofEpochMilli(windowStart - 1),
+                Instant.ofEpochMilli(windowStart - 1),
+                extractor,
+                Set.of()
         );
 
         // do the query at the first window
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart),
-            Instant.ofEpochMilli(windowStart),
-            extractor,
-            Set.of(1, 2)
+                Instant.ofEpochMilli(windowStart),
+                Instant.ofEpochMilli(windowStart),
+                extractor,
+                Set.of(1, 2)
         );
 
         // do the query at the first and the second windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
-            extractor,
-            Set.of(1, 2, 3, 4)
+                Instant.ofEpochMilli(windowStart),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
+                extractor,
+                Set.of(1, 2, 3, 4)
         );
 
         // do the query at the second and the third windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(10).toMillis()),
-            extractor,
-            Set.of(3, 4, 5, 13)
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(10).toMillis()),
+                extractor,
+                Set.of(3, 4, 5, 13)
         );
 
         // do the query at the third and the fourth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(10).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
-            extractor,
-            Set.of(17, 5, 13)
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(10).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
+                extractor,
+                Set.of(17, 5, 13)
         );
 
         // do the query at the fourth and the fifth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(20).toMillis()),
-            extractor,
-            Set.of(17)
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(20).toMillis()),
+                extractor,
+                Set.of(17)
         );
 
         //do the query at the fifth and the sixth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(20).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(25).toMillis()),
-            extractor,
-            Set.of()
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(20).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(25).toMillis()),
+                extractor,
+                Set.of()
         );
 
         // do the query from the second to the fourth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
-            extractor,
-            Set.of(17, 3, 4, 5, 13)
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
+                extractor,
+                Set.of(17, 3, 4, 5, 13)
         );
 
         // do the query from the first to the fourth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
-            extractor,
-            Set.of(1, 17, 2, 3, 4, 5, 13)
+                Instant.ofEpochMilli(windowStart),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
+                extractor,
+                Set.of(1, 17, 2, 3, 4, 5, 13)
         );
 
         // Should fail to execute this query on a WindowStore.
         final WindowRangeQuery<Integer, T> query = WindowRangeQuery.withKey(2);
 
         final StateQueryRequest<KeyValueIterator<Windowed<Integer>, T>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<KeyValueIterator<Windowed<Integer>, T>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         if (result.getGlobalResult() != null) {
             fail("global tables aren't implemented");
         } else {
             final Map<Integer, QueryResult<KeyValueIterator<Windowed<Integer>, T>>> queryResult =
-                result.getPartitionResults();
+                    result.getPartitionResults();
             for (final int partition : queryResult.keySet()) {
                 final QueryResult<KeyValueIterator<Windowed<Integer>, T>> partitionResult =
-                    queryResult.get(partition);
+                        queryResult.get(partition);
                 final boolean failure = partitionResult.isFailure();
                 if (!failure) {
                     throw new AssertionError(queryResult.toString());
                 }
                 assertThat(partitionResult.getFailureReason(), is(FailureReason.UNKNOWN_QUERY_TYPE));
                 assertThat(partitionResult.getFailureMessage(), matchesPattern(
-                    "This store"
-                        + " \\(class org.apache.kafka.streams.state.internals.Metered.*WindowStore.*\\)"
-                        + " doesn't know how to execute the given query"
-                        + " \\(WindowRangeQuery\\{key=Optional\\[2], timeFrom=Optional.empty, timeTo=Optional.empty}\\)"
-                        + " because WindowStores only supports WindowRangeQuery.withWindowStartRange\\."
-                        + " Contact the store maintainer if you need support for a new query type\\."
+                        "This store"
+                                + " \\(class org.apache.kafka.streams.state.internals.Metered.*WindowStore.*\\)"
+                                + " doesn't know how to execute the given query"
+                                + " \\(WindowRangeQuery\\{key=Optional\\[2], timeFrom=Optional.empty, timeTo=Optional.empty}\\)"
+                                + " because WindowStores only supports WindowRangeQuery.withWindowStartRange\\."
+                                + " Contact the store maintainer if you need support for a new query type\\."
                 ));
             }
         }
@@ -1340,108 +1341,108 @@ public class IQv2StoreIntegrationTest {
 
         // miss the window start
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart - 1),
-            Instant.ofEpochMilli(windowStart - 1),
-            extractor,
-            Set.of()
+                Instant.ofEpochMilli(windowStart - 1),
+                Instant.ofEpochMilli(windowStart - 1),
+                extractor,
+                Set.of()
         );
 
         // do the query at the first window
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart),
-            Instant.ofEpochMilli(windowStart),
-            extractor,
-            Set.of(1, 2)
+                Instant.ofEpochMilli(windowStart),
+                Instant.ofEpochMilli(windowStart),
+                extractor,
+                Set.of(1, 2)
         );
 
         // do the query at the first and the second windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
-            extractor,
-            Set.of(1, 2, 3, 4)
+                Instant.ofEpochMilli(windowStart),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
+                extractor,
+                Set.of(1, 2, 3, 4)
         );
 
         // do the query at the second and the third windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(10).toMillis()),
-            extractor,
-            Set.of(3, 4, 5, 7)
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(10).toMillis()),
+                extractor,
+                Set.of(3, 4, 5, 7)
         );
 
         // do the query at the third and the fourth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(10).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
-            extractor,
-            Set.of(5, 7, 9)
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(10).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
+                extractor,
+                Set.of(5, 7, 9)
         );
 
         // do the query at the fourth and the fifth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(20).toMillis()),
-            extractor,
-            Set.of(9)
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(20).toMillis()),
+                extractor,
+                Set.of(9)
         );
 
         //do the query at the fifth and the sixth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(20).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(25).toMillis()),
-            extractor,
-            Set.of()
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(20).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(25).toMillis()),
+                extractor,
+                Set.of()
         );
 
         // do the query from the second to the fourth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
-            extractor,
-            Set.of(3, 4, 5, 7, 9)
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(5).toMillis()),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
+                extractor,
+                Set.of(3, 4, 5, 7, 9)
         );
 
         // do the query from the first to the fourth windows
         shouldHandleWindowRangeQuery(
-            Instant.ofEpochMilli(windowStart),
-            Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
-            extractor,
-            Set.of(1, 2, 3, 4, 5, 7, 9)
+                Instant.ofEpochMilli(windowStart),
+                Instant.ofEpochMilli(windowStart + Duration.ofMinutes(15).toMillis()),
+                extractor,
+                Set.of(1, 2, 3, 4, 5, 7, 9)
         );
 
         // Should fail to execute this query on a WindowStore.
         final WindowRangeQuery<Integer, T> query = WindowRangeQuery.withKey(2);
 
         final StateQueryRequest<KeyValueIterator<Windowed<Integer>, T>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<KeyValueIterator<Windowed<Integer>, T>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         if (result.getGlobalResult() != null) {
             fail("global tables aren't implemented");
         } else {
             final Map<Integer, QueryResult<KeyValueIterator<Windowed<Integer>, T>>> queryResult =
-                result.getPartitionResults();
+                    result.getPartitionResults();
             for (final int partition : queryResult.keySet()) {
                 final QueryResult<KeyValueIterator<Windowed<Integer>, T>> partitionResult =
-                    queryResult.get(partition);
+                        queryResult.get(partition);
                 final boolean failure = partitionResult.isFailure();
                 if (!failure) {
                     throw new AssertionError(queryResult.toString());
                 }
                 assertThat(partitionResult.getFailureReason(), is(FailureReason.UNKNOWN_QUERY_TYPE));
                 assertThat(partitionResult.getFailureMessage(), matchesPattern(
-                    "This store"
-                        + " \\(class org.apache.kafka.streams.state.internals.Metered.*WindowStore\\)"
-                        + " doesn't know how to execute the given query"
-                        + " \\(WindowRangeQuery\\{key=Optional\\[2], timeFrom=Optional.empty, timeTo=Optional.empty}\\)"
-                        + " because WindowStores only supports WindowRangeQuery.withWindowStartRange\\."
-                        + " Contact the store maintainer if you need support for a new query type\\."
+                        "This store"
+                                + " \\(class org.apache.kafka.streams.state.internals.Metered.*WindowStore\\)"
+                                + " doesn't know how to execute the given query"
+                                + " \\(WindowRangeQuery\\{key=Optional\\[2], timeFrom=Optional.empty, timeTo=Optional.empty}\\)"
+                                + " because WindowStores only supports WindowRangeQuery.withWindowStartRange\\."
+                                + " Contact the store maintainer if you need support for a new query type\\."
                 ));
             }
         }
@@ -1449,138 +1450,138 @@ public class IQv2StoreIntegrationTest {
 
     private <T> void shouldHandleSessionKeyDSLQueries() {
         shouldHandleSessionRangeQuery(
-            0,
-            Set.of(1)
+                0,
+                Set.of(1)
         );
 
         shouldHandleSessionRangeQuery(
-            1,
-            Set.of(5)
+                1,
+                Set.of(5)
         );
 
         shouldHandleSessionRangeQuery(
-            2,
-            Set.of(9)
+                2,
+                Set.of(9)
         );
 
         shouldHandleSessionRangeQuery(
-            3,
-            Set.of(13)
+                3,
+                Set.of(13)
         );
 
         shouldHandleSessionRangeQuery(
-            4,
-            Set.of(17)
+                4,
+                Set.of(17)
         );
 
         // not preset, so empty result iter
         shouldHandleSessionRangeQuery(
-            999,
-            Set.of()
+                999,
+                Set.of()
         );
 
         // Should fail to execute this query on a SessionStore.
         final WindowRangeQuery<Integer, T> query =
-            WindowRangeQuery.withWindowStartRange(
-                Instant.ofEpochMilli(0L),
-                Instant.ofEpochMilli(0L)
-            );
+                WindowRangeQuery.withWindowStartRange(
+                        Instant.ofEpochMilli(0L),
+                        Instant.ofEpochMilli(0L)
+                );
 
         final StateQueryRequest<KeyValueIterator<Windowed<Integer>, T>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<KeyValueIterator<Windowed<Integer>, T>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         if (result.getGlobalResult() != null) {
             fail("global tables aren't implemented");
         } else {
             final Map<Integer, QueryResult<KeyValueIterator<Windowed<Integer>, T>>> queryResult =
-                result.getPartitionResults();
+                    result.getPartitionResults();
             for (final int partition : queryResult.keySet()) {
                 final QueryResult<KeyValueIterator<Windowed<Integer>, T>> partitionResult =
-                    queryResult.get(partition);
+                        queryResult.get(partition);
                 final boolean failure = partitionResult.isFailure();
                 if (!failure) {
                     throw new AssertionError(queryResult.toString());
                 }
                 assertThat(partitionResult.getFailureReason(), is(FailureReason.UNKNOWN_QUERY_TYPE));
                 assertThat(partitionResult.getFailureMessage(),
-                    containsString("doesn't know how to execute the given query"));
+                        containsString("doesn't know how to execute the given query"));
                 assertThat(partitionResult.getFailureMessage(),
-                    containsString("because SessionStores only support WindowRangeQuery.withKey."));
+                        containsString("because SessionStores only support WindowRangeQuery.withKey."));
             }
         }
     }
 
     private <T> void shouldHandleSessionKeyPAPIQueries() {
         shouldHandleSessionRangeQuery(
-            0,
-            Set.of(0, 1)
+                0,
+                Set.of(0, 1)
         );
 
         shouldHandleSessionRangeQuery(
-            1,
-            Set.of(2, 3)
+                1,
+                Set.of(2, 3)
         );
 
         shouldHandleSessionRangeQuery(
-            2,
-            Set.of(4, 5)
+                2,
+                Set.of(4, 5)
         );
 
         shouldHandleSessionRangeQuery(
-            3,
-            Set.of(6, 7)
+                3,
+                Set.of(6, 7)
         );
 
         shouldHandleSessionRangeQuery(
-            4,
-            Set.of(8, 9)
+                4,
+                Set.of(8, 9)
         );
 
         // not preset, so empty result iter
         shouldHandleSessionRangeQuery(
-            999,
-            Set.of()
+                999,
+                Set.of()
         );
 
         // Should fail to execute this query on a SessionStore.
         final WindowRangeQuery<Integer, T> query =
-            WindowRangeQuery.withWindowStartRange(
-                Instant.ofEpochMilli(0L),
-                Instant.ofEpochMilli(0L)
-            );
+                WindowRangeQuery.withWindowStartRange(
+                        Instant.ofEpochMilli(0L),
+                        Instant.ofEpochMilli(0L)
+                );
 
         final StateQueryRequest<KeyValueIterator<Windowed<Integer>, T>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<KeyValueIterator<Windowed<Integer>, T>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         if (result.getGlobalResult() != null) {
             fail("global tables aren't implemented");
         } else {
             final Map<Integer, QueryResult<KeyValueIterator<Windowed<Integer>, T>>> queryResult =
-                result.getPartitionResults();
+                    result.getPartitionResults();
             for (final int partition : queryResult.keySet()) {
                 final QueryResult<KeyValueIterator<Windowed<Integer>, T>> partitionResult =
-                    queryResult.get(partition);
+                        queryResult.get(partition);
                 final boolean failure = partitionResult.isFailure();
                 if (!failure) {
                     throw new AssertionError(queryResult.toString());
                 }
                 assertThat(partitionResult.getFailureReason(), is(FailureReason.UNKNOWN_QUERY_TYPE));
                 assertThat(partitionResult.getFailureMessage(),
-                    containsString("doesn't know how to execute the given query"));
+                        containsString("doesn't know how to execute the given query"));
                 assertThat(partitionResult.getFailureMessage(),
-                    containsString("because SessionStores only support WindowRangeQuery.withKey."));
+                        containsString("because SessionStores only support WindowRangeQuery.withKey."));
             }
         }
     }
@@ -1590,19 +1591,19 @@ public class IQv2StoreIntegrationTest {
 
         final KeyQuery<Integer, ValueAndTimestamp<Integer>> query = KeyQuery.withKey(1);
         final StateQueryRequest<ValueAndTimestamp<Integer>> request =
-            inStore(STORE_NAME).withQuery(query);
+                inStore(STORE_NAME).withQuery(query);
 
         final StateQueryResult<ValueAndTimestamp<Integer>> result = kafkaStreams.query(request);
 
         assertThat(result.getGlobalResult().isFailure(), is(true));
         assertThat(
-            result.getGlobalResult().getFailureReason(),
-            is(FailureReason.UNKNOWN_QUERY_TYPE)
+                result.getGlobalResult().getFailureReason(),
+                is(FailureReason.UNKNOWN_QUERY_TYPE)
         );
         assertThat(
-            result.getGlobalResult().getFailureMessage(),
-            is("Global stores do not yet support the KafkaStreams#query API."
-                + " Use KafkaStreams#store instead.")
+                result.getGlobalResult().getFailureMessage(),
+                is("Global stores do not yet support the KafkaStreams#query API."
+                        + " Use KafkaStreams#store instead.")
         );
     }
 
@@ -1613,47 +1614,47 @@ public class IQv2StoreIntegrationTest {
         final Set<Integer> partitions = Set.of(0, 1);
 
         final StateQueryResult<Void> result =
-            IntegrationTestUtils.iqv2WaitForPartitions(kafkaStreams, request, partitions);
+                IntegrationTestUtils.iqv2WaitForPartitions(kafkaStreams, request, partitions);
 
         makeAssertions(
-            partitions,
-            result,
-            queryResult -> {
-                assertThat(queryResult.isFailure(), is(true));
-                assertThat(queryResult.isSuccess(), is(false));
-                assertThat(
-                    queryResult.getFailureReason(),
-                    is(FailureReason.UNKNOWN_QUERY_TYPE)
-                );
-                assertThat(
-                    queryResult.getFailureMessage(),
-                    matchesPattern(
-                        "This store (.*)"
-                            + " doesn't know how to execute the given query"
-                            + " (.*)."
-                            + " Contact the store maintainer if you need support for a new query type."
-                    )
-                );
-                assertThrows(IllegalArgumentException.class, queryResult::getResult);
+                partitions,
+                result,
+                queryResult -> {
+                    assertThat(queryResult.isFailure(), is(true));
+                    assertThat(queryResult.isSuccess(), is(false));
+                    assertThat(
+                            queryResult.getFailureReason(),
+                            is(FailureReason.UNKNOWN_QUERY_TYPE)
+                    );
+                    assertThat(
+                            queryResult.getFailureMessage(),
+                            matchesPattern(
+                                    "This store (.*)"
+                                            + " doesn't know how to execute the given query"
+                                            + " (.*)."
+                                            + " Contact the store maintainer if you need support for a new query type."
+                            )
+                    );
+                    assertThrows(IllegalArgumentException.class, queryResult::getResult);
 
-                assertThat(queryResult.getExecutionInfo(), is(empty()));
-            }
+                    assertThat(queryResult.getExecutionInfo(), is(empty()));
+                }
         );
     }
 
     public <V> void shouldHandleKeyQuery(
-        final Integer key,
-        final Integer expectedValue) {
+            final Integer key,
+            final Integer expectedValue) {
 
         final KeyQuery<Integer, V> query = KeyQuery.withKey(key);
         final StateQueryRequest<V> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<V> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         final QueryResult<V> queryResult = result.getOnlyPartitionResult();
         final boolean failure = queryResult.isFailure();
@@ -1664,8 +1665,8 @@ public class IQv2StoreIntegrationTest {
 
         assertThrows(IllegalArgumentException.class, queryResult::getFailureReason);
         assertThrows(
-            IllegalArgumentException.class,
-            queryResult::getFailureMessage
+                IllegalArgumentException.class,
+                queryResult::getFailureMessage
         );
 
         final V result1 = queryResult.getResult();
@@ -1732,10 +1733,10 @@ public class IQv2StoreIntegrationTest {
     }
 
     public <V> void shouldHandleRangeQuery(
-        final Optional<Integer> lower,
-        final Optional<Integer> upper,
-        final boolean isKeyAscending,
-        final List<Integer> expectedValues) {
+            final Optional<Integer> lower,
+            final Optional<Integer> upper,
+            final boolean isKeyAscending,
+            final List<Integer> expectedValues) {
 
         RangeQuery<Integer, V> query;
 
@@ -1744,12 +1745,12 @@ public class IQv2StoreIntegrationTest {
             query = query.withDescendingKeys();
         }
         final StateQueryRequest<KeyValueIterator<Integer, V>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
         final StateQueryResult<KeyValueIterator<Integer, V>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         if (result.getGlobalResult() != null) {
             fail("global tables aren't implemented");
@@ -1765,12 +1766,12 @@ public class IQv2StoreIntegrationTest {
                 assertThat(queryResult.get(partition).isSuccess(), is(true));
 
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureReason
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureReason
                 );
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureMessage
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureMessage
                 );
                 try (final KeyValueIterator<Integer, V> iterator = queryResult.get(partition).getResult()) {
                     while (iterator.hasNext()) {
@@ -1785,10 +1786,10 @@ public class IQv2StoreIntegrationTest {
     }
 
     public <V> void shouldHandleTimestampedRangeQuery(
-        final Optional<Integer> lower,
-        final Optional<Integer> upper,
-        final boolean isKeyAscending,
-        final List<ValueAndTimestamp> expectedValueAndTimestamp) {
+            final Optional<Integer> lower,
+            final Optional<Integer> upper,
+            final boolean isKeyAscending,
+            final List<ValueAndTimestamp> expectedValueAndTimestamp) {
 
         TimestampedRangeQuery<Integer, V> query;
 
@@ -1799,12 +1800,12 @@ public class IQv2StoreIntegrationTest {
         }
 
         final StateQueryRequest<KeyValueIterator<Integer, ValueAndTimestamp<V>>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
         final StateQueryResult<KeyValueIterator<Integer, ValueAndTimestamp<V>>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         if (result.getGlobalResult() != null) {
             fail("global tables aren't implemented");
@@ -1820,12 +1821,12 @@ public class IQv2StoreIntegrationTest {
                 assertThat(queryResult.get(partition).isSuccess(), is(true));
 
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureReason
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureReason
                 );
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureMessage
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureMessage
                 );
 
                 try (final KeyValueIterator<Integer, ValueAndTimestamp<V>> iterator = queryResult.get(partition).getResult()) {
@@ -1841,26 +1842,26 @@ public class IQv2StoreIntegrationTest {
     }
 
     public <V> void shouldHandleWindowKeyQuery(
-        final Integer key,
-        final Instant timeFrom,
-        final Instant timeTo,
-        final Function<V, Integer> valueExtractor,
-        final Set<Integer> expectedValues) {
+            final Integer key,
+            final Instant timeFrom,
+            final Instant timeTo,
+            final Function<V, Integer> valueExtractor,
+            final Set<Integer> expectedValues) {
 
         final WindowKeyQuery<Integer, V> query = WindowKeyQuery.withKeyAndWindowStartRange(
-            key,
-            timeFrom,
-            timeTo
+                key,
+                timeFrom,
+                timeTo
         );
 
         final StateQueryRequest<WindowStoreIterator<V>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<WindowStoreIterator<V>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         if (result.getGlobalResult() != null) {
             fail("global tables aren't implemented");
@@ -1875,12 +1876,12 @@ public class IQv2StoreIntegrationTest {
                 assertThat(queryResult.get(partition).isSuccess(), is(true));
 
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureReason
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureReason
                 );
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureMessage
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureMessage
                 );
 
                 try (final WindowStoreIterator<V> iterator = queryResult.get(partition).getResult()) {
@@ -1896,21 +1897,21 @@ public class IQv2StoreIntegrationTest {
     }
 
     public <V> void shouldHandleWindowRangeQuery(
-        final Instant timeFrom,
-        final Instant timeTo,
-        final Function<V, Integer> valueExtractor,
-        final Set<Integer> expectedValues) {
+            final Instant timeFrom,
+            final Instant timeTo,
+            final Function<V, Integer> valueExtractor,
+            final Set<Integer> expectedValues) {
 
         final WindowRangeQuery<Integer, V> query = WindowRangeQuery.withWindowStartRange(timeFrom, timeTo);
 
         final StateQueryRequest<KeyValueIterator<Windowed<Integer>, V>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<KeyValueIterator<Windowed<Integer>, V>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         if (result.getGlobalResult() != null) {
             fail("global tables aren't implemented");
@@ -1925,12 +1926,12 @@ public class IQv2StoreIntegrationTest {
                 assertThat(queryResult.get(partition).isSuccess(), is(true));
 
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureReason
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureReason
                 );
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureMessage
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureMessage
                 );
 
                 try (final KeyValueIterator<Windowed<Integer>, V> iterator = queryResult.get(partition).getResult()) {
@@ -1946,18 +1947,18 @@ public class IQv2StoreIntegrationTest {
     }
 
     public <V> void shouldHandleSessionRangeQuery(
-        final Integer key,
-        final Set<Integer> expectedValues) {
+            final Integer key,
+            final Set<Integer> expectedValues) {
 
         final WindowRangeQuery<Integer, V> query = WindowRangeQuery.withKey(key);
 
         final StateQueryRequest<KeyValueIterator<Windowed<Integer>, V>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
         final StateQueryResult<KeyValueIterator<Windowed<Integer>, V>> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         if (result.getGlobalResult() != null) {
             fail("global tables aren't implemented");
@@ -1972,12 +1973,12 @@ public class IQv2StoreIntegrationTest {
                 assertThat(queryResult.get(partition).isSuccess(), is(true));
 
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureReason
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureReason
                 );
                 assertThrows(
-                    IllegalArgumentException.class,
-                    queryResult.get(partition)::getFailureMessage
+                        IllegalArgumentException.class,
+                        queryResult.get(partition)::getFailureMessage
                 );
 
                 try (final KeyValueIterator<Windowed<Integer>, V> iterator = queryResult.get(partition).getResult()) {
@@ -1997,22 +1998,22 @@ public class IQv2StoreIntegrationTest {
         final KeyQuery<Integer, ValueAndTimestamp<Integer>> query = KeyQuery.withKey(1);
         final Set<Integer> partitions = Set.of(0, 1);
         final StateQueryRequest<ValueAndTimestamp<Integer>> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .enableExecutionInfo()
-                .withPartitions(partitions)
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .enableExecutionInfo()
+                        .withPartitions(partitions)
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<ValueAndTimestamp<Integer>> result =
-            IntegrationTestUtils.iqv2WaitForResult(
-                kafkaStreams,
-                request
-            );
+                IntegrationTestUtils.iqv2WaitForResult(
+                        kafkaStreams,
+                        request
+                );
 
         makeAssertions(
-            partitions,
-            result,
-            queryResult -> assertThat(queryResult.getExecutionInfo(), not(empty()))
+                partitions,
+                result,
+                queryResult -> assertThat(queryResult.getExecutionInfo(), not(empty()))
         );
     }
 
@@ -2021,29 +2022,29 @@ public class IQv2StoreIntegrationTest {
         final UnknownQuery query = new UnknownQuery();
         final Set<Integer> partitions = Set.of(0, 1);
         final StateQueryRequest<Void> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .enableExecutionInfo()
-                .withPartitions(partitions)
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .enableExecutionInfo()
+                        .withPartitions(partitions)
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<Void> result =
-            IntegrationTestUtils.iqv2WaitForResult(
-                kafkaStreams,
-                request
-            );
+                IntegrationTestUtils.iqv2WaitForResult(
+                        kafkaStreams,
+                        request
+                );
 
         makeAssertions(
-            partitions,
-            result,
-            queryResult -> assertThat(queryResult.getExecutionInfo(), not(empty()))
+                partitions,
+                result,
+                queryResult -> assertThat(queryResult.getExecutionInfo(), not(empty()))
         );
     }
 
     private <R> void makeAssertions(
-        final Set<Integer> partitions,
-        final StateQueryResult<R> result,
-        final Consumer<QueryResult<R>> assertion) {
+            final Set<Integer> partitions,
+            final StateQueryResult<R> result,
+            final Consumer<QueryResult<R>> assertion) {
 
         if (result.getGlobalResult() != null) {
             assertion.accept(result.getGlobalResult());
@@ -2058,8 +2059,8 @@ public class IQv2StoreIntegrationTest {
     private static Properties streamsConfiguration(final boolean cache, final boolean log,
                                                    final String supplier, final String kind, final String groupProtocol, final boolean withHeaders) {
         final String safeTestName =
-            IQv2StoreIntegrationTest.class.getName() + "-" + cache + "-" + log + "-" + supplier
-                + "-" + kind + "-" + groupProtocol + "-" + withHeaders + "-" + RANDOM.nextInt();
+                IQv2StoreIntegrationTest.class.getName() + "-" + cache + "-" + log + "-" + supplier
+                        + "-" + kind + "-" + groupProtocol + "-" + withHeaders + "-" + RANDOM.nextInt();
         final Properties config = new Properties();
         config.put(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE);
         config.put(StreamsConfig.APPLICATION_ID_CONFIG, "app-" + safeTestName);

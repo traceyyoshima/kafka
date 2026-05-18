@@ -44,8 +44,8 @@ public class TableSourceNode<K, V> extends SourceGraphNode<K, V> {
                             final boolean isGlobalKTable) {
 
         super(nodeName,
-              Collections.singletonList(topic),
-              consumedInternal);
+                Collections.singletonList(topic),
+                consumedInternal);
 
         this.sourceName = sourceName;
         this.isGlobalKTable = isGlobalKTable;
@@ -60,10 +60,10 @@ public class TableSourceNode<K, V> extends SourceGraphNode<K, V> {
     @Override
     public String toString() {
         return "TableSourceNode{" +
-               ", processorParameters=" + processorParameters +
-               ", sourceName='" + sourceName + '\'' +
-               ", isGlobalKTable=" + isGlobalKTable +
-               "} " + super.toString();
+                ", processorParameters=" + processorParameters +
+                ", sourceName='" + sourceName + '\'' +
+                ", isGlobalKTable=" + isGlobalKTable +
+                "} " + super.toString();
     }
 
     public static <K, V> TableSourceNodeBuilder<K, V> tableSourceNodeBuilder() {
@@ -86,22 +86,22 @@ public class TableSourceNode<K, V> extends SourceGraphNode<K, V> {
 
         if (isGlobalKTable) {
             topologyBuilder.addGlobalStore(
-                sourceName,
-                consumedInternal().timestampExtractor(),
-                consumedInternal().keyDeserializer(),
-                consumedInternal().valueDeserializer(),
-                topicName,
-                processorParameters.processorName(),
-                (ProcessorSupplier<K, V, Void, Void>) processorParameters.processorSupplier(),
-                false
+                    sourceName,
+                    consumedInternal().timestampExtractor(),
+                    consumedInternal().keyDeserializer(),
+                    consumedInternal().valueDeserializer(),
+                    topicName,
+                    processorParameters.processorName(),
+                    (ProcessorSupplier<K, V, Void, Void>) processorParameters.processorSupplier(),
+                    false
             );
         } else {
             topologyBuilder.addSource(consumedInternal().offsetResetPolicy(),
-                                      sourceName,
-                                      consumedInternal().timestampExtractor(),
-                                      consumedInternal().keyDeserializer(),
-                                      consumedInternal().valueDeserializer(),
-                                      topicName);
+                    sourceName,
+                    consumedInternal().timestampExtractor(),
+                    consumedInternal().keyDeserializer(),
+                    consumedInternal().valueDeserializer(),
+                    topicName);
 
             processorParameters.addProcessorTo(topologyBuilder, sourceName);
 
@@ -166,11 +166,11 @@ public class TableSourceNode<K, V> extends SourceGraphNode<K, V> {
 
         public TableSourceNode<K, V> build() {
             return new TableSourceNode<>(nodeName,
-                                         sourceName,
-                                         topic,
-                                         consumedInternal,
-                                         processorParameters,
-                                         isGlobalKTable);
+                    sourceName,
+                    topic,
+                    consumedInternal,
+                    processorParameters,
+                    isGlobalKTable);
         }
     }
 }

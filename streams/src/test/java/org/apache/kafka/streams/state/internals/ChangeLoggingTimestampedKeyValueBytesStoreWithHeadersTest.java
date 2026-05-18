@@ -54,7 +54,7 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeadersTest {
     private final MockRecordCollector collector = new MockRecordCollector();
     private final InMemoryKeyValueStore root = new InMemoryKeyValueStore("kv");
     private final ChangeLoggingTimestampedKeyValueBytesStoreWithHeaders store =
-        new ChangeLoggingTimestampedKeyValueBytesStoreWithHeaders(root);
+            new ChangeLoggingTimestampedKeyValueBytesStoreWithHeaders(root);
     private final Bytes hi = Bytes.wrap("hi".getBytes());
     private final Bytes hello = Bytes.wrap("hello".getBytes());
 
@@ -73,7 +73,7 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeadersTest {
         worldHeaders.add("key2", "value2".getBytes());
 
         final ValueTimestampHeadersSerializer<byte[]> serializer =
-            new ValueTimestampHeadersSerializer<>(Serdes.ByteArray().serializer());
+                new ValueTimestampHeadersSerializer<>(Serdes.ByteArray().serializer());
         rawThere = serializer.serialize("topic", there);
         rawWorld = serializer.serialize("topic", world);
 
@@ -84,11 +84,11 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeadersTest {
 
     private InternalMockProcessorContext<String, Long> mockContext() {
         return new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            collector,
-            new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                collector,
+                new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
         );
     }
 
@@ -126,7 +126,7 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeadersTest {
     @Test
     public void shouldWriteAllKeyValueToInnerStoreOnPutAll() {
         store.putAll(Arrays.asList(KeyValue.pair(hi, rawThere),
-                                   KeyValue.pair(hello, rawWorld)));
+                KeyValue.pair(hello, rawWorld)));
         assertEquals(rawThere, root.get(hi));
         assertEquals(rawWorld, root.get(hello));
     }
@@ -134,7 +134,7 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeadersTest {
     @Test
     public void shouldLogChangesOnPutAll() {
         store.putAll(Arrays.asList(KeyValue.pair(hi, rawThere),
-                                   KeyValue.pair(hello, rawWorld)));
+                KeyValue.pair(hello, rawWorld)));
 
         assertEquals(2, collector.collected().size());
 
@@ -294,10 +294,10 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeadersTest {
     public void shouldHandleEmptyHeaders() {
         final RecordHeaders emptyHeaders = new RecordHeaders();
         final ValueTimestampHeaders<byte[]> valueWithEmptyHeaders =
-            ValueTimestampHeaders.make("test".getBytes(), 100L, emptyHeaders);
+                ValueTimestampHeaders.make("test".getBytes(), 100L, emptyHeaders);
 
         final ValueTimestampHeadersSerializer<byte[]> serializer =
-            new ValueTimestampHeadersSerializer<>(Serdes.ByteArray().serializer());
+                new ValueTimestampHeadersSerializer<>(Serdes.ByteArray().serializer());
         final byte[] rawValueWithEmptyHeaders = serializer.serialize("topic", valueWithEmptyHeaders);
 
         store.put(hi, rawValueWithEmptyHeaders);
@@ -320,10 +320,10 @@ public class ChangeLoggingTimestampedKeyValueBytesStoreWithHeadersTest {
         multiHeaders.add("header3", "value3".getBytes());
 
         final ValueTimestampHeaders<byte[]> valueWithMultiHeaders =
-            ValueTimestampHeaders.make("multi".getBytes(), 123L, multiHeaders);
+                ValueTimestampHeaders.make("multi".getBytes(), 123L, multiHeaders);
 
         final ValueTimestampHeadersSerializer<byte[]> serializer =
-            new ValueTimestampHeadersSerializer<>(Serdes.ByteArray().serializer());
+                new ValueTimestampHeadersSerializer<>(Serdes.ByteArray().serializer());
         final byte[] rawValueWithMultiHeaders = serializer.serialize("topic", valueWithMultiHeaders);
 
         store.put(hello, rawValueWithMultiHeaders);

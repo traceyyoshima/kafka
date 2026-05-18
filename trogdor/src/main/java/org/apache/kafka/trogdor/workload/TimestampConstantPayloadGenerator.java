@@ -27,22 +27,22 @@ import java.nio.ByteOrder;
 
 /**
  * A PayloadGenerator which generates a timestamped constant payload.
- *
+ * <p>
  * The timestamp used for this class is in milliseconds since epoch, encoded directly to the first several bytes of the
  * payload.
- *
+ * <p>
  * This should be used in conjunction with TimestampRecordProcessor in the Consumer to measure true end-to-end latency
  * of a system.
- *
+ * <p>
  * `size` - The size in bytes of each message.
- *
+ * <p>
  * Here is an example spec:
- *
+ * <p>
  * {
- *    "type": "timestampConstant",
- *    "size": 512
+ * "type": "timestampConstant",
+ * "size": 512
  * }
- *
+ * <p>
  * This will generate a 512-byte message with the first several bytes encoded with the timestamp.
  */
 public class TimestampConstantPayloadGenerator implements PayloadGenerator {

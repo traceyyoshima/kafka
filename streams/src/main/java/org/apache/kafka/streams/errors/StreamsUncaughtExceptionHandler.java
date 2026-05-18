@@ -20,9 +20,7 @@ public interface StreamsUncaughtExceptionHandler {
     /**
      * Inspect the exception received in a stream thread and respond with an action.
      *
-     * @param exception
-     *     The actual exception.
-     *
+     * @param exception The actual exception.
      * @return Whether to replace the failed thread, or to shut down the client or the whole application.
      */
     StreamThreadExceptionResponse handle(final Throwable exception);
@@ -31,11 +29,17 @@ public interface StreamsUncaughtExceptionHandler {
      * Enumeration that describes the response from the exception handler.
      */
     enum StreamThreadExceptionResponse {
-        /** Replace the failed thread with a new one. */
+        /**
+         * Replace the failed thread with a new one.
+         */
         REPLACE_THREAD(0, "REPLACE_THREAD"),
-        /** Shut down the client. */
+        /**
+         * Shut down the client.
+         */
         SHUTDOWN_CLIENT(1, "SHUTDOWN_KAFKA_STREAMS_CLIENT"),
-        /** Try to shut down the whole application. */
+        /**
+         * Try to shut down the whole application.
+         */
         SHUTDOWN_APPLICATION(2, "SHUTDOWN_KAFKA_STREAMS_APPLICATION");
 
         /**

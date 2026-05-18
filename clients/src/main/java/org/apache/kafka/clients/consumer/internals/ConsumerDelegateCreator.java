@@ -36,16 +36,16 @@ import java.util.Optional;
  * underlying {@link Consumer} implementation that is created. This provides the means by which {@link KafkaConsumer}
  * can remain the top-level facade for implementations, but allow different implementations to co-exist under
  * the covers.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * The current logic for the {@code ConsumerCreator} inspects the incoming configuration and determines if
  * it is using the new consumer group protocol (KIP-848) or if it should fall back to the existing, legacy group
  * protocol. This is based on the presence and value of the {@link ConsumerConfig#GROUP_PROTOCOL_CONFIG group.protocol}
  * configuration. If the value is present and equal to &quot;{@code consumer}&quot;, the {@link AsyncKafkaConsumer}
  * will be returned. Otherwise, the {@link ClassicKafkaConsumer} will be returned.
- *
- *
+ * <p>
+ * <p>
  * <p/>
  *
  * <em>Note</em>: this is for internal use only and is not intended for use by end users. Internal users should
@@ -85,26 +85,26 @@ public class ConsumerDelegateCreator {
 
             if (groupProtocol == GroupProtocol.CONSUMER)
                 return new AsyncKafkaConsumer<>(
-                    logContext,
-                    time,
-                    config,
-                    keyDeserializer,
-                    valueDeserializer,
-                    client,
-                    subscriptions,
-                    metadata
+                        logContext,
+                        time,
+                        config,
+                        keyDeserializer,
+                        valueDeserializer,
+                        client,
+                        subscriptions,
+                        metadata
                 );
             else
                 return new ClassicKafkaConsumer<>(
-                    logContext,
-                    time,
-                    config,
-                    keyDeserializer,
-                    valueDeserializer,
-                    client,
-                    subscriptions,
-                    metadata,
-                    assignors
+                        logContext,
+                        time,
+                        config,
+                        keyDeserializer,
+                        valueDeserializer,
+                        client,
+                        subscriptions,
+                        metadata,
+                        assignors
                 );
         } catch (KafkaException e) {
             throw e;

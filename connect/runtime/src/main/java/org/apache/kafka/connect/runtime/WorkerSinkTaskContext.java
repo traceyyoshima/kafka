@@ -79,6 +79,7 @@ public class WorkerSinkTaskContext implements SinkTaskContext {
 
     /**
      * Get offsets that the SinkTask has submitted to be reset. Used by the Kafka Connect framework.
+     *
      * @return the map of offsets
      */
     public Map<TopicPartition, Long> offsets() {
@@ -93,6 +94,7 @@ public class WorkerSinkTaskContext implements SinkTaskContext {
 
     /**
      * Get the timeout in milliseconds set by SinkTasks. Used by the Kafka Connect framework.
+     *
      * @return the backoff timeout in milliseconds.
      */
     public long timeout() {
@@ -175,7 +177,7 @@ public class WorkerSinkTaskContext implements SinkTaskContext {
     @Override
     public String toString() {
         return "WorkerSinkTaskContext{" +
-               "id=" + sinkTask.id +
-               '}';
+                "id=" + sinkTask.id +
+                '}';
     }
 }

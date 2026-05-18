@@ -88,9 +88,9 @@ public class KStreamFilterTest {
         final Predicate<Number, Object> numberKeyPredicate = (key, value) -> false;
 
         new StreamsBuilder()
-            .<Integer, String>stream("empty")
-            .filter(numberKeyPredicate)
-            .filterNot(numberKeyPredicate)
-            .to("nirvana");
+                .<Integer, String>stream("empty")
+                .filter(numberKeyPredicate)
+                .filterNot(numberKeyPredicate)
+                .to("nirvana");
     }
 }

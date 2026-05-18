@@ -33,114 +33,114 @@ public class CheckerTestUtils {
 
     static MessageSpec toMessage(String input) throws Exception {
         return MessageGenerator.JSON_SERDE.
-            readValue(singleQuotesToDoubleQuotes(input), MessageSpec.class);
+                readValue(singleQuotesToDoubleQuotes(input), MessageSpec.class);
     }
 
     static FieldSpec field(
-        String name,
-        String versions,
-        String type
+            String name,
+            String versions,
+            String type
     ) {
         return new FieldSpec(name,
-            versions,
-            null,
-            type,
-            false,
-            null,
-            null,
-            false,
-            null,
-            "",
-            null,
-            null,
-            null,
-            false);
+                versions,
+                null,
+                type,
+                false,
+                null,
+                null,
+                false,
+                null,
+                "",
+                null,
+                null,
+                null,
+                false);
     }
 
     static FieldSpec fieldWithTag(
-        String name,
-        OptionalInt tag
+            String name,
+            OptionalInt tag
     ) {
         return new FieldSpec(name,
-            "0+",
-            null,
-            "int8",
-            false,
-            null,
-            null,
-            false,
-            null,
-            null,
-            tag.isPresent() ? "0+" : "",
-            null,
-            tag.isPresent() ? tag.getAsInt() : null,
-            false);
+                "0+",
+                null,
+                "int8",
+                false,
+                null,
+                null,
+                false,
+                null,
+                null,
+                tag.isPresent() ? "0+" : "",
+                null,
+                tag.isPresent() ? tag.getAsInt() : null,
+                false);
     }
 
     static FieldSpec fieldWithTag(
-        String name,
-        int tag,
-        String validVersions,
-        String taggedVersions
+            String name,
+            int tag,
+            String validVersions,
+            String taggedVersions
     ) {
         return new FieldSpec(name,
-            validVersions,
-            null,
-            "int8",
-            false,
-            null,
-            null,
-            false,
-            null,
-            null,
-            taggedVersions,
-            null,
-            tag,
-            false);
+                validVersions,
+                null,
+                "int8",
+                false,
+                null,
+                null,
+                false,
+                null,
+                null,
+                taggedVersions,
+                null,
+                tag,
+                false);
     }
 
     static FieldSpec fieldWithNulls(
-        String name,
-        String versions,
-        String type,
-        String nullableVersions
+            String name,
+            String versions,
+            String type,
+            String nullableVersions
     ) {
         return new FieldSpec(name,
-            versions,
-            null,
-            type,
-            false,
-            nullableVersions,
-            null,
-            false,
-            null,
-            "",
-            null,
-            null,
-            null,
-            false);
+                versions,
+                null,
+                type,
+                false,
+                nullableVersions,
+                null,
+                false,
+                null,
+                "",
+                null,
+                null,
+                null,
+                false);
     }
 
     static FieldSpec fieldWithDefaults(
-        String name,
-        String versions,
-        String fieldDefault,
-        String flexibleVersions
+            String name,
+            String versions,
+            String fieldDefault,
+            String flexibleVersions
     ) {
         return new FieldSpec(name,
-            versions,
-            null,
-            "string",
-            false,
-            null,
-            fieldDefault,
-            false,
-            null,
-            "",
-            null,
-            flexibleVersions,
-            null,
-            false);
+                versions,
+                null,
+                "string",
+                false,
+                null,
+                fieldDefault,
+                false,
+                null,
+                "",
+                null,
+                flexibleVersions,
+                null,
+                false);
     }
 
     static String messageSpecStringToTempFile(String input) throws IOException {

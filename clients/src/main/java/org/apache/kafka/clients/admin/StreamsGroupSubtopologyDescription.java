@@ -36,11 +36,11 @@ public class StreamsGroupSubtopologyDescription {
     private final Map<String, TopicInfo> repartitionSourceTopics;
 
     public StreamsGroupSubtopologyDescription(
-        final String subtopologyId,
-        final List<String> sourceTopics,
-        final List<String> repartitionSinkTopics,
-        final Map<String, TopicInfo> stateChangelogTopics,
-        final Map<String, TopicInfo> repartitionSourceTopics
+            final String subtopologyId,
+            final List<String> sourceTopics,
+            final List<String> repartitionSinkTopics,
+            final Map<String, TopicInfo> stateChangelogTopics,
+            final Map<String, TopicInfo> repartitionSourceTopics
     ) {
         this.subtopologyId = Objects.requireNonNull(subtopologyId, "subtopologyId must be non-null");
         this.sourceTopics = Objects.requireNonNull(sourceTopics, "sourceTopics must be non-null");
@@ -94,32 +94,32 @@ public class StreamsGroupSubtopologyDescription {
         }
         final StreamsGroupSubtopologyDescription that = (StreamsGroupSubtopologyDescription) o;
         return Objects.equals(subtopologyId, that.subtopologyId)
-            && Objects.equals(sourceTopics, that.sourceTopics)
-            && Objects.equals(repartitionSinkTopics, that.repartitionSinkTopics)
-            && Objects.equals(stateChangelogTopics, that.stateChangelogTopics)
-            && Objects.equals(repartitionSourceTopics, that.repartitionSourceTopics);
+                && Objects.equals(sourceTopics, that.sourceTopics)
+                && Objects.equals(repartitionSinkTopics, that.repartitionSinkTopics)
+                && Objects.equals(stateChangelogTopics, that.stateChangelogTopics)
+                && Objects.equals(repartitionSourceTopics, that.repartitionSourceTopics);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-            subtopologyId,
-            sourceTopics,
-            repartitionSinkTopics,
-            stateChangelogTopics,
-            repartitionSourceTopics
+                subtopologyId,
+                sourceTopics,
+                repartitionSinkTopics,
+                stateChangelogTopics,
+                repartitionSourceTopics
         );
     }
 
     @Override
     public String toString() {
         return "(" +
-            "subtopologyId='" + subtopologyId + '\'' +
-            ", sourceTopics=" + sourceTopics +
-            ", repartitionSinkTopics=" + repartitionSinkTopics +
-            ", stateChangelogTopics=" + stateChangelogTopics +
-            ", repartitionSourceTopics=" + repartitionSourceTopics +
-            ')';
+                "subtopologyId='" + subtopologyId + '\'' +
+                ", sourceTopics=" + sourceTopics +
+                ", repartitionSinkTopics=" + repartitionSinkTopics +
+                ", stateChangelogTopics=" + stateChangelogTopics +
+                ", repartitionSourceTopics=" + repartitionSourceTopics +
+                ')';
     }
 
     /**
@@ -169,27 +169,27 @@ public class StreamsGroupSubtopologyDescription {
             }
             final TopicInfo topicInfo = (TopicInfo) o;
             return partitions == topicInfo.partitions
-                && replicationFactor == topicInfo.replicationFactor
-                && Objects.equals(topicConfigs, topicInfo.topicConfigs);
+                    && replicationFactor == topicInfo.replicationFactor
+                    && Objects.equals(topicConfigs, topicInfo.topicConfigs);
         }
 
         @Override
         public int hashCode() {
             return Objects.hash(
-                partitions,
-                replicationFactor,
-                topicConfigs
+                    partitions,
+                    replicationFactor,
+                    topicConfigs
             );
         }
 
         @Override
         public String toString() {
             return "TopicInfo(" +
-                "partitions=" + partitions +
-                ", replicationFactor=" + replicationFactor +
-                ", topicConfigs=" + topicConfigs.entrySet().stream().map(x -> x.getKey() + "=" + x.getValue())
-                .collect(Collectors.joining(",")) +
-                ')';
+                    "partitions=" + partitions +
+                    ", replicationFactor=" + replicationFactor +
+                    ", topicConfigs=" + topicConfigs.entrySet().stream().map(x -> x.getKey() + "=" + x.getValue())
+                    .collect(Collectors.joining(",")) +
+                    ')';
         }
     }
 

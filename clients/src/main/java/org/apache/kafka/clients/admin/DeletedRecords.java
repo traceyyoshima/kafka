@@ -27,7 +27,7 @@ public class DeletedRecords {
     /**
      * Create an instance of this class with the provided parameters.
      *
-     * @param lowWatermark  "low watermark" for the topic partition on which the deletion was executed
+     * @param lowWatermark "low watermark" for the topic partition on which the deletion was executed
      */
     public DeletedRecords(long lowWatermark) {
         this.lowWatermark = lowWatermark;

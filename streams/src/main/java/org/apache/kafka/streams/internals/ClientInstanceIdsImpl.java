@@ -44,8 +44,8 @@ public class ClientInstanceIdsImpl implements ClientInstanceIds {
     public Uuid adminInstanceId() {
         if (adminInstanceId == null) {
             throw new IllegalStateException(
-                "Telemetry is not enabled on the admin client." +
-                    " Set config `" + AdminClientConfig.ENABLE_METRICS_PUSH_CONFIG + "` to `true`.");
+                    "Telemetry is not enabled on the admin client." +
+                            " Set config `" + AdminClientConfig.ENABLE_METRICS_PUSH_CONFIG + "` to `true`.");
         }
         return adminInstanceId;
     }

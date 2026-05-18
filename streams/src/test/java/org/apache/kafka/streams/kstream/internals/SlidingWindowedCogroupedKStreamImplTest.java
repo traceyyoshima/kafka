@@ -87,63 +87,63 @@ public class SlidingWindowedCogroupedKStreamImplTest {
         final CogroupedKStream<String, String> cogroupedStream = groupedStream.cogroup(MockAggregator.TOSTRING_ADDER)
                 .cogroup(groupedStream2, MockAggregator.TOSTRING_REMOVER);
         windowedCogroupedStream = cogroupedStream.windowedBy(SlidingWindows.ofTimeDifferenceAndGrace(ofMillis(
-            WINDOW_SIZE_MS), ofMillis(2000L)));
+                WINDOW_SIZE_MS), ofMillis(2000L)));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void shouldNotHaveNullInitializerOnAggregate(final boolean withHeaders) {
         setup(withHeaders);
-        assertThrows(NullPointerException.class, () ->  windowedCogroupedStream.aggregate(null));
+        assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(null));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void shouldNotHaveNullMaterializedOnTwoOptionAggregate(final boolean withHeaders) {
         setup(withHeaders);
-        assertThrows(NullPointerException.class, () ->  windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT, (Materialized<String, String, WindowStore<Bytes, byte[]>>) null));
+        assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT, (Materialized<String, String, WindowStore<Bytes, byte[]>>) null));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void shouldNotHaveNullNamedTwoOptionOnAggregate(final boolean withHeaders) {
         setup(withHeaders);
-        assertThrows(NullPointerException.class, () ->  windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT, (Named) null));
+        assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT, (Named) null));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void shouldNotHaveNullInitializerTwoOptionNamedOnAggregate(final boolean withHeaders) {
         setup(withHeaders);
-        assertThrows(NullPointerException.class, () ->  windowedCogroupedStream.aggregate(null, Named.as("test")));
+        assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(null, Named.as("test")));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void shouldNotHaveNullInitializerTwoOptionMaterializedOnAggregate(final boolean withHeaders) {
         setup(withHeaders);
-        assertThrows(NullPointerException.class, () ->  windowedCogroupedStream.aggregate(null, Materialized.as("test")));
+        assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(null, Materialized.as("test")));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void shouldNotHaveNullInitializerThreeOptionOnAggregate(final boolean withHeaders) {
         setup(withHeaders);
-        assertThrows(NullPointerException.class, () ->  windowedCogroupedStream.aggregate(null, Named.as("test"), Materialized.as("test")));
+        assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(null, Named.as("test"), Materialized.as("test")));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void shouldNotHaveNullMaterializedOnAggregate(final boolean withHeaders) {
         setup(withHeaders);
-        assertThrows(NullPointerException.class, () ->  windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT, Named.as("Test"), null));
+        assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT, Named.as("Test"), null));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void shouldNotHaveNullNamedOnAggregate(final boolean withHeaders) {
         setup(withHeaders);
-        assertThrows(NullPointerException.class, () ->  windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT, null, Materialized.as("test")));
+        assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT, null, Materialized.as("test")));
     }
 
     @ParameterizedTest

@@ -93,7 +93,7 @@ public class ImplicitLinkedHashMultiCollectionTest {
         while (iterator.hasNext()) {
             TestElement element = iterator.next();
             assertTrue(i < sequence.length, "Iterator yielded " + (i + 1) + " elements, but only " +
-                sequence.length + " were expected.");
+                    sequence.length + " were expected.");
             if (sequence[i] != element) {
                 fail("Iterator value number " + (i + 1) + " was incorrect.");
             }
@@ -108,12 +108,12 @@ public class ImplicitLinkedHashMultiCollectionTest {
         ImplicitLinkedHashMultiCollection<TestElement> multiSet = new ImplicitLinkedHashMultiCollection<>(5);
         assertEquals(11, multiSet.numSlots());
         TestElement[] testElements = {
-            new TestElement(100),
-            new TestElement(101),
-            new TestElement(102),
-            new TestElement(100),
-            new TestElement(101),
-            new TestElement(105)
+                new TestElement(100),
+                new TestElement(101),
+                new TestElement(102),
+                new TestElement(100),
+                new TestElement(101),
+                new TestElement(105)
         };
         for (TestElement testElement : testElements) {
             assertTrue(multiSet.add(testElement));
@@ -126,7 +126,7 @@ public class ImplicitLinkedHashMultiCollectionTest {
         assertEquals(23, multiSet.numSlots());
         assertEquals(5, multiSet.size());
         expectExactTraversal(multiSet.iterator(),
-            testElements[0], testElements[2], testElements[3], testElements[4], testElements[5]);
+                testElements[0], testElements[2], testElements[3], testElements[4], testElements[5]);
     }
 
     @Test
@@ -158,12 +158,12 @@ public class ImplicitLinkedHashMultiCollectionTest {
         while (iter.hasNext()) {
             TestElement element = iter.next();
             assertTrue(expectedIter.hasNext(),
-                "Iterator yielded " + (i + 1) + " elements, but only " + i + " were expected.");
+                    "Iterator yielded " + (i + 1) + " elements, but only " + i + " were expected.");
             TestElement expected = expectedIter.next();
             assertSame(expected, element, "Iterator value number " + (i + 1) + " was incorrect.");
             i = i + 1;
         }
         assertFalse(expectedIter.hasNext(),
-            "Iterator yielded " + i + " elements, but at least " + (i + 1) + " were expected.");
+                "Iterator yielded " + i + " elements, but at least " + (i + 1) + " were expected.");
     }
 }

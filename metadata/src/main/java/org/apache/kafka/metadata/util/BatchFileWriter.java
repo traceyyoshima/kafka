@@ -39,7 +39,7 @@ import static org.apache.kafka.raft.KafkaRaftClient.MAX_BATCH_SIZE_BYTES;
 
 /**
  * Write an arbitrary set of metadata records into a Kafka metadata log batch format.
- *
+ * <p>
  * This is similar to the binary format used for metadata snapshot files, but the log epoch
  * and initial offset are set to zero. This type includes a SnapshotHeaderRecord record in the
  * first batch and a SnapshotFooterRecord record in the last batch.
@@ -50,9 +50,9 @@ public class BatchFileWriter implements AutoCloseable {
     private final Time time;
 
     private BatchFileWriter(
-        FileChannel channel,
-        BatchAccumulator<ApiMessageAndVersion> batchAccumulator,
-        Time time
+            FileChannel channel,
+            BatchAccumulator<ApiMessageAndVersion> batchAccumulator,
+            Time time
     ) {
         this.channel = channel;
         this.batchAccumulator = batchAccumulator;
@@ -70,9 +70,9 @@ public class BatchFileWriter implements AutoCloseable {
     public void close() throws IOException {
         // Append the footer before draining the batch accumulator and force it to create a batch
         batchAccumulator.appendSnapshotFooterRecord(
-            new SnapshotFooterRecord()
-                .setVersion(ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION),
-            time.milliseconds()
+                new SnapshotFooterRecord()
+                        .setVersion(ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION),
+                time.milliseconds()
         );
         batchAccumulator.forceDrain();
 
@@ -89,30 +89,30 @@ public class BatchFileWriter implements AutoCloseable {
     public static BatchFileWriter open(Path snapshotPath) throws IOException {
         Time time = Time.SYSTEM;
         BatchAccumulator<ApiMessageAndVersion> batchAccumulator = new BatchAccumulator<>(
-            0,
-            0,
-            Integer.MAX_VALUE,
-            MAX_BATCH_SIZE_BYTES,
-            Integer.MAX_VALUE,
-            new BatchMemoryPool(5, MAX_BATCH_SIZE_BYTES),
-            time,
-            Compression.NONE,
-            MetadataRecordSerde.INSTANCE
+                0,
+                0,
+                Integer.MAX_VALUE,
+                MAX_BATCH_SIZE_BYTES,
+                Integer.MAX_VALUE,
+                new BatchMemoryPool(5, MAX_BATCH_SIZE_BYTES),
+                time,
+                Compression.NONE,
+                MetadataRecordSerde.INSTANCE
         );
 
         // Append the snapshot header control record and force it to create a batch
         batchAccumulator.appendSnapshotHeaderRecord(
-            new SnapshotHeaderRecord()
-                .setVersion(ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION)
-                .setLastContainedLogTimestamp(0),
-            time.milliseconds()
+                new SnapshotHeaderRecord()
+                        .setVersion(ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION)
+                        .setLastContainedLogTimestamp(0),
+                time.milliseconds()
         );
         batchAccumulator.forceDrain();
 
         FileChannel channel = FileChannel.open(
-            snapshotPath,
-            StandardOpenOption.CREATE_NEW,
-            StandardOpenOption.WRITE
+                snapshotPath,
+                StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE
         );
 
         return new BatchFileWriter(channel, batchAccumulator, time);

@@ -75,8 +75,8 @@ public class ProducerIdsImageTest {
     private static void testToImage(ProducerIdsImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> ProducerIdsImage.EMPTY,
-            ProducerIdsDelta::new
+                () -> ProducerIdsImage.EMPTY,
+                ProducerIdsDelta::new
         ).test(image, fromRecords);
     }
 

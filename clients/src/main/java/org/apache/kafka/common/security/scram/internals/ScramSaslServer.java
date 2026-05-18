@@ -85,12 +85,12 @@ public class ScramSaslServer implements SaslServer {
 
     /**
      * @throws SaslAuthenticationException if the requested authorization id is not the same as username.
-     * <p>
-     * <b>Note:</b> This method may throw {@link SaslAuthenticationException} to provide custom error messages
-     * to clients. But care should be taken to avoid including any information in the exception message that
-     * should not be leaked to unauthenticated clients. It may be safer to throw {@link SaslException} in
-     * most cases so that a standard error message is returned to clients.
-     * </p>
+     *                                     <p>
+     *                                     <b>Note:</b> This method may throw {@link SaslAuthenticationException} to provide custom error messages
+     *                                     to clients. But care should be taken to avoid including any information in the exception message that
+     *                                     should not be leaked to unauthenticated clients. It may be safer to throw {@link SaslException} in
+     *                                     most cases so that a standard error message is returned to clients.
+     *                                     </p>
      */
     @Override
     public byte[] evaluateResponse(byte[] response) throws SaslException, SaslAuthenticationException {
@@ -131,7 +131,7 @@ public class ScramSaslServer implements SaslServer {
                             throw new SaslAuthenticationException("Authentication failed: Client requested an authorization id that is different from username");
 
                         if (scramCredential.iterations() < mechanism.minIterations())
-                            throw new SaslException("Iterations " + scramCredential.iterations() +  " is less than the minimum " + mechanism.minIterations() + " for " + mechanism);
+                            throw new SaslException("Iterations " + scramCredential.iterations() + " is less than the minimum " + mechanism.minIterations() + " for " + mechanism);
                         this.serverFirstMessage = new ServerFirstMessage(clientFirstMessage.nonce(),
                                 serverNonce,
                                 scramCredential.salt(),
@@ -246,7 +246,7 @@ public class ScramSaslServer implements SaslServer {
 
         @Override
         public SaslServer createSaslServer(String mechanism, String protocol, String serverName, Map<String, ?> props, CallbackHandler cbh)
-            throws SaslException {
+                throws SaslException {
 
             if (!ScramMechanism.isScram(mechanism)) {
                 throw new SaslException(String.format("Requested mechanism '%s' is not supported. Supported mechanisms are '%s'.",

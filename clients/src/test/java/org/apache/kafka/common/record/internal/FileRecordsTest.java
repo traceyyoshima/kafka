@@ -67,7 +67,7 @@ import static org.mockito.Mockito.when;
 
 public class FileRecordsTest {
 
-    private final byte[][] values = new byte[][] {
+    private final byte[][] values = new byte[][]{
             "abcd".getBytes(),
             "efgh".getBytes(),
             "ijkl".getBytes()
@@ -106,7 +106,7 @@ public class FileRecordsTest {
     @Test
     public void testOutOfRangeSlice() {
         assertThrows(IllegalArgumentException.class,
-            () -> this.fileRecords.slice(fileRecords.sizeInBytes() + 1, 15).sizeInBytes());
+                () -> this.fileRecords.slice(fileRecords.sizeInBytes() + 1, 15).sizeInBytes());
     }
 
     /**
@@ -254,26 +254,26 @@ public class FileRecordsTest {
 
         int message1Size = batches.get(0).sizeInBytes();
         assertEquals(new FileRecords.LogOffsetPosition(0L, position, message1Size),
-            fileRecords.searchForOffsetFromPosition(0, 0),
-            "Should be able to find the first message by its offset");
+                fileRecords.searchForOffsetFromPosition(0, 0),
+                "Should be able to find the first message by its offset");
         position += message1Size;
 
         int message2Size = batches.get(1).sizeInBytes();
         assertEquals(new FileRecords.LogOffsetPosition(1L, position, message2Size),
-            fileRecords.searchForOffsetFromPosition(1, 0),
-            "Should be able to find second message when starting from 0");
+                fileRecords.searchForOffsetFromPosition(1, 0),
+                "Should be able to find second message when starting from 0");
         assertEquals(new FileRecords.LogOffsetPosition(1L, position, message2Size),
-            fileRecords.searchForOffsetFromPosition(1, position),
-            "Should be able to find second message starting from its offset");
+                fileRecords.searchForOffsetFromPosition(1, position),
+                "Should be able to find second message starting from its offset");
         position += message2Size + batches.get(2).sizeInBytes();
 
         int message4Size = batches.get(3).sizeInBytes();
         assertEquals(new FileRecords.LogOffsetPosition(50L, position, message4Size),
-            fileRecords.searchForOffsetFromPosition(3, position),
-            "Should be able to find fourth message from a non-existent offset");
+                fileRecords.searchForOffsetFromPosition(3, position),
+                "Should be able to find fourth message from a non-existent offset");
         assertEquals(new FileRecords.LogOffsetPosition(50L, position, message4Size),
-            fileRecords.searchForOffsetFromPosition(50,  position),
-            "Should be able to find fourth message by correct offset");
+                fileRecords.searchForOffsetFromPosition(50, position),
+                "Should be able to find fourth message by correct offset");
     }
 
     /**
@@ -426,19 +426,19 @@ public class FileRecordsTest {
      */
     @Test
     public void testSliceForAlreadySlicedFileRecords() throws IOException {
-        byte[][] values = new byte[][] {
-            "abcd".getBytes(),
-            "efgh".getBytes(),
-            "ijkl".getBytes(),
-            "mnopqr".getBytes(),
-            "stuv".getBytes()
+        byte[][] values = new byte[][]{
+                "abcd".getBytes(),
+                "efgh".getBytes(),
+                "ijkl".getBytes(),
+                "mnopqr".getBytes(),
+                "stuv".getBytes()
         };
         try (FileRecords fileRecords = createFileRecords(values)) {
             List<RecordBatch> items = batches(fileRecords.slice(0, fileRecords.sizeInBytes()));
 
             // Slice from fourth message until the end.
             int position = IntStream.range(0, 3).map(i -> items.get(i).sizeInBytes()).sum();
-            Records sliced  = fileRecords.slice(position, fileRecords.sizeInBytes() - position);
+            Records sliced = fileRecords.slice(position, fileRecords.sizeInBytes() - position);
             assertEquals(fileRecords.sizeInBytes() - position, sliced.sizeInBytes());
             assertEquals(items.subList(3, items.size()), batches(sliced), "Read starting from the fourth message");
 
@@ -714,8 +714,8 @@ public class FileRecordsTest {
         List<Long> offsets = asList(0L, 2L, 3L, 9L, 11L, 15L, 16L, 17L, 22L, 24L);
 
         Header[] headers = {new RecordHeader("headerKey1", "headerValue1".getBytes()),
-                            new RecordHeader("headerKey2", "headerValue2".getBytes()),
-                            new RecordHeader("headerKey3", "headerValue3".getBytes())};
+                new RecordHeader("headerKey2", "headerValue2".getBytes()),
+                new RecordHeader("headerKey3", "headerValue3".getBytes())};
 
         List<SimpleRecord> records = asList(
                 new SimpleRecord(1L, "k1".getBytes(), "hello".getBytes()),

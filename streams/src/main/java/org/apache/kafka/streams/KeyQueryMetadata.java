@@ -35,7 +35,7 @@ public class KeyQueryMetadata {
      * operations.
      */
     public static final KeyQueryMetadata NOT_AVAILABLE =
-        new KeyQueryMetadata(HostInfo.unavailable(), Collections.emptySet(), -1);
+            new KeyQueryMetadata(HostInfo.unavailable(), Collections.emptySet(), -1);
 
     private final HostInfo activeHost;
 
@@ -83,8 +83,8 @@ public class KeyQueryMetadata {
         }
         final KeyQueryMetadata keyQueryMetadata = (KeyQueryMetadata) obj;
         return Objects.equals(keyQueryMetadata.activeHost, activeHost)
-            && Objects.equals(keyQueryMetadata.standbyHosts, standbyHosts)
-            && Objects.equals(keyQueryMetadata.partition, partition);
+                && Objects.equals(keyQueryMetadata.standbyHosts, standbyHosts)
+                && Objects.equals(keyQueryMetadata.partition, partition);
     }
 
     @Override

@@ -57,7 +57,7 @@ public class FetchMetadata {
      * Returns the next epoch.
      *
      * @param prevEpoch The previous epoch.
-     * @return          The next epoch.
+     * @return The next epoch.
      */
     public static int nextEpoch(int prevEpoch) {
         if (prevEpoch < 0) {

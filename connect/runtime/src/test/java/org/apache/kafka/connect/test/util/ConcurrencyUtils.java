@@ -27,9 +27,10 @@ public class ConcurrencyUtils {
 
     /**
      * {@link CountDownLatch#await(long, TimeUnit) Await} the given latch, failing if the timeout elapses or the wait is interrupted.
-     * @param latch the latch to await; may not be null
+     *
+     * @param latch     the latch to await; may not be null
      * @param timeoutMs the maximum amount of time to wait for the latch, in milliseconds
-     * @param message the failure message to use if the timeout elapses or the wait is interrupted; may be null
+     * @param message   the failure message to use if the timeout elapses or the wait is interrupted; may be null
      */
     public static void awaitLatch(CountDownLatch latch, long timeoutMs, String message) {
         try {
@@ -42,7 +43,8 @@ public class ConcurrencyUtils {
     /**
      * {@link CountDownLatch#await(long, TimeUnit) Await} the given latch, failing if the
      * {@link #DEFAULT_LATCH_AWAIT_TIME_MS default timeout} elapses or the wait is interrupted.
-     * @param latch the latch to await; may not be null
+     *
+     * @param latch   the latch to await; may not be null
      * @param message the failure message to use if the timeout elapses or the wait is interrupted; may be null
      */
     public static void awaitLatch(CountDownLatch latch, String message) {

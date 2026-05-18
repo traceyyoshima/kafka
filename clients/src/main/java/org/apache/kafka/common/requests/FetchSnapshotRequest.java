@@ -36,9 +36,9 @@ public final class FetchSnapshotRequest extends AbstractRequest {
     @Override
     public FetchSnapshotResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new FetchSnapshotResponse(
-            new FetchSnapshotResponseData()
-                .setThrottleTimeMs(throttleTimeMs)
-                .setErrorCode(Errors.forException(e).code())
+                new FetchSnapshotResponseData()
+                        .setThrottleTimeMs(throttleTimeMs)
+                        .setErrorCode(Errors.forException(e).code())
         );
     }
 
@@ -50,21 +50,21 @@ public final class FetchSnapshotRequest extends AbstractRequest {
     /**
      * Finds the PartitionSnapshot for a given topic partition.
      *
-     * @param data the fetch snapshot request data
+     * @param data           the fetch snapshot request data
      * @param topicPartition the topic partition to find
      * @return the request partition snapshot if found, otherwise an empty Optional
      */
     public static Optional<FetchSnapshotRequestData.PartitionSnapshot> forTopicPartition(
-        FetchSnapshotRequestData data,
-        TopicPartition topicPartition
+            FetchSnapshotRequestData data,
+            TopicPartition topicPartition
     ) {
         return data
-            .topics()
-            .stream()
-            .filter(topic -> topic.name().equals(topicPartition.topic()))
-            .flatMap(topic -> topic.partitions().stream())
-            .filter(partition -> partition.partition() == topicPartition.partition())
-            .findAny();
+                .topics()
+                .stream()
+                .filter(topic -> topic.name().equals(topicPartition.topic()))
+                .flatMap(topic -> topic.partitions().stream())
+                .filter(partition -> partition.partition() == topicPartition.partition())
+                .findAny();
     }
 
     public static FetchSnapshotRequest parse(Readable readable, short version) {
@@ -74,7 +74,7 @@ public final class FetchSnapshotRequest extends AbstractRequest {
     public static class Builder extends AbstractRequest.Builder<FetchSnapshotRequest> {
         private final FetchSnapshotRequestData data;
 
-        public Builder(FetchSnapshotRequestData  data) {
+        public Builder(FetchSnapshotRequestData data) {
             super(ApiKeys.FETCH_SNAPSHOT);
             this.data = data;
         }

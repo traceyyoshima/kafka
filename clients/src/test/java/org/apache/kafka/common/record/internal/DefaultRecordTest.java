@@ -38,18 +38,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DefaultRecordTest {
     @Test
     public void testBasicSerde() throws IOException {
-        Header[] headers = new Header[] {
-            new RecordHeader("foo", "value".getBytes()),
-            new RecordHeader("bar", null),
-            new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
+        Header[] headers = new Header[]{
+                new RecordHeader("foo", "value".getBytes()),
+                new RecordHeader("bar", null),
+                new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
         };
 
-        SimpleRecord[] records = new SimpleRecord[] {
-            new SimpleRecord("hi".getBytes(), "there".getBytes()),
-            new SimpleRecord(null, "there".getBytes()),
-            new SimpleRecord("hi".getBytes(), null),
-            new SimpleRecord(null, null),
-            new SimpleRecord(15L, "hi".getBytes(), "there".getBytes(), headers)
+        SimpleRecord[] records = new SimpleRecord[]{
+                new SimpleRecord("hi".getBytes(), "there".getBytes()),
+                new SimpleRecord(null, "there".getBytes()),
+                new SimpleRecord("hi".getBytes(), null),
+                new SimpleRecord(null, null),
+                new SimpleRecord(15L, "hi".getBytes(), "there".getBytes(), headers)
         };
 
         for (SimpleRecord record : records) {
@@ -80,10 +80,10 @@ public class DefaultRecordTest {
 
     @Test
     public void testBasicSerdeInvalidHeaderCountTooHigh() throws IOException {
-        Header[] headers = new Header[] {
-            new RecordHeader("foo", "value".getBytes()),
-            new RecordHeader("bar", null),
-            new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
+        Header[] headers = new Header[]{
+                new RecordHeader("foo", "value".getBytes()),
+                new RecordHeader("bar", null),
+                new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
         };
 
         SimpleRecord record = new SimpleRecord(15L, "hi".getBytes(), "there".getBytes(), headers);
@@ -103,19 +103,19 @@ public class DefaultRecordTest {
         // test for input stream input
         try (ByteBufferInputStream inpStream = new ByteBufferInputStream(buffer.asReadOnlyBuffer())) {
             assertThrows(InvalidRecordException.class,
-                () -> DefaultRecord.readFrom(inpStream, baseOffset, baseTimestamp, baseSequence, null));
+                    () -> DefaultRecord.readFrom(inpStream, baseOffset, baseTimestamp, baseSequence, null));
         }
         // test for buffer input
         assertThrows(InvalidRecordException.class,
-            () -> DefaultRecord.readFrom(buffer, baseOffset, baseTimestamp, baseSequence, null));
+                () -> DefaultRecord.readFrom(buffer, baseOffset, baseTimestamp, baseSequence, null));
     }
 
     @Test
     public void testBasicSerdeInvalidHeaderCountTooLow() throws IOException {
-        Header[] headers = new Header[] {
-            new RecordHeader("foo", "value".getBytes()),
-            new RecordHeader("bar", null),
-            new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
+        Header[] headers = new Header[]{
+                new RecordHeader("foo", "value".getBytes()),
+                new RecordHeader("bar", null),
+                new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
         };
 
         SimpleRecord record = new SimpleRecord(15L, "hi".getBytes(), "there".getBytes(), headers);
@@ -134,7 +134,7 @@ public class DefaultRecordTest {
         buffer.put(14, (byte) 4);
 
         assertThrows(InvalidRecordException.class,
-            () -> DefaultRecord.readFrom(buffer, baseOffset, baseTimestamp, baseSequence, null));
+                () -> DefaultRecord.readFrom(buffer, baseOffset, baseTimestamp, baseSequence, null));
     }
 
     @Test
@@ -494,7 +494,7 @@ public class DefaultRecordTest {
     private static void assertPartiallyDecodingRecordsFromBufferThrowsInvalidRecordException(ByteBuffer buf) throws IOException {
         try (InputStream inputStream = new ByteBufferInputStream(buf)) {
             assertThrows(InvalidRecordException.class,
-                () -> DefaultRecord.readPartiallyFrom(inputStream, 0L, 0L, RecordBatch.NO_SEQUENCE, null));
+                    () -> DefaultRecord.readPartiallyFrom(inputStream, 0L, 0L, RecordBatch.NO_SEQUENCE, null));
         }
     }
 
@@ -502,10 +502,10 @@ public class DefaultRecordTest {
         // test for input stream input
         try (ByteBufferInputStream inpStream = new ByteBufferInputStream(buf.asReadOnlyBuffer())) {
             assertThrows(InvalidRecordException.class,
-                () -> DefaultRecord.readFrom(inpStream, 0L, 0L, RecordBatch.NO_SEQUENCE, null));
+                    () -> DefaultRecord.readFrom(inpStream, 0L, 0L, RecordBatch.NO_SEQUENCE, null));
         }
         // test for buffer input
         assertThrows(InvalidRecordException.class,
-            () -> DefaultRecord.readFrom(buf, 0L, 0L, RecordBatch.NO_SEQUENCE, null));
+                () -> DefaultRecord.readFrom(buf, 0L, 0L, RecordBatch.NO_SEQUENCE, null));
     }
 }

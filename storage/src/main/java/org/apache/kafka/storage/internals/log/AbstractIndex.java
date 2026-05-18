@@ -75,13 +75,15 @@ public abstract class AbstractIndex implements Closeable {
      * The maximum number of entries this index can hold
      */
     private volatile int maxEntries;
-    /** The number of entries in this index */
+    /**
+     * The number of entries in this index
+     */
     private volatile int entries;
 
 
     /**
-     * @param file The index file
-     * @param baseOffset the base offset of the segment that this index is corresponding to.
+     * @param file         The index file
+     * @param baseOffset   the base offset of the segment that this index is corresponding to.
      * @param maxIndexSize The maximum index size in bytes.
      */
     @SuppressWarnings("this-escape")
@@ -148,7 +150,7 @@ public abstract class AbstractIndex implements Closeable {
      * To parse an entry in the index.
      *
      * @param buffer the buffer of this memory mapped index.
-     * @param n the slot
+     * @param n      the slot
      * @return the index entry stored in the given slot.
      */
     protected abstract IndexEntry parseEntry(ByteBuffer buffer, int n);
@@ -251,9 +253,9 @@ public abstract class AbstractIndex implements Closeable {
     /**
      * Delete this index file.
      *
-     * @throws IOException if deletion fails due to an I/O error
      * @return `true` if the file was deleted by this method; `false` if the file could not be deleted because it did
-     *         not exist
+     * not exist
+     * @throws IOException if deletion fails due to an I/O error
      */
     public boolean deleteIfExists() throws IOException {
         closeHandler();
@@ -311,11 +313,12 @@ public abstract class AbstractIndex implements Closeable {
     public int relativeOffset(long offset) {
         OptionalInt relativeOffset = toRelative(offset);
         return relativeOffset.orElseThrow(() -> new IndexOffsetOverflowException(
-            "Integer overflow for offset: " + offset + " (" + file.getAbsoluteFile() + ")"));
+                "Integer overflow for offset: " + offset + " (" + file.getAbsoluteFile() + ")"));
     }
 
     /**
      * Check if a particular offset is valid to be appended to this index.
+     *
      * @param offset The offset to check
      * @return true if this offset is valid to be appended to this index; false otherwise
      */
@@ -448,7 +451,7 @@ public abstract class AbstractIndex implements Closeable {
      * Find the slot in which the largest entry less than or equal to the given target key or value is stored.
      * The comparison is made using the `IndexEntry.compareTo()` method.
      *
-     * @param idx The index buffer
+     * @param idx    The index buffer
      * @param target The index key to look for
      * @return The slot found or -1 if the least entry in the index is larger than the target key or the index is empty
      */
@@ -502,7 +505,7 @@ public abstract class AbstractIndex implements Closeable {
         // check if the target offset is in the warm section of the index
         if (compareIndexEntry(parseEntry(idx, firstHotEntry), target, searchEntity) < 0) {
             return binarySearch(idx, target, searchEntity,
-                searchResultType, firstHotEntry, entries - 1);
+                    searchResultType, firstHotEntry, entries - 1);
         }
 
         // check if the target offset is smaller than the least offset

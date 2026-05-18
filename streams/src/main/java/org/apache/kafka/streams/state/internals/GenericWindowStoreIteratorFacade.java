@@ -26,7 +26,7 @@ import java.util.function.Function;
  * Generic iterator facade that wraps a {@link KeyValueIterator} with Long keys and converts values
  * using a provided converter function to implement {@link WindowStoreIterator}.
  *
- * @param <InV> input value type (from inner iterator)
+ * @param <InV>  input value type (from inner iterator)
  * @param <OutV> output value type (exposed by this facade)
  */
 class GenericWindowStoreIteratorFacade<InV, OutV> implements WindowStoreIterator<OutV> {

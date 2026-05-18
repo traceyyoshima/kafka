@@ -71,7 +71,7 @@ public class MetadataCacheTest {
         MetadataCache cache = createCache();
         String topic = "topic";
         List<MetadataResponseData.MetadataResponseTopic> topicMetadata = cache.getTopicMetadata(
-            Set.of(topic), ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT), false, false);
+                Set.of(topic), ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT), false, false);
         assertTrue(topicMetadata.isEmpty());
     }
 
@@ -82,53 +82,53 @@ public class MetadataCacheTest {
         String topic1 = "topic-1";
 
         Map<String, Uuid> topicIds = Map.of(
-            topic0, Uuid.randomUuid(),
-            topic1, Uuid.randomUuid()
+                topic0, Uuid.randomUuid(),
+                topic1, Uuid.randomUuid()
         );
 
         List<PartitionRecord> partitionStates = List.of(
-            new PartitionRecord()
-                .setTopicId(topicIds.get(topic0))
-                .setPartitionId(0)
-                .setLeader(0)
-                .setLeaderEpoch(0)
-                .setIsr(List.of(0, 1, 3))
-                .setReplicas(List.of(0, 1, 3)),
-            new PartitionRecord()
-                .setTopicId(topicIds.get(topic0))
-                .setPartitionId(1)
-                .setLeader(1)
-                .setLeaderEpoch(1)
-                .setIsr(List.of(1, 0))
-                .setReplicas(List.of(1, 2, 0, 4)),
-            new PartitionRecord()
-                .setTopicId(topicIds.get(topic1))
-                .setPartitionId(0)
-                .setLeader(2)
-                .setLeaderEpoch(2)
-                .setIsr(List.of(2, 1))
-                .setReplicas(List.of(2, 1, 3))
+                new PartitionRecord()
+                        .setTopicId(topicIds.get(topic0))
+                        .setPartitionId(0)
+                        .setLeader(0)
+                        .setLeaderEpoch(0)
+                        .setIsr(List.of(0, 1, 3))
+                        .setReplicas(List.of(0, 1, 3)),
+                new PartitionRecord()
+                        .setTopicId(topicIds.get(topic0))
+                        .setPartitionId(1)
+                        .setLeader(1)
+                        .setLeaderEpoch(1)
+                        .setIsr(List.of(1, 0))
+                        .setReplicas(List.of(1, 2, 0, 4)),
+                new PartitionRecord()
+                        .setTopicId(topicIds.get(topic1))
+                        .setPartitionId(0)
+                        .setLeader(2)
+                        .setLeaderEpoch(2)
+                        .setIsr(List.of(2, 1))
+                        .setReplicas(List.of(2, 1, 3))
         );
 
         List<ApiMessage> records = new ArrayList<>();
         for (int brokerId = 0; brokerId <= 4; brokerId++) {
             String host = "foo-" + brokerId;
             BrokerEndpointCollection endpoints = new BrokerEndpointCollection(List.of(
-                new BrokerEndpoint()
-                    .setHost(host)
-                    .setPort(9092)
-                    .setSecurityProtocol(SecurityProtocol.PLAINTEXT.id)
-                    .setName(ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT).value()),
-                new BrokerEndpoint()
-                    .setHost(host)
-                    .setPort(9093)
-                    .setSecurityProtocol(SecurityProtocol.SSL.id)
-                    .setName(ListenerName.forSecurityProtocol(SecurityProtocol.SSL).value())
+                    new BrokerEndpoint()
+                            .setHost(host)
+                            .setPort(9092)
+                            .setSecurityProtocol(SecurityProtocol.PLAINTEXT.id)
+                            .setName(ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT).value()),
+                    new BrokerEndpoint()
+                            .setHost(host)
+                            .setPort(9093)
+                            .setSecurityProtocol(SecurityProtocol.SSL.id)
+                            .setName(ListenerName.forSecurityProtocol(SecurityProtocol.SSL).value())
             ));
             records.add(new RegisterBrokerRecord()
-                .setBrokerId(brokerId)
-                .setEndPoints(endpoints)
-                .setRack("rack1"));
+                    .setBrokerId(brokerId)
+                    .setEndPoints(endpoints)
+                    .setRack("rack1"));
         }
         records.add(new TopicRecord().setName(topic0).setTopicId(topicIds.get(topic0)));
         records.add(new TopicRecord().setName(topic1).setTopicId(topicIds.get(topic1)));
@@ -140,7 +140,7 @@ public class MetadataCacheTest {
 
             for (String topic : new String[]{topic0, topic1}) {
                 List<MetadataResponseData.MetadataResponseTopic> topicMetadataList =
-                    cache.getTopicMetadata(Set.of(topic), listenerName, false, false);
+                        cache.getTopicMetadata(Set.of(topic), listenerName, false, false);
                 assertEquals(1, topicMetadataList.size());
 
                 MetadataResponseData.MetadataResponseTopic topicMetadata = topicMetadataList.get(0);
@@ -156,10 +156,10 @@ public class MetadataCacheTest {
                 }
 
                 List<MetadataResponseData.MetadataResponsePartition> partitionMetadatas =
-                    new ArrayList<>(topicMetadata.partitions());
+                        new ArrayList<>(topicMetadata.partitions());
                 partitionMetadatas.sort(Comparator.comparingInt(MetadataResponseData.MetadataResponsePartition::partitionIndex));
                 assertEquals(topicPartitionStates.size(), partitionMetadatas.size(),
-                    "Unexpected partition count for topic " + topic);
+                        "Unexpected partition count for topic " + topic);
 
                 for (int i = 0; i < partitionMetadatas.size(); i++) {
                     MetadataResponseData.MetadataResponsePartition partitionMetadata = partitionMetadatas.get(i);
@@ -167,9 +167,9 @@ public class MetadataCacheTest {
                     assertEquals(Errors.NONE.code(), partitionMetadata.errorCode());
                     assertEquals(partitionId, partitionMetadata.partitionIndex());
                     PartitionRecord partitionState = topicPartitionStates.stream()
-                        .filter(ps -> ps.partitionId() == partitionId)
-                        .findFirst()
-                        .orElseThrow(() -> new AssertionError("Unable to find partition state for partition " + partitionId));
+                            .filter(ps -> ps.partitionId() == partitionId)
+                            .findFirst()
+                            .orElseThrow(() -> new AssertionError("Unable to find partition state for partition " + partitionId));
                     assertEquals(partitionState.leader(), partitionMetadata.leaderId());
                     assertEquals(partitionState.leaderEpoch(), partitionMetadata.leaderEpoch());
                     assertEquals(partitionState.isr(), partitionMetadata.isrNodes());
@@ -185,23 +185,23 @@ public class MetadataCacheTest {
         SecurityProtocol securityProtocol = SecurityProtocol.PLAINTEXT;
         ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
         List<RegisterBrokerRecord> brokers = List.of(
-            new RegisterBrokerRecord()
-                .setBrokerId(0)
-                .setFenced(false)
-                .setEndPoints(new BrokerEndpointCollection(List.of(
-                    new BrokerEndpoint()
-                        .setHost("foo")
-                        .setPort(9092)
-                        .setSecurityProtocol(securityProtocol.id)
-                        .setName(listenerName.value())
-                )))
+                new RegisterBrokerRecord()
+                        .setBrokerId(0)
+                        .setFenced(false)
+                        .setEndPoints(new BrokerEndpointCollection(List.of(
+                                new BrokerEndpoint()
+                                        .setHost("foo")
+                                        .setPort(9092)
+                                        .setSecurityProtocol(securityProtocol.id)
+                                        .setName(listenerName.value())
+                        )))
         );
 
         // leader is not available. expect LEADER_NOT_AVAILABLE for any metadata version.
         verifyTopicMetadataPartitionLeaderOrEndpointNotAvailable(cache, brokers, listenerName,
-            1, Errors.LEADER_NOT_AVAILABLE, false);
+                1, Errors.LEADER_NOT_AVAILABLE, false);
         verifyTopicMetadataPartitionLeaderOrEndpointNotAvailable(cache, brokers, listenerName,
-            1, Errors.LEADER_NOT_AVAILABLE, true);
+                1, Errors.LEADER_NOT_AVAILABLE, true);
     }
 
     @Test
@@ -212,52 +212,52 @@ public class MetadataCacheTest {
         ListenerName plaintextListenerName = ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT);
         ListenerName sslListenerName = ListenerName.forSecurityProtocol(SecurityProtocol.SSL);
         BrokerEndpointCollection broker0Endpoints = new BrokerEndpointCollection(List.of(
-            new BrokerEndpoint()
-                .setHost("host0")
-                .setPort(9092)
-                .setSecurityProtocol(SecurityProtocol.PLAINTEXT.id)
-                .setName(plaintextListenerName.value()),
-            new BrokerEndpoint()
-                .setHost("host0")
-                .setPort(9093)
-                .setSecurityProtocol(SecurityProtocol.SSL.id)
-                .setName(sslListenerName.value())
+                new BrokerEndpoint()
+                        .setHost("host0")
+                        .setPort(9092)
+                        .setSecurityProtocol(SecurityProtocol.PLAINTEXT.id)
+                        .setName(plaintextListenerName.value()),
+                new BrokerEndpoint()
+                        .setHost("host0")
+                        .setPort(9093)
+                        .setSecurityProtocol(SecurityProtocol.SSL.id)
+                        .setName(sslListenerName.value())
         ));
 
         BrokerEndpointCollection broker1Endpoints = new BrokerEndpointCollection(List.of(
-            new BrokerEndpoint()
-                .setHost("host1")
-                .setPort(9092)
-                .setSecurityProtocol(SecurityProtocol.PLAINTEXT.id)
-                .setName(plaintextListenerName.value())
+                new BrokerEndpoint()
+                        .setHost("host1")
+                        .setPort(9092)
+                        .setSecurityProtocol(SecurityProtocol.PLAINTEXT.id)
+                        .setName(plaintextListenerName.value())
         ));
 
         List<RegisterBrokerRecord> brokers = List.of(
-            new RegisterBrokerRecord()
-                .setBrokerId(0)
-                .setFenced(false)
-                .setEndPoints(broker0Endpoints),
-            new RegisterBrokerRecord()
-                .setBrokerId(1)
-                .setFenced(false)
-                .setEndPoints(broker1Endpoints)
+                new RegisterBrokerRecord()
+                        .setBrokerId(0)
+                        .setFenced(false)
+                        .setEndPoints(broker0Endpoints),
+                new RegisterBrokerRecord()
+                        .setBrokerId(1)
+                        .setFenced(false)
+                        .setEndPoints(broker1Endpoints)
         );
 
         // leader available in cache but listener name not present. expect LISTENER_NOT_FOUND error for new metadata version
         verifyTopicMetadataPartitionLeaderOrEndpointNotAvailable(cache, brokers, sslListenerName,
-            1, Errors.LISTENER_NOT_FOUND, true);
+                1, Errors.LISTENER_NOT_FOUND, true);
         // leader available in cache but listener name not present. expect LEADER_NOT_AVAILABLE error for old metadata version
         verifyTopicMetadataPartitionLeaderOrEndpointNotAvailable(cache, brokers, sslListenerName,
-            1, Errors.LEADER_NOT_AVAILABLE, false);
+                1, Errors.LEADER_NOT_AVAILABLE, false);
     }
 
     private void verifyTopicMetadataPartitionLeaderOrEndpointNotAvailable(
-        MetadataCache cache,
-        List<RegisterBrokerRecord> brokers,
-        ListenerName listenerName,
-        int leader,
-        Errors expectedError,
-        boolean errorUnavailableListeners
+            MetadataCache cache,
+            List<RegisterBrokerRecord> brokers,
+            ListenerName listenerName,
+            int leader,
+            Errors expectedError,
+            boolean errorUnavailableListeners
     ) {
         String topic = "topic";
         Uuid topicId = Uuid.randomUuid();
@@ -267,17 +267,17 @@ public class MetadataCacheTest {
         int leaderEpoch = 1;
         int partitionEpoch = 3;
         records.add(new PartitionRecord()
-            .setTopicId(topicId)
-            .setPartitionId(0)
-            .setPartitionEpoch(partitionEpoch)
-            .setLeader(leader)
-            .setLeaderEpoch(leaderEpoch)
-            .setIsr(List.of(0))
-            .setReplicas(List.of(0)));
+                .setTopicId(topicId)
+                .setPartitionId(0)
+                .setPartitionEpoch(partitionEpoch)
+                .setLeader(leader)
+                .setLeaderEpoch(leaderEpoch)
+                .setIsr(List.of(0))
+                .setReplicas(List.of(0)));
         updateCache(cache, records);
 
         List<MetadataResponseData.MetadataResponseTopic> topicMetadataList =
-            cache.getTopicMetadata(Set.of(topic), listenerName, false, errorUnavailableListeners);
+                cache.getTopicMetadata(Set.of(topic), listenerName, false, errorUnavailableListeners);
         assertEquals(1, topicMetadataList.size());
 
         MetadataResponseData.MetadataResponseTopic topicMetadata = topicMetadataList.get(0);
@@ -303,11 +303,11 @@ public class MetadataCacheTest {
         SecurityProtocol securityProtocol = SecurityProtocol.PLAINTEXT;
         ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
         BrokerEndpointCollection endPoints = new BrokerEndpointCollection(List.of(
-            new BrokerEndpoint()
-                .setHost("foo")
-                .setPort(9092)
-                .setSecurityProtocol(securityProtocol.id)
-                .setName(listenerName.value())
+                new BrokerEndpoint()
+                        .setHost("foo")
+                        .setPort(9092)
+                        .setSecurityProtocol(securityProtocol.id)
+                        .setName(listenerName.value())
         ));
 
         // replica 1 is not available
@@ -317,25 +317,25 @@ public class MetadataCacheTest {
         List<Integer> isr = List.of(0);
 
         List<ApiMessage> records = List.of(
-            new RegisterBrokerRecord()
-                .setBrokerId(0)
-                .setFenced(false)
-                .setEndPoints(endPoints),
-            new TopicRecord().setName(topic).setTopicId(topicId),
-            new PartitionRecord()
-                .setTopicId(topicId)
-                .setPartitionId(0)
-                .setLeader(leader)
-                .setLeaderEpoch(leaderEpoch)
-                .setIsr(isr)
-                .setPartitionEpoch(partitionEpoch)
-                .setReplicas(replicas)
+                new RegisterBrokerRecord()
+                        .setBrokerId(0)
+                        .setFenced(false)
+                        .setEndPoints(endPoints),
+                new TopicRecord().setName(topic).setTopicId(topicId),
+                new PartitionRecord()
+                        .setTopicId(topicId)
+                        .setPartitionId(0)
+                        .setLeader(leader)
+                        .setLeaderEpoch(leaderEpoch)
+                        .setIsr(isr)
+                        .setPartitionEpoch(partitionEpoch)
+                        .setReplicas(replicas)
         );
         updateCache(cache, records);
 
         // Validate errorUnavailableEndpoints = false
         List<MetadataResponseData.MetadataResponseTopic> topicMetadataList =
-            cache.getTopicMetadata(Set.of(topic), listenerName, false, false);
+                cache.getTopicMetadata(Set.of(topic), listenerName, false, false);
         assertEquals(1, topicMetadataList.size());
 
         MetadataResponseData.MetadataResponseTopic topicMetadata = topicMetadataList.get(0);
@@ -352,7 +352,7 @@ public class MetadataCacheTest {
 
         // Validate errorUnavailableEndpoints = true
         List<MetadataResponseData.MetadataResponseTopic> topicMetadatasWithError =
-            cache.getTopicMetadata(Set.of(topic), listenerName, true, false);
+                cache.getTopicMetadata(Set.of(topic), listenerName, true, false);
         assertEquals(1, topicMetadatasWithError.size());
 
         MetadataResponseData.MetadataResponseTopic topicMetadataWithError = topicMetadatasWithError.get(0);
@@ -378,11 +378,11 @@ public class MetadataCacheTest {
         ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
 
         BrokerEndpointCollection endpoints = new BrokerEndpointCollection(List.of(
-            new BrokerEndpoint()
-                .setHost("foo")
-                .setPort(9092)
-                .setSecurityProtocol(securityProtocol.id)
-                .setName(listenerName.value())
+                new BrokerEndpoint()
+                        .setHost("foo")
+                        .setPort(9092)
+                        .setSecurityProtocol(securityProtocol.id)
+                        .setName(listenerName.value())
         ));
 
         // isr member 1 is not a registered broker
@@ -391,25 +391,25 @@ public class MetadataCacheTest {
         List<Integer> replicas = List.of(0);
         List<Integer> isr = List.of(0, 1);
         List<ApiMessage> records = List.of(
-            new RegisterBrokerRecord()
-                .setBrokerId(0)
-                .setRack("rack1")
-                .setFenced(false)
-                .setEndPoints(endpoints),
-            new TopicRecord().setName(topic).setTopicId(topicId),
-            new PartitionRecord()
-                .setTopicId(topicId)
-                .setPartitionId(0)
-                .setLeader(leader)
-                .setLeaderEpoch(leaderEpoch)
-                .setIsr(isr)
-                .setReplicas(replicas)
+                new RegisterBrokerRecord()
+                        .setBrokerId(0)
+                        .setRack("rack1")
+                        .setFenced(false)
+                        .setEndPoints(endpoints),
+                new TopicRecord().setName(topic).setTopicId(topicId),
+                new PartitionRecord()
+                        .setTopicId(topicId)
+                        .setPartitionId(0)
+                        .setLeader(leader)
+                        .setLeaderEpoch(leaderEpoch)
+                        .setIsr(isr)
+                        .setReplicas(replicas)
         );
         updateCache(cache, records);
 
         // Validate errorUnavailableEndpoints = false
         List<MetadataResponseData.MetadataResponseTopic> topicMetadataList =
-            cache.getTopicMetadata(Set.of(topic), listenerName, false, false);
+                cache.getTopicMetadata(Set.of(topic), listenerName, false, false);
         assertEquals(1, topicMetadataList.size());
 
         MetadataResponseData.MetadataResponseTopic topicMetadata = topicMetadataList.get(0);
@@ -426,7 +426,7 @@ public class MetadataCacheTest {
 
         // Validate errorUnavailableEndpoints = true
         List<MetadataResponseData.MetadataResponseTopic> topicMetadatasWithError =
-            cache.getTopicMetadata(Set.of(topic), listenerName, true, false);
+                cache.getTopicMetadata(Set.of(topic), listenerName, true, false);
         assertEquals(1, topicMetadatasWithError.size());
 
         MetadataResponseData.MetadataResponseTopic topicMetadataWithError = topicMetadatasWithError.get(0);
@@ -450,15 +450,15 @@ public class MetadataCacheTest {
         SecurityProtocol securityProtocol = SecurityProtocol.PLAINTEXT;
 
         RegisterBrokerRecord broker = new RegisterBrokerRecord()
-            .setBrokerId(0)
-            .setRack("")
-            .setEndPoints(new BrokerEndpointCollection(List.of(
-                new BrokerEndpoint()
-                    .setHost("foo")
-                    .setPort(9092)
-                    .setSecurityProtocol(securityProtocol.id)
-                    .setName(ListenerName.forSecurityProtocol(securityProtocol).value())
-            )));
+                .setBrokerId(0)
+                .setRack("")
+                .setEndPoints(new BrokerEndpointCollection(List.of(
+                        new BrokerEndpoint()
+                                .setHost("foo")
+                                .setPort(9092)
+                                .setSecurityProtocol(securityProtocol.id)
+                                .setName(ListenerName.forSecurityProtocol(securityProtocol).value())
+                )));
 
         TopicRecord topicRecord = new TopicRecord().setName(topic).setTopicId(topicId);
 
@@ -468,20 +468,20 @@ public class MetadataCacheTest {
         List<Integer> isr = List.of(0, 1);
 
         List<ApiMessage> records = List.of(
-            broker,
-            topicRecord,
-            new PartitionRecord()
-                .setTopicId(topicId)
-                .setPartitionId(0)
-                .setLeader(leader)
-                .setLeaderEpoch(leaderEpoch)
-                .setIsr(isr)
-                .setReplicas(replicas)
+                broker,
+                topicRecord,
+                new PartitionRecord()
+                        .setTopicId(topicId)
+                        .setPartitionId(0)
+                        .setLeader(leader)
+                        .setLeaderEpoch(leaderEpoch)
+                        .setIsr(isr)
+                        .setReplicas(replicas)
         );
         updateCache(cache, records);
 
         List<MetadataResponseData.MetadataResponseTopic> topicMetadata =
-            cache.getTopicMetadata(Set.of(topic), ListenerName.forSecurityProtocol(SecurityProtocol.SSL), false, false);
+                cache.getTopicMetadata(Set.of(topic), ListenerName.forSecurityProtocol(SecurityProtocol.SSL), false, false);
         assertEquals(1, topicMetadata.size());
         assertEquals(1, topicMetadata.get(0).partitions().size());
         assertEquals(RecordBatch.NO_PARTITION_LEADER_EPOCH, topicMetadata.get(0).partitions().get(0).leaderId());
@@ -493,7 +493,7 @@ public class MetadataCacheTest {
         String topic = "topic";
         Uuid topicId = Uuid.randomUuid();
         List<ApiMessage> topicRecords = List.of(
-            new TopicRecord().setName(topic).setTopicId(topicId));
+                new TopicRecord().setName(topic).setTopicId(topicId));
 
         List<Integer> initialBrokerIds = List.of(0, 1, 2);
         updateCacheWithBrokers(cache, initialBrokerIds, topicId, topicRecords);
@@ -505,31 +505,31 @@ public class MetadataCacheTest {
     }
 
     private void updateCacheWithBrokers(MetadataCache cache, List<Integer> brokerIds,
-                                         Uuid topicId, List<ApiMessage> topicRecords) {
+                                        Uuid topicId, List<ApiMessage> topicRecords) {
         SecurityProtocol securityProtocol = SecurityProtocol.PLAINTEXT;
         List<ApiMessage> records = new ArrayList<>();
         for (int brokerId : brokerIds) {
             records.add(new RegisterBrokerRecord()
-                .setBrokerId(brokerId)
-                .setRack("")
-                .setFenced(false)
-                .setBrokerEpoch(BROKER_EPOCH)
-                .setEndPoints(new BrokerEndpointCollection(List.of(
-                    new BrokerEndpoint()
-                        .setHost("foo")
-                        .setPort(9092)
-                        .setSecurityProtocol(securityProtocol.id)
-                        .setName(ListenerName.forSecurityProtocol(securityProtocol).value())
-                ))));
+                    .setBrokerId(brokerId)
+                    .setRack("")
+                    .setFenced(false)
+                    .setBrokerEpoch(BROKER_EPOCH)
+                    .setEndPoints(new BrokerEndpointCollection(List.of(
+                            new BrokerEndpoint()
+                                    .setHost("foo")
+                                    .setPort(9092)
+                                    .setSecurityProtocol(securityProtocol.id)
+                                    .setName(ListenerName.forSecurityProtocol(securityProtocol).value())
+                    ))));
         }
         records.addAll(topicRecords);
         records.add(new PartitionRecord()
-            .setTopicId(topicId)
-            .setPartitionId(0)
-            .setLeader(0)
-            .setLeaderEpoch(0)
-            .setIsr(List.of(0, 1))
-            .setReplicas(List.of(0)));
+                .setTopicId(topicId)
+                .setPartitionId(0)
+                .setLeader(0)
+                .setLeaderEpoch(0)
+                .setIsr(List.of(0, 1))
+                .setReplicas(List.of(0)));
         updateCache(cache, records);
     }
 
@@ -545,16 +545,16 @@ public class MetadataCacheTest {
         List<RegisterBrokerRecord> brokerRecords = new ArrayList<>();
         for (int brokerId = 0; brokerId < numBrokers; brokerId++) {
             brokerRecords.add(new RegisterBrokerRecord()
-                .setBrokerId(brokerId)
-                .setFenced(brokerId == fencedBrokerId)
-                .setRack("rack" + (brokerId % 3))
-                .setEndPoints(new BrokerEndpointCollection(List.of(
-                    new BrokerEndpoint()
-                        .setHost("foo" + brokerId)
-                        .setPort(9092)
-                        .setSecurityProtocol(securityProtocol.id)
-                        .setName(listenerName.value())
-                ))));
+                    .setBrokerId(brokerId)
+                    .setFenced(brokerId == fencedBrokerId)
+                    .setRack("rack" + (brokerId % 3))
+                    .setEndPoints(new BrokerEndpointCollection(List.of(
+                            new BrokerEndpoint()
+                                    .setHost("foo" + brokerId)
+                                    .setPort(9092)
+                                    .setSecurityProtocol(securityProtocol.id)
+                                    .setName(listenerName.value())
+                    ))));
         }
 
         // Set up a single topic (with many partitions) for the metadata cache
@@ -575,12 +575,12 @@ public class MetadataCacheTest {
                 if (id != fencedBrokerId) nonFencedReplicas.add(id);
             }
             partitionRecords.add(new PartitionRecord()
-                .setTopicId(topicId)
-                .setPartitionId(partitionId)
-                .setReplicas(replicas)
-                .setLeader(replicas.get(0))
-                .setIsr(nonFencedReplicas)
-                .setEligibleLeaderReplicas(nonFencedReplicas));
+                    .setTopicId(topicId)
+                    .setPartitionId(partitionId)
+                    .setReplicas(replicas)
+                    .setLeader(replicas.get(0))
+                    .setIsr(nonFencedReplicas)
+                    .setEligibleLeaderReplicas(nonFencedReplicas));
         }
 
         // Load the prepared data in the metadata cache
@@ -592,7 +592,7 @@ public class MetadataCacheTest {
         for (int partitionId = 0; partitionId < numPartitions; partitionId++) {
             TopicPartition tp = new TopicPartition(topic, partitionId);
             Map<Integer, Node> brokerIdToNodeMap =
-                cache.getPartitionReplicaEndpoints(tp, listenerName);
+                    cache.getPartitionReplicaEndpoints(tp, listenerName);
             Set<Integer> replicaSet = brokerIdToNodeMap.keySet();
             Set<Integer> expectedReplicaSet = new HashSet<>(partitionRecords.get(partitionId).replicas());
 
@@ -601,10 +601,10 @@ public class MetadataCacheTest {
                 Set<Integer> replicaSetPlusFenced = new HashSet<>(replicaSet);
                 replicaSetPlusFenced.add(fencedBrokerId);
                 assertEquals(expectedReplicaSet, replicaSetPlusFenced,
-                    "Unexpected partial replica set for partition " + partitionId);
+                        "Unexpected partial replica set for partition " + partitionId);
             } else {
                 assertEquals(expectedReplicaSet, replicaSet,
-                    "Unexpected replica set for partition " + partitionId);
+                        "Unexpected replica set for partition " + partitionId);
             }
 
             // Verify that the endpoint data for each non-fenced replica is as expected
@@ -616,17 +616,17 @@ public class MetadataCacheTest {
                 RegisterBrokerRecord expectedBroker = brokerRecords.get(brokerId);
                 BrokerEndpoint expectedEndpoint = expectedBroker.endPoints().find(listenerName.value());
                 assertEquals(expectedEndpoint.host(), brokerNode.host(),
-                    "Unexpected host for broker " + brokerId + " and partition " + partitionId);
+                        "Unexpected host for broker " + brokerId + " and partition " + partitionId);
                 assertEquals(expectedEndpoint.port(), brokerNode.port(),
-                    "Unexpected port for broker " + brokerId + " and partition " + partitionId);
+                        "Unexpected port for broker " + brokerId + " and partition " + partitionId);
                 assertEquals(expectedBroker.rack(), brokerNode.rack(),
-                    "Unexpected rack for broker " + brokerId + " and partition " + partitionId);
+                        "Unexpected rack for broker " + brokerId + " and partition " + partitionId);
             }
         }
 
         TopicPartition tp = new TopicPartition(topic, numPartitions);
         Map<Integer, Node> brokerIdToNodeMap =
-            cache.getPartitionReplicaEndpoints(tp, listenerName);
+                cache.getPartitionReplicaEndpoints(tp, listenerName);
         assertTrue(brokerIdToNodeMap.isEmpty());
     }
 
@@ -692,16 +692,16 @@ public class MetadataCacheTest {
 
         MetadataDelta delta = new MetadataDelta.Builder().build();
         delta.replay(new RegisterBrokerRecord()
-            .setBrokerId(0)
-            .setFenced(false));
+                .setBrokerId(0)
+                .setFenced(false));
 
         metadataCache.setImage(delta.apply(MetadataProvenance.EMPTY));
 
         assertFalse(metadataCache.isBrokerFenced(0));
 
         delta.replay(new BrokerRegistrationChangeRecord()
-            .setBrokerId(0)
-            .setFenced((byte) 1));
+                .setBrokerId(0)
+                .setFenced((byte) 1));
 
         metadataCache.setImage(delta.apply(MetadataProvenance.EMPTY));
 
@@ -714,16 +714,16 @@ public class MetadataCacheTest {
 
         MetadataDelta delta = new MetadataDelta.Builder().build();
         delta.replay(new RegisterBrokerRecord()
-            .setBrokerId(0)
-            .setInControlledShutdown(false));
+                .setBrokerId(0)
+                .setInControlledShutdown(false));
 
         metadataCache.setImage(delta.apply(MetadataProvenance.EMPTY));
 
         assertFalse(metadataCache.isBrokerShuttingDown(0));
 
         delta.replay(new BrokerRegistrationChangeRecord()
-            .setBrokerId(0)
-            .setInControlledShutdown((byte) 1));
+                .setBrokerId(0)
+                .setInControlledShutdown((byte) 1));
 
         metadataCache.setImage(delta.apply(MetadataProvenance.EMPTY));
 
@@ -736,14 +736,14 @@ public class MetadataCacheTest {
 
         MetadataDelta delta = new MetadataDelta.Builder().build();
         delta.replay(new RegisterBrokerRecord()
-            .setBrokerId(0)
-            .setBrokerEpoch(100)
-            .setFenced(false));
+                .setBrokerId(0)
+                .setBrokerEpoch(100)
+                .setFenced(false));
 
         delta.replay(new RegisterBrokerRecord()
-            .setBrokerId(1)
-            .setBrokerEpoch(101)
-            .setFenced(true));
+                .setBrokerId(1)
+                .setBrokerEpoch(101)
+                .setFenced(true));
 
         metadataCache.setImage(delta.apply(MetadataProvenance.EMPTY));
 
@@ -761,79 +761,79 @@ public class MetadataCacheTest {
         String topic1 = "test1";
 
         Map<String, Uuid> topicIds = Map.of(
-            topic0, Uuid.randomUuid(),
-            topic1, Uuid.randomUuid()
+                topic0, Uuid.randomUuid(),
+                topic1, Uuid.randomUuid()
         );
 
         // partitionMap key: "topicName:partitionId"
         Map<String, PartitionRecord> partitionMap = Map.of(
-            topic0 + ":0", new PartitionRecord()
-                .setTopicId(topicIds.get(topic0))
-                .setPartitionId(0)
-                .setReplicas(List.of(0, 1, 2))
-                .setLeader(0)
-                .setIsr(List.of(0))
-                .setEligibleLeaderReplicas(List.of(1))
-                .setLastKnownElr(List.of(2))
-                .setLeaderEpoch(0)
-                .setPartitionEpoch(1)
-                .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value()),
-            topic0 + ":2", new PartitionRecord()
-                .setTopicId(topicIds.get(topic0))
-                .setPartitionId(2)
-                .setReplicas(List.of(0, 2, 3))
-                .setLeader(3)
-                .setIsr(List.of(3))
-                .setEligibleLeaderReplicas(List.of(2))
-                .setLastKnownElr(List.of(0))
-                .setLeaderEpoch(1)
-                .setPartitionEpoch(2)
-                .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value()),
-            topic0 + ":1", new PartitionRecord()
-                .setTopicId(topicIds.get(topic0))
-                .setPartitionId(1)
-                .setReplicas(List.of(0, 1, 3))
-                .setLeader(0)
-                .setIsr(List.of(0))
-                .setEligibleLeaderReplicas(List.of(1))
-                .setLastKnownElr(List.of(3))
-                .setLeaderEpoch(0)
-                .setPartitionEpoch(2)
-                .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value()),
-            topic1 + ":0", new PartitionRecord()
-                .setTopicId(topicIds.get(topic1))
-                .setPartitionId(0)
-                .setReplicas(List.of(0, 1, 2))
-                .setLeader(2)
-                .setIsr(List.of(2))
-                .setEligibleLeaderReplicas(List.of(1))
-                .setLastKnownElr(List.of(0))
-                .setLeaderEpoch(10)
-                .setPartitionEpoch(11)
-                .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value())
+                topic0 + ":0", new PartitionRecord()
+                        .setTopicId(topicIds.get(topic0))
+                        .setPartitionId(0)
+                        .setReplicas(List.of(0, 1, 2))
+                        .setLeader(0)
+                        .setIsr(List.of(0))
+                        .setEligibleLeaderReplicas(List.of(1))
+                        .setLastKnownElr(List.of(2))
+                        .setLeaderEpoch(0)
+                        .setPartitionEpoch(1)
+                        .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value()),
+                topic0 + ":2", new PartitionRecord()
+                        .setTopicId(topicIds.get(topic0))
+                        .setPartitionId(2)
+                        .setReplicas(List.of(0, 2, 3))
+                        .setLeader(3)
+                        .setIsr(List.of(3))
+                        .setEligibleLeaderReplicas(List.of(2))
+                        .setLastKnownElr(List.of(0))
+                        .setLeaderEpoch(1)
+                        .setPartitionEpoch(2)
+                        .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value()),
+                topic0 + ":1", new PartitionRecord()
+                        .setTopicId(topicIds.get(topic0))
+                        .setPartitionId(1)
+                        .setReplicas(List.of(0, 1, 3))
+                        .setLeader(0)
+                        .setIsr(List.of(0))
+                        .setEligibleLeaderReplicas(List.of(1))
+                        .setLastKnownElr(List.of(3))
+                        .setLeaderEpoch(0)
+                        .setPartitionEpoch(2)
+                        .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value()),
+                topic1 + ":0", new PartitionRecord()
+                        .setTopicId(topicIds.get(topic1))
+                        .setPartitionId(0)
+                        .setReplicas(List.of(0, 1, 2))
+                        .setLeader(2)
+                        .setIsr(List.of(2))
+                        .setEligibleLeaderReplicas(List.of(1))
+                        .setLastKnownElr(List.of(0))
+                        .setLeaderEpoch(10)
+                        .setPartitionEpoch(11)
+                        .setLeaderRecoveryState(LeaderRecoveryState.RECOVERED.value())
         );
 
         List<ApiMessage> records = new ArrayList<>();
         records.add(new RegisterBrokerRecord().setBrokerEpoch(BROKER_EPOCH).setFenced(false).setBrokerId(0)
-            .setEndPoints(new BrokerEndpointCollection(List.of(
-                new BrokerEndpoint().setHost("foo0").setPort(9092)
-                    .setSecurityProtocol(securityProtocol.id).setName(listenerName.value())
-            ))));
+                .setEndPoints(new BrokerEndpointCollection(List.of(
+                        new BrokerEndpoint().setHost("foo0").setPort(9092)
+                                .setSecurityProtocol(securityProtocol.id).setName(listenerName.value())
+                ))));
         records.add(new RegisterBrokerRecord().setBrokerEpoch(BROKER_EPOCH).setFenced(false).setBrokerId(1)
-            .setEndPoints(new BrokerEndpointCollection(List.of(
-                new BrokerEndpoint().setHost("foo1").setPort(9093)
-                    .setSecurityProtocol(securityProtocol.id).setName(listenerName.value())
-            ))));
+                .setEndPoints(new BrokerEndpointCollection(List.of(
+                        new BrokerEndpoint().setHost("foo1").setPort(9093)
+                                .setSecurityProtocol(securityProtocol.id).setName(listenerName.value())
+                ))));
         records.add(new RegisterBrokerRecord().setBrokerEpoch(BROKER_EPOCH).setFenced(false).setBrokerId(2)
-            .setEndPoints(new BrokerEndpointCollection(List.of(
-                new BrokerEndpoint().setHost("foo2").setPort(9094)
-                    .setSecurityProtocol(securityProtocol.id).setName(listenerName.value())
-            ))));
+                .setEndPoints(new BrokerEndpointCollection(List.of(
+                        new BrokerEndpoint().setHost("foo2").setPort(9094)
+                                .setSecurityProtocol(securityProtocol.id).setName(listenerName.value())
+                ))));
         records.add(new RegisterBrokerRecord().setBrokerEpoch(BROKER_EPOCH).setFenced(false).setBrokerId(3)
-            .setEndPoints(new BrokerEndpointCollection(List.of(
-                new BrokerEndpoint().setHost("foo3").setPort(9095)
-                    .setSecurityProtocol(securityProtocol.id).setName(listenerName.value())
-            ))));
+                .setEndPoints(new BrokerEndpointCollection(List.of(
+                        new BrokerEndpoint().setHost("foo3").setPort(9095)
+                                .setSecurityProtocol(securityProtocol.id).setName(listenerName.value())
+                ))));
         records.add(new TopicRecord().setName(topic0).setTopicId(topicIds.get(topic0)));
         records.add(new TopicRecord().setName(topic1).setTopicId(topicIds.get(topic1)));
         records.addAll(partitionMap.values());
@@ -841,8 +841,8 @@ public class MetadataCacheTest {
 
         // Basic test
         List<DescribeTopicPartitionsResponseTopic> result = metadataCache
-            .describeTopicResponse(List.of(topic0, topic1).iterator(), listenerName, t -> 0, 10, false)
-            .topics().stream().toList();
+                .describeTopicResponse(List.of(topic0, topic1).iterator(), listenerName, t -> 0, 10, false)
+                .topics().stream().toList();
         assertEquals(2, result.size());
         DescribeTopicPartitionsResponseTopic resultTopic = result.get(0);
         assertEquals(topic0, resultTopic.name());
@@ -860,7 +860,7 @@ public class MetadataCacheTest {
 
         // Quota reached
         DescribeTopicPartitionsResponseData response = metadataCache
-            .describeTopicResponse(List.of(topic0, topic1).iterator(), listenerName, t -> 0, 2, false);
+                .describeTopicResponse(List.of(topic0, topic1).iterator(), listenerName, t -> 0, 2, false);
         result = response.topics().stream().toList();
         assertEquals(1, result.size());
         resultTopic = result.get(0);
@@ -874,9 +874,9 @@ public class MetadataCacheTest {
 
         // With start index
         result = metadataCache
-            .describeTopicResponse(List.of(topic0).iterator(), listenerName,
-                t -> t.equals(topic0) ? 1 : 0, 10, false)
-            .topics().stream().toList();
+                .describeTopicResponse(List.of(topic0).iterator(), listenerName,
+                        t -> t.equals(topic0) ? 1 : 0, 10, false)
+                .topics().stream().toList();
         assertEquals(1, result.size());
         resultTopic = result.get(0);
         assertEquals(topic0, resultTopic.name());
@@ -887,7 +887,7 @@ public class MetadataCacheTest {
 
         // With start index and quota reached
         response = metadataCache.describeTopicResponse(List.of(topic0, topic1).iterator(), listenerName,
-            t -> t.equals(topic0) ? 2 : 0, 1, false);
+                t -> t.equals(topic0) ? 2 : 0, 1, false);
         result = response.topics().stream().toList();
         assertEquals(1, result.size());
         resultTopic = result.get(0);
@@ -901,7 +901,7 @@ public class MetadataCacheTest {
 
         // When the first topic does not exist
         result = metadataCache.describeTopicResponse(List.of("Non-exist", topic0).iterator(), listenerName,
-            t -> t.equals("Non-exist") ? 1 : 0, 1, false).topics().stream().toList();
+                t -> t.equals("Non-exist") ? 1 : 0, 1, false).topics().stream().toList();
         assertEquals(2, result.size());
         resultTopic = result.get(0);
         assertEquals("Non-exist", resultTopic.name());
@@ -916,10 +916,10 @@ public class MetadataCacheTest {
     }
 
     private void checkTopicMetadata(
-        String topic,
-        Set<Integer> partitionIds,
-        List<DescribeTopicPartitionsResponsePartition> partitions,
-        Map<String, PartitionRecord> partitionMap
+            String topic,
+            Set<Integer> partitionIds,
+            List<DescribeTopicPartitionsResponsePartition> partitions,
+            Map<String, PartitionRecord> partitionMap
     ) {
         for (DescribeTopicPartitionsResponsePartition partition : partitions) {
             int partitionId = partition.partitionIndex();
@@ -950,25 +950,25 @@ public class MetadataCacheTest {
         ListenerName listenerName = ListenerName.forSecurityProtocol(securityProtocol);
 
         List<ApiMessage> records = List.of(
-            new RegisterBrokerRecord()
-                .setBrokerId(0)
-                .setBrokerEpoch(BROKER_EPOCH)
-                .setRack("rack1")
-                .setEndPoints(new BrokerEndpointCollection(List.of(
-                    new BrokerEndpoint()
-                        .setHost("foo")
-                        .setPort(9092)
-                        .setSecurityProtocol(securityProtocol.id)
-                        .setName(listenerName.value())
-                ))),
-            new TopicRecord().setName(topic).setTopicId(topicId),
-            new PartitionRecord()
-                .setTopicId(topicId)
-                .setPartitionId(partitionIndex)
-                .setLeader(leader)
-                .setLeaderEpoch(leaderEpoch)
-                .setIsr(isr)
-                .setReplicas(replicas)
+                new RegisterBrokerRecord()
+                        .setBrokerId(0)
+                        .setBrokerEpoch(BROKER_EPOCH)
+                        .setRack("rack1")
+                        .setEndPoints(new BrokerEndpointCollection(List.of(
+                                new BrokerEndpoint()
+                                        .setHost("foo")
+                                        .setPort(9092)
+                                        .setSecurityProtocol(securityProtocol.id)
+                                        .setName(listenerName.value())
+                        ))),
+                new TopicRecord().setName(topic).setTopicId(topicId),
+                new PartitionRecord()
+                        .setTopicId(topicId)
+                        .setPartitionId(partitionIndex)
+                        .setLeader(leader)
+                        .setLeaderEpoch(leaderEpoch)
+                        .setIsr(isr)
+                        .setReplicas(replicas)
         );
         updateCache(cache, records);
 
@@ -983,24 +983,24 @@ public class MetadataCacheTest {
     @Test
     public void testGetOfflineReplicasConsidersDirAssignment() {
         Map<Integer, List<Integer>> result = offlinePartitions(
-            List.of(
-                new Broker(0, List.of(Uuid.fromString("broker1logdirjEo71BG0w"))),
-                new Broker(1, List.of(Uuid.fromString("broker2logdirRmQQgLxgw")))
-            ),
-            List.of(
-                new Partition(0, List.of(0, 1),
-                    List.of(Uuid.fromString("broker1logdirjEo71BG0w"), DirectoryId.LOST)),
-                new Partition(1, List.of(0, 1),
-                    List.of(Uuid.fromString("unknownlogdirjEo71BG0w"), DirectoryId.UNASSIGNED)),
-                new Partition(2, List.of(0, 1),
-                    List.of(DirectoryId.MIGRATING, Uuid.fromString("broker2logdirRmQQgLxgw")))
-            )
+                List.of(
+                        new Broker(0, List.of(Uuid.fromString("broker1logdirjEo71BG0w"))),
+                        new Broker(1, List.of(Uuid.fromString("broker2logdirRmQQgLxgw")))
+                ),
+                List.of(
+                        new Partition(0, List.of(0, 1),
+                                List.of(Uuid.fromString("broker1logdirjEo71BG0w"), DirectoryId.LOST)),
+                        new Partition(1, List.of(0, 1),
+                                List.of(Uuid.fromString("unknownlogdirjEo71BG0w"), DirectoryId.UNASSIGNED)),
+                        new Partition(2, List.of(0, 1),
+                                List.of(DirectoryId.MIGRATING, Uuid.fromString("broker2logdirRmQQgLxgw")))
+                )
         );
 
         Map<Integer, List<Integer>> expected = Map.of(
-            0, List.of(1),
-            1, List.of(0),
-            2, List.of()
+                0, List.of(1),
+                1, List.of(0),
+                2, List.of()
         );
         assertEquals(expected, result);
     }
@@ -1012,42 +1012,42 @@ public class MetadataCacheTest {
     }
 
     private static Map<Integer, List<Integer>> offlinePartitions(
-        List<Broker> brokers,
-        List<Partition> partitions
+            List<Broker> brokers,
+            List<Partition> partitions
     ) {
         MetadataDelta delta = new MetadataDelta.Builder().build();
         for (Broker broker : brokers) {
             delta.replay(new RegisterBrokerRecord()
-                .setFenced(false)
-                .setBrokerId(broker.id)
-                .setLogDirs(broker.dirs)
-                .setEndPoints(new BrokerEndpointCollection(List.of(
-                    new BrokerEndpoint()
-                        .setSecurityProtocol(SecurityProtocol.PLAINTEXT.id)
-                        .setPort((short) 9093)
-                        .setName("PLAINTEXT")
-                        .setHost("broker-" + broker.id)
-                ))));
+                    .setFenced(false)
+                    .setBrokerId(broker.id)
+                    .setLogDirs(broker.dirs)
+                    .setEndPoints(new BrokerEndpointCollection(List.of(
+                            new BrokerEndpoint()
+                                    .setSecurityProtocol(SecurityProtocol.PLAINTEXT.id)
+                                    .setPort((short) 9093)
+                                    .setName("PLAINTEXT")
+                                    .setHost("broker-" + broker.id)
+                    ))));
         }
         Uuid topicId = Uuid.fromString("95OVr1IPRYGrcNCLlpImCA");
         delta.replay(new TopicRecord().setTopicId(topicId).setName("foo"));
         for (Partition partition : partitions) {
             delta.replay(new PartitionRecord()
-                .setTopicId(topicId)
-                .setPartitionId(partition.id)
-                .setReplicas(partition.replicas)
-                .setDirectories(partition.dirs)
-                .setLeader(partition.replicas.get(0))
-                .setIsr(partition.replicas));
+                    .setTopicId(topicId)
+                    .setPartitionId(partition.id)
+                    .setReplicas(partition.replicas)
+                    .setDirectories(partition.dirs)
+                    .setLeader(partition.replicas.get(0))
+                    .setIsr(partition.replicas));
         }
         KRaftMetadataCache cache = new KRaftMetadataCache(1, () -> KRaftVersion.KRAFT_VERSION_0);
         cache.setImage(delta.apply(MetadataProvenance.EMPTY));
         List<MetadataResponseData.MetadataResponseTopic> topicMetadata =
-            cache.getTopicMetadata(Set.of("foo"), ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT), false, false);
+                cache.getTopicMetadata(Set.of("foo"), ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT), false, false);
         return topicMetadata.get(0).partitions().stream()
-            .collect(Collectors.toMap(
-                MetadataResponseData.MetadataResponsePartition::partitionIndex,
-                MetadataResponseData.MetadataResponsePartition::offlineReplicas
-            ));
+                .collect(Collectors.toMap(
+                        MetadataResponseData.MetadataResponsePartition::partitionIndex,
+                        MetadataResponseData.MetadataResponsePartition::offlineReplicas
+                ));
     }
 }

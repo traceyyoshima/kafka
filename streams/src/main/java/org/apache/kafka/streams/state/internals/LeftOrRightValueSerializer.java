@@ -72,18 +72,18 @@ public class LeftOrRightValueSerializer<V1, V2> implements WrappingNullableSeria
         }
 
         final byte[] rawValue = (data.leftValue() != null)
-            ? leftSerializer.serialize(topic, headers, data.leftValue())
-            : rightSerializer.serialize(topic, headers, data.rightValue());
+                ? leftSerializer.serialize(topic, headers, data.leftValue())
+                : rightSerializer.serialize(topic, headers, data.rightValue());
 
         if (rawValue == null) {
             return null;
         }
 
         return ByteBuffer
-            .allocate(1 + rawValue.length)
-            .put((byte) (data.leftValue() != null ? 1 : 0))
-            .put(rawValue)
-            .array();
+                .allocate(1 + rawValue.length)
+                .put((byte) (data.leftValue() != null ? 1 : 0))
+                .put(rawValue)
+                .array();
     }
 
     @Override

@@ -54,6 +54,6 @@ public interface MemberStateListener {
      * @param memberState The member state.
      */
     default void onMemberStateChange(MemberState memberState) {
-   
+
     }
 }

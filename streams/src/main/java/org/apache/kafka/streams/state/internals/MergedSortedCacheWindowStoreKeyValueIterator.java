@@ -27,7 +27,7 @@ import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.StateSerdes;
 
 class MergedSortedCacheWindowStoreKeyValueIterator
-    extends AbstractMergedSortedCacheStoreIterator<Windowed<Bytes>, Windowed<Bytes>, byte[], byte[]> {
+        extends AbstractMergedSortedCacheStoreIterator<Windowed<Bytes>, Windowed<Bytes>, byte[], byte[]> {
 
     private final StateSerdes<Bytes, byte[]> serdes;
     private final long windowSize;
@@ -36,26 +36,26 @@ class MergedSortedCacheWindowStoreKeyValueIterator
     private final WindowKeyToBytes windowKeyToBytes;
 
     MergedSortedCacheWindowStoreKeyValueIterator(
-        final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator,
-        final KeyValueIterator<Windowed<Bytes>, byte[]> underlyingIterator,
-        final StateSerdes<Bytes, byte[]> serdes,
-        final long windowSize,
-        final SegmentedCacheFunction cacheFunction,
-        final boolean forward
+            final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator,
+            final KeyValueIterator<Windowed<Bytes>, byte[]> underlyingIterator,
+            final StateSerdes<Bytes, byte[]> serdes,
+            final long windowSize,
+            final SegmentedCacheFunction cacheFunction,
+            final boolean forward
     ) {
         this(filteredCacheIterator, underlyingIterator, serdes,
-            windowSize, cacheFunction, forward, WindowKeySchema::fromStoreKey, WindowKeySchema::toStoreKeyBinary);
+                windowSize, cacheFunction, forward, WindowKeySchema::fromStoreKey, WindowKeySchema::toStoreKeyBinary);
     }
 
     MergedSortedCacheWindowStoreKeyValueIterator(
-        final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator,
-        final KeyValueIterator<Windowed<Bytes>, byte[]> underlyingIterator,
-        final StateSerdes<Bytes, byte[]> serdes,
-        final long windowSize,
-        final SegmentedCacheFunction cacheFunction,
-        final boolean forward,
-        final StoreKeyToWindowKey storeKeyToWindowKey,
-        final WindowKeyToBytes windowKeyToBytes
+            final PeekingKeyValueIterator<Bytes, LRUCacheEntry> filteredCacheIterator,
+            final KeyValueIterator<Windowed<Bytes>, byte[]> underlyingIterator,
+            final StateSerdes<Bytes, byte[]> serdes,
+            final long windowSize,
+            final SegmentedCacheFunction cacheFunction,
+            final boolean forward,
+            final StoreKeyToWindowKey storeKeyToWindowKey,
+            final WindowKeyToBytes windowKeyToBytes
     ) {
         super(filteredCacheIterator, underlyingIterator, forward);
         this.serdes = serdes;

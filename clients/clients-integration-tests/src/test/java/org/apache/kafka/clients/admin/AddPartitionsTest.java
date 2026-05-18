@@ -47,8 +47,8 @@ public class AddPartitionsTest {
             cluster.createTopicWithAssignment("topic1", Map.of(0, List.of(0, 1)));
 
             ExecutionException exception = assertThrows(ExecutionException.class, () ->
-                admin.createPartitions(Map.of("topic1",
-                    NewPartitions.increaseTo(2, List.of(List.of(0, 1, 2))))).all().get());
+                    admin.createPartitions(Map.of("topic1",
+                            NewPartitions.increaseTo(2, List.of(List.of(0, 1, 2))))).all().get());
             assertInstanceOf(InvalidReplicaAssignmentException.class, exception.getCause());
         }
     }
@@ -57,27 +57,27 @@ public class AddPartitionsTest {
     public void testMissingPartitionsInCreateTopics(ClusterInstance cluster) {
         try (Admin admin = cluster.admin()) {
             Map<Integer, List<Integer>> topic6Placements = Map.of(
-                1, List.of(0, 1),
-                2, List.of(1, 0));
+                    1, List.of(0, 1),
+                    2, List.of(1, 0));
             Map<Integer, List<Integer>> topic7Placements = Map.of(
-                2, List.of(0, 1),
-                3, List.of(1, 0));
+                    2, List.of(0, 1),
+                    3, List.of(1, 0));
 
             CreateTopicsResult result = admin.createTopics(List.of(
-                new NewTopic("new-topic6", topic6Placements),
-                new NewTopic("new-topic7", topic7Placements)));
+                    new NewTopic("new-topic6", topic6Placements),
+                    new NewTopic("new-topic7", topic7Placements)));
 
             Throwable topic6Cause = assertThrows(ExecutionException.class,
-                () -> result.values().get("new-topic6").get()).getCause();
+                    () -> result.values().get("new-topic6").get()).getCause();
             assertInstanceOf(InvalidReplicaAssignmentException.class, topic6Cause);
             assertTrue(topic6Cause.getMessage().contains("partitions should be a consecutive 0-based integer sequence"),
-                "Unexpected error message: " + topic6Cause.getMessage());
+                    "Unexpected error message: " + topic6Cause.getMessage());
 
             Throwable topic7Cause = assertThrows(ExecutionException.class,
-                () -> result.values().get("new-topic7").get()).getCause();
+                    () -> result.values().get("new-topic7").get()).getCause();
             assertInstanceOf(InvalidReplicaAssignmentException.class, topic7Cause);
             assertTrue(topic7Cause.getMessage().contains("partitions should be a consecutive 0-based integer sequence"),
-                "Unexpected error message: " + topic7Cause.getMessage());
+                    "Unexpected error message: " + topic7Cause.getMessage());
         }
     }
 
@@ -87,12 +87,12 @@ public class AddPartitionsTest {
             cluster.createTopicWithAssignment("topic1", Map.of(0, List.of(0, 1)));
 
             Throwable cause = assertThrows(ExecutionException.class, () ->
-                admin.createPartitions(Map.of("topic1",
-                    NewPartitions.increaseTo(3, List.of(List.of(0, 1, 2))))).all().get()).getCause();
+                    admin.createPartitions(Map.of("topic1",
+                            NewPartitions.increaseTo(3, List.of(List.of(0, 1, 2))))).all().get()).getCause();
             assertInstanceOf(InvalidReplicaAssignmentException.class, cause);
             assertTrue(cause.getMessage().contains(
-                "Attempted to add 2 additional partition(s), but only 1 assignment(s) were specified."),
-                "Unexpected error message: " + cause.getMessage());
+                            "Attempted to add 2 additional partition(s), but only 1 assignment(s) were specified."),
+                    "Unexpected error message: " + cause.getMessage());
         }
     }
 
@@ -126,7 +126,7 @@ public class AddPartitionsTest {
             cluster.createTopicWithAssignment("topic2", Map.of(0, List.of(1, 2)));
 
             admin.createPartitions(Map.of("topic2", NewPartitions.increaseTo(3,
-                List.of(List.of(0, 1), List.of(2, 3))))).all().get();
+                    List.of(List.of(0, 1), List.of(2, 3))))).all().get();
 
             AdminUtils.fetchOrWaitForLeader(admin, "topic2", 1, 30000);
             AdminUtils.fetchOrWaitForLeader(admin, "topic2", 2, 30000);
@@ -138,16 +138,16 @@ public class AddPartitionsTest {
             assertEquals(3, topicDescription.partitions().size());
 
             List<TopicPartitionInfo> partitions = topicDescription.partitions().stream()
-                .sorted(Comparator.comparingInt(TopicPartitionInfo::partition))
-                .toList();
+                    .sorted(Comparator.comparingInt(TopicPartitionInfo::partition))
+                    .toList();
 
             assertEquals(0, partitions.get(0).partition());
             assertEquals(1, partitions.get(1).partition());
             assertEquals(2, partitions.get(2).partition());
 
             Set<Integer> partition1Replicas = partitions.get(1).replicas().stream()
-                .map(Node::id)
-                .collect(Collectors.toSet());
+                    .map(Node::id)
+                    .collect(Collectors.toSet());
             assertEquals(2, partition1Replicas.size());
             assertEquals(Set.of(0, 1), partition1Replicas);
         }
@@ -168,16 +168,16 @@ public class AddPartitionsTest {
 
             for (TopicPartitionInfo partition : topicDescription.partitions()) {
                 Set<Integer> replicaIds = partition.replicas().stream()
-                    .map(Node::id)
-                    .collect(Collectors.toSet());
+                        .map(Node::id)
+                        .collect(Collectors.toSet());
                 assertEquals(4, replicaIds.size(),
-                    "Partition " + partition.partition() + " should have 4 replicas");
+                        "Partition " + partition.partition() + " should have 4 replicas");
                 assertTrue(replicaIds.stream().allMatch(id -> id >= 0 && id <= 3),
-                    "Replicas should only include brokers 0-3");
+                        "Replicas should only include brokers 0-3");
                 assertNotNull(partition.leader(),
-                    "Partition " + partition.partition() + " should have a leader");
+                        "Partition " + partition.partition() + " should have a leader");
                 assertTrue(replicaIds.contains(partition.leader().id()),
-                    "Leader should be one of the replicas");
+                        "Leader should be one of the replicas");
             }
         }
     }
@@ -197,16 +197,16 @@ public class AddPartitionsTest {
 
             for (TopicPartitionInfo partition : topicDescription.partitions()) {
                 Set<Integer> replicaIds = partition.replicas().stream()
-                    .map(Node::id)
-                    .collect(Collectors.toSet());
+                        .map(Node::id)
+                        .collect(Collectors.toSet());
                 assertEquals(2, replicaIds.size(),
-                    "Partition " + partition.partition() + " should have 2 replicas");
+                        "Partition " + partition.partition() + " should have 2 replicas");
                 assertTrue(replicaIds.stream().allMatch(id -> id >= 0 && id <= 3),
-                    "Replicas should only include brokers 0-3");
+                        "Replicas should only include brokers 0-3");
                 assertNotNull(partition.leader(),
-                    "Partition " + partition.partition() + " should have a leader");
+                        "Partition " + partition.partition() + " should have a leader");
                 assertTrue(replicaIds.contains(partition.leader().id()),
-                    "Leader should be one of the replicas");
+                        "Leader should be one of the replicas");
             }
         }
     }

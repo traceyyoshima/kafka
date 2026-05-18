@@ -25,9 +25,9 @@ public record SubscriptionCount(int byNameCount, int byRegexCount) {
     @Override
     public String toString() {
         return "SubscriptionCount(" +
-            "byNameCount=" + byNameCount +
-            ", byRegexCount=" + byRegexCount +
-            ')';
+                "byNameCount=" + byNameCount +
+                ", byRegexCount=" + byRegexCount +
+                ')';
     }
 
     /**

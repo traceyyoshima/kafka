@@ -80,37 +80,37 @@ public class PushTelemetryRequestTest {
         }
 
         return new PushTelemetryRequest.Builder(
-            new PushTelemetryRequestData()
-                .setMetrics(compressedData)
-                .setCompressionType(compressionType.id)).build();
+                new PushTelemetryRequestData()
+                        .setMetrics(compressedData)
+                        .setCompressionType(compressionType.id)).build();
     }
 
     private MetricsData getMetricsData() {
         List<Metric> metricsList = new ArrayList<>();
         metricsList.add(SinglePointMetric.sum(
-                new MetricKey("metricName"), 1.0, true, Instant.now(), null, Collections.emptySet())
-            .builder().build());
+                        new MetricKey("metricName"), 1.0, true, Instant.now(), null, Collections.emptySet())
+                .builder().build());
         metricsList.add(SinglePointMetric.sum(
-                new MetricKey("metricName1"), 100.0, false, Instant.now(),  Instant.now(), Collections.emptySet())
-            .builder().build());
+                        new MetricKey("metricName1"), 100.0, false, Instant.now(), Instant.now(), Collections.emptySet())
+                .builder().build());
         metricsList.add(SinglePointMetric.deltaSum(
-                new MetricKey("metricName2"), 1.0, true, Instant.now(), Instant.now(), Collections.emptySet())
-            .builder().build());
+                        new MetricKey("metricName2"), 1.0, true, Instant.now(), Instant.now(), Collections.emptySet())
+                .builder().build());
         metricsList.add(SinglePointMetric.gauge(
-                new MetricKey("metricName3"), 1.0, Instant.now(), Collections.emptySet())
-            .builder().build());
+                        new MetricKey("metricName3"), 1.0, Instant.now(), Collections.emptySet())
+                .builder().build());
         metricsList.add(SinglePointMetric.gauge(
-                new MetricKey("metricName4"), Long.valueOf(100), Instant.now(), Collections.emptySet())
-            .builder().build());
+                        new MetricKey("metricName4"), Long.valueOf(100), Instant.now(), Collections.emptySet())
+                .builder().build());
 
         MetricsData.Builder builder = MetricsData.newBuilder();
         for (Metric metric : metricsList) {
             ResourceMetrics rm = ResourceMetrics.newBuilder()
-                .setResource(Resource.newBuilder().build())
-                .addScopeMetrics(ScopeMetrics.newBuilder()
-                    .addMetrics(metric)
-                    .build()
-                ).build();
+                    .setResource(Resource.newBuilder().build())
+                    .addScopeMetrics(ScopeMetrics.newBuilder()
+                            .addMetrics(metric)
+                            .build()
+                    ).build();
             builder.addResourceMetrics(rm);
         }
 

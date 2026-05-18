@@ -37,22 +37,22 @@ import java.util.stream.Collectors;
  * <p>
  * This class is immutable and is fully backed by records stored in the __consumer_offsets topic.
  *
- * @param memberId                      The ID of the member.
- * @param memberEpoch                   The current epoch of the member.
- * @param previousMemberEpoch           The previous epoch of the member.
- * @param state                         The current state of the member.
- * @param instanceId                    The instance ID of the member.
- * @param rackId                        The rack ID of the member.
- * @param clientId                      The client ID of the member.
- * @param clientHost                    The host of the member.
- * @param rebalanceTimeoutMs            The rebalance timeout in milliseconds.
- * @param topologyEpoch                 The epoch of the topology the member uses.
- * @param processId                     The ID of the Streams client that contains the member.
- * @param userEndpoint                  The user endpoint exposed for Interactive Queries by the Streams client that
- *                                      contains the member.
- * @param clientTags                    Tags of the client of the member used for rack-aware assignment.
- * @param assignedTasks                 Tasks assigned to the member, including assignment epochs for active tasks.
- * @param tasksPendingRevocation        Tasks owned by the member pending revocation, including assignment epochs for active tasks.
+ * @param memberId               The ID of the member.
+ * @param memberEpoch            The current epoch of the member.
+ * @param previousMemberEpoch    The previous epoch of the member.
+ * @param state                  The current state of the member.
+ * @param instanceId             The instance ID of the member.
+ * @param rackId                 The rack ID of the member.
+ * @param clientId               The client ID of the member.
+ * @param clientHost             The host of the member.
+ * @param rebalanceTimeoutMs     The rebalance timeout in milliseconds.
+ * @param topologyEpoch          The epoch of the topology the member uses.
+ * @param processId              The ID of the Streams client that contains the member.
+ * @param userEndpoint           The user endpoint exposed for Interactive Queries by the Streams client that
+ *                               contains the member.
+ * @param clientTags             Tags of the client of the member used for rack-aware assignment.
+ * @param assignedTasks          Tasks assigned to the member, including assignment epochs for active tasks.
+ * @param tasksPendingRevocation Tasks owned by the member pending revocation, including assignment epochs for active tasks.
  */
 @SuppressWarnings("checkstyle:JavaNCSS")
 public record StreamsGroupMember(String memberId,
@@ -245,8 +245,8 @@ public record StreamsGroupMember(String memberId,
             setProcessId(record.processId());
             setUserEndpoint(record.userEndpoint());
             setClientTags(record.clientTags().stream().collect(Collectors.toMap(
-                StreamsGroupMemberMetadataValue.KeyValue::key,
-                StreamsGroupMemberMetadataValue.KeyValue::value
+                    StreamsGroupMemberMetadataValue.KeyValue::key,
+                    StreamsGroupMemberMetadataValue.KeyValue::value
             )));
             return this;
         }
@@ -256,63 +256,63 @@ public record StreamsGroupMember(String memberId,
             setPreviousMemberEpoch(record.previousMemberEpoch());
             setState(MemberState.fromValue(record.state()));
             setAssignedTasks(
-                TasksTupleWithEpochs.fromCurrentAssignmentRecord(
-                    log,
-                    groupId,
-                    record.activeTasks(),
-                    record.standbyTasks(),
-                    record.warmupTasks(),
-                    record.memberEpoch()
-                )
+                    TasksTupleWithEpochs.fromCurrentAssignmentRecord(
+                            log,
+                            groupId,
+                            record.activeTasks(),
+                            record.standbyTasks(),
+                            record.warmupTasks(),
+                            record.memberEpoch()
+                    )
             );
             setTasksPendingRevocation(
-                TasksTupleWithEpochs.fromCurrentAssignmentRecord(
-                    log,
-                    groupId,
-                    record.activeTasksPendingRevocation(),
-                    record.standbyTasksPendingRevocation(),
-                    record.warmupTasksPendingRevocation(),
-                    record.memberEpoch()
-                )
+                    TasksTupleWithEpochs.fromCurrentAssignmentRecord(
+                            log,
+                            groupId,
+                            record.activeTasksPendingRevocation(),
+                            record.standbyTasksPendingRevocation(),
+                            record.warmupTasksPendingRevocation(),
+                            record.memberEpoch()
+                    )
             );
             return this;
         }
 
         public static Builder withDefaults(String memberId) {
             return new Builder(memberId)
-                .setRebalanceTimeoutMs(-1)
-                .setTopologyEpoch(-1)
-                .setInstanceId(null)
-                .setRackId(null)
-                .setClientId("")
-                .setClientHost("")
-                .setProcessId("")
-                .setClientTags(Map.of())
-                .setState(MemberState.STABLE)
-                .setMemberEpoch(0)
-                .setPreviousMemberEpoch(0)
-                .setAssignedTasks(TasksTupleWithEpochs.EMPTY)
-                .setTasksPendingRevocation(TasksTupleWithEpochs.EMPTY)
-                .setUserEndpoint(null);
+                    .setRebalanceTimeoutMs(-1)
+                    .setTopologyEpoch(-1)
+                    .setInstanceId(null)
+                    .setRackId(null)
+                    .setClientId("")
+                    .setClientHost("")
+                    .setProcessId("")
+                    .setClientTags(Map.of())
+                    .setState(MemberState.STABLE)
+                    .setMemberEpoch(0)
+                    .setPreviousMemberEpoch(0)
+                    .setAssignedTasks(TasksTupleWithEpochs.EMPTY)
+                    .setTasksPendingRevocation(TasksTupleWithEpochs.EMPTY)
+                    .setUserEndpoint(null);
         }
 
         public StreamsGroupMember build() {
             return new StreamsGroupMember(
-                memberId,
-                memberEpoch,
-                previousMemberEpoch,
-                state,
-                instanceId,
-                rackId,
-                clientId,
-                clientHost,
-                rebalanceTimeoutMs,
-                topologyEpoch,
-                processId,
-                userEndpoint,
-                clientTags,
-                assignedTasks,
-                tasksPendingRevocation
+                    memberId,
+                    memberEpoch,
+                    previousMemberEpoch,
+                    state,
+                    instanceId,
+                    rackId,
+                    clientId,
+                    clientHost,
+                    rebalanceTimeoutMs,
+                    topologyEpoch,
+                    processId,
+                    userEndpoint,
+                    clientTags,
+                    assignedTasks,
+                    tasksPendingRevocation
             );
         }
     }
@@ -328,55 +328,54 @@ public record StreamsGroupMember(String memberId,
      * Creates a member description for the streams group describe response from this member.
      *
      * @param targetAssignment The target assignment of this member in the corresponding group.
-     *
      * @return The StreamsGroupMember mapped as StreamsGroupDescribeResponseData.Member.
      */
     public StreamsGroupDescribeResponseData.Member asStreamsGroupDescribeMember(TasksTuple targetAssignment) {
         final StreamsGroupDescribeResponseData.Assignment describedTargetAssignment =
-            new StreamsGroupDescribeResponseData.Assignment();
+                new StreamsGroupDescribeResponseData.Assignment();
 
         if (targetAssignment != null) {
             describedTargetAssignment
-                .setActiveTasks(taskIdsFromMap(targetAssignment.activeTasks()))
-                .setStandbyTasks(taskIdsFromMap(targetAssignment.standbyTasks()))
-                .setWarmupTasks(taskIdsFromMap(targetAssignment.warmupTasks()));
+                    .setActiveTasks(taskIdsFromMap(targetAssignment.activeTasks()))
+                    .setStandbyTasks(taskIdsFromMap(targetAssignment.standbyTasks()))
+                    .setWarmupTasks(taskIdsFromMap(targetAssignment.warmupTasks()));
         }
 
         return new StreamsGroupDescribeResponseData.Member()
-            .setMemberEpoch(memberEpoch)
-            .setMemberId(memberId)
-            .setAssignment(
-                new StreamsGroupDescribeResponseData.Assignment()
-                    .setActiveTasks(taskIdsFromMapWithEpochs(assignedTasks.activeTasksWithEpochs()))
-                    .setStandbyTasks(taskIdsFromMap(assignedTasks.standbyTasks()))
-                    .setWarmupTasks(taskIdsFromMap(assignedTasks.warmupTasks())))
-            .setTargetAssignment(describedTargetAssignment)
-            .setClientHost(clientHost)
-            .setClientId(clientId)
-            .setInstanceId(instanceId.orElse(null))
-            .setRackId(rackId.orElse(null))
-            .setClientTags(clientTags.entrySet().stream().map(
-                entry -> new StreamsGroupDescribeResponseData.KeyValue()
-                    .setKey(entry.getKey())
-                    .setValue(entry.getValue())
-            ).toList())
-            .setProcessId(processId)
-            .setTopologyEpoch(topologyEpoch)
-            .setUserEndpoint(
-                userEndpoint.map(
-                    endpoint -> new StreamsGroupDescribeResponseData.Endpoint()
-                        .setHost(endpoint.host())
-                        .setPort(endpoint.port())
-                    ).orElse(null)
-            );
+                .setMemberEpoch(memberEpoch)
+                .setMemberId(memberId)
+                .setAssignment(
+                        new StreamsGroupDescribeResponseData.Assignment()
+                                .setActiveTasks(taskIdsFromMapWithEpochs(assignedTasks.activeTasksWithEpochs()))
+                                .setStandbyTasks(taskIdsFromMap(assignedTasks.standbyTasks()))
+                                .setWarmupTasks(taskIdsFromMap(assignedTasks.warmupTasks())))
+                .setTargetAssignment(describedTargetAssignment)
+                .setClientHost(clientHost)
+                .setClientId(clientId)
+                .setInstanceId(instanceId.orElse(null))
+                .setRackId(rackId.orElse(null))
+                .setClientTags(clientTags.entrySet().stream().map(
+                        entry -> new StreamsGroupDescribeResponseData.KeyValue()
+                                .setKey(entry.getKey())
+                                .setValue(entry.getValue())
+                ).toList())
+                .setProcessId(processId)
+                .setTopologyEpoch(topologyEpoch)
+                .setUserEndpoint(
+                        userEndpoint.map(
+                                endpoint -> new StreamsGroupDescribeResponseData.Endpoint()
+                                        .setHost(endpoint.host())
+                                        .setPort(endpoint.port())
+                        ).orElse(null)
+                );
     }
 
     private static List<StreamsGroupDescribeResponseData.TaskIds> taskIdsFromMap(Map<String, Set<Integer>> tasks) {
         List<StreamsGroupDescribeResponseData.TaskIds> taskIds = new ArrayList<>();
         tasks.keySet().stream().sorted().forEach(subtopologyId -> {
             taskIds.add(new StreamsGroupDescribeResponseData.TaskIds()
-                .setSubtopologyId(subtopologyId)
-                .setPartitions(tasks.get(subtopologyId).stream().sorted().toList()));
+                    .setSubtopologyId(subtopologyId)
+                    .setPartitions(tasks.get(subtopologyId).stream().sorted().toList()));
         });
         return taskIds;
     }
@@ -385,8 +384,8 @@ public record StreamsGroupMember(String memberId,
         List<StreamsGroupDescribeResponseData.TaskIds> taskIds = new ArrayList<>();
         tasksWithEpochs.keySet().stream().sorted().forEach(subtopologyId -> {
             taskIds.add(new StreamsGroupDescribeResponseData.TaskIds()
-                .setSubtopologyId(subtopologyId)
-                .setPartitions(tasksWithEpochs.get(subtopologyId).keySet().stream().sorted().toList()));
+                    .setSubtopologyId(subtopologyId)
+                    .setPartitions(tasksWithEpochs.get(subtopologyId).keySet().stream().sorted().toList()));
         });
         return taskIds;
     }

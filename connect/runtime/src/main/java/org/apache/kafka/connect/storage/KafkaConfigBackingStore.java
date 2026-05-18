@@ -271,9 +271,11 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
             .build();
 
     public static final String LOGGER_CLUSTER_PREFIX = "logger-cluster-";
+
     public static String LOGGER_CLUSTER_KEY(String namespace) {
         return LOGGER_CLUSTER_PREFIX + namespace;
     }
+
     public static final Schema LOGGER_LEVEL_V0 = SchemaBuilder.struct()
             .field("level", Schema.STRING_SCHEMA)
             .build();
@@ -390,8 +392,8 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
         int partitionCount = configLog.partitionCount();
         if (partitionCount > 1) {
             String msg = String.format("Topic '%s' supplied via the '%s' property is required "
-                    + "to have a single partition in order to guarantee consistency of "
-                    + "connector configurations, but found %d partitions.",
+                            + "to have a single partition in order to guarantee consistency of "
+                            + "connector configurations, but found %d partitions.",
                     topic, DistributedConfig.CONFIG_TOPIC_CONFIG, partitionCount);
             throw new ConfigException(msg);
         }
@@ -499,14 +501,14 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
      * back by tailing the Kafka log with a consumer. {@link #claimWritePrivileges()} must be successfully invoked before calling
      * this method if the worker is configured to use a fencable producer for writes to the config topic.
      *
-     * @param connector  name of the connector to write data for
-     * @param properties the configuration to write
+     * @param connector   name of the connector to write data for
+     * @param properties  the configuration to write
      * @param targetState the desired target state for the connector; may be {@code null} if no target state change is desired. Note that the default
      *                    target state is {@link TargetState#STARTED} if no target state exists previously
-     * @throws IllegalStateException if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
-     * this method was called
+     * @throws IllegalStateException    if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
+     *                                  this method was called
      * @throws PrivilegedWriteException if the worker is configured to use a fencable producer for writes to the config topic
-     * and the write fails
+     *                                  and the write fails
      */
     @Override
     public void putConnectorConfig(String connector, Map<String, String> properties, TargetState targetState) {
@@ -533,11 +535,12 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
     /**
      * Remove configuration for a given connector. {@link #claimWritePrivileges()} must be successfully invoked before calling
      * this method if the worker is configured to use a fencable producer for writes to the config topic.
+     *
      * @param connector name of the connector to remove
-     * @throws IllegalStateException if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
-     * this method was called
+     * @throws IllegalStateException    if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
+     *                                  this method was called
      * @throws PrivilegedWriteException if the worker is configured to use a fencable producer for writes to the config topic
-     * and the write fails
+     *                                  and the write fails
      */
     @Override
     public void removeConnectorConfig(String connector) {
@@ -569,13 +572,13 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
      * writes to the config topic.
      *
      * @param connector the connector to write task configuration
-     * @param configs list of task configurations for the connector
-     * @throws ConnectException if the task configurations do not resolve inconsistencies found in the existing root
-     *                          and task configurations.
-     * @throws IllegalStateException if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
-     * this method was called
+     * @param configs   list of task configurations for the connector
+     * @throws ConnectException         if the task configurations do not resolve inconsistencies found in the existing root
+     *                                  and task configurations.
+     * @throws IllegalStateException    if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
+     *                                  this method was called
      * @throws PrivilegedWriteException if the worker is configured to use a fencable producer for writes to the config topic
-     * and the write fails
+     *                                  and the write fails
      */
     @Override
     public void putTaskConfigs(String connector, List<Map<String, String>> configs) {
@@ -595,7 +598,7 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
         // Send all the individual updates
         int index = 0;
         List<ProducerKeyValue> keyValues = new ArrayList<>();
-        for (Map<String, String> taskConfig: configs) {
+        for (Map<String, String> taskConfig : configs) {
             Struct connectConfig = new Struct(TASK_CONFIGURATION_V0);
             connectConfig.put("properties", taskConfig);
             byte[] serializedConfig = converter.fromConnectData(topic, TASK_CONFIGURATION_V0, connectConfig);
@@ -648,15 +651,16 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
     /**
      * Write a new {@link TargetState} for the connector. Note that {@link #claimWritePrivileges()} does not need to be
      * invoked before invoking this method.
+     *
      * @param connector the name of the connector
-     * @param state the desired target state for the connector
+     * @param state     the desired target state for the connector
      */
     @Override
     public void putTargetState(String connector, TargetState state) {
         log.debug("Writing target state {} for connector {}", state, connector);
         try {
             configLog.sendWithReceipt(TARGET_STATE_KEY(connector), serializeTargetState(state))
-                .get(READ_WRITE_TOTAL_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+                    .get(READ_WRITE_TOTAL_TIMEOUT_MS, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             log.error("Failed to write target state to Kafka", e);
             throw new ConnectException("Error writing target state to Kafka", e);
@@ -675,12 +679,13 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
      * Write a task count record for a connector to persistent storage and wait until it has been acknowledged and read back by
      * tailing the Kafka log with a consumer. {@link #claimWritePrivileges()} must be successfully invoked before calling this method
      * if the worker is configured to use a fencable producer for writes to the config topic.
+     *
      * @param connector name of the connector
      * @param taskCount number of tasks used by the connector
-     * @throws IllegalStateException if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
-     * this method was called
+     * @throws IllegalStateException    if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
+     *                                  this method was called
      * @throws PrivilegedWriteException if the worker is configured to use a fencable producer for writes to the config topic
-     * and the write fails
+     *                                  and the write fails
      */
     @Override
     public void putTaskCountRecord(String connector, int taskCount) {
@@ -702,11 +707,12 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
      * Write a session key to persistent storage and wait until it has been acknowledged and read back by tailing the Kafka log
      * with a consumer. {@link #claimWritePrivileges()} must be successfully invoked before calling this method if the worker
      * is configured to use a fencable producer for writes to the config topic.
+     *
      * @param sessionKey the session key to distributed
-     * @throws IllegalStateException if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
-     * this method was called
+     * @throws IllegalStateException    if {@link #claimWritePrivileges()} is required, but was not successfully invoked before
+     *                                  this method was called
      * @throws PrivilegedWriteException if the worker is configured to use a fencable producer for writes to the config topic
-     * and the write fails
+     *                                  and the write fails
      */
     @Override
     public void putSessionKey(SessionKey sessionKey) {
@@ -730,6 +736,7 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
      * Write a restart request for the connector and optionally its tasks to persistent storage and wait until it has been
      * acknowledged and read back by tailing the Kafka log with a consumer. {@link #claimWritePrivileges()} must be successfully
      * invoked before calling this method if the worker is configured to use a fencable producer for writes to the config topic.
+     *
      * @param restartRequest the restart request details
      */
     @Override
@@ -790,8 +797,8 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
         adminProps.put(CommonClientConfigs.CLIENT_ID_CONFIG, clientId);
 
         Map<String, Object> topicSettings = config instanceof DistributedConfig
-                                            ? ((DistributedConfig) config).configStorageTopicSettings()
-                                            : Map.of();
+                ? ((DistributedConfig) config).configStorageTopicSettings()
+                : Map.of();
         NewTopic topicDescription = TopicAdmin.defineTopic(topic)
                 .config(topicSettings) // first so that we override user-supplied settings as needed
                 .compacted()
@@ -805,7 +812,8 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
     /**
      * Send a single record to the config topic synchronously. Note that {@link #claimWritePrivileges()} must be
      * successfully invoked before calling this method if this store is configured to use a fencable writer.
-     * @param key the record key
+     *
+     * @param key   the record key
      * @param value the record value
      * @param timer Timer bounding how long this method can block. The timer is updated before the method returns.
      */
@@ -816,8 +824,9 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
     /**
      * Send one or more records to the config topic synchronously. Note that {@link #claimWritePrivileges()} must be
      * successfully invoked before calling this method if this store is configured to use a fencable writer.
+     *
      * @param keyValues the list of producer record key/value pairs
-     * @param timer Timer bounding how long this method can block. The timer is updated before the method returns.
+     * @param timer     Timer bounding how long this method can block. The timer is updated before the method returns.
      */
     private void sendPrivileged(List<ProducerKeyValue> keyValues, Timer timer) throws ExecutionException, InterruptedException, TimeoutException {
         if (!usesFencableWriter) {
@@ -1065,8 +1074,8 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
                 processConnectorRemoval(connectorName);
                 log.debug(
                         "Ignoring task configs for connector {}; it appears that the connector was deleted previously "
-                            + "and that log compaction has since removed any trace of its previous configurations "
-                            + "from the config topic",
+                                + "and that log compaction has since removed any trace of its previous configurations "
+                                + "from the config topic",
                         connectorName
                 );
                 return;
@@ -1173,7 +1182,7 @@ public final class KafkaConfigBackingStore extends KafkaTopicBasedBackingStore i
 
     private void processTaskCountRecord(String connectorName, SchemaAndValue value) {
         if (!(value.value() instanceof Map)) {
-            log.error("Ignoring task count record for connector '{}' because it is in the wrong format: {}",  connectorName, className(value.value()));
+            log.error("Ignoring task count record for connector '{}' because it is in the wrong format: {}", connectorName, className(value.value()));
             return;
         }
         @SuppressWarnings("unchecked")

@@ -74,9 +74,9 @@ public final class ValidOffsetAndEpoch {
     @Override
     public String toString() {
         return String.format(
-            "ValidOffsetAndEpoch(kind=%s, offsetAndEpoch=%s)",
-            kind,
-            offsetAndEpoch
+                "ValidOffsetAndEpoch(kind=%s, offsetAndEpoch=%s)",
+                kind,
+                offsetAndEpoch
         );
     }
 }

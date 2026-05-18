@@ -33,21 +33,21 @@ public final class InvalidMemoryRecordsProvider implements ArgumentsProvider {
 
     /**
      * Returns a stream of arguments for invalid memory records and the expected exception.
-     *
+     * <p>
      * The first object in the {@code Arguments} is a {@code MemoryRecords}.
-     *
+     * <p>
      * The second object in the {@code Arguments} is an {@code Optional<Class<Exception>>} which is
      * the expected exception from the log layer.
      */
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
         return Stream.of(
-            Arguments.of(MemoryRecords.readableRecords(notEnoughBytes()), Optional.empty()),
-            Arguments.of(MemoryRecords.readableRecords(recordsSizeTooSmall()), Optional.of(CorruptRecordException.class)),
-            Arguments.of(MemoryRecords.readableRecords(notEnoughBytesToMagic()), Optional.empty()),
-            Arguments.of(MemoryRecords.readableRecords(negativeMagic()), Optional.of(CorruptRecordException.class)),
-            Arguments.of(MemoryRecords.readableRecords(largeMagic()), Optional.of(CorruptRecordException.class)),
-            Arguments.of(MemoryRecords.readableRecords(lessBytesThanRecordSize()), Optional.empty())
+                Arguments.of(MemoryRecords.readableRecords(notEnoughBytes()), Optional.empty()),
+                Arguments.of(MemoryRecords.readableRecords(recordsSizeTooSmall()), Optional.of(CorruptRecordException.class)),
+                Arguments.of(MemoryRecords.readableRecords(notEnoughBytesToMagic()), Optional.empty()),
+                Arguments.of(MemoryRecords.readableRecords(negativeMagic()), Optional.of(CorruptRecordException.class)),
+                Arguments.of(MemoryRecords.readableRecords(largeMagic()), Optional.of(CorruptRecordException.class)),
+                Arguments.of(MemoryRecords.readableRecords(lessBytesThanRecordSize()), Optional.empty())
         );
     }
 

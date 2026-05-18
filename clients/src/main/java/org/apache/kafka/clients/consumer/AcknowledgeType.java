@@ -23,19 +23,29 @@ import java.util.Locale;
  * whether the record was consumed successfully.
  */
 public enum AcknowledgeType {
-    /** The record was consumed successfully. */
+    /**
+     * The record was consumed successfully.
+     */
     ACCEPT((byte) 1),
 
-    /** The record was not consumed successfully. Release it for another delivery attempt. */
+    /**
+     * The record was not consumed successfully. Release it for another delivery attempt.
+     */
     RELEASE((byte) 2),
 
-    /** The record was not consumed successfully. Reject it and do not release it for another delivery attempt. */
+    /**
+     * The record was not consumed successfully. Reject it and do not release it for another delivery attempt.
+     */
     REJECT((byte) 3),
 
-    /** The record is still being processed. Renew the acquisition lock so processing can continue. */
+    /**
+     * The record is still being processed. Renew the acquisition lock so processing can continue.
+     */
     RENEW((byte) 4);
 
-    /** The unique identifier for this acknowledge type. */
+    /**
+     * The unique identifier for this acknowledge type.
+     */
     public final byte id;
 
     AcknowledgeType(byte id) {

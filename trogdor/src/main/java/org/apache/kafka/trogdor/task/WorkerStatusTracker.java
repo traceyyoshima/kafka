@@ -26,7 +26,7 @@ public interface WorkerStatusTracker {
     /**
      * Updates the status.
      *
-     * @param status    The new status.
+     * @param status The new status.
      */
     void update(JsonNode status);
 }

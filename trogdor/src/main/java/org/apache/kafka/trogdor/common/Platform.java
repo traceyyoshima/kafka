@@ -38,13 +38,13 @@ public interface Platform {
             JsonNode platformNode = root.get("platform");
             if (platformNode == null) {
                 throw new RuntimeException("Expected to find a 'platform' field " +
-                    "in the root JSON configuration object");
+                        "in the root JSON configuration object");
             }
             String platformName = platformNode.textValue();
             return Utils.newParameterizedInstance(platformName,
-                String.class, curNodeName,
-                Scheduler.class, Scheduler.SYSTEM,
-                JsonNode.class, root);
+                    String.class, curNodeName,
+                    Scheduler.class, Scheduler.SYSTEM,
+                    JsonNode.class, root);
         }
     }
 
@@ -70,13 +70,12 @@ public interface Platform {
 
     /**
      * Run a command on this local node.
-     *
+     * <p>
      * Throws an exception if the command could not be run, or if the
      * command returned a non-zero error status.
      *
-     * @param command   The command
-     *
-     * @return          The command output.
+     * @param command The command
+     * @return The command output.
      */
     String runCommand(String[] command) throws IOException;
 }

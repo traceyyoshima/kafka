@@ -35,9 +35,9 @@ public class EnvelopeRequest extends AbstractRequest {
                        byte[] clientAddress) {
             super(ApiKeys.ENVELOPE);
             this.data = new EnvelopeRequestData()
-                            .setRequestData(requestData)
-                            .setRequestPrincipal(serializedPrincipal)
-                            .setClientHostAddress(clientAddress);
+                    .setRequestData(requestData)
+                    .setRequestPrincipal(serializedPrincipal)
+                    .setClientHostAddress(clientAddress);
         }
 
         @Override
@@ -73,7 +73,7 @@ public class EnvelopeRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new EnvelopeResponse(new EnvelopeResponseData()
-                                        .setErrorCode(Errors.forException(e).code()));
+                .setErrorCode(Errors.forException(e).code()));
     }
 
     public static EnvelopeRequest parse(Readable readable, short version) {

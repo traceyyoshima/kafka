@@ -45,7 +45,7 @@ public interface TaskInfo {
     /**
      *
      * @return the set of state store names that this task makes use of. In the case of stateless tasks,
-     *         this set will be empty as no state stores are used.
+     * this set will be empty as no state stores are used.
      */
     Set<String> stateStoreNames();
 

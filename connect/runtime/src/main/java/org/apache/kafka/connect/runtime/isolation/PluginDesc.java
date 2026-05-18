@@ -127,8 +127,8 @@ public class PluginDesc<T> implements Comparable<PluginDesc<?>> {
         int typeComp = type.compareTo(other.type);
         return nameComp != 0 ? nameComp :
                 versionComp != 0 ? versionComp :
-                        isolatedComp != 0 ? isolatedComp :
-                                loaderComp != 0 ? loaderComp :
-                                        typeComp;
+                isolatedComp != 0 ? isolatedComp :
+                loaderComp != 0 ? loaderComp :
+                typeComp;
     }
 }

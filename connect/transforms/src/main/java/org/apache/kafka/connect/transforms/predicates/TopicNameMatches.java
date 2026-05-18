@@ -29,6 +29,7 @@ import java.util.regex.PatternSyntaxException;
 
 /**
  * A predicate which is true for records with a topic name that matches the configured regular expression.
+ *
  * @param <R> The type of connect record.
  */
 public class TopicNameMatches<R extends ConnectRecord<R>> implements Predicate<R> {
@@ -39,9 +40,9 @@ public class TopicNameMatches<R extends ConnectRecord<R>> implements Predicate<R
 
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(PATTERN_CONFIG, ConfigDef.Type.STRING, ConfigDef.NO_DEFAULT_VALUE,
-            ConfigDef.CompositeValidator.of(new ConfigDef.NonEmptyString(), new RegexValidator()),
-            ConfigDef.Importance.MEDIUM,
-            "A Java regular expression for matching against the name of a record's topic.");
+                    ConfigDef.CompositeValidator.of(new ConfigDef.NonEmptyString(), new RegexValidator()),
+                    ConfigDef.Importance.MEDIUM,
+                    "A Java regular expression for matching against the name of a record's topic.");
     private Pattern pattern;
 
     @Override

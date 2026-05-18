@@ -137,16 +137,16 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
                       final InternalProcessorContext processorContext,
                       final LogContext logContext,
                       final boolean processingThreadsEnabled
-                      ) {
+    ) {
         super(
-            id,
-            topology,
-            stateDirectory,
-            stateMgr,
-            inputPartitions,
-            config,
-            "task",
-            StreamTask.class
+                id,
+                topology,
+                stateDirectory,
+                stateMgr,
+                inputPartitions,
+                config,
+                "task",
+                StreamTask.class
         );
         this.mainConsumer = mainConsumer;
 
@@ -172,16 +172,16 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
 
         for (final String terminalNodeName : topology.terminalNodes()) {
             e2eLatencySensors.put(
-                terminalNodeName,
-                ProcessorNodeMetrics.e2ELatencySensor(threadId, taskId, terminalNodeName, streamsMetrics)
+                    terminalNodeName,
+                    ProcessorNodeMetrics.e2ELatencySensor(threadId, taskId, terminalNodeName, streamsMetrics)
             );
         }
 
         for (final ProcessorNode<?, ?, ?, ?> sourceNode : topology.sources()) {
             final String sourceNodeName = sourceNode.name();
             e2eLatencySensors.put(
-                sourceNodeName,
-                ProcessorNodeMetrics.e2ELatencySensor(threadId, taskId, sourceNodeName, streamsMetrics)
+                    sourceNodeName,
+                    ProcessorNodeMetrics.e2ELatencySensor(threadId, taskId, sourceNodeName, streamsMetrics)
             );
         }
 
@@ -203,28 +203,28 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
         final long maxTaskIdleMs = config.maxTaskIdleMs;
         if (processingThreadsEnabled) {
             partitionGroup = new SynchronizedPartitionGroup(new PartitionGroup(
-                logContext,
-                createPartitionQueues(),
-                mainConsumer::currentLag,
-                TaskMetrics.recordLatenessSensor(threadId, taskId, streamsMetrics),
-                enforcedProcessingSensor,
-                maxTaskIdleMs
+                    logContext,
+                    createPartitionQueues(),
+                    mainConsumer::currentLag,
+                    TaskMetrics.recordLatenessSensor(threadId, taskId, streamsMetrics),
+                    enforcedProcessingSensor,
+                    maxTaskIdleMs
             ));
         } else {
             partitionGroup = new PartitionGroup(
-                logContext,
-                createPartitionQueues(),
-                mainConsumer::currentLag,
-                TaskMetrics.recordLatenessSensor(threadId, taskId, streamsMetrics),
-                enforcedProcessingSensor,
-                maxTaskIdleMs
+                    logContext,
+                    createPartitionQueues(),
+                    mainConsumer::currentLag,
+                    TaskMetrics.recordLatenessSensor(threadId, taskId, streamsMetrics),
+                    enforcedProcessingSensor,
+                    maxTaskIdleMs
             );
         }
 
         stateMgr.registerGlobalStateStores(topology.globalStateStores());
         committedOffsets = new HashMap<>();
         highWatermark = new HashMap<>();
-        for (final TopicPartition topicPartition: inputPartitions) {
+        for (final TopicPartition topicPartition : inputPartitions) {
             committedOffsets.put(topicPartition, -1L);
             highWatermark.put(topicPartition, -1L);
         }
@@ -265,9 +265,9 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
 
     /**
      * @throws TaskCorruptedException if the state cannot be reused (with EOS) and needs to be reset
-     * @throws LockException    could happen when multi-threads within the single instance, could retry
-     * @throws TimeoutException if initializing record collector timed out
-     * @throws StreamsException fatal error, should close the thread
+     * @throws LockException          could happen when multi-threads within the single instance, could retry
+     * @throws TimeoutException       if initializing record collector timed out
+     * @throws StreamsException       fatal error, should close the thread
      */
     @Override
     public void initializeIfNeeded() {
@@ -421,9 +421,9 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
     }
 
     /**
-     * @throws StreamsException fatal error that should cause the thread to die
-     * @throws TaskMigratedException recoverable error that would cause the task to be removed
      * @return offsets that should be committed for this task
+     * @throws StreamsException      fatal error that should cause the thread to die
+     * @throws TaskMigratedException recoverable error that would cause the task to be removed
      */
     @Override
     public Map<TopicPartition, OffsetAndMetadata> prepareCommit(final boolean clean) {
@@ -492,7 +492,7 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
                 // If there's processor metadata to be committed. We need to commit them to all
                 // input partitions
                 final Set<TopicPartition> partitionsNeedCommit = processorContext.processorMetadata().needsCommit() ?
-                    inputPartitions() : consumedOffsets.keySet();
+                        inputPartitions() : consumedOffsets.keySet();
 
                 return partitionsNeedCommit.stream()
                         .map(partition -> findOffsetAndMetadata(partition)
@@ -624,8 +624,8 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
      * The following exceptions maybe thrown from the state manager flushing call
      *
      * @throws TaskMigratedException recoverable error sending changelog records that would cause the task to be removed
-     * @throws StreamsException fatal error when flushing the state store, for example sending changelog records failed
-     *                          or flushing state store get IO errors; such error should cause the thread to die
+     * @throws StreamsException      fatal error when flushing the state store, for example sending changelog records failed
+     *                               or flushing state store get IO errors; such error should cause the thread to die
      */
     @Override
     public void maybeCheckpoint() {
@@ -638,7 +638,7 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
         // closeClean in handleAssignment. We should throw if we detect this to force the TaskManager to closeDirty
         if (commitNeeded) {
             log.debug("Tried to close clean but there was pending uncommitted data, this means we failed to"
-                          + " commit and should close as dirty instead");
+                    + " commit and should close as dirty instead");
             throw new TaskMigratedException("Tried to close dirty task as clean");
         }
     }
@@ -657,34 +657,34 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
         switch (state()) {
             case SUSPENDED:
                 TaskManager.executeAndMaybeSwallow(
-                    clean,
-                    partitionGroup::close,
-                    "partition group close",
-                    log
+                        clean,
+                        partitionGroup::close,
+                        "partition group close",
+                        log
                 );
 
                 // first close state manager (which is idempotent) then close the record collector
                 // if the latter throws and we re-close dirty which would close the state manager again.
                 TaskManager.executeAndMaybeSwallow(
-                    clean,
-                    () -> StateManagerUtil.closeStateManager(
-                        log,
-                        logPrefix,
                         clean,
-                        eosEnabled,
-                        transactionalStateStoresEnabled,
-                        stateMgr,
-                        stateDirectory,
-                        TaskType.ACTIVE
-                    ),
-                    "state manager close",
-                    log);
+                        () -> StateManagerUtil.closeStateManager(
+                                log,
+                                logPrefix,
+                                clean,
+                                eosEnabled,
+                                transactionalStateStoresEnabled,
+                                stateMgr,
+                                stateDirectory,
+                                TaskType.ACTIVE
+                        ),
+                        "state manager close",
+                        log);
 
                 TaskManager.executeAndMaybeSwallow(
-                    clean,
-                    clean ? recordCollector::closeClean : recordCollector::closeDirty,
-                    "record collector close",
-                    log
+                        clean,
+                        clean ? recordCollector::closeClean : recordCollector::closeDirty,
+                        "record collector close",
+                        log
                 );
 
                 break;
@@ -802,7 +802,7 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
             commitNeeded = true;
 
             log.trace("Task processed record: topic={}, partition={}, offset={}",
-                record.topic(), record.partition(), record.offset());
+                    record.topic(), record.partition(), record.offset());
 
             // after processing this record, if its partition queue's buffered size has been
             // decreased to the threshold, we can then resume the consumption on this partition
@@ -823,9 +823,9 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
         } catch (final FailedProcessingException failedProcessingException) {
             // Do not keep the failed processing exception in the stack trace
             handleException(
-                failedProcessingException.getMessage(),
-                failedProcessingException.failedProcessorNodeName(),
-                failedProcessingException.getCause()
+                    failedProcessingException.getMessage(),
+                    failedProcessingException.failedProcessorNodeName(),
+                    failedProcessingException.getCause()
             );
         } catch (final StreamsException exception) {
             record = null;
@@ -841,16 +841,16 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
 
     private void handleException(final String failedProcessorNodeName, final Throwable originalException) {
         handleException(
-            String.format(
-                "Exception caught in process. taskId=%s, processor=%s, topic=%s, partition=%d, offset=%d",
-                id(),
+                String.format(
+                        "Exception caught in process. taskId=%s, processor=%s, topic=%s, partition=%d, offset=%d",
+                        id(),
+                        failedProcessorNodeName,
+                        record.topic(),
+                        record.partition(),
+                        record.offset()
+                ),
                 failedProcessorNodeName,
-                record.topic(),
-                record.partition(),
-                record.offset()
-            ),
-            failedProcessorNodeName,
-            originalException);
+                originalException);
     }
 
     private void handleException(final String errorMessage, final String failedProcessorNodeName, final Throwable originalException) {
@@ -871,22 +871,22 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
         log.trace("Start processing one record [{}]", record);
 
         final ProcessorRecordContext recordContext = new ProcessorRecordContext(
-            record.timestamp,
-            record.offset(),
-            record.partition(),
-            record.topic(),
-            record.headers(),
-            record.rawKey(),
-            record.rawValue()
+                record.timestamp,
+                record.offset(),
+                record.partition(),
+                record.topic(),
+                record.headers(),
+                record.rawKey(),
+                record.rawValue()
         );
         updateProcessorContext(currNode, wallClockTime, recordContext);
 
         maybeRecordE2ELatency(record.timestamp, wallClockTime, currNode.name());
         final Record<Object, Object> toProcess = new Record<>(
-            record.key(),
-            record.value(),
-            processorContext.recordContext().timestamp(),
-            processorContext.recordContext().headers()
+                record.key(),
+                record.value(),
+                processorContext.recordContext().timestamp(),
+                processorContext.recordContext().headers()
         );
         maybeMeasureLatency(() -> currNode.process(toProcess), time, processLatencySensor);
 
@@ -922,11 +922,11 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
         // when punctuating, we need to preserve the timestamp (this can be either system time or event time)
         // while other record context are set as dummy: null topic, -1 partition, -1 offset and empty header
         final ProcessorRecordContext recordContext = new ProcessorRecordContext(
-            timestamp,
-            -1L,
-            -1,
-            null,
-            new RecordHeaders()
+                timestamp,
+                -1L,
+                -1,
+                null,
+                new RecordHeaders()
         );
         updateProcessorContext(node, time.milliseconds(), recordContext);
 
@@ -952,32 +952,32 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
             // like Scala or Kotlin do not, and thus we need to catch `Exception`
             // (instead of `RuntimeException`) to work well with those languages
             final ErrorHandlerContext errorHandlerContext = new DefaultErrorHandlerContext(
-                null,
-                recordContext.topic(),
-                recordContext.partition(),
-                recordContext.offset(),
-                recordContext.headers(),
-                node.name(),
-                id(),
-                recordContext.timestamp(),
-                recordContext.sourceRawKey(),
-                recordContext.sourceRawValue()
+                    null,
+                    recordContext.topic(),
+                    recordContext.partition(),
+                    recordContext.offset(),
+                    recordContext.headers(),
+                    node.name(),
+                    id(),
+                    recordContext.timestamp(),
+                    recordContext.sourceRawKey(),
+                    recordContext.sourceRawValue()
             );
 
             final ProcessingExceptionHandler.Response processingExceptionResponse;
             try {
                 processingExceptionResponse = Objects.requireNonNull(
-                    processingExceptionHandler.handleError(errorHandlerContext, null, processingException),
-                    "Invalid ProcessingExceptionHandler response."
+                        processingExceptionHandler.handleError(errorHandlerContext, null, processingException),
+                        "Invalid ProcessingExceptionHandler response."
                 );
             } catch (final Exception fatalUserException) {
                 // while Java distinguishes checked vs unchecked exceptions, other languages
                 // like Scala or Kotlin do not, and thus we need to catch `Exception`
                 // (instead of `RuntimeException`) to work well with those languages
                 log.error(
-                    "Processing error callback failed after processing error for record: {}",
-                    errorHandlerContext,
-                    processingException
+                        "Processing error callback failed after processing error for record: {}",
+                        errorHandlerContext,
+                        processingException
                 );
                 throw new FailedProcessingException("Fatal user code error in processing error callback", node.name(), fatalUserException);
             }
@@ -1056,13 +1056,13 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
             resetOffsetsForPartitions.clear();
 
             initializeTaskTimeAndProcessorMetadata(offsetsAndMetadata.entrySet().stream()
-                .filter(e -> e.getValue() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
+                    .filter(e -> e.getValue() != null)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
             );
         } catch (final TimeoutException timeoutException) {
             log.warn(
-                "Encountered {} while trying to fetch committed offsets, will retry initializing the metadata in the next loop.",
-                timeoutException.toString()
+                    "Encountered {} while trying to fetch committed offsets, will retry initializing the metadata in the next loop.",
+                    timeoutException.toString()
             );
 
             // re-throw to trigger `task.timeout.ms`
@@ -1083,7 +1083,7 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
                 final long committedTimestamp = committedTimestampAndMeta.partitionTime();
                 partitionGroup.setPartitionTime(partition, committedTimestamp);
                 log.debug("A committed timestamp was detected: setting the partition time of partition {}"
-                    + " to {} in stream task {}", partition, committedTimestamp, id);
+                        + " to {} in stream task {}", partition, committedTimestamp, id);
 
                 final ProcessorMetadata processorMetadata = committedTimestampAndMeta.processorMetadata();
                 finalProcessMetadata.update(processorMetadata);
@@ -1181,8 +1181,8 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
      * Schedules a punctuation for the processor
      *
      * @param startTime time of the first punctuation
-     * @param interval the interval in milliseconds
-     * @param type     the punctuation type
+     * @param interval  the interval in milliseconds
+     * @param type      the punctuation type
      * @throws IllegalStateException if the current node is not null
      */
     public Cancellable schedule(final Instant startTime, final long interval, final PunctuationType type, final Punctuator punctuator) {
@@ -1373,8 +1373,8 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
                     }
                 } catch (final TimeoutException swallow) {
                     log.debug(
-                        String.format("Could not get consumer position for partition %s", partition),
-                        swallow
+                            String.format("Could not get consumer position for partition %s", partition),
+                            swallow
                     );
                 } catch (final KafkaException fatal) {
                     throw new StreamsException(fatal);
@@ -1391,7 +1391,7 @@ public class StreamTask extends AbstractTask implements ProcessorNodePunctuator,
             // if we are in running state, just return the latest offset sentinel indicating
             // we should be at the end of the changelog
             return changelogPartitions().stream()
-                                        .collect(Collectors.toMap(Function.identity(), tp -> Task.LATEST_OFFSET));
+                    .collect(Collectors.toMap(Function.identity(), tp -> Task.LATEST_OFFSET));
         } else {
             return Collections.unmodifiableMap(stateMgr.changelogOffsets());
         }

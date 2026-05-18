@@ -68,8 +68,8 @@ public abstract class SourceConnector extends Connector {
      * @return {@link ConnectorTransactionBoundaries#SUPPORTED} if the connector will define its own transaction boundaries,
      * or {@link ConnectorTransactionBoundaries#UNSUPPORTED} otherwise; may never be {@code null}. The default implementation
      * returns {@link ConnectorTransactionBoundaries#UNSUPPORTED}.
-     * @since 3.3
      * @see TransactionContext
+     * @since 3.3
      */
     public ConnectorTransactionBoundaries canDefineTransactionBoundaries(Map<String, String> connectorConfig) {
         return ConnectorTransactionBoundaries.UNSUPPORTED;
@@ -96,17 +96,17 @@ public abstract class SourceConnector extends Connector {
      * {@link #start(Map) start} method is invoked.
      *
      * @param connectorConfig the configuration of the connector
-     * @param offsets a map from source partition to source offset, containing the offsets that the user has requested
-     *                to alter/reset. For any source partitions whose offsets are being reset instead of altered, their
-     *                corresponding source offset value in the map will be {@code null}. This map may be empty, but
-     *                never null. An empty offsets map could indicate that the offsets were reset previously or that no
-     *                offsets have been committed yet.
+     * @param offsets         a map from source partition to source offset, containing the offsets that the user has requested
+     *                        to alter/reset. For any source partitions whose offsets are being reset instead of altered, their
+     *                        corresponding source offset value in the map will be {@code null}. This map may be empty, but
+     *                        never null. An empty offsets map could indicate that the offsets were reset previously or that no
+     *                        offsets have been committed yet.
      * @return whether this method has been overridden by the connector; the default implementation returns
      * {@code false}, and all other implementations (that do not unconditionally throw exceptions) should return
      * {@code true}
-     * @throws UnsupportedOperationException if it is impossible to alter/reset the offsets for this connector
+     * @throws UnsupportedOperationException                    if it is impossible to alter/reset the offsets for this connector
      * @throws org.apache.kafka.connect.errors.ConnectException if the offsets for this connector cannot be
-     * reset for any other reason (for example, they have failed custom validation logic specific to this connector)
+     *                                                          reset for any other reason (for example, they have failed custom validation logic specific to this connector)
      * @since 3.6
      */
     public boolean alterOffsets(Map<String, String> connectorConfig, Map<Map<String, ?>, Map<String, ?>> offsets) {

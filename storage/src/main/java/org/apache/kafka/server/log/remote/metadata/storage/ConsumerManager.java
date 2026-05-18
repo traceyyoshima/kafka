@@ -57,12 +57,12 @@ public class ConsumerManager implements Closeable {
         //Create a task to consume messages and submit the respective events to RemotePartitionMetadataEventHandler.
         KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<>(rlmmConfig.consumerProperties());
         consumerTask = new ConsumerTask(
-            remotePartitionMetadataEventHandler,
-            topicPartitioner,
-            consumer,
-            100L,
-            300_000L,
-            time
+                remotePartitionMetadataEventHandler,
+                topicPartitioner,
+                consumer,
+                100L,
+                300_000L,
+                time
         );
         consumerTaskThread = KafkaThread.nonDaemon("RLMMConsumerTask", consumerTask);
     }

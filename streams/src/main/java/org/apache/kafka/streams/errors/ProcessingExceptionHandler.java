@@ -31,13 +31,9 @@ public interface ProcessingExceptionHandler extends Configurable {
     /**
      * Inspect a record and the exception received
      *
-     * @param context
-     *     Processing context metadata.
-     * @param record
-     *     Record where the exception occurred.
-     * @param exception
-     *     The actual exception.
-     *
+     * @param context   Processing context metadata.
+     * @param record    Record where the exception occurred.
+     * @param exception The actual exception.
      * @return Whether to continue or stop processing.
      * @deprecated Use {@link #handleError(ErrorHandlerContext, Record, Exception)} instead.
      */
@@ -49,13 +45,9 @@ public interface ProcessingExceptionHandler extends Configurable {
     /**
      * Inspects a record and the exception received during processing.
      *
-     * @param context
-     *     Processing context metadata.
-     * @param record
-     *     Record where the exception occurred.
-     * @param exception
-     *     The actual exception.
-     *
+     * @param context   Processing context metadata.
+     * @param record    Record where the exception occurred.
+     * @param exception The actual exception.
      * @return a {@link Response} object
      */
     default Response handleError(final ErrorHandlerContext context, final Record<?, ?> record, final Exception exception) {
@@ -64,9 +56,13 @@ public interface ProcessingExceptionHandler extends Configurable {
 
     @Deprecated
     enum ProcessingHandlerResponse {
-        /** Continue processing. */
+        /**
+         * Continue processing.
+         */
         CONTINUE(1, "CONTINUE"),
-        /** Fail processing. */
+        /**
+         * Fail processing.
+         */
         FAIL(2, "FAIL");
 
         /**
@@ -89,9 +85,13 @@ public interface ProcessingExceptionHandler extends Configurable {
      * Enumeration that describes the response from the exception handler.
      */
     enum Result {
-        /** Resume processing. */
+        /**
+         * Resume processing.
+         */
         RESUME(1, "RESUME"),
-        /** Fail processing. */
+        /**
+         * Fail processing.
+         */
         FAIL(2, "FAIL");
 
         /**
@@ -145,8 +145,8 @@ public interface ProcessingExceptionHandler extends Configurable {
         /**
          * Constructs a new {@code ProcessingExceptionResponse} object.
          *
-         * @param result the result indicating whether processing should continue or fail;
-         *                                  must not be {@code null}.
+         * @param result                 the result indicating whether processing should continue or fail;
+         *                               must not be {@code null}.
          * @param deadLetterQueueRecords the list of records to be sent to the dead letter queue; may be {@code null}.
          */
         private Response(final Result result,
@@ -209,7 +209,7 @@ public interface ProcessingExceptionHandler extends Configurable {
          * </p>
          *
          * @return an unmodifiable list of {@link ProducerRecord} instances
-         *         for the dead letter queue, or an empty list if no records are available.
+         * for the dead letter queue, or an empty list if no records are available.
          */
         public List<ProducerRecord<byte[], byte[]>> deadLetterQueueRecords() {
             if (deadLetterQueueRecords == null) {

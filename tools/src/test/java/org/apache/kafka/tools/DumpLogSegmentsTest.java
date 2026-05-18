@@ -139,10 +139,11 @@ public class DumpLogSegmentsTest {
     private static final Pattern SIZE_PATTERN = Pattern.compile(".+?size:\\s(\\d+).+");
 
     private record BatchInfo(
-        List<SimpleRecord> records,
-        boolean hasKeys,
-        boolean hasValues
-    ) { }
+            List<SimpleRecord> records,
+            boolean hasKeys,
+            boolean hasValues
+    ) {
+    }
 
     private final File tmpDir = TestUtils.tempDir();
     private final File logDir = TestUtils.randomPartitionLogDir(tmpDir);
@@ -175,19 +176,19 @@ public class DumpLogSegmentsTest {
 
     private UnifiedLog createLog(LogConfig logConfig, MockTime logTime) throws Exception {
         log = UnifiedLog.create(
-            logDir,
-            logConfig,
-            0L,
-            0L,
-            logTime.scheduler,
-            new BrokerTopicStats(),
-            logTime,
-            5 * 60 * 1000,
-            new ProducerStateManagerConfig(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_DEFAULT, false),
-            TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
-            new LogDirFailureChannel(10),
-            true,
-            Optional.empty()
+                logDir,
+                logConfig,
+                0L,
+                0L,
+                logTime.scheduler,
+                new BrokerTopicStats(),
+                logTime,
+                5 * 60 * 1000,
+                new ProducerStateManagerConfig(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_DEFAULT, false),
+                TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
+                new LogDirFailureChannel(10),
+                true,
+                Optional.empty()
         );
         return log;
     }
@@ -203,9 +204,9 @@ public class DumpLogSegmentsTest {
         List<SimpleRecord> firstBatchRecords = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             firstBatchRecords.add(new SimpleRecord(
-                now + i * 2L,
-                ("message key " + i).getBytes(),
-                ("message value " + i).getBytes()
+                    now + i * 2L,
+                    ("message key " + i).getBytes(),
+                    ("message value " + i).getBytes()
             ));
         }
         batches.add(new BatchInfo(firstBatchRecords, true, true));
@@ -213,8 +214,8 @@ public class DumpLogSegmentsTest {
         List<SimpleRecord> secondBatchRecords = new ArrayList<>();
         for (int i = 10; i < 30; i++) {
             secondBatchRecords.add(new SimpleRecord(
-                now + i * 3L,
-                ("message key " + i).getBytes(),
+                    now + i * 3L,
+                    ("message key " + i).getBytes(),
                     null
             ));
         }
@@ -223,9 +224,9 @@ public class DumpLogSegmentsTest {
         List<SimpleRecord> thirdBatchRecords = new ArrayList<>();
         for (int i = 30; i < 50; i++) {
             thirdBatchRecords.add(new SimpleRecord(
-                now + i * 5L,
+                    now + i * 5L,
                     null,
-                ("message value " + i).getBytes()
+                    ("message value " + i).getBytes()
             ));
         }
         batches.add(new BatchInfo(thirdBatchRecords, false, true));
@@ -238,12 +239,12 @@ public class DumpLogSegmentsTest {
 
         for (BatchInfo batchInfo : batches) {
             log.appendAsLeader(
-                MemoryRecords.withRecords(
-                    Compression.NONE,
-                    0,
-                    batchInfo.records.toArray(new SimpleRecord[0])
-                ),
-                0
+                    MemoryRecords.withRecords(
+                            Compression.NONE,
+                            0,
+                            batchInfo.records.toArray(new SimpleRecord[0])
+                    ),
+                    0
             );
         }
         // Flush, but don't close so that the indexes are not trimmed and contain some zero entries
@@ -255,32 +256,32 @@ public class DumpLogSegmentsTest {
         log = createTestLog();
 
         log.appendAsLeader(MemoryRecords.withRecords(Compression.NONE, 0,
-            new SimpleRecord("a".getBytes()),
-            new SimpleRecord("b".getBytes())
+                new SimpleRecord("a".getBytes()),
+                new SimpleRecord("b".getBytes())
         ), 0);
 
         log.appendAsLeader(MemoryRecords.withRecords(Compression.gzip().build(), 0,
-            new SimpleRecord(time.milliseconds(), "c".getBytes(), "1".getBytes()),
-            new SimpleRecord("d".getBytes())
+                new SimpleRecord(time.milliseconds(), "c".getBytes(), "1".getBytes()),
+                new SimpleRecord("d".getBytes())
         ), 3);
 
         log.appendAsLeader(MemoryRecords.withRecords(Compression.NONE, 0,
-            new SimpleRecord("e".getBytes(), null),
-            new SimpleRecord(null, "f".getBytes()),
-            new SimpleRecord("g".getBytes())
+                new SimpleRecord("e".getBytes(), null),
+                new SimpleRecord(null, "f".getBytes()),
+                new SimpleRecord("g".getBytes())
         ), 3);
 
         log.appendAsLeader(MemoryRecords.withIdempotentRecords(Compression.NONE, 29342342L, (short) 15, 234123,
-            new SimpleRecord("h".getBytes())
+                new SimpleRecord("h".getBytes())
         ), 3);
 
         log.appendAsLeader(MemoryRecords.withTransactionalRecords(Compression.gzip().build(), 98323L, (short) 99, 266,
-            new SimpleRecord("i".getBytes()),
-            new SimpleRecord("j".getBytes())
+                new SimpleRecord("i".getBytes()),
+                new SimpleRecord("j".getBytes())
         ), 5);
 
         log.appendAsLeader(MemoryRecords.withEndTransactionMarker(98323L, (short) 99,
-            new EndTransactionMarker(ControlRecordType.COMMIT, 100)
+                new EndTransactionMarker(ControlRecordType.COMMIT, 100)
         ), 7, AppendOrigin.COORDINATOR, RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
 
         assertDumpLogRecordMetadata(log);
@@ -293,18 +294,18 @@ public class DumpLogSegmentsTest {
         addSimpleRecords(log, batches);
 
         // Verify that records are printed with --print-data-log even if --deep-iteration is not specified
-        verifyRecordsInOutput(batches, true, new String[] {"--print-data-log", "--files", logFilePath});
+        verifyRecordsInOutput(batches, true, new String[]{"--print-data-log", "--files", logFilePath});
         // Verify that records are printed with --print-data-log if --deep-iteration is also specified
-        verifyRecordsInOutput(batches, true, new String[] {"--print-data-log", "--deep-iteration", "--files", logFilePath});
+        verifyRecordsInOutput(batches, true, new String[]{"--print-data-log", "--deep-iteration", "--files", logFilePath});
         // Verify that records are printed with --value-decoder even if --print-data-log is not specified
-        verifyRecordsInOutput(batches, true, new String[] {"--value-decoder-class", "org.apache.kafka.tools.api.StringDecoder", "--files", logFilePath});
+        verifyRecordsInOutput(batches, true, new String[]{"--value-decoder-class", "org.apache.kafka.tools.api.StringDecoder", "--files", logFilePath});
         // Verify that records are printed with --key-decoder even if --print-data-log is not specified
-        verifyRecordsInOutput(batches, true, new String[] {"--key-decoder-class", "org.apache.kafka.tools.api.StringDecoder", "--files", logFilePath});
+        verifyRecordsInOutput(batches, true, new String[]{"--key-decoder-class", "org.apache.kafka.tools.api.StringDecoder", "--files", logFilePath});
         // Verify that records are printed with --deep-iteration even if --print-data-log is not specified
-        verifyRecordsInOutput(batches, false, new String[] {"--deep-iteration", "--files", logFilePath});
+        verifyRecordsInOutput(batches, false, new String[]{"--deep-iteration", "--files", logFilePath});
 
         // Verify that records are not printed by default
-        verifyNoRecordsInOutput(new String[] {"--files", logFilePath});
+        verifyNoRecordsInOutput(new String[]{"--files", logFilePath});
     }
 
     @Test
@@ -336,7 +337,7 @@ public class DumpLogSegmentsTest {
         log = createTestLog();
         addSimpleRecords(log, new ArrayList<>());
 
-        String output = runDumpLogSegments(new String[] {"--index-sanity-check", "--files", indexFilePath});
+        String output = runDumpLogSegments(new String[]{"--index-sanity-check", "--files", indexFilePath});
         assertTrue(output.contains("passed sanity check"), output);
     }
 
@@ -346,7 +347,7 @@ public class DumpLogSegmentsTest {
         addSimpleRecords(log, new ArrayList<>());
 
         String errOutput = captureStandardErr(
-            () -> runDumpLogSegments(new String[] {"--verify-index-only", "--files", indexFilePath}));
+                () -> runDumpLogSegments(new String[]{"--verify-index-only", "--files", indexFilePath}));
         assertTrue(errOutput.isEmpty(), errOutput);
     }
 
@@ -377,7 +378,7 @@ public class DumpLogSegmentsTest {
         LogConfig logConfig = createLogConfig(1024 * 1024);
         log = createLog(logConfig);
 
-        String output = runDumpLogSegments(new String[] {"--remote-log-metadata-decoder", "--files", logFilePath});
+        String output = runDumpLogSegments(new String[]{"--remote-log-metadata-decoder", "--files", logFilePath});
         assertEquals(0, batchCount(output));
         assertEquals(0, recordCount(output));
         assertTrue(output.contains("Log starting offset: 0"));
@@ -389,13 +390,13 @@ public class DumpLogSegmentsTest {
         String topicName = "foo";
 
         List<RemotePartitionDeleteMetadata> metadata = List.of(
-            new RemotePartitionDeleteMetadata(new TopicIdPartition(topicId, new TopicPartition(topicName, 0)),
-                RemotePartitionDeleteState.DELETE_PARTITION_MARKED, time.milliseconds(), 0)
+                new RemotePartitionDeleteMetadata(new TopicIdPartition(topicId, new TopicPartition(topicName, 0)),
+                        RemotePartitionDeleteState.DELETE_PARTITION_MARKED, time.milliseconds(), 0)
         );
 
         SimpleRecord[] records = metadata.stream()
-            .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
-            .toArray(SimpleRecord[]::new);
+                .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
+                .toArray(SimpleRecord[]::new);
 
         LogConfig logConfig = createLogConfig(1024 * 1024);
         log = createLog(logConfig);
@@ -403,9 +404,9 @@ public class DumpLogSegmentsTest {
         log.flush(false);
 
         String expectedDeletePayload = String.format("RemotePartitionDeleteMetadata{topicPartition=%s:%s-0, " +
-            "state=DELETE_PARTITION_MARKED, eventTimestampMs=0, brokerId=0}", topicId, topicName);
+                "state=DELETE_PARTITION_MARKED, eventTimestampMs=0, brokerId=0}", topicId, topicName);
 
-        String output = runDumpLogSegments(new String[] {"--remote-log-metadata-decoder", "--files", logFilePath});
+        String output = runDumpLogSegments(new String[]{"--remote-log-metadata-decoder", "--files", logFilePath});
         assertEquals(1, batchCount(output));
         assertEquals(1, recordCount(output));
         assertTrue(output.contains("Log starting offset: 0"));
@@ -422,24 +423,24 @@ public class DumpLogSegmentsTest {
         RemoteLogSegmentId remoteLogSegmentId = new RemoteLogSegmentId(topicIdPartition, remoteSegmentId);
 
         List<RemoteLogMetadata> metadata = List.of(
-            new RemoteLogSegmentMetadataUpdate(
-                remoteLogSegmentId,
-                time.milliseconds(),
-                Optional.of(new RemoteLogSegmentMetadata.CustomMetadata(new byte[] {0, 1, 2, 3})),
-                RemoteLogSegmentState.COPY_SEGMENT_FINISHED,
-                0
-            ),
-            new RemotePartitionDeleteMetadata(
-                topicIdPartition,
-                RemotePartitionDeleteState.DELETE_PARTITION_MARKED,
-                time.milliseconds(),
-                0
-            )
+                new RemoteLogSegmentMetadataUpdate(
+                        remoteLogSegmentId,
+                        time.milliseconds(),
+                        Optional.of(new RemoteLogSegmentMetadata.CustomMetadata(new byte[]{0, 1, 2, 3})),
+                        RemoteLogSegmentState.COPY_SEGMENT_FINISHED,
+                        0
+                ),
+                new RemotePartitionDeleteMetadata(
+                        topicIdPartition,
+                        RemotePartitionDeleteState.DELETE_PARTITION_MARKED,
+                        time.milliseconds(),
+                        0
+                )
         );
 
         SimpleRecord[] metadataRecords = metadata.stream()
-            .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
-            .toArray(SimpleRecord[]::new);
+                .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
+                .toArray(SimpleRecord[]::new);
 
         LogConfig logConfig = createLogConfig(1024 * 1024);
         log = createLog(logConfig);
@@ -447,13 +448,13 @@ public class DumpLogSegmentsTest {
         log.flush(false);
 
         String expectedUpdatePayload = String.format("RemoteLogSegmentMetadataUpdate{remoteLogSegmentId=" +
-            "RemoteLogSegmentId{topicIdPartition=%s:%s-0, id=%s}, customMetadata=Optional[" +
-            "CustomMetadata{4 bytes}], state=COPY_SEGMENT_FINISHED, eventTimestampMs=0, brokerId=0}",
-            topicId, topicName, remoteSegmentId);
+                        "RemoteLogSegmentId{topicIdPartition=%s:%s-0, id=%s}, customMetadata=Optional[" +
+                        "CustomMetadata{4 bytes}], state=COPY_SEGMENT_FINISHED, eventTimestampMs=0, brokerId=0}",
+                topicId, topicName, remoteSegmentId);
         String expectedDeletePayload = String.format("RemotePartitionDeleteMetadata{topicPartition=%s:%s-0, " +
-            "state=DELETE_PARTITION_MARKED, eventTimestampMs=0, brokerId=0}", topicId, topicName);
+                "state=DELETE_PARTITION_MARKED, eventTimestampMs=0, brokerId=0}", topicId, topicName);
 
-        String output = runDumpLogSegments(new String[] {"--remote-log-metadata-decoder", "--files", logFilePath});
+        String output = runDumpLogSegments(new String[]{"--remote-log-metadata-decoder", "--files", logFilePath});
         assertEquals(1, batchCount(output));
         assertEquals(2, recordCount(output));
         assertTrue(output.contains("Log starting offset: 0"));
@@ -471,24 +472,24 @@ public class DumpLogSegmentsTest {
         RemoteLogSegmentId remoteLogSegmentId = new RemoteLogSegmentId(topicIdPartition, remoteSegmentId);
 
         List<RemoteLogMetadata> metadata = List.of(
-            new RemoteLogSegmentMetadataUpdate(
-                remoteLogSegmentId,
-                time.milliseconds(),
-                Optional.of(new RemoteLogSegmentMetadata.CustomMetadata(new byte[] {0, 1, 2, 3})),
-                RemoteLogSegmentState.COPY_SEGMENT_FINISHED,
-                0
-            ),
-            new RemotePartitionDeleteMetadata(
-                topicIdPartition,
-                RemotePartitionDeleteState.DELETE_PARTITION_MARKED,
-                time.milliseconds(),
-                0
-            )
+                new RemoteLogSegmentMetadataUpdate(
+                        remoteLogSegmentId,
+                        time.milliseconds(),
+                        Optional.of(new RemoteLogSegmentMetadata.CustomMetadata(new byte[]{0, 1, 2, 3})),
+                        RemoteLogSegmentState.COPY_SEGMENT_FINISHED,
+                        0
+                ),
+                new RemotePartitionDeleteMetadata(
+                        topicIdPartition,
+                        RemotePartitionDeleteState.DELETE_PARTITION_MARKED,
+                        time.milliseconds(),
+                        0
+                )
         );
 
         SimpleRecord[] records = metadata.stream()
-            .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
-            .toArray(SimpleRecord[]::new);
+                .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
+                .toArray(SimpleRecord[]::new);
 
         LogConfig logConfig = createLogConfig(1024 * 1024);
         log = createLog(logConfig);
@@ -497,13 +498,13 @@ public class DumpLogSegmentsTest {
         log.flush(false);
 
         String expectedUpdatePayload = String.format("RemoteLogSegmentMetadataUpdate{remoteLogSegmentId=" +
-            "RemoteLogSegmentId{topicIdPartition=%s:%s-0, id=%s}, customMetadata=Optional[" +
-            "CustomMetadata{4 bytes}], state=COPY_SEGMENT_FINISHED, eventTimestampMs=0, brokerId=0}",
-            topicId, topicName, remoteSegmentId);
+                        "RemoteLogSegmentId{topicIdPartition=%s:%s-0, id=%s}, customMetadata=Optional[" +
+                        "CustomMetadata{4 bytes}], state=COPY_SEGMENT_FINISHED, eventTimestampMs=0, brokerId=0}",
+                topicId, topicName, remoteSegmentId);
         String expectedDeletePayload = String.format("RemotePartitionDeleteMetadata{topicPartition=%s:%s-0, " +
-            "state=DELETE_PARTITION_MARKED, eventTimestampMs=0, brokerId=0}", topicId, topicName);
+                "state=DELETE_PARTITION_MARKED, eventTimestampMs=0, brokerId=0}", topicId, topicName);
 
-        String output = runDumpLogSegments(new String[] {"--remote-log-metadata-decoder", "--files", logFilePath});
+        String output = runDumpLogSegments(new String[]{"--remote-log-metadata-decoder", "--files", logFilePath});
         assertEquals(2, batchCount(output));
         assertEquals(4, recordCount(output));
         assertTrue(output.contains("Log starting offset: 0"));
@@ -517,13 +518,13 @@ public class DumpLogSegmentsTest {
         String topicName = "foo";
 
         List<RemotePartitionDeleteMetadata> metadata = List.of(
-            new RemotePartitionDeleteMetadata(new TopicIdPartition(topicId, new TopicPartition(topicName, 0)),
-                RemotePartitionDeleteState.DELETE_PARTITION_MARKED, time.milliseconds(), 0)
+                new RemotePartitionDeleteMetadata(new TopicIdPartition(topicId, new TopicPartition(topicName, 0)),
+                        RemotePartitionDeleteState.DELETE_PARTITION_MARKED, time.milliseconds(), 0)
         );
 
         SimpleRecord[] metadataRecords = metadata.stream()
-            .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
-            .toArray(SimpleRecord[]::new);
+                .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
+                .toArray(SimpleRecord[]::new);
 
         LogConfig logConfig = createLogConfig(1024 * 1024);
         log = createLog(logConfig);
@@ -534,10 +535,10 @@ public class DumpLogSegmentsTest {
         log.flush(true);
 
         String expectedDeletePayload = String.format("RemotePartitionDeleteMetadata{topicPartition=%s:%s-0, " +
-            "state=DELETE_PARTITION_MARKED, eventTimestampMs=0, brokerId=0}", topicId, topicName);
+                "state=DELETE_PARTITION_MARKED, eventTimestampMs=0, brokerId=0}", topicId, topicName);
 
-        String output = runDumpLogSegments(new String[] {"--remote-log-metadata-decoder", "--files",
-            secondSegment.log().file().getAbsolutePath()});
+        String output = runDumpLogSegments(new String[]{"--remote-log-metadata-decoder", "--files",
+                secondSegment.log().file().getAbsolutePath()});
         assertEquals(1, batchCount(output));
         assertEquals(1, recordCount(output));
         assertTrue(output.contains("Log starting offset: 1"));
@@ -546,14 +547,14 @@ public class DumpLogSegmentsTest {
 
     @Test
     public void testDumpRemoteLogMetadataWithCorruption() throws Exception {
-        SimpleRecord[] metadataRecords = new SimpleRecord[] {new SimpleRecord(null, "corrupted".getBytes())};
+        SimpleRecord[] metadataRecords = new SimpleRecord[]{new SimpleRecord(null, "corrupted".getBytes())};
 
         LogConfig logConfig = createLogConfig(1024 * 1024);
         log = createLog(logConfig);
         log.appendAsLeader(MemoryRecords.withRecords(Compression.NONE, metadataRecords), 0);
         log.flush(false);
 
-        String output = runDumpLogSegments(new String[] {"--remote-log-metadata-decoder", "--files", logFilePath});
+        String output = runDumpLogSegments(new String[]{"--remote-log-metadata-decoder", "--files", logFilePath});
         assertEquals(1, batchCount(output));
         assertEquals(1, recordCount(output));
         assertTrue(output.contains("Log starting offset: 0"));
@@ -566,13 +567,13 @@ public class DumpLogSegmentsTest {
         String topicName = "foo";
 
         List<RemotePartitionDeleteMetadata> metadata = List.of(
-            new RemotePartitionDeleteMetadata(new TopicIdPartition(topicId, new TopicPartition(topicName, 0)),
-                RemotePartitionDeleteState.DELETE_PARTITION_MARKED, time.milliseconds(), 0)
+                new RemotePartitionDeleteMetadata(new TopicIdPartition(topicId, new TopicPartition(topicName, 0)),
+                        RemotePartitionDeleteState.DELETE_PARTITION_MARKED, time.milliseconds(), 0)
         );
 
         SimpleRecord[] metadataRecords = metadata.stream()
-            .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
-            .toArray(SimpleRecord[]::new);
+                .map(message -> new SimpleRecord(null, new RemoteLogMetadataSerde().serialize(message)))
+                .toArray(SimpleRecord[]::new);
 
         LogConfig logConfig = createLogConfig(1024 * 1024);
         log = createLog(logConfig);
@@ -582,7 +583,7 @@ public class DumpLogSegmentsTest {
         Files.setPosixFilePermissions(Paths.get(logFilePath), PosixFilePermissions.fromString("-w-------"));
 
         RuntimeException thrown = assertThrows(RuntimeException.class,
-            () -> runDumpLogSegments(new String[] {"--remote-log-metadata-decoder", "--files", logFilePath}));
+                () -> runDumpLogSegments(new String[]{"--remote-log-metadata-decoder", "--files", logFilePath}));
         assertInstanceOf(AccessDeniedException.class, thrown.getCause());
     }
 
@@ -593,7 +594,7 @@ public class DumpLogSegmentsTest {
         });
         try {
             IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> runDumpLogSegments(new String[] {"--remote-log-metadata-decoder"}));
+                    () -> runDumpLogSegments(new String[]{"--remote-log-metadata-decoder"}));
             assertEquals("Missing required argument \"[files]\"", thrown.getMessage());
         } finally {
             Exit.resetExitProcedure();
@@ -604,7 +605,7 @@ public class DumpLogSegmentsTest {
     public void testDumpRemoteLogMetadataNoSuchFileException() {
         String noSuchFileLogPath = "/tmp/nosuchfile/00000000000000000000.log";
         RuntimeException thrown = assertThrows(RuntimeException.class,
-            () -> runDumpLogSegments(new String[] {"--remote-log-metadata-decoder", "--files", noSuchFileLogPath}));
+                () -> runDumpLogSegments(new String[]{"--remote-log-metadata-decoder", "--files", noSuchFileLogPath}));
         assertInstanceOf(NoSuchFileException.class, thrown.getCause());
     }
 
@@ -615,15 +616,15 @@ public class DumpLogSegmentsTest {
         log = createLog(logConfig, mockTime);
 
         List<ApiMessageAndVersion> metadataRecords = List.of(
-            new ApiMessageAndVersion(
-                new RegisterBrokerRecord().setBrokerId(0).setBrokerEpoch(10), (short) 0),
-            new ApiMessageAndVersion(
-                new RegisterBrokerRecord().setBrokerId(1).setBrokerEpoch(20), (short) 0),
-            new ApiMessageAndVersion(
-                new TopicRecord().setName("test-topic").setTopicId(Uuid.randomUuid()), (short) 0),
-            new ApiMessageAndVersion(
-                new PartitionChangeRecord().setTopicId(Uuid.randomUuid()).setLeader(1)
-                    .setPartitionId(0).setIsr(List.of(0, 1, 2)), (short) 0)
+                new ApiMessageAndVersion(
+                        new RegisterBrokerRecord().setBrokerId(0).setBrokerEpoch(10), (short) 0),
+                new ApiMessageAndVersion(
+                        new RegisterBrokerRecord().setBrokerId(1).setBrokerEpoch(20), (short) 0),
+                new ApiMessageAndVersion(
+                        new TopicRecord().setName("test-topic").setTopicId(Uuid.randomUuid()), (short) 0),
+                new ApiMessageAndVersion(
+                        new PartitionChangeRecord().setTopicId(Uuid.randomUuid()).setLeader(1)
+                                .setPartitionId(0).setIsr(List.of(0, 1, 2)), (short) 0)
         );
 
         List<SimpleRecord> records = new ArrayList<>();
@@ -640,12 +641,12 @@ public class DumpLogSegmentsTest {
         log.appendAsLeader(MemoryRecords.withRecords(Compression.NONE, records.toArray(new SimpleRecord[0])), 1);
         log.flush(false);
 
-        String output = runDumpLogSegments(new String[] {"--cluster-metadata-decoder", "--files", logFilePath});
+        String output = runDumpLogSegments(new String[]{"--cluster-metadata-decoder", "--files", logFilePath});
         assertTrue(output.contains("Log starting offset: 0"));
         assertTrue(output.contains("TOPIC_RECORD"));
         assertTrue(output.contains("BROKER_RECORD"));
 
-        output = runDumpLogSegments(new String[] {"--cluster-metadata-decoder", "--skip-record-metadata", "--files", logFilePath});
+        output = runDumpLogSegments(new String[]{"--cluster-metadata-decoder", "--skip-record-metadata", "--files", logFilePath});
         assertTrue(output.contains("TOPIC_RECORD"));
         assertTrue(output.contains("BROKER_RECORD"));
 
@@ -657,7 +658,7 @@ public class DumpLogSegmentsTest {
         log.appendAsLeader(MemoryRecords.withRecords(Compression.NONE, new SimpleRecord(null, buf.array())), 2);
         log.appendAsLeader(MemoryRecords.withRecords(Compression.NONE, records.toArray(new SimpleRecord[0])), 2);
 
-        output = runDumpLogSegments(new String[] {"--cluster-metadata-decoder", "--skip-record-metadata", "--files", logFilePath});
+        output = runDumpLogSegments(new String[]{"--cluster-metadata-decoder", "--skip-record-metadata", "--files", logFilePath});
         assertTrue(output.contains("TOPIC_RECORD"));
         assertTrue(output.contains("BROKER_RECORD"));
         assertTrue(output.contains("skipping"));
@@ -668,32 +669,32 @@ public class DumpLogSegmentsTest {
         log = createTestLog();
 
         log.appendAsLeader(MemoryRecords.withEndTransactionMarker(0L, (short) 0,
-            new EndTransactionMarker(ControlRecordType.COMMIT, 100)
+                new EndTransactionMarker(ControlRecordType.COMMIT, 100)
         ), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
 
         log.appendAsLeader(MemoryRecords.withLeaderChangeMessage(0L, 0L, 0, ByteBuffer.allocate(4),
-            new LeaderChangeMessage()
+                new LeaderChangeMessage()
         ), 0, AppendOrigin.COORDINATOR);
 
         log.appendAsLeader(MemoryRecords.withSnapshotHeaderRecord(0L, 0L, 0, ByteBuffer.allocate(4),
-            new SnapshotHeaderRecord()
+                new SnapshotHeaderRecord()
         ), 0, AppendOrigin.COORDINATOR);
 
         log.appendAsLeader(MemoryRecords.withSnapshotFooterRecord(0L, 0L, 0, ByteBuffer.allocate(4),
-            new SnapshotFooterRecord()
-                .setVersion(ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION)
+                new SnapshotFooterRecord()
+                        .setVersion(ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION)
         ), 0, AppendOrigin.COORDINATOR);
 
         log.appendAsLeader(MemoryRecords.withKRaftVersionRecord(0L, 0L, 0, ByteBuffer.allocate(4),
-            new KRaftVersionRecord()
+                new KRaftVersionRecord()
         ), 0, AppendOrigin.COORDINATOR);
 
         log.appendAsLeader(MemoryRecords.withVotersRecord(0L, 0L, 0, ByteBuffer.allocate(4),
-            new VotersRecord()
+                new VotersRecord()
         ), 0, AppendOrigin.COORDINATOR);
         log.flush(false);
 
-        String output = runDumpLogSegments(new String[] {"--cluster-metadata-decoder", "--files", logFilePath});
+        String output = runDumpLogSegments(new String[]{"--cluster-metadata-decoder", "--files", logFilePath});
         assertTrue(output.contains("endTxnMarker"), output);
         assertTrue(output.contains("LeaderChange"), output);
         assertTrue(output.contains("SnapshotHeader"), output);
@@ -705,47 +706,47 @@ public class DumpLogSegmentsTest {
     @Test
     public void testDumpMetadataSnapshot() throws Exception {
         List<ApiMessageAndVersion> metadataRecords = List.of(
-            new ApiMessageAndVersion(
-                new RegisterBrokerRecord().setBrokerId(0).setBrokerEpoch(10), (short) 0),
-            new ApiMessageAndVersion(
-                new RegisterBrokerRecord().setBrokerId(1).setBrokerEpoch(20), (short) 0),
-            new ApiMessageAndVersion(
-                new TopicRecord().setName("test-topic").setTopicId(Uuid.randomUuid()), (short) 0),
-            new ApiMessageAndVersion(
-                new PartitionChangeRecord().setTopicId(Uuid.randomUuid()).setLeader(1)
-                    .setPartitionId(0).setIsr(List.of(0, 1, 2)), (short) 0)
+                new ApiMessageAndVersion(
+                        new RegisterBrokerRecord().setBrokerId(0).setBrokerEpoch(10), (short) 0),
+                new ApiMessageAndVersion(
+                        new RegisterBrokerRecord().setBrokerId(1).setBrokerEpoch(20), (short) 0),
+                new ApiMessageAndVersion(
+                        new TopicRecord().setName("test-topic").setTopicId(Uuid.randomUuid()), (short) 0),
+                new ApiMessageAndVersion(
+                        new PartitionChangeRecord().setTopicId(Uuid.randomUuid()).setLeader(1)
+                                .setPartitionId(0).setIsr(List.of(0, 1, 2)), (short) 0)
         );
 
         KafkaRaftLog metadataLog = KafkaRaftLog.createLog(
-            Topic.CLUSTER_METADATA_TOPIC_PARTITION,
-            Uuid.METADATA_TOPIC_ID,
-            logDir,
-            time,
-            time.scheduler,
-            createMetadataLogConfig(
-                100 * 1024,
-                10 * 1000,
-                100 * 1024,
-                60 * 1000
-            ),
-            1
+                Topic.CLUSTER_METADATA_TOPIC_PARTITION,
+                Uuid.METADATA_TOPIC_ID,
+                logDir,
+                time,
+                time.scheduler,
+                createMetadataLogConfig(
+                        100 * 1024,
+                        10 * 1000,
+                        100 * 1024,
+                        60 * 1000
+                ),
+                1
         );
 
         long lastContainedLogTimestamp = 10000;
 
         try (RecordsSnapshotWriter<ApiMessageAndVersion> snapshotWriter = new RecordsSnapshotWriter.Builder()
-            .setTime(new MockTime())
-            .setLastContainedLogTimestamp(lastContainedLogTimestamp)
-            .setRawSnapshotWriter(metadataLog.createNewSnapshot(new OffsetAndEpoch(0, 0)).get())
-            .setKraftVersion(KRaftVersion.KRAFT_VERSION_1)
-            .setVoterSet(Optional.of(createVoterSet()))
-            .build(MetadataRecordSerde.INSTANCE)
+                .setTime(new MockTime())
+                .setLastContainedLogTimestamp(lastContainedLogTimestamp)
+                .setRawSnapshotWriter(metadataLog.createNewSnapshot(new OffsetAndEpoch(0, 0)).get())
+                .setKraftVersion(KRaftVersion.KRAFT_VERSION_1)
+                .setVoterSet(Optional.of(createVoterSet()))
+                .build(MetadataRecordSerde.INSTANCE)
         ) {
             snapshotWriter.append(metadataRecords);
             snapshotWriter.freeze();
         }
 
-        String output = runDumpLogSegments(new String[] {"--cluster-metadata-decoder", "--files", snapshotPath});
+        String output = runDumpLogSegments(new String[]{"--cluster-metadata-decoder", "--files", snapshotPath});
         assertTrue(output.contains("Snapshot end offset: 0, epoch: 0"), output);
         assertTrue(output.contains("TOPIC_RECORD"), output);
         assertTrue(output.contains("BROKER_RECORD"), output);
@@ -755,7 +756,7 @@ public class DumpLogSegmentsTest {
         assertTrue(output.contains("KRaftVoters"), output);
         assertTrue(output.contains("\"lastContainedLogTimestamp\":" + lastContainedLogTimestamp), output);
 
-        output = runDumpLogSegments(new String[] {"--cluster-metadata-decoder", "--skip-record-metadata", "--files", snapshotPath});
+        output = runDumpLogSegments(new String[]{"--cluster-metadata-decoder", "--skip-record-metadata", "--files", snapshotPath});
         assertTrue(output.contains("Snapshot end offset: 0, epoch: 0"), output);
         assertTrue(output.contains("TOPIC_RECORD"), output);
         assertTrue(output.contains("BROKER_RECORD"), output);
@@ -777,11 +778,11 @@ public class DumpLogSegmentsTest {
         String output = captureStandardOut(() -> {
             try {
                 DumpLogSegments.dumpIndex(
-                    indexFile,
-                    false,
-                    true,
-                    new HashMap<>(),
-                    Integer.MAX_VALUE
+                        indexFile,
+                        false,
+                        true,
+                        new HashMap<>(),
+                        Integer.MAX_VALUE
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -800,14 +801,14 @@ public class DumpLogSegmentsTest {
         int partialBatches = totalBatches / 2;
 
         // Get all the batches
-        String output = runDumpLogSegments(new String[] {"--files", logFilePath});
+        String output = runDumpLogSegments(new String[]{"--files", logFilePath});
         ListIterator<String> lines = Arrays.asList(output.split("\n")).listIterator();
 
         // Get total bytes of the partial batches
         int partialBatchesBytes = readPartialBatchesBytes(lines, partialBatches);
 
         // Request only the partial batches by bytes
-        String partialOutput = runDumpLogSegments(new String[] {"--max-bytes", Integer.toString(partialBatchesBytes), "--files", logFilePath});
+        String partialOutput = runDumpLogSegments(new String[]{"--max-bytes", Integer.toString(partialBatchesBytes), "--files", logFilePath});
         ListIterator<String> partialLines = Arrays.asList(partialOutput.split("\n")).listIterator();
 
         // Count the total of partial batches limited by bytes
@@ -819,11 +820,11 @@ public class DumpLogSegmentsTest {
     private Record serializedRecord(ApiMessage key, ApiMessageAndVersion value) {
         byte[] valueBytes = value == null ? null : MessageUtil.toVersionPrefixedBytes(value.version(), value.message());
         return TestUtils.singletonRecords(
-            valueBytes,
-            MessageUtil.toCoordinatorTypePrefixedBytes(key),
-            Compression.NONE,
-            RecordBatch.NO_TIMESTAMP,
-            RecordBatch.CURRENT_MAGIC_VALUE
+                valueBytes,
+                MessageUtil.toCoordinatorTypePrefixedBytes(key),
+                Compression.NONE,
+                RecordBatch.NO_TIMESTAMP,
+                RecordBatch.CURRENT_MAGIC_VALUE
         ).records().iterator().next();
     }
 
@@ -833,136 +834,136 @@ public class DumpLogSegmentsTest {
 
         // The key is mandatory.
         assertEquals(
-            "Failed to decode message at offset 0 using the specified decoder (message had a missing key)",
-            assertThrows(RuntimeException.class, () ->
-                parser.parse(TestUtils.singletonRecords(null, null, Compression.NONE, RecordBatch.NO_TIMESTAMP,
-                    RecordBatch.CURRENT_MAGIC_VALUE).records().iterator().next())
-            ).getMessage()
+                "Failed to decode message at offset 0 using the specified decoder (message had a missing key)",
+                assertThrows(RuntimeException.class, () ->
+                        parser.parse(TestUtils.singletonRecords(null, null, Compression.NONE, RecordBatch.NO_TIMESTAMP,
+                                RecordBatch.CURRENT_MAGIC_VALUE).records().iterator().next())
+                ).getMessage()
         );
 
         // A valid key and value should work.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new ConsumerGroupMetadataKey().setGroupId("group"),
-                new ApiMessageAndVersion(
-                    new ConsumerGroupMetadataValue().setEpoch(10),
-                    (short) 0
-                )
-            )),
-            Optional.of("{\"type\":\"3\",\"data\":{\"groupId\":\"group\"}}"),
-            Optional.of("{\"version\":\"0\",\"data\":{\"epoch\":10}}")
+                parser.parse(serializedRecord(
+                        new ConsumerGroupMetadataKey().setGroupId("group"),
+                        new ApiMessageAndVersion(
+                                new ConsumerGroupMetadataValue().setEpoch(10),
+                                (short) 0
+                        )
+                )),
+                Optional.of("{\"type\":\"3\",\"data\":{\"groupId\":\"group\"}}"),
+                Optional.of("{\"version\":\"0\",\"data\":{\"epoch\":10}}")
         );
 
         // Consumer embedded protocol is parsed if possible.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new GroupMetadataKey().setGroup("group"),
-                new ApiMessageAndVersion(
-                    new GroupMetadataValue()
-                        .setProtocolType("consumer")
-                        .setProtocol("range")
-                        .setLeader("member")
-                        .setGeneration(10)
-                        .setMembers(Collections.singletonList(
-                            new GroupMetadataValue.MemberMetadata()
-                                .setMemberId("member")
-                                .setClientId("client")
-                                .setClientHost("host")
-                                .setGroupInstanceId("instance")
-                                .setSessionTimeout(100)
-                                .setRebalanceTimeout(1000)
-                                .setSubscription(Utils.toArray(ConsumerProtocol.serializeSubscription(
-                                    new Subscription(
-                                        Collections.singletonList("foo"),
-                                        null,
-                                        Collections.singletonList(new TopicPartition("foo", 0)),
-                                        0,
-                                        Optional.of("rack")))))
-                                .setAssignment(Utils.toArray(ConsumerProtocol.serializeAssignment(
-                                    new Assignment(Collections.singletonList(new TopicPartition("foo", 0))))))
-                        )),
-                    GroupMetadataValue.HIGHEST_SUPPORTED_VERSION
-                )
-            )),
-            Optional.of("{\"type\":\"2\",\"data\":{\"group\":\"group\"}}"),
-            Optional.of("{\"version\":\"4\",\"data\":{\"protocolType\":\"consumer\",\"generation\":10,\"protocol\":\"range\"," +
-                "\"leader\":\"member\",\"currentStateTimestamp\":-1,\"members\":[{\"memberId\":\"member\"," +
-                "\"groupInstanceId\":\"instance\",\"clientId\":\"client\",\"clientHost\":\"host\"," +
-                "\"rebalanceTimeout\":1000,\"sessionTimeout\":100,\"subscription\":{\"topics\":[\"foo\"]," +
-                "\"userData\":null,\"ownedPartitions\":[{\"topic\":\"foo\",\"partitions\":[0]}]," +
-                "\"generationId\":0,\"rackId\":\"rack\"},\"assignment\":{\"assignedPartitions\":" +
-                "[{\"topic\":\"foo\",\"partitions\":[0]}],\"userData\":null}}]}}")
+                parser.parse(serializedRecord(
+                        new GroupMetadataKey().setGroup("group"),
+                        new ApiMessageAndVersion(
+                                new GroupMetadataValue()
+                                        .setProtocolType("consumer")
+                                        .setProtocol("range")
+                                        .setLeader("member")
+                                        .setGeneration(10)
+                                        .setMembers(Collections.singletonList(
+                                                new GroupMetadataValue.MemberMetadata()
+                                                        .setMemberId("member")
+                                                        .setClientId("client")
+                                                        .setClientHost("host")
+                                                        .setGroupInstanceId("instance")
+                                                        .setSessionTimeout(100)
+                                                        .setRebalanceTimeout(1000)
+                                                        .setSubscription(Utils.toArray(ConsumerProtocol.serializeSubscription(
+                                                                new Subscription(
+                                                                        Collections.singletonList("foo"),
+                                                                        null,
+                                                                        Collections.singletonList(new TopicPartition("foo", 0)),
+                                                                        0,
+                                                                        Optional.of("rack")))))
+                                                        .setAssignment(Utils.toArray(ConsumerProtocol.serializeAssignment(
+                                                                new Assignment(Collections.singletonList(new TopicPartition("foo", 0))))))
+                                        )),
+                                GroupMetadataValue.HIGHEST_SUPPORTED_VERSION
+                        )
+                )),
+                Optional.of("{\"type\":\"2\",\"data\":{\"group\":\"group\"}}"),
+                Optional.of("{\"version\":\"4\",\"data\":{\"protocolType\":\"consumer\",\"generation\":10,\"protocol\":\"range\"," +
+                        "\"leader\":\"member\",\"currentStateTimestamp\":-1,\"members\":[{\"memberId\":\"member\"," +
+                        "\"groupInstanceId\":\"instance\",\"clientId\":\"client\",\"clientHost\":\"host\"," +
+                        "\"rebalanceTimeout\":1000,\"sessionTimeout\":100,\"subscription\":{\"topics\":[\"foo\"]," +
+                        "\"userData\":null,\"ownedPartitions\":[{\"topic\":\"foo\",\"partitions\":[0]}]," +
+                        "\"generationId\":0,\"rackId\":\"rack\"},\"assignment\":{\"assignedPartitions\":" +
+                        "[{\"topic\":\"foo\",\"partitions\":[0]}],\"userData\":null}}]}}")
         );
 
         // Consumer embedded protocol is not parsed if malformed.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new GroupMetadataKey().setGroup("group"),
-                new ApiMessageAndVersion(
-                    new GroupMetadataValue()
-                        .setProtocolType("consumer")
-                        .setProtocol("range")
-                        .setLeader("member")
-                        .setGeneration(10)
-                        .setMembers(Collections.singletonList(
-                            new GroupMetadataValue.MemberMetadata()
-                                .setMemberId("member")
-                                .setClientId("client")
-                                .setClientHost("host")
-                                .setGroupInstanceId("instance")
-                                .setSessionTimeout(100)
-                                .setRebalanceTimeout(1000)
-                                .setSubscription("Subscription".getBytes())
-                                .setAssignment("Assignment".getBytes())
-                        )),
-                    GroupMetadataValue.HIGHEST_SUPPORTED_VERSION
-                )
-            )),
-            Optional.of("{\"type\":\"2\",\"data\":{\"group\":\"group\"}}"),
-            Optional.of("{\"version\":\"4\",\"data\":{\"protocolType\":\"consumer\",\"generation\":10,\"protocol\":\"range\"," +
-                "\"leader\":\"member\",\"currentStateTimestamp\":-1,\"members\":[{\"memberId\":\"member\"," +
-                "\"groupInstanceId\":\"instance\",\"clientId\":\"client\",\"clientHost\":\"host\"," +
-                "\"rebalanceTimeout\":1000,\"sessionTimeout\":100,\"subscription\":\"U3Vic2NyaXB0aW9u\"," +
-                "\"assignment\":\"QXNzaWdubWVudA==\"}]}}")
+                parser.parse(serializedRecord(
+                        new GroupMetadataKey().setGroup("group"),
+                        new ApiMessageAndVersion(
+                                new GroupMetadataValue()
+                                        .setProtocolType("consumer")
+                                        .setProtocol("range")
+                                        .setLeader("member")
+                                        .setGeneration(10)
+                                        .setMembers(Collections.singletonList(
+                                                new GroupMetadataValue.MemberMetadata()
+                                                        .setMemberId("member")
+                                                        .setClientId("client")
+                                                        .setClientHost("host")
+                                                        .setGroupInstanceId("instance")
+                                                        .setSessionTimeout(100)
+                                                        .setRebalanceTimeout(1000)
+                                                        .setSubscription("Subscription".getBytes())
+                                                        .setAssignment("Assignment".getBytes())
+                                        )),
+                                GroupMetadataValue.HIGHEST_SUPPORTED_VERSION
+                        )
+                )),
+                Optional.of("{\"type\":\"2\",\"data\":{\"group\":\"group\"}}"),
+                Optional.of("{\"version\":\"4\",\"data\":{\"protocolType\":\"consumer\",\"generation\":10,\"protocol\":\"range\"," +
+                        "\"leader\":\"member\",\"currentStateTimestamp\":-1,\"members\":[{\"memberId\":\"member\"," +
+                        "\"groupInstanceId\":\"instance\",\"clientId\":\"client\",\"clientHost\":\"host\"," +
+                        "\"rebalanceTimeout\":1000,\"sessionTimeout\":100,\"subscription\":\"U3Vic2NyaXB0aW9u\"," +
+                        "\"assignment\":\"QXNzaWdubWVudA==\"}]}}")
         );
 
         // A valid key with a tombstone should work.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new ConsumerGroupMetadataKey().setGroupId("group"),
-                null
-            )),
-            Optional.of("{\"type\":\"3\",\"data\":{\"groupId\":\"group\"}}"),
-            Optional.of("<DELETE>")
+                parser.parse(serializedRecord(
+                        new ConsumerGroupMetadataKey().setGroupId("group"),
+                        null
+                )),
+                Optional.of("{\"type\":\"3\",\"data\":{\"groupId\":\"group\"}}"),
+                Optional.of("<DELETE>")
         );
 
         // An unknown record type should be handled and reported as such.
         assertParseResult(
-            parser.parse(
-                TestUtils.singletonRecords(
-                    new byte[0],
-                    ByteBuffer.allocate(2).putShort(Short.MAX_VALUE).array(),
-                    Compression.NONE,
-                    RecordBatch.NO_TIMESTAMP,
-                    RecordBatch.CURRENT_MAGIC_VALUE
-                ).records().iterator().next()
-            ),
-            Optional.of("Unknown record type 32767 at offset 0, skipping."),
-            Optional.empty()
+                parser.parse(
+                        TestUtils.singletonRecords(
+                                new byte[0],
+                                ByteBuffer.allocate(2).putShort(Short.MAX_VALUE).array(),
+                                Compression.NONE,
+                                RecordBatch.NO_TIMESTAMP,
+                                RecordBatch.CURRENT_MAGIC_VALUE
+                        ).records().iterator().next()
+                ),
+                Optional.of("Unknown record type 32767 at offset 0, skipping."),
+                Optional.empty()
         );
 
         // Any parsing error is swallowed and reported.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new ConsumerGroupMetadataKey().setGroupId("group"),
-                new ApiMessageAndVersion(
-                    new ConsumerGroupMemberMetadataValue(),
-                    (short) 0
-                )
-            )),
-            Optional.of("Error at offset 0, skipping. Could not read record with version 0 from value's buffer due to: " +
-                "Error reading byte array of 536870911 byte(s): only 1 byte(s) available."),
-            Optional.empty()
+                parser.parse(serializedRecord(
+                        new ConsumerGroupMetadataKey().setGroupId("group"),
+                        new ApiMessageAndVersion(
+                                new ConsumerGroupMemberMetadataValue(),
+                                (short) 0
+                        )
+                )),
+                Optional.of("Error at offset 0, skipping. Could not read record with version 0 from value's buffer due to: " +
+                        "Error reading byte array of 536870911 byte(s): only 1 byte(s) available."),
+                Optional.empty()
         );
     }
 
@@ -972,85 +973,85 @@ public class DumpLogSegmentsTest {
 
         // The key is mandatory.
         assertEquals(
-            "Failed to decode message at offset 0 using the specified decoder (message had a missing key)",
-            assertThrows(RuntimeException.class, () ->
-                parser.parse(TestUtils.singletonRecords(null, null, Compression.NONE, RecordBatch.NO_TIMESTAMP,
-                    RecordBatch.CURRENT_MAGIC_VALUE).records().iterator().next())
-            ).getMessage()
+                "Failed to decode message at offset 0 using the specified decoder (message had a missing key)",
+                assertThrows(RuntimeException.class, () ->
+                        parser.parse(TestUtils.singletonRecords(null, null, Compression.NONE, RecordBatch.NO_TIMESTAMP,
+                                RecordBatch.CURRENT_MAGIC_VALUE).records().iterator().next())
+                ).getMessage()
         );
 
         // A valid key and value should work.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new TransactionLogKey().setTransactionalId("txnId"),
-                new ApiMessageAndVersion(
-                    new TransactionLogValue().setProducerId(123L),
-                    (short) 0
-                )
-            )),
-            Optional.of("{\"type\":\"0\",\"data\":{\"transactionalId\":\"txnId\"}}"),
-            Optional.of("{\"version\":\"0\",\"data\":{\"producerId\":123,\"producerEpoch\":0,\"transactionTimeoutMs\":0," +
-                "\"transactionStatus\":0,\"transactionPartitions\":[],\"transactionLastUpdateTimestampMs\":0," +
-                "\"transactionStartTimestampMs\":0}}")
+                parser.parse(serializedRecord(
+                        new TransactionLogKey().setTransactionalId("txnId"),
+                        new ApiMessageAndVersion(
+                                new TransactionLogValue().setProducerId(123L),
+                                (short) 0
+                        )
+                )),
+                Optional.of("{\"type\":\"0\",\"data\":{\"transactionalId\":\"txnId\"}}"),
+                Optional.of("{\"version\":\"0\",\"data\":{\"producerId\":123,\"producerEpoch\":0,\"transactionTimeoutMs\":0," +
+                        "\"transactionStatus\":0,\"transactionPartitions\":[],\"transactionLastUpdateTimestampMs\":0," +
+                        "\"transactionStartTimestampMs\":0}}")
         );
 
         // A valid key with a tombstone should work.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new TransactionLogKey().setTransactionalId("txnId"),
-                null
-            )),
-            Optional.of("{\"type\":\"0\",\"data\":{\"transactionalId\":\"txnId\"}}"),
-            Optional.of("<DELETE>")
+                parser.parse(serializedRecord(
+                        new TransactionLogKey().setTransactionalId("txnId"),
+                        null
+                )),
+                Optional.of("{\"type\":\"0\",\"data\":{\"transactionalId\":\"txnId\"}}"),
+                Optional.of("<DELETE>")
         );
 
         // An unknown record type should be handled and reported as such.
         assertParseResult(
-            parser.parse(
-                TestUtils.singletonRecords(
-                    new byte[0],
-                    ByteBuffer.allocate(2).putShort(Short.MAX_VALUE).array(),
-                    Compression.NONE,
-                    RecordBatch.NO_TIMESTAMP,
-                    RecordBatch.CURRENT_MAGIC_VALUE
-                ).records().iterator().next()
-            ),
-            Optional.of("Unknown record type 32767 at offset 0, skipping."),
-            Optional.empty()
+                parser.parse(
+                        TestUtils.singletonRecords(
+                                new byte[0],
+                                ByteBuffer.allocate(2).putShort(Short.MAX_VALUE).array(),
+                                Compression.NONE,
+                                RecordBatch.NO_TIMESTAMP,
+                                RecordBatch.CURRENT_MAGIC_VALUE
+                        ).records().iterator().next()
+                ),
+                Optional.of("Unknown record type 32767 at offset 0, skipping."),
+                Optional.empty()
         );
 
         // A valid key and value with all fields set should work.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new TransactionLogKey().setTransactionalId("txnId"),
-                new ApiMessageAndVersion(
-                    new TransactionLogValue()
-                        .setClientTransactionVersion((short) 0)
-                        .setNextProducerId(10L)
-                        .setPreviousProducerId(11L)
-                        .setProducerEpoch((short) 2)
-                        .setProducerId(12L)
-                        .setTransactionLastUpdateTimestampMs(123L)
-                        .setTransactionPartitions(List.of(
-                            new TransactionLogValue.PartitionsSchema()
-                                .setTopic("topic1")
-                                .setPartitionIds(List.of(0, 1, 2)),
-                            new TransactionLogValue.PartitionsSchema()
-                                .setTopic("topic2")
-                                .setPartitionIds(List.of(3, 4, 5))
-                        ))
-                        .setTransactionStartTimestampMs(13L)
-                        .setTransactionStatus((byte) 0)
-                        .setTransactionTimeoutMs(14),
-                    (short) 1
-                )
-            )),
-            Optional.of("{\"type\":\"0\",\"data\":{\"transactionalId\":\"txnId\"}}"),
-            Optional.of("{\"version\":\"1\",\"data\":{\"producerId\":12,\"previousProducerId\":11,\"nextProducerId\":10," +
-                "\"producerEpoch\":2,\"transactionTimeoutMs\":14,\"transactionStatus\":0," +
-                "\"transactionPartitions\":[{\"topic\":\"topic1\",\"partitionIds\":[0,1,2]}," +
-                "{\"topic\":\"topic2\",\"partitionIds\":[3,4,5]}],\"transactionLastUpdateTimestampMs\":123," +
-                "\"transactionStartTimestampMs\":13}}")
+                parser.parse(serializedRecord(
+                        new TransactionLogKey().setTransactionalId("txnId"),
+                        new ApiMessageAndVersion(
+                                new TransactionLogValue()
+                                        .setClientTransactionVersion((short) 0)
+                                        .setNextProducerId(10L)
+                                        .setPreviousProducerId(11L)
+                                        .setProducerEpoch((short) 2)
+                                        .setProducerId(12L)
+                                        .setTransactionLastUpdateTimestampMs(123L)
+                                        .setTransactionPartitions(List.of(
+                                                new TransactionLogValue.PartitionsSchema()
+                                                        .setTopic("topic1")
+                                                        .setPartitionIds(List.of(0, 1, 2)),
+                                                new TransactionLogValue.PartitionsSchema()
+                                                        .setTopic("topic2")
+                                                        .setPartitionIds(List.of(3, 4, 5))
+                                        ))
+                                        .setTransactionStartTimestampMs(13L)
+                                        .setTransactionStatus((byte) 0)
+                                        .setTransactionTimeoutMs(14),
+                                (short) 1
+                        )
+                )),
+                Optional.of("{\"type\":\"0\",\"data\":{\"transactionalId\":\"txnId\"}}"),
+                Optional.of("{\"version\":\"1\",\"data\":{\"producerId\":12,\"previousProducerId\":11,\"nextProducerId\":10," +
+                        "\"producerEpoch\":2,\"transactionTimeoutMs\":14,\"transactionStatus\":0," +
+                        "\"transactionPartitions\":[{\"topic\":\"topic1\",\"partitionIds\":[0,1,2]}," +
+                        "{\"topic\":\"topic2\",\"partitionIds\":[3,4,5]}],\"transactionLastUpdateTimestampMs\":123," +
+                        "\"transactionStartTimestampMs\":13}}")
         );
     }
 
@@ -1116,9 +1117,9 @@ public class DumpLogSegmentsTest {
     private Map<String, String> parseMetadataFields(String line) {
         Map<String, String> fields = new HashMap<>();
         Iterator<String> tokens = Arrays.stream(line.split("\\s+"))
-            .map(String::trim)
-            .filter(token -> !token.isEmpty())
-            .iterator();
+                .map(String::trim)
+                .filter(token -> !token.isEmpty())
+                .iterator();
 
         while (tokens.hasNext()) {
             String token = tokens.next();
@@ -1141,7 +1142,7 @@ public class DumpLogSegmentsTest {
     private void assertDumpLogRecordMetadata(UnifiedLog log) throws Exception {
         FetchDataInfo logReadInfo = log.read(0, Integer.MAX_VALUE, FetchIsolation.LOG_END, true);
 
-        String output = runDumpLogSegments(new String[] {"--deep-iteration", "--files", logFilePath});
+        String output = runDumpLogSegments(new String[]{"--deep-iteration", "--files", logFilePath});
         ListIterator<String> lines = Arrays.asList(output.split("\n")).listIterator();
 
         for (RecordBatch batch : logReadInfo.records.batches()) {
@@ -1194,119 +1195,119 @@ public class DumpLogSegmentsTest {
 
         // The key is mandatory.
         assertEquals(
-            "Failed to decode message at offset 0 using the specified decoder (message had a missing key)",
-            assertThrows(RuntimeException.class, () ->
-                parser.parse(TestUtils.singletonRecords(null, null, Compression.NONE, RecordBatch.NO_TIMESTAMP,
-                    RecordBatch.CURRENT_MAGIC_VALUE).records().iterator().next())
-            ).getMessage()
+                "Failed to decode message at offset 0 using the specified decoder (message had a missing key)",
+                assertThrows(RuntimeException.class, () ->
+                        parser.parse(TestUtils.singletonRecords(null, null, Compression.NONE, RecordBatch.NO_TIMESTAMP,
+                                RecordBatch.CURRENT_MAGIC_VALUE).records().iterator().next())
+                ).getMessage()
         );
 
         // A valid key and value should work (ShareSnapshot).
         assertParseResult(
-            parser.parse(serializedRecord(
-                new ShareSnapshotKey()
-                    .setGroupId("gs1")
-                    .setTopicId(Uuid.fromString("Uj5wn_FqTXirEASvVZRY1w"))
-                    .setPartition(0),
-                new ApiMessageAndVersion(new ShareSnapshotValue()
-                    .setSnapshotEpoch(0)
-                    .setStateEpoch(0)
-                    .setLeaderEpoch(0)
-                    .setStartOffset(0)
-                    .setCreateTimestamp(timestamp)
-                    .setWriteTimestamp(timestamp)
-                    .setStateBatches(List.of(
-                        new ShareSnapshotValue.StateBatch()
-                            .setFirstOffset(0)
-                            .setLastOffset(4)
-                            .setDeliveryState((byte) 2)
-                            .setDeliveryCount((short) 1)
-                    )),
-                    (short) 0)
-            )),
-            Optional.of("{\"type\":\"0\",\"data\":{\"groupId\":\"gs1\",\"topicId\":\"Uj5wn_FqTXirEASvVZRY1w\",\"partition\":0}}"),
-            Optional.of(String.format("{\"version\":\"0\",\"data\":{\"snapshotEpoch\":0,\"stateEpoch\":0,\"leaderEpoch\":0," +
-                "\"startOffset\":0,\"createTimestamp\":%d,\"writeTimestamp\":%d,\"stateBatches\":[{" +
-                "\"firstOffset\":0,\"lastOffset\":4,\"deliveryState\":2,\"deliveryCount\":1}]}}",
-                timestamp, timestamp))
+                parser.parse(serializedRecord(
+                        new ShareSnapshotKey()
+                                .setGroupId("gs1")
+                                .setTopicId(Uuid.fromString("Uj5wn_FqTXirEASvVZRY1w"))
+                                .setPartition(0),
+                        new ApiMessageAndVersion(new ShareSnapshotValue()
+                                .setSnapshotEpoch(0)
+                                .setStateEpoch(0)
+                                .setLeaderEpoch(0)
+                                .setStartOffset(0)
+                                .setCreateTimestamp(timestamp)
+                                .setWriteTimestamp(timestamp)
+                                .setStateBatches(List.of(
+                                        new ShareSnapshotValue.StateBatch()
+                                                .setFirstOffset(0)
+                                                .setLastOffset(4)
+                                                .setDeliveryState((byte) 2)
+                                                .setDeliveryCount((short) 1)
+                                )),
+                                (short) 0)
+                )),
+                Optional.of("{\"type\":\"0\",\"data\":{\"groupId\":\"gs1\",\"topicId\":\"Uj5wn_FqTXirEASvVZRY1w\",\"partition\":0}}"),
+                Optional.of(String.format("{\"version\":\"0\",\"data\":{\"snapshotEpoch\":0,\"stateEpoch\":0,\"leaderEpoch\":0," +
+                                "\"startOffset\":0,\"createTimestamp\":%d,\"writeTimestamp\":%d,\"stateBatches\":[{" +
+                                "\"firstOffset\":0,\"lastOffset\":4,\"deliveryState\":2,\"deliveryCount\":1}]}}",
+                        timestamp, timestamp))
         );
 
         // A valid key and value should work (ShareUpdate).
         assertParseResult(
-            parser.parse(serializedRecord(
-                new ShareUpdateKey()
-                    .setGroupId("gs1")
-                    .setTopicId(Uuid.fromString("Uj5wn_FqTXirEASvVZRY1w"))
-                    .setPartition(0),
-                new ApiMessageAndVersion(new ShareUpdateValue()
-                    .setSnapshotEpoch(0)
-                    .setLeaderEpoch(0)
-                    .setStartOffset(0)
-                    .setStateBatches(List.of(
-                        new ShareUpdateValue.StateBatch()
-                            .setFirstOffset(0)
-                            .setLastOffset(4)
-                            .setDeliveryState((byte) 2)
-                            .setDeliveryCount((short) 1)
-                    )),
-                    (short) 0)
-            )),
-            Optional.of("{\"type\":\"1\",\"data\":{\"groupId\":\"gs1\",\"topicId\":\"Uj5wn_FqTXirEASvVZRY1w\",\"partition\":0}}"),
-            Optional.of("{\"version\":\"0\",\"data\":{\"snapshotEpoch\":0,\"leaderEpoch\":0,\"startOffset\":0," +
-                "\"stateBatches\":[{\"firstOffset\":0,\"lastOffset\":4,\"deliveryState\":2,\"deliveryCount\":1}]}}")
+                parser.parse(serializedRecord(
+                        new ShareUpdateKey()
+                                .setGroupId("gs1")
+                                .setTopicId(Uuid.fromString("Uj5wn_FqTXirEASvVZRY1w"))
+                                .setPartition(0),
+                        new ApiMessageAndVersion(new ShareUpdateValue()
+                                .setSnapshotEpoch(0)
+                                .setLeaderEpoch(0)
+                                .setStartOffset(0)
+                                .setStateBatches(List.of(
+                                        new ShareUpdateValue.StateBatch()
+                                                .setFirstOffset(0)
+                                                .setLastOffset(4)
+                                                .setDeliveryState((byte) 2)
+                                                .setDeliveryCount((short) 1)
+                                )),
+                                (short) 0)
+                )),
+                Optional.of("{\"type\":\"1\",\"data\":{\"groupId\":\"gs1\",\"topicId\":\"Uj5wn_FqTXirEASvVZRY1w\",\"partition\":0}}"),
+                Optional.of("{\"version\":\"0\",\"data\":{\"snapshotEpoch\":0,\"leaderEpoch\":0,\"startOffset\":0," +
+                        "\"stateBatches\":[{\"firstOffset\":0,\"lastOffset\":4,\"deliveryState\":2,\"deliveryCount\":1}]}}")
         );
 
         // A valid key with a tombstone should work.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new ShareSnapshotKey()
-                    .setGroupId("gs1")
-                    .setTopicId(Uuid.fromString("Uj5wn_FqTXirEASvVZRY1w"))
-                    .setPartition(0),
-                null
-            )),
-            Optional.of("{\"type\":\"0\",\"data\":{\"groupId\":\"gs1\",\"topicId\":\"Uj5wn_FqTXirEASvVZRY1w\",\"partition\":0}}"),
-            Optional.of("<DELETE>")
+                parser.parse(serializedRecord(
+                        new ShareSnapshotKey()
+                                .setGroupId("gs1")
+                                .setTopicId(Uuid.fromString("Uj5wn_FqTXirEASvVZRY1w"))
+                                .setPartition(0),
+                        null
+                )),
+                Optional.of("{\"type\":\"0\",\"data\":{\"groupId\":\"gs1\",\"topicId\":\"Uj5wn_FqTXirEASvVZRY1w\",\"partition\":0}}"),
+                Optional.of("<DELETE>")
         );
 
         // An unknown record type should be handled and reported as such.
         assertParseResult(
-            parser.parse(
-                TestUtils.singletonRecords(
-                    new byte[0],
-                    ByteBuffer.allocate(2).putShort(Short.MAX_VALUE).array(),
-                    Compression.NONE,
-                    RecordBatch.NO_TIMESTAMP,
-                    RecordBatch.CURRENT_MAGIC_VALUE
-                ).records().iterator().next()
-            ),
-            Optional.of("Unknown record type 32767 at offset 0, skipping."),
-            Optional.empty()
+                parser.parse(
+                        TestUtils.singletonRecords(
+                                new byte[0],
+                                ByteBuffer.allocate(2).putShort(Short.MAX_VALUE).array(),
+                                Compression.NONE,
+                                RecordBatch.NO_TIMESTAMP,
+                                RecordBatch.CURRENT_MAGIC_VALUE
+                        ).records().iterator().next()
+                ),
+                Optional.of("Unknown record type 32767 at offset 0, skipping."),
+                Optional.empty()
         );
 
         // Any parsing error is swallowed and reported.
         assertParseResult(
-            parser.parse(serializedRecord(
-                new ShareUpdateKey()
-                    .setGroupId("group")
-                    .setTopicId(Uuid.fromString("Uj5wn_FqTXirEASvVZRY1w"))
-                    .setPartition(0),
-                new ApiMessageAndVersion(
-                    new ShareSnapshotValue(),
-                    (short) 0
-                )
-            )),
-            Optional.of("Error at offset 0, skipping. Could not read record with version 0 from value's buffer due to: " +
-                "non-nullable field stateBatches was serialized as null."),
-            Optional.empty()
+                parser.parse(serializedRecord(
+                        new ShareUpdateKey()
+                                .setGroupId("group")
+                                .setTopicId(Uuid.fromString("Uj5wn_FqTXirEASvVZRY1w"))
+                                .setPartition(0),
+                        new ApiMessageAndVersion(
+                                new ShareSnapshotValue(),
+                                (short) 0
+                        )
+                )),
+                Optional.of("Error at offset 0, skipping. Could not read record with version 0 from value's buffer due to: " +
+                        "non-nullable field stateBatches was serialized as null."),
+                Optional.empty()
         );
     }
 
     private MetadataLogConfig createMetadataLogConfig(
-        int internalLogSegmentBytes,
-        long logSegmentMillis,
-        long retentionMaxBytes,
-        long retentionMillis
+            int internalLogSegmentBytes,
+            long logSegmentMillis,
+            long retentionMaxBytes,
+            long retentionMillis
     ) {
         Map<String, Object> config = new HashMap<>();
         config.put(MetadataLogConfig.INTERNAL_METADATA_LOG_SEGMENT_BYTES_CONFIG, internalLogSegmentBytes);
@@ -1336,11 +1337,11 @@ public class DumpLogSegmentsTest {
             // only increment the offset if it's not a batch
             if (isBatch(batches, index)) {
                 assertTrue(line.startsWith("baseOffset: " + offset + " lastOffset: "),
-                    "Not a valid batch-level message record: " + line);
+                        "Not a valid batch-level message record: " + line);
                 batch = batchIterator.next();
             } else {
                 assertTrue(line.startsWith(DumpLogSegments.RECORD_INDENT + " offset: " + offset),
-                    "Not a valid message record: " + line);
+                        "Not a valid message record: " + line);
                 if (checkKeysAndValues) {
                     StringBuilder suffix = new StringBuilder("headerKeys: []");
                     if (batch.hasKeys) {
@@ -1417,9 +1418,9 @@ public class DumpLogSegmentsTest {
     }
 
     private void assertParseResult(
-        DumpLogSegments.ParseResult<String, String> result,
-        Optional<String> expectedKey,
-        Optional<String> expectedValue
+            DumpLogSegments.ParseResult<String, String> result,
+            Optional<String> expectedKey,
+            Optional<String> expectedValue
     ) {
         assertEquals(expectedKey, result.key());
         assertEquals(expectedValue, result.value());
@@ -1427,9 +1428,9 @@ public class DumpLogSegmentsTest {
 
     private VoterSet createVoterSet() {
         Map<Integer, InetSocketAddress> voters = Map.of(
-            1, InetSocketAddress.createUnresolved("localhost", 9991),
-            2, InetSocketAddress.createUnresolved("localhost", 9992),
-            3, InetSocketAddress.createUnresolved("localhost", 9993)
+                1, InetSocketAddress.createUnresolved("localhost", 9991),
+                2, InetSocketAddress.createUnresolved("localhost", 9992),
+                3, InetSocketAddress.createUnresolved("localhost", 9993)
         );
         return VoterSet.fromInetSocketAddresses(ListenerName.normalised("LISTENER"), voters);
     }
@@ -1441,9 +1442,9 @@ public class DumpLogSegmentsTest {
         File legacyLogFile = new File(logDir, "00000000000000001000.log");
 
         MemoryRecords legacyRecords = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V1, 0L,
-            Compression.NONE, TimestampType.CREATE_TIME,
-            new SimpleRecord(time.milliseconds(), "key1".getBytes(), "value1".getBytes()),
-            new SimpleRecord(time.milliseconds(), "key2".getBytes(), "value2".getBytes())
+                Compression.NONE, TimestampType.CREATE_TIME,
+                new SimpleRecord(time.milliseconds(), "key1".getBytes(), "value1".getBytes()),
+                new SimpleRecord(time.milliseconds(), "key2".getBytes(), "value2".getBytes())
         );
 
         // Write the legacy records directly to a file (create it first)
@@ -1453,7 +1454,7 @@ public class DumpLogSegmentsTest {
         }
 
         // Dump the legacy log file
-        String output = runDumpLogSegments(new String[] {"--deep-iteration", "--files", legacyLogFile.getAbsolutePath()});
+        String output = runDumpLogSegments(new String[]{"--deep-iteration", "--files", legacyLogFile.getAbsolutePath()});
 
         // Verify the output contains legacy batch fields
         assertTrue(output.contains("Log starting offset:"), "Output should contain log starting offset");
@@ -1461,9 +1462,9 @@ public class DumpLogSegmentsTest {
         // For legacy batches, the wrapper record is an AbstractLegacyRecordBatch
         // and should output "isValid:" and "crc:" fields
         assertTrue(output.contains("isValid:"),
-            "Output should contain 'isValid:' field for legacy batches. Output:\n" + output);
+                "Output should contain 'isValid:' field for legacy batches. Output:\n" + output);
         assertTrue(output.contains("crc:"),
-            "Output should contain 'crc:' field for legacy batches. Output:\n" + output);
+                "Output should contain 'crc:' field for legacy batches. Output:\n" + output);
 
         // Critical: Verify no unmatched closing braces in the output
         // Count all braces in the entire output
@@ -1471,8 +1472,8 @@ public class DumpLogSegmentsTest {
         long closeBraces = output.chars().filter(ch -> ch == '}').count();
 
         assertEquals(openBraces, closeBraces,
-            "Output should have balanced braces (no unmatched closing brace). " +
-            "Found " + openBraces + " '{' and " + closeBraces + " '}'");
+                "Output should have balanced braces (no unmatched closing brace). " +
+                        "Found " + openBraces + " '{' and " + closeBraces + " '}'");
     }
 
     @Test
@@ -1514,8 +1515,8 @@ public class DumpLogSegmentsTest {
     public void testDumpProducerIdSnapshotWithBatchMetadata() throws Exception {
         log = createTestLog();
         log.appendAsLeader(MemoryRecords.withIdempotentRecords(Compression.NONE, 42L, (short) 1, 0,
-            new SimpleRecord("a".getBytes()),
-            new SimpleRecord("b".getBytes())
+                new SimpleRecord("a".getBytes()),
+                new SimpleRecord("b".getBytes())
         ), 0);
         log.roll();
 
@@ -1573,7 +1574,7 @@ public class DumpLogSegmentsTest {
     public void testPrintTrailingBytes() throws Exception {
         log = createTestLog();
         log.appendAsLeader(MemoryRecords.withRecords(Compression.NONE, 0,
-            new SimpleRecord("a".getBytes())), 0);
+                new SimpleRecord("a".getBytes())), 0);
         log.flush(false);
         Utils.closeQuietly(log, "UnifiedLog");
         log = null;
@@ -1590,10 +1591,10 @@ public class DumpLogSegmentsTest {
     @Test
     public void testInvalidDecoderClass() {
         RuntimeException thrown = assertThrows(RuntimeException.class,
-            () -> runDumpLogSegments(new String[]{
-                "--value-decoder-class", "org.apache.kafka.tools.api.NonExistentDecoder",
-                "--files", logFilePath
-            }));
+                () -> runDumpLogSegments(new String[]{
+                        "--value-decoder-class", "org.apache.kafka.tools.api.NonExistentDecoder",
+                        "--files", logFilePath
+                }));
         assertTrue(thrown.getMessage().contains("Failed to load decoder class"), thrown.getMessage());
     }
 
@@ -1603,7 +1604,7 @@ public class DumpLogSegmentsTest {
         Files.write(unknownFile.toPath(), new byte[0]);
 
         String errOutput = captureStandardErr(
-            () -> runDumpLogSegments(new String[]{"--files", unknownFile.getAbsolutePath()}));
+                () -> runDumpLogSegments(new String[]{"--files", unknownFile.getAbsolutePath()}));
         assertTrue(errOutput.contains("Ignoring unknown file"), errOutput);
     }
 
@@ -1613,7 +1614,7 @@ public class DumpLogSegmentsTest {
         Files.write(noDotFile.toPath(), new byte[0]);
 
         String errOutput = captureStandardErr(
-            () -> runDumpLogSegments(new String[]{"--files", noDotFile.getAbsolutePath()}));
+                () -> runDumpLogSegments(new String[]{"--files", noDotFile.getAbsolutePath()}));
         assertTrue(errOutput.contains("Ignoring unknown file"), errOutput);
     }
 }

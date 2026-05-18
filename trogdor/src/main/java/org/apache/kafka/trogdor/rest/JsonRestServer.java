@@ -67,12 +67,12 @@ public class JsonRestServer {
     /**
      * Create a REST server for this herder using the specified configs.
      *
-     * @param port              The port number to use for the REST server, or
-     *                          0 to use a random port.
+     * @param port The port number to use for the REST server, or
+     *             0 to use a random port.
      */
     public JsonRestServer(int port) {
         this.shutdownExecutor = Executors.newSingleThreadScheduledExecutor(
-            ThreadUtils.createThreadFactory("JsonRestServerCleanupExecutor", false));
+                ThreadUtils.createThreadFactory("JsonRestServerCleanupExecutor", false));
         this.jettyServer = new Server();
         this.connector = new ServerConnector(jettyServer);
         if (port > 0) {
@@ -84,7 +84,7 @@ public class JsonRestServer {
     /**
      * Start the JsonRestServer.
      *
-     * @param resources         The path handling resources to register.
+     * @param resources The path handling resources to register.
      */
     public void start(Object... resources) {
         log.info("Starting REST server");
@@ -165,20 +165,20 @@ public class JsonRestServer {
     /**
      * Make an HTTP request.
      *
-     * @param logger            The logger to use.
-     * @param url               HTTP connection will be established with this url.
-     * @param method            HTTP method ("GET", "POST", "PUT", etc.)
-     * @param requestBodyData   Object to serialize as JSON and send in the request body.
-     * @param responseFormat    Expected format of the response to the HTTP request.
-     * @param <T>               The type of the deserialized response to the HTTP request.
+     * @param logger          The logger to use.
+     * @param url             HTTP connection will be established with this url.
+     * @param method          HTTP method ("GET", "POST", "PUT", etc.)
+     * @param requestBodyData Object to serialize as JSON and send in the request body.
+     * @param responseFormat  Expected format of the response to the HTTP request.
+     * @param <T>             The type of the deserialized response to the HTTP request.
      * @return The deserialized response to the HTTP request, or null if no data is expected.
      */
     public static <T> HttpResponse<T> httpRequest(Logger logger, String url, String method,
-            Object requestBodyData, TypeReference<T> responseFormat) throws IOException {
+                                                  Object requestBodyData, TypeReference<T> responseFormat) throws IOException {
         HttpURLConnection connection = null;
         try {
             String serializedBody = requestBodyData == null ? null :
-                JsonUtil.JSON_SERDE.writeValueAsString(requestBodyData);
+                    JsonUtil.JSON_SERDE.writeValueAsString(requestBodyData);
             logger.debug("Sending {} with input {} to {}", method, serializedBody, url);
             connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setRequestMethod(method);
@@ -232,11 +232,11 @@ public class JsonRestServer {
     /**
      * Make an HTTP request with retries.
      *
-     * @param url               HTTP connection will be established with this url.
-     * @param method            HTTP method ("GET", "POST", "PUT", etc.)
-     * @param requestBodyData   Object to serialize as JSON and send in the request body.
-     * @param responseFormat    Expected format of the response to the HTTP request.
-     * @param <T>               The type of the deserialized response to the HTTP request.
+     * @param url             HTTP connection will be established with this url.
+     * @param method          HTTP method ("GET", "POST", "PUT", etc.)
+     * @param requestBodyData Object to serialize as JSON and send in the request body.
+     * @param responseFormat  Expected format of the response to the HTTP request.
+     * @param <T>             The type of the deserialized response to the HTTP request.
      * @return The deserialized response to the HTTP request, or null if no data is expected.
      */
     public static <T> HttpResponse<T> httpRequest(String url, String method, Object requestBodyData,
@@ -248,16 +248,16 @@ public class JsonRestServer {
     /**
      * Make an HTTP request with retries.
      *
-     * @param logger            The logger to use.
-     * @param url               HTTP connection will be established with this url.
-     * @param method            HTTP method ("GET", "POST", "PUT", etc.)
-     * @param requestBodyData   Object to serialize as JSON and send in the request body.
-     * @param responseFormat    Expected format of the response to the HTTP request.
-     * @param <T>               The type of the deserialized response to the HTTP request.
+     * @param logger          The logger to use.
+     * @param url             HTTP connection will be established with this url.
+     * @param method          HTTP method ("GET", "POST", "PUT", etc.)
+     * @param requestBodyData Object to serialize as JSON and send in the request body.
+     * @param responseFormat  Expected format of the response to the HTTP request.
+     * @param <T>             The type of the deserialized response to the HTTP request.
      * @return The deserialized response to the HTTP request, or null if no data is expected.
      */
     public static <T> HttpResponse<T> httpRequest(Logger logger, String url, String method,
-            Object requestBodyData, TypeReference<T> responseFormat, int maxTries)
+                                                  Object requestBodyData, TypeReference<T> responseFormat, int maxTries)
             throws IOException, InterruptedException {
         IOException exc = null;
         for (int tries = 0; tries < maxTries; tries++) {

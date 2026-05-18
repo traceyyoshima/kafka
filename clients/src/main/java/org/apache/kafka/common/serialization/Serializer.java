@@ -38,10 +38,8 @@ public interface Serializer<T> extends Closeable {
     /**
      * Configure this class.
      *
-     * @param configs
-     *        configs in key/value pairs
-     * @param isKey
-     *        whether the serializer is used for the key or the value
+     * @param configs configs in key/value pairs
+     * @param isKey   whether the serializer is used for the key or the value
      */
     default void configure(Map<String, ?> configs, boolean isKey) {
         // intentionally left blank
@@ -52,11 +50,8 @@ public interface Serializer<T> extends Closeable {
      *
      * <p>It is recommended to serialize {@code null} data to the {@code null} byte array.
      *
-     * @param topic
-     *        topic associated with data
-     * @param data
-     *        typed data; may be {@code null}
-     *
+     * @param topic topic associated with data
+     * @param data  typed data; may be {@code null}
      * @return serialized bytes; may be {@code null}
      */
     byte[] serialize(String topic, T data);
@@ -70,13 +65,9 @@ public interface Serializer<T> extends Closeable {
      * The implementation is allowed to modify the passed in headers, as a side effect of serialization.
      * It is considered best practice to not delete or modify existing headers, but rather only add new ones.
      *
-     * @param topic
-     *        topic associated with data
-     * @param headers
-     *        headers associated with the record
-     * @param data
-     *        typed data; may be {@code null}
-     *
+     * @param topic   topic associated with data
+     * @param headers headers associated with the record
+     * @param data    typed data; may be {@code null}
      * @return serialized bytes; may be {@code null}
      */
     default byte[] serialize(String topic, Headers headers, T data) {

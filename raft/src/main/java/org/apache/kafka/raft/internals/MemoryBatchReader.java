@@ -31,10 +31,10 @@ public class MemoryBatchReader<T> implements BatchReader<T> {
     private final long lastOffset;
 
     private MemoryBatchReader(
-        long baseOffset,
-        long lastOffset,
-        Iterator<Batch<T>> iterator,
-        CloseListener<BatchReader<T>> closeListener
+            long baseOffset,
+            long lastOffset,
+            Iterator<Batch<T>> iterator,
+            CloseListener<BatchReader<T>> closeListener
     ) {
         this.baseOffset = baseOffset;
         this.lastOffset = lastOffset;
@@ -68,32 +68,32 @@ public class MemoryBatchReader<T> implements BatchReader<T> {
     }
 
     public static <T> MemoryBatchReader<T> empty(
-        long baseOffset,
-        long lastOffset,
-        CloseListener<BatchReader<T>> closeListener
+            long baseOffset,
+            long lastOffset,
+            CloseListener<BatchReader<T>> closeListener
     ) {
         return new MemoryBatchReader<>(
-            baseOffset,
-            lastOffset,
-            Collections.emptyIterator(),
-            closeListener
+                baseOffset,
+                lastOffset,
+                Collections.emptyIterator(),
+                closeListener
         );
     }
 
     public static <T> MemoryBatchReader<T> of(
-        List<Batch<T>> batches,
-        CloseListener<BatchReader<T>> closeListener
+            List<Batch<T>> batches,
+            CloseListener<BatchReader<T>> closeListener
     ) {
         if (batches.isEmpty()) {
             throw new IllegalArgumentException("MemoryBatchReader requires at least " +
-                "one batch to iterate, but an empty list was provided");
+                    "one batch to iterate, but an empty list was provided");
         }
 
         return new MemoryBatchReader<>(
-            batches.get(0).baseOffset(),
-            batches.get(batches.size() - 1).lastOffset(),
-            batches.iterator(),
-            closeListener
+                batches.get(0).baseOffset(),
+                batches.get(batches.size() - 1).lastOffset(),
+                batches.iterator(),
+                closeListener
         );
     }
 }

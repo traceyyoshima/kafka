@@ -33,7 +33,8 @@ public final class SinkUtils {
     public static final String KAFKA_PARTITION_KEY = "kafka_partition";
     public static final String KAFKA_OFFSET_KEY = "kafka_offset";
 
-    private SinkUtils() {}
+    private SinkUtils() {
+    }
 
     public static String consumerGroupId(String connector) {
         return "connect-" + connector;
@@ -47,7 +48,7 @@ public final class SinkUtils {
             partition.put(KAFKA_TOPIC_KEY, topicPartitionOffset.getKey().topic());
             partition.put(KAFKA_PARTITION_KEY, topicPartitionOffset.getKey().partition());
             connectorOffsets.add(new ConnectorOffset(partition,
-                   Map.of(KAFKA_OFFSET_KEY, topicPartitionOffset.getValue().offset())));
+                    Map.of(KAFKA_OFFSET_KEY, topicPartitionOffset.getValue().offset())));
         }
 
         return new ConnectorOffsets(connectorOffsets);
@@ -61,20 +62,19 @@ public final class SinkUtils {
      *       "kafka_partition": 3
      *     }
      * </pre>
-     *
+     * <p>
      * and that the provided offsets (values in the {@code partitionOffsets} map) look like:
      * <pre>
      *     {
      *       "kafka_offset": 1000
      *     }
      * </pre>
-     *
+     * <p>
      * and then parse them into a mapping from {@link TopicPartition}s to their corresponding {@link Long}
      * valued offsets.
      *
      * @param partitionOffsets the partitions to offset map that needs to be validated and parsed; may not be null or empty
      * @return the parsed mapping from {@link TopicPartition}s to their corresponding {@link Long} valued offsets; may not be null or empty
-     *
      * @throws BadRequestException if the provided offsets aren't in the expected format
      */
     public static Map<TopicPartition, Long> parseSinkConnectorOffsets(Map<Map<String, ?>, Map<String, ?>> partitionOffsets) {

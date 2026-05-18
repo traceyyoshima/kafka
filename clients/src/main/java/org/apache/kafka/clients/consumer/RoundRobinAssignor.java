@@ -60,7 +60,7 @@ import java.util.TreeSet;
  * <li><code>C1: [t1p0]</code>
  * <li><code>C2: [t1p1, t2p0, t2p1, t2p2]</code>
  * </ul>
- *
+ * <p>
  * Since the introduction of static membership, we could leverage <code>group.instance.id</code> to make the assignment behavior more sticky.
  * For example, we have three consumers with assigned <code>member.id</code> <code>C0</code>, <code>C1</code>, <code>C2</code>,
  * two topics <code>t0</code> and <code>t1</code>, and each topic has 3 partitions, resulting in partitions <code>t0p0</code>,
@@ -73,7 +73,7 @@ import java.util.TreeSet;
  * <li><code>C1: [t0p1, t1p1]</code>
  * <li><code>C2: [t0p2, t1p2]</code>
  * </ul>
- *
+ * <p>
  * After one rolling bounce, group coordinator will attempt to assign new <code>member.id</code> towards consumers,
  * for example <code>C0</code> -&gt; <code>C5</code> <code>C1</code> -&gt; <code>C3</code>, <code>C2</code> -&gt; <code>C4</code>.
  *
@@ -83,7 +83,7 @@ import java.util.TreeSet;
  * <li><code>C4 (was C2): [t0p1, t1p1] (before was [t0p2, t1p2])</code>
  * <li><code>C5 (was C0): [t0p2, t1p2] (before was [t0p0, t1p0])</code>
  * </ul>
- *
+ * <p>
  * This issue could be mitigated by the introduction of static membership. Consumers will have individual instance ids
  * <code>I1</code>, <code>I2</code>, <code>I3</code>. As long as
  * 1. Number of members remain the same across generation
@@ -108,7 +108,7 @@ public class RoundRobinAssignor extends AbstractPartitionAssignor {
         for (Map.Entry<String, Subscription> memberSubscription : subscriptions.entrySet()) {
             assignment.put(memberSubscription.getKey(), new ArrayList<>());
             memberInfoList.add(new MemberInfo(memberSubscription.getKey(),
-                                              memberSubscription.getValue().groupInstanceId()));
+                    memberSubscription.getValue().groupInstanceId()));
         }
 
         CircularIterator<MemberInfo> assigner = new CircularIterator<>(Utils.sorted(memberInfoList));

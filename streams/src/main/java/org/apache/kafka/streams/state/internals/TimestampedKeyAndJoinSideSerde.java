@@ -23,8 +23,8 @@ public class TimestampedKeyAndJoinSideSerde<K> extends WrappingNullableSerde<Tim
 
     public TimestampedKeyAndJoinSideSerde(final Serde<K> keySerde) {
         super(
-            new TimestampedKeyAndJoinSideSerializer<>(keySerde != null ? keySerde.serializer() : null),
-            new TimestampedKeyAndJoinSideDeserializer<>(keySerde != null ? keySerde.deserializer() : null)
+                new TimestampedKeyAndJoinSideSerializer<>(keySerde != null ? keySerde.serializer() : null),
+                new TimestampedKeyAndJoinSideDeserializer<>(keySerde != null ? keySerde.deserializer() : null)
         );
     }
 }

@@ -104,8 +104,8 @@ public class DumpLogSegments {
     public static void main(String[] args) throws IOException {
         DumpLogSegmentsOptions opts = new DumpLogSegmentsOptions(args);
         CommandLineUtils.maybePrintHelpOrVersion(
-            opts,
-            "This tool helps to parse a log file and dump its contents to the console, useful for debugging a seemingly corrupt log segment."
+                opts,
+                "This tool helps to parse a log file and dump its contents to the console, useful for debugging a seemingly corrupt log segment."
         );
         opts.checkArgs();
 
@@ -127,12 +127,12 @@ public class DumpLogSegments {
 
             switch (suffix) {
                 case UnifiedLog.LOG_FILE_SUFFIX, Snapshots.SUFFIX ->
-                    dumpLog(file, opts.shouldPrintDataLog(), nonConsecutivePairsForLogFilesMap,
-                        opts.isDeepIteration(), opts.messageParser(), opts.skipRecordMetadata(), opts.maxBytes());
+                        dumpLog(file, opts.shouldPrintDataLog(), nonConsecutivePairsForLogFilesMap,
+                                opts.isDeepIteration(), opts.messageParser(), opts.skipRecordMetadata(), opts.maxBytes());
                 case UnifiedLog.INDEX_FILE_SUFFIX -> dumpIndex(file, opts.indexSanityOnly(), opts.verifyOnly(),
-                    misMatchesForIndexFilesMap, opts.maxMessageSize());
+                        misMatchesForIndexFilesMap, opts.maxMessageSize());
                 case UnifiedLog.TIME_INDEX_FILE_SUFFIX ->
-                    dumpTimeIndex(file, opts.indexSanityOnly(), opts.verifyOnly(), timeIndexDumpErrors);
+                        dumpTimeIndex(file, opts.indexSanityOnly(), opts.verifyOnly(), timeIndexDumpErrors);
                 case LogFileUtils.PRODUCER_SNAPSHOT_FILE_SUFFIX -> dumpProducerIdSnapshot(file);
                 case UnifiedLog.TXN_INDEX_FILE_SUFFIX -> dumpTxnIndex(file);
                 default -> System.err.println("Ignoring unknown file " + file);
@@ -142,7 +142,7 @@ public class DumpLogSegments {
         misMatchesForIndexFilesMap.forEach((fileName, mismatchesByOffset) -> {
             System.err.println("Mismatches in :" + fileName);
             mismatchesByOffset.forEach((indexOffset, logOffset) ->
-                System.err.println("  Index offset: " + indexOffset + ", log offset: " + logOffset));
+                    System.err.println("  Index offset: " + indexOffset + ", log offset: " + logOffset));
         });
 
         timeIndexDumpErrors.printErrors();
@@ -157,10 +157,10 @@ public class DumpLogSegments {
         try (TransactionIndex index = new TransactionIndex(UnifiedLog.offsetFromFile(file), file)) {
             for (AbortedTxn abortedTxn : index.allAbortedTxns()) {
                 System.out.println("version: " + AbortedTxn.HIGHEST_SUPPORTED_VERSION +
-                    " producerId: " + abortedTxn.producerId() +
-                    " firstOffset: " + abortedTxn.firstOffset() +
-                    " lastOffset: " + abortedTxn.lastOffset() +
-                    " lastStableOffset: " + abortedTxn.lastStableOffset());
+                        " producerId: " + abortedTxn.producerId() +
+                        " firstOffset: " + abortedTxn.firstOffset() +
+                        " lastOffset: " + abortedTxn.lastOffset() +
+                        " lastStableOffset: " + abortedTxn.lastStableOffset());
             }
         }
     }
@@ -170,18 +170,18 @@ public class DumpLogSegments {
             List<ProducerStateEntry> entries = ProducerStateManager.readSnapshot(file);
             for (ProducerStateEntry entry : entries) {
                 System.out.print("producerId: " + entry.producerId() +
-                    " producerEpoch: " + entry.producerEpoch() +
-                    " coordinatorEpoch: " + entry.coordinatorEpoch() +
-                    " currentTxnFirstOffset: " + entry.currentTxnFirstOffset() +
-                    " lastTimestamp: " + entry.lastTimestamp());
+                        " producerEpoch: " + entry.producerEpoch() +
+                        " coordinatorEpoch: " + entry.coordinatorEpoch() +
+                        " currentTxnFirstOffset: " + entry.currentTxnFirstOffset() +
+                        " lastTimestamp: " + entry.lastTimestamp());
 
                 if (!entry.batchMetadata().isEmpty()) {
                     BatchMetadata metadata = entry.batchMetadata().iterator().next();
                     System.out.print(" firstSequence: " + metadata.firstSeq() +
-                        " lastSequence: " + metadata.lastSeq() +
-                        " lastOffset: " + metadata.lastOffset() +
-                        " offsetDelta: " + metadata.offsetDelta() +
-                        " timestamp: " + metadata.timestamp());
+                            " lastSequence: " + metadata.lastSeq() +
+                            " lastOffset: " + metadata.lastOffset() +
+                            " offsetDelta: " + metadata.offsetDelta() +
+                            " timestamp: " + metadata.timestamp());
                 }
                 System.out.println();
             }
@@ -198,7 +198,7 @@ public class DumpLogSegments {
                           int maxMessageSize) throws IOException {
         long startOffset = Long.parseLong(file.getName().split("\\.")[0]);
         File logFile = new File(file.getAbsoluteFile().getParent(),
-            file.getName().split("\\.")[0] + UnifiedLog.LOG_FILE_SUFFIX);
+                file.getName().split("\\.")[0] + UnifiedLog.LOG_FILE_SUFFIX);
 
         try (FileRecords fileRecords = FileRecords.open(logFile, false);
              OffsetIndex index = new OffsetIndex(file, startOffset, -1, false)) {
@@ -227,7 +227,7 @@ public class DumpLogSegments {
                 long firstBatchLastOffset = slice.batches().iterator().next().lastOffset();
                 if (firstBatchLastOffset != entry.offset()) {
                     Map<Long, Long> mismatchesByOffset = misMatchesForIndexFilesMap
-                        .computeIfAbsent(file.getAbsolutePath(), k -> new TreeMap<>(java.util.Collections.reverseOrder()));
+                            .computeIfAbsent(file.getAbsolutePath(), k -> new TreeMap<>(java.util.Collections.reverseOrder()));
                     mismatchesByOffset.put(entry.offset(), firstBatchLastOffset);
                 }
                 if (!verifyOnly) {
@@ -244,9 +244,9 @@ public class DumpLogSegments {
                               TimeIndexDumpErrors timeIndexDumpErrors) throws IOException {
         long startOffset = Long.parseLong(file.getName().split("\\.")[0]);
         File logFile = new File(file.getAbsoluteFile().getParent(),
-            file.getName().split("\\.")[0] + UnifiedLog.LOG_FILE_SUFFIX);
+                file.getName().split("\\.")[0] + UnifiedLog.LOG_FILE_SUFFIX);
         File indexFile = new File(file.getAbsoluteFile().getParent(),
-            file.getName().split("\\.")[0] + UnifiedLog.INDEX_FILE_SUFFIX);
+                file.getName().split("\\.")[0] + UnifiedLog.INDEX_FILE_SUFFIX);
 
         FileRecords fileRecords = null;
         OffsetIndex index = null;
@@ -280,14 +280,14 @@ public class DumpLogSegments {
                 long maxTimestamp = RecordBatch.NO_TIMESTAMP;
                 // We first find the message by offset then check if the timestamp is correct.
                 Optional<FileLogInputStream.FileChannelRecordBatch> matchingBatch = batches.stream()
-                    .filter(batch -> batch.lastOffset() >= entry.offset())
-                    .findFirst();
+                        .filter(batch -> batch.lastOffset() >= entry.offset())
+                        .findFirst();
 
                 if (matchingBatch.isEmpty()) {
                     timeIndexDumpErrors.recordShallowOffsetNotFound(file, entry.offset(), -1L);
                 } else if (matchingBatch.get().lastOffset() != entry.offset()) {
                     timeIndexDumpErrors.recordShallowOffsetNotFound(file, entry.offset(),
-                        matchingBatch.get().lastOffset());
+                            matchingBatch.get().lastOffset());
                 } else {
                     RecordBatch batch = matchingBatch.get();
                     for (Record record : batch) {
@@ -325,7 +325,8 @@ public class DumpLogSegments {
         ParseResult<K, V> parse(Record record);
     }
 
-    record ParseResult<K, V>(Optional<K> key, Optional<V> value) { }
+    record ParseResult<K, V>(Optional<K> key, Optional<V> value) {
+    }
 
     static class DecoderMessageParser<K, V> implements MessageParser<K, V> {
         private final Decoder<K> keyDecoder;
@@ -339,8 +340,8 @@ public class DumpLogSegments {
         @Override
         public ParseResult<K, V> parse(Record record) {
             Optional<K> key = record.hasKey()
-                ? Optional.of(keyDecoder.fromBytes(Utils.readBytes(record.key())))
-                : Optional.empty();
+                    ? Optional.of(keyDecoder.fromBytes(Utils.readBytes(record.key())))
+                    : Optional.empty();
 
             Optional<V> value;
             if (!record.hasValue()) {
@@ -384,7 +385,7 @@ public class DumpLogSegments {
                 printBatchLevel(batch, validBytes);
                 if (isDeepIteration) {
                     dumpBatchRecords(batch, lastOffset, file, nonConsecutivePairsForLogFilesMap,
-                        skipRecordMetadata, printContents, parser);
+                            skipRecordMetadata, printContents, parser);
                 }
                 validBytes += batch.sizeInBytes();
             }
@@ -408,7 +409,7 @@ public class DumpLogSegments {
             long previousOffset = lastOffset.get();
             if (record.offset() != previousOffset + 1) {
                 Map<Long, Long> nonConsecutivePairsSeq = nonConsecutivePairsForLogFilesMap
-                    .computeIfAbsent(file.getAbsolutePath(), k -> new TreeMap<>());
+                        .computeIfAbsent(file.getAbsolutePath(), k -> new TreeMap<>());
                 nonConsecutivePairsSeq.put(previousOffset, record.offset());
             }
             lastOffset.set(record.offset());
@@ -428,12 +429,12 @@ public class DumpLogSegments {
     private static void printRecordMetadata(FileLogInputStream.FileChannelRecordBatch batch,
                                             Record record) {
         System.out.print(RECORD_INDENT + " " + "offset: " + record.offset() +
-            " " + batch.timestampType() + ": " + record.timestamp() +
-            " keySize: " + record.keySize() + " valueSize: " + record.valueSize());
+                " " + batch.timestampType() + ": " + record.timestamp() +
+                " keySize: " + record.keySize() + " valueSize: " + record.valueSize());
 
         if (batch.magic() >= RecordBatch.MAGIC_VALUE_V2) {
             System.out.print(" sequence: " + record.sequence() +
-                " headerKeys: " + Arrays.stream(record.headers())
+                    " headerKeys: " + Arrays.stream(record.headers())
                     .map(Header::key)
                     .collect(Collectors.joining(",", "[", "]")));
         }
@@ -474,32 +475,32 @@ public class DumpLogSegments {
             case COMMIT:
                 EndTransactionMarker endTxnMarker = EndTransactionMarker.deserialize(record);
                 System.out.print(" endTxnMarker: " + endTxnMarker.controlType() +
-                    " coordinatorEpoch: " + endTxnMarker.coordinatorEpoch());
+                        " coordinatorEpoch: " + endTxnMarker.coordinatorEpoch());
                 break;
             case LEADER_CHANGE:
                 LeaderChangeMessage leaderChangeMessage = ControlRecordUtils.deserializeLeaderChangeMessage(record);
                 System.out.print(" LeaderChange: " +
-                    LeaderChangeMessageJsonConverter.write(leaderChangeMessage, leaderChangeMessage.version()));
+                        LeaderChangeMessageJsonConverter.write(leaderChangeMessage, leaderChangeMessage.version()));
                 break;
             case SNAPSHOT_HEADER:
                 SnapshotHeaderRecord header = ControlRecordUtils.deserializeSnapshotHeaderRecord(record);
                 System.out.print(" SnapshotHeader " +
-                    SnapshotHeaderRecordJsonConverter.write(header, header.version()));
+                        SnapshotHeaderRecordJsonConverter.write(header, header.version()));
                 break;
             case SNAPSHOT_FOOTER:
                 SnapshotFooterRecord footer = ControlRecordUtils.deserializeSnapshotFooterRecord(record);
                 System.out.print(" SnapshotFooter " +
-                    SnapshotFooterRecordJsonConverter.write(footer, footer.version()));
+                        SnapshotFooterRecordJsonConverter.write(footer, footer.version()));
                 break;
             case KRAFT_VERSION:
                 KRaftVersionRecord kraftVersion = ControlRecordUtils.deserializeKRaftVersionRecord(record);
                 System.out.print(" KRaftVersion " +
-                    KRaftVersionRecordJsonConverter.write(kraftVersion, kraftVersion.version()));
+                        KRaftVersionRecordJsonConverter.write(kraftVersion, kraftVersion.version()));
                 break;
             case KRAFT_VOTERS:
                 VotersRecord voters = ControlRecordUtils.deserializeVotersRecord(record);
                 System.out.print(" KRaftVoters " +
-                    VotersRecordJsonConverter.write(voters, voters.version()));
+                        VotersRecordJsonConverter.write(voters, voters.version()));
                 break;
             default:
                 System.out.print(" controlType: " + controlType + "(" + controlTypeId + ")");
@@ -510,27 +511,27 @@ public class DumpLogSegments {
     private static void printBatchLevel(FileLogInputStream.FileChannelRecordBatch batch, long accumulativeBytes) {
         if (batch.magic() >= RecordBatch.MAGIC_VALUE_V2) {
             System.out.print("baseOffset: " + batch.baseOffset() +
-                " lastOffset: " + batch.lastOffset() +
-                " count: " + batch.countOrNull() +
-                " baseSequence: " + batch.baseSequence() +
-                " lastSequence: " + batch.lastSequence() +
-                " producerId: " + batch.producerId() +
-                " producerEpoch: " + batch.producerEpoch() +
-                " partitionLeaderEpoch: " + batch.partitionLeaderEpoch() +
-                " isTransactional: " + batch.isTransactional() +
-                " isControl: " + batch.isControlBatch() +
-                " deleteHorizonMs: " + batch.deleteHorizonMs());
+                    " lastOffset: " + batch.lastOffset() +
+                    " count: " + batch.countOrNull() +
+                    " baseSequence: " + batch.baseSequence() +
+                    " lastSequence: " + batch.lastSequence() +
+                    " producerId: " + batch.producerId() +
+                    " producerEpoch: " + batch.producerEpoch() +
+                    " partitionLeaderEpoch: " + batch.partitionLeaderEpoch() +
+                    " isTransactional: " + batch.isTransactional() +
+                    " isControl: " + batch.isControlBatch() +
+                    " deleteHorizonMs: " + batch.deleteHorizonMs());
         } else {
             System.out.print("offset: " + batch.lastOffset());
         }
 
         System.out.println(" position: " + accumulativeBytes +
-            " " + batch.timestampType() + ": " + batch.maxTimestamp() +
-            " size: " + batch.sizeInBytes() +
-            " magic: " + batch.magic() +
-            " compresscodec: " + batch.compressionType().name +
-            " crc: " + batch.checksum() +
-            " isvalid: " + batch.isValid());
+                " " + batch.timestampType() + ": " + batch.maxTimestamp() +
+                " size: " + batch.sizeInBytes() +
+                " magic: " + batch.magic() +
+                " compresscodec: " + batch.compressionType().name +
+                " crc: " + batch.checksum() +
+                " isvalid: " + batch.isValid());
     }
 
     static class TimeIndexDumpErrors {
@@ -540,19 +541,19 @@ public class DumpLogSegments {
 
         void recordMismatchTimeIndex(File file, long indexTimestamp, long logTimestamp) {
             List<Map.Entry<Long, Long>> misMatchesSeq = misMatchesForTimeIndexFilesMap
-                .computeIfAbsent(file.getAbsolutePath(), k -> new ArrayList<>());
+                    .computeIfAbsent(file.getAbsolutePath(), k -> new ArrayList<>());
             misMatchesSeq.add(Map.entry(indexTimestamp, logTimestamp));
         }
 
         void recordOutOfOrderIndexTimestamp(File file, long indexTimestamp, long prevIndexTimestamp) {
             List<Map.Entry<Long, Long>> outOfOrderSeq = outOfOrderTimestamp
-                .computeIfAbsent(file.getAbsolutePath(), k -> new ArrayList<>());
+                    .computeIfAbsent(file.getAbsolutePath(), k -> new ArrayList<>());
             outOfOrderSeq.add(Map.entry(indexTimestamp, prevIndexTimestamp));
         }
 
         void recordShallowOffsetNotFound(File file, long indexOffset, long logOffset) {
             List<Map.Entry<Long, Long>> shallowOffsetNotFoundSeq = shallowOffsetNotFound
-                .computeIfAbsent(file.getAbsolutePath(), k -> new ArrayList<>());
+                    .computeIfAbsent(file.getAbsolutePath(), k -> new ArrayList<>());
             shallowOffsetNotFoundSeq.add(Map.entry(indexOffset, logOffset));
         }
 
@@ -560,21 +561,21 @@ public class DumpLogSegments {
             misMatchesForTimeIndexFilesMap.forEach((fileName, listOfMismatches) -> {
                 System.err.println("Found timestamp mismatch in :" + fileName);
                 listOfMismatches.forEach(m ->
-                    System.err.println("  Index timestamp: " + m.getKey() + ", log timestamp: " + m.getValue())
+                        System.err.println("  Index timestamp: " + m.getKey() + ", log timestamp: " + m.getValue())
                 );
             });
 
             outOfOrderTimestamp.forEach((fileName, outOfOrderTimestamps) -> {
                 System.err.println("Found out of order timestamp in :" + fileName);
                 outOfOrderTimestamps.forEach(m ->
-                    System.err.println("  Index timestamp: " + m.getKey() + ", Previously indexed timestamp: " + m.getValue())
+                        System.err.println("  Index timestamp: " + m.getKey() + ", Previously indexed timestamp: " + m.getValue())
                 );
             });
 
             shallowOffsetNotFound.forEach((fileName, listOfShallowOffsetNotFound) -> {
                 System.err.println("The following indexed offsets are not found in :" + fileName);
                 listOfShallowOffsetNotFound.forEach(pair ->
-                    System.err.println("Indexed offset: " + pair.getKey() + ", found log offset: " + pair.getValue())
+                        System.err.println("Indexed offset: " + pair.getKey() + ", found log offset: " + pair.getValue())
                 );
             });
         }
@@ -591,27 +592,27 @@ public class DumpLogSegments {
         public ParseResult<String, String> parse(Record record) {
             if (!record.hasKey()) {
                 throw new RuntimeException("Failed to decode message at offset " + record.offset() +
-                    " using the specified decoder (message had a missing key)");
+                        " using the specified decoder (message had a missing key)");
             }
 
             try {
                 CoordinatorRecord r = serde.deserialize(record.key(), record.value());
                 return new ParseResult<>(
-                    Optional.of(prepareKey(r.key())),
-                    Optional.ofNullable(r.value())
-                        .map(v -> prepareValue(v.message(), v.version()))
-                        .or(() -> Optional.of("<DELETE>"))
+                        Optional.of(prepareKey(r.key())),
+                        Optional.ofNullable(r.value())
+                                .map(v -> prepareValue(v.message(), v.version()))
+                                .or(() -> Optional.of("<DELETE>"))
                 );
             } catch (Deserializer.UnknownRecordTypeException e) {
                 return new ParseResult<>(
-                    Optional.of("Unknown record type " + e.unknownType() + " at offset " +
-                        record.offset() + ", skipping."),
-                    Optional.empty()
+                        Optional.of("Unknown record type " + e.unknownType() + " at offset " +
+                                record.offset() + ", skipping."),
+                        Optional.empty()
                 );
             } catch (Throwable e) {
                 return new ParseResult<>(
-                    Optional.of("Error at offset " + record.offset() + ", skipping. " + e.getMessage()),
-                    Optional.empty()
+                        Optional.of("Error at offset " + record.offset() + ", skipping. " + e.getMessage()),
+                        Optional.empty()
                 );
             }
         }
@@ -631,6 +632,7 @@ public class DumpLogSegments {
         }
 
         protected abstract JsonNode keyAsJson(ApiMessage message);
+
         protected abstract JsonNode valueAsJson(ApiMessage message, short version);
     }
 
@@ -643,24 +645,24 @@ public class DumpLogSegments {
         @Override
         protected JsonNode keyAsJson(ApiMessage message) {
             return org.apache.kafka.coordinator.group.generated.CoordinatorRecordJsonConverters
-                .writeRecordKeyAsJson(message);
+                    .writeRecordKeyAsJson(message);
         }
 
         @Override
         protected JsonNode valueAsJson(ApiMessage message, short version) {
             if (message.apiKey() == org.apache.kafka.coordinator.group.generated.CoordinatorRecordType.GROUP_METADATA.id()) {
                 return prepareGroupMetadataValue(
-                    (org.apache.kafka.coordinator.group.generated.GroupMetadataValue) message, version);
+                        (org.apache.kafka.coordinator.group.generated.GroupMetadataValue) message, version);
             } else {
                 return org.apache.kafka.coordinator.group.generated.CoordinatorRecordJsonConverters
-                    .writeRecordValueAsJson(message, version);
+                        .writeRecordValueAsJson(message, version);
             }
         }
 
         private JsonNode prepareGroupMetadataValue(
-            org.apache.kafka.coordinator.group.generated.GroupMetadataValue message, short version) {
+                org.apache.kafka.coordinator.group.generated.GroupMetadataValue message, short version) {
             JsonNode json = org.apache.kafka.coordinator.group.generated.GroupMetadataValueJsonConverter
-                .write(message, version);
+                    .write(message, version);
 
             JsonNode protocolTypeNode = json.get("protocolType");
             if (protocolTypeNode != null && protocolTypeNode.asText().equals(ConsumerProtocol.PROTOCOL_TYPE)) {
@@ -669,18 +671,18 @@ public class DumpLogSegments {
                     membersNode.forEach(memberNode -> {
                         // Replace the subscription field
                         replaceField(
-                            memberNode,
-                            "subscription",
-                            ConsumerProtocolSubscription::new,
-                            ConsumerProtocolSubscriptionJsonConverter::write
+                                memberNode,
+                                "subscription",
+                                ConsumerProtocolSubscription::new,
+                                ConsumerProtocolSubscriptionJsonConverter::write
                         );
 
                         // Replace the assignment field
                         replaceField(
-                            memberNode,
-                            "assignment",
-                            ConsumerProtocolAssignment::new,
-                            ConsumerProtocolAssignmentJsonConverter::write
+                                memberNode,
+                                "assignment",
+                                ConsumerProtocolAssignment::new,
+                                ConsumerProtocolAssignmentJsonConverter::write
                         );
                     });
                 }
@@ -690,10 +692,10 @@ public class DumpLogSegments {
         }
 
         private <T> void replaceField(
-            JsonNode node,
-            String field,
-            BiFunction<Readable, Short, T> reader,
-            BiFunction<T, Short, JsonNode> writer
+                JsonNode node,
+                String field,
+                BiFunction<Readable, Short, T> reader,
+                BiFunction<T, Short, JsonNode> writer
         ) {
             JsonNode fieldNode = node.get(field);
             if (fieldNode != null) {
@@ -720,13 +722,13 @@ public class DumpLogSegments {
         @Override
         protected JsonNode keyAsJson(ApiMessage message) {
             return org.apache.kafka.coordinator.transaction.generated.CoordinatorRecordJsonConverters
-                .writeRecordKeyAsJson(message);
+                    .writeRecordKeyAsJson(message);
         }
 
         @Override
         protected JsonNode valueAsJson(ApiMessage message, short version) {
             return org.apache.kafka.coordinator.transaction.generated.CoordinatorRecordJsonConverters
-                .writeRecordValueAsJson(message, version);
+                    .writeRecordValueAsJson(message, version);
         }
     }
 
@@ -737,13 +739,13 @@ public class DumpLogSegments {
             String output;
             try {
                 ApiMessageAndVersion messageAndVersion = MetadataRecordSerde.INSTANCE.read(
-                    new ByteBufferAccessor(record.value()), record.valueSize());
+                        new ByteBufferAccessor(record.value()), record.valueSize());
                 ObjectNode json = new ObjectNode(JsonNodeFactory.instance);
                 json.set("type", new TextNode(
-                    MetadataRecordType.fromId(messageAndVersion.message().apiKey()).toString()));
+                        MetadataRecordType.fromId(messageAndVersion.message().apiKey()).toString()));
                 json.set("version", new IntNode(messageAndVersion.version()));
                 json.set("data", MetadataJsonConverters.writeJson(
-                    messageAndVersion.message(), messageAndVersion.version()));
+                        messageAndVersion.message(), messageAndVersion.version()));
                 output = json.toString();
             } catch (Throwable e) {
                 output = "Error at " + record.offset() + ", skipping. " + e.getMessage();
@@ -780,13 +782,13 @@ public class DumpLogSegments {
         @Override
         protected JsonNode keyAsJson(ApiMessage message) {
             return org.apache.kafka.coordinator.share.generated.CoordinatorRecordJsonConverters
-                .writeRecordKeyAsJson(message);
+                    .writeRecordKeyAsJson(message);
         }
 
         @Override
         protected JsonNode valueAsJson(ApiMessage message, short version) {
             return org.apache.kafka.coordinator.share.generated.CoordinatorRecordJsonConverters
-                .writeRecordValueAsJson(message, version);
+                    .writeRecordValueAsJson(message, version);
         }
     }
 
@@ -811,53 +813,53 @@ public class DumpLogSegments {
             super(args);
 
             printOpt = parser.accepts("print-data-log",
-                "If set, printing the messages content when dumping data logs. Automatically set if any decoder option is specified.");
+                    "If set, printing the messages content when dumping data logs. Automatically set if any decoder option is specified.");
             verifyOpt = parser.accepts("verify-index-only",
-                "If set, just verify the index log without printing its content.");
+                    "If set, just verify the index log without printing its content.");
             indexSanityOpt = parser.accepts("index-sanity-check",
-                "If set, just checks the index sanity without printing its content. " +
-                "This is the same check that is executed on broker startup to determine if an index needs rebuilding or not.");
+                    "If set, just checks the index sanity without printing its content. " +
+                            "This is the same check that is executed on broker startup to determine if an index needs rebuilding or not.");
             filesOpt = parser.accepts("files",
-                    "REQUIRED: The comma separated list of data and index log files to be dumped.")
-                .withRequiredArg()
-                .describedAs("file1, file2, ...")
-                .ofType(String.class);
+                            "REQUIRED: The comma separated list of data and index log files to be dumped.")
+                    .withRequiredArg()
+                    .describedAs("file1, file2, ...")
+                    .ofType(String.class);
             maxMessageSizeOpt = parser.accepts("max-message-size", "Size of largest message.")
-                .withRequiredArg()
-                .describedAs("size")
-                .ofType(Integer.class)
-                .defaultsTo(5 * 1024 * 1024);
+                    .withRequiredArg()
+                    .describedAs("size")
+                    .ofType(Integer.class)
+                    .defaultsTo(5 * 1024 * 1024);
             maxBytesOpt = parser.accepts("max-bytes",
-                    "Limit the amount of total batches read in bytes avoiding reading the whole .log file(s).")
-                .withRequiredArg()
-                .describedAs("size")
-                .ofType(Integer.class)
-                .defaultsTo(Integer.MAX_VALUE);
+                            "Limit the amount of total batches read in bytes avoiding reading the whole .log file(s).")
+                    .withRequiredArg()
+                    .describedAs("size")
+                    .ofType(Integer.class)
+                    .defaultsTo(Integer.MAX_VALUE);
             deepIterationOpt = parser.accepts("deep-iteration",
-                "If set, uses deep instead of shallow iteration. Automatically set if print-data-log is enabled.");
+                    "If set, uses deep instead of shallow iteration. Automatically set if print-data-log is enabled.");
             valueDecoderOpt = parser.accepts("value-decoder-class",
-                    "If set, used to deserialize the messages. This class should implement org.apache.kafka.tools.api.Decoder trait. Custom jar should be available in kafka/libs directory.")
-                .withOptionalArg()
-                .ofType(String.class)
-                .defaultsTo(StringDecoder.class.getName());
+                            "If set, used to deserialize the messages. This class should implement org.apache.kafka.tools.api.Decoder trait. Custom jar should be available in kafka/libs directory.")
+                    .withOptionalArg()
+                    .ofType(String.class)
+                    .defaultsTo(StringDecoder.class.getName());
             keyDecoderOpt = parser.accepts("key-decoder-class",
-                    "If set, used to deserialize the keys. This class should implement org.apache.kafka.tools.api.Decoder trait. Custom jar should be available in kafka/libs directory.")
-                .withOptionalArg()
-                .ofType(String.class)
-                .defaultsTo(StringDecoder.class.getName());
+                            "If set, used to deserialize the keys. This class should implement org.apache.kafka.tools.api.Decoder trait. Custom jar should be available in kafka/libs directory.")
+                    .withOptionalArg()
+                    .ofType(String.class)
+                    .defaultsTo(StringDecoder.class.getName());
             offsetsOpt = parser.accepts("offsets-decoder",
-                "If set, log data will be parsed as offset data from the __consumer_offsets topic.");
+                    "If set, log data will be parsed as offset data from the __consumer_offsets topic.");
             transactionLogOpt = parser.accepts("transaction-log-decoder",
-                "If set, log data will be parsed as transaction metadata from the __transaction_state topic.");
+                    "If set, log data will be parsed as transaction metadata from the __transaction_state topic.");
             clusterMetadataOpt = parser.accepts("cluster-metadata-decoder",
-                "If set, log data will be parsed as cluster metadata records.");
+                    "If set, log data will be parsed as cluster metadata records.");
             remoteMetadataOpt = parser.accepts("remote-log-metadata-decoder",
-                "If set, log data will be parsed as TopicBasedRemoteLogMetadataManager (RLMM) metadata records. " +
-                "Instead, the value-decoder-class option can be used if a custom RLMM implementation is configured.");
+                    "If set, log data will be parsed as TopicBasedRemoteLogMetadataManager (RLMM) metadata records. " +
+                            "Instead, the value-decoder-class option can be used if a custom RLMM implementation is configured.");
             shareStateOpt = parser.accepts("share-group-state-decoder",
-                "If set, log data will be parsed as share group state data from the __share_group_state topic.");
+                    "If set, log data will be parsed as share group state data from the __share_group_state topic.");
             skipRecordMetadataOpt = parser.accepts("skip-record-metadata",
-                "Skip metadata when printing records. This flag also skips control records.");
+                    "Skip metadata when printing records. This flag also skips control records.");
 
             this.options = parser.parse(args);
         }
@@ -886,14 +888,14 @@ public class DumpLogSegments {
 
         boolean shouldPrintDataLog() {
             return hasAnyOption(
-                printOpt,
-                offsetsOpt,
-                transactionLogOpt,
-                clusterMetadataOpt,
-                remoteMetadataOpt,
-                valueDecoderOpt,
-                keyDecoderOpt,
-                shareStateOpt
+                    printOpt,
+                    offsetsOpt,
+                    transactionLogOpt,
+                    clusterMetadataOpt,
+                    remoteMetadataOpt,
+                    valueDecoderOpt,
+                    keyDecoderOpt,
+                    shareStateOpt
             );
         }
 

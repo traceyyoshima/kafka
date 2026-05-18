@@ -50,10 +50,10 @@ public final class ServerTestUtils {
      */
     public static Number yammerMetricValue(String name) {
         Gauge<?> gauge = (Gauge<?>) KafkaYammerMetrics.defaultRegistry().allMetrics().entrySet().stream()
-            .filter(e -> e.getKey().getMBeanName().contains(name))
-            .findFirst()
-            .orElseThrow()
-            .getValue();
+                .filter(e -> e.getKey().getMBeanName().contains(name))
+                .findFirst()
+                .orElseThrow()
+                .getValue();
         return (Number) gauge.value();
     }
 

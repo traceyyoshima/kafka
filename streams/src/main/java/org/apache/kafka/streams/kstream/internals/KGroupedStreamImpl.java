@@ -58,12 +58,12 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
         this.repartitionRequired = repartitionRequired;
         this.userProvidedRepartitionTopicName = groupedInternal.name();
         this.aggregateBuilder = new GroupedStreamAggregateBuilder<>(
-            builder,
-            groupedInternal,
-            repartitionRequired,
-            subTopologySourceNodes,
-            name,
-            graphNode
+                builder,
+                groupedInternal,
+                repartitionRequired,
+                subTopologySourceNodes,
+                name,
+                graphNode
         );
     }
 
@@ -87,7 +87,7 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
         Objects.requireNonNull(named, "name can't be null");
 
         final MaterializedInternal<K, V, KeyValueStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, builder, REDUCE_NAME);
+                new MaterializedInternal<>(materialized, builder, REDUCE_NAME);
 
         if (materializedInternal.keySerde() == null) {
             materializedInternal.withKeySerde(keySerde);
@@ -100,9 +100,9 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
         final KeyValueStoreMaterializer<K, V> storeFactory = new KeyValueStoreMaterializer<>(materializedInternal);
 
         return doAggregate(
-            new KStreamReduce<>(storeFactory, reducer),
-            name,
-            storeFactory
+                new KStreamReduce<>(storeFactory, reducer),
+                name,
+                storeFactory
         );
     }
 
@@ -124,7 +124,7 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
         Objects.requireNonNull(named, "named can't be null");
 
         final MaterializedInternal<K, VOut, KeyValueStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
+                new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
 
         if (materializedInternal.keySerde() == null) {
             materializedInternal.withKeySerde(keySerde);
@@ -134,9 +134,9 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
         final KeyValueStoreMaterializer<K, VOut> storeFactory = new KeyValueStoreMaterializer<>(materializedInternal);
 
         return doAggregate(
-            new KStreamAggregate<>(storeFactory, initializer, aggregator),
-            name,
-            storeFactory
+                new KStreamAggregate<>(storeFactory, initializer, aggregator),
+                name,
+                storeFactory
         );
     }
 
@@ -177,7 +177,7 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
 
     private KTable<K, Long> doCount(final Named named, final Materialized<K, Long, KeyValueStore<Bytes, byte[]>> materialized) {
         final MaterializedInternal<K, Long, KeyValueStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
+                new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
 
         if (materializedInternal.keySerde() == null) {
             materializedInternal.withKeySerde(keySerde);
@@ -190,23 +190,23 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
         final KeyValueStoreMaterializer<K, Long> storeFactory = new KeyValueStoreMaterializer<>(materializedInternal);
 
         return doAggregate(
-            new KStreamAggregate<>(storeFactory, aggregateBuilder.countInitializer, aggregateBuilder.countAggregator),
-            name,
-            storeFactory);
+                new KStreamAggregate<>(storeFactory, aggregateBuilder.countInitializer, aggregateBuilder.countAggregator),
+                name,
+                storeFactory);
     }
 
     @Override
     public <W extends Window> TimeWindowedKStream<K, V> windowedBy(final Windows<W> windows) {
 
         return new TimeWindowedKStreamImpl<>(
-            windows,
-            builder,
-            subTopologySourceNodes,
-            name,
-            keySerde,
-            valueSerde,
-            aggregateBuilder,
-            graphNode
+                windows,
+                builder,
+                subTopologySourceNodes,
+                name,
+                keySerde,
+                valueSerde,
+                aggregateBuilder,
+                graphNode
         );
     }
 
@@ -229,14 +229,14 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
     public SessionWindowedKStream<K, V> windowedBy(final SessionWindows windows) {
 
         return new SessionWindowedKStreamImpl<>(
-            windows,
-            builder,
-            subTopologySourceNodes,
-            name,
-            keySerde,
-            valueSerde,
-            aggregateBuilder,
-            graphNode
+                windows,
+                builder,
+                subTopologySourceNodes,
+                name,
+                keySerde,
+                valueSerde,
+                aggregateBuilder,
+                graphNode
         );
     }
 
@@ -245,19 +245,19 @@ class KGroupedStreamImpl<K, V> extends AbstractStream<K, V> implements KGroupedS
                                          final KeyValueStoreMaterializer<K, T> storeFactory) {
 
         return aggregateBuilder.buildNonWindowed(
-            new NamedInternal(functionName),
-            storeFactory.storeName(),
-            aggregateSupplier,
-            storeFactory.queryableStoreName(),
-            storeFactory.keySerde(),
-            storeFactory.valueSerde(),
-            storeFactory.storeSupplier() instanceof VersionedBytesStoreSupplier);
+                new NamedInternal(functionName),
+                storeFactory.storeName(),
+                aggregateSupplier,
+                storeFactory.queryableStoreName(),
+                storeFactory.keySerde(),
+                storeFactory.valueSerde(),
+                storeFactory.storeSupplier() instanceof VersionedBytesStoreSupplier);
     }
 
     @Override
     public <VOut> CogroupedKStream<K, VOut> cogroup(final Aggregator<? super K, ? super V, VOut> aggregator) {
         Objects.requireNonNull(aggregator, "aggregator can't be null");
         return new CogroupedKStreamImpl<K, VOut>(name, subTopologySourceNodes, graphNode, builder)
-            .cogroup(this, aggregator);
+                .cogroup(this, aggregator);
     }
 }

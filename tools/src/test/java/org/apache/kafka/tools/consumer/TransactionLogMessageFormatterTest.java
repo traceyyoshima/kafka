@@ -28,15 +28,15 @@ import java.util.stream.Stream;
 public class TransactionLogMessageFormatterTest extends CoordinatorRecordMessageFormatterTest {
 
     private static final TransactionLogKey TXN_LOG_KEY = new TransactionLogKey()
-        .setTransactionalId("TXNID");
+            .setTransactionalId("TXNID");
     private static final TransactionLogValue TXN_LOG_VALUE = new TransactionLogValue()
-        .setProducerId(100)
-        .setProducerEpoch((short) 50)
-        .setTransactionStatus((byte) 4)
-        .setTransactionStartTimestampMs(750L)
-        .setTransactionLastUpdateTimestampMs(1000L)
-        .setTransactionTimeoutMs(500)
-        .setTransactionPartitions(List.of());
+            .setProducerId(100)
+            .setProducerEpoch((short) 50)
+            .setTransactionStatus((byte) 4)
+            .setTransactionStartTimestampMs(750L)
+            .setTransactionLastUpdateTimestampMs(1000L)
+            .setTransactionTimeoutMs(500)
+            .setTransactionPartitions(List.of());
 
     @Override
     protected CoordinatorRecordMessageFormatter formatter() {
@@ -46,64 +46,64 @@ public class TransactionLogMessageFormatterTest extends CoordinatorRecordMessage
     @Override
     protected Stream<Arguments> parameters() {
         return Stream.of(
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 10, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 10, TXN_LOG_VALUE).array(),
-                ""
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                """
-                    {"key":{"type":0,"data":{"transactionalId":"TXNID"}},
-                     "value":{"version":1,
-                              "data":{"producerId":100,
-                                      "producerEpoch":50,
-                                      "transactionTimeoutMs":500,
-                                      "transactionStatus":4,
-                                      "transactionPartitions":[],
-                                      "transactionLastUpdateTimestampMs":1000,
-                                      "transactionStartTimestampMs":750}}}
-                """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                """
-                    {"key":{"type":0,"data":{"transactionalId":"TXNID"}},
-                     "value":{"version":1,
-                              "data":{"producerId":100,
-                                      "producerEpoch":50,
-                                      "transactionTimeoutMs":500,
-                                      "transactionStatus":4,
-                                      "transactionPartitions":[],
-                                      "transactionLastUpdateTimestampMs":1000,
-                                      "transactionStartTimestampMs":750}}}
-                """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                ""
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
-                null,
-                """
-                    {"key":{"type":0,"data":{"transactionalId":"TXNID"}},"value":null}
-                """
-            ),
-            Arguments.of(
-                null,
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                ""
-            ),
-            Arguments.of(null, null, ""),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer(Short.MAX_VALUE, TXN_LOG_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
-                ""
-            )
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 10, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 10, TXN_LOG_VALUE).array(),
+                        ""
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        """
+                                    {"key":{"type":0,"data":{"transactionalId":"TXNID"}},
+                                     "value":{"version":1,
+                                              "data":{"producerId":100,
+                                                      "producerEpoch":50,
+                                                      "transactionTimeoutMs":500,
+                                                      "transactionStatus":4,
+                                                      "transactionPartitions":[],
+                                                      "transactionLastUpdateTimestampMs":1000,
+                                                      "transactionStartTimestampMs":750}}}
+                                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        """
+                                    {"key":{"type":0,"data":{"transactionalId":"TXNID"}},
+                                     "value":{"version":1,
+                                              "data":{"producerId":100,
+                                                      "producerEpoch":50,
+                                                      "transactionTimeoutMs":500,
+                                                      "transactionStatus":4,
+                                                      "transactionPartitions":[],
+                                                      "transactionLastUpdateTimestampMs":1000,
+                                                      "transactionStartTimestampMs":750}}}
+                                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        ""
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, TXN_LOG_KEY).array(),
+                        null,
+                        """
+                                    {"key":{"type":0,"data":{"transactionalId":"TXNID"}},"value":null}
+                                """
+                ),
+                Arguments.of(
+                        null,
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        ""
+                ),
+                Arguments.of(null, null, ""),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer(Short.MAX_VALUE, TXN_LOG_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, TXN_LOG_VALUE).array(),
+                        ""
+                )
         );
     }
 }

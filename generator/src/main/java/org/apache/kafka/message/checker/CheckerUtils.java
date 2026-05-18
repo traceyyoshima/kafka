@@ -47,9 +47,9 @@ class CheckerUtils {
     /**
      * A min function defined for shorts.
      *
-     * @param a     The first short integer to compare.
-     * @param b     The second short integer to compare.
-     * @return      The minimum short integer.
+     * @param a The first short integer to compare.
+     * @param b The second short integer to compare.
+     * @return The minimum short integer.
      */
     static short min(short a, short b) {
         return a < b ? a : b;
@@ -58,9 +58,9 @@ class CheckerUtils {
     /**
      * A max function defined for shorts.
      *
-     * @param a     The first short integer to compare.
-     * @param b     The second short integer to compare.
-     * @return      The maximum short integer.
+     * @param a The first short integer to compare.
+     * @param b The second short integer to compare.
+     * @return The maximum short integer.
      */
     static short max(short a, short b) {
         return a > b ? a : b;
@@ -70,14 +70,14 @@ class CheckerUtils {
      * Validate that a field doesn't have tagged versions that are outside of the top-level flexible
      * versions.
      *
-     * @param what                      A description of the field.
-     * @param field                     The field to validate.
-     * @param topLevelFlexibleVersions  The top-level flexible versions.
+     * @param what                     A description of the field.
+     * @param field                    The field to validate.
+     * @param topLevelFlexibleVersions The top-level flexible versions.
      */
     static void validateTaggedVersions(
-        String what,
-        FieldSpec field,
-        Versions topLevelFlexibleVersions
+            String what,
+            FieldSpec field,
+            Versions topLevelFlexibleVersions
     ) {
         if (field.flexibleVersions().isEmpty()) {
             if (!topLevelFlexibleVersions.contains(field.taggedVersions())) {
@@ -91,8 +91,8 @@ class CheckerUtils {
     /**
      * Read a MessageSpec file from a path.
      *
-     * @param schemaPath    The path to read the file from.
-     * @return              The MessageSpec.
+     * @param schemaPath The path to read the file from.
+     * @return The MessageSpec.
      */
     static MessageSpec readMessageSpecFromFile(String schemaPath) {
         if (!Files.isReadable(Paths.get(schemaPath))) {
@@ -109,8 +109,8 @@ class CheckerUtils {
     /**
      * Return a MessageSpec file give file contents.
      *
-     * @param contents      The path to read the file from.
-     * @return              The MessageSpec.
+     * @param contents The path to read the file from.
+     * @return The MessageSpec.
      */
     static MessageSpec readMessageSpecFromString(String contents) {
         try {
@@ -124,7 +124,7 @@ class CheckerUtils {
      * Read the file from the specified git reference.
      *
      * @param filePath The fully qualified file path. The git directory will be derived from this.
-     * @param gitRef The specific git reference to be used for comparison.
+     * @param gitRef   The specific git reference to be used for comparison.
      * @return The file contents.
      */
     static String readFileFromGitRef(String filePath, String gitRef) throws IOException {

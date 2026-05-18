@@ -88,46 +88,46 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Timeout(value = 40)
 public class StandardAuthorizerTest {
     public static final Endpoint PLAINTEXT = new Endpoint("PLAINTEXT",
-        SecurityProtocol.PLAINTEXT,
-        "127.0.0.1",
-        9020);
+            SecurityProtocol.PLAINTEXT,
+            "127.0.0.1",
+            9020);
 
     public static final Endpoint CONTROLLER = new Endpoint("CONTROLLER",
-        SecurityProtocol.PLAINTEXT,
-        "127.0.0.1",
-        9020);
+            SecurityProtocol.PLAINTEXT,
+            "127.0.0.1",
+            9020);
 
     private final Metrics metrics = new Metrics();
 
     @Test
     public void testGetConfiguredSuperUsers() {
         assertEquals(Set.of(),
-            getConfiguredSuperUsers(Map.of()));
+                getConfiguredSuperUsers(Map.of()));
         assertEquals(Set.of(),
-            getConfiguredSuperUsers(Map.of(SUPER_USERS_CONFIG, " ")));
+                getConfiguredSuperUsers(Map.of(SUPER_USERS_CONFIG, " ")));
         assertEquals(Set.of("User:bob", "User:alice"),
-            getConfiguredSuperUsers(Map.of(SUPER_USERS_CONFIG, "User:bob;User:alice ")));
+                getConfiguredSuperUsers(Map.of(SUPER_USERS_CONFIG, "User:bob;User:alice ")));
         assertEquals(Set.of("User:bob", "User:alice"),
-            getConfiguredSuperUsers(Map.of(SUPER_USERS_CONFIG, ";  User:bob  ;  User:alice ")));
+                getConfiguredSuperUsers(Map.of(SUPER_USERS_CONFIG, ";  User:bob  ;  User:alice ")));
         assertEquals("expected a string in format principalType:principalName but got bob",
-            assertThrows(IllegalArgumentException.class, () -> getConfiguredSuperUsers(
-                Map.of(SUPER_USERS_CONFIG, "bob;:alice"))).getMessage());
+                assertThrows(IllegalArgumentException.class, () -> getConfiguredSuperUsers(
+                        Map.of(SUPER_USERS_CONFIG, "bob;:alice"))).getMessage());
     }
 
     @Test
     public void testGetDefaultResult() {
         assertEquals(DENIED, getDefaultResult(Map.of()));
         assertEquals(ALLOWED, getDefaultResult(Map.of(
-            ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "true")));
+                ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "true")));
         assertEquals(DENIED, getDefaultResult(Map.of(
-            ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "false")));
+                ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "false")));
     }
 
     @Test
     public void testAllowEveryoneIfNoAclFoundConfigEnabled() throws Exception {
         Map<String, Object> configs = Map.of(
-            SUPER_USERS_CONFIG, "User:alice;User:chris",
-            ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "true");
+                SUPER_USERS_CONFIG, "User:alice;User:chris",
+                ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "true");
         StandardAuthorizer authorizer = createAndInitializeStandardAuthorizer(configs);
 
         List<StandardAclWithId> acls = List.of(
@@ -153,8 +153,8 @@ public class StandardAuthorizerTest {
     @Test
     public void testAllowEveryoneIfNoAclFoundConfigDisabled() throws Exception {
         Map<String, Object> configs = Map.of(
-            SUPER_USERS_CONFIG, "User:alice;User:chris",
-            ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "false");
+                SUPER_USERS_CONFIG, "User:alice;User:chris",
+                ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "false");
         StandardAuthorizer authorizer = createAndInitializeStandardAuthorizer(configs);
 
         List<StandardAclWithId> acls = List.of(
@@ -180,18 +180,18 @@ public class StandardAuthorizerTest {
     @Test
     public void testConfigure() {
         Map<String, Object> configs = Map.of(
-            SUPER_USERS_CONFIG, "User:alice;User:chris",
-            ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "true");
+                SUPER_USERS_CONFIG, "User:alice;User:chris",
+                ALLOW_EVERYONE_IF_NO_ACL_IS_FOUND_CONFIG, "true");
         StandardAuthorizer authorizer = createAndInitializeStandardAuthorizer(configs);
         assertEquals(Set.of("User:alice", "User:chris"), authorizer.superUsers());
         assertEquals(ALLOWED, authorizer.defaultResult());
     }
 
     private static Action newAction(AclOperation aclOperation,
-                            ResourceType resourceType,
-                            String resourceName) {
+                                    ResourceType resourceType,
+                                    String resourceName) {
         return new Action(aclOperation,
-            new ResourcePattern(resourceType, resourceName, LITERAL), 1, false, false);
+                new ResourcePattern(resourceType, resourceName, LITERAL), 1, false, false);
     }
 
     private StandardAuthorizer createAndInitializeStandardAuthorizer() {
@@ -209,13 +209,13 @@ public class StandardAuthorizerTest {
 
     private static StandardAcl newFooAcl(AclOperation op, AclPermissionType permission) {
         return new StandardAcl(
-            TOPIC,
-            "foo_",
-            PREFIXED,
-            "User:bob",
-            WILDCARD,
-            op,
-            permission);
+                TOPIC,
+                "foo_",
+                PREFIXED,
+                "User:bob",
+                WILDCARD,
+                op,
+                permission);
     }
 
     private static StandardAclWithId withId(StandardAcl acl) {
@@ -227,9 +227,9 @@ public class StandardAuthorizerTest {
         // These permissions all imply DESCRIBE.
         for (AclOperation op : List.of(DESCRIBE, READ, WRITE, DELETE, ALTER)) {
             assertEquals(ALLOWED, findResult(newAction(DESCRIBE, TOPIC, "foo_bar"),
-                new MockAuthorizableRequestContext.Builder().
-                    setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
-                newFooAcl(op, ALLOW)));
+                    new MockAuthorizableRequestContext.Builder().
+                            setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
+                    newFooAcl(op, ALLOW)));
         }
         // CREATE does not imply DESCRIBE
         assertNull(findResult(newAction(DESCRIBE, TOPIC, "foo_bar"),
@@ -245,15 +245,15 @@ public class StandardAuthorizerTest {
         }
         // Exact match
         assertEquals(DENIED, findResult(newAction(DESCRIBE, TOPIC, "foo_bar"),
-            new MockAuthorizableRequestContext.Builder().
-                setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
-            newFooAcl(DESCRIBE, DENY)));
+                new MockAuthorizableRequestContext.Builder().
+                        setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
+                newFooAcl(DESCRIBE, DENY)));
         // These permissions all imply DESCRIBE_CONFIGS.
         for (AclOperation op : List.of(DESCRIBE_CONFIGS, ALTER_CONFIGS)) {
             assertEquals(ALLOWED, findResult(newAction(DESCRIBE_CONFIGS, TOPIC, "foo_bar"),
-                new MockAuthorizableRequestContext.Builder().
-                    setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
-                newFooAcl(op, ALLOW)));
+                    new MockAuthorizableRequestContext.Builder().
+                            setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
+                    newFooAcl(op, ALLOW)));
         }
         // Deny ACLs don't do "implication".
         assertNull(findResult(newAction(DESCRIBE_CONFIGS, TOPIC, "foo_bar"),
@@ -262,28 +262,28 @@ public class StandardAuthorizerTest {
                 newFooAcl(ALTER_CONFIGS, DENY)));
         // Exact match
         assertEquals(DENIED, findResult(newAction(ALTER_CONFIGS, TOPIC, "foo_bar"),
-            new MockAuthorizableRequestContext.Builder().
-                setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
-            newFooAcl(ALTER_CONFIGS, DENY)));
+                new MockAuthorizableRequestContext.Builder().
+                        setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
+                newFooAcl(ALTER_CONFIGS, DENY)));
     }
 
     private static StandardAcl newBarAcl(AclOperation op, AclPermissionType permission) {
         return new StandardAcl(
-            GROUP,
-            "bar",
-            LITERAL,
-            WILDCARD_PRINCIPAL,
-            WILDCARD,
-            op,
-            permission);
+                GROUP,
+                "bar",
+                LITERAL,
+                WILDCARD_PRINCIPAL,
+                WILDCARD,
+                op,
+                permission);
     }
 
     @Test
     public void testFindResultPrincipalMatching() throws Exception {
         assertEquals(ALLOWED, findResult(newAction(READ, TOPIC, "foo_bar"),
-            new MockAuthorizableRequestContext.Builder().
-                setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
-            newFooAcl(READ, ALLOW)));
+                new MockAuthorizableRequestContext.Builder().
+                        setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
+                newFooAcl(READ, ALLOW)));
         // Principal does not match.
         assertNull(findResult(newAction(READ, TOPIC, "foo_bar"),
                 new MockAuthorizableRequestContext.Builder().
@@ -291,9 +291,9 @@ public class StandardAuthorizerTest {
                 newFooAcl(READ, ALLOW)));
         // Wildcard principal matches anything.
         assertEquals(DENIED, findResult(newAction(READ, GROUP, "bar"),
-            new MockAuthorizableRequestContext.Builder().
-                setPrincipal(new KafkaPrincipal(USER_TYPE, "alice")).build(),
-            newBarAcl(READ, DENY)));
+                new MockAuthorizableRequestContext.Builder().
+                        setPrincipal(new KafkaPrincipal(USER_TYPE, "alice")).build(),
+                newBarAcl(READ, DENY)));
     }
 
     private static void assertContains(Iterable<AclBinding> iterable, StandardAcl... acls) {
@@ -310,20 +310,20 @@ public class StandardAuthorizerTest {
     public void testListAcls() {
         StandardAuthorizer authorizer = createAndInitializeStandardAuthorizer();
         List<StandardAclWithId> fooAcls = List.of(
-            withId(newFooAcl(READ, ALLOW)),
-            withId(newFooAcl(WRITE, ALLOW)));
+                withId(newFooAcl(READ, ALLOW)),
+                withId(newFooAcl(WRITE, ALLOW)));
         List<StandardAclWithId> barAcls = List.of(
-            withId(newBarAcl(DESCRIBE_CONFIGS, DENY)),
-            withId(newBarAcl(ALTER_CONFIGS, DENY)));
+                withId(newBarAcl(DESCRIBE_CONFIGS, DENY)),
+                withId(newBarAcl(ALTER_CONFIGS, DENY)));
         fooAcls.forEach(a -> authorizer.addAcl(a.id(), a.acl()));
         barAcls.forEach(a -> authorizer.addAcl(a.id(), a.acl()));
         assertContains(authorizer.acls(AclBindingFilter.ANY),
-            fooAcls.get(0).acl(), fooAcls.get(1).acl(), barAcls.get(0).acl(), barAcls.get(1).acl());
+                fooAcls.get(0).acl(), fooAcls.get(1).acl(), barAcls.get(0).acl(), barAcls.get(1).acl());
         authorizer.removeAcl(fooAcls.get(1).id());
         assertContains(authorizer.acls(AclBindingFilter.ANY),
-            fooAcls.get(0).acl(), barAcls.get(0).acl(), barAcls.get(1).acl());
+                fooAcls.get(0).acl(), barAcls.get(0).acl(), barAcls.get(1).acl());
         assertContains(authorizer.acls(new AclBindingFilter(new ResourcePatternFilter(
-            TOPIC, null, PatternType.ANY), AccessControlEntryFilter.ANY)),
+                        TOPIC, null, PatternType.ANY), AccessControlEntryFilter.ANY)),
                 fooAcls.get(0).acl());
     }
 
@@ -331,91 +331,91 @@ public class StandardAuthorizerTest {
     public void testSimpleAuthorizations() throws Exception {
         StandardAuthorizer authorizer = createAndInitializeStandardAuthorizer();
         List<StandardAclWithId> fooAcls = List.of(
-            withId(newFooAcl(READ, ALLOW)),
-            withId(newFooAcl(WRITE, ALLOW)));
+                withId(newFooAcl(READ, ALLOW)),
+                withId(newFooAcl(WRITE, ALLOW)));
         List<StandardAclWithId> barAcls = List.of(
-            withId(newBarAcl(DESCRIBE_CONFIGS, ALLOW)),
-            withId(newBarAcl(ALTER_CONFIGS, ALLOW)));
+                withId(newBarAcl(DESCRIBE_CONFIGS, ALLOW)),
+                withId(newBarAcl(ALTER_CONFIGS, ALLOW)));
         fooAcls.forEach(a -> authorizer.addAcl(a.id(), a.acl()));
         barAcls.forEach(a -> authorizer.addAcl(a.id(), a.acl()));
         assertEquals(List.of(ALLOWED),
-            authorizer.authorize(new MockAuthorizableRequestContext.Builder().
-                setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
-                    List.of(newAction(READ, TOPIC, "foo_"))));
+                authorizer.authorize(new MockAuthorizableRequestContext.Builder().
+                                setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
+                        List.of(newAction(READ, TOPIC, "foo_"))));
         assertEquals(List.of(ALLOWED),
-            authorizer.authorize(new MockAuthorizableRequestContext.Builder().
-                    setPrincipal(new KafkaPrincipal(USER_TYPE, "fred")).build(),
-                List.of(newAction(ALTER_CONFIGS, GROUP, "bar"))));
+                authorizer.authorize(new MockAuthorizableRequestContext.Builder().
+                                setPrincipal(new KafkaPrincipal(USER_TYPE, "fred")).build(),
+                        List.of(newAction(ALTER_CONFIGS, GROUP, "bar"))));
     }
 
     @Test
     public void testDenyPrecedenceWithOperationAll() throws Exception {
         StandardAuthorizer authorizer = createAndInitializeStandardAuthorizer();
         List<StandardAcl> acls = List.of(
-            new StandardAcl(TOPIC, "foo", LITERAL, "User:alice", "*", ALL, DENY),
-            new StandardAcl(TOPIC, "foo", PREFIXED, "User:alice", "*", READ, ALLOW),
-            new StandardAcl(TOPIC, "foo", LITERAL, "User:*", "*", ALL, DENY),
-            new StandardAcl(TOPIC, "foo", PREFIXED, "User:*", "*", DESCRIBE, ALLOW)
+                new StandardAcl(TOPIC, "foo", LITERAL, "User:alice", "*", ALL, DENY),
+                new StandardAcl(TOPIC, "foo", PREFIXED, "User:alice", "*", READ, ALLOW),
+                new StandardAcl(TOPIC, "foo", LITERAL, "User:*", "*", ALL, DENY),
+                new StandardAcl(TOPIC, "foo", PREFIXED, "User:*", "*", DESCRIBE, ALLOW)
         );
         acls.forEach(acl -> {
             StandardAclWithId aclWithId = withId(acl);
             authorizer.addAcl(aclWithId.id(), aclWithId.acl());
         });
         assertEquals(List.of(DENIED, DENIED, DENIED, ALLOWED), authorizer.authorize(
-            newRequestContext("alice"),
-            List.of(
-                newAction(WRITE, TOPIC, "foo"),
-                newAction(READ, TOPIC, "foo"),
-                newAction(DESCRIBE, TOPIC, "foo"),
-                newAction(READ, TOPIC, "foobar"))));
+                newRequestContext("alice"),
+                List.of(
+                        newAction(WRITE, TOPIC, "foo"),
+                        newAction(READ, TOPIC, "foo"),
+                        newAction(DESCRIBE, TOPIC, "foo"),
+                        newAction(READ, TOPIC, "foobar"))));
         assertEquals(List.of(DENIED, DENIED, DENIED, ALLOWED, DENIED), authorizer.authorize(
-            newRequestContext("bob"),
-            List.of(
-                newAction(DESCRIBE, TOPIC, "foo"),
-                newAction(READ, TOPIC, "foo"),
-                newAction(WRITE, TOPIC, "foo"),
-                newAction(DESCRIBE, TOPIC, "foobaz"),
-                newAction(READ, TOPIC, "foobaz"))));
+                newRequestContext("bob"),
+                List.of(
+                        newAction(DESCRIBE, TOPIC, "foo"),
+                        newAction(READ, TOPIC, "foo"),
+                        newAction(WRITE, TOPIC, "foo"),
+                        newAction(DESCRIBE, TOPIC, "foobaz"),
+                        newAction(READ, TOPIC, "foobaz"))));
     }
 
     @Test
     public void testTopicAclWithOperationAll() throws Exception {
         StandardAuthorizer authorizer = createAndInitializeStandardAuthorizer();
         List<StandardAcl> acls = List.of(
-            new StandardAcl(TOPIC, "foo", LITERAL, "User:*", "*", ALL, ALLOW),
-            new StandardAcl(TOPIC, "bar", PREFIXED, "User:alice", "*", ALL, ALLOW),
-            new StandardAcl(TOPIC, "baz", LITERAL, "User:bob", "*", ALL, ALLOW)
+                new StandardAcl(TOPIC, "foo", LITERAL, "User:*", "*", ALL, ALLOW),
+                new StandardAcl(TOPIC, "bar", PREFIXED, "User:alice", "*", ALL, ALLOW),
+                new StandardAcl(TOPIC, "baz", LITERAL, "User:bob", "*", ALL, ALLOW)
         );
         acls.forEach(acl -> {
             StandardAclWithId aclWithId = withId(acl);
             authorizer.addAcl(aclWithId.id(), aclWithId.acl());
         });
         assertEquals(List.of(ALLOWED, ALLOWED, DENIED), authorizer.authorize(
-            newRequestContext("alice"),
-            List.of(
-                newAction(WRITE, TOPIC, "foo"),
-                newAction(DESCRIBE_CONFIGS, TOPIC, "bar"),
-                newAction(DESCRIBE, TOPIC, "baz"))));
+                newRequestContext("alice"),
+                List.of(
+                        newAction(WRITE, TOPIC, "foo"),
+                        newAction(DESCRIBE_CONFIGS, TOPIC, "bar"),
+                        newAction(DESCRIBE, TOPIC, "baz"))));
 
         assertEquals(List.of(ALLOWED, DENIED, ALLOWED), authorizer.authorize(
-            newRequestContext("bob"),
-            List.of(
-                newAction(WRITE, TOPIC, "foo"),
-                newAction(READ, TOPIC, "bar"),
-                newAction(DESCRIBE, TOPIC, "baz"))));
+                newRequestContext("bob"),
+                List.of(
+                        newAction(WRITE, TOPIC, "foo"),
+                        newAction(READ, TOPIC, "bar"),
+                        newAction(DESCRIBE, TOPIC, "baz"))));
 
         assertEquals(List.of(ALLOWED, DENIED, DENIED), authorizer.authorize(
-            newRequestContext("malory"),
-            List.of(
-                newAction(DESCRIBE, TOPIC, "foo"),
-                newAction(WRITE, TOPIC, "bar"),
-                newAction(READ, TOPIC, "baz"))));
+                newRequestContext("malory"),
+                List.of(
+                        newAction(DESCRIBE, TOPIC, "foo"),
+                        newAction(WRITE, TOPIC, "bar"),
+                        newAction(READ, TOPIC, "baz"))));
     }
 
     private AuthorizableRequestContext newRequestContext(String principal) throws Exception {
         return new MockAuthorizableRequestContext.Builder()
-            .setPrincipal(new KafkaPrincipal(USER_TYPE, principal))
-            .build();
+                .setPrincipal(new KafkaPrincipal(USER_TYPE, principal))
+                .build();
     }
 
     @Test
@@ -425,10 +425,10 @@ public class StandardAuthorizerTest {
 
         StandardAuthorizer authorizer = createAndInitializeStandardAuthorizer();
         List<StandardAcl> acls = List.of(
-            new StandardAcl(TOPIC, "foo", LITERAL, "User:alice", host1.getHostAddress(), READ, DENY),
-            new StandardAcl(TOPIC, "foo", LITERAL, "User:alice", "*", READ, ALLOW),
-            new StandardAcl(TOPIC, "bar", LITERAL, "User:bob", host2.getHostAddress(), READ, ALLOW),
-            new StandardAcl(TOPIC, "bar", LITERAL, "User:*", InetAddress.getLocalHost().getHostAddress(), DESCRIBE, ALLOW)
+                new StandardAcl(TOPIC, "foo", LITERAL, "User:alice", host1.getHostAddress(), READ, DENY),
+                new StandardAcl(TOPIC, "foo", LITERAL, "User:alice", "*", READ, ALLOW),
+                new StandardAcl(TOPIC, "bar", LITERAL, "User:bob", host2.getHostAddress(), READ, ALLOW),
+                new StandardAcl(TOPIC, "bar", LITERAL, "User:*", InetAddress.getLocalHost().getHostAddress(), DESCRIBE, ALLOW)
         );
 
         acls.forEach(acl -> {
@@ -437,48 +437,48 @@ public class StandardAuthorizerTest {
         });
 
         List<Action> actions = List.of(
-            newAction(READ, TOPIC, "foo"),
-            newAction(READ, TOPIC, "bar"),
-            newAction(DESCRIBE, TOPIC, "bar")
+                newAction(READ, TOPIC, "foo"),
+                newAction(READ, TOPIC, "bar"),
+                newAction(DESCRIBE, TOPIC, "bar")
         );
 
         assertEquals(List.of(ALLOWED, DENIED, ALLOWED), authorizer.authorize(
-            newRequestContext("alice", InetAddress.getLocalHost()), actions));
+                newRequestContext("alice", InetAddress.getLocalHost()), actions));
 
         assertEquals(List.of(DENIED, DENIED, DENIED), authorizer.authorize(
-            newRequestContext("alice", host1), actions));
+                newRequestContext("alice", host1), actions));
 
         assertEquals(List.of(ALLOWED, DENIED, DENIED), authorizer.authorize(
-            newRequestContext("alice", host2), actions));
+                newRequestContext("alice", host2), actions));
 
         assertEquals(List.of(DENIED, DENIED, ALLOWED), authorizer.authorize(
-            newRequestContext("bob", InetAddress.getLocalHost()), actions));
+                newRequestContext("bob", InetAddress.getLocalHost()), actions));
 
         assertEquals(List.of(DENIED, DENIED, DENIED), authorizer.authorize(
-            newRequestContext("bob", host1), actions));
+                newRequestContext("bob", host1), actions));
 
         assertEquals(List.of(DENIED, ALLOWED, ALLOWED), authorizer.authorize(
-            newRequestContext("bob", host2), actions));
+                newRequestContext("bob", host2), actions));
     }
 
     private AuthorizableRequestContext newRequestContext(String principal, InetAddress clientAddress) throws Exception {
         return new MockAuthorizableRequestContext.Builder()
-            .setPrincipal(new KafkaPrincipal(USER_TYPE, principal))
-            .setClientAddress(clientAddress)
-            .build();
+                .setPrincipal(new KafkaPrincipal(USER_TYPE, principal))
+                .setClientAddress(clientAddress)
+                .build();
     }
 
     private static void addManyAcls(StandardAuthorizer authorizer) {
         List<StandardAcl> acls = List.of(
-            new StandardAcl(TOPIC, "green2", LITERAL, "User:*", "*", READ, ALLOW),
-            new StandardAcl(TOPIC, "green", PREFIXED, "User:bob", "*", READ, ALLOW),
-            new StandardAcl(TOPIC, "betamax4", LITERAL, "User:bob", "*", READ, ALLOW),
-            new StandardAcl(TOPIC, "betamax", LITERAL, "User:bob", "*", READ, ALLOW),
-            new StandardAcl(TOPIC, "beta", PREFIXED, "User:*", "*", READ, ALLOW),
-            new StandardAcl(TOPIC, "alpha", PREFIXED, "User:*", "*", READ, ALLOW),
-            new StandardAcl(TOPIC, "alp", PREFIXED, "User:bob", "*", READ, DENY),
-            new StandardAcl(GROUP, "*", LITERAL, "User:bob", "*", WRITE, ALLOW),
-            new StandardAcl(GROUP, "wheel", LITERAL, "User:*", "*", WRITE, DENY)
+                new StandardAcl(TOPIC, "green2", LITERAL, "User:*", "*", READ, ALLOW),
+                new StandardAcl(TOPIC, "green", PREFIXED, "User:bob", "*", READ, ALLOW),
+                new StandardAcl(TOPIC, "betamax4", LITERAL, "User:bob", "*", READ, ALLOW),
+                new StandardAcl(TOPIC, "betamax", LITERAL, "User:bob", "*", READ, ALLOW),
+                new StandardAcl(TOPIC, "beta", PREFIXED, "User:*", "*", READ, ALLOW),
+                new StandardAcl(TOPIC, "alpha", PREFIXED, "User:*", "*", READ, ALLOW),
+                new StandardAcl(TOPIC, "alp", PREFIXED, "User:bob", "*", READ, DENY),
+                new StandardAcl(GROUP, "*", LITERAL, "User:bob", "*", WRITE, ALLOW),
+                new StandardAcl(GROUP, "wheel", LITERAL, "User:*", "*", WRITE, DENY)
         );
         acls.forEach(acl -> {
             StandardAclWithId aclWithId = withId(acl);
@@ -491,16 +491,16 @@ public class StandardAuthorizerTest {
         StandardAuthorizer authorizer = createAndInitializeStandardAuthorizer();
         addManyAcls(authorizer);
         assertEquals(List.of(ALLOWED, DENIED),
-            authorizer.authorize(new MockAuthorizableRequestContext.Builder().
-                    setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
-                List.of(newAction(READ, TOPIC, "green1"),
-                    newAction(WRITE, GROUP, "wheel"))));
+                authorizer.authorize(new MockAuthorizableRequestContext.Builder().
+                                setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
+                        List.of(newAction(READ, TOPIC, "green1"),
+                                newAction(WRITE, GROUP, "wheel"))));
         assertEquals(List.of(DENIED, ALLOWED, DENIED),
-            authorizer.authorize(new MockAuthorizableRequestContext.Builder().
-                    setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
-                List.of(newAction(READ, TOPIC, "alpha"),
-                    newAction(WRITE, GROUP, "arbitrary"),
-                    newAction(READ, TOPIC, "ala"))));
+                authorizer.authorize(new MockAuthorizableRequestContext.Builder().
+                                setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
+                        List.of(newAction(READ, TOPIC, "alpha"),
+                                newAction(WRITE, GROUP, "arbitrary"),
+                                newAction(READ, TOPIC, "ala"))));
     }
 
     @ParameterizedTest
@@ -510,12 +510,12 @@ public class StandardAuthorizerTest {
             Logger otherLog = Mockito.mock(Logger.class);
             Logger auditLog = Mockito.mock(Logger.class);
             mockedLoggerFactory
-                .when(() -> LoggerFactory.getLogger("kafka.authorizer.logger"))
-                .thenReturn(auditLog);
+                    .when(() -> LoggerFactory.getLogger("kafka.authorizer.logger"))
+                    .thenReturn(auditLog);
 
             mockedLoggerFactory
-                .when(() -> LoggerFactory.getLogger(Mockito.any(Class.class)))
-                .thenReturn(otherLog);
+                    .when(() -> LoggerFactory.getLogger(Mockito.any(Class.class)))
+                    .thenReturn(otherLog);
 
             Mockito.when(auditLog.isDebugEnabled()).thenReturn(true);
             Mockito.when(auditLog.isTraceEnabled()).thenReturn(true);
@@ -525,17 +525,17 @@ public class StandardAuthorizerTest {
             ResourcePattern topicResource = new ResourcePattern(TOPIC, "alpha", LITERAL);
             Action action = new Action(READ, topicResource, 1, false, logIfDenied);
             MockAuthorizableRequestContext requestContext = new MockAuthorizableRequestContext.Builder()
-                .setPrincipal(new KafkaPrincipal(USER_TYPE, "bob"))
-                .setClientAddress(InetAddress.getByName("127.0.0.1"))
-                .build();
+                    .setPrincipal(new KafkaPrincipal(USER_TYPE, "bob"))
+                    .setClientAddress(InetAddress.getByName("127.0.0.1"))
+                    .build();
 
             assertEquals(List.of(DENIED), authorizer.authorize(requestContext, List.of(action)));
 
             String expectedAuditLog = "Principal = User:bob is Denied operation = READ " +
-                "from host = 127.0.0.1 on resource = Topic:LITERAL:alpha for request = Fetch " +
-                "with resourceRefCount = 1 based on rule MatchingAcl(acl=StandardAcl[resourceType=TOPIC, " +
-                "resourceName=alp, patternType=PREFIXED, principal=User:bob, host=*, operation=READ, " +
-                "permissionType=DENY])";
+                    "from host = 127.0.0.1 on resource = Topic:LITERAL:alpha for request = Fetch " +
+                    "with resourceRefCount = 1 based on rule MatchingAcl(acl=StandardAcl[resourceType=TOPIC, " +
+                    "resourceName=alp, patternType=PREFIXED, principal=User:bob, host=*, operation=READ, " +
+                    "permissionType=DENY])";
 
             if (logIfDenied) {
                 Mockito.verify(auditLog).info(expectedAuditLog);
@@ -552,12 +552,12 @@ public class StandardAuthorizerTest {
             Logger otherLog = Mockito.mock(Logger.class);
             Logger auditLog = Mockito.mock(Logger.class);
             mockedLoggerFactory
-                .when(() -> LoggerFactory.getLogger("kafka.authorizer.logger"))
-                .thenReturn(auditLog);
+                    .when(() -> LoggerFactory.getLogger("kafka.authorizer.logger"))
+                    .thenReturn(auditLog);
 
             mockedLoggerFactory
-                .when(() -> LoggerFactory.getLogger(Mockito.any(Class.class)))
-                .thenReturn(otherLog);
+                    .when(() -> LoggerFactory.getLogger(Mockito.any(Class.class)))
+                    .thenReturn(otherLog);
 
             Mockito.when(auditLog.isDebugEnabled()).thenReturn(true);
             Mockito.when(auditLog.isTraceEnabled()).thenReturn(true);
@@ -567,17 +567,17 @@ public class StandardAuthorizerTest {
             ResourcePattern topicResource = new ResourcePattern(TOPIC, "green1", LITERAL);
             Action action = new Action(READ, topicResource, 1, logIfAllowed, false);
             MockAuthorizableRequestContext requestContext = new MockAuthorizableRequestContext.Builder()
-                .setPrincipal(new KafkaPrincipal(USER_TYPE, "bob"))
-                .setClientAddress(InetAddress.getByName("127.0.0.1"))
-                .build();
+                    .setPrincipal(new KafkaPrincipal(USER_TYPE, "bob"))
+                    .setClientAddress(InetAddress.getByName("127.0.0.1"))
+                    .build();
 
             assertEquals(List.of(ALLOWED), authorizer.authorize(requestContext, List.of(action)));
 
             String expectedAuditLog = "Principal = User:bob is Allowed operation = READ " +
-                "from host = 127.0.0.1 on resource = Topic:LITERAL:green1 for request = Fetch " +
-                "with resourceRefCount = 1 based on rule MatchingAcl(acl=StandardAcl[resourceType=TOPIC, " +
-                "resourceName=green, patternType=PREFIXED, principal=User:bob, host=*, operation=READ, " +
-                "permissionType=ALLOW])";
+                    "from host = 127.0.0.1 on resource = Topic:LITERAL:green1 for request = Fetch " +
+                    "with resourceRefCount = 1 based on rule MatchingAcl(acl=StandardAcl[resourceType=TOPIC, " +
+                    "resourceName=green, patternType=PREFIXED, principal=User:bob, host=*, operation=READ, " +
+                    "permissionType=ALLOW])";
 
             if (logIfAllowed) {
                 Mockito.verify(auditLog).debug(expectedAuditLog);
@@ -596,7 +596,7 @@ public class StandardAuthorizerTest {
         StandardAuthorizer authorizer = new StandardAuthorizer();
         authorizer.configure(Map.of(SUPER_USERS_CONFIG, "User:superman"));
         Map<Endpoint, ? extends CompletionStage<Void>> futures2 = authorizer.
-            start(new AuthorizerTestServerInfo(List.of(PLAINTEXT, CONTROLLER)));
+                start(new AuthorizerTestServerInfo(List.of(PLAINTEXT, CONTROLLER)));
         assertEquals(Set.of(PLAINTEXT, CONTROLLER), futures2.keySet());
         assertFalse(futures2.get(PLAINTEXT).toCompletableFuture().isDone());
         assertTrue(futures2.get(CONTROLLER).toCompletableFuture().isDone());
@@ -614,15 +614,15 @@ public class StandardAuthorizerTest {
         authorizer.configure(Map.of(SUPER_USERS_CONFIG, "User:superman"));
         authorizer.withPluginMetrics(new PluginMetricsImpl(new Metrics(), Map.of()));
         assertThrows(AuthorizerNotReadyException.class, () ->
-            authorizer.authorize(new MockAuthorizableRequestContext.Builder().
-                    setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
-                List.of(newAction(READ, TOPIC, "green1"),
-                    newAction(READ, TOPIC, "green2"))));
+                authorizer.authorize(new MockAuthorizableRequestContext.Builder().
+                                setPrincipal(new KafkaPrincipal(USER_TYPE, "bob")).build(),
+                        List.of(newAction(READ, TOPIC, "green1"),
+                                newAction(READ, TOPIC, "green2"))));
         assertEquals(List.of(ALLOWED, ALLOWED),
-            authorizer.authorize(new MockAuthorizableRequestContext.Builder().
-                    setPrincipal(new KafkaPrincipal(USER_TYPE, "superman")).build(),
-                List.of(newAction(READ, TOPIC, "green1"),
-                    newAction(WRITE, GROUP, "wheel"))));
+                authorizer.authorize(new MockAuthorizableRequestContext.Builder().
+                                setPrincipal(new KafkaPrincipal(USER_TYPE, "superman")).build(),
+                        List.of(newAction(READ, TOPIC, "green1"),
+                                newAction(WRITE, GROUP, "wheel"))));
     }
 
     @Test
@@ -630,7 +630,7 @@ public class StandardAuthorizerTest {
         StandardAuthorizer authorizer = new StandardAuthorizer();
         authorizer.configure(Map.of(SUPER_USERS_CONFIG, "User:superman"));
         Map<Endpoint, ? extends CompletionStage<Void>> futures = authorizer.
-            start(new AuthorizerTestServerInfo(Set.of(PLAINTEXT)));
+                start(new AuthorizerTestServerInfo(Set.of(PLAINTEXT)));
         assertEquals(Set.of(PLAINTEXT), futures.keySet());
         assertFalse(futures.get(PLAINTEXT).toCompletableFuture().isDone());
         authorizer.completeInitialLoad();
@@ -643,7 +643,7 @@ public class StandardAuthorizerTest {
         StandardAuthorizer authorizer = new StandardAuthorizer();
         authorizer.configure(Map.of(SUPER_USERS_CONFIG, "User:superman"));
         Map<Endpoint, ? extends CompletionStage<Void>> futures = authorizer.
-            start(new AuthorizerTestServerInfo(List.of(PLAINTEXT, CONTROLLER)));
+                start(new AuthorizerTestServerInfo(List.of(PLAINTEXT, CONTROLLER)));
         assertEquals(Set.of(PLAINTEXT, CONTROLLER), futures.keySet());
         assertFalse(futures.get(PLAINTEXT).toCompletableFuture().isDone());
         assertTrue(futures.get(CONTROLLER).toCompletableFuture().isDone());

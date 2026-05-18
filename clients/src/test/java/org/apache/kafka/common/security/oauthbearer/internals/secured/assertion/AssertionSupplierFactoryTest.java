@@ -125,13 +125,13 @@ public class AssertionSupplierFactoryTest extends OAuthBearerTest {
 
             // Verify all configured static claims are present in the assertion
             JwtConsumer jwtConsumer = new JwtConsumerBuilder()
-                .setVerificationKey(keyPair.getPublic())
-                .setRequireExpirationTime()
-                .setAllowedClockSkewInSeconds(30)
-                .setExpectedAudience("https://auth.example.com")
-                .setExpectedIssuer("my-client")
-                .setExpectedSubject("service-account")
-                .build();
+                    .setVerificationKey(keyPair.getPublic())
+                    .setRequireExpirationTime()
+                    .setAllowedClockSkewInSeconds(30)
+                    .setExpectedAudience("https://auth.example.com")
+                    .setExpectedIssuer("my-client")
+                    .setExpectedSubject("service-account")
+                    .build();
             JwtContext context = jwtConsumer.process(assertion);
             assertNotNull(context);
         }

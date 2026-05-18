@@ -111,8 +111,8 @@ public abstract class ShareConsumerTestBase {
             tpId = createTopic("topic");
             createTopic("topic2");
             sgsTopicPartitions = IntStream.range(0, 3)
-                .mapToObj(part -> new TopicPartition(Topic.SHARE_GROUP_STATE_TOPIC_NAME, part))
-                .toList();
+                    .mapToObj(part -> new TopicPartition(Topic.SHARE_GROUP_STATE_TOPIC_NAME, part))
+                    .toList();
             this.warmup();
         } catch (Exception e) {
             fail(e);
@@ -187,7 +187,7 @@ public abstract class ShareConsumerTestBase {
         try (Producer<byte[], byte[]> producer = createProducer()) {
             for (int i = 0; i < messageCount; i++) {
                 ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(tp.topic(), tp.partition(), startingTimestamp + i,
-                    ("key " + i).getBytes(), ("value " + i).getBytes());
+                        ("key " + i).getBytes(), ("value " + i).getBytes());
                 producer.send(record);
             }
             producer.flush();
@@ -271,8 +271,8 @@ public abstract class ShareConsumerTestBase {
                                   int maxFetchBytes) {
         return assertDoesNotThrow(() -> {
             try (ShareConsumer<byte[], byte[]> shareConsumer = createShareConsumer(
-                groupId,
-                Map.of(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, maxFetchBytes))) {
+                    groupId,
+                    Map.of(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, maxFetchBytes))) {
                 shareConsumer.subscribe(Set.of(tp.topic()));
                 return consumeMessages(shareConsumer, totalMessagesConsumed, totalMessages, consumerNumber, maxPolls, commit);
             }
@@ -364,9 +364,9 @@ public abstract class ShareConsumerTestBase {
 
     protected <K, V> Producer<K, V> createProducer(String transactionalId) {
         return createProducer(
-            Map.of(
-                ProducerConfig.TRANSACTIONAL_ID_CONFIG, transactionalId
-            )
+                Map.of(
+                        ProducerConfig.TRANSACTIONAL_ID_CONFIG, transactionalId
+                )
         );
     }
 
@@ -375,17 +375,17 @@ public abstract class ShareConsumerTestBase {
     }
 
     protected <K, V> ShareConsumer<K, V> createShareConsumer(
-        String groupId,
-        Map<?, ?> additionalProperties
+            String groupId,
+            Map<?, ?> additionalProperties
     ) {
         return createShareConsumer(groupId, additionalProperties, null, null);
     }
 
     protected <K, V> ShareConsumer<K, V> createShareConsumer(
-        String groupId,
-        Map<?, ?> additionalProperties,
-        Deserializer<K> keyDeserializer,
-        Deserializer<V> valueDeserializer
+            String groupId,
+            Map<?, ?> additionalProperties,
+            Deserializer<K> keyDeserializer,
+            Deserializer<V> valueDeserializer
     ) {
         Properties props = new Properties();
         props.putAll(additionalProperties);
@@ -409,14 +409,14 @@ public abstract class ShareConsumerTestBase {
 
             shareConsumer.subscribe(subscription);
             TestUtils.waitForCondition(
-                () -> shareConsumer.poll(Duration.ofMillis(5000)).count() == 1, 30000, 200L, () -> "warmup record not received");
+                    () -> shareConsumer.poll(Duration.ofMillis(5000)).count() == 1, 30000, 200L, () -> "warmup record not received");
         }
     }
 
     protected void waitForMetadataCache() throws InterruptedException {
         TestUtils.waitForCondition(() ->
-                !cluster.brokers().get(0).metadataCache().getAliveBrokerNodes(new ListenerName("EXTERNAL")).isEmpty(),
-            DEFAULT_MAX_WAIT_MS, 100L, () -> "cache not up yet");
+                        !cluster.brokers().get(0).metadataCache().getAliveBrokerNodes(new ListenerName("EXTERNAL")).isEmpty(),
+                DEFAULT_MAX_WAIT_MS, 100L, () -> "cache not up yet");
     }
 
     protected void verifyShareGroupStateTopicRecordsProduced() {
@@ -426,15 +426,15 @@ public abstract class ShareConsumerTestBase {
                 consumer.seekToBeginning(sgsTopicPartitions);
                 Set<ConsumerRecord<byte[], byte[]>> records = new HashSet<>();
                 TestUtils.waitForCondition(() -> {
-                        ConsumerRecords<byte[], byte[]> msgs = consumer.poll(Duration.ofMillis(5000L));
-                        if (msgs.count() > 0) {
-                            msgs.records(Topic.SHARE_GROUP_STATE_TOPIC_NAME).forEach(records::add);
-                        }
-                        return records.size() > 2; // +2 because of extra warmup records
-                    },
-                    30000L,
-                    200L,
-                    () -> "no records produced"
+                            ConsumerRecords<byte[], byte[]> msgs = consumer.poll(Duration.ofMillis(5000L));
+                            if (msgs.count() > 0) {
+                                msgs.records(Topic.SHARE_GROUP_STATE_TOPIC_NAME).forEach(records::add);
+                            }
+                            return records.size() > 2; // +2 because of extra warmup records
+                        },
+                        30000L,
+                        200L,
+                        () -> "no records produced"
                 );
             }
         } catch (InterruptedException e) {
@@ -446,12 +446,12 @@ public abstract class ShareConsumerTestBase {
         ConfigResource configResource = new ConfigResource(ConfigResource.Type.GROUP, groupId);
         Map<ConfigResource, Collection<AlterConfigOp>> alterEntries = new HashMap<>();
         alterEntries.put(configResource, List.of(new AlterConfigOp(new ConfigEntry(
-            configKey, newValue), AlterConfigOp.OpType.SET)));
+                configKey, newValue), AlterConfigOp.OpType.SET)));
         AlterConfigsOptions alterOptions = new AlterConfigsOptions();
         try (Admin adminClient = createAdminClient()) {
             assertDoesNotThrow(() -> adminClient.incrementalAlterConfigs(alterEntries, alterOptions)
-                .all()
-                .get(60, TimeUnit.SECONDS), "Failed to alter configs");
+                    .all()
+                    .get(60, TimeUnit.SECONDS), "Failed to alter configs");
         }
 
         // This config is changed dynamically in tests, and we need it to have propagated before the test proceeds.
@@ -459,11 +459,11 @@ public abstract class ShareConsumerTestBase {
         // altering the config and continuing.
         try (Admin adminClient = createAdminClient()) {
             assertDoesNotThrow(() ->
-                TestUtils.waitForCondition(() -> {
-                    Config config = adminClient.describeConfigs(List.of(configResource)).all().get().get(configResource);
-                    ConfigEntry entry = config.get(configKey);
-                    return entry != null && entry.value().equals(newValue);
-                }, 10000L, 100L, () -> "New config value did not propagate"), "Failed to describe configs");
+                    TestUtils.waitForCondition(() -> {
+                        Config config = adminClient.describeConfigs(List.of(configResource)).all().get().get(configResource);
+                        ConfigEntry entry = config.get(configKey);
+                        return entry != null && entry.value().equals(newValue);
+                    }, 10000L, 100L, () -> "New config value did not propagate"), "Failed to describe configs");
         }
     }
 
@@ -485,18 +485,18 @@ public abstract class ShareConsumerTestBase {
 
     protected List<Integer> topicPartitionLeader(Admin adminClient, String topicName, int partition) throws InterruptedException, ExecutionException {
         return adminClient.describeTopics(List.of(topicName)).allTopicNames().get().get(topicName)
-            .partitions().stream()
-            .filter(info -> info.partition() == partition)
-            .map(info -> info.leader().id())
-            .filter(info -> info != -1)
-            .toList();
+                .partitions().stream()
+                .filter(info -> info.partition() == partition)
+                .map(info -> info.leader().id())
+                .filter(info -> info != -1)
+                .toList();
     }
 
     protected SharePartitionOffsetInfo sharePartitionOffsetInfo(Admin adminClient, String groupId, TopicPartition tp) throws InterruptedException, ExecutionException {
         SharePartitionOffsetInfo partitionResult;
         ListShareGroupOffsetsResult result = adminClient.listShareGroupOffsets(
-            Map.of(groupId, new ListShareGroupOffsetsSpec().topicPartitions(List.of(tp))),
-            new ListShareGroupOffsetsOptions().timeoutMs(30000)
+                Map.of(groupId, new ListShareGroupOffsetsSpec().topicPartitions(List.of(tp))),
+                new ListShareGroupOffsetsOptions().timeoutMs(30000)
         );
         partitionResult = result.partitionsToOffsetInfo(groupId).get().get(tp);
         return partitionResult;
@@ -506,7 +506,7 @@ public abstract class ShareConsumerTestBase {
         TestUtils.waitForCondition(() -> {
             SharePartitionOffsetInfo sharePartitionOffsetInfo = sharePartitionOffsetInfo(adminClient, groupId, tp);
             return sharePartitionOffsetInfo != null &&
-                sharePartitionOffsetInfo.startOffset() == expectedStartOffset;
+                    sharePartitionOffsetInfo.startOffset() == expectedStartOffset;
         }, DEFAULT_MAX_WAIT_MS, DEFAULT_POLL_INTERVAL_MS, () -> "Failed to retrieve share partition lag");
     }
 
@@ -514,31 +514,31 @@ public abstract class ShareConsumerTestBase {
         TestUtils.waitForCondition(() -> {
             SharePartitionOffsetInfo sharePartitionOffsetInfo = sharePartitionOffsetInfo(adminClient, groupId, tp);
             return sharePartitionOffsetInfo != null &&
-                sharePartitionOffsetInfo.lag().isPresent() &&
-                sharePartitionOffsetInfo.lag().get() == expectedLag;
+                    sharePartitionOffsetInfo.lag().isPresent() &&
+                    sharePartitionOffsetInfo.lag().get() == expectedLag;
         }, DEFAULT_MAX_WAIT_MS, DEFAULT_POLL_INTERVAL_MS, () -> "Failed to retrieve share partition lag");
     }
 
     protected void verifySharePartitionOffsetsDeleted(Admin adminClient, String groupId, TopicPartition tp) throws InterruptedException {
         TestUtils.waitForCondition(
-            () -> sharePartitionOffsetInfo(adminClient, groupId, tp) == null,
-            DEFAULT_MAX_WAIT_MS,
-            DEFAULT_POLL_INTERVAL_MS,
-            () -> "Failed to retrieve share partition lag");
+                () -> sharePartitionOffsetInfo(adminClient, groupId, tp) == null,
+                DEFAULT_MAX_WAIT_MS,
+                DEFAULT_POLL_INTERVAL_MS,
+                () -> "Failed to retrieve share partition lag");
     }
 
     protected void alterShareGroupOffsets(Admin adminClient, String groupId, TopicPartition topicPartition, Long newOffset) throws InterruptedException, ExecutionException {
         adminClient.alterShareGroupOffsets(
-            groupId,
-            Map.of(topicPartition, newOffset),
-            new AlterShareGroupOffsetsOptions().timeoutMs(30000)).partitionResult(topicPartition).get();
+                groupId,
+                Map.of(topicPartition, newOffset),
+                new AlterShareGroupOffsetsOptions().timeoutMs(30000)).partitionResult(topicPartition).get();
     }
 
     protected void deleteShareGroupOffsets(Admin adminClient, String groupId, String topic) throws InterruptedException, ExecutionException {
         adminClient.deleteShareGroupOffsets(
-            groupId,
-            Set.of(topic),
-            new DeleteShareGroupOffsetsOptions().timeoutMs(30000)).topicResult(topic).get();
+                groupId,
+                Set.of(topic),
+                new DeleteShareGroupOffsetsOptions().timeoutMs(30000)).topicResult(topic).get();
     }
 
     protected void alterSharePartitionMaxRecordLocks(String groupId, String newValue) {
@@ -570,37 +570,37 @@ public abstract class ShareConsumerTestBase {
         private final BiConsumer<ShareConsumer<K, V>, ConsumerRecord<K, V>> processFunc;
 
         ComplexShareConsumer(
-            String bootstrapServers,
-            String topicName,
-            String groupId,
-            Map<String, Object> additionalProperties
+                String bootstrapServers,
+                String topicName,
+                String groupId,
+                Map<String, Object> additionalProperties
         ) {
             this(
-                bootstrapServers,
-                topicName,
-                groupId,
-                additionalProperties,
-                records -> records.count() == 0,
-                (consumer, record) -> {
-                    short deliveryCountBeforeAccept = (short) ((record.offset() + record.offset() / (MAX_DELIVERY_COUNT + 2)) % (MAX_DELIVERY_COUNT + 2));
-                    if (deliveryCountBeforeAccept == 0) {
-                        consumer.acknowledge(record, AcknowledgeType.REJECT);
-                    } else if (record.deliveryCount().get() == deliveryCountBeforeAccept) {
-                        consumer.acknowledge(record, AcknowledgeType.ACCEPT);
-                    } else {
-                        consumer.acknowledge(record, AcknowledgeType.RELEASE);
+                    bootstrapServers,
+                    topicName,
+                    groupId,
+                    additionalProperties,
+                    records -> records.count() == 0,
+                    (consumer, record) -> {
+                        short deliveryCountBeforeAccept = (short) ((record.offset() + record.offset() / (MAX_DELIVERY_COUNT + 2)) % (MAX_DELIVERY_COUNT + 2));
+                        if (deliveryCountBeforeAccept == 0) {
+                            consumer.acknowledge(record, AcknowledgeType.REJECT);
+                        } else if (record.deliveryCount().get() == deliveryCountBeforeAccept) {
+                            consumer.acknowledge(record, AcknowledgeType.ACCEPT);
+                        } else {
+                            consumer.acknowledge(record, AcknowledgeType.RELEASE);
+                        }
                     }
-                }
             );
         }
 
         ComplexShareConsumer(
-            String bootstrapServers,
-            String topicName,
-            String groupId,
-            Map<String, Object> additionalProperties,
-            Predicate<ConsumerRecords<K, V>> exitCriteria,
-            BiConsumer<ShareConsumer<K, V>, ConsumerRecord<K, V>> processFunc
+                String bootstrapServers,
+                String topicName,
+                String groupId,
+                Map<String, Object> additionalProperties,
+                Predicate<ConsumerRecords<K, V>> exitCriteria,
+                BiConsumer<ShareConsumer<K, V>, ConsumerRecord<K, V>> processFunc
         ) {
             this.exitCriteria = Objects.requireNonNull(exitCriteria);
             this.processFunc = Objects.requireNonNull(processFunc);
@@ -649,34 +649,34 @@ public abstract class ShareConsumerTestBase {
     }
 
     protected ConsumerRecords<byte[], byte[]> waitedPoll(
-        ShareConsumer<byte[], byte[]> shareConsumer,
-        long pollMs,
-        int recordCount
+            ShareConsumer<byte[], byte[]> shareConsumer,
+            long pollMs,
+            int recordCount
     ) {
         return waitedPoll(shareConsumer, pollMs, recordCount, false, "", List.of());
     }
 
     protected ConsumerRecords<byte[], byte[]> waitedPoll(
-        ShareConsumer<byte[], byte[]> shareConsumer,
-        long pollMs,
-        int recordCount,
-        boolean checkAssignment,
-        String groupId,
-        List<TopicPartition> tps
+            ShareConsumer<byte[], byte[]> shareConsumer,
+            long pollMs,
+            int recordCount,
+            boolean checkAssignment,
+            String groupId,
+            List<TopicPartition> tps
     ) {
         AtomicReference<ConsumerRecords<byte[], byte[]>> recordsAtomic = new AtomicReference<>();
         try {
             waitForCondition(() -> {
-                    ConsumerRecords<byte[], byte[]> recs = shareConsumer.poll(Duration.ofMillis(pollMs));
-                    recordsAtomic.set(recs);
-                    if (checkAssignment) {
-                        waitForAssignment(groupId, tps);
-                    }
-                    return recs.count() == recordCount;
-                },
-                DEFAULT_MAX_WAIT_MS,
-                500L,
-                () -> "failed to get records"
+                        ConsumerRecords<byte[], byte[]> recs = shareConsumer.poll(Duration.ofMillis(pollMs));
+                        recordsAtomic.set(recs);
+                        if (checkAssignment) {
+                            waitForAssignment(groupId, tps);
+                        }
+                        return recs.count() == recordCount;
+                    },
+                    DEFAULT_MAX_WAIT_MS,
+                    500L,
+                    () -> "failed to get records"
             );
             return recordsAtomic.get();
         } catch (InterruptedException e) {
@@ -685,20 +685,20 @@ public abstract class ShareConsumerTestBase {
     }
 
     protected void validateExpectedRecordsInEachPollAndRelease(
-        ShareConsumer<byte[], byte[]> shareConsumer,
-        int startOffset,
-        int lastOffset,
-        int expectedRecordsInEachPoll
+            ShareConsumer<byte[], byte[]> shareConsumer,
+            int startOffset,
+            int lastOffset,
+            int expectedRecordsInEachPoll
     ) {
         validateExpectedRecordsInEachPollAndAcknowledge(shareConsumer, startOffset, lastOffset, expectedRecordsInEachPoll, AcknowledgeType.RELEASE);
     }
 
     protected void validateExpectedRecordsInEachPollAndAcknowledge(
-        ShareConsumer<byte[], byte[]> shareConsumer,
-        int startOffset,
-        int lastOffset,
-        int expectedRecordsInEachPoll,
-        AcknowledgeType acknowledgeType
+            ShareConsumer<byte[], byte[]> shareConsumer,
+            int startOffset,
+            int lastOffset,
+            int expectedRecordsInEachPoll,
+            AcknowledgeType acknowledgeType
     ) {
         for (int i = startOffset; i < lastOffset; i = i + expectedRecordsInEachPoll) {
             ConsumerRecords<byte[], byte[]> records = waitedPoll(shareConsumer, 2500L, expectedRecordsInEachPoll);
@@ -716,24 +716,24 @@ public abstract class ShareConsumerTestBase {
     protected void waitForAssignment(String groupId, List<TopicPartition> tps) {
         try {
             waitForCondition(() -> {
-                    try (Admin admin = createAdminClient()) {
-                        Collection<ShareMemberDescription> members = admin.describeShareGroups(List.of(groupId),
-                            new DescribeShareGroupsOptions().includeAuthorizedOperations(true)
-                        ).describedGroups().get(groupId).get().members();
-                        Set<TopicPartition> assigned = new HashSet<>();
-                        members.forEach(desc -> {
-                            if (desc.assignment() != null) {
-                                assigned.addAll(desc.assignment().topicPartitions());
-                            }
-                        });
-                        return assigned.containsAll(tps);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                },
-                DEFAULT_MAX_WAIT_MS,
-                1000L,
-                () -> "tps not assigned to members"
+                        try (Admin admin = createAdminClient()) {
+                            Collection<ShareMemberDescription> members = admin.describeShareGroups(List.of(groupId),
+                                    new DescribeShareGroupsOptions().includeAuthorizedOperations(true)
+                            ).describedGroups().get(groupId).get().members();
+                            Set<TopicPartition> assigned = new HashSet<>();
+                            members.forEach(desc -> {
+                                if (desc.assignment() != null) {
+                                    assigned.addAll(desc.assignment().topicPartitions());
+                                }
+                            });
+                            return assigned.containsAll(tps);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    DEFAULT_MAX_WAIT_MS,
+                    1000L,
+                    () -> "tps not assigned to members"
             );
         } catch (Exception e) {
             throw new RuntimeException(e);

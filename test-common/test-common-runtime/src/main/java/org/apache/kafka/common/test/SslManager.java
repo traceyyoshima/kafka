@@ -46,8 +46,8 @@ public class SslManager {
     public Map<String, Object> createSslConfig() {
         try {
             Map<String, Object> config = new TestSslUtils.SslConfigsBuilder(ConnectionMode.SERVER)
-                .createNewTrustStore(trustStoreFile)
-                .build();
+                    .createNewTrustStore(trustStoreFile)
+                    .build();
             keyStoreFile = new File((String) config.get(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG));
             log.info("Created unified SSL config - KeyStore: {}, TrustStore: {}", keyStoreFile.getPath(), trustStoreFile.getPath());
             return config;
@@ -59,8 +59,8 @@ public class SslManager {
     public Map<String, Object> createClientSslConfig() {
         try {
             return new TestSslUtils.SslConfigsBuilder(ConnectionMode.CLIENT)
-                .useExistingTrustStore(trustStoreFile)
-                .build();
+                    .useExistingTrustStore(trustStoreFile)
+                    .build();
         } catch (IOException | GeneralSecurityException e) {
             throw new RuntimeException("Failed to create client SSL config", e);
         }

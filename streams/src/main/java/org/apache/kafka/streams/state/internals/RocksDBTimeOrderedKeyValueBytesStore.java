@@ -35,10 +35,10 @@ public class RocksDBTimeOrderedKeyValueBytesStore extends AbstractRocksDBTimeOrd
     RocksDBTimeOrderedKeyValueBytesStore(final String name,
                                          final String metricsScope) {
         super(name,
-            Long.MAX_VALUE,
-            new TimeFirstWindowKeySchema(),
-            Optional.empty(),
-            new KeyValueSegments(name, metricsScope, Long.MAX_VALUE, Long.MAX_VALUE));
+                Long.MAX_VALUE,
+                new TimeFirstWindowKeySchema(),
+                Optional.empty(),
+                new KeyValueSegments(name, metricsScope, Long.MAX_VALUE, Long.MAX_VALUE));
     }
 
     @Override
@@ -49,10 +49,10 @@ public class RocksDBTimeOrderedKeyValueBytesStore extends AbstractRocksDBTimeOrd
     @Override
     Map<KeyValueSegment, WriteBatch> getWriteBatches(final Collection<ConsumerRecord<byte[], byte[]>> records) {
         return getWriteBatches(
-            records,
-            WindowKeySchema::extractStoreTimestamp,
-            null, // never an indexed store -- not needed
-            TimeFirstWindowKeySchema::fromNonPrefixWindowKey
+                records,
+                WindowKeySchema::extractStoreTimestamp,
+                null, // never an indexed store -- not needed
+                TimeFirstWindowKeySchema::fromNonPrefixWindowKey
         );
     }
 

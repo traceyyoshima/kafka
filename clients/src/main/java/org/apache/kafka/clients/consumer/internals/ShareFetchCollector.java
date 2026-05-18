@@ -63,7 +63,6 @@ public class ShareFetchCollector<K, V> {
      * Return the fetched {@link ConsumerRecord records}.
      *
      * @param fetchBuffer {@link ShareFetchBuffer} from which to retrieve the {@link ConsumerRecord records}
-     *
      * @return A {@link ShareFetch} for the requested partitions
      * @throws TopicAuthorizationException If there is TopicAuthorization error in fetchResponse.
      */

@@ -31,26 +31,26 @@ import java.util.Objects;
  */
 public record ScramCredentialData(byte[] salt, byte[] storedKey, byte[] serverKey, int iterations) {
     public static ScramCredentialData fromRecord(
-        UserScramCredentialRecord record
+            UserScramCredentialRecord record
     ) {
         return new ScramCredentialData(
-            record.salt(),
-            record.storedKey(),
-            record.serverKey(),
-            record.iterations());
+                record.salt(),
+                record.storedKey(),
+                record.serverKey(),
+                record.iterations());
     }
 
     public UserScramCredentialRecord toRecord(
-        String userName,
-        ScramMechanism mechanism
+            String userName,
+            ScramMechanism mechanism
     ) {
         return new UserScramCredentialRecord().
-            setName(userName).
-            setMechanism(mechanism.type()).
-            setSalt(salt).
-            setStoredKey(storedKey).
-            setServerKey(serverKey).
-            setIterations(iterations);
+                setName(userName).
+                setMechanism(mechanism.type()).
+                setSalt(salt).
+                setStoredKey(storedKey).
+                setServerKey(serverKey).
+                setIterations(iterations);
     }
 
     public ScramCredential toCredential() {
@@ -60,10 +60,10 @@ public record ScramCredentialData(byte[] salt, byte[] storedKey, byte[] serverKe
     @Override
     public int hashCode() {
         return Objects.hash(
-            Arrays.hashCode(salt),
-            Arrays.hashCode(storedKey),
-            Arrays.hashCode(serverKey),
-            iterations
+                Arrays.hashCode(salt),
+                Arrays.hashCode(storedKey),
+                Arrays.hashCode(serverKey),
+                iterations
         );
     }
 
@@ -73,18 +73,18 @@ public record ScramCredentialData(byte[] salt, byte[] storedKey, byte[] serverKe
         if (!o.getClass().equals(ScramCredentialData.class)) return false;
         ScramCredentialData other = (ScramCredentialData) o;
         return Arrays.equals(salt, other.salt) &&
-            Arrays.equals(storedKey, other.storedKey) &&
-            Arrays.equals(serverKey, other.serverKey) &&
-            iterations == other.iterations;
+                Arrays.equals(storedKey, other.storedKey) &&
+                Arrays.equals(serverKey, other.serverKey) &&
+                iterations == other.iterations;
     }
 
     @Override
     public String toString() {
         return "ScramCredentialData" +
-            "(salt=" + "[hidden]" +
-            ", storedKey=" + "[hidden]" +
-            ", serverKey=" + "[hidden]" +
-            ", iterations=" + "[hidden]" +
-            ")";
+                "(salt=" + "[hidden]" +
+                ", storedKey=" + "[hidden]" +
+                ", serverKey=" + "[hidden]" +
+                ", iterations=" + "[hidden]" +
+                ")";
     }
 }

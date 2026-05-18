@@ -57,15 +57,13 @@ public class CopartitionedTopicsEnforcer {
     /**
      * Enforces the number of partitions for copartitioned topics.
      *
-     * @param copartitionedTopics          The set of copartitioned topics (external source topics and repartition topics).
-     * @param fixedRepartitionTopics       The set of repartition topics whose partition count is fixed by the topology sent by the
-     *                                     client (in particular, when the user uses `repartition` in the DSL).
-     * @param flexibleRepartitionTopics    The set of repartition topics whose partition count is flexible, and can be changed.
-     *
+     * @param copartitionedTopics       The set of copartitioned topics (external source topics and repartition topics).
+     * @param fixedRepartitionTopics    The set of repartition topics whose partition count is fixed by the topology sent by the
+     *                                  client (in particular, when the user uses `repartition` in the DSL).
+     * @param flexibleRepartitionTopics The set of repartition topics whose partition count is flexible, and can be changed.
+     * @return A map from all repartition topics in copartitionedTopics to their updated partition counts.
      * @throws IllegalStateException If the partition count for any topic in copartitionedTopics is not defined by
      *                               topicPartitionCountProvider.
-     *
-     * @return A map from all repartition topics in copartitionedTopics to their updated partition counts.
      */
     public Map<String, Integer> enforce(final Set<String> copartitionedTopics,
                                         final Set<String> fixedRepartitionTopics,
@@ -77,13 +75,13 @@ public class CopartitionedTopicsEnforcer {
         final Map<String, Integer> returnedPartitionCounts = new HashMap<>();
 
         final Map<String, Integer> repartitionTopicPartitionCounts =
-            copartitionedTopics.stream()
-                .filter(x -> fixedRepartitionTopics.contains(x) || flexibleRepartitionTopics.contains(x))
-                .collect(Collectors.toMap(topic -> topic, this::getPartitionCount));
+                copartitionedTopics.stream()
+                        .filter(x -> fixedRepartitionTopics.contains(x) || flexibleRepartitionTopics.contains(x))
+                        .collect(Collectors.toMap(topic -> topic, this::getPartitionCount));
 
         final Map<String, Integer> nonRepartitionTopicPartitions =
-            copartitionedTopics.stream().filter(topic -> !repartitionTopicPartitionCounts.containsKey(topic))
-                .collect(Collectors.toMap(topic -> topic, this::getPartitionCount));
+                copartitionedTopics.stream().filter(topic -> !repartitionTopicPartitionCounts.containsKey(topic))
+                        .collect(Collectors.toMap(topic -> topic, this::getPartitionCount));
 
         final int numPartitionsToUseForRepartitionTopics;
 
@@ -93,8 +91,8 @@ public class CopartitionedTopicsEnforcer {
             // validate that they all have same number of partitions
             if (!fixedRepartitionTopics.isEmpty()) {
                 numPartitionsToUseForRepartitionTopics = validateAndGetNumOfPartitions(
-                    repartitionTopicPartitionCounts,
-                    fixedRepartitionTopics
+                        repartitionTopicPartitionCounts,
+                        fixedRepartitionTopics
                 );
             } else {
                 // If all topics for this co-partition group are repartition topics,
@@ -110,12 +108,12 @@ public class CopartitionedTopicsEnforcer {
         for (final Entry<String, Integer> repartitionTopic : repartitionTopicPartitionCounts.entrySet()) {
             returnedPartitionCounts.put(repartitionTopic.getKey(), numPartitionsToUseForRepartitionTopics);
             if (fixedRepartitionTopics.contains(repartitionTopic.getKey())
-                && repartitionTopic.getValue() != numPartitionsToUseForRepartitionTopics) {
+                    && repartitionTopic.getValue() != numPartitionsToUseForRepartitionTopics) {
                 final String msg = String.format("Number of partitions [%d] of repartition topic [%s] " +
-                        "doesn't match number of partitions [%d] of the source topic.",
-                    repartitionTopic.getValue(),
-                    repartitionTopic.getKey(),
-                    numPartitionsToUseForRepartitionTopics);
+                                "doesn't match number of partitions [%d] of the source topic.",
+                        repartitionTopic.getValue(),
+                        repartitionTopic.getKey(),
+                        numPartitionsToUseForRepartitionTopics);
                 throw TopicConfigurationException.incorrectlyPartitionedTopics(msg);
             }
         }
@@ -143,7 +141,7 @@ public class CopartitionedTopicsEnforcer {
 
             if (numberOfPartitions != firstNumberOfPartitionsOfInternalTopic) {
                 final String msg = String.format("Following topics do not have the same number of partitions: [%s]",
-                    new TreeMap<>(repartitionTopics));
+                        new TreeMap<>(repartitionTopics));
                 throw TopicConfigurationException.incorrectlyPartitionedTopics(msg);
             }
         }
@@ -157,7 +155,7 @@ public class CopartitionedTopicsEnforcer {
             if (entry.getValue() != partitions) {
                 final TreeMap<String, Integer> sorted = new TreeMap<>(nonRepartitionTopicsInCopartitionGroup);
                 throw TopicConfigurationException.incorrectlyPartitionedTopics(
-                    String.format("Following topics do not have the same number of partitions: [%s]", sorted));
+                        String.format("Following topics do not have the same number of partitions: [%s]", sorted));
             }
         }
         return partitions;
@@ -171,7 +169,7 @@ public class CopartitionedTopicsEnforcer {
         }
         if (maxPartitions == 0) {
             throw new StreamsInvalidTopologyException("All topics in the copartition group had undefined partition number: " +
-                repartitionTopicsInCopartitionGroup.keySet());
+                    repartitionTopicsInCopartitionGroup.keySet());
         }
         return maxPartitions;
     }

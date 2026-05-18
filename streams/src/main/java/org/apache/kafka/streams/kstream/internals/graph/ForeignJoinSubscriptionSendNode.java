@@ -34,7 +34,7 @@ public class ForeignJoinSubscriptionSendNode<K, V> extends ProcessorGraphNode<K,
         }
 
         final SubscriptionSendProcessorSupplier<?, ?, ?> subscriptionSendProcessor
-            = (SubscriptionSendProcessorSupplier<?, ?, ?>) processorSupplier;
+                = (SubscriptionSendProcessorSupplier<?, ?, ?>) processorSupplier;
         subscriptionSendProcessor.setUseVersionedSemantics(useVersionedSemantics);
     }
 }

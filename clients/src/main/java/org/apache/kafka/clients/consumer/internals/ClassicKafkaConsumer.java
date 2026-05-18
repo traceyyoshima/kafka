@@ -103,12 +103,12 @@ import static org.apache.kafka.common.utils.Utils.swallow;
 /**
  * A client that consumes records from a Kafka cluster using the {@link GroupProtocol#CLASSIC classic group protocol}.
  * In this implementation, all network I/O happens in the thread of the application making the call.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * This {@link ConsumerDelegate} implementation exists for backward compatibility to allow users to continue to use
  * the classic group protocol (pre-KIP 848).
- *
+ * <p>
  * <p/>
  *
  * <em>Note:</em> This class should not be invoked directly; users should instead create and use the
@@ -220,11 +220,11 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
                         .anyMatch(a -> a.getClass().getName().contains("StreamsPartitionAssignor"));
                 if (!isStreamsConsumer) {
                     log.info("\n" +
-                            "****************************************************************\n" +
-                            "* The consumer rebalance protocol (KIP-848) is production-ready!\n" +
-                            "* Set the consumer configuration {}={} to try it out.\n" +
-                            "* See https://kafka.apache.org/documentation/#consumer_rebalance_protocol\n" +
-                            "****************************************************************",
+                                    "****************************************************************\n" +
+                                    "* The consumer rebalance protocol (KIP-848) is production-ready!\n" +
+                                    "* Set the consumer configuration {}={} to try it out.\n" +
+                                    "* See https://kafka.apache.org/documentation/#consumer_rebalance_protocol\n" +
+                                    "****************************************************************",
                             ConsumerConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT));
                 }
             }
@@ -331,41 +331,41 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
         Optional<String> groupInstanceId = Optional.ofNullable(config.getString(ConsumerConfig.GROUP_INSTANCE_ID_CONFIG));
 
         this.client = new ConsumerNetworkClient(
-            logContext,
-            client,
-            metadata,
-            time,
-            retryBackoffMs,
-            requestTimeoutMs,
-            heartbeatIntervalMs
+                logContext,
+                client,
+                metadata,
+                time,
+                retryBackoffMs,
+                requestTimeoutMs,
+                heartbeatIntervalMs
         );
 
         if (groupId.isPresent()) {
             GroupRebalanceConfig rebalanceConfig = new GroupRebalanceConfig(
-                sessionTimeoutMs,
-                rebalanceTimeoutMs,
-                heartbeatIntervalMs,
-                groupId.get(),
-                groupInstanceId,
-                rackId,
-                retryBackoffMs,
-                retryBackoffMaxMs
+                    sessionTimeoutMs,
+                    rebalanceTimeoutMs,
+                    heartbeatIntervalMs,
+                    groupId.get(),
+                    groupInstanceId,
+                    rackId,
+                    retryBackoffMs,
+                    retryBackoffMaxMs
             );
             this.coordinator = new ConsumerCoordinator(
-                rebalanceConfig,
-                logContext,
-                this.client,
-                assignors,
-                metadata,
-                subscriptions,
-                metrics,
-                CONSUMER_METRIC_GROUP_PREFIX,
-                time,
-                enableAutoCommit,
-                autoCommitIntervalMs,
-                interceptors,
-                throwOnStableOffsetNotSupported,
-                clientTelemetryReporter
+                    rebalanceConfig,
+                    logContext,
+                    this.client,
+                    assignors,
+                    metadata,
+                    subscriptions,
+                    metrics,
+                    CONSUMER_METRIC_GROUP_PREFIX,
+                    time,
+                    enableAutoCommit,
+                    autoCommitIntervalMs,
+                    interceptors,
+                    throwOnStableOffsetNotSupported,
+                    clientTelemetryReporter
             );
         } else {
             this.coordinator = null;
@@ -392,32 +392,32 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
                 isolationLevel
         );
         this.fetcher = new Fetcher<>(
-            logContext,
-            this.client,
-            metadata,
-            subscriptions,
-            fetchConfig,
-            deserializers,
-            fetchMetricsManager,
-            time,
-            apiVersions
+                logContext,
+                this.client,
+                metadata,
+                subscriptions,
+                fetchConfig,
+                deserializers,
+                fetchMetricsManager,
+                time,
+                apiVersions
         );
         this.offsetFetcher = new OffsetFetcher(
-            logContext,
-            this.client,
-            metadata,
-            subscriptions,
-            time,
-            retryBackoffMs,
-            requestTimeoutMs,
-            isolationLevel,
-            apiVersions
+                logContext,
+                this.client,
+                metadata,
+                subscriptions,
+                time,
+                retryBackoffMs,
+                requestTimeoutMs,
+                isolationLevel,
+                apiVersions
         );
         this.topicMetadataFetcher = new TopicMetadataFetcher(
-            logContext,
-            this.client,
-            retryBackoffMs,
-            retryBackoffMaxMs
+                logContext,
+                this.client,
+                retryBackoffMs,
+                retryBackoffMaxMs
         );
     }
 
@@ -461,7 +461,7 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
     public void unregisterMetricFromSubscription(KafkaMetric metric) {
         if (!metrics().containsKey(metric.metricName())) {
             clientTelemetryReporter.ifPresent(reporter -> reporter.metricRemoval(metric));
-        }  else {
+        } else {
             log.debug("Skipping unregistration for metric {}. Existing consumer metrics cannot be removed.", metric.metricName());
         }
     }
@@ -479,17 +479,18 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
      * <b>Topic subscriptions are not incremental. This list will replace the current
      * assignment (if there is one).</b> It is not possible to combine topic subscription with group management
      * with manual partition assignment through {@link #assign(Collection)}.
-     *
+     * <p>
      * If the given list of topics is empty, it is treated the same as {@link #unsubscribe()}.
      *
      * <p>
-     * @param topics The list of topics to subscribe to
+     *
+     * @param topics   The list of topics to subscribe to
      * @param listener {@link Optional} listener instance to get notifications on partition assignment/revocation
      *                 for the subscribed topics
      * @throws IllegalArgumentException If topics is null or contains null or empty elements
-     * @throws IllegalStateException If {@code subscribe()} is called previously with pattern, or assign is called
-     *                               previously (without a subsequent call to {@link #unsubscribe()}), or if not
-     *                               configured at-least one partition assignment strategy
+     * @throws IllegalStateException    If {@code subscribe()} is called previously with pattern, or assign is called
+     *                                  previously (without a subsequent call to {@link #unsubscribe()}), or if not
+     *                                  configured at-least one partition assignment strategy
      */
     private void subscribeInternal(Collection<String> topics, Optional<ConsumerRebalanceListener> listener) {
         acquireAndEnsureOpen();
@@ -543,13 +544,13 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
     @Override
     public void subscribe(SubscriptionPattern pattern, ConsumerRebalanceListener callback) {
         throw new UnsupportedOperationException(String.format("Subscribe to RE2/J pattern is not supported when using" +
-            "the %s protocol defined in config %s", GroupProtocol.CLASSIC, ConsumerConfig.GROUP_PROTOCOL_CONFIG));
+                "the %s protocol defined in config %s", GroupProtocol.CLASSIC, ConsumerConfig.GROUP_PROTOCOL_CONFIG));
     }
 
     @Override
     public void subscribe(SubscriptionPattern pattern) {
         throw new UnsupportedOperationException(String.format("Subscribe to RE2/J pattern is not supported when using" +
-            "the %s protocol defined in config %s", GroupProtocol.CLASSIC, ConsumerConfig.GROUP_PROTOCOL_CONFIG));
+                "the %s protocol defined in config %s", GroupProtocol.CLASSIC, ConsumerConfig.GROUP_PROTOCOL_CONFIG));
     }
 
     /**
@@ -566,13 +567,13 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
      * is a change to the topics matching the provided pattern and when consumer group membership changes.
      * Group rebalances only take place during an active call to {@link #poll(Duration)}.
      *
-     * @param pattern Pattern to subscribe to
+     * @param pattern  Pattern to subscribe to
      * @param listener {@link Optional} listener instance to get notifications on partition assignment/revocation
      *                 for the subscribed topics
      * @throws IllegalArgumentException If pattern or listener is null
-     * @throws IllegalStateException If {@code subscribe()} is called previously with topics, or assign is called
-     *                               previously (without a subsequent call to {@link #unsubscribe()}), or if not
-     *                               configured at-least one partition assignment strategy
+     * @throws IllegalStateException    If {@code subscribe()} is called previously with topics, or assign is called
+     *                                  previously (without a subsequent call to {@link #unsubscribe()}), or if not
+     *                                  configured at-least one partition assignment strategy
      */
     private void subscribeInternal(Pattern pattern, Optional<ConsumerRebalanceListener> listener) {
         throwIfGroupIdNotDefined();
@@ -980,7 +981,7 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
         acquireAndEnsureOpen();
         try {
             log.debug("Pausing partitions {}", partitions);
-            for (TopicPartition partition: partitions) {
+            for (TopicPartition partition : partitions) {
                 subscriptions.pause(partition);
             }
         } finally {
@@ -993,7 +994,7 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
         acquireAndEnsureOpen();
         try {
             log.debug("Resuming partitions {}", partitions);
-            for (TopicPartition partition: partitions) {
+            for (TopicPartition partition : partitions) {
                 subscriptions.resume(partition);
             }
         } finally {
@@ -1155,11 +1156,11 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
         if (coordinator != null) {
             // This is a blocking call bound by the time remaining in closeTimer
             swallow(
-                log,
-                Level.ERROR,
-                "Failed to close coordinator with a timeout(ms)=" + closeTimer.timeoutMs(),
-                () -> coordinator.close(closeTimer, membershipOperation),
-                firstException
+                    log,
+                    Level.ERROR,
+                    "Failed to close coordinator with a timeout(ms)=" + closeTimer.timeoutMs(),
+                    () -> coordinator.close(closeTimer, membershipOperation),
+                    firstException
             );
         }
 
@@ -1198,10 +1199,10 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
      * Set the fetch position to the committed position (if there is one)
      * or reset it using the offset reset policy the user has configured.
      *
-     * @throws org.apache.kafka.common.errors.AuthenticationException if authentication fails. See the exception for more details
-     * @throws NoOffsetForPartitionException If no offset is stored for a given partition and no offset reset policy is
-     *             defined
      * @return true iff the operation completed without timing out
+     * @throws org.apache.kafka.common.errors.AuthenticationException if authentication fails. See the exception for more details
+     * @throws NoOffsetForPartitionException                          If no offset is stored for a given partition and no offset reset policy is
+     *                                                                defined
      */
     private boolean updateFetchPositions(final Timer timer) {
         // If any partitions have been truncated due to a leader change, we need to validate the offsets
@@ -1231,6 +1232,7 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
 
     /**
      * Acquire the light lock and ensure that the consumer hasn't been closed.
+     *
      * @throws IllegalStateException If the consumer has been closed
      */
     private void acquireAndEnsureOpen() {
@@ -1245,6 +1247,7 @@ public class ClassicKafkaConsumer<K, V> implements ConsumerDelegate<K, V> {
      * Acquire the light lock protecting this consumer from multi-threaded access. Instead of blocking
      * when the lock is not available, however, we just throw an exception (since multi-threaded usage is not
      * supported).
+     *
      * @throws ConcurrentModificationException if another thread already has the lock
      */
     private void acquire() {

@@ -29,14 +29,14 @@ public class AccessControlEntryFilter {
      * Matches any access control entry.
      */
     public static final AccessControlEntryFilter ANY =
-        new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY);
+            new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY);
 
     /**
      * Create an instance of an access control entry filter with the provided parameters.
      *
-     * @param principal the principal or null
-     * @param host the host or null
-     * @param operation non-null operation
+     * @param principal      the principal or null
+     * @param host           the host or null
+     * @param operation      non-null operation
      * @param permissionType non-null permission type
      */
     public AccessControlEntryFilter(String principal, String host, AclOperation operation, AclPermissionType permissionType) {
@@ -48,7 +48,7 @@ public class AccessControlEntryFilter {
     /**
      * This is a non-public constructor used in AccessControlEntry#toFilter
      *
-     * @param data     The access control data.
+     * @param data The access control data.
      */
     AccessControlEntryFilter(AccessControlEntryData data) {
         this.data = data;

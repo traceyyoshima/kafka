@@ -62,19 +62,20 @@ public class ClientsTestUtils {
     private static final String KEY_PREFIX = "key ";
     private static final String VALUE_PREFIX = "value ";
 
-    private ClientsTestUtils() {}
+    private ClientsTestUtils() {
+    }
 
     public static <K, V> List<ConsumerRecord<K, V>> consumeRecords(
-        Consumer<K, V> consumer,
-        int numRecords
+            Consumer<K, V> consumer,
+            int numRecords
     ) throws InterruptedException {
         return consumeRecords(consumer, numRecords, Integer.MAX_VALUE);
     }
 
     public static <K, V> List<ConsumerRecord<K, V>> consumeRecords(
-        Consumer<K, V> consumer,
-        int numRecords,
-        int maxPollRecords
+            Consumer<K, V> consumer,
+            int numRecords,
+            int maxPollRecords
     ) throws InterruptedException {
         List<ConsumerRecord<K, V>> consumedRecords = new ArrayList<>();
         TestUtils.waitForCondition(() -> {
@@ -88,49 +89,49 @@ public class ClientsTestUtils {
     }
 
     public static void consumeAndVerifyRecords(
-        Consumer<byte[], byte[]> consumer,
-        TopicPartition tp,
-        int numRecords,
-        int startingOffset,
-        int startingKeyAndValueIndex,
-        long startingTimestamp,
-        long timestampIncrement
+            Consumer<byte[], byte[]> consumer,
+            TopicPartition tp,
+            int numRecords,
+            int startingOffset,
+            int startingKeyAndValueIndex,
+            long startingTimestamp,
+            long timestampIncrement
     ) throws InterruptedException {
         consumeAndVerifyRecords(
-            consumer,
-            tp,
-            numRecords,
-            Integer.MAX_VALUE,
-            startingOffset,
-            startingKeyAndValueIndex,
-            startingTimestamp,
-            timestampIncrement
+                consumer,
+                tp,
+                numRecords,
+                Integer.MAX_VALUE,
+                startingOffset,
+                startingKeyAndValueIndex,
+                startingTimestamp,
+                timestampIncrement
         );
     }
 
     public static void pollUntilTrue(
-        Consumer<byte[], byte[]> consumer,
-        Supplier<Boolean> testCondition,
-        String msg
+            Consumer<byte[], byte[]> consumer,
+            Supplier<Boolean> testCondition,
+            String msg
     ) throws InterruptedException {
         pollUntilTrue(consumer, Duration.ofMillis(100), testCondition, 15_000L, msg);
     }
 
     public static void pollUntilTrue(
-        Consumer<byte[], byte[]> consumer,
-        Supplier<Boolean> testCondition,
-        long waitTimeMs,
-        String msg
+            Consumer<byte[], byte[]> consumer,
+            Supplier<Boolean> testCondition,
+            long waitTimeMs,
+            String msg
     ) throws InterruptedException {
         pollUntilTrue(consumer, Duration.ofMillis(100), testCondition, waitTimeMs, msg);
     }
 
     public static void pollUntilTrue(
-        Consumer<byte[], byte[]> consumer,
-        Duration timeout,
-        Supplier<Boolean> testCondition,
-        long waitTimeMs, 
-        String msg
+            Consumer<byte[], byte[]> consumer,
+            Duration timeout,
+            Supplier<Boolean> testCondition,
+            long waitTimeMs,
+            String msg
     ) throws InterruptedException {
         TestUtils.waitForCondition(() -> {
             consumer.poll(timeout);
@@ -139,10 +140,10 @@ public class ClientsTestUtils {
     }
 
     public static void consumeAndVerifyRecordsWithTimeTypeLogAppend(
-        Consumer<byte[], byte[]> consumer,
-        TopicPartition tp,
-        int numRecords,
-        long startingTimestamp
+            Consumer<byte[], byte[]> consumer,
+            TopicPartition tp,
+            int numRecords,
+            long startingTimestamp
     ) throws InterruptedException {
         var records = consumeRecords(consumer, numRecords, Integer.MAX_VALUE);
         var now = System.currentTimeMillis();
@@ -152,7 +153,7 @@ public class ClientsTestUtils {
             assertEquals(tp.partition(), record.partition());
 
             assertTrue(record.timestamp() >= startingTimestamp && record.timestamp() <= now,
-                "Got unexpected timestamp " + record.timestamp() + ". Timestamp should be between [" + startingTimestamp + ", " + now + "]");
+                    "Got unexpected timestamp " + record.timestamp() + ". Timestamp should be between [" + startingTimestamp + ", " + now + "]");
 
             assertEquals(i, record.offset());
             assertEquals(KEY_PREFIX + i, new String(record.key()));
@@ -164,14 +165,14 @@ public class ClientsTestUtils {
     }
 
     public static void consumeAndVerifyRecords(
-        Consumer<byte[], byte[]> consumer,
-        TopicPartition tp,
-        int numRecords,
-        int maxPollRecords,
-        int startingOffset,
-        int startingKeyAndValueIndex,
-        long startingTimestamp,
-        long timestampIncrement
+            Consumer<byte[], byte[]> consumer,
+            TopicPartition tp,
+            int numRecords,
+            int maxPollRecords,
+            int startingOffset,
+            int startingKeyAndValueIndex,
+            long startingTimestamp,
+            long timestampIncrement
     ) throws InterruptedException {
         var records = consumeRecords(consumer, numRecords, maxPollRecords);
         for (var i = 0; i < numRecords; i++) {
@@ -196,31 +197,31 @@ public class ClientsTestUtils {
     }
 
     public static void consumeAndVerifyRecords(
-        Consumer<byte[], byte[]> consumer,
-        TopicPartition tp,
-        int numRecords,
-        int startingOffset,
-        int startingKeyAndValueIndex,
-        long startingTimestamp
+            Consumer<byte[], byte[]> consumer,
+            TopicPartition tp,
+            int numRecords,
+            int startingOffset,
+            int startingKeyAndValueIndex,
+            long startingTimestamp
     ) throws InterruptedException {
         consumeAndVerifyRecords(consumer, tp, numRecords, startingOffset, startingKeyAndValueIndex, startingTimestamp, -1);
     }
 
     public static void consumeAndVerifyRecords(
-        Consumer<byte[], byte[]> consumer,
-        TopicPartition tp,
-        int numRecords,
-        int startingOffset
+            Consumer<byte[], byte[]> consumer,
+            TopicPartition tp,
+            int numRecords,
+            int startingOffset
     ) throws InterruptedException {
         consumeAndVerifyRecords(consumer, tp, numRecords, startingOffset, 0, 0, -1);
     }
 
     public static void sendRecords(
-        ClusterInstance cluster,
-        TopicPartition tp,
-        int numRecords,
-        long startingTimestamp,
-        long timestampIncrement
+            ClusterInstance cluster,
+            TopicPartition tp,
+            int numRecords,
+            long startingTimestamp,
+            long timestampIncrement
     ) {
         try (Producer<byte[], byte[]> producer = cluster.producer()) {
             for (var i = 0; i < numRecords; i++) {
@@ -231,28 +232,28 @@ public class ClientsTestUtils {
     }
 
     public static void sendRecords(
-        ClusterInstance cluster,
-        TopicPartition tp,
-        int numRecords,
-        long startingTimestamp
+            ClusterInstance cluster,
+            TopicPartition tp,
+            int numRecords,
+            long startingTimestamp
     ) {
         sendRecords(cluster, tp, numRecords, startingTimestamp, -1);
     }
 
     public static void sendRecords(
-        ClusterInstance cluster,
-        TopicPartition tp,
-        int numRecords
+            ClusterInstance cluster,
+            TopicPartition tp,
+            int numRecords
     ) {
         sendRecords(cluster, tp, numRecords, System.currentTimeMillis());
     }
 
     public static List<ProducerRecord<byte[], byte[]>> sendRecords(
-        Producer<byte[], byte[]> producer,
-        TopicPartition tp,
-        int numRecords,
-        long startingTimestamp,
-        long timestampIncrement
+            Producer<byte[], byte[]> producer,
+            TopicPartition tp,
+            int numRecords,
+            long startingTimestamp,
+            long timestampIncrement
     ) {
         List<ProducerRecord<byte[], byte[]>> records = new ArrayList<>();
         for (var i = 0; i < numRecords; i++) {
@@ -264,10 +265,10 @@ public class ClientsTestUtils {
     }
 
     public static void sendRecords(
-        Producer<byte[], byte[]> producer,
-        TopicPartition tp,
-        int numRecords,
-        long startingTimestamp
+            Producer<byte[], byte[]> producer,
+            TopicPartition tp,
+            int numRecords,
+            long startingTimestamp
     ) {
         for (var i = 0; i < numRecords; i++) {
             sendRecord(producer, tp, startingTimestamp, i, -1);
@@ -276,39 +277,39 @@ public class ClientsTestUtils {
     }
 
     public static void awaitAssignment(
-        Consumer<byte[], byte[]> consumer,
-        Set<TopicPartition> expectedAssignment
+            Consumer<byte[], byte[]> consumer,
+            Set<TopicPartition> expectedAssignment
     ) throws InterruptedException {
         TestUtils.waitForCondition(() -> {
-            consumer.poll(Duration.ofMillis(100));
-            return consumer.assignment().equals(expectedAssignment);
-        }, () -> "Timed out while awaiting expected assignment " + expectedAssignment + ". " +
-                "The current assignment is " + consumer.assignment()
+                    consumer.poll(Duration.ofMillis(100));
+                    return consumer.assignment().equals(expectedAssignment);
+                }, () -> "Timed out while awaiting expected assignment " + expectedAssignment + ". " +
+                        "The current assignment is " + consumer.assignment()
         );
     }
 
     private static ProducerRecord<byte[], byte[]> sendRecord(
-        Producer<byte[], byte[]> producer,
-        TopicPartition tp,
-        long startingTimestamp,
-        int numRecord,
-        long timestampIncrement
+            Producer<byte[], byte[]> producer,
+            TopicPartition tp,
+            long startingTimestamp,
+            int numRecord,
+            long timestampIncrement
     ) {
         var timestamp = startingTimestamp + numRecord * (timestampIncrement > 0 ? timestampIncrement : 1);
         var record = new ProducerRecord<>(
-            tp.topic(),
-            tp.partition(),
-            timestamp,
-            (KEY_PREFIX + numRecord).getBytes(),
-            (VALUE_PREFIX + numRecord).getBytes()
+                tp.topic(),
+                tp.partition(),
+                timestamp,
+                (KEY_PREFIX + numRecord).getBytes(),
+                (VALUE_PREFIX + numRecord).getBytes()
         );
         producer.send(record);
         return record;
     }
 
     public static <K, V> void sendAndAwaitAsyncCommit(
-        Consumer<K, V> consumer,
-        Optional<Map<TopicPartition, OffsetAndMetadata>> offsetsOpt
+            Consumer<K, V> consumer,
+            Optional<Map<TopicPartition, OffsetAndMetadata>> offsetsOpt
     ) throws InterruptedException {
 
         var commitCallback = new RetryCommitCallback<>(consumer, offsetsOpt);
@@ -323,8 +324,8 @@ public class ClientsTestUtils {
     }
 
     public static void awaitRebalance(
-        Consumer<byte[], byte[]> consumer,
-        TestConsumerReassignmentListener rebalanceListener
+            Consumer<byte[], byte[]> consumer,
+            TestConsumerReassignmentListener rebalanceListener
     ) throws InterruptedException {
         var numReassignments = rebalanceListener.callsToAssigned;
         TestUtils.waitForCondition(() -> {
@@ -334,8 +335,8 @@ public class ClientsTestUtils {
     }
 
     public static void ensureNoRebalance(
-        Consumer<byte[], byte[]> consumer,
-        TestConsumerReassignmentListener rebalanceListener
+            Consumer<byte[], byte[]> consumer,
+            TestConsumerReassignmentListener rebalanceListener
     ) throws InterruptedException {
         // The best way to verify that the current membership is still active is to commit offsets.
         // This would fail if the group had rebalanced.
@@ -346,8 +347,8 @@ public class ClientsTestUtils {
 
 
     public static void waitForPollThrowException(
-        Consumer<byte[], byte[]> consumer,
-        Class<? extends Exception> exceptedException
+            Consumer<byte[], byte[]> consumer,
+            Class<? extends Exception> exceptedException
     ) throws InterruptedException {
         TestUtils.waitForCondition(() -> {
             try {
@@ -374,8 +375,8 @@ public class ClientsTestUtils {
         }
 
         public static void testSimpleConsumption(
-            ClusterInstance cluster,
-            Map<String, Object> config
+                ClusterInstance cluster,
+                Map<String, Object> config
         ) throws InterruptedException {
             var numRecords = 10000;
             var startingTimestamp = System.currentTimeMillis();
@@ -392,13 +393,13 @@ public class ClientsTestUtils {
         }
 
         public static void testClusterResourceListener(
-            ClusterInstance cluster,
-            Map<String, Object> consumerConfig
+                ClusterInstance cluster,
+                Map<String, Object> consumerConfig
         ) throws InterruptedException {
             var numRecords = 100;
             Map<String, Object> producerConfig = Map.of(
-                KEY_SERIALIZER_CLASS_CONFIG, TestClusterResourceListenerSerializer.class,
-                VALUE_SERIALIZER_CLASS_CONFIG, TestClusterResourceListenerSerializer.class
+                    KEY_SERIALIZER_CLASS_CONFIG, TestClusterResourceListenerSerializer.class,
+                    VALUE_SERIALIZER_CLASS_CONFIG, TestClusterResourceListenerSerializer.class
             );
             Map<String, Object> consumerConfigOverrides = new HashMap<>(consumerConfig);
             consumerConfigOverrides.put(KEY_DESERIALIZER_CLASS_CONFIG, TestClusterResourceListenerDeserializer.class);
@@ -420,8 +421,8 @@ public class ClientsTestUtils {
         }
 
         public static void testCoordinatorFailover(
-            ClusterInstance cluster,
-            Map<String, Object> consumerConfig
+                ClusterInstance cluster,
+                Map<String, Object> consumerConfig
         ) throws InterruptedException {
             var listener = new TestConsumerReassignmentListener();
             try (Consumer<byte[], byte[]> consumer = cluster.consumer(consumerConfig)) {
@@ -449,13 +450,13 @@ public class ClientsTestUtils {
     }
 
     public static <K, V> void sendAsyncCommit(
-        Consumer<K, V> consumer,
-        OffsetCommitCallback callback,
-        Optional<Map<TopicPartition, OffsetAndMetadata>> offsetsOpt
+            Consumer<K, V> consumer,
+            OffsetCommitCallback callback,
+            Optional<Map<TopicPartition, OffsetAndMetadata>> offsetsOpt
     ) {
         offsetsOpt.ifPresentOrElse(
-            offsets -> consumer.commitAsync(offsets, callback),
-            () -> consumer.commitAsync(callback)
+                offsets -> consumer.commitAsync(offsets, callback),
+                () -> consumer.commitAsync(callback)
         );
     }
 
@@ -472,7 +473,7 @@ public class ClientsTestUtils {
         public byte[] serialize(String topic, byte[] data) {
             return data;
         }
-        
+
         public static void resetCount() {
             UPDATE_PRODUCER_COUNT.set(0);
         }
@@ -504,8 +505,8 @@ public class ClientsTestUtils {
         Optional<Map<TopicPartition, OffsetAndMetadata>> offsetsOpt;
 
         public RetryCommitCallback(
-            Consumer<K, V> consumer,
-            Optional<Map<TopicPartition, OffsetAndMetadata>> offsetsOpt
+                Consumer<K, V> consumer,
+                Optional<Map<TopicPartition, OffsetAndMetadata>> offsetsOpt
         ) {
             this.consumer = consumer;
             this.offsetsOpt = offsetsOpt;

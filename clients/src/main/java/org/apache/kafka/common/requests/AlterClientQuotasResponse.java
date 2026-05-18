@@ -76,7 +76,7 @@ public class AlterClientQuotasResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.entries().forEach(entry ->
-            updateErrorCounts(counts, Errors.forCode(entry.errorCode()))
+                updateErrorCounts(counts, Errors.forCode(entry.errorCode()))
         );
         return counts;
     }
@@ -111,8 +111,8 @@ public class AlterClientQuotasResponse extends AbstractResponse {
         }
 
         return new AlterClientQuotasResponse(new AlterClientQuotasResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setEntries(entries));
+                .setThrottleTimeMs(throttleTimeMs)
+                .setEntries(entries));
     }
 
 }

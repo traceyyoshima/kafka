@@ -79,7 +79,8 @@ public final class Request implements BaseRequest {
 
     private volatile OptionalLong callbackRequestDequeueTimeNanos = OptionalLong.empty();
     private volatile OptionalLong callbackRequestCompleteTimeNanos = OptionalLong.empty();
-    private volatile LongConsumer recordNetworkThreadTimeCallback = __ -> { };
+    private volatile LongConsumer recordNetworkThreadTimeCallback = __ -> {
+    };
 
     private static boolean isRequestLoggingEnabled(RequestHeader header) {
         return REQUEST_LOGGER.isDebugEnabled()
@@ -103,8 +104,8 @@ public final class Request implements BaseRequest {
         // This is constructed on creation of a Request so that the JSON representation is computed before the request is
         // processed by the api layer. Otherwise, a ProduceRequest can occur without its data (ie. it goes into purgatory).
         this.requestLog = isRequestLoggingEnabled(context.header)
-            ? RequestConvertToJson.request(loggableRequest())
-            : null;
+                ? RequestConvertToJson.request(loggableRequest())
+                : null;
 
         // Most request types are parsed entirely into objects at this point. For those we can release the underlying
         // buffer. Some (like produce, or any time the schema contains fields of types BYTES or NULLABLE_BYTES) retain
@@ -245,7 +246,7 @@ public final class Request implements BaseRequest {
             EnvelopeResponse envelopeResponse;
             if (shouldReturnNotController(abstractResponse)) {
                 envelopeResponse = new EnvelopeResponse(new EnvelopeResponseData()
-                    .setErrorCode(Errors.NOT_CONTROLLER.code()));
+                        .setErrorCode(Errors.NOT_CONTROLLER.code()));
             } else {
                 ByteBuffer responseBytes = context.buildResponseEnvelopePayload(abstractResponse);
                 envelopeResponse = new EnvelopeResponse(responseBytes, Errors.NONE);
@@ -279,7 +280,7 @@ public final class Request implements BaseRequest {
             return clazz.cast(bodyAndSize.request);
         }
         throw new ClassCastException("Expected request with type " + clazz.getName()
-            + ", but found " + bodyAndSize.request.getClass().getName());
+                + ", but found " + bodyAndSize.request.getClass().getName());
     }
 
     public AbstractRequest loggableRequest() {
@@ -288,7 +289,7 @@ public final class Request implements BaseRequest {
             newData.resources().forEach(resource -> {
                 ConfigResource.Type resourceType = ConfigResource.Type.forId(resource.resourceType());
                 resource.configs().forEach(config ->
-                    config.setValue(AbstractKafkaConfig.loggableValue(resourceType, config.name(), config.value()))
+                        config.setValue(AbstractKafkaConfig.loggableValue(resourceType, config.name(), config.value()))
                 );
             });
             return new AlterConfigsRequest(newData, alterConfigs.version());
@@ -297,7 +298,7 @@ public final class Request implements BaseRequest {
             newData.resources().forEach(resource -> {
                 ConfigResource.Type resourceType = ConfigResource.Type.forId(resource.resourceType());
                 resource.configs().forEach(config ->
-                    config.setValue(AbstractKafkaConfig.loggableValue(resourceType, config.name(), config.value()))
+                        config.setValue(AbstractKafkaConfig.loggableValue(resourceType, config.name(), config.value()))
                 );
             });
             return new IncrementalAlterConfigsRequest.Builder(newData).build(alterConfigs.version());
@@ -359,7 +360,7 @@ public final class Request implements BaseRequest {
             RequestMetrics m = metrics.apply(metricName);
             m.requestRate(header().apiVersion()).mark();
             m.deprecatedRequestRate(header().apiKey(), header().apiVersion(), context.clientInformation)
-                .ifPresent(Meter::mark);
+                    .ifPresent(Meter::mark);
             m.requestQueueTimeHist.update(Math.round(requestQueueTimeMs));
             m.localTimeHist.update(Math.round(apiLocalTimeMs));
             m.remoteTimeHist.update(Math.round(apiRemoteTimeMs));
@@ -382,11 +383,11 @@ public final class Request implements BaseRequest {
 
         if (isRequestLoggingEnabled(header())) {
             JsonNode desc = RequestConvertToJson.requestDescMetrics(header(), requestLog(), responseLog,
-                context, session, isForwarded(),
-                totalTimeMs, requestQueueTimeMs, apiLocalTimeMs,
-                apiRemoteTimeMs, apiThrottleTimeMs, responseQueueTimeMs,
-                responseSendTimeMs, temporaryMemoryBytes,
-                messageConversionsTimeMs);
+                    context, session, isForwarded(),
+                    totalTimeMs, requestQueueTimeMs, apiLocalTimeMs,
+                    apiRemoteTimeMs, apiThrottleTimeMs, responseQueueTimeMs,
+                    responseSendTimeMs, temporaryMemoryBytes,
+                    messageConversionsTimeMs);
             String logPrefix = "Completed request:{}";
             if (header().isApiVersionDeprecated()) {
                 REQUEST_LOGGER.info(logPrefix, desc);
@@ -414,11 +415,11 @@ public final class Request implements BaseRequest {
     @Override
     public String toString() {
         return "Request(processor=" + processor
-            + ", connectionId=" + context.connectionId
-            + ", session=" + session
-            + ", listenerName=" + context.listenerName
-            + ", securityProtocol=" + context.securityProtocol
-            + ", buffer=" + buffer
-            + ", envelope=" + envelope + ")";
+                + ", connectionId=" + context.connectionId
+                + ", session=" + session
+                + ", listenerName=" + context.listenerName
+                + ", securityProtocol=" + context.securityProtocol
+                + ", buffer=" + buffer
+                + ", envelope=" + envelope + ")";
     }
 }

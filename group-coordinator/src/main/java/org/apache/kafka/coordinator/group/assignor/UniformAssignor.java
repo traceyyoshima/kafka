@@ -44,7 +44,7 @@ import static org.apache.kafka.coordinator.group.api.assignor.SubscriptionType.H
  *         subscriptions.
  *     </li>
  * </ul>
- *
+ * <p>
  * The appropriate strategy is automatically chosen based on the current members' topic subscriptions.
  *
  * @see UniformHomogeneousAssignmentBuilder
@@ -63,28 +63,28 @@ public class UniformAssignor implements ConsumerGroupPartitionAssignor {
      * Perform the group assignment given the current members and
      * topics metadata.
      *
-     * @param groupSpec                     The assignment specification that included member metadata.
-     * @param subscribedTopicDescriber      The topic and cluster metadata describer {@link SubscribedTopicDescriber}.
+     * @param groupSpec                The assignment specification that included member metadata.
+     * @param subscribedTopicDescriber The topic and cluster metadata describer {@link SubscribedTopicDescriber}.
      * @return The new target assignment for the group.
      */
     @Override
     public GroupAssignment assign(
-        GroupSpec groupSpec,
-        SubscribedTopicDescriber subscribedTopicDescriber
+            GroupSpec groupSpec,
+            SubscribedTopicDescriber subscribedTopicDescriber
     ) throws PartitionAssignorException {
         if (groupSpec.memberIds().isEmpty())
             return new GroupAssignment(Map.of());
 
         if (groupSpec.subscriptionType().equals(HOMOGENEOUS)) {
             LOG.debug("Detected that all members are subscribed to the same set of topics, invoking the "
-                + "homogeneous assignment algorithm");
+                    + "homogeneous assignment algorithm");
             return new UniformHomogeneousAssignmentBuilder(groupSpec, subscribedTopicDescriber)
-                .build();
+                    .build();
         } else {
             LOG.debug("Detected that the members are subscribed to different sets of topics, invoking the "
-                + "heterogeneous assignment algorithm");
+                    + "heterogeneous assignment algorithm");
             return new UniformHeterogeneousAssignmentBuilder(groupSpec, subscribedTopicDescriber)
-                .build();
+                    .build();
         }
     }
 }

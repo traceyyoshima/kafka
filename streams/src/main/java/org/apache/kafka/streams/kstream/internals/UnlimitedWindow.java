@@ -55,7 +55,7 @@ public class UnlimitedWindow extends Window {
     public boolean overlap(final Window other) {
         if (getClass() != other.getClass()) {
             throw new IllegalArgumentException("Cannot compare windows of different type. Other window has type "
-                + other.getClass() + ".");
+                    + other.getClass() + ".");
         }
         return true;
     }

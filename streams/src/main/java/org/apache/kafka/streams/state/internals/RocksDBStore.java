@@ -178,14 +178,14 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
         // since it is only for values that are already flushed
         this.context = stateStoreContext;
         stateStoreContext.register(
-            root,
-            (RecordBatchingStateRestoreCallback) this::restoreBatch,
+                root,
+                (RecordBatchingStateRestoreCallback) this::restoreBatch,
                 this::writePosition
         );
         consistencyEnabled = StreamsConfig.InternalConfig.getBoolean(
-            stateStoreContext.appConfigs(),
-            IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
-            false);
+                stateStoreContext.appConfigs(),
+                IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
+                false);
     }
 
     @SuppressWarnings("unchecked")
@@ -263,7 +263,7 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
             } catch (final ProcessorStateException e) {
                 final String message = "State store " + name + " didn't find a valid state, since under EOS it has the risk of getting uncommitted data in stores";
                 throw new TaskCorruptedException(Set.of(taskId), new ProcessorStateException(message, e));
-            }  catch (final StreamsException fatal) {
+            } catch (final StreamsException fatal) {
                 final String fatalMessage = "Fatal error while opening store " + name;
                 throw new ProcessorStateException(fatalMessage, fatal);
             } catch (final RocksDBException fatal) {
@@ -360,8 +360,8 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
                     if (Arrays.equals(existingFamily, RocksDBTimestampedStore.TIMESTAMPED_VALUES_COLUMN_FAMILY_NAME)) {
                         throw new ProcessorStateException(
                                 "Store " + name + " is a timestamped key-value store and cannot be opened as a regular key-value store. " +
-                                "Downgrade from timestamped to regular store is not supported directly. " +
-                                "To downgrade, you can delete the local state in the state directory, and rebuild the store as regular key-value store from the changelog.");
+                                        "Downgrade from timestamped to regular store is not supported directly. " +
+                                        "To downgrade, you can delete the local state in the state directory, and rebuild the store as regular key-value store from the changelog.");
                     }
                     if (Arrays.equals(existingFamily, RocksDBTimestampedStoreWithHeaders.TIMESTAMPED_VALUES_WITH_HEADERS_CF_NAME)) {
                         final boolean openingAsTimestampedStore = allDescriptors.stream()
@@ -369,19 +369,19 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
                         if (openingAsTimestampedStore) {
                             throw new ProcessorStateException(
                                     "Store " + name + " is a headers-aware store and cannot be opened as a timestamped store. " +
-                                    "Downgrade from headers-aware to timestamped store is not supported. " +
-                                    "To downgrade, you can delete the local state in the state directory, and rebuild the store as timestamped store from the changelog.");
+                                            "Downgrade from headers-aware to timestamped store is not supported. " +
+                                            "To downgrade, you can delete the local state in the state directory, and rebuild the store as timestamped store from the changelog.");
                         } else {
                             throw new ProcessorStateException(
                                     "Store " + name + " is a headers-aware store and cannot be opened as a regular key-value store. " +
-                                    "Downgrade from headers-aware to regular store is not supported.");
+                                            "Downgrade from headers-aware to regular store is not supported.");
                         }
                     }
 
                     final String unexpectedFamily = new String(existingFamily, StandardCharsets.UTF_8);
                     throw new ProcessorStateException(
                             "Unexpected column family '" + unexpectedFamily + "' found in store " + name + ". " +
-                            "The store may have been created with incompatible settings.");
+                                    "The store may have been created with incompatible settings.");
                 }
             }
 
@@ -517,17 +517,17 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
 
     @Override
     public <R> QueryResult<R> query(
-        final Query<R> query,
-        final PositionBound positionBound,
-        final QueryConfig config) {
+            final Query<R> query,
+            final PositionBound positionBound,
+            final QueryConfig config) {
 
         return StoreQueryUtils.handleBasicQueries(
-            query,
-            positionBound,
-            config,
-            this,
-            position,
-            context
+                query,
+                positionBound,
+                config,
+                this,
+                position,
+                context
         );
     }
 
@@ -780,7 +780,7 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
             db.write(wOptions, (WriteBatchWithIndex) batch);
         } else {
             log.error("Unknown type of batch {}. This is a bug in Kafka Streams. " +
-                    "Please file a bug report at https://issues.apache.org/jira/projects/KAFKA.",
+                            "Please file a bug report at https://issues.apache.org/jira/projects/KAFKA.",
                     batch.getClass().getCanonicalName());
             throw new IllegalStateException("Unknown type of batch " + batch.getClass().getCanonicalName());
         }
@@ -903,14 +903,23 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
 
     interface DBAccessor {
         byte[] get(final ColumnFamilyHandle columnFamily, final byte[] key) throws RocksDBException;
+
         byte[] get(final ColumnFamilyHandle columnFamily, final ReadOptions readOptions, final byte[] key) throws RocksDBException;
+
         RocksIterator newIterator(final ColumnFamilyHandle columnFamily);
+
         void put(final ColumnFamilyHandle columnFamily, final byte[] key, final byte[] value) throws RocksDBException;
+
         void delete(final ColumnFamilyHandle columnFamily, final byte[] key) throws RocksDBException;
+
         void deleteRange(final ColumnFamilyHandle columnFamily, final byte[] from, final byte[] to) throws RocksDBException;
+
         long approximateNumEntries(final ColumnFamilyHandle columnFamily) throws RocksDBException;
+
         void flush(final ColumnFamilyHandle... columnFamilies) throws RocksDBException;
+
         void reset();
+
         void close();
 
         default ManagedKeyValueIterator<Bytes, byte[]> all(final ColumnFamilyHandle cf, final String storeName, final boolean forward) {
@@ -1030,9 +1039,9 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
         byte[] getOnly(final DBAccessor accessor, final byte[] key) throws RocksDBException;
 
         ManagedKeyValueIterator<Bytes, byte[]> range(final DBAccessor accessor,
-                                              final Bytes from,
-                                              final Bytes to,
-                                              final boolean forward);
+                                                     final Bytes from,
+                                                     final Bytes to,
+                                                     final boolean forward);
 
         /**
          * Deletes keys entries in the range ['from', 'to'], including 'from' and excluding 'to'.
@@ -1057,6 +1066,7 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
 
         /**
          * Initializes the ColumnFamily.
+         *
          * @return the position of the store based on the data in the ColumnFamily. If no offset position is found, an empty position is returned.
          * @throws ProcessorStateException if an invalid state is found and ignoreInvalidState is false
          */
@@ -1175,9 +1185,9 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
             try (final WriteBatch batch = new WriteBatch()) {
                 for (final ConsumerRecord<byte[], byte[]> record : records) {
                     ChangelogRecordDeserializationHelper.applyChecksAndUpdatePosition(
-                        record,
-                        consistencyEnabled,
-                        position
+                            record,
+                            consistencyEnabled,
+                            position
                     );
                     // If version headers are not present or version is V0
                     cfAccessor.addToBatch(record.key(), record.value(), batch);
@@ -1205,7 +1215,7 @@ public class RocksDBStore implements KeyValueStore<Bytes, byte[]>, BatchWritingS
      *
      * @param input bytes to increment
      * @return A new copy of the incremented byte array, or {@code null} if incrementing would
-     *         result in overflow.
+     * result in overflow.
      */
     static Bytes incrementWithoutOverflow(final Bytes input) {
         try {

@@ -34,18 +34,18 @@ public class KafkaStreamsAssignmentTest {
     @Test
     public void shouldHaveReadableString() {
         final KafkaStreamsAssignment assignment = KafkaStreamsAssignment.of(
-            processIdForInt(1),
-            Set.of(
-                new AssignedTask(TASK_0_0, AssignedTask.Type.ACTIVE),
-                new AssignedTask(TASK_0_1, AssignedTask.Type.STANDBY),
-                new AssignedTask(TASK_0_2, AssignedTask.Type.ACTIVE)
-            )
+                processIdForInt(1),
+                Set.of(
+                        new AssignedTask(TASK_0_0, AssignedTask.Type.ACTIVE),
+                        new AssignedTask(TASK_0_1, AssignedTask.Type.STANDBY),
+                        new AssignedTask(TASK_0_2, AssignedTask.Type.ACTIVE)
+                )
         );
 
         assertThat(
-            assignment.toString(),
-            equalTo("KafkaStreamsAssignment{00000000-0000-0000-0000-000000000001, "
-                    + "[AssignedTask{ACTIVE, 0_2}, AssignedTask{STANDBY, 0_1}, AssignedTask{ACTIVE, 0_0}], "
-                    + "Optional.empty}"));
+                assignment.toString(),
+                equalTo("KafkaStreamsAssignment{00000000-0000-0000-0000-000000000001, "
+                        + "[AssignedTask{ACTIVE, 0_2}, AssignedTask{STANDBY, 0_1}, AssignedTask{ACTIVE, 0_0}], "
+                        + "Optional.empty}"));
     }
 }

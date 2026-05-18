@@ -107,12 +107,12 @@ public class DeleteAclsRequest extends AbstractRequest {
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable throwable) {
         ApiError apiError = ApiError.fromThrowable(throwable);
         List<DeleteAclsFilterResult> filterResults = Collections.nCopies(data.filters().size(),
-            new DeleteAclsResponseData.DeleteAclsFilterResult()
-                .setErrorCode(apiError.error().code())
-                .setErrorMessage(apiError.message()));
+                new DeleteAclsResponseData.DeleteAclsFilterResult()
+                        .setErrorCode(apiError.error().code())
+                        .setErrorMessage(apiError.message()));
         return new DeleteAclsResponse(new DeleteAclsResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setFilterResults(filterResults), version());
+                .setThrottleTimeMs(throttleTimeMs)
+                .setFilterResults(filterResults), version());
     }
 
     public static DeleteAclsRequest parse(Readable readable, short version) {
@@ -121,25 +121,25 @@ public class DeleteAclsRequest extends AbstractRequest {
 
     public static DeleteAclsFilter deleteAclsFilter(AclBindingFilter filter) {
         return new DeleteAclsFilter()
-            .setResourceNameFilter(filter.patternFilter().name())
-            .setResourceTypeFilter(filter.patternFilter().resourceType().code())
-            .setPatternTypeFilter(filter.patternFilter().patternType().code())
-            .setHostFilter(filter.entryFilter().host())
-            .setOperation(filter.entryFilter().operation().code())
-            .setPermissionType(filter.entryFilter().permissionType().code())
-            .setPrincipalFilter(filter.entryFilter().principal());
+                .setResourceNameFilter(filter.patternFilter().name())
+                .setResourceTypeFilter(filter.patternFilter().resourceType().code())
+                .setPatternTypeFilter(filter.patternFilter().patternType().code())
+                .setHostFilter(filter.entryFilter().host())
+                .setOperation(filter.entryFilter().operation().code())
+                .setPermissionType(filter.entryFilter().permissionType().code())
+                .setPrincipalFilter(filter.entryFilter().principal());
     }
 
     private static AclBindingFilter aclBindingFilter(DeleteAclsFilter filter) {
         ResourcePatternFilter patternFilter = new ResourcePatternFilter(
-            ResourceType.fromCode(filter.resourceTypeFilter()),
-            filter.resourceNameFilter(),
-            PatternType.fromCode(filter.patternTypeFilter()));
+                ResourceType.fromCode(filter.resourceTypeFilter()),
+                filter.resourceNameFilter(),
+                PatternType.fromCode(filter.patternTypeFilter()));
         AccessControlEntryFilter entryFilter = new AccessControlEntryFilter(
-            filter.principalFilter(),
-            filter.hostFilter(),
-            AclOperation.fromCode(filter.operation()),
-            AclPermissionType.fromCode(filter.permissionType()));
+                filter.principalFilter(),
+                filter.hostFilter(),
+                AclOperation.fromCode(filter.operation()),
+                AclPermissionType.fromCode(filter.permissionType()));
         return new AclBindingFilter(patternFilter, entryFilter);
     }
 }

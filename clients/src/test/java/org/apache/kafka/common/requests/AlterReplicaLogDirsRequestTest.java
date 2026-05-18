@@ -64,14 +64,14 @@ public class AlterReplicaLogDirsRequestTest {
         AlterReplicaLogDirsRequestData data = new AlterReplicaLogDirsRequestData()
                 .setDirs(new AlterReplicaLogDirCollection(
                         asList(new AlterReplicaLogDir()
-                                .setPath("/data0")
-                                .setTopics(new AlterReplicaLogDirTopicCollection(
-                                        asList(new AlterReplicaLogDirTopic()
-                                                .setName("topic")
-                                                .setPartitions(asList(0, 1)),
-                                               new AlterReplicaLogDirTopic()
-                                                .setName("topic2")
-                                                .setPartitions(singletonList(7))))),
+                                        .setPath("/data0")
+                                        .setTopics(new AlterReplicaLogDirTopicCollection(
+                                                asList(new AlterReplicaLogDirTopic()
+                                                                .setName("topic")
+                                                                .setPartitions(asList(0, 1)),
+                                                        new AlterReplicaLogDirTopic()
+                                                                .setName("topic2")
+                                                                .setPartitions(singletonList(7))))),
                                 new AlterReplicaLogDir()
                                         .setPath("/data1")
                                         .setTopics(new AlterReplicaLogDirTopicCollection(

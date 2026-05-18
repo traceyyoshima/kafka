@@ -42,17 +42,17 @@ public class RuntimeLoggerManagerTest {
     @Test
     public void testValidateSetLogLevelConfig() {
         MANAGER.validateLogLevelConfigs(List.of(new AlterableConfig().
-            setName(LOG.getName()).
-            setConfigOperation(OpType.SET.id()).
-            setValue("TRACE")));
+                setName(LOG.getName()).
+                setConfigOperation(OpType.SET.id()).
+                setValue("TRACE")));
     }
 
     @Test
     public void testValidateDeleteLogLevelConfig() {
         MANAGER.validateLogLevelConfigs(List.of(new AlterableConfig().
-            setName(LOG.getName()).
-            setConfigOperation(OpType.DELETE.id()).
-            setValue("")));
+                setName(LOG.getName()).
+                setConfigOperation(OpType.DELETE.id()).
+                setValue("")));
     }
 
     @ParameterizedTest
@@ -60,22 +60,22 @@ public class RuntimeLoggerManagerTest {
     public void testOperationNotAllowed(byte id) {
         OpType opType = AlterConfigOp.OpType.forId(id);
         assertEquals(opType + " operation is not allowed for the BROKER_LOGGER resource",
-            Assertions.assertThrows(InvalidRequestException.class,
-                () -> MANAGER.validateLogLevelConfigs(List.of(new AlterableConfig().
-                    setName(LOG.getName()).
-                    setConfigOperation(id).
-                    setValue("TRACE")))).getMessage());
+                Assertions.assertThrows(InvalidRequestException.class,
+                        () -> MANAGER.validateLogLevelConfigs(List.of(new AlterableConfig().
+                                setName(LOG.getName()).
+                                setConfigOperation(id).
+                                setValue("TRACE")))).getMessage());
     }
 
     @Test
     public void testValidateBogusLogLevelNameNotAllowed() {
         assertEquals("Cannot set the log level of " + LOG.getName() + " to BOGUS as it is not " +
-            "a supported log level. Valid log levels are DEBUG, ERROR, FATAL, INFO, TRACE, WARN",
-            Assertions.assertThrows(InvalidConfigurationException.class,
-                () -> MANAGER.validateLogLevelConfigs(List.of(new AlterableConfig().
-                    setName(LOG.getName()).
-                    setConfigOperation(OpType.SET.id()).
-                    setValue("BOGUS")))).getMessage());
+                        "a supported log level. Valid log levels are DEBUG, ERROR, FATAL, INFO, TRACE, WARN",
+                Assertions.assertThrows(InvalidConfigurationException.class,
+                        () -> MANAGER.validateLogLevelConfigs(List.of(new AlterableConfig().
+                                setName(LOG.getName()).
+                                setConfigOperation(OpType.SET.id()).
+                                setValue("BOGUS")))).getMessage());
     }
 
     @Test
@@ -89,11 +89,11 @@ public class RuntimeLoggerManagerTest {
     @Test
     public void testValidateRemoveRootLogLevelConfigNotAllowed() {
         assertEquals("Removing the log level of the " + LoggingController.ROOT_LOGGER +
-            " logger is not allowed",
-            Assertions.assertThrows(InvalidRequestException.class,
-                () -> MANAGER.validateLogLevelConfigs(List.of(new AlterableConfig().
-                    setName(LoggingController.ROOT_LOGGER).
-                    setConfigOperation(OpType.DELETE.id()).
-                    setValue("")))).getMessage());
+                        " logger is not allowed",
+                Assertions.assertThrows(InvalidRequestException.class,
+                        () -> MANAGER.validateLogLevelConfigs(List.of(new AlterableConfig().
+                                setName(LoggingController.ROOT_LOGGER).
+                                setConfigOperation(OpType.DELETE.id()).
+                                setValue("")))).getMessage());
     }
 }

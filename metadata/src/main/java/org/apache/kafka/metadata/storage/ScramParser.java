@@ -66,7 +66,7 @@ public class ScramParser {
             throw new FormatterException("Expected configuration string to end with ]");
         }
         return new AbstractMap.SimpleImmutableEntry<>(mechanism,
-            configString.substring(1, configString.length() - 1));
+                configString.substring(1, configString.length() - 1));
     }
 
     static final class PerMechanismData {
@@ -78,12 +78,12 @@ public class ScramParser {
         private final Optional<byte[]> configuredSaltedPassword;
 
         PerMechanismData(
-            ScramMechanism mechanism,
-            String configuredName,
-            Optional<byte[]> configuredSalt,
-            OptionalInt configuredIterations,
-            Optional<String> configuredPasswordString,
-            Optional<byte[]> configuredSaltedPassword
+                ScramMechanism mechanism,
+                String configuredName,
+                Optional<byte[]> configuredSalt,
+                OptionalInt configuredIterations,
+                Optional<String> configuredPasswordString,
+                Optional<byte[]> configuredSaltedPassword
         ) {
             this.mechanism = mechanism;
             this.configuredName = configuredName;
@@ -94,8 +94,8 @@ public class ScramParser {
         }
 
         PerMechanismData(
-            ScramMechanism mechanism,
-            String configString
+                ScramMechanism mechanism,
+                String configString
         ) {
             this.mechanism = mechanism;
             String[] configComponents = configString.split(",");
@@ -205,35 +205,35 @@ public class ScramParser {
             if (o == null || (!(o.getClass().equals(PerMechanismData.class)))) return false;
             PerMechanismData other = (PerMechanismData) o;
             return mechanism.equals(other.mechanism) &&
-                configuredName.equals(other.configuredName) &&
-                Arrays.equals(configuredSalt.orElse(null),
-                    other.configuredSalt.orElse(null)) &&
-                configuredIterations.equals(other.configuredIterations) &&
-                configuredPasswordString.equals(other.configuredPasswordString) &&
-                Arrays.equals(configuredSaltedPassword.orElse(null),
-                    other.configuredSaltedPassword.orElse(null));
+                    configuredName.equals(other.configuredName) &&
+                    Arrays.equals(configuredSalt.orElse(null),
+                            other.configuredSalt.orElse(null)) &&
+                    configuredIterations.equals(other.configuredIterations) &&
+                    configuredPasswordString.equals(other.configuredPasswordString) &&
+                    Arrays.equals(configuredSaltedPassword.orElse(null),
+                            other.configuredSaltedPassword.orElse(null));
         }
 
         @Override
         public int hashCode() {
             return Objects.hash(mechanism,
-                configuredName,
-                configuredSalt,
-                configuredIterations,
-                configuredPasswordString,
-                configuredSaltedPassword);
+                    configuredName,
+                    configuredSalt,
+                    configuredIterations,
+                    configuredPasswordString,
+                    configuredSaltedPassword);
         }
 
         @Override
         public String toString() {
             return "PerMechanismData" +
-                "(mechanism=" + mechanism +
-                ", configuredName=" + configuredName +
-                ", configuredSalt=" + configuredSalt.map(Arrays::toString) +
-                ", configuredIterations=" + configuredIterations +
-                ", configuredPasswordString=" + configuredPasswordString +
-                ", configuredSaltedPassword=" + configuredSaltedPassword.map(Arrays::toString) +
-                ")";
+                    "(mechanism=" + mechanism +
+                    ", configuredName=" + configuredName +
+                    ", configuredSalt=" + configuredSalt.map(Arrays::toString) +
+                    ", configuredIterations=" + configuredIterations +
+                    ", configuredPasswordString=" + configuredPasswordString +
+                    ", configuredSaltedPassword=" + configuredSaltedPassword.map(Arrays::toString) +
+                    ")";
         }
     }
 

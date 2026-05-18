@@ -55,7 +55,7 @@ public class DescribeTopicsResult {
      * Use when {@link Admin#describeTopics(TopicCollection, DescribeTopicsOptions)} used a TopicIdCollection
      *
      * @return a map from topic IDs to futures which can be used to check the status of
-     *         individual topics if the request used topic IDs, otherwise return null.
+     * individual topics if the request used topic IDs, otherwise return null.
      */
     public Map<Uuid, KafkaFuture<TopicDescription>> topicIdValues() {
         return topicIdFutures;
@@ -65,7 +65,7 @@ public class DescribeTopicsResult {
      * Use when {@link Admin#describeTopics(TopicCollection, DescribeTopicsOptions)} used a TopicNameCollection
      *
      * @return a map from topic names to futures which can be used to check the status of
-     *         individual topics if the request used topic names, otherwise return null.
+     * individual topics if the request used topic names, otherwise return null.
      */
     public Map<String, KafkaFuture<TopicDescription>> topicNameValues() {
         return nameFutures;
@@ -73,9 +73,9 @@ public class DescribeTopicsResult {
 
     /**
      * @return A future map from topic names to descriptions which can be used to check
-     *         the status of individual description if the describe topic request used
-     *         topic names, otherwise return null, this request succeeds only if all the
-     *         topic descriptions succeed
+     * the status of individual description if the describe topic request used
+     * topic names, otherwise return null, this request succeeds only if all the
+     * topic descriptions succeed
      */
     public KafkaFuture<Map<String, TopicDescription>> allTopicNames() {
         return all(nameFutures);
@@ -83,9 +83,9 @@ public class DescribeTopicsResult {
 
     /**
      * @return A future map from topic ids to descriptions which can be used to check the
-     *         status of individual description if the describe topic request used topic
-     *         ids, otherwise return null, this request succeeds only if all the topic
-     *         descriptions succeed
+     * status of individual description if the describe topic request used topic
+     * ids, otherwise return null, this request succeeds only if all the topic
+     * descriptions succeed
      */
     public KafkaFuture<Map<Uuid, TopicDescription>> allTopicIds() {
         return all(topicIdFutures);
@@ -98,18 +98,18 @@ public class DescribeTopicsResult {
         if (futures == null) return null;
         KafkaFuture<Void> future = KafkaFuture.allOf(futures.values().toArray(new KafkaFuture<?>[0]));
         return future.
-            thenApply(v -> {
-                Map<T, TopicDescription> descriptions = new HashMap<>(futures.size());
-                for (Map.Entry<T, KafkaFuture<TopicDescription>> entry : futures.entrySet()) {
-                    try {
-                        descriptions.put(entry.getKey(), entry.getValue().get());
-                    } catch (InterruptedException | ExecutionException e) {
-                        // This should be unreachable, because allOf ensured that all the futures
-                        // completed successfully.
-                        throw new RuntimeException(e);
+                thenApply(v -> {
+                    Map<T, TopicDescription> descriptions = new HashMap<>(futures.size());
+                    for (Map.Entry<T, KafkaFuture<TopicDescription>> entry : futures.entrySet()) {
+                        try {
+                            descriptions.put(entry.getKey(), entry.getValue().get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            // This should be unreachable, because allOf ensured that all the futures
+                            // completed successfully.
+                            throw new RuntimeException(e);
+                        }
                     }
-                }
-                return descriptions;
-            });
+                    return descriptions;
+                });
     }
 }

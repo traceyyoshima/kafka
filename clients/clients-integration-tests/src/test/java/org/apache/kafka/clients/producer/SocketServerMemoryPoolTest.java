@@ -45,8 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * invalid and unsupported protocol requests
  */
 @ClusterTestDefaults(types = {Type.CO_KRAFT}, serverProperties = {
-    @ClusterConfigProperty(key = SocketServerConfigs.SOCKET_REQUEST_MAX_BYTES_CONFIG, value = "50000"),
-    @ClusterConfigProperty(key = SocketServerConfigs.QUEUED_MAX_BYTES_CONFIG, value = "100000"),
+        @ClusterConfigProperty(key = SocketServerConfigs.SOCKET_REQUEST_MAX_BYTES_CONFIG, value = "50000"),
+        @ClusterConfigProperty(key = SocketServerConfigs.QUEUED_MAX_BYTES_CONFIG, value = "100000"),
 })
 public class SocketServerMemoryPoolTest {
     @ClusterTest

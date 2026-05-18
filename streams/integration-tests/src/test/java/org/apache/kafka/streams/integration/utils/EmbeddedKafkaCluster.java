@@ -92,6 +92,7 @@ public class EmbeddedKafkaCluster {
     private final KafkaClusterTestKit cluster;
     private final Properties brokerConfig;
     public final MockTime time;
+
     public EmbeddedKafkaCluster(final int numBrokers) {
         this(numBrokers, new Properties());
     }
@@ -105,11 +106,13 @@ public class EmbeddedKafkaCluster {
                                 final long mockTimeMillisStart) {
         this(numBrokers, brokerConfig, Collections.emptyMap(), mockTimeMillisStart, System.nanoTime());
     }
+
     public EmbeddedKafkaCluster(final int numBrokers,
                                 final Properties brokerConfig,
                                 final Map<Integer, Map<String, String>> brokerConfigOverrides) {
         this(numBrokers, brokerConfig, brokerConfigOverrides, System.currentTimeMillis(), System.nanoTime());
     }
+
     public EmbeddedKafkaCluster(final int numBrokers,
                                 final Properties brokerConfig,
                                 final Map<Integer, Map<String, String>> brokerConfigOverrides,
@@ -176,8 +179,8 @@ public class EmbeddedKafkaCluster {
         final UUID uuid = UUID.randomUUID();
         final String consumerGroupId = "group-warmup-" + uuid;
         final Map<String, Object> consumerConfig = Map.of(
-            GROUP_ID_CONFIG, consumerGroupId,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name()
+                GROUP_ID_CONFIG, consumerGroupId,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name()
         );
         final String topic = "topic-warmup-" + uuid;
 
@@ -246,8 +249,8 @@ public class EmbeddedKafkaCluster {
     /**
      * Create a Kafka topic with given partition and a replication factor of 1.
      *
-     * @param topic The name of the topic.
-     * @param partitions  The number of partitions for this topic.
+     * @param topic      The name of the topic.
+     * @param partitions The number of partitions for this topic.
      */
     public void createTopic(final String topic, final int partitions) {
         createTopic(topic, partitions, 1, Collections.emptyMap());
@@ -267,7 +270,7 @@ public class EmbeddedKafkaCluster {
     /**
      * Create a Kafka topic with given partition, replication factor, and topic config.
      *
-     * @param topic The name of the topic.
+     * @param topic       The name of the topic.
      * @param partitions  The number of partitions for this topic.
      * @param replication The replication factor for (partitions of) this topic.
      * @param topicConfig Additional topic-level configuration settings.
@@ -334,10 +337,11 @@ public class EmbeddedKafkaCluster {
 
     /**
      * Produce given key and value to topic partition.
-     * @param topic the topic to produce to; may not be null.
+     *
+     * @param topic     the topic to produce to; may not be null.
      * @param partition the topic partition to produce to.
-     * @param key the record key.
-     * @param value the record value.
+     * @param key       the record key.
+     * @param value     the record value.
      */
     public void produce(final Map<String, Object> producerProps, final String topic, final Integer partition, final String key, final String value) {
         try (KafkaProducer<byte[], byte[]> producer = new KafkaProducer<>(producerProps, new ByteArraySerializer(), new ByteArraySerializer())) {
@@ -444,10 +448,10 @@ public class EmbeddedKafkaCluster {
     public void setGroupSessionTimeout(final String groupId, final int sessionTimeoutMs) {
         try (final Admin adminClient = createAdminClient()) {
             adminClient.incrementalAlterConfigs(
-                Map.of(
-                    new ConfigResource(ConfigResource.Type.GROUP, groupId),
-                    List.of(new AlterConfigOp(new ConfigEntry(GroupConfig.STREAMS_SESSION_TIMEOUT_MS_CONFIG, String.valueOf(sessionTimeoutMs)), AlterConfigOp.OpType.SET))
-                )
+                    Map.of(
+                            new ConfigResource(ConfigResource.Type.GROUP, groupId),
+                            List.of(new AlterConfigOp(new ConfigEntry(GroupConfig.STREAMS_SESSION_TIMEOUT_MS_CONFIG, String.valueOf(sessionTimeoutMs)), AlterConfigOp.OpType.SET))
+                    )
             ).all().get();
         } catch (final InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
@@ -457,10 +461,10 @@ public class EmbeddedKafkaCluster {
     public void setGroupHeartbeatTimeout(final String groupId, final int heartbeatTimeoutMs) {
         try (final Admin adminClient = createAdminClient()) {
             adminClient.incrementalAlterConfigs(
-                Map.of(
-                    new ConfigResource(ConfigResource.Type.GROUP, groupId),
-                    List.of(new AlterConfigOp(new ConfigEntry(GroupConfig.STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG, String.valueOf(heartbeatTimeoutMs)), AlterConfigOp.OpType.SET))
-                )
+                    Map.of(
+                            new ConfigResource(ConfigResource.Type.GROUP, groupId),
+                            List.of(new AlterConfigOp(new ConfigEntry(GroupConfig.STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG, String.valueOf(heartbeatTimeoutMs)), AlterConfigOp.OpType.SET))
+                    )
             ).all().get();
         } catch (final InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
@@ -470,10 +474,10 @@ public class EmbeddedKafkaCluster {
     public void setGroupStandbyReplicas(final String groupId, final int numStandbyReplicas) {
         try (final Admin adminClient = createAdminClient()) {
             adminClient.incrementalAlterConfigs(
-                Map.of(
-                    new ConfigResource(ConfigResource.Type.GROUP, groupId),
-                    List.of(new AlterConfigOp(new ConfigEntry(GroupConfig.STREAMS_NUM_STANDBY_REPLICAS_CONFIG, String.valueOf(numStandbyReplicas)), AlterConfigOp.OpType.SET))
-                )
+                    Map.of(
+                            new ConfigResource(ConfigResource.Type.GROUP, groupId),
+                            List.of(new AlterConfigOp(new ConfigEntry(GroupConfig.STREAMS_NUM_STANDBY_REPLICAS_CONFIG, String.valueOf(numStandbyReplicas)), AlterConfigOp.OpType.SET))
+                    )
             ).all().get();
         } catch (final InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
@@ -483,10 +487,10 @@ public class EmbeddedKafkaCluster {
     public void setGroupStreamsInitialRebalanceDelay(final String groupId, final int initialRebalanceDelayMs) {
         try (final Admin adminClient = createAdminClient()) {
             adminClient.incrementalAlterConfigs(
-                Map.of(
-                    new ConfigResource(ConfigResource.Type.GROUP, groupId),
-                    List.of(new AlterConfigOp(new ConfigEntry(GroupConfig.STREAMS_INITIAL_REBALANCE_DELAY_MS_CONFIG, String.valueOf(initialRebalanceDelayMs)), AlterConfigOp.OpType.SET))
-                )
+                    Map.of(
+                            new ConfigResource(ConfigResource.Type.GROUP, groupId),
+                            List.of(new AlterConfigOp(new ConfigEntry(GroupConfig.STREAMS_INITIAL_REBALANCE_DELAY_MS_CONFIG, String.valueOf(initialRebalanceDelayMs)), AlterConfigOp.OpType.SET))
+                    )
             ).all().get();
         } catch (final InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);

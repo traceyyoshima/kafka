@@ -28,8 +28,8 @@ import java.util.function.Function;
  * Generic facade that wraps a {@link ReadOnlyWindowStore} and converts values
  * using a provided converter function.
  *
- * @param <K> key type
- * @param <InV> input value type (from inner store)
+ * @param <K>    key type
+ * @param <InV>  input value type (from inner store)
  * @param <OutV> output value type (exposed by this facade)
  */
 public class GenericReadOnlyWindowStoreFacade<K, InV, OutV> implements ReadOnlyWindowStore<K, OutV> {

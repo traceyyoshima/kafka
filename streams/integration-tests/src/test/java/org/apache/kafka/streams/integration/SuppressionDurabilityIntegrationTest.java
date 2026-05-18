@@ -119,15 +119,15 @@ public class SuppressionDurabilityIntegrationTest {
 
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<String, Long> valueCounts = builder
-            .stream(
-                input,
-                Consumed.with(STRING_SERDE, STRING_SERDE))
-            .groupByKey()
-            .count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as(storeName).withCachingDisabled());
+                .stream(
+                        input,
+                        Consumed.with(STRING_SERDE, STRING_SERDE))
+                .groupByKey()
+                .count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as(storeName).withCachingDisabled());
 
         final KStream<String, Long> suppressedCounts = valueCounts
-            .suppress(untilTimeLimit(ofMillis(MAX_VALUE), maxRecords(3L).emitEarlyWhenFull()))
-            .toStream();
+                .suppress(untilTimeLimit(ofMillis(MAX_VALUE), maxRecords(3L).emitEarlyWhenFull()))
+                .toStream();
 
         final AtomicInteger eventCount = new AtomicInteger(0);
         suppressedCounts.foreach((key, value) -> eventCount.incrementAndGet());
@@ -136,19 +136,19 @@ public class SuppressionDurabilityIntegrationTest {
         final MetadataValidator metadataValidator = new MetadataValidator(input);
 
         suppressedCounts
-            .process(metadataValidator)
-            .to(outputSuppressed, Produced.with(STRING_SERDE, Serdes.Long()));
+                .process(metadataValidator)
+                .to(outputSuppressed, Produced.with(STRING_SERDE, Serdes.Long()));
 
         valueCounts
-            .toStream()
-            .process(metadataValidator)
-            .to(outputRaw, Produced.with(STRING_SERDE, Serdes.Long()));
+                .toStream()
+                .process(metadataValidator)
+                .to(outputRaw, Produced.with(STRING_SERDE, Serdes.Long()));
 
         final Properties streamsConfig = mkProperties(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-            mkEntry(StreamsConfig.POLL_MS_CONFIG, Long.toString(COMMIT_INTERVAL)),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                mkEntry(StreamsConfig.POLL_MS_CONFIG, Long.toString(COMMIT_INTERVAL)),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
         ));
 
         streamsConfig.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, COMMIT_INTERVAL);
@@ -160,45 +160,45 @@ public class SuppressionDurabilityIntegrationTest {
             // note, we send all input records to partition 0
             // to make sure that suppress doesn't erroneously send records to other partitions.
             produceSynchronouslyToPartitionZero(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k1", "v1", scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", "v2", scaledTime(2L)),
-                    new KeyValueTimestamp<>("k3", "v3", scaledTime(3L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k1", "v1", scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", "v2", scaledTime(2L)),
+                            new KeyValueTimestamp<>("k3", "v3", scaledTime(3L))
+                    )
             );
             verifyOutput(
-                outputRaw,
-                asList(
-                    new KeyValueTimestamp<>("k1", 1L, scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", 1L, scaledTime(2L)),
-                    new KeyValueTimestamp<>("k3", 1L, scaledTime(3L))
-                )
+                    outputRaw,
+                    asList(
+                            new KeyValueTimestamp<>("k1", 1L, scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", 1L, scaledTime(2L)),
+                            new KeyValueTimestamp<>("k3", 1L, scaledTime(3L))
+                    )
             );
             assertThat(eventCount.get(), is(0));
 
             // flush two of the first three events out.
             produceSynchronouslyToPartitionZero(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k4", "v4", scaledTime(4L)),
-                    new KeyValueTimestamp<>("k5", "v5", scaledTime(5L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k4", "v4", scaledTime(4L)),
+                            new KeyValueTimestamp<>("k5", "v5", scaledTime(5L))
+                    )
             );
             verifyOutput(
-                outputRaw,
-                asList(
-                    new KeyValueTimestamp<>("k4", 1L, scaledTime(4L)),
-                    new KeyValueTimestamp<>("k5", 1L, scaledTime(5L))
-                )
+                    outputRaw,
+                    asList(
+                            new KeyValueTimestamp<>("k4", 1L, scaledTime(4L)),
+                            new KeyValueTimestamp<>("k5", 1L, scaledTime(5L))
+                    )
             );
             assertThat(eventCount.get(), is(2));
             verifyOutput(
-                outputSuppressed,
-                asList(
-                    new KeyValueTimestamp<>("k1", 1L, scaledTime(1L)),
-                    new KeyValueTimestamp<>("k2", 1L, scaledTime(2L))
-                )
+                    outputSuppressed,
+                    asList(
+                            new KeyValueTimestamp<>("k1", 1L, scaledTime(1L)),
+                            new KeyValueTimestamp<>("k2", 1L, scaledTime(2L))
+                    )
             );
 
             // bounce to ensure that the history, including retractions,
@@ -212,31 +212,31 @@ public class SuppressionDurabilityIntegrationTest {
 
             // flush those recovered buffered events out.
             produceSynchronouslyToPartitionZero(
-                input,
-                asList(
-                    new KeyValueTimestamp<>("k6", "v6", scaledTime(6L)),
-                    new KeyValueTimestamp<>("k7", "v7", scaledTime(7L)),
-                    new KeyValueTimestamp<>("k8", "v8", scaledTime(8L))
-                )
+                    input,
+                    asList(
+                            new KeyValueTimestamp<>("k6", "v6", scaledTime(6L)),
+                            new KeyValueTimestamp<>("k7", "v7", scaledTime(7L)),
+                            new KeyValueTimestamp<>("k8", "v8", scaledTime(8L))
+                    )
             );
             verifyOutput(
-                outputRaw,
-                asList(
-                    new KeyValueTimestamp<>("k6", 1L, scaledTime(6L)),
-                    new KeyValueTimestamp<>("k7", 1L, scaledTime(7L)),
-                    new KeyValueTimestamp<>("k8", 1L, scaledTime(8L))
-                )
+                    outputRaw,
+                    asList(
+                            new KeyValueTimestamp<>("k6", 1L, scaledTime(6L)),
+                            new KeyValueTimestamp<>("k7", 1L, scaledTime(7L)),
+                            new KeyValueTimestamp<>("k8", 1L, scaledTime(8L))
+                    )
             );
             assertThat("suppress has apparently produced some duplicates. There should only be 5 output events.",
-                       eventCount.get(), is(5));
+                    eventCount.get(), is(5));
 
             verifyOutput(
-                outputSuppressed,
-                asList(
-                    new KeyValueTimestamp<>("k3", 1L, scaledTime(3L)),
-                    new KeyValueTimestamp<>("k4", 1L, scaledTime(4L)),
-                    new KeyValueTimestamp<>("k5", 1L, scaledTime(5L))
-                )
+                    outputSuppressed,
+                    asList(
+                            new KeyValueTimestamp<>("k3", 1L, scaledTime(3L)),
+                            new KeyValueTimestamp<>("k4", 1L, scaledTime(4L)),
+                            new KeyValueTimestamp<>("k5", 1L, scaledTime(5L))
+                    )
             );
 
             metadataValidator.raiseExceptionIfAny();
@@ -289,12 +289,12 @@ public class SuppressionDurabilityIntegrationTest {
 
     private void verifyOutput(final String topic, final List<KeyValueTimestamp<String, Long>> keyValueTimestamps) {
         final Properties properties = mkProperties(
-            mkMap(
-                mkEntry(ConsumerConfig.GROUP_ID_CONFIG, "test-group"),
-                mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName()),
-                mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ((Deserializer<Long>) LONG_DESERIALIZER).getClass().getName())
-            )
+                mkMap(
+                        mkEntry(ConsumerConfig.GROUP_ID_CONFIG, "test-group"),
+                        mkEntry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                        mkEntry(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ((Deserializer<String>) STRING_DESERIALIZER).getClass().getName()),
+                        mkEntry(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ((Deserializer<Long>) LONG_DESERIALIZER).getClass().getName())
+                )
         );
         IntegrationTestUtils.verifyKeyValueTimestamps(properties, topic, keyValueTimestamps);
     }
@@ -309,10 +309,10 @@ public class SuppressionDurabilityIntegrationTest {
 
     private static void produceSynchronouslyToPartitionZero(final String topic, final List<KeyValueTimestamp<String, String>> toProduce) {
         final Properties producerConfig = mkProperties(mkMap(
-            mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
-            mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
-            mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
+                mkEntry(ProducerConfig.CLIENT_ID_CONFIG, "anything"),
+                mkEntry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ((Serializer<String>) STRING_SERIALIZER).getClass().getName()),
+                mkEntry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers())
         ));
         IntegrationTestUtils.produceSynchronously(producerConfig, false, topic, Optional.of(0), toProduce);
     }

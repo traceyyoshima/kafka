@@ -57,10 +57,10 @@ public class VersionedKeyValueStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn(METRICS_SCOPE);
 
         builder = new VersionedKeyValueStoreBuilder<>(
-            supplier,
-            Serdes.String(),
-            Serdes.String(),
-            new MockTime()
+                supplier,
+                Serdes.String(),
+                Serdes.String(),
+                new MockTime()
         );
     }
 
@@ -91,8 +91,8 @@ public class VersionedKeyValueStoreBuilderTest {
     public void shouldNotHaveChangeLoggingStoreWhenDisabled() {
         setUp();
         final VersionedKeyValueStore<String, String> store = builder
-            .withLoggingDisabled()
-            .build();
+                .withLoggingDisabled()
+                .build();
 
         assertThat(store, instanceOf(MeteredVersionedKeyValueStore.class));
         final StateStore next = ((WrappedStateStore) store).wrapped();
@@ -104,8 +104,8 @@ public class VersionedKeyValueStoreBuilderTest {
     public void shouldHaveChangeLoggingStoreWhenLoggingEnabled() {
         setUp();
         final VersionedKeyValueStore<String, String> store = builder
-            .withLoggingEnabled(Collections.emptyMap())
-            .build();
+                .withLoggingEnabled(Collections.emptyMap())
+                .build();
 
         assertThat(store, instanceOf(MeteredVersionedKeyValueStore.class));
         final StateStore next = ((WrappedStateStore) store).wrapped();

@@ -185,7 +185,7 @@ public class SlidingWindowedKStreamImpl<K, V> extends AbstractStream<K, V> imple
         Objects.requireNonNull(aggregator, "aggregator can't be null");
         Objects.requireNonNull(materialized, "materialized can't be null");
         final MaterializedInternal<K, VOut, WindowStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
+                new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
         if (materializedInternal.keySerde() == null) {
             materializedInternal.withKeySerde(keySerde);
         }
@@ -193,14 +193,14 @@ public class SlidingWindowedKStreamImpl<K, V> extends AbstractStream<K, V> imple
         final StoreFactory storeFactory = new SlidingWindowStoreMaterializer<>(materializedInternal, windows, emitStrategy);
 
         return aggregateBuilder.buildWindowed(
-            new NamedInternal(aggregateName),
-            storeFactory.storeName(),
-            windows.gracePeriodMs(),
-            new KStreamSlidingWindowAggregate<>(windows, storeFactory, emitStrategy, initializer, aggregator),
-            materializedInternal.queryableStoreName(),
-            materializedInternal.keySerde() != null ? new FullTimeWindowedSerde<>(materializedInternal.keySerde(), windows.timeDifferenceMs()) : null,
-            materializedInternal.valueSerde(),
-            false);
+                new NamedInternal(aggregateName),
+                storeFactory.storeName(),
+                windows.gracePeriodMs(),
+                new KStreamSlidingWindowAggregate<>(windows, storeFactory, emitStrategy, initializer, aggregator),
+                materializedInternal.queryableStoreName(),
+                materializedInternal.keySerde() != null ? new FullTimeWindowedSerde<>(materializedInternal.keySerde(), windows.timeDifferenceMs()) : null,
+                materializedInternal.valueSerde(),
+                false);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class RenewDelegationTokenResponse extends AbstractResponse {
 
     public static RenewDelegationTokenResponse parse(Readable readable, short version) {
         return new RenewDelegationTokenResponse(new RenewDelegationTokenResponseData(
-            readable, version));
+                readable, version));
     }
 
     @Override

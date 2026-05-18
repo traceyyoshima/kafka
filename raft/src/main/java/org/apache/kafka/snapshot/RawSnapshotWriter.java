@@ -37,7 +37,7 @@ public interface RawSnapshotWriter extends AutoCloseable {
 
     /**
      * Fully appends the memory record set to the snapshot.
-     *
+     * <p>
      * If the method returns without an exception the given record set was fully writing the
      * snapshot.
      *
@@ -48,7 +48,7 @@ public interface RawSnapshotWriter extends AutoCloseable {
     /**
      * Fully appends the memory record set to the snapshot, the difference with {@link RawSnapshotWriter#append(MemoryRecords)}
      * is that the record set are fetched from leader by FetchSnapshotRequest, so the records are unaligned.
-     *
+     * <p>
      * If the method returns without an exception the given records was fully writing the
      * snapshot.
      *
@@ -58,7 +58,7 @@ public interface RawSnapshotWriter extends AutoCloseable {
 
     /**
      * Returns true if the snapshot has been frozen, otherwise false is returned.
-     *
+     * <p>
      * Modification to the snapshot are not allowed once it is frozen.
      */
     boolean isFrozen();
@@ -70,7 +70,7 @@ public interface RawSnapshotWriter extends AutoCloseable {
 
     /**
      * Closes the snapshot writer.
-     *
+     * <p>
      * If close is called without first calling freeze the snapshot is aborted.
      */
     void close();

@@ -25,7 +25,7 @@ import org.apache.kafka.raft.LeaderAndEpoch;
 
 /**
  * Publishes metadata deltas which we have loaded from the log and snapshots.
- *
+ * <p>
  * Publishers receive a stream of callbacks from the metadata loader which keeps them notified
  * of the latest cluster metadata. This interface abstracts away some of the complications of
  * following the cluster metadata. For example, if the loader needs to read a snapshot, it will
@@ -45,7 +45,8 @@ public interface MetadataPublisher extends AutoCloseable {
      * @param newLeaderAndEpoch The new quorum leader and epoch. The new leader will be
      *                          OptionalInt.empty if there is currently no active controller.
      */
-    default void onControllerChange(LeaderAndEpoch newLeaderAndEpoch) { }
+    default void onControllerChange(LeaderAndEpoch newLeaderAndEpoch) {
+    }
 
     /**
      * Publish a new cluster metadata snapshot that we loaded.
@@ -65,5 +66,6 @@ public interface MetadataPublisher extends AutoCloseable {
     /**
      * Close this metadata publisher and free any associated resources.
      */
-    default void close() throws Exception { }
+    default void close() throws Exception {
+    }
 }

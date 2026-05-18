@@ -51,7 +51,7 @@ public class CombinedKey<KRight, KLeft> {
         }
         final CombinedKey<?, ?> that = (CombinedKey<?, ?>) o;
         return Objects.equals(foreignKey, that.foreignKey) && Objects.equals(
-            primaryKey, that.primaryKey);
+                primaryKey, that.primaryKey);
     }
 
     @Override

@@ -24,7 +24,7 @@ import org.apache.kafka.common.metrics.MetricConfig;
  * over all time. For example, this can be used to compute the ratio of
  * time that a thread is busy or idle. The value is approximate since the
  * measurement and recording intervals may not be aligned.
- *
+ * <p>
  * Note that the duration of the event is assumed to be small relative to
  * the interval of measurement.
  *
@@ -86,7 +86,7 @@ public class TimeRatio implements MeasurableStat {
     /**
      * Records a duration value at the specified timestamp.
      *
-     * @param value The duration value to record
+     * @param value              The duration value to record
      * @param currentTimestampMs The current timestamp in milliseconds
      */
     public void record(double value, long currentTimestampMs) {

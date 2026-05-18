@@ -32,7 +32,7 @@ public class DeleteRecordsResponse extends AbstractResponse {
 
     /**
      * Possible error code:
-     *
+     * <p>
      * OFFSET_OUT_OF_RANGE (1)
      * UNKNOWN_TOPIC_OR_PARTITION (3)
      * NOT_LEADER_OR_FOLLOWER (6)
@@ -64,9 +64,9 @@ public class DeleteRecordsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         data.topics().forEach(topicResponses ->
-            topicResponses.partitions().forEach(response ->
-                updateErrorCounts(errorCounts, Errors.forCode(response.errorCode()))
-            )
+                topicResponses.partitions().forEach(response ->
+                        updateErrorCounts(errorCounts, Errors.forCode(response.errorCode()))
+                )
         );
         return errorCounts;
     }

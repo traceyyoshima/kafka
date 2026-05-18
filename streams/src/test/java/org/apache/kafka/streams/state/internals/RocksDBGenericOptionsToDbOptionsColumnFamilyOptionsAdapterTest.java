@@ -82,38 +82,38 @@ import static org.mockito.Mockito.mockingDetails;
 public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
 
     private final List<String> walRelatedMethods = List.of(
-        "setManualWalFlush",
-        "setMaxTotalWalSize",
-        "setWalBytesPerSync",
-        "setWalDir",
-        "setWalFilter",
-        "setWalRecoveryMode",
-        "setWalSizeLimitMB",
-        "setWalTtlSeconds"
+            "setManualWalFlush",
+            "setMaxTotalWalSize",
+            "setWalBytesPerSync",
+            "setWalDir",
+            "setWalFilter",
+            "setWalRecoveryMode",
+            "setWalSizeLimitMB",
+            "setWalTtlSeconds"
     );
 
     private final List<String> ignoreMethods = Stream.concat(
-        Stream.of(
-            "isOwningHandle",
-            "getNativeHandle",
-            "dispose",
-            "wait",
-            "equals",
-            "getClass",
-            "hashCode",
-            "notify",
-            "notifyAll",
-            "toString",
-            "getOptionStringFromProps",
-            "maxBackgroundCompactions",
-            "setMaxBackgroundCompactions",
-            "maxBackgroundFlushes",
-            "setMaxBackgroundFlushes",
-            "tablePropertiesCollectorFactory",
-            "setTablePropertiesCollectorFactory",
-            "setAtomicFlush"
-        ),
-        walRelatedMethods.stream()
+            Stream.of(
+                    "isOwningHandle",
+                    "getNativeHandle",
+                    "dispose",
+                    "wait",
+                    "equals",
+                    "getClass",
+                    "hashCode",
+                    "notify",
+                    "notifyAll",
+                    "toString",
+                    "getOptionStringFromProps",
+                    "maxBackgroundCompactions",
+                    "setMaxBackgroundCompactions",
+                    "maxBackgroundFlushes",
+                    "setMaxBackgroundFlushes",
+                    "tablePropertiesCollectorFactory",
+                    "setTablePropertiesCollectorFactory",
+                    "setAtomicFlush"
+            ),
+            walRelatedMethods.stream()
     ).collect(Collectors.toList());
 
     @Test
@@ -121,7 +121,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
         for (final Method method : Options.class.getMethods()) {
             if (!ignoreMethods.contains(method.getName())) {
                 RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter.class
-                    .getDeclaredMethod(method.getName(), method.getParameterTypes());
+                        .getDeclaredMethod(method.getName(), method.getParameterTypes());
             }
         }
     }
@@ -133,7 +133,8 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
                 try {
                     DBOptions.class.getMethod(method.getName(), method.getParameterTypes());
                     verifyDBOptionsMethodCall(method);
-                } catch (final NoSuchMethodException expectedAndSwallow) { }
+                } catch (final NoSuchMethodException expectedAndSwallow) {
+                }
             }
         }
     }
@@ -141,7 +142,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
     private void verifyDBOptionsMethodCall(final Method method) throws Exception {
         final DBOptions mockedDbOptions = mock(DBOptions.class);
         final RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter optionsFacadeDbOptions
-            = new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(mockedDbOptions, new ColumnFamilyOptions());
+                = new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(mockedDbOptions, new ColumnFamilyOptions());
 
         final Object[] parameters = getDBOptionsParameters(method.getParameterTypes());
 
@@ -153,7 +154,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
         } catch (final InvocationTargetException undeclaredMockMethodCall) {
             assertThat(undeclaredMockMethodCall.getCause(), instanceOf(AssertionError.class));
             assertThat(undeclaredMockMethodCall.getCause().getMessage().trim(),
-                matchesPattern("Unexpected method call DBOptions\\." + method.getName() + "((.*\n*)*):"));
+                    matchesPattern("Unexpected method call DBOptions\\." + method.getName() + "((.*\n*)*):"));
         } finally {
             optionsFacadeDbOptions.close();
         }
@@ -188,7 +189,8 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
                 case "org.rocksdb.Logger":
                     parameters[i] = new Logger(new Options()) {
                         @Override
-                        protected void log(final InfoLogLevel infoLogLevel, final String logMsg) {}
+                        protected void log(final InfoLogLevel infoLogLevel, final String logMsg) {
+                        }
                     };
                     break;
                 case "org.rocksdb.RateLimiter":
@@ -236,7 +238,8 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
                 try {
                     ColumnFamilyOptions.class.getMethod(method.getName(), method.getParameterTypes());
                     verifyColumnFamilyOptionsMethodCall(method);
-                } catch (final NoSuchMethodException expectedAndSwallow) { }
+                } catch (final NoSuchMethodException expectedAndSwallow) {
+                }
             }
         }
     }
@@ -244,7 +247,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
     private void verifyColumnFamilyOptionsMethodCall(final Method method) throws Exception {
         final ColumnFamilyOptions mockedColumnFamilyOptions = mock(ColumnFamilyOptions.class);
         final RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter optionsFacadeColumnFamilyOptions
-            = new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(new DBOptions(), mockedColumnFamilyOptions);
+                = new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(new DBOptions(), mockedColumnFamilyOptions);
 
         final Object[] parameters = getColumnFamilyOptionsParameters(method.getParameterTypes());
 
@@ -256,7 +259,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
         } catch (final InvocationTargetException undeclaredMockMethodCall) {
             assertThat(undeclaredMockMethodCall.getCause(), instanceOf(AssertionError.class));
             assertThat(undeclaredMockMethodCall.getCause().getMessage().trim(),
-                matchesPattern("Unexpected method call ColumnFamilyOptions\\." + method.getName() +  "(.*)"));
+                    matchesPattern("Unexpected method call ColumnFamilyOptions\\." + method.getName() + "(.*)"));
         } finally {
             optionsFacadeColumnFamilyOptions.close();
         }
@@ -340,7 +343,7 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter.class)) {
 
             try (RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter adapter =
-                     new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(new DBOptions(), new ColumnFamilyOptions())) {
+                         new RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter(new DBOptions(), new ColumnFamilyOptions())) {
                 for (final Method method : RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapter.class.getDeclaredMethods()) {
                     if (walRelatedMethods.contains(method.getName())) {
                         method.invoke(adapter, getDBOptionsParameters(method.getParameterTypes()));
@@ -350,9 +353,9 @@ public class RocksDBGenericOptionsToDbOptionsColumnFamilyOptionsAdapterTest {
                 final List<String> walOptions = Arrays.asList("walDir", "walFilter", "walRecoveryMode", "walBytesPerSync", "walSizeLimitMB", "manualWalFlush", "maxTotalWalSize", "walTtlSeconds");
 
                 final Set<String> logMessages = appender.getEvents().stream()
-                    .filter(e -> e.getLevel().equals("WARN"))
-                    .map(LogCaptureAppender.Event::getMessage)
-                    .collect(Collectors.toSet());
+                        .filter(e -> e.getLevel().equals("WARN"))
+                        .map(LogCaptureAppender.Event::getMessage)
+                        .collect(Collectors.toSet());
 
                 walOptions.forEach(option -> assertThat(logMessages, hasItem(String.format("WAL is explicitly disabled by Streams in RocksDB. Setting option '%s' will be ignored", option))));
             }

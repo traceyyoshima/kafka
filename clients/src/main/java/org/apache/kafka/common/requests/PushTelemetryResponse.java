@@ -25,7 +25,7 @@ import org.apache.kafka.common.protocol.Readable;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class PushTelemetryResponse  extends AbstractResponse {
+public class PushTelemetryResponse extends AbstractResponse {
 
     private final PushTelemetryResponseData data;
 

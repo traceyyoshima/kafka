@@ -24,6 +24,7 @@ public interface Cache<K, V> {
 
     /**
      * Look up a value in the cache.
+     *
      * @param key the key to
      * @return the cached value, or null if it is not present.
      */
@@ -31,13 +32,15 @@ public interface Cache<K, V> {
 
     /**
      * Insert an entry into the cache.
-     * @param key the key to insert
+     *
+     * @param key   the key to insert
      * @param value the value to insert
      */
     void put(K key, V value);
 
     /**
      * Manually invalidate a key, clearing its entry from the cache.
+     *
      * @param key the key to remove
      * @return true if the key existed in the cache and the entry was removed or false if it was not present
      */
@@ -46,6 +49,7 @@ public interface Cache<K, V> {
     /**
      * Get the number of entries in this cache. If this cache is used by multiple threads concurrently, the returned
      * value will only be approximate.
+     *
      * @return the number of entries in the cache
      */
     long size();

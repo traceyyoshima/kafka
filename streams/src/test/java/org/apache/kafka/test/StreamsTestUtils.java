@@ -57,7 +57,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.withSettings;
 
 public final class StreamsTestUtils {
-    private StreamsTestUtils() {}
+    private StreamsTestUtils() {
+    }
 
     public static Properties getStreamsConfig(final String applicationId,
                                               final String bootstrapServers,
@@ -105,9 +106,9 @@ public final class StreamsTestUtils {
 
     public static Properties getStreamsConfig(final String applicationId, final Properties additional) {
         return getStreamsConfig(
-            applicationId,
-            "localhost:9091",
-            additional);
+                applicationId,
+                "localhost:9091",
+                additional);
     }
 
     public static Properties getStreamsConfig() {
@@ -165,14 +166,14 @@ public final class StreamsTestUtils {
                                                   final List<String> expectedValues) {
         if (expectedKeys.size() != expectedValues.size()) {
             throw new IllegalArgumentException("expectedKeys and expectedValues should have the same size. " +
-                "expectedKeys size: " + expectedKeys.size() + ", expectedValues size: " + expectedValues.size());
+                    "expectedKeys size: " + expectedKeys.size() + ", expectedValues size: " + expectedValues.size());
         }
 
         for (int i = 0; i < expectedKeys.size(); i++) {
             verifyWindowedKeyValue(
-                iterator.next(),
-                expectedKeys.get(i),
-                expectedValues.get(i)
+                    iterator.next(),
+                    expectedKeys.get(i),
+                    expectedValues.get(i)
             );
         }
         assertFalse(iterator.hasNext());
@@ -196,10 +197,10 @@ public final class StreamsTestUtils {
                     metric = entry.getValue();
                 } else {
                     throw new IllegalStateException(
-                        "Found two metrics with name=[" + name + "]: \n" +
-                            metric.metricName().toString() +
-                            " AND \n" +
-                            entry.getKey().toString()
+                            "Found two metrics with name=[" + name + "]: \n" +
+                                    metric.metricName().toString() +
+                                    " AND \n" +
+                                    entry.getKey().toString()
                     );
                 }
             }
@@ -229,10 +230,10 @@ public final class StreamsTestUtils {
                         metric = entry.getValue();
                     } else {
                         throw new IllegalStateException(
-                            "Found two metrics with name=[" + name + "] and tags=[" + filterTags + "]: \n" +
-                                metric.metricName().toString() +
-                                " AND \n" +
-                                entry.getKey().toString()
+                                "Found two metrics with name=[" + name + "] and tags=[" + filterTags + "]: \n" +
+                                        metric.metricName().toString() +
+                                        " AND \n" +
+                                        entry.getKey().toString()
                         );
                     }
                 }
@@ -255,6 +256,7 @@ public final class StreamsTestUtils {
 
     /**
      * Used to keep tests simple, and ignore calls from {@link org.apache.kafka.streams.internals.ApiUtils#checkSupplier(Supplier)}.
+     *
      * @return true if the stack context is within a {@link org.apache.kafka.streams.internals.ApiUtils#checkSupplier(Supplier)} call
      */
     public static boolean isCheckSupplierCall() {
@@ -322,7 +324,7 @@ public final class StreamsTestUtils {
      * with and without headers mode.
      *
      * @param streamsConfig The streams configuration properties to modify
-     * @param withHeaders Whether to enable headers mode
+     * @param withHeaders   Whether to enable headers mode
      */
     public static void maybeSetDslStoreFormatHeaders(final Properties streamsConfig, final boolean withHeaders) {
         if (withHeaders) {

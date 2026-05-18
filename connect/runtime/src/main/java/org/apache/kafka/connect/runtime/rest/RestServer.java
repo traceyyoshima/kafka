@@ -336,6 +336,7 @@ public abstract class RestServer {
      * <p>
      * <em>N.B.: Classes do <b>not</b> need to register the resources provided in {@link #regularResources()} with
      * the {@link ResourceConfig} parameter in this method; they are automatically registered by the parent class.</em>
+     *
      * @param resourceConfig the {@link ResourceConfig} that the server's regular listeners are registered with; never null
      */
     protected void configureRegularResources(ResourceConfig resourceConfig) {
@@ -349,6 +350,7 @@ public abstract class RestServer {
      * <p>
      * <em>N.B.: Classes do <b>not</b> need to register the resources provided in {@link #adminResources()} with
      * the {@link ResourceConfig} parameter in this method; they are automatically registered by the parent class.</em>
+     *
      * @param adminResourceConfig the {@link ResourceConfig} that the server's admin listeners are registered with; never null
      */
     protected void configureAdminResources(ResourceConfig adminResourceConfig) {
@@ -484,6 +486,7 @@ public abstract class RestServer {
 
     /**
      * Locate a Jetty connector for the standard (non-admin) REST API that uses the given protocol.
+     *
      * @param protocol the protocol for the connector (e.g., "http" or "https").
      * @return a {@link ServerConnector} for the server that uses the requested protocol, or
      * {@code null} if none exist.
@@ -506,9 +509,9 @@ public abstract class RestServer {
     protected final void registerRestExtensions(Herder herder, ResourceConfig resourceConfig) {
         connectRestExtensionPlugins = Plugin.wrapInstances(
                 herder.plugins().newPlugins(
-                    config.restExtensions(),
-                    config,
-                    ConnectRestExtension.class
+                        config.restExtensions(),
+                        config,
+                        ConnectRestExtension.class
                 ),
                 herder.connectMetrics().metrics(),
                 RestServerConfig.REST_EXTENSION_CLASSES_CONFIG);
@@ -522,14 +525,14 @@ public abstract class RestServer {
         }
 
         ConnectClusterDetails connectClusterDetails = new ConnectClusterDetailsImpl(
-            herder.kafkaClusterId()
+                herder.kafkaClusterId()
         );
 
         ConnectRestExtensionContext connectRestExtensionContext =
-            new ConnectRestExtensionContextImpl(
-                new ConnectRestConfigurable(resourceConfig),
-                new ConnectClusterStateImpl(herderRequestTimeoutMs, connectClusterDetails, herder)
-            );
+                new ConnectRestExtensionContextImpl(
+                        new ConnectRestConfigurable(resourceConfig),
+                        new ConnectClusterStateImpl(herderRequestTimeoutMs, connectClusterDetails, herder)
+                );
         for (Plugin<ConnectRestExtension> connectRestExtensionPlugin : connectRestExtensionPlugins) {
             connectRestExtensionPlugin.get().register(connectRestExtensionContext);
         }
@@ -538,6 +541,7 @@ public abstract class RestServer {
 
     /**
      * Register header filter to ServletContextHandler.
+     *
      * @param context The servlet context handler
      */
     protected void configureHttpResponseHeaderFilter(ServletContextHandler context, String headerConfig) {

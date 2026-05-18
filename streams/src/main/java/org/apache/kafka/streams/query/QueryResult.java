@@ -41,8 +41,8 @@ public interface QueryResult<R> {
      * respond to a {@link StateStore#query(Query, PositionBound, QueryConfig)}.
      */
     static <R> QueryResult<R> forFailure(
-        final FailureReason failureReason,
-        final String failureMessage) {
+            final FailureReason failureReason,
+            final String failureMessage) {
 
         return new FailedQueryResult<>(failureReason, failureMessage);
     }
@@ -54,14 +54,14 @@ public interface QueryResult<R> {
      * Used by StateStores to respond to a {@link StateStore#query(Query, PositionBound, QueryConfig)}.
      */
     static <R> QueryResult<R> forUnknownQueryType(
-        final Query<R> query,
-        final StateStore store) {
+            final Query<R> query,
+            final StateStore store) {
 
         return forFailure(
-            FailureReason.UNKNOWN_QUERY_TYPE,
-            "This store (" + store.getClass() + ") doesn't know how to execute "
-                + "the given query (" + query + ")." +
-                " Contact the store maintainer if you need support for a new query type.");
+                FailureReason.UNKNOWN_QUERY_TYPE,
+                "This store (" + store.getClass() + ") doesn't know how to execute "
+                        + "the given query (" + query + ")." +
+                        " Contact the store maintainer if you need support for a new query type.");
     }
 
     /**
@@ -71,22 +71,22 @@ public interface QueryResult<R> {
      * Used by StateStores to respond to a {@link StateStore#query(Query, PositionBound, QueryConfig)}.
      */
     static <R> QueryResult<R> notUpToBound(
-        final Position currentPosition,
-        final PositionBound positionBound,
-        final Integer partition) {
+            final Position currentPosition,
+            final PositionBound positionBound,
+            final Integer partition) {
 
         if (partition == null) {
             return new FailedQueryResult<>(
-                FailureReason.NOT_UP_TO_BOUND,
-                "The store is not initialized yet, so it is not yet up to the bound "
-                    + positionBound
+                    FailureReason.NOT_UP_TO_BOUND,
+                    "The store is not initialized yet, so it is not yet up to the bound "
+                            + positionBound
             );
         } else {
             return new FailedQueryResult<>(
-                FailureReason.NOT_UP_TO_BOUND,
-                "For store partition " + partition + ", the current position "
-                    + currentPosition + " is not yet up to the bound "
-                    + positionBound
+                    FailureReason.NOT_UP_TO_BOUND,
+                    "For store partition " + partition + ", the current position "
+                            + currentPosition + " is not yet up to the bound "
+                            + positionBound
             );
         }
     }

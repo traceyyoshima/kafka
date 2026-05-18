@@ -187,7 +187,7 @@ public class ShareSessionCache {
     /**
      * Update the size of the cache by updating the total number of share partitions.
      *
-     * @param session  The session.
+     * @param session The session.
      */
     public synchronized void updateNumPartitions(ShareSession session) {
         numPartitions += session.updateCachedSize();
@@ -195,21 +195,22 @@ public class ShareSessionCache {
 
     /**
      * Maybe create a new session and add it to the cache.
-     * @param groupId - The group id in the share fetch request.
-     * @param memberId - The member id in the share fetch request.
-     * @param partitionMap - The topic partitions to be added to the session.
+     *
+     * @param groupId            - The group id in the share fetch request.
+     * @param memberId           - The member id in the share fetch request.
+     * @param partitionMap       - The topic partitions to be added to the session.
      * @param clientConnectionId - The client connection id.
      * @return - The session key if the session was created, or null if the session was not created.
      */
     public synchronized ShareSessionKey maybeCreateSession(
-        String groupId,
-        String memberId,
-        ImplicitLinkedHashCollection<CachedSharePartition> partitionMap,
-        String clientConnectionId
+            String groupId,
+            String memberId,
+            ImplicitLinkedHashCollection<CachedSharePartition> partitionMap,
+            String clientConnectionId
     ) {
         if (sessions.size() < maxEntries) {
             ShareSession session = new ShareSession(new ShareSessionKey(groupId, memberId), partitionMap,
-                ShareRequestMetadata.nextEpoch(ShareRequestMetadata.INITIAL_EPOCH), clientConnectionId);
+                    ShareRequestMetadata.nextEpoch(ShareRequestMetadata.INITIAL_EPOCH), clientConnectionId);
             sessions.put(session.key(), session);
             updateNumPartitions(session);
             numMembersPerGroup.compute(session.key().groupId(), (k, v) -> v != null ? v + 1 : 1);

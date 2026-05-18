@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * of a few custom annotations. These annotations are placed on so-called test template methods. Template methods look
  * like normal JUnit test methods, but instead of being invoked directly, they are used as templates for generating
  * multiple test invocations.
- *
+ * <p>
  * Test class that use this extension should use one of the following annotations on each template method:
  *
  * <ul>
@@ -66,14 +66,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *     <li>{@link ClusterTests}, provide multiple instances of @ClusterTest</li>
  *     <li>{@link ClusterTemplate}, define a static method that generates cluster configurations</li>
  * </ul>
- *
+ * <p>
  * Any combination of these annotations may be used on a given test template method. If no test invocations are
  * generated after processing the annotations, an error is thrown.
- *
+ * <p>
  * Depending on which annotations are used, and what values are given, different {@link ClusterConfig} will be
  * generated. Each ClusterConfig is used to create an underlying Kafka cluster that is used for the actual test
  * invocation.
- *
+ * <p>
  * For example:
  *
  * <pre>
@@ -84,18 +84,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *   }
  * }
  * </pre>
- *
+ * <p>
  * will generate two invocations of "someTest" (since two cluster types were specified). For each invocation, the test class
  * SomeIntegrationTest will be instantiated, lifecycle methods (before/after) will be run, and "someTest" will be invoked.
- *
+ * <p>
  * A special system property "kafka.cluster.test.repeat" can be used to cause repeated invocation of the tests.
- *
+ * <p>
  * For example:
  *
  * <pre>
  * ./gradlew -Pkafka.cluster.test.repeat=3 :core:test
  * </pre>
- *
+ * <p>
  * will cause all ClusterTest-s in the :core module to be invoked three times.
  */
 public class ClusterTestExtensions implements TestTemplateInvocationContextProvider, BeforeEachCallback, AfterEachCallback {
@@ -134,8 +134,8 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
     private boolean isClusterTest(ExtensionContext context) {
         Method method = context.getRequiredTestMethod();
         return method.getDeclaredAnnotation(ClusterTemplate.class) != null ||
-            method.getDeclaredAnnotation(ClusterTest.class) != null ||
-            method.getDeclaredAnnotation(ClusterTests.class) != null;
+                method.getDeclaredAnnotation(ClusterTest.class) != null ||
+                method.getDeclaredAnnotation(ClusterTests.class) != null;
     }
 
     @Override
@@ -168,7 +168,7 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
     public void beforeEach(ExtensionContext context) {
         if (isClusterTest(context)) {
             DetectThreadLeak detectThreadLeak = DetectThreadLeak.of(thread ->
-                SKIPPED_THREAD_PREFIX.stream().noneMatch(prefix -> thread.getName().startsWith(prefix)));
+                    SKIPPED_THREAD_PREFIX.stream().noneMatch(prefix -> thread.getName().startsWith(prefix)));
             getStore(context).put(DETECT_THREAD_LEAK_KEY, detectThreadLeak);
         }
     }
@@ -182,7 +182,7 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
             }
             List<Thread> threads = detectThreadLeak.newThreads();
             assertTrue(threads.isEmpty(), "Thread leak detected: " +
-                threads.stream().map(Thread::getName).collect(Collectors.joining(", ")));
+                    threads.stream().map(Thread::getName).collect(Collectors.joining(", ")));
         }
     }
 
@@ -202,9 +202,9 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
     }
 
     private TestTemplateInvocationContext invocationContextForClusterType(
-        Type type,
-        String baseDisplayName,
-        ClusterConfig config
+            Type type,
+            String baseDisplayName,
+            ClusterConfig config
     ) {
         return switch (type) {
             case KRAFT -> new RaftClusterInvocationContext(baseDisplayName, config, false);
@@ -220,10 +220,10 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
         String baseDisplayName = context.getRequiredTestMethod().getName();
         int repeatCount = getTestRepeatCount();
         List<TestTemplateInvocationContext> contexts = IntStream.range(0, repeatCount)
-            .mapToObj(__ -> generateClusterConfiguration(context, annot.value()).stream())
-            .flatMap(Function.identity())
-            .flatMap(config -> config.clusterTypes().stream().map(type -> invocationContextForClusterType(type, baseDisplayName, config)))
-            .collect(Collectors.toList());
+                .mapToObj(__ -> generateClusterConfiguration(context, annot.value()).stream())
+                .flatMap(Function.identity())
+                .flatMap(config -> config.clusterTypes().stream().map(type -> invocationContextForClusterType(type, baseDisplayName, config)))
+                .collect(Collectors.toList());
 
         if (contexts.isEmpty()) {
             throw new IllegalStateException("ClusterConfig generator method should provide at least one config");
@@ -234,8 +234,8 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
 
     @SuppressWarnings("unchecked")
     private List<ClusterConfig> generateClusterConfiguration(
-        ExtensionContext context,
-        String generateClustersMethods
+            ExtensionContext context,
+            String generateClustersMethods
     ) {
         Object testInstance = context.getTestInstance().orElse(null);
         Method method = ReflectionUtils.getRequiredMethod(context.getRequiredTestClass(), generateClustersMethods);
@@ -243,16 +243,16 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
     }
 
     private List<TestTemplateInvocationContext> processClusterTests(
-        ExtensionContext context,
-        ClusterTest[] clusterTests,
-        ClusterTestDefaults defaults
+            ExtensionContext context,
+            ClusterTest[] clusterTests,
+            ClusterTestDefaults defaults
     ) {
         int repeatCount = getTestRepeatCount();
         List<TestTemplateInvocationContext> ret = IntStream.range(0, repeatCount)
-            .mapToObj(__ -> Arrays.stream(clusterTests))
-            .flatMap(Function.identity())
-            .flatMap(clusterTest -> processClusterTestInternal(context, clusterTest, defaults).stream())
-            .collect(Collectors.toList());
+                .mapToObj(__ -> Arrays.stream(clusterTests))
+                .flatMap(Function.identity())
+                .flatMap(clusterTest -> processClusterTestInternal(context, clusterTest, defaults).stream())
+                .collect(Collectors.toList());
 
         if (ret.isEmpty()) {
             throw new IllegalStateException("processClusterTests method should provide at least one config");
@@ -262,49 +262,49 @@ public class ClusterTestExtensions implements TestTemplateInvocationContextProvi
     }
 
     private List<TestTemplateInvocationContext> processClusterTestInternal(
-        ExtensionContext context,
-        ClusterTest clusterTest,
-        ClusterTestDefaults defaults
+            ExtensionContext context,
+            ClusterTest clusterTest,
+            ClusterTestDefaults defaults
     ) {
         Type[] types = clusterTest.types().length == 0 ? defaults.types() : clusterTest.types();
         Map<String, String> serverProperties = Stream.concat(Arrays.stream(defaults.serverProperties()), Arrays.stream(clusterTest.serverProperties()))
-            .filter(e -> e.id() == -1)
-            .collect(Collectors.toMap(ClusterConfigProperty::key, ClusterConfigProperty::value, (a, b) -> b));
+                .filter(e -> e.id() == -1)
+                .collect(Collectors.toMap(ClusterConfigProperty::key, ClusterConfigProperty::value, (a, b) -> b));
 
         Map<Integer, Map<String, String>> perServerProperties = Stream.concat(Arrays.stream(defaults.serverProperties()), Arrays.stream(clusterTest.serverProperties()))
-            .filter(e -> e.id() != -1)
-            .collect(Collectors.groupingBy(ClusterConfigProperty::id, Collectors.mapping(Function.identity(),
-                Collectors.toMap(ClusterConfigProperty::key, ClusterConfigProperty::value, (a, b) -> b))));
+                .filter(e -> e.id() != -1)
+                .collect(Collectors.groupingBy(ClusterConfigProperty::id, Collectors.mapping(Function.identity(),
+                        Collectors.toMap(ClusterConfigProperty::key, ClusterConfigProperty::value, (a, b) -> b))));
 
         Map<Feature, Short> features = Arrays.stream(clusterTest.features())
-            .collect(Collectors.toMap(ClusterFeature::feature, ClusterFeature::version));
+                .collect(Collectors.toMap(ClusterFeature::feature, ClusterFeature::version));
 
         ClusterConfig config = ClusterConfig.builder()
-            .setTypes(Set.of(types))
-            .setBrokers(clusterTest.brokers() == 0 ? defaults.brokers() : clusterTest.brokers())
-            .setControllers(clusterTest.controllers() == 0 ? defaults.controllers() : clusterTest.controllers())
-            .setDisksPerBroker(clusterTest.disksPerBroker() == 0 ? defaults.disksPerBroker() : clusterTest.disksPerBroker())
-            .setAutoStart(clusterTest.autoStart() == AutoStart.DEFAULT ? defaults.autoStart() : clusterTest.autoStart() == AutoStart.YES)
-            .setBrokerListenerName(ListenerName.normalised(clusterTest.brokerListener()))
-            .setBrokerSecurityProtocol(clusterTest.brokerSecurityProtocol())
-            .setControllerListenerName(ListenerName.normalised(clusterTest.controllerListener()))
-            .setControllerSecurityProtocol(clusterTest.controllerSecurityProtocol())
-            .setServerProperties(serverProperties)
-            .setPerServerProperties(perServerProperties)
-            .setMetadataVersion(clusterTest.metadataVersion())
-            .setTags(List.of(clusterTest.tags()))
-            .setFeatures(features)
-            .setStandalone(clusterTest.standalone())
-            .build();
+                .setTypes(Set.of(types))
+                .setBrokers(clusterTest.brokers() == 0 ? defaults.brokers() : clusterTest.brokers())
+                .setControllers(clusterTest.controllers() == 0 ? defaults.controllers() : clusterTest.controllers())
+                .setDisksPerBroker(clusterTest.disksPerBroker() == 0 ? defaults.disksPerBroker() : clusterTest.disksPerBroker())
+                .setAutoStart(clusterTest.autoStart() == AutoStart.DEFAULT ? defaults.autoStart() : clusterTest.autoStart() == AutoStart.YES)
+                .setBrokerListenerName(ListenerName.normalised(clusterTest.brokerListener()))
+                .setBrokerSecurityProtocol(clusterTest.brokerSecurityProtocol())
+                .setControllerListenerName(ListenerName.normalised(clusterTest.controllerListener()))
+                .setControllerSecurityProtocol(clusterTest.controllerSecurityProtocol())
+                .setServerProperties(serverProperties)
+                .setPerServerProperties(perServerProperties)
+                .setMetadataVersion(clusterTest.metadataVersion())
+                .setTags(List.of(clusterTest.tags()))
+                .setFeatures(features)
+                .setStandalone(clusterTest.standalone())
+                .build();
 
         return Arrays.stream(types)
-            .map(type -> invocationContextForClusterType(type, context.getRequiredTestMethod().getName(), config))
-            .collect(Collectors.toList());
+                .map(type -> invocationContextForClusterType(type, context.getRequiredTestMethod().getName(), config))
+                .collect(Collectors.toList());
     }
 
     private ClusterTestDefaults getClusterTestDefaults(Class<?> testClass) {
         return Optional.ofNullable(testClass.getDeclaredAnnotation(ClusterTestDefaults.class))
-            .orElseGet(() -> EmptyClass.class.getDeclaredAnnotation(ClusterTestDefaults.class));
+                .orElseGet(() -> EmptyClass.class.getDeclaredAnnotation(ClusterTestDefaults.class));
     }
 
     @ClusterTestDefaults

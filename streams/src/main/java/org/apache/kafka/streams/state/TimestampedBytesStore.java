@@ -26,9 +26,9 @@ public interface TimestampedBytesStore {
             return null;
         }
         return ByteBuffer
-            .allocate(8 + plainValue.length)
-            .putLong(NO_TIMESTAMP)
-            .put(plainValue)
-            .array();
+                .allocate(8 + plainValue.length)
+                .putLong(NO_TIMESTAMP)
+                .put(plainValue)
+                .array();
     }
 }

@@ -40,24 +40,24 @@ public class StreamStreamJoinNode<K, V1, V2, VR> extends BaseJoinProcessorNode<K
                                  final String otherWindowedStreamProcessorName) {
 
         super(nodeName,
-              valueJoiner,
-              joinThisProcessorParameters,
-              joinOtherProcessParameters,
-              joinMergeProcessorParameters,
-              null,
-              null);
+                valueJoiner,
+                joinThisProcessorParameters,
+                joinOtherProcessParameters,
+                joinMergeProcessorParameters,
+                null,
+                null);
 
         this.thisWindowedStreamProcessorName = thisWindowedStreamProcessorName;
-        this.otherWindowedStreamProcessorName =  otherWindowedStreamProcessorName;
+        this.otherWindowedStreamProcessorName = otherWindowedStreamProcessorName;
         this.selfJoinProcessorParameters = selfJoinProcessorParameters;
     }
 
     @Override
     public String toString() {
         return "StreamStreamJoinNode{" +
-            "thisWindowedStreamProcessorName=" + thisWindowedStreamProcessorName +
-            ", otherWindowedStreamProcessorName=" + otherWindowedStreamProcessorName +
-               "} " + super.toString();
+                "thisWindowedStreamProcessorName=" + thisWindowedStreamProcessorName +
+                ", otherWindowedStreamProcessorName=" + otherWindowedStreamProcessorName +
+                "} " + super.toString();
     }
 
     @SuppressWarnings("unchecked")
@@ -132,7 +132,7 @@ public class StreamStreamJoinNode<K, V1, V2, VR> extends BaseJoinProcessorNode<K
         }
 
         public StreamStreamJoinNodeBuilder<K, V1, V2, VR> withSelfJoinProcessorParameters(
-            final ProcessorParameters<K, V1, ?, ?> selfJoinProcessorParameters) {
+                final ProcessorParameters<K, V1, ?, ?> selfJoinProcessorParameters) {
             this.selfJoinProcessorParameters = selfJoinProcessorParameters;
             return this;
         }
@@ -155,13 +155,13 @@ public class StreamStreamJoinNode<K, V1, V2, VR> extends BaseJoinProcessorNode<K
         public StreamStreamJoinNode<K, V1, V2, VR> build() {
 
             return new StreamStreamJoinNode<>(nodeName,
-                                              valueJoiner,
-                                              joinThisProcessorParameters,
-                                              joinOtherProcessorParameters,
-                                              joinMergeProcessorParameters,
-                                              selfJoinProcessorParameters,
-                                              thisWindowedStreamProcessorName,
-                                              otherWindowedStreamProcessorName);
+                    valueJoiner,
+                    joinThisProcessorParameters,
+                    joinOtherProcessorParameters,
+                    joinMergeProcessorParameters,
+                    selfJoinProcessorParameters,
+                    thisWindowedStreamProcessorName,
+                    otherWindowedStreamProcessorName);
 
 
         }

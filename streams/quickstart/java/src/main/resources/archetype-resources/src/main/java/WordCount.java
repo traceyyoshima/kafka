@@ -14,7 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ${package};
+package $
+
+{package};
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
@@ -51,11 +53,11 @@ public class WordCount {
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.<String, String>stream("streams-plaintext-input")
-               .flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
-               .groupBy((key, value) -> value)
-               .count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("counts-store"))
-               .toStream()
-               .to("streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long()));
+                .flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
+                .groupBy((key, value) -> value)
+                .count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("counts-store"))
+                .toStream()
+                .to("streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long()));
 
         final Topology topology = builder.build();
         final KafkaStreams streams = new KafkaStreams(topology, props);

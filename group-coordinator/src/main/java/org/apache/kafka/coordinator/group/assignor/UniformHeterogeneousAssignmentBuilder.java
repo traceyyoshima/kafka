@@ -46,7 +46,7 @@ import java.util.Set;
  *   <li>Stickiness:       Minimize partition movements among members by retaining
  *                         as much of the existing assignment as possible.</li>
  * </ol>
- *
+ * <p>
  * This assignment builder prioritizes the above properties in the following order:
  *      Balance > Stickiness.
  */
@@ -168,7 +168,7 @@ public class UniformHeterogeneousAssignmentBuilder {
                 int numPartitions = subscribedTopicDescriber.numPartitions(topicId);
                 if (numPartitions == -1) {
                     throw new PartitionAssignorException(
-                        "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
+                            "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
                     );
                 }
                 subscribedTopicIds.add(topicId);
@@ -184,8 +184,8 @@ public class UniformHeterogeneousAssignmentBuilder {
 
             // Order by partitions per subscriber, descending.
             int order = Double.compare(
-                (double) topic2PartitionCount / topic2SubscriberCount,
-                (double) topic1PartitionCount / topic1SubscriberCount
+                    (double) topic2PartitionCount / topic2SubscriberCount,
+                    (double) topic1PartitionCount / topic1SubscriberCount
             );
 
             // Then order by subscriber count, ascending.
@@ -204,8 +204,8 @@ public class UniformHeterogeneousAssignmentBuilder {
         this.memberComparator = (memberIndex1, memberIndex2) -> {
             // Order by number of assigned partitions, ascending.
             int order = Integer.compare(
-                memberTargetAssignmentSizes[memberIndex1],
-                memberTargetAssignmentSizes[memberIndex2]
+                    memberTargetAssignmentSizes[memberIndex1],
+                    memberTargetAssignmentSizes[memberIndex2]
             );
 
             // Then order by member index, ascending.
@@ -258,10 +258,10 @@ public class UniformHeterogeneousAssignmentBuilder {
      *   <li>Ties are broken by sorting in ascending order of number of subscribers.</li>
      *   <li>Any remaining ties are broken by sorting in ascending order of topic id.</li>
      * </ol>
-     *
+     * <p>
      * The last criteria is for predictability of assignments.
      *
-     * @param topicIds          The topic ids that need to be sorted.
+     * @param topicIds The topic ids that need to be sorted.
      * @return A list of sorted topic ids.
      */
     private List<Uuid> sortTopicIds(Collection<Uuid> topicIds) {
@@ -272,7 +272,7 @@ public class UniformHeterogeneousAssignmentBuilder {
 
     /**
      * Revoke the partitions that are not part of each member's subscriptions.
-     *
+     * <p>
      * This method ensures that the original assignment is not copied if it is not altered.
      */
     private void maybeRevokePartitions() {
@@ -437,7 +437,7 @@ public class UniformHeterogeneousAssignmentBuilder {
             nextMostLoadedMember = sortedMembers.size() - 1;
 
             return memberTargetAssignmentSizes[sortedMembers.get(sortedMembers.size() - 1)] -
-                   memberTargetAssignmentSizes[sortedMembers.get(0)];
+                    memberTargetAssignmentSizes[sortedMembers.get(0)];
         }
 
         /**
@@ -471,7 +471,7 @@ public class UniformHeterogeneousAssignmentBuilder {
 
                 // Expand the range.
                 while (leastLoadedRangeEnd < sortedMembers.size() &&
-                    memberTargetAssignmentSizes[sortedMembers.get(leastLoadedRangeEnd)] == leastLoadedRangePartitionCount) {
+                        memberTargetAssignmentSizes[sortedMembers.get(leastLoadedRangeEnd)] == leastLoadedRangePartitionCount) {
                     leastLoadedRangeEnd++;
                 }
 
@@ -493,12 +493,12 @@ public class UniformHeterogeneousAssignmentBuilder {
          * the returned member.
          *
          * @return The most loaded member from which to reassign a partition, or -1 if no such
-         *         member exists.
+         * member exists.
          */
         public int nextMostLoadedMember() {
             if (nextMostLoadedMember < mostLoadedRangeStart) {
                 if (mostLoadedRangeEnd <= mostLoadedRangeStart &&
-                    mostLoadedRangeStart > 0) {
+                        mostLoadedRangeStart > 0) {
                     // The range is empty due to calls to excludeMostLoadedMember(). We risk not
                     // expanding the range below and returning a member outside the range. Ensure
                     // that we always expand the range below by resetting the partition count.
@@ -509,7 +509,7 @@ public class UniformHeterogeneousAssignmentBuilder {
 
                 // Expand the range.
                 while (mostLoadedRangeStart > 0 &&
-                    memberTargetAssignmentSizes[sortedMembers.get(mostLoadedRangeStart - 1)] == mostLoadedRangePartitionCount) {
+                        memberTargetAssignmentSizes[sortedMembers.get(mostLoadedRangeStart - 1)] == mostLoadedRangePartitionCount) {
                     mostLoadedRangeStart--;
                 }
 
@@ -532,7 +532,7 @@ public class UniformHeterogeneousAssignmentBuilder {
 
         /**
          * Excludes the last member returned from nextMostLoadedMember from the most loaded range.
-         *
+         * <p>
          * Must not be called if nextMostLoadedMember has not been called yet or returned -1.
          */
         public void excludeMostLoadedMember() {
@@ -561,7 +561,7 @@ public class UniformHeterogeneousAssignmentBuilder {
      *       subscribers, repeatedly.</li>
      * </ol>
      *
-     * @param partitions        The partitions to be assigned.
+     * @param partitions The partitions to be assigned.
      */
     private void assignRemainingPartitions(Map<Uuid, List<Integer>> partitions) {
         List<Uuid> sortedTopicIds = sortTopicIds(partitions.keySet());
@@ -615,21 +615,21 @@ public class UniformHeterogeneousAssignmentBuilder {
      * same subscriptions. However, when subscribers have overlapping, non-identical subscriptions,
      * the method produces almost-balanced assignments, assuming the iteration limit is not hit.
      * eg. if there are three members and two topics and members 1 and 2 are subscribed to the first
-     *     topic and members 2 and 3 are subscribed to the second topic, we can end up with an
-     *     assignment like:
+     * topic and members 2 and 3 are subscribed to the second topic, we can end up with an
+     * assignment like:
      * <ul>
      *   <li>Member 1: 9 partitions</li>
      *   <li>Member 2: 10 partitions</li>
      *   <li>Member 3: 11 partitions</li>
      * </ul>
-     *
+     * <p>
      * In this assignment, the subscribers of the first topic have a difference in partitions of 1,
      * so the topic is considered balanced. The same applies to the second topic. However, balance
      * can be improved by moving a partition from the second topic from member 3 to member 2 and a
      * partition from the first topic from member 2 to member 1.
      *
-     * @param topicIds          The topics to consider for reassignment. These topics must have at
-     *                          least two subscribers.
+     * @param topicIds The topics to consider for reassignment. These topics must have at
+     *                 least two subscribers.
      */
     private void balanceTopics(Collection<Uuid> topicIds) {
         List<Uuid> sortedTopicIds = sortTopicIds(topicIds);
@@ -662,15 +662,15 @@ public class UniformHeterogeneousAssignmentBuilder {
                 Uuid topicId = sortedTopicIds.get(topicIndex);
 
                 int reassignedPartitionCount = balanceTopic(
-                    topicId,
-                    memberAssignmentBalancer,
-                    partitions,
-                    startPartitionIndices,
-                    endPartitionIndices
+                        topicId,
+                        memberAssignmentBalancer,
+                        partitions,
+                        startPartitionIndices,
+                        endPartitionIndices
                 );
 
                 if (reassignedPartitionCount > 0 ||
-                    lastRebalanceTopicIndex == -1) {
+                        lastRebalanceTopicIndex == -1) {
                     lastRebalanceTopicIndex = topicIndex;
                 }
             }
@@ -699,11 +699,11 @@ public class UniformHeterogeneousAssignmentBuilder {
      * @return the number of partitions reassigned.
      */
     private int balanceTopic(
-        Uuid topicId,
-        MemberAssignmentBalancer memberAssignmentBalancer,
-        List<Integer> partitions,
-        Map<Integer, Integer> startPartitionIndices,
-        Map<Integer, Integer> endPartitionIndices // exclusive
+            Uuid topicId,
+            MemberAssignmentBalancer memberAssignmentBalancer,
+            List<Integer> partitions,
+            Map<Integer, Integer> startPartitionIndices,
+            Map<Integer, Integer> endPartitionIndices // exclusive
     ) {
         int reassignedPartitionCount = 0;
 
@@ -729,9 +729,9 @@ public class UniformHeterogeneousAssignmentBuilder {
             partitions.add(partition);
         }
         partitions.sort(
-            Comparator
-                .comparingInt((Integer partition) -> partitionOwners[partition])
-                .thenComparingInt(partition -> partition)
+                Comparator
+                        .comparingInt((Integer partition) -> partitionOwners[partition])
+                        .thenComparingInt(partition -> partition)
         );
 
         // Initialize the ranges in the partitions list owned by members.
@@ -765,7 +765,7 @@ public class UniformHeterogeneousAssignmentBuilder {
                 }
 
                 if (!endPartitionIndices.containsKey(mostLoadedMemberIndex) ||
-                    endPartitionIndices.get(mostLoadedMemberIndex) - startPartitionIndices.get(mostLoadedMemberIndex) <= 0) {
+                        endPartitionIndices.get(mostLoadedMemberIndex) - startPartitionIndices.get(mostLoadedMemberIndex) <= 0) {
                     memberAssignmentBalancer.excludeMostLoadedMember();
                     continue;
                 }
@@ -826,9 +826,9 @@ public class UniformHeterogeneousAssignmentBuilder {
     /**
      * Assigns or reassigns the given partition to a member.
      *
-     * @param topicId           The topic containing the partition to be assigned or reassigned.
-     * @param partition         The partition to be assigned or reassigned.
-     * @param memberIndex       The index of the member to which the partition should be assigned.
+     * @param topicId     The topic containing the partition to be assigned or reassigned.
+     * @param partition   The partition to be assigned or reassigned.
+     * @param memberIndex The index of the member to which the partition should be assigned.
      */
     private void assignPartition(Uuid topicId, int partition, int memberIndex) {
         int oldMemberIndex = targetAssignmentPartitionOwners.get(topicId)[partition];
@@ -843,14 +843,14 @@ public class UniformHeterogeneousAssignmentBuilder {
     /**
      * Assigns a partition to a member and updates the current assignment size.
      *
-     * @param topicId               The topic containing the partition to be assigned.
-     * @param partition             The partition to be assigned.
-     * @param memberIndex           Member that the partition needs to be added to.
+     * @param topicId     The topic containing the partition to be assigned.
+     * @param partition   The partition to be assigned.
+     * @param memberIndex Member that the partition needs to be added to.
      */
     private void addPartitionToTargetAssignment(
-        Uuid topicId,
-        int partition,
-        int memberIndex
+            Uuid topicId,
+            int partition,
+            int memberIndex
     ) {
         String memberId = memberIds.get(memberIndex);
         Map<Uuid, Set<Integer>> assignment = targetAssignment.get(memberId).partitions();
@@ -859,13 +859,13 @@ public class UniformHeterogeneousAssignmentBuilder {
             targetAssignment.put(memberId, new MemberAssignmentImpl(assignment));
         }
         assignment
-            .computeIfAbsent(topicId, __ -> {
-                int numPartitions = subscribedTopicDescriber.numPartitions(topicId);
-                int numSubscribers = topicSubscribers.get(topicId).size();
-                int estimatedPartitionsPerSubscriber = (numPartitions + numSubscribers - 1) / numSubscribers;
-                return new HashSet<>((int) ((estimatedPartitionsPerSubscriber / 0.75f) + 1));
-            })
-            .add(partition);
+                .computeIfAbsent(topicId, __ -> {
+                    int numPartitions = subscribedTopicDescriber.numPartitions(topicId);
+                    int numSubscribers = topicSubscribers.get(topicId).size();
+                    int estimatedPartitionsPerSubscriber = (numPartitions + numSubscribers - 1) / numSubscribers;
+                    return new HashSet<>((int) ((estimatedPartitionsPerSubscriber / 0.75f) + 1));
+                })
+                .add(partition);
 
         targetAssignmentPartitionOwners.get(topicId)[partition] = memberIndex;
 
@@ -875,14 +875,14 @@ public class UniformHeterogeneousAssignmentBuilder {
     /**
      * Revokes the partition from a member and updates the current target assignment size.
      *
-     * @param topicId               The topic containing the partition to be revoked.
-     * @param partition             The partition to be revoked.
-     * @param memberIndex           Member that the partition needs to be revoked from.
+     * @param topicId     The topic containing the partition to be revoked.
+     * @param partition   The partition to be revoked.
+     * @param memberIndex Member that the partition needs to be revoked from.
      */
     private void removePartitionFromTargetAssignment(
-        Uuid topicId,
-        int partition,
-        int memberIndex
+            Uuid topicId,
+            int partition,
+            int memberIndex
     ) {
         String memberId = memberIds.get(memberIndex);
         Map<Uuid, Set<Integer>> assignment = targetAssignment.get(memberId).partitions();

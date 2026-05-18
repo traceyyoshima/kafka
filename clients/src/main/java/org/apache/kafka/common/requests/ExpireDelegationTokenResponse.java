@@ -34,7 +34,7 @@ public class ExpireDelegationTokenResponse extends AbstractResponse {
 
     public static ExpireDelegationTokenResponse parse(Readable readable, short version) {
         return new ExpireDelegationTokenResponse(new ExpireDelegationTokenResponseData(readable,
-            version));
+                version));
     }
 
     public Errors error() {

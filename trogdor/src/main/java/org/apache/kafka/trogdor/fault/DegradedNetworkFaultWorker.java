@@ -165,11 +165,12 @@ public class DegradedNetworkFaultWorker implements TaskWorker {
 
     /**
      * Delete any previously defined qdisc for the given network interface.
+     *
      * @throws IOException
      */
     private void disableTrafficControl(Platform platform, String networkDevice) throws IOException {
-        platform.runCommand(new String[] {
-            "sudo", "tc", "qdisc", "del", "dev", networkDevice, "root"
+        platform.runCommand(new String[]{
+                "sudo", "tc", "qdisc", "del", "dev", networkDevice, "root"
         });
     }
 }

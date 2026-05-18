@@ -188,26 +188,26 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> response = new LinkedHashMap<>();
         response.put(tp0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp0.partition())
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(tp0.partition())
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         response.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp1.partition())
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(tp1.partition())
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         response.put(tp2, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp2.partition())
-            .setHighWatermark(5)
-            .setLastStableOffset(5)
-            .setLogStartOffset(5));
+                .setPartitionIndex(tp2.partition())
+                .setHighWatermark(5)
+                .setLastStableOffset(5)
+                .setLogStartOffset(5));
 
         int sessionId = context1.updateAndGenerateResponseData(response, List.of()).sessionId();
 
         // With no changes, the cached epochs should remain the same
         FetchRequest request2 = createRequest(new FetchMetadata(sessionId, 1), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context2 = newContext(fetchManager, request2, topicNames);
         assertEquals(Map.of(tp0, Optional.empty(), tp1, Optional.of(1), tp2, Optional.of(2)), cachedLeaderEpochs(context2));
         context2.updateAndGenerateResponseData(response, List.of()).sessionId();
@@ -219,7 +219,7 @@ public class FetchSessionTest {
         requestData3.put(tp2.topicPartition(), new PartitionData(tp2.topicId(), 10, 0, 100, Optional.of(3)));
 
         FetchRequest request3 = createRequest(new FetchMetadata(sessionId, 2), requestData3,
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context3 = newContext(fetchManager, request3, topicNames);
         assertEquals(Map.of(tp0, Optional.of(6), tp1, Optional.empty(), tp2, Optional.of(3)), cachedLeaderEpochs(context3));
     }
@@ -247,26 +247,26 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> response = new LinkedHashMap<>();
         response.put(tp0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp0.partition())
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(tp0.partition())
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         response.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp1.partition())
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(tp1.partition())
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         response.put(tp2, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp2.partition())
-            .setHighWatermark(5)
-            .setLastStableOffset(5)
-            .setLogStartOffset(5));
+                .setPartitionIndex(tp2.partition())
+                .setHighWatermark(5)
+                .setLastStableOffset(5)
+                .setLogStartOffset(5));
 
         int sessionId = context1.updateAndGenerateResponseData(response, List.of()).sessionId();
 
         // With no changes, the cached epochs should remain the same
         FetchRequest request2 = createRequest(new FetchMetadata(sessionId, 1), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context2 = newContext(fetchManager, request2, topicNames);
         assertEquals(Map.of(tp0, Optional.empty(), tp1, Optional.of(1), tp2, Optional.of(2)), cachedLeaderEpochs(context2));
         assertEquals(Map.of(tp0, Optional.empty(), tp1, Optional.empty(), tp2, Optional.of(1)), cachedLastFetchedEpochs(context2));
@@ -320,41 +320,41 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData2 = new LinkedHashMap<>();
         respData2.put(tp0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData2.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse resp2 = context2.updateAndGenerateResponseData(respData2, List.of());
         assertEquals(Errors.NONE, resp2.error());
         assertTrue(resp2.sessionId() != INVALID_SESSION_ID);
         assertEquals(
-            respData2.entrySet()
-                .stream()
-                .collect(Collectors.toMap(entry -> entry.getKey().topicPartition(), Map.Entry::getValue)),
-            resp2.responseData(topicNames, request2.version())
+                respData2.entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(entry -> entry.getKey().topicPartition(), Map.Entry::getValue)),
+                resp2.responseData(topicNames, request2.version())
         );
 
         // Test trying to create a new session with an invalid epoch
         FetchRequest request3 = createRequest(new FetchMetadata(resp2.sessionId(), 5), reqData2,
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context3 = newContext(fetchManager, request3, topicNames);
         assertInstanceOf(SessionErrorContext.class, context3);
         assertEquals(Errors.INVALID_FETCH_SESSION_EPOCH, context3.updateAndGenerateResponseData(respData2, List.of()).error());
 
         // Test trying to create a new session with a non-existent session id
         FetchRequest request4 = createRequest(new FetchMetadata(resp2.sessionId() + 1, 1), reqData2,
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context4 = newContext(fetchManager, request4, topicNames);
         assertEquals(Errors.FETCH_SESSION_ID_NOT_FOUND, context4.updateAndGenerateResponseData(respData2, List.of()).error());
 
         // Continue the first fetch session we created.
         FetchRequest request5 = createRequest(new FetchMetadata(resp2.sessionId(), 1), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context5 = newContext(fetchManager, request5, topicNames);
         assertInstanceOf(IncrementalFetchContext.class, context5);
 
@@ -374,14 +374,14 @@ public class FetchSessionTest {
 
         // Test setting an invalid fetch session epoch.
         FetchRequest request6 = createRequest(new FetchMetadata(resp2.sessionId(), 5), reqData2,
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context6 = newContext(fetchManager, request6, topicNames);
         assertInstanceOf(SessionErrorContext.class, context6);
         assertEquals(Errors.INVALID_FETCH_SESSION_EPOCH, context6.updateAndGenerateResponseData(respData2, List.of()).error());
 
         // Test generating a throttled response for the incremental fetch session
         FetchRequest request7 = createRequest(new FetchMetadata(resp2.sessionId(), 2), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context7 = newContext(fetchManager, request7, topicNames);
         FetchResponse resp7 = context7.getThrottledResponse(100, List.of());
         assertEquals(Errors.NONE, resp7.error());
@@ -396,22 +396,22 @@ public class FetchSessionTest {
             reqData8.put(tp2.topicPartition(), new PartitionData(tp2.topicId(), 0, 0, 100, Optional.empty()));
             reqData8.put(tp3.topicPartition(), new PartitionData(tp3.topicId(), 10, 0, 100, Optional.empty()));
             FetchRequest request8 = createRequest(new FetchMetadata(prevSessionId, FINAL_EPOCH), reqData8,
-                List.of(), false, FETCH.latestVersion());
+                    List.of(), false, FETCH.latestVersion());
             FetchContext context8 = newContext(fetchManager, request8, topicNames);
             assertInstanceOf(SessionlessFetchContext.class, context8);
             assertEquals(0, cacheShard.size());
 
             LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData8 = new LinkedHashMap<>();
             respData8.put(tp2, new FetchResponseData.PartitionData()
-                .setPartitionIndex(0)
-                .setHighWatermark(100)
-                .setLastStableOffset(100)
-                .setLogStartOffset(100));
+                    .setPartitionIndex(0)
+                    .setHighWatermark(100)
+                    .setLastStableOffset(100)
+                    .setLogStartOffset(100));
             respData8.put(tp3, new FetchResponseData.PartitionData()
-                .setPartitionIndex(1)
-                .setHighWatermark(100)
-                .setLastStableOffset(100)
-                .setLogStartOffset(100));
+                    .setPartitionIndex(1)
+                    .setHighWatermark(100)
+                    .setLastStableOffset(100)
+                    .setLogStartOffset(100));
             FetchResponse resp8 = context8.updateAndGenerateResponseData(respData8, List.of());
             assertEquals(Errors.NONE, resp8.error());
 
@@ -425,8 +425,8 @@ public class FetchSessionTest {
         FetchSessionCacheShard cacheShard = new FetchSessionCacheShard(10, 1000, Integer.MAX_VALUE, 0);
         FetchManager fetchManager = new FetchManager(new MockTime(), cacheShard);
         Map<Uuid, String> topicNames = usesTopicIds
-            ? Map.of(Uuid.randomUuid(), "foo", Uuid.randomUuid(), "bar")
-            : Map.of();
+                ? Map.of(Uuid.randomUuid(), "foo", Uuid.randomUuid(), "bar")
+                : Map.of();
         Map<String, Uuid> topicIds = topicNames.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
         short version = usesTopicIds ? FETCH.latestVersion() : (short) 12;
         Uuid fooId = topicIds.getOrDefault("foo", Uuid.ZERO_UUID);
@@ -445,15 +445,15 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(tp0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData1.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse resp1 = context1.updateAndGenerateResponseData(respData1, List.of());
         assertEquals(Errors.NONE, resp1.error());
         assertTrue(resp1.sessionId() != INVALID_SESSION_ID);
@@ -478,15 +478,15 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData2 = new LinkedHashMap<>();
         respData2.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         respData2.put(tp2, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(0)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse resp2 = context2.updateAndGenerateResponseData(respData2, List.of());
         assertEquals(Errors.NONE, resp2.error());
         assertEquals(1, resp2.responseData(topicNames, request2.version()).size());
@@ -516,22 +516,22 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(tp0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData1.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse resp1 = context1.updateAndGenerateResponseData(respData1, List.of());
         // Since we are ignoring IDs, we should have no errors.
         assertEquals(Errors.NONE, resp1.error());
         assertTrue(resp1.sessionId() != INVALID_SESSION_ID);
         assertEquals(2, resp1.responseData(topicNames, request1.version()).size());
         resp1.responseData(topicNames, request1.version()).forEach((tp, resp) ->
-            assertEquals(Errors.NONE.code(), resp.errorCode()));
+                assertEquals(Errors.NONE.code(), resp.errorCode()));
     }
 
     @Test
@@ -564,27 +564,27 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(emptyFoo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setErrorCode(Errors.UNKNOWN_TOPIC_ID.code()));
+                .setPartitionIndex(0)
+                .setErrorCode(Errors.UNKNOWN_TOPIC_ID.code()));
         respData1.put(emptyFoo1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setErrorCode(Errors.UNKNOWN_TOPIC_ID.code()));
+                .setPartitionIndex(1)
+                .setErrorCode(Errors.UNKNOWN_TOPIC_ID.code()));
         respData1.put(emptyZar0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setErrorCode(Errors.UNKNOWN_TOPIC_ID.code()));
+                .setPartitionIndex(1)
+                .setErrorCode(Errors.UNKNOWN_TOPIC_ID.code()));
         FetchResponse resp1 = context1.updateAndGenerateResponseData(respData1, List.of());
         // On the latest request version, we should have unknown topic ID errors.
         assertEquals(Errors.NONE, resp1.error());
         assertTrue(resp1.sessionId() != INVALID_SESSION_ID);
         assertEquals(
-            Map.of(
-                foo0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code(),
-                foo1.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code(),
-                zar0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
-            ),
-            resp1.responseData(topicNames, request1.version()).entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().errorCode()))
+                Map.of(
+                        foo0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code(),
+                        foo1.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code(),
+                        zar0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                ),
+                resp1.responseData(topicNames, request1.version()).entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().errorCode()))
         );
 
         // Create an incremental request where we resolve the partitions
@@ -597,32 +597,32 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData2 = new LinkedHashMap<>();
         respData2.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData2.put(foo1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         respData2.put(emptyZar0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setErrorCode(Errors.UNKNOWN_TOPIC_ID.code()));
+                .setPartitionIndex(1)
+                .setErrorCode(Errors.UNKNOWN_TOPIC_ID.code()));
         FetchResponse resp2 = context2.updateAndGenerateResponseData(respData2, List.of());
         // Since we are ignoring IDs, we should have no errors.
         assertEquals(Errors.NONE, resp2.error());
         assertTrue(resp2.sessionId() != INVALID_SESSION_ID);
         assertEquals(3, resp2.responseData(topicNames, request2.version()).size());
         assertEquals(
-            Map.of(
-                foo0.topicPartition(), Errors.NONE.code(),
-                foo1.topicPartition(), Errors.NONE.code(),
-                zar0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
-            ),
-            resp2.responseData(topicNames, request2.version()).entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().errorCode()))
+                Map.of(
+                        foo0.topicPartition(), Errors.NONE.code(),
+                        foo1.topicPartition(), Errors.NONE.code(),
+                        zar0.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                ),
+                resp2.responseData(topicNames, request2.version()).entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().errorCode()))
         );
     }
 
@@ -643,10 +643,10 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         FetchResponse resp1 = context1.updateAndGenerateResponseData(respData1, List.of());
         assertEquals(Errors.NONE, resp1.error());
         assertTrue(resp1.sessionId() != INVALID_SESSION_ID);
@@ -680,10 +680,10 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         FetchResponse resp1 = context1.updateAndGenerateResponseData(respData1, List.of());
         assertEquals(Errors.NONE, resp1.error());
         assertTrue(resp1.sessionId() != INVALID_SESSION_ID);
@@ -721,16 +721,16 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         respData1.put(tp0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(-1)
-            .setLastStableOffset(-1)
-            .setLogStartOffset(-1)
-            .setErrorCode(Errors.UNKNOWN_TOPIC_OR_PARTITION.code()));
+                .setPartitionIndex(0)
+                .setHighWatermark(-1)
+                .setLastStableOffset(-1)
+                .setLogStartOffset(-1)
+                .setErrorCode(Errors.UNKNOWN_TOPIC_OR_PARTITION.code()));
         FetchResponse resp1 = context1.updateAndGenerateResponseData(respData1, List.of());
         assertEquals(Errors.NONE, resp1.error());
         assertTrue(resp1.sessionId() != INVALID_SESSION_ID);
@@ -746,11 +746,11 @@ public class FetchSessionTest {
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData2 = new LinkedHashMap<>();
         // Likely if the topic ID is different in the broker, it will be different in the log. Simulate the log check finding an inconsistent ID.
         respData2.put(tp0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(-1)
-            .setLastStableOffset(-1)
-            .setLogStartOffset(-1)
-            .setErrorCode(Errors.INCONSISTENT_TOPIC_ID.code()));
+                .setPartitionIndex(0)
+                .setHighWatermark(-1)
+                .setLastStableOffset(-1)
+                .setLogStartOffset(-1)
+                .setErrorCode(Errors.INCONSISTENT_TOPIC_ID.code()));
         FetchResponse resp2 = context2.updateAndGenerateResponseData(respData2, List.of());
         assertEquals(Errors.NONE, resp2.error());
         assertTrue(resp2.sessionId() > 0);
@@ -794,10 +794,10 @@ public class FetchSessionTest {
 
         // The metadata cache knows about foo and bar.
         FetchContext context3 = newContext(
-            new FetchMetadata(sessionId, 2),
-            List.of(bar),
-            fetchManager,
-            Map.of(foo.topicId(), foo.topic(), bar.topicId(), bar.topic())
+                new FetchMetadata(sessionId, 2),
+                List.of(bar),
+                fetchManager,
+                Map.of(foo.topicId(), foo.topic(), bar.topicId(), bar.topic())
         );
 
         // So foo and bar are resolved.
@@ -808,10 +808,10 @@ public class FetchSessionTest {
 
         // The metadata cache knows about all topics.
         FetchContext context4 = newContext(
-            new FetchMetadata(sessionId, 3),
-            List.of(),
-            fetchManager,
-            Map.of(foo.topicId(), foo.topic(), bar.topicId(), bar.topic(), zar.topicId(), zar.topic())
+                new FetchMetadata(sessionId, 3),
+                List.of(),
+                fetchManager,
+                Map.of(foo.topicId(), foo.topic(), bar.topicId(), bar.topic(), zar.topicId(), zar.topic())
         );
 
         // So all topics are resolved.
@@ -845,11 +845,11 @@ public class FetchSessionTest {
         Map<Uuid, String> context1Names = fooStartsResolved ? Map.of(foo.topicId(), foo.topic()) : Map.of();
         TopicIdPartition fooContext1 = fooStartsResolved ? foo : fooUnresolved;
         FetchContext context1 = newContext(
-            INITIAL,
-            List.of(fooContext1, bar),
-            List.of(),
-            fetchManager,
-            context1Names
+                INITIAL,
+                List.of(fooContext1, bar),
+                List.of(),
+                fetchManager,
+                context1Names
         );
 
         // So the context contains unresolved bar and a resolved foo iff fooStartsResolved
@@ -863,11 +863,11 @@ public class FetchSessionTest {
         Map<Uuid, String> context2Names = fooEndsResolved ? Map.of(foo.topicId(), foo.topic()) : Map.of();
         TopicIdPartition fooContext2 = fooEndsResolved ? foo : fooUnresolved;
         FetchContext context2 = newContext(
-            new FetchMetadata(sessionId, 1),
-            List.of(),
-            List.of(fooContext2),
-            fetchManager,
-            context2Names
+                new FetchMetadata(sessionId, 1),
+                List.of(),
+                List.of(fooContext2),
+                fetchManager,
+                context2Names
         );
 
         // So foo is removed but not the others.
@@ -878,11 +878,11 @@ public class FetchSessionTest {
 
         // Now remove bar
         FetchContext context3 = newContext(
-            new FetchMetadata(sessionId, 2),
-            List.of(),
-            List.of(bar),
-            fetchManager,
-            Map.of()
+                new FetchMetadata(sessionId, 2),
+                List.of(),
+                List.of(bar),
+                fetchManager,
+                Map.of()
         );
 
         // Context is sessionless since it is empty.
@@ -906,28 +906,28 @@ public class FetchSessionTest {
 
         // Start with a sessionless context.
         FetchContext context1 = newContext(
-            FetchMetadata.LEGACY,
-            List.of(foo, bar),
-            fetchManager,
-            receivingBrokerTopicNames
+                FetchMetadata.LEGACY,
+                List.of(foo, bar),
+                fetchManager,
+                receivingBrokerTopicNames
         );
         assertInstanceOf(SessionlessFetchContext.class, context1);
         // Check the response can be read as expected.
         checkResponseData(
-            Map.of(
-                foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
-                bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
-            ),
-            updateAndGenerateResponseData(context1),
-            sendingTopicNames
+                Map.of(
+                        foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
+                        bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                ),
+                updateAndGenerateResponseData(context1),
+                sendingTopicNames
         );
 
         // Now create a full context.
         FetchContext context2 = newContext(
-            INITIAL,
-            List.of(foo, bar),
-            fetchManager,
-            receivingBrokerTopicNames
+                INITIAL,
+                List.of(foo, bar),
+                fetchManager,
+                receivingBrokerTopicNames
         );
         assertInstanceOf(FullFetchContext.class, context2);
 
@@ -935,37 +935,37 @@ public class FetchSessionTest {
         FetchResponse response2 = updateAndGenerateResponseData(context2);
         int sessionId = response2.sessionId();
         checkResponseData(
-            Map.of(
-                foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
-                bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
-            ),
-            response2,
-            sendingTopicNames
+                Map.of(
+                        foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
+                        bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                ),
+                response2,
+                sendingTopicNames
         );
 
         // Now create an incremental context. We re-add foo as though the partition data is updated. In a real broker, the data would update.
         FetchContext context3 = newContext(
-            new FetchMetadata(sessionId, 1),
-            List.of(),
-            fetchManager,
-            receivingBrokerTopicNames
+                new FetchMetadata(sessionId, 1),
+                List.of(),
+                fetchManager,
+                receivingBrokerTopicNames
         );
         assertInstanceOf(IncrementalFetchContext.class, context3);
         checkResponseData(
-            Map.of(
-                foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
-                bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
-            ),
-            updateAndGenerateResponseData(context3),
-            sendingTopicNames
+                Map.of(
+                        foo.topicPartition(), Errors.UNKNOWN_TOPIC_OR_PARTITION.code(),
+                        bar.topicPartition(), Errors.UNKNOWN_TOPIC_ID.code()
+                ),
+                updateAndGenerateResponseData(context3),
+                sendingTopicNames
         );
 
         // Finally create an error context by using the same epoch
         FetchContext context4 = newContext(
-            new FetchMetadata(sessionId, 1),
-            List.of(),
-            fetchManager,
-            receivingBrokerTopicNames
+                new FetchMetadata(sessionId, 1),
+                List.of(),
+                fetchManager,
+                receivingBrokerTopicNames
         );
         assertInstanceOf(SessionErrorContext.class, context4);
         // The response should be empty.
@@ -993,15 +993,15 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData1.put(foo1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse session1resp = session1context1.updateAndGenerateResponseData(respData1, List.of());
         assertEquals(Errors.NONE, session1resp.error());
         assertTrue(session1resp.sessionId() != INVALID_SESSION_ID);
@@ -1022,15 +1022,15 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> session2RespData = new LinkedHashMap<>();
         session2RespData.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         session2RespData.put(foo1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse session2resp = session2context.updateAndGenerateResponseData(session2RespData, List.of());
         assertEquals(Errors.NONE, session2resp.error());
         assertTrue(session2resp.sessionId() != INVALID_SESSION_ID);
@@ -1044,7 +1044,7 @@ public class FetchSessionTest {
 
         // Create an incremental fetch request for session 1
         FetchRequest session1request2 = createRequest(new FetchMetadata(session1resp.sessionId(), 1), new LinkedHashMap<>(),
-            List.of(), false, FETCH.latestVersion());
+                List.of(), false, FETCH.latestVersion());
         FetchContext context1v2 = newContext(fetchManager, session1request2, topicNames);
         assertInstanceOf(IncrementalFetchContext.class, context1v2);
 
@@ -1063,15 +1063,15 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData3 = new LinkedHashMap<>();
         respData3.put(new TopicIdPartition(fooId, new TopicPartition("foo", 0)), new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData3.put(new TopicIdPartition(fooId, new TopicPartition("foo", 1)), new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse session3resp = session3context.updateAndGenerateResponseData(respData3, List.of());
         assertEquals(Errors.NONE, session3resp.error());
         assertTrue(session3resp.sessionId() != INVALID_SESSION_ID);
@@ -1079,7 +1079,7 @@ public class FetchSessionTest {
 
         assertTrue(cacheShard.get(session1resp.sessionId()).isPresent());
         assertFalse(cacheShard.get(session2resp.sessionId()).isPresent(),
-            "session 2 should have been evicted by latest session, as session 1 was used more recently");
+                "session 2 should have been evicted by latest session, as session 1 was used more recently");
         assertTrue(cacheShard.get(session3resp.sessionId()).isPresent());
     }
 
@@ -1104,15 +1104,15 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData1.put(foo1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse session1resp = session1context.updateAndGenerateResponseData(respData1, List.of());
         assertEquals(Errors.NONE, session1resp.error());
         assertTrue(session1resp.sessionId() != INVALID_SESSION_ID);
@@ -1132,15 +1132,15 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> session2RespData = new LinkedHashMap<>();
         session2RespData.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         session2RespData.put(foo1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse session2resp = session2context.updateAndGenerateResponseData(session2RespData, List.of());
         assertEquals(Errors.NONE, session2resp.error());
         assertTrue(session2resp.sessionId() != INVALID_SESSION_ID);
@@ -1163,15 +1163,15 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData3 = new LinkedHashMap<>();
         respData3.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData3.put(foo1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse session3resp = session3context.updateAndGenerateResponseData(respData3, List.of());
         assertEquals(Errors.NONE, session3resp.error());
         assertTrue(session3resp.sessionId() != INVALID_SESSION_ID);
@@ -1196,22 +1196,22 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData4 = new LinkedHashMap<>();
         respData4.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData4.put(foo1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse session4resp = session3context.updateAndGenerateResponseData(respData4, List.of());
         assertEquals(Errors.NONE, session4resp.error());
         assertTrue(session4resp.sessionId() != INVALID_SESSION_ID);
         assertEquals(2, session4resp.responseData(topicNames, session4request.version()).size());
 
         assertFalse(cacheShard.get(session1resp.sessionId()).isPresent(),
-            "session 1 should have been evicted by session 4 even though it is privileged as it has hit eviction time");
+                "session 1 should have been evicted by session 4 even though it is privileged as it has hit eviction time");
         assertTrue(cacheShard.get(session3resp.sessionId()).isPresent());
         assertTrue(cacheShard.get(session4resp.sessionId()).isPresent());
         assertEquals(2, cacheShard.size());
@@ -1236,15 +1236,15 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(foo0, new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(100)
-            .setLastStableOffset(100)
-            .setLogStartOffset(100));
+                .setPartitionIndex(0)
+                .setHighWatermark(100)
+                .setLastStableOffset(100)
+                .setLogStartOffset(100));
         respData1.put(foo1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(1)
-            .setHighWatermark(10)
-            .setLastStableOffset(10)
-            .setLogStartOffset(10));
+                .setPartitionIndex(1)
+                .setHighWatermark(10)
+                .setLastStableOffset(10)
+                .setLogStartOffset(10));
         FetchResponse resp1 = context1.updateAndGenerateResponseData(respData1, List.of());
         assertEquals(Errors.NONE, resp1.error());
         assertTrue(resp1.sessionId() != INVALID_SESSION_ID);
@@ -1253,7 +1253,7 @@ public class FetchSessionTest {
         // Create an incremental fetch request that removes foo-0 and foo-1
         // Verify that the previous fetch session was closed.
         FetchRequest request2 = createRequest(new FetchMetadata(resp1.sessionId(), 1), new LinkedHashMap<>(),
-            List.of(foo0, foo1), false, FETCH.latestVersion());
+                List.of(foo0, foo1), false, FETCH.latestVersion());
         FetchContext context2 = newContext(fetchManager, request2, topicNames);
         assertInstanceOf(SessionlessFetchContext.class, context2);
 
@@ -1283,17 +1283,17 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData = new LinkedHashMap<>();
         respData.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp1.partition())
-            .setHighWatermark(105)
-            .setLastStableOffset(105)
-            .setLogStartOffset(0));
+                .setPartitionIndex(tp1.partition())
+                .setHighWatermark(105)
+                .setLastStableOffset(105)
+                .setLogStartOffset(0));
         FetchResponseData.EpochEndOffset divergingEpoch = new FetchResponseData.EpochEndOffset().setEpoch(3).setEndOffset(90);
         respData.put(tp2, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp2.partition())
-            .setHighWatermark(105)
-            .setLastStableOffset(105)
-            .setLogStartOffset(0)
-            .setDivergingEpoch(divergingEpoch));
+                .setPartitionIndex(tp2.partition())
+                .setHighWatermark(105)
+                .setLastStableOffset(105)
+                .setLogStartOffset(0)
+                .setDivergingEpoch(divergingEpoch));
         FetchResponse resp1 = context1.updateAndGenerateResponseData(respData, List.of());
         assertEquals(Errors.NONE, resp1.error());
         assertNotEquals(INVALID_SESSION_ID, resp1.sessionId());
@@ -1312,11 +1312,11 @@ public class FetchSessionTest {
 
         // All partitions with divergent epoch should be returned.
         respData.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp1.partition())
-            .setHighWatermark(105)
-            .setLastStableOffset(105)
-            .setLogStartOffset(0)
-            .setDivergingEpoch(divergingEpoch));
+                .setPartitionIndex(tp1.partition())
+                .setHighWatermark(105)
+                .setLastStableOffset(105)
+                .setLogStartOffset(0)
+                .setDivergingEpoch(divergingEpoch));
         FetchResponse resp3 = context2.updateAndGenerateResponseData(respData, List.of());
         assertEquals(Errors.NONE, resp3.error());
         assertEquals(resp1.sessionId(), resp3.sessionId());
@@ -1325,10 +1325,10 @@ public class FetchSessionTest {
         // Partitions that meet other conditions should be returned regardless of whether
         // divergingEpoch is set or not.
         respData.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp1.partition())
-            .setHighWatermark(110)
-            .setLastStableOffset(110)
-            .setLogStartOffset(0));
+                .setPartitionIndex(tp1.partition())
+                .setHighWatermark(110)
+                .setLastStableOffset(110)
+                .setLogStartOffset(0));
         FetchResponse resp4 = context2.updateAndGenerateResponseData(respData, List.of());
         assertEquals(Errors.NONE, resp4.error());
         assertEquals(resp1.sessionId(), resp4.sessionId());
@@ -1356,33 +1356,33 @@ public class FetchSessionTest {
 
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData1 = new LinkedHashMap<>();
         respData1.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp1.topicPartition().partition())
-            .setHighWatermark(50)
-            .setLastStableOffset(50)
-            .setLogStartOffset(0));
+                .setPartitionIndex(tp1.topicPartition().partition())
+                .setHighWatermark(50)
+                .setLastStableOffset(50)
+                .setLogStartOffset(0));
         respData1.put(tp2, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp2.topicPartition().partition())
-            .setHighWatermark(50)
-            .setLastStableOffset(50)
-            .setLogStartOffset(0));
+                .setPartitionIndex(tp2.topicPartition().partition())
+                .setHighWatermark(50)
+                .setLastStableOffset(50)
+                .setLogStartOffset(0));
         respData1.put(tp3, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp3.topicPartition().partition())
-            .setHighWatermark(50)
-            .setLastStableOffset(50)
-            .setLogStartOffset(0));
+                .setPartitionIndex(tp3.topicPartition().partition())
+                .setHighWatermark(50)
+                .setLastStableOffset(50)
+                .setLogStartOffset(0));
 
         FetchResponse resp1 = context1.updateAndGenerateResponseData(respData1, List.of());
         assertEquals(Errors.NONE, resp1.error());
         assertNotEquals(INVALID_SESSION_ID, resp1.sessionId());
         assertEquals(
-            Set.of(tp1.topicPartition(), tp2.topicPartition(), tp3.topicPartition()),
-            resp1.responseData(topicNames, FETCH.latestVersion()).keySet()
+                Set.of(tp1.topicPartition(), tp2.topicPartition(), tp3.topicPartition()),
+                resp1.responseData(topicNames, FETCH.latestVersion()).keySet()
         );
 
         // Incremental fetch context returns partitions with changes but only deprioritizes
         // the partitions with records
         FetchContext context2 = fetchManager.newContext(FETCH.latestVersion(), new FetchMetadata(resp1.sessionId(), 1),
-            false, reqData, List.of(), topicNames);
+                false, reqData, List.of(), topicNames);
         assertInstanceOf(IncrementalFetchContext.class, context2);
 
         // Partitions are ordered in the session as per last response
@@ -1397,21 +1397,21 @@ public class FetchSessionTest {
         // All partitions with changes should be returned.
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> respData3 = new LinkedHashMap<>();
         respData3.put(tp1, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp1.topicPartition().partition())
-            .setHighWatermark(60)
-            .setLastStableOffset(50)
-            .setLogStartOffset(0));
+                .setPartitionIndex(tp1.topicPartition().partition())
+                .setHighWatermark(60)
+                .setLastStableOffset(50)
+                .setLogStartOffset(0));
         respData3.put(tp2, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp2.topicPartition().partition())
-            .setHighWatermark(60)
-            .setLastStableOffset(50)
-            .setLogStartOffset(0)
-            .setRecords(MemoryRecords.withRecords(Compression.NONE, new SimpleRecord(100, null))));
+                .setPartitionIndex(tp2.topicPartition().partition())
+                .setHighWatermark(60)
+                .setLastStableOffset(50)
+                .setLogStartOffset(0)
+                .setRecords(MemoryRecords.withRecords(Compression.NONE, new SimpleRecord(100, null))));
         respData3.put(tp3, new FetchResponseData.PartitionData()
-            .setPartitionIndex(tp3.topicPartition().partition())
-            .setHighWatermark(50)
-            .setLastStableOffset(50)
-            .setLogStartOffset(0));
+                .setPartitionIndex(tp3.topicPartition().partition())
+                .setHighWatermark(50)
+                .setLastStableOffset(50)
+                .setLogStartOffset(0));
         FetchResponse resp3 = context2.updateAndGenerateResponseData(respData3, List.of());
         assertEquals(Errors.NONE, resp3.error());
         assertEquals(resp1.sessionId(), resp3.sessionId());
@@ -1489,8 +1489,8 @@ public class FetchSessionTest {
         int numShards = 8;
         int sessionIdRange = Integer.MAX_VALUE / numShards;
         List<FetchSessionCacheShard> cacheShards = IntStream.range(0, numShards)
-            .mapToObj(shardNum -> new FetchSessionCacheShard(10, 1000, sessionIdRange, shardNum))
-            .toList();
+                .mapToObj(shardNum -> new FetchSessionCacheShard(10, 1000, sessionIdRange, shardNum))
+                .toList();
         FetchSessionCache cache = new FetchSessionCache(cacheShards);
 
         // When
@@ -1511,8 +1511,8 @@ public class FetchSessionTest {
         int numShards = 8;
         int sessionIdRange = Integer.MAX_VALUE / numShards;
         List<FetchSessionCacheShard> cacheShards = IntStream.range(0, numShards)
-            .mapToObj(shardNum -> new FetchSessionCacheShard(10, 1000, sessionIdRange, shardNum))
-            .toList();
+                .mapToObj(shardNum -> new FetchSessionCacheShard(10, 1000, sessionIdRange, shardNum))
+                .toList();
         FetchSessionCache cache = new FetchSessionCache(cacheShards);
 
         // When / Then
@@ -1528,8 +1528,8 @@ public class FetchSessionTest {
         int numShards = 8;
         int sessionIdRange = Integer.MAX_VALUE / numShards;
         List<FetchSessionCacheShard> cacheShards = IntStream.range(0, numShards)
-            .mapToObj(shardNum -> new FetchSessionCacheShard(10, 1000, sessionIdRange, shardNum))
-            .toList();
+                .mapToObj(shardNum -> new FetchSessionCacheShard(10, 1000, sessionIdRange, shardNum))
+                .toList();
         FetchSessionCache cache = new FetchSessionCache(cacheShards);
 
         // When / Then
@@ -1542,7 +1542,7 @@ public class FetchSessionTest {
         for (int sessionId : sessionIds) {
             i = i + 1;
             assertTrue(cacheShard.get(sessionId).isPresent(),
-                "Missing session " + i + " out of " + List.of(sessionIds).size() + " " + sessionId + "\"");
+                    "Missing session " + i + " out of " + List.of(sessionIds).size() + " " + sessionId + "\"");
         }
         assertEquals(sessionIds.length, cacheShard.size());
     }
@@ -1560,41 +1560,41 @@ public class FetchSessionTest {
                                        boolean isFromFollower,
                                        short version) {
         return new FetchRequest.Builder(
-            version,
-            version,
-            isFromFollower ? 1 : FetchRequest.CONSUMER_REPLICA_ID,
-            isFromFollower ? 1 : -1,
-            0,
-            0,
-            fetchData)
-        .metadata(metadata)
-        .removed(toForget)
-        .build();
+                version,
+                version,
+                isFromFollower ? 1 : FetchRequest.CONSUMER_REPLICA_ID,
+                isFromFollower ? 1 : -1,
+                0,
+                0,
+                fetchData)
+                .metadata(metadata)
+                .removed(toForget)
+                .build();
     }
 
     private FetchRequest createRequestWithoutTopicIds(FetchMetadata metadata,
                                                       Map<TopicPartition, PartitionData> fetchData) {
         return new FetchRequest.Builder(
-            (short) 12,
-            (short) 12,
-            FetchRequest.CONSUMER_REPLICA_ID,
-            -1,
-            0,
-            0,
-            fetchData)
-        .metadata(metadata)
-        .removed(List.of())
-        .build();
+                (short) 12,
+                (short) 12,
+                FetchRequest.CONSUMER_REPLICA_ID,
+                -1,
+                0,
+                0,
+                fetchData)
+                .metadata(metadata)
+                .removed(List.of())
+                .build();
     }
 
     private FetchContext newContext(FetchManager fetchManager, FetchRequest request, Map<Uuid, String> topicNames) {
         return fetchManager.newContext(
-            request.version(),
-            request.metadata(),
-            request.isFromFollower(),
-            request.fetchData(topicNames),
-            request.forgottenTopics(topicNames),
-            topicNames
+                request.version(),
+                request.metadata(),
+                request.isFromFollower(),
+                request.fetchData(topicNames),
+                request.forgottenTopics(topicNames),
+                topicNames
         );
     }
 
@@ -1605,21 +1605,21 @@ public class FetchSessionTest {
         LinkedHashMap<TopicPartition, PartitionData> data = new LinkedHashMap<>();
 
         partitions.forEach(topicIdPartition ->
-            data.put(
-                topicIdPartition.topicPartition(),
-                new PartitionData(topicIdPartition.topicId(), 0, 0, 100, Optional.empty())
-            )
+                data.put(
+                        topicIdPartition.topicPartition(),
+                        new PartitionData(topicIdPartition.topicId(), 0, 0, 100, Optional.empty())
+                )
         );
 
         FetchRequest fetchRequest = createRequest(metadata, data, List.of(), false, FETCH.latestVersion());
 
         return fetchManager.newContext(
-            fetchRequest.version(),
-            fetchRequest.metadata(),
-            fetchRequest.isFromFollower(),
-            fetchRequest.fetchData(topicNames),
-            fetchRequest.forgottenTopics(topicNames),
-            topicNames
+                fetchRequest.version(),
+                fetchRequest.metadata(),
+                fetchRequest.isFromFollower(),
+                fetchRequest.fetchData(topicNames),
+                fetchRequest.forgottenTopics(topicNames),
+                topicNames
         );
     }
 
@@ -1631,21 +1631,21 @@ public class FetchSessionTest {
         LinkedHashMap<TopicPartition, PartitionData> data = new LinkedHashMap<>();
 
         partitions.forEach(topicIdPartition ->
-            data.put(
-                topicIdPartition.topicPartition(),
-                new PartitionData(topicIdPartition.topicId(), 0, 0, 100, Optional.empty())
-            )
+                data.put(
+                        topicIdPartition.topicPartition(),
+                        new PartitionData(topicIdPartition.topicId(), 0, 0, 100, Optional.empty())
+                )
         );
 
         FetchRequest fetchRequest = createRequest(metadata, data, toForget, false, FETCH.latestVersion());
 
         return fetchManager.newContext(
-            fetchRequest.version(),
-            fetchRequest.metadata(),
-            fetchRequest.isFromFollower(),
-            fetchRequest.fetchData(topicNames),
-            fetchRequest.forgottenTopics(topicNames),
-            topicNames
+                fetchRequest.version(),
+                fetchRequest.metadata(),
+                fetchRequest.isFromFollower(),
+                fetchRequest.fetchData(topicNames),
+                fetchRequest.forgottenTopics(topicNames),
+                topicNames
         );
     }
 
@@ -1663,27 +1663,27 @@ public class FetchSessionTest {
 
     private FetchResponseData.PartitionData errorResponse(short errorCode) {
         return new FetchResponseData.PartitionData()
-            .setPartitionIndex(0)
-            .setHighWatermark(-1)
-            .setLastStableOffset(-1)
-            .setLogStartOffset(-1)
-            .setErrorCode(errorCode);
+                .setPartitionIndex(0)
+                .setHighWatermark(-1)
+                .setLastStableOffset(-1)
+                .setLogStartOffset(-1)
+                .setErrorCode(errorCode);
     }
 
     private int updateAndGenerateResponseDataSessionId(FetchContext context) {
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> data = new LinkedHashMap<>();
 
         context.foreachPartition((topicIdPartition, partData) ->
-            data.put(
-                topicIdPartition,
-                topicIdPartition.topic() == null
-                    ? errorResponse(Errors.UNKNOWN_TOPIC_ID.code())
-                    : new FetchResponseData.PartitionData()
-                        .setPartitionIndex(1)
-                        .setHighWatermark(10)
-                        .setLastStableOffset(10)
-                        .setLogStartOffset(10)
-            )
+                data.put(
+                        topicIdPartition,
+                        topicIdPartition.topic() == null
+                                ? errorResponse(Errors.UNKNOWN_TOPIC_ID.code())
+                                : new FetchResponseData.PartitionData()
+                                  .setPartitionIndex(1)
+                                  .setHighWatermark(10)
+                                  .setLastStableOffset(10)
+                                  .setLogStartOffset(10)
+                )
         );
 
         return context.updateAndGenerateResponseData(data, List.of()).sessionId();
@@ -1693,12 +1693,12 @@ public class FetchSessionTest {
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> data = new LinkedHashMap<>();
 
         context.foreachPartition((topicIdPartition, partData) ->
-            data.put(
-                topicIdPartition,
-                topicIdPartition.topic() == null
-                    ? errorResponse(Errors.UNKNOWN_TOPIC_ID.code())
-                    : errorResponse(Errors.UNKNOWN_TOPIC_OR_PARTITION.code())
-            )
+                data.put(
+                        topicIdPartition,
+                        topicIdPartition.topic() == null
+                                ? errorResponse(Errors.UNKNOWN_TOPIC_ID.code())
+                                : errorResponse(Errors.UNKNOWN_TOPIC_OR_PARTITION.code())
+                )
         );
 
         return context.updateAndGenerateResponseData(data, List.of());
@@ -1706,10 +1706,10 @@ public class FetchSessionTest {
 
     private void checkResponseData(Map<TopicPartition, Short> expected, FetchResponse response, Map<Uuid, String> topicNames) {
         assertEquals(
-            expected,
-            response.responseData(topicNames, FETCH.latestVersion()).entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().errorCode()))
+                expected,
+                response.responseData(topicNames, FETCH.latestVersion()).entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().errorCode()))
         );
     }
 

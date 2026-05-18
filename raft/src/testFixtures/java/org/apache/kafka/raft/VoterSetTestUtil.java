@@ -32,52 +32,52 @@ public final class VoterSetTestUtil {
     public static final ListenerName DEFAULT_LISTENER_NAME = ListenerName.normalised("LISTENER");
 
     public static Map<Integer, VoterSet.VoterNode> voterMap(
-        IntStream replicas,
-        boolean withDirectoryId
+            IntStream replicas,
+            boolean withDirectoryId
     ) {
         return replicas
-            .boxed()
-            .collect(
-                Collectors.toMap(
-                    Function.identity(),
-                    id -> voterNode(id, withDirectoryId)
-                )
-            );
+                .boxed()
+                .collect(
+                        Collectors.toMap(
+                                Function.identity(),
+                                id -> voterNode(id, withDirectoryId)
+                        )
+                );
     }
 
     public static Map<Integer, VoterSet.VoterNode> voterMap(Stream<ReplicaKey> replicas) {
         return replicas
-            .collect(Collectors.toMap(ReplicaKey::id, VoterSetTestUtil::voterNode));
+                .collect(Collectors.toMap(ReplicaKey::id, VoterSetTestUtil::voterNode));
     }
 
     public static VoterSet.VoterNode voterNode(int id, boolean withDirectoryId) {
         return voterNode(
-            ReplicaKey.of(
-                id,
-                withDirectoryId ? Uuid.randomUuid() : ReplicaKey.NO_DIRECTORY_ID
-            )
+                ReplicaKey.of(
+                        id,
+                        withDirectoryId ? Uuid.randomUuid() : ReplicaKey.NO_DIRECTORY_ID
+                )
         );
     }
 
     public static VoterSet.VoterNode voterNode(ReplicaKey replicaKey) {
         return voterNode(
-            replicaKey,
-            Endpoints.fromInetSocketAddresses(
-                Map.of(
-                    DEFAULT_LISTENER_NAME,
-                    InetSocketAddress.createUnresolved(
-                        "localhost",
-                        9990 + replicaKey.id()
-                    )
+                replicaKey,
+                Endpoints.fromInetSocketAddresses(
+                        Map.of(
+                                DEFAULT_LISTENER_NAME,
+                                InetSocketAddress.createUnresolved(
+                                        "localhost",
+                                        9990 + replicaKey.id()
+                                )
+                        )
                 )
-            )
         );
     }
 
     public static VoterSet.VoterNode voterNode(ReplicaKey replicaKey, Endpoints endpoints) {
         var supportedVersionRange = replicaKey.directoryId().isEmpty() ?
-            new SupportedVersionRange((short) 0) :
-            Feature.KRAFT_VERSION.supportedVersionRange();
+                new SupportedVersionRange((short) 0) :
+                Feature.KRAFT_VERSION.supportedVersionRange();
 
         return new VoterSet.VoterNode(replicaKey, endpoints, supportedVersionRange);
     }
@@ -90,5 +90,6 @@ public final class VoterSetTestUtil {
         return voterSet(voterMap(voterKeys));
     }
 
-    private VoterSetTestUtil() {}
+    private VoterSetTestUtil() {
+    }
 }

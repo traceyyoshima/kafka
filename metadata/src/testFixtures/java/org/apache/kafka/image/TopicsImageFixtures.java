@@ -53,19 +53,19 @@ public final class TopicsImageFixtures {
 
     public static final TopicsImage IMAGE1 = newTopicsImage(List.of(
             newTopicImage("foo", FOO_UUID,
-                    new PartitionRegistration.Builder().setReplicas(new int[] {2, 3, 4}).
+                    new PartitionRegistration.Builder().setReplicas(new int[]{2, 3, 4}).
                             setDirectories(DirectoryId.migratingArray(3)).
-                            setIsr(new int[] {2, 3}).setLeader(2).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(1).setPartitionEpoch(345).build(),
-                    new PartitionRegistration.Builder().setReplicas(new int[] {3, 4, 5}).
+                            setIsr(new int[]{2, 3}).setLeader(2).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(1).setPartitionEpoch(345).build(),
+                    new PartitionRegistration.Builder().setReplicas(new int[]{3, 4, 5}).
                             setDirectories(DirectoryId.migratingArray(3)).
-                            setIsr(new int[] {3, 4, 5}).setLeader(3).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(4).setPartitionEpoch(684).build(),
-                    new PartitionRegistration.Builder().setReplicas(new int[] {2, 4, 5}).
+                            setIsr(new int[]{3, 4, 5}).setLeader(3).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(4).setPartitionEpoch(684).build(),
+                    new PartitionRegistration.Builder().setReplicas(new int[]{2, 4, 5}).
                             setDirectories(DirectoryId.migratingArray(3)).
-                            setIsr(new int[] {2, 4, 5}).setLeader(2).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(10).setPartitionEpoch(84).build()),
+                            setIsr(new int[]{2, 4, 5}).setLeader(2).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(10).setPartitionEpoch(84).build()),
             newTopicImage("bar", BAR_UUID,
-                    new PartitionRegistration.Builder().setReplicas(new int[] {0, 1, 2, 3, 4}).
+                    new PartitionRegistration.Builder().setReplicas(new int[]{0, 1, 2, 3, 4}).
                             setDirectories(DirectoryId.migratingArray(5)).
-                            setIsr(new int[] {0, 1, 2, 3}).setRemovingReplicas(new int[] {1}).setAddingReplicas(new int[] {3, 4}).setLeader(0).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(1).setPartitionEpoch(345).build())));
+                            setIsr(new int[]{0, 1, 2, 3}).setRemovingReplicas(new int[]{1}).setAddingReplicas(new int[]{3, 4}).setLeader(0).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(1).setPartitionEpoch(345).build())));
 
     public static final List<ApiMessageAndVersion> DELTA1_RECORDS = List.of(
             // remove topic
@@ -113,13 +113,13 @@ public final class TopicsImageFixtures {
     public static final TopicsImage IMAGE2 = newTopicsImage(List.of(
             newTopicImage("foo", FOO_UUID2),
             newTopicImage("bar", BAR_UUID,
-                    new PartitionRegistration.Builder().setReplicas(new int[] {0, 1, 2, 3, 4}).
+                    new PartitionRegistration.Builder().setReplicas(new int[]{0, 1, 2, 3, 4}).
                             setDirectories(DirectoryId.migratingArray(5)).
-                            setIsr(new int[] {0, 1, 2, 3}).setRemovingReplicas(new int[] {1}).setAddingReplicas(new int[] {3, 4}).setLeader(1).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(2).setPartitionEpoch(346).build()),
+                            setIsr(new int[]{0, 1, 2, 3}).setRemovingReplicas(new int[]{1}).setAddingReplicas(new int[]{3, 4}).setLeader(1).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(2).setPartitionEpoch(346).build()),
             newTopicImage("baz", BAZ_UUID,
-                    new PartitionRegistration.Builder().setReplicas(new int[] {1, 2, 3, 4}).
+                    new PartitionRegistration.Builder().setReplicas(new int[]{1, 2, 3, 4}).
                             setDirectories(DirectoryId.migratingArray(4)).
-                            setIsr(new int[] {3, 4}).setRemovingReplicas(new int[] {2}).setAddingReplicas(new int[] {1}).setLeader(3).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(2).setPartitionEpoch(1).build())));
+                            setIsr(new int[]{3, 4}).setRemovingReplicas(new int[]{2}).setAddingReplicas(new int[]{1}).setLeader(3).setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).setLeaderEpoch(2).setPartitionEpoch(1).build())));
 
     public static TopicImage newTopicImage(String name, Uuid id, PartitionRegistration... partitions) {
         Map<Integer, PartitionRegistration> partitionMap = new HashMap<>();

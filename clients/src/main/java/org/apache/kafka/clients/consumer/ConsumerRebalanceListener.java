@@ -85,7 +85,7 @@ import java.util.Collection;
  * as it will be propagated all the way up to the {@link KafkaConsumer#poll(java.time.Duration)} call.
  * If user captures the exception in the caller, the callback is still assumed successful and no further retries will be attempted.
  * <p>
- *
+ * <p>
  * Here is pseudo-code for a callback implementation for saving offsets:
  * <pre>
  * {@code
@@ -154,9 +154,9 @@ public interface ConsumerRebalanceListener {
      * necessary to catch these exceptions and re-attempt to wakeup or interrupt the consumer thread.
      *
      * @param partitions The list of partitions that were assigned to the consumer and now need to be revoked. This will
-     *                  include the full assignment under the Classic/Eager protocol, given that it revokes all partitions.
+     *                   include the full assignment under the Classic/Eager protocol, given that it revokes all partitions.
      *                   It will only include the subset to revoke under the Classic/Cooperative and Consumer protocols.
-     * @throws org.apache.kafka.common.errors.WakeupException If raised from a nested call to {@link KafkaConsumer}
+     * @throws org.apache.kafka.common.errors.WakeupException    If raised from a nested call to {@link KafkaConsumer}
      * @throws org.apache.kafka.common.errors.InterruptException If raised from a nested call to {@link KafkaConsumer}
      */
     void onPartitionsRevoked(Collection<TopicPartition> partitions);

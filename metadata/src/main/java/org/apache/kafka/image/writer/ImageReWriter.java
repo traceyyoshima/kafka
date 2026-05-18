@@ -24,7 +24,7 @@ import org.apache.kafka.server.common.ApiMessageAndVersion;
 
 /**
  * ImageReWriter writes a metadata image out to another metadata image.
- *
+ * <p>
  * There are a few reasons why you might want to do this. One is to obtain a MetadataDelta
  * object which contains everything in the image. Another is to translate an image from
  * one metadata version to another.

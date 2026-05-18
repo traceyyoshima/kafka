@@ -35,11 +35,11 @@ import java.util.TreeMap;
 
 /**
  * This class is a generic version of the in-memory key-value store that is useful for testing when you
- *  need a basic KeyValueStore for arbitrary types and don't have/want to write a serde
+ * need a basic KeyValueStore for arbitrary types and don't have/want to write a serde
  */
 public class GenericInMemoryKeyValueStore<K extends Comparable, V>
-    extends WrappedStateStore<StateStore, K, V>
-    implements KeyValueStore<K, V> {
+        extends WrappedStateStore<StateStore, K, V>
+        implements KeyValueStore<K, V> {
 
     private final String name;
     private final NavigableMap<K, V> map;
@@ -91,7 +91,7 @@ public class GenericInMemoryKeyValueStore<K extends Comparable, V>
 
     @Override
     public synchronized void put(final K key,
-        final V value) {
+                                 final V value) {
         if (value == null) {
             map.remove(key);
         } else {
@@ -101,7 +101,7 @@ public class GenericInMemoryKeyValueStore<K extends Comparable, V>
 
     @Override
     public synchronized V putIfAbsent(final K key,
-        final V value) {
+                                      final V value) {
         final V originalValue = get(key);
         if (originalValue == null) {
             put(key, value);
@@ -123,7 +123,7 @@ public class GenericInMemoryKeyValueStore<K extends Comparable, V>
 
     @Override
     public synchronized KeyValueIterator<K, V> range(final K from,
-        final K to) {
+                                                     final K to) {
         final TreeMap<K, V> copy = new TreeMap<>(map.subMap(from, true, to, true));
         return new DelegatingPeekingKeyValueIterator<>(name, new GenericInMemoryKeyValueIterator<>(copy.entrySet().iterator()));
     }

@@ -154,7 +154,7 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         assertEquals(7L, rocksDBStore.approximateNumEntries(), "Expected 7 entries on DEFAULT CF, 0 in headers-aware CF");
 
         assertEquals(1 + 0 + 8 + 1, rocksDBStore.get(new Bytes("key1".getBytes())).length,
-            "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(1) = 10 bytes");
+                "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(1) = 10 bytes");
         assertEquals(7L, rocksDBStore.approximateNumEntries(), "Expected 6 entries on DEFAULT CF, 1 in headers-aware CF after migrating key1");
 
         // put() - tests migration on write
@@ -177,12 +177,12 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         // putIfAbsent() - tests migration on conditional write
 
         assertNull(rocksDBStore.putIfAbsent(new Bytes("key11new".getBytes()), "headers+timestamp+11111111111".getBytes()),
-            "Expected null return value for putIfAbsent on non-existing key11new, and new key should be added to headers-aware CF");
+                "Expected null return value for putIfAbsent on non-existing key11new, and new key should be added to headers-aware CF");
         // one delete on old CF, one put on new CF, but count is off by one due to delete on old CF not deleting anything
         assertEquals(3L, rocksDBStore.approximateNumEntries(), "Expected 4 entries on DEFAULT CF, 2 in headers-aware CF after adding new key11new with putIfAbsent()");
 
         assertEquals(1 + 0 + 8 + 5, rocksDBStore.putIfAbsent(new Bytes("key5".getBytes()), null).length,
-            "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(5) = 14 bytes for putIfAbsent with null on existing key5");
+                "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(5) = 14 bytes for putIfAbsent with null on existing key5");
         // one delete on old CF, one put on new CF, due to `get()` migration
         assertEquals(3L, rocksDBStore.approximateNumEntries(), "Expected 3 entries on DEFAULT CF, 3 in headers-aware CF after migrating key5 with putIfAbsent(null)");
 
@@ -193,7 +193,7 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         // delete() - tests migration on delete
 
         assertEquals(1 + 0 + 8 + 6, rocksDBStore.delete(new Bytes("key6".getBytes())).length,
-            "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(6) = 15 bytes for delete() on existing key6");
+                "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(6) = 15 bytes for delete() on existing key6");
         // two delete operation, however, only one is counted because old CF count was zero before already
         assertEquals(2L, rocksDBStore.approximateNumEntries(), "Expected 2 entries on DEFAULT CF, 2 in headers-aware CF after deleting key6 with delete()");
 
@@ -221,9 +221,9 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
 
         // Verify we can read the migrated data
         assertEquals(1 + 0 + 8 + "value1".getBytes().length, rocksDBStore.get(new Bytes("key1".getBytes())).length,
-            "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value");
+                "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value");
         assertEquals(1 + 0 + 8 + "value2".getBytes().length, rocksDBStore.get(new Bytes("key2".getBytes())).length,
-            "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value");
+                "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value");
 
         rocksDBStore.close();
 
@@ -236,9 +236,9 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         final ColumnFamilyOptions columnFamilyOptions = new ColumnFamilyOptions();
 
         final List<ColumnFamilyDescriptor> columnFamilyDescriptors = asList(
-            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-            new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
-            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
+                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+                new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
+                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
 
         final List<ColumnFamilyHandle> columnFamilies = new ArrayList<>(columnFamilyDescriptors.size());
         RocksDB db = null;
@@ -246,10 +246,10 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         ColumnFamilyHandle headersCF = null;
         try {
             db = RocksDB.open(
-                dbOptions,
-                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
-                columnFamilyDescriptors,
-                columnFamilies);
+                    dbOptions,
+                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
+                    columnFamilyDescriptors,
+                    columnFamilies);
 
             defaultCF = columnFamilies.get(0);
             headersCF = columnFamilies.get(1);
@@ -296,8 +296,8 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
 
         // Step 3: Try to open with headers store - should fail
         final ProcessorStateException exception = assertThrows(
-            ProcessorStateException.class,
-            () -> rocksDBStore.init(context, rocksDBStore)
+                ProcessorStateException.class,
+                () -> rocksDBStore.init(context, rocksDBStore)
         );
 
         assertTrue(exception.getMessage().contains("Inconsistent store state"));
@@ -324,7 +324,7 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         assertEquals(7L, rocksDBStore.approximateNumEntries(), "Expected 7 entries on legacy CF, 0 in headers-aware CF");
 
         assertEquals(1 + 0 + 8 + 1, rocksDBStore.get(new Bytes("key1".getBytes())).length,
-            "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(1) = 10 bytes");
+                "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(1) = 10 bytes");
         assertEquals(7L, rocksDBStore.approximateNumEntries(), "Expected 6 entries on legacy CF, 1 in headers-aware CF after migrating key1");
 
         // put() - tests migration on write
@@ -347,12 +347,12 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         // putIfAbsent() - tests migration on conditional write
 
         assertNull(rocksDBStore.putIfAbsent(new Bytes("key11new".getBytes()), "headers+timestamp+11111111111".getBytes()),
-            "Expected null return value for putIfAbsent on non-existing key11new, and new key should be added to headers-aware CF");
+                "Expected null return value for putIfAbsent on non-existing key11new, and new key should be added to headers-aware CF");
         // one delete on old CF, one put on new CF, but count is off by one due to delete on old CF not deleting anything
         assertEquals(3L, rocksDBStore.approximateNumEntries(), "Expected 1 entries on legacy CF, 2 in headers-aware CF after adding new key11new with putIfAbsent()");
 
         assertEquals(1 + 0 + 8 + 5, rocksDBStore.putIfAbsent(new Bytes("key5".getBytes()), null).length,
-            "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(5) = 14 bytes for putIfAbsent with null on existing key5");
+                "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(5) = 14 bytes for putIfAbsent with null on existing key5");
         // one delete on old CF, one put on new CF, due to `get()` migration
         assertEquals(3L, rocksDBStore.approximateNumEntries(), "Expected 0 entry on legacy CF, 3 in headers-aware CF after migrating key5 with putIfAbsent(null)");
 
@@ -363,7 +363,7 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         // delete() - tests migration on delete
 
         assertEquals(1 + 0 + 8 + 6, rocksDBStore.delete(new Bytes("key6".getBytes())).length,
-            "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(6) = 15 bytes for delete() on existing key6");
+                "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(6) = 15 bytes for delete() on existing key6");
         // two delete operation, however, only one is counted because old CF count was zero before already
         assertEquals(2L, rocksDBStore.approximateNumEntries(), "Expected 0 entries on legacy CF, 2 in headers-aware CF after deleting key6 with delete()");
 
@@ -400,7 +400,7 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
                 final KeyValue<Bytes, byte[]> keyValue = itAll.next();
                 assertArrayEquals("key4".getBytes(), keyValue.key.get()); // not migrated since not accessed, should still be in legacy format: [timestamp(8)][value], with 1 byte of varint, but without headers
                 assertEquals(13, keyValue.value.length,
-                    "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(4) = 13 bytes for key4 from legacy CF");
+                        "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(4) = 13 bytes for key4 from legacy CF");
             }
             {
                 final KeyValue<Bytes, byte[]> keyValue = itAll.next();
@@ -421,7 +421,7 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         }
 
         try (final KeyValueIterator<Bytes, byte[]> it =
-                          rocksDBStore.range(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
+                     rocksDBStore.range(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
             {
                 final KeyValue<Bytes, byte[]> keyValue = it.next();
                 assertArrayEquals("key2".getBytes(), keyValue.key.get());
@@ -480,7 +480,7 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         }
 
         try (final KeyValueIterator<Bytes, byte[]> it =
-                          rocksDBStore.reverseRange(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
+                     rocksDBStore.reverseRange(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
             {
                 final KeyValue<Bytes, byte[]> keyValue = it.next();
                 assertArrayEquals("key5".getBytes(), keyValue.key.get());
@@ -655,7 +655,7 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
                 final KeyValue<Bytes, byte[]> keyValue = itAll.next();
                 assertArrayEquals("key4".getBytes(), keyValue.key.get()); // not migrated since not accessed, should be converted on-the-fly from DEFAULT CF
                 assertEquals(13, keyValue.value.length,
-                    "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(4) = 13 bytes for key4 from DEFAULT CF");
+                        "Expected header-aware format: varint(1) + empty headers(0) + timestamp(8) + value(4) = 13 bytes for key4 from DEFAULT CF");
             }
             {
                 final KeyValue<Bytes, byte[]> keyValue = itAll.next();
@@ -683,9 +683,9 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         final ColumnFamilyOptions columnFamilyOptions = new ColumnFamilyOptions();
 
         final List<ColumnFamilyDescriptor> columnFamilyDescriptors = asList(
-            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-            new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
-            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
+                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+                new ColumnFamilyDescriptor("keyValueWithTimestampAndHeaders".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
+                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
 
         final List<ColumnFamilyHandle> columnFamilies = new ArrayList<>(columnFamilyDescriptors.size());
         RocksDB db = null;
@@ -693,10 +693,10 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         ColumnFamilyHandle headersCF = null;
         try {
             db = RocksDB.open(
-                dbOptions,
-                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
-                columnFamilyDescriptors,
-                columnFamilies);
+                    dbOptions,
+                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
+                    columnFamilyDescriptors,
+                    columnFamilies);
 
             defaultCF = columnFamilies.get(0);
             headersCF = columnFamilies.get(1);
@@ -798,8 +798,8 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         // Verify that the legacy column family no longer exists
         try (DBOptions dbOptions = new DBOptions(); final Options options = new Options(dbOptions, new ColumnFamilyOptions())) {
             final List<byte[]> existingCFs = RocksDB.listColumnFamilies(
-                options,
-                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath()
+                    options,
+                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath()
             );
 
             // Should only have DEFAULT, OFFSETS and keyValueWithTimestampAndHeaders, not the legacy keyValueWithTimestamp
@@ -873,8 +873,8 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         final RocksDBStore regularStore = new RocksDBStore(DB_NAME, METRICS_SCOPE);
         try {
             final ProcessorStateException exception = assertThrows(
-                ProcessorStateException.class,
-                () -> regularStore.init(context, regularStore)
+                    ProcessorStateException.class,
+                    () -> regularStore.init(context, regularStore)
             );
 
             assertTrue(exception.getMessage().contains("Store " + DB_NAME + " is a headers-aware store"));
@@ -895,8 +895,8 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         final RocksDBTimestampedStore timestampedStore = new RocksDBTimestampedStore(DB_NAME, METRICS_SCOPE);
         try {
             final ProcessorStateException exception = assertThrows(
-                ProcessorStateException.class,
-                () -> timestampedStore.init(context, timestampedStore)
+                    ProcessorStateException.class,
+                    () -> timestampedStore.init(context, timestampedStore)
             );
 
             assertTrue(exception.getMessage().contains("Store " + DB_NAME + " is a headers-aware store"));
@@ -996,9 +996,9 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         // Verify result indicates unknown query type
         assertFalse(result.isSuccess(), "Expected query to fail with unknown query type");
         assertEquals(
-            FailureReason.UNKNOWN_QUERY_TYPE,
-            result.getFailureReason(),
-            "Expected UNKNOWN_QUERY_TYPE failure reason"
+                FailureReason.UNKNOWN_QUERY_TYPE,
+                result.getFailureReason(),
+                "Expected UNKNOWN_QUERY_TYPE failure reason"
         );
 
         // Verify position is set
@@ -1021,12 +1021,12 @@ public class RocksDBTimestampedStoreWithHeadersTest extends RocksDBStoreTest {
         // Verify execution info was collected
         assertFalse(result.getExecutionInfo().isEmpty(), "Expected execution info to be collected");
         assertTrue(
-            result.getExecutionInfo().get(0).contains("Handled in"),
-            "Expected execution info to contain handling information"
+                result.getExecutionInfo().get(0).contains("Handled in"),
+                "Expected execution info to contain handling information"
         );
         assertTrue(
-            result.getExecutionInfo().get(0).contains(RocksDBTimestampedStoreWithHeaders.class.getName()),
-            "Expected execution info to mention the class name"
+                result.getExecutionInfo().get(0).contains(RocksDBTimestampedStoreWithHeaders.class.getName()),
+                "Expected execution info to mention the class name"
         );
     }
 

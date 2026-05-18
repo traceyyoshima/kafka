@@ -50,10 +50,10 @@ public class PluginClassLoader extends URLClassLoader {
      * Constructor that accepts a specific classloader as parent.
      *
      * @param pluginLocation the top-level location of the plugin to be loaded in isolation by this
-     * classloader.
-     * @param urls the list of urls from which to load classes and resources for this plugin.
-     * @param parent the parent classloader to be used for delegation for classes that were
-     * not found or should not be loaded in isolation by this classloader.
+     *                       classloader.
+     * @param urls           the list of urls from which to load classes and resources for this plugin.
+     * @param parent         the parent classloader to be used for delegation for classes that were
+     *                       not found or should not be loaded in isolation by this classloader.
      */
     public PluginClassLoader(URL pluginLocation, URL[] urls, ClassLoader parent) {
         super(urls, parent);
@@ -90,13 +90,13 @@ public class PluginClassLoader extends URLClassLoader {
     public Enumeration<URL> getResources(String name) throws IOException {
         Objects.requireNonNull(name);
         List<URL> resources = new ArrayList<>();
-        for (Enumeration<URL> foundLocally = findResources(name); foundLocally.hasMoreElements();) {
+        for (Enumeration<URL> foundLocally = findResources(name); foundLocally.hasMoreElements(); ) {
             URL url = foundLocally.nextElement();
             if (url != null)
                 resources.add(url);
         }
         // Explicitly call the parent implementation instead of super to avoid double-listing the local resources
-        for (Enumeration<URL> foundByParent = getParent().getResources(name); foundByParent.hasMoreElements();) {
+        for (Enumeration<URL> foundByParent = getParent().getResources(name); foundByParent.hasMoreElements(); ) {
             URL url = foundByParent.nextElement();
             if (url != null)
                 resources.add(url);

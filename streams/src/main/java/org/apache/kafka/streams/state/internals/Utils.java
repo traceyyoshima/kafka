@@ -64,7 +64,7 @@ public class Utils {
         // If the header is empty, then copy the value bytes directly
         if (hasEmptyHeaders(aggregationWithHeaders)) {
             // Strip header size's varint byte, and empty headers consume no bytes
-            final byte[] aggregation = new byte[aggregationWithHeaders.length - 1]; 
+            final byte[] aggregation = new byte[aggregationWithHeaders.length - 1];
             System.arraycopy(aggregationWithHeaders, 1, aggregation, 0, aggregation.length);
             return aggregation;
         }
@@ -72,14 +72,14 @@ public class Utils {
         final ByteBuffer buffer = ByteBuffer.wrap(aggregationWithHeaders);
         // Skip the headers bytes without deserializing or copying
         final int headersSize = ByteUtils.readVarint(buffer);
-        buffer.position(buffer.position() + headersSize); 
+        buffer.position(buffer.position() + headersSize);
         return readBytes(buffer, buffer.remaining());
     }
 
     /**
      * Extract raw plain value from serialized ValueTimestampHeaders.
      * This strips both the headers and timestamp portions.
-     *
+     * <p>
      * Format conversion:
      * Input:  [headersSize(varint)][headers][timestamp(8)][value]
      * Output: [value]
@@ -92,7 +92,7 @@ public class Utils {
         // If the header is empty, then copy the value bytes directly
         if (hasEmptyHeaders(rawValueTimestampHeaders)) {
             // Strip header size (varint 1 byte), empty headers (no bytes), and timestamp
-            final byte[] rawValue = new byte[rawValueTimestampHeaders.length - 1 - StateSerdes.TIMESTAMP_SIZE]; 
+            final byte[] rawValue = new byte[rawValueTimestampHeaders.length - 1 - StateSerdes.TIMESTAMP_SIZE];
             System.arraycopy(rawValueTimestampHeaders, 1 + StateSerdes.TIMESTAMP_SIZE, rawValue, 0, rawValue.length);
             return rawValue;
         }
@@ -110,7 +110,7 @@ public class Utils {
     /**
      * Extract raw timestamped value (timestamp + value) from serialized ValueTimestampHeaders.
      * This strips the headers portion but keeps timestamp and value intact.
-     *
+     * <p>
      * Format conversion:
      * Input:  [headersSize(varint)][headers][timestamp(8)][value]
      * Output: [timestamp(8)][value]
@@ -123,7 +123,7 @@ public class Utils {
         // If the header is empty, then copy the value and timestamp bytes directly
         if (hasEmptyHeaders(rawValueTimestampHeaders)) {
             // Strip header size (varint 1 byte), empty headers (no bytes)
-            final byte[] rawValueAndTimestamp = new byte[rawValueTimestampHeaders.length - 1]; 
+            final byte[] rawValueAndTimestamp = new byte[rawValueTimestampHeaders.length - 1];
             System.arraycopy(rawValueTimestampHeaders, 1, rawValueAndTimestamp, 0, rawValueAndTimestamp.length);
             return rawValueAndTimestamp;
         }
@@ -133,9 +133,9 @@ public class Utils {
         // Skip headers, keep timestamp + value
         if (headersSize < 0 || headersSize > buffer.remaining() || buffer.remaining() - headersSize < StateSerdes.TIMESTAMP_SIZE) {
             throw new SerializationException(
-                "Invalid format: headers size " + headersSize + 
-                ", timestamp expected size " + StateSerdes.TIMESTAMP_SIZE + 
-                ", but buffer size " + buffer.remaining()
+                    "Invalid format: headers size " + headersSize +
+                            ", timestamp expected size " + StateSerdes.TIMESTAMP_SIZE +
+                            ", but buffer size " + buffer.remaining()
             );
         }
         buffer.position(buffer.position() + headersSize);
@@ -156,13 +156,13 @@ public class Utils {
     public static byte[] readBytes(final ByteBuffer buffer, final int length) {
         if (length < 0) {
             throw new SerializationException(
-                "Invalid format: negative length " + length
+                    "Invalid format: negative length " + length
             );
         }
         if (buffer.remaining() < length) {
             throw new SerializationException(
-                "Invalid format: expected " + length +
-                    " bytes but only " + buffer.remaining() + " bytes remaining"
+                    "Invalid format: expected " + length +
+                            " bytes but only " + buffer.remaining() + " bytes remaining"
             );
         }
         final byte[] bytes = new byte[length];

@@ -49,10 +49,10 @@ public interface ProcessorContext<KForward, VForward> extends ProcessingContext 
      * <p>
      * In other words, this would be considered unsafe:
      * <code>
-     *     process(Record inputRecord) {
-     *         inputRecord.headers().add(...);
-     *         context.forward(inputRecord);
-     *     }
+     * process(Record inputRecord) {
+     * inputRecord.headers().add(...);
+     * context.forward(inputRecord);
+     * }
      * </code>
      * This is unsafe because the parent, and potentially siblings, grandparents, etc.,
      * all will see this modification to their shared Headers reference. This is a violation
@@ -77,6 +77,7 @@ public interface ProcessorContext<KForward, VForward> extends ProcessingContext 
      *         context.forward(toForward);
      *     }
      * }</pre>
+     *
      * @param record The record to forward to all children
      */
     <K extends KForward, V extends VForward> void forward(Record<K, V> record);
@@ -85,7 +86,7 @@ public interface ProcessorContext<KForward, VForward> extends ProcessingContext 
      * Forward a record to the specified child processor.
      * See {@link ProcessorContext#forward(Record)} for considerations.
      *
-     * @param record The record to forward
+     * @param record    The record to forward
      * @param childName The name of the child processor to receive the record
      * @see ProcessorContext#forward(Record)
      */

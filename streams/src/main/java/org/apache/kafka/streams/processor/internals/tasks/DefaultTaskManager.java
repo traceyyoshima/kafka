@@ -45,11 +45,11 @@ import java.util.stream.Collectors;
 
 /**
  * An active task could only be in one of the following status:
- *
+ * <p>
  * 1. It's assigned to one of the executors for processing.
  * 2. It's locked for committing, removal, other manipulations etc.
  * 3. Neither 1 or 2, i.e. it stays idle. This is possible if we do not have enough executors or because those tasks
- *    are not processable (e.g. because no records fetched) yet.
+ * are not processable (e.g. because no records fetched) yet.
  */
 public final class DefaultTaskManager implements TaskManager {
 
@@ -79,7 +79,7 @@ public final class DefaultTaskManager implements TaskManager {
                               final TaskExecutorCreator executorCreator,
                               final TaskExecutionMetadata taskExecutionMetadata,
                               final int numExecutors
-                              ) {
+    ) {
         final String logPrefix = String.format("%s ", clientId);
         final LogContext logContext = new LogContext(logPrefix);
         this.log = logContext.logger(DefaultTaskManager.class);
@@ -104,9 +104,9 @@ public final class DefaultTaskManager implements TaskManager {
             // the most naive scheduling algorithm for now: give the next unlocked, unassigned, and  processable task
             for (final StreamTask task : tasks.activeInitializedTasks()) {
                 if (!assignedTasks.containsKey(task.id()) &&
-                    !lockedTasks.contains(task.id()) &&
-                    canProgress(task, time.milliseconds()) &&
-                    !hasUncaughtException(task.id())
+                        !lockedTasks.contains(task.id()) &&
+                        canProgress(task, time.milliseconds()) &&
+                        !hasUncaughtException(task.id())
                 ) {
 
                     assignedTasks.put(task.id(), executor);
@@ -128,9 +128,9 @@ public final class DefaultTaskManager implements TaskManager {
         final boolean interrupted = returnWithTasksLocked(() -> {
             for (final StreamTask task : tasks.activeInitializedTasks()) {
                 if (!assignedTasks.containsKey(task.id()) &&
-                    !lockedTasks.contains(task.id()) &&
-                    canProgress(task, time.milliseconds()) &&
-                    !hasUncaughtException(task.id())
+                        !lockedTasks.contains(task.id()) &&
+                        canProgress(task, time.milliseconds()) &&
+                        !hasUncaughtException(task.id())
                 ) {
                     log.debug("Await unblocked: returning early from await since a processable task {} was found", task.id());
                     return false;
@@ -243,7 +243,7 @@ public final class DefaultTaskManager implements TaskManager {
     @Override
     public KafkaFuture<Void> lockAllTasks() {
         return returnWithTasksLocked(() ->
-            lockTasks(tasks.activeInitializedTasks().stream().map(Task::id).collect(Collectors.toSet()))
+                lockTasks(tasks.activeInitializedTasks().stream().map(Task::id).collect(Collectors.toSet()))
         );
     }
 
@@ -321,9 +321,9 @@ public final class DefaultTaskManager implements TaskManager {
         });
 
         log.info("Set an uncaught exception of type {} for task {}, with error message: {}",
-            exception.getClass().getName(),
-            taskId,
-            exception.getMessage());
+                exception.getClass().getName(),
+                taskId,
+                exception.getMessage());
     }
 
     public Map<TaskId, RuntimeException> drainUncaughtExceptions() {
@@ -364,22 +364,22 @@ public final class DefaultTaskManager implements TaskManager {
 
     private boolean canProgress(final StreamTask task, final long nowMs) {
         return
-            taskExecutionMetadata.canProcessTask(task, nowMs) && task.isProcessable(nowMs) ||
-                taskExecutionMetadata.canPunctuateTask(task) && (task.canPunctuateStreamTime() || task.canPunctuateSystemTime());
+                taskExecutionMetadata.canProcessTask(task, nowMs) && task.isProcessable(nowMs) ||
+                        taskExecutionMetadata.canPunctuateTask(task) && (task.canPunctuateStreamTime() || task.canPunctuateSystemTime());
     }
 
     public void startTaskExecutors() {
-        for (final TaskExecutor t: taskExecutors) {
+        for (final TaskExecutor t : taskExecutors) {
             t.start();
         }
     }
 
     public void shutdown(final Duration duration) {
-        for (final TaskExecutor t: taskExecutors) {
+        for (final TaskExecutor t : taskExecutors) {
             t.requestShutdown();
         }
         signalTaskExecutors();
-        for (final TaskExecutor t: taskExecutors) {
+        for (final TaskExecutor t : taskExecutors) {
             t.awaitShutdown(duration);
         }
     }

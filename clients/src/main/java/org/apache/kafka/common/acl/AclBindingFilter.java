@@ -37,7 +37,7 @@ public class AclBindingFilter {
      * Create an instance of this filter with the provided parameters.
      *
      * @param patternFilter non-null pattern filter
-     * @param entryFilter non-null access control entry filter
+     * @param entryFilter   non-null access control entry filter
      */
     public AclBindingFilter(ResourcePatternFilter patternFilter, AccessControlEntryFilter entryFilter) {
         this.patternFilter = Objects.requireNonNull(patternFilter, "patternFilter");
@@ -76,7 +76,7 @@ public class AclBindingFilter {
         if (o == null || getClass() != o.getClass()) return false;
         AclBindingFilter that = (AclBindingFilter) o;
         return Objects.equals(patternFilter, that.patternFilter) &&
-            Objects.equals(entryFilter, that.entryFilter);
+                Objects.equals(entryFilter, that.entryFilter);
     }
 
     /**

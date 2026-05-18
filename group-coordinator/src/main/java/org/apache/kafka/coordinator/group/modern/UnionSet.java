@@ -211,8 +211,8 @@ public class UnionSet<T> implements Set<T> {
     @Override
     public String toString() {
         return "UnionSet(" +
-            "largeSet=" + largeSet +
-            ", smallSet=" + smallSet +
-            ')';
+                "largeSet=" + largeSet +
+                ", smallSet=" + smallSet +
+                ')';
     }
 }

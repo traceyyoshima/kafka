@@ -58,6 +58,7 @@ public class NodeToControllerRequestThread extends InterBrokerSendThread {
 
     // Used for testing
     volatile boolean started = false;
+
     public void setStarted(boolean started) {
         this.started = started;
     }

@@ -202,7 +202,7 @@ public class RocksDBMetricsRecorderGaugesTest {
 
     private void runAndVerifySumOfProperties(final String propertyName) throws Exception {
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime());
+                new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime());
         final RocksDBMetricsRecorder recorder = new RocksDBMetricsRecorder(METRICS_SCOPE, STORE_NAME);
 
         recorder.init(streamsMetrics, TASK_ID);
@@ -236,7 +236,7 @@ public class RocksDBMetricsRecorderGaugesTest {
 
     private void runAndVerifyBlockCacheMetricsWithSingleCache(final String propertyName) throws Exception {
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime());
+                new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime());
         final RocksDBMetricsRecorder recorder = new RocksDBMetricsRecorder(METRICS_SCOPE, STORE_NAME);
 
         recorder.init(streamsMetrics, TASK_ID);
@@ -256,15 +256,15 @@ public class RocksDBMetricsRecorderGaugesTest {
 
         final Map<MetricName, ? extends Metric> metrics = streamsMetrics.metrics();
         final Map<String, String> tagMap = mkMap(
-            mkEntry(THREAD_ID_TAG, Thread.currentThread().getName()),
-            mkEntry(TASK_ID_TAG, TASK_ID.toString()),
-            mkEntry(METRICS_SCOPE + "-" + STORE_ID_TAG, STORE_NAME)
+                mkEntry(THREAD_ID_TAG, Thread.currentThread().getName()),
+                mkEntry(TASK_ID_TAG, TASK_ID.toString()),
+                mkEntry(METRICS_SCOPE + "-" + STORE_ID_TAG, STORE_NAME)
         );
         final KafkaMetric metric = (KafkaMetric) metrics.get(new MetricName(
-            propertyName,
-            STATE_STORE_LEVEL_GROUP,
-            "description is ignored",
-            tagMap
+                propertyName,
+                STATE_STORE_LEVEL_GROUP,
+                "description is ignored",
+                tagMap
         ));
 
         assertThat(metric, notNullValue());

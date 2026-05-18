@@ -49,7 +49,7 @@ public class BrokerFeatures {
     public static BrokerFeatures createDefault(boolean unstableFeatureVersionsEnabled) {
         return new BrokerFeatures(defaultSupportedFeatures(unstableFeatureVersionsEnabled));
     }
-    
+
     // only for testing
     public static BrokerFeatures createDefault(boolean unstableFeatureVersionsEnabled, Features<SupportedVersionRange> newFeatures) {
         Map<String, SupportedVersionRange> combined = new HashMap<>(defaultSupportedFeatures(unstableFeatureVersionsEnabled).features());

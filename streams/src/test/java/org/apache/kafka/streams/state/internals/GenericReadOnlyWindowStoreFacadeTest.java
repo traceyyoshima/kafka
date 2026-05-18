@@ -62,12 +62,12 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertSingleValueFetch() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedStore.fetch("key1", 21L))
-            .thenReturn(ValueAndTimestamp.make("value1", 42L));
+                .thenReturn(ValueAndTimestamp.make("value1", 42L));
         when(mockedTimestampedStore.fetch("unknownKey", 21L))
-            .thenReturn(null);
+                .thenReturn(null);
 
         assertThat(facade.fetch("key1", 21L), is("value1"));
         assertNull(facade.fetch("unknownKey", 21L));
@@ -77,12 +77,12 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertSingleValueFetchWithHeadersConverter() {
         final Function<ValueTimestampHeaders<String>, String> converter = ValueConverters.extractValueFromHeaders();
         final GenericReadOnlyWindowStoreFacade<String, ValueTimestampHeaders<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedHeadersStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedHeadersStore, converter);
 
         when(mockedHeadersStore.fetch("key1", 21L))
-            .thenReturn(ValueTimestampHeaders.make("value1", 42L, new RecordHeaders()));
+                .thenReturn(ValueTimestampHeaders.make("value1", 42L, new RecordHeaders()));
         when(mockedHeadersStore.fetch("unknownKey", 21L))
-            .thenReturn(null);
+                .thenReturn(null);
 
         assertThat(facade.fetch("key1", 21L), is("value1"));
         assertNull(facade.fetch("unknownKey", 21L));
@@ -91,12 +91,12 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     @Test
     public void shouldConvertToValueAndTimestamp() {
         final Function<ValueTimestampHeaders<String>, ValueAndTimestamp<String>> converter =
-            ValueConverters.extractValueAndTimestampFromHeaders();
+                ValueConverters.extractValueAndTimestampFromHeaders();
         final GenericReadOnlyWindowStoreFacade<String, ValueTimestampHeaders<String>, ValueAndTimestamp<String>> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedHeadersStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedHeadersStore, converter);
 
         when(mockedHeadersStore.fetch("key1", 21L))
-            .thenReturn(ValueTimestampHeaders.make("value1", 42L, new RecordHeaders()));
+                .thenReturn(ValueTimestampHeaders.make("value1", 42L, new RecordHeaders()));
 
         final ValueAndTimestamp<String> result = facade.fetch("key1", 21L);
         assertThat(result.value(), is("value1"));
@@ -107,16 +107,16 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertWindowStoreIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedWindowIterator.next())
-            .thenReturn(KeyValue.pair(21L, ValueAndTimestamp.make("value1", 22L)))
-            .thenReturn(KeyValue.pair(42L, ValueAndTimestamp.make("value2", 23L)));
+                .thenReturn(KeyValue.pair(21L, ValueAndTimestamp.make("value1", 22L)))
+                .thenReturn(KeyValue.pair(42L, ValueAndTimestamp.make("value2", 23L)));
         when(mockedTimestampedStore.fetch("key1", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L)))
-            .thenReturn(mockedTimestampedWindowIterator);
+                .thenReturn(mockedTimestampedWindowIterator);
 
         final WindowStoreIterator<String> iterator =
-            facade.fetch("key1", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
+                facade.fetch("key1", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
 
         assertThat(iterator.next(), is(KeyValue.pair(21L, "value1")));
         assertThat(iterator.next(), is(KeyValue.pair(42L, "value2")));
@@ -126,16 +126,16 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertBackwardFetchWindowStoreIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedWindowIterator.next())
-            .thenReturn(KeyValue.pair(42L, ValueAndTimestamp.make("value2", 23L)))
-            .thenReturn(KeyValue.pair(21L, ValueAndTimestamp.make("value1", 22L)));
+                .thenReturn(KeyValue.pair(42L, ValueAndTimestamp.make("value2", 23L)))
+                .thenReturn(KeyValue.pair(21L, ValueAndTimestamp.make("value1", 22L)));
         when(mockedTimestampedStore.backwardFetch("key1", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L)))
-            .thenReturn(mockedTimestampedWindowIterator);
+                .thenReturn(mockedTimestampedWindowIterator);
 
         final WindowStoreIterator<String> iterator =
-            facade.backwardFetch("key1", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
+                facade.backwardFetch("key1", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
 
         assertThat(iterator.next(), is(KeyValue.pair(42L, "value2")));
         assertThat(iterator.next(), is(KeyValue.pair(21L, "value1")));
@@ -145,20 +145,20 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertKeyRangeFetchIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedKeyValueIterator.next())
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new TimeWindow(21L, 22L)),
-                ValueAndTimestamp.make("value1", 22L)))
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key2", new TimeWindow(42L, 43L)),
-                ValueAndTimestamp.make("value2", 100L)));
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key1", new TimeWindow(21L, 22L)),
+                        ValueAndTimestamp.make("value1", 22L)))
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key2", new TimeWindow(42L, 43L)),
+                        ValueAndTimestamp.make("value2", 100L)));
         when(mockedTimestampedStore.fetch("key1", "key2", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L)))
-            .thenReturn(mockedTimestampedKeyValueIterator);
+                .thenReturn(mockedTimestampedKeyValueIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            facade.fetch("key1", "key2", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
+                facade.fetch("key1", "key2", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new TimeWindow(21L, 22L)), "value1")));
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key2", new TimeWindow(42L, 43L)), "value2")));
@@ -168,20 +168,20 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertBackwardFetchKeyRangeIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedKeyValueIterator.next())
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key2", new TimeWindow(42L, 43L)),
-                ValueAndTimestamp.make("value2", 100L)))
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new TimeWindow(21L, 22L)),
-                ValueAndTimestamp.make("value1", 22L)));
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key2", new TimeWindow(42L, 43L)),
+                        ValueAndTimestamp.make("value2", 100L)))
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key1", new TimeWindow(21L, 22L)),
+                        ValueAndTimestamp.make("value1", 22L)));
         when(mockedTimestampedStore.backwardFetch("key1", "key2", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L)))
-            .thenReturn(mockedTimestampedKeyValueIterator);
+                .thenReturn(mockedTimestampedKeyValueIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            facade.backwardFetch("key1", "key2", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
+                facade.backwardFetch("key1", "key2", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key2", new TimeWindow(42L, 43L)), "value2")));
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new TimeWindow(21L, 22L)), "value1")));
@@ -191,20 +191,20 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertFetchAllIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedKeyValueIterator.next())
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new TimeWindow(21L, 22L)),
-                ValueAndTimestamp.make("value1", 22L)))
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key2", new TimeWindow(42L, 43L)),
-                ValueAndTimestamp.make("value2", 100L)));
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key1", new TimeWindow(21L, 22L)),
+                        ValueAndTimestamp.make("value1", 22L)))
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key2", new TimeWindow(42L, 43L)),
+                        ValueAndTimestamp.make("value2", 100L)));
         when(mockedTimestampedStore.fetchAll(Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L)))
-            .thenReturn(mockedTimestampedKeyValueIterator);
+                .thenReturn(mockedTimestampedKeyValueIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            facade.fetchAll(Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
+                facade.fetchAll(Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new TimeWindow(21L, 22L)), "value1")));
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key2", new TimeWindow(42L, 43L)), "value2")));
@@ -214,20 +214,20 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertBackwardFetchAllIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedKeyValueIterator.next())
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key2", new TimeWindow(42L, 43L)),
-                ValueAndTimestamp.make("value2", 100L)))
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new TimeWindow(21L, 22L)),
-                ValueAndTimestamp.make("value1", 22L)));
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key2", new TimeWindow(42L, 43L)),
+                        ValueAndTimestamp.make("value2", 100L)))
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key1", new TimeWindow(21L, 22L)),
+                        ValueAndTimestamp.make("value1", 22L)));
         when(mockedTimestampedStore.backwardFetchAll(Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L)))
-            .thenReturn(mockedTimestampedKeyValueIterator);
+                .thenReturn(mockedTimestampedKeyValueIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator =
-            facade.backwardFetchAll(Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
+                facade.backwardFetchAll(Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
 
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key2", new TimeWindow(42L, 43L)), "value2")));
         assertThat(iterator.next(), is(KeyValue.pair(new Windowed<>("key1", new TimeWindow(21L, 22L)), "value1")));
@@ -237,15 +237,15 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertAllIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedKeyValueIterator.next())
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new TimeWindow(21L, 22L)),
-                ValueAndTimestamp.make("value1", 22L)))
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key2", new TimeWindow(42L, 43L)),
-                ValueAndTimestamp.make("value2", 100L)));
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key1", new TimeWindow(21L, 22L)),
+                        ValueAndTimestamp.make("value1", 22L)))
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key2", new TimeWindow(42L, 43L)),
+                        ValueAndTimestamp.make("value2", 100L)));
         when(mockedTimestampedStore.all()).thenReturn(mockedTimestampedKeyValueIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator = facade.all();
@@ -258,15 +258,15 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldConvertBackwardAllIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedKeyValueIterator.next())
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key2", new TimeWindow(42L, 43L)),
-                ValueAndTimestamp.make("value2", 100L)))
-            .thenReturn(KeyValue.pair(
-                new Windowed<>("key1", new TimeWindow(21L, 22L)),
-                ValueAndTimestamp.make("value1", 22L)));
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key2", new TimeWindow(42L, 43L)),
+                        ValueAndTimestamp.make("value2", 100L)))
+                .thenReturn(KeyValue.pair(
+                        new Windowed<>("key1", new TimeWindow(21L, 22L)),
+                        ValueAndTimestamp.make("value1", 22L)));
         when(mockedTimestampedStore.backwardAll()).thenReturn(mockedTimestampedKeyValueIterator);
 
         final KeyValueIterator<Windowed<String>, String> iterator = facade.backwardAll();
@@ -279,16 +279,16 @@ public class GenericReadOnlyWindowStoreFacadeTest {
     public void shouldHandleNullValuesInWindowIterator() {
         final Function<ValueAndTimestamp<String>, String> converter = ValueConverters.extractValue();
         final GenericReadOnlyWindowStoreFacade<String, ValueAndTimestamp<String>, String> facade =
-            new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
+                new GenericReadOnlyWindowStoreFacade<>(mockedTimestampedStore, converter);
 
         when(mockedTimestampedWindowIterator.next())
-            .thenReturn(KeyValue.pair(21L, null))
-            .thenReturn(KeyValue.pair(42L, ValueAndTimestamp.make("value2", 23L)));
+                .thenReturn(KeyValue.pair(21L, null))
+                .thenReturn(KeyValue.pair(42L, ValueAndTimestamp.make("value2", 23L)));
         when(mockedTimestampedStore.fetch("key1", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L)))
-            .thenReturn(mockedTimestampedWindowIterator);
+                .thenReturn(mockedTimestampedWindowIterator);
 
         final WindowStoreIterator<String> iterator =
-            facade.fetch("key1", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
+                facade.fetch("key1", Instant.ofEpochMilli(21L), Instant.ofEpochMilli(42L));
 
         assertThat(iterator.next(), is(KeyValue.pair(21L, null)));
         assertThat(iterator.next(), is(KeyValue.pair(42L, "value2")));

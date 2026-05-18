@@ -30,7 +30,7 @@ public class ScramCredentialInfo {
 
     /**
      *
-     * @param mechanism the required mechanism
+     * @param mechanism  the required mechanism
      * @param iterations the number of iterations used when creating the credential
      */
     public ScramCredentialInfo(ScramMechanism mechanism, int iterations) {

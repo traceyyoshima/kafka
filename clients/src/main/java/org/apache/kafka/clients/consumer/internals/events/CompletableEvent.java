@@ -57,7 +57,6 @@ public interface CompletableEvent<T> {
      * </ul>
      *
      * @return Future on which the caller may block or query for completion
-     *
      * @see CompletableEventReaper
      */
     CompletableFuture<T> future();
@@ -69,7 +68,6 @@ public interface CompletableEvent<T> {
      * {@link TimeoutException}.
      *
      * @return Absolute time for event to be completed
-     *
      * @see CompletableEventReaper
      */
     long deadlineMs();
@@ -78,7 +76,6 @@ public interface CompletableEvent<T> {
      * Calculate the deadline timestamp based on {@link Timer#currentTimeMs()} and {@link Timer#remainingMs()}.
      *
      * @param timer Timer
-     *
      * @return Absolute time by which event should be completed
      */
     static long calculateDeadlineMs(final Timer timer) {
@@ -91,7 +88,6 @@ public interface CompletableEvent<T> {
      *
      * @param time     Time
      * @param duration Duration
-     *
      * @return Absolute time by which event should be completed
      */
     static long calculateDeadlineMs(final Time time, final Duration duration) {
@@ -103,7 +99,6 @@ public interface CompletableEvent<T> {
      *
      * @param time      Time
      * @param timeoutMs Timeout, in milliseconds
-     *
      * @return Absolute time by which event should be completed
      */
     static long calculateDeadlineMs(final Time time, final long timeoutMs) {
@@ -115,7 +110,6 @@ public interface CompletableEvent<T> {
      *
      * @param currentTimeMs Current time, in milliseconds
      * @param timeoutMs     Timeout, in milliseconds
-     *
      * @return Absolute time by which event should be completed
      */
     static long calculateDeadlineMs(final long currentTimeMs, final long timeoutMs) {

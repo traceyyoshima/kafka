@@ -81,7 +81,6 @@ import static org.apache.kafka.streams.internals.ApiUtils.validateMillisecondDur
  * @param <K> type of record key
  * @param <V> type of record value
  * @param <S> type of state store (note: state stores always have key/value types {@code <Bytes,byte[]>}
- *
  * @see org.apache.kafka.streams.state.Stores
  */
 public class Materialized<K, V, S extends StateStore> {
@@ -141,7 +140,8 @@ public class Materialized<K, V, S extends StateStore> {
 
     /**
      * Copy constructor.
-     * @param materialized  the {@link Materialized} instance to copy.
+     *
+     * @param materialized the {@link Materialized} instance to copy.
      */
     protected Materialized(final Materialized<K, V, S> materialized) {
         this.storeSupplier = materialized.storeSupplier;
@@ -158,10 +158,10 @@ public class Materialized<K, V, S extends StateStore> {
     /**
      * Materialize a {@link StateStore} with the given {@link DslStoreSuppliers}.
      *
-     * @param storeSuppliers  the type of the state store
-     * @param <K>             key type of the store
-     * @param <V>             value type of the store
-     * @param <S>             type of the {@link StateStore}
+     * @param storeSuppliers the type of the state store
+     * @param <K>            key type of the store
+     * @param <V>            value type of the store
+     * @param <S>            type of the {@link StateStore}
      * @return a new {@link Materialized} instance with the given storeName
      */
     public static <K, V, S extends StateStore> Materialized<K, V, S> as(final DslStoreSuppliers storeSuppliers) {
@@ -192,8 +192,8 @@ public class Materialized<K, V, S extends StateStore> {
      *     .with(keySerde, valueSerde);  // Store name is lost
      * }</pre>
      *
-     * @param storeName  the name of the underlying {@link KTable} state store; valid characters are ASCII
-     * alphanumerics, '.', '_' and '-'.
+     * @param storeName the name of the underlying {@link KTable} state store; valid characters are ASCII
+     *                  alphanumerics, '.', '_' and '-'.
      * @param <K>       key type of the store
      * @param <V>       value type of the store
      * @param <S>       type of the {@link StateStore}
@@ -206,7 +206,7 @@ public class Materialized<K, V, S extends StateStore> {
 
     /**
      * Materialize a {@link WindowStore} using the provided {@link WindowBytesStoreSupplier}.
-     *
+     * <p>
      * Important: Custom subclasses are allowed here, but they should respect the retention contract:
      * Window stores are required to retain windows at least as long as (window size + window grace period).
      * Stores constructed via {@link org.apache.kafka.streams.state.Stores} already satisfy this contract.
@@ -223,7 +223,7 @@ public class Materialized<K, V, S extends StateStore> {
 
     /**
      * Materialize a {@link SessionStore} using the provided {@link SessionBytesStoreSupplier}.
-     *
+     * <p>
      * Important: Custom subclasses are allowed here, but they should respect the retention contract:
      * Session stores are required to retain windows at least as long as (session inactivity gap + session grace period).
      * Stores constructed via {@link org.apache.kafka.streams.state.Stores} already satisfy this contract.
@@ -272,13 +272,13 @@ public class Materialized<K, V, S extends StateStore> {
      *     .with(keySerde, valueSerde);  // Store name is lost
      * }</pre>
      *
-     * @param keySerde      the key {@link Serde} to use. If the {@link Serde} is null, then the default key
-     *                      serde from configs will be used
-     * @param valueSerde    the value {@link Serde} to use. If the {@link Serde} is null, then the default value
-     *                      serde from configs will be used
-     * @param <K>           key type
-     * @param <V>           value type
-     * @param <S>           store type
+     * @param keySerde   the key {@link Serde} to use. If the {@link Serde} is null, then the default key
+     *                   serde from configs will be used
+     * @param valueSerde the value {@link Serde} to use. If the {@link Serde} is null, then the default value
+     *                   serde from configs will be used
+     * @param <K>        key type
+     * @param <V>        value type
+     * @param <S>        store type
      * @return a new {@link Materialized} instance with the given key and value serdes
      */
     public static <K, V, S extends StateStore> Materialized<K, V, S> with(final Serde<K> keySerde,
@@ -301,8 +301,9 @@ public class Materialized<K, V, S extends StateStore> {
 
     /**
      * Set the keySerde the materialized {@link StateStore} will use.
-     * @param keySerde  the key {@link Serde} to use. If the {@link Serde} is null, then the default key
-     *                  serde from configs will be used
+     *
+     * @param keySerde the key {@link Serde} to use. If the {@link Serde} is null, then the default key
+     *                 serde from configs will be used
      * @return itself
      */
     public Materialized<K, V, S> withKeySerde(final Serde<K> keySerde) {
@@ -315,7 +316,8 @@ public class Materialized<K, V, S extends StateStore> {
      * with the provided configs.
      * <p>
      * Note: Any unrecognized configs will be ignored.
-     * @param config    any configs that should be applied to the changelog
+     *
+     * @param config any configs that should be applied to the changelog
      * @return itself
      */
     public Materialized<K, V, S> withLoggingEnabled(final Map<String, String> config) {
@@ -326,6 +328,7 @@ public class Materialized<K, V, S extends StateStore> {
 
     /**
      * Disable change logging for the materialized {@link StateStore}.
+     *
      * @return itself
      */
     public Materialized<K, V, S> withLoggingDisabled() {
@@ -336,6 +339,7 @@ public class Materialized<K, V, S extends StateStore> {
 
     /**
      * Enable caching for the materialized {@link StateStore}.
+     *
      * @return itself
      */
     public Materialized<K, V, S> withCachingEnabled() {
@@ -345,6 +349,7 @@ public class Materialized<K, V, S extends StateStore> {
 
     /**
      * Disable caching for the materialized {@link StateStore}.
+     *
      * @return itself
      */
     public Materialized<K, V, S> withCachingDisabled() {
@@ -354,10 +359,10 @@ public class Materialized<K, V, S extends StateStore> {
 
     /**
      * Configure retention period for window and session stores. Ignored for key/value stores.
-     *
+     * <p>
      * Overridden by pre-configured store suppliers
      * ({@link Materialized#as(SessionBytesStoreSupplier)} or {@link Materialized#as(WindowBytesStoreSupplier)}).
-     *
+     * <p>
      * Note that the retention period must be at least long enough to contain the windowed data's entire life cycle,
      * from window-start through window-end, and for the entire grace period. If not specified, the retention
      * period would be set as the window length (from window-start through window-end) plus the grace period.
@@ -380,7 +385,7 @@ public class Materialized<K, V, S extends StateStore> {
     /**
      * Set the type of the materialized {@link StateStore}.
      *
-     * @param storeSuppliers  the store type {@link StoreType} to use.
+     * @param storeSuppliers the store type {@link StoreType} to use.
      * @return itself
      * @throws IllegalArgumentException if store supplier is also pre-configured
      */

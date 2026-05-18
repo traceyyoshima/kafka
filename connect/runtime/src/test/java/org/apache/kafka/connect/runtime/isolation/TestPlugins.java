@@ -311,7 +311,7 @@ public class TestPlugins {
     private static void assertAvailable() throws AssertionError {
         if (INITIALIZATION_EXCEPTION != null) {
             throw new AssertionError("TestPlugins did not initialize completely",
-                INITIALIZATION_EXCEPTION);
+                    INITIALIZATION_EXCEPTION);
         }
         if (PLUGIN_JARS.isEmpty()) {
             throw new AssertionError("No test plugins loaded");
@@ -320,6 +320,7 @@ public class TestPlugins {
 
     /**
      * Assemble a default plugin path containing all TestPlugin instances which are not hidden by default.
+     *
      * @return A list of plugin jar filenames
      * @throws AssertionError if any plugin failed to load, or no plugins were loaded.
      */
@@ -333,6 +334,7 @@ public class TestPlugins {
 
     /**
      * Assemble a plugin path containing some TestPlugin instances
+     *
      * @param plugins One or more plugins which should be included on the plugin path.
      * @return A list of plugin jar filenames containing the specified test plugins
      * @throws AssertionError if any plugin failed to load, or no plugins were loaded.
@@ -353,6 +355,7 @@ public class TestPlugins {
 
     /**
      * Get all plugin classes which are included on the default classpath
+     *
      * @return A list of plugin class names
      * @throws AssertionError if any plugin failed to load, or no plugins were loaded.
      */
@@ -362,6 +365,7 @@ public class TestPlugins {
 
     /**
      * Get all plugin classes which are included in the specified plugins
+     *
      * @param plugins One or more plugins which are included in the plugin path.
      * @return A list of plugin class names
      * @throws AssertionError if any plugin failed to load, or no plugins were loaded.
@@ -402,8 +406,8 @@ public class TestPlugins {
 
     private static Path resourceDirectoryPath(String resourceDir) throws IOException {
         URL resource = Thread.currentThread()
-            .getContextClassLoader()
-            .getResource(resourceDir);
+                .getContextClassLoader()
+                .getResource(resourceDir);
         if (resource == null) {
             throw new IOException("Could not find test plugin resource: " + resourceDir);
         }
@@ -446,6 +450,7 @@ public class TestPlugins {
      * and the classes present in the test environment.
      * See <a href="https://stackoverflow.com/questions/1563909/"/> for more information.
      * Additional dependencies in your plugins should be added as test scope to :connect:runtime.
+     *
      * @param sourceDir Directory containing java source files
      * @throws IOException if the files cannot be compiled
      */
@@ -463,16 +468,16 @@ public class TestPlugins {
 
         StringWriter writer = new StringWriter();
         List<String> options = List.of(
-            "-d", binDir.toString() // Write class output to a different directory.
+                "-d", binDir.toString() // Write class output to a different directory.
         );
         try (StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null)) {
             boolean success = compiler.getTask(
-                writer,
-                fileManager,
-                null,
-                options,
-                null,
-                fileManager.getJavaFileObjectsFromFiles(sourceFiles)
+                    writer,
+                    fileManager,
+                    null,
+                    options,
+                    null,
+                    fileManager.getJavaFileObjectsFromFiles(sourceFiles)
             ).call();
             if (!success) {
                 throw new RuntimeException("Failed to compile test plugin:\n" + writer);
@@ -507,10 +512,10 @@ public class TestPlugins {
         for (Path path : paths) {
             try (InputStream in = new BufferedInputStream(Files.newInputStream(path))) {
                 jar.putNextEntry(new JarEntry(
-                    inputDir.relativize(path)
-                        .toFile()
-                        .getPath()
-                        .replace(File.separator, "/")
+                        inputDir.relativize(path)
+                                .toFile()
+                                .getPath()
+                                .replace(File.separator, "/")
                 ));
                 byte[] buffer = new byte[1024];
                 for (int count; (count = in.read(buffer)) != -1; ) {

@@ -54,8 +54,10 @@ import static org.mockito.Mockito.when;
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 public class RootResourceTest {
 
-    @Mock private Herder herder;
-    @Mock private Time time;
+    @Mock
+    private Herder herder;
+    @Mock
+    private Time time;
     private RootResource rootResource;
 
     private static final RestRequestTimeout REQUEST_TIMEOUT = RestRequestTimeout.constant(

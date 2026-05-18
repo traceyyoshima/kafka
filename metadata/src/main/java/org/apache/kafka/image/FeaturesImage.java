@@ -33,13 +33,13 @@ import java.util.Optional;
 
 /**
  * Represents the feature levels in the metadata image.
- *
+ * <p>
  * This class is thread-safe.
  */
 public final class FeaturesImage {
     public static final FeaturesImage EMPTY = new FeaturesImage(
-        Map.of(),
-        Optional.empty()
+            Map.of(),
+            Optional.empty()
     );
 
     private final Map<String, Short> finalizedVersions;
@@ -79,7 +79,7 @@ public final class FeaturesImage {
 
     public boolean isElrEnabled() {
         return finalizedVersions.getOrDefault(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_0.featureLevel())
-            >= EligibleLeaderReplicasVersion.ELRV_1.featureLevel();
+                >= EligibleLeaderReplicasVersion.ELRV_1.featureLevel();
     }
 
     public void write(ImageWriter writer, ImageWriterOptions options) {
@@ -115,7 +115,7 @@ public final class FeaturesImage {
     public boolean equals(Object o) {
         if (!(o instanceof FeaturesImage other)) return false;
         return finalizedVersions.equals(other.finalizedVersions) &&
-            metadataVersion.equals(other.metadataVersion);
+                metadataVersion.equals(other.metadataVersion);
     }
 
     @Override

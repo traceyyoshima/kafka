@@ -31,4 +31,5 @@ record PartitionReassignmentState(
         List<Integer> currentReplicas,
         List<Integer> targetReplicas,
         boolean done
-) { }
+) {
+}

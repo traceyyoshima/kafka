@@ -88,17 +88,17 @@ public final class InteractiveShell implements AutoCloseable {
     public InteractiveShell(MetadataShellState state) throws IOException {
         this.state = state;
         TerminalBuilder builder = TerminalBuilder.builder().
-            system(true).
-            nativeSignals(true);
+                system(true).
+                nativeSignals(true);
         this.terminal = builder.build();
         this.history = new DefaultHistory();
         this.reader = LineReaderBuilder.builder().
-            terminal(terminal).
-            parser(new DefaultParser()).
-            history(history).
-            completer(new MetadataShellCompleter(state)).
-            option(LineReader.Option.AUTO_FRESH_LINE, false).
-            build();
+                terminal(terminal).
+                parser(new DefaultParser()).
+                history(history).
+                completer(new MetadataShellCompleter(state)).
+                option(LineReader.Option.AUTO_FRESH_LINE, false).
+                build();
     }
 
     public void runMainLoop() throws Exception {
@@ -140,7 +140,7 @@ public final class InteractiveShell implements AutoCloseable {
         return new HistoryIterator(first, last);
     }
 
-    public class HistoryIterator implements  Iterator<Entry<Integer, String>> {
+    public class HistoryIterator implements Iterator<Entry<Integer, String>> {
         private final int last;
         private int index;
 

@@ -21,7 +21,7 @@ import java.util.Iterator;
 
 
 /**
- * This is a mutable integer which can be snapshotted. 
+ * This is a mutable integer which can be snapshotted.
  * <br>
  * This class requires external synchronization.
  */

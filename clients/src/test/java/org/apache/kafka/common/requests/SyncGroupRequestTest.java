@@ -28,10 +28,10 @@ public class SyncGroupRequestTest {
     @Test
     public void testRequestVersionCompatibilityFailBuild() {
         assertThrows(UnsupportedVersionException.class, () -> new SyncGroupRequest.Builder(
-            new SyncGroupRequestData()
-                .setGroupId("groupId")
-                .setMemberId("consumerId")
-                .setGroupInstanceId("groupInstanceId")
+                new SyncGroupRequestData()
+                        .setGroupId("groupId")
+                        .setMemberId("consumerId")
+                        .setGroupInstanceId("groupInstanceId")
         ).build((short) 2));
     }
 }

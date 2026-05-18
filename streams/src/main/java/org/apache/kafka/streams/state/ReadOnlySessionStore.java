@@ -62,7 +62,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                             final long earliestSessionEndTime,
                                                             final long latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -96,7 +96,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                             final Instant earliestSessionEndTime,
                                                             final Instant latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -130,7 +130,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                                     final long earliestSessionEndTime,
                                                                     final long latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -164,7 +164,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                                     final Instant earliestSessionEndTime,
                                                                     final Instant latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -187,9 +187,9 @@ public interface ReadOnlySessionStore<K, AGG> {
      * This iterator must be closed after use.
      *
      * @param keyFrom                The first key that could be in the range
-     * A null value indicates a starting position from the first element in the store.
+     *                               A null value indicates a starting position from the first element in the store.
      * @param keyTo                  The last key that could be in the range
-     * A null value indicates that the range ends with the last element in the store.
+     *                               A null value indicates that the range ends with the last element in the store.
      * @param earliestSessionEndTime the end timestamp of the earliest session to search for, where
      *                               iteration starts.
      * @param latestSessionStartTime the end timestamp of the latest session to search for, where
@@ -202,7 +202,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                             final long earliestSessionEndTime,
                                                             final long latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -225,9 +225,9 @@ public interface ReadOnlySessionStore<K, AGG> {
      * This iterator must be closed after use.
      *
      * @param keyFrom                The first key that could be in the range
-     * A null value indicates a starting position from the first element in the store.
+     *                               A null value indicates a starting position from the first element in the store.
      * @param keyTo                  The last key that could be in the range
-     * A null value indicates that the range ends with the last element in the store.
+     *                               A null value indicates that the range ends with the last element in the store.
      * @param earliestSessionEndTime the end timestamp of the earliest session to search for, where
      *                               iteration starts.
      * @param latestSessionStartTime the end timestamp of the latest session to search for, where
@@ -240,7 +240,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                             final Instant earliestSessionEndTime,
                                                             final Instant latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -263,9 +263,9 @@ public interface ReadOnlySessionStore<K, AGG> {
      * This iterator must be closed after use.
      *
      * @param keyFrom                The first key that could be in the range
-     * A null value indicates a starting position from the first element in the store.
+     *                               A null value indicates a starting position from the first element in the store.
      * @param keyTo                  The last key that could be in the range
-     * A null value indicates that the range ends with the last element in the store.
+     *                               A null value indicates that the range ends with the last element in the store.
      * @param earliestSessionEndTime the end timestamp of the earliest session to search for, where
      *                               iteration ends.
      * @param latestSessionStartTime the end timestamp of the latest session to search for, where
@@ -278,7 +278,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                                     final long earliestSessionEndTime,
                                                                     final long latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -301,9 +301,9 @@ public interface ReadOnlySessionStore<K, AGG> {
      * This iterator must be closed after use.
      *
      * @param keyFrom                The first key that could be in the range
-     * A null value indicates a starting position from the first element in the store.
+     *                               A null value indicates a starting position from the first element in the store.
      * @param keyTo                  The last key that could be in the range
-     * A null value indicates that the range ends with the last element in the store.
+     *                               A null value indicates that the range ends with the last element in the store.
      * @param earliestSessionEndTime the end timestamp of the earliest session to search for, where
      *                               iteration ends.
      * @param latestSessionStartTime the end timestamp of the latest session to search for, where
@@ -316,7 +316,7 @@ public interface ReadOnlySessionStore<K, AGG> {
                                                                     final Instant earliestSessionEndTime,
                                                                     final Instant latestSessionStartTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -326,14 +326,14 @@ public interface ReadOnlySessionStore<K, AGG> {
      * @param sessionStartTime start timestamp of the session
      * @param sessionEndTime   end timestamp of the session
      * @return The value or {@code null} if no session with the exact start and end timestamp exists
-     *         for the given key
+     * for the given key
      * @throws NullPointerException If {@code null} is used for any key.
      */
     default AGG fetchSession(final K key,
                              final long sessionStartTime,
                              final long sessionEndTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -343,14 +343,14 @@ public interface ReadOnlySessionStore<K, AGG> {
      * @param sessionStartTime start timestamp of the session
      * @param sessionEndTime   end timestamp of the session
      * @return The value or {@code null} if no session with the exact start and end timestamp exists
-     *         for the given key
+     * for the given key
      * @throws NullPointerException If {@code null} is used for any key.
      */
     default AGG fetchSession(final K key,
                              final Instant sessionStartTime,
                              final Instant sessionEndTime) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -381,7 +381,7 @@ public interface ReadOnlySessionStore<K, AGG> {
      */
     default KeyValueIterator<Windowed<K>, AGG> backwardFetch(final K key) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**
@@ -392,9 +392,9 @@ public interface ReadOnlySessionStore<K, AGG> {
      * available session to the newest/latest session.
      *
      * @param keyFrom first key in the range to find aggregated session values for
-     * A null value indicates a starting position from the first element in the store.
+     *                A null value indicates a starting position from the first element in the store.
      * @param keyTo   last key in the range to find aggregated session values for
-     * A null value indicates that the range ends with the last element in the store.
+     *                A null value indicates that the range ends with the last element in the store.
      * @return KeyValueIterator containing all sessions for the provided key, from oldest to newest
      * session.
      */
@@ -408,15 +408,15 @@ public interface ReadOnlySessionStore<K, AGG> {
      * available session to the oldest/earliest session.
      *
      * @param keyFrom first key in the range to find aggregated session values for
-     * A null value indicates a starting position from the first element in the store.
+     *                A null value indicates a starting position from the first element in the store.
      * @param keyTo   last key in the range to find aggregated session values for
-     * A null value indicates that the range ends with the last element in the store.
+     *                A null value indicates that the range ends with the last element in the store.
      * @return backward KeyValueIterator containing all sessions for the provided key, from newest
      * to oldest session.
      */
     default KeyValueIterator<Windowed<K>, AGG> backwardFetch(final K keyFrom, final K keyTo) {
         throw new UnsupportedOperationException(
-            "This API is not supported by this implementation of ReadOnlySessionStore.");
+                "This API is not supported by this implementation of ReadOnlySessionStore.");
     }
 
     /**

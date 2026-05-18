@@ -22,11 +22,11 @@ import java.util.List;
 
 public final class StandardAclWithIdFixtures {
     public static final List<StandardAclWithId> TEST_ACLS = List.of(
-        new StandardAclWithId(Uuid.fromString("QZDDv-R7SyaPgetDPGd0Mw"), StandardAclFixtures.TEST_ACLS.get(0)),
-        new StandardAclWithId(Uuid.fromString("SdDjEdlbRmy2__WFKe3RMg"), StandardAclFixtures.TEST_ACLS.get(1)),
-        new StandardAclWithId(Uuid.fromString("wQzt5gkSTwuQNXZF5gIw7A"), StandardAclFixtures.TEST_ACLS.get(2)),
-        new StandardAclWithId(Uuid.fromString("ab_5xjJXSbS1o5jGfhgQXg"), StandardAclFixtures.TEST_ACLS.get(3)),
-        new StandardAclWithId(Uuid.fromString("wP_cCK0LTEGSX9oDRInJHQ"), StandardAclFixtures.TEST_ACLS.get(4))
+            new StandardAclWithId(Uuid.fromString("QZDDv-R7SyaPgetDPGd0Mw"), StandardAclFixtures.TEST_ACLS.get(0)),
+            new StandardAclWithId(Uuid.fromString("SdDjEdlbRmy2__WFKe3RMg"), StandardAclFixtures.TEST_ACLS.get(1)),
+            new StandardAclWithId(Uuid.fromString("wQzt5gkSTwuQNXZF5gIw7A"), StandardAclFixtures.TEST_ACLS.get(2)),
+            new StandardAclWithId(Uuid.fromString("ab_5xjJXSbS1o5jGfhgQXg"), StandardAclFixtures.TEST_ACLS.get(3)),
+            new StandardAclWithId(Uuid.fromString("wP_cCK0LTEGSX9oDRInJHQ"), StandardAclFixtures.TEST_ACLS.get(4))
     );
 
     private StandardAclWithIdFixtures() {

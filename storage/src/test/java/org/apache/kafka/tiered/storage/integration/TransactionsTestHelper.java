@@ -78,7 +78,9 @@ public class TransactionsTestHelper {
 
     public interface TransactionHooks {
         void verifyLogStartOffsets(Map<TopicPartition, Long> expectedOffsets) throws InterruptedException;
+
         void maybeVerifyLocalLogStartOffsets(Map<TopicPartition, Long> expectedOffsets) throws InterruptedException;
+
         void maybeWaitForAtLeastOneSegmentUpload(List<TopicPartition> topicPartitions);
     }
 
@@ -885,7 +887,7 @@ public class TransactionsTestHelper {
 
             producer.beginTransaction();
             var nextMetadata = producer.send(
-                    producerRecordWithExpectedTransactionStatus(TOPIC2, null, "2", "2", true))
+                            producerRecordWithExpectedTransactionStatus(TOPIC2, null, "2", "2", true))
                     .get(20, TimeUnit.SECONDS);
 
             var actualTp = new TopicPartition(TOPIC2, nextMetadata.partition());

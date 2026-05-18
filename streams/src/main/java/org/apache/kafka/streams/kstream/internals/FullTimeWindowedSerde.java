@@ -25,8 +25,8 @@ import org.apache.kafka.streams.kstream.Windowed;
 class FullTimeWindowedSerde<T> extends Serdes.WrapperSerde<Windowed<T>> {
     FullTimeWindowedSerde(final Serde<T> inner, final long windowSize) {
         super(
-            new TimeWindowedSerializer<>(inner.serializer()),
-            new TimeWindowedDeserializer<>(inner.deserializer(), windowSize)
+                new TimeWindowedSerializer<>(inner.serializer()),
+                new TimeWindowedDeserializer<>(inner.deserializer(), windowSize)
         );
     }
 }

@@ -24,8 +24,8 @@ import org.apache.kafka.server.authorizer.AuthorizableRequestContext;
  * which receives client telemetry metrics.
  *
  * @deprecated Since 4.2.0, use {@link ClientTelemetryExporter} instead. This interface will be
- *             removed in Kafka 5.0.0. The new interface provides additional context including
- *             the push interval to enable better metric lifecycle management.
+ * removed in Kafka 5.0.0. The new interface provides additional context including
+ * the push interval to enable better metric lifecycle management.
  */
 @Deprecated(since = "4.2", forRemoval = true)
 public interface ClientTelemetryReceiver {

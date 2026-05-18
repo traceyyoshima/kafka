@@ -20,7 +20,7 @@ import org.apache.kafka.common.utils.Bytes;
 
 /**
  * A store supplier that can be used to create one or more {@link SessionStore SessionStore&lt;Byte, byte[]&gt;} instances.
- *
+ * <p>
  * For any stores implementing the {@link SessionStore SessionStore&lt;Byte, byte[]&gt;} interface, {@code null} value
  * bytes are considered as "not exist". This means:
  * <ol>

@@ -40,9 +40,9 @@ public class TokenBucketTest {
         // Rate  = 5 unit / sec
         // Burst = 2 * 10 = 20 units
         MetricConfig config = new MetricConfig()
-            .quota(Quota.upperBound(5))
-            .timeWindow(2, TimeUnit.SECONDS)
-            .samples(10);
+                .quota(Quota.upperBound(5))
+                .timeWindow(2, TimeUnit.SECONDS)
+                .samples(10);
 
         TokenBucket tk = new TokenBucket();
 
@@ -69,9 +69,9 @@ public class TokenBucketTest {
         // Rate  = 5 unit / sec
         // Burst = 2 * 10 = 20 units
         MetricConfig config = new MetricConfig()
-            .quota(Quota.upperBound(5))
-            .timeWindow(2, TimeUnit.SECONDS)
-            .samples(10);
+                .quota(Quota.upperBound(5))
+                .timeWindow(2, TimeUnit.SECONDS)
+                .samples(10);
 
         TokenBucket tk = new TokenBucket();
 

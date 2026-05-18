@@ -57,9 +57,9 @@ public class DescribeShareGroupOffsetsRequest extends AbstractRequest {
 
     public List<String> groupIds() {
         return data.groups()
-            .stream()
-            .map(DescribeShareGroupOffsetsRequestGroup::groupId)
-            .collect(Collectors.toList());
+                .stream()
+                .map(DescribeShareGroupOffsetsRequestGroup::groupId)
+                .collect(Collectors.toList());
     }
 
     public List<DescribeShareGroupOffsetsRequestGroup> groups() {
@@ -86,8 +86,8 @@ public class DescribeShareGroupOffsetsRequest extends AbstractRequest {
 
     public static DescribeShareGroupOffsetsResponseGroup getErrorDescribedGroup(String groupId, Errors error) {
         return new DescribeShareGroupOffsetsResponseGroup()
-            .setGroupId(groupId)
-            .setErrorCode(error.code())
-            .setErrorMessage(error.message());
+                .setGroupId(groupId)
+                .setErrorCode(error.code())
+                .setErrorMessage(error.message());
     }
 }

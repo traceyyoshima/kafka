@@ -22,7 +22,7 @@ import org.apache.kafka.message.Versions;
 
 /**
  * FieldDomain represents whether a field should appear in message1, message2, both, or neither.
- *
+ * <p>
  * Note that this class does not handle tagged fields. Tagged fields can appear in any version,
  * provided that the version is a flexibleVersion. In other words, adding a tagged field to an
  * existing version is not an incompatible change. (However, reusing a tag index certainly is.)
@@ -34,9 +34,9 @@ enum FieldDomain {
     NEITHER;
 
     static FieldDomain of(
-        FieldSpec fieldSpec,
-        Versions versions1,
-        Versions versions2
+            FieldSpec fieldSpec,
+            Versions versions1,
+            Versions versions2
     ) {
         Versions intersection1 = versions1.intersect(fieldSpec.versions());
         Versions intersection2 = versions2.intersect(fieldSpec.versions());
@@ -54,10 +54,10 @@ enum FieldDomain {
     }
 
     void validate(
-        String what,
-        FieldSpec field,
-        boolean present1,
-        boolean present2
+            String what,
+            FieldSpec field,
+            boolean present1,
+            boolean present2
     ) {
         switch (this) {
             case MESSAGE1_ONLY:

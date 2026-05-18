@@ -504,7 +504,8 @@ public class AlterPartitionManagerTest {
         };
     }
 
-    record TopicPartitionKey(Uuid topicId, int partitionId) { }
+    record TopicPartitionKey(Uuid topicId, int partitionId) {
+    }
 
     private ClientResponse makeClientResponse(AlterPartitionResponse response, short version) {
         return new ClientResponse(

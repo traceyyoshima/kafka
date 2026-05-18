@@ -93,13 +93,12 @@ public interface ClientTelemetrySender extends AutoCloseable {
      *                client instance ID. The value must be non-negative. Specifying a timeout
      *                of zero means do not wait for the initial request to complete if it hasn't
      *                already.
-     * @throws InterruptException If the thread is interrupted while blocked.
-     * @throws KafkaException If an unexpected error occurs while trying to determine the client
-     *                        instance ID, though this error does not necessarily imply the
-     *                        enclosing client instance is otherwise unusable.
-     * @throws IllegalArgumentException If the <code>timeout</code> is negative.
-     *
      * @return If present, optional of the client's assigned instance id used for metrics collection.
+     * @throws InterruptException       If the thread is interrupted while blocked.
+     * @throws KafkaException           If an unexpected error occurs while trying to determine the client
+     *                                  instance ID, though this error does not necessarily imply the
+     *                                  enclosing client instance is otherwise unusable.
+     * @throws IllegalArgumentException If the <code>timeout</code> is negative.
      */
 
     Optional<Uuid> clientInstanceId(Duration timeout);

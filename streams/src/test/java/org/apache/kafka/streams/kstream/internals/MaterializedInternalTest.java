@@ -63,7 +63,7 @@ public class MaterializedInternalTest {
         when(nameProvider.newStoreName(prefix)).thenReturn(generatedName);
 
         final MaterializedInternal<Object, Object, StateStore> materialized =
-            new MaterializedInternal<>(Materialized.with(null, null), nameProvider, prefix);
+                new MaterializedInternal<>(Materialized.with(null, null), nameProvider, prefix);
 
         assertThat(materialized.storeName(), equalTo(generatedName));
     }
@@ -72,7 +72,7 @@ public class MaterializedInternalTest {
     public void shouldUseProvidedStoreNameWhenSet() {
         final String storeName = "store-name";
         final MaterializedInternal<Object, Object, StateStore> materialized =
-            new MaterializedInternal<>(Materialized.as(storeName), nameProvider, prefix);
+                new MaterializedInternal<>(Materialized.as(storeName), nameProvider, prefix);
         assertThat(materialized.storeName(), equalTo(storeName));
     }
 
@@ -81,7 +81,7 @@ public class MaterializedInternalTest {
         final String storeName = "other-store-name";
         when(supplier.name()).thenReturn(storeName);
         final MaterializedInternal<Object, Object, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as(supplier), nameProvider, prefix);
+                new MaterializedInternal<>(Materialized.as(supplier), nameProvider, prefix);
         assertThat(materialized.storeName(), equalTo(storeName));
     }
 
@@ -93,12 +93,12 @@ public class MaterializedInternalTest {
         final StreamsConfig config = new StreamsConfig(StreamsTestUtils.getStreamsConfig());
 
         final InternalTopologyBuilder topologyBuilder = new InternalTopologyBuilder(
-            new TopologyConfig("my-topology", config, topologyOverrides));
+                new TopologyConfig("my-topology", config, topologyOverrides));
 
         final InternalStreamsBuilder internalStreamsBuilder = new InternalStreamsBuilder(topologyBuilder, false);
 
         final MaterializedInternal<Object, Object, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as(supplier), internalStreamsBuilder, prefix);
+                new MaterializedInternal<>(Materialized.as(supplier), internalStreamsBuilder, prefix);
         assertThat(materialized.dslStoreSuppliers(), equalTo(Optional.of(Materialized.StoreType.IN_MEMORY)));
     }
 

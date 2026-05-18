@@ -114,8 +114,8 @@ public class EmbeddedKafkaCluster {
     }
 
     public EmbeddedKafkaCluster(final int numBrokers,
-                                   final Properties brokerConfig,
-                                   final Map<String, String> clientConfigs) {
+                                final Properties brokerConfig,
+                                final Map<String, String> clientConfigs) {
         addDefaultBrokerPropsIfAbsent(brokerConfig, numBrokers);
         try {
             KafkaClusterTestKit.Builder clusterBuilder = new KafkaClusterTestKit.Builder(
@@ -247,7 +247,7 @@ public class EmbeddedKafkaCluster {
      * Get the brokers that have a {@link BrokerState#RUNNING} state.
      *
      * @return the set of {@link BrokerServer} instances that are running;
-     *         never null but possibly empty
+     * never null but possibly empty
      */
     public Set<BrokerServer> runningBrokers() {
         return brokersInState(BrokerState.RUNNING::equals);
@@ -257,7 +257,7 @@ public class EmbeddedKafkaCluster {
      * Get the brokers whose state match the given predicate.
      *
      * @return the set of {@link BrokerServer} instances with states that match the predicate;
-     *         never null but possibly empty
+     * never null but possibly empty
      */
     public Set<BrokerServer> brokersInState(Predicate<BrokerState> desiredState) {
         return cluster.brokers().values().stream()
@@ -441,9 +441,9 @@ public class EmbeddedKafkaCluster {
     /**
      * Consume at least n records in a given duration or throw an exception.
      *
-     * @param n the number of expected records in this topic.
+     * @param n           the number of expected records in this topic.
      * @param maxDuration the max duration to wait for these records (in milliseconds).
-     * @param topics the topics to subscribe and consume records from.
+     * @param topics      the topics to subscribe and consume records from.
      * @return a {@link ConsumerRecords} collection containing at least n records.
      */
     public ConsumerRecords<byte[], byte[]> consume(int n, long maxDuration, String... topics) {
@@ -453,9 +453,9 @@ public class EmbeddedKafkaCluster {
     /**
      * Consume at least n records in a given duration or throw an exception.
      *
-     * @param n the number of expected records in this topic.
-     * @param maxDuration the max duration to wait for these records (in milliseconds).
-     * @param topics the topics to subscribe and consume records from.
+     * @param n             the number of expected records in this topic.
+     * @param maxDuration   the max duration to wait for these records (in milliseconds).
+     * @param topics        the topics to subscribe and consume records from.
      * @param consumerProps overrides to the default properties the consumer is constructed with;
      *                      may not be null
      * @return a {@link ConsumerRecords} collection containing at least n records.
@@ -474,7 +474,7 @@ public class EmbeddedKafkaCluster {
                     allowedDuration = maxDuration - (System.currentTimeMillis() - startMillis);
                     continue;
                 }
-                for (TopicPartition partition: rec.partitions()) {
+                for (TopicPartition partition : rec.partitions()) {
                     final List<ConsumerRecord<byte[], byte[]>> r = rec.records(partition);
                     records.computeIfAbsent(partition, t -> new ArrayList<>()).addAll(r);
                     final ConsumerRecord<byte[], byte[]> lastRecord = r.get(r.size() - 1);
@@ -493,23 +493,25 @@ public class EmbeddedKafkaCluster {
 
     /**
      * Consume all currently-available records for the specified topics in a given duration, or throw an exception.
+     *
      * @param maxDurationMs the max duration to wait for these records (in milliseconds).
-     * @param topics the topics to consume from
+     * @param topics        the topics to consume from
      * @return a {@link ConsumerRecords} collection containing the records for all partitions of the given topics
      */
     public ConsumerRecords<byte[], byte[]> consumeAll(
-        long maxDurationMs,
-        String... topics
+            long maxDurationMs,
+            String... topics
     ) throws TimeoutException, InterruptedException, ExecutionException {
         return consumeAll(maxDurationMs, null, null, topics);
     }
 
     /**
      * Consume all currently-available records for the specified topics in a given duration, or throw an exception.
+     *
      * @param maxDurationMs the max duration to wait for these records (in milliseconds).
      * @param consumerProps overrides to the default properties the consumer is constructed with; may be null
-     * @param adminProps overrides to the default properties the admin used to query Kafka cluster metadata is constructed with; may be null
-     * @param topics the topics to consume from
+     * @param adminProps    overrides to the default properties the admin used to query Kafka cluster metadata is constructed with; may be null
+     * @param topics        the topics to consume from
      * @return a {@link ConsumerRecords} collection containing the records for all partitions of the given topics
      */
     public ConsumerRecords<byte[], byte[]> consumeAll(
@@ -585,9 +587,10 @@ public class EmbeddedKafkaCluster {
 
     /**
      * List all the known partitions for the given {@link Collection} of topics
+     *
      * @param maxDurationMs the max duration to wait for while fetching metadata from Kafka (in milliseconds).
-     * @param admin the admin client to use for fetching metadata from the Kafka cluster
-     * @param topics the topics whose partitions should be listed
+     * @param admin         the admin client to use for fetching metadata from the Kafka cluster
+     * @param topics        the topics whose partitions should be listed
      * @return a {@link Set} of {@link TopicPartition topic partitions} for the given topics; never null, and never empty
      */
     private Set<TopicPartition> listPartitions(
@@ -607,8 +610,9 @@ public class EmbeddedKafkaCluster {
 
     /**
      * List the latest current offsets for the given {@link Collection} of {@link TopicPartition topic partitions}
-     * @param maxDurationMs the max duration to wait for while fetching metadata from Kafka (in milliseconds)
-     * @param admin the admin client to use for fetching metadata from the Kafka cluster
+     *
+     * @param maxDurationMs   the max duration to wait for while fetching metadata from Kafka (in milliseconds)
+     * @param admin           the admin client to use for fetching metadata from the Kafka cluster
      * @param topicPartitions the topic partitions to list end offsets for
      * @return a {@link Map} containing the latest offset for each requested {@link TopicPartition topic partition}; never null, and never empty
      */

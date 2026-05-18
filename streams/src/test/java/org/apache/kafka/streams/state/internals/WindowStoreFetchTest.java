@@ -65,7 +65,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class WindowStoreFetchTest {
-    private enum StoreType { InMemory, RocksDB, Timed }
+    private enum StoreType {InMemory, RocksDB, Timed}
+
     private static final String STORE_NAME = "store";
     private static final int DATA_SIZE = 5;
     private static final long WINDOW_SIZE = 500L;
@@ -87,9 +88,9 @@ public class WindowStoreFetchTest {
     private String innerLowBetween;
     private String innerHighBetween;
 
-    public void setup(final StoreType storeType, 
-                      final boolean enableLogging, 
-                      final boolean enableCaching, 
+    public void setup(final StoreType storeType,
+                      final boolean enableLogging,
+                      final boolean enableCaching,
                       final boolean forward) {
         this.storeType = storeType;
         this.enableLogging = enableLogging;
@@ -160,11 +161,11 @@ public class WindowStoreFetchTest {
 
         final KStream<String, String> stream = builder.stream("input", Consumed.with(Serdes.String(), Serdes.String()));
         stream.
-            groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(WINDOW_SIZE)))
-            .count(stateStoreConfig)
-            .toStream()
-            .to("output");
+                groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(WINDOW_SIZE)))
+                .count(stateStoreConfig)
+                .toStream()
+                .to("output");
 
         final Topology topology = builder.build();
 
@@ -184,23 +185,23 @@ public class WindowStoreFetchTest {
 
             // query the state store
             try (final KeyValueIterator<Windowed<String>, Long> scanIterator = this.forward ?
-                stateStore.fetchAll(0, Long.MAX_VALUE) :
-                stateStore.backwardFetchAll(0, Long.MAX_VALUE)) {
+                    stateStore.fetchAll(0, Long.MAX_VALUE) :
+                    stateStore.backwardFetchAll(0, Long.MAX_VALUE)) {
 
                 final Iterator<KeyValue<Windowed<String>, Long>> dataIterator = this.forward ?
-                    expectedRecords.iterator() :
-                    expectedRecords.descendingIterator();
+                        expectedRecords.iterator() :
+                        expectedRecords.descendingIterator();
 
                 TestUtils.checkEquals(scanIterator, dataIterator);
             }
 
             try (final KeyValueIterator<Windowed<String>, Long> scanIterator = this.forward ?
-                stateStore.fetch(null, null, 0, Long.MAX_VALUE) :
-                stateStore.backwardFetch(null, null, 0, Long.MAX_VALUE)) {
+                    stateStore.fetch(null, null, 0, Long.MAX_VALUE) :
+                    stateStore.backwardFetch(null, null, 0, Long.MAX_VALUE)) {
 
                 final Iterator<KeyValue<Windowed<String>, Long>> dataIterator = this.forward ?
-                    expectedRecords.iterator() :
-                    expectedRecords.descendingIterator();
+                        expectedRecords.iterator() :
+                        expectedRecords.descendingIterator();
 
                 TestUtils.checkEquals(scanIterator, dataIterator);
             }
@@ -258,20 +259,20 @@ public class WindowStoreFetchTest {
         final Supplier<WindowBytesStoreSupplier> createStore = () -> {
             if (type == StoreType.InMemory) {
                 return Stores.inMemoryWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                    Duration.ofMillis(WINDOW_SIZE),
-                    false);
+                        Duration.ofMillis(WINDOW_SIZE),
+                        false);
             } else if (type == StoreType.RocksDB) {
                 return Stores.persistentWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                    Duration.ofMillis(WINDOW_SIZE),
-                    false);
+                        Duration.ofMillis(WINDOW_SIZE),
+                        false);
             } else if (type == StoreType.Timed) {
                 return Stores.persistentTimestampedWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                    Duration.ofMillis(WINDOW_SIZE),
-                    false);
+                        Duration.ofMillis(WINDOW_SIZE),
+                        false);
             } else {
                 return Stores.inMemoryWindowStore(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                    Duration.ofMillis(WINDOW_SIZE),
-                    false);
+                        Duration.ofMillis(WINDOW_SIZE),
+                        false);
             }
         };
 

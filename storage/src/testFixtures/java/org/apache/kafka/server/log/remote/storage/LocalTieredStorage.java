@@ -385,7 +385,7 @@ public final class LocalTieredStorage implements RemoteStorageManager {
                 final InputStream inputStream;
                 if (fileType.isOptional() && !file.exists()) {
                     throw new RemoteResourceNotFoundException("Index file for type: " + indexType +
-                        " not found for segment " + metadata.remoteLogSegmentId());
+                            " not found for segment " + metadata.remoteLogSegmentId());
                 } else {
                     inputStream = newInputStream(file.toPath(), READ);
                 }

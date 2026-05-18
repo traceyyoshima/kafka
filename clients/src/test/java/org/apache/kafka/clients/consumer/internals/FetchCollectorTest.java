@@ -171,8 +171,8 @@ public class FetchCollectorTest {
         assignAndSeek(topicAPartition0);
 
         CompletedFetch completedFetch = spy(completedFetchBuilder
-            .recordCount(DEFAULT_RECORD_COUNT)
-            .build());
+                .recordCount(DEFAULT_RECORD_COUNT)
+                .build());
 
         // Record the subscription position at the moment drain() is called.
         AtomicLong positionAtDrainTime = new AtomicLong(-1);
@@ -478,12 +478,12 @@ public class FetchCollectorTest {
         final FetchCollector<String, String> fetchCollector = createFetchCollector(subscriptions);
         final Records records = createRecords();
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-            .setPartitionIndex(topicPartition0.partition())
-            .setHighWatermark(1000)
-            .setRecords(records);
+                .setPartitionIndex(topicPartition0.partition())
+                .setHighWatermark(1000)
+                .setRecords(records);
         final CompletedFetch completedFetch = new CompletedFetchBuilder()
-            .partitionData(partitionData)
-            .partition(topicPartition0).build();
+                .partitionData(partitionData)
+                .partition(topicPartition0).build();
         final FetchBuffer fetchBuffer = mock(FetchBuffer.class);
         when(fetchBuffer.nextInLineFetch()).thenReturn(null);
         when(fetchBuffer.peek()).thenReturn(completedFetch).thenReturn(null);
@@ -507,13 +507,13 @@ public class FetchCollectorTest {
         final FetchCollector<String, String> fetchCollector = createFetchCollector(subscriptions);
         final Records records = createRecords();
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-            .setPartitionIndex(topicPartition0.partition())
-            .setHighWatermark(highWatermark)
-            .setRecords(records);
+                .setPartitionIndex(topicPartition0.partition())
+                .setHighWatermark(highWatermark)
+                .setRecords(records);
         final CompletedFetch completedFetch = new CompletedFetchBuilder()
-            .partitionData(partitionData)
-            .partition(topicPartition0)
-            .fetchOffset(fetchOffset).build();
+                .partitionData(partitionData)
+                .partition(topicPartition0)
+                .fetchOffset(fetchOffset).build();
         final FetchBuffer fetchBuffer = mock(FetchBuffer.class);
         when(fetchBuffer.nextInLineFetch()).thenReturn(null);
         when(fetchBuffer.peek()).thenReturn(completedFetch).thenReturn(null);
@@ -539,14 +539,14 @@ public class FetchCollectorTest {
         final FetchCollector<String, String> fetchCollector = createFetchCollector(subscriptions);
         final Records records = createRecords();
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-            .setPartitionIndex(topicPartition0.partition())
-            .setHighWatermark(highWatermark)
-            .setRecords(records)
-            .setLogStartOffset(logStartOffset);
+                .setPartitionIndex(topicPartition0.partition())
+                .setHighWatermark(highWatermark)
+                .setRecords(records)
+                .setLogStartOffset(logStartOffset);
         final CompletedFetch completedFetch = new CompletedFetchBuilder()
-            .partitionData(partitionData)
-            .partition(topicPartition0)
-            .fetchOffset(fetchOffset).build();
+                .partitionData(partitionData)
+                .partition(topicPartition0)
+                .fetchOffset(fetchOffset).build();
         final FetchBuffer fetchBuffer = mock(FetchBuffer.class);
         when(fetchBuffer.nextInLineFetch()).thenReturn(null);
         when(fetchBuffer.peek()).thenReturn(completedFetch).thenReturn(null);
@@ -574,15 +574,15 @@ public class FetchCollectorTest {
         final FetchCollector<String, String> fetchCollector = createFetchCollector(subscriptions);
         final Records records = createRecords();
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-            .setPartitionIndex(topicPartition0.partition())
-            .setHighWatermark(highWatermark)
-            .setRecords(records)
-            .setLogStartOffset(logStartOffset)
-            .setLastStableOffset(lastStableOffset);
+                .setPartitionIndex(topicPartition0.partition())
+                .setHighWatermark(highWatermark)
+                .setRecords(records)
+                .setLogStartOffset(logStartOffset)
+                .setLastStableOffset(lastStableOffset);
         final CompletedFetch completedFetch = new CompletedFetchBuilder()
-            .partitionData(partitionData)
-            .partition(topicPartition0)
-            .fetchOffset(fetchOffset).build();
+                .partitionData(partitionData)
+                .partition(topicPartition0)
+                .fetchOffset(fetchOffset).build();
         final FetchBuffer fetchBuffer = mock(FetchBuffer.class);
         when(fetchBuffer.nextInLineFetch()).thenReturn(null);
         when(fetchBuffer.peek()).thenReturn(completedFetch).thenReturn(null);
@@ -612,16 +612,16 @@ public class FetchCollectorTest {
         final FetchCollector<String, String> fetchCollector = createFetchCollector(subscriptions);
         final Records records = createRecords();
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-            .setPartitionIndex(topicPartition0.partition())
-            .setHighWatermark(highWatermark)
-            .setRecords(records)
-            .setLogStartOffset(logStartOffset)
-            .setLastStableOffset(lastStableOffset)
-            .setPreferredReadReplica(preferredReadReplicaId);
+                .setPartitionIndex(topicPartition0.partition())
+                .setHighWatermark(highWatermark)
+                .setRecords(records)
+                .setLogStartOffset(logStartOffset)
+                .setLastStableOffset(lastStableOffset)
+                .setPreferredReadReplica(preferredReadReplicaId);
         final CompletedFetch completedFetch = new CompletedFetchBuilder()
-            .partitionData(partitionData)
-            .partition(topicPartition0)
-            .fetchOffset(fetchOffset).build();
+                .partitionData(partitionData)
+                .partition(topicPartition0)
+                .fetchOffset(fetchOffset).build();
         final FetchBuffer fetchBuffer = mock(FetchBuffer.class);
         when(fetchBuffer.nextInLineFetch()).thenReturn(null);
         when(fetchBuffer.peek()).thenReturn(completedFetch).thenReturn(null);
@@ -641,11 +641,11 @@ public class FetchCollectorTest {
         when(subscriptions.positionOrNull(topicPartition0)).thenReturn(null);
         final FetchCollector<String, String> fetchCollector = createFetchCollector(subscriptions);
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-            .setPartitionIndex(topicPartition0.partition())
-            .setErrorCode(Errors.OFFSET_OUT_OF_RANGE.code());
+                .setPartitionIndex(topicPartition0.partition())
+                .setErrorCode(Errors.OFFSET_OUT_OF_RANGE.code());
         final CompletedFetch completedFetch = new CompletedFetchBuilder()
-            .partitionData(partitionData)
-            .partition(topicPartition0).build();
+                .partitionData(partitionData)
+                .partition(topicPartition0).build();
         final FetchBuffer fetchBuffer = mock(FetchBuffer.class);
         when(fetchBuffer.nextInLineFetch()).thenReturn(null);
         when(fetchBuffer.peek()).thenReturn(completedFetch).thenReturn(null);
@@ -667,12 +667,12 @@ public class FetchCollectorTest {
         when(subscriptions.hasDefaultOffsetResetPolicy()).thenReturn(true);
         final FetchCollector<String, String> fetchCollector = createFetchCollector(subscriptions);
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-            .setPartitionIndex(topicPartition0.partition())
-            .setErrorCode(Errors.OFFSET_OUT_OF_RANGE.code());
+                .setPartitionIndex(topicPartition0.partition())
+                .setErrorCode(Errors.OFFSET_OUT_OF_RANGE.code());
         final CompletedFetch completedFetch = new CompletedFetchBuilder()
-            .partitionData(partitionData)
-            .partition(topicPartition0)
-            .fetchOffset(fetchOffset).build();
+                .partitionData(partitionData)
+                .partition(topicPartition0)
+                .fetchOffset(fetchOffset).build();
         final FetchBuffer fetchBuffer = mock(FetchBuffer.class);
         when(fetchBuffer.nextInLineFetch()).thenReturn(null);
         when(fetchBuffer.peek()).thenReturn(completedFetch).thenReturn(null);
@@ -694,11 +694,11 @@ public class FetchCollectorTest {
         /* The first CompletedFetch object */
         Records rawRecords = createTransactionalRecords(ControlRecordType.ABORT, true, 0, recordCount);
         FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-            .setRecords(rawRecords)
-            .setAbortedTransactions(createAbortedTransaction(0));
+                .setRecords(rawRecords)
+                .setAbortedTransactions(createAbortedTransaction(0));
         CompletedFetch completedFetch1 = completedFetchBuilder
-            .partitionData(partitionData)
-            .build();
+                .partitionData(partitionData)
+                .build();
         fetchBuffer.add(completedFetch1);
         Fetch<String, String> fetch = fetchCollector.collectFetch(fetchBuffer);
 
@@ -712,12 +712,12 @@ public class FetchCollectorTest {
         int startOffset = recordCount + 1;
         rawRecords = createTransactionalRecords(ControlRecordType.ABORT, false, startOffset, recordCount);
         partitionData = new FetchResponseData.PartitionData()
-            .setRecords(rawRecords)
-            .setAbortedTransactions(createAbortedTransaction(startOffset));
+                .setRecords(rawRecords)
+                .setAbortedTransactions(createAbortedTransaction(startOffset));
         CompletedFetch completedFetch2 = completedFetchBuilder
-            .partitionData(partitionData)
-            .fetchOffset(startOffset)
-            .build();
+                .partitionData(partitionData)
+                .fetchOffset(startOffset)
+                .build();
         fetchBuffer.add(completedFetch2);
         fetch = fetchCollector.collectFetch(fetchBuffer);
 
@@ -738,13 +738,13 @@ public class FetchCollectorTest {
     private FetchCollector<String, String> createFetchCollector(final SubscriptionState subscriptions) {
         final Properties consumerProps = consumerProps();
         return new FetchCollector<>(
-            logContext,
-            mock(ConsumerMetadata.class),
-            subscriptions,
-            new FetchConfig(new ConsumerConfig(consumerProps)),
-            new Deserializers<>(new StringDeserializer(), new StringDeserializer(), null),
-            mock(FetchMetricsManager.class),
-            new MockTime()
+                logContext,
+                mock(ConsumerMetadata.class),
+                subscriptions,
+                new FetchConfig(new ConsumerConfig(consumerProps)),
+                new Deserializers<>(new StringDeserializer(), new StringDeserializer(), null),
+                mock(FetchMetricsManager.class),
+                new MockTime()
         );
     }
 
@@ -799,14 +799,14 @@ public class FetchCollectorTest {
 
     private FetchConfig createFetchConfig(ConsumerConfig config, IsolationLevel isolationLevel) {
         return new FetchConfig(
-            config.getInt(ConsumerConfig.FETCH_MIN_BYTES_CONFIG),
-            config.getInt(ConsumerConfig.FETCH_MAX_BYTES_CONFIG),
-            config.getInt(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG),
-            config.getInt(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG),
-            config.getInt(ConsumerConfig.MAX_POLL_RECORDS_CONFIG),
-            config.getBoolean(ConsumerConfig.CHECK_CRCS_CONFIG),
-            config.getString(ConsumerConfig.CLIENT_RACK_CONFIG),
-            isolationLevel
+                config.getInt(ConsumerConfig.FETCH_MIN_BYTES_CONFIG),
+                config.getInt(ConsumerConfig.FETCH_MAX_BYTES_CONFIG),
+                config.getInt(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG),
+                config.getInt(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG),
+                config.getInt(ConsumerConfig.MAX_POLL_RECORDS_CONFIG),
+                config.getBoolean(ConsumerConfig.CHECK_CRCS_CONFIG),
+                config.getString(ConsumerConfig.CLIENT_RACK_CONFIG),
+                isolationLevel
         );
     }
 
@@ -931,9 +931,9 @@ public class FetchCollectorTest {
 
             if (partitionData == null) {
                 partitionData = new FetchResponseData.PartitionData()
-                    .setPartitionIndex(topicAPartition0.partition())
-                    .setHighWatermark(1000)
-                    .setRecords(records);
+                        .setPartitionIndex(topicAPartition0.partition())
+                        .setHighWatermark(1000)
+                        .setRecords(records);
             }
 
             if (topicPartition != null) {
@@ -963,9 +963,9 @@ public class FetchCollectorTest {
         ByteBuffer allocate = ByteBuffer.allocate(1024);
 
         try (MemoryRecordsBuilder builder = MemoryRecords.builder(allocate,
-            Compression.NONE,
-            TimestampType.CREATE_TIME,
-            0)) {
+                Compression.NONE,
+                TimestampType.CREATE_TIME,
+                0)) {
             for (int i = 0; i < recordCount; i++)
                 builder.append(0L, "key".getBytes(), ("value-" + i).getBytes());
 
@@ -984,16 +984,16 @@ public class FetchCollectorTest {
         }
 
         try (MemoryRecordsBuilder builder = MemoryRecords.builder(buffer,
-            RecordBatch.CURRENT_MAGIC_VALUE,
-            Compression.NONE,
-            TimestampType.CREATE_TIME,
-            baseOffset,
-            time.milliseconds(),
-            PRODUCER_ID,
-            (short) 0,
-            0,
-            true,
-            0)) {
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                Compression.NONE,
+                TimestampType.CREATE_TIME,
+                baseOffset,
+                time.milliseconds(),
+                PRODUCER_ID,
+                (short) 0,
+                0,
+                true,
+                0)) {
             for (int i = 0; i < recordCount; i++)
                 builder.append(new SimpleRecord(time.milliseconds(), "key".getBytes(), "value".getBytes()));
 
@@ -1011,11 +1011,11 @@ public class FetchCollectorTest {
                                         int offset,
                                         Time time) {
         MemoryRecords.writeEndTransactionalMarker(buffer,
-            offset,
-            time.milliseconds(),
-            0,
-            PRODUCER_ID,
-            (short) 0,
-            new EndTransactionMarker(controlRecordType, 0));
+                offset,
+                time.milliseconds(),
+                0,
+                PRODUCER_ID,
+                (short) 0,
+                new EndTransactionMarker(controlRecordType, 0));
     }
 }

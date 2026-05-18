@@ -88,8 +88,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ClusterTestDefaults(
         types = {Type.KRAFT},
         serverProperties = {
-            @ClusterConfigProperty(key = StandardAuthorizer.SUPER_USERS_CONFIG, value = "User:ANONYMOUS"),
-            @ClusterConfigProperty(key = AUTHORIZER_CLASS_NAME_CONFIG, value = AclCommandTest.STANDARD_AUTHORIZER)}
+                @ClusterConfigProperty(key = StandardAuthorizer.SUPER_USERS_CONFIG, value = "User:ANONYMOUS"),
+                @ClusterConfigProperty(key = AUTHORIZER_CLASS_NAME_CONFIG, value = AclCommandTest.STANDARD_AUTHORIZER)}
 
 )
 public class AclCommandTest {
@@ -110,9 +110,9 @@ public class AclCommandTest {
     private static final String RESOURCE_PATTERN_TYPE = "--resource-pattern-type";
     private static final KafkaPrincipal PRINCIPAL = SecurityUtils.parseKafkaPrincipal("User:test2");
     private static final Set<KafkaPrincipal> USERS = Set.of(
-        SecurityUtils.parseKafkaPrincipal("User:CN=writeuser,OU=Unknown,O=Unknown,L=Unknown,ST=Unknown,C=Unknown"),
-        PRINCIPAL,
-        SecurityUtils.parseKafkaPrincipal("User:CN=\\#User with special chars in CN : (\\, \\+ \" \\ \\< \\> \\; ')")
+            SecurityUtils.parseKafkaPrincipal("User:CN=writeuser,OU=Unknown,O=Unknown,L=Unknown,ST=Unknown,C=Unknown"),
+            PRINCIPAL,
+            SecurityUtils.parseKafkaPrincipal("User:CN=\\#User with special chars in CN : (\\, \\+ \" \\ \\< \\> \\; ')")
     );
     private static final Set<String> HOSTS = Set.of("host1", "host2");
     private static final List<String> ALLOW_HOST_COMMAND = List.of("--allow-host", "host1", "--allow-host", "host2");
@@ -120,85 +120,85 @@ public class AclCommandTest {
 
     private static final ResourcePattern CLUSTER_RESOURCE = new ResourcePattern(CLUSTER, Resource.CLUSTER_NAME, LITERAL);
     private static final Set<ResourcePattern> TOPIC_RESOURCES = Set.of(
-        new ResourcePattern(ResourceType.TOPIC, "test-1", LITERAL),
-        new ResourcePattern(ResourceType.TOPIC, "test-2", LITERAL)
+            new ResourcePattern(ResourceType.TOPIC, "test-1", LITERAL),
+            new ResourcePattern(ResourceType.TOPIC, "test-2", LITERAL)
     );
     private static final Set<ResourcePattern> GROUP_RESOURCES = Set.of(
-        new ResourcePattern(ResourceType.GROUP, "testGroup-1", LITERAL),
-        new ResourcePattern(ResourceType.GROUP, "testGroup-2", LITERAL)
+            new ResourcePattern(ResourceType.GROUP, "testGroup-1", LITERAL),
+            new ResourcePattern(ResourceType.GROUP, "testGroup-2", LITERAL)
     );
     private static final Set<ResourcePattern> TRANSACTIONAL_ID_RESOURCES = Set.of(
             new ResourcePattern(TRANSACTIONAL_ID, "t0", LITERAL),
             new ResourcePattern(TRANSACTIONAL_ID, "t1", LITERAL)
     );
     private static final Set<ResourcePattern> TOKEN_RESOURCES = Set.of(
-        new ResourcePattern(DELEGATION_TOKEN, "token1", LITERAL),
-        new ResourcePattern(DELEGATION_TOKEN, "token2", LITERAL)
+            new ResourcePattern(DELEGATION_TOKEN, "token1", LITERAL),
+            new ResourcePattern(DELEGATION_TOKEN, "token2", LITERAL)
     );
     private static final Set<ResourcePattern> USER_RESOURCES = Set.of(
-        new ResourcePattern(USER, "User:test-user1", LITERAL),
-        new ResourcePattern(USER, "User:test-user2", LITERAL)
+            new ResourcePattern(USER, "User:test-user1", LITERAL),
+            new ResourcePattern(USER, "User:test-user2", LITERAL)
     );
 
     private static final Map<Set<ResourcePattern>, List<String>> RESOURCE_TO_COMMAND = Map.of(
-        TOPIC_RESOURCES, List.of(TOPIC, "test-1", TOPIC, "test-2"),
-        Set.of(CLUSTER_RESOURCE), List.of("--cluster"),
-        GROUP_RESOURCES, List.of(GROUP, "testGroup-1", GROUP, "testGroup-2"),
-        TRANSACTIONAL_ID_RESOURCES, List.of("--transactional-id", "t0", "--transactional-id", "t1"),
-        TOKEN_RESOURCES, List.of("--delegation-token", "token1", "--delegation-token", "token2"),
-        USER_RESOURCES, List.of("--user-principal", "User:test-user1", "--user-principal", "User:test-user2")
+            TOPIC_RESOURCES, List.of(TOPIC, "test-1", TOPIC, "test-2"),
+            Set.of(CLUSTER_RESOURCE), List.of("--cluster"),
+            GROUP_RESOURCES, List.of(GROUP, "testGroup-1", GROUP, "testGroup-2"),
+            TRANSACTIONAL_ID_RESOURCES, List.of("--transactional-id", "t0", "--transactional-id", "t1"),
+            TOKEN_RESOURCES, List.of("--delegation-token", "token1", "--delegation-token", "token2"),
+            USER_RESOURCES, List.of("--user-principal", "User:test-user1", "--user-principal", "User:test-user2")
     );
 
     private static final Map<Set<ResourcePattern>, Map.Entry<Set<AclOperation>, List<String>>> RESOURCE_TO_OPERATIONS = Map.of(
-        TOPIC_RESOURCES, Map.entry(
-            Set.of(READ, WRITE, CREATE, DESCRIBE, DELETE, DESCRIBE_CONFIGS, ALTER_CONFIGS, ALTER),
-            List.of(OPERATION, "Read", OPERATION, "Write", OPERATION, "Create",
-                    OPERATION, "Describe", OPERATION, "Delete", OPERATION, "DescribeConfigs",
-                    OPERATION, "AlterConfigs", OPERATION, "Alter")),
-        Set.of(CLUSTER_RESOURCE), Map.entry(
-            Set.of(CREATE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, IDEMPOTENT_WRITE, ALTER, DESCRIBE),
-            List.of(OPERATION, "Create", OPERATION, "ClusterAction", OPERATION, "DescribeConfigs",
-                    OPERATION, "AlterConfigs", OPERATION, "IdempotentWrite", OPERATION, "Alter", OPERATION, "Describe")),
-        GROUP_RESOURCES, Map.entry(
-            Set.of(READ, DESCRIBE, DELETE),
-            List.of(OPERATION, "Read", OPERATION, "Describe", OPERATION, "Delete")),
-        TRANSACTIONAL_ID_RESOURCES, Map.entry(
-            Set.of(DESCRIBE, WRITE, TWO_PHASE_COMMIT),
-            List.of(OPERATION, "Describe", OPERATION, "Write", OPERATION, "TwoPhaseCommit")),
-        TOKEN_RESOURCES, Map.entry(
-            Set.of(DESCRIBE),
-            List.of(OPERATION, "Describe")),
-        USER_RESOURCES, Map.entry(
-            Set.of(CREATE_TOKENS, DESCRIBE_TOKENS),
-            List.of(OPERATION, "CreateTokens", OPERATION, "DescribeTokens"))
+            TOPIC_RESOURCES, Map.entry(
+                    Set.of(READ, WRITE, CREATE, DESCRIBE, DELETE, DESCRIBE_CONFIGS, ALTER_CONFIGS, ALTER),
+                    List.of(OPERATION, "Read", OPERATION, "Write", OPERATION, "Create",
+                            OPERATION, "Describe", OPERATION, "Delete", OPERATION, "DescribeConfigs",
+                            OPERATION, "AlterConfigs", OPERATION, "Alter")),
+            Set.of(CLUSTER_RESOURCE), Map.entry(
+                    Set.of(CREATE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, IDEMPOTENT_WRITE, ALTER, DESCRIBE),
+                    List.of(OPERATION, "Create", OPERATION, "ClusterAction", OPERATION, "DescribeConfigs",
+                            OPERATION, "AlterConfigs", OPERATION, "IdempotentWrite", OPERATION, "Alter", OPERATION, "Describe")),
+            GROUP_RESOURCES, Map.entry(
+                    Set.of(READ, DESCRIBE, DELETE),
+                    List.of(OPERATION, "Read", OPERATION, "Describe", OPERATION, "Delete")),
+            TRANSACTIONAL_ID_RESOURCES, Map.entry(
+                    Set.of(DESCRIBE, WRITE, TWO_PHASE_COMMIT),
+                    List.of(OPERATION, "Describe", OPERATION, "Write", OPERATION, "TwoPhaseCommit")),
+            TOKEN_RESOURCES, Map.entry(
+                    Set.of(DESCRIBE),
+                    List.of(OPERATION, "Describe")),
+            USER_RESOURCES, Map.entry(
+                    Set.of(CREATE_TOKENS, DESCRIBE_TOKENS),
+                    List.of(OPERATION, "CreateTokens", OPERATION, "DescribeTokens"))
     );
 
     private static final Map<Set<ResourcePattern>, Set<AccessControlEntry>> CONSUMER_RESOURCE_TO_ACLS = Map.of(
-        TOPIC_RESOURCES, AclCommand.getAcls(USERS, ALLOW, Set.of(READ, DESCRIBE), HOSTS),
-        GROUP_RESOURCES, AclCommand.getAcls(USERS, ALLOW, Set.of(READ), HOSTS)
+            TOPIC_RESOURCES, AclCommand.getAcls(USERS, ALLOW, Set.of(READ, DESCRIBE), HOSTS),
+            GROUP_RESOURCES, AclCommand.getAcls(USERS, ALLOW, Set.of(READ), HOSTS)
     );
 
     private static final Map<List<String>, Map<Set<ResourcePattern>, Set<AccessControlEntry>>> CMD_TO_RESOURCES_TO_ACL = Map.of(
-        List.of(PRODUCER), producerResourceToAcls(false),
-        List.of(PRODUCER, IDEMPOTENT), producerResourceToAcls(true),
-        List.of(CONSUMER), CONSUMER_RESOURCE_TO_ACLS,
-        List.of(PRODUCER, CONSUMER),
+            List.of(PRODUCER), producerResourceToAcls(false),
+            List.of(PRODUCER, IDEMPOTENT), producerResourceToAcls(true),
+            List.of(CONSUMER), CONSUMER_RESOURCE_TO_ACLS,
+            List.of(PRODUCER, CONSUMER),
             CONSUMER_RESOURCE_TO_ACLS.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> {
-                    Set<AccessControlEntry> value = new HashSet<>(entry.getValue());
-                    value.addAll(producerResourceToAcls(false).getOrDefault(entry.getKey(), Set.of()));
-                    return value;
-                }
+                    Map.Entry::getKey,
+                    entry -> {
+                        Set<AccessControlEntry> value = new HashSet<>(entry.getValue());
+                        value.addAll(producerResourceToAcls(false).getOrDefault(entry.getKey(), Set.of()));
+                        return value;
+                    }
             )),
-        List.of(PRODUCER, IDEMPOTENT, CONSUMER),
+            List.of(PRODUCER, IDEMPOTENT, CONSUMER),
             CONSUMER_RESOURCE_TO_ACLS.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> {
-                    Set<AccessControlEntry> value = new HashSet<>(entry.getValue());
-                    value.addAll(producerResourceToAcls(true).getOrDefault(entry.getKey(), Set.of()));
-                    return value;
-                }
+                    Map.Entry::getKey,
+                    entry -> {
+                        Set<AccessControlEntry> value = new HashSet<>(entry.getValue());
+                        value.addAll(producerResourceToAcls(true).getOrDefault(entry.getKey(), Set.of()));
+                        return value;
+                    }
             ))
     );
 
@@ -424,12 +424,12 @@ public class AclCommandTest {
 
     private static Map<Set<ResourcePattern>, Set<AccessControlEntry>> producerResourceToAcls(boolean enableIdempotence) {
         return Map.of(
-            TOPIC_RESOURCES, AclCommand.getAcls(USERS, ALLOW, Set.of(WRITE, DESCRIBE, CREATE), HOSTS),
-            TRANSACTIONAL_ID_RESOURCES, AclCommand.getAcls(USERS, ALLOW, Set.of(WRITE, DESCRIBE), HOSTS),
-            Set.of(CLUSTER_RESOURCE), AclCommand.getAcls(USERS, ALLOW,
-                enableIdempotence
-                        ? Set.of(IDEMPOTENT_WRITE)
-                        : Set.of(), HOSTS));
+                TOPIC_RESOURCES, AclCommand.getAcls(USERS, ALLOW, Set.of(WRITE, DESCRIBE, CREATE), HOSTS),
+                TRANSACTIONAL_ID_RESOURCES, AclCommand.getAcls(USERS, ALLOW, Set.of(WRITE, DESCRIBE), HOSTS),
+                Set.of(CLUSTER_RESOURCE), AclCommand.getAcls(USERS, ALLOW,
+                        enableIdempotence
+                                ? Set.of(IDEMPOTENT_WRITE)
+                                : Set.of(), HOSTS));
     }
 
     private List<String> adminArgs(String bootstrapServer, Optional<File> commandConfig) {

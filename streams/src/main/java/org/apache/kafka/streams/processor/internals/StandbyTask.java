@@ -71,14 +71,14 @@ public class StandbyTask extends AbstractTask implements Task {
                 final ThreadCache cache,
                 final InternalProcessorContext<?, ?> processorContext) {
         super(
-            id,
-            topology,
-            stateDirectory,
-            stateMgr,
-            inputPartitions,
-            config,
-            "standby-task",
-            StandbyTask.class
+                id,
+                topology,
+                stateDirectory,
+                stateMgr,
+                inputPartitions,
+                config,
+                "standby-task",
+                StandbyTask.class
         );
         this.processorContext = processorContext;
         this.streamsMetrics = streamsMetrics;
@@ -106,7 +106,7 @@ public class StandbyTask extends AbstractTask implements Task {
 
     /**
      * @throws TaskCorruptedException if the state cannot be reused (with EOS) and needs to be reset)
-     * @throws StreamsException fatal error, should close the thread
+     * @throws StreamsException       fatal error, should close the thread
      */
     @Override
     public void initializeIfNeeded() {
@@ -172,8 +172,8 @@ public class StandbyTask extends AbstractTask implements Task {
      * Flush stores before a commit; the following exceptions maybe thrown from the state manager flushing call
      *
      * @throws TaskMigratedException recoverable error sending changelog records that would cause the task to be removed
-     * @throws StreamsException fatal error when flushing the state store, for example sending changelog records failed
-     *                          or flushing state store get IO errors; such error should cause the thread to die
+     * @throws StreamsException      fatal error when flushing the state store, for example sending changelog records failed
+     *                               or flushing state store get IO errors; such error should cause the thread to die
      */
     @Override
     public Map<TopicPartition, OffsetAndMetadata> prepareCommit(final boolean clean) {
@@ -267,19 +267,19 @@ public class StandbyTask extends AbstractTask implements Task {
         switch (state()) {
             case SUSPENDED:
                 TaskManager.executeAndMaybeSwallow(
-                    clean,
-                    () -> StateManagerUtil.closeStateManager(
-                        log,
-                        logPrefix,
                         clean,
-                        eosEnabled,
-                        transactionalStateStoresEnabled,
-                        stateMgr,
-                        stateDirectory,
-                        TaskType.STANDBY
-                    ),
-                    "state manager close",
-                    log
+                        () -> StateManagerUtil.closeStateManager(
+                                log,
+                                logPrefix,
+                                clean,
+                                eosEnabled,
+                                transactionalStateStoresEnabled,
+                                stateMgr,
+                                stateDirectory,
+                                TaskType.STANDBY
+                        ),
+                        "state manager close",
+                        log
                 );
 
                 break;

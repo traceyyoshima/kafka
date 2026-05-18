@@ -102,8 +102,8 @@ public class BasicNode implements Node {
         if (o == null || getClass() != o.getClass()) return false;
         BasicNode that = (BasicNode) o;
         return Objects.equals(name, that.name) &&
-            Objects.equals(hostname, that.hostname) &&
-            Objects.equals(config, that.config) &&
-            Objects.equals(tags, that.tags);
+                Objects.equals(hostname, that.hostname) &&
+                Objects.equals(config, that.config) &&
+                Objects.equals(tags, that.tags);
     }
 }

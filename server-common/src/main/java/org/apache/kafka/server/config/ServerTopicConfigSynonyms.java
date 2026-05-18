@@ -48,43 +48,43 @@ public final class ServerTopicConfigSynonyms {
      * the first synonym and ignore the second.
      */
     public static final Map<String, List<ConfigSynonym>> ALL_TOPIC_CONFIG_SYNONYMS = Utils.mkMap(
-        sameNameWithLogPrefix(TopicConfig.SEGMENT_BYTES_CONFIG),
-        listWithLogPrefix(TopicConfig.SEGMENT_MS_CONFIG,
-            new ConfigSynonym("roll.ms"),
-            new ConfigSynonym("roll.hours", ConfigSynonym.HOURS_TO_MILLISECONDS)),
-        listWithLogPrefix(TopicConfig.SEGMENT_JITTER_MS_CONFIG,
-            new ConfigSynonym("roll.jitter.ms"),
-            new ConfigSynonym("roll.jitter.hours", ConfigSynonym.HOURS_TO_MILLISECONDS)),
-        singleWithLogPrefix(TopicConfig.SEGMENT_INDEX_BYTES_CONFIG, "index.size.max.bytes"),
-        singleWithLogPrefix(TopicConfig.FLUSH_MESSAGES_INTERVAL_CONFIG, "flush.interval.messages"),
-        listWithLogPrefix(TopicConfig.FLUSH_MS_CONFIG,
-            new ConfigSynonym("flush.interval.ms"),
-            new ConfigSynonym("flush.scheduler.interval.ms")),
-        sameNameWithLogPrefix(TopicConfig.RETENTION_BYTES_CONFIG),
-        listWithLogPrefix(TopicConfig.RETENTION_MS_CONFIG,
-            new ConfigSynonym("retention.ms"),
-            new ConfigSynonym("retention.minutes", ConfigSynonym.MINUTES_TO_MILLISECONDS),
-            new ConfigSynonym("retention.hours", ConfigSynonym.HOURS_TO_MILLISECONDS)),
-        single(TopicConfig.MAX_MESSAGE_BYTES_CONFIG, "message.max.bytes"),
-        sameNameWithLogPrefix(TopicConfig.INDEX_INTERVAL_BYTES_CONFIG),
-        sameNameWithLogCleanerPrefix(TopicConfig.DELETE_RETENTION_MS_CONFIG),
-        sameNameWithLogCleanerPrefix(TopicConfig.MIN_COMPACTION_LAG_MS_CONFIG),
-        sameNameWithLogCleanerPrefix(TopicConfig.MAX_COMPACTION_LAG_MS_CONFIG),
-        singleWithLogPrefix(TopicConfig.FILE_DELETE_DELAY_MS_CONFIG, "segment.delete.delay.ms"),
-        singleWithLogCleanerPrefix(TopicConfig.MIN_CLEANABLE_DIRTY_RATIO_CONFIG, "min.cleanable.ratio"),
-        sameNameWithLogPrefix(TopicConfig.CLEANUP_POLICY_CONFIG),
-        sameName(TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG),
-        sameName(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG),
-        sameName(TopicConfig.COMPRESSION_TYPE_CONFIG),
-        sameName(TopicConfig.COMPRESSION_GZIP_LEVEL_CONFIG),
-        sameName(TopicConfig.COMPRESSION_LZ4_LEVEL_CONFIG),
-        sameName(TopicConfig.COMPRESSION_ZSTD_LEVEL_CONFIG),
-        sameNameWithLogPrefix(TopicConfig.PREALLOCATE_CONFIG),
-        sameNameWithLogPrefix(TopicConfig.MESSAGE_TIMESTAMP_TYPE_CONFIG),
-        sameNameWithLogPrefix(TopicConfig.MESSAGE_TIMESTAMP_BEFORE_MAX_MS_CONFIG),
-        sameNameWithLogPrefix(TopicConfig.MESSAGE_TIMESTAMP_AFTER_MAX_MS_CONFIG),
-        sameNameWithLogPrefix(TopicConfig.LOCAL_LOG_RETENTION_MS_CONFIG),
-        sameNameWithLogPrefix(TopicConfig.LOCAL_LOG_RETENTION_BYTES_CONFIG)
+            sameNameWithLogPrefix(TopicConfig.SEGMENT_BYTES_CONFIG),
+            listWithLogPrefix(TopicConfig.SEGMENT_MS_CONFIG,
+                    new ConfigSynonym("roll.ms"),
+                    new ConfigSynonym("roll.hours", ConfigSynonym.HOURS_TO_MILLISECONDS)),
+            listWithLogPrefix(TopicConfig.SEGMENT_JITTER_MS_CONFIG,
+                    new ConfigSynonym("roll.jitter.ms"),
+                    new ConfigSynonym("roll.jitter.hours", ConfigSynonym.HOURS_TO_MILLISECONDS)),
+            singleWithLogPrefix(TopicConfig.SEGMENT_INDEX_BYTES_CONFIG, "index.size.max.bytes"),
+            singleWithLogPrefix(TopicConfig.FLUSH_MESSAGES_INTERVAL_CONFIG, "flush.interval.messages"),
+            listWithLogPrefix(TopicConfig.FLUSH_MS_CONFIG,
+                    new ConfigSynonym("flush.interval.ms"),
+                    new ConfigSynonym("flush.scheduler.interval.ms")),
+            sameNameWithLogPrefix(TopicConfig.RETENTION_BYTES_CONFIG),
+            listWithLogPrefix(TopicConfig.RETENTION_MS_CONFIG,
+                    new ConfigSynonym("retention.ms"),
+                    new ConfigSynonym("retention.minutes", ConfigSynonym.MINUTES_TO_MILLISECONDS),
+                    new ConfigSynonym("retention.hours", ConfigSynonym.HOURS_TO_MILLISECONDS)),
+            single(TopicConfig.MAX_MESSAGE_BYTES_CONFIG, "message.max.bytes"),
+            sameNameWithLogPrefix(TopicConfig.INDEX_INTERVAL_BYTES_CONFIG),
+            sameNameWithLogCleanerPrefix(TopicConfig.DELETE_RETENTION_MS_CONFIG),
+            sameNameWithLogCleanerPrefix(TopicConfig.MIN_COMPACTION_LAG_MS_CONFIG),
+            sameNameWithLogCleanerPrefix(TopicConfig.MAX_COMPACTION_LAG_MS_CONFIG),
+            singleWithLogPrefix(TopicConfig.FILE_DELETE_DELAY_MS_CONFIG, "segment.delete.delay.ms"),
+            singleWithLogCleanerPrefix(TopicConfig.MIN_CLEANABLE_DIRTY_RATIO_CONFIG, "min.cleanable.ratio"),
+            sameNameWithLogPrefix(TopicConfig.CLEANUP_POLICY_CONFIG),
+            sameName(TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG),
+            sameName(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG),
+            sameName(TopicConfig.COMPRESSION_TYPE_CONFIG),
+            sameName(TopicConfig.COMPRESSION_GZIP_LEVEL_CONFIG),
+            sameName(TopicConfig.COMPRESSION_LZ4_LEVEL_CONFIG),
+            sameName(TopicConfig.COMPRESSION_ZSTD_LEVEL_CONFIG),
+            sameNameWithLogPrefix(TopicConfig.PREALLOCATE_CONFIG),
+            sameNameWithLogPrefix(TopicConfig.MESSAGE_TIMESTAMP_TYPE_CONFIG),
+            sameNameWithLogPrefix(TopicConfig.MESSAGE_TIMESTAMP_BEFORE_MAX_MS_CONFIG),
+            sameNameWithLogPrefix(TopicConfig.MESSAGE_TIMESTAMP_AFTER_MAX_MS_CONFIG),
+            sameNameWithLogPrefix(TopicConfig.LOCAL_LOG_RETENTION_MS_CONFIG),
+            sameNameWithLogPrefix(TopicConfig.LOCAL_LOG_RETENTION_BYTES_CONFIG)
     );
 
     /**
@@ -93,9 +93,9 @@ public final class ServerTopicConfigSynonyms {
      * or using [[AllTopicConfigSynonyms]]
      */
     public static final Map<String, String> TOPIC_CONFIG_SYNONYMS =
-        ALL_TOPIC_CONFIG_SYNONYMS.entrySet()
-        .stream()
-        .collect(Collectors.toMap(Entry::getKey, e -> e.getValue().get(0).name()));
+            ALL_TOPIC_CONFIG_SYNONYMS.entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(Entry::getKey, e -> e.getValue().get(0).name()));
 
     /**
      * Return the server config with the highest priority for `topicConfigName` if it exists. Otherwise,
@@ -130,8 +130,8 @@ public final class ServerTopicConfigSynonyms {
 
     private static Entry<String, List<ConfigSynonym>> listWithLogPrefix(String topicConfigName, ConfigSynonym... synonyms) {
         List<ConfigSynonym> synonymsWithPrefix = Arrays.stream(synonyms)
-            .map(s -> new ConfigSynonym(LOG_PREFIX + s.name(), s.converter()))
-            .collect(Collectors.toList());
+                .map(s -> new ConfigSynonym(LOG_PREFIX + s.name(), s.converter()))
+                .collect(Collectors.toList());
         return Utils.mkEntry(topicConfigName, synonymsWithPrefix);
     }
 

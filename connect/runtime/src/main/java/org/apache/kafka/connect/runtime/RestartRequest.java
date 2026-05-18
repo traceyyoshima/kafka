@@ -26,6 +26,7 @@ import java.util.Objects;
  * The natural order is based first upon the connector name and then requested restart behaviors.
  * If two requests have the same connector name, then the requests are ordered based on the
  * probable number of tasks/connector this request is going to restart.
+ *
  * @param connectorName the name of the connector; may not be null
  * @param onlyFailed    true if only failed instances should be restarted
  * @param includeTasks  true if tasks should be restarted, or false if only the connector should be restarted

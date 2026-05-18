@@ -60,8 +60,8 @@ class WindowStoreIteratorWrapper {
         final Function<byte[], Long> timestampExtractor;
 
         WrappedWindowStoreIterator(
-            final KeyValueIterator<Bytes, byte[]> bytesIterator,
-            final Function<byte[], Long> timestampExtractor) {
+                final KeyValueIterator<Bytes, byte[]> bytesIterator,
+                final Function<byte[], Long> timestampExtractor) {
             this.bytesIterator = bytesIterator;
             this.timestampExtractor = timestampExtractor;
         }

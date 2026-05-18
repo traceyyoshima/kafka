@@ -95,8 +95,8 @@ public final class MetaProperties {
 
         public Builder(Properties props) {
             this.version = MetaPropertiesVersion.fromNumberString(
-                props.getProperty(VERSION_PROP,
-                    MetaPropertiesVersion.V0.numberString()));
+                    props.getProperty(VERSION_PROP,
+                            MetaPropertiesVersion.V0.numberString()));
             if (version.hasBrokerId()) {
                 if (props.containsKey(BROKER_ID_PROP)) {
                     this.nodeId = OptionalInt.of(PropertiesUtils.loadRequiredIntProp(props, BROKER_ID_PROP));
@@ -175,17 +175,17 @@ public final class MetaProperties {
                 }
             }
             return new MetaProperties(version,
-                clusterId,
-                nodeId,
-                directoryId);
+                    clusterId,
+                    nodeId,
+                    directoryId);
         }
     }
 
     private MetaProperties(
-        MetaPropertiesVersion version,
-        Optional<String> clusterId,
-        OptionalInt nodeId,
-        Optional<Uuid> directoryId
+            MetaPropertiesVersion version,
+            Optional<String> clusterId,
+            OptionalInt nodeId,
+            Optional<Uuid> directoryId
     ) {
         this.version = version;
         this.clusterId = clusterId;
@@ -212,9 +212,9 @@ public final class MetaProperties {
     @Override
     public int hashCode() {
         return Objects.hash(version,
-            clusterId,
-            nodeId,
-            directoryId);
+                clusterId,
+                nodeId,
+                directoryId);
     }
 
     @Override
@@ -222,9 +222,9 @@ public final class MetaProperties {
         if (o == null || !(o.getClass().equals(MetaProperties.class))) return false;
         MetaProperties other = (MetaProperties) o;
         return version.equals(other.version) &&
-            clusterId.equals(other.clusterId) &&
-            nodeId.equals(other.nodeId) &&
-            directoryId.equals(other.directoryId);
+                clusterId.equals(other.clusterId) &&
+                nodeId.equals(other.nodeId) &&
+                directoryId.equals(other.directoryId);
     }
 
     @Override

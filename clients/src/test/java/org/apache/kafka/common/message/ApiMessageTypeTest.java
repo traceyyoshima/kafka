@@ -64,7 +64,7 @@ public class ApiMessageTypeTest {
         int apiKeysWithNoValidVersionCount = 0;
         for (ApiMessageType type : ApiMessageType.values()) {
             assertFalse(ids.contains(type.apiKey()),
-                "found two ApiMessageType objects with id " + type.apiKey());
+                    "found two ApiMessageType objects with id " + type.apiKey());
             ids.add(type.apiKey());
             ApiKeys apiKey = ApiKeys.forId(type.apiKey());
             if (apiKey.hasValidVersion()) {

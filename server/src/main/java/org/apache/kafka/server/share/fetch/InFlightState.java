@@ -139,13 +139,12 @@ public class InFlightState {
      * new state is allowed to be transitioned from old state. The delivery count is not changed
      * if the state update is unsuccessful.
      *
-     * @param newState The new state of the records.
-     * @param ops      The behavior on the delivery count.
+     * @param newState         The new state of the records.
+     * @param ops              The behavior on the delivery count.
      * @param maxDeliveryCount The maximum delivery count for the record.
-     * @param newMemberId The member id of the client that is fetching/acknowledging the record.
-     *
+     * @param newMemberId      The member id of the client that is fetching/acknowledging the record.
      * @return {@code InFlightState} if update succeeds, null otherwise. Returning state
-     *         helps update chaining.
+     * helps update chaining.
      */
     public InFlightState tryUpdateState(RecordState newState, DeliveryCountOps ops, int maxDeliveryCount, String newMemberId, boolean dlqSupportEnabled) {
         try {
@@ -192,13 +191,12 @@ public class InFlightState {
      * for the records. It creates a copy of the current state and sets it as the rollback state.
      * If the state transition is successful, it returns the updated state.
      *
-     * @param newState The new state of the records.
-     * @param ops      The behavior on the delivery count.
+     * @param newState         The new state of the records.
+     * @param ops              The behavior on the delivery count.
      * @param maxDeliveryCount The maximum delivery count for the record.
-     * @param newMemberId The member id of the client that is fetching/acknowledging the record.
-     *
+     * @param newMemberId      The member id of the client that is fetching/acknowledging the record.
      * @return {@code InFlightState} if update succeeds, null otherwise. Returning state
-     *         helps update chaining.
+     * helps update chaining.
      */
     public InFlightState startStateTransition(RecordState newState, DeliveryCountOps ops, int maxDeliveryCount, String newMemberId, boolean dlqSupportEnabled) {
         InFlightState currentState = new InFlightState(state, deliveryCount, memberId, acquisitionLockTimeoutTask);
@@ -229,7 +227,7 @@ public class InFlightState {
             // If the acquisition lock timeout task has expired, we should mark the record as available.
             // However, if the delivery count has reached the maximum delivery count, we should archive the record.
             state = previousState.deliveryCount() >= rollbackState.maxDeliveryCount ?
-                RecordState.ARCHIVED : RecordState.AVAILABLE;
+                    RecordState.ARCHIVED : RecordState.AVAILABLE;
             memberId = EMPTY_MEMBER_ID;
             cancelAndClearAcquisitionLockTimeoutTask();
         } else {
@@ -272,17 +270,18 @@ public class InFlightState {
     @Override
     public String toString() {
         return "InFlightState(" +
-            "state=" + state.toString() +
-            ", deliveryCount=" + deliveryCount +
-            ", memberId=" + memberId +
-            ")";
+                "state=" + state.toString() +
+                ", deliveryCount=" + deliveryCount +
+                ", memberId=" + memberId +
+                ")";
     }
 
-  /**
-   * This record is used to store the state before the transition. It is used to revert the state if the transition fails.
-   * @param state The state of the records before the transition.
-   * @param maxDeliveryCount The maximum delivery count for the record.
-   */
+    /**
+     * This record is used to store the state before the transition. It is used to revert the state if the transition fails.
+     *
+     * @param state            The state of the records before the transition.
+     * @param maxDeliveryCount The maximum delivery count for the record.
+     */
     private record RollbackState(InFlightState state, int maxDeliveryCount) {
     }
 }

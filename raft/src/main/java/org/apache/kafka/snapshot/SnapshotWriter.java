@@ -23,11 +23,11 @@ import java.util.List;
 
 /**
  * A type for writing a snapshot for a given end offset and epoch.
- *
+ * <p>
  * A snapshot writer can be used to append objects until freeze is called. When freeze is
  * called the snapshot is validated and marked as immutable. After freeze is called any
  * append will fail with an exception.
- *
+ * <p>
  * It is assumed that the content of the snapshot represents all the records for the
  * topic partition from offset 0 up to but not including the end offset in the snapshot
  * id.
@@ -52,14 +52,14 @@ public interface SnapshotWriter<T> extends AutoCloseable {
 
     /**
      * Returns true if the snapshot has been frozen, otherwise false is returned.
-     *
+     * <p>
      * Modification to the snapshot are not allowed once it is frozen.
      */
     boolean isFrozen();
 
     /**
      * Appends a list of values to the snapshot.
-     *
+     * <p>
      * The list of record passed are guaranteed to get written together.
      *
      * @param records the list of records to append to the snapshot
@@ -69,16 +69,16 @@ public interface SnapshotWriter<T> extends AutoCloseable {
 
     /**
      * Freezes the snapshot by flushing all pending writes and marking it as immutable.
-     *
+     * <p>
      * Also adds a {@link SnapshotFooterRecord} to the end of the snapshot
      *
-     * @return  The size of the snapshot in bytes.
+     * @return The size of the snapshot in bytes.
      */
     long freeze();
 
     /**
      * Closes the snapshot writer.
-     *
+     * <p>
      * If close is called without first calling freeze the snapshot is aborted.
      */
     void close();

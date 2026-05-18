@@ -30,11 +30,9 @@ import java.util.Map;
 public interface ApplicationState {
     /**
      * @param computeTaskLags whether to include task lag information in the returned metadata. Note that passing
-     * in "true" will result in a remote call to fetch changelog topic end offsets, and you should pass in "false" unless
-     * you specifically need the task lag information.
-     *
+     *                        in "true" will result in a remote call to fetch changelog topic end offsets, and you should pass in "false" unless
+     *                        you specifically need the task lag information.
      * @return a map from the {@code processId} to {@link KafkaStreamsState} for all KafkaStreams clients in this app
-     *
      * @throws TaskAssignmentException if a retriable error occurs while computing KafkaStreamsState metadata. Re-throw
      *                                 this exception to have Kafka Streams retry the rebalance by returning the same
      *                                 assignment and scheduling an immediate followup rebalance

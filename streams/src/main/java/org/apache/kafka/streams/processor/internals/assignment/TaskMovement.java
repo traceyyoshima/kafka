@@ -80,15 +80,15 @@ final class TaskMovement {
                                          final Map<ProcessId, Set<TaskId>> warmups,
                                          final AtomicInteger remainingWarmupReplicas) {
         final BiFunction<ProcessId, TaskId, Boolean> caughtUpPredicate =
-            (client, task) -> taskIsCaughtUpOnClient(task, client, tasksToCaughtUpClients);
+                (client, task) -> taskIsCaughtUpOnClient(task, client, tasksToCaughtUpClients);
 
         final ConstrainedPrioritySet caughtUpClientsByTaskLoad = new ConstrainedPrioritySet(
-            caughtUpPredicate,
-            client -> clientStates.get(client).assignedTaskLoad()
+                caughtUpPredicate,
+                client -> clientStates.get(client).assignedTaskLoad()
         );
 
         final Queue<TaskMovement> taskMovements = new PriorityQueue<>(
-            Comparator.comparing(TaskMovement::numCaughtUpClients).thenComparing(TaskMovement::task)
+                Comparator.comparing(TaskMovement::numCaughtUpClients).thenComparing(TaskMovement::task)
         );
 
         for (final Map.Entry<ProcessId, ClientState> clientStateEntry : clientStates.entrySet()) {
@@ -129,15 +129,15 @@ final class TaskMovement {
                                           final AtomicInteger remainingWarmupReplicas,
                                           final Map<ProcessId, Set<TaskId>> warmups) {
         final BiFunction<ProcessId, TaskId, Boolean> caughtUpPredicate =
-            (client, task) -> taskIsCaughtUpOnClient(task, client, tasksToCaughtUpClients);
+                (client, task) -> taskIsCaughtUpOnClient(task, client, tasksToCaughtUpClients);
 
         final ConstrainedPrioritySet caughtUpClientsByTaskLoad = new ConstrainedPrioritySet(
-            caughtUpPredicate,
-            client -> clientStates.get(client).assignedTaskLoad()
+                caughtUpPredicate,
+                client -> clientStates.get(client).assignedTaskLoad()
         );
 
         final Queue<TaskMovement> taskMovements = new PriorityQueue<>(
-            Comparator.comparing(TaskMovement::numCaughtUpClients).thenComparing(TaskMovement::task)
+                Comparator.comparing(TaskMovement::numCaughtUpClients).thenComparing(TaskMovement::task)
         );
 
         for (final Map.Entry<ProcessId, ClientState> clientStateEntry : clientStates.entrySet()) {
@@ -163,8 +163,8 @@ final class TaskMovement {
             final Function<ProcessId, Boolean> eligibleClientPredicate =
                     clientId -> !clientStates.get(clientId).hasAssignedTask(movement.task);
             ProcessId sourceClient = caughtUpClientsByTaskLoad.poll(
-                movement.task,
-                eligibleClientPredicate
+                    movement.task,
+                    eligibleClientPredicate
             );
 
             if (sourceClient == null) {
@@ -176,10 +176,10 @@ final class TaskMovement {
                 // nowhere to move it.
             } else {
                 moveStandbyAndTryToWarmUp(
-                    remainingWarmupReplicas,
-                    movement.task,
-                    clientStates.get(sourceClient),
-                    clientStates.get(movement.destination)
+                        remainingWarmupReplicas,
+                        movement.task,
+                        clientStates.get(sourceClient),
+                        clientStates.get(movement.destination)
                 );
                 caughtUpClientsByTaskLoad.offerAll(asList(sourceClient, movement.destination));
                 movementsNeeded++;
@@ -300,15 +300,15 @@ final class TaskMovement {
     }
 
     private static ProcessId mostCaughtUpEligibleClient(final Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag,
-                                                   final TaskId task,
-                                                   final ProcessId destinationClient) {
+                                                        final TaskId task,
+                                                        final ProcessId destinationClient) {
         return mostCaughtUpEligibleClient(tasksToClientByLag, client -> true, task, destinationClient);
     }
 
     private static ProcessId mostCaughtUpEligibleClient(final Map<TaskId, SortedSet<ProcessId>> tasksToClientByLag,
-                                                   final Function<ProcessId, Boolean> constraint,
-                                                   final TaskId task,
-                                                   final ProcessId destinationClient) {
+                                                        final Function<ProcessId, Boolean> constraint,
+                                                        final TaskId task,
+                                                        final ProcessId destinationClient) {
         for (final ProcessId client : tasksToClientByLag.get(task)) {
             if (destinationClient.equals(client)) {
                 break;

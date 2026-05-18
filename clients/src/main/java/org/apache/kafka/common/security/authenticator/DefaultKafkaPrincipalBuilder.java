@@ -46,7 +46,7 @@ import javax.security.sasl.SaslServer;
  * SSL authentication and SASL authentication. In the latter case, when GSSAPI is used, this
  * class applies {@link org.apache.kafka.common.security.kerberos.KerberosShortNamer} to transform
  * the name.
- *
+ * <p>
  * NOTE: This is an internal class and can change without notice.
  */
 public class DefaultKafkaPrincipalBuilder implements KafkaPrincipalBuilder {
@@ -113,9 +113,9 @@ public class DefaultKafkaPrincipalBuilder implements KafkaPrincipalBuilder {
     @Override
     public byte[] serialize(KafkaPrincipal principal) {
         DefaultPrincipalData data = new DefaultPrincipalData()
-                                        .setType(principal.getPrincipalType())
-                                        .setName(principal.getName())
-                                        .setTokenAuthenticated(principal.tokenAuthenticated());
+                .setType(principal.getPrincipalType())
+                .setName(principal.getName())
+                .setTokenAuthenticated(principal.tokenAuthenticated());
         return MessageUtil.toVersionPrefixedBytes(DefaultPrincipalData.HIGHEST_SUPPORTED_VERSION, data);
     }
 

@@ -49,14 +49,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Integration tests for the consumer that covers logic related to manual assignment.
  */
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = PlaintextConsumerAssignTest.BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"),
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
-    }
+        types = {Type.KRAFT},
+        brokers = PlaintextConsumerAssignTest.BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"),
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
+                @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
+        }
 )
 public class PlaintextConsumerAssignTest {
 
@@ -323,9 +323,9 @@ public class PlaintextConsumerAssignTest {
         long startingTimestamp = System.currentTimeMillis();
 
         Map<String, Object> consumerConfig = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name,
-            GROUP_ID_CONFIG, "test-group",
-            ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name,
+                GROUP_ID_CONFIG, "test-group",
+                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         try (Consumer<byte[], byte[]> consumer = clusterInstance.consumer(consumerConfig);
              var admin = clusterInstance.admin()) {
@@ -340,9 +340,9 @@ public class PlaintextConsumerAssignTest {
             // Delete the topic and wait for deletion to propagate to metadata
             admin.deleteTopics(List.of(topicToDelete)).all().get();
             TestUtils.waitForCondition(
-                () -> !admin.listTopics().names().get().contains(topicToDelete),
-                10000,
-                "Topic should be removed from metadata");
+                    () -> !admin.listTopics().names().get().contains(topicToDelete),
+                    10000,
+                    "Topic should be removed from metadata");
 
             // Change assignment to force the consumer to fetch committed offsets on next poll()
             // The consumer still has the topic ID cached, so it will use version 10+

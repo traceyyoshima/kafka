@@ -83,10 +83,10 @@ public class SessionWindowedKStreamImplTest {
 
     static Stream<Arguments> emitStrategyAndHeaders() {
         return Stream.of(
-            Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, false),
-            Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, true),
-            Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_CLOSE, false),
-            Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_CLOSE, true)
+                Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, false),
+                Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, true),
+                Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_CLOSE, false),
+                Arguments.of(EmitStrategy.StrategyType.ON_WINDOW_CLOSE, true)
         );
     }
 
@@ -98,8 +98,8 @@ public class SessionWindowedKStreamImplTest {
 
         final KStream<String, String> stream = builder.stream(TOPIC, Consumed.with(Serdes.String(), Serdes.String()));
         this.stream = stream.groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
-            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(500)))
-            .emitStrategy(emitStrategy);
+                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(500)))
+                .emitStrategy(emitStrategy);
     }
 
     @ParameterizedTest
@@ -120,35 +120,35 @@ public class SessionWindowedKStreamImplTest {
     private void shouldCountSessionWindowed() {
         final MockApiProcessorSupplier<Windowed<String>, Long, Void, Void> supplier = new MockApiProcessorSupplier<>();
         stream.count()
-            .toStream()
-            .process(supplier);
+                .toStream()
+                .process(supplier);
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             processData(driver);
         }
 
         final ArrayList<KeyValueTimestamp<Windowed<String>, Long>> processed =
-            supplier.theCapturedProcessor().processed();
+                supplier.theCapturedProcessor().processed();
 
         if (emitFinal) {
             assertEquals(
-                Collections.singletonList(
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), 2L, 15L)
-                ),
-                processed
+                    Collections.singletonList(
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), 2L, 15L)
+                    ),
+                    processed
             );
         } else {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), 1L, 10L),
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), null, 10L),
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), 2L, 15L),
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(600L, 600L)), 1L, 600L),
-                    new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), 1L, 600L),
-                    new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), null, 600L),
-                    new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(599L, 600L)), 2L, 600L)
-                ),
-                processed
+                    asList(
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), 1L, 10L),
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), null, 10L),
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), 2L, 15L),
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(600L, 600L)), 1L, 600L),
+                            new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), 1L, 600L),
+                            new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), null, 600L),
+                            new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(599L, 600L)), 2L, 600L)
+                    ),
+                    processed
             );
         }
     }
@@ -159,8 +159,8 @@ public class SessionWindowedKStreamImplTest {
         setup(inputType, withHeaders);
         final MockApiProcessorSupplier<Windowed<String>, String, Void, Void> supplier = new MockApiProcessorSupplier<>();
         stream.reduce(MockReducer.STRING_ADDER)
-            .toStream()
-            .process(supplier);
+                .toStream()
+                .process(supplier);
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             processData(driver);
@@ -171,23 +171,23 @@ public class SessionWindowedKStreamImplTest {
 
         if (emitFinal) {
             assertEquals(
-                Collections.singletonList(
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), "1+2", 15L)
-                ),
-                processed
+                    Collections.singletonList(
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), "1+2", 15L)
+                    ),
+                    processed
             );
         } else {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), "1", 10L),
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), null, 10L),
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), "1+2", 15L),
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(600L, 600L)), "3", 600L),
-                    new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), "1", 600L),
-                    new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), null, 600L),
-                    new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(599L, 600L)), "1+2", 600L)
-                ),
-                processed
+                    asList(
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), "1", 10L),
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), null, 10L),
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), "1+2", 15L),
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(600L, 600L)), "3", 600L),
+                            new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), "1", 600L),
+                            new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), null, 600L),
+                            new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(599L, 600L)), "1+2", 600L)
+                    ),
+                    processed
             );
         }
     }
@@ -198,11 +198,11 @@ public class SessionWindowedKStreamImplTest {
         setup(inputType, withHeaders);
         final MockApiProcessorSupplier<Windowed<String>, String, Void, Void> supplier = new MockApiProcessorSupplier<>();
         stream.aggregate(MockInitializer.STRING_INIT,
-                         MockAggregator.TOSTRING_ADDER,
-                         sessionMerger,
-                         Materialized.with(Serdes.String(), Serdes.String()))
-            .toStream()
-            .process(supplier);
+                        MockAggregator.TOSTRING_ADDER,
+                        sessionMerger,
+                        Materialized.with(Serdes.String(), Serdes.String()))
+                .toStream()
+                .process(supplier);
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             processData(driver);
         }
@@ -212,23 +212,23 @@ public class SessionWindowedKStreamImplTest {
 
         if (emitFinal) {
             assertEquals(
-                Collections.singletonList(
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), "0+0+1+2", 15L)
-                ),
-                processed
+                    Collections.singletonList(
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), "0+0+1+2", 15L)
+                    ),
+                    processed
             );
         } else {
             assertEquals(
-                asList(
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), "0+1", 10L),
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), null, 10L),
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), "0+0+1+2", 15L),
-                    new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(600L, 600L)), "0+3", 600L),
-                    new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), "0+1", 600L),
-                    new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), null, 600L),
-                    new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(599L, 600L)), "0+0+1+2", 600L)
-                ),
-                processed
+                    asList(
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), "0+1", 10L),
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 10L)), null, 10L),
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(10L, 15L)), "0+0+1+2", 15L),
+                            new KeyValueTimestamp<>(new Windowed<>("1", new SessionWindow(600L, 600L)), "0+3", 600L),
+                            new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), "0+1", 600L),
+                            new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(600L, 600L)), null, 600L),
+                            new KeyValueTimestamp<>(new Windowed<>("2", new SessionWindow(599L, 600L)), "0+0+1+2", 600L)
+                    ),
+                    processed
             );
         }
     }
@@ -295,10 +295,10 @@ public class SessionWindowedKStreamImplTest {
     public void shouldMaterializeAggregated(final EmitStrategy.StrategyType inputType, final boolean withHeaders) {
         setup(inputType, withHeaders);
         stream.aggregate(
-            MockInitializer.STRING_INIT,
-            MockAggregator.TOSTRING_ADDER,
-            sessionMerger,
-            Materialized.<String, String, SessionStore<Bytes, byte[]>>as("aggregated").withValueSerde(Serdes.String()));
+                MockInitializer.STRING_INIT,
+                MockAggregator.TOSTRING_ADDER,
+                sessionMerger,
+                Materialized.<String, String, SessionStore<Bytes, byte[]>>as("aggregated").withValueSerde(Serdes.String()));
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             processData(driver);
@@ -350,30 +350,30 @@ public class SessionWindowedKStreamImplTest {
     public void shouldThrowNullPointerOnMaterializedAggregateIfInitializerIsNull() {
         setup(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, false);
         assertThrows(NullPointerException.class, () -> stream.aggregate(
-            null,
-            MockAggregator.TOSTRING_ADDER,
-            sessionMerger,
-            Materialized.as("store")));
+                null,
+                MockAggregator.TOSTRING_ADDER,
+                sessionMerger,
+                Materialized.as("store")));
     }
 
     @Test
     public void shouldThrowNullPointerOnMaterializedAggregateIfAggregatorIsNull() {
         setup(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, false);
         assertThrows(NullPointerException.class, () -> stream.aggregate(
-            MockInitializer.STRING_INIT,
-            null,
-            sessionMerger,
-            Materialized.as("store")));
+                MockInitializer.STRING_INIT,
+                null,
+                sessionMerger,
+                Materialized.as("store")));
     }
 
     @Test
     public void shouldThrowNullPointerOnMaterializedAggregateIfMergerIsNull() {
         setup(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, false);
         assertThrows(NullPointerException.class, () -> stream.aggregate(
-            MockInitializer.STRING_INIT,
-            MockAggregator.TOSTRING_ADDER,
-            null,
-            Materialized.as("store")));
+                MockInitializer.STRING_INIT,
+                MockAggregator.TOSTRING_ADDER,
+                null,
+                Materialized.as("store")));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -381,10 +381,10 @@ public class SessionWindowedKStreamImplTest {
     public void shouldThrowNullPointerOnMaterializedAggregateIfMaterializedIsNull() {
         setup(EmitStrategy.StrategyType.ON_WINDOW_UPDATE, false);
         assertThrows(NullPointerException.class, () -> stream.aggregate(
-            MockInitializer.STRING_INIT,
-            MockAggregator.TOSTRING_ADDER,
-            sessionMerger,
-            (Materialized) null));
+                MockInitializer.STRING_INIT,
+                MockAggregator.TOSTRING_ADDER,
+                sessionMerger,
+                (Materialized) null));
     }
 
     @Test

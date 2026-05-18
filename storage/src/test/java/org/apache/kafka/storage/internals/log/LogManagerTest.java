@@ -103,9 +103,9 @@ public class LogManagerTest {
     private final MockTime time = new MockTime();
     private static final int MAX_LOG_AGE_MS = 10 * 60 * 1000;
     private static final Map<?, ?> LOG_PROPS = Map.of(
-        LogConfig.INTERNAL_SEGMENT_BYTES_CONFIG, 1024,
-        TopicConfig.SEGMENT_INDEX_BYTES_CONFIG, 4096,
-        TopicConfig.RETENTION_MS_CONFIG, MAX_LOG_AGE_MS
+            LogConfig.INTERNAL_SEGMENT_BYTES_CONFIG, 1024,
+            TopicConfig.SEGMENT_INDEX_BYTES_CONFIG, 4096,
+            TopicConfig.RETENTION_MS_CONFIG, MAX_LOG_AGE_MS
     );
     private static final LogConfig LOG_CONFIG = new LogConfig(LOG_PROPS);
     private static final String NAME = "kafka";
@@ -316,7 +316,7 @@ public class LogManagerTest {
             loadLogCalled.incrementAndGet();
             return invocation.callRealMethod();
         }).when(logManager).loadLog(any(File.class), any(Boolean.class), anyMap(), anyMap(),
-            any(LogConfig.class), anyMap(), any(ConcurrentMap.class), any(Function.class));
+                any(LogConfig.class), anyMap(), any(ConcurrentMap.class), any(Function.class));
 
         Thread t = new Thread(() -> {
             try {
@@ -593,7 +593,7 @@ public class LogManagerTest {
         File remoteIndexCache = new File(logDir, RemoteIndexCache.DIR_NAME);
         remoteIndexCache.mkdir();
         logManager = createLogManager(List.of(logDir));
-        logManager.loadLogs(LOG_CONFIG, Map.of(), unifiedLog ->  false);
+        logManager.loadLogs(LOG_CONFIG, Map.of(), unifiedLog -> false);
     }
 
     @Test
@@ -917,7 +917,7 @@ public class LogManagerTest {
     /**
      * Test even if no log is getting initialized, if config change events are delivered
      * things continue to work correctly. This test should not throw.
-     *
+     * <p>
      * This makes sure that events can be delivered even when no log is getting initialized.
      */
     @Test
@@ -983,9 +983,9 @@ public class LogManagerTest {
         String logManagerClassName = LogManager.class.getSimpleName();
         // get all `remainingSegmentsToRecover` metrics
         List<Gauge<Integer>> logSegmentMetrics = KafkaYammerMetrics.defaultRegistry().allMetrics().entrySet().stream()
-            .filter(entry -> entry.getKey().getType().equals(logManagerClassName) && entry.getKey().getName().equals("remainingSegmentsToRecover"))
-            .map(entry -> (Gauge<Integer>) entry.getValue())
-            .toList();
+                .filter(entry -> entry.getKey().getType().equals(logManagerClassName) && entry.getKey().getName().equals("remainingSegmentsToRecover"))
+                .map(entry -> (Gauge<Integer>) entry.getValue())
+                .toList();
 
         // expected each log dir has 1 metrics for each thread
         assertEquals(recoveryThreadsPerDataDir * logDirs.size(), logSegmentMetrics.size());
@@ -1091,7 +1091,7 @@ public class LogManagerTest {
                     LogOffsetsListener.NO_OP_OFFSETS_LISTENER);
 
         }).when(spyLogManager).loadLog(any(File.class), any(Boolean.class), anyMap(), any(),
-            any(LogConfig.class), anyMap(), any(ConcurrentMap.class), any(Function.class));
+                any(LogConfig.class), anyMap(), any(ConcurrentMap.class), any(Function.class));
 
         // do nothing for removeLogRecoveryMetrics for metrics verification
         doNothing().when(spyLogManager).removeLogRecoveryMetrics();
@@ -1180,7 +1180,7 @@ public class LogManagerTest {
     @Test
     public void testLogManagerMetrics() throws IOException {
         KafkaYammerMetrics.defaultRegistry().allMetrics().keySet().forEach(metricName ->
-            KafkaYammerMetrics.defaultRegistry().removeMetric(metricName));
+                KafkaYammerMetrics.defaultRegistry().removeMetric(metricName));
         logManager.shutdown();
         logManager = createLogManager(List.of(logDir, logDir2));
 
@@ -1245,7 +1245,7 @@ public class LogManagerTest {
         logManager.startup(Set.of());
 
         String topicName = "future-log";
-        Supplier<Set<MetricName>> logMetrics = () ->  KafkaYammerMetrics.defaultRegistry().allMetrics().keySet().stream()
+        Supplier<Set<MetricName>> logMetrics = () -> KafkaYammerMetrics.defaultRegistry().allMetrics().keySet().stream()
                 .filter(metric -> metric.getType().equals("Log") && metric.getScope().contains(topicName))
                 .collect(Collectors.toSet());
 
@@ -1267,7 +1267,7 @@ public class LogManagerTest {
 
         // Trigger the deletion of the former current directory and verify that one set of metrics is still present
         time.sleep(LOG_CONFIG.fileDeleteDelayMs + 1);
-        verifyMetrics(1,  logMetrics.get(), metricTag);
+        verifyMetrics(1, logMetrics.get(), metricTag);
     }
 
     private void verifyMetrics(int logCount, Set<MetricName> logMetrics, String metricTag) {

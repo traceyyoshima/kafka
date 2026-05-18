@@ -22,9 +22,9 @@ package org.apache.kafka.storage.internals.log;
  * After verifying, we retain this object until we append to the log. This prevents any race conditions where the transaction
  * may end via a control marker before we write to the log. This mechanism is used to prevent hanging transactions.
  * We remove the VerificationGuard whenever we write data to the transaction or write an end marker for the transaction.
- *
+ * <p>
  * We also store the lowest seen sequence to block a higher sequence from being written in the case of the lower sequence needing retries.
- *
+ * <p>
  * Any lingering entries that are never verified are removed via the producer state entry cleanup mechanism.
  */
 public class VerificationStateEntry {
@@ -67,14 +67,14 @@ public class VerificationStateEntry {
      * An OutOfOrderSequence loop can happen for any idempotent/transactional producer when a lower sequence fails with
      * a retriable error and a higher sequence is successfully written. The lower sequence will fail with
      * OutOfOrderSequence and retry until retries run out.
-     *
+     * <p>
      * Here, we keep the lowest sequence seen in order to prevent an OutOfOrderSequence loop when verifying. This does
      * not solve the error loop for idempotent producers or transactional producers that fail before verification
      * starts. When verification fails with a retriable error (ie. NOT_COORDINATOR), the VerificationStateEntry
      * maintains the lowest sequence number it sees and blocks higher sequences from being written to the log. However,
      * if we encounter a new and lower sequence when verifying, we want to block sequences higher than that new
      * sequence. Additionally, if the epoch is bumped, the sequence is reset and any previous sequence must be disregarded.
-     *
+     * <p>
      * Thus, we update the lowest sequence if there is a batch needing verification that has:
      * a) a lower sequence for the same epoch
      * b) a higher epoch -- update the epoch here too

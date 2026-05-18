@@ -73,12 +73,12 @@ public final class MessageUtil {
                 value -= 128;
             } else {
                 throw new RuntimeException(about + ": value " + value +
-                    " does not fit in an 8-bit signed integer.");
+                        " does not fit in an 8-bit signed integer.");
             }
         }
         if (value < Byte.MIN_VALUE) {
             throw new RuntimeException(about + ": value " + value +
-                " does not fit in an 8-bit signed integer.");
+                    " does not fit in an 8-bit signed integer.");
         }
         return (byte) value;
     }
@@ -87,7 +87,7 @@ public final class MessageUtil {
         int value = jsonNodeToInt(node, about);
         if ((value < Short.MIN_VALUE) || (value > Short.MAX_VALUE)) {
             throw new RuntimeException(about + ": value " + value +
-                " does not fit in a 16-bit signed integer.");
+                    " does not fit in a 16-bit signed integer.");
         }
         return (short) value;
     }
@@ -96,7 +96,7 @@ public final class MessageUtil {
         int value = jsonNodeToInt(node, about);
         if (value < 0 || value > UNSIGNED_SHORT_MAX) {
             throw new RuntimeException(about + ": value " + value +
-                " does not fit in a 16-bit unsigned integer.");
+                    " does not fit in a 16-bit unsigned integer.");
         }
         return value;
     }
@@ -116,7 +116,7 @@ public final class MessageUtil {
         }
         if (node.isTextual()) {
             throw new NumberFormatException(about + ": expected an integer or " +
-                "string type, but got " + node.getNodeType());
+                    "string type, but got " + node.getNodeType());
         }
         String text = node.asText();
         if (text.startsWith("0x")) {
@@ -124,14 +124,14 @@ public final class MessageUtil {
                 return Integer.parseInt(text.substring(2), 16);
             } catch (NumberFormatException e) {
                 throw new NumberFormatException(about + ": failed to " +
-                    "parse hexadecimal number: " + e.getMessage());
+                        "parse hexadecimal number: " + e.getMessage());
             }
         } else {
             try {
                 return Integer.parseInt(text);
             } catch (NumberFormatException e) {
                 throw new NumberFormatException(about + ": failed to " +
-                    "parse number: " + e.getMessage());
+                        "parse number: " + e.getMessage());
             }
         }
     }
@@ -142,7 +142,7 @@ public final class MessageUtil {
         }
         if (node.isTextual()) {
             throw new NumberFormatException(about + ": expected an integer or " +
-                "string type, but got " + node.getNodeType());
+                    "string type, but got " + node.getNodeType());
         }
         String text = node.asText();
         if (text.startsWith("0x")) {
@@ -150,14 +150,14 @@ public final class MessageUtil {
                 return Long.parseLong(text.substring(2), 16);
             } catch (NumberFormatException e) {
                 throw new NumberFormatException(about + ": failed to " +
-                    "parse hexadecimal number: " + e.getMessage());
+                        "parse hexadecimal number: " + e.getMessage());
             }
         } else {
             try {
                 return Long.parseLong(text);
             } catch (NumberFormatException e) {
                 throw new NumberFormatException(about + ": failed to " +
-                    "parse number: " + e.getMessage());
+                        "parse number: " + e.getMessage());
             }
         }
     }
@@ -178,7 +178,7 @@ public final class MessageUtil {
     public static double jsonNodeToDouble(JsonNode node, String about) {
         if (!node.isFloatingPointNumber()) {
             throw new NumberFormatException(about + ": expected a floating point " +
-                "type, but got " + node.getNodeType());
+                    "type, but got " + node.getNodeType());
         }
         return node.asDouble();
     }
@@ -227,9 +227,9 @@ public final class MessageUtil {
         ByteBuffer buffer = toVersionPrefixedByteBuffer(version, message);
         // take the inner array directly if it is full of data.
         if (buffer.hasArray() &&
-            buffer.arrayOffset() == 0 &&
-            buffer.position() == 0 &&
-            buffer.limit() == buffer.array().length) return buffer.array();
+                buffer.arrayOffset() == 0 &&
+                buffer.position() == 0 &&
+                buffer.limit() == buffer.array().length) return buffer.array();
         else return Utils.toArray(buffer);
     }
 
@@ -254,9 +254,9 @@ public final class MessageUtil {
         ByteBuffer buffer = toCoordinatorTypePrefixedByteBuffer(message);
         // take the inner array directly if it is full of data.
         if (buffer.hasArray() &&
-            buffer.arrayOffset() == 0 &&
-            buffer.position() == 0 &&
-            buffer.limit() == buffer.array().length) return buffer.array();
+                buffer.arrayOffset() == 0 &&
+                buffer.position() == 0 &&
+                buffer.limit() == buffer.array().length) return buffer.array();
         else return Utils.toArray(buffer);
     }
 }

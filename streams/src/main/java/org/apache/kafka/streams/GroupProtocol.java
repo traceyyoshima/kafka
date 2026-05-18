@@ -19,10 +19,14 @@ package org.apache.kafka.streams;
 import java.util.Locale;
 
 public enum GroupProtocol {
-    /** Classic group protocol.  */
+    /**
+     * Classic group protocol.
+     */
     CLASSIC("CLASSIC"),
 
-    /** Streams group protocol */
+    /**
+     * Streams group protocol
+     */
     STREAMS("STREAMS");
 
     /**

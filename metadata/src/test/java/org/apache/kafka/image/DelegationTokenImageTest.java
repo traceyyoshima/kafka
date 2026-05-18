@@ -79,8 +79,8 @@ public class DelegationTokenImageTest {
     private static void testToImage(DelegationTokenImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> DelegationTokenImage.EMPTY,
-            DelegationTokenDelta::new
+                () -> DelegationTokenImage.EMPTY,
+                DelegationTokenDelta::new
         ).test(image, fromRecords);
     }
 
@@ -102,6 +102,6 @@ public class DelegationTokenImageTest {
         ImageWriterOptions imageWriterOptions = new ImageWriterOptions.Builder(MetadataVersion.IBP_3_5_IV2).build();
         RecordListWriter writer = new RecordListWriter();
         assertThrows(Exception.class, () -> IMAGE1.write(writer, imageWriterOptions),
-            "expected exception writing IMAGE with Delegation Token records for MetadataVersion.IBP_3_5_IV2");
+                "expected exception writing IMAGE with Delegation Token records for MetadataVersion.IBP_3_5_IV2");
     }
 }

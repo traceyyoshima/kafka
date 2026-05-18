@@ -84,13 +84,13 @@ public final class MessageGenerator {
     static final String ARRAYLIST_CLASS = "java.util.ArrayList";
 
     static final String IMPLICIT_LINKED_HASH_COLLECTION_CLASS =
-        "org.apache.kafka.common.utils.internals.ImplicitLinkedHashCollection";
+            "org.apache.kafka.common.utils.internals.ImplicitLinkedHashCollection";
 
     static final String IMPLICIT_LINKED_HASH_MULTI_COLLECTION_CLASS =
-        "org.apache.kafka.common.utils.internals.ImplicitLinkedHashMultiCollection";
+            "org.apache.kafka.common.utils.internals.ImplicitLinkedHashMultiCollection";
 
     static final String UNSUPPORTED_VERSION_EXCEPTION_CLASS =
-        "org.apache.kafka.common.errors.UnsupportedVersionException";
+            "org.apache.kafka.common.errors.UnsupportedVersionException";
 
     static final String ITERATOR_CLASS = "java.util.Iterator";
 
@@ -247,7 +247,7 @@ public final class MessageGenerator {
                 try {
                     MessageSpec spec = JSON_SERDE.readValue(inputPath.toFile(), MessageSpec.class);
                     outputFileNames.addAll(
-                        generateAndWriteMessageClasses(spec, packageName, outputDir, messageClassGeneratorTypes));
+                            generateAndWriteMessageClasses(spec, packageName, outputDir, messageClassGeneratorTypes));
                     numProcessed++;
                     typeClassGenerators.forEach(generator -> generator.registerMessageType(spec));
                 } catch (Exception e) {
@@ -275,6 +275,7 @@ public final class MessageGenerator {
 
     /**
      * Generate and write message classes.
+     *
      * @return output file names.
      */
     static Set<String> generateAndWriteMessageClasses(MessageSpec spec,
@@ -309,7 +310,7 @@ public final class MessageGenerator {
             return string;
         }
         return string.substring(0, 1).toUpperCase(Locale.ENGLISH) +
-            string.substring(1);
+                string.substring(1);
     }
 
     static String lowerCaseFirst(String string) {
@@ -317,7 +318,7 @@ public final class MessageGenerator {
             return string;
         }
         return string.substring(0, 1).toLowerCase(Locale.ENGLISH) +
-            string.substring(1);
+                string.substring(1);
     }
 
     static boolean firstIsCapitalized(String string) {
@@ -351,7 +352,7 @@ public final class MessageGenerator {
             return str.substring(0, str.length() - suffix.length());
         } else {
             throw new RuntimeException("String " + str + " does not end with the " +
-                "expected suffix " + suffix);
+                    "expected suffix " + suffix);
         }
     }
 
@@ -369,37 +370,37 @@ public final class MessageGenerator {
 
     public static void main(String[] args) throws Exception {
         ArgumentParser parser = ArgumentParsers
-            .newArgumentParser("message-generator")
-            .defaultHelp(true)
-            .description("The Kafka message generator");
+                .newArgumentParser("message-generator")
+                .defaultHelp(true)
+                .description("The Kafka message generator");
         parser.addArgument("--package", "-p")
-            .action(store())
-            .required(true)
-            .metavar("PACKAGE")
-            .help("The java package to use in generated files.");
+                .action(store())
+                .required(true)
+                .metavar("PACKAGE")
+                .help("The java package to use in generated files.");
         parser.addArgument("--output", "-o")
-            .action(store())
-            .required(true)
-            .metavar("OUTPUT")
-            .help("The output directory to create.");
+                .action(store())
+                .required(true)
+                .metavar("OUTPUT")
+                .help("The output directory to create.");
         parser.addArgument("--input", "-i")
-            .action(store())
-            .required(true)
-            .metavar("INPUT")
-            .help("The input directory to use.");
+                .action(store())
+                .required(true)
+                .metavar("INPUT")
+                .help("The input directory to use.");
         parser.addArgument("--typeclass-generators", "-t")
-            .nargs("+")
-            .action(store())
-            .metavar("TYPECLASS_GENERATORS")
-            .help("The type class generators to use, if any.");
+                .nargs("+")
+                .action(store())
+                .metavar("TYPECLASS_GENERATORS")
+                .help("The type class generators to use, if any.");
         parser.addArgument("--message-class-generators", "-m")
-            .nargs("+")
-            .action(store())
-            .metavar("MESSAGE_CLASS_GENERATORS")
-            .help("The message class generators to use.");
+                .nargs("+")
+                .action(store())
+                .metavar("MESSAGE_CLASS_GENERATORS")
+                .help("The message class generators to use.");
         Namespace res = parser.parseArgsOrFail(args);
         processDirectories(res.getString("package"), res.getString("output"),
-            res.getString("input"), res.getList("typeclass_generators"),
-            res.getList("message_class_generators"));
+                res.getString("input"), res.getList("typeclass_generators"),
+                res.getList("message_class_generators"));
     }
 }

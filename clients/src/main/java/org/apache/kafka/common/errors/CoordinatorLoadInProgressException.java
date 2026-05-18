@@ -19,7 +19,7 @@ package org.apache.kafka.common.errors;
 /**
  * In the context of the group coordinator, the broker returns this error code for any coordinator request if
  * it is still loading the group metadata (e.g. after a leader change for that group metadata topic partition).
- *
+ * <p>
  * In the context of the transactional coordinator, this error will be returned if there is a pending transactional
  * request with the same transactional id, or if the transaction cache is currently being populated from the transaction
  * log.

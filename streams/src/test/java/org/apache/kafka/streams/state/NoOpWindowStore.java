@@ -58,7 +58,8 @@ public class NoOpWindowStore implements ReadOnlyWindowStore, StateStore {
     }
 
     @Override
-    public void init(final StateStoreContext stateStoreContext, final StateStore root) {}
+    public void init(final StateStoreContext stateStoreContext, final StateStore root) {
+    }
 
     @Override
     public void commit(final Map<TopicPartition, Long> changelogOffsets) {
@@ -96,7 +97,7 @@ public class NoOpWindowStore implements ReadOnlyWindowStore, StateStore {
     }
 
     @Override
-    public WindowStoreIterator backwardFetch(final  Object key,
+    public WindowStoreIterator backwardFetch(final Object key,
                                              final Instant timeFrom,
                                              final Instant timeTo) throws IllegalArgumentException {
         return EMPTY_WINDOW_STORE_ITERATOR;

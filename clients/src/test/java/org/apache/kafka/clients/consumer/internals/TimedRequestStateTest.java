@@ -35,11 +35,11 @@ public class TimedRequestStateTest {
     @Test
     public void testIsExpired() {
         TimedRequestState state = new TimedRequestState(
-            new LogContext(),
-            this.getClass().getSimpleName(),
-            100,
-            1000,
-            time.timer(DEFAULT_TIMEOUT_MS)
+                new LogContext(),
+                this.getClass().getSimpleName(),
+                100,
+                1000,
+                time.timer(DEFAULT_TIMEOUT_MS)
         );
         assertFalse(state.isExpired());
         time.sleep(DEFAULT_TIMEOUT_MS);
@@ -49,11 +49,11 @@ public class TimedRequestStateTest {
     @Test
     public void testRemainingMs() {
         TimedRequestState state = new TimedRequestState(
-            new LogContext(),
-            this.getClass().getSimpleName(),
-            100,
-            1000,
-            time.timer(DEFAULT_TIMEOUT_MS)
+                new LogContext(),
+                this.getClass().getSimpleName(),
+                100,
+                1000,
+                time.timer(DEFAULT_TIMEOUT_MS)
         );
         assertEquals(DEFAULT_TIMEOUT_MS, state.remainingMs());
         time.sleep(DEFAULT_TIMEOUT_MS);
@@ -79,11 +79,11 @@ public class TimedRequestStateTest {
     @Test
     public void testToStringUpdatesTimer() {
         TimedRequestState state = new TimedRequestState(
-            new LogContext(),
-            this.getClass().getSimpleName(),
-            100,
-            1000,
-            time.timer(DEFAULT_TIMEOUT_MS)
+                new LogContext(),
+                this.getClass().getSimpleName(),
+                100,
+                1000,
+                time.timer(DEFAULT_TIMEOUT_MS)
         );
 
         assertToString(state, DEFAULT_TIMEOUT_MS);

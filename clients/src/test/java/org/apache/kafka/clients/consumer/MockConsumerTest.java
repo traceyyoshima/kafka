@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MockConsumerTest {
-    
+
     private final MockConsumer<String, String> consumer = new MockConsumer<>(AutoOffsetResetStrategy.EARLIEST.name());
 
     @Test
@@ -56,9 +56,9 @@ public class MockConsumerTest {
         consumer.updateBeginningOffsets(beginningOffsets);
         consumer.seek(new TopicPartition("test", 0), 0);
         ConsumerRecord<String, String> rec1 = new ConsumerRecord<>("test", 0, 0, 0L, TimestampType.CREATE_TIME,
-            0, 0, "key1", "value1", new RecordHeaders(), Optional.empty());
+                0, 0, "key1", "value1", new RecordHeaders(), Optional.empty());
         ConsumerRecord<String, String> rec2 = new ConsumerRecord<>("test", 0, 1, 0L, TimestampType.CREATE_TIME,
-            0, 0, "key2", "value2", new RecordHeaders(), Optional.empty());
+                0, 0, "key2", "value2", new RecordHeaders(), Optional.empty());
         consumer.addRecord(rec1);
         consumer.addRecord(rec2);
         ConsumerRecords<String, String> recs = consumer.poll(Duration.ofMillis(1));
@@ -188,7 +188,7 @@ public class MockConsumerTest {
         assertEquals(1, revoked.size());
         assertTrue(revoked.contains(topicPartitionList.get(0)));
     }
-    
+
     @Test
     public void testRe2JPatternSubscription() {
         assertThrows(IllegalArgumentException.class, () -> consumer.subscribe((SubscriptionPattern) null));
@@ -244,8 +244,11 @@ public class MockConsumerTest {
             public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
                 revoked.addAll(partitions);
             }
+
             @Override
-            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {}
+            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+            }
+
             @Override
             public void onPartitionsLost(Collection<TopicPartition> partitions) {
                 lost.addAll(partitions);
@@ -292,9 +295,9 @@ public class MockConsumerTest {
         consumer.subscribe(List.of("test"));
         consumer.rebalance(List.of(tp0, tp1));
         consumer.updateBeginningOffsets(new HashMap<>() {{
-                put(tp0, 0L);
-                put(tp1, 0L);
-            }});
+            put(tp0, 0L);
+            put(tp1, 0L);
+        }});
         consumer.seek(tp0, 0);
         consumer.seek(tp1, 0);
 
@@ -319,7 +322,9 @@ public class MockConsumerTest {
         List<TopicPartition> assigned = new ArrayList<>();
         consumer.subscribe(List.of("test"), new ConsumerRebalanceListener() {
             @Override
-            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {}
+            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+            }
+
             @Override
             public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
                 assigned.addAll(partitions);

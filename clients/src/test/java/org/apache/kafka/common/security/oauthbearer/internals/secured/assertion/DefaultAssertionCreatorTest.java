@@ -54,16 +54,16 @@ public class DefaultAssertionCreatorTest extends OAuthBearerTest {
     public void testPrivateKey() throws Exception {
         KeyPair keyPair = generateKeyPair();
         Builder builder = new Builder()
-            .setPrivateKeyFile(generatePrivateKey(keyPair.getPrivate()));
+                .setPrivateKeyFile(generatePrivateKey(keyPair.getPrivate()));
         AssertionJwtTemplate jwtTemplate = new LayeredAssertionJwtTemplate(
-            new StaticAssertionJwtTemplate(Map.of("kid", "test-id"), Map.of()),
-            new DynamicAssertionJwtTemplate(
-                new MockTime(),
-                builder.algorithm,
-                3600,
-                60,
-                false
-            )
+                new StaticAssertionJwtTemplate(Map.of("kid", "test-id"), Map.of()),
+                new DynamicAssertionJwtTemplate(
+                        new MockTime(),
+                        builder.algorithm,
+                        3600,
+                        60,
+                        false
+                )
         );
 
         try (AssertionCreator assertionCreator = builder.build()) {
@@ -76,17 +76,17 @@ public class DefaultAssertionCreatorTest extends OAuthBearerTest {
     public void testPrivateKeyId() throws Exception {
         KeyPair keyPair = generateKeyPair();
         Builder builder = new Builder()
-            .setPrivateKeyFile(generatePrivateKey(keyPair.getPrivate()));
+                .setPrivateKeyFile(generatePrivateKey(keyPair.getPrivate()));
 
         AssertionJwtTemplate jwtTemplate = new LayeredAssertionJwtTemplate(
-            new StaticAssertionJwtTemplate(Map.of("kid", "test-id"), Map.of()),
-            new DynamicAssertionJwtTemplate(
-                new MockTime(),
-                builder.algorithm,
-                3600,
-                60,
-                false
-            )
+                new StaticAssertionJwtTemplate(Map.of("kid", "test-id"), Map.of()),
+                new DynamicAssertionJwtTemplate(
+                        new MockTime(),
+                        builder.algorithm,
+                        3600,
+                        60,
+                        false
+                )
         );
 
         try (AssertionCreator assertionCreator = builder.build()) {
@@ -126,18 +126,18 @@ public class DefaultAssertionCreatorTest extends OAuthBearerTest {
     public void testAlgorithm(String algorithm) throws Exception {
         KeyPair keyPair = generateKeyPair();
         Builder builder = new Builder()
-            .setPrivateKeyFile(generatePrivateKey(keyPair.getPrivate()))
-            .setAlgorithm(algorithm);
+                .setPrivateKeyFile(generatePrivateKey(keyPair.getPrivate()))
+                .setAlgorithm(algorithm);
 
         String assertion;
 
         try (AssertionCreator assertionCreator = builder.build()) {
             AssertionJwtTemplate jwtTemplate = new DynamicAssertionJwtTemplate(
-                new MockTime(),
-                algorithm,
-                3600,
-                60,
-                false
+                    new MockTime(),
+                    algorithm,
+                    3600,
+                    60,
+                    false
             );
             assertion = assertionCreator.create(jwtTemplate);
         }
@@ -156,12 +156,12 @@ public class DefaultAssertionCreatorTest extends OAuthBearerTest {
     public void testInvalidAlgorithm() throws IOException {
         PrivateKey privateKey = generateKeyPair().getPrivate();
         Builder builder = new Builder()
-            .setPrivateKeyFile(generatePrivateKey(privateKey))
-            .setAlgorithm("thisisnotvalid");
+                .setPrivateKeyFile(generatePrivateKey(privateKey))
+                .setAlgorithm("thisisnotvalid");
         assertThrows(NoSuchAlgorithmException.class, () -> getSignature(builder.algorithm));
         assertThrows(
-            NoSuchAlgorithmException.class,
-            () -> sign(builder.algorithm, privateKey, "dummy content"));
+                NoSuchAlgorithmException.class,
+                () -> sign(builder.algorithm, privateKey, "dummy content"));
     }
 
     private static class Builder {

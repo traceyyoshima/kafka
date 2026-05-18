@@ -47,17 +47,17 @@ import java.util.function.Function;
 public class ChannelBuilders {
     private static final Logger log = LoggerFactory.getLogger(ChannelBuilders.class);
 
-    private ChannelBuilders() { }
+    private ChannelBuilders() {
+    }
 
     /**
-     * @param securityProtocol the securityProtocol
-     * @param contextType the contextType, it must be non-null if `securityProtocol` is SASL_*; it is ignored otherwise
-     * @param config client config
-     * @param listenerName the listenerName if contextType is SERVER or null otherwise
+     * @param securityProtocol    the securityProtocol
+     * @param contextType         the contextType, it must be non-null if `securityProtocol` is SASL_*; it is ignored otherwise
+     * @param config              client config
+     * @param listenerName        the listenerName if contextType is SERVER or null otherwise
      * @param clientSaslMechanism SASL mechanism if mode is CLIENT, ignored otherwise
-     * @param time the time instance
-     * @param logContext the log context instance
-     *
+     * @param time                the time instance
+     * @param logContext          the log context instance
      * @return the configured `ChannelBuilder`
      * @throws IllegalArgumentException if `mode` invariants described above is not maintained
      */
@@ -77,20 +77,19 @@ public class ChannelBuilders {
                 throw new IllegalArgumentException("`clientSaslMechanism` must be non-null in client mode if `securityProtocol` is `" + securityProtocol + "`");
         }
         return create(securityProtocol, ConnectionMode.CLIENT, contextType, config, listenerName, false, clientSaslMechanism,
-            null, null, time, logContext, null);
+                null, null, time, logContext, null);
     }
 
     /**
-     * @param listenerName the listenerName
+     * @param listenerName          the listenerName
      * @param isInterBrokerListener whether or not this listener is used for inter-broker requests
-     * @param securityProtocol the securityProtocol
-     * @param config server config
-     * @param credentialCache Credential cache for SASL/SCRAM if SCRAM is enabled
-     * @param tokenCache Delegation token cache
-     * @param time the time instance
-     * @param logContext the log context instance
-     * @param apiVersionSupplier supplier for ApiVersions responses sent prior to authentication
-     *
+     * @param securityProtocol      the securityProtocol
+     * @param config                server config
+     * @param credentialCache       Credential cache for SASL/SCRAM if SCRAM is enabled
+     * @param tokenCache            Delegation token cache
+     * @param time                  the time instance
+     * @param logContext            the log context instance
+     * @param apiVersionSupplier    supplier for ApiVersions responses sent prior to authentication
      * @return the configured `ChannelBuilder`
      */
     public static ChannelBuilder serverChannelBuilder(ListenerName listenerName,
@@ -201,13 +200,13 @@ public class ChannelBuilders {
             parsedConfigs = config.valuesWithPrefixOverride(listenerName.configPrefix());
 
         config.originals().entrySet().stream()
-            .filter(e -> !parsedConfigs.containsKey(e.getKey())) // exclude already parsed configs
-            // exclude already parsed listener prefix configs
-            .filter(e -> !(listenerName != null && e.getKey().startsWith(listenerName.configPrefix()) &&
-                parsedConfigs.containsKey(e.getKey().substring(listenerName.configPrefix().length()))))
-            // exclude keys like `{mechanism}.some.prop` if "listener.name." prefix is present and key `some.prop` exists in parsed configs.
-            .filter(e -> !(listenerName != null && parsedConfigs.containsKey(e.getKey().substring(e.getKey().indexOf('.') + 1))))
-            .forEach(e -> parsedConfigs.put(e.getKey(), e.getValue()));
+                .filter(e -> !parsedConfigs.containsKey(e.getKey())) // exclude already parsed configs
+                // exclude already parsed listener prefix configs
+                .filter(e -> !(listenerName != null && e.getKey().startsWith(listenerName.configPrefix()) &&
+                        parsedConfigs.containsKey(e.getKey().substring(listenerName.configPrefix().length()))))
+                // exclude keys like `{mechanism}.some.prop` if "listener.name." prefix is present and key `some.prop` exists in parsed configs.
+                .filter(e -> !(listenerName != null && parsedConfigs.containsKey(e.getKey().substring(e.getKey().indexOf('.') + 1))))
+                .forEach(e -> parsedConfigs.put(e.getKey(), e.getValue()));
         return parsedConfigs;
     }
 

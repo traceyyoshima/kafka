@@ -42,7 +42,7 @@ import static org.apache.kafka.common.config.ConfigDef.Type.STRING;
 /**
  * Common home for broker-side security configs which need to be accessible from the libraries shared
  * between the broker and the client.
- *
+ * <p>
  * Note this is an internal API and subject to change without notice.
  */
 public class BrokerSecurityConfigs {
@@ -139,7 +139,7 @@ public class BrokerSecurityConfigs {
     public static final String ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG = "org.apache.kafka.sasl.oauthbearer.allowed.files";
     public static final String ALLOWED_SASL_OAUTHBEARER_FILES_DEFAULT = "";
 
-    public static final ConfigDef CONFIG_DEF =  new ConfigDef()
+    public static final ConfigDef CONFIG_DEF = new ConfigDef()
             // General Security Configuration
             .define(BrokerSecurityConfigs.CONNECTIONS_MAX_REAUTH_MS_CONFIG, LONG, BrokerSecurityConfigs.DEFAULT_CONNECTIONS_MAX_REAUTH_MS, MEDIUM, BrokerSecurityConfigs.CONNECTIONS_MAX_REAUTH_MS_DOC)
             .define(BrokerSecurityConfigs.SASL_SERVER_MAX_RECEIVE_SIZE_CONFIG, INT, BrokerSecurityConfigs.DEFAULT_SASL_SERVER_MAX_RECEIVE_SIZE, MEDIUM, BrokerSecurityConfigs.SASL_SERVER_MAX_RECEIVE_SIZE_DOC)

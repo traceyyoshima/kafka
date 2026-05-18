@@ -48,7 +48,7 @@ public class ConsumerRecords<K, V> implements Iterable<ConsumerRecord<K, V>> {
     /**
      * Constructs a new ConsumerRecords with the given records and next offsets.
      *
-     * @param records The records for each partition
+     * @param records     The records for each partition
      * @param nextOffsets The next offset and metadata for each partition whose position was advanced
      *                    during the poll call. These represent the offsets that the consumer will
      *                    start reading from on the next poll.
@@ -60,7 +60,7 @@ public class ConsumerRecords<K, V> implements Iterable<ConsumerRecord<K, V>> {
 
     /**
      * Get just the records for the given partition
-     * 
+     *
      * @param partition The partition to get records for
      */
     public List<ConsumerRecord<K, V>> records(TopicPartition partition) {
@@ -73,6 +73,7 @@ public class ConsumerRecords<K, V> implements Iterable<ConsumerRecord<K, V>> {
 
     /**
      * Get the next offsets and metadata corresponding to all topic partitions for which the position have been advanced in this poll call
+     *
      * @return The next offsets that the consumer will consume
      */
     public Map<TopicPartition, OffsetAndMetadata> nextOffsets() {
@@ -95,6 +96,7 @@ public class ConsumerRecords<K, V> implements Iterable<ConsumerRecord<K, V>> {
 
     /**
      * Get the partitions which have records contained in this record set.
+     *
      * @return The set of partitions with data in this record set (may be empty if no data was returned)
      */
     public Set<TopicPartition> partitions() {
@@ -111,7 +113,7 @@ public class ConsumerRecords<K, V> implements Iterable<ConsumerRecord<K, V>> {
      */
     public int count() {
         int count = 0;
-        for (List<ConsumerRecord<K, V>> recs: this.records.values())
+        for (List<ConsumerRecord<K, V>> recs : this.records.values())
             count += recs.size();
         return count;
     }

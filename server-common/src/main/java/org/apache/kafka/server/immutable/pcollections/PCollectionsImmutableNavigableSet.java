@@ -35,17 +35,17 @@ public class PCollectionsImmutableNavigableSet<E> implements ImmutableNavigableS
     private final TreePSet<E> underlying;
 
     /**
-     * @return a wrapped tree-based persistent navigable set that is empty
      * @param <E> the element type
+     * @return a wrapped tree-based persistent navigable set that is empty
      */
     public static <E extends Comparable<? super E>> PCollectionsImmutableNavigableSet<E> empty() {
         return new PCollectionsImmutableNavigableSet<>(TreePSet.<E>empty());
     }
 
     /**
-     * @param e the element
-     * @return a wrapped tree-based persistent set that is empty
+     * @param e   the element
      * @param <E> the element type
+     * @return a wrapped tree-based persistent set that is empty
      */
     public static <E extends Comparable<? super E>> PCollectionsImmutableNavigableSet<E> singleton(E e) {
         return new PCollectionsImmutableNavigableSet<>(TreePSet.singleton(e));

@@ -72,14 +72,19 @@ public class WorkerConnectorTest {
         CONFIG.put(ConnectorConfig.NAME_CONFIG, CONNECTOR);
         CONFIG.put(SinkConnectorConfig.TOPICS_CONFIG, "my-topic");
     }
+
     public ConnectorConfig connectorConfig;
     public MockConnectMetrics metrics;
 
 
-    @Mock private Plugins plugins;
-    @Mock private CloseableConnectorContext ctx;
-    @Mock private ConnectorStatus.Listener listener;
-    @Mock private ClassLoader classLoader;
+    @Mock
+    private Plugins plugins;
+    @Mock
+    private CloseableConnectorContext ctx;
+    @Mock
+    private ConnectorStatus.Listener listener;
+    @Mock
+    private ClassLoader classLoader;
 
     private ConnectorType connectorType;
     private Connector connector;
@@ -103,7 +108,7 @@ public class WorkerConnectorTest {
                 throw new IllegalStateException("Unexpected connector type: " + connectorType);
         }
     }
-    
+
     public void setup(ConnectorType connectorType) {
         setConnector(connectorType);
         connectorConfig = new ConnectorConfig(plugins, CONFIG);

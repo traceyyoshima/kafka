@@ -51,9 +51,9 @@ public class FailOnInvalidTimestamp extends ExtractRecordMetadataTimestamp {
     /**
      * Raises an exception on every call.
      *
-     * @param record a data record
+     * @param record          a data record
      * @param recordTimestamp the timestamp extractor from the record
-     * @param partitionTime the highest extracted valid timestamp of the current record's partition˙ (could be -1 if unknown)
+     * @param partitionTime   the highest extracted valid timestamp of the current record's partition˙ (could be -1 if unknown)
      * @return nothing; always raises an exception
      * @throws StreamsException on every invocation
      */
@@ -64,9 +64,9 @@ public class FailOnInvalidTimestamp extends ExtractRecordMetadataTimestamp {
             throws StreamsException {
 
         final String message = "Input record " + record + " has invalid (negative) timestamp. " +
-            "Possibly because a pre-0.10 producer client was used to write this record to Kafka without embedding " +
-            "a timestamp, or because the input topic was created before upgrading the Kafka cluster to 0.10+. " +
-            "Use a different TimestampExtractor to process this data.";
+                "Possibly because a pre-0.10 producer client was used to write this record to Kafka without embedding " +
+                "a timestamp, or because the input topic was created before upgrading the Kafka cluster to 0.10+. " +
+                "Use a different TimestampExtractor to process this data.";
 
         log.error(message);
         throw new StreamsException(message);

@@ -66,22 +66,22 @@ public class DescribeTransactionsHandlerTest {
         DescribeTransactionsHandler handler = new DescribeTransactionsHandler(logContext);
 
         DescribeTransactionsResponseData.TransactionState transactionState1 =
-            sampleTransactionState1(transactionalId1);
+                sampleTransactionState1(transactionalId1);
         DescribeTransactionsResponseData.TransactionState transactionState2 =
-            sampleTransactionState2(transactionalId2);
+                sampleTransactionState2(transactionalId2);
 
         Set<CoordinatorKey> keys = coordinatorKeys(transactionalIds);
         DescribeTransactionsResponse response = new DescribeTransactionsResponse(new DescribeTransactionsResponseData()
-            .setTransactionStates(asList(transactionState1, transactionState2)));
+                .setTransactionStates(asList(transactionState1, transactionState2)));
 
         ApiResult<CoordinatorKey, TransactionDescription> result = handler.handleResponse(
-            node, keys, response);
+                node, keys, response);
 
         assertEquals(keys, result.completedKeys.keySet());
         assertMatchingTransactionState(node.id(), transactionState1,
-            result.completedKeys.get(CoordinatorKey.byTransactionalId(transactionalId1)));
+                result.completedKeys.get(CoordinatorKey.byTransactionalId(transactionalId1)));
         assertMatchingTransactionState(node.id(), transactionState2,
-            result.completedKeys.get(CoordinatorKey.byTransactionalId(transactionalId2)));
+                result.completedKeys.get(CoordinatorKey.byTransactionalId(transactionalId2)));
     }
 
     @Test
@@ -97,9 +97,9 @@ public class DescribeTransactionsHandlerTest {
     }
 
     private void assertFatalError(
-        DescribeTransactionsHandler handler,
-        String transactionalId,
-        Errors error
+            DescribeTransactionsHandler handler,
+            String transactionalId,
+            Errors error
     ) {
         CoordinatorKey key = CoordinatorKey.byTransactionalId(transactionalId);
         ApiResult<CoordinatorKey, TransactionDescription> result = handleResponseError(handler, transactionalId, error);
@@ -111,9 +111,9 @@ public class DescribeTransactionsHandlerTest {
     }
 
     private void assertRetriableError(
-        DescribeTransactionsHandler handler,
-        String transactionalId,
-        Errors error
+            DescribeTransactionsHandler handler,
+            String transactionalId,
+            Errors error
     ) {
         ApiResult<CoordinatorKey, TransactionDescription> result = handleResponseError(handler, transactionalId, error);
         assertEquals(emptyList(), result.unmappedKeys);
@@ -121,9 +121,9 @@ public class DescribeTransactionsHandlerTest {
     }
 
     private void assertUnmappedKey(
-        DescribeTransactionsHandler handler,
-        String transactionalId,
-        Errors error
+            DescribeTransactionsHandler handler,
+            String transactionalId,
+            Errors error
     ) {
         CoordinatorKey key = CoordinatorKey.byTransactionalId(transactionalId);
         ApiResult<CoordinatorKey, TransactionDescription> result = handleResponseError(handler, transactionalId, error);
@@ -132,19 +132,19 @@ public class DescribeTransactionsHandlerTest {
     }
 
     private ApiResult<CoordinatorKey, TransactionDescription> handleResponseError(
-        DescribeTransactionsHandler handler,
-        String transactionalId,
-        Errors error
+            DescribeTransactionsHandler handler,
+            String transactionalId,
+            Errors error
     ) {
         CoordinatorKey key = CoordinatorKey.byTransactionalId(transactionalId);
         Set<CoordinatorKey> keys = Set.of(key);
 
         DescribeTransactionsResponseData.TransactionState transactionState = new DescribeTransactionsResponseData.TransactionState()
-            .setErrorCode(error.code())
-            .setTransactionalId(transactionalId);
+                .setErrorCode(error.code())
+                .setTransactionalId(transactionalId);
 
         DescribeTransactionsResponse response = new DescribeTransactionsResponse(new DescribeTransactionsResponseData()
-            .setTransactionStates(singletonList(transactionState)));
+                .setTransactionStates(singletonList(transactionState)));
 
         ApiResult<CoordinatorKey, TransactionDescription> result = handler.handleResponse(node, keys, response);
         assertEquals(emptyMap(), result.completedKeys);
@@ -152,8 +152,8 @@ public class DescribeTransactionsHandlerTest {
     }
 
     private void assertLookup(
-        DescribeTransactionsHandler handler,
-        Set<String> transactionalIds
+            DescribeTransactionsHandler handler,
+            Set<String> transactionalIds
     ) {
         Set<CoordinatorKey> keys = coordinatorKeys(transactionalIds);
         DescribeTransactionsRequest.Builder request = handler.buildBatchedRequest(1, keys);
@@ -162,47 +162,47 @@ public class DescribeTransactionsHandlerTest {
 
     private static Set<CoordinatorKey> coordinatorKeys(Set<String> transactionalIds) {
         return transactionalIds.stream()
-            .map(CoordinatorKey::byTransactionalId)
-            .collect(Collectors.toSet());
+                .map(CoordinatorKey::byTransactionalId)
+                .collect(Collectors.toSet());
     }
 
     private DescribeTransactionsResponseData.TransactionState sampleTransactionState1(
-        String transactionalId
+            String transactionalId
     ) {
         return new DescribeTransactionsResponseData.TransactionState()
-            .setErrorCode(Errors.NONE.code())
-            .setTransactionState("Ongoing")
-            .setTransactionalId(transactionalId)
-            .setProducerId(12345L)
-            .setProducerEpoch((short) 15)
-            .setTransactionStartTimeMs(1599151791L)
-            .setTransactionTimeoutMs(10000)
-            .setTopics(new DescribeTransactionsResponseData.TopicDataCollection(asList(
-                new DescribeTransactionsResponseData.TopicData()
-                    .setTopic("foo")
-                    .setPartitions(asList(1, 3, 5)),
-                new DescribeTransactionsResponseData.TopicData()
-                    .setTopic("bar")
-                    .setPartitions(asList(1, 3, 5))
-            )));
+                .setErrorCode(Errors.NONE.code())
+                .setTransactionState("Ongoing")
+                .setTransactionalId(transactionalId)
+                .setProducerId(12345L)
+                .setProducerEpoch((short) 15)
+                .setTransactionStartTimeMs(1599151791L)
+                .setTransactionTimeoutMs(10000)
+                .setTopics(new DescribeTransactionsResponseData.TopicDataCollection(asList(
+                        new DescribeTransactionsResponseData.TopicData()
+                                .setTopic("foo")
+                                .setPartitions(asList(1, 3, 5)),
+                        new DescribeTransactionsResponseData.TopicData()
+                                .setTopic("bar")
+                                .setPartitions(asList(1, 3, 5))
+                )));
     }
 
     private DescribeTransactionsResponseData.TransactionState sampleTransactionState2(
-        String transactionalId
+            String transactionalId
     ) {
         return new DescribeTransactionsResponseData.TransactionState()
-            .setErrorCode(Errors.NONE.code())
-            .setTransactionState("Empty")
-            .setTransactionalId(transactionalId)
-            .setProducerId(98765L)
-            .setProducerEpoch((short) 30)
-            .setTransactionStartTimeMs(-1);
+                .setErrorCode(Errors.NONE.code())
+                .setTransactionState("Empty")
+                .setTransactionalId(transactionalId)
+                .setProducerId(98765L)
+                .setProducerEpoch((short) 30)
+                .setTransactionStartTimeMs(-1);
     }
 
     private void assertMatchingTransactionState(
-        int expectedCoordinatorId,
-        DescribeTransactionsResponseData.TransactionState expected,
-        TransactionDescription actual
+            int expectedCoordinatorId,
+            DescribeTransactionsResponseData.TransactionState expected,
+            TransactionDescription actual
     ) {
         assertEquals(expectedCoordinatorId, actual.coordinatorId());
         assertEquals(expected.producerId(), actual.producerId());
@@ -213,7 +213,7 @@ public class DescribeTransactionsHandlerTest {
     }
 
     private Set<TopicPartition> collectTransactionPartitions(
-        DescribeTransactionsResponseData.TransactionState transactionState
+            DescribeTransactionsResponseData.TransactionState transactionState
     ) {
         Set<TopicPartition> topicPartitions = new HashSet<>();
         for (DescribeTransactionsResponseData.TopicData topicData : transactionState.topics()) {

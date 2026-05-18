@@ -29,51 +29,51 @@ import static org.apache.kafka.metadata.authorizer.StandardAuthorizerData.WILDCA
 
 public final class StandardAclFixtures {
     public static final List<StandardAcl> TEST_ACLS = List.of(
-        new StandardAcl(
-            ResourceType.CLUSTER,
-            Resource.CLUSTER_NAME,
-            PatternType.LITERAL,
-            WILDCARD_PRINCIPAL,
-            WILDCARD,
-            AclOperation.ALTER,
-            AclPermissionType.ALLOW
-        ),
-        new StandardAcl(
-            ResourceType.TOPIC,
-            "foo_",
-            PatternType.PREFIXED,
-            WILDCARD_PRINCIPAL,
-            WILDCARD,
-            AclOperation.READ,
-            AclPermissionType.ALLOW
-        ),
-        new StandardAcl(
-            ResourceType.GROUP,
-            "mygroup",
-            PatternType.LITERAL,
-            "User:foo",
-            WILDCARD,
-            AclOperation.READ,
-            AclPermissionType.DENY
-        ),
-        new StandardAcl(
-            ResourceType.GROUP,
-            "mygroup",
-            PatternType.PREFIXED,
-            "User:foo",
-            WILDCARD,
-            AclOperation.READ,
-            AclPermissionType.DENY
-        ),
-        new StandardAcl(
-            ResourceType.GROUP,
-            "foo",
-            PatternType.PREFIXED,
-            "User:foo",
-            WILDCARD,
-            AclOperation.READ,
-            AclPermissionType.DENY
-        )
+            new StandardAcl(
+                    ResourceType.CLUSTER,
+                    Resource.CLUSTER_NAME,
+                    PatternType.LITERAL,
+                    WILDCARD_PRINCIPAL,
+                    WILDCARD,
+                    AclOperation.ALTER,
+                    AclPermissionType.ALLOW
+            ),
+            new StandardAcl(
+                    ResourceType.TOPIC,
+                    "foo_",
+                    PatternType.PREFIXED,
+                    WILDCARD_PRINCIPAL,
+                    WILDCARD,
+                    AclOperation.READ,
+                    AclPermissionType.ALLOW
+            ),
+            new StandardAcl(
+                    ResourceType.GROUP,
+                    "mygroup",
+                    PatternType.LITERAL,
+                    "User:foo",
+                    WILDCARD,
+                    AclOperation.READ,
+                    AclPermissionType.DENY
+            ),
+            new StandardAcl(
+                    ResourceType.GROUP,
+                    "mygroup",
+                    PatternType.PREFIXED,
+                    "User:foo",
+                    WILDCARD,
+                    AclOperation.READ,
+                    AclPermissionType.DENY
+            ),
+            new StandardAcl(
+                    ResourceType.GROUP,
+                    "foo",
+                    PatternType.PREFIXED,
+                    "User:foo",
+                    WILDCARD,
+                    AclOperation.READ,
+                    AclPermissionType.DENY
+            )
     );
 
     private StandardAclFixtures() {

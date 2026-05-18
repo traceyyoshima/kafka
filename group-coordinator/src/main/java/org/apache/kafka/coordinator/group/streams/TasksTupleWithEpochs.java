@@ -56,9 +56,9 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
      * An empty task tuple.
      */
     public static final TasksTupleWithEpochs EMPTY = new TasksTupleWithEpochs(
-        Map.of(),
-        Map.of(),
-        Map.of()
+            Map.of(),
+            Map.of(),
+            Map.of()
     );
 
     /**
@@ -86,7 +86,7 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
         // Add tasks from other tuple, overwriting epochs for overlapping partitions
         other.activeTasksWithEpochs.forEach((subtopologyId, partitionsWithEpochs) -> {
             mergedActive.computeIfAbsent(subtopologyId, k -> new HashMap<>())
-                .putAll(partitionsWithEpochs);
+                    .putAll(partitionsWithEpochs);
         });
 
         Map<String, Set<Integer>> mergedStandby = mergeTasks(this.standbyTasks, other.standbyTasks);
@@ -97,42 +97,42 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
     /**
      * Creates a TasksTupleWithEpochs from a current assignment record.
      *
-     * @param activeTasks                    The active tasks from the record.
-     * @param standbyTasks                   The standby tasks from the record.
-     * @param warmupTasks                    The warmup tasks from the record.
-     * @param memberEpoch                    The member epoch to use as default for tasks without explicit epochs.
+     * @param activeTasks  The active tasks from the record.
+     * @param standbyTasks The standby tasks from the record.
+     * @param warmupTasks  The warmup tasks from the record.
+     * @param memberEpoch  The member epoch to use as default for tasks without explicit epochs.
      * @return The TasksTupleWithEpochs
      */
     public static TasksTupleWithEpochs fromCurrentAssignmentRecord(
-        Logger log,
-        String groupId,
-        List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> activeTasks,
-        List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> standbyTasks,
-        List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> warmupTasks,
-        int memberEpoch
+            Logger log,
+            String groupId,
+            List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> activeTasks,
+            List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> standbyTasks,
+            List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> warmupTasks,
+            int memberEpoch
     ) {
         return new TasksTupleWithEpochs(
-            parseActiveTasksWithEpochs(log, groupId, activeTasks, memberEpoch),
-            parseSimpleTasks(standbyTasks),
-            parseSimpleTasks(warmupTasks)
+                parseActiveTasksWithEpochs(log, groupId, activeTasks, memberEpoch),
+                parseSimpleTasks(standbyTasks),
+                parseSimpleTasks(warmupTasks)
         );
     }
 
     private static Map<String, Set<Integer>> mergeTasks(final Map<String, Set<Integer>> tasks1, final Map<String, Set<Integer>> tasks2) {
         HashMap<String, Set<Integer>> result = new HashMap<>();
         tasks1.forEach((subtopologyId, tasks) ->
-            result.put(subtopologyId, new HashSet<>(tasks)));
+                result.put(subtopologyId, new HashSet<>(tasks)));
         tasks2.forEach((subtopologyId, tasks) -> result
-            .computeIfAbsent(subtopologyId, __ -> new HashSet<>())
-            .addAll(tasks));
+                .computeIfAbsent(subtopologyId, __ -> new HashSet<>())
+                .addAll(tasks));
         return result;
     }
 
     private static Map<String, Map<Integer, Integer>> parseActiveTasksWithEpochs(
-        Logger log,
-        String groupId,
-        List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> taskIdsList,
-        int memberEpoch
+            Logger log,
+            String groupId,
+            List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> taskIdsList,
+            int memberEpoch
     ) {
         Map<String, Map<Integer, Integer>> result = new HashMap<>();
 
@@ -150,8 +150,8 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
             } else {
                 if (epochs != null) {
                     log.error("[GroupId {}] Size of assignment epochs {} is not equal to partitions {} for subtopology {}. " +
-                            "Using default epoch {} for all partitions.",
-                        groupId, epochs.size(), partitions.size(), subtopologyId, memberEpoch);
+                                    "Using default epoch {} for all partitions.",
+                            groupId, epochs.size(), partitions.size(), subtopologyId, memberEpoch);
                 }
                 // Legacy record without epochs: use member epoch as default
                 for (Integer partition : partitions) {
@@ -166,7 +166,7 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
     }
 
     private static Map<String, Set<Integer>> parseSimpleTasks(
-        List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> taskIdsList
+            List<StreamsGroupCurrentMemberAssignmentValue.TaskIds> taskIdsList
     ) {
         Map<String, Set<Integer>> result = new HashMap<>();
 
@@ -180,26 +180,26 @@ public record TasksTupleWithEpochs(Map<String, Map<Integer, Integer>> activeTask
     @Override
     public String toString() {
         return "(active=" + taskAssignmentToString(activeTasksWithEpochs) +
-            ", standby=" + TasksTuple.taskAssignmentToString(standbyTasks) +
-            ", warmup=" + TasksTuple.taskAssignmentToString(warmupTasks) +
-            ')';
+                ", standby=" + TasksTuple.taskAssignmentToString(standbyTasks) +
+                ", warmup=" + TasksTuple.taskAssignmentToString(warmupTasks) +
+                ')';
     }
 
     private static String taskAssignmentToString(Map<String, Map<Integer, Integer>> assignment) {
         StringBuilder builder = new StringBuilder("[");
-        
+
         // Sort subtopology IDs
         String[] subtopologyIds = assignment.keySet().toArray(new String[0]);
         java.util.Arrays.sort(subtopologyIds);
-        
+
         boolean first = true;
         for (String subtopologyId : subtopologyIds) {
             Map<Integer, Integer> partitions = assignment.get(subtopologyId);
-            
+
             // Sort partition IDs
             Integer[] partitionIds = partitions.keySet().toArray(new Integer[0]);
             java.util.Arrays.sort(partitionIds);
-            
+
             for (Integer partitionId : partitionIds) {
                 if (!first) {
                     builder.append(", ");

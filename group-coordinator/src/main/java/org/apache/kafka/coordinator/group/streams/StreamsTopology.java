@@ -39,9 +39,9 @@ import java.util.stream.Stream;
  * This class allows to look-up subtopologies by subtopology ID in constant time by getting the subtopologies map.
  * The information in this class is fully backed by records stored in the __consumer_offsets topic.
  *
- * @param topologyEpoch The epoch of the topology (must be non-negative).
- * @param subtopologies The subtopologies of the topology containing information about source topics,
- *                      repartition topics, changelog topics, co-partition groups etc. (must be non-null)
+ * @param topologyEpoch  The epoch of the topology (must be non-negative).
+ * @param subtopologies  The subtopologies of the topology containing information about source topics,
+ *                       repartition topics, changelog topics, co-partition groups etc. (must be non-null)
  * @param sourceTopicMap A precomputed map of source topics to their corresponding subtopology (must be non-null)
  */
 public record StreamsTopology(int topologyEpoch,
@@ -91,15 +91,15 @@ public record StreamsTopology(int topologyEpoch,
      */
     public Set<String> requiredTopics() {
         return subtopologies.values().stream()
-            .flatMap(x ->
-                Stream.concat(
-                    Stream.concat(
-                        x.sourceTopics().stream(),
-                        x.repartitionSourceTopics().stream().map(TopicInfo::name)
-                    ),
-                    x.stateChangelogTopics().stream().map(TopicInfo::name)
-                )
-            ).collect(Collectors.toSet());
+                .flatMap(x ->
+                        Stream.concat(
+                                Stream.concat(
+                                        x.sourceTopics().stream(),
+                                        x.repartitionSourceTopics().stream().map(TopicInfo::name)
+                                ),
+                                x.stateChangelogTopics().stream().map(TopicInfo::name)
+                        )
+                ).collect(Collectors.toSet());
     }
 
     /**
@@ -110,8 +110,8 @@ public record StreamsTopology(int topologyEpoch,
      */
     public static StreamsTopology fromRecord(StreamsGroupTopologyValue record) {
         return new StreamsTopology(
-            record.epoch(),
-            record.subtopologies().stream().collect(Collectors.toMap(Subtopology::subtopologyId, x -> x))
+                record.epoch(),
+                record.subtopologies().stream().collect(Collectors.toMap(Subtopology::subtopologyId, x -> x))
         );
     }
 
@@ -124,46 +124,46 @@ public record StreamsTopology(int topologyEpoch,
     public static StreamsTopology fromHeartbeatRequest(StreamsGroupHeartbeatRequestData.Topology topology) {
         StreamsGroupTopologyValue recordValue = StreamsCoordinatorRecordHelpers.convertToStreamsGroupTopologyRecord(topology);
         final Map<String, StreamsGroupTopologyValue.Subtopology> subtopologyMap = recordValue.subtopologies().stream()
-            .collect(Collectors.toMap(StreamsGroupTopologyValue.Subtopology::subtopologyId, x -> x));
+                .collect(Collectors.toMap(StreamsGroupTopologyValue.Subtopology::subtopologyId, x -> x));
         return new StreamsTopology(topology.epoch(), subtopologyMap);
     }
 
     public StreamsGroupDescribeResponseData.Topology asStreamsGroupDescribeTopology() {
         return new StreamsGroupDescribeResponseData.Topology()
-            .setEpoch(topologyEpoch)
-            .setSubtopologies(
-                subtopologies.entrySet().stream()
-                    .sorted(Map.Entry.comparingByKey())
-                    .map(entry -> asStreamsGroupDescribeSubtopology(entry.getKey(), entry.getValue()))
-                    .toList()
-            );
+                .setEpoch(topologyEpoch)
+                .setSubtopologies(
+                        subtopologies.entrySet().stream()
+                                .sorted(Map.Entry.comparingByKey())
+                                .map(entry -> asStreamsGroupDescribeSubtopology(entry.getKey(), entry.getValue()))
+                                .toList()
+                );
     }
 
     private StreamsGroupDescribeResponseData.Subtopology asStreamsGroupDescribeSubtopology(String subtopologyId, StreamsGroupTopologyValue.Subtopology subtopology) {
         return new StreamsGroupDescribeResponseData.Subtopology()
-            .setSubtopologyId(subtopologyId)
-            .setSourceTopics(subtopology.sourceTopics().stream().sorted().toList())
-            .setRepartitionSinkTopics(subtopology.repartitionSinkTopics().stream().sorted().toList())
-            .setRepartitionSourceTopics(subtopology.repartitionSourceTopics().stream()
-                .map(this::asStreamsGroupDescribeTopicInfo)
-                .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.TopicInfo::name)).toList())
-            .setStateChangelogTopics(subtopology.stateChangelogTopics().stream()
-                .map(this::asStreamsGroupDescribeTopicInfo)
-                .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.TopicInfo::name)).toList());
+                .setSubtopologyId(subtopologyId)
+                .setSourceTopics(subtopology.sourceTopics().stream().sorted().toList())
+                .setRepartitionSinkTopics(subtopology.repartitionSinkTopics().stream().sorted().toList())
+                .setRepartitionSourceTopics(subtopology.repartitionSourceTopics().stream()
+                        .map(this::asStreamsGroupDescribeTopicInfo)
+                        .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.TopicInfo::name)).toList())
+                .setStateChangelogTopics(subtopology.stateChangelogTopics().stream()
+                        .map(this::asStreamsGroupDescribeTopicInfo)
+                        .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.TopicInfo::name)).toList());
     }
 
     private StreamsGroupDescribeResponseData.TopicInfo asStreamsGroupDescribeTopicInfo(StreamsGroupTopologyValue.TopicInfo topicInfo) {
         return new StreamsGroupDescribeResponseData.TopicInfo()
-            .setName(topicInfo.name())
-            .setPartitions(topicInfo.partitions())
-            .setReplicationFactor(topicInfo.replicationFactor())
-            .setTopicConfigs(
-                topicInfo.topicConfigs().stream().map(
-                    topicConfig -> new StreamsGroupDescribeResponseData.KeyValue()
-                        .setKey(topicConfig.key())
-                        .setValue(topicConfig.value())
-                ).toList()
-            );
+                .setName(topicInfo.name())
+                .setPartitions(topicInfo.partitions())
+                .setReplicationFactor(topicInfo.replicationFactor())
+                .setTopicConfigs(
+                        topicInfo.topicConfigs().stream().map(
+                                topicConfig -> new StreamsGroupDescribeResponseData.KeyValue()
+                                        .setKey(topicConfig.key())
+                                        .setValue(topicConfig.value())
+                        ).toList()
+                );
     }
 
 }

@@ -355,61 +355,61 @@ public class GroupConfigTest {
 
     private static Stream<Arguments> outOfRangeValuesAndExpectedMessages() {
         return Stream.of(
-            // Consumer group configs.
-            Arguments.of(GroupConfig.CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG, "1",
-                "consumer.heartbeat.interval.ms must be in the range 5 to 15000 inclusive."),
-            Arguments.of(GroupConfig.CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG, "20000",
-                "consumer.heartbeat.interval.ms must be in the range 5 to 15000 inclusive."),
-            Arguments.of(GroupConfig.CONSUMER_SESSION_TIMEOUT_MS_CONFIG, "1",
-                "consumer.session.timeout.ms must be in the range 45 to 60000 inclusive."),
-            Arguments.of(GroupConfig.CONSUMER_SESSION_TIMEOUT_MS_CONFIG, "70000",
-                "consumer.session.timeout.ms must be in the range 45 to 60000 inclusive."),
-            Arguments.of(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG, "500",
-                "consumer.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
-            Arguments.of(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG, "20000",
-                "consumer.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
+                // Consumer group configs.
+                Arguments.of(GroupConfig.CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG, "1",
+                        "consumer.heartbeat.interval.ms must be in the range 5 to 15000 inclusive."),
+                Arguments.of(GroupConfig.CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG, "20000",
+                        "consumer.heartbeat.interval.ms must be in the range 5 to 15000 inclusive."),
+                Arguments.of(GroupConfig.CONSUMER_SESSION_TIMEOUT_MS_CONFIG, "1",
+                        "consumer.session.timeout.ms must be in the range 45 to 60000 inclusive."),
+                Arguments.of(GroupConfig.CONSUMER_SESSION_TIMEOUT_MS_CONFIG, "70000",
+                        "consumer.session.timeout.ms must be in the range 45 to 60000 inclusive."),
+                Arguments.of(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG, "500",
+                        "consumer.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
+                Arguments.of(GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG, "20000",
+                        "consumer.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
 
-            // Share group configs.
-            Arguments.of(GroupConfig.SHARE_HEARTBEAT_INTERVAL_MS_CONFIG, "1",
-                "share.heartbeat.interval.ms must be in the range 5 to 15000 inclusive."),
-            Arguments.of(GroupConfig.SHARE_HEARTBEAT_INTERVAL_MS_CONFIG, "20000",
-                "share.heartbeat.interval.ms must be in the range 5 to 15000 inclusive."),
-            Arguments.of(GroupConfig.SHARE_SESSION_TIMEOUT_MS_CONFIG, "1",
-                "share.session.timeout.ms must be in the range 45 to 60000 inclusive."),
-            Arguments.of(GroupConfig.SHARE_SESSION_TIMEOUT_MS_CONFIG, "70000",
-                "share.session.timeout.ms must be in the range 45 to 60000 inclusive."),
-            Arguments.of(GroupConfig.SHARE_RECORD_LOCK_DURATION_MS_CONFIG, "10000",
-                "share.record.lock.duration.ms must be in the range 15000 to 60000 inclusive."),
-            Arguments.of(GroupConfig.SHARE_RECORD_LOCK_DURATION_MS_CONFIG, "70000",
-                "share.record.lock.duration.ms must be in the range 15000 to 60000 inclusive."),
-            Arguments.of(GroupConfig.SHARE_DELIVERY_COUNT_LIMIT_CONFIG, "11",
-                "share.delivery.count.limit must be in the range 2 to 10 inclusive."),
-            Arguments.of(GroupConfig.SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG, "11000",
-                "share.partition.max.record.locks must be in the range 100 to 10000 inclusive."),
-            Arguments.of(GroupConfig.SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG, "500",
-                "share.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
-            Arguments.of(GroupConfig.SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG, "20000",
-                "share.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
+                // Share group configs.
+                Arguments.of(GroupConfig.SHARE_HEARTBEAT_INTERVAL_MS_CONFIG, "1",
+                        "share.heartbeat.interval.ms must be in the range 5 to 15000 inclusive."),
+                Arguments.of(GroupConfig.SHARE_HEARTBEAT_INTERVAL_MS_CONFIG, "20000",
+                        "share.heartbeat.interval.ms must be in the range 5 to 15000 inclusive."),
+                Arguments.of(GroupConfig.SHARE_SESSION_TIMEOUT_MS_CONFIG, "1",
+                        "share.session.timeout.ms must be in the range 45 to 60000 inclusive."),
+                Arguments.of(GroupConfig.SHARE_SESSION_TIMEOUT_MS_CONFIG, "70000",
+                        "share.session.timeout.ms must be in the range 45 to 60000 inclusive."),
+                Arguments.of(GroupConfig.SHARE_RECORD_LOCK_DURATION_MS_CONFIG, "10000",
+                        "share.record.lock.duration.ms must be in the range 15000 to 60000 inclusive."),
+                Arguments.of(GroupConfig.SHARE_RECORD_LOCK_DURATION_MS_CONFIG, "70000",
+                        "share.record.lock.duration.ms must be in the range 15000 to 60000 inclusive."),
+                Arguments.of(GroupConfig.SHARE_DELIVERY_COUNT_LIMIT_CONFIG, "11",
+                        "share.delivery.count.limit must be in the range 2 to 10 inclusive."),
+                Arguments.of(GroupConfig.SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG, "11000",
+                        "share.partition.max.record.locks must be in the range 100 to 10000 inclusive."),
+                Arguments.of(GroupConfig.SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG, "500",
+                        "share.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
+                Arguments.of(GroupConfig.SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG, "20000",
+                        "share.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
 
-            // Streams group configs.
-            Arguments.of(GroupConfig.STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG, "1000",
-                "streams.heartbeat.interval.ms must be in the range 5000 to 15000 inclusive."),
-            Arguments.of(GroupConfig.STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG, "20000",
-                "streams.heartbeat.interval.ms must be in the range 5000 to 15000 inclusive."),
-            Arguments.of(GroupConfig.STREAMS_SESSION_TIMEOUT_MS_CONFIG, "1",
-                "streams.session.timeout.ms must be in the range 45000 to 60000 inclusive."),
-            Arguments.of(GroupConfig.STREAMS_SESSION_TIMEOUT_MS_CONFIG, "70000",
-                "streams.session.timeout.ms must be in the range 45000 to 60000 inclusive."),
-            Arguments.of(GroupConfig.STREAMS_NUM_STANDBY_REPLICAS_CONFIG, "5",
-                "streams.num.standby.replicas must be less than or equal to 2"),
-            Arguments.of(GroupConfig.STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG, "500",
-                "streams.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
-            Arguments.of(GroupConfig.STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG, "20000",
-                "streams.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
-            Arguments.of(GroupConfig.STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG, "1000",
-                "streams.task.offset.interval.ms must be greater than or equal to 15000"),
-            Arguments.of(GroupConfig.STREAMS_NUM_WARMUP_REPLICAS_CONFIG, "50",
-                "streams.num.warmup.replicas must be less than or equal to 20")
+                // Streams group configs.
+                Arguments.of(GroupConfig.STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG, "1000",
+                        "streams.heartbeat.interval.ms must be in the range 5000 to 15000 inclusive."),
+                Arguments.of(GroupConfig.STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG, "20000",
+                        "streams.heartbeat.interval.ms must be in the range 5000 to 15000 inclusive."),
+                Arguments.of(GroupConfig.STREAMS_SESSION_TIMEOUT_MS_CONFIG, "1",
+                        "streams.session.timeout.ms must be in the range 45000 to 60000 inclusive."),
+                Arguments.of(GroupConfig.STREAMS_SESSION_TIMEOUT_MS_CONFIG, "70000",
+                        "streams.session.timeout.ms must be in the range 45000 to 60000 inclusive."),
+                Arguments.of(GroupConfig.STREAMS_NUM_STANDBY_REPLICAS_CONFIG, "5",
+                        "streams.num.standby.replicas must be less than or equal to 2"),
+                Arguments.of(GroupConfig.STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG, "500",
+                        "streams.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
+                Arguments.of(GroupConfig.STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG, "20000",
+                        "streams.assignment.interval.ms must be in the range 1000 to 15000 inclusive."),
+                Arguments.of(GroupConfig.STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG, "1000",
+                        "streams.task.offset.interval.ms must be greater than or equal to 15000"),
+                Arguments.of(GroupConfig.STREAMS_NUM_WARMUP_REPLICAS_CONFIG, "50",
+                        "streams.num.warmup.replicas must be less than or equal to 20")
         );
     }
 
@@ -418,8 +418,8 @@ public class GroupConfigTest {
     public void testValidationErrorMessageIncludesBound(String key, String value, String expectedMessage) {
         var props = Map.of(key, value);
         var exception = assertThrows(
-            InvalidConfigurationException.class,
-            () -> GroupConfig.validate(props, createGroupCoordinatorConfig(), createShareGroupConfig())
+                InvalidConfigurationException.class,
+                () -> GroupConfig.validate(props, createGroupCoordinatorConfig(), createShareGroupConfig())
         );
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -581,12 +581,12 @@ public class GroupConfigTest {
     public void testNotValidatedWhenNotConfigured() {
         // When configs are absent, validation should not use their default values.
         GroupCoordinatorConfig groupCoordinatorConfig = GroupCoordinatorConfig.fromProps(Map.of(
-            GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
-            GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
-            GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
-            GroupCoordinatorConfig.CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
-            GroupCoordinatorConfig.SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
-            GroupCoordinatorConfig.STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000
+                GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
+                GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
+                GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
+                GroupCoordinatorConfig.CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
+                GroupCoordinatorConfig.SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000,
+                GroupCoordinatorConfig.STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 2000
         ));
         assertDoesNotThrow(() -> GroupConfig.validate(Map.of(), groupCoordinatorConfig, createShareGroupConfig()));
     }
@@ -616,14 +616,14 @@ public class GroupConfigTest {
         ShareGroupConfig shareGroupConfig = ShareGroupConfig.fromProps(overrides);
 
         assertDoesNotThrow(() ->
-            GroupConfig.validate(new HashMap<>(), groupCoordinatorConfig, shareGroupConfig));
+                GroupConfig.validate(new HashMap<>(), groupCoordinatorConfig, shareGroupConfig));
     }
 
     @Test
     public void testEvaluateEmptyPropsReturnsEmpty() {
         Properties result = GroupConfig.evaluate(
-            new Properties(), "test-group",
-            GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
+                new Properties(), "test-group",
+                GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
         assertTrue(result.isEmpty());
     }
 
@@ -636,7 +636,7 @@ public class GroupConfigTest {
         propsSnapshot.putAll(props);
 
         GroupConfig.evaluate(props, "test-group",
-            GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
+                GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
         assertEquals(propsSnapshot, props);
     }
 
@@ -646,69 +646,69 @@ public class GroupConfigTest {
      */
     private static Stream<Arguments> rangeBoundedConfigs() {
         return Stream.of(
-            // Consumer group configs
-            Arguments.of(
-                GroupConfig.CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
-                40000, CONSUMER_GROUP_MIN_SESSION_TIMEOUT_MS_DEFAULT,
-                70000, CONSUMER_GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
-                3000, CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_DEFAULT,
-                20000, CONSUMER_GROUP_MAX_HEARTBEAT_INTERVAL_MS_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                0, /* CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG = */ 500,
-                20000, CONSUMER_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_DEFAULT
-            ),
-            // Share group configs
-            Arguments.of(
-                GroupConfig.SHARE_SESSION_TIMEOUT_MS_CONFIG,
-                40000, SHARE_GROUP_MIN_SESSION_TIMEOUT_MS_DEFAULT,
-                70000, SHARE_GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
-                3000, SHARE_GROUP_MIN_HEARTBEAT_INTERVAL_MS_DEFAULT,
-                20000, SHARE_GROUP_MAX_HEARTBEAT_INTERVAL_MS_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.SHARE_RECORD_LOCK_DURATION_MS_CONFIG,
-                10000, SHARE_GROUP_MIN_RECORD_LOCK_DURATION_MS_DEFAULT,
-                70000, SHARE_GROUP_MAX_RECORD_LOCK_DURATION_MS_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.SHARE_DELIVERY_COUNT_LIMIT_CONFIG,
-                1, SHARE_GROUP_MIN_DELIVERY_COUNT_LIMIT_DEFAULT,
-                15, SHARE_GROUP_MAX_DELIVERY_COUNT_LIMIT_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG,
-                50, SHARE_GROUP_MIN_PARTITION_MAX_RECORD_LOCKS_DEFAULT,
-                5000, SHARE_GROUP_MAX_PARTITION_MAX_RECORD_LOCKS_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                0, /* SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG = */ 500,
-                20000, SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_DEFAULT
-            ),
-            // Streams group configs
-            Arguments.of(
-                GroupConfig.STREAMS_SESSION_TIMEOUT_MS_CONFIG,
-                40000, STREAMS_GROUP_MIN_SESSION_TIMEOUT_MS_DEFAULT,
-                70000, STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
-                3000, STREAMS_GROUP_MIN_HEARTBEAT_INTERVAL_MS_DEFAULT,
-                20000, STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG,
-                0, /* STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG = */ 500,
-                20000, STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_DEFAULT
-            )
+                // Consumer group configs
+                Arguments.of(
+                        GroupConfig.CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
+                        40000, CONSUMER_GROUP_MIN_SESSION_TIMEOUT_MS_DEFAULT,
+                        70000, CONSUMER_GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
+                        3000, CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_DEFAULT,
+                        20000, CONSUMER_GROUP_MAX_HEARTBEAT_INTERVAL_MS_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                        0, /* CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG = */ 500,
+                        20000, CONSUMER_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_DEFAULT
+                ),
+                // Share group configs
+                Arguments.of(
+                        GroupConfig.SHARE_SESSION_TIMEOUT_MS_CONFIG,
+                        40000, SHARE_GROUP_MIN_SESSION_TIMEOUT_MS_DEFAULT,
+                        70000, SHARE_GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
+                        3000, SHARE_GROUP_MIN_HEARTBEAT_INTERVAL_MS_DEFAULT,
+                        20000, SHARE_GROUP_MAX_HEARTBEAT_INTERVAL_MS_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.SHARE_RECORD_LOCK_DURATION_MS_CONFIG,
+                        10000, SHARE_GROUP_MIN_RECORD_LOCK_DURATION_MS_DEFAULT,
+                        70000, SHARE_GROUP_MAX_RECORD_LOCK_DURATION_MS_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.SHARE_DELIVERY_COUNT_LIMIT_CONFIG,
+                        1, SHARE_GROUP_MIN_DELIVERY_COUNT_LIMIT_DEFAULT,
+                        15, SHARE_GROUP_MAX_DELIVERY_COUNT_LIMIT_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG,
+                        50, SHARE_GROUP_MIN_PARTITION_MAX_RECORD_LOCKS_DEFAULT,
+                        5000, SHARE_GROUP_MAX_PARTITION_MAX_RECORD_LOCKS_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                        0, /* SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG = */ 500,
+                        20000, SHARE_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_DEFAULT
+                ),
+                // Streams group configs
+                Arguments.of(
+                        GroupConfig.STREAMS_SESSION_TIMEOUT_MS_CONFIG,
+                        40000, STREAMS_GROUP_MIN_SESSION_TIMEOUT_MS_DEFAULT,
+                        70000, STREAMS_GROUP_MAX_SESSION_TIMEOUT_MS_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
+                        3000, STREAMS_GROUP_MIN_HEARTBEAT_INTERVAL_MS_DEFAULT,
+                        20000, STREAMS_GROUP_MAX_HEARTBEAT_INTERVAL_MS_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                        0, /* STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG = */ 500,
+                        20000, STREAMS_GROUP_MAX_ASSIGNMENT_INTERVAL_MS_DEFAULT
+                )
         );
     }
 
@@ -718,14 +718,14 @@ public class GroupConfigTest {
      */
     private static Stream<Arguments> maxBoundedConfigs() {
         return Stream.of(
-            Arguments.of(
-                GroupConfig.STREAMS_NUM_STANDBY_REPLICAS_CONFIG,
-                5, STREAMS_GROUP_MAX_STANDBY_REPLICAS_DEFAULT
-            ),
-            Arguments.of(
-                GroupConfig.STREAMS_NUM_WARMUP_REPLICAS_CONFIG,
-                25, STREAMS_GROUP_MAX_WARMUP_REPLICAS_DEFAULT
-            )
+                Arguments.of(
+                        GroupConfig.STREAMS_NUM_STANDBY_REPLICAS_CONFIG,
+                        5, STREAMS_GROUP_MAX_STANDBY_REPLICAS_DEFAULT
+                ),
+                Arguments.of(
+                        GroupConfig.STREAMS_NUM_WARMUP_REPLICAS_CONFIG,
+                        25, STREAMS_GROUP_MAX_WARMUP_REPLICAS_DEFAULT
+                )
         );
     }
 
@@ -735,75 +735,75 @@ public class GroupConfigTest {
      */
     private static Stream<Arguments> minBoundedConfigs() {
         return Stream.of(
-            Arguments.of(
-                GroupConfig.STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG,
-                1000, STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_DEFAULT
-            )
+                Arguments.of(
+                        GroupConfig.STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG,
+                        1000, STREAMS_GROUP_MIN_TASK_OFFSET_INTERVAL_MS_DEFAULT
+                )
         );
     }
 
     @ParameterizedTest(name = "testEvaluateValueAboveMaxIsCapped[{0}]")
     @MethodSource("rangeBoundedConfigs")
     public void testEvaluateValueAboveMaxIsCapped(
-        String key,
-        int tooLow,
-        int expectedMin,
-        int tooHigh,
-        int expectedMax
+            String key,
+            int tooLow,
+            int expectedMin,
+            int tooHigh,
+            int expectedMax
     ) {
         Properties props = new Properties();
         props.put(key, tooHigh);
         Properties result = GroupConfig.evaluate(props, "test-group",
-            GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
+                GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
         assertEquals(expectedMax, result.get(key));
     }
 
     @ParameterizedTest(name = "testEvaluateValueBelowMinIsCapped[{0}]")
     @MethodSource("rangeBoundedConfigs")
     public void testEvaluateValueBelowMinIsCapped(
-        String key,
-        int tooLow,
-        int expectedMin,
-        int tooHigh,
-        int expectedMax
+            String key,
+            int tooLow,
+            int expectedMin,
+            int tooHigh,
+            int expectedMax
     ) {
         Properties props = new Properties();
         props.put(key, tooLow);
         Properties result = GroupConfig.evaluate(props, "test-group",
-            GroupCoordinatorConfig.fromProps(Map.of(
-                GroupCoordinatorConfig.CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 500,
-                GroupCoordinatorConfig.SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 500,
-                GroupCoordinatorConfig.STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 500
-            )),
-            ShareGroupConfig.fromProps(Map.of()));
+                GroupCoordinatorConfig.fromProps(Map.of(
+                        GroupCoordinatorConfig.CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 500,
+                        GroupCoordinatorConfig.SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 500,
+                        GroupCoordinatorConfig.STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 500
+                )),
+                ShareGroupConfig.fromProps(Map.of()));
         assertEquals(expectedMin, result.get(key));
     }
 
     @ParameterizedTest(name = "testEvaluateMaxBoundedValueAboveMaxIsCapped[{0}]")
     @MethodSource("maxBoundedConfigs")
     public void testEvaluateMaxBoundedValueAboveMaxIsCapped(
-        String key,
-        int tooHigh,
-        int expectedMax
+            String key,
+            int tooHigh,
+            int expectedMax
     ) {
         Properties props = new Properties();
         props.put(key, tooHigh);
         Properties result = GroupConfig.evaluate(props, "test-group",
-            GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
+                GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
         assertEquals(expectedMax, result.get(key));
     }
 
     @ParameterizedTest(name = "testEvaluateMinBoundedValueBelowMinIsCapped[{0}]")
     @MethodSource("minBoundedConfigs")
     public void testEvaluateMinBoundedValueBelowMinIsCapped(
-        String key,
-        int tooLow,
-        int expectedMin
+            String key,
+            int tooLow,
+            int expectedMin
     ) {
         Properties props = new Properties();
         props.put(key, tooLow);
         Properties result = GroupConfig.evaluate(props, "test-group",
-            GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
+                GroupCoordinatorConfig.fromProps(new HashMap<>()), ShareGroupConfig.fromProps(new HashMap<>()));
         assertEquals(expectedMin, result.get(key));
     }
 
@@ -812,14 +812,14 @@ public class GroupConfigTest {
         // Every GroupConfig entry should have an entry in ALL_GROUP_CONFIG_SYNONYMS.
         for (String groupConfigName : GroupConfig.CONFIG_DEF.names()) {
             assertTrue(GroupConfig.ALL_GROUP_CONFIG_SYNONYMS.containsKey(groupConfigName),
-                "GroupConfig entry '" + groupConfigName + "' is not in ALL_GROUP_CONFIG_SYNONYMS. " +
-                    "Add it with Optional.of(brokerConfigName) or Optional.empty() if it has no broker synonym.");
+                    "GroupConfig entry '" + groupConfigName + "' is not in ALL_GROUP_CONFIG_SYNONYMS. " +
+                            "Add it with Optional.of(brokerConfigName) or Optional.empty() if it has no broker synonym.");
         }
 
         // Every key in ALL_GROUP_CONFIG_SYNONYMS should be a valid GroupConfig entry.
         for (String key : GroupConfig.ALL_GROUP_CONFIG_SYNONYMS.keySet()) {
             assertTrue(GroupConfig.CONFIG_DEF.names().contains(key),
-                "ALL_GROUP_CONFIG_SYNONYMS contains '" + key + "' which is not a valid GroupConfig entry.");
+                    "ALL_GROUP_CONFIG_SYNONYMS contains '" + key + "' which is not a valid GroupConfig entry.");
         }
 
         // Every present synonym mapping should point to a valid broker config.
@@ -829,9 +829,9 @@ public class GroupConfigTest {
 
         for (Map.Entry<String, Optional<String>> entry : GroupConfig.ALL_GROUP_CONFIG_SYNONYMS.entrySet()) {
             entry.getValue().ifPresent(brokerConfigName ->
-                assertTrue(brokerConfigNames.contains(brokerConfigName),
-                    "ALL_GROUP_CONFIG_SYNONYMS maps '" + entry.getKey() + "' to '" +
-                        brokerConfigName + "' but this broker config does not exist."));
+                    assertTrue(brokerConfigNames.contains(brokerConfigName),
+                            "ALL_GROUP_CONFIG_SYNONYMS maps '" + entry.getKey() + "' to '" +
+                                    brokerConfigName + "' but this broker config does not exist."));
         }
     }
 
@@ -858,14 +858,14 @@ public class GroupConfigTest {
 
     private GroupCoordinatorConfig createGroupCoordinatorConfig() {
         return GroupCoordinatorConfigTest.createGroupCoordinatorConfig(
-            OFFSET_METADATA_MAX_SIZE,
-            OFFSETS_RETENTION_CHECK_INTERVAL_MS,
-            OFFSETS_RETENTION_MINUTES,
-            Map.of(
-                GroupCoordinatorConfig.CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 1000,
-                GroupCoordinatorConfig.SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 1000,
-                GroupCoordinatorConfig.STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 1000
-            )
+                OFFSET_METADATA_MAX_SIZE,
+                OFFSETS_RETENTION_CHECK_INTERVAL_MS,
+                OFFSETS_RETENTION_MINUTES,
+                Map.of(
+                        GroupCoordinatorConfig.CONSUMER_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 1000,
+                        GroupCoordinatorConfig.SHARE_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 1000,
+                        GroupCoordinatorConfig.STREAMS_GROUP_MIN_ASSIGNMENT_INTERVAL_MS_CONFIG, 1000
+                )
         );
     }
 
@@ -906,7 +906,7 @@ public class GroupConfigTest {
         configs.put(GroupConfig.ERRORS_DEADLETTERQUEUE_TOPIC_NAME_CONFIG, "__my-dlq");
 
         InvalidConfigurationException exception = assertThrows(InvalidConfigurationException.class, () ->
-            GroupConfig.validate(configs, createGroupCoordinatorConfig(), createShareGroupConfig()));
+                GroupConfig.validate(configs, createGroupCoordinatorConfig(), createShareGroupConfig()));
         assertTrue(exception.getMessage().contains("DLQ topic name must not start with '__'"));
     }
 

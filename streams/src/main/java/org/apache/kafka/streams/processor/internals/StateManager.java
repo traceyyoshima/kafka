@@ -32,8 +32,8 @@ public interface StateManager {
 
     /**
      * @throws IllegalArgumentException if the store name has already been registered or if it is not a valid name
-     * (e.g., when it conflicts with the names of internal topics, like the checkpoint file name)
-     * @throws StreamsException if the store's change log does not contain the partition
+     *                                  (e.g., when it conflicts with the names of internal topics, like the checkpoint file name)
+     * @throws StreamsException         if the store's change log does not contain the partition
      */
     void registerStore(final StateStore store,
                        final StateRestoreCallback stateRestoreCallback,

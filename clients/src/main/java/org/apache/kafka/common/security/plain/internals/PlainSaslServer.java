@@ -59,13 +59,13 @@ public class PlainSaslServer implements SaslServer {
 
     /**
      * @throws SaslAuthenticationException if username/password combination is invalid or if the requested
-     *         authorization id is not the same as username.
-     * <p>
-     * <b>Note:</b> This method may throw {@link SaslAuthenticationException} to provide custom error messages
-     * to clients. But care should be taken to avoid including any information in the exception message that
-     * should not be leaked to unauthenticated clients. It may be safer to throw {@link SaslException} in
-     * some cases so that a standard error message is returned to clients.
-     * </p>
+     *                                     authorization id is not the same as username.
+     *                                     <p>
+     *                                     <b>Note:</b> This method may throw {@link SaslAuthenticationException} to provide custom error messages
+     *                                     to clients. But care should be taken to avoid including any information in the exception message that
+     *                                     should not be leaked to unauthenticated clients. It may be safer to throw {@link SaslException} in
+     *                                     some cases so that a standard error message is returned to clients.
+     *                                     </p>
      */
     @Override
     public byte[] evaluateResponse(byte[] responseBytes) throws SaslAuthenticationException {
@@ -128,7 +128,7 @@ public class PlainSaslServer implements SaslServer {
 
         if (tokens.size() != 3)
             throw new SaslAuthenticationException("Invalid SASL/PLAIN response: expected 3 tokens, got " +
-                tokens.size());
+                    tokens.size());
 
         return tokens;
     }
@@ -179,7 +179,7 @@ public class PlainSaslServer implements SaslServer {
 
         @Override
         public SaslServer createSaslServer(String mechanism, String protocol, String serverName, Map<String, ?> props, CallbackHandler cbh)
-            throws SaslException {
+                throws SaslException {
 
             if (!PLAIN_MECHANISM.equals(mechanism))
                 throw new SaslException(String.format("Mechanism \'%s\' is not supported. Only PLAIN is supported.", mechanism));

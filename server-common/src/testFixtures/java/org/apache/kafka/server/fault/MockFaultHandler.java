@@ -46,7 +46,7 @@ public class MockFaultHandler implements FaultHandler {
         FaultHandlerException e = (cause == null) ?
                 new FaultHandlerException(name + ": " + failureMessage) :
                 new FaultHandlerException(name + ": " + failureMessage +
-                        ": " + cause.getMessage(), cause);
+                                          ": " + cause.getMessage(), cause);
         if (firstException == null) {
             firstException = e;
         }

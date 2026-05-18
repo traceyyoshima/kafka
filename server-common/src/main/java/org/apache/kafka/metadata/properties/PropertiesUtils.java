@@ -34,20 +34,20 @@ public final class PropertiesUtils {
     /**
      * Writes a Java Properties object to a file.
      *
-     * @param props         The Properties object.
-     * @param path          The file to write to.
+     * @param props The Properties object.
+     * @param path  The file to write to.
      * @throws IOException
      */
     public static void writePropertiesFile(
-        Properties props,
-        String path,
-        boolean fsync
+            Properties props,
+            String path,
+            boolean fsync
     ) throws IOException {
         File tempFile = new File(path + ".tmp");
         try (
-            FileOutputStream fos = new FileOutputStream(tempFile, false);
-            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-            PrintWriter pw = new PrintWriter(osw)
+                FileOutputStream fos = new FileOutputStream(tempFile, false);
+                OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+                PrintWriter pw = new PrintWriter(osw)
         ) {
             props.store(pw, "");
             fos.flush();
@@ -67,10 +67,9 @@ public final class PropertiesUtils {
     /**
      * Reads a Java Properties object from a file.
      *
-     * @param path          The file to read from.
-     *
-     * @throws java.nio.file.NoSuchFileException    If the file is not found.
-     * @throws IOException                          If there is another exception while reading.
+     * @param path The file to read from.
+     * @throws java.nio.file.NoSuchFileException If the file is not found.
+     * @throws IOException                       If there is another exception while reading.
      */
     public static Properties readPropertiesFile(String path) throws IOException {
         Properties props = new Properties();
@@ -83,14 +82,13 @@ public final class PropertiesUtils {
     /**
      * Pull an integer from a Properties object.
      *
-     * @param props     The Properties object.
-     * @param keyName   The key to look for.
-     *
-     * @return          The integer.
+     * @param props   The Properties object.
+     * @param keyName The key to look for.
+     * @return The integer.
      */
     static int loadRequiredIntProp(
-        Properties props,
-        String keyName
+            Properties props,
+            String keyName
     ) {
         String value = props.getProperty(keyName);
         if (value == null) {

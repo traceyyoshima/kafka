@@ -79,10 +79,10 @@ public class StreamsNamedRepartitionTest {
         }
 
         maybeUpdatedStream.groupByKey(Grouped.with("grouped-stream", Serdes.String(), Serdes.String()))
-            .aggregate(initializer, aggregator, Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("count-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.Integer()))
-            .toStream()
-            .peek((k, v) -> System.out.printf("AGGREGATED key=%s value=%s%n", k, v))
-            .to(aggregationTopic, Produced.with(Serdes.String(), Serdes.Integer()));
+                .aggregate(initializer, aggregator, Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("count-store").withKeySerde(Serdes.String()).withValueSerde(Serdes.Integer()))
+                .toStream()
+                .peek((k, v) -> System.out.printf("AGGREGATED key=%s value=%s%n", k, v))
+                .to(aggregationTopic, Produced.with(Serdes.String(), Serdes.Integer()));
 
         final Properties config = new Properties();
 

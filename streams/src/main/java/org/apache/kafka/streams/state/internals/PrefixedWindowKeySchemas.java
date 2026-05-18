@@ -59,19 +59,19 @@ public class PrefixedWindowKeySchemas {
             final byte[] maxKey = new byte[key.get().length];
             Arrays.fill(maxKey, (byte) 0xFF);
             return Bytes.wrap(ByteBuffer.allocate(PREFIX_SIZE + TIMESTAMP_SIZE + maxKey.length + SEQNUM_SIZE)
-                .put(TIME_FIRST_PREFIX)
-                .putLong(to)
-                .put(maxKey).putInt(Integer.MAX_VALUE)
-                .array());
+                    .put(TIME_FIRST_PREFIX)
+                    .putLong(to)
+                    .put(maxKey).putInt(Integer.MAX_VALUE)
+                    .array());
         }
 
         @Override
         public Bytes lowerRange(final Bytes key, final long from) {
             if (key == null) {
                 return Bytes.wrap(ByteBuffer.allocate(PREFIX_SIZE + TIMESTAMP_SIZE)
-                    .put(TIME_FIRST_PREFIX)
-                    .putLong(from)
-                    .array());
+                        .put(TIME_FIRST_PREFIX)
+                        .putLong(from)
+                        .array());
             }
 
             /*
@@ -85,10 +85,10 @@ public class PrefixedWindowKeySchemas {
              *            it will always be larger than (k1 + seqnum).
              */
             return Bytes.wrap(ByteBuffer.allocate(PREFIX_SIZE + TIMESTAMP_SIZE + key.get().length)
-                .put(TIME_FIRST_PREFIX)
-                .putLong(from)
-                .put(key.get())
-                .array());
+                    .put(TIME_FIRST_PREFIX)
+                    .putLong(from)
+                    .put(key.get())
+                    .array());
         }
 
         @Override
@@ -108,7 +108,7 @@ public class PrefixedWindowKeySchemas {
 
         @Override
         public HasNextCondition hasNextCondition(final Bytes binaryKeyFrom,
-            final Bytes binaryKeyTo, final long from, final long to, final boolean forward) {
+                                                 final Bytes binaryKeyTo, final long from, final long to, final boolean forward) {
             return iterator -> {
                 while (iterator.hasNext()) {
                     final Bytes bytes = iterator.peekNextKey();
@@ -130,10 +130,10 @@ public class PrefixedWindowKeySchemas {
                     }
 
                     final Bytes keyBytes = Bytes.wrap(
-                        TimeFirstWindowKeySchema.extractStoreKeyBytes(bytes.get()));
+                            TimeFirstWindowKeySchema.extractStoreKeyBytes(bytes.get()));
                     if ((binaryKeyFrom == null || keyBytes.compareTo(binaryKeyFrom) >= 0)
-                        && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
-                        && time >= from && time <= to) {
+                            && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
+                            && time >= from && time <= to) {
                         return true;
                     }
                     iterator.next();
@@ -144,9 +144,9 @@ public class PrefixedWindowKeySchemas {
 
         @Override
         public <S extends Segment> List<S> segmentsToSearch(final Segments<S> segments,
-            final long from,
-            final long to,
-            final boolean forward) {
+                                                            final long from,
+                                                            final long to,
+                                                            final boolean forward) {
             return segments.segments(from, to, forward);
         }
 
@@ -203,7 +203,7 @@ public class PrefixedWindowKeySchemas {
                                       final long timestamp,
                                       final int seqnum) {
             final ByteBuffer buf = ByteBuffer.allocate(
-                PREFIX_SIZE + TIMESTAMP_SIZE + serializedKey.length + SEQNUM_SIZE);
+                    PREFIX_SIZE + TIMESTAMP_SIZE + serializedKey.length + SEQNUM_SIZE);
             buf.put(TIME_FIRST_PREFIX);
             buf.putLong(timestamp);
             buf.put(serializedKey);
@@ -290,9 +290,9 @@ public class PrefixedWindowKeySchemas {
                     final Bytes keyBytes = Bytes.wrap(KeyFirstWindowKeySchema.extractStoreKeyBytes(bytes.get()));
                     final long time = KeyFirstWindowKeySchema.extractStoreTimestamp(bytes.get());
                     if ((binaryKeyFrom == null || keyBytes.compareTo(binaryKeyFrom) >= 0)
-                        && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
-                        && time >= from
-                        && time <= to) {
+                            && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
+                            && time >= from
+                            && time <= to) {
                         return true;
                     }
                     iterator.next();
@@ -339,8 +339,8 @@ public class PrefixedWindowKeySchemas {
 
         // package private for testing
         public static Bytes toStoreKeyBinary(final byte[] serializedKey,
-                                      final long timestamp,
-                                      final int seqnum) {
+                                             final long timestamp,
+                                             final int seqnum) {
             final ByteBuffer buf = ByteBuffer.allocate(PREFIX_SIZE + serializedKey.length + TIMESTAMP_SIZE + SEQNUM_SIZE);
             buf.put(KEY_FIRST_PREFIX);
             buf.put(serializedKey);
@@ -372,7 +372,7 @@ public class PrefixedWindowKeySchemas {
         }
 
         static Window extractStoreWindow(final byte[] binaryKey,
-                                     final long windowSize) {
+                                         final long windowSize) {
             final long start = KeyFirstWindowKeySchema.extractStoreTimestamp(binaryKey);
             return timeWindowForSize(start, windowSize);
         }
@@ -392,14 +392,14 @@ public class PrefixedWindowKeySchemas {
             if (noPrefixKey == null) {
                 final byte prefix = upperRange ? KEY_FIRST_PREFIX + 1 : KEY_FIRST_PREFIX;
                 final byte[] ret = ByteBuffer.allocate(PREFIX_SIZE)
-                    .put(prefix)
-                    .array();
+                        .put(prefix)
+                        .array();
                 return Bytes.wrap(ret);
             }
             final byte[] ret = ByteBuffer.allocate(PREFIX_SIZE + noPrefixKey.get().length)
-                .put(KEY_FIRST_PREFIX)
-                .put(noPrefixKey.get())
-                .array();
+                    .put(KEY_FIRST_PREFIX)
+                    .put(noPrefixKey.get())
+                    .array();
             return Bytes.wrap(ret);
         }
 

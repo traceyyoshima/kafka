@@ -30,9 +30,9 @@ public abstract class CoordinatorMetrics {
 
     /**
      * Create a new metrics shard.
-     * @param snapshotRegistry  The snapshot registry.
-     * @param tp                The topic partition corresponding to the shard.
      *
+     * @param snapshotRegistry The snapshot registry.
+     * @param tp               The topic partition corresponding to the shard.
      * @return The metrics shard.
      */
     public abstract CoordinatorMetricsShard newMetricsShard(SnapshotRegistry snapshotRegistry, TopicPartition tp);
@@ -40,14 +40,14 @@ public abstract class CoordinatorMetrics {
     /**
      * Activate the metrics shard. This shard is now able to collect metrics.
      *
-     * @param shard  The metrics shard.
+     * @param shard The metrics shard.
      */
     public abstract void activateMetricsShard(CoordinatorMetricsShard shard);
 
     /**
      * Deactivate the metrics shard. This shard should not be part of the metrics aggregation.
      *
-     * @param shard  The metrics shard.
+     * @param shard The metrics shard.
      */
     public abstract void deactivateMetricsShard(CoordinatorMetricsShard shard);
 
@@ -57,7 +57,6 @@ public abstract class CoordinatorMetrics {
      * @param group The metric group.
      * @param type  The metric type.
      * @param name  The metric name.
-     *
      * @return the yammer metric name.
      */
     public static MetricName getMetricName(String group, String type, String name) {
@@ -68,8 +67,8 @@ public abstract class CoordinatorMetrics {
      * Invoked when the last committed offset has been updated. This is used as a listener for metrics
      * relying on a snapshot registry.
      *
-     * @param tp      The topic partition.
-     * @param offset  The updated offset.
+     * @param tp     The topic partition.
+     * @param offset The updated offset.
      */
     public abstract void onUpdateLastCommittedOffset(TopicPartition tp, long offset);
 }

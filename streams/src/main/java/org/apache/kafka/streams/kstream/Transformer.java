@@ -77,11 +77,11 @@ public interface Transformer<K, V, R> {
      * more than one output record should be forwarded downstream, {@link ProcessorContext#forward(Object, Object)}
      * and {@link ProcessorContext#forward(Object, Object, To)} can be used.
      * If no record should be forwarded downstream, {@code transform} can return {@code null}.
-     *
+     * <p>
      * Note that returning a new {@link KeyValue} is merely for convenience. The same can be achieved by using
      * {@link ProcessorContext#forward(Object, Object)} and returning {@code null}.
      *
-     * @param key the key for the record
+     * @param key   the key for the record
      * @param value the value for the record
      * @return new {@link KeyValue} pair&mdash;if {@code null} no key-value pair will
      * be forwarded to down stream

@@ -36,9 +36,9 @@ public enum StreamsVersion implements FeatureVersion {
     private final Map<String, Short> dependencies;
 
     StreamsVersion(
-        int featureLevel,
-        MetadataVersion bootstrapMetadataVersion,
-        Map<String, Short> dependencies
+            int featureLevel,
+            MetadataVersion bootstrapMetadataVersion,
+            Map<String, Short> dependencies
     ) {
         this.featureLevel = (short) featureLevel;
         this.bootstrapMetadataVersion = bootstrapMetadataVersion;

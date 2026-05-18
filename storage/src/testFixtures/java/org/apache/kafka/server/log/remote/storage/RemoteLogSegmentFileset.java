@@ -61,8 +61,8 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * <code>
  * / storage-directory / topic-partition-uuidBase64 / 00000000000000000011-oAtiIQ95REujbuzNd_lkLQ.log
- *                                                  . 00000000000000000011-oAtiIQ95REujbuzNd_lkLQ.index
- *                                                  . 00000000000000000011-oAtiIQ95REujbuzNd_lkLQ.timeindex
+ * . 00000000000000000011-oAtiIQ95REujbuzNd_lkLQ.index
+ * . 00000000000000000011-oAtiIQ95REujbuzNd_lkLQ.timeindex
  * </code>
  */
 public final class RemoteLogSegmentFileset {
@@ -70,7 +70,7 @@ public final class RemoteLogSegmentFileset {
     /**
      * The format of a file which belongs to the fileset, i.e. a file which is assigned to a log segment in
      * Kafka's log directory.
-     *
+     * <p>
      * The name of each of the files under the scope of a log segment (the log file, its indexes, etc.)
      * follows the structure UUID-FileType.
      */
@@ -156,7 +156,7 @@ public final class RemoteLogSegmentFileset {
      * the log segment offloaded are not created on the file system until transfer happens.
      *
      * @param storageDir The root directory of the local tiered storage.
-     * @param metadata Remote log metadata about a topic partition's remote log.
+     * @param metadata   Remote log metadata about a topic partition's remote log.
      * @return A new fileset instance.
      */
     public static RemoteLogSegmentFileset openFileset(final File storageDir, final RemoteLogSegmentMetadata metadata) {
@@ -178,7 +178,7 @@ public final class RemoteLogSegmentFileset {
      * The fileset MUST exist on the file system with the given uuid.
      *
      * @param tpDirectory The topic-partition directory which this fileset's segment belongs to.
-     * @param uuid The expected UUID of the fileset.
+     * @param uuid        The expected UUID of the fileset.
      * @return A new fileset instance.
      */
     public static RemoteLogSegmentFileset openExistingFileset(final RemoteTopicPartitionDirectory tpDirectory,

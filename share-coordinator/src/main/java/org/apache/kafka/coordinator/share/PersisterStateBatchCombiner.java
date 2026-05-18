@@ -33,9 +33,9 @@ public class PersisterStateBatchCombiner {
     private List<PersisterStateBatch> finalBatchList;   // final list is built here
 
     public PersisterStateBatchCombiner(
-        List<PersisterStateBatch> batchesSoFar,
-        List<PersisterStateBatch> newBatches,
-        long startOffset
+            List<PersisterStateBatch> batchesSoFar,
+            List<PersisterStateBatch> newBatches,
+            long startOffset
     ) {
         initializeCombinedList(batchesSoFar, newBatches);
         int estimatedResultSize = (combinedBatchList.size() * 3) / 2;   // heuristic size - 50% overallocation
@@ -78,7 +78,7 @@ public class PersisterStateBatchCombiner {
      * - remove any non-overlapping batches from sortedBatches encountered during the find operation and add them to a finalBatchList
      * - do repeat until a mergeable pair is not found:
      * -    based on various conditions of offset overlap and batch state differences combine the batches or
-     *      create new batches, if required, and add to the sortedBatches.
+     * create new batches, if required, and add to the sortedBatches.
      * -    find first 2 mergeable batches in sortedBatches set, say, prev and candidate.
      * -    remove any non-mergeable batches from sortedBatches encountered during the find operation and add them to a finalBatchList
      * - done
@@ -168,7 +168,7 @@ public class PersisterStateBatchCombiner {
      * Any non-mergeable batches prefixing a good mergeable pair are removed from the sortedBatches.
      * For example:
      * ----- ----  ----- -----      -----
-     *                      ------
+     * ------
      * <---------------> <-------->
      * non-overlapping   1st overlapping pair
      *
@@ -184,11 +184,11 @@ public class PersisterStateBatchCombiner {
         while (iter.hasNext()) {
             PersisterStateBatch candidate = iter.next();
             if (candidate.firstOffset() <= prev.lastOffset() || // overlap
-                prev.lastOffset() + 1 == candidate.firstOffset() && compareBatchDeliveryInfo(prev, candidate) == 0) {  // contiguous
+                    prev.lastOffset() + 1 == candidate.firstOffset() && compareBatchDeliveryInfo(prev, candidate) == 0) {  // contiguous
                 updateBatchContainers(nonOverlapping);
                 return new MergeCandidatePair(
-                    prev,
-                    candidate
+                        prev,
+                        candidate
                 );
             }
             nonOverlapping.add(prev);
@@ -241,13 +241,13 @@ public class PersisterStateBatchCombiner {
 
     private void handleSameStateMerge(PersisterStateBatch prev, PersisterStateBatch candidate) {
         sortedBatches.add(new PersisterStateBatch(
-            prev.firstOffset(),
-            // cover cases
-            // prev:      ------   --------       ---------
-            // candidate:   ---       ----------           -----
-            Math.max(candidate.lastOffset(), prev.lastOffset()),
-            prev.deliveryState(),
-            prev.deliveryCount()
+                prev.firstOffset(),
+                // cover cases
+                // prev:      ------   --------       ---------
+                // candidate:   ---       ----------           -----
+                Math.max(candidate.lastOffset(), prev.lastOffset()),
+                prev.deliveryState(),
+                prev.deliveryCount()
         ));
     }
 
@@ -274,10 +274,10 @@ public class PersisterStateBatchCombiner {
             if (compareBatchDeliveryInfo(candidate, prev) < 0) {
                 sortedBatches.add(prev);
                 sortedBatches.add(new PersisterStateBatch(
-                    prev.lastOffset() + 1,
-                    candidate.lastOffset(),
-                    candidate.deliveryState(),
-                    candidate.deliveryCount()
+                        prev.lastOffset() + 1,
+                        candidate.lastOffset(),
+                        candidate.deliveryState(),
+                        candidate.deliveryCount()
                 ));
             } else {
                 // candidate priority is >= prev
@@ -303,19 +303,19 @@ public class PersisterStateBatchCombiner {
             sortedBatches.add(prev);
         } else {
             sortedBatches.add(new PersisterStateBatch(
-                prev.firstOffset(),
-                candidate.firstOffset() - 1,
-                prev.deliveryState(),
-                prev.deliveryCount()
+                    prev.firstOffset(),
+                    candidate.firstOffset() - 1,
+                    prev.deliveryState(),
+                    prev.deliveryCount()
             ));
 
             sortedBatches.add(candidate);
 
             sortedBatches.add(new PersisterStateBatch(
-                candidate.lastOffset() + 1,
-                prev.lastOffset(),
-                prev.deliveryState(),
-                prev.deliveryCount()
+                    candidate.lastOffset() + 1,
+                    prev.lastOffset(),
+                    prev.deliveryState(),
+                    prev.deliveryCount()
             ));
         }
     }
@@ -327,10 +327,10 @@ public class PersisterStateBatchCombiner {
             sortedBatches.add(prev);
         } else {
             sortedBatches.add(new PersisterStateBatch(
-                prev.firstOffset(),
-                candidate.firstOffset() - 1,
-                prev.deliveryState(),
-                prev.deliveryCount()
+                    prev.firstOffset(),
+                    candidate.firstOffset() - 1,
+                    prev.deliveryState(),
+                    prev.deliveryCount()
             ));
 
             sortedBatches.add(candidate);
@@ -344,18 +344,18 @@ public class PersisterStateBatchCombiner {
             sortedBatches.add(prev);
 
             sortedBatches.add(new PersisterStateBatch(
-                prev.lastOffset() + 1,
-                candidate.lastOffset(),
-                candidate.deliveryState(),
-                candidate.deliveryCount()
+                    prev.lastOffset() + 1,
+                    candidate.lastOffset(),
+                    candidate.deliveryState(),
+                    candidate.deliveryCount()
             ));
         } else {
             // candidate has higher priority
             sortedBatches.add(new PersisterStateBatch(
-                prev.firstOffset(),
-                candidate.firstOffset() - 1,
-                prev.deliveryState(),
-                prev.deliveryCount()
+                    prev.firstOffset(),
+                    candidate.firstOffset() - 1,
+                    prev.deliveryState(),
+                    prev.deliveryCount()
             ));
 
             sortedBatches.add(candidate);
@@ -372,8 +372,8 @@ public class PersisterStateBatchCombiner {
         public static final MergeCandidatePair EMPTY = new MergeCandidatePair(null, null);
 
         public MergeCandidatePair(
-            PersisterStateBatch prev,
-            PersisterStateBatch candidate
+                PersisterStateBatch prev,
+                PersisterStateBatch candidate
         ) {
             this.prev = prev;
             this.candidate = candidate;

@@ -24,8 +24,8 @@ public interface DeferredEvent {
     /**
      * Complete the event.
      *
-     * @param exception         null if the event should be completed successfully; the
-     *                          error otherwise.
+     * @param exception null if the event should be completed successfully; the
+     *                  error otherwise.
      */
     void complete(Throwable exception);
 }

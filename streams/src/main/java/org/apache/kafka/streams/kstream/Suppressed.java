@@ -172,8 +172,8 @@ public interface Suppressed<K> extends NamedOperation<Suppressed<K>> {
      * the first record in the buffer but does <em>not</em> re-start the timer.
      *
      * @param timeToWaitForMoreEvents The amount of time to wait, per record, for new events.
-     * @param bufferConfig A configuration specifying how much space to use for buffering intermediate results.
-     * @param <K> The key type for the KTable to apply this suppression to.
+     * @param bufferConfig            A configuration specifying how much space to use for buffering intermediate results.
+     * @param <K>                     The key type for the KTable to apply this suppression to.
      * @return a suppression configuration
      */
     static <K> Suppressed<K> untilTimeLimit(final Duration timeToWaitForMoreEvents, final BufferConfig<?> bufferConfig) {

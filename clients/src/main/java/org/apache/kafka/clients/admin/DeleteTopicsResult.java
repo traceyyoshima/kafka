@@ -50,6 +50,7 @@ public class DeleteTopicsResult {
 
     /**
      * Use when {@link Admin#deleteTopics(TopicCollection, DeleteTopicsOptions)} used a TopicIdCollection
+     *
      * @return a map from topic IDs to futures which can be used to check the status of
      * individual deletions if the deleteTopics request used topic IDs. Otherwise return null.
      */
@@ -59,6 +60,7 @@ public class DeleteTopicsResult {
 
     /**
      * Use when {@link Admin#deleteTopics(TopicCollection, DeleteTopicsOptions)} used a TopicNameCollection
+     *
      * @return a map from topic names to futures which can be used to check the status of
      * individual deletions if the deleteTopics request used topic names. Otherwise return null.
      */
@@ -71,6 +73,6 @@ public class DeleteTopicsResult {
      */
     public KafkaFuture<Void> all() {
         return (topicIdFutures == null) ? KafkaFuture.allOf(nameFutures.values().toArray(new KafkaFuture<?>[0])) :
-            KafkaFuture.allOf(topicIdFutures.values().toArray(new KafkaFuture<?>[0]));
+                KafkaFuture.allOf(topicIdFutures.values().toArray(new KafkaFuture<?>[0]));
     }
 }

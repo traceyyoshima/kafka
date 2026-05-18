@@ -29,7 +29,7 @@ public class DeleteTopicsResponse extends AbstractResponse {
 
     /**
      * Possible error codes:
-     *
+     * <p>
      * REQUEST_TIMED_OUT(7)
      * INVALID_TOPIC_EXCEPTION(17)
      * TOPIC_AUTHORIZATION_FAILED(29)
@@ -63,7 +63,7 @@ public class DeleteTopicsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.responses().forEach(result ->
-            updateErrorCounts(counts, Errors.forCode(result.errorCode()))
+                updateErrorCounts(counts, Errors.forCode(result.errorCode()))
         );
         return counts;
     }

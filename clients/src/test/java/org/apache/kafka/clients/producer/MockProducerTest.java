@@ -89,11 +89,11 @@ public class MockProducerTest {
         Cluster cluster = new Cluster(null, new ArrayList<>(0), asList(partitionInfo0, partitionInfo1),
                 Collections.emptySet(), Collections.emptySet());
         MockProducer<String, String> producer = new MockProducer<>(
-            cluster,
-            true,
-            new org.apache.kafka.clients.producer.RoundRobinPartitioner(),
-            new StringSerializer(),
-            new StringSerializer()
+                cluster,
+                true,
+                new org.apache.kafka.clients.producer.RoundRobinPartitioner(),
+                new StringSerializer(),
+                new StringSerializer()
         );
         ProducerRecord<String, String> record = new ProducerRecord<>(topic, "key", "value");
         Future<RecordMetadata> metadata = producer.send(record);
@@ -442,7 +442,7 @@ public class MockProducerTest {
         producer.sendOffsetsToTransaction(Collections.emptyMap(), new ConsumerGroupMetadata("groupId"));
         assertFalse(producer.sentOffsets());
     }
-    
+
     @Test
     public void shouldAddOffsetsWhenSendOffsetsToTransactionByGroupMetadata() {
         buildMockProducer(true);

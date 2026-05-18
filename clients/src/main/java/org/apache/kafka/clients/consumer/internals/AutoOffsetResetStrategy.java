@@ -57,7 +57,7 @@ public class AutoOffsetResetStrategy {
     }
 
     /**
-     *  Returns the AutoOffsetResetStrategy from the given string.
+     * Returns the AutoOffsetResetStrategy from the given string.
      */
     public static AutoOffsetResetStrategy fromString(String offsetStrategy) {
         if (offsetStrategy == null) {
@@ -114,6 +114,7 @@ public class AutoOffsetResetStrategy {
 
     /**
      * Return the timestamp to be used for the ListOffsetsRequest.
+     *
      * @return the timestamp for the OffsetResetStrategy,
      * if the strategy is EARLIEST or LATEST or duration is provided
      * else return Optional.empty()
@@ -170,12 +171,12 @@ public class AutoOffsetResetStrategy {
         @Override
         public String toString() {
             String values = Arrays.stream(StrategyType.values())
-                .map(strategyType -> {
-                    if (strategyType == StrategyType.BY_DURATION) {
-                        return "by_duration:PnDTnHnMn.nS";
-                    }
-                    return strategyType.toString();
-                }).collect(Collectors.joining(", "));
+                    .map(strategyType -> {
+                        if (strategyType == StrategyType.BY_DURATION) {
+                            return "by_duration:PnDTnHnMn.nS";
+                        }
+                        return strategyType.toString();
+                    }).collect(Collectors.joining(", "));
             return "[" + values + "]";
         }
     }

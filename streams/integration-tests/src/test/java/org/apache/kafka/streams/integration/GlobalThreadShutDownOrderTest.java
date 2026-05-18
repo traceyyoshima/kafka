@@ -65,7 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * This test asserts that when Kafka Streams is closing and shuts
  * down a StreamThread the closing of the GlobalStreamThread happens
  * after all the StreamThreads are completely stopped.
- *
+ * <p>
  * The test validates the Processor still has access to the GlobalStateStore while closing.
  * Otherwise if the GlobalStreamThread were to close underneath the StreamThread
  * an exception would be thrown as the GlobalStreamThread closes all global stores on closing.
@@ -123,34 +123,34 @@ public class GlobalThreadShutDownOrderTest {
         final Consumed<String, Long> stringLongConsumed = Consumed.with(Serdes.String(), Serdes.Long());
 
         final KeyValueStoreBuilder<String, Long> storeBuilder = new KeyValueStoreBuilder<>(
-            Stores.persistentKeyValueStore(globalStore),
-            Serdes.String(),
-            Serdes.Long(),
-            mockTime);
+                Stores.persistentKeyValueStore(globalStore),
+                Serdes.String(),
+                Serdes.Long(),
+                mockTime);
 
         final ProcessorSupplier<String, Long, Void, Void> processorSupplier;
         processorSupplier = () -> new ContextualProcessor<String, Long, Void, Void>() {
             @Override
             public void process(final Record<String, Long> record) {
                 final KeyValueStore<String, Long> stateStore =
-                    context().getStateStore(storeBuilder.name());
+                        context().getStateStore(storeBuilder.name());
                 stateStore.put(
-                    record.key(),
-                    record.value()
+                        record.key(),
+                        record.value()
                 );
             }
         };
 
         builder.addGlobalStore(
-            storeBuilder,
-            globalStoreTopic,
-            Consumed.with(Serdes.String(), Serdes.Long()),
-            processorSupplier
+                storeBuilder,
+                globalStoreTopic,
+                Consumed.with(Serdes.String(), Serdes.Long()),
+                processorSupplier
         );
 
         builder
-            .stream(streamTopic, stringLongConsumed)
-            .process(() -> new GlobalStoreProcessor(globalStore));
+                .stream(streamTopic, stringLongConsumed)
+                .process(() -> new GlobalStoreProcessor(globalStore));
 
     }
 
@@ -171,9 +171,9 @@ public class GlobalThreadShutDownOrderTest {
         kafkaStreams.start();
 
         TestUtils.waitForCondition(
-            () -> firstRecordProcessed,
-            30000,
-            "Has not processed record within 30 seconds");
+                () -> firstRecordProcessed,
+                30000,
+                "Has not processed record within 30 seconds");
 
         kafkaStreams.close(Duration.ofSeconds(30));
 
@@ -193,18 +193,18 @@ public class GlobalThreadShutDownOrderTest {
 
     private void populateTopics(final String topicName) throws Exception {
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            topicName,
-            Arrays.asList(
-                new KeyValue<>("A", 1L),
-                new KeyValue<>("B", 2L),
-                new KeyValue<>("C", 3L),
-                new KeyValue<>("D", 4L)),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                StringSerializer.class,
-                LongSerializer.class,
-                new Properties()),
-            mockTime);
+                topicName,
+                Arrays.asList(
+                        new KeyValue<>("A", 1L),
+                        new KeyValue<>("B", 2L),
+                        new KeyValue<>("C", 3L),
+                        new KeyValue<>("D", 4L)),
+                TestUtils.producerConfig(
+                        CLUSTER.bootstrapServers(),
+                        StringSerializer.class,
+                        LongSerializer.class,
+                        new Properties()),
+                mockTime);
     }
 
 

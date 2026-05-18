@@ -74,26 +74,26 @@ public class ClientUtilsTest {
             InetAddress inetAddress2 = mock(InetAddress.class);
             when(inetAddress2.getCanonicalHostName()).thenReturn(canonicalHostname2);
             inetAddress.when(() -> InetAddress.getAllByName(hostname))
-                .thenReturn(new InetAddress[]{inetAddress1, inetAddress2});
+                    .thenReturn(new InetAddress[]{inetAddress1, inetAddress2});
             try (MockedConstruction<InetSocketAddress> inetSocketAddress =
-                     mockConstruction(
-                         InetSocketAddress.class,
-                         (mock, context) -> {
-                             when(mock.isUnresolved()).thenReturn(false);
-                             when(mock.getHostName()).thenReturn((String) context.arguments().get(0));
-                             when(mock.getPort()).thenReturn((Integer) context.arguments().get(1));
-                         })
+                         mockConstruction(
+                                 InetSocketAddress.class,
+                                 (mock, context) -> {
+                                     when(mock.isUnresolved()).thenReturn(false);
+                                     when(mock.getHostName()).thenReturn((String) context.arguments().get(0));
+                                     when(mock.getPort()).thenReturn((Integer) context.arguments().get(1));
+                                 })
             ) {
                 List<InetSocketAddress> validatedAddresses = checkWithLookup(Collections.singletonList(hostname + ":" + port));
                 assertEquals(2, inetSocketAddress.constructed().size());
                 assertEquals(2, validatedAddresses.size());
                 assertTrue(validatedAddresses.containsAll(List.of(
-                    inetSocketAddress.constructed().get(0),
-                    inetSocketAddress.constructed().get(1)))
+                        inetSocketAddress.constructed().get(0),
+                        inetSocketAddress.constructed().get(1)))
                 );
                 validatedAddresses.forEach(address -> assertEquals(port, address.getPort()));
                 validatedAddresses.stream().map(InetSocketAddress::getHostName).forEach(
-                    hostName -> assertTrue(List.of(canonicalHostname1, canonicalHostname2).contains(hostName))
+                        hostName -> assertTrue(List.of(canonicalHostname1, canonicalHostname2).contains(hostName))
                 );
             }
         }
@@ -107,10 +107,10 @@ public class ClientUtilsTest {
 
     static Stream<List<String>> provideInvalidBrokerAddressTestCases() {
         return Stream.of(
-            List.of("localhost:9997\nlocalhost:9998\nlocalhost:9999"),
-            List.of("localhost:9997", "localhost:9998", " localhost:9999"),
-            // Intentionally provide a single string, as users may provide space-separated brokers, which will be parsed as a single string.
-            List.of("localhost:9997 localhost:9998 localhost:9999")
+                List.of("localhost:9997\nlocalhost:9998\nlocalhost:9999"),
+                List.of("localhost:9997", "localhost:9998", " localhost:9999"),
+                // Intentionally provide a single string, as users may provide space-separated brokers, which will be parsed as a single string.
+                List.of("localhost:9997 localhost:9998 localhost:9999")
         );
     }
 
@@ -118,13 +118,13 @@ public class ClientUtilsTest {
     @MethodSource("provideInvalidBrokerAddressTestCases")
     public void testInvalidBrokerAddress(List<String> addresses) {
         assertThrows(ConfigException.class,
-            () -> ClientUtils.parseAndValidateAddresses(addresses, ClientDnsLookup.USE_ALL_DNS_IPS));
+                () -> ClientUtils.parseAndValidateAddresses(addresses, ClientDnsLookup.USE_ALL_DNS_IPS));
     }
 
     @Test
     public void testInvalidConfig() {
         assertThrows(IllegalArgumentException.class,
-            () -> ClientUtils.parseAndValidateAddresses(Collections.singletonList("localhost:10000"), "random.value"));
+                () -> ClientUtils.parseAndValidateAddresses(Collections.singletonList("localhost:10000"), "random.value"));
     }
 
     @Test
@@ -140,18 +140,18 @@ public class ClientUtilsTest {
     @Test
     public void testOnlyBadHostname() {
         try (MockedConstruction<InetSocketAddress> inetSocketAddress =
-                 mockConstruction(
-                     InetSocketAddress.class,
-                     (mock, context) -> when(mock.isUnresolved()).thenReturn(true)
-                 )
+                     mockConstruction(
+                             InetSocketAddress.class,
+                             (mock, context) -> when(mock.isUnresolved()).thenReturn(true)
+                     )
         ) {
             Exception exception = assertThrows(
-                ConfigException.class,
-                () -> checkWithoutLookup("some.invalid.hostname.foo.bar.local:9999")
+                    ConfigException.class,
+                    () -> checkWithoutLookup("some.invalid.hostname.foo.bar.local:9999")
             );
             assertEquals(
-                "No resolvable bootstrap urls given in " + CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,
-                exception.getMessage()
+                    "No resolvable bootstrap urls given in " + CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,
+                    exception.getMessage()
             );
         }
     }
@@ -180,15 +180,15 @@ public class ClientUtilsTest {
             throw new UnknownHostException();
         };
         assertThrows(
-            UnknownHostException.class,
-            () -> ClientUtils.resolve("some.invalid.hostname.foo.bar.local", throwingHostResolver)
+                UnknownHostException.class,
+                () -> ClientUtils.resolve("some.invalid.hostname.foo.bar.local", throwingHostResolver)
         );
     }
 
     @Test
     public void testResolveDnsLookup() throws UnknownHostException {
-        InetAddress[] addresses = new InetAddress[] {
-            InetAddress.getByName("198.51.100.0"), InetAddress.getByName("198.51.100.5")
+        InetAddress[] addresses = new InetAddress[]{
+                InetAddress.getByName("198.51.100.0"), InetAddress.getByName("198.51.100.5")
         };
         HostResolver hostResolver = new AddressChangeHostResolver(addresses, addresses);
         assertEquals(asList(addresses), ClientUtils.resolve("kafka.apache.org", hostResolver));

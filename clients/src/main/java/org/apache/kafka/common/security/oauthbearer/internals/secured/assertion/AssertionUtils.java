@@ -64,12 +64,12 @@ public class AssertionUtils {
      */
     public static byte[] stripPemEncoding(String pemContents) {
         String stripped = pemContents
-            .replace("-----BEGIN PRIVATE KEY-----", "")
-            .replace("-----END PRIVATE KEY-----", "")
-            .replace("-----BEGIN ENCRYPTED PRIVATE KEY-----", "")
-            .replace("-----END ENCRYPTED PRIVATE KEY-----", "")
-            .replace("\n", "")
-            .replace("\r", "");
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replace("-----BEGIN ENCRYPTED PRIVATE KEY-----", "")
+                .replace("-----END ENCRYPTED PRIVATE KEY-----", "")
+                .replace("\n", "")
+                .replace("\r", "");
         return stripped.getBytes(StandardCharsets.UTF_8);
     }
 
@@ -129,8 +129,8 @@ public class AssertionUtils {
 
     public static Optional<StaticAssertionJwtTemplate> staticAssertionJwtTemplate(ConfigurationUtils cu) {
         if (cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_AUD) ||
-            cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_ISS) ||
-            cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_SUB)) {
+                cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_ISS) ||
+                cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_SUB)) {
             Map<String, Object> staticClaimsPayload = new HashMap<>();
 
             if (cu.containsKey(SASL_OAUTHBEARER_ASSERTION_CLAIM_AUD))

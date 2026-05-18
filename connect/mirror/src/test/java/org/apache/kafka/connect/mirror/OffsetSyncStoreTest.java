@@ -222,7 +222,7 @@ public class OffsetSyncStoreTest {
         long iterations = 100;
         long maxStep = Long.MAX_VALUE / iterations;
         // Test a variety of steps (corresponding to the offset.lag.max configuration)
-        for (long step = 1; step < maxStep; step = (step * 2) + 1)  {
+        for (long step = 1; step < maxStep; step = (step * 2) + 1) {
             for (long firstOffset = 0; firstOffset < 30; firstOffset++) {
                 long finalStep = step;
                 // Generate a stream of consistently spaced syncs
@@ -269,8 +269,9 @@ public class OffsetSyncStoreTest {
     /**
      * Simulate an OffsetSyncStore receiving a sequence of offset syncs as defined by their start offset and gaps.
      * After processing each simulated sync, assert that the store has not expired more unique syncs than the bound.
-     * @param firstOffset First offset to give to the sync store after starting
-     * @param steps A finite stream of gaps between syncs with some known distribution
+     *
+     * @param firstOffset        First offset to give to the sync store after starting
+     * @param steps              A finite stream of gaps between syncs with some known distribution
      * @param maximumExpirations The maximum number of distinct syncs allowed to be expired after a single update.
      */
     private void assertSyncSpacingHasBoundedExpirations(long firstOffset, LongStream steps, int maximumExpirations) {

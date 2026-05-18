@@ -29,9 +29,9 @@ public class TerseFailure extends KafkaException {
     }
 
     /**
-     * @param message     The message to print out before exiting.  A stack trace will not
-     *                    be printed.
-     * @param cause       The exception's cause
+     * @param message The message to print out before exiting.  A stack trace will not
+     *                be printed.
+     * @param cause   The exception's cause
      */
     public TerseFailure(String message, Throwable cause) {
         super(message, cause);

@@ -17,7 +17,8 @@
 package org.apache.kafka.streams;
 
 public final class EqualityCheck {
-    private EqualityCheck() {}
+    private EqualityCheck() {
+    }
 
     // Inspired by EqualsTester from Guava
     public static <T> void verifyEquality(final T o1, final T o2) {
@@ -75,14 +76,14 @@ public final class EqualityCheck {
         // since these objects are NOT equal, their hashcode SHOULD PROBABLY not be the same
         if (o1.hashCode() == o2.hashCode()) {
             throw new AssertionError(
-                String.format(
-                    "o1[%s].hash[%d] was equal to o2[%s].hash[%d], even though !o1.equals(o2). " +
-                        "This is NOT A BUG, but it is undesirable for hash collection performance.",
-                    o1,
-                    o1.hashCode(),
-                    o2,
-                    o2.hashCode()
-                )
+                    String.format(
+                            "o1[%s].hash[%d] was equal to o2[%s].hash[%d], even though !o1.equals(o2). " +
+                                    "This is NOT A BUG, but it is undesirable for hash collection performance.",
+                            o1,
+                            o1.hashCode(),
+                            o2,
+                            o2.hashCode()
+                    )
             );
         }
     }
@@ -125,12 +126,12 @@ public final class EqualityCheck {
             final int second = o1.hashCode();
             if (first != second) {
                 throw new AssertionError(
-                    String.format(
-                        "o1[%s]'s hashcode was not consistent: [%d]!=[%d].",
-                        o1,
-                        first,
-                        second
-                    )
+                        String.format(
+                                "o1[%s]'s hashcode was not consistent: [%d]!=[%d].",
+                                o1,
+                                first,
+                                second
+                        )
                 );
             }
         }
@@ -140,12 +141,12 @@ public final class EqualityCheck {
             final int second = o2.hashCode();
             if (first != second) {
                 throw new AssertionError(
-                    String.format(
-                        "o2[%s]'s hashcode was not consistent: [%d]!=[%d].",
-                        o2,
-                        first,
-                        second
-                    )
+                        String.format(
+                                "o2[%s]'s hashcode was not consistent: [%d]!=[%d].",
+                                o2,
+                                first,
+                                second
+                        )
                 );
             }
         }

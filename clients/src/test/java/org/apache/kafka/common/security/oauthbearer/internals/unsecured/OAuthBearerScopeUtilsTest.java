@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class OAuthBearerScopeUtilsTest {
     @Test
     public void validScope() {
-        for (String validScope : new String[] {"", "   ", "scope1", " scope1 ", "scope1 Scope2", "scope1   Scope2"}) {
+        for (String validScope : new String[]{"", "   ", "scope1", " scope1 ", "scope1 Scope2", "scope1   Scope2"}) {
             List<String> parsedScope = OAuthBearerScopeUtils.parseScope(validScope);
             if (Utils.isBlank(validScope)) {
                 assertTrue(parsedScope.isEmpty());
@@ -43,7 +43,7 @@ public class OAuthBearerScopeUtilsTest {
 
     @Test
     public void invalidScope() {
-        for (String invalidScope : new String[] {"\"foo", "\\foo"}) {
+        for (String invalidScope : new String[]{"\"foo", "\\foo"}) {
             try {
                 OAuthBearerScopeUtils.parseScope(invalidScope);
                 fail("did not detect invalid scope: " + invalidScope);

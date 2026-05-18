@@ -39,7 +39,7 @@ public class TimeWindow extends Window {
      * @param startMs the start timestamp of the window (inclusive)
      * @param endMs   the end timestamp of the window (exclusive)
      * @throws IllegalArgumentException if {@code startMs} is negative or if {@code endMs} is smaller than or equal to
-     * {@code startMs}
+     *                                  {@code startMs}
      */
     public TimeWindow(final long startMs, final long endMs) throws IllegalArgumentException {
         super(startMs, endMs);
@@ -59,7 +59,7 @@ public class TimeWindow extends Window {
     public boolean overlap(final Window other) throws IllegalArgumentException {
         if (getClass() != other.getClass()) {
             throw new IllegalArgumentException("Cannot compare windows of different type. Other window has type "
-                + other.getClass() + ".");
+                    + other.getClass() + ".");
         }
         final TimeWindow otherWindow = (TimeWindow) other;
         return startMs < otherWindow.endMs && otherWindow.startMs < endMs;

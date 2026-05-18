@@ -62,13 +62,13 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 /**
  * The MetadataLoader follows changes provided by a RaftClient, and packages them into metadata
  * deltas and images that can be consumed by publishers.
- *
+ * <p>
  * The Loader maintains its own thread, which is used to make all callbacks into publishers. If a
  * publisher A is installed before B, A will receive all callbacks before B. This is also true if
  * A and B are installed as part of a list [A, B].
- *
+ * <p>
  * Publishers should not modify any data structures passed to them.
- *
+ * <p>
  * It is possible to change the list of publishers dynamically over time. Whenever a new publisher is
  * added, it receives a catch-up delta which contains the full state. Any publisher installed when the
  * loader is closed will itself be closed.
@@ -128,19 +128,21 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
             }
             if (metrics == null) {
                 metrics = new MetadataLoaderMetrics(
-                    Optional.empty(),
-                    __ -> { },
-                    __ -> { },
-                    new AtomicReference<>(MetadataProvenance.EMPTY));
+                        Optional.empty(),
+                        __ -> {
+                        },
+                        __ -> {
+                        },
+                        new AtomicReference<>(MetadataProvenance.EMPTY));
             }
             return new MetadataLoader(
-                time,
-                logContext,
-                threadNamePrefix,
-                faultHandler,
-                metrics,
-                highWaterMarkAccessor,
-                supportedConfigChecker);
+                    time,
+                    logContext,
+                    threadNamePrefix,
+                    faultHandler,
+                    metrics,
+                    highWaterMarkAccessor,
+                    supportedConfigChecker);
         }
     }
 
@@ -210,13 +212,13 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
     private final SupportedConfigChecker supportedConfigChecker;
 
     private MetadataLoader(
-        Time time,
-        LogContext logContext,
-        String threadNamePrefix,
-        FaultHandler faultHandler,
-        MetadataLoaderMetrics metrics,
-        Supplier<OptionalLong> highWaterMarkAccessor,
-        SupportedConfigChecker supportedConfigChecker
+            Time time,
+            LogContext logContext,
+            String threadNamePrefix,
+            FaultHandler faultHandler,
+            MetadataLoaderMetrics metrics,
+            Supplier<OptionalLong> highWaterMarkAccessor,
+            SupportedConfigChecker supportedConfigChecker
     ) {
         this.log = logContext.logger(MetadataLoader.class);
         this.time = time;
@@ -228,17 +230,17 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         this.publishers = new LinkedHashMap<>();
         this.image = MetadataImage.EMPTY;
         this.batchLoader = new MetadataBatchLoader(
-            logContext,
-            time,
-            faultHandler,
-            this::maybePublishMetadata,
-            supportedConfigChecker);
+                logContext,
+                time,
+                faultHandler,
+                this::maybePublishMetadata,
+                supportedConfigChecker);
         this.eventQueue = new KafkaEventQueue(
-            time,
-            logContext,
-            threadNamePrefix + "metadata-loader-",
-            new ShutdownEvent(),
-            metrics::updateIdleTime);
+                time,
+                logContext,
+                threadNamePrefix + "metadata-loader-",
+                new ShutdownEvent(),
+                metrics::updateIdleTime);
     }
 
     // VisibleForTesting
@@ -276,20 +278,20 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
     /**
      * Schedule an event to initialize the new publishers that are present in the system.
      *
-     * @param delayNs   The minimum time in nanoseconds we should wait. If there is already an
-     *                  initialization event scheduled, we will either move its deadline forward
-     *                  in time or leave it unchanged.
+     * @param delayNs The minimum time in nanoseconds we should wait. If there is already an
+     *                initialization event scheduled, we will either move its deadline forward
+     *                in time or leave it unchanged.
      */
     void scheduleInitializeNewPublishers(long delayNs) {
         eventQueue.scheduleDeferred(INITIALIZE_NEW_PUBLISHERS,
-            new EventQueue.EarliestDeadlineFunction(eventQueue.time().nanoseconds() + delayNs),
-            () -> {
-                try {
-                    initializeNewPublishers();
-                } catch (Throwable e) {
-                    faultHandler.handleFault("Unhandled error initializing new publishers", e);
-                }
-            });
+                new EventQueue.EarliestDeadlineFunction(eventQueue.time().nanoseconds() + delayNs),
+                () -> {
+                    try {
+                        initializeNewPublishers();
+                    } catch (Throwable e) {
+                        faultHandler.handleFault("Unhandled error initializing new publishers", e);
+                    }
+                });
     }
 
     void initializeNewPublishers() {
@@ -323,7 +325,7 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                 image.provenance(),
                 time.nanoseconds() - startNs);
         for (Iterator<MetadataPublisher> iter = uninitializedPublishers.values().iterator();
-                iter.hasNext(); ) {
+             iter.hasNext(); ) {
             MetadataPublisher publisher = iter.next();
             iter.remove();
             try {
@@ -350,8 +352,8 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         this.image = image;
 
         if (stillNeedToCatchUp(
-            "maybePublishMetadata(" + manifest.type().toString() + ")",
-            manifest.provenance().lastContainedOffset())
+                "maybePublishMetadata(" + manifest.type().toString() + ")",
+                manifest.provenance().lastContainedOffset())
         ) {
             return;
         }
@@ -364,8 +366,8 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                 publisher.onMetadataUpdate(delta, image, manifest);
             } catch (Throwable e) {
                 faultHandler.handleFault("Unhandled error publishing the new metadata " +
-                    "image ending at " + manifest.provenance().lastContainedOffset() +
-                    " with publisher " + publisher.name(), e);
+                        "image ending at " + manifest.provenance().lastContainedOffset() +
+                        " with publisher " + publisher.name(), e);
             }
         }
         metrics.updateLastAppliedImageProvenance(image.provenance());
@@ -374,16 +376,16 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
 
         // Set the metadata version feature level, since it is handled separately from other features
         metrics.recordFinalizedFeatureLevel(
-            MetadataVersion.FEATURE_NAME,
-            metadataVersion.featureLevel()
+                MetadataVersion.FEATURE_NAME,
+                metadataVersion.featureLevel()
         );
 
         // Set all production feature levels from the image
         metrics.maybeRemoveFinalizedFeatureLevelMetrics(image.features().finalizedVersions());
         for (var featureEntry : image.features().finalizedVersions().entrySet()) {
             metrics.recordFinalizedFeatureLevel(
-                featureEntry.getKey(),
-                featureEntry.getValue()
+                    featureEntry.getKey(),
+                    featureEntry.getValue()
             );
         }
 
@@ -420,14 +422,14 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                 long numLoaded = metrics.incrementHandleLoadSnapshotCount();
                 String snapshotName = Snapshots.filenameFromSnapshotId(reader.snapshotId());
                 log.info("handleLoadSnapshot({}): incrementing HandleLoadSnapshotCount to {}.",
-                    snapshotName, numLoaded);
+                        snapshotName, numLoaded);
                 MetadataDelta delta = new MetadataDelta.Builder().
-                    setImage(image).
-                    setSupportedConfigChecker(supportedConfigChecker).
-                    build();
+                        setImage(image).
+                        setSupportedConfigChecker(supportedConfigChecker).
+                        build();
                 SnapshotManifest manifest = loadSnapshot(delta, reader);
                 log.info("handleLoadSnapshot({}): generated a metadata delta between offset {} " +
-                        "and this snapshot in {} us.", snapshotName,
+                                "and this snapshot in {} us.", snapshotName,
                         image.provenance().lastContainedOffset(),
                         NANOSECONDS.toMicros(manifest.elapsedNs()));
                 MetadataImage image = delta.apply(manifest.provenance());
@@ -455,9 +457,9 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
      * The main complication here is that we have to maintain an index
      * of what record we are processing so that we can give useful error messages.
      *
-     * @param delta     The metadata delta we are preparing.
-     * @param reader    The reader which yields the snapshot batches.
-     * @return          A manifest of what was loaded.
+     * @param delta  The metadata delta we are preparing.
+     * @param reader The reader which yields the snapshot batches.
+     * @return A manifest of what was loaded.
      */
     SnapshotManifest loadSnapshot(
             MetadataDelta delta,
@@ -503,8 +505,8 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                     publisher.onControllerChange(currentLeaderAndEpoch);
                 } catch (Throwable e) {
                     faultHandler.handleFault("Unhandled error publishing the new leader " +
-                        "change to " + currentLeaderAndEpoch + " with publisher " +
-                        publisher.name(), e);
+                            "change to " + currentLeaderAndEpoch + " with publisher " +
+                            publisher.name(), e);
                 }
             }
             metrics.setCurrentControllerId(leaderAndEpoch.leaderId().orElse(-1));
@@ -515,10 +517,9 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
      * Install a list of publishers. When a publisher is installed, we will publish a MetadataDelta
      * to it which contains the entire current image.
      *
-     * @param newPublishers     The publishers to install.
-     *
-     * @return                  A future which yields null when the publishers have been added, or
-     *                          an exception if the installation failed.
+     * @param newPublishers The publishers to install.
+     * @return A future which yields null when the publishers have been added, or
+     * an exception if the installation failed.
      */
     public CompletableFuture<Void> installPublishers(List<? extends MetadataPublisher> newPublishers) {
         if (newPublishers.isEmpty()) return CompletableFuture.completedFuture(null);
@@ -567,10 +568,9 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
     /**
      * Remove a publisher and close it.
      *
-     * @param publisher         The publisher to remove and close.
-     *
-     * @return                  A future which yields null when the publisher has been removed
-     *                          and closed, or an exception if the removal failed.
+     * @param publisher The publisher to remove and close.
+     * @return A future which yields null when the publisher has been removed
+     * and closed, or an exception if the removal failed.
      */
     public CompletableFuture<Void> removeAndClosePublisher(MetadataPublisher publisher) {
         CompletableFuture<Void> future = new CompletableFuture<>();

@@ -62,7 +62,7 @@ class RocksDBTimeOrderedWindowStoreWithHeaders extends RocksDBTimeOrderedWindowS
 
             if (config.isCollectExecutionInfo()) {
                 result.addExecutionInfo(
-                    "Handled in " + this.getClass() + " in " + (System.nanoTime() - start) + "ns"
+                        "Handled in " + this.getClass() + " in " + (System.nanoTime() - start) + "ns"
                 );
             }
             result.setPosition(position.copy());

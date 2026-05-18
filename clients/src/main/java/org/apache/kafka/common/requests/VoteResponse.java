@@ -27,11 +27,11 @@ import java.util.Map;
 
 /**
  * Possible error codes.
- *
+ * <p>
  * Top level errors:
  * - {@link Errors#CLUSTER_AUTHORIZATION_FAILED}
  * - {@link Errors#BROKER_NOT_AVAILABLE}
- *
+ * <p>
  * Partition level errors:
  * - {@link Errors#FENCED_LEADER_EPOCH}
  * - {@link Errors#INVALID_REQUEST}

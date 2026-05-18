@@ -81,7 +81,7 @@ public class HandlingSourceTopicDeletionIntegrationTest {
     public void shouldThrowErrorAfterSourceTopicDeleted(final String groupProtocol, final TestInfo testName) throws InterruptedException {
         final StreamsBuilder builder = new StreamsBuilder();
         builder.stream(INPUT_TOPIC, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .to(OUTPUT_TOPIC, Produced.with(Serdes.Integer(), Serdes.String()));
+                .to(OUTPUT_TOPIC, Produced.with(Serdes.Integer(), Serdes.String()));
 
         final String safeTestName = safeUniqueTestName(testName);
         final String appId = "app-" + safeTestName;
@@ -101,7 +101,7 @@ public class HandlingSourceTopicDeletionIntegrationTest {
 
         try (final KafkaStreams kafkaStreams1 = new KafkaStreams(topology, streamsConfiguration);
              final KafkaStreams kafkaStreams2 = new KafkaStreams(topology, streamsConfiguration)) {
-            
+
             kafkaStreams1.setUncaughtExceptionHandler(exception -> {
                 calledUncaughtExceptionHandler1.set(true);
                 return StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_CLIENT;
@@ -115,17 +115,17 @@ public class HandlingSourceTopicDeletionIntegrationTest {
             kafkaStreams2.start();
 
             TestUtils.waitForCondition(
-                () -> kafkaStreams1.state() == State.RUNNING && kafkaStreams2.state() == State.RUNNING,
-                TIMEOUT,
-                () -> "Kafka Streams clients did not reach state RUNNING"
+                    () -> kafkaStreams1.state() == State.RUNNING && kafkaStreams2.state() == State.RUNNING,
+                    TIMEOUT,
+                    () -> "Kafka Streams clients did not reach state RUNNING"
             );
 
             CLUSTER.deleteTopic(INPUT_TOPIC);
 
             TestUtils.waitForCondition(
-                () -> kafkaStreams1.state() == State.ERROR && kafkaStreams2.state() == State.ERROR,
-                TIMEOUT,
-                () -> "Kafka Streams clients did not reach state ERROR"
+                    () -> kafkaStreams1.state() == State.ERROR && kafkaStreams2.state() == State.ERROR,
+                    TIMEOUT,
+                    () -> "Kafka Streams clients did not reach state ERROR"
             );
 
             assertThat(calledUncaughtExceptionHandler1.get(), is(true));

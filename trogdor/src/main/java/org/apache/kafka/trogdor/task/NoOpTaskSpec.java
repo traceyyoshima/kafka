@@ -22,13 +22,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The specification for a task that does nothing.
- *
+ * <p>
  * This task type exists to test trogdor itself.
  */
 public class NoOpTaskSpec extends TaskSpec {
     @JsonCreator
     public NoOpTaskSpec(@JsonProperty("startMs") long startMs,
-                         @JsonProperty("durationMs") long durationMs) {
+                        @JsonProperty("durationMs") long durationMs) {
         super(startMs, durationMs);
     }
 

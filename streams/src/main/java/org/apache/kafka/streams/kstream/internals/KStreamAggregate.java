@@ -88,15 +88,15 @@ public class KStreamAggregate<KIn, VIn, VAgg> implements KStreamAggProcessorSupp
         public void init(final ProcessorContext<KIn, Change<VAgg>> context) {
             super.init(context);
             droppedRecordsSensor = droppedRecordsSensor(
-                Thread.currentThread().getName(),
-                context.taskId().toString(),
-                (StreamsMetricsImpl) context.metrics());
+                    Thread.currentThread().getName(),
+                    context.taskId().toString(),
+                    (StreamsMetricsImpl) context.metrics());
             store = new KeyValueStoreWrapper<>(context, storeName);
             tupleForwarder = new TimestampedTupleForwarder<>(
-                store.store(),
-                context,
-                store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                sendOldValues);
+                    store.store(),
+                    context,
+                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                    sendOldValues);
         }
 
         @Override
@@ -106,13 +106,13 @@ public class KStreamAggregate<KIn, VIn, VAgg> implements KStreamAggProcessorSupp
                 if (context().recordMetadata().isPresent()) {
                     final RecordMetadata recordMetadata = context().recordMetadata().get();
                     LOG.warn(
-                        "Skipping record due to null key or value. "
-                            + "topic=[{}] partition=[{}] offset=[{}]",
-                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                            "Skipping record due to null key or value. "
+                                    + "topic=[{}] partition=[{}] offset=[{}]",
+                            recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                     );
                 } else {
                     LOG.warn(
-                        "Skipping record due to null key or value. Topic, partition, and offset not known."
+                            "Skipping record due to null key or value. Topic, partition, and offset not known."
                     );
                 }
                 droppedRecordsSensor.record();
@@ -139,8 +139,8 @@ public class KStreamAggregate<KIn, VIn, VAgg> implements KStreamAggProcessorSupp
             // if not put to store, do not forward downstream either
             if (putReturnCode != PUT_RETURN_CODE_NOT_PUT) {
                 tupleForwarder.maybeForward(
-                    record.withValue(new Change<>(newAgg, sendOldValues ? oldAgg : null, putReturnCode == PUT_RETURN_CODE_IS_LATEST))
-                        .withTimestamp(newTimestamp));
+                        record.withValue(new Change<>(newAgg, sendOldValues ? oldAgg : null, putReturnCode == PUT_RETURN_CODE_IS_LATEST))
+                                .withTimestamp(newTimestamp));
             }
         }
     }

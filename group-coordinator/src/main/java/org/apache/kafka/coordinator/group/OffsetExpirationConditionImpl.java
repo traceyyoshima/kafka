@@ -31,9 +31,9 @@ public record OffsetExpirationConditionImpl(
      * or current state timestamp if group is empty for classic groups) and check whether the offset has
      * exceeded the offset retention.
      *
-     * @param offset              The offset and metadata.
-     * @param currentTimestampMs  The current timestamp.
-     * @param offsetsRetentionMs  The offsets retention in milliseconds.
+     * @param offset             The offset and metadata.
+     * @param currentTimestampMs The current timestamp.
+     * @param offsetsRetentionMs The offsets retention in milliseconds.
      * @return Whether the given offset is expired or not.
      */
     @Override

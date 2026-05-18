@@ -37,11 +37,11 @@ public class ThreadUtils {
     /**
      * Create a new ThreadFactory.
      *
-     * @param pattern       The pattern to use.  If this contains %d, it will be
-     *                      replaced with a thread number.  It should not contain more
-     *                      than one %d.
-     * @param daemon        True if we want daemon threads.
-     * @return              The new ThreadFactory.
+     * @param pattern The pattern to use.  If this contains %d, it will be
+     *                replaced with a thread number.  It should not contain more
+     *                than one %d.
+     * @param daemon  True if we want daemon threads.
+     * @return The new ThreadFactory.
      */
     public static ThreadFactory createThreadFactory(final String pattern,
                                                     final boolean daemon) {
@@ -51,12 +51,12 @@ public class ThreadUtils {
     /**
      * Create a new ThreadFactory.
      *
-     * @param pattern       The pattern to use.  If this contains %d, it will be
-     *                      replaced with a thread number.  It should not contain more
-     *                      than one %d.
-     * @param daemon        True if we want daemon threads.
-     * @param ueh           thread's uncaught exception handler.
-     * @return              The new ThreadFactory.
+     * @param pattern The pattern to use.  If this contains %d, it will be
+     *                replaced with a thread number.  It should not contain more
+     *                than one %d.
+     * @param daemon  True if we want daemon threads.
+     * @param ueh     thread's uncaught exception handler.
+     * @return The new ThreadFactory.
      */
     public static ThreadFactory createThreadFactory(final String pattern,
                                                     final boolean daemon,
@@ -88,6 +88,7 @@ public class ThreadUtils {
      * After the timeout/on interrupt, the service is forcefully closed.
      * This pattern of shutting down thread pool is adopted from here:
      * <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/ExecutorService.html">ExecutorService</a>
+     *
      * @param executorService The service to shut down.
      * @param timeout         The timeout of the shutdown.
      * @param timeUnit        The time unit of the shutdown timeout.

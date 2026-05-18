@@ -29,10 +29,10 @@ import java.util.Optional;
 /**
  * A simple implementation of `MetadataUpdater` that returns the cluster nodes set via the constructor or via
  * `setNodes`.
- *
+ * <p>
  * This is useful in cases where automatic metadata updates are not required. An example is controller/broker
  * communication.
- *
+ * <p>
  * This class is not thread-safe!
  */
 public class ManualMetadataUpdater implements MetadataUpdater {

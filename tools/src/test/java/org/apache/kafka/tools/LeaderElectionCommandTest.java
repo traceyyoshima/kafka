@@ -58,10 +58,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @ClusterTestDefaults(brokers = 3, serverProperties = {
-    @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
-    @ClusterConfigProperty(key = "auto.leader.rebalance.enable", value = "false"),
-    @ClusterConfigProperty(key = "controlled.shutdown.enable", value = "true"),
-    @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "2")
+        @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
+        @ClusterConfigProperty(key = "auto.leader.rebalance.enable", value = "false"),
+        @ClusterConfigProperty(key = "controlled.shutdown.enable", value = "true"),
+        @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "2")
 })
 public class LeaderElectionCommandTest {
     private final ClusterInstance cluster;
@@ -114,11 +114,11 @@ public class LeaderElectionCommandTest {
 
         try (final MockedStatic<Admin> mockedAdmin = Mockito.mockStatic(Admin.class)) {
             String output = ToolsTestUtils.captureStandardOut(() ->
-                LeaderElectionCommand.mainNoExit(
-                    "--bootstrap-server", cluster.bootstrapServers(),
-                    "--election-type", "unclean", "--all-topic-partitions",
-                    "--admin.config", adminConfigPath.toString()
-                )
+                    LeaderElectionCommand.mainNoExit(
+                            "--bootstrap-server", cluster.bootstrapServers(),
+                            "--election-type", "unclean", "--all-topic-partitions",
+                            "--admin.config", adminConfigPath.toString()
+                    )
             );
             assertTrue(output.contains("Option --admin.config has been deprecated and will be removed in a future version. Use --command-config instead."));
 
@@ -139,9 +139,9 @@ public class LeaderElectionCommandTest {
 
         try (final MockedStatic<Admin> mockedAdmin = Mockito.mockStatic(Admin.class)) {
             assertEquals(1, LeaderElectionCommand.mainNoExit(
-                "--bootstrap-server", cluster.bootstrapServers(),
-                "--election-type", "unclean", "--all-topic-partitions",
-                "--command-config", adminConfigPath.toString()
+                    "--bootstrap-server", cluster.bootstrapServers(),
+                    "--election-type", "unclean", "--all-topic-partitions",
+                    "--command-config", adminConfigPath.toString()
             ));
 
             ArgumentCaptor<Properties> argumentCaptor = ArgumentCaptor.forClass(Properties.class);
@@ -164,16 +164,16 @@ public class LeaderElectionCommandTest {
             Exit.setExitProcedure(new ToolsTestUtils.MockExitProcedure());
 
             String output = ToolsTestUtils.captureStandardErr(() ->
-                LeaderElectionCommand.mainNoExit(
-                    "--bootstrap-server", "localhost:9092",
-                    "--election-type", "unclean", "--all-topic-partitions",
-                    "--admin.config", adminConfigPath.toString(),
-                    "--command-config", adminConfigPath.toString()
-                )
+                    LeaderElectionCommand.mainNoExit(
+                            "--bootstrap-server", "localhost:9092",
+                            "--election-type", "unclean", "--all-topic-partitions",
+                            "--admin.config", adminConfigPath.toString(),
+                            "--command-config", adminConfigPath.toString()
+                    )
             );
 
             assertTrue(output.contains(String.format("Option \"%s\" can't be used with option \"%s\"",
-                "[admin.config]", "[command-config]")));
+                    "[admin.config]", "[command-config]")));
         } finally {
             Exit.resetExitProcedure();
         }
@@ -289,11 +289,11 @@ public class LeaderElectionCommandTest {
     @ClusterTest
     public void testTopicDoesNotExist() {
         Throwable e = assertThrows(AdminCommandFailedException.class, () -> LeaderElectionCommand.run(
-            Duration.ofSeconds(30),
-            "--bootstrap-server", cluster.bootstrapServers(),
-            "--election-type", "preferred",
-            "--topic", "unknown-topic-name",
-            "--partition", "0"
+                Duration.ofSeconds(30),
+                "--bootstrap-server", cluster.bootstrapServers(),
+                "--election-type", "preferred",
+                "--topic", "unknown-topic-name",
+                "--partition", "0"
         ));
         assertInstanceOf(UnknownTopicOrPartitionException.class, e.getSuppressed()[0]);
     }
@@ -331,24 +331,24 @@ public class LeaderElectionCommandTest {
 
         Path topicPartitionPath = tempTopicPartitionFile(List.of(topicPartition0, topicPartition1));
         String output = ToolsTestUtils.captureStandardOut(() ->
-            LeaderElectionCommand.mainNoExit(
-                "--bootstrap-server", cluster.bootstrapServers(),
-                "--election-type", "preferred",
-                "--path-to-json-file", topicPartitionPath.toString()
-            ));
+                LeaderElectionCommand.mainNoExit(
+                        "--bootstrap-server", cluster.bootstrapServers(),
+                        "--election-type", "preferred",
+                        "--path-to-json-file", topicPartitionPath.toString()
+                ));
 
         Iterator<String> electionResultOutputIter = Arrays.stream(output.split("\n")).iterator();
 
         assertTrue(electionResultOutputIter.hasNext());
         String firstLine = electionResultOutputIter.next();
         assertTrue(firstLine.contains(String.format(
-            "Successfully completed leader election (PREFERRED) for partitions %s", topicPartition0)),
-            String.format("Unexpected output: %s", firstLine));
+                        "Successfully completed leader election (PREFERRED) for partitions %s", topicPartition0)),
+                String.format("Unexpected output: %s", firstLine));
 
         assertTrue(electionResultOutputIter.hasNext());
         String secondLine = electionResultOutputIter.next();
         assertTrue(secondLine.contains(String.format("Valid replica already elected for partitions %s", topicPartition1)),
-            String.format("Unexpected output: %s", secondLine));
+                String.format("Unexpected output: %s", secondLine));
     }
 
     private void createTopic(Admin admin, String topic, Map<Integer, List<Integer>> replicaAssignment) throws ExecutionException, InterruptedException {
@@ -394,8 +394,8 @@ public class LeaderElectionCommandTest {
     }
 
     private void waitForBrokersOutOfIsr(
-            Admin client, 
-            Set<TopicPartition> partitions, 
+            Admin client,
+            Set<TopicPartition> partitions,
             Set<Integer> brokerIds
     ) throws InterruptedException {
         TestUtils.waitForCondition(

@@ -33,9 +33,9 @@ public class MinTrafficGraphConstructor<T> implements RackAwareGraphConstructor<
 
     @Override
     public int getSinkNodeID(
-        final List<TaskId> taskIdList,
-        final List<ProcessId> clientList,
-        final Collection<Set<TaskId>> taskSetsPerTopicGroup
+            final List<TaskId> taskIdList,
+            final List<ProcessId> clientList,
+            final Collection<Set<TaskId>> taskSetsPerTopicGroup
     ) {
         return clientList.size() + taskIdList.size();
     }
@@ -52,17 +52,17 @@ public class MinTrafficGraphConstructor<T> implements RackAwareGraphConstructor<
 
     @Override
     public Graph<Integer> constructTaskGraph(
-        final List<ProcessId> clientList,
-        final List<TaskId> taskIdList,
-        final Map<ProcessId, T> clientStates,
-        final Map<TaskId, ProcessId> taskClientMap,
-        final Map<ProcessId, Integer> originalAssignedTaskNumber,
-        final BiPredicate<T, TaskId> hasAssignedTask,
-        final CostFunction costFunction,
-        final int trafficCost,
-        final int nonOverlapCost,
-        final boolean hasReplica,
-        final boolean isStandby
+            final List<ProcessId> clientList,
+            final List<TaskId> taskIdList,
+            final Map<ProcessId, T> clientStates,
+            final Map<TaskId, ProcessId> taskClientMap,
+            final Map<ProcessId, Integer> originalAssignedTaskNumber,
+            final BiPredicate<T, TaskId> hasAssignedTask,
+            final CostFunction costFunction,
+            final int trafficCost,
+            final int nonOverlapCost,
+            final boolean hasReplica,
+            final boolean isStandby
     ) {
         final Graph<Integer> graph = new Graph<>();
 
@@ -83,11 +83,11 @@ public class MinTrafficGraphConstructor<T> implements RackAwareGraphConstructor<
 
                 final int flow = hasAssignedTask.test(clientStates.get(processId), taskId) ? 1 : 0;
                 final int cost = costFunction.getCost(taskId, processId, flow == 1, trafficCost,
-                    nonOverlapCost, isStandby);
+                        nonOverlapCost, isStandby);
                 if (flow == 1) {
                     if (!hasReplica && taskClientMap.containsKey(taskId)) {
                         throw new IllegalArgumentException("Task " + taskId + " assigned to multiple clients "
-                            + processId + ", " + taskClientMap.get(taskId));
+                                + processId + ", " + taskClientMap.get(taskId));
                     }
                     taskClientMap.put(taskId, processId);
                 }
@@ -120,22 +120,22 @@ public class MinTrafficGraphConstructor<T> implements RackAwareGraphConstructor<
 
     @Override
     public boolean assignTaskFromMinCostFlow(
-        final Graph<Integer> graph,
-        final List<ProcessId> clientList,
-        final List<TaskId> taskIdList,
-        final Map<ProcessId, T> clientStates,
-        final Map<ProcessId, Integer> originalAssignedTaskNumber,
-        final Map<TaskId, ProcessId> taskClientMap,
-        final BiConsumer<T, TaskId> assignTask,
-        final BiConsumer<T, TaskId> unAssignTask,
-        final BiPredicate<T, TaskId> hasAssignedTask
+            final Graph<Integer> graph,
+            final List<ProcessId> clientList,
+            final List<TaskId> taskIdList,
+            final Map<ProcessId, T> clientStates,
+            final Map<ProcessId, Integer> originalAssignedTaskNumber,
+            final Map<TaskId, ProcessId> taskClientMap,
+            final BiConsumer<T, TaskId> assignTask,
+            final BiConsumer<T, TaskId> unAssignTask,
+            final BiPredicate<T, TaskId> hasAssignedTask
     ) {
         int tasksAssigned = 0;
         boolean taskMoved = false;
         for (int taskNodeId = 0; taskNodeId < taskIdList.size(); taskNodeId++) {
             final TaskId taskId = taskIdList.get(taskNodeId);
             final KeyValue<Boolean, Integer> movedAndAssigned = assignTaskToClient(graph, taskId, taskNodeId, -1,
-                clientStates, clientList, taskIdList, taskClientMap, assignTask, unAssignTask);
+                    clientStates, clientList, taskIdList, taskClientMap, assignTask, unAssignTask);
             taskMoved |= movedAndAssigned.key;
             tasksAssigned += movedAndAssigned.value;
         }

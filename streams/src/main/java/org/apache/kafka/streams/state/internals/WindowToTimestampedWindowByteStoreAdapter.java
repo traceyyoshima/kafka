@@ -107,7 +107,7 @@ public class WindowToTimestampedWindowByteStoreAdapter implements WindowStore<By
     public KeyValueIterator<Windowed<Bytes>, byte[]> fetch(final Bytes keyFrom,
                                                            final Bytes keyTo,
                                                            final Instant timeFrom,
-                                                           final Instant timeTo)  throws IllegalArgumentException {
+                                                           final Instant timeTo) throws IllegalArgumentException {
         return new KeyValueToTimestampedKeyValueIteratorAdapter<>(store.fetch(keyFrom, keyTo, timeFrom, timeTo));
     }
 
@@ -195,16 +195,16 @@ public class WindowToTimestampedWindowByteStoreAdapter implements WindowStore<By
 
     @Override
     public <R> QueryResult<R> query(
-        final Query<R> query,
-        final PositionBound positionBound,
-        final QueryConfig config) {
+            final Query<R> query,
+            final PositionBound positionBound,
+            final QueryConfig config) {
 
         final long start = config.isCollectExecutionInfo() ? System.nanoTime() : -1L;
         final QueryResult<R> result = store.query(query, positionBound, config);
         if (config.isCollectExecutionInfo()) {
             final long end = System.nanoTime();
             result.addExecutionInfo(
-                "Handled in " + getClass() + " in " + (end - start) + "ns"
+                    "Handled in " + getClass() + " in " + (end - start) + "ns"
             );
         }
         return result;
@@ -217,8 +217,8 @@ public class WindowToTimestampedWindowByteStoreAdapter implements WindowStore<By
 
 
     private static class WindowToTimestampedWindowIteratorAdapter
-        extends KeyValueToTimestampedKeyValueIteratorAdapter<Long>
-        implements WindowStoreIterator<byte[]> {
+            extends KeyValueToTimestampedKeyValueIteratorAdapter<Long>
+            implements WindowStoreIterator<byte[]> {
 
         WindowToTimestampedWindowIteratorAdapter(final KeyValueIterator<Long, byte[]> innerIterator) {
             super(innerIterator);

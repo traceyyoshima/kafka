@@ -34,19 +34,19 @@ public class DelayedFuturePurgatory {
     public DelayedFuturePurgatory(String purgatoryName, int brokerId) {
         this.purgatory = new DelayedOperationPurgatory<>(purgatoryName, brokerId);
         this.executor = new ThreadPoolExecutor(
-            1,
-            1,
-            0,
-            TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(),
-            r -> new KafkaThread("DelayedExecutor-" + purgatoryName, r, true));
+                1,
+                1,
+                0,
+                TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(),
+                r -> new KafkaThread("DelayedExecutor-" + purgatoryName, r, true));
         this.purgatoryKey = () -> "delayed-future-key";
     }
 
     public <T> DelayedFuture<T> tryCompleteElseWatch(
-        long timeoutMs,
-        List<CompletableFuture<T>> futures,
-        Runnable responseCallback
+            long timeoutMs,
+            List<CompletableFuture<T>> futures,
+            Runnable responseCallback
     ) {
         DelayedFuture<T> delayedFuture = new DelayedFuture<>(timeoutMs, futures, responseCallback);
         boolean done = purgatory.tryCompleteElseWatch(delayedFuture, List.of(purgatoryKey));

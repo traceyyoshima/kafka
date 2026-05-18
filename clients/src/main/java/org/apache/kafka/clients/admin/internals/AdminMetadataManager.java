@@ -37,7 +37,7 @@ import java.util.Optional;
 
 /**
  * Manages the metadata for KafkaAdminClient.
- *
+ * <p>
  * This class is not thread-safe.  It is only accessed from the AdminClient
  * service thread (which also uses the NetworkClient).
  */
@@ -163,10 +163,10 @@ public class AdminMetadataManager {
     }
 
     public AdminMetadataManager(
-        LogContext logContext,
-        long refreshBackoffMs,
-        long metadataExpireMs,
-        boolean usingBootstrapControllers
+            LogContext logContext,
+            long refreshBackoffMs,
+            long metadataExpireMs,
+            boolean usingBootstrapControllers
     ) {
         this.log = logContext.logger(AdminMetadataManager.class);
         this.refreshBackoffMs = refreshBackoffMs;
@@ -190,12 +190,12 @@ public class AdminMetadataManager {
         }
         if (cluster.nodes().isEmpty()) {
             log.trace("Metadata is not ready: bootstrap nodes have not been " +
-                "initialized yet.");
+                    "initialized yet.");
             return false;
         }
         if (cluster.isBootstrapConfigured()) {
             log.trace("Metadata is not ready: we have not fetched metadata from " +
-                "the bootstrap nodes yet.");
+                    "the bootstrap nodes yet.");
             return false;
         }
         log.trace("Metadata is ready to use.");
@@ -221,11 +221,11 @@ public class AdminMetadataManager {
         if (cluster.controller() != null) {
             log.trace("Clearing cached controller node {}.", cluster.controller());
             this.cluster = new Cluster(cluster.clusterResource().clusterId(),
-                cluster.nodes(),
-                Collections.emptySet(),
-                Collections.emptySet(),
-                Collections.emptySet(),
-                null);
+                    cluster.nodes(),
+                    Collections.emptySet(),
+                    Collections.emptySet(),
+                    Collections.emptySet(),
+                    null);
         }
     }
 
@@ -279,14 +279,14 @@ public class AdminMetadataManager {
         if (RequestUtils.isFatalException(exception)) {
             log.warn("Fatal error during metadata update", exception);
             // avoid unchecked/unconfirmed cast to ApiException
-            if (exception instanceof  ApiException) {
+            if (exception instanceof ApiException) {
                 this.fatalException = (ApiException) exception;
             }
 
             if (exception instanceof UnsupportedVersionException) {
                 if (usingBootstrapControllers) {
                     log.warn("The remote node is not a CONTROLLER that supports the KIP-919 " +
-                        "DESCRIBE_CLUSTER api.", exception);
+                            "DESCRIBE_CLUSTER api.", exception);
                 } else {
                     log.warn("The remote node is not a BROKER that supports the METADATA api.", exception);
                 }

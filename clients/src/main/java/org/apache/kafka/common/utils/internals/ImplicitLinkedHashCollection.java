@@ -30,21 +30,21 @@ import java.util.Set;
 
 /**
  * A memory-efficient hash set which tracks the order of insertion of elements.
- *
+ * <p>
  * Like java.util.LinkedHashSet, this collection maintains a linked list of elements.
  * However, rather than using a separate linked list, this collection embeds the next
  * and previous fields into the elements themselves.  This reduces memory consumption,
  * because it means that we only have to store one Java object per element, rather
  * than multiple.
- *
+ * <p>
  * The next and previous fields are stored as array indices rather than pointers.
  * This ensures that the fields only take 32 bits, even when pointers are 64 bits.
  * It also makes the garbage collector's job easier, because it reduces the number of
  * pointers that it must chase.
- *
+ * <p>
  * This class uses linear probing.  Unlike HashMap (but like HashTable), we don't force
  * the size to be a power of 2.  This saves memory.
- *
+ * <p>
  * This set does not allow null elements.  It does not have internal synchronization.
  */
 public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection.Element> extends AbstractCollection<E> {
@@ -57,9 +57,13 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
      */
     public interface Element {
         int prev();
+
         void setPrev(int prev);
+
         int next();
+
         void setNext(int next);
+
         default boolean elementKeysAreEqual(Object other) {
             return equals(other);
         }
@@ -292,7 +296,7 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
     /**
      * Returns an iterator that will yield every element in the set.
      * The elements will be returned in the order that they were inserted in.
-     *
+     * <p>
      * Do not modify the set while you are iterating over it (except by calling
      * remove on the iterator itself, of course.)
      */
@@ -311,14 +315,14 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
 
     /**
      * Find an element matching an example element.
-     *
+     * <p>
      * Using the element's hash code, we can look up the slot where it belongs.
      * However, it may not have ended up in exactly this slot, due to a collision.
      * Therefore, we must search forward in the array until we hit a null, before
      * concluding that the element is not present.
      *
-     * @param key               The element to match.
-     * @return                  The match index, or INVALID_INDEX if no match was found.
+     * @param key The element to match.
+     * @return The match index, or INVALID_INDEX if no match was found.
      */
     private int findIndexOfEqualElement(Object key) {
         if (key == null || size == 0) {
@@ -342,8 +346,8 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
      * An element e in the collection such that e.elementKeysAreEqual(key) and
      * e.hashCode() == key.hashCode().
      *
-     * @param key   The element to match.
-     * @return      The matching element, or null if there were none.
+     * @param key The element to match.
+     * @return The matching element, or null if there were none.
      */
     public final E find(E key) {
         int index = findIndexOfEqualElement(key);
@@ -367,7 +371,7 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
      * Returns true if there is at least one element e in the collection such
      * that key.elementKeysAreEqual(e) and key.hashCode() == e.hashCode().
      *
-     * @param key       The object to try to match.
+     * @param key The object to try to match.
      */
     @Override
     public final boolean contains(Object key) {
@@ -384,10 +388,9 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
     /**
      * Add a new element to the collection.
      *
-     * @param newElement    The new element.
-     *
-     * @return              True if the element was added to the collection;
-     *                      false if it was not, because there was an existing equal element.
+     * @param newElement The new element.
+     * @return True if the element was added to the collection;
+     * false if it was not, because there was an existing equal element.
      */
     @Override
     public final boolean add(E newElement) {
@@ -418,10 +421,10 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
     /**
      * Adds a new element to the appropriate place in the elements array.
      *
-     * @param newElement    The new element to add.
-     * @param addElements   The elements array.
-     * @return              The index at which the element was inserted, or INVALID_INDEX
-     *                      if the element could not be inserted.
+     * @param newElement  The new element to add.
+     * @param addElements The elements array.
+     * @return The index at which the element was inserted, or INVALID_INDEX
+     * if the element could not be inserted.
      */
     int addInternal(Element newElement, Element[] addElements) {
         int slot = slot(addElements, newElement);
@@ -458,8 +461,8 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
      * Remove the first element e such that key.elementKeysAreEqual(e)
      * and key.hashCode == e.hashCode.
      *
-     * @param key       The object to try to match.
-     * @return          True if an element was removed; false otherwise.
+     * @param key The object to try to match.
+     * @return True if an element was removed; false otherwise.
      */
     @Override
     public final boolean remove(Object key) {
@@ -478,9 +481,8 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
     /**
      * Remove an element in a particular slot.
      *
-     * @param slot      The slot of the element to remove.
-     *
-     * @return          True if an element was removed; false otherwise.
+     * @param slot The slot of the element to remove.
+     * @return True if an element was removed; false otherwise.
      */
     private boolean removeElementAtSlot(int slot) {
         size--;
@@ -539,9 +541,9 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
     /**
      * Create a new ImplicitLinkedHashCollection.
      *
-     * @param expectedNumElements   The number of elements we expect to have in this set.
-     *                              This is used to optimize by setting the capacity ahead
-     *                              of time rather than growing incrementally.
+     * @param expectedNumElements The number of elements we expect to have in this set.
+     *                            This is used to optimize by setting the capacity ahead
+     *                            of time rather than growing incrementally.
      */
     public ImplicitLinkedHashCollection(int expectedNumElements) {
         clear(expectedNumElements);
@@ -550,8 +552,8 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
     /**
      * Create a new ImplicitLinkedHashCollection.
      *
-     * @param iter                  We will add all the elements accessible through this iterator
-     *                              to the set.
+     * @param iter We will add all the elements accessible through this iterator
+     *             to the set.
      */
     @SuppressWarnings("this-escape")
     public ImplicitLinkedHashCollection(Iterator<E> iter) {
@@ -609,7 +611,7 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
      * those elements were inserted in the same order. Because
      * {@code ImplicitLinkedHashCollectionListIterator} iterates over the elements
      * in insertion order, it is sufficient to call {@code valuesList.equals}.
-     *
+     * <p>
      * Note that {@link ImplicitLinkedHashMultiCollection} does not override
      * {@code equals} and uses this method as well. This means that two
      * {@code ImplicitLinkedHashMultiCollection} objects will be considered equal even
@@ -658,7 +660,7 @@ public class ImplicitLinkedHashCollection<E extends ImplicitLinkedHashCollection
      * vice-versa. The list supports element removal, which removes the corresponding
      * element from the collection, but does not support the {@code add} or
      * {@code set} operations.
-     *
+     * <p>
      * The list is implemented as a circular linked list, so all index-based
      * operations, such as {@code List.get}, run in O(n) time.
      *

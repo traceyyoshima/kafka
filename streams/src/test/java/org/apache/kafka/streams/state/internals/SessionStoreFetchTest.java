@@ -65,7 +65,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SessionStoreFetchTest {
-    private enum StoreType { InMemory, RocksDB }
+    private enum StoreType {InMemory, RocksDB}
+
     private static final String STORE_NAME = "store";
     private static final int DATA_SIZE = 5;
     private static final long WINDOW_SIZE = 500L;
@@ -154,23 +155,23 @@ public class SessionStoreFetchTest {
 
     private void verifyNormalQuery(final SessionStore<String, Long> stateStore) {
         try (final KeyValueIterator<Windowed<String>, Long> scanIterator = forward ?
-            stateStore.fetch("key-a", "key-bb") :
-            stateStore.backwardFetch("key-a", "key-bb")) {
+                stateStore.fetch("key-a", "key-bb") :
+                stateStore.backwardFetch("key-a", "key-bb")) {
 
             final Iterator<KeyValue<Windowed<String>, Long>> dataIterator = forward ?
-                expectedRecords.iterator() :
-                expectedRecords.descendingIterator();
+                    expectedRecords.iterator() :
+                    expectedRecords.descendingIterator();
 
             TestUtils.checkEquals(dataIterator, scanIterator);
         }
 
         try (final KeyValueIterator<Windowed<String>, Long> scanIterator = forward ?
-            stateStore.findSessions("key-a", "key-bb", 0L, Long.MAX_VALUE) :
-            stateStore.backwardFindSessions("key-a", "key-bb", 0L, Long.MAX_VALUE)) {
+                stateStore.findSessions("key-a", "key-bb", 0L, Long.MAX_VALUE) :
+                stateStore.backwardFindSessions("key-a", "key-bb", 0L, Long.MAX_VALUE)) {
 
             final Iterator<KeyValue<Windowed<String>, Long>> dataIterator = forward ?
-                expectedRecords.iterator() :
-                expectedRecords.descendingIterator();
+                    expectedRecords.iterator() :
+                    expectedRecords.descendingIterator();
 
             TestUtils.checkEquals(dataIterator, scanIterator);
         }
@@ -178,23 +179,23 @@ public class SessionStoreFetchTest {
 
     private void verifyInfiniteQuery(final SessionStore<String, Long> stateStore) {
         try (final KeyValueIterator<Windowed<String>, Long> scanIterator = forward ?
-            stateStore.fetch(null, null) :
-            stateStore.backwardFetch(null, null)) {
+                stateStore.fetch(null, null) :
+                stateStore.backwardFetch(null, null)) {
 
             final Iterator<KeyValue<Windowed<String>, Long>> dataIterator = forward ?
-                expectedRecords.iterator() :
-                expectedRecords.descendingIterator();
+                    expectedRecords.iterator() :
+                    expectedRecords.descendingIterator();
 
             TestUtils.checkEquals(dataIterator, scanIterator);
         }
 
         try (final KeyValueIterator<Windowed<String>, Long> scanIterator = forward ?
-            stateStore.findSessions(null, null, 0L, Long.MAX_VALUE) :
-            stateStore.backwardFindSessions(null, null, 0L, Long.MAX_VALUE)) {
+                stateStore.findSessions(null, null, 0L, Long.MAX_VALUE) :
+                stateStore.backwardFindSessions(null, null, 0L, Long.MAX_VALUE)) {
 
             final Iterator<KeyValue<Windowed<String>, Long>> dataIterator = forward ?
-                expectedRecords.iterator() :
-                expectedRecords.descendingIterator();
+                    expectedRecords.iterator() :
+                    expectedRecords.descendingIterator();
 
             TestUtils.checkEquals(dataIterator, scanIterator);
         }
@@ -218,11 +219,11 @@ public class SessionStoreFetchTest {
 
         final KStream<String, String> stream = builder.stream("input", Consumed.with(Serdes.String(), Serdes.String()));
         stream.
-            groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
-            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(WINDOW_SIZE)))
-            .count(stateStoreConfig)
-            .toStream()
-            .to("output");
+                groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
+                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(WINDOW_SIZE)))
+                .count(stateStoreConfig)
+                .toStream()
+                .to("output");
 
         final Topology topology = builder.build();
 

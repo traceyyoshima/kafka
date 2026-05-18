@@ -37,7 +37,7 @@ import java.util.Optional;
 public class SnapshotEmitter implements SnapshotGenerator.Emitter {
     /**
      * The maximum number of records we will put in each snapshot batch by default.
-     *
+     * <p>
      * From the perspective of the Raft layer, the limit on batch size is specified in terms of
      * bytes, not number of records. See MAX_BATCH_SIZE_BYTES in KafkaRaftClient for details.
      * However, it's more convenient to limit the batch size here in terms of number of records.
@@ -116,11 +116,11 @@ public class SnapshotEmitter implements SnapshotGenerator.Emitter {
     private final SnapshotEmitterMetrics metrics;
 
     private SnapshotEmitter(
-        Time time,
-        int nodeId,
-        RaftClient<ApiMessageAndVersion> raftClient,
-        int batchSize,
-        SnapshotEmitterMetrics metrics
+            Time time,
+            int nodeId,
+            RaftClient<ApiMessageAndVersion> raftClient,
+            int batchSize,
+            SnapshotEmitterMetrics metrics
     ) {
         this.time = time;
         this.log = new LogContext("[SnapshotEmitter id=" + nodeId + "] ").logger(SnapshotEmitter.class);
@@ -137,8 +137,8 @@ public class SnapshotEmitter implements SnapshotGenerator.Emitter {
     public void maybeEmit(MetadataImage image) {
         MetadataProvenance provenance = image.provenance();
         Optional<SnapshotWriter<ApiMessageAndVersion>> snapshotWriter = raftClient.createSnapshot(
-            provenance.snapshotId(),
-            provenance.lastContainedLogTimeMs()
+                provenance.snapshotId(),
+                provenance.lastContainedLogTimeMs()
         );
         if (snapshotWriter.isEmpty()) {
             log.error("Not generating {} because it already exists.", provenance.snapshotName());

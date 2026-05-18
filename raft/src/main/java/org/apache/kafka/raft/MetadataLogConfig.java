@@ -118,7 +118,7 @@ public class MetadataLogConfig {
     public int logSegmentBytes() {
         return logSegmentBytes;
     }
-    
+
     public Integer internalSegmentBytes() {
         return internalSegmentBytes;
     }

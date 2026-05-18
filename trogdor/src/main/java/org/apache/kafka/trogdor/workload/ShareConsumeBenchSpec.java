@@ -35,43 +35,43 @@ import java.util.Set;
 
 /**
  * The specification for a benchmark that consumes messages from a set of topic/partitions.
- *
+ * <p>
  * If a share group is not given to the specification, the default group name "share" will be used.
- *
+ * <p>
  * This specification uses a specific way to represent a topic partition via its "activeTopics" field.
  * The notation for that is topic_name:partition_number (e.g "foo:1" represents partition-1 of topic "foo")
  * Note that a topic name cannot have more than one colon.
- *
+ * <p>
  * The "activeTopics" field also supports ranges that get expanded. See #{@link StringExpander}.
- *
+ * <p>
  * There now exists a clever and succinct way to represent multiple topics.
  * Example:
  * Given "activeTopics": ["foo[1-3]"], "foo[1-3]" will get
  * expanded to [foo1, foo2, foo3].
- *
+ * <p>
  * The consumer will subscribe to the topics via
  * #{@link org.apache.kafka.clients.consumer.KafkaShareConsumer#subscribe(Collection)}.
  * It will be assigned partitions dynamically from the share group by the broker.
- *
+ * <p>
  * This specification supports the spawning of multiple share consumers in the single Trogdor worker agent.
  * The "threadsPerWorker" field denotes how many consumers should be spawned for this spec.
  * It is worth noting that the "targetMessagesPerSec", "maxMessages" and "activeTopics" fields apply for every share consumer individually.
- *
+ * <p>
  * The "recordProcessor" field allows the specification of tasks to run on records that are consumed.  This is run
  * immediately after the messages are polled.  See the `RecordProcessor` interface for more information.
- *
+ * <p>
  * An example JSON representation which will result in a share consumer that is part of the share group "sg" and
  * subscribed to topics foo1, foo2, foo3 and bar.
  * #{@code
- *    {
- *        "class": "org.apache.kafka.trogdor.workload.ShareConsumeBenchSpec",
- *        "durationMs": 10000000,
- *        "consumerNode": "node0",
- *        "bootstrapServers": "localhost:9092",
- *        "maxMessages": 100,
- *        "shareGroup": "sg",
- *        "activeTopics": ["foo[1-3]", "bar"]
- *    }
+ * {
+ * "class": "org.apache.kafka.trogdor.workload.ShareConsumeBenchSpec",
+ * "durationMs": 10000000,
+ * "consumerNode": "node0",
+ * "bootstrapServers": "localhost:9092",
+ * "maxMessages": 100,
+ * "shareGroup": "sg",
+ * "activeTopics": ["foo[1-3]", "bar"]
+ * }
  * }
  */
 public final class ShareConsumeBenchSpec extends TaskSpec {
@@ -92,18 +92,18 @@ public final class ShareConsumeBenchSpec extends TaskSpec {
 
     @JsonCreator
     public ShareConsumeBenchSpec(@JsonProperty("startMs") long startMs,
-                            @JsonProperty("durationMs") long durationMs,
-                            @JsonProperty("consumerNode") String consumerNode,
-                            @JsonProperty("bootstrapServers") String bootstrapServers,
-                            @JsonProperty("targetMessagesPerSec") int targetMessagesPerSec,
-                            @JsonProperty("maxMessages") long maxMessages,
-                            @JsonProperty("shareGroup") String shareGroup,
-                            @JsonProperty("consumerConf") Map<String, String> consumerConf,
-                            @JsonProperty("commonClientConf") Map<String, String> commonClientConf,
-                            @JsonProperty("adminClientConf") Map<String, String> adminClientConf,
-                            @JsonProperty("threadsPerWorker") Integer threadsPerWorker,
-                            @JsonProperty("recordProcessor") Optional<RecordProcessor> recordProcessor,
-                            @JsonProperty("activeTopics") List<String> activeTopics) {
+                                 @JsonProperty("durationMs") long durationMs,
+                                 @JsonProperty("consumerNode") String consumerNode,
+                                 @JsonProperty("bootstrapServers") String bootstrapServers,
+                                 @JsonProperty("targetMessagesPerSec") int targetMessagesPerSec,
+                                 @JsonProperty("maxMessages") long maxMessages,
+                                 @JsonProperty("shareGroup") String shareGroup,
+                                 @JsonProperty("consumerConf") Map<String, String> consumerConf,
+                                 @JsonProperty("commonClientConf") Map<String, String> commonClientConf,
+                                 @JsonProperty("adminClientConf") Map<String, String> adminClientConf,
+                                 @JsonProperty("threadsPerWorker") Integer threadsPerWorker,
+                                 @JsonProperty("recordProcessor") Optional<RecordProcessor> recordProcessor,
+                                 @JsonProperty("activeTopics") List<String> activeTopics) {
         super(startMs, durationMs);
         this.consumerNode = (consumerNode == null) ? "" : consumerNode;
         this.bootstrapServers = (bootstrapServers == null) ? "" : bootstrapServers;
@@ -185,7 +185,7 @@ public final class ShareConsumeBenchSpec extends TaskSpec {
 
     /**
      * Materializes a list of topic names (optionally with ranges) into a map of the topics and their partitions
-     *
+     * <p>
      * Example:
      * ['foo[1-3]', 'bar[1-2]'] => {'foo1', 'foo2', 'foo3', 'bar1', 'bar2' }
      */

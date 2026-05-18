@@ -23,9 +23,9 @@ import java.security.GeneralSecurityException;
 /**
  * {@code AssertionCreator} is used to create a client-signed OAuth assertion that can be used with different
  * grant types. See <a href="https://datatracker.ietf.org/doc/html/rfc7521">RFC 7521</a> for specifics.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * The assertion creator has three main steps:
  *
  * <ol>
@@ -33,9 +33,9 @@ import java.security.GeneralSecurityException;
  *     <li>Create the JWT payload</li>
  *     <li>Sign</li>
  * </ol>
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Step 1 is to dynamically create the JWT header. The implementation may add whatever values it needs, but
  * the {@code alg} (algorithm), {@code kid} (key ID), and {@code type} (type) are usually present. Here is
  * an example of the JSON version of the JWT header:
@@ -47,9 +47,9 @@ import java.security.GeneralSecurityException;
  *   "typ": "JWT",
  * }
  * </pre>
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Step 2 is to create the JWT payload from the claims provided to {@link #create(AssertionJwtTemplate)}. Depending on the
  * implementation, other claims may be dynamically generated and added to the JWT payload. Or, some of the
  * claims in the incoming map could be ignored or modified. Here's an example where the implementation has
@@ -65,9 +65,9 @@ import java.security.GeneralSecurityException;
  *   "...": "...",
  * }
  * </pre>
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Step 3 is to use the configured private key to sign the header and payload and serialize in the compact
  * JWT format. The means by which the private key (if any) is made available for use is up to the
  * implementation. The private key could be loaded from a file, downloaded from a trusted resource,
@@ -78,7 +78,7 @@ public interface AssertionCreator extends Closeable {
     /**
      * Creates and signs an OAuth assertion by converting the given claims into JWT and then signing it using
      * the configured algorithm.
-     *
+     * <p>
      * <p/>
      *
      * @param template {@link AssertionJwtTemplate} with optional header and/or claims to include in the JWT

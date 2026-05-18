@@ -60,8 +60,8 @@ public final class ManCommandHandler implements Commands.Handler {
         @Override
         public void addArguments(ArgumentParser parser) {
             parser.addArgument("cmd").
-                nargs(1).
-                help("The command to get help text for.");
+                    nargs(1).
+                    help("The command to get help text for.");
         }
 
         @Override
@@ -71,9 +71,9 @@ public final class ManCommandHandler implements Commands.Handler {
 
         @Override
         public void completeNext(
-            MetadataShellState state,
-            List<String> nextWords,
-            List<Candidate> candidates
+                MetadataShellState state,
+                List<String> nextWords,
+                List<Candidate> candidates
         ) throws Exception {
             if (nextWords.size() == 1) {
                 CommandUtils.completeCommand(nextWords.get(0), candidates);
@@ -87,14 +87,14 @@ public final class ManCommandHandler implements Commands.Handler {
 
     @Override
     public void run(
-        Optional<InteractiveShell> shell,
-        PrintWriter writer,
-        MetadataShellState manager
+            Optional<InteractiveShell> shell,
+            PrintWriter writer,
+            MetadataShellState manager
     ) {
         Commands.Type type = Commands.TYPES.get(cmd);
         if (type == null) {
             writer.println("man: unknown command " + cmd +
-                ". Type help to get a list of commands.");
+                    ". Type help to get a list of commands.");
         } else {
             ArgumentParser parser = ArgumentParsers.newArgumentParser(type.name(), false);
             type.addArguments(parser);

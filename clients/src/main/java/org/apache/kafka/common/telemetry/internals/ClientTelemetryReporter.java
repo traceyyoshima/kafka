@@ -70,14 +70,14 @@ import io.opentelemetry.proto.metrics.v1.ScopeMetrics;
  * of the client telemetry collection process. The client telemetry reporter is responsible for
  * collecting the client telemetry data and sending it to the broker.
  * <p>
- *
+ * <p>
  * The client telemetry reporter is configured with a {@link ClientTelemetrySender} which is
  * responsible for sending the client telemetry data to the broker. The client telemetry reporter
  * will attempt to fetch the telemetry subscription information from the broker and send the
  * telemetry data to the broker based on the subscription information i.e. push interval, temporality,
  * compression type, etc.
  * <p>
- *
+ * <p>
  * The full life-cycle of the metric collection process is defined by a state machine in
  * {@link ClientTelemetryState}. Each state is associated with a different set of operations.
  * For example, the client telemetry reporter will attempt to fetch the telemetry subscription
@@ -85,11 +85,11 @@ import io.opentelemetry.proto.metrics.v1.ScopeMetrics;
  * If the push operation fails, the client telemetry reporter will attempt to re-fetch the
  * subscription information by setting the state back to {@link ClientTelemetryState#SUBSCRIPTION_NEEDED}.
  * <p>
- *
+ * <p>
  * In an unlikely scenario, if a bad state transition is detected, an
  * {@link IllegalStateException} will be thrown.
  * <p>
- *
+ * <p>
  * The state transition follows the following steps in order:
  * <ol>
  *     <li>{@link ClientTelemetryState#SUBSCRIPTION_NEEDED}</li>
@@ -101,7 +101,7 @@ import io.opentelemetry.proto.metrics.v1.ScopeMetrics;
  *     <li>{@link ClientTelemetryState#TERMINATED}</li>
  * </ol>
  * <p>
- *
+ * <p>
  * For more detail in state transition, see {@link ClientTelemetryState#validateTransition}.
  */
 public class ClientTelemetryReporter implements MetricsReporter {
@@ -236,16 +236,16 @@ public class ClientTelemetryReporter implements MetricsReporter {
 
     private void initCollectors() {
         kafkaMetricsCollector = new KafkaMetricsCollector(
-            TelemetryMetricNamingConvention.getClientTelemetryMetricNamingStrategy(
-                telemetryProvider.domain()), EXCLUDE_LABELS);
+                TelemetryMetricNamingConvention.getClientTelemetryMetricNamingStrategy(
+                        telemetryProvider.domain()), EXCLUDE_LABELS);
     }
 
     private ResourceMetrics buildMetric(Metric metric) {
         return ResourceMetrics.newBuilder()
-            .setResource(telemetryProvider.resource())
-            .addScopeMetrics(ScopeMetrics.newBuilder()
-                .addMetrics(metric)
-                .build()).build();
+                .setResource(telemetryProvider.resource())
+                .addScopeMetrics(ScopeMetrics.newBuilder()
+                        .addMetrics(metric)
+                        .build()).build();
     }
 
     // Visible for testing, only for unit tests
@@ -410,7 +410,7 @@ public class ClientTelemetryReporter implements MetricsReporter {
             }
 
             Optional<Integer> errorIntervalMsOpt = ClientTelemetryUtils.maybeFetchErrorIntervalMs(data.errorCode(),
-                oldSubscription != null ? oldSubscription.pushIntervalMs() : -1);
+                    oldSubscription != null ? oldSubscription.pushIntervalMs() : -1);
             /*
              If the error code indicates that the interval ms needs to be updated as per the error
              code then update the interval ms and state so that the subscription can be retried.
@@ -430,9 +430,9 @@ public class ClientTelemetryReporter implements MetricsReporter {
             Uuid clientInstanceId = ClientTelemetryUtils.validateClientInstanceId(data.clientInstanceId());
             int intervalMs = ClientTelemetryUtils.validateIntervalMs(data.pushIntervalMs());
             Predicate<? super MetricKeyable> selector = ClientTelemetryUtils.getSelectorFromRequestedMetrics(
-                data.requestedMetrics());
+                    data.requestedMetrics());
             List<CompressionType> acceptedCompressionTypes = ClientTelemetryUtils.getCompressionTypesFromAcceptedList(
-                data.acceptedCompressionTypes());
+                    data.acceptedCompressionTypes());
 
             /*
              Check if the delta temporality has changed, if so, we need to reset the ledger tracking
@@ -440,19 +440,19 @@ public class ClientTelemetryReporter implements MetricsReporter {
             */
             if (oldSubscription != null && oldSubscription.deltaTemporality() != data.deltaTemporality()) {
                 log.info("Delta temporality has changed from {} to {}, resetting metric values",
-                    oldSubscription.deltaTemporality(), data.deltaTemporality());
+                        oldSubscription.deltaTemporality(), data.deltaTemporality());
                 if (kafkaMetricsCollector != null) {
                     kafkaMetricsCollector.metricsReset();
                 }
             }
 
             ClientTelemetrySubscription clientTelemetrySubscription = new ClientTelemetrySubscription(
-                clientInstanceId,
-                data.subscriptionId(),
-                intervalMs,
-                acceptedCompressionTypes,
-                data.deltaTemporality(),
-                selector);
+                    clientInstanceId,
+                    data.subscriptionId(),
+                    intervalMs,
+                    acceptedCompressionTypes,
+                    data.deltaTemporality(),
+                    selector);
 
             lock.writeLock().lock();
             try {
@@ -503,7 +503,7 @@ public class ClientTelemetryReporter implements MetricsReporter {
                 }
 
                 Optional<Integer> errorIntervalMsOpt = ClientTelemetryUtils.maybeFetchErrorIntervalMs(data.errorCode(),
-                    subscription.pushIntervalMs());
+                        subscription.pushIntervalMs());
                 /*
                  If the error code indicates that the interval ms needs to be updated as per the error
                  code then update the interval ms and state so that the subscription can be re-fetched,
@@ -632,8 +632,8 @@ public class ClientTelemetryReporter implements MetricsReporter {
 
         private boolean isRetryable(final KafkaException maybeFatalException) {
             return maybeFatalException == null ||
-                (maybeFatalException instanceof RetriableException) ||
-                (maybeFatalException.getCause() != null && maybeFatalException.getCause() instanceof RetriableException);
+                    (maybeFatalException instanceof RetriableException) ||
+                    (maybeFatalException.getCause() != null && maybeFatalException.getCause() instanceof RetriableException);
         }
 
         private Optional<Builder<?>> createSubscriptionRequest(ClientTelemetrySubscription localSubscription) {
@@ -659,7 +659,7 @@ public class ClientTelemetryReporter implements MetricsReporter {
             }
 
             AbstractRequest.Builder<?> requestBuilder = new GetTelemetrySubscriptionsRequest.Builder(
-                new GetTelemetrySubscriptionsRequestData().setClientInstanceId(clientInstanceId), true);
+                    new GetTelemetrySubscriptionsRequestData().setClientInstanceId(clientInstanceId), true);
             return Optional.of(requestBuilder);
         }
 
@@ -748,12 +748,12 @@ public class ClientTelemetryReporter implements MetricsReporter {
             }
 
             AbstractRequest.Builder<?> requestBuilder = new PushTelemetryRequest.Builder(
-                new PushTelemetryRequestData()
-                    .setClientInstanceId(localSubscription.clientInstanceId())
-                    .setSubscriptionId(localSubscription.subscriptionId())
-                    .setTerminating(terminating)
-                    .setCompressionType(compressionType.id)
-                    .setMetrics(compressedPayload), true);
+                    new PushTelemetryRequestData()
+                            .setClientInstanceId(localSubscription.clientInstanceId())
+                            .setSubscriptionId(localSubscription.subscriptionId())
+                            .setTerminating(terminating)
+                            .setCompressionType(compressionType.id)
+                            .setMetrics(compressedPayload), true);
 
             return Optional.of(requestBuilder);
         }
@@ -787,7 +787,7 @@ public class ClientTelemetryReporter implements MetricsReporter {
                 lastRequestMs = timeMs;
 
                 log.debug("Updating subscription - subscription: {}; intervalMs: {}, lastRequestMs: {}",
-                    subscription, intervalMs, lastRequestMs);
+                        subscription, intervalMs, lastRequestMs);
                 subscriptionLoaded.signalAll();
             } finally {
                 lock.writeLock().unlock();
@@ -825,13 +825,13 @@ public class ClientTelemetryReporter implements MetricsReporter {
             int firstPushIntervalMs = (int) Math.round(rand * intervalMs);
 
             log.debug("Telemetry subscription push interval value from broker was {}; to stagger requests the first push"
-                + " interval is being adjusted to {}", intervalMs, firstPushIntervalMs);
+                    + " interval is being adjusted to {}", intervalMs, firstPushIntervalMs);
             return firstPushIntervalMs;
         }
 
         private boolean isTerminatingState() {
             return state == ClientTelemetryState.TERMINATED || state == ClientTelemetryState.TERMINATING_PUSH_NEEDED
-                || state == ClientTelemetryState.TERMINATING_PUSH_IN_PROGRESS;
+                    || state == ClientTelemetryState.TERMINATING_PUSH_IN_PROGRESS;
         }
 
         // Visible for testing
@@ -971,8 +971,8 @@ public class ClientTelemetryReporter implements MetricsReporter {
         private final Predicate<? super MetricKeyable> selector;
 
         ClientTelemetrySubscription(Uuid clientInstanceId, int subscriptionId, int pushIntervalMs,
-                List<CompressionType> acceptedCompressionTypes, boolean deltaTemporality,
-                Predicate<? super MetricKeyable> selector) {
+                                    List<CompressionType> acceptedCompressionTypes, boolean deltaTemporality,
+                                    Predicate<? super MetricKeyable> selector) {
             this.clientInstanceId = clientInstanceId;
             this.subscriptionId = subscriptionId;
             this.pushIntervalMs = pushIntervalMs;
@@ -1008,13 +1008,13 @@ public class ClientTelemetryReporter implements MetricsReporter {
         @Override
         public String toString() {
             return new StringJoiner(", ", "ClientTelemetrySubscription{", "}")
-                .add("clientInstanceId=" + clientInstanceId)
-                .add("subscriptionId=" + subscriptionId)
-                .add("pushIntervalMs=" + pushIntervalMs)
-                .add("acceptedCompressionTypes=" + acceptedCompressionTypes)
-                .add("deltaTemporality=" + deltaTemporality)
-                .add("selector=" + selector)
-                .toString();
+                    .add("clientInstanceId=" + clientInstanceId)
+                    .add("subscriptionId=" + subscriptionId)
+                    .add("pushIntervalMs=" + pushIntervalMs)
+                    .add("acceptedCompressionTypes=" + acceptedCompressionTypes)
+                    .add("deltaTemporality=" + deltaTemporality)
+                    .add("selector=" + selector)
+                    .toString();
         }
     }
 }

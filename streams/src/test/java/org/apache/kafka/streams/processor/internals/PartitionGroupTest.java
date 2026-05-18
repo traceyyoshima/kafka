@@ -419,8 +419,8 @@ public class PartitionGroupTest {
         final PartitionGroup group = getBasicGroup();
 
         final IllegalStateException exception = assertThrows(
-            IllegalStateException.class,
-            () -> group.addRawRecords(unknownPartition, null));
+                IllegalStateException.class,
+                () -> group.addRawRecords(unknownPartition, null));
         assertThat(errMessage, equalTo(exception.getMessage()));
     }
 
@@ -429,8 +429,8 @@ public class PartitionGroupTest {
         final PartitionGroup group = getBasicGroup();
 
         final IllegalStateException exception = assertThrows(
-            IllegalStateException.class,
-            () -> group.numBuffered(unknownPartition));
+                IllegalStateException.class,
+                () -> group.numBuffered(unknownPartition));
         assertThat(errMessage, equalTo(exception.getMessage()));
     }
 
@@ -439,8 +439,8 @@ public class PartitionGroupTest {
         final PartitionGroup group = getBasicGroup();
 
         final IllegalStateException exception = assertThrows(
-            IllegalStateException.class,
-            () -> group.setPartitionTime(unknownPartition, 0L));
+                IllegalStateException.class,
+                () -> group.setPartitionTime(unknownPartition, 0L));
         assertThat(errMessage, equalTo(exception.getMessage()));
     }
 
@@ -449,8 +449,8 @@ public class PartitionGroupTest {
         final PartitionGroup group = getBasicGroup();
 
         final IllegalStateException exception = assertThrows(
-            IllegalStateException.class,
-            () -> group.partitionTimestamp(unknownPartition));
+                IllegalStateException.class,
+                () -> group.partitionTimestamp(unknownPartition));
         assertThat(errMessage, equalTo(exception.getMessage()));
     }
 
@@ -459,8 +459,8 @@ public class PartitionGroupTest {
         final PartitionGroup group = getBasicGroup();
 
         final IllegalStateException exception = assertThrows(
-            IllegalStateException.class,
-            () -> group.headRecordOffset(unknownPartition));
+                IllegalStateException.class,
+                () -> group.headRecordOffset(unknownPartition));
         assertThat(errMessage, equalTo(exception.getMessage()));
     }
 
@@ -477,16 +477,16 @@ public class PartitionGroupTest {
     @Test
     public void shouldEmptyPartitionsOnClear() {
         final PartitionGroup group =
-            new PartitionGroup(
-                logContext,
-                mkMap(
-                    mkEntry(partition1, queue1)
-                ),
-                tp -> OptionalLong.of(0L),
-                getValueSensor(metrics, lastLatenessValue),
-                enforcedProcessingSensor,
-                10
-            );
+                new PartitionGroup(
+                        logContext,
+                        mkMap(
+                                mkEntry(partition1, queue1)
+                        ),
+                        tp -> OptionalLong.of(0L),
+                        getValueSensor(metrics, lastLatenessValue),
+                        enforcedProcessingSensor,
+                        10
+                );
 
         final List<ConsumerRecord<byte[], byte[]>> list = Arrays.asList(
                 new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
@@ -543,12 +543,12 @@ public class PartitionGroupTest {
     @Test
     public void shouldUpdatePartitionQueuesExpand() {
         final PartitionGroup group = new PartitionGroup(
-            logContext,
-            mkMap(mkEntry(partition1, queue1)),
-            tp -> OptionalLong.of(0L),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            maxTaskIdleMs
+                logContext,
+                mkMap(mkEntry(partition1, queue1)),
+                tp -> OptionalLong.of(0L),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                maxTaskIdleMs
         );
         final List<ConsumerRecord<byte[], byte[]>> list1 = Arrays.asList(
                 new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
@@ -576,12 +576,12 @@ public class PartitionGroupTest {
     @Test
     public void shouldUpdatePartitionQueuesShrinkAndExpand() {
         final PartitionGroup group = new PartitionGroup(
-            logContext,
-            mkMap(mkEntry(partition1, queue1)),
-            tp -> OptionalLong.of(0L),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            maxTaskIdleMs
+                logContext,
+                mkMap(mkEntry(partition1, queue1)),
+                tp -> OptionalLong.of(0L),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                maxTaskIdleMs
         );
         final List<ConsumerRecord<byte[], byte[]>> list1 = Arrays.asList(
                 new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
@@ -608,69 +608,69 @@ public class PartitionGroupTest {
     @Test
     public void shouldUpdateBufferSizeCorrectlyForSkippedRecords() {
         final PartitionGroup group = new PartitionGroup(
-            logContext,
-            mkMap(mkEntry(partition1, queue1)),
-            tp -> OptionalLong.of(0L),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            maxTaskIdleMs
+                logContext,
+                mkMap(mkEntry(partition1, queue1)),
+                tp -> OptionalLong.of(0L),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                maxTaskIdleMs
         );
         final List<ConsumerRecord<byte[], byte[]>> list1 = Arrays.asList(
-            new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
-            new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue),
-            new ConsumerRecord<>(
-                "topic",
-                1,
-                -1, // offset as invalid timestamp
-                -1, // invalid timestamp
-                TimestampType.CREATE_TIME,
-                0,
-                0,
-                recordKey,
-                recordValue,
-                new RecordHeaders(),
-                Optional.empty()
-            ),
-            new ConsumerRecord<>(
-                "topic",
-                1,
-                11,
-                0,
-                TimestampType.CREATE_TIME,
-                0,
-                0,
-                new byte[0], // corrupted key
-                recordValue,
-                new RecordHeaders(),
-                Optional.empty()
-            ),
-            new ConsumerRecord<>(
-                "topic",
-                1,
-                -1, // offset as invalid timestamp
-                -1, // invalid timestamp
-                TimestampType.CREATE_TIME,
-                0,
-                0,
-                recordKey,
-                recordValue,
-                new RecordHeaders(),
-                Optional.empty()
-            ),
-            new ConsumerRecord<>(
-                "topic",
-                1,
-                13,
-                0,
-                TimestampType.CREATE_TIME,
-                0,
-                0,
-                recordKey,
-                new byte[0], // corrupted value
-                new RecordHeaders(),
-                Optional.empty()
-            ),
-            new ConsumerRecord<>("topic", 1, 20L, recordKey, recordValue)
+                new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
+                new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue),
+                new ConsumerRecord<>(
+                        "topic",
+                        1,
+                        -1, // offset as invalid timestamp
+                        -1, // invalid timestamp
+                        TimestampType.CREATE_TIME,
+                        0,
+                        0,
+                        recordKey,
+                        recordValue,
+                        new RecordHeaders(),
+                        Optional.empty()
+                ),
+                new ConsumerRecord<>(
+                        "topic",
+                        1,
+                        11,
+                        0,
+                        TimestampType.CREATE_TIME,
+                        0,
+                        0,
+                        new byte[0], // corrupted key
+                        recordValue,
+                        new RecordHeaders(),
+                        Optional.empty()
+                ),
+                new ConsumerRecord<>(
+                        "topic",
+                        1,
+                        -1, // offset as invalid timestamp
+                        -1, // invalid timestamp
+                        TimestampType.CREATE_TIME,
+                        0,
+                        0,
+                        recordKey,
+                        recordValue,
+                        new RecordHeaders(),
+                        Optional.empty()
+                ),
+                new ConsumerRecord<>(
+                        "topic",
+                        1,
+                        13,
+                        0,
+                        TimestampType.CREATE_TIME,
+                        0,
+                        0,
+                        recordKey,
+                        new byte[0], // corrupted value
+                        new RecordHeaders(),
+                        Optional.empty()
+                ),
+                new ConsumerRecord<>("topic", 1, 20L, recordKey, recordValue)
         );
 
         group.addRawRecords(partition1, list1);
@@ -690,20 +690,20 @@ public class PartitionGroupTest {
     @Test
     public void shouldNeverWaitIfIdlingIsDisabled() {
         final PartitionGroup group = new PartitionGroup(
-            logContext,
-            mkMap(
-                mkEntry(partition1, queue1),
-                mkEntry(partition2, queue2)
-            ),
-            tp -> OptionalLong.of(0L),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            StreamsConfig.MAX_TASK_IDLE_MS_DISABLED
+                logContext,
+                mkMap(
+                        mkEntry(partition1, queue1),
+                        mkEntry(partition2, queue2)
+                ),
+                tp -> OptionalLong.of(0L),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                StreamsConfig.MAX_TASK_IDLE_MS_DISABLED
         );
 
         final List<ConsumerRecord<byte[], byte[]>> list1 = Arrays.asList(
-            new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
-            new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
+                new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
+                new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
         group.addRawRecords(partition1, list1);
 
         assertThat(group.allPartitionsBufferedLocally(), is(false));
@@ -713,16 +713,16 @@ public class PartitionGroupTest {
             assertTrue(result.isReady());
             assertTrue(result.getLogMessage().isEmpty());
             assertThat(
-                appender.getEvents(),
-                hasItem(Matchers.allOf(
-                    Matchers.hasProperty("level", equalTo("TRACE")),
-                    Matchers.hasProperty("message", equalTo(
-                        "[test] Ready for processing because max.task.idle.ms is disabled.\n" +
-                            "\tThere may be out-of-order processing for this task as a result.\n" +
-                            "\tBuffered partitions: [topic-1]\n" +
-                            "\tNon-buffered partitions: [topic-2]"
+                    appender.getEvents(),
+                    hasItem(Matchers.allOf(
+                            Matchers.hasProperty("level", equalTo("TRACE")),
+                            Matchers.hasProperty("message", equalTo(
+                                    "[test] Ready for processing because max.task.idle.ms is disabled.\n" +
+                                            "\tThere may be out-of-order processing for this task as a result.\n" +
+                                            "\tBuffered partitions: [topic-1]\n" +
+                                            "\tNon-buffered partitions: [topic-2]"
+                            ))
                     ))
-                ))
             );
         }
     }
@@ -730,25 +730,25 @@ public class PartitionGroupTest {
     @Test
     public void shouldBeReadyIfAllPartitionsAreBuffered() {
         final PartitionGroup group = new PartitionGroup(
-            logContext,
-            mkMap(
-                mkEntry(partition1, queue1),
-                mkEntry(partition2, queue2)
-            ),
-            tp -> OptionalLong.of(0L),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            0L
+                logContext,
+                mkMap(
+                        mkEntry(partition1, queue1),
+                        mkEntry(partition2, queue2)
+                ),
+                tp -> OptionalLong.of(0L),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                0L
         );
 
         final List<ConsumerRecord<byte[], byte[]>> list1 = Arrays.asList(
-            new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
-            new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
+                new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
+                new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
         group.addRawRecords(partition1, list1);
 
         final List<ConsumerRecord<byte[], byte[]>> list2 = Arrays.asList(
-            new ConsumerRecord<>("topic", 2, 1L, recordKey, recordValue),
-            new ConsumerRecord<>("topic", 2, 5L, recordKey, recordValue));
+                new ConsumerRecord<>("topic", 2, 1L, recordKey, recordValue),
+                new ConsumerRecord<>("topic", 2, 5L, recordKey, recordValue));
         group.addRawRecords(partition2, list2);
 
         assertThat(group.allPartitionsBufferedLocally(), is(true));
@@ -759,11 +759,11 @@ public class PartitionGroupTest {
             assertTrue(result.isReady());
             assertTrue(result.getLogMessage().isEmpty());
             assertThat(
-                appender.getEvents(),
-                hasItem(Matchers.allOf(
-                    Matchers.hasProperty("level", equalTo("TRACE")),
-                    Matchers.hasProperty("message", equalTo("[test] All partitions were buffered locally, so this task is ready for processing."))
-                ))
+                    appender.getEvents(),
+                    hasItem(Matchers.allOf(
+                            Matchers.hasProperty("level", equalTo("TRACE")),
+                            Matchers.hasProperty("message", equalTo("[test] All partitions were buffered locally, so this task is ready for processing."))
+                    ))
             );
         }
     }
@@ -772,27 +772,27 @@ public class PartitionGroupTest {
     public void shouldWaitForFetchesWhenMetadataIsIncomplete() {
         final HashMap<TopicPartition, OptionalLong> lags = new HashMap<>();
         final PartitionGroup group = new PartitionGroup(
-            logContext,
-            mkMap(
-                mkEntry(partition1, queue1),
-                mkEntry(partition2, queue2)
-            ),
-            tp -> lags.getOrDefault(tp, OptionalLong.empty()),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            0L
+                logContext,
+                mkMap(
+                        mkEntry(partition1, queue1),
+                        mkEntry(partition2, queue2)
+                ),
+                tp -> lags.getOrDefault(tp, OptionalLong.empty()),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                0L
         );
 
         final List<ConsumerRecord<byte[], byte[]>> list1 = Arrays.asList(
-            new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
-            new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
+                new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
+                new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
         group.addRawRecords(partition1, list1);
 
         assertThat(group.allPartitionsBufferedLocally(), is(false));
         final AbstractPartitionGroup.ReadyToProcessResult result = group.readyToProcess(0L);
         assertFalse(result.isReady());
         assertTrue(result.getLogMessage().isPresent() &&
-            result.getLogMessage().get().contains("Waiting to fetch data for topic-2"));
+                result.getLogMessage().get().contains("Waiting to fetch data for topic-2"));
         lags.put(partition2, OptionalLong.of(0L));
         group.updateLags();
         assertTrue(group.readyToProcess(0L).isReady());
@@ -802,20 +802,20 @@ public class PartitionGroupTest {
     public void shouldWaitForPollWhenLagIsNonzero() {
         final HashMap<TopicPartition, OptionalLong> lags = new HashMap<>();
         final PartitionGroup group = new PartitionGroup(
-            logContext,
-            mkMap(
-                mkEntry(partition1, queue1),
-                mkEntry(partition2, queue2)
-            ),
-            tp -> lags.getOrDefault(tp, OptionalLong.empty()),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            0L
+                logContext,
+                mkMap(
+                        mkEntry(partition1, queue1),
+                        mkEntry(partition2, queue2)
+                ),
+                tp -> lags.getOrDefault(tp, OptionalLong.empty()),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                0L
         );
 
         final List<ConsumerRecord<byte[], byte[]>> list1 = Arrays.asList(
-            new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
-            new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
+                new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
+                new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
         group.addRawRecords(partition1, list1);
 
         lags.put(partition2, OptionalLong.of(1L));
@@ -826,27 +826,27 @@ public class PartitionGroupTest {
         final AbstractPartitionGroup.ReadyToProcessResult result = group.readyToProcess(0L);
         assertFalse(result.isReady());
         assertTrue(result.getLogMessage().isPresent() &&
-            result.getLogMessage().get().contains("Partition topic-2 has current lag 1, but no data is buffered locally. Waiting to buffer some records."));
+                result.getLogMessage().get().contains("Partition topic-2 has current lag 1, but no data is buffered locally. Waiting to buffer some records."));
     }
 
     @Test
     public void shouldIdleAsSpecifiedWhenLagIsZero() {
         final PartitionGroup group = new PartitionGroup(
-            logContext,
-            mkMap(
-                mkEntry(partition1, queue1),
-                mkEntry(partition2, queue2)
-            ),
-            tp -> OptionalLong.of(0L),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            1L
+                logContext,
+                mkMap(
+                        mkEntry(partition1, queue1),
+                        mkEntry(partition2, queue2)
+                ),
+                tp -> OptionalLong.of(0L),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                1L
         );
         group.updateLags();
 
         final List<ConsumerRecord<byte[], byte[]>> list1 = Arrays.asList(
-            new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
-            new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
+                new ConsumerRecord<>("topic", 1, 1L, recordKey, recordValue),
+                new ConsumerRecord<>("topic", 1, 5L, recordKey, recordValue));
         group.addRawRecords(partition1, list1);
 
         assertThat(group.allPartitionsBufferedLocally(), is(false));
@@ -854,7 +854,7 @@ public class PartitionGroupTest {
         final AbstractPartitionGroup.ReadyToProcessResult result1 = group.readyToProcess(0L);
         assertFalse(result1.isReady());
         assertTrue(result1.getLogMessage().isPresent() &&
-            result1.getLogMessage().get().contains("Partition topic-2 has current lag 0 and current time is 0. Waiting for new data to be produced for configured idle time 1 (deadline is 1)."));
+                result1.getLogMessage().get().contains("Partition topic-2 has current lag 0 and current time is 0. Waiting for new data to be produced for configured idle time 1 (deadline is 1)."));
 
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(PartitionGroup.class)) {
             appender.setClassLogger(PartitionGroup.class, Level.TRACE);
@@ -862,18 +862,18 @@ public class PartitionGroupTest {
             assertTrue(result2.isReady());
             assertTrue(result2.getLogMessage().isEmpty());
             assertThat(
-                appender.getEvents(),
-                hasItem(Matchers.allOf(
-                    Matchers.hasProperty("level", equalTo("TRACE")),
-                    Matchers.hasProperty("message", equalTo(
-                        "[test] Continuing to process although some partitions are empty on the broker.\n" +
-                            "\tThere may be out-of-order processing for this task as a result.\n" +
-                            "\tPartitions with local data: [topic-1].\n" +
-                            "\tPartitions we gave up waiting for, with their corresponding deadlines: {topic-2=1}.\n" +
-                            "\tConfigured max.task.idle.ms: 1.\n" +
-                            "\tCurrent wall-clock time: 1."
+                    appender.getEvents(),
+                    hasItem(Matchers.allOf(
+                            Matchers.hasProperty("level", equalTo("TRACE")),
+                            Matchers.hasProperty("message", equalTo(
+                                    "[test] Continuing to process although some partitions are empty on the broker.\n" +
+                                            "\tThere may be out-of-order processing for this task as a result.\n" +
+                                            "\tPartitions with local data: [topic-1].\n" +
+                                            "\tPartitions we gave up waiting for, with their corresponding deadlines: {topic-2=1}.\n" +
+                                            "\tConfigured max.task.idle.ms: 1.\n" +
+                                            "\tCurrent wall-clock time: 1."
+                            ))
                     ))
-                ))
             );
         }
 
@@ -883,18 +883,18 @@ public class PartitionGroupTest {
             assertTrue(result3.isReady());
             assertTrue(result3.getLogMessage().isEmpty());
             assertThat(
-                appender.getEvents(),
-                hasItem(Matchers.allOf(
-                    Matchers.hasProperty("level", equalTo("TRACE")),
-                    Matchers.hasProperty("message", equalTo(
-                        "[test] Continuing to process although some partitions are empty on the broker.\n" +
-                            "\tThere may be out-of-order processing for this task as a result.\n" +
-                            "\tPartitions with local data: [topic-1].\n" +
-                            "\tPartitions we gave up waiting for, with their corresponding deadlines: {topic-2=1}.\n" +
-                            "\tConfigured max.task.idle.ms: 1.\n" +
-                            "\tCurrent wall-clock time: 2."
+                    appender.getEvents(),
+                    hasItem(Matchers.allOf(
+                            Matchers.hasProperty("level", equalTo("TRACE")),
+                            Matchers.hasProperty("message", equalTo(
+                                    "[test] Continuing to process although some partitions are empty on the broker.\n" +
+                                            "\tThere may be out-of-order processing for this task as a result.\n" +
+                                            "\tPartitions with local data: [topic-1].\n" +
+                                            "\tPartitions we gave up waiting for, with their corresponding deadlines: {topic-2=1}.\n" +
+                                            "\tConfigured max.task.idle.ms: 1.\n" +
+                                            "\tCurrent wall-clock time: 2."
+                            ))
                     ))
-                ))
             );
         }
     }
@@ -903,15 +903,15 @@ public class PartitionGroupTest {
         final AbstractPartitionGroup.ReadyToProcessResult result = group.readyToProcess(0L);
         assertFalse(result.isReady());
         assertTrue(result.getLogMessage().isPresent() &&
-            result.getLogMessage().get().contains(String.format("Waiting to fetch data for %s", partition)));
+                result.getLogMessage().get().contains(String.format("Waiting to fetch data for %s", partition)));
     }
 
     private void hasZeroFetchedLag(final PartitionGroup group, final TopicPartition partition) {
         final AbstractPartitionGroup.ReadyToProcessResult result = group.readyToProcess(0L);
         assertFalse(result.isReady());
         assertTrue(result.getLogMessage().isPresent() &&
-            result.getLogMessage().get().contains(String.format("Partition %s has current lag 0 and current time is %d. "
-            + "Waiting for new data to be produced for configured idle time", partition, 0L)));
+                result.getLogMessage().get().contains(String.format("Partition %s has current lag 0 and current time is %d. "
+                        + "Waiting for new data to be produced for configured idle time", partition, 0L)));
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -919,8 +919,8 @@ public class PartitionGroupTest {
         final AbstractPartitionGroup.ReadyToProcessResult result = group.readyToProcess(0L);
         assertFalse(result.isReady());
         assertTrue(result.getLogMessage().isPresent() &&
-            result.getLogMessage().get().contains(String.format("Partition %s has current lag %d, but no data is buffered locally. "
-            + "Waiting to buffer some records.", partition, lag)));
+                result.getLogMessage().get().contains(String.format("Partition %s has current lag %d, but no data is buffered locally. "
+                        + "Waiting to buffer some records.", partition, lag)));
     }
 
 
@@ -928,14 +928,14 @@ public class PartitionGroupTest {
     public void shouldUpdateLags() {
         final HashMap<TopicPartition, OptionalLong> lags = new HashMap<>();
         final PartitionGroup group = new PartitionGroup(
-            logContext,
-            mkMap(
-                mkEntry(partition1, queue1)
-            ),
-            tp -> lags.getOrDefault(tp, OptionalLong.empty()),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            10L
+                logContext,
+                mkMap(
+                        mkEntry(partition1, queue1)
+                ),
+                tp -> lags.getOrDefault(tp, OptionalLong.empty()),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                10L
         );
 
         hasNoFetchedLag(group, partition1);
@@ -964,15 +964,15 @@ public class PartitionGroupTest {
 
     private PartitionGroup getBasicGroup() {
         return new PartitionGroup(
-            logContext,
-            mkMap(
-                mkEntry(partition1, queue1),
-                mkEntry(partition2, queue2)
-            ),
-            tp -> OptionalLong.of(0L),
-            getValueSensor(metrics, lastLatenessValue),
-            enforcedProcessingSensor,
-            maxTaskIdleMs
+                logContext,
+                mkMap(
+                        mkEntry(partition1, queue1),
+                        mkEntry(partition2, queue2)
+                ),
+                tp -> OptionalLong.of(0L),
+                getValueSensor(metrics, lastLatenessValue),
+                enforcedProcessingSensor,
+                maxTaskIdleMs
         );
     }
 }

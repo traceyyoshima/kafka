@@ -17,17 +17,17 @@
 package org.apache.kafka.streams.state.internals;
 
 public class RocksDBTimestampedSegmentedBytesStoreWithHeadersTest
-    extends AbstractRocksDBSegmentedBytesStoreTest<TimestampedSegmentWithHeaders> {
+        extends AbstractRocksDBSegmentedBytesStoreTest<TimestampedSegmentWithHeaders> {
 
     private static final String METRICS_SCOPE = "metrics-scope";
 
     RocksDBTimestampedSegmentedBytesStoreWithHeaders getBytesStore() {
         return new RocksDBTimestampedSegmentedBytesStoreWithHeaders(
-            storeName,
-            METRICS_SCOPE,
-            retention,
-            segmentInterval,
-            schema
+                storeName,
+                METRICS_SCOPE,
+                retention,
+                segmentInterval,
+                schema
         );
     }
 

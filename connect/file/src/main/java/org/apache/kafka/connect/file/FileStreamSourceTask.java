@@ -44,7 +44,7 @@ import java.util.Map;
 public class FileStreamSourceTask extends SourceTask {
     private static final Logger log = LoggerFactory.getLogger(FileStreamSourceTask.class);
     public static final String FILENAME_FIELD = "filename";
-    public  static final String POSITION_FIELD = "position";
+    public static final String POSITION_FIELD = "position";
     private static final Schema VALUE_SCHEMA = Schema.STRING_SCHEMA;
 
     private String filename;

@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 /**
  * The consumer group state.
+ *
  * @deprecated Since 4.0. Use {@link GroupState} instead.
  */
 @Deprecated(since = "4.0", forRemoval = true)
@@ -39,7 +40,7 @@ public enum ConsumerGroupState {
     RECONCILING("Reconciling");
 
     private static final Map<String, ConsumerGroupState> NAME_TO_ENUM = Arrays.stream(values())
-        .collect(Collectors.toMap(state -> state.name.toUpperCase(Locale.ROOT), Function.identity()));
+            .collect(Collectors.toMap(state -> state.name.toUpperCase(Locale.ROOT), Function.identity()));
 
     private final String name;
 

@@ -35,7 +35,7 @@ public class FindCoordinatorResponse extends AbstractResponse {
 
     /**
      * Possible error codes:
-     *
+     * <p>
      * COORDINATOR_LOAD_IN_PROGRESS (14)
      * COORDINATOR_NOT_AVAILABLE (15)
      * GROUP_AUTHORIZATION_FAILED (30)
@@ -138,33 +138,33 @@ public class FindCoordinatorResponse extends AbstractResponse {
     public static FindCoordinatorResponse prepareOldResponse(Errors error, Node node) {
         FindCoordinatorResponseData data = new FindCoordinatorResponseData();
         data.setErrorCode(error.code())
-            .setErrorMessage(error.message())
-            .setNodeId(node.id())
-            .setHost(node.host())
-            .setPort(node.port());
+                .setErrorMessage(error.message())
+                .setNodeId(node.id())
+                .setHost(node.host())
+                .setPort(node.port());
         return new FindCoordinatorResponse(data);
     }
 
     public static FindCoordinatorResponse prepareResponse(Errors error, String key, Node node) {
         FindCoordinatorResponseData data = new FindCoordinatorResponseData();
         data.setCoordinators(List.of(
-            prepareCoordinatorResponse(error, key, node)
+                prepareCoordinatorResponse(error, key, node)
         ));
         return new FindCoordinatorResponse(data);
     }
 
     public static FindCoordinatorResponseData.Coordinator prepareCoordinatorResponse(
-        Errors error,
-        String key,
-        Node node
+            Errors error,
+            String key,
+            Node node
     ) {
         return new FindCoordinatorResponseData.Coordinator()
-            .setErrorCode(error.code())
-            .setErrorMessage(error.message())
-            .setKey(key)
-            .setHost(node.host())
-            .setPort(node.port())
-            .setNodeId(node.id());
+                .setErrorCode(error.code())
+                .setErrorMessage(error.message())
+                .setKey(key)
+                .setHost(node.host())
+                .setPort(node.port())
+                .setNodeId(node.id());
     }
 
     public static FindCoordinatorResponse prepareErrorResponse(Errors error, List<String> keys) {
@@ -172,12 +172,12 @@ public class FindCoordinatorResponse extends AbstractResponse {
         List<FindCoordinatorResponseData.Coordinator> coordinators = new ArrayList<>(keys.size());
         for (String key : keys) {
             FindCoordinatorResponseData.Coordinator coordinator = new FindCoordinatorResponseData.Coordinator()
-                .setErrorCode(error.code())
-                .setErrorMessage(error.message())
-                .setKey(key)
-                .setHost(Node.noNode().host())
-                .setPort(Node.noNode().port())
-                .setNodeId(Node.noNode().id());
+                    .setErrorCode(error.code())
+                    .setErrorMessage(error.message())
+                    .setKey(key)
+                    .setHost(Node.noNode().host())
+                    .setPort(Node.noNode().port())
+                    .setNodeId(Node.noNode().id());
             coordinators.add(coordinator);
         }
         data.setCoordinators(coordinators);

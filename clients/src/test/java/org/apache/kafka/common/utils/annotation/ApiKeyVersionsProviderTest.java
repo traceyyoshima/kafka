@@ -44,8 +44,8 @@ public class ApiKeyVersionsProviderTest {
         provider.accept(mockSource);
 
         List<Short> versions = provider.provideArguments(mock(ExtensionContext.class))
-            .map(arg -> (Short) arg.get()[0])
-            .collect(Collectors.toList());
+                .map(arg -> (Short) arg.get()[0])
+                .collect(Collectors.toList());
 
         assertEquals(List.of((short) 5, (short) 6, (short) 7), versions);
     }
@@ -66,13 +66,13 @@ public class ApiKeyVersionsProviderTest {
         short latest = ApiKeys.METADATA.latestVersion(false);
 
         List<Short> versions = provider.provideArguments(mock(ExtensionContext.class))
-            .map(arg -> (Short) arg.get()[0])
-            .collect(Collectors.toList());
+                .map(arg -> (Short) arg.get()[0])
+                .collect(Collectors.toList());
 
         List<Short> expected = IntStream
-            .rangeClosed(oldest, latest)
-            .mapToObj(i -> (short) i)
-            .collect(Collectors.toList());
+                .rangeClosed(oldest, latest)
+                .mapToObj(i -> (short) i)
+                .collect(Collectors.toList());
 
         assertEquals(expected, versions);
     }

@@ -34,7 +34,7 @@ public class MockQuorumStateStore implements QuorumStateStore {
     @Override
     public void writeElectionState(ElectionState update, KRaftVersion kraftVersion) {
         current = Optional.of(
-            update.toQuorumStateData(kraftVersion.quorumStateVersion())
+                update.toQuorumStateData(kraftVersion.quorumStateVersion())
         );
     }
 

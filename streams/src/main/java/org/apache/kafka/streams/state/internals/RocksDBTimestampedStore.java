@@ -54,10 +54,10 @@ public class RocksDBTimestampedStore extends RocksDBStore implements Timestamped
     void openRocksDB(final DBOptions dbOptions,
                      final ColumnFamilyOptions columnFamilyOptions) {
         final List<ColumnFamilyHandle> columnFamilies = openRocksDB(
-            dbOptions,
-            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-            new ColumnFamilyDescriptor(TIMESTAMPED_VALUES_COLUMN_FAMILY_NAME, columnFamilyOptions),
-            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, createOffsetsCFOptions())
+                dbOptions,
+                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+                new ColumnFamilyDescriptor(TIMESTAMPED_VALUES_COLUMN_FAMILY_NAME, columnFamilyOptions),
+                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, createOffsetsCFOptions())
         );
         final ColumnFamilyHandle noTimestampColumnFamily = columnFamilies.get(0);
         final ColumnFamilyHandle withTimestampColumnFamily = columnFamilies.get(1);
@@ -68,12 +68,12 @@ public class RocksDBTimestampedStore extends RocksDBStore implements Timestamped
             if (noTimestampsIter.isValid()) {
                 log.info("Opening store {} in upgrade mode", name);
                 cfAccessor = new DualColumnFamilyAccessor(
-                    offsetsColumnFamily,
-                    noTimestampColumnFamily,
-                    withTimestampColumnFamily,
-                    TimestampedBytesStore::convertToTimestampedFormat,
-                    this,
-                    open
+                        offsetsColumnFamily,
+                        noTimestampColumnFamily,
+                        withTimestampColumnFamily,
+                        TimestampedBytesStore::convertToTimestampedFormat,
+                        this,
+                        open
                 );
             } else {
                 log.info("Opening store {} in regular mode", name);

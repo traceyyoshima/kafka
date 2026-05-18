@@ -27,7 +27,7 @@ public class HeartbeatResponse extends AbstractResponse {
 
     /**
      * Possible error codes:
-     *
+     * <p>
      * GROUP_COORDINATOR_NOT_AVAILABLE (15)
      * NOT_COORDINATOR (16)
      * ILLEGAL_GENERATION (22)

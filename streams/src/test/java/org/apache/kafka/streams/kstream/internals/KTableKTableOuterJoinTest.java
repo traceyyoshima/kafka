@@ -416,8 +416,7 @@ public class KTableKTableOuterJoinTest {
     public void shouldLogAndMeterSkippedRecordsDueToNullLeftKey(final boolean withHeaders) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        @SuppressWarnings("unchecked")
-        final Processor<String, Change<String>, String, Change<Object>> join = new KTableKTableOuterJoin<>(
+        @SuppressWarnings("unchecked") final Processor<String, Change<String>, String, Change<Object>> join = new KTableKTableOuterJoin<>(
                 (KTableImpl<String, String, String>) builder.table("left", Consumed.with(Serdes.String(), Serdes.String())),
                 (KTableImpl<String, String, String>) builder.table("right", Consumed.with(Serdes.String(), Serdes.String())),
                 null
@@ -432,8 +431,8 @@ public class KTableKTableOuterJoinTest {
             join.process(new Record<>(null, new Change<>("new", "old"), 0));
 
             assertThat(
-                appender.getMessages(),
-                hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
+                    appender.getMessages(),
+                    hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
             );
         }
     }

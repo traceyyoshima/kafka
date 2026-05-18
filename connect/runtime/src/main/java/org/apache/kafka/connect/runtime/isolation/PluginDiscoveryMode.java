@@ -20,6 +20,7 @@ import java.util.Locale;
 
 /**
  * Strategy to use to discover plugins usable on a Connect worker.
+ *
  * @see <a href="https://cwiki.apache.org/confluence/display/KAFKA/KIP-898%3A+Modernize+Connect+plugin+discovery">KIP-898</a>
  */
 public enum PluginDiscoveryMode {

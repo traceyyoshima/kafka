@@ -26,6 +26,7 @@ import java.util.Optional;
 
 /**
  * A listing of a consumer group in the cluster.
+ *
  * @deprecated Since 4.1. Use {@link Admin#listGroups(ListGroupsOptions)} and {@link GroupListing} instead.
  */
 @SuppressWarnings("removal")
@@ -39,8 +40,8 @@ public class ConsumerGroupListing {
     /**
      * Create an instance with the specified parameters.
      *
-     * @param groupId                   Group Id.
-     * @param isSimpleConsumerGroup     If consumer group is simple or not.
+     * @param groupId               Group Id.
+     * @param isSimpleConsumerGroup If consumer group is simple or not.
      */
     public ConsumerGroupListing(String groupId, boolean isSimpleConsumerGroup) {
         this(groupId, Optional.empty(), Optional.empty(), isSimpleConsumerGroup);
@@ -49,9 +50,9 @@ public class ConsumerGroupListing {
     /**
      * Create an instance with the specified parameters.
      *
-     * @param groupId                   Group Id.
-     * @param isSimpleConsumerGroup     If consumer group is simple or not.
-     * @param state                     The state of the consumer group.
+     * @param groupId               Group Id.
+     * @param isSimpleConsumerGroup If consumer group is simple or not.
+     * @param state                 The state of the consumer group.
      * @deprecated Since 4.0. Use {@link #ConsumerGroupListing(String, Optional, boolean)} instead.
      */
     @Deprecated
@@ -62,18 +63,18 @@ public class ConsumerGroupListing {
     /**
      * Create an instance with the specified parameters.
      *
-     * @param groupId                   Group Id.
-     * @param isSimpleConsumerGroup     If consumer group is simple or not.
-     * @param state                     The state of the consumer group.
-     * @param type                      The type of the consumer group.
+     * @param groupId               Group Id.
+     * @param isSimpleConsumerGroup If consumer group is simple or not.
+     * @param state                 The state of the consumer group.
+     * @param type                  The type of the consumer group.
      * @deprecated Since 4.0. Use {@link #ConsumerGroupListing(String, Optional, Optional, boolean)} instead.
      */
     @Deprecated
     public ConsumerGroupListing(
-        String groupId,
-        boolean isSimpleConsumerGroup,
-        Optional<ConsumerGroupState> state,
-        Optional<GroupType> type
+            String groupId,
+            boolean isSimpleConsumerGroup,
+            Optional<ConsumerGroupState> state,
+            Optional<GroupType> type
     ) {
         this(groupId, Objects.requireNonNull(state).map(state0 -> GroupState.parse(state0.toString())), type, isSimpleConsumerGroup);
     }
@@ -81,9 +82,9 @@ public class ConsumerGroupListing {
     /**
      * Create an instance with the specified parameters.
      *
-     * @param groupId                   Group Id.
-     * @param groupState                The state of the consumer group.
-     * @param isSimpleConsumerGroup     If consumer group is simple or not.
+     * @param groupId               Group Id.
+     * @param groupState            The state of the consumer group.
+     * @param isSimpleConsumerGroup If consumer group is simple or not.
      */
     public ConsumerGroupListing(
             String groupId,
@@ -96,10 +97,10 @@ public class ConsumerGroupListing {
     /**
      * Create an instance with the specified parameters.
      *
-     * @param groupId                   Group Id.
-     * @param groupState                The state of the consumer group.
-     * @param type                      The type of the consumer group.
-     * @param isSimpleConsumerGroup     If consumer group is simple or not.
+     * @param groupId               Group Id.
+     * @param groupState            The state of the consumer group.
+     * @param type                  The type of the consumer group.
+     * @param isSimpleConsumerGroup If consumer group is simple or not.
      */
     public ConsumerGroupListing(
             String groupId,
@@ -136,6 +137,7 @@ public class ConsumerGroupListing {
 
     /**
      * Consumer Group state
+     *
      * @deprecated Since 4.0. Use {@link #groupState()} instead.
      */
     @Deprecated
@@ -155,11 +157,11 @@ public class ConsumerGroupListing {
     @Override
     public String toString() {
         return "(" +
-            "groupId='" + groupId + '\'' +
-            ", isSimpleConsumerGroup=" + isSimpleConsumerGroup +
-            ", groupState=" + groupState +
-            ", type=" + type +
-            ')';
+                "groupId='" + groupId + '\'' +
+                ", isSimpleConsumerGroup=" + isSimpleConsumerGroup +
+                ", groupState=" + groupState +
+                ", type=" + type +
+                ')';
     }
 
     @Override
@@ -173,8 +175,8 @@ public class ConsumerGroupListing {
         if (!(o instanceof ConsumerGroupListing)) return false;
         ConsumerGroupListing that = (ConsumerGroupListing) o;
         return isSimpleConsumerGroup() == that.isSimpleConsumerGroup() &&
-            Objects.equals(groupId, that.groupId) &&
-            Objects.equals(groupState, that.groupState) &&
-            Objects.equals(type, that.type);
+                Objects.equals(groupId, that.groupId) &&
+                Objects.equals(groupState, that.groupState) &&
+                Objects.equals(type, that.type);
     }
 }

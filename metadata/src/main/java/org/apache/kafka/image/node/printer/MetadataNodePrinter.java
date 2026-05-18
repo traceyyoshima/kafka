@@ -22,14 +22,14 @@ public interface MetadataNodePrinter extends AutoCloseable {
     /**
      * Find out the redaction criteria to use when printing.
      *
-     * @return          The redaction criteria to use when printing.
+     * @return The redaction criteria to use when printing.
      */
     MetadataNodeRedactionCriteria redactionCriteria();
 
     /**
      * Begin visiting a node.
      *
-     * @param name      The node name.
+     * @param name The node name.
      */
     void enterNode(String name);
 

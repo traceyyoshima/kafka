@@ -66,7 +66,7 @@ public class ConnectorHandle {
      * Get or create a task handle for a given task id. The task need not be created when this method is called. If the
      * handle is called before the task is created, the task will bind to the handle once it starts (or restarts).
      *
-     * @param taskId the task id
+     * @param taskId   the task id
      * @param consumer A callback invoked when a sink task processes a record.
      * @return a non-null {@link TaskHandle}
      */
@@ -191,11 +191,11 @@ public class ConnectorHandle {
         }
     }
 
-     /**
+    /**
      * Wait for this connector to meet the expected number of commits as defined by {@code
      * expectedCommits}.
      *
-     * @param  timeout duration to wait for commits
+     * @param timeout duration to wait for commits
      * @throws InterruptedException if another threads interrupts this one while waiting for commits
      */
     public void awaitCommits(long timeout) throws InterruptedException {
@@ -273,15 +273,15 @@ public class ConnectorHandle {
      *
      * @param expectedStarts the minimum number of starts that are expected once this method is
      *                       called
-     * @param includeTasks  true if the latch should also wait for the tasks to be stopped the
-     *                      specified minimum number of times
+     * @param includeTasks   true if the latch should also wait for the tasks to be stopped the
+     *                       specified minimum number of times
      * @return the latch that can be used to wait for the starts to complete; never null
      */
     public StartAndStopLatch expectedStarts(int expectedStarts, boolean includeTasks) {
         List<StartAndStopLatch> taskLatches = includeTasks
                 ? taskHandles.values().stream()
-                .map(task -> task.expectedStarts(expectedStarts))
-                .toList()
+                  .map(task -> task.expectedStarts(expectedStarts))
+                  .toList()
                 : List.of();
         return startAndStopCounter.expectedStarts(expectedStarts, taskLatches);
     }
@@ -289,8 +289,8 @@ public class ConnectorHandle {
     public StartAndStopLatch expectedStarts(int expectedStarts, Map<String, Integer> expectedTasksStarts, boolean includeTasks) {
         List<StartAndStopLatch> taskLatches = includeTasks
                 ? taskHandles.values().stream()
-                .map(task -> task.expectedStarts(expectedTasksStarts.get(task.taskId())))
-                .toList()
+                  .map(task -> task.expectedStarts(expectedTasksStarts.get(task.taskId())))
+                  .toList()
                 : List.of();
         return startAndStopCounter.expectedStarts(expectedStarts, taskLatches);
     }
@@ -342,8 +342,8 @@ public class ConnectorHandle {
     public StartAndStopLatch expectedStops(int expectedStops, boolean includeTasks) {
         List<StartAndStopLatch> taskLatches = includeTasks
                 ? taskHandles.values().stream()
-                .map(task -> task.expectedStops(expectedStops))
-                .toList()
+                  .map(task -> task.expectedStops(expectedStops))
+                  .toList()
                 : List.of();
         return startAndStopCounter.expectedStops(expectedStops, taskLatches);
     }
@@ -351,8 +351,8 @@ public class ConnectorHandle {
     public StartAndStopLatch expectedStops(int expectedStops, Map<String, Integer> expectedTasksStops, boolean includeTasks) {
         List<StartAndStopLatch> taskLatches = includeTasks
                 ? taskHandles.values().stream()
-                .map(task -> task.expectedStops(expectedTasksStops.get(task.taskId())))
-                .toList()
+                  .map(task -> task.expectedStops(expectedTasksStops.get(task.taskId())))
+                  .toList()
                 : List.of();
         return startAndStopCounter.expectedStops(expectedStops, taskLatches);
     }

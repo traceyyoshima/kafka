@@ -23,19 +23,20 @@ import java.util.zip.Checksum;
 
 /**
  * A class that can be used to compute the CRC32C (Castagnoli) of a ByteBuffer or array of bytes.
- *
+ * <p>
  * NOTE: This class is intended for INTERNAL usage only within Kafka.
  */
 public final class Crc32C {
 
-    private Crc32C() {}
+    private Crc32C() {
+    }
 
     /**
      * Compute the CRC32C (Castagnoli) of the segment of the byte array given by the specified size and offset
      *
-     * @param bytes The bytes to checksum
+     * @param bytes  The bytes to checksum
      * @param offset the offset at which to begin the checksum computation
-     * @param size the number of bytes to checksum
+     * @param size   the number of bytes to checksum
      * @return The CRC32C
      */
     public static long compute(byte[] bytes, int offset, int size) {
@@ -49,7 +50,7 @@ public final class Crc32C {
      *
      * @param buffer The buffer with the underlying data
      * @param offset The offset relative to the current position
-     * @param size The number of bytes beginning from the offset to include
+     * @param size   The number of bytes beginning from the offset to include
      * @return The CRC32C
      */
     public static long compute(ByteBuffer buffer, int offset, int size) {

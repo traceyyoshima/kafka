@@ -93,28 +93,28 @@ public class ClientMetricsConfigs extends AbstractConfig {
     public static final List<String> MATCH_DEFAULT = List.of();
 
     private static final Set<String> ALLOWED_MATCH_PARAMS = Set.of(
-        CLIENT_INSTANCE_ID,
-        CLIENT_ID,
-        CLIENT_SOFTWARE_NAME,
-        CLIENT_SOFTWARE_VERSION,
-        CLIENT_SOURCE_ADDRESS,
-        CLIENT_SOURCE_PORT
+            CLIENT_INSTANCE_ID,
+            CLIENT_ID,
+            CLIENT_SOFTWARE_NAME,
+            CLIENT_SOFTWARE_VERSION,
+            CLIENT_SOURCE_ADDRESS,
+            CLIENT_SOURCE_PORT
     );
 
     private static final ConfigDef CONFIG = new ConfigDef()
-        .define(METRICS_CONFIG, 
-                Type.LIST, 
-                METRICS_DEFAULT, 
-                ConfigDef.ValidList.anyNonDuplicateValues(true, false), 
-                Importance.MEDIUM, 
-                "Telemetry metric name prefix list")
-        .define(INTERVAL_MS_CONFIG, Type.INT, INTERVAL_MS_DEFAULT, Importance.MEDIUM, "Metrics push interval in milliseconds")
-        .define(MATCH_CONFIG, 
-                Type.LIST, 
-                MATCH_DEFAULT,
-                ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                Importance.MEDIUM, 
-                "Client match criteria");
+            .define(METRICS_CONFIG,
+                    Type.LIST,
+                    METRICS_DEFAULT,
+                    ConfigDef.ValidList.anyNonDuplicateValues(true, false),
+                    Importance.MEDIUM,
+                    "Telemetry metric name prefix list")
+            .define(INTERVAL_MS_CONFIG, Type.INT, INTERVAL_MS_DEFAULT, Importance.MEDIUM, "Metrics push interval in milliseconds")
+            .define(MATCH_CONFIG,
+                    Type.LIST,
+                    MATCH_DEFAULT,
+                    ConfigDef.ValidList.anyNonDuplicateValues(true, false),
+                    Importance.MEDIUM,
+                    "Client match criteria");
 
     public ClientMetricsConfigs(Properties props) {
         super(CONFIG, props, false);
@@ -164,7 +164,7 @@ public class ClientMetricsConfigs extends AbstractConfig {
             int pushIntervalMs = (Integer) parsed.get(INTERVAL_MS_CONFIG);
             if (pushIntervalMs < MIN_INTERVAL_MS || pushIntervalMs > MAX_INTERVAL_MS) {
                 String msg = String.format("Invalid value %s for %s, interval must be between 100 and 3600000 (1 hour)",
-                    pushIntervalMs, INTERVAL_MS_CONFIG);
+                        pushIntervalMs, INTERVAL_MS_CONFIG);
                 throw new InvalidRequestException(msg);
             }
         }

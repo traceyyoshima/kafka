@@ -88,10 +88,10 @@ public class RelationalSmokeTest extends SmokeTestUtil {
     static final String ARTICLE_RESULT_SINK = "out-augmented-article";
     static final String COMMENT_RESULT_SINK = "out-augmented-comment";
     private static final String[] TOPICS = {
-        ARTICLE_SOURCE,
-        COMMENT_SOURCE,
-        ARTICLE_RESULT_SINK,
-        COMMENT_RESULT_SINK
+            ARTICLE_SOURCE,
+            COMMENT_SOURCE,
+            ARTICLE_RESULT_SINK,
+            COMMENT_RESULT_SINK
     };
 
     public static String[] topics() {
@@ -124,10 +124,10 @@ public class RelationalSmokeTest extends SmokeTestUtil {
         @Override
         public String toString() {
             return "Article{" +
-                "key=" + key +
-                ", timestamp=" + Instant.ofEpochMilli(timestamp) +
-                ", text='" + text + '\'' +
-                '}';
+                    "key=" + key +
+                    ", timestamp=" + Instant.ofEpochMilli(timestamp) +
+                    ", text='" + text + '\'' +
+                    '}';
         }
 
         public static class ArticleSerializer implements Serializer<Article> {
@@ -138,11 +138,11 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                 final int length = Integer.BYTES + Long.BYTES + Integer.BYTES + serialText.length;
 
                 final ByteBuffer buffer =
-                    ByteBuffer.allocate(length)
-                        .putInt(data.getKey())
-                        .putLong(data.getTimestamp())
-                        .putInt(serialText.length)
-                        .put(serialText);
+                        ByteBuffer.allocate(length)
+                                .putInt(data.getKey())
+                                .putLong(data.getTimestamp())
+                                .putInt(serialText.length)
+                                .put(serialText);
 
                 return Serdes.ByteBuffer().serializer().serialize(topic, buffer);
             }
@@ -212,11 +212,11 @@ public class RelationalSmokeTest extends SmokeTestUtil {
         @Override
         public String toString() {
             return "Comment{" +
-                "key=" + key +
-                ", timestamp=" + Instant.ofEpochMilli(timestamp) +
-                ", text='" + text + '\'' +
-                ", articleId=" + articleId +
-                '}';
+                    "key=" + key +
+                    ", timestamp=" + Instant.ofEpochMilli(timestamp) +
+                    ", text='" + text + '\'' +
+                    ", articleId=" + articleId +
+                    '}';
         }
 
         public static class CommentSerializer implements Serializer<Comment> {
@@ -228,12 +228,12 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                 final int length = Integer.BYTES + Long.BYTES + (Integer.BYTES + serialText.length) + Integer.BYTES;
 
                 final ByteBuffer buffer =
-                    ByteBuffer.allocate(length)
-                        .putInt(data.key)
-                        .putLong(data.timestamp)
-                        .putInt(serialText.length)
-                        .put(serialText)
-                        .putInt(data.articleId);
+                        ByteBuffer.allocate(length)
+                                .putInt(data.key)
+                                .putLong(data.timestamp)
+                                .putInt(serialText.length)
+                                .put(serialText)
+                                .putInt(data.articleId);
 
                 return Serdes.ByteBuffer().serializer().serialize(topic, buffer);
             }
@@ -405,22 +405,22 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                 while (a < articles.length || c < comments.length) {
                     final ProducerRecord<Integer, byte[]> producerRecord;
                     if (a < articles.length && c >= comments.length ||
-                        a < articles.length && articles[a].getTimestamp() <= comments[c].timestamp) {
+                            a < articles.length && articles[a].getTimestamp() <= comments[c].timestamp) {
                         producerRecord = new ProducerRecord<>(
-                            ARTICLE_SOURCE,
-                            null,
-                            articles[a].getTimestamp(),
-                            articles[a].getKey(),
-                            articleSerializer.serialize("", articles[a])
+                                ARTICLE_SOURCE,
+                                null,
+                                articles[a].getTimestamp(),
+                                articles[a].getKey(),
+                                articleSerializer.serialize("", articles[a])
                         );
                         a++;
                     } else {
                         producerRecord = new ProducerRecord<>(
-                            COMMENT_SOURCE,
-                            null,
-                            comments[c].getTimestamp(),
-                            comments[c].getKey(),
-                            commentSerializer.serialize("", comments[c])
+                                COMMENT_SOURCE,
+                                null,
+                                comments[c].getTimestamp(),
+                                comments[c].getKey(),
+                                commentSerializer.serialize("", comments[c])
                         );
                         c++;
                     }
@@ -448,11 +448,11 @@ public class RelationalSmokeTest extends SmokeTestUtil {
         @Override
         public String toString() {
             return "AugmentedArticle{" +
-                "key=" + super.key +
-                ", timestamp=" + getTimestamp() +
-                ", text='" + getText() + '\'' +
-                ", commentCount=" + commentCount +
-                '}';
+                    "key=" + super.key +
+                    ", timestamp=" + getTimestamp() +
+                    ", text='" + getText() + '\'' +
+                    ", commentCount=" + commentCount +
+                    '}';
         }
 
         public static class AugmentedArticleSerializer implements Serializer<AugmentedArticle> {
@@ -463,9 +463,9 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                 final byte[] serializedArticle = articleSerializer.serialize(topic, data);
                 final int length = serializedArticle.length + Long.BYTES;
                 final ByteBuffer buffer =
-                    ByteBuffer.allocate(length)
-                        .put(serializedArticle)
-                        .putLong(data.getCommentCount());
+                        ByteBuffer.allocate(length)
+                                .put(serializedArticle)
+                                .putLong(data.getCommentCount());
                 return Serdes.ByteBuffer().serializer().serialize(topic, buffer);
             }
         }
@@ -496,9 +496,9 @@ public class RelationalSmokeTest extends SmokeTestUtil {
 
         public static ValueJoiner<Article, Long, AugmentedArticle> joiner() {
             return (article, commentCount) -> new AugmentedArticle(
-                article.getKey(),
-                article.getTimestamp(),
-                article.getText(), commentCount == null ? 0 : commentCount
+                    article.getKey(),
+                    article.getTimestamp(),
+                    article.getText(), commentCount == null ? 0 : commentCount
             );
         }
     }
@@ -522,12 +522,12 @@ public class RelationalSmokeTest extends SmokeTestUtil {
         @Override
         public String toString() {
             return "AugmentedComment{" +
-                "key=" + super.key +
-                ", timestamp=" + getTimestamp() +
-                ", text='" + getText() + '\'' +
-                ", articleId=" + getArticleId() +
-                ", articlePrefix='" + articlePrefix + '\'' +
-                '}';
+                    "key=" + super.key +
+                    ", timestamp=" + getTimestamp() +
+                    ", text='" + getText() + '\'' +
+                    ", articleId=" + getArticleId() +
+                    ", articlePrefix='" + articlePrefix + '\'' +
+                    '}';
         }
 
         public static class AugmentedCommentSerializer implements Serializer<AugmentedComment> {
@@ -539,10 +539,10 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                 final byte[] serializedPrefix = stringSerde.serializer().serialize(topic, data.getArticlePrefix());
                 final int length = serializedComment.length + Integer.BYTES + serializedPrefix.length;
                 final ByteBuffer buffer =
-                    ByteBuffer.allocate(length)
-                        .put(serializedComment)
-                        .putInt(serializedPrefix.length)
-                        .put(serializedPrefix);
+                        ByteBuffer.allocate(length)
+                                .put(serializedComment)
+                                .putInt(serializedPrefix.length)
+                                .put(serializedPrefix);
                 return Serdes.ByteBuffer().serializer().serialize(topic, buffer);
             }
         }
@@ -558,11 +558,11 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                 wrap.get(serializedPrefix);
                 final String articlePrefix = stringSerde.deserializer().deserialize(topic, serializedPrefix);
                 return new AugmentedComment(
-                    comment.key,
-                    comment.getTimestamp(),
-                    comment.getText(),
-                    comment.getArticleId(),
-                    articlePrefix
+                        comment.key,
+                        comment.getTimestamp(),
+                        comment.getText(),
+                        comment.getArticleId(),
+                        articlePrefix
                 );
             }
         }
@@ -586,11 +586,11 @@ public class RelationalSmokeTest extends SmokeTestUtil {
 
         public static ValueJoiner<Comment, Article, AugmentedComment> joiner() {
             return (comment, article) -> new AugmentedComment(
-                comment.key,
-                comment.getTimestamp(),
-                comment.getText(),
-                comment.getArticleId(),
-                prefix(article.getText(), 10)
+                    comment.key,
+                    comment.getTimestamp(),
+                    comment.getText(),
+                    comment.getArticleId(),
+                    prefix(article.getText(), 10)
             );
         }
     }
@@ -599,34 +599,34 @@ public class RelationalSmokeTest extends SmokeTestUtil {
         public static Topology getTopology() {
             final StreamsBuilder streamsBuilder = new StreamsBuilder();
             final KTable<Integer, Article> articles =
-                streamsBuilder.table(ARTICLE_SOURCE, Consumed.with(intSerde, new Article.ArticleSerde()));
+                    streamsBuilder.table(ARTICLE_SOURCE, Consumed.with(intSerde, new Article.ArticleSerde()));
 
             final KTable<Integer, Comment> comments =
-                streamsBuilder.table(COMMENT_SOURCE, Consumed.with(intSerde, new Comment.CommentSerde()));
+                    streamsBuilder.table(COMMENT_SOURCE, Consumed.with(intSerde, new Comment.CommentSerde()));
 
 
             final KTable<Integer, Long> commentCounts =
-                comments.groupBy(
-                    (key, value) -> new KeyValue<>(value.getArticleId(), (short) 1),
-                    Grouped.with(Serdes.Integer(), Serdes.Short())
-                )
-                .count();
+                    comments.groupBy(
+                                    (key, value) -> new KeyValue<>(value.getArticleId(), (short) 1),
+                                    Grouped.with(Serdes.Integer(), Serdes.Short())
+                            )
+                            .count();
 
             articles
-                .leftJoin(
-                    commentCounts,
-                    AugmentedArticle.joiner(),
-                    Materialized.with(null, new AugmentedArticle.AugmentedArticleSerde())
-                )
-                .toStream()
-                .to(ARTICLE_RESULT_SINK);
+                    .leftJoin(
+                            commentCounts,
+                            AugmentedArticle.joiner(),
+                            Materialized.with(null, new AugmentedArticle.AugmentedArticleSerde())
+                    )
+                    .toStream()
+                    .to(ARTICLE_RESULT_SINK);
 
             comments.join(articles,
-                          Comment::getArticleId,
-                          AugmentedComment.joiner(),
-                          Materialized.with(null, new AugmentedComment.AugmentedCommentSerde()))
-                .toStream()
-                .to(COMMENT_RESULT_SINK);
+                            Comment::getArticleId,
+                            AugmentedComment.joiner(),
+                            Materialized.with(null, new AugmentedComment.AugmentedCommentSerde()))
+                    .toStream()
+                    .to(COMMENT_RESULT_SINK);
 
             return streamsBuilder.build();
         }
@@ -638,17 +638,17 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                                            final String groupProtocol,
                                            final String stateDir) {
             final Properties properties =
-                mkProperties(
-                    mkMap(
-                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, broker),
-                        mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, application),
-                        mkEntry(StreamsConfig.CLIENT_ID_CONFIG, id),
-                        mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, processingGuarantee),
-                        mkEntry(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"),
-                        mkEntry(StreamsConfig.STATE_DIR_CONFIG, stateDir),
-                        mkEntry(StreamsConfig.GROUP_PROTOCOL_CONFIG, groupProtocol)
-                    )
-                );
+                    mkProperties(
+                            mkMap(
+                                    mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, broker),
+                                    mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, application),
+                                    mkEntry(StreamsConfig.CLIENT_ID_CONFIG, id),
+                                    mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, processingGuarantee),
+                                    mkEntry(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"),
+                                    mkEntry(StreamsConfig.STATE_DIR_CONFIG, stateDir),
+                                    mkEntry(StreamsConfig.GROUP_PROTOCOL_CONFIG, groupProtocol)
+                            )
+                    );
             properties.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 1000L);
             properties.put(StreamsConfig.WINDOW_STORE_CHANGE_LOG_ADDITIONAL_RETENTION_MS_CONFIG, Duration.ofDays(5).toMillis());
             return properties;
@@ -661,7 +661,7 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                                              final String groupProtocol,
                                              final String stateDir) throws InterruptedException {
             final KafkaStreams kafkaStreams =
-                new KafkaStreams(getTopology(), getConfig(broker, application, id, processingGuarantee, groupProtocol, stateDir));
+                    new KafkaStreams(getTopology(), getConfig(broker, application, id, processingGuarantee, groupProtocol, stateDir));
             final CountDownLatch startUpLatch = new CountDownLatch(1);
             kafkaStreams.setStateListener((newState, oldState) -> {
                 if (oldState == KafkaStreams.State.REBALANCING && newState == KafkaStreams.State.RUNNING) {
@@ -678,12 +678,12 @@ public class RelationalSmokeTest extends SmokeTestUtil {
             final Deserializer<Article> articleDeserializer = new Article.ArticleDeserializer();
 
             final Deserializer<AugmentedArticle> augmentedArticleDeserializer =
-                new AugmentedArticle.AugmentedArticleDeserializer();
+                    new AugmentedArticle.AugmentedArticleDeserializer();
 
             final Deserializer<Comment> commentDeserializer = new Comment.CommentDeserializer();
 
             final Deserializer<AugmentedComment> augmentedCommentDeserializer =
-                new AugmentedComment.AugmentedCommentDeserializer();
+                    new AugmentedComment.AugmentedCommentDeserializer();
 
 
             final Properties consumerProperties = new Properties();
@@ -702,16 +702,16 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                 final List<PartitionInfo> commentPartitions = consumer.partitionsFor(COMMENT_SOURCE);
                 final List<PartitionInfo> augmentedCommentPartitions = consumer.partitionsFor(COMMENT_RESULT_SINK);
                 final List<TopicPartition> assignment =
-                    Stream.concat(
                         Stream.concat(
-                            articlePartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition())),
-                            augmentedArticlePartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition()))
-                        ), 
-                        Stream.concat(
-                            commentPartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition())),
-                            augmentedCommentPartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition()))
-                        )
-                    ).collect(toList());
+                                Stream.concat(
+                                        articlePartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition())),
+                                        augmentedArticlePartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition()))
+                                ),
+                                Stream.concat(
+                                        commentPartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition())),
+                                        augmentedCommentPartitions.stream().map(p -> new TopicPartition(p.topic(), p.partition()))
+                                )
+                        ).collect(toList());
                 consumer.assign(assignment);
                 consumer.seekToBeginning(assignment);
 
@@ -752,13 +752,13 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                                 }
                                 case ARTICLE_RESULT_SINK: {
                                     final AugmentedArticle article =
-                                        augmentedArticleDeserializer.deserialize("", record.value());
+                                            augmentedArticleDeserializer.deserialize("", record.value());
                                     consumedAugmentedArticles.put(key, article);
                                     break;
                                 }
                                 case COMMENT_RESULT_SINK: {
                                     final AugmentedComment comment =
-                                        augmentedCommentDeserializer.deserialize("", record.value());
+                                            augmentedCommentDeserializer.deserialize("", record.value());
                                     consumedAugmentedComments.put(key, comment);
                                     break;
                                 }
@@ -787,11 +787,11 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                     }
 
                     passed = verifySync(
-                        false,
-                        consumedArticles,
-                        consumedComments,
-                        consumedAugmentedArticles,
-                        consumedAugmentedComments
+                            false,
+                            consumedArticles,
+                            consumedComments,
+                            consumedAugmentedArticles,
+                            consumedAugmentedComments
                     );
                     if (!passed) {
                         LOG.info("Verification has not passed yet. ");
@@ -799,11 +799,11 @@ public class RelationalSmokeTest extends SmokeTestUtil {
                     }
                 }
                 return verifySync(
-                    true,
-                    consumedArticles,
-                    consumedComments,
-                    consumedAugmentedArticles,
-                    consumedAugmentedComments
+                        true,
+                        consumedArticles,
+                        consumedComments,
+                        consumedAugmentedArticles,
+                        consumedAugmentedComments
                 );
             }
         }
@@ -829,35 +829,35 @@ public class RelationalSmokeTest extends SmokeTestUtil {
             final StringBuilder report = logResults ? new StringBuilder() : null;
 
             assertThat(
-                pass,
-                report,
-                "Expected 1 article, got " + consumedArticles.size(),
-                !consumedArticles.isEmpty()
+                    pass,
+                    report,
+                    "Expected 1 article, got " + consumedArticles.size(),
+                    !consumedArticles.isEmpty()
             );
             assertThat(
-                pass,
-                report,
-                "Expected 1 comment, got " + consumedComments.size(),
-                !consumedComments.isEmpty()
+                    pass,
+                    report,
+                    "Expected 1 comment, got " + consumedComments.size(),
+                    !consumedComments.isEmpty()
             );
 
             assertThat(
-                pass,
-                report,
-                "Mismatched article size between augmented articles (size "
-                    + consumedAugmentedArticles.size() +
-                    ") and consumed articles (size "
-                    + consumedArticles.size() + ")",
-                consumedAugmentedArticles.size() == consumedArticles.size()
+                    pass,
+                    report,
+                    "Mismatched article size between augmented articles (size "
+                            + consumedAugmentedArticles.size() +
+                            ") and consumed articles (size "
+                            + consumedArticles.size() + ")",
+                    consumedAugmentedArticles.size() == consumedArticles.size()
             );
             assertThat(
-                pass,
-                report,
-                "Mismatched comments size between augmented comments (size "
-                    + consumedAugmentedComments.size() +
-                    ") and consumed comments (size " +
-                    consumedComments.size() + ")", 
-                consumedAugmentedComments.size() == consumedComments.size()
+                    pass,
+                    report,
+                    "Mismatched comments size between augmented comments (size "
+                            + consumedAugmentedComments.size() +
+                            ") and consumed comments (size " +
+                            consumedComments.size() + ")",
+                    consumedAugmentedComments.size() == consumedComments.size()
             );
 
             final Map<Integer, Long> commentCounts = new TreeMap<>();
@@ -865,57 +865,57 @@ public class RelationalSmokeTest extends SmokeTestUtil {
             for (final RelationalSmokeTest.AugmentedComment augmentedComment : consumedAugmentedComments.values()) {
                 final int key = augmentedComment.getKey();
                 assertThat(
-                    pass,
-                    report,
-                    "comment missing, but found in augmentedComment: " + key,
-                    consumedComments.containsKey(key)
+                        pass,
+                        report,
+                        "comment missing, but found in augmentedComment: " + key,
+                        consumedComments.containsKey(key)
                 );
 
                 final Comment comment = consumedComments.get(key);
                 if (comment != null) {
                     assertThat(
-                        pass,
-                        report,
-                        "comment missing, but found in augmentedComment: " + key,
-                        consumedComments.containsKey(key)
+                            pass,
+                            report,
+                            "comment missing, but found in augmentedComment: " + key,
+                            consumedComments.containsKey(key)
                     );
                 }
                 commentCounts.put(
-                    augmentedComment.getArticleId(),
-                    commentCounts.getOrDefault(augmentedComment.getArticleId(), 0L) + 1
+                        augmentedComment.getArticleId(),
+                        commentCounts.getOrDefault(augmentedComment.getArticleId(), 0L) + 1
                 );
 
                 assertThat(
-                    pass,
-                    report,
-                    "augmentedArticle [" + augmentedComment.getArticleId() + "] " +
-                        "missing for augmentedComment [" + augmentedComment.getKey() + "]",
-                    consumedAugmentedArticles.containsKey(augmentedComment.getArticleId())
+                        pass,
+                        report,
+                        "augmentedArticle [" + augmentedComment.getArticleId() + "] " +
+                                "missing for augmentedComment [" + augmentedComment.getKey() + "]",
+                        consumedAugmentedArticles.containsKey(augmentedComment.getArticleId())
                 );
                 final AugmentedArticle augmentedArticle =
                         consumedAugmentedArticles.get(augmentedComment.getArticleId());
                 if (augmentedArticle != null) {
                     assertThat(
-                        pass,
-                        report,
-                        "articlePrefix didn't match augmentedArticle: " + augmentedArticle.getText(),
-                        augmentedArticle.getText().startsWith(augmentedComment.getArticlePrefix())
+                            pass,
+                            report,
+                            "articlePrefix didn't match augmentedArticle: " + augmentedArticle.getText(),
+                            augmentedArticle.getText().startsWith(augmentedComment.getArticlePrefix())
                     );
                 }
 
                 assertThat(
-                    pass,
-                    report,
-                    "article " + augmentedComment.getArticleId() + " missing from consumedArticles",
-                    consumedArticles.containsKey(augmentedComment.getArticleId())
+                        pass,
+                        report,
+                        "article " + augmentedComment.getArticleId() + " missing from consumedArticles",
+                        consumedArticles.containsKey(augmentedComment.getArticleId())
                 );
                 final Article article = consumedArticles.get(augmentedComment.getArticleId());
                 if (article != null) {
                     assertThat(
-                        pass,
-                        report,
-                        "articlePrefix didn't match article: " + article.getText(),
-                        article.getText().startsWith(augmentedComment.getArticlePrefix())
+                            pass,
+                            report,
+                            "articlePrefix didn't match article: " + article.getText(),
+                            article.getText().startsWith(augmentedComment.getArticlePrefix())
                     );
                 }
             }
@@ -923,34 +923,34 @@ public class RelationalSmokeTest extends SmokeTestUtil {
 
             for (final RelationalSmokeTest.AugmentedArticle augmentedArticle : consumedAugmentedArticles.values()) {
                 assertThat(
-                    pass,
-                    report,
-                    "article " + augmentedArticle.getKey() + " comment count mismatch",
-                    augmentedArticle.getCommentCount() == commentCounts.getOrDefault(augmentedArticle.getKey(), 0L)
+                        pass,
+                        report,
+                        "article " + augmentedArticle.getKey() + " comment count mismatch",
+                        augmentedArticle.getCommentCount() == commentCounts.getOrDefault(augmentedArticle.getKey(), 0L)
                 );
             }
 
             if (logResults) {
                 if (pass.get()) {
                     LOG.info(
-                        "Evaluation passed ({}/{}) articles and ({}/{}) comments",
-                        consumedAugmentedArticles.size(),
-                        consumedArticles.size(),
-                        consumedAugmentedComments.size(),
-                        consumedComments.size()
+                            "Evaluation passed ({}/{}) articles and ({}/{}) comments",
+                            consumedAugmentedArticles.size(),
+                            consumedArticles.size(),
+                            consumedAugmentedComments.size(),
+                            consumedComments.size()
                     );
                 } else {
                     LOG.error(
-                        "Evaluation failed\nReport: {}\n" +
-                            "Consumed Input Articles: {}\n" +
-                            "Consumed Input Comments: {}\n" +
-                            "Consumed Augmented Articles: {}\n" +
-                            "Consumed Augmented Comments: {}",
-                        report,
-                        consumedArticles,
-                        consumedComments,
-                        consumedAugmentedArticles,
-                        consumedAugmentedComments
+                            "Evaluation failed\nReport: {}\n" +
+                                    "Consumed Input Articles: {}\n" +
+                                    "Consumed Input Comments: {}\n" +
+                                    "Consumed Augmented Articles: {}\n" +
+                                    "Consumed Augmented Comments: {}",
+                            report,
+                            consumedArticles,
+                            consumedComments,
+                            consumedAugmentedArticles,
+                            consumedAugmentedComments
                     );
                 }
             }

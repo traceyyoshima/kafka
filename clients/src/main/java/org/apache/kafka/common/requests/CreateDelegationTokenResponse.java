@@ -36,19 +36,19 @@ public class CreateDelegationTokenResponse extends AbstractResponse {
 
     public static CreateDelegationTokenResponse parse(Readable readable, short version) {
         return new CreateDelegationTokenResponse(
-            new CreateDelegationTokenResponseData(readable, version));
+                new CreateDelegationTokenResponseData(readable, version));
     }
 
     public static CreateDelegationTokenResponse prepareResponse(int version,
-            int throttleTimeMs,
-            Errors error,
-            KafkaPrincipal owner,
-            KafkaPrincipal tokenRequester,
-            long issueTimestamp,
-            long expiryTimestamp,
-            long maxTimestamp,
-            String tokenId,
-            ByteBuffer hmac) {
+                                                                int throttleTimeMs,
+                                                                Errors error,
+                                                                KafkaPrincipal owner,
+                                                                KafkaPrincipal tokenRequester,
+                                                                long issueTimestamp,
+                                                                long expiryTimestamp,
+                                                                long maxTimestamp,
+                                                                String tokenId,
+                                                                ByteBuffer hmac) {
         CreateDelegationTokenResponseData data = new CreateDelegationTokenResponseData()
                 .setThrottleTimeMs(throttleTimeMs)
                 .setErrorCode(error.code())
@@ -61,14 +61,14 @@ public class CreateDelegationTokenResponse extends AbstractResponse {
                 .setHmac(hmac.array());
         if (version > 2) {
             data.setTokenRequesterPrincipalType(tokenRequester.getPrincipalType())
-                .setTokenRequesterPrincipalName(tokenRequester.getName());
+                    .setTokenRequesterPrincipalName(tokenRequester.getName());
         }
         return new CreateDelegationTokenResponse(data);
     }
 
     public static CreateDelegationTokenResponse prepareResponse(int version, int throttleTimeMs, Errors error,
                                                                 KafkaPrincipal owner, KafkaPrincipal requester) {
-        return prepareResponse(version, throttleTimeMs, error, owner, requester, -1, -1, -1, "", ByteBuffer.wrap(new byte[] {}));
+        return prepareResponse(version, throttleTimeMs, error, owner, requester, -1, -1, -1, "", ByteBuffer.wrap(new byte[]{}));
     }
 
     @Override

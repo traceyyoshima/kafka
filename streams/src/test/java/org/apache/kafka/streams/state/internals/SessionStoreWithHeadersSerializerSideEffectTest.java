@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Test to verify that key serializers can modify headers as a side-effect,
  * and that this side-effect makes it into the changelog topic for session stores.
- *
+ * <p>
  * This test verifies the core assumption of the headers-aware state store implementation:
  * when we create a temporary context with new headers and serialize the key, the key
  * serializer will add metadata to those headers, and those headers
@@ -110,8 +110,8 @@ public class SessionStoreWithHeadersSerializerSideEffectTest {
         public void process(final Record<String, String> record) {
             final long timestamp = record.timestamp();
             final Windowed<String> sessionKey = new Windowed<>(
-                record.key(),
-                new SessionWindow(timestamp, timestamp)
+                    record.key(),
+                    new SessionWindow(timestamp, timestamp)
             );
 
             if ("remove".equals(record.value())) {
@@ -120,8 +120,8 @@ public class SessionStoreWithHeadersSerializerSideEffectTest {
                 store.put(sessionKey, null);
             } else {
                 store.put(
-                    sessionKey,
-                    AggregationWithHeaders.make(record.value(), record.headers())
+                        sessionKey,
+                        AggregationWithHeaders.make(record.value(), record.headers())
                 );
             }
 
@@ -135,20 +135,20 @@ public class SessionStoreWithHeadersSerializerSideEffectTest {
 
         // Create a session store with headers using our custom serializer
         builder.addStateStore(
-            Stores.sessionStoreWithHeadersBuilder(
-                Stores.inMemorySessionStore(
-                    STORE_NAME,
-                    Duration.ofMillis(10000L)
-                ),
-                new HeaderAddingSerde(),  // Custom key serializer that adds headers
-                Serdes.String()
-            )
+                Stores.sessionStoreWithHeadersBuilder(
+                        Stores.inMemorySessionStore(
+                                STORE_NAME,
+                                Duration.ofMillis(10000L)
+                        ),
+                        new HeaderAddingSerde(),  // Custom key serializer that adds headers
+                        Serdes.String()
+                )
         );
 
         // Add a processor that uses the store and forwards to output
         builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), Serdes.String()))
-            .process(SessionStoreProcessor::new, STORE_NAME)
-            .to(OUTPUT_TOPIC);
+                .process(SessionStoreProcessor::new, STORE_NAME)
+                .to(OUTPUT_TOPIC);
 
         final Properties props = new Properties();
         props.put("application.id", "test-session-app");
@@ -157,26 +157,26 @@ public class SessionStoreWithHeadersSerializerSideEffectTest {
 
         try (TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic = driver.createInputTopic(
-                INPUT_TOPIC,
-                Serdes.String().serializer(),
-                Serdes.String().serializer()
+                    INPUT_TOPIC,
+                    Serdes.String().serializer(),
+                    Serdes.String().serializer()
             );
 
             final String changelogTopic = "test-session-app-" + STORE_NAME + "-changelog";
             final TestOutputTopic<String, String> changelogOutputTopic =
-                driver.createOutputTopic(
-                    changelogTopic,
-                    Serdes.String().deserializer(),
-                    Serdes.String().deserializer()
-                );
+                    driver.createOutputTopic(
+                            changelogTopic,
+                            Serdes.String().deserializer(),
+                            Serdes.String().deserializer()
+                    );
 
             // Create output topic reader (using regular StringSerde, not HeaderAddingSerde)
             final TestOutputTopic<String, String> outputTopic =
-                driver.createOutputTopic(
-                    OUTPUT_TOPIC,
-                    Serdes.String().deserializer(),
-                    Serdes.String().deserializer()
-                );
+                    driver.createOutputTopic(
+                            OUTPUT_TOPIC,
+                            Serdes.String().deserializer(),
+                            Serdes.String().deserializer()
+                    );
 
             inputTopic.pipeInput("key1", "value1", 1000L);
 

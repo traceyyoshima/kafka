@@ -25,12 +25,14 @@ import java.util.function.Supplier;
  * This internal class exists because CompletableFuture exposes complete(), completeExceptionally() and
  * other methods which would allow erroneous completion by user code of a KafkaFuture returned from a
  * Kafka API to a client application.
+ *
  * @param <T> The type of the future value.
  */
 public class KafkaCompletableFuture<T> extends CompletableFuture<T> {
 
     /**
      * Completes this future normally. For internal use by the Kafka clients, not by user code.
+     *
      * @param value the result value
      * @return {@code true} if this invocation caused this CompletableFuture
      * to transition to a completed state, else {@code false}
@@ -41,6 +43,7 @@ public class KafkaCompletableFuture<T> extends CompletableFuture<T> {
 
     /**
      * Completes this future exceptionally. For internal use by the Kafka clients, not by user code.
+     *
      * @param throwable the exception.
      * @return {@code true} if this invocation caused this CompletableFuture
      * to transition to a completed state, else {@code false}

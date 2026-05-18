@@ -34,20 +34,20 @@ class MemoryBatchReaderTest {
     @Test
     public void testIteration() {
         Batch<String> batch1 = Batch.data(
-            0L, 1, 0L, 3, List.of("a", "b", "c")
+                0L, 1, 0L, 3, List.of("a", "b", "c")
         );
         Batch<String> batch2 = Batch.data(
-            3L, 2, 1L, 2, List.of("d", "e")
+                3L, 2, 1L, 2, List.of("d", "e")
         );
         Batch<String> batch3 = Batch.data(
-            5L, 2, 3L, 4, List.of("f", "g", "h", "i")
+                5L, 2, 3L, 4, List.of("f", "g", "h", "i")
         );
 
         @SuppressWarnings("unchecked")
         CloseListener<BatchReader<String>> listener = Mockito.mock(CloseListener.class);
         MemoryBatchReader<String> reader = MemoryBatchReader.of(
-            List.of(batch1, batch2, batch3),
-            listener
+                List.of(batch1, batch2, batch3),
+                listener
         );
 
         assertEquals(0L, reader.baseOffset());

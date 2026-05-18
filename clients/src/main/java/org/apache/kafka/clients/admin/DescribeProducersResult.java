@@ -37,25 +37,25 @@ public class DescribeProducersResult {
         KafkaFuture<PartitionProducerState> future = futures.get(partition);
         if (future == null) {
             throw new IllegalArgumentException("Topic partition " + partition +
-                " was not included in the request");
+                    " was not included in the request");
         }
         return future;
     }
 
     public KafkaFuture<Map<TopicPartition, PartitionProducerState>> all() {
         return KafkaFuture.allOf(futures.values().toArray(new KafkaFuture<?>[0]))
-            .thenApply(nil -> {
-                Map<TopicPartition, PartitionProducerState> results = new HashMap<>(futures.size());
-                for (Map.Entry<TopicPartition, KafkaFuture<PartitionProducerState>> entry : futures.entrySet()) {
-                    try {
-                        results.put(entry.getKey(), entry.getValue().get());
-                    } catch (InterruptedException | ExecutionException e) {
-                        // This should be unreachable, because allOf ensured that all the futures completed successfully.
-                        throw new KafkaException(e);
+                .thenApply(nil -> {
+                    Map<TopicPartition, PartitionProducerState> results = new HashMap<>(futures.size());
+                    for (Map.Entry<TopicPartition, KafkaFuture<PartitionProducerState>> entry : futures.entrySet()) {
+                        try {
+                            results.put(entry.getKey(), entry.getValue().get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            // This should be unreachable, because allOf ensured that all the futures completed successfully.
+                            throw new KafkaException(e);
+                        }
                     }
-                }
-                return results;
-            });
+                    return results;
+                });
     }
 
     public static class PartitionProducerState {
@@ -72,8 +72,8 @@ public class DescribeProducersResult {
         @Override
         public String toString() {
             return "PartitionProducerState(" +
-                "activeProducers=" + activeProducers +
-                ')';
+                    "activeProducers=" + activeProducers +
+                    ')';
         }
     }
 

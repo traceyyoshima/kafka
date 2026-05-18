@@ -170,10 +170,11 @@ public abstract class Flatten<R extends ConnectRecord<R>> implements Transformat
      * optionality and default values of the flattened fields are affected by the optionality and default values of
      * parent/ancestor schemas (e.g. flattened field is optional because the parent schema was optional, even if the
      * schema itself is marked as required).
-     * @param schema the schema to translate
-     * @param fieldNamePrefix the prefix to use on field names, i.e. the delimiter-joined set of ancestor field names
-     * @param newSchema the flattened schema being built
-     * @param optional true if any ancestor schema is optional
+     *
+     * @param schema            the schema to translate
+     * @param fieldNamePrefix   the prefix to use on field names, i.e. the delimiter-joined set of ancestor field names
+     * @param newSchema         the flattened schema being built
+     * @param optional          true if any ancestor schema is optional
      * @param defaultFromParent the default value, if any, included via the parent/ancestor schemas
      */
     private void buildUpdatedSchema(Schema schema, String fieldNamePrefix, SchemaBuilder newSchema, boolean optional, Struct defaultFromParent) {
@@ -213,8 +214,9 @@ public abstract class Flatten<R extends ConnectRecord<R>> implements Transformat
      * Convert the schema for a field of a Struct with a primitive schema to the schema to be used for the flattened
      * version, taking into account that we may need to override optionality and default values in the flattened version
      * to take into account the optionality and default values of parent/ancestor schemas
-     * @param orig the original schema for the field
-     * @param optional whether the new flattened field should be optional
+     *
+     * @param orig              the original schema for the field
+     * @param optional          whether the new flattened field should be optional
      * @param defaultFromParent the default value either taken from the existing field or provided by the parent
      */
     private Schema convertFieldSchema(Schema orig, boolean optional, Object defaultFromParent) {

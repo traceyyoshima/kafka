@@ -71,7 +71,7 @@ public class TieredStorageTestUtils {
     }
 
     public static Map<String, TopicDescription> describeTopics(TieredStorageTestContext context,
-                                                                List<String> topics)
+                                                               List<String> topics)
             throws ExecutionException, InterruptedException {
         return context.admin()
                 .describeTopics(topics)
@@ -82,7 +82,8 @@ public class TieredStorageTestUtils {
     /**
      * Get the records found in the local tiered storage.
      * Snapshot does not sort the filesets by base offset.
-     * @param context The test context.
+     *
+     * @param context        The test context.
      * @param topicPartition The topic-partition of the records.
      * @return The records found in the local tiered storage.
      */
@@ -165,7 +166,7 @@ public class TieredStorageTestUtils {
     }
 
     public static Map<String, String> createTopicConfigForRemoteStorage(boolean enableRemoteStorage,
-            int maxRecordBatchPerSegment) {
+                                                                        int maxRecordBatchPerSegment) {
         Map<String, String> topicProps = new HashMap<>();
         // Enables remote log storage for this topic.
         topicProps.put(TopicConfig.REMOTE_LOG_STORAGE_ENABLE_CONFIG, String.valueOf(enableRemoteStorage));

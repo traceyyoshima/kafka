@@ -94,11 +94,10 @@ public interface ProcessorContext {
     /**
      * Register and possibly restores the specified storage engine.
      *
-     * @param store the storage engine
+     * @param store                the storage engine
      * @param stateRestoreCallback the restoration callback logic for log-backed state stores upon restart
-     *
      * @throws IllegalStateException If store gets registered after initialized is already finished
-     * @throws StreamsException if the store's change log does not contain the partition
+     * @throws StreamsException      if the store's change log does not contain the partition
      */
     void register(final StateStore store,
                   final StateRestoreCallback stateRestoreCallback);
@@ -114,9 +113,8 @@ public interface ProcessorContext {
      * partition) may lead to data corruption and/or data loss.
      *
      * @param name The store name
-     * @param <S> The type or interface of the store to return
+     * @param <S>  The type or interface of the store to return
      * @return The state store instance
-     *
      * @throws ClassCastException if the return type isn't a type or interface of the actual returned store.
      */
     <S extends StateStore> S getStateStore(final String name);
@@ -149,7 +147,7 @@ public interface ProcessorContext {
      * </ul>
      *
      * @param interval the time interval between punctuations (supported minimum is 1 millisecond)
-     * @param type one of: {@link PunctuationType#STREAM_TIME}, {@link PunctuationType#WALL_CLOCK_TIME}
+     * @param type     one of: {@link PunctuationType#STREAM_TIME}, {@link PunctuationType#WALL_CLOCK_TIME}
      * @param callback a function consuming timestamps representing the current stream or system time
      * @return a handle allowing cancellation of the punctuation schedule established by this method
      * @throws IllegalArgumentException if the interval is not representable in milliseconds
@@ -187,9 +185,9 @@ public interface ProcessorContext {
      *
      * @param startTime the time for the first punctuation.
      *                  The subsequent trigger times are calculated using the {@code startTime} and the {@code interval}
-     * @param interval the time interval between punctuations (supported minimum is 1 millisecond)
-     * @param type one of: {@link PunctuationType#STREAM_TIME}, {@link PunctuationType#WALL_CLOCK_TIME}
-     * @param callback a function consuming timestamps representing the current stream or system time
+     * @param interval  the time interval between punctuations (supported minimum is 1 millisecond)
+     * @param type      one of: {@link PunctuationType#STREAM_TIME}, {@link PunctuationType#WALL_CLOCK_TIME}
+     * @param callback  a function consuming timestamps representing the current stream or system time
      * @return a handle allowing cancellation of the punctuation schedule established by this method
      * @throws IllegalArgumentException if the interval is not representable in milliseconds
      */
@@ -205,7 +203,7 @@ public interface ProcessorContext {
      * <p> If this method is called with {@link Punctuator#punctuate(long)} the record that
      * is sent downstream won't have any associated record metadata like topic, partition, or offset.
      *
-     * @param key key
+     * @param key   key
      * @param value value
      */
     <K, V> void forward(final K key, final V value);
@@ -217,9 +215,9 @@ public interface ProcessorContext {
      * <p> If this method is called with {@link Punctuator#punctuate(long)} the record that
      * is sent downstream won't have any associated record metadata like topic, partition, or offset.
      *
-     * @param key key
+     * @param key   key
      * @param value value
-     * @param to the options to use when forwarding
+     * @param to    the options to use when forwarding
      */
     <K, V> void forward(final K key, final V value, final To to);
 

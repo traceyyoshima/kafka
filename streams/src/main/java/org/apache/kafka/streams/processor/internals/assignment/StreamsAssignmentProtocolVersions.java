@@ -33,5 +33,6 @@ public final class StreamsAssignmentProtocolVersions {
      * 3) Note the date & corresponding Kafka version of this bump
      */
 
-    private StreamsAssignmentProtocolVersions() {}
+    private StreamsAssignmentProtocolVersions() {
+    }
 }

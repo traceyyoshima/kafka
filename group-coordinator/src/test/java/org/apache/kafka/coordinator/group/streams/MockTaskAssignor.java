@@ -43,14 +43,14 @@ public class MockTaskAssignor implements TaskAssignor {
 
     public void prepareGroupAssignment(Map<String, TasksTuple> memberAssignments) {
         this.preparedGroupAssignment =
-            new GroupAssignment(memberAssignments.entrySet().stream().collect(
-                Collectors.toMap(
-                    Entry::getKey,
-                    entry -> {
-                        TasksTuple tasksTuple = entry.getValue();
-                        return new MemberAssignment(
-                            tasksTuple.activeTasks(), tasksTuple.standbyTasks(), tasksTuple.warmupTasks());
-                    })));
+                new GroupAssignment(memberAssignments.entrySet().stream().collect(
+                        Collectors.toMap(
+                                Entry::getKey,
+                                entry -> {
+                                    TasksTuple tasksTuple = entry.getValue();
+                                    return new MemberAssignment(
+                                            tasksTuple.activeTasks(), tasksTuple.standbyTasks(), tasksTuple.warmupTasks());
+                                })));
     }
 
     public Map<String, String> lastPassedAssignmentConfigs() {
@@ -69,7 +69,7 @@ public class MockTaskAssignor implements TaskAssignor {
 
     @Override
     public GroupAssignment assign(final GroupSpec groupSpec, final TopologyDescriber topologyDescriber)
-        throws TaskAssignorException {
+            throws TaskAssignorException {
         assignmentConfigs = groupSpec.assignmentConfigs();
         return preparedGroupAssignment;
     }

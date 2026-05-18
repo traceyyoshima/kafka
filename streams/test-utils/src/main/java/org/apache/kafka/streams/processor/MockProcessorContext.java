@@ -183,10 +183,10 @@ public class MockProcessorContext implements ProcessorContext, RecordCollector.S
         @Override
         public String toString() {
             return "CapturedForward{" +
-                "childName='" + childName + '\'' +
-                ", timestamp=" + timestamp +
-                ", keyValue=" + keyValue +
-                '}';
+                    "childName='" + childName + '\'' +
+                    ", timestamp=" + timestamp +
+                    ", keyValue=" + keyValue +
+                    '}';
         }
 
         public Headers headers() {
@@ -206,14 +206,14 @@ public class MockProcessorContext implements ProcessorContext, RecordCollector.S
     public MockProcessorContext() {
         //noinspection DoubleBraceInitialization
         this(
-            new Properties() {
-                {
-                    put(StreamsConfig.APPLICATION_ID_CONFIG, "");
-                    put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "mock-localhost:9092");
-                }
-            },
-            new TaskId(0, 0),
-            null);
+                new Properties() {
+                    {
+                        put(StreamsConfig.APPLICATION_ID_CONFIG, "");
+                        put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "mock-localhost:9092");
+                    }
+                },
+                new TaskId(0, 0),
+                null);
     }
 
     /**
@@ -477,7 +477,8 @@ public class MockProcessorContext implements ProcessorContext, RecordCollector.S
         }
         final CapturedPunctuator capturedPunctuator = new CapturedPunctuator(intervalMs, type, callback);
         punctuators.add(capturedPunctuator);
-        return capturedPunctuator::cancel;    }
+        return capturedPunctuator::cancel;
+    }
 
     @Override
     public Cancellable schedule(final Instant startTime,
@@ -514,11 +515,11 @@ public class MockProcessorContext implements ProcessorContext, RecordCollector.S
     @Override
     public <K, V> void forward(final K key, final V value, final To to) {
         capturedForwards.add(
-            new CapturedForward(
-                new KeyValue<>(key, value),
-                to.timestamp == -1 ? to.withTimestamp(recordTimestamp == null ? -1 : recordTimestamp) : to,
-                headers
-            )
+                new CapturedForward(
+                        new KeyValue<>(key, value),
+                        to.timestamp == -1 ? to.withTimestamp(recordTimestamp == null ? -1 : recordTimestamp) : to,
+                        headers
+                )
         );
     }
 
@@ -589,9 +590,9 @@ public class MockProcessorContext implements ProcessorContext, RecordCollector.S
         // Rather than risk a mysterious ClassCastException during unit tests, throw an explanatory exception.
 
         throw new UnsupportedOperationException(
-            "MockProcessorContext does not provide record collection. " +
-                "For processor unit tests, use an in-memory state store with change-logging disabled. " +
-                "Alternatively, use the TopologyTestDriver for testing processor/store/topology integration."
+                "MockProcessorContext does not provide record collection. " +
+                        "For processor unit tests, use an in-memory state store with change-logging disabled. " +
+                        "Alternatively, use the TopologyTestDriver for testing processor/store/topology integration."
         );
     }
 }

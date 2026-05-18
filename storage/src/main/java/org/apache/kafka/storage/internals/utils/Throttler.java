@@ -49,11 +49,11 @@ public class Throttler {
      * or a count of some other thing), and will sleep for an appropriate amount of time when maybeThrottle()
      * is called to attain the desired rate.
      *
-     * @param desiredRatePerSec  The rate we want to hit in units/sec
-     * @param checkIntervalMs    The interval at which to check our rate
-     * @param metricName         The name of the metric
-     * @param units              The name of the unit
-     * @param time               The time implementation to use
+     * @param desiredRatePerSec The rate we want to hit in units/sec
+     * @param checkIntervalMs   The interval at which to check our rate
+     * @param metricName        The name of the metric
+     * @param units             The name of the unit
+     * @param time              The time implementation to use
      */
     public Throttler(double desiredRatePerSec,
                      long checkIntervalMs,

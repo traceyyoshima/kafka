@@ -48,21 +48,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Timeout(120)
 public class KafkaFutureTest {
 
-    /** Asserts that the given future is done, didn't fail and wasn't cancelled. */
+    /**
+     * Asserts that the given future is done, didn't fail and wasn't cancelled.
+     */
     private void assertIsSuccessful(KafkaFuture<?> future) {
         assertTrue(future.isDone());
         assertFalse(future.isCompletedExceptionally());
         assertFalse(future.isCancelled());
     }
 
-    /** Asserts that the given future is done, failed and wasn't cancelled. */
+    /**
+     * Asserts that the given future is done, failed and wasn't cancelled.
+     */
     private void assertIsFailed(KafkaFuture<?> future) {
         assertTrue(future.isDone());
         assertFalse(future.isCancelled());
         assertTrue(future.isCompletedExceptionally());
     }
 
-    /** Asserts that the given future is done, didn't fail and was cancelled. */
+    /**
+     * Asserts that the given future is done, didn't fail and was cancelled.
+     */
     private void assertIsCancelled(KafkaFuture<?> future) {
         assertTrue(future.isDone());
         assertTrue(future.isCancelled());

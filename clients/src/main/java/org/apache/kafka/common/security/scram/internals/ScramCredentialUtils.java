@@ -38,18 +38,19 @@ public final class ScramCredentialUtils {
     private static final String SERVER_KEY = "server_key";
     private static final String ITERATIONS = "iterations";
 
-    private ScramCredentialUtils() {}
+    private ScramCredentialUtils() {
+    }
 
     public static String credentialToString(ScramCredential credential) {
         return String.format("%s=%s,%s=%s,%s=%s,%s=%d",
-               SALT,
-               Base64.getEncoder().encodeToString(credential.salt()),
-               STORED_KEY,
-               Base64.getEncoder().encodeToString(credential.storedKey()),
-               SERVER_KEY,
-               Base64.getEncoder().encodeToString(credential.serverKey()),
-               ITERATIONS,
-               credential.iterations());
+                SALT,
+                Base64.getEncoder().encodeToString(credential.salt()),
+                STORED_KEY,
+                Base64.getEncoder().encodeToString(credential.storedKey()),
+                SERVER_KEY,
+                Base64.getEncoder().encodeToString(credential.serverKey()),
+                ITERATIONS,
+                credential.iterations());
     }
 
     public static ScramCredential credentialFromString(String str) {

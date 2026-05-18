@@ -36,10 +36,11 @@ public interface KTableValueGetter<K, V> {
 
     /**
      * @return whether this value getter supports multiple record versions for the same key.
-     *         If true, then {@link #get(Object, long)} must be implemented. If not, then
-     *         {@link #get(Object, long)} must not be called.
+     * If true, then {@link #get(Object, long)} must be implemented. If not, then
+     * {@link #get(Object, long)} must not be called.
      */
     boolean isVersioned();
 
-    default void close() {}
+    default void close() {
+    }
 }

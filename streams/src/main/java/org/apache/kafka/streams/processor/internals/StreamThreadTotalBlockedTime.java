@@ -30,31 +30,31 @@ public class StreamThreadTotalBlockedTime {
     private final Supplier<Double> producerTotalBlockedTime;
 
     StreamThreadTotalBlockedTime(
-        final Consumer<?, ?> consumer,
-        final Consumer<?, ?> restoreConsumer,
-        final Supplier<Double> producerTotalBlockedTime) {
+            final Consumer<?, ?> consumer,
+            final Consumer<?, ?> restoreConsumer,
+            final Supplier<Double> producerTotalBlockedTime) {
         this.consumer = consumer;
         this.restoreConsumer = restoreConsumer;
         this.producerTotalBlockedTime = producerTotalBlockedTime;
     }
 
     private double metricValue(
-        final Map<MetricName, ? extends Metric> metrics,
-        final String name) {
+            final Map<MetricName, ? extends Metric> metrics,
+            final String name) {
         return metrics.keySet().stream()
-            .filter(n -> n.name().equals(name))
-            .findFirst()
-            .map(n -> (Double) metrics.get(n).metricValue())
-            .orElse(0.0);
+                .filter(n -> n.name().equals(name))
+                .findFirst()
+                .map(n -> (Double) metrics.get(n).metricValue())
+                .orElse(0.0);
     }
 
     public double compute() {
         return metricValue(consumer.metrics(), "io-wait-time-ns-total")
-            + metricValue(consumer.metrics(), "io-time-ns-total")
-            + metricValue(consumer.metrics(), "committed-time-ns-total")
-            + metricValue(consumer.metrics(), "commit-sync-time-ns-total")
-            + metricValue(restoreConsumer.metrics(), "io-wait-time-ns-total")
-            + metricValue(restoreConsumer.metrics(), "io-time-ns-total")
-            + producerTotalBlockedTime.get();
+                + metricValue(consumer.metrics(), "io-time-ns-total")
+                + metricValue(consumer.metrics(), "committed-time-ns-total")
+                + metricValue(consumer.metrics(), "commit-sync-time-ns-total")
+                + metricValue(restoreConsumer.metrics(), "io-wait-time-ns-total")
+                + metricValue(restoreConsumer.metrics(), "io-time-ns-total")
+                + producerTotalBlockedTime.get();
     }
 }

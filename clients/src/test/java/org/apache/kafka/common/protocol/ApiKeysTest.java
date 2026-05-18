@@ -65,11 +65,11 @@ public class ApiKeysTest {
         Set<ApiKeys> authenticationKeys = EnumSet.of(ApiKeys.SASL_HANDSHAKE, ApiKeys.SASL_AUTHENTICATE);
         // Newer protocol apis include throttle time ms even for cluster actions
         Set<ApiKeys> clusterActionsWithThrottleTimeMs = EnumSet.of(ApiKeys.ALTER_PARTITION, ApiKeys.ALLOCATE_PRODUCER_IDS, ApiKeys.UPDATE_FEATURES);
-        for (ApiKeys apiKey: ApiKeys.clientApis()) {
+        for (ApiKeys apiKey : ApiKeys.clientApis()) {
             Schema responseSchema = apiKey.messageType.responseSchemas()[apiKey.latestVersion()];
             BoundField throttleTimeField = responseSchema.get("throttle_time_ms");
             if ((apiKey.clusterAction && !clusterActionsWithThrottleTimeMs.contains(apiKey))
-                || authenticationKeys.contains(apiKey))
+                    || authenticationKeys.contains(apiKey))
                 assertNull(throttleTimeField, "Unexpected throttle time field: " + apiKey);
             else
                 assertNotNull(throttleTimeField, "Throttle time field missing: " + apiKey);
@@ -85,13 +85,13 @@ public class ApiKeysTest {
             }
         }
         assertEquals(Collections.emptySet(), apisMissingScope,
-            "Found some APIs missing scope definition");
+                "Found some APIs missing scope definition");
     }
 
     @Test
     public void testHasValidVersions() {
         var apiKeysWithNoValidVersions = Set.of(ApiKeys.LEADER_AND_ISR, ApiKeys.STOP_REPLICA, ApiKeys.UPDATE_METADATA,
-            ApiKeys.CONTROLLED_SHUTDOWN);
+                ApiKeys.CONTROLLED_SHUTDOWN);
         for (ApiKeys apiKey : ApiKeys.values()) {
             if (apiKeysWithNoValidVersions.contains(apiKey))
                 assertFalse(apiKey.hasValidVersion());

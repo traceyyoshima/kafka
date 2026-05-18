@@ -50,7 +50,7 @@ import java.util.concurrent.CountDownLatch;
  * <p>bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic iot-temperature-max
  *
  * <p>After that, a console consumer can be started in order to read filtered values from the "iot-temperature-max" topic :
- *
+ * <p>
  * bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic iot-temperature-max --from-beginning
  *
  * <p>On the other side, a console producer can be used for sending temperature values (which needs to be integers)
@@ -86,20 +86,20 @@ public class TemperatureDemo {
         final KStream<String, String> source = builder.stream("iot-temperature");
 
         final KStream<Windowed<String>, String> max = source
-            // temperature values are sent without a key (null), so in order
-            // to group and reduce them, a key is needed ("temp" has been chosen)
-            .selectKey((key, value) -> "temp")
-            .groupByKey()
-            .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofSeconds(TEMPERATURE_WINDOW_SIZE), duration24Hours))
-            .reduce((value1, value2) -> {
-                if (Integer.parseInt(value1) > Integer.parseInt(value2)) {
-                    return value1;
-                } else {
-                    return value2;
-                }
-            })
-            .toStream()
-            .filter((key, value) -> Integer.parseInt(value) > TEMPERATURE_THRESHOLD);
+                // temperature values are sent without a key (null), so in order
+                // to group and reduce them, a key is needed ("temp" has been chosen)
+                .selectKey((key, value) -> "temp")
+                .groupByKey()
+                .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofSeconds(TEMPERATURE_WINDOW_SIZE), duration24Hours))
+                .reduce((value1, value2) -> {
+                    if (Integer.parseInt(value1) > Integer.parseInt(value2)) {
+                        return value1;
+                    } else {
+                        return value2;
+                    }
+                })
+                .toStream()
+                .filter((key, value) -> Integer.parseInt(value) > TEMPERATURE_THRESHOLD);
 
         final Serde<Windowed<String>> windowedSerde = WindowedSerdes.timeWindowedSerdeFrom(String.class, TEMPERATURE_WINDOW_SIZE);
 

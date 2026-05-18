@@ -30,7 +30,8 @@ import java.util.function.Supplier;
 
 public final class AdminUtils {
 
-    private AdminUtils() {}
+    private AdminUtils() {
+    }
 
     /**
      * Fetch the partition leader or wait until one is elected using the provided admin client.
@@ -42,6 +43,7 @@ public final class AdminUtils {
 
         var condition = new Supplier<Boolean>() {
             int leader = Node.noNode().id();
+
             @Override
             public Boolean get() {
                 checkLeader();

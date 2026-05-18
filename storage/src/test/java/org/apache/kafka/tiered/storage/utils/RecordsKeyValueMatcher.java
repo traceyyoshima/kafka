@@ -37,8 +37,8 @@ import java.util.Iterator;
 /**
  * @param <R1> The type of records used to formulate the expectations.
  * @param <R2> The type of records compared against the expectations.
- * @param <K> The type of the record keys.
- * @param <V> The type of the record values.
+ * @param <K>  The type of the record keys.
+ * @param <V>  The type of the record values.
  */
 public final class RecordsKeyValueMatcher<R1, R2, K, V> extends TypeSafeDiagnosingMatcher<Collection<R2>> {
 
@@ -50,19 +50,19 @@ public final class RecordsKeyValueMatcher<R1, R2, K, V> extends TypeSafeDiagnosi
     /**
      * Heterogeneous matcher between alternative types of records:
      * {@link ProducerRecord}, {@link ConsumerRecord} or {@link Record}.
-     *
+     * <p>
      * It is conceptually incorrect to try to match records of different natures.
      * Only a committed {@link Record} is univoque, whereas a {@link ProducerRecord} or {@link ConsumerRecord} is
      * a physical representation of a record-to-be or viewed record.
-     *
+     * <p>
      * This matcher breaches that semantic so that testers can avoid performing manual comparisons on
      * targeted internal fields of these type of records. This implementation only compares key and
      * value of the records.
      *
      * @param expectedRecords The records expected.
-     * @param topicPartition The topic-partition which the records belong to.
-     * @param keySerde The {@link Serde} for the keys of the records.
-     * @param valueSerde The {@link Serde} for the values of the records.
+     * @param topicPartition  The topic-partition which the records belong to.
+     * @param keySerde        The {@link Serde} for the keys of the records.
+     * @param valueSerde      The {@link Serde} for the values of the records.
      */
     public RecordsKeyValueMatcher(Collection<R1> expectedRecords,
                                   TopicPartition topicPartition,
@@ -165,9 +165,9 @@ public final class RecordsKeyValueMatcher<R1, R2, K, V> extends TypeSafeDiagnosi
      * the expectedRecords sequence, in order.
      *
      * @param expectedRecords The records expected.
-     * @param topicPartition The topic-partition which the records belong to.
-     * @param keySerde The {@link Serde} for the keys of the records.
-     * @param valueSerde The {@link Serde} for the values of the records.
+     * @param topicPartition  The topic-partition which the records belong to.
+     * @param keySerde        The {@link Serde} for the keys of the records.
+     * @param valueSerde      The {@link Serde} for the values of the records.
      */
     public static <R1, R2, K, V> RecordsKeyValueMatcher<R1, R2, K, V> correspondTo(Collection<R1> expectedRecords,
                                                                                    TopicPartition topicPartition,

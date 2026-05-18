@@ -36,15 +36,15 @@ import java.nio.ByteOrder;
  * This class will process records containing timestamps and generate a histogram based on the data.  It will then be
  * present in the status from the `ConsumeBenchWorker` class.  This must be used with a timestamped PayloadGenerator
  * implementation.
- *
+ * <p>
  * Example spec:
  * {
- *    "type": "timestamp",
- *    "histogramMaxMs": 10000,
- *    "histogramMinMs": 0,
- *    "histogramStepMs": 1
+ * "type": "timestamp",
+ * "histogramMaxMs": 10000,
+ * "histogramMinMs": 0,
+ * "histogramStepMs": 1
  * }
- *
+ * <p>
  * This will track total E2E latency up to 10 seconds, using 1ms resolution and a timestamp size of 8 bytes.
  */
 

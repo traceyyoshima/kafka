@@ -75,17 +75,17 @@ public class OffsetCommitResponseTest {
     @Test
     public void testParse() {
         OffsetCommitResponseData data = new OffsetCommitResponseData()
-            .setTopics(Arrays.asList(
-                new OffsetCommitResponseTopic().setPartitions(
-                    Collections.singletonList(new OffsetCommitResponsePartition()
-                        .setPartitionIndex(partitionOne)
-                        .setErrorCode(errorOne.code()))),
-                new OffsetCommitResponseTopic().setPartitions(
-                    Collections.singletonList(new OffsetCommitResponsePartition()
-                        .setPartitionIndex(partitionTwo)
-                        .setErrorCode(errorTwo.code())))
-            ))
-            .setThrottleTimeMs(throttleTimeMs);
+                .setTopics(Arrays.asList(
+                        new OffsetCommitResponseTopic().setPartitions(
+                                Collections.singletonList(new OffsetCommitResponsePartition()
+                                        .setPartitionIndex(partitionOne)
+                                        .setErrorCode(errorOne.code()))),
+                        new OffsetCommitResponseTopic().setPartitions(
+                                Collections.singletonList(new OffsetCommitResponsePartition()
+                                        .setPartitionIndex(partitionTwo)
+                                        .setErrorCode(errorTwo.code())))
+                ))
+                .setThrottleTimeMs(throttleTimeMs);
 
         for (short version : ApiKeys.OFFSET_COMMIT.allVersions()) {
             Readable readable = MessageUtil.toByteBufferAccessor(data, version);

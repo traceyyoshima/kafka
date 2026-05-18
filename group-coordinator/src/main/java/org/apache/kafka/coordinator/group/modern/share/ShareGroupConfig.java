@@ -31,7 +31,9 @@ import static org.apache.kafka.common.config.ConfigDef.Type.INT;
 import static org.apache.kafka.common.config.ConfigDef.Type.STRING;
 
 public class ShareGroupConfig {
-    /** Share Group Configurations **/
+    /**
+     * Share Group Configurations
+     **/
 
     public static final String SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_CONFIG = "group.share.partition.max.record.locks";
     public static final int SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_DEFAULT = 2000;
@@ -80,7 +82,7 @@ public class ShareGroupConfig {
     public static final String SHARE_GROUP_PERSISTER_CLASS_NAME_CONFIG = "group.share.persister.class.name";
     public static final String SHARE_GROUP_PERSISTER_CLASS_NAME_DEFAULT = "org.apache.kafka.server.share.persister.DefaultStatePersister";
     public static final String SHARE_GROUP_PERSISTER_CLASS_NAME_DOC = "The fully qualified name of a class which implements " +
-        "the <code>org.apache.kafka.server.share.Persister</code> interface.";
+            "the <code>org.apache.kafka.server.share.Persister</code> interface.";
 
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(SHARE_GROUP_DELIVERY_COUNT_LIMIT_CONFIG, INT, SHARE_GROUP_DELIVERY_COUNT_LIMIT_DEFAULT, between(2, 10), MEDIUM, SHARE_GROUP_DELIVERY_COUNT_LIMIT_DOC)
@@ -129,15 +131,17 @@ public class ShareGroupConfig {
 
     public static ShareGroupConfig fromProps(Map<?, ?> props) {
         return new ShareGroupConfig(
-            new AbstractConfig(
-                Utils.mergeConfigs(Arrays.asList(CONFIG_DEF, GroupCoordinatorConfig.CONFIG_DEF)),
-                props,
-                false
-            )
+                new AbstractConfig(
+                        Utils.mergeConfigs(Arrays.asList(CONFIG_DEF, GroupCoordinatorConfig.CONFIG_DEF)),
+                        props,
+                        false
+                )
         );
     }
 
-    /** Share group configuration **/
+    /**
+     * Share group configuration
+     **/
     public int shareGroupPartitionMaxRecordLocks() {
         return shareGroupPartitionMaxRecordLocks;
     }

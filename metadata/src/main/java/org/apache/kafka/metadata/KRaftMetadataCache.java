@@ -84,16 +84,17 @@ public class KRaftMetadataCache implements MetadataCache {
      * <p>
      * This method is the main hotspot when it comes to the performance of metadata requests,
      * we should be careful about adding additional logic here.
+     *
      * @param image                      The metadata image.
      * @param brokers                    The list of brokers to filter.
      * @param listenerName               The listener name.
      * @param filterUnavailableEndpoints Whether to filter the unavailable endpoints. This field is to support v0 MetadataResponse.
      */
     private List<Integer> maybeFilterAliveReplicas(
-        MetadataImage image,
-        int[] brokers,
-        ListenerName listenerName,
-        boolean filterUnavailableEndpoints
+            MetadataImage image,
+            int[] brokers,
+            ListenerName listenerName,
+            boolean filterUnavailableEndpoints
     ) {
         if (!filterUnavailableEndpoints) return Replicas.toList(brokers);
         List<Integer> res = new ArrayList<>(brokers.length);
@@ -123,11 +124,11 @@ public class KRaftMetadataCache implements MetadataCache {
      * @param errorUnavailableListeners Whether to return LISTENER_NOT_FOUND or LEADER_NOT_AVAILABLE.
      */
     private List<MetadataResponsePartition> partitionMetadata(
-        MetadataImage image,
-        String topicName,
-        ListenerName listenerName,
-        boolean errorUnavailableEndpoints,
-        boolean errorUnavailableListeners
+            MetadataImage image,
+            String topicName,
+            ListenerName listenerName,
+            boolean errorUnavailableEndpoints,
+            boolean errorUnavailableListeners
     ) {
         TopicImage topicImage = image.topics().getTopic(topicName);
         if (topicImage == null) return List.of();
@@ -148,13 +149,13 @@ public class KRaftMetadataCache implements MetadataCache {
                     error = errorUnavailableListeners ? Errors.LISTENER_NOT_FOUND : Errors.LEADER_NOT_AVAILABLE;
                 }
                 return new MetadataResponsePartition()
-                    .setErrorCode(error.code())
-                    .setPartitionIndex(partitionId)
-                    .setLeaderId(MetadataResponse.NO_LEADER_ID)
-                    .setLeaderEpoch(partition.leaderEpoch)
-                    .setReplicaNodes(filteredReplicas)
-                    .setIsrNodes(filteredIsr)
-                    .setOfflineReplicas(offlineReplicas);
+                        .setErrorCode(error.code())
+                        .setPartitionIndex(partitionId)
+                        .setLeaderId(MetadataResponse.NO_LEADER_ID)
+                        .setLeaderEpoch(partition.leaderEpoch)
+                        .setReplicaNodes(filteredReplicas)
+                        .setIsrNodes(filteredIsr)
+                        .setOfflineReplicas(offlineReplicas);
             } else {
                 if (filteredReplicas.size() < partition.replicas.length) {
                     log.debug("Error while fetching metadata for {}-{}: replica information not available for following brokers {}", topicName, partitionId, Arrays.stream(partition.replicas).filter(b -> !filteredReplicas.contains(b)).mapToObj(String::valueOf).collect(Collectors.joining(",")));
@@ -166,13 +167,13 @@ public class KRaftMetadataCache implements MetadataCache {
                     error = Errors.NONE;
                 }
                 return new MetadataResponsePartition()
-                    .setErrorCode(error.code())
-                    .setPartitionIndex(partitionId)
-                    .setLeaderId(maybeLeader.get().id())
-                    .setLeaderEpoch(partition.leaderEpoch)
-                    .setReplicaNodes(filteredReplicas)
-                    .setIsrNodes(filteredIsr)
-                    .setOfflineReplicas(offlineReplicas);
+                        .setErrorCode(error.code())
+                        .setPartitionIndex(partitionId)
+                        .setLeaderId(maybeLeader.get().id())
+                        .setLeaderEpoch(partition.leaderEpoch)
+                        .setReplicaNodes(filteredReplicas)
+                        .setIsrNodes(filteredIsr)
+                        .setOfflineReplicas(offlineReplicas);
             }
         }).toList();
     }
@@ -181,20 +182,19 @@ public class KRaftMetadataCache implements MetadataCache {
      * Return topic partition metadata for the given topic, listener and index range. Also, return the next partition
      * index that is not included in the result.
      *
-     * @param image                       The metadata image
-     * @param topicName                   The name of the topic.
-     * @param listenerName                The listener name.
-     * @param startIndex                  The smallest index of the partitions to be included in the result.
-     *
-     * @return                            A collection of topic partition metadata and next partition index (-1 means
-     *                                    no next partition).
+     * @param image        The metadata image
+     * @param topicName    The name of the topic.
+     * @param listenerName The listener name.
+     * @param startIndex   The smallest index of the partitions to be included in the result.
+     * @return A collection of topic partition metadata and next partition index (-1 means
+     * no next partition).
      */
     private Entry<Optional<List<DescribeTopicPartitionsResponsePartition>>, Integer> partitionMetadataForDescribeTopicResponse(
-        MetadataImage image,
-        String topicName,
-        ListenerName listenerName,
-        int startIndex,
-        int maxCount
+            MetadataImage image,
+            String topicName,
+            ListenerName listenerName,
+            int startIndex,
+            int maxCount
     ) {
         TopicImage topic = image.topics().getTopic(topicName);
         if (topic == null) return Map.entry(Optional.empty(), -1);
@@ -212,14 +212,14 @@ public class KRaftMetadataCache implements MetadataCache {
             List<Integer> offlineReplicas = getOfflineReplicas(image, partition, listenerName);
             Optional<Node> maybeLeader = getAliveEndpoint(image, partition.leader, listenerName);
             result.add(new DescribeTopicPartitionsResponsePartition()
-                .setPartitionIndex(partitionId)
-                .setLeaderId(maybeLeader.map(Node::id).orElse(MetadataResponse.NO_LEADER_ID))
-                .setLeaderEpoch(partition.leaderEpoch)
-                .setReplicaNodes(filteredReplicas)
-                .setIsrNodes(filteredIsr)
-                .setOfflineReplicas(offlineReplicas)
-                .setEligibleLeaderReplicas(Replicas.toList(partition.elr))
-                .setLastKnownElr(Replicas.toList(partition.lastKnownElr)));
+                    .setPartitionIndex(partitionId)
+                    .setLeaderId(maybeLeader.map(Node::id).orElse(MetadataResponse.NO_LEADER_ID))
+                    .setLeaderEpoch(partition.leaderEpoch)
+                    .setReplicaNodes(filteredReplicas)
+                    .setIsrNodes(filteredIsr)
+                    .setOfflineReplicas(offlineReplicas)
+                    .setEligibleLeaderReplicas(Replicas.toList(partition.elr))
+                    .setLastKnownElr(Replicas.toList(partition.lastKnownElr)));
         }
         return Map.entry(Optional.of(result), (upperIndex < partitions.size()) ? upperIndex : -1);
     }
@@ -251,36 +251,36 @@ public class KRaftMetadataCache implements MetadataCache {
      */
     private Optional<Node> getAliveEndpoint(MetadataImage image, int id, ListenerName listenerName) {
         return image.cluster().broker(id) == null ? Optional.empty() :
-            image.cluster().broker(id).node(listenerName.value());
+                image.cluster().broker(id).node(listenerName.value());
     }
 
     @Override
     public List<MetadataResponseTopic> getTopicMetadata(
-        Set<String> topics,
-        ListenerName listenerName,
-        boolean errorUnavailableEndpoints,
-        boolean errorUnavailableListeners
+            Set<String> topics,
+            ListenerName listenerName,
+            boolean errorUnavailableEndpoints,
+            boolean errorUnavailableListeners
     ) {
         MetadataImage image = currentImage;
         return topics.stream().flatMap(topic -> {
             List<MetadataResponsePartition> partitions = partitionMetadata(image, topic, listenerName, errorUnavailableEndpoints, errorUnavailableListeners);
             if (partitions.isEmpty()) return Stream.empty();
             return Stream.of(new MetadataResponseTopic()
-                .setErrorCode(Errors.NONE.code())
-                .setName(topic)
-                .setTopicId(image.topics().getTopic(topic) == null ? Uuid.ZERO_UUID : image.topics().getTopic(topic).id())
-                .setIsInternal(Topic.isInternal(topic))
-                .setPartitions(partitions));
+                    .setErrorCode(Errors.NONE.code())
+                    .setName(topic)
+                    .setTopicId(image.topics().getTopic(topic) == null ? Uuid.ZERO_UUID : image.topics().getTopic(topic).id())
+                    .setIsInternal(Topic.isInternal(topic))
+                    .setPartitions(partitions));
         }).toList();
     }
 
     @Override
     public DescribeTopicPartitionsResponseData describeTopicResponse(
-        Iterator<String> topics,
-        ListenerName listenerName,
-        Function<String, Integer> topicPartitionStartIndex,
-        int maximumNumberOfPartitions,
-        boolean ignoreTopicsWithExceptions
+            Iterator<String> topics,
+            ListenerName listenerName,
+            Function<String, Integer> topicPartitionStartIndex,
+            int maximumNumberOfPartitions,
+            boolean ignoreTopicsWithExceptions
     ) {
         MetadataImage image = currentImage;
         AtomicInteger remaining = new AtomicInteger(maximumNumberOfPartitions);
@@ -294,11 +294,11 @@ public class KRaftMetadataCache implements MetadataCache {
                 if (partitionResponse.isPresent()) {
                     List<DescribeTopicPartitionsResponsePartition> partitions = partitionResponse.get();
                     DescribeTopicPartitionsResponseTopic response = new DescribeTopicPartitionsResponseTopic()
-                        .setErrorCode(Errors.NONE.code())
-                        .setName(topicName)
-                        .setTopicId(Optional.ofNullable(image.topics().getTopic(topicName).id()).orElse(Uuid.ZERO_UUID))
-                        .setIsInternal(Topic.isInternal(topicName))
-                        .setPartitions(partitions);
+                            .setErrorCode(Errors.NONE.code())
+                            .setName(topicName)
+                            .setTopicId(Optional.ofNullable(image.topics().getTopic(topicName).id()).orElse(Uuid.ZERO_UUID))
+                            .setIsInternal(Topic.isInternal(topicName))
+                            .setPartitions(partitions);
                     result.topics().add(response);
 
                     if (nextPartition != -1) {
@@ -316,10 +316,10 @@ public class KRaftMetadataCache implements MetadataCache {
                         error = Errors.INVALID_TOPIC_EXCEPTION;
                     }
                     result.topics().add(new DescribeTopicPartitionsResponseTopic()
-                        .setErrorCode(error.code())
-                        .setName(topicName)
-                        .setTopicId(getTopicId(topicName))
-                        .setIsInternal(Topic.isInternal(topicName)));
+                            .setErrorCode(error.code())
+                            .setName(topicName)
+                            .setTopicId(getTopicId(topicName))
+                            .setIsInternal(Topic.isInternal(topicName)));
                 }
             } else if (remaining.get() == 0) {
                 // The cursor should point to the beginning of the current topic. All the partitions in the previous topic
@@ -369,36 +369,36 @@ public class KRaftMetadataCache implements MetadataCache {
     @Override
     public Optional<Node> getAliveBrokerNode(int brokerId, ListenerName listenerName) {
         return Optional.ofNullable(currentImage.cluster().broker(brokerId))
-            .filter(Predicate.not(BrokerRegistration::fenced))
-            .flatMap(broker -> broker.node(listenerName.value()));
+                .filter(Predicate.not(BrokerRegistration::fenced))
+                .flatMap(broker -> broker.node(listenerName.value()));
     }
 
     @Override
     public List<Node> getAliveBrokerNodes(ListenerName listenerName) {
         return currentImage.cluster().brokers().values().stream()
-            .filter(Predicate.not(BrokerRegistration::fenced))
-            .flatMap(broker -> broker.node(listenerName.value()).stream())
-            .collect(Collectors.toList());
+                .filter(Predicate.not(BrokerRegistration::fenced))
+                .flatMap(broker -> broker.node(listenerName.value()).stream())
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Node> getBrokerNodes(ListenerName listenerName) {
         return currentImage.cluster().brokers().values().stream()
-            .flatMap(broker -> broker.node(listenerName.value()).stream())
-            .collect(Collectors.toList());
+                .flatMap(broker -> broker.node(listenerName.value()).stream())
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<LeaderAndIsr> getLeaderAndIsr(String topicName, int partitionId) {
         return Optional.ofNullable(currentImage.topics().getTopic(topicName))
-            .flatMap(topic -> Optional.ofNullable(topic.partitions().get(partitionId)))
-            .map(partition -> new LeaderAndIsr(
-                partition.leader,
-                partition.leaderEpoch,
-                Arrays.stream(partition.isr).boxed().collect(Collectors.toList()),
-                partition.leaderRecoveryState,
-                partition.partitionEpoch
-            ));
+                .flatMap(topic -> Optional.ofNullable(topic.partitions().get(partitionId)))
+                .map(partition -> new LeaderAndIsr(
+                        partition.leader,
+                        partition.leaderEpoch,
+                        Arrays.stream(partition.isr).boxed().collect(Collectors.toList()),
+                        partition.leaderRecoveryState,
+                        partition.partitionEpoch
+                ));
     }
 
     @Override
@@ -425,9 +425,9 @@ public class KRaftMetadataCache implements MetadataCache {
     public Optional<Node> getPartitionLeaderEndpoint(String topicName, int partitionId, ListenerName listenerName) {
         MetadataImage image = currentImage;
         return Optional.ofNullable(image.topics().getTopic(topicName))
-            .flatMap(topic -> Optional.ofNullable(topic.partitions().get(partitionId)))
-            .flatMap(partition -> Optional.ofNullable(image.cluster().broker(partition.leader))
-                .map(broker -> broker.node(listenerName.value()).orElse(Node.noNode())));
+                .flatMap(topic -> Optional.ofNullable(topic.partitions().get(partitionId)))
+                .flatMap(partition -> Optional.ofNullable(image.cluster().broker(partition.leader))
+                        .map(broker -> broker.node(listenerName.value()).orElse(Node.noNode())));
     }
 
     @Override
@@ -454,8 +454,8 @@ public class KRaftMetadataCache implements MetadataCache {
     @Override
     public Optional<Integer> getRandomAliveBrokerId() {
         List<Integer> aliveBrokers = currentImage.cluster().brokers().values().stream()
-            .filter(Predicate.not(BrokerRegistration::fenced))
-            .map(BrokerRegistration::id).toList();
+                .filter(Predicate.not(BrokerRegistration::fenced))
+                .map(BrokerRegistration::id).toList();
         if (aliveBrokers.isEmpty()) {
             return Optional.empty();
         } else {
@@ -466,8 +466,8 @@ public class KRaftMetadataCache implements MetadataCache {
     @Override
     public Optional<Long> getAliveBrokerEpoch(int brokerId) {
         return Optional.ofNullable(currentImage.cluster().broker(brokerId))
-            .filter(Predicate.not(BrokerRegistration::fenced))
-            .map(BrokerRegistration::epoch);
+                .filter(Predicate.not(BrokerRegistration::fenced))
+                .map(BrokerRegistration::epoch);
     }
 
     @Override
@@ -478,8 +478,8 @@ public class KRaftMetadataCache implements MetadataCache {
     @Override
     public boolean contains(TopicPartition tp) {
         return Optional.ofNullable(currentImage.topics().getTopic(tp.topic()))
-            .map(topic -> topic.partitions().containsKey(tp.partition()))
-            .orElse(false);
+                .map(topic -> topic.partitions().containsKey(tp.partition()))
+                .orElse(false);
     }
 
     public void setImage(MetadataImage newImage) {

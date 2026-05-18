@@ -55,12 +55,12 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
      * Builds an offset store that uses a connector-specific offset topic as the primary store and
      * the worker-global offset store as the secondary store.
      *
-     * @param loggingContext a {@link Supplier} for the {@link LoggingContext} that should be used
-     *                       for messages logged by this offset store; may not be null, and may never return null
-     * @param workerStore the worker-global offset store; may not be null
-     * @param connectorStore the connector-specific offset store; may not be null
+     * @param loggingContext        a {@link Supplier} for the {@link LoggingContext} that should be used
+     *                              for messages logged by this offset store; may not be null, and may never return null
+     * @param workerStore           the worker-global offset store; may not be null
+     * @param connectorStore        the connector-specific offset store; may not be null
      * @param connectorOffsetsTopic the name of the connector-specific offset topic; may not be null
-     * @param connectorStoreAdmin the topic admin to use for the connector-specific offset topic; may not be null
+     * @param connectorStoreAdmin   the topic admin to use for the connector-specific offset topic; may not be null
      * @return an offset store backed primarily by the connector-specific offset topic and secondarily
      * by the worker-global offset store; never null
      */
@@ -89,9 +89,9 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
     /**
      * Builds an offset store that uses the worker-global offset store as the primary store, and no secondary store.
      *
-     * @param loggingContext a {@link Supplier} for the {@link LoggingContext} that should be used
-     *                       for messages logged by this offset store; may not be null, and may never return null
-     * @param workerStore the worker-global offset store; may not be null
+     * @param loggingContext     a {@link Supplier} for the {@link LoggingContext} that should be used
+     *                           for messages logged by this offset store; may not be null, and may never return null
+     * @param workerStore        the worker-global offset store; may not be null
      * @param workerOffsetsTopic the name of the worker-global offset topic; may be null if the worker
      *                           does not use an offset topic for its offset store
      * @return an offset store for the connector backed solely by the worker-global offset store; never null
@@ -109,11 +109,11 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
     /**
      * Builds an offset store that uses a connector-specific offset topic as the primary store, and no secondary store.
      *
-     * @param loggingContext a {@link Supplier} for the {@link LoggingContext} that should be used
-     *                       for messages logged by this offset store; may not be null, and may never return null
-     * @param connectorStore the connector-specific offset store; may not be null
+     * @param loggingContext        a {@link Supplier} for the {@link LoggingContext} that should be used
+     *                              for messages logged by this offset store; may not be null, and may never return null
+     * @param connectorStore        the connector-specific offset store; may not be null
      * @param connectorOffsetsTopic the name of the connector-specific offset topic; may not be null
-     * @param connectorStoreAdmin the topic admin to use for the connector-specific offset topic; may not be null
+     * @param connectorStoreAdmin   the topic admin to use for the connector-specific offset topic; may not be null
      * @return an offset store for the connector backed solely by the connector-specific offset topic; never null
      */
     public static ConnectorOffsetBackingStore withOnlyConnectorStore(
@@ -200,7 +200,7 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
      *
      * <p>If not configured to use a connector-specific offset store, only the values contained in the worker-global
      * offset store are returned.
-
+     *
      * @param keys list of keys to look up
      * @return future for the resulting map from key to value
      */
@@ -275,11 +275,10 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
      *
      * <p>If not configured to use a connector-specific offset store, the returned {@link Future} corresponds to a
      * write to the worker-global offset store, and the passed-in {@link Callback} is invoked once that write completes.
-
-     * @param values map from key to value
+     *
+     * @param values   map from key to value
      * @param callback callback to invoke on completion of the primary write
      * @return void future for the primary write
-    *
      * @see <a href="https://issues.apache.org/jira/browse/KAFKA-15018">KAFKA-15018</a> for context on the three-step
      * write sequence
      *
@@ -312,12 +311,12 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
 
         if (secondaryStore != null && !tombstoneOffsets.isEmpty()) {
             return new ChainedOffsetWriteFuture(
-                primaryStore,
-                secondaryStore,
-                values,
-                regularOffsets,
-                tombstoneOffsets,
-                callback
+                    primaryStore,
+                    secondaryStore,
+                    values,
+                    regularOffsets,
+                    tombstoneOffsets,
+                    callback
             );
         } else {
             return setPrimaryThenSecondary(primaryStore, secondaryStore, values, regularOffsets, callback);
@@ -325,11 +324,11 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
     }
 
     private Future<Void> setPrimaryThenSecondary(
-        OffsetBackingStore primaryStore,
-        OffsetBackingStore secondaryStore,
-        Map<ByteBuffer, ByteBuffer> completeOffsets,
-        Map<ByteBuffer, ByteBuffer> nonTombstoneOffsets,
-        Callback<Void> callback
+            OffsetBackingStore primaryStore,
+            OffsetBackingStore secondaryStore,
+            Map<ByteBuffer, ByteBuffer> completeOffsets,
+            Map<ByteBuffer, ByteBuffer> nonTombstoneOffsets,
+            Callback<Void> callback
     ) {
         return primaryStore.set(completeOffsets, (primaryWriteError, ignored) -> {
             if (secondaryStore != null) {
@@ -411,12 +410,12 @@ public class ConnectorOffsetBackingStore implements OffsetBackingStore {
         private final CountDownLatch completed;
 
         public ChainedOffsetWriteFuture(
-            OffsetBackingStore primaryStore,
-            OffsetBackingStore secondaryStore,
-            Map<ByteBuffer, ByteBuffer> completeOffsets,
-            Map<ByteBuffer, ByteBuffer> regularOffsets,
-            Map<ByteBuffer, ByteBuffer> tombstoneOffsets,
-            Callback<Void> callback
+                OffsetBackingStore primaryStore,
+                OffsetBackingStore secondaryStore,
+                Map<ByteBuffer, ByteBuffer> completeOffsets,
+                Map<ByteBuffer, ByteBuffer> regularOffsets,
+                Map<ByteBuffer, ByteBuffer> tombstoneOffsets,
+                Callback<Void> callback
         ) {
             this.primaryStore = primaryStore;
             this.secondaryStore = secondaryStore;

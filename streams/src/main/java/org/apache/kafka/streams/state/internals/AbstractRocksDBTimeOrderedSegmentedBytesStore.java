@@ -40,28 +40,28 @@ import java.util.function.Function;
 /**
  * RocksDB store backed by two SegmentedBytesStores which can optimize scan by time as well as window
  * lookup for a specific key.
- *
+ * <p>
  * Schema for first SegmentedBytesStore (base store) is as below:
- *     Key schema: | timestamp + [timestamp] + recordkey |
- *     Value schema: | value |. Value here is determined by caller.
- *
+ * Key schema: | timestamp + [timestamp] + recordkey |
+ * Value schema: | value |. Value here is determined by caller.
+ * <p>
  * Schema for second SegmentedBytesStore (index store) is as below:
- *     Key schema: | record + timestamp + [timestamp]|
- *     Value schema: ||
- *
+ * Key schema: | record + timestamp + [timestamp]|
+ * Value schema: ||
+ * <p>
  * Note there could be two timestamps if we store both window end time and window start time.
- *
+ * <p>
  * Operations:
- *     Put: 1. Put to index store. 2. Put to base store.
- *     Delete: 1. Delete from base store. 2. Delete from index store.
+ * Put: 1. Put to index store. 2. Put to base store.
+ * Delete: 1. Delete from base store. 2. Delete from index store.
  * Since we need to update two stores, failure can happen in the middle. We put in index store first
  * to make sure if a failure happens in second step and the view is inconsistent, we can't get the
  * value for the key. We delete from base store first to make sure if a failure happens in second step
  * and the view is inconsistent, we can't get the value for the key.
- *
+ * <p>
  * Note:
- *     Index store can be optional if we can construct the timestamp in base store instead of looking
- *     them up from index store.
+ * Index store can be optional if we can construct the timestamp in base store instead of looking
+ * them up from index store.
  *
  * @see RocksDBTimeOrderedSessionSegmentedBytesStore
  * @see RocksDBTimeOrderedWindowSegmentedBytesStore
@@ -136,10 +136,10 @@ public abstract class AbstractRocksDBTimeOrderedSegmentedBytesStore<S extends Se
     }
 
     Map<S, WriteBatch> getWriteBatches(
-        final Collection<ConsumerRecord<byte[], byte[]>> records,
-        final Function<byte[], Long> timestampExtractor,
-        final Function<byte[], byte[]> indexedKeyExtractor,
-        final Function<byte[], byte[]> baseKeyExtractor
+            final Collection<ConsumerRecord<byte[], byte[]>> records,
+            final Function<byte[], Long> timestampExtractor,
+            final Function<byte[], byte[]> indexedKeyExtractor,
+            final Function<byte[], byte[]> baseKeyExtractor
     ) {
         // advance stream time to the max timestamp in the batch
         for (final ConsumerRecord<byte[], byte[]> record : records) {
@@ -155,9 +155,9 @@ public abstract class AbstractRocksDBTimeOrderedSegmentedBytesStore<S extends Se
             final S segment = segments.getOrCreateSegmentIfLive(segmentId, internalProcessorContext, observedStreamTime);
             if (segment != null) {
                 ChangelogRecordDeserializationHelper.applyChecksAndUpdatePosition(
-                    record,
-                    consistencyEnabled,
-                    position
+                        record,
+                        consistencyEnabled,
+                        position
                 );
                 try {
                     final WriteBatch batch = writeBatchMap.computeIfAbsent(segment, s -> new WriteBatch());
@@ -238,32 +238,32 @@ public abstract class AbstractRocksDBTimeOrderedSegmentedBytesStore<S extends Se
 
         if (indexKeySchema.isPresent()) {
             final List<S> searchSpace = indexKeySchema.get().segmentsToSearch(segments, actualFrom, to,
-                forward);
+                    forward);
 
             final Bytes binaryFrom = indexKeySchema.get().lowerRangeFixedSize(key, actualFrom);
             final Bytes binaryTo = indexKeySchema.get().upperRangeFixedSize(key, to);
 
             return getIndexToBaseStoreIterator(new SegmentIterator<>(
-                searchSpace.iterator(),
-                indexKeySchema.get().hasNextCondition(key, key, actualFrom, to, forward),
-                binaryFrom,
-                binaryTo,
-                forward));
+                    searchSpace.iterator(),
+                    indexKeySchema.get().hasNextCondition(key, key, actualFrom, to, forward),
+                    binaryFrom,
+                    binaryTo,
+                    forward));
         }
 
 
         final List<S> searchSpace = baseKeySchema.segmentsToSearch(segments, actualFrom, to,
-            forward);
+                forward);
 
         final Bytes binaryFrom = baseKeySchema.lowerRangeFixedSize(key, actualFrom);
         final Bytes binaryTo = baseKeySchema.upperRangeFixedSize(key, to);
 
         return new SegmentIterator<>(
-            searchSpace.iterator(),
-            baseKeySchema.hasNextCondition(key, key, actualFrom, to, forward),
-            binaryFrom,
-            binaryTo,
-            forward);
+                searchSpace.iterator(),
+                baseKeySchema.hasNextCondition(key, key, actualFrom, to, forward),
+                binaryFrom,
+                binaryTo,
+                forward);
     }
 
     @Override
@@ -303,31 +303,31 @@ public abstract class AbstractRocksDBTimeOrderedSegmentedBytesStore<S extends Se
 
         if (indexKeySchema.isPresent()) {
             final List<S> searchSpace = indexKeySchema.get().segmentsToSearch(segments, actualFrom, to,
-                forward);
+                    forward);
 
             final Bytes binaryFrom = indexKeySchema.get().lowerRange(keyFrom, actualFrom);
             final Bytes binaryTo = indexKeySchema.get().upperRange(keyTo, to);
 
             return getIndexToBaseStoreIterator(new SegmentIterator<>(
-                searchSpace.iterator(),
-                indexKeySchema.get().hasNextCondition(keyFrom, keyTo, actualFrom, to, forward),
-                binaryFrom,
-                binaryTo,
-                forward));
+                    searchSpace.iterator(),
+                    indexKeySchema.get().hasNextCondition(keyFrom, keyTo, actualFrom, to, forward),
+                    binaryFrom,
+                    binaryTo,
+                    forward));
         }
 
         final List<S> searchSpace = baseKeySchema.segmentsToSearch(segments, actualFrom, to,
-            forward);
+                forward);
 
         final Bytes binaryFrom = baseKeySchema.lowerRange(keyFrom, actualFrom);
         final Bytes binaryTo = baseKeySchema.upperRange(keyTo, to);
 
         return new SegmentIterator<>(
-            searchSpace.iterator(),
-            baseKeySchema.hasNextCondition(keyFrom, keyTo, actualFrom, to, forward),
-            binaryFrom,
-            binaryTo,
-            forward);
+                searchSpace.iterator(),
+                baseKeySchema.hasNextCondition(keyFrom, keyTo, actualFrom, to, forward),
+                binaryFrom,
+                binaryTo,
+                forward);
     }
 
     @Override

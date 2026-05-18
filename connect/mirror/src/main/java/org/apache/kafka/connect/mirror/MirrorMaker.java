@@ -72,31 +72,31 @@ import java.util.stream.Collectors;
 import static org.apache.kafka.clients.CommonClientConfigs.CLIENT_ID_CONFIG;
 
 /**
- *  Entry point for "MirrorMaker 2.0".
- *  <p>
- *  MirrorMaker runs a set of Connectors between multiple clusters, in order to replicate data, configuration,
- *  ACL rules, and consumer group state.
- *  </p>
- *  <p>
- *  Configuration is via a top-level "mm2.properties" file, which supports per-cluster and per-replication
- *  sub-configs. Each source->target replication must be explicitly enabled. For example:
- *  </p>
- *  <pre>
+ * Entry point for "MirrorMaker 2.0".
+ * <p>
+ * MirrorMaker runs a set of Connectors between multiple clusters, in order to replicate data, configuration,
+ * ACL rules, and consumer group state.
+ * </p>
+ * <p>
+ * Configuration is via a top-level "mm2.properties" file, which supports per-cluster and per-replication
+ * sub-configs. Each source->target replication must be explicitly enabled. For example:
+ * </p>
+ * <pre>
  *    clusters = primary, backup
  *    primary.bootstrap.servers = vip1:9092
  *    backup.bootstrap.servers = vip2:9092
  *    primary->backup.enabled = true
  *    backup->primary.enabled = true
  *  </pre>
- *  <p>
- *  Run as follows:
- *  </p>
- *  <pre>
+ * <p>
+ * Run as follows:
+ * </p>
+ * <pre>
  *    ./bin/connect-mirror-maker.sh mm2.properties
  *  </pre>
- *  <p>
- *  Additional information and example configurations are provided in ./connect/mirror/README.md
- *  </p>
+ * <p>
+ * Additional information and example configurations are provided in ./connect/mirror/README.md
+ * </p>
  */
 public class MirrorMaker {
     private static final Logger log = LoggerFactory.getLogger(MirrorMaker.class);
@@ -118,11 +118,11 @@ public class MirrorMaker {
     private final RestClient restClient;
 
     /**
-     * @param config    MM2 configuration from mm2.properties file
-     * @param clusters  target clusters for this node. These must match cluster
-     *                  aliases as defined in the config. If null or empty list,
-     *                  uses all clusters in the config.
-     * @param time      time source
+     * @param config   MM2 configuration from mm2.properties file
+     * @param clusters target clusters for this node. These must match cluster
+     *                 aliases as defined in the config. If null or empty list,
+     *                 uses all clusters in the config.
+     * @param time     time source
      */
     public MirrorMaker(MirrorMakerConfig config, List<String> clusters, Time time) {
         log.debug("Kafka MirrorMaker instance created");
@@ -146,8 +146,8 @@ public class MirrorMaker {
         }
         log.info("Targeting clusters {}", this.clusters);
         Set<SourceAndTarget> herderPairs = config.clusterPairs().stream()
-            .filter(x -> this.clusters.contains(x.target()))
-            .collect(Collectors.toSet());
+                .filter(x -> this.clusters.contains(x.target()))
+                .collect(Collectors.toSet());
         if (herderPairs.isEmpty()) {
             throw new IllegalArgumentException("No source->target replication flows.");
         }
@@ -156,11 +156,11 @@ public class MirrorMaker {
     }
 
     /**
-     * @param config    MM2 configuration from mm2.properties file
-     * @param clusters  target clusters for this node. These must match cluster
-     *                  aliases as defined in the config. If null or empty list,
-     *                  uses all clusters in the config.
-     * @param time      time source
+     * @param config   MM2 configuration from mm2.properties file
+     * @param clusters target clusters for this node. These must match cluster
+     *                 aliases as defined in the config. If null or empty list,
+     *                 uses all clusters in the config.
+     * @param time     time source
      */
     public MirrorMaker(Map<String, String> config, List<String> clusters, Time time) {
         this(new MirrorMakerConfig(config), clusters, time);
@@ -330,10 +330,10 @@ public class MirrorMaker {
         ArgumentParser parser = ArgumentParsers.newArgumentParser("connect-mirror-maker");
         parser.description("MirrorMaker 2.0 driver");
         parser.addArgument("config").type(Arguments.fileType().verifyCanRead())
-            .metavar("mm2.properties").required(true)
-            .help("MM2 configuration file.");
+                .metavar("mm2.properties").required(true)
+                .help("MM2 configuration file.");
         parser.addArgument("--clusters").nargs("+").metavar("CLUSTER").required(false)
-            .help("Target cluster to use for this node.");
+                .help("Target cluster to use for this node.");
         Namespace ns;
         try {
             ns = parser.parseArgs(args);
@@ -350,7 +350,7 @@ public class MirrorMaker {
             Properties props = Utils.loadProps(configFile.getPath());
             Map<String, String> config = Utils.propsToStringMap(props);
             MirrorMaker mirrorMaker = new MirrorMaker(config, clusters);
-            
+
             try {
                 mirrorMaker.start();
             } catch (Exception e) {

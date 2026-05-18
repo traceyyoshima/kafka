@@ -26,8 +26,8 @@ import org.apache.kafka.streams.state.WindowStoreIterator;
  * {@link WindowStoreIterator} interface marker.
  */
 class PlainToHeadersWindowStoreIteratorAdapter
-    extends PlainToHeadersIteratorAdapter<Long>
-    implements WindowStoreIterator<byte[]> {
+        extends PlainToHeadersIteratorAdapter<Long>
+        implements WindowStoreIterator<byte[]> {
 
     PlainToHeadersWindowStoreIteratorAdapter(final WindowStoreIterator<byte[]> innerIterator) {
         super(innerIterator);

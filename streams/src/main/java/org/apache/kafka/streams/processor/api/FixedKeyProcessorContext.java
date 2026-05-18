@@ -50,10 +50,10 @@ public interface FixedKeyProcessorContext<KForward, VForward> extends Processing
      * <p>
      * In other words, this would be considered unsafe:
      * <code>
-     *     process(FixedKeyRecord inputRecord) {
-     *         inputRecord.headers().add(...);
-     *         context.forward(inputRecord);
-     *     }
+     * process(FixedKeyRecord inputRecord) {
+     * inputRecord.headers().add(...);
+     * context.forward(inputRecord);
+     * }
      * </code>
      * This is unsafe because the parent, and potentially siblings, grandparents, etc.,
      * all will see this modification to their shared Headers reference. This is a violation
@@ -61,23 +61,24 @@ public interface FixedKeyProcessorContext<KForward, VForward> extends Processing
      * <p>
      * A safe usage would look like this:
      * <code>
-     *     process(FixedKeyRecord inputRecord) {
-     *         // makes a copy of the headers
-     *         FixedKeyRecord toForward = inputRecord.withHeaders(inputRecord.headers());
-     *         // Other options to create a safe copy are:
-     *         // * use any copy-on-write method, which makes a copy of all fields:
-     *         //   toForward = inputRecord.withValue();
-     *         // * explicitly copy all fields:
-     *         //   toForward = new FixedKeyRecord(inputRecord.key(), inputRecord.value(), inputRecord.timestamp(), inputRecord.headers());
-     *         // * create a fresh, empty Headers:
-     *         //   toForward = new FixedKeyRecord(inputRecord.key(), inputRecord.value(), inputRecord.timestamp());
-     *         // * etc.
-     *
-     *         // now, we are modifying our own independent copy of the headers.
-     *         toForward.headers().add(...);
-     *         context.forward(toForward);
-     *     }
+     * process(FixedKeyRecord inputRecord) {
+     * // makes a copy of the headers
+     * FixedKeyRecord toForward = inputRecord.withHeaders(inputRecord.headers());
+     * // Other options to create a safe copy are:
+     * // * use any copy-on-write method, which makes a copy of all fields:
+     * //   toForward = inputRecord.withValue();
+     * // * explicitly copy all fields:
+     * //   toForward = new FixedKeyRecord(inputRecord.key(), inputRecord.value(), inputRecord.timestamp(), inputRecord.headers());
+     * // * create a fresh, empty Headers:
+     * //   toForward = new FixedKeyRecord(inputRecord.key(), inputRecord.value(), inputRecord.timestamp());
+     * // * etc.
+     * <p>
+     * // now, we are modifying our own independent copy of the headers.
+     * toForward.headers().add(...);
+     * context.forward(toForward);
+     * }
      * </code>
+     *
      * @param record The record to forward to all children
      */
     <K extends KForward, V extends VForward> void forward(FixedKeyRecord<K, V> record);
@@ -86,7 +87,7 @@ public interface FixedKeyProcessorContext<KForward, VForward> extends Processing
      * Forward a record to the specified child processor.
      * See {@link FixedKeyProcessorContext#forward(FixedKeyRecord)} for considerations.
      *
-     * @param record The record to forward
+     * @param record    The record to forward
      * @param childName The name of the child processor to receive the record
      * @see FixedKeyProcessorContext#forward(FixedKeyRecord)
      */

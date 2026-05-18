@@ -66,7 +66,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-import static  org.apache.kafka.test.TestUtils.SEEDED_RANDOM;
+import static org.apache.kafka.test.TestUtils.SEEDED_RANDOM;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -77,29 +77,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Integration tests for the consumer that cover basic usage as well as server failures
  */
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = ConsumerBounceTest.BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"), // don't want to lose offset
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "10"), // set small enough session timeout
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "0"),
+        types = {Type.KRAFT},
+        brokers = ConsumerBounceTest.BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"), // don't want to lose offset
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "10"), // set small enough session timeout
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "0"),
 
-        // Tests will run for CONSUMER and CLASSIC group protocol, so set the group max size property
-        // required for each.
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_MAX_SIZE_CONFIG, value = ConsumerBounceTest.MAX_GROUP_SIZE),
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_MAX_SIZE_CONFIG, value = ConsumerBounceTest.MAX_GROUP_SIZE),
+                // Tests will run for CONSUMER and CLASSIC group protocol, so set the group max size property
+                // required for each.
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_MAX_SIZE_CONFIG, value = ConsumerBounceTest.MAX_GROUP_SIZE),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.GROUP_MAX_SIZE_CONFIG, value = ConsumerBounceTest.MAX_GROUP_SIZE),
 
-        @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
-        @ClusterConfigProperty(key = ServerLogConfigs.LOG_INITIAL_TASK_DELAY_MS_CONFIG, value = "100"),
-        @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "false"),
-        @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
-        @ClusterConfigProperty(key = TopicConfig.FILE_DELETE_DELAY_MS_CONFIG, value = "1000"),
-        @ClusterConfigProperty(key = ReplicationConfigs.UNCLEAN_LEADER_ELECTION_INTERVAL_MS_CONFIG, value = "50"),
+                @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
+                @ClusterConfigProperty(key = ServerLogConfigs.LOG_INITIAL_TASK_DELAY_MS_CONFIG, value = "100"),
+                @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "false"),
+                @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = TopicConfig.FILE_DELETE_DELAY_MS_CONFIG, value = "1000"),
+                @ClusterConfigProperty(key = ReplicationConfigs.UNCLEAN_LEADER_ELECTION_INTERVAL_MS_CONFIG, value = "50"),
 
-        @ClusterConfigProperty(key = KRaftConfigs.BROKER_HEARTBEAT_INTERVAL_MS_CONFIG, value = "50"),
-        @ClusterConfigProperty(key = KRaftConfigs.BROKER_SESSION_TIMEOUT_MS_CONFIG, value = "300")
-    }
+                @ClusterConfigProperty(key = KRaftConfigs.BROKER_HEARTBEAT_INTERVAL_MS_CONFIG, value = "50"),
+                @ClusterConfigProperty(key = KRaftConfigs.BROKER_SESSION_TIMEOUT_MS_CONFIG, value = "300")
+        }
 )
 public class ConsumerBounceTest {
 
@@ -266,7 +266,7 @@ public class ConsumerBounceTest {
 
         Consumer<byte[], byte[]> consumer = clusterInstance.consumer(
                 Map.of(ConsumerConfig.GROUP_PROTOCOL_CONFIG, groupProtocol.name, ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 6000,
-                       ConsumerConfig.METADATA_MAX_AGE_CONFIG, 100));
+                        ConsumerConfig.METADATA_MAX_AGE_CONFIG, 100));
         consumers.add(consumer);
         consumer.subscribe(List.of(newTopic));
         consumer.poll(Duration.ZERO);
@@ -404,12 +404,12 @@ public class ConsumerBounceTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerReceivesFatalExceptionWhenGroupPassesMaxSize() throws Exception {
         testConsumerReceivesFatalExceptionWhenGroupPassesMaxSize(GroupProtocol.CONSUMER);
@@ -474,14 +474,14 @@ public class ConsumerBounceTest {
     /**
      * Create 'numOfConsumersToAdd' consumers, add them to the consumer group, and create corresponding
      * pollers. Wait for partition re-assignment and validate.
-     *
+     * <p>
      * Assignment validation requires that total number of partitions is greater than or equal to
      * the resulting number of consumers in the group.
      *
      * @param numOfConsumersToAdd number of consumers to create and add to the consumer group
-     * @param topicsToSubscribe topics to subscribe
-     * @param subscriptions set of all topic partitions
-     * @param group consumer group ID
+     * @param topicsToSubscribe   topics to subscribe
+     * @param subscriptions       set of all topic partitions
+     * @param group               consumer group ID
      */
     private void addConsumersToGroupAndWaitForGroupAssignment(
             int numOfConsumersToAdd,
@@ -553,11 +553,11 @@ public class ConsumerBounceTest {
     /**
      * Wait for consumers to get partition assignment and validate it.
      *
-     * @param consumerPollers       Consumer pollers corresponding to the consumer group being tested
-     * @param subscriptions         Set of all topic partitions
-     * @param msg                   Optional message to print if validation fails
-     * @param waitTimeMs            Wait timeout in milliseconds
-     * @param expectedAssignments   Expected assignments (optional)
+     * @param consumerPollers     Consumer pollers corresponding to the consumer group being tested
+     * @param subscriptions       Set of all topic partitions
+     * @param msg                 Optional message to print if validation fails
+     * @param waitTimeMs          Wait timeout in milliseconds
+     * @param expectedAssignments Expected assignments (optional)
      */
     private void validateGroupAssignment(
             List<ConsumerAssignmentPoller> consumerPollers,
@@ -587,8 +587,8 @@ public class ConsumerBounceTest {
      * Create 'numOfConsumersToAdd' consumers, add them to the consumer group, and create corresponding pollers.
      *
      * @param numOfConsumersToAdd number of consumers to create and add to the consumer group
-     * @param topicsToSubscribe topics to which new consumers will subscribe
-     * @param group consumer group ID
+     * @param topicsToSubscribe   topics to which new consumers will subscribe
+     * @param group               consumer group ID
      */
     private void addConsumersToGroup(
             int numOfConsumersToAdd,
@@ -688,7 +688,6 @@ public class ConsumerBounceTest {
     }
 
 
-
     private Consumer<byte[], byte[]> createConsumerAndReceive(String groupId, boolean manualAssign, int numRecords,
                                                               Map<String, String> consumerConfig) throws InterruptedException {
         Map<String, Object> configs = new HashMap<>(consumerConfig);
@@ -764,11 +763,11 @@ public class ConsumerBounceTest {
             long timeTakenMs = System.currentTimeMillis() - startMs;
 
             maxCloseTimeMs.ifPresent(ms ->
-                assertTrue(timeTakenMs < ms + closeGraceTimeMs, "Close took too long " + timeTakenMs)
+                    assertTrue(timeTakenMs < ms + closeGraceTimeMs, "Close took too long " + timeTakenMs)
             );
 
             minCloseTimeMs.ifPresent(ms ->
-                assertTrue(timeTakenMs >= ms, "Close finished too quickly " + timeTakenMs)
+                    assertTrue(timeTakenMs >= ms, "Close finished too quickly " + timeTakenMs)
             );
 
             logger.info("consumer.close() completed in {} ms.", timeTakenMs);

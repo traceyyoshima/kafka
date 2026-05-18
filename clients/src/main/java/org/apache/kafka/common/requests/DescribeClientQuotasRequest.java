@@ -56,8 +56,8 @@ public class DescribeClientQuotasRequest extends AbstractRequest {
                 componentData.add(fd);
             }
             this.data = new DescribeClientQuotasRequestData()
-                .setComponents(componentData)
-                .setStrict(filter.strict());
+                    .setComponents(componentData)
+                    .setStrict(filter.strict());
         }
 
         @Override
@@ -113,15 +113,15 @@ public class DescribeClientQuotasRequest extends AbstractRequest {
     public DescribeClientQuotasResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         ApiError error = ApiError.fromThrowable(e);
         return new DescribeClientQuotasResponse(new DescribeClientQuotasResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setErrorCode(error.error().code())
-            .setErrorMessage(error.message())
-            .setEntries(null));
+                .setThrottleTimeMs(throttleTimeMs)
+                .setErrorCode(error.error().code())
+                .setErrorMessage(error.message())
+                .setEntries(null));
     }
 
     public static DescribeClientQuotasRequest parse(Readable readable, short version) {
         return new DescribeClientQuotasRequest(new DescribeClientQuotasRequestData(readable, version),
-            version);
+                version);
     }
 
 }

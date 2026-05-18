@@ -20,9 +20,9 @@ import org.apache.kafka.common.utils.Bytes;
 
 /**
  * A store supplier that can be used to create one or more {@link WindowStore WindowStore&lt;Byte, byte[]&gt;} instances of type &lt;Byte, byte[]&gt;.
- *
+ * <p>
  * For any stores implementing the {@link WindowStore WindowStore&lt;Byte, byte[]&gt;} interface, null value bytes are considered as "not exist". This means:
- *
+ * <p>
  * 1. Null value bytes in put operations should be treated as delete.
  * 2. Null value bytes should never be returned in range query results.
  */

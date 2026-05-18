@@ -97,6 +97,7 @@ public class OAuthBearerExtensionsValidatorCallback implements Callback {
 
     /**
      * Validates a specific extension in the original {@code inputExtensions} map
+     *
      * @param extensionName - the name of the extension which was validated
      */
     public void valid(String extensionName) {
@@ -104,13 +105,12 @@ public class OAuthBearerExtensionsValidatorCallback implements Callback {
             throw new IllegalArgumentException(String.format("Extension %s was not found in the original extensions", extensionName));
         validatedExtensions.put(extensionName, inputExtensions.map().get(extensionName));
     }
+
     /**
      * Set the error value for a specific extension key-value pair if validation has failed
      *
-     * @param invalidExtensionName
-     *            the mandatory extension name which caused the validation failure
-     * @param errorMessage
-     *            error message describing why the validation failed
+     * @param invalidExtensionName the mandatory extension name which caused the validation failure
+     * @param errorMessage         error message describing why the validation failed
      */
     public void error(String invalidExtensionName, String errorMessage) {
         if (Objects.requireNonNull(invalidExtensionName).isEmpty())

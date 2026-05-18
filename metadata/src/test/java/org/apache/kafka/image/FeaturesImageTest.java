@@ -101,8 +101,8 @@ public class FeaturesImageTest {
     private static void testToImage(FeaturesImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> FeaturesImage.EMPTY,
-            FeaturesDelta::new
+                () -> FeaturesImage.EMPTY,
+                FeaturesDelta::new
         ).test(image, fromRecords);
     }
 
@@ -116,22 +116,22 @@ public class FeaturesImageTest {
     public void testEmpty() {
         assertTrue(FeaturesImage.EMPTY.isEmpty());
         assertFalse(new FeaturesImage(Map.of("foo", (short) 1),
-            MetadataVersion.MINIMUM_VERSION).isEmpty());
+                MetadataVersion.MINIMUM_VERSION).isEmpty());
         assertFalse(new FeaturesImage(FeaturesImage.EMPTY.finalizedVersions(),
-            MetadataVersion.MINIMUM_VERSION).isEmpty());
+                MetadataVersion.MINIMUM_VERSION).isEmpty());
     }
 
     @Test
     public void testElrEnabled() {
         FeaturesImage image1 = new FeaturesImage(
-            Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_0.featureLevel()),
-            MetadataVersion.latestTesting()
+                Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_0.featureLevel()),
+                MetadataVersion.latestTesting()
         );
         assertFalse(image1.isElrEnabled());
 
         FeaturesImage image2 = new FeaturesImage(
-            Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_1.featureLevel()),
-            MetadataVersion.latestTesting()
+                Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_1.featureLevel()),
+                MetadataVersion.latestTesting()
         );
         assertTrue(image2.isElrEnabled());
     }

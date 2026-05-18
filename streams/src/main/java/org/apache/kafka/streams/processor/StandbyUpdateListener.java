@@ -30,7 +30,7 @@ public interface StandbyUpdateListener {
      * task. It is guaranteed to always be invoked before any records are loaded into the standby store.
      *
      * @param topicPartition the changelog TopicPartition for this standby task
-     * @param storeName the name of the store being loaded
+     * @param storeName      the name of the store being loaded
      * @param startingOffset the offset from which the standby task begins consuming from the changelog
      */
     void onUpdateStart(final TopicPartition topicPartition,
@@ -42,14 +42,14 @@ public interface StandbyUpdateListener {
      * the value of the MAX_POLL_RECORDS is set to.
      * <n>
      * This method is called after loading each batch and it is advised to keep processing to a minimum.
-     * Any heavy processing will block the state updater thread and slow down the rate of standby task 
+     * Any heavy processing will block the state updater thread and slow down the rate of standby task
      * loading. Therefore, if you need to do any extended processing or connect to an external service,
      * consider doing so asynchronously.
      *
-     * @param topicPartition the changelog TopicPartition for this standby task
-     * @param storeName the name of the store being loaded
-     * @param batchEndOffset batchEndOffset the changelog end offset (inclusive) of the batch that was just loaded
-     * @param batchSize the total number of records in the batch that was just loaded
+     * @param topicPartition   the changelog TopicPartition for this standby task
+     * @param storeName        the name of the store being loaded
+     * @param batchEndOffset   batchEndOffset the changelog end offset (inclusive) of the batch that was just loaded
+     * @param batchSize        the total number of records in the batch that was just loaded
      * @param currentEndOffset the current end offset of the changelog topic partition.
      */
     void onBatchLoaded(final TopicPartition topicPartition,
@@ -63,19 +63,19 @@ public interface StandbyUpdateListener {
      * This method is called when the corresponding standby task stops updating, for the provided reason.
      * <p>
      * If the task was {@code MIGRATED} to another instance, this callback will be invoked after this
-     * state store (and the task itself) are closed (in which case the data will be cleaned up after 
+     * state store (and the task itself) are closed (in which case the data will be cleaned up after
      * state.cleanup.delay.ms).
-     * If the task was {@code PROMOTED} to an active task, the state store will not be closed, and the 
-     * callback will be invoked after unregistering it as a standby task but before re-registering it as an active task 
-     * and beginning restoration. In other words, this will always called before the corresponding 
+     * If the task was {@code PROMOTED} to an active task, the state store will not be closed, and the
+     * callback will be invoked after unregistering it as a standby task but before re-registering it as an active task
+     * and beginning restoration. In other words, this will always called before the corresponding
      * {@link StateRestoreListener#onRestoreStart} call is made.
      *
-     * @param topicPartition the changelog TopicPartition for this standby task
-     * @param storeName the name of the store being loaded
-     * @param storeOffset is the offset of the last changelog record that was read and put into the store at the time
-     * of suspension.
+     * @param topicPartition   the changelog TopicPartition for this standby task
+     * @param storeName        the name of the store being loaded
+     * @param storeOffset      is the offset of the last changelog record that was read and put into the store at the time
+     *                         of suspension.
      * @param currentEndOffset the current end offset of the changelog topic partition.
-     * @param reason is the reason why the standby task was suspended.
+     * @param reason           is the reason why the standby task was suspended.
      */
     void onUpdateSuspended(final TopicPartition topicPartition,
                            final String storeName,

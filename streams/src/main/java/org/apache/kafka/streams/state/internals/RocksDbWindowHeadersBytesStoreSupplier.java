@@ -23,36 +23,36 @@ import org.apache.kafka.streams.state.WindowStore;
 import static org.apache.kafka.streams.state.internals.RocksDbWindowBytesStoreSupplier.WindowStoreTypes.TIMESTAMPED_WINDOW_STORE_WITH_HEADERS;
 
 public class RocksDbWindowHeadersBytesStoreSupplier
-    extends RocksDbWindowBytesStoreSupplier
-    implements HeadersBytesStoreSupplier {
+        extends RocksDbWindowBytesStoreSupplier
+        implements HeadersBytesStoreSupplier {
 
     public RocksDbWindowHeadersBytesStoreSupplier(
-        final String name,
-        final long retentionPeriod,
-        final long segmentInterval,
-        final long windowSize,
-        final boolean retainDuplicates
+            final String name,
+            final long retentionPeriod,
+            final long segmentInterval,
+            final long windowSize,
+            final boolean retainDuplicates
     ) {
         super(
-            name,
-            retentionPeriod,
-            segmentInterval,
-            windowSize,
-            retainDuplicates,
-            TIMESTAMPED_WINDOW_STORE_WITH_HEADERS
+                name,
+                retentionPeriod,
+                segmentInterval,
+                windowSize,
+                retainDuplicates,
+                TIMESTAMPED_WINDOW_STORE_WITH_HEADERS
         );
     }
 
     @Override
     public WindowStore<Bytes, byte[]> get() {
         return new RocksDBTimestampedWindowStoreWithHeaders(
-            new RocksDBTimestampedSegmentedBytesStoreWithHeaders(
-                name,
-                metricsScope(),
-                retentionPeriod,
-                segmentInterval,
-                new WindowKeySchema()),
-            retainDuplicates,
-            windowSize);
+                new RocksDBTimestampedSegmentedBytesStoreWithHeaders(
+                        name,
+                        metricsScope(),
+                        retentionPeriod,
+                        segmentInterval,
+                        new WindowKeySchema()),
+                retainDuplicates,
+                windowSize);
     }
 }

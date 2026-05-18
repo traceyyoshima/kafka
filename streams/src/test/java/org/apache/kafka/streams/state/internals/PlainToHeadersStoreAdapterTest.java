@@ -71,8 +71,8 @@ public class PlainToHeadersStoreAdapterTest {
         when(mockStore.persistent()).thenReturn(false);
 
         final IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new PlainToHeadersStoreAdapter(mockStore)
+                IllegalArgumentException.class,
+                () -> new PlainToHeadersStoreAdapter(mockStore)
         );
 
         assertTrue(exception.getMessage().contains("Provided store must be a persistent store"));
@@ -83,8 +83,8 @@ public class PlainToHeadersStoreAdapterTest {
         final RocksDBTimestampedStore timestampedStore = new RocksDBTimestampedStore("test", "scope");
 
         final IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new PlainToHeadersStoreAdapter(timestampedStore)
+                IllegalArgumentException.class,
+                () -> new PlainToHeadersStoreAdapter(timestampedStore)
         );
 
         assertTrue(exception.getMessage().contains("Provided store must be a plain (non-timestamped)"));
@@ -160,8 +160,8 @@ public class PlainToHeadersStoreAdapterTest {
         final byte[] value2 = convertFromPlainToHeaderFormat("value2".getBytes());
 
         final List<KeyValue<Bytes, byte[]>> entries = Arrays.asList(
-            KeyValue.pair(key1, value1),
-            KeyValue.pair(key2, value2)
+                KeyValue.pair(key1, value1),
+                KeyValue.pair(key2, value2)
         );
 
         adapter.putAll(entries);
@@ -238,7 +238,7 @@ public class PlainToHeadersStoreAdapterTest {
 
         final QueryResult<byte[]> mockResult = QueryResult.forResult(plainValue);
         when(mockStore.query(eq(query), any(PositionBound.class), any(QueryConfig.class)))
-            .thenReturn(mockResult);
+                .thenReturn(mockResult);
 
         final QueryResult<byte[]> result = adapter.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
@@ -254,7 +254,7 @@ public class PlainToHeadersStoreAdapterTest {
 
         final QueryResult<byte[]> mockResult = QueryResult.forResult(null);
         when(mockStore.query(eq(query), any(PositionBound.class), any(QueryConfig.class)))
-            .thenReturn(mockResult);
+                .thenReturn(mockResult);
 
         final QueryResult<byte[]> result = adapter.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
@@ -270,7 +270,7 @@ public class PlainToHeadersStoreAdapterTest {
 
         final QueryResult<byte[]> mockResult = QueryResult.forUnknownQueryType(query, mockStore);
         when(mockStore.query(eq(query), any(PositionBound.class), any(QueryConfig.class)))
-            .thenReturn(mockResult);
+                .thenReturn(mockResult);
 
         final QueryResult<byte[]> result = adapter.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
@@ -281,18 +281,18 @@ public class PlainToHeadersStoreAdapterTest {
     public void shouldHandleRangeQuery() {
         adapter = createAdapter();
         final RangeQuery<Bytes, byte[]> query = RangeQuery.withRange(
-            new Bytes("a".getBytes()),
-            new Bytes("z".getBytes())
+                new Bytes("a".getBytes()),
+                new Bytes("z".getBytes())
         );
 
         final QueryResult<KeyValueIterator<Bytes, byte[]>> mockResult = QueryResult.forResult(mockIterator);
         when(mockStore.query(eq(query), any(PositionBound.class), any(QueryConfig.class)))
-            .thenReturn(mockResult);
+                .thenReturn(mockResult);
 
         final QueryResult<KeyValueIterator<Bytes, byte[]>> result = adapter.query(
-            query,
-            PositionBound.unbounded(),
-            new QueryConfig(false)
+                query,
+                PositionBound.unbounded(),
+                new QueryConfig(false)
         );
 
         assertTrue(result.isSuccess());
@@ -309,7 +309,7 @@ public class PlainToHeadersStoreAdapterTest {
 
         final QueryResult<byte[]> mockResult = QueryResult.forResult(plainValue);
         when(mockStore.query(eq(query), any(PositionBound.class), any(QueryConfig.class)))
-            .thenReturn(mockResult);
+                .thenReturn(mockResult);
 
         final QueryResult<byte[]> result = adapter.query(query, PositionBound.unbounded(), new QueryConfig(true));
 
@@ -318,25 +318,25 @@ public class PlainToHeadersStoreAdapterTest {
         final String executionInfo = String.join("\n", result.getExecutionInfo());
         assertTrue(executionInfo.contains("Handled in"), "Expected execution info to contain handling information");
         assertTrue(executionInfo.contains(PlainToHeadersStoreAdapter.class.getName()),
-            "Expected execution info to mention PlainToHeadersStoreAdapter");
+                "Expected execution info to mention PlainToHeadersStoreAdapter");
     }
 
     @Test
     public void shouldCollectExecutionInfoForRangeQuery() {
         adapter = createAdapter();
         final RangeQuery<Bytes, byte[]> query = RangeQuery.withRange(
-            new Bytes("a".getBytes()),
-            new Bytes("z".getBytes())
+                new Bytes("a".getBytes()),
+                new Bytes("z".getBytes())
         );
 
         final QueryResult<KeyValueIterator<Bytes, byte[]>> mockResult = QueryResult.forResult(mockIterator);
         when(mockStore.query(eq(query), any(PositionBound.class), any(QueryConfig.class)))
-            .thenReturn(mockResult);
+                .thenReturn(mockResult);
 
         final QueryResult<KeyValueIterator<Bytes, byte[]>> result = adapter.query(
-            query,
-            PositionBound.unbounded(),
-            new QueryConfig(true)
+                query,
+                PositionBound.unbounded(),
+                new QueryConfig(true)
         );
 
         assertTrue(result.isSuccess());
@@ -353,7 +353,7 @@ public class PlainToHeadersStoreAdapterTest {
 
         final QueryResult<byte[]> mockResult = QueryResult.forUnknownQueryType(query, mockStore);
         when(mockStore.query(eq(query), any(PositionBound.class), any(QueryConfig.class)))
-            .thenReturn(mockResult);
+                .thenReturn(mockResult);
 
         final QueryResult<byte[]> result = adapter.query(query, PositionBound.unbounded(), new QueryConfig(false));
 

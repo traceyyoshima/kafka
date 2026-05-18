@@ -68,14 +68,14 @@ import static org.apache.kafka.coordinator.group.GroupCoordinatorConfig.OFFSETS_
 import static org.apache.kafka.coordinator.group.GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG;
 
 @ClusterTestDefaults(
-    types = {Type.CO_KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-    }
+        types = {Type.CO_KRAFT},
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
+                @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+                @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+        }
 )
 public class ListConsumerGroupTest {
     private static final String TOPIC_PREFIX = "test.topic.";
@@ -557,16 +557,16 @@ public class ListConsumerGroupTest {
     /**
      * Validates the consumer group listings returned against expected values using specified filters.
      *
-     * @param service                The service to list consumer groups.
-     * @param typeFilterSet          Filters for group types, empty for no filter.
-     * @param groupStateFilterSet    Filters for group states, empty for no filter.
-     * @param expectedListing        Expected consumer group listings.
+     * @param service             The service to list consumer groups.
+     * @param typeFilterSet       Filters for group types, empty for no filter.
+     * @param groupStateFilterSet Filters for group states, empty for no filter.
+     * @param expectedListing     Expected consumer group listings.
      */
     private static void assertGroupListing(
-        ConsumerGroupCommand.ConsumerGroupService service,
-        Set<GroupType> typeFilterSet,
-        Set<GroupState> groupStateFilterSet,
-        Set<GroupListing> expectedListing
+            ConsumerGroupCommand.ConsumerGroupService service,
+            Set<GroupType> typeFilterSet,
+            Set<GroupState> groupStateFilterSet,
+            Set<GroupListing> expectedListing
     ) throws Exception {
         final AtomicReference<Set<GroupListing>> foundListing = new AtomicReference<>();
         TestUtils.waitForCondition(() -> {
@@ -578,16 +578,16 @@ public class ListConsumerGroupTest {
     /**
      * Validates that the output of the list command corresponds to the expected values.
      *
-     * @param args              The arguments for the command line tool.
-     * @param expectedHeader    The expected header as a list of strings; or an empty list
-     *                          if a header is not expected.
-     * @param expectedRows      The expected rows as a set of list of columns.
+     * @param args           The arguments for the command line tool.
+     * @param expectedHeader The expected header as a list of strings; or an empty list
+     *                       if a header is not expected.
+     * @param expectedRows   The expected rows as a set of list of columns.
      * @throws InterruptedException
      */
     private static void validateListOutput(
-        List<String> args,
-        List<String> expectedHeader,
-        Set<List<String>> expectedRows
+            List<String> args,
+            List<String> expectedHeader,
+            Set<List<String>> expectedRows
     ) throws InterruptedException {
         final AtomicReference<String> out = new AtomicReference<>("");
         TestUtils.waitForCondition(() -> {

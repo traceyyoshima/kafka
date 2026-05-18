@@ -50,8 +50,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         brokers = RaftClusterSnapshotTest.BROKER_COUNT,
         controllers = RaftClusterSnapshotTest.CONTROLLER_COUNT,
         serverProperties = {
-            @ClusterConfigProperty(key = METADATA_SNAPSHOT_MAX_NEW_RECORD_BYTES_CONFIG, value = "10"),
-            @ClusterConfigProperty(key = METADATA_MAX_IDLE_INTERVAL_MS_CONFIG, value = "0"),
+                @ClusterConfigProperty(key = METADATA_SNAPSHOT_MAX_NEW_RECORD_BYTES_CONFIG, value = "10"),
+                @ClusterConfigProperty(key = METADATA_MAX_IDLE_INTERVAL_MS_CONFIG, value = "0"),
         })
 public class RaftClusterSnapshotTest {
 

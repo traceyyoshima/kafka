@@ -160,7 +160,7 @@ public class ProcessorTopology {
             final List<String> updatedSourceTopics = allSourceTopicsByNodeName.get(sourceNodeName);
             if (updatedSourceTopics == null) {
                 log.error("Unable to find source node {} in updated topics map {}",
-                          sourceNodeName, allSourceTopicsByNodeName);
+                        sourceNodeName, allSourceTopicsByNodeName);
                 throw new IllegalStateException("Node " + sourceNodeName + " not found in full topology");
             }
 
@@ -168,9 +168,9 @@ public class ProcessorTopology {
             for (final String topic : updatedSourceTopics) {
                 if (sourceNodesByTopic.containsKey(topic)) {
                     log.error("Tried to subscribe topic {} to two nodes when updating topics from {}",
-                              topic, allSourceTopicsByNodeName);
+                            topic, allSourceTopicsByNodeName);
                     throw new IllegalStateException("Topic " + topic + " was already registered to source node "
-                                                        + sourceNodesByTopic.get(topic).name());
+                            + sourceNodesByTopic.get(topic).name());
                 }
                 sourceNodesByTopic.put(topic, sourceNode);
             }
@@ -200,6 +200,7 @@ public class ProcessorTopology {
     /**
      * Produces a string representation containing useful information this topology starting with the given indent.
      * This is useful in debugging scenarios.
+     *
      * @return A string representation of this instance.
      */
     @Override
@@ -210,6 +211,7 @@ public class ProcessorTopology {
     /**
      * Produces a string representation containing useful information this topology.
      * This is useful in debugging scenarios.
+     *
      * @return A string representation of this instance.
      */
     public String toString(final String indent) {
@@ -228,8 +230,8 @@ public class ProcessorTopology {
             final SourceNode<?, ?> source = sourceNodeEntry.getKey();
             final List<String> topics = sourceNodeEntry.getValue();
             sb.append(source.toString(indent + "\t"))
-                .append(topicsToString(indent + "\t", topics))
-                .append(childrenToString(indent + "\t", source.children()));
+                    .append(topicsToString(indent + "\t", topics))
+                    .append(childrenToString(indent + "\t", source.children()));
         }
         return sb.toString();
     }

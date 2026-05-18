@@ -187,7 +187,7 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
          * The child this data was forwarded to.
          *
          * @return If present, the child name the record was forwarded to.
-         *         If empty, the forward was a broadcast.
+         * If empty, the forward was a broadcast.
          */
         public Optional<String> childName() {
             return childName;
@@ -205,9 +205,9 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
         @Override
         public String toString() {
             return "CapturedForward{" +
-                "record=" + record +
-                ", childName=" + childName +
-                '}';
+                    "record=" + record +
+                    ", childName=" + childName +
+                    '}';
         }
 
         @Override
@@ -216,7 +216,7 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
             if (o == null || getClass() != o.getClass()) return false;
             final CapturedForward<?, ?> that = (CapturedForward<?, ?>) o;
             return Objects.equals(record, that.record) &&
-                Objects.equals(childName, that.childName);
+                    Objects.equals(childName, that.childName);
         }
 
         @Override
@@ -235,12 +235,12 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
      */
     public MockProcessorContext() {
         this(
-            mkProperties(mkMap(
-                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, ""),
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy-bootstrap-host:0")
-            )),
-            new TaskId(0, 0),
-            null
+                mkProperties(mkMap(
+                        mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, ""),
+                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy-bootstrap-host:0")
+                )),
+                new TaskId(0, 0),
+                null
         );
     }
 
@@ -276,9 +276,9 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
         metricConfig.recordLevel(Sensor.RecordingLevel.DEBUG);
         final String threadId = Thread.currentThread().getName();
         metrics = new StreamsMetricsImpl(
-            new Metrics(metricConfig),
-            threadId,
-            Time.SYSTEM
+                new Metrics(metricConfig),
+                threadId,
+                Time.SYSTEM
         );
         TaskMetrics.droppedRecordsSensor(threadId, taskId.toString(), metrics);
     }
@@ -335,11 +335,11 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
     @Override
     public File stateDir() {
         return Objects.requireNonNull(
-            stateDir,
-            "The stateDir constructor argument was needed (probably for a state store) but not supplied. " +
-                "You can either reconfigure your test so that it doesn't need access to the disk " +
-                "(such as using an in-memory store), or use the full MockProcessorContext constructor to supply " +
-                "a non-null stateDir argument."
+                stateDir,
+                "The stateDir constructor argument was needed (probably for a state store) but not supplied. " +
+                        "You can either reconfigure your test so that it doesn't need access to the disk " +
+                        "(such as using an in-memory store), or use the full MockProcessorContext constructor to supply " +
+                        "a non-null stateDir argument."
         );
     }
 
@@ -395,7 +395,8 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
                                 final Punctuator callback) {
         final CapturedPunctuator capturedPunctuator = new CapturedPunctuator(interval, type, callback);
         punctuators.add(capturedPunctuator);
-        return capturedPunctuator::cancel;    }
+        return capturedPunctuator::cancel;
+    }
 
     @Override
     public Cancellable schedule(final Instant startTime,
@@ -489,9 +490,9 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
         // Rather than risk a mysterious ClassCastException during unit tests, throw an explanatory exception.
 
         throw new UnsupportedOperationException(
-            "MockProcessorContext does not provide record collection. " +
-                "For processor unit tests, use an in-memory state store with change-logging disabled. " +
-                "Alternatively, use the TopologyTestDriver for testing processor/store/topology integration."
+                "MockProcessorContext does not provide record collection. " +
+                        "For processor unit tests, use an in-memory state store with change-logging disabled. " +
+                        "Alternatively, use the TopologyTestDriver for testing processor/store/topology integration."
         );
     }
 
@@ -499,6 +500,7 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
      * Used to get a {@link StateStoreContext} for use with
      * {@link StateStore#init(StateStoreContext, StateStore)}
      * if you need to initialize a store for your tests.
+     *
      * @return a {@link StateStoreContext} that delegates to this ProcessorContext.
      */
     public StateStoreContext getStateStoreContext() {
@@ -509,11 +511,12 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
     private final class MockContext extends AbstractProcessorContext<Object, Object> implements StateStoreContext {
         public MockContext() {
             super(
-                new TaskId(0, 0),
-                new StreamsConfig(MockProcessorContext.this.appConfigs()),
-                (StreamsMetricsImpl) MockProcessorContext.this.metrics(),
-                new ThreadCache(new LogContext(), 0, (StreamsMetricsImpl) MockProcessorContext.this.metrics()));
+                    new TaskId(0, 0),
+                    new StreamsConfig(MockProcessorContext.this.appConfigs()),
+                    (StreamsMetricsImpl) MockProcessorContext.this.metrics(),
+                    new ThreadCache(new LogContext(), 0, (StreamsMetricsImpl) MockProcessorContext.this.metrics()));
         }
+
         @Override
         public String applicationId() {
             return MockProcessorContext.this.applicationId();
@@ -552,7 +555,8 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
         @Override
         public void register(final StateStore store,
                              final StateRestoreCallback stateRestoreCallback) {
-            register(store, stateRestoreCallback, () -> { });
+            register(store, stateRestoreCallback, () -> {
+            });
         }
 
         @Override
@@ -576,50 +580,77 @@ public class MockProcessorContext<KForward, VForward> implements ProcessorContex
 
         @SuppressWarnings("rawtypes")
         @Override
-        public void forward(final Record record, final String childName) { }
+        public void forward(final Record record, final String childName) {
+        }
+
         @SuppressWarnings("rawtypes")
         @Override
-        public void forward(final Record record) { }
+        public void forward(final Record record) {
+        }
+
         @SuppressWarnings("rawtypes")
         @Override
-        public void forward(final FixedKeyRecord record, final String childName) { }
+        public void forward(final FixedKeyRecord record, final String childName) {
+        }
+
         @SuppressWarnings("rawtypes")
         @Override
-        public void forward(final FixedKeyRecord record) { }
+        public void forward(final FixedKeyRecord record) {
+        }
+
         @Override
         public Cancellable schedule(final Duration interval, final PunctuationType type, final Punctuator callback) {
             return null;
         }
+
         @Override
         public Cancellable schedule(final Instant startTime, final Duration interval, final PunctuationType type, final Punctuator callback) {
             return null;
         }
+
         @Override
-        public void commit() { }
+        public void commit() {
+        }
+
         @Override
         public long currentStreamTimeMs() {
             return 0;
         }
+
         @Override
-        public void forward(final Object key, final Object value, final To to) { }
+        public void forward(final Object key, final Object value, final To to) {
+        }
+
         @Override
-        public void forward(final Object key, final Object value) { }
+        public void forward(final Object key, final Object value) {
+        }
+
         @Override
         public StateStore getStateStore(final String name) {
             return null;
         }
+
         @Override
-        public void transitionToActive(final StreamTask streamTask, final RecordCollector recordCollector, final ThreadCache newCache) { }
+        public void transitionToActive(final StreamTask streamTask, final RecordCollector recordCollector, final ThreadCache newCache) {
+        }
+
         @Override
-        public void transitionToStandby(final ThreadCache newCache) { }
+        public void transitionToStandby(final ThreadCache newCache) {
+        }
+
         @Override
-        public void registerCacheFlushListener(final String namespace, final ThreadCache.DirtyEntryFlushListener listener) { }
+        public void registerCacheFlushListener(final String namespace, final ThreadCache.DirtyEntryFlushListener listener) {
+        }
+
         @Override
-        public void logChange(final String storeName, final Bytes key, final byte[] value, final long timestamp, final Headers headers, final Position position) { }
+        public void logChange(final String storeName, final Bytes key, final byte[] value, final long timestamp, final Headers headers, final Position position) {
+        }
+
         @Override
         public String changelogFor(final String storeName) {
             return "changelog";
         }
+
         @Override
         protected StateManager stateManager() {
             return null;

@@ -61,16 +61,16 @@ public class StateSerdesTest {
     @SuppressWarnings("rawtypes")
     @Test
     public void shouldReturnSerdesForBuiltInKeyAndValueTypesForBuiltinTypes() {
-        final Class[] supportedBuildInTypes = new Class[] {
-            String.class,
-            Short.class,
-            Integer.class,
-            Long.class,
-            Float.class,
-            Double.class,
-            byte[].class,
-            ByteBuffer.class,
-            Bytes.class
+        final Class[] supportedBuildInTypes = new Class[]{
+                String.class,
+                Short.class,
+                Integer.class,
+                Long.class,
+                Float.class,
+                Double.class,
+                byte[].class,
+                ByteBuffer.class,
+                Bytes.class
         };
 
         for (final Class keyClass : supportedBuildInTypes) {
@@ -107,49 +107,45 @@ public class StateSerdesTest {
 
     @Test
     public void shouldThrowIfIncompatibleSerdeForValue() throws ClassNotFoundException {
-        @SuppressWarnings("rawtypes")
-        final Class myClass = Class.forName("java.lang.String");
+        @SuppressWarnings("rawtypes") final Class myClass = Class.forName("java.lang.String");
         final StateSerdes<Object, Object> stateSerdes = new StateSerdes<Object, Object>("anyName", Serdes.serdeFrom(myClass), Serdes.serdeFrom(myClass));
         final Integer myInt = 123;
         final Exception e = assertThrows(StreamsException.class, () -> stateSerdes.rawValue(myInt, new RecordHeaders()));
         assertThat(
-            e.getMessage(),
-            equalTo(
-                "A serializer (org.apache.kafka.common.serialization.StringSerializer) " +
-                "is not compatible to the actual value type (value type: java.lang.Integer). " +
-                "Change the default Serdes in StreamConfig or provide correct Serdes via method parameters."));
+                e.getMessage(),
+                equalTo(
+                        "A serializer (org.apache.kafka.common.serialization.StringSerializer) " +
+                                "is not compatible to the actual value type (value type: java.lang.Integer). " +
+                                "Change the default Serdes in StreamConfig or provide correct Serdes via method parameters."));
     }
 
     @Test
     public void shouldSkipValueAndTimestampeInformationForErrorOnTimestampAndValueSerialization() throws ClassNotFoundException {
-        @SuppressWarnings("rawtypes")
-        final Class myClass = Class.forName("java.lang.String");
-        @SuppressWarnings("rawtypes")
-        final StateSerdes<Object, Object> stateSerdes =
-            new StateSerdes<Object, Object>("anyName", Serdes.serdeFrom(myClass), new ValueAndTimestampSerde(Serdes.serdeFrom(myClass)));
+        @SuppressWarnings("rawtypes") final Class myClass = Class.forName("java.lang.String");
+        @SuppressWarnings("rawtypes") final StateSerdes<Object, Object> stateSerdes =
+                new StateSerdes<Object, Object>("anyName", Serdes.serdeFrom(myClass), new ValueAndTimestampSerde(Serdes.serdeFrom(myClass)));
         final Integer myInt = 123;
         final Exception e = assertThrows(StreamsException.class, () -> stateSerdes.rawValue(ValueAndTimestamp.make(myInt, 0L), new RecordHeaders()));
         assertThat(
-            e.getMessage(),
-            equalTo(
-                "A serializer (org.apache.kafka.common.serialization.StringSerializer) " +
-                    "is not compatible to the actual value type (value type: java.lang.Integer). " +
-                    "Change the default Serdes in StreamConfig or provide correct Serdes via method parameters."));
+                e.getMessage(),
+                equalTo(
+                        "A serializer (org.apache.kafka.common.serialization.StringSerializer) " +
+                                "is not compatible to the actual value type (value type: java.lang.Integer). " +
+                                "Change the default Serdes in StreamConfig or provide correct Serdes via method parameters."));
     }
 
     @Test
     public void shouldThrowIfIncompatibleSerdeForKey() throws ClassNotFoundException {
-        @SuppressWarnings("rawtypes")
-        final Class myClass = Class.forName("java.lang.String");
+        @SuppressWarnings("rawtypes") final Class myClass = Class.forName("java.lang.String");
         final StateSerdes<Object, Object> stateSerdes = new StateSerdes<Object, Object>("anyName", Serdes.serdeFrom(myClass), Serdes.serdeFrom(myClass));
         final Integer myInt = 123;
         final Exception e = assertThrows(StreamsException.class, () -> stateSerdes.rawKey(myInt, new RecordHeaders()));
         assertThat(
-            e.getMessage(),
-            equalTo(
-                "A serializer (org.apache.kafka.common.serialization.StringSerializer) " +
-                    "is not compatible to the actual key type (key type: java.lang.Integer). " +
-                    "Change the default Serdes in StreamConfig or provide correct Serdes via method parameters."));
+                e.getMessage(),
+                equalTo(
+                        "A serializer (org.apache.kafka.common.serialization.StringSerializer) " +
+                                "is not compatible to the actual key type (key type: java.lang.Integer). " +
+                                "Change the default Serdes in StreamConfig or provide correct Serdes via method parameters."));
     }
 
     @Test
@@ -161,7 +157,7 @@ public class StateSerdesTest {
         when(spyKeySerde.deserializer()).thenReturn(spyDeserializer);
 
         final StateSerdes<String, String> stateSerdes =
-            new StateSerdes<>("test-topic", spyKeySerde, Serdes.String());
+                new StateSerdes<>("test-topic", spyKeySerde, Serdes.String());
 
         final Headers headers = new RecordHeaders();
         final String key = "test-key";
@@ -183,10 +179,10 @@ public class StateSerdesTest {
         when(spyValueSerde.deserializer()).thenReturn(spyDeserializer);
 
         final StateSerdes<String, String> stateSerdes =
-            new StateSerdes<>("test-topic", Serdes.String(), spyValueSerde);
+                new StateSerdes<>("test-topic", Serdes.String(), spyValueSerde);
 
         final Headers headers = new RecordHeaders()
-            .add("header-key", "header-value".getBytes());
+                .add("header-key", "header-value".getBytes());
         final String value = "test-value";
         final byte[] serialized = stateSerdes.rawValue(value, headers);
 

@@ -80,7 +80,7 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
     private static final long TIMESTAMP = 97L;
     private static final RecordHeaders HEADERS = makeHeaders();
     private static final ValueTimestampHeaders<String> VALUE_TIMESTAMP_HEADERS =
-        ValueTimestampHeaders.make("value", TIMESTAMP, HEADERS);
+            ValueTimestampHeaders.make("value", TIMESTAMP, HEADERS);
     private static final byte[] VALUE_TIMESTAMP_HEADERS_BYTES = serializeValueTimestampHeaders();
     private static final int WINDOW_SIZE_MS = 10;
 
@@ -94,70 +94,69 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
 
     public void setUp() {
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(metrics, "test", new MockTime());
+                new StreamsMetricsImpl(metrics, "test", new MockTime());
 
         context = new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            streamsMetrics,
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
-            MockRecordCollector::new,
-            new ThreadCache(new LogContext("testCache "), 0, streamsMetrics),
-            Time.SYSTEM,
-            taskId
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                streamsMetrics,
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
+                MockRecordCollector::new,
+                new ThreadCache(new LogContext("testCache "), 0, streamsMetrics),
+                Time.SYSTEM,
+                taskId
         );
 
         when(innerStoreMock.name()).thenReturn(STORE_NAME);
 
         store = new MeteredTimestampedWindowStoreWithHeaders<>(
-            innerStoreMock,
-            WINDOW_SIZE_MS, // any size
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new ValueTimestampHeadersSerde<>(new SerdeThatDoesntHandleNull())
+                innerStoreMock,
+                WINDOW_SIZE_MS, // any size
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new ValueTimestampHeadersSerde<>(new SerdeThatDoesntHandleNull())
         );
     }
 
     public void setUpWithoutContextName() {
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(metrics, "test", new MockTime());
+                new StreamsMetricsImpl(metrics, "test", new MockTime());
 
         context = new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            streamsMetrics,
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
-            MockRecordCollector::new,
-            new ThreadCache(new LogContext("testCache "), 0, streamsMetrics),
-            Time.SYSTEM,
-            taskId
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                streamsMetrics,
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
+                MockRecordCollector::new,
+                new ThreadCache(new LogContext("testCache "), 0, streamsMetrics),
+                Time.SYSTEM,
+                taskId
         );
 
         store = new MeteredTimestampedWindowStoreWithHeaders<>(
-            innerStoreMock,
-            WINDOW_SIZE_MS, // any size
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new ValueTimestampHeadersSerde<>(new SerdeThatDoesntHandleNull())
+                innerStoreMock,
+                WINDOW_SIZE_MS, // any size
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new ValueTimestampHeadersSerde<>(new SerdeThatDoesntHandleNull())
         );
     }
 
     @Test
     public void shouldDelegateInit() {
         setUpWithoutContextName();
-        @SuppressWarnings("unchecked")
-        final WindowStore<Bytes, byte[]> inner = mock(WindowStore.class);
+        @SuppressWarnings("unchecked") final WindowStore<Bytes, byte[]> inner = mock(WindowStore.class);
         final MeteredTimestampedWindowStoreWithHeaders<String, String> outer = new MeteredTimestampedWindowStoreWithHeaders<>(
-            inner,
-            WINDOW_SIZE_MS, // any size
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new ValueTimestampHeadersSerde<>(new SerdeThatDoesntHandleNull())
+                inner,
+                WINDOW_SIZE_MS, // any size
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new ValueTimestampHeadersSerde<>(new SerdeThatDoesntHandleNull())
         );
         when(inner.name()).thenReturn("store");
 
@@ -177,7 +176,7 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
     public void shouldPassDefaultChangelogTopicNameToStateStoreSerdeIfLoggingDisabled() {
         setUp();
         final String defaultChangelogTopicName =
-            ProcessorStateManager.storeChangelogTopic(context.applicationId(), STORE_NAME, taskId.topologyName());
+                ProcessorStateManager.storeChangelogTopic(context.applicationId(), STORE_NAME, taskId.topologyName());
         doShouldPassChangelogTopicNameToStateStoreSerde(defaultChangelogTopicName);
     }
 
@@ -204,12 +203,12 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         setUp();
         when(innerStoreMock.name()).thenReturn("mocked-store");
         final MeteredTimestampedWindowStoreWithHeaders<String, Long> store = new MeteredTimestampedWindowStoreWithHeaders<>(
-            innerStoreMock,
-            10L, // any size
-            "scope",
-            new MockTime(),
-            null,
-            null
+                innerStoreMock,
+                10L, // any size
+                "scope",
+                new MockTime(),
+                null,
+                null
         );
         store.init(context, innerStoreMock);
 
@@ -228,12 +227,12 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         setUp();
         when(innerStoreMock.name()).thenReturn("mocked-store");
         final MeteredTimestampedWindowStoreWithHeaders<String, Long> store = new MeteredTimestampedWindowStoreWithHeaders<>(
-            innerStoreMock,
-            10L, // any size
-            "scope",
-            new MockTime(),
-            Serdes.String(),
-            new ValueTimestampHeadersSerde<>(Serdes.Long())
+                innerStoreMock,
+                10L, // any size
+                "scope",
+                new MockTime(),
+                Serdes.String(),
+                new ValueTimestampHeadersSerde<>(Serdes.Long())
         );
         store.init(context, innerStoreMock);
 
@@ -274,20 +273,20 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         // For put: value serialization uses value's headers
         when(valueSerializer.serialize(topic, HEADERS, VALUE_TIMESTAMP_HEADERS)).thenReturn(VALUE_TIMESTAMP_HEADERS_BYTES);
         context.setRecordContext(new ProcessorRecordContext(
-            0L,
-            0L,
-            0,
-            topic,
-            HEADERS
+                0L,
+                0L,
+                0,
+                topic,
+                HEADERS
         ));
         when(innerStoreMock.fetch(KEY_BYTES, TIMESTAMP)).thenReturn(VALUE_TIMESTAMP_HEADERS_BYTES);
         store = new MeteredTimestampedWindowStoreWithHeaders<>(
-            innerStoreMock,
-            WINDOW_SIZE_MS,
-            STORE_TYPE,
-            new MockTime(),
-            keySerde,
-            valueSerde
+                innerStoreMock,
+                WINDOW_SIZE_MS,
+                STORE_TYPE,
+                new MockTime(),
+                keySerde,
+                valueSerde
         );
 
         store.init(context, store);
@@ -313,18 +312,18 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         lenient().when(keySerializer.serialize(any(), any(RecordHeaders.class), any())).thenReturn(KEY.getBytes());
 
         lenient().when(valueDeserializer.deserialize(any(), any(RecordHeaders.class), eq(VALUE_TIMESTAMP_HEADERS_BYTES)))
-            .thenReturn(VALUE_TIMESTAMP_HEADERS);
+                .thenReturn(VALUE_TIMESTAMP_HEADERS);
 
         lenient().when(keyDeserializer.deserialize(any(), eq(HEADERS), eq(KEY.getBytes())))
-            .thenReturn(KEY);
+                .thenReturn(KEY);
 
         final MeteredTimestampedWindowStoreWithHeaders<String, String> mockStore = new MeteredTimestampedWindowStoreWithHeaders<>(
-            innerStoreMock,
-            WINDOW_SIZE_MS,
-            STORE_TYPE,
-            new MockTime(),
-            keySerde,
-            valueSerde
+                innerStoreMock,
+                WINDOW_SIZE_MS,
+                STORE_TYPE,
+                new MockTime(),
+                keySerde,
+                valueSerde
         );
         mockStore.init(context, mockStore);
         return mockStore;
@@ -337,7 +336,7 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         final Windowed<Bytes> windowedKey = new Windowed<>(KEY_BYTES, new TimeWindow(0, WINDOW_SIZE_MS));
         final KeyValue<Windowed<Bytes>, byte[]> testData = KeyValue.pair(windowedKey, VALUE_TIMESTAMP_HEADERS_BYTES);
         when(innerStoreMock.fetchAll(0, 100))
-            .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
+                .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
 
         store = createStoreWithMockSerdes();
 
@@ -363,7 +362,7 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         final Windowed<Bytes> windowedKey = new Windowed<>(KEY_BYTES, new TimeWindow(0, WINDOW_SIZE_MS));
         final KeyValue<Windowed<Bytes>, byte[]> testData = KeyValue.pair(windowedKey, VALUE_TIMESTAMP_HEADERS_BYTES);
         when(innerStoreMock.all())
-            .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
+                .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
 
         store = createStoreWithMockSerdes();
 
@@ -388,17 +387,17 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         final Windowed<Bytes> windowedKey = new Windowed<>(KEY_BYTES, new TimeWindow(0, WINDOW_SIZE_MS));
         final KeyValue<Windowed<Bytes>, byte[]> testData = KeyValue.pair(windowedKey, VALUE_TIMESTAMP_HEADERS_BYTES);
         when(innerStoreMock.fetch(any(Bytes.class), any(Bytes.class), eq(0L), eq(100L)))
-            .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
+                .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
 
         store = createStoreWithMockSerdes();
 
         final KeyValueIterator<Windowed<String>, ValueTimestampHeaders<String>> iterator =
-            store.fetch(KEY, KEY, 0, 100);
+                store.fetch(KEY, KEY, 0, 100);
 
         assertTrue(iterator.hasNext());
         assertEquals(KEY, iterator.peekNextKey().key());
         final KeyValue<Windowed<String>, ValueTimestampHeaders<String>> result =
-            iterator.next();
+                iterator.next();
 
         assertEquals(KEY, result.key.key());
         assertEquals(VALUE_TIMESTAMP_HEADERS, result.value);
@@ -415,7 +414,7 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         final Windowed<Bytes> windowedKey = new Windowed<>(KEY_BYTES, new TimeWindow(0, WINDOW_SIZE_MS));
         final KeyValue<Windowed<Bytes>, byte[]> testData = KeyValue.pair(windowedKey, VALUE_TIMESTAMP_HEADERS_BYTES);
         when(innerStoreMock.backwardFetchAll(0, 100))
-            .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
+                .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
 
         store = createStoreWithMockSerdes();
 
@@ -440,7 +439,7 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         final Windowed<Bytes> windowedKey = new Windowed<>(KEY_BYTES, new TimeWindow(0, WINDOW_SIZE_MS));
         final KeyValue<Windowed<Bytes>, byte[]> testData = KeyValue.pair(windowedKey, VALUE_TIMESTAMP_HEADERS_BYTES);
         when(innerStoreMock.backwardAll())
-            .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
+                .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
 
         store = createStoreWithMockSerdes();
 
@@ -465,17 +464,17 @@ public class MeteredTimestampedWindowStoreWithHeadersTest {
         final Windowed<Bytes> windowedKey = new Windowed<>(KEY_BYTES, new TimeWindow(0, WINDOW_SIZE_MS));
         final KeyValue<Windowed<Bytes>, byte[]> testData = KeyValue.pair(windowedKey, VALUE_TIMESTAMP_HEADERS_BYTES);
         when(innerStoreMock.backwardFetch(any(Bytes.class), any(Bytes.class), eq(0L), eq(100L)))
-            .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
+                .thenReturn(new KeyValueIteratorStub<>(List.of(testData).iterator()));
 
         store = createStoreWithMockSerdes();
 
         final KeyValueIterator<Windowed<String>, ValueTimestampHeaders<String>> iterator =
-            store.backwardFetch(KEY, KEY, 0, 100);
+                store.backwardFetch(KEY, KEY, 0, 100);
 
         assertTrue(iterator.hasNext());
         assertEquals(KEY, iterator.peekNextKey().key());
         final KeyValue<Windowed<String>, ValueTimestampHeaders<String>> result =
-            iterator.next();
+                iterator.next();
 
         assertEquals(KEY, result.key.key());
         assertEquals(VALUE_TIMESTAMP_HEADERS, result.value);

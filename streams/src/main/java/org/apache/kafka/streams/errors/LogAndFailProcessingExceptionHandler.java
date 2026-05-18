@@ -39,13 +39,13 @@ public class LogAndFailProcessingExceptionHandler implements ProcessingException
                                 final Record<?, ?> record,
                                 final Exception exception) {
         log.error(
-            "Exception caught during message processing, processor node: {}, taskId: {}, source topic: {}, source partition: {}, source offset: {}",
-            context.processorNodeId(),
-            context.taskId(),
-            context.topic(),
-            context.partition(),
-            context.offset(),
-            exception
+                "Exception caught during message processing, processor node: {}, taskId: {}, source topic: {}, source partition: {}, source offset: {}",
+                context.processorNodeId(),
+                context.taskId(),
+                context.topic(),
+                context.partition(),
+                context.offset(),
+                exception
         );
 
         return Response.fail(maybeBuildDeadLetterQueueRecords(deadLetterQueueTopic, context.sourceRawKey(), context.sourceRawValue(), context, exception));

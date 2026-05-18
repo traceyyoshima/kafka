@@ -82,10 +82,9 @@ public class FetchCollector<K, V> {
      * NOTE: returning an {@link Fetch#empty() empty} fetch guarantees the consumed position is not updated.
      *
      * @param fetchBuffer {@link FetchBuffer} from which to retrieve the {@link ConsumerRecord records}
-     *
      * @return A {@link Fetch} for the requested partitions
-     * @throws OffsetOutOfRangeException If there is OffsetOutOfRange error in fetchResponse and
-     *         the defaultResetPolicy is NONE
+     * @throws OffsetOutOfRangeException   If there is OffsetOutOfRange error in fetchResponse and
+     *                                     the defaultResetPolicy is NONE
      * @throws TopicAuthorizationException If there is TopicAuthorization error in fetchResponse.
      */
     public Fetch<K, V> collectFetch(final FetchBuffer fetchBuffer) {
@@ -258,7 +257,7 @@ public class FetchCollector<K, V> {
         SubscriptionState.FetchPosition position = subscriptions.positionOrNull(tp);
         if (position == null || position.offset != fetchOffset) {
             log.debug("Discarding stale fetch response for partition {} since its offset {} does not match " +
-                "the expected offset {} or the partition has been unassigned", tp, fetchOffset, position);
+                    "the expected offset {} or the partition has been unassigned", tp, fetchOffset, position);
             return null;
         }
 
@@ -307,12 +306,12 @@ public class FetchCollector<K, V> {
 
         if (FetchResponse.isPreferredReplica(partitionData)) {
             return subscriptions.tryUpdatingPreferredReadReplica(
-                tp, partitionData.preferredReadReplica(), () -> {
-                    long expireTimeMs = time.milliseconds() + metadata.metadataExpireMs();
-                    log.debug("Updating preferred read replica for partition {} to {}, set to expire at {}",
-                        tp, partitionData.preferredReadReplica(), expireTimeMs);
-                    return expireTimeMs;
-                });
+                    tp, partitionData.preferredReadReplica(), () -> {
+                        long expireTimeMs = time.milliseconds() + metadata.metadataExpireMs();
+                        log.debug("Updating preferred read replica for partition {} to {}, set to expire at {}",
+                                tp, partitionData.preferredReadReplica(), expireTimeMs);
+                        return expireTimeMs;
+                    });
         }
 
         return true;

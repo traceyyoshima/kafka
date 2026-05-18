@@ -44,7 +44,7 @@ public final class ScramDelta {
     public void finishSnapshot() {
         for (Entry<ScramMechanism, Map<String, ScramCredentialData>> mechanismEntry : image.mechanisms().entrySet()) {
             Map<String, Optional<ScramCredentialData>> userNameMap =
-                changes.computeIfAbsent(mechanismEntry.getKey(), __ -> new HashMap<>());
+                    changes.computeIfAbsent(mechanismEntry.getKey(), __ -> new HashMap<>());
             for (String userName : mechanismEntry.getValue().keySet()) {
                 if (!userNameMap.containsKey(userName)) {
                     userNameMap.put(userName, Optional.empty());
@@ -104,7 +104,7 @@ public final class ScramDelta {
     @Override
     public String toString() {
         return "ScramDelta(" +
-            "changes=" + changes +
-            ')';
+                "changes=" + changes +
+                ')';
     }
 }

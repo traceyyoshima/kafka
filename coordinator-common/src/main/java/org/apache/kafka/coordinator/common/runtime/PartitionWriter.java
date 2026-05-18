@@ -36,89 +36,90 @@ public interface PartitionWriter {
      */
     interface Listener {
         void onHighWatermarkUpdated(
-            TopicPartition tp,
-            long offset
+                TopicPartition tp,
+                long offset
         );
     }
 
     /**
      * Register a {@link Listener}.
      *
-     * @param tp        The partition to register the listener to.
-     * @param listener  The listener.
+     * @param tp       The partition to register the listener to.
+     * @param listener The listener.
      */
     void registerListener(
-        TopicPartition tp,
-        Listener listener
+            TopicPartition tp,
+            Listener listener
     );
 
     /**
      * Deregister a {@link Listener}.
      *
-     * @param tp        The partition to deregister the listener from.
-     * @param listener  The listener.
+     * @param tp       The partition to deregister the listener from.
+     * @param listener The listener.
      */
     void deregisterListener(
-        TopicPartition tp,
-        Listener listener
+            TopicPartition tp,
+            Listener listener
     );
 
     /**
      * Return the LogConfig of the partition.
      *
-     * @param tp    The partition.
+     * @param tp The partition.
      * @return The LogConfig.
      */
     LogConfig config(
-        TopicPartition tp
+            TopicPartition tp
     );
 
     /**
      * Write records to the partitions.
      *
-     * @param tp                The partition to write records to.
-     * @param verificationGuard The verification guard.
-     * @param records           The MemoryRecords.
-     * @param transactionVersion  The transaction version (1 = TV1, 2 = TV2 etc.).
-     *                            Use TV_UNKNOWN (-1) for non-transaction writes.
+     * @param tp                 The partition to write records to.
+     * @param verificationGuard  The verification guard.
+     * @param records            The MemoryRecords.
+     * @param transactionVersion The transaction version (1 = TV1, 2 = TV2 etc.).
+     *                           Use TV_UNKNOWN (-1) for non-transaction writes.
      * @return The log end offset right after the written records.
      */
     long append(
-        TopicPartition tp,
-        VerificationGuard verificationGuard,
-        MemoryRecords records,
-        short transactionVersion
+            TopicPartition tp,
+            VerificationGuard verificationGuard,
+            MemoryRecords records,
+            short transactionVersion
     ) throws KafkaException;
 
     /**
      * Verify the transaction.
      *
-     * @param tp                The partition to write records to.
-     * @param transactionalId   The transactional id.
-     * @param producerId        The producer id.
-     * @param producerEpoch     The producer epoch.
-     * @param apiVersion        The version of the Request used.
+     * @param tp              The partition to write records to.
+     * @param transactionalId The transactional id.
+     * @param producerId      The producer id.
+     * @param producerEpoch   The producer epoch.
+     * @param apiVersion      The version of the Request used.
      * @return A future failed with any error encountered; or the {@link VerificationGuard}
-     *         if the transaction required verification and {@link VerificationGuard#SENTINEL}
-     *         if it did not.
+     * if the transaction required verification and {@link VerificationGuard#SENTINEL}
+     * if it did not.
      * @throws KafkaException Any KafkaException caught during the operation.
      */
     CompletableFuture<VerificationGuard> maybeStartTransactionVerification(
-        TopicPartition tp,
-        String transactionalId,
-        long producerId,
-        short producerEpoch,
-        int apiVersion
+            TopicPartition tp,
+            String transactionalId,
+            long producerId,
+            short producerEpoch,
+            int apiVersion
     ) throws KafkaException;
 
     /**
      * Delete records from a topic partition until specified offset
-     * @param tp                    The partition to delete records from
-     * @param deleteBeforeOffset    Offset to delete until, starting from the beginning
-     * @throws KafkaException       Any KafkaException caught during the operation.
+     *
+     * @param tp                 The partition to delete records from
+     * @param deleteBeforeOffset Offset to delete until, starting from the beginning
+     * @throws KafkaException Any KafkaException caught during the operation.
      */
     CompletableFuture<Void> deleteRecords(
-        TopicPartition tp,
-        long deleteBeforeOffset
+            TopicPartition tp,
+            long deleteBeforeOffset
     ) throws KafkaException;
 }

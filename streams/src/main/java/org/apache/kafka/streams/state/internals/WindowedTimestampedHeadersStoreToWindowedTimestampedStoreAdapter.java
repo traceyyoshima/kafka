@@ -51,8 +51,8 @@ import java.util.Map;
  * type with an empty {@link org.apache.kafka.common.header.Headers} object.
  */
 public class WindowedTimestampedHeadersStoreToWindowedTimestampedStoreAdapter<K, V>
-    extends WrappedStateStore<TimestampedWindowStore<K, V>, K, V>
-    implements TimestampedWindowStoreWithHeaders<K, V> {
+        extends WrappedStateStore<TimestampedWindowStore<K, V>, K, V>
+        implements TimestampedWindowStoreWithHeaders<K, V> {
 
     public WindowedTimestampedHeadersStoreToWindowedTimestampedStoreAdapter(final TimestampedWindowStore<K, V> timestampedWindowStore) {
         super(timestampedWindowStore);

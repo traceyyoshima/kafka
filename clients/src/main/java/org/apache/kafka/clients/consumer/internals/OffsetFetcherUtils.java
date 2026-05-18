@@ -77,8 +77,8 @@ class OffsetFetcherUtils {
                        long retryBackoffMs,
                        ApiVersions apiVersions) {
         this(logContext, metadata, subscriptionState,
-            time, retryBackoffMs, apiVersions,
-            new PositionsValidator(logContext, time, subscriptionState, metadata));
+                time, retryBackoffMs, apiVersions,
+                new PositionsValidator(logContext, time, subscriptionState, metadata));
     }
 
     OffsetFetcherUtils(LogContext logContext,
@@ -180,7 +180,7 @@ class OffsetFetcherUtils {
                 return;
             }
             partitionsByNode.computeIfAbsent(leader, __ -> new HashMap<>())
-                .put(tp, value);
+                    .put(tp, value);
         });
 
         return partitionsByNode;
@@ -217,9 +217,9 @@ class OffsetFetcherUtils {
     }
 
     static Map<TopicPartition, OffsetAndTimestamp> buildListOffsetsResult(
-        final Map<TopicPartition, Long> timestampsToSearch,
-        final Map<TopicPartition, ListOffsetData> fetchedOffsets,
-        BiFunction<TopicPartition, ListOffsetData, OffsetAndTimestamp> resultMapper) {
+            final Map<TopicPartition, Long> timestampsToSearch,
+            final Map<TopicPartition, ListOffsetData> fetchedOffsets,
+            BiFunction<TopicPartition, ListOffsetData, OffsetAndTimestamp> resultMapper) {
 
         HashMap<TopicPartition, OffsetAndTimestamp> offsetsResults = new HashMap<>(timestampsToSearch.size());
         for (Map.Entry<TopicPartition, Long> entry : timestampsToSearch.entrySet())
@@ -234,13 +234,13 @@ class OffsetFetcherUtils {
     }
 
     static Map<TopicPartition, OffsetAndTimestamp> buildOffsetsForTimesResult(
-        final Map<TopicPartition, Long> timestampsToSearch,
-        final Map<TopicPartition, ListOffsetData> fetchedOffsets) {
+            final Map<TopicPartition, Long> timestampsToSearch,
+            final Map<TopicPartition, ListOffsetData> fetchedOffsets) {
         return buildListOffsetsResult(timestampsToSearch, fetchedOffsets,
-            (topicPartition, offsetData) -> new OffsetAndTimestamp(
-                offsetData.offset,
-                offsetData.timestamp,
-                offsetData.leaderEpoch));
+                (topicPartition, offsetData) -> new OffsetAndTimestamp(
+                        offsetData.offset,
+                        offsetData.timestamp,
+                        offsetData.leaderEpoch));
     }
 
     static Map<TopicPartition, OffsetAndTimestampInternal> buildOffsetsForTimeInternalResult(
@@ -307,7 +307,7 @@ class OffsetFetcherUtils {
      * flag in {@link SubscriptionState}.
      *
      * @return {@code true} if the partition's end offset can be requested, {@code false} if there's already an
-     *         in-flight request
+     * in-flight request
      */
     boolean maybeSetPartitionEndOffsetRequest(TopicPartition partition) {
         if (subscriptionState.partitionEndOffsetRequested(partition)) {

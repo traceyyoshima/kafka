@@ -36,9 +36,9 @@ public class SlidingWindowStoreMaterializer<K, V> extends MaterializedStoreFacto
     private final long retentionPeriod;
 
     public SlidingWindowStoreMaterializer(
-        final MaterializedInternal<K, V, WindowStore<Bytes, byte[]>> materialized,
-        final SlidingWindows windows,
-        final EmitStrategy emitStrategy
+            final MaterializedInternal<K, V, WindowStore<Bytes, byte[]>> materialized,
+            final SlidingWindows windows,
+            final EmitStrategy emitStrategy
     ) {
         super(materialized, DslStoreFormat.TIMESTAMPED);
         this.windows = windows;
@@ -60,7 +60,7 @@ public class SlidingWindowStoreMaterializer<K, V> extends MaterializedStoreFacto
     @Override
     public StoreBuilder<?> builder() {
         final WindowBytesStoreSupplier supplier = materialized.storeSupplier() == null
-            ? dslStoreSuppliers().windowStore(new DslWindowParams(
+                ? dslStoreSuppliers().windowStore(new DslWindowParams(
                 materialized.storeName(),
                 Duration.ofMillis(retentionPeriod),
                 Duration.ofMillis(windows.timeDifferenceMs()),
@@ -68,21 +68,21 @@ public class SlidingWindowStoreMaterializer<K, V> extends MaterializedStoreFacto
                 emitStrategy,
                 true,
                 dslStoreFormat()
-            ))
-            : (WindowBytesStoreSupplier) materialized.storeSupplier();
+        ))
+                : (WindowBytesStoreSupplier) materialized.storeSupplier();
 
         final StoreBuilder<?> builder;
         if (supplier instanceof HeadersBytesStoreSupplier) {
             builder = Stores.timestampedWindowStoreWithHeadersBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde()
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde()
             );
         } else {
             builder = Stores.timestampedWindowStoreBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde()
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde()
             );
         }
 
@@ -104,7 +104,7 @@ public class SlidingWindowStoreMaterializer<K, V> extends MaterializedStoreFacto
 
     @Override
     public final long retentionPeriod() {
-        return  materialized.retention() != null
+        return materialized.retention() != null
                 ? materialized.retention().toMillis()
                 : windows.gracePeriodMs() + 2 * windows.timeDifferenceMs();
     }

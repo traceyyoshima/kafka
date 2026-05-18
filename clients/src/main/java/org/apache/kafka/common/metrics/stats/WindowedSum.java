@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * A {@link SampledStat} that maintains the sum of what it has seen.
  * This is a sampled version of {@link CumulativeSum}.
- *
+ * <p>
  * See also {@link WindowedCount} if you want to increment the value by 1 on each recording.
  */
 public class WindowedSum extends SampledStat {

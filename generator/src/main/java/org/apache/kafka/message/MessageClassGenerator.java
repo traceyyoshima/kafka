@@ -29,8 +29,8 @@ public interface MessageClassGenerator {
     /**
      * Generate the converter, and then write it out.
      *
-     * @param spec      The message to generate a converter for.
-     * @param writer    The writer to write out the state to.
+     * @param spec   The message to generate a converter for.
+     * @param writer The writer to write out the state to.
      */
     void generateAndWrite(MessageSpec spec, BufferedWriter writer) throws Exception;
 }

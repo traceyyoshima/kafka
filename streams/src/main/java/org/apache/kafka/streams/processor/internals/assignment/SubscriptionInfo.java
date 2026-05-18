@@ -63,21 +63,21 @@ public class SubscriptionInfo {
         final int subscriptionInfoLatestVersion = SubscriptionInfoData.HIGHEST_SUPPORTED_VERSION;
         if (subscriptionInfoLatestVersion != LATEST_SUPPORTED_VERSION) {
             throw new IllegalArgumentException(
-                "streams/src/main/resources/common/message/SubscriptionInfoData.json needs to be updated to match the " +
-                    "latest assignment protocol version. SubscriptionInfo only supports up to  ["
-                    + subscriptionInfoLatestVersion + "] but needs to support up to [" + LATEST_SUPPORTED_VERSION + "].");
+                    "streams/src/main/resources/common/message/SubscriptionInfoData.json needs to be updated to match the " +
+                            "latest assignment protocol version. SubscriptionInfo only supports up to  ["
+                            + subscriptionInfoLatestVersion + "] but needs to support up to [" + LATEST_SUPPORTED_VERSION + "].");
         }
     }
 
     private static void validateVersions(final int version, final int latestSupportedVersion) {
         if (latestSupportedVersion == UNKNOWN && (version < 1 || version > 2)) {
             throw new IllegalArgumentException(
-                "Only versions 1 and 2 are expected to use an UNKNOWN (-1) latest supported version. " +
-                    "Got " + version + "."
+                    "Only versions 1 and 2 are expected to use an UNKNOWN (-1) latest supported version. " +
+                            "Got " + version + "."
             );
         } else if (latestSupportedVersion != UNKNOWN && (version < 1 || version > latestSupportedVersion)) {
             throw new IllegalArgumentException(
-                "version must be between 1 and " + latestSupportedVersion + "; was: " + version
+                    "version must be between 1 and " + latestSupportedVersion + "; was: " + version
             );
         }
     }
@@ -132,12 +132,12 @@ public class SubscriptionInfo {
 
     public Map<String, String> clientTags() {
         return data.clientTags().stream()
-            .collect(
-                Collectors.toMap(
-                    clientTag -> new String(clientTag.key(), StandardCharsets.UTF_8),
-                    clientTag -> new String(clientTag.value(), StandardCharsets.UTF_8)
-                )
-            );
+                .collect(
+                        Collectors.toMap(
+                                clientTag -> new String(clientTag.key(), StandardCharsets.UTF_8),
+                                clientTag -> new String(clientTag.value(), StandardCharsets.UTF_8)
+                        )
+                );
     }
 
     public int errorCode() {
@@ -146,13 +146,13 @@ public class SubscriptionInfo {
 
     private List<ClientTag> buildClientTagsFromMap(final Map<String, String> clientTags) {
         return clientTags.entrySet().stream()
-            .map(clientTagEntry -> {
-                final ClientTag clientTag = new ClientTag();
-                clientTag.setKey(clientTagEntry.getKey().getBytes(StandardCharsets.UTF_8));
-                clientTag.setValue(clientTagEntry.getValue().getBytes(StandardCharsets.UTF_8));
-                return clientTag;
-            })
-            .collect(Collectors.toList());
+                .map(clientTagEntry -> {
+                    final ClientTag clientTag = new ClientTag();
+                    clientTag.setKey(clientTagEntry.getKey().getBytes(StandardCharsets.UTF_8));
+                    clientTag.setValue(clientTagEntry.getValue().getBytes(StandardCharsets.UTF_8));
+                    return clientTag;
+                })
+                .collect(Collectors.toList());
     }
 
     // For version > MIN_NAMED_TOPOLOGY_VERSION
@@ -177,9 +177,9 @@ public class SubscriptionInfo {
                 throw new TaskAssignmentException("Named topologies are not compatible with older protocol versions");
             }
             topicGroupIdToPartitionOffsetSum.computeIfAbsent(task.subtopology(), t -> new ArrayList<>()).add(
-                new SubscriptionInfoData.PartitionToOffsetSum()
-                    .setPartition(task.partition())
-                    .setOffsetSum(taskEntry.getValue()));
+                    new SubscriptionInfoData.PartitionToOffsetSum()
+                            .setPartition(task.partition())
+                            .setOffsetSum(taskEntry.getValue()));
         }
 
         data.setTaskOffsetSums(topicGroupIdToPartitionOffsetSum.entrySet().stream().map(t -> {
@@ -238,10 +238,10 @@ public class SubscriptionInfo {
                 prevTasksCache = getActiveTasksFromTaskOffsetSumMap(taskOffsetSums());
             } else {
                 prevTasksCache = Collections.unmodifiableSet(
-                    data.prevTasks()
-                        .stream()
-                        .map(t -> new TaskId(t.topicGroupId(), t.partition()))
-                        .collect(Collectors.toSet())
+                        data.prevTasks()
+                                .stream()
+                                .map(t -> new TaskId(t.topicGroupId(), t.partition()))
+                                .collect(Collectors.toSet())
                 );
             }
         }
@@ -254,10 +254,10 @@ public class SubscriptionInfo {
                 standbyTasksCache = getStandbyTasksFromTaskOffsetSumMap(taskOffsetSums());
             } else {
                 standbyTasksCache = Collections.unmodifiableSet(
-                    data.standbyTasks()
-                        .stream()
-                        .map(t -> new TaskId(t.topicGroupId(), t.partition()))
-                        .collect(Collectors.toSet())
+                        data.standbyTasks()
+                                .stream()
+                                .map(t -> new TaskId(t.topicGroupId(), t.partition()))
+                                .collect(Collectors.toSet())
                 );
             }
         }
@@ -271,16 +271,16 @@ public class SubscriptionInfo {
                 for (final TaskOffsetSum taskOffsetSum : data.taskOffsetSums()) {
                     if (data.version() >= MIN_NAMED_TOPOLOGY_VERSION) {
                         taskOffsetSumsCache.put(
-                            new TaskId(taskOffsetSum.topicGroupId(),
-                                       taskOffsetSum.partition(),
-                                       taskOffsetSum.namedTopology()),
-                            taskOffsetSum.offsetSum());
+                                new TaskId(taskOffsetSum.topicGroupId(),
+                                        taskOffsetSum.partition(),
+                                        taskOffsetSum.namedTopology()),
+                                taskOffsetSum.offsetSum());
                     } else {
                         for (final PartitionToOffsetSum partitionOffsetSum : taskOffsetSum.partitionToOffsetSum()) {
                             taskOffsetSumsCache.put(
-                                new TaskId(taskOffsetSum.topicGroupId(),
-                                           partitionOffsetSum.partition()),
-                                partitionOffsetSum.offsetSum()
+                                    new TaskId(taskOffsetSum.topicGroupId(),
+                                            partitionOffsetSum.partition()),
+                                    partitionOffsetSum.offsetSum()
                             );
                         }
                     }
@@ -295,8 +295,8 @@ public class SubscriptionInfo {
 
     public String userEndPoint() {
         return data.userEndPoint() == null || data.userEndPoint().length == 0
-            ? null
-            : new String(data.userEndPoint(), StandardCharsets.UTF_8);
+                ? null
+                : new String(data.userEndPoint(), StandardCharsets.UTF_8);
     }
 
     public static Set<TaskId> getActiveTasksFromTaskOffsetSumMap(final Map<TaskId, Long> taskOffsetSums) {
@@ -310,9 +310,9 @@ public class SubscriptionInfo {
     private static Set<TaskId> taskOffsetSumMapToTaskSet(final Map<TaskId, Long> taskOffsetSums,
                                                          final boolean getActiveTasks) {
         return taskOffsetSums.entrySet().stream()
-                   .filter(t -> getActiveTasks == (t.getValue() == Task.LATEST_OFFSET))
-                   .map(Map.Entry::getKey)
-                   .collect(Collectors.toSet());
+                .filter(t -> getActiveTasks == (t.getValue() == Task.LATEST_OFFSET))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -321,8 +321,8 @@ public class SubscriptionInfo {
     public ByteBuffer encode() {
         if (data.version() > LATEST_SUPPORTED_VERSION) {
             throw new IllegalStateException(
-                "Should never try to encode a SubscriptionInfo with version [" +
-                    data.version() + "] > LATEST_SUPPORTED_VERSION [" + LATEST_SUPPORTED_VERSION + "]"
+                    "Should never try to encode a SubscriptionInfo with version [" +
+                            data.version() + "] > LATEST_SUPPORTED_VERSION [" + LATEST_SUPPORTED_VERSION + "]"
             );
         } else return MessageUtil.toByteBufferAccessor(data, (short) data.version()).buffer();
     }
@@ -342,8 +342,8 @@ public class SubscriptionInfo {
             subscriptionInfoData.setVersion(version);
             subscriptionInfoData.setLatestSupportedVersion(latestSupportedVersion);
             LOG.info("Unable to decode subscription data: used version: {}; latest supported version: {}",
-                version,
-                latestSupportedVersion
+                    version,
+                    latestSupportedVersion
             );
             return new SubscriptionInfo(subscriptionInfoData);
         } else {
