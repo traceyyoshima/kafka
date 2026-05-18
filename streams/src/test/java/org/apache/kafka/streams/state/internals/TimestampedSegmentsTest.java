@@ -64,7 +64,7 @@ public class TimestampedSegmentsTest extends AbstractSegmentsTest<TimestampedSeg
     @Test
     public void shouldBaseSegmentIntervalOnRetentionAndNumSegments() {
         final TimestampedSegments segments =
-            new TimestampedSegments("test", METRICS_SCOPE, 8 * SEGMENT_INTERVAL, 2 * SEGMENT_INTERVAL);
+                new TimestampedSegments("test", METRICS_SCOPE, 8 * SEGMENT_INTERVAL, 2 * SEGMENT_INTERVAL);
         assertEquals(0, segments.segmentId(0));
         assertEquals(0, segments.segmentId(SEGMENT_INTERVAL));
         assertEquals(1, segments.segmentId(2 * SEGMENT_INTERVAL));

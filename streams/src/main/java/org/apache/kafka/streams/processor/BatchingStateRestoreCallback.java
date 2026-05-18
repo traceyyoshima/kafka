@@ -24,7 +24,7 @@ import java.util.Collection;
 
 /**
  * Interface for batching restoration of a {@link StateStore}
- *
+ * <p>
  * It is expected that implementations of this class will not call the {@link StateRestoreCallback#restore(byte[],
  * byte[])} method.
  */

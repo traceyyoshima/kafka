@@ -47,7 +47,7 @@ import java.util.concurrent.CompletableFuture;
  * "cluster.id", "broker.id" and all other properties prefixed with the config: "remote.log.metadata.manager.impl.prefix"
  * (default value is "rlmm.config.") are passed when {@link #configure(Map)} is invoked on this instance.
  * <p>
- *
+ * <p>
  * Implement {@link org.apache.kafka.common.metrics.Monitorable} to enable the manager to register metrics.
  * The following tags are automatically added to all metrics registered: <code>config</code> set to
  * <code>remote.log.metadata.manager.class.name</code>, and <code>class</code> set to the RemoteLogMetadataManager class name.
@@ -62,9 +62,9 @@ public interface RemoteLogMetadataManager extends Configurable, Closeable {
      * {@link #updateRemoteLogSegmentMetadata(RemoteLogSegmentMetadataUpdate)} should be used to update an existing RemoteLogSegmentMetadata.
      *
      * @param remoteLogSegmentMetadata metadata about the remote log segment.
+     * @return a CompletableFuture which will complete once this operation is finished.
      * @throws RemoteStorageException   if there are any storage related errors occurred.
      * @throws IllegalArgumentException if the given metadata instance does not have the state as {@link RemoteLogSegmentState#COPY_SEGMENT_STARTED}
-     * @return a CompletableFuture which will complete once this operation is finished.
      */
     CompletableFuture<Void> addRemoteLogSegmentMetadata(RemoteLogSegmentMetadata remoteLogSegmentMetadata) throws RemoteStorageException;
 
@@ -104,10 +104,10 @@ public interface RemoteLogMetadataManager extends Configurable, Closeable {
      * the remote partition deletion.
      *
      * @param remoteLogSegmentMetadataUpdate update of the remote log segment metadata.
+     * @return a CompletableFuture which will complete once this operation is finished.
      * @throws RemoteStorageException          if there are any storage related errors occurred.
      * @throws RemoteResourceNotFoundException when there are no resources associated with the given remoteLogSegmentMetadataUpdate.
      * @throws IllegalArgumentException        if the given metadata instance has the state as {@link RemoteLogSegmentState#COPY_SEGMENT_STARTED}
-     * @return a CompletableFuture which will complete once this operation is finished.
      */
     CompletableFuture<Void> updateRemoteLogSegmentMetadata(RemoteLogSegmentMetadataUpdate remoteLogSegmentMetadataUpdate)
             throws RemoteStorageException;
@@ -155,9 +155,9 @@ public interface RemoteLogMetadataManager extends Configurable, Closeable {
      * </ul>
      *
      * @param remotePartitionDeleteMetadata update on delete state of a partition.
+     * @return a CompletableFuture which will complete once this operation is finished.
      * @throws RemoteStorageException          if there are any storage related errors occurred.
      * @throws RemoteResourceNotFoundException when there are no resources associated with the given remotePartitionDeleteMetadata.
-     * @return a CompletableFuture which will complete once this operation is finished.
      */
     CompletableFuture<Void> putRemotePartitionDeleteMetadata(RemotePartitionDeleteMetadata remotePartitionDeleteMetadata)
             throws RemoteStorageException;
@@ -207,7 +207,7 @@ public interface RemoteLogMetadataManager extends Configurable, Closeable {
      * Returns total size of the log for the given leader epoch in remote storage.
      *
      * @param topicIdPartition topic partition for which size needs to be calculated.
-     * @param leaderEpoch Size will only include segments belonging to this epoch.
+     * @param leaderEpoch      Size will only include segments belonging to this epoch.
      * @return Total size of the log stored in remote storage in bytes.
      */
     long remoteLogSize(TopicIdPartition topicIdPartition, int leaderEpoch) throws RemoteStorageException;
@@ -220,9 +220,10 @@ public interface RemoteLogMetadataManager extends Configurable, Closeable {
      *     <li>The custom implementation can optimize by returning the next segment metadata that contains the txn index
      *     in the given epoch. If there are no segments with txn index in the given epoch, then return empty.</li>
      * </ul>
+     *
      * @param topicIdPartition topic partition to search for.
-     * @param epoch leader epoch for the given offset.
-     * @param offset offset
+     * @param epoch            leader epoch for the given offset.
+     * @param offset           offset
      * @return The next segment metadata. The transaction index may or may not exist in the returned segment metadata
      * which depends on the RLMM plugin implementation. The caller of this method handles for both the cases.
      * @throws RemoteStorageException if there are any storage related errors occurred.

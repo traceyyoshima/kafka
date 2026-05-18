@@ -82,6 +82,7 @@ public class CatalogTestFilter implements Filter<TestDescriptor> {
 
     /**
      * Create a filter that excludes tests that are missing from a given test catalog file.
+     *
      * @param testCatalogFileName path to a test catalog file
      */
     public static Filter<TestDescriptor> create(String testCatalogFileName) {
@@ -144,9 +145,9 @@ public class CatalogTestFilter implements Filter<TestDescriptor> {
         @Override
         public String toString() {
             return "TestAndMethod{" +
-                "testClass='" + testClass + '\'' +
-                ", testMethod='" + testMethod + '\'' +
-                '}';
+                    "testClass='" + testClass + '\'' +
+                    ", testMethod='" + testMethod + '\'' +
+                    '}';
         }
     }
 }

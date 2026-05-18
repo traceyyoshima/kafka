@@ -87,10 +87,10 @@ public class TimeOrderedSessionStoreUpgradeTest {
         final Properties props = StreamsTestUtils.getStreamsConfig();
         baseDir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-            baseDir,
-            Serdes.Bytes(),
-            Serdes.ByteArray(),
-            new StreamsConfig(props)
+                baseDir,
+                Serdes.Bytes(),
+                Serdes.ByteArray(),
+                new StreamsConfig(props)
         );
     }
 
@@ -125,7 +125,7 @@ public class TimeOrderedSessionStoreUpgradeTest {
     @Test
     public void shouldMigrateFromWithoutHeadersToWithHeaders() {
         final RocksDbTimeOrderedSessionBytesStoreSupplier oldSupplier =
-            new RocksDbTimeOrderedSessionBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
+                new RocksDbTimeOrderedSessionBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
 
         final SessionStore<Bytes, byte[]> oldStore = oldSupplier.get();
         oldStore.init(context, oldStore);
@@ -147,7 +147,7 @@ public class TimeOrderedSessionStoreUpgradeTest {
 
         // Reopen with headers
         final RocksDbTimeOrderedSessionHeadersBytesStoreSupplier newSupplier =
-            new RocksDbTimeOrderedSessionHeadersBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
+                new RocksDbTimeOrderedSessionHeadersBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
 
         final SessionStore<Bytes, byte[]> newStore = newSupplier.get();
         newStore.init(context, newStore);
@@ -174,7 +174,7 @@ public class TimeOrderedSessionStoreUpgradeTest {
     @Test
     public void shouldMigrateFromWithIndexToWithIndexAndHeaders() {
         final RocksDbTimeOrderedSessionBytesStoreSupplier oldSupplier =
-            new RocksDbTimeOrderedSessionBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
+                new RocksDbTimeOrderedSessionBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
 
         final SessionStore<Bytes, byte[]> oldStore = oldSupplier.get();
         oldStore.init(context, oldStore);
@@ -185,7 +185,7 @@ public class TimeOrderedSessionStoreUpgradeTest {
 
         // Upgrade to headers
         final RocksDbTimeOrderedSessionHeadersBytesStoreSupplier newSupplier =
-            new RocksDbTimeOrderedSessionHeadersBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
+                new RocksDbTimeOrderedSessionHeadersBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
 
         final SessionStore<Bytes, byte[]> newStore = newSupplier.get();
         newStore.init(context, newStore);
@@ -201,7 +201,7 @@ public class TimeOrderedSessionStoreUpgradeTest {
     @Test
     public void shouldMigrateFromWithoutIndexToWithIndexAndHeaders() {
         final RocksDbTimeOrderedSessionBytesStoreSupplier oldSupplier =
-            new RocksDbTimeOrderedSessionBytesStoreSupplier(STORE_NAME, RETENTION_MS, false);
+                new RocksDbTimeOrderedSessionBytesStoreSupplier(STORE_NAME, RETENTION_MS, false);
 
         final SessionStore<Bytes, byte[]> oldStore = oldSupplier.get();
         oldStore.init(context, oldStore);
@@ -212,7 +212,7 @@ public class TimeOrderedSessionStoreUpgradeTest {
 
         // Upgrade to both index and headers
         final RocksDbTimeOrderedSessionHeadersBytesStoreSupplier newSupplier =
-            new RocksDbTimeOrderedSessionHeadersBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
+                new RocksDbTimeOrderedSessionHeadersBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
 
         final SessionStore<Bytes, byte[]> newStore = newSupplier.get();
         newStore.init(context, newStore);
@@ -229,7 +229,7 @@ public class TimeOrderedSessionStoreUpgradeTest {
     public void shouldWriteAndReadWithHeaders() {
         // Start fresh with headers
         final RocksDbTimeOrderedSessionHeadersBytesStoreSupplier supplier =
-            new RocksDbTimeOrderedSessionHeadersBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
+                new RocksDbTimeOrderedSessionHeadersBytesStoreSupplier(STORE_NAME, RETENTION_MS, true);
 
         final SessionStore<Bytes, byte[]> store = supplier.get();
         store.init(context, store);
@@ -239,14 +239,14 @@ public class TimeOrderedSessionStoreUpgradeTest {
 
         // Write with empty headers
         store.put(new Windowed<>(key1, new SessionWindow(100, 200)),
-            serializeValueWithHeaders("value1".getBytes(), new RecordHeaders()));
+                serializeValueWithHeaders("value1".getBytes(), new RecordHeaders()));
 
         // Write with actual headers
         final RecordHeaders headersWithData = new RecordHeaders();
         headersWithData.add("header-key-1", "header-value-1".getBytes());
         headersWithData.add("header-key-2", "header-value-2".getBytes());
         store.put(new Windowed<>(key2, new SessionWindow(150, 250)),
-            serializeValueWithHeaders("value2".getBytes(), headersWithData));
+                serializeValueWithHeaders("value2".getBytes(), headersWithData));
 
         // Verify values
         assertEquals("value1", new String(Utils.rawAggregation(store.fetchSession(key1, 100, 200))));
@@ -285,12 +285,12 @@ public class TimeOrderedSessionStoreUpgradeTest {
     @Test
     public void shouldMigrateViaDslSupplierPath() {
         final BuiltInDslStoreSuppliers.RocksDBDslStoreSuppliers dslSuppliers =
-            new BuiltInDslStoreSuppliers.RocksDBDslStoreSuppliers();
+                new BuiltInDslStoreSuppliers.RocksDBDslStoreSuppliers();
 
         // Phase 1: create store via DSL supplier with PLAIN format
         final SessionBytesStoreSupplier oldSupplier = dslSuppliers.sessionStore(
-            new DslSessionParams(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                EmitStrategy.onWindowClose(), DslStoreFormat.PLAIN));
+                new DslSessionParams(STORE_NAME, Duration.ofMillis(RETENTION_MS),
+                        EmitStrategy.onWindowClose(), DslStoreFormat.PLAIN));
 
         final SessionStore<Bytes, byte[]> oldStore = oldSupplier.get();
         oldStore.init(context, oldStore);
@@ -303,8 +303,8 @@ public class TimeOrderedSessionStoreUpgradeTest {
 
         // Phase 2: create store via DSL supplier with HEADERS format
         final SessionBytesStoreSupplier newSupplier = dslSuppliers.sessionStore(
-            new DslSessionParams(STORE_NAME, Duration.ofMillis(RETENTION_MS),
-                EmitStrategy.onWindowClose(), DslStoreFormat.HEADERS));
+                new DslSessionParams(STORE_NAME, Duration.ofMillis(RETENTION_MS),
+                        EmitStrategy.onWindowClose(), DslStoreFormat.HEADERS));
 
         final SessionStore<Bytes, byte[]> newStore = newSupplier.get();
         newStore.init(context, newStore);
@@ -314,7 +314,7 @@ public class TimeOrderedSessionStoreUpgradeTest {
         assertNotNull(fetch, "Old data should be readable after upgrade via DSL supplier path");
         assertEquals("value1", new String(Utils.rawAggregation(fetch)));
         assertEquals(0, Utils.headers(fetch).toArray().length,
-            "Old data should have empty headers after migration");
+                "Old data should have empty headers after migration");
 
         newStore.close();
     }
@@ -326,8 +326,8 @@ public class TimeOrderedSessionStoreUpgradeTest {
 
     static Stream<Arguments> dslStoreFormats() {
         return Stream.of(
-            Arguments.of(false),
-            Arguments.of(true)
+                Arguments.of(false),
+                Arguments.of(true)
         );
     }
 
@@ -344,15 +344,15 @@ public class TimeOrderedSessionStoreUpgradeTest {
 
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
         streamsBuilder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), Serdes.String()))
-            .groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
-            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(500)))
-            .emitStrategy(EmitStrategy.onWindowClose())
-            .count(Materialized.<String, Long, SessionStore<Bytes, byte[]>>as(MATERIALIZED_STORE)
-                .withRetention(Duration.ofMinutes(5)));
+                .groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
+                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(500)))
+                .emitStrategy(EmitStrategy.onWindowClose())
+                .count(Materialized.<String, Long, SessionStore<Bytes, byte[]>>as(MATERIALIZED_STORE)
+                        .withRetention(Duration.ofMinutes(5)));
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(streamsBuilder.build(), dslProps)) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic(INPUT_TOPIC, new StringSerializer(), new StringSerializer());
+                    driver.createInputTopic(INPUT_TOPIC, new StringSerializer(), new StringSerializer());
 
             // Send records within the same session window (gap = 500ms)
             inputTopic.pipeInput("A", "v1", 100);

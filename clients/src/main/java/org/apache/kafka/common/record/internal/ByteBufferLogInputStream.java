@@ -59,8 +59,9 @@ class ByteBufferLogInputStream implements LogInputStream<MutableRecordBatch> {
 
     /**
      * Validates the header of the next batch and returns batch size.
+     *
      * @return next batch size including LOG_OVERHEAD if buffer contains header up to
-     *         magic byte, null otherwise
+     * magic byte, null otherwise
      * @throws CorruptRecordException if record size or magic is invalid
      */
     Integer nextBatchSize() throws CorruptRecordException {

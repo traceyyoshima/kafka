@@ -184,7 +184,7 @@ public class ClientCredentialsRequestFormatterFactoryTest extends OAuthBearerTes
      * 1. First Preference: File-based assertion (sasl.oauthbearer.assertion.file)
      * 2. Second Preference: Locally-generated assertion (sasl.oauthbearer.assertion.claim.iss + private key)
      * 3. Third Preference: Client secret (client.id + client.secret)
-     *
+     * <p>
      * When multiple authentication methods are configured simultaneously, the first preference
      * takes precedence and other configurations are silently ignored.
      */
@@ -294,10 +294,10 @@ public class ClientCredentialsRequestFormatterFactoryTest extends OAuthBearerTes
 
     private static Stream<Arguments> urlEncodeHeaderSupplier() {
         return Stream.of(
-            Arguments.of(Collections.emptyMap(), DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE),
-            Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, null), DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE),
-            Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, true), true),
-            Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, false), false)
+                Arguments.of(Collections.emptyMap(), DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE),
+                Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, null), DEFAULT_SASL_OAUTHBEARER_HEADER_URLENCODE),
+                Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, true), true),
+                Arguments.of(Collections.singletonMap(SASL_OAUTHBEARER_HEADER_URLENCODE, false), false)
         );
     }
 

@@ -118,14 +118,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
-        @ClusterConfigProperty(key = GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, value = "60000"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
-    }
+        types = {Type.KRAFT},
+        brokers = BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
+                @ClusterConfigProperty(key = GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, value = "60000"),
+                @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
+        }
 )
 public class PlaintextConsumerTest {
 
@@ -139,39 +139,39 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerSimpleConsumption() throws InterruptedException {
         testSimpleConsumption(cluster, Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerSimpleConsumption() throws InterruptedException {
         testSimpleConsumption(cluster, Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testClassicConsumerClusterResourceListener() throws InterruptedException {
         testClusterResourceListener(cluster, Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerClusterResourceListener() throws InterruptedException {
         testClusterResourceListener(cluster, Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testClassicConsumerCoordinatorFailover() throws InterruptedException {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            SESSION_TIMEOUT_MS_CONFIG, 5001,
-            HEARTBEAT_INTERVAL_MS_CONFIG, 1000,
-            // Use higher poll timeout to avoid consumer leaving the group due to timeout
-            MAX_POLL_INTERVAL_MS_CONFIG, 15000
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                SESSION_TIMEOUT_MS_CONFIG, 5001,
+                HEARTBEAT_INTERVAL_MS_CONFIG, 1000,
+                // Use higher poll timeout to avoid consumer leaving the group due to timeout
+                MAX_POLL_INTERVAL_MS_CONFIG, 15000
         );
         testCoordinatorFailover(cluster, config);
     }
@@ -179,42 +179,42 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testAsyncConsumeCoordinatorFailover() throws InterruptedException {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            // Use higher poll timeout to avoid consumer leaving the group due to timeout
-            MAX_POLL_INTERVAL_MS_CONFIG, 15000
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                // Use higher poll timeout to avoid consumer leaving the group due to timeout
+                MAX_POLL_INTERVAL_MS_CONFIG, 15000
         );
         testCoordinatorFailover(cluster, config);
     }
 
     @ClusterTest(
-        brokers = 1,
-        serverProperties = {
-            @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-            @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
-            @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1"),
-            @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1")
-        }
+            brokers = 1,
+            serverProperties = {
+                    @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                    @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
+                    @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1"),
+                    @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1")
+            }
     )
     public void testClassicConsumerCloseOnBrokerShutdown() {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         );
         testConsumerCloseOnBrokerShutdown(config);
     }
 
     @ClusterTest(
-        brokers = 1,
-        serverProperties = {
-            @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-            @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
-            @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1"),
-            @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1")
-        }
+            brokers = 1,
+            serverProperties = {
+                    @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                    @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
+                    @ClusterConfigProperty(key = "transaction.state.log.replication.factor", value = "1"),
+                    @ClusterConfigProperty(key = "transaction.state.log.min.isr", value = "1")
+            }
     )
     public void testAsyncConsumerCloseOnBrokerShutdown() {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            ENABLE_AUTO_COMMIT_CONFIG, false
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                ENABLE_AUTO_COMMIT_CONFIG, false
         );
         // Disabling auto commit so that commitSync() does not block the close timeout.
         testConsumerCloseOnBrokerShutdown(config);
@@ -246,14 +246,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerHeaders() throws Exception {
         testHeaders(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerHeaders() throws Exception {
         testHeaders(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -292,14 +292,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerHeadersSerializerDeserializer() throws Exception {
         testHeadersSerializeDeserialize(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerHeadersSerializerDeserializer() throws Exception {
         testHeadersSerializeDeserialize(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -308,20 +308,20 @@ public class PlaintextConsumerTest {
         Map<String, Object> consumerConfig = new HashMap<>(config);
         consumerConfig.put(VALUE_DESERIALIZER_CLASS_CONFIG, DeserializerImpl.class);
         Map<String, Object> producerConfig = Map.of(
-            VALUE_SERIALIZER_CLASS_CONFIG, SerializerImpl.class.getName()
+                VALUE_SERIALIZER_CLASS_CONFIG, SerializerImpl.class.getName()
         );
 
         try (Producer<byte[], byte[]> producer = cluster.producer(producerConfig);
              Consumer<byte[], byte[]> consumer = cluster.consumer(consumerConfig)
         ) {
             producer.send(new ProducerRecord<>(
-                TP.topic(), 
-                TP.partition(), 
-                null, 
-                "key".getBytes(), 
-                "value".getBytes())
+                    TP.topic(),
+                    TP.partition(),
+                    null,
+                    "key".getBytes(),
+                    "value".getBytes())
             );
-            
+
             assertEquals(0, consumer.assignment().size());
             consumer.assign(List.of(TP));
             assertEquals(1, consumer.assignment().size());
@@ -334,14 +334,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerAutoOffsetReset() throws Exception {
         testAutoOffsetReset(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerAutoOffsetReset() throws Exception {
         testAutoOffsetReset(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -359,21 +359,21 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerGroupConsumption() throws Exception {
         testGroupConsumption(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerGroupConsumption() throws Exception {
         testGroupConsumption(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -391,21 +391,21 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerGroupConsumptionWithTwoMembers() throws InterruptedException {
         testGroupConsumptionWithTwoMembers(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerGroupConsumptionWithTwoMembers() throws InterruptedException {
         testGroupConsumptionWithTwoMembers(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -454,14 +454,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerPartitionsFor() throws Exception {
         testPartitionsFor(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerPartitionsFor() throws Exception {
         testPartitionsFor(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -480,14 +480,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerPartitionsForAutoCreate() throws Exception {
         testPartitionsForAutoCreate(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerPartitionsForAutoCreate() throws Exception {
         testPartitionsForAutoCreate(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -496,8 +496,8 @@ public class PlaintextConsumerTest {
             // First call would create the topic
             consumer.partitionsFor("non-exist-topic");
             TestUtils.waitForCondition(
-                () -> !consumer.partitionsFor("non-exist-topic").isEmpty(), 
-                "Timed out while awaiting non empty partitions."
+                    () -> !consumer.partitionsFor("non-exist-topic").isEmpty(),
+                    "Timed out while awaiting non empty partitions."
             );
         }
     }
@@ -505,14 +505,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerPartitionsForInvalidTopic() {
         testPartitionsForInvalidTopic(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerPartitionsForInvalidTopic() {
         testPartitionsForInvalidTopic(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -525,15 +525,15 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerSeek() throws Exception {
         testSeek(
-            Map.of(GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
-        ));
+                Map.of(GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                ));
     }
 
     @ClusterTest
     public void testAsyncConsumerSeek() throws Exception {
         testSeek(
-            Map.of(GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
-        ));
+                Map.of(GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                ));
     }
 
     private void testSeek(Map<String, Object> consumerConfig) throws Exception {
@@ -584,14 +584,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerPartitionPauseAndResume() throws Exception {
         testPartitionPauseAndResume(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerPartitionPauseAndResume() throws Exception {
         testPartitionPauseAndResume(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -619,14 +619,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerInterceptors() throws Exception {
         testInterceptors(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerInterceptors() throws Exception {
         testInterceptors(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -637,17 +637,17 @@ public class PlaintextConsumerTest {
 
         // create producer with interceptor
         Map<String, Object> producerConfig = Map.of(
-            ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, MockProducerInterceptor.class.getName(),
-            KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
-            VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
-            "mock.interceptor.append", appendStr
+                ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, MockProducerInterceptor.class.getName(),
+                KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
+                VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
+                "mock.interceptor.append", appendStr
         );
         // create consumer with interceptor
         Map<String, Object> consumerConfigOverride = new HashMap<>(consumerConfig);
         consumerConfigOverride.put(INTERCEPTOR_CLASSES_CONFIG, MockConsumerInterceptor.class.getName());
         consumerConfigOverride.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         consumerConfigOverride.put(VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        
+
         try (Producer<String, String> producer = cluster.producer(producerConfig);
              Consumer<String, String> consumer = cluster.consumer(consumerConfigOverride)
         ) {
@@ -656,7 +656,7 @@ public class PlaintextConsumerTest {
             List<Future<RecordMetadata>> futures = new ArrayList<>();
             for (var i = 0; i < numRecords; i++) {
                 Future<RecordMetadata> future = producer.send(
-                    new ProducerRecord<>(TP.topic(), TP.partition(), "key " + i, "value " + i)
+                        new ProducerRecord<>(TP.topic(), TP.partition(), "key " + i, "value " + i)
                 );
                 futures.add(future);
             }
@@ -669,21 +669,21 @@ public class PlaintextConsumerTest {
 
             // send invalid record
             assertThrows(
-                Throwable.class,
-                () -> producer.send(null), 
-                "Should not allow sending a null record"
+                    Throwable.class,
+                    () -> producer.send(null),
+                    "Should not allow sending a null record"
             );
             assertEquals(
-                1, 
-                MockProducerInterceptor.ON_ERROR_COUNT.intValue(), 
-                "Interceptor should be notified about exception"
+                    1,
+                    MockProducerInterceptor.ON_ERROR_COUNT.intValue(),
+                    "Interceptor should be notified about exception"
             );
             assertEquals(
-                0, 
-                MockProducerInterceptor.ON_ERROR_WITH_METADATA_COUNT.intValue(),
-                "Interceptor should not receive metadata with an exception when record is null"
+                    0,
+                    MockProducerInterceptor.ON_ERROR_WITH_METADATA_COUNT.intValue(),
+                    "Interceptor should not receive metadata with an exception when record is null"
             );
-            
+
             consumer.assign(List.of(TP));
             consumer.seek(TP, 0);
 
@@ -720,14 +720,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerInterceptorsWithWrongKeyValue() throws Exception {
         testInterceptorsWithWrongKeyValue(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerInterceptorsWithWrongKeyValue() throws Exception {
         testInterceptorsWithWrongKeyValue(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -735,8 +735,8 @@ public class PlaintextConsumerTest {
         var appendStr = "mock";
         // create producer with interceptor that has different key and value types from the producer
         Map<String, Object> producerConfig = Map.of(
-            ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, MockProducerInterceptor.class.getName(),
-            "mock.interceptor.append", appendStr
+                ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, MockProducerInterceptor.class.getName(),
+                "mock.interceptor.append", appendStr
         );
         // create consumer with interceptor that has different key and value types from the consumer
         Map<String, Object> consumerConfigOverride = new HashMap<>(consumerConfig);
@@ -747,10 +747,10 @@ public class PlaintextConsumerTest {
         ) {
             // producing records should succeed
             producer.send(new ProducerRecord<>(
-                TP.topic(),
-                TP.partition(),
-                "key".getBytes(),
-                "value will not be modified".getBytes()
+                    TP.topic(),
+                    TP.partition(),
+                    "key".getBytes(),
+                    "value will not be modified".getBytes()
             ));
 
             consumer.assign(List.of(TP));
@@ -765,14 +765,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerConsumeMessagesWithCreateTime() throws Exception {
         testConsumeMessagesWithCreateTime(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerConsumeMessagesWithCreateTime() throws Exception {
         testConsumeMessagesWithCreateTime(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -800,14 +800,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerConsumeMessagesWithLogAppendTime() throws Exception {
         testConsumeMessagesWithLogAppendTime(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerConsumeMessagesWithLogAppendTime() throws Exception {
         testConsumeMessagesWithLogAppendTime(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -835,14 +835,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerListTopics() throws Exception {
         testListTopics(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerListTopics() throws Exception {
         testListTopics(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -873,16 +873,16 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerPauseStateNotPreservedByRebalance() throws Exception {
         testPauseStateNotPreservedByRebalance(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            SESSION_TIMEOUT_MS_CONFIG, 100,
-            HEARTBEAT_INTERVAL_MS_CONFIG, 30
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                SESSION_TIMEOUT_MS_CONFIG, 100,
+                HEARTBEAT_INTERVAL_MS_CONFIG, 30
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerPauseStateNotPreservedByRebalance() throws Exception {
         testPauseStateNotPreservedByRebalance(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -909,9 +909,9 @@ public class PlaintextConsumerTest {
     public void testClassicConsumerPerPartitionLeadMetricsCleanUpWithSubscribe() throws Exception {
         String consumerClientId = "testClassicConsumerPerPartitionLeadMetricsCleanUpWithSubscribe";
         testPerPartitionLeadMetricsCleanUpWithSubscribe(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId
         ), consumerClientId);
     }
 
@@ -919,21 +919,21 @@ public class PlaintextConsumerTest {
     public void testAsyncConsumerPerPartitionLeadMetricsCleanUpWithSubscribe() throws Exception {
         String consumerClientId = "testAsyncConsumerPerPartitionLeadMetricsCleanUpWithSubscribe";
         testPerPartitionLeadMetricsCleanUpWithSubscribe(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId
         ), consumerClientId);
     }
 
     private void testPerPartitionLeadMetricsCleanUpWithSubscribe(
-        Map<String, Object> consumerConfig,
-        String consumerClientId
+            Map<String, Object> consumerConfig,
+            String consumerClientId
     ) throws Exception {
         var numMessages = 1000;
         var topic2 = "topic2";
         var tp2 = new TopicPartition(TOPIC, 1);
         cluster.createTopic(topic2, 2, (short) BROKER_COUNT);
-        
+
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(consumerConfig)) {
             // send some messages.
             sendRecords(cluster, TP, numMessages);
@@ -947,15 +947,15 @@ public class PlaintextConsumerTest {
 
             // Verify the metric exist.
             Map<String, String> tags1 = Map.of(
-                "client-id", consumerClientId,
-                "topic", TP.topic(),
-                "partition", String.valueOf(TP.partition())
+                    "client-id", consumerClientId,
+                    "topic", TP.topic(),
+                    "partition", String.valueOf(TP.partition())
             );
 
             Map<String, String> tags2 = Map.of(
-                "client-id", consumerClientId,
-                "topic", tp2.topic(),
-                "partition", String.valueOf(tp2.partition())
+                    "client-id", consumerClientId,
+                    "topic", tp2.topic(),
+                    "partition", String.valueOf(tp2.partition())
             );
 
             var fetchLead0 = consumer.metrics().get(new MetricName("records-lead", "consumer-fetch-manager-metrics", "", tags1));
@@ -972,9 +972,9 @@ public class PlaintextConsumerTest {
     public void testClassicConsumerPerPartitionLagMetricsCleanUpWithSubscribe() throws Exception {
         String consumerClientId = "testClassicConsumerPerPartitionLagMetricsCleanUpWithSubscribe";
         testPerPartitionLagMetricsCleanUpWithSubscribe(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId
         ), consumerClientId);
     }
 
@@ -982,15 +982,15 @@ public class PlaintextConsumerTest {
     public void testAsyncConsumerPerPartitionLagMetricsCleanUpWithSubscribe() throws Exception {
         String consumerClientId = "testAsyncConsumerPerPartitionLagMetricsCleanUpWithSubscribe";
         testPerPartitionLagMetricsCleanUpWithSubscribe(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId
         ), consumerClientId);
     }
 
     private void testPerPartitionLagMetricsCleanUpWithSubscribe(
-        Map<String, Object> consumerConfig,
-        String consumerClientId
+            Map<String, Object> consumerConfig,
+            String consumerClientId
     ) throws Exception {
         int numMessages = 1000;
         var topic2 = "topic2";
@@ -1000,7 +1000,7 @@ public class PlaintextConsumerTest {
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(consumerConfig)) {
             // send some messages.
             sendRecords(cluster, TP, numMessages);
-            
+
             // Test subscribe
             // Create a consumer and consumer some messages.
             var listener = new TestConsumerReassignmentListener();
@@ -1010,15 +1010,15 @@ public class PlaintextConsumerTest {
 
             // Verify the metric exist.
             Map<String, String> tags1 = Map.of(
-                "client-id", consumerClientId,
-                "topic", TP.topic(),
-                "partition", String.valueOf(TP.partition())
+                    "client-id", consumerClientId,
+                    "topic", TP.topic(),
+                    "partition", String.valueOf(TP.partition())
             );
 
             Map<String, String> tags2 = Map.of(
-                "client-id", consumerClientId,
-                "topic", tp2.topic(),
-                "partition", String.valueOf(tp2.partition())
+                    "client-id", consumerClientId,
+                    "topic", tp2.topic(),
+                    "partition", String.valueOf(tp2.partition())
             );
 
             var fetchLag0 = consumer.metrics().get(new MetricName("records-lag", "consumer-fetch-manager-metrics", "", tags1));
@@ -1036,9 +1036,9 @@ public class PlaintextConsumerTest {
     public void testClassicConsumerPerPartitionLeadMetricsCleanUpWithAssign() throws Exception {
         String consumerClientId = "testClassicConsumerPerPartitionLeadMetricsCleanUpWithAssign";
         testPerPartitionLeadMetricsCleanUpWithAssign(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId
         ), consumerClientId);
     }
 
@@ -1046,35 +1046,35 @@ public class PlaintextConsumerTest {
     public void testAsyncConsumerPerPartitionLeadMetricsCleanUpWithAssign() throws Exception {
         String consumerClientId = "testAsyncConsumerPerPartitionLeadMetricsCleanUpWithAssign";
         testPerPartitionLeadMetricsCleanUpWithAssign(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId
         ), consumerClientId);
     }
 
     private void testPerPartitionLeadMetricsCleanUpWithAssign(
-        Map<String, Object> consumerConfig,
-        String consumerClientId
+            Map<String, Object> consumerConfig,
+            String consumerClientId
     ) throws Exception {
         var numMessages = 1000;
         var tp2 = new TopicPartition(TOPIC, 1);
         cluster.createTopic(TOPIC, 2, (short) BROKER_COUNT);
-        
+
         try (Producer<byte[], byte[]> producer = cluster.producer();
              Consumer<byte[], byte[]> consumer = cluster.consumer(consumerConfig)
         ) {
             // Test assign send some messages.
             sendRecords(producer, TP, numMessages, System.currentTimeMillis());
             sendRecords(producer, tp2, numMessages, System.currentTimeMillis());
-            
+
             consumer.assign(List.of(TP));
             var records = awaitNonEmptyRecords(consumer, TP);
 
             // Verify the metric exist.
             Map<String, String> tags = Map.of(
-                "client-id", consumerClientId,
-                "topic", TP.topic(),
-                "partition", String.valueOf(TP.partition()) 
+                    "client-id", consumerClientId,
+                    "topic", TP.topic(),
+                    "partition", String.valueOf(TP.partition())
             );
 
             var fetchLead = consumer.metrics().get(new MetricName("records-lead", "consumer-fetch-manager-metrics", "", tags));
@@ -1091,9 +1091,9 @@ public class PlaintextConsumerTest {
     public void testClassicConsumerPerPartitionLagMetricsCleanUpWithAssign() throws Exception {
         String consumerClientId = "testClassicConsumerPerPartitionLagMetricsCleanUpWithAssign";
         testPerPartitionLagMetricsCleanUpWithAssign(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId
         ), consumerClientId);
     }
 
@@ -1101,15 +1101,15 @@ public class PlaintextConsumerTest {
     public void testAsyncConsumerPerPartitionLagMetricsCleanUpWithAssign() throws Exception {
         String consumerClientId = "testAsyncConsumerPerPartitionLagMetricsCleanUpWithAssign";
         testPerPartitionLagMetricsCleanUpWithAssign(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId
         ), consumerClientId);
     }
 
     private void testPerPartitionLagMetricsCleanUpWithAssign(
-        Map<String, Object> consumerConfig,
-        String consumerClientId
+            Map<String, Object> consumerConfig,
+            String consumerClientId
     ) throws Exception {
         var numMessages = 1000;
         var tp2 = new TopicPartition(TOPIC, 1);
@@ -1127,9 +1127,9 @@ public class PlaintextConsumerTest {
 
             // Verify the metric exist.
             Map<String, String> tags = Map.of(
-                "client-id", consumerClientId,
-                "topic", TP.topic(),
-                "partition", String.valueOf(TP.partition())
+                    "client-id", consumerClientId,
+                    "topic", TP.topic(),
+                    "partition", String.valueOf(TP.partition())
             );
 
             var fetchLag = consumer.metrics().get(new MetricName("records-lag", "consumer-fetch-manager-metrics", "", tags));
@@ -1148,10 +1148,10 @@ public class PlaintextConsumerTest {
     public void testClassicConsumerPerPartitionLagMetricsWhenReadCommitted() throws Exception {
         String consumerClientId = "testClassicConsumerPerPartitionLagMetricsWhenReadCommitted";
         testPerPartitionLagMetricsWhenReadCommitted(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId,
-            ISOLATION_LEVEL_CONFIG, "read_committed"
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId,
+                ISOLATION_LEVEL_CONFIG, "read_committed"
         ), consumerClientId);
     }
 
@@ -1159,16 +1159,16 @@ public class PlaintextConsumerTest {
     public void testAsyncConsumerPerPartitionLagMetricsWhenReadCommitted() throws Exception {
         String consumerClientId = "testAsyncConsumerPerPartitionLagMetricsWhenReadCommitted";
         testPerPartitionLagMetricsWhenReadCommitted(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId,
-            ISOLATION_LEVEL_CONFIG, "read_committed"
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId,
+                ISOLATION_LEVEL_CONFIG, "read_committed"
         ), consumerClientId);
     }
 
     private void testPerPartitionLagMetricsWhenReadCommitted(
-        Map<String, Object> consumerConfig,
-        String consumerClientId
+            Map<String, Object> consumerConfig,
+            String consumerClientId
     ) throws Exception {
         var numMessages = 1000;
         var tp2 = new TopicPartition(TOPIC, 1);
@@ -1186,9 +1186,9 @@ public class PlaintextConsumerTest {
 
             // Verify the metric exist.
             Map<String, String> tags = Map.of(
-                "client-id", consumerClientId,
-                "topic", TP.topic(),
-                "partition", String.valueOf(TP.partition())
+                    "client-id", consumerClientId,
+                    "topic", TP.topic(),
+                    "partition", String.valueOf(TP.partition())
             );
 
             var fetchLag = consumer.metrics().get(new MetricName("records-lag", "consumer-fetch-manager-metrics", "", tags));
@@ -1200,10 +1200,10 @@ public class PlaintextConsumerTest {
     public void testClassicConsumerQuotaMetricsNotCreatedIfNoQuotasConfigured() throws Exception {
         var consumerClientId = "testClassicConsumerQuotaMetricsNotCreatedIfNoQuotasConfigured";
         testQuotaMetricsNotCreatedIfNoQuotasConfigured(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId,
-            ISOLATION_LEVEL_CONFIG, "read_committed"
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId,
+                ISOLATION_LEVEL_CONFIG, "read_committed"
         ), consumerClientId);
     }
 
@@ -1211,16 +1211,16 @@ public class PlaintextConsumerTest {
     public void testAsyncConsumerQuotaMetricsNotCreatedIfNoQuotasConfigured() throws Exception {
         var consumerClientId = "testAsyncConsumerQuotaMetricsNotCreatedIfNoQuotasConfigured";
         testQuotaMetricsNotCreatedIfNoQuotasConfigured(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, consumerClientId,
-            CLIENT_ID_CONFIG, consumerClientId,
-            ISOLATION_LEVEL_CONFIG, "read_committed"
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, consumerClientId,
+                CLIENT_ID_CONFIG, consumerClientId,
+                ISOLATION_LEVEL_CONFIG, "read_committed"
         ), consumerClientId);
     }
 
     private void testQuotaMetricsNotCreatedIfNoQuotasConfigured(
-        Map<String, Object> consumerConfig, 
-        String consumerClientId
+            Map<String, Object> consumerConfig,
+            String consumerClientId
     ) throws Exception {
         var producerClientId = UUID.randomUUID().toString();
         var numRecords = 1000;
@@ -1235,7 +1235,7 @@ public class PlaintextConsumerTest {
             consumer.assign(List.of(TP));
             consumer.seek(TP, 0);
             consumeAndVerifyRecords(consumer, TP, numRecords, 0, 0, startingTimestamp);
-            
+
             var brokers = cluster.brokers().values();
             brokers.forEach(broker -> assertNoMetric(broker, "byte-rate", QuotaType.PRODUCE, producerClientId));
             brokers.forEach(broker -> assertNoMetric(broker, "throttle-time", QuotaType.PRODUCE, producerClientId));
@@ -1252,18 +1252,18 @@ public class PlaintextConsumerTest {
         var metricName = broker.metrics().metricName(name, quotaType.toString(), "", "user", "", "client-id", clientId);
         assertNull(broker.metrics().metric(metricName), "Metric should not have been created " + metricName);
     }
-    
+
     @ClusterTest
     public void testClassicConsumerSeekThrowsIllegalStateIfPartitionsNotAssigned() throws Exception {
         testSeekThrowsIllegalStateIfPartitionsNotAssigned(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerSeekThrowsIllegalStateIfPartitionsNotAssigned() throws Exception {
         testSeekThrowsIllegalStateIfPartitionsNotAssigned(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -1278,20 +1278,20 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumingWithNullGroupId() throws Exception {
         testConsumingWithNullGroupId(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerConsumingWithNullGroupId() throws Exception {
         testConsumingWithNullGroupId(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
         ));
     }
 
@@ -1355,24 +1355,24 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerNullGroupIdNotSupportedIfCommitting() throws Exception {
         testNullGroupIdNotSupportedIfCommitting(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers(),
-            AUTO_OFFSET_RESET_CONFIG, "earliest",
-            CLIENT_ID_CONFIG, "consumer1"
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers(),
+                AUTO_OFFSET_RESET_CONFIG, "earliest",
+                CLIENT_ID_CONFIG, "consumer1"
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerNullGroupIdNotSupportedIfCommitting() throws Exception {
         testNullGroupIdNotSupportedIfCommitting(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers(),
-            AUTO_OFFSET_RESET_CONFIG, "earliest",
-            CLIENT_ID_CONFIG, "consumer1"
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers(),
+                AUTO_OFFSET_RESET_CONFIG, "earliest",
+                CLIENT_ID_CONFIG, "consumer1"
         ));
     }
 
@@ -1387,29 +1387,29 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerStaticConsumerDetectsNewPartitionCreatedAfterRestart() throws Exception {
         testStaticConsumerDetectsNewPartitionCreatedAfterRestart(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, "my-group-id",
-            GROUP_INSTANCE_ID_CONFIG, "my-instance-id",
-            METADATA_MAX_AGE_CONFIG, 100,
-            MAX_POLL_INTERVAL_MS_CONFIG, 6000
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, "my-group-id",
+                GROUP_INSTANCE_ID_CONFIG, "my-instance-id",
+                METADATA_MAX_AGE_CONFIG, 100,
+                MAX_POLL_INTERVAL_MS_CONFIG, 6000
         ));
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerStaticConsumerDetectsNewPartitionCreatedAfterRestart() throws Exception {
         testStaticConsumerDetectsNewPartitionCreatedAfterRestart(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, "my-group-id",
-            GROUP_INSTANCE_ID_CONFIG, "my-instance-id",
-            METADATA_MAX_AGE_CONFIG, 100,
-            MAX_POLL_INTERVAL_MS_CONFIG, 6000
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, "my-group-id",
+                GROUP_INSTANCE_ID_CONFIG, "my-instance-id",
+                METADATA_MAX_AGE_CONFIG, 100,
+                MAX_POLL_INTERVAL_MS_CONFIG, 6000
         ));
     }
 
@@ -1438,18 +1438,18 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerEndOffsets() throws Exception {
         testEndOffsets(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            METADATA_MAX_AGE_CONFIG, 100,
-            MAX_POLL_INTERVAL_MS_CONFIG, 6000
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                METADATA_MAX_AGE_CONFIG, 100,
+                MAX_POLL_INTERVAL_MS_CONFIG, 6000
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerEndOffsets() throws Exception {
         testEndOffsets(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            METADATA_MAX_AGE_CONFIG, 100,
-            MAX_POLL_INTERVAL_MS_CONFIG, 6000
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                METADATA_MAX_AGE_CONFIG, 100,
+                MAX_POLL_INTERVAL_MS_CONFIG, 6000
         ));
     }
 
@@ -1465,11 +1465,11 @@ public class PlaintextConsumerTest {
             for (var i = 0; i < numRecords; i++) {
                 var timestamp = startingTimestamp + (long) i;
                 ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(
-                    TP.topic(),
-                    TP.partition(),
-                    timestamp,
-                    ("key " + i).getBytes(),
-                    ("value " + i).getBytes()
+                        TP.topic(),
+                        TP.partition(),
+                        timestamp,
+                        ("key " + i).getBytes(),
+                        ("value " + i).getBytes()
                 );
                 producer.send(record);
             }
@@ -1486,14 +1486,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerFetchOffsetsForTime() throws Exception {
         testFetchOffsetsForTime(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerFetchOffsetsForTime() throws Exception {
         testFetchOffsetsForTime(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -1527,18 +1527,18 @@ public class PlaintextConsumerTest {
             assertEquals(Optional.of(0), timestampTp1.leaderEpoch());
         }
     }
-    
+
     @ClusterTest
     public void testClassicConsumerPositionRespectsTimeout() {
         testPositionRespectsTimeout(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerPositionRespectsTimeout() {
         testPositionRespectsTimeout(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -1551,18 +1551,18 @@ public class PlaintextConsumerTest {
             assertThrows(TimeoutException.class, () -> consumer.position(topicPartition, Duration.ofSeconds(3)));
         }
     }
-    
+
     @ClusterTest
     public void testClassicConsumerPositionRespectsWakeup() {
         testPositionRespectsWakeup(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerPositionRespectsWakeup() {
         testPositionRespectsWakeup(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -1581,22 +1581,22 @@ public class PlaintextConsumerTest {
             assertThrows(WakeupException.class, () -> consumer.position(topicPartition, Duration.ofSeconds(3)));
         }
     }
-    
+
     @ClusterTest
     public void testClassicConsumerPositionWithErrorConnectionRespectsWakeup() {
         testPositionWithErrorConnectionRespectsWakeup(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            // make sure the connection fails
-            BOOTSTRAP_SERVERS_CONFIG, "localhost:12345"
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                // make sure the connection fails
+                BOOTSTRAP_SERVERS_CONFIG, "localhost:12345"
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerPositionWithErrorConnectionRespectsWakeup() {
         testPositionWithErrorConnectionRespectsWakeup(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            // make sure the connection fails
-            BOOTSTRAP_SERVERS_CONFIG, "localhost:12345"
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                // make sure the connection fails
+                BOOTSTRAP_SERVERS_CONFIG, "localhost:12345"
         ));
     }
 
@@ -1620,12 +1620,12 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerCloseLeavesGroupOnInterrupt() throws Exception {
         testCloseLeavesGroupOnInterrupt(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            AUTO_OFFSET_RESET_CONFIG, "earliest",
-            GROUP_ID_CONFIG, "group_test,",
-            BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                AUTO_OFFSET_RESET_CONFIG, "earliest",
+                GROUP_ID_CONFIG, "group_test,",
+                BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
         ));
     }
 
@@ -1633,12 +1633,12 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testAsyncConsumerCloseLeavesGroupOnInterrupt() throws Exception {
         testCloseLeavesGroupOnInterrupt(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
-            AUTO_OFFSET_RESET_CONFIG, "earliest",
-            GROUP_ID_CONFIG, "group_test,",
-            BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                KEY_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName(),
+                AUTO_OFFSET_RESET_CONFIG, "earliest",
+                GROUP_ID_CONFIG, "group_test,",
+                BOOTSTRAP_SERVERS_CONFIG, cluster.bootstrapServers()
         ));
     }
 
@@ -1670,9 +1670,9 @@ public class PlaintextConsumerTest {
             var leaveGroupTimeoutMs = config.getInt(SESSION_TIMEOUT_MS_CONFIG) / 2;
 
             TestUtils.waitForCondition(
-                () -> checkGroupMemberEmpty(config), 
-                leaveGroupTimeoutMs, 
-                "Consumer did not leave the consumer group within " + leaveGroupTimeoutMs + " ms of close"
+                    () -> checkGroupMemberEmpty(config),
+                    leaveGroupTimeoutMs,
+                    "Consumer did not leave the consumer group within " + leaveGroupTimeoutMs + " ms of close"
             );
         }
     }
@@ -1691,14 +1691,14 @@ public class PlaintextConsumerTest {
     @ClusterTest
     public void testClassicConsumerOffsetRelatedWhenTimeoutZero() throws Exception {
         testOffsetRelatedWhenTimeoutZero(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT)
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerOffsetRelatedWhenTimeoutZero() throws Exception {
         testOffsetRelatedWhenTimeoutZero(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -1722,16 +1722,16 @@ public class PlaintextConsumerTest {
 
     private void sendCompressedMessages(int numRecords, TopicPartition tp) {
         Map<String, Object> config = Map.of(
-            COMPRESSION_TYPE_CONFIG, CompressionType.GZIP.name,
-            LINGER_MS_CONFIG, Integer.MAX_VALUE
+                COMPRESSION_TYPE_CONFIG, CompressionType.GZIP.name,
+                LINGER_MS_CONFIG, Integer.MAX_VALUE
         );
         try (Producer<byte[], byte[]> producer = cluster.producer(config)) {
             IntStream.range(0, numRecords).forEach(i -> producer.send(new ProducerRecord<>(
-                tp.topic(),
-                tp.partition(),
-                (long) i,
-                ("key " + i).getBytes(),
-                ("value " + i).getBytes()
+                    tp.topic(),
+                    tp.partition(),
+                    (long) i,
+                    ("key " + i).getBytes(),
+                    ("value " + i).getBytes()
             )));
         }
     }
@@ -1749,9 +1749,9 @@ public class PlaintextConsumerTest {
     /**
      * This test is to prove that the intermittent stalling that has been experienced when using the asynchronous
      * consumer, as filed under KAFKA-19259, have been fixed.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * The basic idea is to have one thread that produces a record every 500 ms. and the main thread that consumes
      * records without pausing between polls for much more than the produce delay. In the test case filed in
      * KAFKA-19259, the consumer sometimes pauses for up to 5-10 seconds despite records being produced every second.
@@ -1769,10 +1769,10 @@ public class PlaintextConsumerTest {
         try (var producer = cluster.producer()) {
             // Start a thread running that produces records at a relative trickle.
             executor.scheduleWithFixedDelay(
-                () -> producer.send(new ProducerRecord<>(testTopic, TestUtils.randomBytes(64))),
-                0,
-                produceDelay,
-                TimeUnit.MILLISECONDS
+                    () -> producer.send(new ProducerRecord<>(testTopic, TestUtils.randomBytes(64))),
+                    0,
+                    produceDelay,
+                    TimeUnit.MILLISECONDS
             );
 
             Map<String, Object> consumerConfig = Map.of(GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT));
@@ -1806,8 +1806,8 @@ public class PlaintextConsumerTest {
     }
 
     private ConsumerRecords<byte[], byte[]> awaitNonEmptyRecords(
-        Consumer<byte[], byte[]> consumer,
-        TopicPartition tp
+            Consumer<byte[], byte[]> consumer,
+            TopicPartition tp
     ) throws Exception {
         AtomicReference<ConsumerRecords<byte[], byte[]>> result = new AtomicReference<>();
 
@@ -1867,10 +1867,10 @@ public class PlaintextConsumerTest {
     }
 
     private void awaitMetricsCleanup(
-        Consumer<?, ?> consumer,
-        String metricName,
-        Map<String, String> tags1,
-        Map<String, String> tags2
+            Consumer<?, ?> consumer,
+            String metricName,
+            Map<String, String> tags1,
+            Map<String, String> tags2
     ) throws InterruptedException {
         var metric1 = new MetricName(metricName, "consumer-fetch-manager-metrics", "", tags1);
         var metric2 = new MetricName(metricName, "consumer-fetch-manager-metrics", "", tags2);
@@ -1921,8 +1921,8 @@ public class PlaintextConsumerTest {
 
             // Consumer 2 should have received another assignment callback due to the rebalance
             assertTrue(listener2.callsToAssigned > initialAssignedCalls,
-                "Consumer 2 should have received a rebalance after static consumer 1 left the group permanently. " +
-                "Initial assigned calls: " + initialAssignedCalls + ", current: " + listener2.callsToAssigned);
+                    "Consumer 2 should have received a rebalance after static consumer 1 left the group permanently. " +
+                            "Initial assigned calls: " + initialAssignedCalls + ", current: " + listener2.callsToAssigned);
         }
     }
 

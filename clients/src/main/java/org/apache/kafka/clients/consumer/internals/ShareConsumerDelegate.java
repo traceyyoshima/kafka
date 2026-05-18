@@ -23,7 +23,7 @@ import org.apache.kafka.common.metrics.Metrics;
 /**
  * This extension interface provides a handful of methods to expose internals of the {@link ShareConsumer} for
  * various tests.
- *
+ * <p>
  * <p/>
  *
  * <em>Note</em>: this is for internal use only and is not intended for use by end users. Internal users should

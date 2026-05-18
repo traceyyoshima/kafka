@@ -40,23 +40,23 @@ import java.util.stream.Collectors;
 /**
  * Attempt to recover a failed operation with retries and tolerance limits.
  * <p>
- *
+ * <p>
  * A retry is attempted if the operation throws a {@link RetriableException}. Retries are accompanied by exponential backoffs, starting with
  * {@link #RETRIES_DELAY_MIN_MS}, up to what is specified with {@link ConnectorConfig#errorMaxDelayInMillis()}.
  * Including the first attempt and future retries, the total time taken to evaluate the operation should be within
  * {@link ConnectorConfig#errorMaxDelayInMillis()} millis.
  * <p>
- *
+ * <p>
  * This executor will tolerate failures, as specified by {@link ConnectorConfig#errorToleranceType()}.
  * For transformations and converters, all exceptions are tolerated. For others operations, only {@link RetriableException} are tolerated.
  * <p>
- *
+ * <p>
  * There are three outcomes to executing an operation. It might succeed, in which case the result is returned to the caller.
  * If it fails, this class does one of these two things: (1) if the failure occurred due to a tolerable exception, then
  * set appropriate error reason in the {@link ProcessingContext} and return null, or (2) if the exception is not tolerated,
  * then it is wrapped into a ConnectException and rethrown to the caller.
  * <p>
- *
+ * <p>
  * Instances of this class are thread safe.
  * <p>
  */
@@ -67,6 +67,7 @@ public class RetryWithToleranceOperator<T> implements AutoCloseable {
     public static final long RETRIES_DELAY_MIN_MS = 300;
 
     private static final Map<Stage, Class<? extends Exception>> TOLERABLE_EXCEPTIONS = new HashMap<>();
+
     static {
         TOLERABLE_EXCEPTIONS.put(Stage.TRANSFORMATION, Exception.class);
         TOLERABLE_EXCEPTIONS.put(Stage.HEADER_CONVERTER, Exception.class);
@@ -108,10 +109,10 @@ public class RetryWithToleranceOperator<T> implements AutoCloseable {
      * allow for the operation to be started and stopped within the scope of a single {@link Operation}, and the
      * {@link #execute(ProcessingContext, Operation, Stage, Class)} method cannot be used.
      *
-     * @param context The {@link ProcessingContext} used to hold state about this operation
-     * @param stage The logical stage within the overall pipeline of the operation that has failed
+     * @param context        The {@link ProcessingContext} used to hold state about this operation
+     * @param stage          The logical stage within the overall pipeline of the operation that has failed
      * @param executingClass The class containing the operation implementation that failed
-     * @param error The error which caused the operation to fail
+     * @param error          The error which caused the operation to fail
      * @return A future which resolves when this failure has been persisted by all {@link ErrorReporter} instances
      * @throws ConnectException if the operation is not tolerated, and the overall pipeline should stop
      */
@@ -130,6 +131,7 @@ public class RetryWithToleranceOperator<T> implements AutoCloseable {
 
     /**
      * Report an error to all configured {@link ErrorReporter} instances.
+     *
      * @param context The context containing details of the error to report
      * @return A future which resolves when this failure has been persisted by all {@link ErrorReporter} instances
      */
@@ -159,11 +161,11 @@ public class RetryWithToleranceOperator<T> implements AutoCloseable {
      * <p>This method mutates the passed-in {@link ProcessingContext} with the number of attempts made to execute the
      * operation, and the last error encountered if no attempt was successful.
      *
-     * @param context The {@link ProcessingContext} used to hold state about this operation
-     * @param operation the recoverable operation
-     * @param stage The logical stage within the overall pipeline of the operation that has failed
+     * @param context        The {@link ProcessingContext} used to hold state about this operation
+     * @param operation      the recoverable operation
+     * @param stage          The logical stage within the overall pipeline of the operation that has failed
      * @param executingClass The class containing the operation implementation that failed
-     * @param <V> return type of the result of the operation.
+     * @param <V>            return type of the result of the operation.
      * @return result of the operation, or null if a prior exception occurred, or the operation only threw retriable or tolerable exceptions
      * @throws ConnectException wrapper if any non-tolerated exception was thrown by the operation
      */
@@ -191,9 +193,9 @@ public class RetryWithToleranceOperator<T> implements AutoCloseable {
      * <p>This method mutates the passed-in {@link ProcessingContext} with the number of attempts made to execute the
      * operation, and the last error encountered if no attempt was successful.
      *
-     * @param context The {@link ProcessingContext} used to hold state about this operation
+     * @param context   The {@link ProcessingContext} used to hold state about this operation
      * @param operation the operation to be executed.
-     * @param <V> the return type of the result of the operation.
+     * @param <V>       the return type of the result of the operation.
      * @return the result of the operation if it succeeded, or null if the operation only threw retriable exceptions
      * @throws Exception rethrow if any non-retriable exception was thrown by the operation
      */
@@ -233,7 +235,7 @@ public class RetryWithToleranceOperator<T> implements AutoCloseable {
      *
      * @param operation the operation to be executed.
      * @param tolerated the class of exceptions which can be tolerated if errors.tolerance=all
-     * @param <V> The return type of the result of the operation.
+     * @param <V>       The return type of the result of the operation.
      * @return the result of the operation, or null if the operation only threw retriable or tolerable exceptions
      * @throws ConnectException wrapper if any non-tolerated exception was thrown by the operation
      */
@@ -293,7 +295,8 @@ public class RetryWithToleranceOperator<T> implements AutoCloseable {
      * Do an exponential backoff bounded by {@link #RETRIES_DELAY_MIN_MS} and {@link #errorMaxDelayInMillis}
      * which can be exited prematurely if {@link #triggerStop()} is called or if the thread is interrupted.
      * Visible for testing.
-     * @param attempt the number indicating which backoff attempt it is (beginning with 1)
+     *
+     * @param attempt  the number indicating which backoff attempt it is (beginning with 1)
      * @param deadline the time in milliseconds until when retries can be attempted
      */
     void backoff(int attempt, long deadline) {

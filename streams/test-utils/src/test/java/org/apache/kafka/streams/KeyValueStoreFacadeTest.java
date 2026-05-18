@@ -78,37 +78,37 @@ public class KeyValueStoreFacadeTest {
     public void shouldPutWithUnknownTimestamp() {
         keyValueStoreFacade.put("key", "value");
         verify(mockedKeyValueTimestampStore)
-            .put("key", ValueAndTimestamp.make("value", ConsumerRecord.NO_TIMESTAMP));
+                .put("key", ValueAndTimestamp.make("value", ConsumerRecord.NO_TIMESTAMP));
     }
 
     @Test
     public void shouldPutIfAbsentWithUnknownTimestamp() {
         doReturn(null, ValueAndTimestamp.make("oldValue", 42L))
-            .when(mockedKeyValueTimestampStore)
-            .putIfAbsent("key", ValueAndTimestamp.make("value", ConsumerRecord.NO_TIMESTAMP));
+                .when(mockedKeyValueTimestampStore)
+                .putIfAbsent("key", ValueAndTimestamp.make("value", ConsumerRecord.NO_TIMESTAMP));
 
         assertNull(keyValueStoreFacade.putIfAbsent("key", "value"));
         assertThat(keyValueStoreFacade.putIfAbsent("key", "value"), is("oldValue"));
         verify(mockedKeyValueTimestampStore, times(2))
-            .putIfAbsent("key", ValueAndTimestamp.make("value", ConsumerRecord.NO_TIMESTAMP));
+                .putIfAbsent("key", ValueAndTimestamp.make("value", ConsumerRecord.NO_TIMESTAMP));
     }
 
     @Test
     public void shouldPutAllWithUnknownTimestamp() {
         keyValueStoreFacade.putAll(asList(
-            KeyValue.pair("key1", "value1"),
-            KeyValue.pair("key2", "value2")
+                KeyValue.pair("key1", "value1"),
+                KeyValue.pair("key2", "value2")
         ));
         verify(mockedKeyValueTimestampStore)
-            .put("key1", ValueAndTimestamp.make("value1", ConsumerRecord.NO_TIMESTAMP));
+                .put("key1", ValueAndTimestamp.make("value1", ConsumerRecord.NO_TIMESTAMP));
         verify(mockedKeyValueTimestampStore)
-            .put("key2", ValueAndTimestamp.make("value2", ConsumerRecord.NO_TIMESTAMP));
+                .put("key2", ValueAndTimestamp.make("value2", ConsumerRecord.NO_TIMESTAMP));
     }
 
     @Test
     public void shouldDeleteAndReturnPlainValue() {
         doReturn(null, ValueAndTimestamp.make("oldValue", 42L))
-            .when(mockedKeyValueTimestampStore).delete("key");
+                .when(mockedKeyValueTimestampStore).delete("key");
 
         assertNull(keyValueStoreFacade.delete("key"));
         assertThat(keyValueStoreFacade.delete("key"), is("oldValue"));
@@ -156,7 +156,7 @@ public class KeyValueStoreFacadeTest {
     @Test
     public void shouldReturnIsPersistent() {
         when(mockedKeyValueTimestampStore.persistent())
-            .thenReturn(true, false);
+                .thenReturn(true, false);
 
         assertThat(keyValueStoreFacade.persistent(), is(true));
         assertThat(keyValueStoreFacade.persistent(), is(false));
@@ -166,7 +166,7 @@ public class KeyValueStoreFacadeTest {
     @Test
     public void shouldReturnIsOpen() {
         when(mockedKeyValueTimestampStore.isOpen())
-            .thenReturn(true, false);
+                .thenReturn(true, false);
 
         assertThat(keyValueStoreFacade.isOpen(), is(true));
         assertThat(keyValueStoreFacade.isOpen(), is(false));
@@ -176,7 +176,7 @@ public class KeyValueStoreFacadeTest {
     @Test
     public void shouldReturnPosition() {
         when(mockedKeyValueTimestampStore.getPosition())
-            .thenReturn(Position.emptyPosition());
+                .thenReturn(Position.emptyPosition());
 
         assertThat(keyValueStoreFacade.getPosition(), is(Position.emptyPosition()));
         verify(mockedKeyValueTimestampStore, times(1)).getPosition();
@@ -184,18 +184,19 @@ public class KeyValueStoreFacadeTest {
 
     @Test
     public void shouldReturnQueryResult() {
-        final Query<Object> query = new Query<>() { };
+        final Query<Object> query = new Query<>() {
+        };
         final QueryConfig queryConfig = new QueryConfig(true);
         final QueryResult<Integer> queryResult = QueryResult.forResult(42);
         when(mockedKeyValueTimestampStore.<Integer>query(any(), any(), any())).thenReturn(queryResult);
 
         assertThat(
-            keyValueStoreFacade.query(
-                query,
-                PositionBound.unbounded(),
-                queryConfig
-            ),
-            is(queryResult));
+                keyValueStoreFacade.query(
+                        query,
+                        PositionBound.unbounded(),
+                        queryConfig
+                ),
+                is(queryResult));
         verify(mockedKeyValueTimestampStore).query(query, PositionBound.unbounded(), queryConfig);
     }
 }

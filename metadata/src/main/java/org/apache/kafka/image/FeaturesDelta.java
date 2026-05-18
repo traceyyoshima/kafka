@@ -81,7 +81,7 @@ public final class FeaturesDelta {
 
     public FeaturesImage apply() {
         Map<String, Short> newFinalizedVersions =
-            new HashMap<>(image.finalizedVersions().size());
+                new HashMap<>(image.finalizedVersions().size());
         for (Entry<String, Short> entry : image.finalizedVersions().entrySet()) {
             String name = entry.getKey();
             Optional<Short> change = changes.get(name);
@@ -114,8 +114,8 @@ public final class FeaturesDelta {
     @Override
     public String toString() {
         return "FeaturesDelta(" +
-            "changes=" + changes +
-            ", metadataVersionChange=" + metadataVersionChange +
-            ')';
+                "changes=" + changes +
+                ", metadataVersionChange=" + metadataVersionChange +
+                ')';
     }
 }

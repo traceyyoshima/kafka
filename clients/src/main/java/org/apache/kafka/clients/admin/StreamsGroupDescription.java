@@ -138,43 +138,43 @@ public class StreamsGroupDescription {
         }
         final StreamsGroupDescription that = (StreamsGroupDescription) o;
         return groupEpoch == that.groupEpoch
-            && targetAssignmentEpoch == that.targetAssignmentEpoch
-            && topologyEpoch == that.topologyEpoch
-            && Objects.equals(groupId, that.groupId)
-            && Objects.equals(subtopologies, that.subtopologies)
-            && Objects.equals(members, that.members)
-            && groupState == that.groupState
-            && Objects.equals(coordinator, that.coordinator)
-            && Objects.equals(authorizedOperations, that.authorizedOperations);
+                && targetAssignmentEpoch == that.targetAssignmentEpoch
+                && topologyEpoch == that.topologyEpoch
+                && Objects.equals(groupId, that.groupId)
+                && Objects.equals(subtopologies, that.subtopologies)
+                && Objects.equals(members, that.members)
+                && groupState == that.groupState
+                && Objects.equals(coordinator, that.coordinator)
+                && Objects.equals(authorizedOperations, that.authorizedOperations);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-            groupId,
-            groupEpoch,
-            targetAssignmentEpoch,
-            topologyEpoch,
-            subtopologies,
-            members,
-            groupState,
-            coordinator,
-            authorizedOperations
+                groupId,
+                groupEpoch,
+                targetAssignmentEpoch,
+                topologyEpoch,
+                subtopologies,
+                members,
+                groupState,
+                coordinator,
+                authorizedOperations
         );
     }
 
     @Override
     public String toString() {
         return "(" +
-            "groupId=" + groupId +
-            ", groupEpoch=" + groupEpoch +
-            ", targetAssignmentEpoch=" + targetAssignmentEpoch +
-            ", topologyEpoch=" + topologyEpoch +
-            ", subtopologies=" + subtopologies.stream().map(StreamsGroupSubtopologyDescription::toString).collect(Collectors.joining(",")) +
-            ", members=" + members.stream().map(StreamsGroupMemberDescription::toString).collect(Collectors.joining(",")) +
-            ", groupState=" + groupState +
-            ", coordinator=" + coordinator +
-            ", authorizedOperations=" + authorizedOperations.stream().map(AclOperation::toString).collect(Collectors.joining(",")) +
-            ')';
+                "groupId=" + groupId +
+                ", groupEpoch=" + groupEpoch +
+                ", targetAssignmentEpoch=" + targetAssignmentEpoch +
+                ", topologyEpoch=" + topologyEpoch +
+                ", subtopologies=" + subtopologies.stream().map(StreamsGroupSubtopologyDescription::toString).collect(Collectors.joining(",")) +
+                ", members=" + members.stream().map(StreamsGroupMemberDescription::toString).collect(Collectors.joining(",")) +
+                ", groupState=" + groupState +
+                ", coordinator=" + coordinator +
+                ", authorizedOperations=" + authorizedOperations.stream().map(AclOperation::toString).collect(Collectors.joining(",")) +
+                ')';
     }
 }

@@ -27,14 +27,14 @@ import static org.apache.kafka.common.metrics.internals.MetricsUtils.convert;
 /**
  * The {@link TokenBucket} is a {@link MeasurableStat} implementing a token bucket algorithm
  * that is usable within a {@link org.apache.kafka.common.metrics.Sensor}.
- *
+ * <p>
  * The {@link Quota#bound()} defined the refill rate of the bucket while the maximum burst or
  * the maximum number of credits of the bucket is defined by
  * {@link MetricConfig#samples() * MetricConfig#timeWindowMs() * Quota#bound()}.
- *
+ * <p>
  * The quota is considered as exhausted when the amount of remaining credits in the bucket
  * is below zero. The enforcement is done by the {@link org.apache.kafka.common.metrics.Sensor}.
- *
+ * <p>
  * Token Bucket vs Rate based Quota:
  * The current sampled rate based quota does not cope well with bursty workloads. The issue is
  * that a unique and large sample can hold the average above the quota until it is discarded.
@@ -48,7 +48,7 @@ import static org.apache.kafka.common.metrics.internals.MetricsUtils.convert;
  * computed as follow: ((R - Q / Q * S * W)) = ((5.6 - 5) / 5 * 100 * 1) = 12 secs. In practice,
  * the average rate won't go below the quota before the burst is dropped from the samples so one
  * must wait 100s (S * W).
- *
+ * <p>
  * The token bucket relies on continuously updated amount of credits. Therefore, it does not
  * suffers from the above issue. The same example would work as follow:
  * - Quota (Q) = 5
@@ -103,9 +103,9 @@ public class TokenBucket implements MeasurableStat {
     @Override
     public String toString() {
         return "TokenBucket(" +
-            "unit=" + unit +
-            ", tokens=" + tokens +
-            ", lastUpdateMs=" + lastUpdateMs +
-            ')';
+                "unit=" + unit +
+                ", tokens=" + tokens +
+                ", lastUpdateMs=" + lastUpdateMs +
+                ')';
     }
 }

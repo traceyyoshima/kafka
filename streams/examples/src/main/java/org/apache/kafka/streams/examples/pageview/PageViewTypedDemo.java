@@ -58,17 +58,17 @@ import java.util.concurrent.CountDownLatch;
  *
  * <p>The inputs for this example are:
  * - Topic: streams-pageview-input
- *   Key Format: (String) USER_ID
- *   Value Format: (JSON) {"_t": "pv", "user": (String USER_ID), "page": (String PAGE_ID), "timestamp": (long ms TIMESTAMP)}
+ * Key Format: (String) USER_ID
+ * Value Format: (JSON) {"_t": "pv", "user": (String USER_ID), "page": (String PAGE_ID), "timestamp": (long ms TIMESTAMP)}
  * <p>
  * - Topic: streams-userprofile-input
- *   Key Format: (String) USER_ID
- *   Value Format: (JSON) {"_t": "up", "region": (String REGION), "timestamp": (long ms TIMESTAMP)}
+ * Key Format: (String) USER_ID
+ * Value Format: (JSON) {"_t": "up", "region": (String REGION), "timestamp": (long ms TIMESTAMP)}
  *
  * <p>To observe the results, read the output topic (e.g., via bin/kafka-console-consumer)
  * - Topic: streams-pageviewstats-typed-output
- *   Key Format: (JSON) {"_t": "wpvbr", "windowStart": (long ms WINDOW_TIMESTAMP), "region": (String REGION)}
- *   Value Format: (JSON) {"_t": "rc", "count": (long REGION_COUNT), "region": (String REGION)}
+ * Key Format: (JSON) {"_t": "wpvbr", "windowStart": (long ms WINDOW_TIMESTAMP), "region": (String REGION)}
+ * Value Format: (JSON) {"_t": "rc", "count": (long REGION_COUNT), "region": (String REGION)}
  *
  * <p>Note, the "_t" field is necessary to help Jackson identify the correct class for deserialization in the
  * generic {@link JSONSerde}. If you instead specify a specific serde per class, you won't need the extra "_t" field.
@@ -85,7 +85,8 @@ public class PageViewTypedDemo {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
         @Override
-        public void configure(final Map<String, ?> configs, final boolean isKey) {}
+        public void configure(final Map<String, ?> configs, final boolean isKey) {
+        }
 
         @SuppressWarnings("unchecked")
         @Override
@@ -115,7 +116,8 @@ public class PageViewTypedDemo {
         }
 
         @Override
-        public void close() {}
+        public void close() {
+        }
 
         @Override
         public Serializer<T> serializer() {
@@ -134,11 +136,11 @@ public class PageViewTypedDemo {
     @SuppressWarnings("DefaultAnnotationParam") // being explicit for the example
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_t")
     @JsonSubTypes({
-        @JsonSubTypes.Type(value = PageView.class, name = "pv"),
-        @JsonSubTypes.Type(value = UserProfile.class, name = "up"),
-        @JsonSubTypes.Type(value = PageViewByRegion.class, name = "pvbr"),
-        @JsonSubTypes.Type(value = WindowedPageViewByRegion.class, name = "wpvbr"),
-        @JsonSubTypes.Type(value = RegionCount.class, name = "rc")
+            @JsonSubTypes.Type(value = PageView.class, name = "pv"),
+            @JsonSubTypes.Type(value = UserProfile.class, name = "up"),
+            @JsonSubTypes.Type(value = PageViewByRegion.class, name = "pvbr"),
+            @JsonSubTypes.Type(value = WindowedPageViewByRegion.class, name = "wpvbr"),
+            @JsonSubTypes.Type(value = RegionCount.class, name = "rc")
     })
     public interface JSONSerdeCompatible {
 
@@ -194,34 +196,34 @@ public class PageViewTypedDemo {
         final Duration duration24Hours = Duration.ofHours(24);
 
         final KStream<WindowedPageViewByRegion, RegionCount> regionCount = views
-            .leftJoin(users, (view, profile) -> {
-                final PageViewByRegion viewByRegion = new PageViewByRegion();
-                viewByRegion.user = view.user;
-                viewByRegion.page = view.page;
+                .leftJoin(users, (view, profile) -> {
+                    final PageViewByRegion viewByRegion = new PageViewByRegion();
+                    viewByRegion.user = view.user;
+                    viewByRegion.page = view.page;
 
-                if (profile != null) {
-                    viewByRegion.region = profile.region;
-                } else {
-                    viewByRegion.region = "UNKNOWN";
-                }
-                return viewByRegion;
-            })
-            .map((user, viewRegion) -> new KeyValue<>(viewRegion.region, viewRegion))
-            .groupByKey(Grouped.with(Serdes.String(), new JSONSerde<>()))
-            .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofDays(7), duration24Hours).advanceBy(Duration.ofSeconds(1)))
-            .count()
-            .toStream()
-            .map((key, value) -> {
-                final WindowedPageViewByRegion wViewByRegion = new WindowedPageViewByRegion();
-                wViewByRegion.windowStart = key.window().start();
-                wViewByRegion.region = key.key();
+                    if (profile != null) {
+                        viewByRegion.region = profile.region;
+                    } else {
+                        viewByRegion.region = "UNKNOWN";
+                    }
+                    return viewByRegion;
+                })
+                .map((user, viewRegion) -> new KeyValue<>(viewRegion.region, viewRegion))
+                .groupByKey(Grouped.with(Serdes.String(), new JSONSerde<>()))
+                .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofDays(7), duration24Hours).advanceBy(Duration.ofSeconds(1)))
+                .count()
+                .toStream()
+                .map((key, value) -> {
+                    final WindowedPageViewByRegion wViewByRegion = new WindowedPageViewByRegion();
+                    wViewByRegion.windowStart = key.window().start();
+                    wViewByRegion.region = key.key();
 
-                final RegionCount rCount = new RegionCount();
-                rCount.region = key.key();
-                rCount.count = value;
+                    final RegionCount rCount = new RegionCount();
+                    rCount.region = key.key();
+                    rCount.count = value;
 
-                return new KeyValue<>(wViewByRegion, rCount);
-            });
+                    return new KeyValue<>(wViewByRegion, rCount);
+                });
 
         // write to the result topic
         regionCount.to("streams-pageviewstats-typed-output", Produced.with(new JSONSerde<>(), new JSONSerde<>()));

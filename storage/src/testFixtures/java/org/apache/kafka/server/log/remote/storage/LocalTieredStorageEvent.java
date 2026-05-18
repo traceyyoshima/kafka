@@ -86,8 +86,8 @@ public final class LocalTieredStorageEvent implements Comparable<LocalTieredStor
      *
      * @param event The event to compare
      * @return true if the current instance was generated after the given {@code event},
-     *         false if events are equal or the current instance was generated before the
-     *         given {@code event}.
+     * false if events are equal or the current instance was generated before the
+     * given {@code event}.
      */
     public boolean isAfter(final LocalTieredStorageEvent event) {
         return event.timestamp < timestamp;

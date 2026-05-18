@@ -39,8 +39,8 @@ public record TopicsImage(ImmutableMap<Uuid, TopicImage> topicsById, ImmutableMa
 
     public TopicsImage including(TopicImage topic) {
         return new TopicsImage(
-            this.topicsById.updated(topic.id(), topic),
-            this.topicsByName.updated(topic.name(), topic));
+                this.topicsById.updated(topic.id(), topic),
+                this.topicsByName.updated(topic.name(), topic));
     }
 
     public boolean isEmpty() {
@@ -92,9 +92,10 @@ public record TopicsImage(ImmutableMap<Uuid, TopicImage> topicsById, ImmutableMa
 
     /**
      * The list of replicas hosting the specified partition
-     * @param topicId        The topic ID
-     * @param partitionId    The partition ID
-     * @return               The list of replicas
+     *
+     * @param topicId     The topic ID
+     * @param partitionId The partition ID
+     * @return The list of replicas
      */
     public List<Integer> partitionReplicas(Uuid topicId, int partitionId) {
         PartitionRegistration partition = getPartition(topicId, partitionId);

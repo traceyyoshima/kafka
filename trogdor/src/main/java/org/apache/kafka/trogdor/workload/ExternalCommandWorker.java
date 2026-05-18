@@ -48,30 +48,30 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * ExternalCommandWorker starts an external process to run a Trogdor command.
- *
+ * <p>
  * The worker communicates with the external process over the standard input and output streams.
- *
+ * <p>
  * When the process is first launched, ExternalCommandWorker will send a message on standard
  * input describing the task ID and the workload.  This message will not contain line breaks.
  * It will have this JSON format:
  * {"id":<task ID string>, "workload":<configured workload JSON object>}
- *
+ * <p>
  * ExternalCommandWorker will log anything that the process writes to stderr, but will take
  * no other action with it.
- *
+ * <p>
  * If the process sends a single-line JSON object to stdout, ExternalCommandWorker will parse it.
  * The JSON object can contain the following fields:
  * - status: If the object contains this field, the status will be set to the given value.
  * - error: If the object contains this field, the error will be set to the given value.
- *   Once an error occurs, we will try to terminate the process.
+ * Once an error occurs, we will try to terminate the process.
  * - log: If the object contains this field, a log message will be issued with this text.
- *
+ * <p>
  * Note that standard output is buffered by default.  The subprocess may wish
  * to flush it after writing its status JSON.  This will ensure that the status
  * is seen in a timely fashion.
- *
+ * <p>
  * If the process sends a non-JSON line to stdout, the worker will log it.
- *
+ * <p>
  * If the process exits, ExternalCommandWorker will finish.  If the process exits unsuccessfully,
  * this is considered an error.  If the worker needs to stop the process, it will start by sending
  * a SIGTERM.  If this does not have the required effect, it will send a SIGKILL, once the shutdown
@@ -143,7 +143,7 @@ public class ExternalCommandWorker implements TaskWorker {
         this.status = status;
         this.doneFuture = doneFuture;
         this.executor = Executors.newCachedThreadPool(
-            ThreadUtils.createThreadFactory("ExternalCommandWorkerThread%d", false));
+                ThreadUtils.createThreadFactory("ExternalCommandWorkerThread%d", false));
         Process process;
         try {
             process = startProcess();
@@ -237,7 +237,7 @@ public class ExternalCommandWorker implements TaskWorker {
         public void run() {
             log.trace("{}: starting stderr monitor.", id);
             try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8))) {
+                    new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8))) {
                 String line;
                 while (true) {
                     try {
@@ -267,7 +267,7 @@ public class ExternalCommandWorker implements TaskWorker {
         @Override
         public void run() {
             OutputStreamWriter stdinWriter = new OutputStreamWriter(
-                process.getOutputStream(), StandardCharsets.UTF_8);
+                    process.getOutputStream(), StandardCharsets.UTF_8);
             try {
                 while (true) {
                     log.info("{}: stdin writer ready.", id);
@@ -386,7 +386,7 @@ public class ExternalCommandWorker implements TaskWorker {
         log.info("{}: Deactivating ExternalCommandWorker.", id);
         terminatorActionQueue.add(TerminatorAction.DESTROY);
         int shutdownGracePeriodMs = spec.shutdownGracePeriodMs().isPresent() ?
-            spec.shutdownGracePeriodMs().get() : DEFAULT_SHUTDOWN_GRACE_PERIOD_MS;
+                spec.shutdownGracePeriodMs().get() : DEFAULT_SHUTDOWN_GRACE_PERIOD_MS;
         if (!executor.awaitTermination(shutdownGracePeriodMs, TimeUnit.MILLISECONDS)) {
             terminatorActionQueue.add(TerminatorAction.DESTROY_FORCIBLY);
             executor.awaitTermination(1, TimeUnit.DAYS);

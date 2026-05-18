@@ -68,7 +68,7 @@ public class MockInternalTopicManager extends InternalTopicManager {
                                                     final Set<String> tempUnknownTopics) {
         final Map<String, Integer> partitions = new HashMap<>();
         for (final String topic : topics) {
-            partitions.put(topic, restoreConsumer.partitionsFor(topic) == null ?  null : restoreConsumer.partitionsFor(topic).size());
+            partitions.put(topic, restoreConsumer.partitionsFor(topic) == null ? null : restoreConsumer.partitionsFor(topic).size());
         }
 
         return partitions;

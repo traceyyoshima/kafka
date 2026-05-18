@@ -31,12 +31,12 @@ import java.util.Map;
 
 /**
  * Possible error codes:
- *
+ * <p>
  * - {@link Errors#UNSUPPORTED_FOR_MESSAGE_FORMAT} If the message format does not support lookup by timestamp
  * - {@link Errors#TOPIC_AUTHORIZATION_FAILED} If the user does not have DESCRIBE access to a requested topic
  * - {@link Errors#REPLICA_NOT_AVAILABLE} If the request is received by a broker with version < 2.6 which is not a replica
  * - {@link Errors#NOT_LEADER_OR_FOLLOWER} If the broker is not a leader or follower and either the provided leader epoch
- *     matches the known leader epoch on the broker or is empty
+ * matches the known leader epoch on the broker or is empty
  * - {@link Errors#FENCED_LEADER_EPOCH} If the epoch is lower than the broker's epoch
  * - {@link Errors#UNKNOWN_LEADER_EPOCH} If the epoch is larger than the broker's epoch
  * - {@link Errors#UNKNOWN_TOPIC_OR_PARTITION} If the broker does not have metadata for a topic or partition
@@ -80,9 +80,9 @@ public class ListOffsetsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         topics().forEach(topic ->
-            topic.partitions().forEach(partition ->
-                updateErrorCounts(errorCounts, Errors.forCode(partition.errorCode()))
-            )
+                topic.partitions().forEach(partition ->
+                        updateErrorCounts(errorCounts, Errors.forCode(partition.errorCode()))
+                )
         );
         return errorCounts;
     }
@@ -103,12 +103,12 @@ public class ListOffsetsResponse extends AbstractResponse {
 
     public static ListOffsetsTopicResponse singletonListOffsetsTopicResponse(TopicPartition tp, Errors error, long timestamp, long offset, int epoch) {
         return new ListOffsetsTopicResponse()
-                 .setName(tp.topic())
-                 .setPartitions(List.of(new ListOffsetsPartitionResponse()
-                         .setPartitionIndex(tp.partition())
-                         .setErrorCode(error.code())
-                         .setTimestamp(timestamp)
-                         .setOffset(offset)
-                         .setLeaderEpoch(epoch)));
+                .setName(tp.topic())
+                .setPartitions(List.of(new ListOffsetsPartitionResponse()
+                        .setPartitionIndex(tp.partition())
+                        .setErrorCode(error.code())
+                        .setTimestamp(timestamp)
+                        .setOffset(offset)
+                        .setLeaderEpoch(epoch)));
     }
 }

@@ -36,7 +36,7 @@ public class LogTruncationException extends OffsetOutOfRangeException {
     /**
      * Constructs a new LogTruncationException with the fetch offsets and divergent offsets.
      *
-     * @param fetchOffsets The fetch offsets that were out of range
+     * @param fetchOffsets     The fetch offsets that were out of range
      * @param divergentOffsets The offsets where the consumer's log diverged from the broker's log
      */
     public LogTruncationException(Map<TopicPartition, Long> fetchOffsets,
@@ -47,8 +47,8 @@ public class LogTruncationException extends OffsetOutOfRangeException {
     /**
      * Constructs a new LogTruncationException with a custom message.
      *
-     * @param message The detail message
-     * @param fetchOffsets The fetch offsets that were out of range
+     * @param message          The detail message
+     * @param fetchOffsets     The fetch offsets that were out of range
      * @param divergentOffsets The offsets where the consumer's log diverged from the broker's log
      */
     public LogTruncationException(String message,
@@ -62,7 +62,7 @@ public class LogTruncationException extends OffsetOutOfRangeException {
      * Get the divergent offsets for the partitions which were truncated. For each
      * partition, this is the first offset which is known to diverge from what the
      * consumer read.
-     *
+     * <p>
      * Note that there is no guarantee that this offset will be known. It is necessary
      * to use {@link #partitions()} to see the set of partitions that were truncated
      * and then check for the presence of a divergent offset in this map.

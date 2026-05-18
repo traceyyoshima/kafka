@@ -109,7 +109,7 @@ public class ConsumerNetworkThread extends KafkaThread implements Closeable {
      * Start the network thread and let it complete its initialization before proceeding. The
      * {@link ClassicKafkaConsumer} constructor blocks during creation of its {@link NetworkClient}, providing
      * precedent for waiting here.
-     *
+     * <p>
      * In certain cases (e.g. an invalid {@link LoginModule} in {@link SaslConfigs#SASL_JAAS_CONFIG}), an error
      * could be thrown during {@link #initializeResources()}. This would result in the {@link #run()} method
      * exiting, no longer able to process events, which means that the consumer effectively hangs.
@@ -124,12 +124,12 @@ public class ConsumerNetworkThread extends KafkaThread implements Closeable {
         try {
             if (!initializationLatch.await(timeoutMs, TimeUnit.MILLISECONDS)) {
                 maybeSetInitializationError(
-                    new TimeoutException("Consumer network thread resource initialization timed out after " + timeoutMs + " ms")
+                        new TimeoutException("Consumer network thread resource initialization timed out after " + timeoutMs + " ms")
                 );
             }
         } catch (InterruptedException e) {
             maybeSetInitializationError(
-                new InterruptException("Consumer network thread resource initialization was interrupted", e)
+                    new InterruptException("Consumer network thread resource initialization was interrupted", e)
             );
         }
 
@@ -330,7 +330,7 @@ public class ConsumerNetworkThread extends KafkaThread implements Closeable {
      * to results from the request managers. For example, the subscription state can change when heartbeats
      * are sent, so blocking for longer than the heartbeat interval might mean the application thread is not
      * responsive to changes.
-     *
+     * <p>
      * Because this method is called by the application thread, it's not allowed to access the request managers
      * that actually provide the information. As a result, the consumer network thread periodically caches the
      * information from the request managers and this can then be read safely using this method.
@@ -357,17 +357,17 @@ public class ConsumerNetworkThread extends KafkaThread implements Closeable {
 
     /**
      * Starts the closing process.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * This method is called from the application thread, but our resources are owned by the network thread. As such,
      * we don't actually close any of those resources here, immediately, on the application thread. Instead, we just
      * update our internal state on the application thread. When the network thread next
      * {@link #run() executes its loop}, it will notice that state, cease processing any further events, and begin
      * {@link #cleanup() closing its resources}.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * This method will wait (i.e. block the application thread) for up to the duration of the given timeout to give
      * the network thread the time to close down cleanly.
      *
@@ -401,8 +401,8 @@ public class ConsumerNetworkThread extends KafkaThread implements Closeable {
 
         if (networkClientDelegate.hasAnyPendingRequests()) {
             log.warn("Close timeout of {} ms expired before the consumer network thread was able " +
-                "to complete pending requests. Inflight request count: {}, Unsent request count: {}",
-                timer.timeoutMs(), networkClientDelegate.inflightRequestCount(), networkClientDelegate.unsentRequests().size());
+                            "to complete pending requests. Inflight request count: {}, Unsent request count: {}",
+                    timer.timeoutMs(), networkClientDelegate.inflightRequestCount(), networkClientDelegate.unsentRequests().size());
         }
     }
 

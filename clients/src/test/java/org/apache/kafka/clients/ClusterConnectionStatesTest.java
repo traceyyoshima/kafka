@@ -262,7 +262,7 @@ public class ClusterConnectionStatesTest {
         time.sleep(50);
         assertEquals(0, connectionStates.throttleDelayMs(nodeId1, time.milliseconds()));
         assertEquals(connectionStates.connectionDelay(nodeId1, time.milliseconds()),
-            connectionStates.pollDelayMs(nodeId1, time.milliseconds()));
+                connectionStates.pollDelayMs(nodeId1, time.milliseconds()));
     }
 
     @Test
@@ -274,7 +274,7 @@ public class ClusterConnectionStatesTest {
         };
 
         connectionStates = new ClusterConnectionStates(reconnectBackoffMs, reconnectBackoffMax,
-            connectionSetupTimeoutMs, connectionSetupTimeoutMaxMs, new LogContext(), hostResolver);
+                connectionSetupTimeoutMs, connectionSetupTimeoutMaxMs, new LogContext(), hostResolver);
 
         connectionStates.connecting(nodeId1, time.milliseconds(), "localhost");
         InetAddress currAddress = connectionStates.currentAddress(nodeId1);
@@ -439,7 +439,7 @@ public class ClusterConnectionStatesTest {
         InetAddress addr2 = connectionStates.currentAddress(nodeId1);
         assertNotSame(addr1, addr2);
     }
-    
+
     private void setupMultipleIPs() {
         this.connectionStates = new ClusterConnectionStates(reconnectBackoffMs, reconnectBackoffMax,
                 connectionSetupTimeoutMs, connectionSetupTimeoutMaxMs, new LogContext(), this.multipleIPHostResolver);
@@ -447,7 +447,7 @@ public class ClusterConnectionStatesTest {
 
     private void verifyReconnectExponentialBackoff(boolean enterCheckingApiVersionState) {
         double reconnectBackoffMaxExp = Math.log(reconnectBackoffMax / (double) Math.max(reconnectBackoffMs, 1))
-            / Math.log(reconnectBackoffExpBase);
+                / Math.log(reconnectBackoffExpBase);
 
         connectionStates.remove(nodeId1);
         // Run through 10 disconnects and check that reconnect backoff value is within expected range for every attempt
@@ -460,7 +460,7 @@ public class ClusterConnectionStatesTest {
             connectionStates.disconnected(nodeId1, time.milliseconds());
             // Calculate expected backoff value without jitter
             long expectedBackoff = Math.round(Math.pow(reconnectBackoffExpBase, Math.min(i, reconnectBackoffMaxExp))
-                * reconnectBackoffMs);
+                    * reconnectBackoffMs);
             long currentBackoff = connectionStates.connectionDelay(nodeId1, time.milliseconds());
             assertEquals(expectedBackoff, currentBackoff, reconnectBackoffJitter * expectedBackoff);
             time.sleep(connectionStates.connectionDelay(nodeId1, time.milliseconds()) + 1);

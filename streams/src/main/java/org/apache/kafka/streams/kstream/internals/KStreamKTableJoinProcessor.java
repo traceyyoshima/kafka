@@ -43,7 +43,7 @@ import static org.apache.kafka.streams.processor.internals.metrics.TaskMetrics.d
 import static org.apache.kafka.streams.state.ValueTimestampHeaders.getValueOrNull;
 
 class KStreamKTableJoinProcessor<StreamKey, StreamValue, TableKey, TableValue, VOut>
-    extends ContextualProcessor<StreamKey, StreamValue, StreamKey, VOut> {
+        extends ContextualProcessor<StreamKey, StreamValue, StreamKey, VOut> {
 
     private static final Logger LOG = LoggerFactory.getLogger(KStreamKTableJoinProcessor.class);
 
@@ -110,7 +110,7 @@ class KStreamKTableJoinProcessor<StreamKey, StreamValue, TableKey, TableValue, V
 
     private void emit(final TimeOrderedKeyValueBuffer.Eviction<StreamKey, StreamValue> toEmit) {
         final Record<StreamKey, StreamValue> record = new Record<>(toEmit.key(), toEmit.value(), toEmit.recordContext().timestamp())
-            .withHeaders(toEmit.recordContext().headers());
+                .withHeaders(toEmit.recordContext().headers());
         final ProcessorRecordContext prevRecordContext = internalProcessorContext.recordContext();
         try {
             internalProcessorContext.setRecordContext(toEmit.recordContext());
@@ -135,8 +135,8 @@ class KStreamKTableJoinProcessor<StreamKey, StreamValue, TableKey, TableValue, V
     private TableValue getTableValue(final Record<StreamKey, StreamValue> record, final TableKey mappedKey) {
         if (mappedKey == null) return null;
         final ValueTimestampHeaders<TableValue> valueTimestampHeaders = valueGetter.isVersioned()
-            ? valueGetter.get(mappedKey, record.timestamp())
-            : valueGetter.get(mappedKey);
+                ? valueGetter.get(mappedKey, record.timestamp())
+                : valueGetter.get(mappedKey);
         return getValueOrNull(valueTimestampHeaders);
     }
 
@@ -157,13 +157,13 @@ class KStreamKTableJoinProcessor<StreamKey, StreamValue, TableKey, TableValue, V
             if (context().recordMetadata().isPresent()) {
                 final RecordMetadata recordMetadata = context().recordMetadata().get();
                 LOG.warn(
-                    "Skipping record due to null join key or value. "
-                        + "topic=[{}] partition=[{}] offset=[{}]",
-                    recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                        "Skipping record due to null join key or value. "
+                                + "topic=[{}] partition=[{}] offset=[{}]",
+                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                 );
             } else {
                 LOG.warn(
-                    "Skipping record due to null join key or value. Topic, partition, and offset not known."
+                        "Skipping record due to null join key or value. Topic, partition, and offset not known."
                 );
             }
             droppedRecordsSensor.record();

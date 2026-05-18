@@ -50,7 +50,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Utils {
-    private Utils() {}
+    private Utils() {
+    }
 
     /**
      * @return An OptionalInt containing the value iff the value is different from
@@ -70,12 +71,12 @@ public class Utils {
 
     /**
      * @return The provided assignment as a String.
-     *
+     * <p>
      * Example:
      * [topicid1-0, topicid1-1, topicid2-0, topicid2-1]
      */
     public static String assignmentToString(
-        Map<Uuid, Set<Integer>> assignment
+            Map<Uuid, Set<Integer>> assignment
     ) {
         StringBuilder builder = new StringBuilder("[");
         Iterator<Map.Entry<Uuid, Set<Integer>>> topicsIterator = assignment.entrySet().iterator();
@@ -97,12 +98,12 @@ public class Utils {
 
     /**
      * @return The provided assignment with epochs as a String.
-     *
+     * <p>
      * Example:
      * [topicid1-0@5, topicid1-1@5, topicid2-0@3, topicid2-1@3]
      */
     public static String assignmentWithEpochsToString(
-        Map<Uuid, Map<Integer, Integer>> assignmentWithEpochs
+            Map<Uuid, Map<Integer, Integer>> assignmentWithEpochs
     ) {
         StringBuilder builder = new StringBuilder("[");
         Iterator<Map.Entry<Uuid, Map<Integer, Integer>>> topicsIterator = assignmentWithEpochs.entrySet().iterator();
@@ -159,7 +160,7 @@ public class Utils {
 
     /**
      * @return An Optional containing the provided string if it is not null and not empty,
-     *         otherwise an empty Optional.
+     * otherwise an empty Optional.
      */
     public static Optional<String> toOptional(String str) {
         return str == null || str.isEmpty() ? Optional.empty() : Optional.of(str);
@@ -168,24 +169,24 @@ public class Utils {
     /**
      * Converts a map of topic id and partition set to a ConsumerProtocolAssignment.
      *
-     * @param assignment    The map to convert.
-     * @param image   The CoordinatorMetadataImage.
+     * @param assignment The map to convert.
+     * @param image      The CoordinatorMetadataImage.
      * @return The converted ConsumerProtocolAssignment.
      */
     public static ConsumerProtocolAssignment toConsumerProtocolAssignment(
-        Map<Uuid, Set<Integer>> assignment,
-        CoordinatorMetadataImage image
+            Map<Uuid, Set<Integer>> assignment,
+            CoordinatorMetadataImage image
     ) {
         ConsumerProtocolAssignment.TopicPartitionCollection collection =
-            new ConsumerProtocolAssignment.TopicPartitionCollection();
+                new ConsumerProtocolAssignment.TopicPartitionCollection();
         assignment.forEach((topicId, partitions) -> {
             image.topicMetadata(topicId).ifPresent(topicMetadata ->
-                collection.add(new ConsumerProtocolAssignment.TopicPartition()
-                    .setTopic(topicMetadata.name())
-                    .setPartitions(new ArrayList<>(partitions))));
+                    collection.add(new ConsumerProtocolAssignment.TopicPartition()
+                            .setTopic(topicMetadata.name())
+                            .setPartitions(new ArrayList<>(partitions))));
         });
         return new ConsumerProtocolAssignment()
-            .setAssignedPartitions(collection);
+                .setAssignedPartitions(collection);
     }
 
     /**
@@ -196,8 +197,8 @@ public class Utils {
      * @return The converted map.
      */
     public static Map<Uuid, Set<Integer>> toTopicPartitionMap(
-        ConsumerProtocolAssignment consumerProtocolAssignment,
-        CoordinatorMetadataImage metadataImage
+            ConsumerProtocolAssignment consumerProtocolAssignment,
+            CoordinatorMetadataImage metadataImage
     ) {
         Map<Uuid, Set<Integer>> topicPartitionMap = new HashMap<>();
         consumerProtocolAssignment.assignedPartitions().forEach(topicPartition -> {
@@ -216,16 +217,16 @@ public class Utils {
      * @return a list of ConsumerGroupHeartbeatRequestData.TopicPartitions.
      */
     public static List<ConsumerGroupHeartbeatRequestData.TopicPartitions> toTopicPartitions(
-        ConsumerProtocolSubscription.TopicPartitionCollection topicPartitionCollection,
-        CoordinatorMetadataImage metadataImage
+            ConsumerProtocolSubscription.TopicPartitionCollection topicPartitionCollection,
+            CoordinatorMetadataImage metadataImage
     ) {
         List<ConsumerGroupHeartbeatRequestData.TopicPartitions> res = new ArrayList<>();
         for (ConsumerProtocolSubscription.TopicPartition tp : topicPartitionCollection) {
             metadataImage.topicMetadata(tp.topic()).ifPresent(topicMetadata -> {
                 res.add(
-                    new ConsumerGroupHeartbeatRequestData.TopicPartitions()
-                        .setTopicId(topicMetadata.id())
-                        .setPartitions(tp.partitions())
+                        new ConsumerGroupHeartbeatRequestData.TopicPartitions()
+                                .setTopicId(topicMetadata.id())
+                                .setPartitions(tp.partitions())
                 );
             });
         }
@@ -235,17 +236,17 @@ public class Utils {
     /**
      * Creates a map of topic id and partition with assignment epochs from a list of consumer group TopicPartitions.
      *
-     * @param log The logger to use for logging errors.
-     * @param groupId The group id for logging context.
+     * @param log             The logger to use for logging errors.
+     * @param groupId         The group id for logging context.
      * @param topicPartitions The list of TopicPartitions.
-     * @param defaultEpoch The default epoch to use when the epoch information is not available for a partition.
+     * @param defaultEpoch    The default epoch to use when the epoch information is not available for a partition.
      * @return a map of topic id and partitions with assignment epochs.
      */
     public static Map<Uuid, Map<Integer, Integer>> assignmentFromTopicPartitions(
-        Logger log,
-        String groupId,
-        List<ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions> topicPartitions,
-        int defaultEpoch
+            Logger log,
+            String groupId,
+            List<ConsumerGroupCurrentMemberAssignmentValue.TopicPartitions> topicPartitions,
+            int defaultEpoch
     ) {
         // For legacy static member, the defaultEpoch could be -2 (LEAVE_GROUP_STATIC_MEMBER_EPOCH).
         // But we want to ensure the default memberEpoch assigned is non-negative.
@@ -264,8 +265,8 @@ public class Utils {
             } else {
                 if (epochs != null) {
                     log.error("[GroupId {}] Size of assignment epochs {} is not equal to partitions {} for topic {}. " +
-                            "Using default epoch {} for all partitions.",
-                        groupId, epochs.size(), partitions.size(), tp.topicId(), adjustedDefaultEpoch);
+                                    "Using default epoch {} for all partitions.",
+                            groupId, epochs.size(), partitions.size(), tp.topicId(), adjustedDefaultEpoch);
                 }
                 for (Integer partition : partitions) {
                     partitionEpochs.put(partition, adjustedDefaultEpoch);
@@ -281,8 +282,8 @@ public class Utils {
      * Adds the given assignment epoch to an assignment without epochs.
      */
     public static Map<Uuid, Map<Integer, Integer>> toAssignmentWithEpochs(
-        Map<Uuid, Set<Integer>> assignment,
-        int epoch
+            Map<Uuid, Set<Integer>> assignment,
+            int epoch
     ) {
         Map<Uuid, Map<Integer, Integer>> result = new HashMap<>();
         for (Map.Entry<Uuid, Set<Integer>> entry : assignment.entrySet()) {
@@ -299,7 +300,7 @@ public class Utils {
      * Discards the assignment epochs from an assignment with epochs.
      */
     public static Map<Uuid, Set<Integer>> toAssignmentWithoutEpochs(
-        Map<Uuid, Map<Integer, Integer>> assignmentWithEpochs
+            Map<Uuid, Map<Integer, Integer>> assignmentWithEpochs
     ) {
         Map<Uuid, Set<Integer>> result = new HashMap<>();
         for (Map.Entry<Uuid, Map<Integer, Integer>> entry : assignmentWithEpochs.entrySet()) {
@@ -311,7 +312,7 @@ public class Utils {
     /**
      * Creates a map of topic id and partition set from a list of share group TopicPartitions.
      *
-     * @param topicPartitionsList   The list of TopicPartitions.
+     * @param topicPartitionsList The list of TopicPartitions.
      * @return a map of topic id and partition set.
      */
     public static Map<Uuid, Set<Integer>> assignmentFromShareGroupTopicPartitions(
@@ -342,8 +343,8 @@ public class Utils {
      * @throws InvalidRequestException
      */
     static void throwIfEmptyString(
-        String value,
-        String error
+            String value,
+            String error
     ) throws InvalidRequestException {
         if (value != null && value.trim().isEmpty()) {
             throw new InvalidRequestException(error);
@@ -358,8 +359,8 @@ public class Utils {
      * @throws InvalidRequestException
      */
     static void throwIfNotEmptyCollection(
-        Collection<?> value,
-        String error
+            Collection<?> value,
+            String error
     ) throws InvalidRequestException {
         if (value == null || !value.isEmpty()) {
             throw new InvalidRequestException(error);
@@ -374,8 +375,8 @@ public class Utils {
      * @throws InvalidRequestException
      */
     static void throwIfNotNullOrEmpty(
-        Collection<?> value,
-        String error
+            Collection<?> value,
+            String error
     ) throws InvalidRequestException {
         if (value != null && !value.isEmpty()) {
             throw new InvalidRequestException(error);
@@ -390,8 +391,8 @@ public class Utils {
      * @throws InvalidRequestException
      */
     static void throwIfNotNull(
-        Object value,
-        String error
+            Object value,
+            String error
     ) throws InvalidRequestException {
         if (value != null) {
             throw new InvalidRequestException(error);
@@ -406,8 +407,8 @@ public class Utils {
      * @throws InvalidRequestException
      */
     static void throwIfNull(
-        Object value,
-        String error
+            Object value,
+            String error
     ) throws InvalidRequestException {
         if (value == null) {
             throw new InvalidRequestException(error);
@@ -421,14 +422,14 @@ public class Utils {
      * @throws InvalidRegularExpression if the regular expression is invalid.
      */
     static void throwIfRegularExpressionIsInvalid(
-        String regex
+            String regex
     ) throws InvalidRegularExpression {
         try {
             Pattern.compile(regex);
         } catch (PatternSyntaxException ex) {
             throw new InvalidRegularExpression(
-                String.format("SubscribedTopicRegex `%s` is not a valid regular expression: %s.",
-                    regex, ex.getDescription()));
+                    String.format("SubscribedTopicRegex `%s` is not a valid regular expression: %s.",
+                            regex, ex.getDescription()));
         }
     }
 
@@ -484,7 +485,7 @@ public class Utils {
      * 5. For each partition, write the partition ID and a sorted list of rack identifiers.
      * - Rack identifiers are formatted as "<length1><value1><length2><value2>" to prevent issues with simple separators.
      *
-     * @param topicName The topic name.
+     * @param topicName     The topic name.
      * @param metadataImage The topic metadata.
      * @return The hash of the topic.
      */
@@ -498,11 +499,11 @@ public class Utils {
 
         HashStream64 hasher = Hashing.xxh3_64().hashStream();
         hasher = hasher
-            .putByte(TOPIC_HASH_MAGIC_BYTE)
-            .putLong(topicMetadata.id().getMostSignificantBits())
-            .putLong(topicMetadata.id().getLeastSignificantBits())
-            .putString(topicMetadata.name())
-            .putInt(topicMetadata.partitionCount());
+                .putByte(TOPIC_HASH_MAGIC_BYTE)
+                .putLong(topicMetadata.id().getMostSignificantBits())
+                .putLong(topicMetadata.id().getLeastSignificantBits())
+                .putString(topicMetadata.name())
+                .putInt(topicMetadata.partitionCount());
 
         for (int i = 0; i < topicMetadata.partitionCount(); i++) {
             hasher = hasher.putInt(i);

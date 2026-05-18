@@ -30,7 +30,7 @@ class KStreamBranch<K, V> implements ProcessorSupplier<K, V, K, V> {
     private final List<String> childNodes;
 
     KStreamBranch(final List<Predicate<? super K, ? super V>> predicates,
-        final List<String> childNodes) {
+                  final List<String> childNodes) {
         this.predicates = predicates;
         this.childNodes = childNodes;
     }

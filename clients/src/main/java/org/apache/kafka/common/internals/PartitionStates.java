@@ -32,12 +32,12 @@ import java.util.function.BiConsumer;
  * round-robin to ensure fairness and some level of determinism given the existence of a limit on the fetch response
  * size. Because the serialization of fetch requests is more efficient if all partitions for the same topic are grouped
  * together, we do such grouping in the method `set`.
- *
+ * <p>
  * As partitions are moved to the end, the same topic may be repeated more than once. In the optimal case, a single
  * topic would "wrap around" and appear twice. However, as partitions are fetched in different orders and partition
  * leadership changes, we will deviate from the optimal. If this turns out to be an issue in practice, we can improve
  * it by tracking the partitions per node or calling `set` every so often.
- *
+ * <p>
  * Note that this class is not thread-safe with the exception of {@link #size()} which returns the number of
  * partitions currently tracked.
  */
@@ -49,7 +49,8 @@ public class PartitionStates<S> {
     /* the number of partitions that are currently assigned available in a thread safe manner */
     private volatile int size = 0;
 
-    public PartitionStates() {}
+    public PartitionStates() {
+    }
 
     public void moveToEnd(TopicPartition topicPartition) {
         S state = map.remove(topicPartition);
@@ -149,7 +150,6 @@ public class PartitionStates<S> {
             }
         }
     }
-
 
 
 }

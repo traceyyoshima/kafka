@@ -125,38 +125,38 @@ public class ApplicationEventProcessorTest {
 
     private void setupStreamProcessor(boolean withGroupId) {
         RequestManagers requestManagers = new RequestManagers(
-            new LogContext(),
-            offsetsRequestManager,
-            mock(TopicMetadataRequestManager.class),
-            mock(FetchRequestManager.class),
-            withGroupId ? Optional.of(mock(CoordinatorRequestManager.class)) : Optional.empty(),
-            withGroupId ? Optional.of(commitRequestManager) : Optional.empty(),
-            withGroupId ? Optional.of(heartbeatRequestManager) : Optional.empty(),
-            Optional.empty(),
-            withGroupId ? Optional.of(streamsGroupHeartbeatRequestManager) : Optional.empty(),
-            withGroupId ? Optional.of(streamsMembershipManager) : Optional.empty()
+                new LogContext(),
+                offsetsRequestManager,
+                mock(TopicMetadataRequestManager.class),
+                mock(FetchRequestManager.class),
+                withGroupId ? Optional.of(mock(CoordinatorRequestManager.class)) : Optional.empty(),
+                withGroupId ? Optional.of(commitRequestManager) : Optional.empty(),
+                withGroupId ? Optional.of(heartbeatRequestManager) : Optional.empty(),
+                Optional.empty(),
+                withGroupId ? Optional.of(streamsGroupHeartbeatRequestManager) : Optional.empty(),
+                withGroupId ? Optional.of(streamsMembershipManager) : Optional.empty()
         );
         processor = new ApplicationEventProcessor(
-            new LogContext(),
-            requestManagers,
-            metadata,
-            subscriptionState
+                new LogContext(),
+                requestManagers,
+                metadata,
+                subscriptionState
         );
     }
 
     private void setupShareProcessor() {
         RequestManagers requestManagers = new RequestManagers(
-            new LogContext(),
-            mock(ShareConsumeRequestManager.class),
-            Optional.of(mock(CoordinatorRequestManager.class)),
-            Optional.of(shareHeartbeatRequestManager),
-            Optional.of(shareMembershipManager)
+                new LogContext(),
+                mock(ShareConsumeRequestManager.class),
+                Optional.of(mock(CoordinatorRequestManager.class)),
+                Optional.of(shareHeartbeatRequestManager),
+                Optional.of(shareMembershipManager)
         );
         processor = new ApplicationEventProcessor(
-            new LogContext(),
-            requestManagers,
-            metadata,
-            subscriptionState
+                new LogContext(),
+                requestManagers,
+                metadata,
+                subscriptionState
         );
     }
 
@@ -345,15 +345,15 @@ public class ApplicationEventProcessorTest {
         TopicPartition tp2 = new TopicPartition("topic", 2);
         Set<TopicPartition> partitions = Set.of(tp0, tp1, tp2);
         Map<TopicPartition, OffsetAndMetadata> topicPartitionOffsets = Map.of(
-            tp0, new OffsetAndMetadata(10L, Optional.of(2), ""),
-            tp1, new OffsetAndMetadata(15L, Optional.empty(), ""),
-            tp2, new OffsetAndMetadata(20L, Optional.of(3), "")
+                tp0, new OffsetAndMetadata(10L, Optional.of(2), ""),
+                tp1, new OffsetAndMetadata(15L, Optional.empty(), ""),
+                tp2, new OffsetAndMetadata(20L, Optional.of(3), "")
         );
         FetchCommittedOffsetsEvent event = new FetchCommittedOffsetsEvent(partitions, 12345);
 
         setupProcessor(true);
         CommitRequestManager.OffsetFetchResult fetchResult = new CommitRequestManager.OffsetFetchResult(
-            topicPartitionOffsets, Collections.emptyMap());
+                topicPartitionOffsets, Collections.emptyMap());
         when(commitRequestManager.fetchOffsets(partitions, 12345)).thenReturn(CompletableFuture.completedFuture(fetchResult));
         processor.process(event);
 
@@ -366,7 +366,7 @@ public class ApplicationEventProcessorTest {
         subscriptionState = new SubscriptionState(new LogContext(), AutoOffsetResetStrategy.EARLIEST);
         Optional<ConsumerRebalanceListener> listener = Optional.of(new MockRebalanceListener());
         TopicSubscriptionChangeEvent event = new TopicSubscriptionChangeEvent(
-            Set.of("topic1", "topic2"), listener, 12345);
+                Set.of("topic1", "topic2"), listener, 12345);
 
         subscriptionState.subscribe(Pattern.compile("topic.*"), listener);
         setupProcessor(true);
@@ -411,7 +411,7 @@ public class ApplicationEventProcessorTest {
     @Test
     public void testTopicPatternSubscriptionTriggersJoin() {
         TopicPatternSubscriptionChangeEvent event = new TopicPatternSubscriptionChangeEvent(
-            Pattern.compile("topic.*"), Optional.of(new MockRebalanceListener()), 12345);
+                Pattern.compile("topic.*"), Optional.of(new MockRebalanceListener()), 12345);
         setupProcessor(true);
         Cluster cluster = mock(Cluster.class);
         when(metadata.fetch()).thenReturn(cluster);
@@ -437,7 +437,7 @@ public class ApplicationEventProcessorTest {
         subscriptionState = new SubscriptionState(new LogContext(), AutoOffsetResetStrategy.EARLIEST);
         Optional<ConsumerRebalanceListener> listener = Optional.of(new MockRebalanceListener());
         TopicPatternSubscriptionChangeEvent event = new TopicPatternSubscriptionChangeEvent(
-            Pattern.compile("topic.*"), listener, 12345);
+                Pattern.compile("topic.*"), listener, 12345);
 
         setupProcessor(true);
 
@@ -486,7 +486,7 @@ public class ApplicationEventProcessorTest {
         SubscriptionPattern pattern = new SubscriptionPattern("t*");
         Optional<ConsumerRebalanceListener> listener = Optional.of(mock(ConsumerRebalanceListener.class));
         TopicRe2JPatternSubscriptionChangeEvent event =
-            new TopicRe2JPatternSubscriptionChangeEvent(pattern, listener, 12345);
+                new TopicRe2JPatternSubscriptionChangeEvent(pattern, listener, 12345);
 
         setupProcessor(true);
         processor.process(event);
@@ -502,9 +502,9 @@ public class ApplicationEventProcessorTest {
         SubscriptionPattern pattern = new SubscriptionPattern("t*");
         Optional<ConsumerRebalanceListener> listener = Optional.of(mock(ConsumerRebalanceListener.class));
         TopicRe2JPatternSubscriptionChangeEvent event =
-            new TopicRe2JPatternSubscriptionChangeEvent(pattern, listener, 12345);
+                new TopicRe2JPatternSubscriptionChangeEvent(pattern, listener, 12345);
         Exception mixedSubscriptionError = new IllegalStateException("Subscription to topics, partitions and " +
-            "pattern are mutually exclusive");
+                "pattern are mutually exclusive");
         doThrow(mixedSubscriptionError).when(subscriptionState).subscribe(pattern, listener);
 
         setupProcessor(true);
@@ -518,7 +518,7 @@ public class ApplicationEventProcessorTest {
     @Test
     public void testSyncCommitEventWithEmptyOffsets() {
         Map<TopicPartition, OffsetAndMetadata> allConsumed =
-            Map.of(new TopicPartition("topic", 0), new OffsetAndMetadata(10, Optional.of(1), ""));
+                Map.of(new TopicPartition("topic", 0), new OffsetAndMetadata(10, Optional.of(1), ""));
         SyncCommitEvent event = new SyncCommitEvent(Optional.empty(), 12345);
         setupProcessor(true);
         doReturn(allConsumed).when(subscriptionState).allConsumed();
@@ -534,7 +534,7 @@ public class ApplicationEventProcessorTest {
     @Test
     public void testSyncCommitEvent() {
         Map<TopicPartition, OffsetAndMetadata> offsets =
-            Map.of(new TopicPartition("topic", 0), new OffsetAndMetadata(10, Optional.of(1), ""));
+                Map.of(new TopicPartition("topic", 0), new OffsetAndMetadata(10, Optional.of(1), ""));
         SyncCommitEvent event = new SyncCommitEvent(Optional.of(offsets), 12345);
         setupProcessor(true);
         doReturn(CompletableFuture.completedFuture(offsets)).when(commitRequestManager).commitSync(offsets, 12345);
@@ -573,7 +573,7 @@ public class ApplicationEventProcessorTest {
     @Test
     public void testAsyncCommitEventWithEmptyOffsets() {
         Map<TopicPartition, OffsetAndMetadata> allConsumed =
-            Map.of(new TopicPartition("topic", 0), new OffsetAndMetadata(10, Optional.of(1), ""));
+                Map.of(new TopicPartition("topic", 0), new OffsetAndMetadata(10, Optional.of(1), ""));
         AsyncCommitEvent event = new AsyncCommitEvent(Optional.empty());
         setupProcessor(true);
         doReturn(CompletableFuture.completedFuture(allConsumed)).when(commitRequestManager).commitAsync(allConsumed);
@@ -589,7 +589,7 @@ public class ApplicationEventProcessorTest {
     @Test
     public void testAsyncCommitEvent() {
         Map<TopicPartition, OffsetAndMetadata> offsets =
-            Map.of(new TopicPartition("topic", 0), new OffsetAndMetadata(10, Optional.of(1), ""));
+                Map.of(new TopicPartition("topic", 0), new OffsetAndMetadata(10, Optional.of(1), ""));
         AsyncCommitEvent event = new AsyncCommitEvent(Optional.of(offsets));
         setupProcessor(true);
         doReturn(CompletableFuture.completedFuture(offsets)).when(commitRequestManager).commitAsync(offsets);
@@ -630,7 +630,7 @@ public class ApplicationEventProcessorTest {
     public void testStreamsOnTasksRevokedCallbackCompletedEvent() {
         setupStreamProcessor(true);
         StreamsOnTasksRevokedCallbackCompletedEvent event =
-            new StreamsOnTasksRevokedCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
+                new StreamsOnTasksRevokedCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
         processor.process(event);
         verify(streamsMembershipManager).onTasksRevokedCallbackCompleted(event);
     }
@@ -639,13 +639,13 @@ public class ApplicationEventProcessorTest {
     public void testStreamsOnTasksRevokedCallbackCompletedEventWithoutStreamsMembershipManager() {
         setupStreamProcessor(false);
         StreamsOnTasksRevokedCallbackCompletedEvent event =
-            new StreamsOnTasksRevokedCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
+                new StreamsOnTasksRevokedCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
         try (final LogCaptureAppender logAppender = LogCaptureAppender.createAndRegister()) {
             logAppender.setClassLogger(ApplicationEventProcessor.class, Level.WARN);
             processor.process(event);
             assertTrue(logAppender.getMessages().stream().anyMatch(e ->
-                e.contains("An internal error occurred; the Streams membership manager was not present, so the notification " +
-                    "of the onTasksRevoked callback execution could not be sent")));
+                    e.contains("An internal error occurred; the Streams membership manager was not present, so the notification " +
+                            "of the onTasksRevoked callback execution could not be sent")));
             verify(streamsMembershipManager, never()).onTasksRevokedCallbackCompleted(event);
         }
     }
@@ -654,7 +654,7 @@ public class ApplicationEventProcessorTest {
     public void testStreamsOnTasksAssignedCallbackCompletedEvent() {
         setupStreamProcessor(true);
         StreamsOnTasksAssignedCallbackCompletedEvent event =
-            new StreamsOnTasksAssignedCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
+                new StreamsOnTasksAssignedCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
         processor.process(event);
         verify(streamsMembershipManager).onTasksAssignedCallbackCompleted(event);
     }
@@ -663,13 +663,13 @@ public class ApplicationEventProcessorTest {
     public void testStreamsOnTasksAssignedCallbackCompletedEventWithoutStreamsMembershipManager() {
         setupStreamProcessor(false);
         StreamsOnTasksAssignedCallbackCompletedEvent event =
-            new StreamsOnTasksAssignedCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
+                new StreamsOnTasksAssignedCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
         try (final LogCaptureAppender logAppender = LogCaptureAppender.createAndRegister()) {
             logAppender.setClassLogger(ApplicationEventProcessor.class, Level.WARN);
             processor.process(event);
             assertTrue(logAppender.getMessages().stream().anyMatch(e ->
-                e.contains("An internal error occurred; the Streams membership manager was not present, so the notification " +
-                    "of the onTasksAssigned callback execution could not be sent")));
+                    e.contains("An internal error occurred; the Streams membership manager was not present, so the notification " +
+                            "of the onTasksAssigned callback execution could not be sent")));
             verify(streamsMembershipManager, never()).onTasksAssignedCallbackCompleted(event);
         }
     }
@@ -678,7 +678,7 @@ public class ApplicationEventProcessorTest {
     public void testStreamsOnAllTasksLostCallbackCompletedEvent() {
         setupStreamProcessor(true);
         StreamsOnAllTasksLostCallbackCompletedEvent event =
-            new StreamsOnAllTasksLostCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
+                new StreamsOnAllTasksLostCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
         processor.process(event);
         verify(streamsMembershipManager).onAllTasksLostCallbackCompleted(event);
     }
@@ -687,13 +687,13 @@ public class ApplicationEventProcessorTest {
     public void testStreamsOnAllTasksLostCallbackCompletedEventWithoutStreamsMembershipManager() {
         setupStreamProcessor(false);
         StreamsOnAllTasksLostCallbackCompletedEvent event =
-            new StreamsOnAllTasksLostCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
+                new StreamsOnAllTasksLostCallbackCompletedEvent(new CompletableFuture<>(), Optional.empty());
         try (final LogCaptureAppender logAppender = LogCaptureAppender.createAndRegister()) {
             logAppender.setClassLogger(ApplicationEventProcessor.class, Level.WARN);
             processor.process(event);
             assertTrue(logAppender.getMessages().stream().anyMatch(e ->
-                e.contains("An internal error occurred; the Streams membership manager was not present, so the notification " +
-                    "of the onAllTasksLost callback execution could not be sent")));
+                    e.contains("An internal error occurred; the Streams membership manager was not present, so the notification " +
+                            "of the onAllTasksLost callback execution could not be sent")));
             verify(streamsMembershipManager, never()).onAllTasksLostCallbackCompleted(event);
         }
     }
@@ -752,7 +752,7 @@ public class ApplicationEventProcessorTest {
 
     private void testUpdateFetchPositionsWithFetchCommittedOffsetsTimeout() {
         when(offsetsRequestManager.updateFetchPositions(anyLong())).thenReturn(
-            CompletableFuture.failedFuture(new Throwable("Intentional failure"))
+                CompletableFuture.failedFuture(new Throwable("Intentional failure"))
         );
         when(heartbeatRequestManager.membershipManager()).thenReturn(membershipManager);
 

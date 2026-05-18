@@ -112,8 +112,8 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
                         return;
                     } catch (LoginException loginException) {
                         log.warn(String.format(
-                                "[Principal=%s]: LoginException during login retry; will sleep %d seconds before trying again.",
-                                principalLogText(), DELAY_SECONDS_BEFORE_NEXT_RETRY_WHEN_RELOGIN_FAILS),
+                                        "[Principal=%s]: LoginException during login retry; will sleep %d seconds before trying again.",
+                                        principalLogText(), DELAY_SECONDS_BEFORE_NEXT_RETRY_WHEN_RELOGIN_FAILS),
                                 loginException);
                         // Sleep and allow loop to run/try again unless interrupted
                         time.sleep(DELAY_SECONDS_BEFORE_NEXT_RETRY_WHEN_RELOGIN_FAILS * 1000);
@@ -151,16 +151,16 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
     private final Class<?> mandatoryClassToSynchronizeOnPriorToRefresh;
 
     public ExpiringCredentialRefreshingLogin(String contextName, Configuration configuration,
-            ExpiringCredentialRefreshConfig expiringCredentialRefreshConfig,
-            AuthenticateCallbackHandler callbackHandler, Class<?> mandatoryClassToSynchronizeOnPriorToRefresh) {
+                                             ExpiringCredentialRefreshConfig expiringCredentialRefreshConfig,
+                                             AuthenticateCallbackHandler callbackHandler, Class<?> mandatoryClassToSynchronizeOnPriorToRefresh) {
         this(contextName, configuration, expiringCredentialRefreshConfig, callbackHandler,
                 mandatoryClassToSynchronizeOnPriorToRefresh, new LoginContextFactory(), Time.SYSTEM);
     }
 
     public ExpiringCredentialRefreshingLogin(String contextName, Configuration configuration,
-            ExpiringCredentialRefreshConfig expiringCredentialRefreshConfig,
-            AuthenticateCallbackHandler callbackHandler, Class<?> mandatoryClassToSynchronizeOnPriorToRefresh,
-            LoginContextFactory loginContextFactory, Time time) {
+                                             ExpiringCredentialRefreshConfig expiringCredentialRefreshConfig,
+                                             AuthenticateCallbackHandler callbackHandler, Class<?> mandatoryClassToSynchronizeOnPriorToRefresh,
+                                             LoginContextFactory loginContextFactory, Time time) {
         this.contextName = Objects.requireNonNull(contextName);
         this.configuration = Objects.requireNonNull(configuration);
         this.expiringCredentialRefreshConfig = Objects.requireNonNull(expiringCredentialRefreshConfig);
@@ -262,13 +262,12 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
 
     /**
      * Determine when to sleep until before performing a refresh
-     * 
-     * @param relativeToMs
-     *            the point (in terms of number of milliseconds since the epoch) at
-     *            which to perform the calculation
+     *
+     * @param relativeToMs the point (in terms of number of milliseconds since the epoch) at
+     *                     which to perform the calculation
      * @return null if no refresh should occur, otherwise the time to sleep until
-     *         (in terms of the number of milliseconds since the epoch) before
-     *         performing a refresh
+     * (in terms of the number of milliseconds since the epoch) before
+     * performing a refresh
      */
     private Long refreshMs(long relativeToMs) {
         if (expiringCredential == null) {
@@ -308,9 +307,9 @@ public abstract class ExpiringCredentialRefreshingLogin implements AutoCloseable
         Long absoluteLastRefreshTimeMs = expiringCredential.absoluteLastRefreshTimeMs();
         if (absoluteLastRefreshTimeMs != null && absoluteLastRefreshTimeMs < expireTimeMs) {
             log.warn("[Principal={}]: Expiring credential refresh thread exiting because the"
-                    + " expiring credential's current expiration time ({}) exceeds the latest possible refresh time ({})."
-                    + " This process will not be able to authenticate new SASL connections after that"
-                    + " time (for example, it will not be able to authenticate a new connection with a Kafka Broker).",
+                            + " expiring credential's current expiration time ({}) exceeds the latest possible refresh time ({})."
+                            + " This process will not be able to authenticate new SASL connections after that"
+                            + " time (for example, it will not be able to authenticate a new connection with a Kafka Broker).",
                     principalLogText(), new Date(expireTimeMs), new Date(absoluteLastRefreshTimeMs));
             return null;
         }

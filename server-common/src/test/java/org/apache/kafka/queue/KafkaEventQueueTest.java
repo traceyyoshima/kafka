@@ -89,7 +89,7 @@ public class KafkaEventQueueTest {
     @Test
     public void testCreateAndClose() throws Exception {
         KafkaEventQueue queue =
-            new KafkaEventQueue(Time.SYSTEM, logContext, "testCreateAndClose");
+                new KafkaEventQueue(Time.SYSTEM, logContext, "testCreateAndClose");
         queue.close();
     }
 
@@ -240,22 +240,22 @@ public class KafkaEventQueueTest {
     @Test
     public void testRejectedExecutionException() throws Exception {
         KafkaEventQueue queue = new KafkaEventQueue(Time.SYSTEM, logContext,
-            "testRejectedExecutionException");
+                "testRejectedExecutionException");
         queue.close();
         CompletableFuture<Void> future = new CompletableFuture<>();
         queue.append(new EventQueue.Event() {
-                @Override
-                public void run() {
-                    future.complete(null);
-                }
+            @Override
+            public void run() {
+                future.complete(null);
+            }
 
-                @Override
-                public void handleException(Throwable e) {
-                    future.completeExceptionally(e);
-                }
-            });
+            @Override
+            public void handleException(Throwable e) {
+                future.completeExceptionally(e);
+            }
+        });
         assertEquals(RejectedExecutionException.class, assertThrows(
-            ExecutionException.class, () -> future.get()).getCause().getClass());
+                ExecutionException.class, () -> future.get()).getCause().getClass());
     }
 
     @Test
@@ -326,9 +326,9 @@ public class KafkaEventQueueTest {
         private final AtomicInteger numInterruptedExceptionsSeen;
 
         InterruptibleEvent(
-            CompletableFuture<Thread> queueThread,
-            AtomicInteger numCallsToRun,
-            AtomicInteger numInterruptedExceptionsSeen
+                CompletableFuture<Thread> queueThread,
+                AtomicInteger numCallsToRun,
+                AtomicInteger numInterruptedExceptionsSeen
         ) {
             this.runFuture = new CompletableFuture<>();
             this.queueThread = queueThread;

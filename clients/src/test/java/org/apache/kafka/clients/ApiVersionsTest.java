@@ -32,31 +32,31 @@ public class ApiVersionsTest {
         assertEquals(-1, apiVersions.getMaxFinalizedFeaturesEpoch());
 
         apiVersions.update("2",
-            new NodeApiVersions(NodeApiVersions.create().allSupportedApiVersions().values(),
-                Arrays.asList(new ApiVersionsResponseData.SupportedFeatureKey()
-                    .setName("transaction.version")
-                    .setMaxVersion((short) 2)
-                    .setMinVersion((short) 0)),
-                Arrays.asList(new ApiVersionsResponseData.FinalizedFeatureKey()
-                    .setName("transaction.version")
-                    .setMaxVersionLevel((short) 2)
-                    .setMinVersionLevel((short) 2)),
-                1));
+                new NodeApiVersions(NodeApiVersions.create().allSupportedApiVersions().values(),
+                        Arrays.asList(new ApiVersionsResponseData.SupportedFeatureKey()
+                                .setName("transaction.version")
+                                .setMaxVersion((short) 2)
+                                .setMinVersion((short) 0)),
+                        Arrays.asList(new ApiVersionsResponseData.FinalizedFeatureKey()
+                                .setName("transaction.version")
+                                .setMaxVersionLevel((short) 2)
+                                .setMinVersionLevel((short) 2)),
+                        1));
         ApiVersions.FinalizedFeaturesInfo info = apiVersions.getFinalizedFeaturesInfo();
         assertEquals(1, info.finalizedFeaturesEpoch);
         assertEquals((short) 2, info.finalizedFeatures.get("transaction.version"));
 
         apiVersions.update("1",
-            new NodeApiVersions(NodeApiVersions.create().allSupportedApiVersions().values(),
-                Arrays.asList(new ApiVersionsResponseData.SupportedFeatureKey()
-                    .setName("transaction.version")
-                    .setMaxVersion((short) 2)
-                    .setMinVersion((short) 0)),
-                Arrays.asList(new ApiVersionsResponseData.FinalizedFeatureKey()
-                    .setName("transaction.version")
-                    .setMaxVersionLevel((short) 1)
-                    .setMinVersionLevel((short) 1)),
-                0));
+                new NodeApiVersions(NodeApiVersions.create().allSupportedApiVersions().values(),
+                        Arrays.asList(new ApiVersionsResponseData.SupportedFeatureKey()
+                                .setName("transaction.version")
+                                .setMaxVersion((short) 2)
+                                .setMinVersion((short) 0)),
+                        Arrays.asList(new ApiVersionsResponseData.FinalizedFeatureKey()
+                                .setName("transaction.version")
+                                .setMaxVersionLevel((short) 1)
+                                .setMinVersionLevel((short) 1)),
+                        0));
         // The stale update should be fenced.
         info = apiVersions.getFinalizedFeaturesInfo();
         assertEquals(1, info.finalizedFeaturesEpoch);

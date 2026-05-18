@@ -40,9 +40,9 @@ public final class QuorumFeatures {
     private final List<Integer> quorumNodeIds;
 
     public static Optional<String> reasonNotSupported(
-        short newVersion,
-        String what,
-        VersionRange range
+            short newVersion,
+            String what,
+            VersionRange range
     ) {
         if (!range.contains(newVersion)) {
             if (range.max() == (short) 0) {
@@ -59,8 +59,8 @@ public final class QuorumFeatures {
         features.put(MetadataVersion.FEATURE_NAME, VersionRange.of(
                 MetadataVersion.MINIMUM_VERSION.featureLevel(),
                 enableUnstable ?
-                    MetadataVersion.latestTesting().featureLevel() :
-                    MetadataVersion.latestProduction().featureLevel()));
+                        MetadataVersion.latestTesting().featureLevel() :
+                        MetadataVersion.latestProduction().featureLevel()));
         for (Feature feature : Feature.PRODUCTION_FEATURES) {
             short maxVersion = enableUnstable ? feature.latestTesting() : feature.latestProduction();
             if (maxVersion > 0) {
@@ -71,9 +71,9 @@ public final class QuorumFeatures {
     }
 
     public QuorumFeatures(
-        int nodeId,
-        Map<String, VersionRange> localSupportedFeatures,
-        List<Integer> quorumNodeIds
+            int nodeId,
+            Map<String, VersionRange> localSupportedFeatures,
+            List<Integer> quorumNodeIds
     ) {
         this.nodeId = nodeId;
         this.localSupportedFeatures = Collections.unmodifiableMap(localSupportedFeatures);
@@ -97,12 +97,12 @@ public final class QuorumFeatures {
     }
 
     public Optional<String> reasonNotLocallySupported(
-        String featureName,
-        short newVersion
+            String featureName,
+            short newVersion
     ) {
         return reasonNotSupported(newVersion,
-            "Local controller " + nodeId,
-            localSupportedFeature(featureName));
+                "Local controller " + nodeId,
+                localSupportedFeature(featureName));
     }
 
     @Override
@@ -115,8 +115,8 @@ public final class QuorumFeatures {
         if (o == null || !(o.getClass().equals(QuorumFeatures.class))) return false;
         QuorumFeatures other = (QuorumFeatures) o;
         return nodeId == other.nodeId &&
-            localSupportedFeatures.equals(other.localSupportedFeatures) &&
-            quorumNodeIds.equals(other.quorumNodeIds);
+                localSupportedFeatures.equals(other.localSupportedFeatures) &&
+                quorumNodeIds.equals(other.quorumNodeIds);
     }
 
     @Override
@@ -128,9 +128,9 @@ public final class QuorumFeatures {
         quorumNodeIds.forEach(id -> nodeIds.add("" + id));
         nodeIds.sort(String::compareTo);
         return "QuorumFeatures" +
-            "(nodeId=" + nodeId +
-            ", localSupportedFeatures={" + features + "}" +
-            ", quorumNodeIds=[" + nodeIds + "]" +
-            ")";
+                "(nodeId=" + nodeId +
+                ", localSupportedFeatures={" + features + "}" +
+                ", quorumNodeIds=[" + nodeIds + "]" +
+                ")";
     }
 }

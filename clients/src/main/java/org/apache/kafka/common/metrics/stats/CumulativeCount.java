@@ -20,7 +20,7 @@ import org.apache.kafka.common.metrics.MetricConfig;
 
 /**
  * A non-sampled version of {@link WindowedCount} maintained over all time.
- *
+ * <p>
  * This is a special kind of {@link CumulativeSum} that always records {@code 1} instead of the provided value.
  * In other words, it counts the number of
  * {@link CumulativeCount#record(MetricConfig, double, long)} invocations,

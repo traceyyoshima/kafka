@@ -125,7 +125,9 @@ public class AppInfoParser {
 
     public interface AppInfoMBean {
         String getVersion();
+
         String getCommitId();
+
         Long getStartTimeMs();
     }
 

@@ -34,17 +34,17 @@ import org.slf4j.Logger;
 import java.util.OptionalLong;
 import java.util.function.Supplier;
 
-public final class DefaultRequestSender  implements RequestSender {
+public final class DefaultRequestSender implements RequestSender {
     private final RequestManager requestManager;
     private final NetworkChannel channel;
     private final RaftMessageQueue messageQueue;
     private final Logger logger;
 
     public DefaultRequestSender(
-        RequestManager requestManager,
-        NetworkChannel channel,
-        RaftMessageQueue messageQueue,
-        LogContext logContext
+            RequestManager requestManager,
+            NetworkChannel channel,
+            RaftMessageQueue messageQueue,
+            LogContext logContext
     ) {
         this.requestManager = requestManager;
         this.channel = channel;
@@ -59,9 +59,9 @@ public final class DefaultRequestSender  implements RequestSender {
 
     @Override
     public OptionalLong send(
-        Node destination,
-        Supplier<ApiMessage> requestSupplier,
-        long currentTimeMs
+            Node destination,
+            Supplier<ApiMessage> requestSupplier,
+            long currentTimeMs
     ) {
         if (requestManager.isBackingOff(destination, currentTimeMs)) {
             long remainingBackoffMs = requestManager.remainingBackoffMs(destination, currentTimeMs);
@@ -79,10 +79,10 @@ public final class DefaultRequestSender  implements RequestSender {
         ApiMessage request = requestSupplier.get();
 
         RaftRequest.Outbound requestMessage = new RaftRequest.Outbound(
-            correlationId,
-            request,
-            destination,
-            currentTimeMs
+                correlationId,
+                request,
+                destination,
+                currentTimeMs
         );
 
         requestMessage.completion.whenComplete((response, exception) -> {
@@ -92,9 +92,9 @@ public final class DefaultRequestSender  implements RequestSender {
                 ApiMessage errorResponse = RaftUtil.errorResponse(api, error);
 
                 response = new RaftResponse.Inbound(
-                    correlationId,
-                    errorResponse,
-                    destination
+                        correlationId,
+                        errorResponse,
+                        destination
                 );
             }
 

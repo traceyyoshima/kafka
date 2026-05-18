@@ -77,7 +77,7 @@ public class DescribeAclsResponseTest {
     @Test
     public void shouldThrowIfUnknown() {
         assertThrows(IllegalArgumentException.class,
-            () -> buildResponse(10, Errors.NONE, Collections.singletonList(UNKNOWN_ACL)).serialize(V1));
+                () -> buildResponse(10, Errors.NONE, Collections.singletonList(UNKNOWN_ACL)).serialize(V1));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class DescribeAclsResponseTest {
         assertResponseEquals(original, result);
 
         final DescribeAclsResponse result2 = buildResponse(100, Errors.NONE, DescribeAclsResponse.aclsResources(
-            DescribeAclsResponse.aclBindings(resources)));
+                DescribeAclsResponse.aclBindings(resources)));
         assertResponseEquals(original, result2);
     }
 
@@ -113,25 +113,25 @@ public class DescribeAclsResponseTest {
 
     private static DescribeAclsResponse buildResponse(int throttleTimeMs, Errors error, List<DescribeAclsResource> resources) {
         return new DescribeAclsResponse(new DescribeAclsResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setErrorCode(error.code())
-            .setErrorMessage(error.message())
-            .setResources(resources));
+                .setThrottleTimeMs(throttleTimeMs)
+                .setErrorCode(error.code())
+                .setErrorMessage(error.message())
+                .setResources(resources));
     }
 
     private static DescribeAclsResource buildResource(String name, ResourceType type, PatternType patternType, List<AclDescription> acls) {
         return new DescribeAclsResource()
-            .setResourceName(name)
-            .setResourceType(type.code())
-            .setPatternType(patternType.code())
-            .setAcls(acls);
+                .setResourceName(name)
+                .setResourceType(type.code())
+                .setPatternType(patternType.code())
+                .setAcls(acls);
     }
 
     private static AclDescription buildAclDescription(String host, String principal, AclOperation operation, AclPermissionType permission) {
         return new AclDescription()
-            .setHost(host)
-            .setPrincipal(principal)
-            .setOperation(operation.code())
-            .setPermissionType(permission.code());
+                .setHost(host)
+                .setPrincipal(principal)
+                .setOperation(operation.code())
+                .setPermissionType(permission.code());
     }
 }

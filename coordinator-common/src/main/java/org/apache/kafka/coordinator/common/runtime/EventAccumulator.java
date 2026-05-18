@@ -35,13 +35,13 @@ import java.util.function.BiConsumer;
 /**
  * A concurrent event accumulator which groups events per key and ensures that only one
  * event with a given key can be processed concurrently.
- *
+ * <p>
  * This class is threadsafe.
  *
  * @param <K> The type of the key of the event.
  * @param <T> The type of the event itself. It implements the {@link Event} interface.
- *
- * There are a few examples about how to use it in the unit tests.
+ *            <p>
+ *            There are a few examples about how to use it in the unit tests.
  */
 public class EventAccumulator<K, T extends EventAccumulator.Event<K>> implements AutoCloseable {
 
@@ -100,7 +100,7 @@ public class EventAccumulator<K, T extends EventAccumulator.Event<K>> implements
     }
 
     public EventAccumulator(
-        Random random
+            Random random
     ) {
         this.random = random;
         this.queues = new HashMap<>();
@@ -143,8 +143,8 @@ public class EventAccumulator<K, T extends EventAccumulator.Event<K>> implements
      * Returns the next {@link Event} available. This method blocks for the provided
      * time and returns null if no event is available.
      *
-     * @param timeout   The timeout.
-     * @param unit      The timeout unit.
+     * @param timeout The timeout.
+     * @param unit    The timeout unit.
      * @return The next event available or null.
      */
     public T poll(long timeout, TimeUnit unit) {
@@ -224,13 +224,14 @@ public class EventAccumulator<K, T extends EventAccumulator.Event<K>> implements
     /**
      * Adds an {@link Event} to the queue using the provided add operation.
      *
-     * @param event         The {@link Event} to add.
-     * @param addOperation  The operation to use for adding (e.g., addFirst or addLast).
+     * @param event        The {@link Event} to add.
+     * @param addOperation The operation to use for adding (e.g., addFirst or addLast).
      */
     private void add(T event, BiConsumer<Deque<T>, T> addOperation) throws RejectedExecutionException {
         lock.lock();
         try {
-            if (closed) throw new RejectedExecutionException("Can't accept an event because the accumulator is closed.");
+            if (closed)
+                throw new RejectedExecutionException("Can't accept an event because the accumulator is closed.");
 
             var key = event.key();
             var queue = queues.get(key);
@@ -250,7 +251,7 @@ public class EventAccumulator<K, T extends EventAccumulator.Event<K>> implements
 
     /**
      * Adds the key to the available keys set.
-     *
+     * <p>
      * This method must be called while holding the lock.
      */
     private void addAvailableKey(K key) {
@@ -261,7 +262,7 @@ public class EventAccumulator<K, T extends EventAccumulator.Event<K>> implements
     /**
      * Returns the next available key. The key is selected randomly
      * from the available keys set.
-     *
+     * <p>
      * This method must be called while holding the lock.
      */
     private K randomKey() {

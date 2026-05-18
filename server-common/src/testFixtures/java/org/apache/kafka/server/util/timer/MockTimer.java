@@ -24,7 +24,7 @@ import java.util.PriorityQueue;
 public class MockTimer implements Timer {
     private final MockTime time;
     private final PriorityQueue<TimerTaskEntry> taskQueue = new PriorityQueue<>(
-        Comparator.comparingLong(entry -> entry.expirationMs)
+            Comparator.comparingLong(entry -> entry.expirationMs)
     );
 
     public MockTimer() {
@@ -92,5 +92,6 @@ public class MockTimer implements Timer {
     }
 
     @Override
-    public void close() throws Exception {}
+    public void close() throws Exception {
+    }
 }

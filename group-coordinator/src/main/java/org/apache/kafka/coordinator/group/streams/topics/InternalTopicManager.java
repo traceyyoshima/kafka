@@ -69,11 +69,11 @@ public class InternalTopicManager {
         final Collection<StreamsGroupTopologyValue.Subtopology> subtopologies = topology.subtopologies().values();
 
         final Map<String, Collection<Set<String>>> copartitionGroupsBySubtopology =
-            subtopologies.stream()
-                .collect(Collectors.toMap(
-                    StreamsGroupTopologyValue.Subtopology::subtopologyId,
-                    InternalTopicManager::copartitionGroupsFromPersistedSubtopology)
-                );
+                subtopologies.stream()
+                        .collect(Collectors.toMap(
+                                StreamsGroupTopologyValue.Subtopology::subtopologyId,
+                                InternalTopicManager::copartitionGroupsFromPersistedSubtopology)
+                        );
 
         try {
             Optional<TopicConfigurationException> topicConfigurationException = Optional.empty();
@@ -81,50 +81,50 @@ public class InternalTopicManager {
             throwOnMissingSourceTopics(topology, metadataImage);
 
             Map<String, Integer> decidedPartitionCountsForInternalTopics =
-                decidePartitionCounts(log, topology, metadataImage, copartitionGroupsBySubtopology);
+                    decidePartitionCounts(log, topology, metadataImage, copartitionGroupsBySubtopology);
 
             final SortedMap<String, ConfiguredSubtopology> configuredSubtopologies =
-                subtopologies.stream()
-                    .collect(Collectors.toMap(
-                        StreamsGroupTopologyValue.Subtopology::subtopologyId,
-                        x -> fromPersistedSubtopology(x, metadataImage, decidedPartitionCountsForInternalTopics),
-                        (v1, v2) -> {
-                            throw new RuntimeException(String.format("Duplicate key for values %s and %s", v1, v2));
-                        },
-                        TreeMap::new
-                    ));
+                    subtopologies.stream()
+                            .collect(Collectors.toMap(
+                                    StreamsGroupTopologyValue.Subtopology::subtopologyId,
+                                    x -> fromPersistedSubtopology(x, metadataImage, decidedPartitionCountsForInternalTopics),
+                                    (v1, v2) -> {
+                                        throw new RuntimeException(String.format("Duplicate key for values %s and %s", v1, v2));
+                                    },
+                                    TreeMap::new
+                            ));
 
             Map<String, CreatableTopic> internalTopicsToCreate = missingInternalTopics(configuredSubtopologies, topology, metadataImage);
             long elapsedMs = time.milliseconds() - startTimeMs;
             if (!internalTopicsToCreate.isEmpty()) {
                 topicConfigurationException = Optional.of(TopicConfigurationException.missingInternalTopics(
-                    "Internal topics are missing: " + summarizeTopics(internalTopicsToCreate.keySet())
+                        "Internal topics are missing: " + summarizeTopics(internalTopicsToCreate.keySet())
                 ));
                 log.info("[GroupId {}][MemberId {}] Valid topic configuration found in {}ms, but internal topics are missing for topology epoch {}: {}",
-                    groupId, memberId, elapsedMs, topology.topologyEpoch(), summarizeTopics(internalTopicsToCreate.keySet()));
+                        groupId, memberId, elapsedMs, topology.topologyEpoch(), summarizeTopics(internalTopicsToCreate.keySet()));
             } else {
                 log.info("[GroupId {}][MemberId {}] Valid topic configuration found in {}ms, topology epoch {} is now initialized.",
-                    groupId, memberId, elapsedMs, topology.topologyEpoch());
+                        groupId, memberId, elapsedMs, topology.topologyEpoch());
             }
 
             return new ConfiguredTopology(
-                topology.topologyEpoch(),
-                metadataHash,
-                Optional.of(configuredSubtopologies),
-                internalTopicsToCreate,
-                topicConfigurationException
+                    topology.topologyEpoch(),
+                    metadataHash,
+                    Optional.of(configuredSubtopologies),
+                    internalTopicsToCreate,
+                    topicConfigurationException
             );
 
         } catch (TopicConfigurationException e) {
             long elapsedMs = time.milliseconds() - startTimeMs;
             log.warn("[GroupId {}][MemberId {}] Topic configuration failed for topology epoch {} in {}ms: {}",
-                groupId, memberId, topology.topologyEpoch(), elapsedMs, e.getMessage());
+                    groupId, memberId, topology.topologyEpoch(), elapsedMs, e.getMessage());
             return new ConfiguredTopology(
-                topology.topologyEpoch(),
-                metadataHash,
-                Optional.empty(),
-                Map.of(),
-                Optional.of(e)
+                    topology.topologyEpoch(),
+                    metadataHash,
+                    Optional.empty(),
+                    Map.of(),
+                    Optional.of(e)
             );
         }
     }
@@ -141,7 +141,7 @@ public class InternalTopicManager {
         }
         if (!sortedMissingTopics.isEmpty()) {
             throw TopicConfigurationException.missingSourceTopics(
-                "Source topics " + summarizeTopics(sortedMissingTopics) + " are missing.");
+                    "Source topics " + summarizeTopics(sortedMissingTopics) + " are missing.");
         }
     }
 
@@ -151,25 +151,25 @@ public class InternalTopicManager {
                                                               final Map<String, Collection<Set<String>>> copartitionGroupsBySubtopology) {
         final Map<String, Integer> decidedPartitionCountsForInternalTopics = new HashMap<>();
         final Function<String, OptionalInt> topicPartitionCountProvider =
-            topic -> getPartitionCount(metadataImage, topic, decidedPartitionCountsForInternalTopics);
+                topic -> getPartitionCount(metadataImage, topic, decidedPartitionCountsForInternalTopics);
         final RepartitionTopics repartitionTopics = new RepartitionTopics(
-            log,
-            topology.subtopologies().values(),
-            topicPartitionCountProvider);
+                log,
+                topology.subtopologies().values(),
+                topicPartitionCountProvider);
         final CopartitionedTopicsEnforcer copartitionedTopicsEnforcer = new CopartitionedTopicsEnforcer(
-            log,
-            topicPartitionCountProvider);
+                log,
+                topicPartitionCountProvider);
         final ChangelogTopics changelogTopics = new ChangelogTopics(log,
-            topology.subtopologies().values(),
-            topicPartitionCountProvider);
+                topology.subtopologies().values(),
+                topicPartitionCountProvider);
 
         decidedPartitionCountsForInternalTopics.putAll(repartitionTopics.setup());
 
         enforceCopartitioning(
-            topology,
-            copartitionGroupsBySubtopology,
-            decidedPartitionCountsForInternalTopics,
-            copartitionedTopicsEnforcer
+                topology,
+                copartitionGroupsBySubtopology,
+                decidedPartitionCountsForInternalTopics,
+                copartitionedTopicsEnforcer
         );
 
         decidedPartitionCountsForInternalTopics.putAll(changelogTopics.setup());
@@ -182,13 +182,13 @@ public class InternalTopicManager {
                                               final Map<String, Integer> decidedPartitionCountsForInternalTopics,
                                               final CopartitionedTopicsEnforcer copartitionedTopicsEnforcer) {
         final Set<String> fixedRepartitionTopics =
-            topology.subtopologies().values().stream().flatMap(x ->
-                x.repartitionSourceTopics().stream().filter(y -> y.partitions() != 0)
-            ).map(StreamsGroupTopologyValue.TopicInfo::name).collect(Collectors.toSet());
+                topology.subtopologies().values().stream().flatMap(x ->
+                        x.repartitionSourceTopics().stream().filter(y -> y.partitions() != 0)
+                ).map(StreamsGroupTopologyValue.TopicInfo::name).collect(Collectors.toSet());
         final Set<String> flexibleRepartitionTopics =
-            topology.subtopologies().values().stream().flatMap(x ->
-                x.repartitionSourceTopics().stream().filter(y -> y.partitions() == 0)
-            ).map(StreamsGroupTopologyValue.TopicInfo::name).collect(Collectors.toSet());
+                topology.subtopologies().values().stream().flatMap(x ->
+                        x.repartitionSourceTopics().stream().filter(y -> y.partitions() == 0)
+                ).map(StreamsGroupTopologyValue.TopicInfo::name).collect(Collectors.toSet());
 
         // ensure the co-partitioning topics within the group have the same number of partitions,
         // and enforce the number of partitions for those repartition topics to be the same if they
@@ -196,7 +196,7 @@ public class InternalTopicManager {
         for (Collection<Set<String>> copartitionGroups : copartitionGroupsBySubtopology.values()) {
             for (Set<String> copartitionGroup : copartitionGroups) {
                 decidedPartitionCountsForInternalTopics.putAll(
-                    copartitionedTopicsEnforcer.enforce(copartitionGroup, fixedRepartitionTopics, flexibleRepartitionTopics));
+                        copartitionedTopicsEnforcer.enforce(copartitionGroup, fixedRepartitionTopics, flexibleRepartitionTopics));
             }
         }
     }
@@ -208,9 +208,9 @@ public class InternalTopicManager {
         final Map<String, CreatableTopic> topicsToCreate = new HashMap<>();
         for (ConfiguredSubtopology subtopology : subtopologyMap.values()) {
             subtopology.repartitionSourceTopics().values()
-                .forEach(x -> topicsToCreate.put(x.name(), toCreatableTopic(x)));
+                    .forEach(x -> topicsToCreate.put(x.name(), toCreatableTopic(x)));
             subtopology.stateChangelogTopics().values()
-                .forEach(x -> topicsToCreate.put(x.name(), toCreatableTopic(x)));
+                    .forEach(x -> topicsToCreate.put(x.name(), toCreatableTopic(x)));
         }
         for (String topic : topology.requiredTopics()) {
             metadataImage.topicMetadata(topic).ifPresent(topicMetadata -> {
@@ -218,7 +218,7 @@ public class InternalTopicManager {
                 if (expectedTopic != null) {
                     if (topicMetadata.partitionCount() != expectedTopic.numPartitions()) {
                         throw TopicConfigurationException.incorrectlyPartitionedTopics("Existing topic " + topic + " has different"
-                            + " number of partitions: expected " + expectedTopic.numPartitions() + ", found " + topicMetadata.partitionCount());
+                                + " number of partitions: expected " + expectedTopic.numPartitions() + ", found " + topicMetadata.partitionCount());
                     }
                 }
             });
@@ -273,15 +273,15 @@ public class InternalTopicManager {
                                                                   final Map<String, Integer> decidedPartitionCountsForInternalTopics
     ) {
         return new ConfiguredSubtopology(
-            computeNumberOfTasks(subtopology, metadataImage, decidedPartitionCountsForInternalTopics),
-            new HashSet<>(subtopology.sourceTopics()),
-            subtopology.repartitionSourceTopics().stream()
-                .map(x -> fromPersistedTopicInfo(x, decidedPartitionCountsForInternalTopics))
-                .collect(Collectors.toMap(ConfiguredInternalTopic::name, x -> x)),
-            new HashSet<>(subtopology.repartitionSinkTopics()),
-            subtopology.stateChangelogTopics().stream()
-                .map(x -> fromPersistedTopicInfo(x, decidedPartitionCountsForInternalTopics))
-                .collect(Collectors.toMap(ConfiguredInternalTopic::name, x -> x))
+                computeNumberOfTasks(subtopology, metadataImage, decidedPartitionCountsForInternalTopics),
+                new HashSet<>(subtopology.sourceTopics()),
+                subtopology.repartitionSourceTopics().stream()
+                        .map(x -> fromPersistedTopicInfo(x, decidedPartitionCountsForInternalTopics))
+                        .collect(Collectors.toMap(ConfiguredInternalTopic::name, x -> x)),
+                new HashSet<>(subtopology.repartitionSinkTopics()),
+                subtopology.stateChangelogTopics().stream()
+                        .map(x -> fromPersistedTopicInfo(x, decidedPartitionCountsForInternalTopics))
+                        .collect(Collectors.toMap(ConfiguredInternalTopic::name, x -> x))
         );
     }
 
@@ -289,14 +289,14 @@ public class InternalTopicManager {
                                             final CoordinatorMetadataImage metadataImage,
                                             final Map<String, Integer> decidedPartitionCountsForInternalTopics) {
         return Stream.concat(
-            subtopology.sourceTopics().stream(),
-            subtopology.repartitionSourceTopics().stream().map(StreamsGroupTopologyValue.TopicInfo::name)
+                subtopology.sourceTopics().stream(),
+                subtopology.repartitionSourceTopics().stream().map(StreamsGroupTopologyValue.TopicInfo::name)
         ).map(
-            topic -> getPartitionCount(metadataImage, topic, decidedPartitionCountsForInternalTopics).orElseThrow(
-                () -> new IllegalStateException("Number of partitions must be set for topic " + topic)
-            )
+                topic -> getPartitionCount(metadataImage, topic, decidedPartitionCountsForInternalTopics).orElseThrow(
+                        () -> new IllegalStateException("Number of partitions must be set for topic " + topic)
+                )
         ).max(Integer::compareTo).orElseThrow(
-            () -> new IllegalStateException("Subtopology does not contain any source topics")
+                () -> new IllegalStateException("Subtopology does not contain any source topics")
         );
     }
 
@@ -307,27 +307,27 @@ public class InternalTopicManager {
         }
 
         return new ConfiguredInternalTopic(
-            topicInfo.name(),
-            topicInfo.partitions() == 0 ? decidedPartitionCountsForInternalTopics.get(topicInfo.name()) : topicInfo.partitions(),
-            topicInfo.replicationFactor() == 0 ? Optional.empty()
-                : Optional.of(topicInfo.replicationFactor()),
-            topicInfo.topicConfigs() != null ? topicInfo.topicConfigs().stream()
-                .collect(Collectors.toMap(StreamsGroupTopologyValue.TopicConfig::key,
-                    StreamsGroupTopologyValue.TopicConfig::value))
-                : Map.of()
+                topicInfo.name(),
+                topicInfo.partitions() == 0 ? decidedPartitionCountsForInternalTopics.get(topicInfo.name()) : topicInfo.partitions(),
+                topicInfo.replicationFactor() == 0 ? Optional.empty()
+                        : Optional.of(topicInfo.replicationFactor()),
+                topicInfo.topicConfigs() != null ? topicInfo.topicConfigs().stream()
+                                                   .collect(Collectors.toMap(StreamsGroupTopologyValue.TopicConfig::key,
+                                                           StreamsGroupTopologyValue.TopicConfig::value))
+                        : Map.of()
         );
     }
 
     private static Collection<Set<String>> copartitionGroupsFromPersistedSubtopology(
-        final StreamsGroupTopologyValue.Subtopology subtopology
+            final StreamsGroupTopologyValue.Subtopology subtopology
     ) {
         return subtopology.copartitionGroups().stream().map(copartitionGroup ->
-            Stream.concat(
-                copartitionGroup.sourceTopics().stream()
-                    .map(i -> subtopology.sourceTopics().get(i)),
-                copartitionGroup.repartitionSourceTopics().stream()
-                    .map(i -> subtopology.repartitionSourceTopics().get(i).name())
-            ).collect(Collectors.toSet())
+                Stream.concat(
+                        copartitionGroup.sourceTopics().stream()
+                                .map(i -> subtopology.sourceTopics().get(i)),
+                        copartitionGroup.repartitionSourceTopics().stream()
+                                .map(i -> subtopology.repartitionSourceTopics().get(i).name())
+                ).collect(Collectors.toSet())
         ).toList();
     }
 
@@ -342,8 +342,8 @@ public class InternalTopicManager {
         int maxToShow = 3;
         int size = topics.size();
         return topics.stream()
-            .limit(maxToShow)
-            .collect(Collectors.joining(", ")) +
-            (size > maxToShow ? " and " + (size - maxToShow) + " additional topics" : "");
+                .limit(maxToShow)
+                .collect(Collectors.joining(", ")) +
+                (size > maxToShow ? " and " + (size - maxToShow) + " additional topics" : "");
     }
 }

@@ -24,7 +24,7 @@ import java.util.Objects;
 
 /**
  * The partition assignment.
- *
+ * <p>
  * The assignment is represented as a list of integers and {@link Uuid}s
  * where each integer is the replica ID, and each Uuid is the ID of the
  * directory hosting the replica in the broker.

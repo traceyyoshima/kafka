@@ -35,7 +35,7 @@ public class BlockBasedTableConfigWithAccessibleCacheTest {
     @Test
     public void shouldReturnNoBlockCacheIfNoneIsSet() {
         final BlockBasedTableConfigWithAccessibleCache configWithAccessibleCache =
-            new BlockBasedTableConfigWithAccessibleCache();
+                new BlockBasedTableConfigWithAccessibleCache();
 
         assertThat(configWithAccessibleCache.blockCache(), nullValue());
     }
@@ -43,7 +43,7 @@ public class BlockBasedTableConfigWithAccessibleCacheTest {
     @Test
     public void shouldSetBlockCacheAndMakeItAccessible() {
         final BlockBasedTableConfigWithAccessibleCache configWithAccessibleCache =
-            new BlockBasedTableConfigWithAccessibleCache();
+                new BlockBasedTableConfigWithAccessibleCache();
         try (final Cache blockCache = new LRUCache(1024)) {
 
             final BlockBasedTableConfig updatedConfig = configWithAccessibleCache.setBlockCache(blockCache);

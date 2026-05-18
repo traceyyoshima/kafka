@@ -96,8 +96,8 @@ public class DefaultTaskTopicPartition implements TaskTopicPartition {
             return false;
         final TaskTopicPartition other = (TaskTopicPartition) obj;
         return topicPartition.equals(other.topicPartition()) &&
-               isSourceTopic == other.isSource() &&
-               isChangelogTopic == other.isChangelog();
+                isSourceTopic == other.isSource() &&
+                isChangelogTopic == other.isChangelog();
     }
 
     public void annotateWithRackIds(final Set<String> rackIds) {

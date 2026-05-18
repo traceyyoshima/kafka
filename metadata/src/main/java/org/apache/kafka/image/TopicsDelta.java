@@ -71,7 +71,7 @@ public final class TopicsDelta {
 
     public void replay(TopicRecord record) {
         TopicDelta delta = new TopicDelta(
-            new TopicImage(record.name(), record.topicId(), Map.of()));
+                new TopicImage(record.name(), record.topicId(), Map.of()));
         changedTopics.put(record.topicId(), delta);
         createdTopics.put(record.name(), record.topicId());
     }
@@ -120,7 +120,7 @@ public final class TopicsDelta {
 
             if (topicId == null) {
                 throw new RuntimeException("Unable to clear elr for topic with name " +
-                    record.topicName() + ": no such topic found.");
+                        record.topicName() + ": no such topic found.");
             }
 
             maybeReplayClearElrRecord(topicId);
@@ -144,7 +144,7 @@ public final class TopicsDelta {
             TopicImage topicImage = image.getTopic(record.topicId());
             if (topicImage == null) {
                 throw new RuntimeException("Unable to delete topic with id " +
-                    record.topicId() + ": no such topic found.");
+                        record.topicId() + ": no such topic found.");
             }
             topicName = topicImage.name();
             deletedTopicIds.add(record.topicId());
@@ -168,7 +168,7 @@ public final class TopicsDelta {
         ImmutableMap<Uuid, TopicImage> newTopicsById = image.topicsById();
         ImmutableMap<String, TopicImage> newTopicsByName = image.topicsByName();
         // apply all the deletes
-        for (Uuid topicId: deletedTopicIds) {
+        for (Uuid topicId : deletedTopicIds) {
             // it was deleted, so we have to remove it from the maps
             TopicImage originalTopicToBeDeleted = image.topicsById().get(topicId);
             if (originalTopicToBeDeleted == null) {
@@ -179,7 +179,7 @@ public final class TopicsDelta {
             }
         }
         // apply all the updates/additions
-        for (Map.Entry<Uuid, TopicDelta> entry: changedTopics.entrySet()) {
+        for (Map.Entry<Uuid, TopicDelta> entry : changedTopics.entrySet()) {
             Uuid topicId = entry.getKey();
             TopicImage newTopicToBeAddedOrUpdated = entry.getValue().apply();
             // put new information into the maps
@@ -267,9 +267,9 @@ public final class TopicsDelta {
     @Override
     public String toString() {
         return "TopicsDelta(" +
-            "changedTopics=" + changedTopics +
-            ", deletedTopicIds=" + deletedTopicIds +
-            ", createdTopics=" + createdTopics +
-            ')';
+                "changedTopics=" + changedTopics +
+                ", deletedTopicIds=" + deletedTopicIds +
+                ", createdTopics=" + createdTopics +
+                ')';
     }
 }

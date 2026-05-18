@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Objects;
 
 public record ConnectorStateInfo(
-    @JsonProperty String name,
-    @JsonProperty ConnectorState connector,
-    @JsonProperty List<TaskState> tasks,
-    @JsonProperty ConnectorType type
+        @JsonProperty String name,
+        @JsonProperty ConnectorState connector,
+        @JsonProperty List<TaskState> tasks,
+        @JsonProperty ConnectorType type
 ) {
 
     public abstract static class AbstractState {

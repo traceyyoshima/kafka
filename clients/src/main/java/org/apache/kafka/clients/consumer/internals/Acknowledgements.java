@@ -69,7 +69,6 @@ public class Acknowledgements {
      *
      * @param offset The record offset.
      * @param type   The AcknowledgeType.
-     *
      * @return Whether the acknowledgement was added.
      */
     public boolean addIfAbsent(long offset, AcknowledgeType type) {

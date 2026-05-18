@@ -123,10 +123,9 @@ public final class KafkaEventQueue implements EventQueue {
         /**
          * Run the event associated with this EventContext.
          *
-         * @param log                  The logger to use.
-         * @param exceptionToDeliver   If non-null, the exception to deliver to the event.
-         *
-         * @return                     True if the thread was interrupted; false otherwise.
+         * @param log                The logger to use.
+         * @param exceptionToDeliver If non-null, the exception to deliver to the event.
+         * @return True if the thread was interrupted; false otherwise.
          */
         boolean run(Logger log, Throwable exceptionToDeliver) {
             if (exceptionToDeliver == null) {
@@ -316,7 +315,7 @@ public final class KafkaEventQueue implements EventQueue {
                 OptionalLong existingDeadlineNs = OptionalLong.empty();
                 if (eventContext.tag != null) {
                     EventContext toRemove =
-                        tagToEventContext.put(eventContext.tag, eventContext);
+                            tagToEventContext.put(eventContext.tag, eventContext);
                     if (toRemove != null) {
                         existingDeadlineNs = toRemove.deadlineNs;
                         remove(toRemove);
@@ -342,7 +341,7 @@ public final class KafkaEventQueue implements EventQueue {
                     case DEFERRED:
                         if (deadlineNs.isEmpty()) {
                             return new RuntimeException(
-                                "You must specify a deadline for deferred events.");
+                                    "You must specify a deadline for deferred events.");
                         }
                         break;
                 }
@@ -452,28 +451,30 @@ public final class KafkaEventQueue implements EventQueue {
 
 
     public KafkaEventQueue(
-        Time time,
-        LogContext logContext,
-        String threadNamePrefix
+            Time time,
+            LogContext logContext,
+            String threadNamePrefix
     ) {
-        this(time, logContext, threadNamePrefix, VoidEvent.INSTANCE, (__, ___) -> { });
+        this(time, logContext, threadNamePrefix, VoidEvent.INSTANCE, (__, ___) -> {
+        });
     }
 
     public KafkaEventQueue(
-        Time time,
-        LogContext logContext,
-        String threadNamePrefix,
-        Event cleanupEvent
+            Time time,
+            LogContext logContext,
+            String threadNamePrefix,
+            Event cleanupEvent
     ) {
-        this(time, logContext, threadNamePrefix, cleanupEvent, (__, ___) -> { });
+        this(time, logContext, threadNamePrefix, cleanupEvent, (__, ___) -> {
+        });
     }
 
     public KafkaEventQueue(
-        Time time,
-        LogContext logContext,
-        String threadNamePrefix,
-        Event cleanupEvent,
-        BiConsumer<Long, Long> idleTimeCallback
+            Time time,
+            LogContext logContext,
+            String threadNamePrefix,
+            Event cleanupEvent,
+            BiConsumer<Long, Long> idleTimeCallback
     ) {
         this.time = time;
         this.cleanupEvent = Objects.requireNonNull(cleanupEvent);
@@ -481,7 +482,7 @@ public final class KafkaEventQueue implements EventQueue {
         this.log = logContext.logger(KafkaEventQueue.class);
         this.eventHandler = new EventHandler();
         this.eventHandlerThread = new KafkaThread(threadNamePrefix + EVENT_HANDLER_THREAD_SUFFIX,
-            this.eventHandler, false);
+                this.eventHandler, false);
         this.shuttingDown = false;
         this.interrupted = false;
         this.idleTimeCallback = Objects.requireNonNull(idleTimeCallback);

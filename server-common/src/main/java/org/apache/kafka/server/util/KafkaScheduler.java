@@ -119,7 +119,7 @@ public class KafkaScheduler implements Scheduler {
             executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
             executor.setRemoveOnCancelPolicy(true);
             executor.setThreadFactory(runnable ->
-                new KafkaThread(threadNamePrefix + schedulerThreadId.getAndIncrement(), runnable, daemon));
+                    new KafkaThread(threadNamePrefix + schedulerThreadId.getAndIncrement(), runnable, daemon));
             this.executor = executor;
         }
     }

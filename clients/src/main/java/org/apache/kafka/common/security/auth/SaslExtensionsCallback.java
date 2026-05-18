@@ -41,9 +41,8 @@ public class SaslExtensionsCallback implements Callback {
 
     /**
      * Sets the SASL extensions on this callback.
-     * 
-     * @param extensions
-     *            the mandatory extensions to set
+     *
+     * @param extensions the mandatory extensions to set
      */
     public void extensions(SaslExtensions extensions) {
         this.extensions = Objects.requireNonNull(extensions, "extensions must not be null");

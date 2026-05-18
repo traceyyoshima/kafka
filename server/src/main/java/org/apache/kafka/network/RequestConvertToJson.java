@@ -395,366 +395,366 @@ public class RequestConvertToJson {
     public static JsonNode request(AbstractRequest request) {
         return switch (request.apiKey()) {
             case ADD_OFFSETS_TO_TXN ->
-                AddOffsetsToTxnRequestDataJsonConverter.write(((AddOffsetsToTxnRequest) request).data(), request.version());
+                    AddOffsetsToTxnRequestDataJsonConverter.write(((AddOffsetsToTxnRequest) request).data(), request.version());
             case ADD_PARTITIONS_TO_TXN ->
-                AddPartitionsToTxnRequestDataJsonConverter.write(((AddPartitionsToTxnRequest) request).data(), request.version());
+                    AddPartitionsToTxnRequestDataJsonConverter.write(((AddPartitionsToTxnRequest) request).data(), request.version());
             case ADD_RAFT_VOTER ->
-                AddRaftVoterRequestDataJsonConverter.write(((AddRaftVoterRequest) request).data(), request.version());
+                    AddRaftVoterRequestDataJsonConverter.write(((AddRaftVoterRequest) request).data(), request.version());
             case ALLOCATE_PRODUCER_IDS ->
-                AllocateProducerIdsRequestDataJsonConverter.write(((AllocateProducerIdsRequest) request).data(), request.version());
+                    AllocateProducerIdsRequestDataJsonConverter.write(((AllocateProducerIdsRequest) request).data(), request.version());
             case ALTER_CLIENT_QUOTAS ->
-                AlterClientQuotasRequestDataJsonConverter.write(((AlterClientQuotasRequest) request).data(), request.version());
+                    AlterClientQuotasRequestDataJsonConverter.write(((AlterClientQuotasRequest) request).data(), request.version());
             case ALTER_CONFIGS ->
-                AlterConfigsRequestDataJsonConverter.write(((AlterConfigsRequest) request).data(), request.version());
+                    AlterConfigsRequestDataJsonConverter.write(((AlterConfigsRequest) request).data(), request.version());
             case ALTER_PARTITION_REASSIGNMENTS ->
-                AlterPartitionReassignmentsRequestDataJsonConverter.write(((AlterPartitionReassignmentsRequest) request).data(), request.version());
+                    AlterPartitionReassignmentsRequestDataJsonConverter.write(((AlterPartitionReassignmentsRequest) request).data(), request.version());
             case ALTER_PARTITION ->
-                AlterPartitionRequestDataJsonConverter.write(((AlterPartitionRequest) request).data(), request.version());
+                    AlterPartitionRequestDataJsonConverter.write(((AlterPartitionRequest) request).data(), request.version());
             case ALTER_REPLICA_LOG_DIRS ->
-                AlterReplicaLogDirsRequestDataJsonConverter.write(((AlterReplicaLogDirsRequest) request).data(), request.version());
+                    AlterReplicaLogDirsRequestDataJsonConverter.write(((AlterReplicaLogDirsRequest) request).data(), request.version());
             case ALTER_SHARE_GROUP_OFFSETS ->
-                AlterShareGroupOffsetsRequestDataJsonConverter.write(((AlterShareGroupOffsetsRequest) request).data(), request.version());
+                    AlterShareGroupOffsetsRequestDataJsonConverter.write(((AlterShareGroupOffsetsRequest) request).data(), request.version());
             case ALTER_USER_SCRAM_CREDENTIALS ->
-                AlterUserScramCredentialsRequestDataJsonConverter.write(((AlterUserScramCredentialsRequest) request).data(), request.version());
+                    AlterUserScramCredentialsRequestDataJsonConverter.write(((AlterUserScramCredentialsRequest) request).data(), request.version());
             case API_VERSIONS ->
-                ApiVersionsRequestDataJsonConverter.write(((ApiVersionsRequest) request).data(), request.version());
+                    ApiVersionsRequestDataJsonConverter.write(((ApiVersionsRequest) request).data(), request.version());
             case ASSIGN_REPLICAS_TO_DIRS ->
-                AssignReplicasToDirsRequestDataJsonConverter.write(((AssignReplicasToDirsRequest) request).data(), request.version());
+                    AssignReplicasToDirsRequestDataJsonConverter.write(((AssignReplicasToDirsRequest) request).data(), request.version());
             case BEGIN_QUORUM_EPOCH ->
-                BeginQuorumEpochRequestDataJsonConverter.write(((BeginQuorumEpochRequest) request).data(), request.version());
+                    BeginQuorumEpochRequestDataJsonConverter.write(((BeginQuorumEpochRequest) request).data(), request.version());
             case BROKER_HEARTBEAT ->
-                BrokerHeartbeatRequestDataJsonConverter.write(((BrokerHeartbeatRequest) request).data(), request.version());
+                    BrokerHeartbeatRequestDataJsonConverter.write(((BrokerHeartbeatRequest) request).data(), request.version());
             case BROKER_REGISTRATION ->
-                BrokerRegistrationRequestDataJsonConverter.write(((BrokerRegistrationRequest) request).data(), request.version());
+                    BrokerRegistrationRequestDataJsonConverter.write(((BrokerRegistrationRequest) request).data(), request.version());
             case CONSUMER_GROUP_DESCRIBE ->
-                ConsumerGroupDescribeRequestDataJsonConverter.write(((ConsumerGroupDescribeRequest) request).data(), request.version());
+                    ConsumerGroupDescribeRequestDataJsonConverter.write(((ConsumerGroupDescribeRequest) request).data(), request.version());
             case CONSUMER_GROUP_HEARTBEAT ->
-                ConsumerGroupHeartbeatRequestDataJsonConverter.write(((ConsumerGroupHeartbeatRequest) request).data(), request.version());
+                    ConsumerGroupHeartbeatRequestDataJsonConverter.write(((ConsumerGroupHeartbeatRequest) request).data(), request.version());
             case CONTROLLER_REGISTRATION ->
-                ControllerRegistrationRequestDataJsonConverter.write(((ControllerRegistrationRequest) request).data(), request.version());
+                    ControllerRegistrationRequestDataJsonConverter.write(((ControllerRegistrationRequest) request).data(), request.version());
             case CREATE_ACLS ->
-                CreateAclsRequestDataJsonConverter.write(((CreateAclsRequest) request).data(), request.version());
+                    CreateAclsRequestDataJsonConverter.write(((CreateAclsRequest) request).data(), request.version());
             case CREATE_DELEGATION_TOKEN ->
-                CreateDelegationTokenRequestDataJsonConverter.write(((CreateDelegationTokenRequest) request).data(), request.version());
+                    CreateDelegationTokenRequestDataJsonConverter.write(((CreateDelegationTokenRequest) request).data(), request.version());
             case CREATE_PARTITIONS ->
-                CreatePartitionsRequestDataJsonConverter.write(((CreatePartitionsRequest) request).data(), request.version());
+                    CreatePartitionsRequestDataJsonConverter.write(((CreatePartitionsRequest) request).data(), request.version());
             case CREATE_TOPICS ->
-                CreateTopicsRequestDataJsonConverter.write(((CreateTopicsRequest) request).data(), request.version());
+                    CreateTopicsRequestDataJsonConverter.write(((CreateTopicsRequest) request).data(), request.version());
             case DELETE_ACLS ->
-                DeleteAclsRequestDataJsonConverter.write(((DeleteAclsRequest) request).data(), request.version());
+                    DeleteAclsRequestDataJsonConverter.write(((DeleteAclsRequest) request).data(), request.version());
             case DELETE_GROUPS ->
-                DeleteGroupsRequestDataJsonConverter.write(((DeleteGroupsRequest) request).data(), request.version());
+                    DeleteGroupsRequestDataJsonConverter.write(((DeleteGroupsRequest) request).data(), request.version());
             case DELETE_RECORDS ->
-                DeleteRecordsRequestDataJsonConverter.write(((DeleteRecordsRequest) request).data(), request.version());
+                    DeleteRecordsRequestDataJsonConverter.write(((DeleteRecordsRequest) request).data(), request.version());
             case DELETE_SHARE_GROUP_OFFSETS ->
-                DeleteShareGroupOffsetsRequestDataJsonConverter.write(((DeleteShareGroupOffsetsRequest) request).data(), request.version());
+                    DeleteShareGroupOffsetsRequestDataJsonConverter.write(((DeleteShareGroupOffsetsRequest) request).data(), request.version());
             case DELETE_SHARE_GROUP_STATE ->
-                DeleteShareGroupStateRequestDataJsonConverter.write(((DeleteShareGroupStateRequest) request).data(), request.version());
+                    DeleteShareGroupStateRequestDataJsonConverter.write(((DeleteShareGroupStateRequest) request).data(), request.version());
             case DELETE_TOPICS ->
-                DeleteTopicsRequestDataJsonConverter.write(((DeleteTopicsRequest) request).data(), request.version());
+                    DeleteTopicsRequestDataJsonConverter.write(((DeleteTopicsRequest) request).data(), request.version());
             case DESCRIBE_ACLS ->
-                DescribeAclsRequestDataJsonConverter.write(((DescribeAclsRequest) request).data(), request.version());
+                    DescribeAclsRequestDataJsonConverter.write(((DescribeAclsRequest) request).data(), request.version());
             case DESCRIBE_CLIENT_QUOTAS ->
-                DescribeClientQuotasRequestDataJsonConverter.write(((DescribeClientQuotasRequest) request).data(), request.version());
+                    DescribeClientQuotasRequestDataJsonConverter.write(((DescribeClientQuotasRequest) request).data(), request.version());
             case DESCRIBE_CLUSTER ->
-                DescribeClusterRequestDataJsonConverter.write(((DescribeClusterRequest) request).data(), request.version());
+                    DescribeClusterRequestDataJsonConverter.write(((DescribeClusterRequest) request).data(), request.version());
             case DESCRIBE_CONFIGS ->
-                DescribeConfigsRequestDataJsonConverter.write(((DescribeConfigsRequest) request).data(), request.version());
+                    DescribeConfigsRequestDataJsonConverter.write(((DescribeConfigsRequest) request).data(), request.version());
             case DESCRIBE_DELEGATION_TOKEN ->
-                DescribeDelegationTokenRequestDataJsonConverter.write(((DescribeDelegationTokenRequest) request).data(), request.version());
+                    DescribeDelegationTokenRequestDataJsonConverter.write(((DescribeDelegationTokenRequest) request).data(), request.version());
             case DESCRIBE_GROUPS ->
-                DescribeGroupsRequestDataJsonConverter.write(((DescribeGroupsRequest) request).data(), request.version());
+                    DescribeGroupsRequestDataJsonConverter.write(((DescribeGroupsRequest) request).data(), request.version());
             case DESCRIBE_LOG_DIRS ->
-                DescribeLogDirsRequestDataJsonConverter.write(((DescribeLogDirsRequest) request).data(), request.version());
+                    DescribeLogDirsRequestDataJsonConverter.write(((DescribeLogDirsRequest) request).data(), request.version());
             case DESCRIBE_PRODUCERS ->
-                DescribeProducersRequestDataJsonConverter.write(((DescribeProducersRequest) request).data(), request.version());
+                    DescribeProducersRequestDataJsonConverter.write(((DescribeProducersRequest) request).data(), request.version());
             case DESCRIBE_QUORUM ->
-                DescribeQuorumRequestDataJsonConverter.write(((DescribeQuorumRequest) request).data(), request.version());
+                    DescribeQuorumRequestDataJsonConverter.write(((DescribeQuorumRequest) request).data(), request.version());
             case DESCRIBE_SHARE_GROUP_OFFSETS ->
-                DescribeShareGroupOffsetsRequestDataJsonConverter.write(((DescribeShareGroupOffsetsRequest) request).data(), request.version());
+                    DescribeShareGroupOffsetsRequestDataJsonConverter.write(((DescribeShareGroupOffsetsRequest) request).data(), request.version());
             case DESCRIBE_TOPIC_PARTITIONS ->
-                DescribeTopicPartitionsRequestDataJsonConverter.write(((DescribeTopicPartitionsRequest) request).data(), request.version());
+                    DescribeTopicPartitionsRequestDataJsonConverter.write(((DescribeTopicPartitionsRequest) request).data(), request.version());
             case DESCRIBE_TRANSACTIONS ->
-                DescribeTransactionsRequestDataJsonConverter.write(((DescribeTransactionsRequest) request).data(), request.version());
+                    DescribeTransactionsRequestDataJsonConverter.write(((DescribeTransactionsRequest) request).data(), request.version());
             case DESCRIBE_USER_SCRAM_CREDENTIALS ->
-                DescribeUserScramCredentialsRequestDataJsonConverter.write(((DescribeUserScramCredentialsRequest) request).data(), request.version());
+                    DescribeUserScramCredentialsRequestDataJsonConverter.write(((DescribeUserScramCredentialsRequest) request).data(), request.version());
             case ELECT_LEADERS ->
-                ElectLeadersRequestDataJsonConverter.write(((ElectLeadersRequest) request).data(), request.version());
+                    ElectLeadersRequestDataJsonConverter.write(((ElectLeadersRequest) request).data(), request.version());
             case END_QUORUM_EPOCH ->
-                EndQuorumEpochRequestDataJsonConverter.write(((EndQuorumEpochRequest) request).data(), request.version());
+                    EndQuorumEpochRequestDataJsonConverter.write(((EndQuorumEpochRequest) request).data(), request.version());
             case END_TXN -> EndTxnRequestDataJsonConverter.write(((EndTxnRequest) request).data(), request.version());
             case ENVELOPE ->
-                EnvelopeRequestDataJsonConverter.write(((EnvelopeRequest) request).data(), request.version());
+                    EnvelopeRequestDataJsonConverter.write(((EnvelopeRequest) request).data(), request.version());
             case EXPIRE_DELEGATION_TOKEN ->
-                ExpireDelegationTokenRequestDataJsonConverter.write(((ExpireDelegationTokenRequest) request).data(), request.version());
+                    ExpireDelegationTokenRequestDataJsonConverter.write(((ExpireDelegationTokenRequest) request).data(), request.version());
             case FETCH -> FetchRequestDataJsonConverter.write(((FetchRequest) request).data(), request.version());
             case FETCH_SNAPSHOT ->
-                FetchSnapshotRequestDataJsonConverter.write(((FetchSnapshotRequest) request).data(), request.version());
+                    FetchSnapshotRequestDataJsonConverter.write(((FetchSnapshotRequest) request).data(), request.version());
             case FIND_COORDINATOR ->
-                FindCoordinatorRequestDataJsonConverter.write(((FindCoordinatorRequest) request).data(), request.version());
+                    FindCoordinatorRequestDataJsonConverter.write(((FindCoordinatorRequest) request).data(), request.version());
             case GET_TELEMETRY_SUBSCRIPTIONS ->
-                GetTelemetrySubscriptionsRequestDataJsonConverter.write(((GetTelemetrySubscriptionsRequest) request).data(), request.version());
+                    GetTelemetrySubscriptionsRequestDataJsonConverter.write(((GetTelemetrySubscriptionsRequest) request).data(), request.version());
             case HEARTBEAT ->
-                HeartbeatRequestDataJsonConverter.write(((HeartbeatRequest) request).data(), request.version());
+                    HeartbeatRequestDataJsonConverter.write(((HeartbeatRequest) request).data(), request.version());
             case INCREMENTAL_ALTER_CONFIGS ->
-                IncrementalAlterConfigsRequestDataJsonConverter.write(((IncrementalAlterConfigsRequest) request).data(), request.version());
+                    IncrementalAlterConfigsRequestDataJsonConverter.write(((IncrementalAlterConfigsRequest) request).data(), request.version());
             case INITIALIZE_SHARE_GROUP_STATE ->
-                InitializeShareGroupStateRequestDataJsonConverter.write(((InitializeShareGroupStateRequest) request).data(), request.version());
+                    InitializeShareGroupStateRequestDataJsonConverter.write(((InitializeShareGroupStateRequest) request).data(), request.version());
             case INIT_PRODUCER_ID ->
-                InitProducerIdRequestDataJsonConverter.write(((InitProducerIdRequest) request).data(), request.version());
+                    InitProducerIdRequestDataJsonConverter.write(((InitProducerIdRequest) request).data(), request.version());
             case JOIN_GROUP ->
-                JoinGroupRequestDataJsonConverter.write(((JoinGroupRequest) request).data(), request.version());
+                    JoinGroupRequestDataJsonConverter.write(((JoinGroupRequest) request).data(), request.version());
             case LEAVE_GROUP ->
-                LeaveGroupRequestDataJsonConverter.write(((LeaveGroupRequest) request).data(), request.version());
+                    LeaveGroupRequestDataJsonConverter.write(((LeaveGroupRequest) request).data(), request.version());
             case LIST_CONFIG_RESOURCES ->
-                ListConfigResourcesRequestDataJsonConverter.write(((ListConfigResourcesRequest) request).data(), request.version());
+                    ListConfigResourcesRequestDataJsonConverter.write(((ListConfigResourcesRequest) request).data(), request.version());
             case LIST_GROUPS ->
-                ListGroupsRequestDataJsonConverter.write(((ListGroupsRequest) request).data(), request.version());
+                    ListGroupsRequestDataJsonConverter.write(((ListGroupsRequest) request).data(), request.version());
             case LIST_OFFSETS ->
-                ListOffsetsRequestDataJsonConverter.write(((ListOffsetsRequest) request).data(), request.version());
+                    ListOffsetsRequestDataJsonConverter.write(((ListOffsetsRequest) request).data(), request.version());
             case LIST_PARTITION_REASSIGNMENTS ->
-                ListPartitionReassignmentsRequestDataJsonConverter.write(((ListPartitionReassignmentsRequest) request).data(), request.version());
+                    ListPartitionReassignmentsRequestDataJsonConverter.write(((ListPartitionReassignmentsRequest) request).data(), request.version());
             case LIST_TRANSACTIONS ->
-                ListTransactionsRequestDataJsonConverter.write(((ListTransactionsRequest) request).data(), request.version());
+                    ListTransactionsRequestDataJsonConverter.write(((ListTransactionsRequest) request).data(), request.version());
             case METADATA ->
-                MetadataRequestDataJsonConverter.write(((MetadataRequest) request).data(), request.version());
+                    MetadataRequestDataJsonConverter.write(((MetadataRequest) request).data(), request.version());
             case OFFSET_COMMIT ->
-                OffsetCommitRequestDataJsonConverter.write(((OffsetCommitRequest) request).data(), request.version());
+                    OffsetCommitRequestDataJsonConverter.write(((OffsetCommitRequest) request).data(), request.version());
             case OFFSET_DELETE ->
-                OffsetDeleteRequestDataJsonConverter.write(((OffsetDeleteRequest) request).data(), request.version());
+                    OffsetDeleteRequestDataJsonConverter.write(((OffsetDeleteRequest) request).data(), request.version());
             case OFFSET_FETCH ->
-                OffsetFetchRequestDataJsonConverter.write(((OffsetFetchRequest) request).data(), request.version());
+                    OffsetFetchRequestDataJsonConverter.write(((OffsetFetchRequest) request).data(), request.version());
             case OFFSET_FOR_LEADER_EPOCH ->
-                OffsetForLeaderEpochRequestDataJsonConverter.write(((OffsetsForLeaderEpochRequest) request).data(), request.version());
+                    OffsetForLeaderEpochRequestDataJsonConverter.write(((OffsetsForLeaderEpochRequest) request).data(), request.version());
             case PRODUCE ->
-                ProduceRequestDataJsonConverter.write(((ProduceRequest) request).data(), request.version(), false);
+                    ProduceRequestDataJsonConverter.write(((ProduceRequest) request).data(), request.version(), false);
             case PUSH_TELEMETRY ->
-                PushTelemetryRequestDataJsonConverter.write(((PushTelemetryRequest) request).data(), request.version());
+                    PushTelemetryRequestDataJsonConverter.write(((PushTelemetryRequest) request).data(), request.version());
             case READ_SHARE_GROUP_STATE ->
-                ReadShareGroupStateRequestDataJsonConverter.write(((ReadShareGroupStateRequest) request).data(), request.version());
+                    ReadShareGroupStateRequestDataJsonConverter.write(((ReadShareGroupStateRequest) request).data(), request.version());
             case READ_SHARE_GROUP_STATE_SUMMARY ->
-                ReadShareGroupStateSummaryRequestDataJsonConverter.write(((ReadShareGroupStateSummaryRequest) request).data(), request.version());
+                    ReadShareGroupStateSummaryRequestDataJsonConverter.write(((ReadShareGroupStateSummaryRequest) request).data(), request.version());
             case REMOVE_RAFT_VOTER ->
-                RemoveRaftVoterRequestDataJsonConverter.write(((RemoveRaftVoterRequest) request).data(), request.version());
+                    RemoveRaftVoterRequestDataJsonConverter.write(((RemoveRaftVoterRequest) request).data(), request.version());
             case RENEW_DELEGATION_TOKEN ->
-                RenewDelegationTokenRequestDataJsonConverter.write(((RenewDelegationTokenRequest) request).data(), request.version());
+                    RenewDelegationTokenRequestDataJsonConverter.write(((RenewDelegationTokenRequest) request).data(), request.version());
             case SASL_AUTHENTICATE ->
-                SaslAuthenticateRequestDataJsonConverter.write(((SaslAuthenticateRequest) request).data(), request.version());
+                    SaslAuthenticateRequestDataJsonConverter.write(((SaslAuthenticateRequest) request).data(), request.version());
             case SASL_HANDSHAKE ->
-                SaslHandshakeRequestDataJsonConverter.write(((SaslHandshakeRequest) request).data(), request.version());
+                    SaslHandshakeRequestDataJsonConverter.write(((SaslHandshakeRequest) request).data(), request.version());
             case SHARE_ACKNOWLEDGE ->
-                ShareAcknowledgeRequestDataJsonConverter.write(((ShareAcknowledgeRequest) request).data(), request.version());
+                    ShareAcknowledgeRequestDataJsonConverter.write(((ShareAcknowledgeRequest) request).data(), request.version());
             case SHARE_FETCH ->
-                ShareFetchRequestDataJsonConverter.write(((ShareFetchRequest) request).data(), request.version());
+                    ShareFetchRequestDataJsonConverter.write(((ShareFetchRequest) request).data(), request.version());
             case SHARE_GROUP_DESCRIBE ->
-                ShareGroupDescribeRequestDataJsonConverter.write(((ShareGroupDescribeRequest) request).data(), request.version());
+                    ShareGroupDescribeRequestDataJsonConverter.write(((ShareGroupDescribeRequest) request).data(), request.version());
             case SHARE_GROUP_HEARTBEAT ->
-                ShareGroupHeartbeatRequestDataJsonConverter.write(((ShareGroupHeartbeatRequest) request).data(), request.version());
+                    ShareGroupHeartbeatRequestDataJsonConverter.write(((ShareGroupHeartbeatRequest) request).data(), request.version());
             case STREAMS_GROUP_DESCRIBE ->
-                StreamsGroupDescribeRequestDataJsonConverter.write(((StreamsGroupDescribeRequest) request).data(), request.version());
+                    StreamsGroupDescribeRequestDataJsonConverter.write(((StreamsGroupDescribeRequest) request).data(), request.version());
             case STREAMS_GROUP_HEARTBEAT ->
-                StreamsGroupHeartbeatRequestDataJsonConverter.write(((StreamsGroupHeartbeatRequest) request).data(), request.version());
+                    StreamsGroupHeartbeatRequestDataJsonConverter.write(((StreamsGroupHeartbeatRequest) request).data(), request.version());
             case SYNC_GROUP ->
-                SyncGroupRequestDataJsonConverter.write(((SyncGroupRequest) request).data(), request.version());
+                    SyncGroupRequestDataJsonConverter.write(((SyncGroupRequest) request).data(), request.version());
             case TXN_OFFSET_COMMIT ->
-                TxnOffsetCommitRequestDataJsonConverter.write(((TxnOffsetCommitRequest) request).data(), request.version());
+                    TxnOffsetCommitRequestDataJsonConverter.write(((TxnOffsetCommitRequest) request).data(), request.version());
             case UNREGISTER_BROKER ->
-                UnregisterBrokerRequestDataJsonConverter.write(((UnregisterBrokerRequest) request).data(), request.version());
+                    UnregisterBrokerRequestDataJsonConverter.write(((UnregisterBrokerRequest) request).data(), request.version());
             case UPDATE_FEATURES ->
-                UpdateFeaturesRequestDataJsonConverter.write(((UpdateFeaturesRequest) request).data(), request.version());
+                    UpdateFeaturesRequestDataJsonConverter.write(((UpdateFeaturesRequest) request).data(), request.version());
             case UPDATE_RAFT_VOTER ->
-                UpdateRaftVoterRequestDataJsonConverter.write(((UpdateRaftVoterRequest) request).data(), request.version());
+                    UpdateRaftVoterRequestDataJsonConverter.write(((UpdateRaftVoterRequest) request).data(), request.version());
             case VOTE -> VoteRequestDataJsonConverter.write(((VoteRequest) request).data(), request.version());
             case WRITE_SHARE_GROUP_STATE ->
-                WriteShareGroupStateRequestDataJsonConverter.write(((WriteShareGroupStateRequest) request).data(), request.version());
+                    WriteShareGroupStateRequestDataJsonConverter.write(((WriteShareGroupStateRequest) request).data(), request.version());
             case WRITE_TXN_MARKERS ->
-                WriteTxnMarkersRequestDataJsonConverter.write(((WriteTxnMarkersRequest) request).data(), request.version());
+                    WriteTxnMarkersRequestDataJsonConverter.write(((WriteTxnMarkersRequest) request).data(), request.version());
             default ->
-                throw new IllegalStateException("ApiKey " + request.apiKey() + " is not currently handled in `request`, the " +
-                    "code should be updated to do so.");
+                    throw new IllegalStateException("ApiKey " + request.apiKey() + " is not currently handled in `request`, the " +
+                            "code should be updated to do so.");
         };
     }
 
     public static JsonNode response(AbstractResponse response, short version) {
         return switch (response.apiKey()) {
             case ADD_OFFSETS_TO_TXN ->
-                AddOffsetsToTxnResponseDataJsonConverter.write(((AddOffsetsToTxnResponse) response).data(), version);
+                    AddOffsetsToTxnResponseDataJsonConverter.write(((AddOffsetsToTxnResponse) response).data(), version);
             case ADD_PARTITIONS_TO_TXN ->
-                AddPartitionsToTxnResponseDataJsonConverter.write(((AddPartitionsToTxnResponse) response).data(), version);
+                    AddPartitionsToTxnResponseDataJsonConverter.write(((AddPartitionsToTxnResponse) response).data(), version);
             case ADD_RAFT_VOTER ->
-                AddRaftVoterResponseDataJsonConverter.write(((AddRaftVoterResponse) response).data(), version);
+                    AddRaftVoterResponseDataJsonConverter.write(((AddRaftVoterResponse) response).data(), version);
             case ALLOCATE_PRODUCER_IDS ->
-                AllocateProducerIdsResponseDataJsonConverter.write(((AllocateProducerIdsResponse) response).data(), version);
+                    AllocateProducerIdsResponseDataJsonConverter.write(((AllocateProducerIdsResponse) response).data(), version);
             case ALTER_CLIENT_QUOTAS ->
-                AlterClientQuotasResponseDataJsonConverter.write(((AlterClientQuotasResponse) response).data(), version);
+                    AlterClientQuotasResponseDataJsonConverter.write(((AlterClientQuotasResponse) response).data(), version);
             case ALTER_CONFIGS ->
-                AlterConfigsResponseDataJsonConverter.write(((AlterConfigsResponse) response).data(), version);
+                    AlterConfigsResponseDataJsonConverter.write(((AlterConfigsResponse) response).data(), version);
             case ALTER_PARTITION_REASSIGNMENTS ->
-                AlterPartitionReassignmentsResponseDataJsonConverter.write(((AlterPartitionReassignmentsResponse) response).data(), version);
+                    AlterPartitionReassignmentsResponseDataJsonConverter.write(((AlterPartitionReassignmentsResponse) response).data(), version);
             case ALTER_PARTITION ->
-                AlterPartitionResponseDataJsonConverter.write(((AlterPartitionResponse) response).data(), version);
+                    AlterPartitionResponseDataJsonConverter.write(((AlterPartitionResponse) response).data(), version);
             case ALTER_REPLICA_LOG_DIRS ->
-                AlterReplicaLogDirsResponseDataJsonConverter.write(((AlterReplicaLogDirsResponse) response).data(), version);
+                    AlterReplicaLogDirsResponseDataJsonConverter.write(((AlterReplicaLogDirsResponse) response).data(), version);
             case ALTER_SHARE_GROUP_OFFSETS ->
-                AlterShareGroupOffsetsResponseDataJsonConverter.write(((AlterShareGroupOffsetsResponse) response).data(), version);
+                    AlterShareGroupOffsetsResponseDataJsonConverter.write(((AlterShareGroupOffsetsResponse) response).data(), version);
             case ALTER_USER_SCRAM_CREDENTIALS ->
-                AlterUserScramCredentialsResponseDataJsonConverter.write(((AlterUserScramCredentialsResponse) response).data(), version);
+                    AlterUserScramCredentialsResponseDataJsonConverter.write(((AlterUserScramCredentialsResponse) response).data(), version);
             case API_VERSIONS ->
-                ApiVersionsResponseDataJsonConverter.write(((ApiVersionsResponse) response).data(), version);
+                    ApiVersionsResponseDataJsonConverter.write(((ApiVersionsResponse) response).data(), version);
             case ASSIGN_REPLICAS_TO_DIRS ->
-                AssignReplicasToDirsResponseDataJsonConverter.write(((AssignReplicasToDirsResponse) response).data(), version);
+                    AssignReplicasToDirsResponseDataJsonConverter.write(((AssignReplicasToDirsResponse) response).data(), version);
             case BEGIN_QUORUM_EPOCH ->
-                BeginQuorumEpochResponseDataJsonConverter.write(((BeginQuorumEpochResponse) response).data(), version);
+                    BeginQuorumEpochResponseDataJsonConverter.write(((BeginQuorumEpochResponse) response).data(), version);
             case BROKER_HEARTBEAT ->
-                BrokerHeartbeatResponseDataJsonConverter.write(((BrokerHeartbeatResponse) response).data(), version);
+                    BrokerHeartbeatResponseDataJsonConverter.write(((BrokerHeartbeatResponse) response).data(), version);
             case BROKER_REGISTRATION ->
-                BrokerRegistrationResponseDataJsonConverter.write(((BrokerRegistrationResponse) response).data(), version);
+                    BrokerRegistrationResponseDataJsonConverter.write(((BrokerRegistrationResponse) response).data(), version);
             case CONSUMER_GROUP_DESCRIBE ->
-                ConsumerGroupDescribeResponseDataJsonConverter.write(((ConsumerGroupDescribeResponse) response).data(), version);
+                    ConsumerGroupDescribeResponseDataJsonConverter.write(((ConsumerGroupDescribeResponse) response).data(), version);
             case CONSUMER_GROUP_HEARTBEAT ->
-                ConsumerGroupHeartbeatResponseDataJsonConverter.write(((ConsumerGroupHeartbeatResponse) response).data(), version);
+                    ConsumerGroupHeartbeatResponseDataJsonConverter.write(((ConsumerGroupHeartbeatResponse) response).data(), version);
             case CONTROLLER_REGISTRATION ->
-                ControllerRegistrationResponseDataJsonConverter.write(((ControllerRegistrationResponse) response).data(), version);
+                    ControllerRegistrationResponseDataJsonConverter.write(((ControllerRegistrationResponse) response).data(), version);
             case CREATE_ACLS ->
-                CreateAclsResponseDataJsonConverter.write(((CreateAclsResponse) response).data(), version);
+                    CreateAclsResponseDataJsonConverter.write(((CreateAclsResponse) response).data(), version);
             case CREATE_DELEGATION_TOKEN ->
-                CreateDelegationTokenResponseDataJsonConverter.write(((CreateDelegationTokenResponse) response).data(), version);
+                    CreateDelegationTokenResponseDataJsonConverter.write(((CreateDelegationTokenResponse) response).data(), version);
             case CREATE_PARTITIONS ->
-                CreatePartitionsResponseDataJsonConverter.write(((CreatePartitionsResponse) response).data(), version);
+                    CreatePartitionsResponseDataJsonConverter.write(((CreatePartitionsResponse) response).data(), version);
             case CREATE_TOPICS ->
-                CreateTopicsResponseDataJsonConverter.write(((CreateTopicsResponse) response).data(), version);
+                    CreateTopicsResponseDataJsonConverter.write(((CreateTopicsResponse) response).data(), version);
             case DELETE_ACLS ->
-                DeleteAclsResponseDataJsonConverter.write(((DeleteAclsResponse) response).data(), version);
+                    DeleteAclsResponseDataJsonConverter.write(((DeleteAclsResponse) response).data(), version);
             case DELETE_GROUPS ->
-                DeleteGroupsResponseDataJsonConverter.write(((DeleteGroupsResponse) response).data(), version);
+                    DeleteGroupsResponseDataJsonConverter.write(((DeleteGroupsResponse) response).data(), version);
             case DELETE_RECORDS ->
-                DeleteRecordsResponseDataJsonConverter.write(((DeleteRecordsResponse) response).data(), version);
+                    DeleteRecordsResponseDataJsonConverter.write(((DeleteRecordsResponse) response).data(), version);
             case DELETE_SHARE_GROUP_OFFSETS ->
-                DeleteShareGroupOffsetsResponseDataJsonConverter.write(((DeleteShareGroupOffsetsResponse) response).data(), version);
+                    DeleteShareGroupOffsetsResponseDataJsonConverter.write(((DeleteShareGroupOffsetsResponse) response).data(), version);
             case DELETE_SHARE_GROUP_STATE ->
-                DeleteShareGroupStateResponseDataJsonConverter.write(((DeleteShareGroupStateResponse) response).data(), version);
+                    DeleteShareGroupStateResponseDataJsonConverter.write(((DeleteShareGroupStateResponse) response).data(), version);
             case DELETE_TOPICS ->
-                DeleteTopicsResponseDataJsonConverter.write(((DeleteTopicsResponse) response).data(), version);
+                    DeleteTopicsResponseDataJsonConverter.write(((DeleteTopicsResponse) response).data(), version);
             case DESCRIBE_ACLS ->
-                DescribeAclsResponseDataJsonConverter.write(((DescribeAclsResponse) response).data(), version);
+                    DescribeAclsResponseDataJsonConverter.write(((DescribeAclsResponse) response).data(), version);
             case DESCRIBE_CLIENT_QUOTAS ->
-                DescribeClientQuotasResponseDataJsonConverter.write(((DescribeClientQuotasResponse) response).data(), version);
+                    DescribeClientQuotasResponseDataJsonConverter.write(((DescribeClientQuotasResponse) response).data(), version);
             case DESCRIBE_CLUSTER ->
-                DescribeClusterResponseDataJsonConverter.write(((DescribeClusterResponse) response).data(), version);
+                    DescribeClusterResponseDataJsonConverter.write(((DescribeClusterResponse) response).data(), version);
             case DESCRIBE_CONFIGS ->
-                DescribeConfigsResponseDataJsonConverter.write(((DescribeConfigsResponse) response).data(), version);
+                    DescribeConfigsResponseDataJsonConverter.write(((DescribeConfigsResponse) response).data(), version);
             case DESCRIBE_DELEGATION_TOKEN ->
-                DescribeDelegationTokenResponseDataJsonConverter.write(((DescribeDelegationTokenResponse) response).data(), version);
+                    DescribeDelegationTokenResponseDataJsonConverter.write(((DescribeDelegationTokenResponse) response).data(), version);
             case DESCRIBE_GROUPS ->
-                DescribeGroupsResponseDataJsonConverter.write(((DescribeGroupsResponse) response).data(), version);
+                    DescribeGroupsResponseDataJsonConverter.write(((DescribeGroupsResponse) response).data(), version);
             case DESCRIBE_LOG_DIRS ->
-                DescribeLogDirsResponseDataJsonConverter.write(((DescribeLogDirsResponse) response).data(), version);
+                    DescribeLogDirsResponseDataJsonConverter.write(((DescribeLogDirsResponse) response).data(), version);
             case DESCRIBE_PRODUCERS ->
-                DescribeProducersResponseDataJsonConverter.write(((DescribeProducersResponse) response).data(), version);
+                    DescribeProducersResponseDataJsonConverter.write(((DescribeProducersResponse) response).data(), version);
             case DESCRIBE_QUORUM ->
-                DescribeQuorumResponseDataJsonConverter.write(((DescribeQuorumResponse) response).data(), version);
+                    DescribeQuorumResponseDataJsonConverter.write(((DescribeQuorumResponse) response).data(), version);
             case DESCRIBE_SHARE_GROUP_OFFSETS ->
-                DescribeShareGroupOffsetsResponseDataJsonConverter.write(((DescribeShareGroupOffsetsResponse) response).data(), version);
+                    DescribeShareGroupOffsetsResponseDataJsonConverter.write(((DescribeShareGroupOffsetsResponse) response).data(), version);
             case DESCRIBE_TOPIC_PARTITIONS ->
-                DescribeTopicPartitionsResponseDataJsonConverter.write(((DescribeTopicPartitionsResponse) response).data(), version);
+                    DescribeTopicPartitionsResponseDataJsonConverter.write(((DescribeTopicPartitionsResponse) response).data(), version);
             case DESCRIBE_TRANSACTIONS ->
-                DescribeTransactionsResponseDataJsonConverter.write(((DescribeTransactionsResponse) response).data(), version);
+                    DescribeTransactionsResponseDataJsonConverter.write(((DescribeTransactionsResponse) response).data(), version);
             case DESCRIBE_USER_SCRAM_CREDENTIALS ->
-                DescribeUserScramCredentialsResponseDataJsonConverter.write(((DescribeUserScramCredentialsResponse) response).data(), version);
+                    DescribeUserScramCredentialsResponseDataJsonConverter.write(((DescribeUserScramCredentialsResponse) response).data(), version);
             case ELECT_LEADERS ->
-                ElectLeadersResponseDataJsonConverter.write(((ElectLeadersResponse) response).data(), version);
+                    ElectLeadersResponseDataJsonConverter.write(((ElectLeadersResponse) response).data(), version);
             case END_QUORUM_EPOCH ->
-                EndQuorumEpochResponseDataJsonConverter.write(((EndQuorumEpochResponse) response).data(), version);
+                    EndQuorumEpochResponseDataJsonConverter.write(((EndQuorumEpochResponse) response).data(), version);
             case END_TXN -> EndTxnResponseDataJsonConverter.write(((EndTxnResponse) response).data(), version);
             case ENVELOPE -> EnvelopeResponseDataJsonConverter.write(((EnvelopeResponse) response).data(), version);
             case EXPIRE_DELEGATION_TOKEN ->
-                ExpireDelegationTokenResponseDataJsonConverter.write(((ExpireDelegationTokenResponse) response).data(), version);
+                    ExpireDelegationTokenResponseDataJsonConverter.write(((ExpireDelegationTokenResponse) response).data(), version);
             case FETCH -> FetchResponseDataJsonConverter.write(((FetchResponse) response).data(), version, false);
             case FETCH_SNAPSHOT ->
-                FetchSnapshotResponseDataJsonConverter.write(((FetchSnapshotResponse) response).data(), version);
+                    FetchSnapshotResponseDataJsonConverter.write(((FetchSnapshotResponse) response).data(), version);
             case FIND_COORDINATOR ->
-                FindCoordinatorResponseDataJsonConverter.write(((FindCoordinatorResponse) response).data(), version);
+                    FindCoordinatorResponseDataJsonConverter.write(((FindCoordinatorResponse) response).data(), version);
             case GET_TELEMETRY_SUBSCRIPTIONS ->
-                GetTelemetrySubscriptionsResponseDataJsonConverter.write(((GetTelemetrySubscriptionsResponse) response).data(), version);
+                    GetTelemetrySubscriptionsResponseDataJsonConverter.write(((GetTelemetrySubscriptionsResponse) response).data(), version);
             case HEARTBEAT -> HeartbeatResponseDataJsonConverter.write(((HeartbeatResponse) response).data(), version);
             case INCREMENTAL_ALTER_CONFIGS ->
-                IncrementalAlterConfigsResponseDataJsonConverter.write(((IncrementalAlterConfigsResponse) response).data(), version);
+                    IncrementalAlterConfigsResponseDataJsonConverter.write(((IncrementalAlterConfigsResponse) response).data(), version);
             case INITIALIZE_SHARE_GROUP_STATE ->
-                InitializeShareGroupStateResponseDataJsonConverter.write(((InitializeShareGroupStateResponse) response).data(), version);
+                    InitializeShareGroupStateResponseDataJsonConverter.write(((InitializeShareGroupStateResponse) response).data(), version);
             case INIT_PRODUCER_ID ->
-                InitProducerIdResponseDataJsonConverter.write(((InitProducerIdResponse) response).data(), version);
+                    InitProducerIdResponseDataJsonConverter.write(((InitProducerIdResponse) response).data(), version);
             case JOIN_GROUP -> JoinGroupResponseDataJsonConverter.write(((JoinGroupResponse) response).data(), version);
             case LEAVE_GROUP ->
-                LeaveGroupResponseDataJsonConverter.write(((LeaveGroupResponse) response).data(), version);
+                    LeaveGroupResponseDataJsonConverter.write(((LeaveGroupResponse) response).data(), version);
             case LIST_CONFIG_RESOURCES ->
-                ListConfigResourcesResponseDataJsonConverter.write(((ListConfigResourcesResponse) response).data(), version);
+                    ListConfigResourcesResponseDataJsonConverter.write(((ListConfigResourcesResponse) response).data(), version);
             case LIST_GROUPS ->
-                ListGroupsResponseDataJsonConverter.write(((ListGroupsResponse) response).data(), version);
+                    ListGroupsResponseDataJsonConverter.write(((ListGroupsResponse) response).data(), version);
             case LIST_OFFSETS ->
-                ListOffsetsResponseDataJsonConverter.write(((ListOffsetsResponse) response).data(), version);
+                    ListOffsetsResponseDataJsonConverter.write(((ListOffsetsResponse) response).data(), version);
             case LIST_PARTITION_REASSIGNMENTS ->
-                ListPartitionReassignmentsResponseDataJsonConverter.write(((ListPartitionReassignmentsResponse) response).data(), version);
+                    ListPartitionReassignmentsResponseDataJsonConverter.write(((ListPartitionReassignmentsResponse) response).data(), version);
             case LIST_TRANSACTIONS ->
-                ListTransactionsResponseDataJsonConverter.write(((ListTransactionsResponse) response).data(), version);
+                    ListTransactionsResponseDataJsonConverter.write(((ListTransactionsResponse) response).data(), version);
             case METADATA -> MetadataResponseDataJsonConverter.write(((MetadataResponse) response).data(), version);
             case OFFSET_COMMIT ->
-                OffsetCommitResponseDataJsonConverter.write(((OffsetCommitResponse) response).data(), version);
+                    OffsetCommitResponseDataJsonConverter.write(((OffsetCommitResponse) response).data(), version);
             case OFFSET_DELETE ->
-                OffsetDeleteResponseDataJsonConverter.write(((OffsetDeleteResponse) response).data(), version);
+                    OffsetDeleteResponseDataJsonConverter.write(((OffsetDeleteResponse) response).data(), version);
             case OFFSET_FETCH ->
-                OffsetFetchResponseDataJsonConverter.write(((OffsetFetchResponse) response).data(), version);
+                    OffsetFetchResponseDataJsonConverter.write(((OffsetFetchResponse) response).data(), version);
             case OFFSET_FOR_LEADER_EPOCH ->
-                OffsetForLeaderEpochResponseDataJsonConverter.write(((OffsetsForLeaderEpochResponse) response).data(), version);
+                    OffsetForLeaderEpochResponseDataJsonConverter.write(((OffsetsForLeaderEpochResponse) response).data(), version);
             case PRODUCE -> ProduceResponseDataJsonConverter.write(((ProduceResponse) response).data(), version);
             case PUSH_TELEMETRY ->
-                PushTelemetryResponseDataJsonConverter.write(((PushTelemetryResponse) response).data(), version);
+                    PushTelemetryResponseDataJsonConverter.write(((PushTelemetryResponse) response).data(), version);
             case READ_SHARE_GROUP_STATE ->
-                ReadShareGroupStateResponseDataJsonConverter.write(((ReadShareGroupStateResponse) response).data(), version);
+                    ReadShareGroupStateResponseDataJsonConverter.write(((ReadShareGroupStateResponse) response).data(), version);
             case READ_SHARE_GROUP_STATE_SUMMARY ->
-                ReadShareGroupStateSummaryResponseDataJsonConverter.write(((ReadShareGroupStateSummaryResponse) response).data(), version);
+                    ReadShareGroupStateSummaryResponseDataJsonConverter.write(((ReadShareGroupStateSummaryResponse) response).data(), version);
             case REMOVE_RAFT_VOTER ->
-                RemoveRaftVoterResponseDataJsonConverter.write(((RemoveRaftVoterResponse) response).data(), version);
+                    RemoveRaftVoterResponseDataJsonConverter.write(((RemoveRaftVoterResponse) response).data(), version);
             case RENEW_DELEGATION_TOKEN ->
-                RenewDelegationTokenResponseDataJsonConverter.write(((RenewDelegationTokenResponse) response).data(), version);
+                    RenewDelegationTokenResponseDataJsonConverter.write(((RenewDelegationTokenResponse) response).data(), version);
             case SASL_AUTHENTICATE ->
-                SaslAuthenticateResponseDataJsonConverter.write(((SaslAuthenticateResponse) response).data(), version);
+                    SaslAuthenticateResponseDataJsonConverter.write(((SaslAuthenticateResponse) response).data(), version);
             case SASL_HANDSHAKE ->
-                SaslHandshakeResponseDataJsonConverter.write(((SaslHandshakeResponse) response).data(), version);
+                    SaslHandshakeResponseDataJsonConverter.write(((SaslHandshakeResponse) response).data(), version);
             case SHARE_ACKNOWLEDGE ->
-                ShareAcknowledgeResponseDataJsonConverter.write(((ShareAcknowledgeResponse) response).data(), version);
+                    ShareAcknowledgeResponseDataJsonConverter.write(((ShareAcknowledgeResponse) response).data(), version);
             case SHARE_FETCH ->
-                ShareFetchResponseDataJsonConverter.write(((ShareFetchResponse) response).data(), version);
+                    ShareFetchResponseDataJsonConverter.write(((ShareFetchResponse) response).data(), version);
             case SHARE_GROUP_DESCRIBE ->
-                ShareGroupDescribeResponseDataJsonConverter.write(((ShareGroupDescribeResponse) response).data(), version);
+                    ShareGroupDescribeResponseDataJsonConverter.write(((ShareGroupDescribeResponse) response).data(), version);
             case SHARE_GROUP_HEARTBEAT ->
-                ShareGroupHeartbeatResponseDataJsonConverter.write(((ShareGroupHeartbeatResponse) response).data(), version);
+                    ShareGroupHeartbeatResponseDataJsonConverter.write(((ShareGroupHeartbeatResponse) response).data(), version);
             case STREAMS_GROUP_DESCRIBE ->
-                StreamsGroupDescribeResponseDataJsonConverter.write(((StreamsGroupDescribeResponse) response).data(), version);
+                    StreamsGroupDescribeResponseDataJsonConverter.write(((StreamsGroupDescribeResponse) response).data(), version);
             case STREAMS_GROUP_HEARTBEAT ->
-                StreamsGroupHeartbeatResponseDataJsonConverter.write(((StreamsGroupHeartbeatResponse) response).data(), version);
+                    StreamsGroupHeartbeatResponseDataJsonConverter.write(((StreamsGroupHeartbeatResponse) response).data(), version);
             case SYNC_GROUP -> SyncGroupResponseDataJsonConverter.write(((SyncGroupResponse) response).data(), version);
             case TXN_OFFSET_COMMIT ->
-                TxnOffsetCommitResponseDataJsonConverter.write(((TxnOffsetCommitResponse) response).data(), version);
+                    TxnOffsetCommitResponseDataJsonConverter.write(((TxnOffsetCommitResponse) response).data(), version);
             case UNREGISTER_BROKER ->
-                UnregisterBrokerResponseDataJsonConverter.write(((UnregisterBrokerResponse) response).data(), version);
+                    UnregisterBrokerResponseDataJsonConverter.write(((UnregisterBrokerResponse) response).data(), version);
             case UPDATE_FEATURES ->
-                UpdateFeaturesResponseDataJsonConverter.write(((UpdateFeaturesResponse) response).data(), version);
+                    UpdateFeaturesResponseDataJsonConverter.write(((UpdateFeaturesResponse) response).data(), version);
             case UPDATE_RAFT_VOTER ->
-                UpdateRaftVoterResponseDataJsonConverter.write(((UpdateRaftVoterResponse) response).data(), version);
+                    UpdateRaftVoterResponseDataJsonConverter.write(((UpdateRaftVoterResponse) response).data(), version);
             case VOTE -> VoteResponseDataJsonConverter.write(((VoteResponse) response).data(), version);
             case WRITE_SHARE_GROUP_STATE ->
-                WriteShareGroupStateResponseDataJsonConverter.write(((WriteShareGroupStateResponse) response).data(), version);
+                    WriteShareGroupStateResponseDataJsonConverter.write(((WriteShareGroupStateResponse) response).data(), version);
             case WRITE_TXN_MARKERS ->
-                WriteTxnMarkersResponseDataJsonConverter.write(((WriteTxnMarkersResponse) response).data(), version);
+                    WriteTxnMarkersResponseDataJsonConverter.write(((WriteTxnMarkersResponse) response).data(), version);
             default ->
-                throw new IllegalStateException("ApiKey " + response.apiKey() + " is not currently handled in `response`, the " +
-                    "code should be updated to do so.");
+                    throw new IllegalStateException("ApiKey " + response.apiKey() + " is not currently handled in `response`, the " +
+                            "code should be updated to do so.");
         };
     }
 
     public static JsonNode requestHeaderNode(RequestHeader header) {
         ObjectNode node = (ObjectNode) RequestHeaderDataJsonConverter.write(
-            header.data(), header.headerVersion(), false
+                header.data(), header.headerVersion(), false
         );
         node.set("requestApiKeyName", new TextNode(header.apiKey().toString()));
         if (header.isApiVersionDeprecated()) {

@@ -49,10 +49,10 @@ public class RocksDBRangeIteratorTest {
     private final String key4 = "d";
 
     private final String value = "value";
-    private final  Bytes key1Bytes = Bytes.wrap(key1.getBytes());
-    private final  Bytes key2Bytes = Bytes.wrap(key2.getBytes());
-    private final  Bytes key3Bytes = Bytes.wrap(key3.getBytes());
-    private final  Bytes key4Bytes = Bytes.wrap(key4.getBytes());
+    private final Bytes key1Bytes = Bytes.wrap(key1.getBytes());
+    private final Bytes key2Bytes = Bytes.wrap(key2.getBytes());
+    private final Bytes key3Bytes = Bytes.wrap(key3.getBytes());
+    private final Bytes key4Bytes = Bytes.wrap(key4.getBytes());
     private final byte[] valueBytes = value.getBytes();
 
     @Test
@@ -60,23 +60,23 @@ public class RocksDBRangeIteratorTest {
         final RocksIterator rocksIterator = mock(RocksIterator.class);
         doNothing().when(rocksIterator).seek(key1Bytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(false);
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
         when(rocksIterator.key())
-            .thenReturn(key1Bytes.get())
-            .thenReturn(key2Bytes.get())
-            .thenReturn(key3Bytes.get());
+                .thenReturn(key1Bytes.get())
+                .thenReturn(key2Bytes.get())
+                .thenReturn(key3Bytes.get());
         when(rocksIterator.value()).thenReturn(valueBytes);
         doNothing().when(rocksIterator).next();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            key3Bytes,
-            true,
-            true
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                key3Bytes,
+                true,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(true));
         assertThat(rocksDBRangeIterator.next().key, is(key1Bytes));
@@ -94,23 +94,23 @@ public class RocksDBRangeIteratorTest {
         final RocksIterator rocksIterator = mock(RocksIterator.class);
         doNothing().when(rocksIterator).seekForPrev(key3Bytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(false);
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
         when(rocksIterator.key())
-            .thenReturn(key3Bytes.get())
-            .thenReturn(key2Bytes.get())
-            .thenReturn(key1Bytes.get());
+                .thenReturn(key3Bytes.get())
+                .thenReturn(key2Bytes.get())
+                .thenReturn(key1Bytes.get());
         when(rocksIterator.value()).thenReturn(valueBytes);
         doNothing().when(rocksIterator).prev();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            key3Bytes,
-            false,
-            true
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                key3Bytes,
+                false,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(true));
         assertThat(rocksDBRangeIterator.next().key, is(key3Bytes));
@@ -129,25 +129,25 @@ public class RocksDBRangeIteratorTest {
         final RocksIterator rocksIterator = mock(RocksIterator.class);
         doNothing().when(rocksIterator).seek(key1Bytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(false);
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
         when(rocksIterator.key())
-            .thenReturn(key1Bytes.get())
-            .thenReturn(key2Bytes.get())
-            .thenReturn(key3Bytes.get())
-            .thenReturn(key4Bytes.get());
+                .thenReturn(key1Bytes.get())
+                .thenReturn(key2Bytes.get())
+                .thenReturn(key3Bytes.get())
+                .thenReturn(key4Bytes.get());
         when(rocksIterator.value()).thenReturn(valueBytes);
         doNothing().when(rocksIterator).next();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            toBytes,
-            true,
-            true
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                toBytes,
+                true,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(true));
         assertThat(rocksDBRangeIterator.next().key, is(key1Bytes));
@@ -168,25 +168,25 @@ public class RocksDBRangeIteratorTest {
         final RocksIterator rocksIterator = mock(RocksIterator.class);
         doNothing().when(rocksIterator).seekForPrev(key4Bytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(false);
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
         when(rocksIterator.key())
-            .thenReturn(key4Bytes.get())
-            .thenReturn(key3Bytes.get())
-            .thenReturn(key2Bytes.get())
-            .thenReturn(key1Bytes.get());
+                .thenReturn(key4Bytes.get())
+                .thenReturn(key3Bytes.get())
+                .thenReturn(key2Bytes.get())
+                .thenReturn(key1Bytes.get());
         when(rocksIterator.value()).thenReturn(valueBytes);
         doNothing().when(rocksIterator).prev();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            key4Bytes,
-            false,
-            true
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                key4Bytes,
+                false,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(true));
         assertThat(rocksDBRangeIterator.next().key, is(key4Bytes));
@@ -209,12 +209,12 @@ public class RocksDBRangeIteratorTest {
         doNothing().when(rocksIterator).seek(key1Bytes.get());
         when(rocksIterator.isValid()).thenReturn(false);
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            key2Bytes,
-            true,
-            true
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                key2Bytes,
+                true,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(false));
     }
@@ -224,19 +224,19 @@ public class RocksDBRangeIteratorTest {
         // key range in state store: [c-f]
         final String from = "g";
         final String to = "h";
-        final  Bytes fromBytes = Bytes.wrap(from.getBytes());
-        final  Bytes toBytes = Bytes.wrap(to.getBytes());
+        final Bytes fromBytes = Bytes.wrap(from.getBytes());
+        final Bytes toBytes = Bytes.wrap(to.getBytes());
         final RocksIterator rocksIterator = mock(RocksIterator.class);
         doNothing().when(rocksIterator).seekForPrev(toBytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(false);
+                .thenReturn(false);
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            fromBytes,
-            toBytes,
-            false,
-            true
+                storeName,
+                rocksIterator,
+                fromBytes,
+                toBytes,
+                false,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(false));
     }
@@ -246,21 +246,21 @@ public class RocksDBRangeIteratorTest {
         final RocksIterator rocksIterator = mock(RocksIterator.class);
         doNothing().when(rocksIterator).seek(key1Bytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(false);
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
         when(rocksIterator.key())
-            .thenReturn(key2Bytes.get())
-            .thenReturn(key3Bytes.get());
+                .thenReturn(key2Bytes.get())
+                .thenReturn(key3Bytes.get());
         when(rocksIterator.value()).thenReturn(valueBytes);
         doNothing().when(rocksIterator).next();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            key3Bytes,
-            true,
-            true
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                key3Bytes,
+                true,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(true));
         assertThat(rocksDBRangeIterator.next().key, is(key2Bytes));
@@ -278,21 +278,21 @@ public class RocksDBRangeIteratorTest {
         final Bytes toBytes = Bytes.wrap(to.getBytes());
         doNothing().when(rocksIterator).seekForPrev(toBytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(false);
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
         when(rocksIterator.key())
-            .thenReturn(key4Bytes.get())
-            .thenReturn(key3Bytes.get());
+                .thenReturn(key4Bytes.get())
+                .thenReturn(key3Bytes.get());
         when(rocksIterator.value()).thenReturn(valueBytes);
         doNothing().when(rocksIterator).prev();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key3Bytes,
-            toBytes,
-            false,
-            true
+                storeName,
+                rocksIterator,
+                key3Bytes,
+                toBytes,
+                false,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(true));
         assertThat(rocksDBRangeIterator.next().key, is(key4Bytes));
@@ -308,21 +308,21 @@ public class RocksDBRangeIteratorTest {
         final RocksIterator rocksIterator = mock(RocksIterator.class);
         doNothing().when(rocksIterator).seek(key1Bytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(false);
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
         when(rocksIterator.key())
-            .thenReturn(key2Bytes.get())
-            .thenReturn(key3Bytes.get());
+                .thenReturn(key2Bytes.get())
+                .thenReturn(key3Bytes.get());
         when(rocksIterator.value()).thenReturn(valueBytes);
         doNothing().when(rocksIterator).next();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            key3Bytes,
-            true,
-            true
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                key3Bytes,
+                true,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(true));
         assertThat(rocksDBRangeIterator.peekNextKey(), is(key2Bytes));
@@ -344,21 +344,21 @@ public class RocksDBRangeIteratorTest {
         final Bytes toBytes = ByteUtils.increment(key4Bytes);
         doNothing().when(rocksIterator).seekForPrev(toBytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(true)
-            .thenReturn(true)
-            .thenReturn(false);
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
         when(rocksIterator.key())
-            .thenReturn(key4Bytes.get())
-            .thenReturn(key3Bytes.get());
+                .thenReturn(key4Bytes.get())
+                .thenReturn(key3Bytes.get());
         when(rocksIterator.value()).thenReturn(valueBytes);
         doNothing().when(rocksIterator).prev();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key3Bytes,
-            toBytes,
-            false,
-            true
+                storeName,
+                rocksIterator,
+                key3Bytes,
+                toBytes,
+                false,
+                true
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(true));
         assertThat(rocksDBRangeIterator.peekNextKey(), is(key4Bytes));
@@ -380,14 +380,15 @@ public class RocksDBRangeIteratorTest {
         doNothing().when(rocksIterator).seek(key1Bytes.get());
         doNothing().when(rocksIterator).close();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            key2Bytes,
-            true,
-            true
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                key2Bytes,
+                true,
+                true
         );
-        rocksDBRangeIterator.onClose(() -> { });
+        rocksDBRangeIterator.onClose(() -> {
+        });
         rocksDBRangeIterator.close();
         verify(rocksIterator).close();
     }
@@ -396,12 +397,12 @@ public class RocksDBRangeIteratorTest {
     public void shouldCallCloseCallbackOnClose() {
         final RocksIterator rocksIterator = mock(RocksIterator.class);
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            key2Bytes,
-            true,
-            true
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                key2Bytes,
+                true,
+                true
         );
         final AtomicBoolean callbackCalled = new AtomicBoolean(false);
         rocksDBRangeIterator.onClose(() -> callbackCalled.set(true));
@@ -414,19 +415,19 @@ public class RocksDBRangeIteratorTest {
         final RocksIterator rocksIterator = mock(RocksIterator.class);
         doNothing().when(rocksIterator).seek(key1Bytes.get());
         when(rocksIterator.isValid())
-            .thenReturn(true);
+                .thenReturn(true);
         when(rocksIterator.key())
-            .thenReturn(key1Bytes.get())
-            .thenReturn(key2Bytes.get());
+                .thenReturn(key1Bytes.get())
+                .thenReturn(key2Bytes.get());
         when(rocksIterator.value()).thenReturn(valueBytes);
         doNothing().when(rocksIterator).next();
         final RocksDBRangeIterator rocksDBRangeIterator = new RocksDBRangeIterator(
-            storeName,
-            rocksIterator,
-            key1Bytes,
-            key2Bytes,
-            true,
-            false
+                storeName,
+                rocksIterator,
+                key1Bytes,
+                key2Bytes,
+                true,
+                false
         );
         assertThat(rocksDBRangeIterator.hasNext(), is(true));
         assertThat(rocksDBRangeIterator.next().key, is(key1Bytes));

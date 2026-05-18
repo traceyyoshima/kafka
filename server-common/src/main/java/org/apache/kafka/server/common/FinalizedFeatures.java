@@ -21,18 +21,18 @@ import java.util.Map;
 import java.util.Objects;
 
 public record FinalizedFeatures(
-    MetadataVersion metadataVersion,
-    Map<String, Short> finalizedFeatures,
-    long finalizedFeaturesEpoch
+        MetadataVersion metadataVersion,
+        Map<String, Short> finalizedFeatures,
+        long finalizedFeaturesEpoch
 ) {
     public static FinalizedFeatures fromKRaftVersion(MetadataVersion version) {
         return new FinalizedFeatures(version, Map.of(), -1);
     }
 
     public FinalizedFeatures(
-        MetadataVersion metadataVersion,
-        Map<String, Short> finalizedFeatures,
-        long finalizedFeaturesEpoch
+            MetadataVersion metadataVersion,
+            Map<String, Short> finalizedFeatures,
+            long finalizedFeaturesEpoch
     ) {
         this.metadataVersion = Objects.requireNonNull(metadataVersion);
         this.finalizedFeatures = new HashMap<>(finalizedFeatures);
@@ -46,9 +46,9 @@ public record FinalizedFeatures(
                 Map<String, Short> newFinalizedFeatures = new HashMap<>(finalizedFeatures);
                 newFinalizedFeatures.remove(key);
                 return new FinalizedFeatures(
-                    metadataVersion,
-                    newFinalizedFeatures,
-                    finalizedFeaturesEpoch);
+                        metadataVersion,
+                        newFinalizedFeatures,
+                        finalizedFeaturesEpoch);
             } else {
                 return this;
             }
@@ -56,9 +56,9 @@ public record FinalizedFeatures(
             Map<String, Short> newFinalizedFeatures = new HashMap<>(finalizedFeatures);
             newFinalizedFeatures.put(key, level);
             return new FinalizedFeatures(
-                metadataVersion,
-                newFinalizedFeatures,
-                finalizedFeaturesEpoch);
+                    metadataVersion,
+                    newFinalizedFeatures,
+                    finalizedFeaturesEpoch);
         }
     }
 }

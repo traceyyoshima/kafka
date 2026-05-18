@@ -34,7 +34,7 @@ import java.util.Map.Entry;
 
 /**
  * Represents a quota for a client entity in the metadata image.
- *
+ * <p>
  * This class is thread-safe.
  */
 public record ClientQuotaImage(Map<String, Double> quotas) {
@@ -45,15 +45,15 @@ public record ClientQuotaImage(Map<String, Double> quotas) {
     }
 
     public void write(
-        ClientQuotaEntity entity,
-        ImageWriter writer
+            ClientQuotaEntity entity,
+            ImageWriter writer
     ) {
         for (Entry<String, Double> entry : quotas.entrySet()) {
             writer.write(0, new ClientQuotaRecord().
-                setEntity(entityToData(entity)).
-                setKey(entry.getKey()).
-                setValue(entry.getValue()).
-                setRemove(false));
+                    setEntity(entityToData(entity)).
+                    setKey(entry.getKey()).
+                    setValue(entry.getValue()).
+                    setRemove(false));
         }
     }
 
@@ -61,8 +61,8 @@ public record ClientQuotaImage(Map<String, Double> quotas) {
         List<EntityData> entityData = new ArrayList<>(entity.entries().size());
         for (Entry<String, String> entry : entity.entries().entrySet()) {
             entityData.add(new EntityData().
-                setEntityType(entry.getKey()).
-                setEntityName(entry.getValue()));
+                    setEntityType(entry.getKey()).
+                    setEntityName(entry.getValue()));
         }
         return entityData;
     }

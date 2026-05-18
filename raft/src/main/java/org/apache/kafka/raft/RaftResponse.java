@@ -53,10 +53,10 @@ public abstract class RaftResponse implements RaftMessage {
         @Override
         public String toString() {
             return String.format(
-                "InboundResponse(correlationId=%d, data=%s, source=%s)",
-                correlationId(),
-                data(),
-                source
+                    "InboundResponse(correlationId=%d, data=%s, source=%s)",
+                    correlationId(),
+                    data(),
+                    source
             );
         }
     }
@@ -69,9 +69,9 @@ public abstract class RaftResponse implements RaftMessage {
         @Override
         public String toString() {
             return String.format(
-                "OutboundResponse(correlationId=%d, data=%s)",
-                correlationId(),
-                data()
+                    "OutboundResponse(correlationId=%d, data=%s)",
+                    correlationId(),
+                    data()
             );
         }
     }

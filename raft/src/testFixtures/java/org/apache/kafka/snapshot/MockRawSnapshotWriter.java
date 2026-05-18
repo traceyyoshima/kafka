@@ -33,8 +33,8 @@ public final class MockRawSnapshotWriter implements RawSnapshotWriter {
     private boolean closed = false;
 
     public MockRawSnapshotWriter(
-        OffsetAndEpoch snapshotId,
-        Consumer<ByteBuffer> frozenHandler
+            OffsetAndEpoch snapshotId,
+            Consumer<ByteBuffer> frozenHandler
     ) {
         this.snapshotId = snapshotId;
         this.frozenHandler = frozenHandler;

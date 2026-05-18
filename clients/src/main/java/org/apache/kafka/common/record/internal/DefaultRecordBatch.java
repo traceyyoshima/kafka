@@ -44,32 +44,32 @@ import static org.apache.kafka.common.record.internal.Records.LOG_OVERHEAD;
 
 /**
  * RecordBatch implementation for magic 2 and above. The schema is given below:
- *
+ * <p>
  * RecordBatch =>
- *  BaseOffset => Int64
- *  Length => Int32
- *  PartitionLeaderEpoch => Int32
- *  Magic => Int8
- *  CRC => Uint32
- *  Attributes => Int16
- *  LastOffsetDelta => Int32 // also serves as LastSequenceDelta
- *  BaseTimestamp => Int64
- *  MaxTimestamp => Int64
- *  ProducerId => Int64
- *  ProducerEpoch => Int16
- *  BaseSequence => Int32
- *  RecordsCount => Int32
- *  Records => [Record]
- *
+ * BaseOffset => Int64
+ * Length => Int32
+ * PartitionLeaderEpoch => Int32
+ * Magic => Int8
+ * CRC => Uint32
+ * Attributes => Int16
+ * LastOffsetDelta => Int32 // also serves as LastSequenceDelta
+ * BaseTimestamp => Int64
+ * MaxTimestamp => Int64
+ * ProducerId => Int64
+ * ProducerEpoch => Int16
+ * BaseSequence => Int32
+ * RecordsCount => Int32
+ * Records => [Record]
+ * <p>
  * Note that when compression is enabled (see attributes below), the compressed record data is serialized
  * directly following the count of the number of records.
- *
+ * <p>
  * The CRC covers the data from the attributes to the end of the batch (i.e. all the bytes that follow the CRC). It is
  * located after the magic byte, which means that clients must parse the magic byte before deciding how to interpret
  * the bytes between the batch length and the magic byte. The partition leader epoch field is not included in the CRC
  * computation to avoid the need to recompute the CRC when this field is assigned for every batch that is received by
  * the broker. The CRC-32C (Castagnoli) polynomial is used for the computation.
- *
+ * <p>
  * On Compaction: Unlike the older message formats, magic v2 and above preserves the first and last offset/sequence
  * numbers from the original batch when the log is cleaned. This is required in order to be able to restore the
  * producer's state when the log is reloaded. If we did not retain the last sequence number, then following
@@ -78,27 +78,27 @@ import static org.apache.kafka.common.record.internal.Records.LOG_OVERHEAD;
  * unexpected OutOfOrderSequence error, which is typically fatal. The base sequence number must be preserved for
  * duplicate checking: the broker checks incoming Produce requests for duplicates by verifying that the first and
  * last sequence numbers of the incoming batch match the last from that producer.
- *
+ * <p>
  * Note that if all of the records in a batch are removed during compaction, the broker may still retain an empty
  * batch header in order to preserve the producer sequence information as described above. These empty batches
  * are retained only until either a new sequence number is written by the corresponding producer or the producerId
  * is expired from lack of activity.
- *
+ * <p>
  * There is no similar need to preserve the timestamp from the original batch after compaction. The BaseTimestamp
  * field therefore reflects the timestamp of the first record in the batch in most cases. If the batch is empty, the
  * BaseTimestamp will be set to -1 (NO_TIMESTAMP). If the delete horizon flag is set to 1, the BaseTimestamp
  * will be set to the time at which tombstone records and aborted transaction markers in the batch should be removed.
- *
+ * <p>
  * Similarly, the MaxTimestamp field reflects the maximum timestamp of the current records if the timestamp type
  * is CREATE_TIME. For LOG_APPEND_TIME, on the other hand, the MaxTimestamp field reflects the timestamp set
  * by the broker and is preserved after compaction. Additionally, the MaxTimestamp of an empty batch always retains
  * the previous value prior to becoming empty.
- *
+ * <p>
  * The current attributes are given below:
- *
- *  ---------------------------------------------------------------------------------------------------------------------------
- *  | Unused (7-15) | Delete Horizon Flag (6) | Control (5) | Transactional (4) | Timestamp Type (3) | Compression Type (0-2) |
- *  ---------------------------------------------------------------------------------------------------------------------------
+ * <p>
+ * ---------------------------------------------------------------------------------------------------------------------------
+ * | Unused (7-15) | Delete Horizon Flag (6) | Control (5) | Transactional (4) | Timestamp Type (3) | Compression Type (0-2) |
+ * ---------------------------------------------------------------------------------------------------------------------------
  */
 public class DefaultRecordBatch extends AbstractRecordBatch implements MutableRecordBatch {
     static final int BASE_OFFSET_OFFSET = 0;
@@ -308,12 +308,15 @@ public class DefaultRecordBatch extends AbstractRecordBatch implements MutableRe
                     throw new InvalidRecordException("Incorrect declared batch size, premature EOF reached");
                 }
             }
+
             @Override
             protected boolean ensureNoneRemaining() {
                 return !buffer.hasRemaining();
             }
+
             @Override
-            public void close() {}
+            public void close() {
+            }
         };
     }
 
@@ -453,8 +456,8 @@ public class DefaultRecordBatch extends AbstractRecordBatch implements MutableRe
                                         boolean isControlRecord) {
         int offsetDelta = (int) (lastOffset - baseOffset);
         writeHeader(buffer, baseOffset, offsetDelta, DefaultRecordBatch.RECORD_BATCH_OVERHEAD, magic,
-                    CompressionType.NONE, timestampType, RecordBatch.NO_TIMESTAMP, timestamp, producerId,
-                    producerEpoch, baseSequence, isTransactional, isControlRecord, false, partitionLeaderEpoch, 0);
+                CompressionType.NONE, timestampType, RecordBatch.NO_TIMESTAMP, timestamp, producerId,
+                producerEpoch, baseSequence, isTransactional, isControlRecord, false, partitionLeaderEpoch, 0);
     }
 
     public static void writeHeader(ByteBuffer buffer,

@@ -27,7 +27,7 @@ public interface MetricValueProvider<T> {
      * Returns the current value associated with this metric.
      *
      * @param config The configuration for this metric
-     * @param now The POSIX time in milliseconds the measurement is being taken
+     * @param now    The POSIX time in milliseconds the measurement is being taken
      * @return the current metric value
      */
     T value(MetricConfig config, long now);

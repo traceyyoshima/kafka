@@ -41,12 +41,14 @@ public interface ConfigBackingStore {
     /**
      * Get a snapshot of the current configuration state including all connector and task
      * configurations.
+     *
      * @return the cluster config state
      */
     ClusterConfigState snapshot();
 
     /**
      * Check if the store has configuration for a connector.
+     *
      * @param connector name of the connector
      * @return true if the backing store contains configuration for the connector
      */
@@ -54,8 +56,9 @@ public interface ConfigBackingStore {
 
     /**
      * Update the configuration for a connector.
-     * @param connector name of the connector
-     * @param properties the connector configuration
+     *
+     * @param connector   name of the connector
+     * @param properties  the connector configuration
      * @param targetState the desired target state for the connector; may be {@code null} if no target state change is desired. Note that the default
      *                    target state is {@link TargetState#STARTED} if no target state exists previously
      */
@@ -63,19 +66,22 @@ public interface ConfigBackingStore {
 
     /**
      * Remove configuration for a connector
+     *
      * @param connector name of the connector
      */
     void removeConnectorConfig(String connector);
 
     /**
      * Update the task configurations for a connector.
+     *
      * @param connector name of the connector
-     * @param configs the new task configs for the connector
+     * @param configs   the new task configs for the connector
      */
     void putTaskConfigs(String connector, List<Map<String, String>> configs);
 
     /**
      * Remove the task configs associated with a connector.
+     *
      * @param connector name of the connector
      */
     void removeTaskConfigs(String connector);
@@ -83,33 +89,38 @@ public interface ConfigBackingStore {
     /**
      * Refresh the backing store. This forces the store to ensure that it has the latest
      * configs that have been written.
+     *
      * @param timeout max time to wait for the refresh to complete
-     * @param unit unit of timeout
+     * @param unit    unit of timeout
      * @throws TimeoutException if the timeout expires before the refresh has completed
      */
     void refresh(long timeout, TimeUnit unit) throws TimeoutException;
 
     /**
      * Transition a connector to a new target state (e.g. paused).
+     *
      * @param connector name of the connector
-     * @param state the state to transition to
+     * @param state     the state to transition to
      */
     void putTargetState(String connector, TargetState state);
 
     /**
      * Store a new {@link SessionKey} that can be used to validate internal (i.e., non-user-triggered) inter-worker communication.
+     *
      * @param sessionKey the session key to store
      */
     void putSessionKey(SessionKey sessionKey);
 
     /**
      * Request a restart of a connector and optionally its tasks.
+     *
      * @param restartRequest the restart request details
      */
     void putRestartRequest(RestartRequest restartRequest);
 
     /**
      * Record the number of tasks for the connector after a successful round of zombie fencing.
+     *
      * @param connector name of the connector
      * @param taskCount number of tasks used by the connector
      */
@@ -127,13 +138,15 @@ public interface ConfigBackingStore {
     /**
      * Emit a new level for the specified logging namespace (and all of its children). This level should
      * be applied by all workers currently in the cluster, but not to workers that join after it is stored.
+     *
      * @param namespace the namespace to adjust; may not be null
-     * @param level the new level for the namespace; may not be null
+     * @param level     the new level for the namespace; may not be null
      */
     void putLoggerLevel(String namespace, String level);
 
     /**
      * Set an update listener to get notifications when there are new records written to the backing store.
+     *
      * @param listener non-null listener
      */
     void setUpdateListener(UpdateListener listener);
@@ -141,44 +154,51 @@ public interface ConfigBackingStore {
     interface UpdateListener {
         /**
          * Invoked when a connector configuration has been removed
+         *
          * @param connector name of the connector
          */
         void onConnectorConfigRemove(String connector);
 
         /**
          * Invoked when a connector configuration has been updated.
+         *
          * @param connector name of the connector
          */
         void onConnectorConfigUpdate(String connector);
 
         /**
          * Invoked when task configs are updated.
+         *
          * @param tasks all the tasks whose configs have been updated
          */
         void onTaskConfigUpdate(Collection<ConnectorTaskId> tasks);
 
         /**
          * Invoked when the user has set a new target state (e.g. paused)
+         *
          * @param connector name of the connector
          */
         void onConnectorTargetStateChange(String connector);
 
         /**
          * Invoked when the leader has distributed a new session key
+         *
          * @param sessionKey the {@link SessionKey session key}
          */
         void onSessionKeyUpdate(SessionKey sessionKey);
 
         /**
          * Invoked when a connector and possibly its tasks have been requested to be restarted.
+         *
          * @param restartRequest the {@link RestartRequest restart request}
          */
         void onRestartRequest(RestartRequest restartRequest);
 
         /**
          * Invoked when a dynamic log level adjustment has been read
+         *
          * @param namespace the namespace to adjust; never null
-         * @param level the level to set the namespace to; never null
+         * @param level     the level to set the namespace to; never null
          */
         void onLoggingLevelUpdate(String namespace, String level);
     }

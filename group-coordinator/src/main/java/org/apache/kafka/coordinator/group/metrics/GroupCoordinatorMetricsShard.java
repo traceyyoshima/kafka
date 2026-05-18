@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * This class is mapped to a single {@link org.apache.kafka.coordinator.group.GroupCoordinatorShard}. It will
  * record all metrics that the shard handles with respect to {@link org.apache.kafka.coordinator.group.OffsetMetadataManager}
  * and {@link org.apache.kafka.coordinator.group.GroupMetadataManager} operations.
- *
+ * <p>
  * Local gauges will be recorded in this class which will be gathered by {@link GroupCoordinatorMetrics} to
  * report.
  */
@@ -49,6 +49,7 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
     private record TimelineGaugeCounter(TimelineLong timelineLong, AtomicLong atomicLong) {
 
     }
+
     /**
      * Classic group size gauge counters keyed by the metric name.
      */
@@ -86,9 +87,9 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
     private final TopicPartition topicPartition;
 
     public GroupCoordinatorMetricsShard(
-        SnapshotRegistry snapshotRegistry,
-        Map<String, Sensor> globalSensors,
-        TopicPartition topicPartition
+            SnapshotRegistry snapshotRegistry,
+            Map<String, Sensor> globalSensors,
+            TopicPartition topicPartition
     ) {
         Objects.requireNonNull(snapshotRegistry);
         numOffsetsTimelineGaugeCounter = new TimelineGaugeCounter(new TimelineLong(snapshotRegistry), new AtomicLong(0));
@@ -122,7 +123,7 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
     public void setConsumerGroupGauges(Map<ConsumerGroupState, Long> consumerGroupGauges) {
         this.consumerGroupGauges = consumerGroupGauges;
     }
-    
+
     /**
      * Set the number of streams groups.
      * This method should be the only way to update the map and is called by the scheduled task
@@ -166,9 +167,8 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
     /**
      * Obtain the number of classic groups in the specified state.
      *
-     * @param state  The classic group state.
-     *
-     * @return   The number of classic groups in `state`.
+     * @param state The classic group state.
+     * @return The number of classic groups in `state`.
      */
     public long numClassicGroups(ClassicGroupState state) {
         Long counter = classicGroupGauges.get(state);
@@ -183,15 +183,14 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
      */
     public long numClassicGroups() {
         return classicGroupGauges.values().stream()
-                                 .mapToLong(Long::longValue).sum();
+                .mapToLong(Long::longValue).sum();
     }
 
     /**
      * Obtain the number of consumer groups in the specified state.
      *
-     * @param state  the consumer group state.
-     *
-     * @return   The number of consumer groups in `state`.
+     * @param state the consumer group state.
+     * @return The number of consumer groups in `state`.
      */
     public long numConsumerGroups(ConsumerGroupState state) {
         Long counter = consumerGroupGauges.get(state);
@@ -206,15 +205,14 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
      */
     public long numConsumerGroups() {
         return consumerGroupGauges.values().stream()
-            .mapToLong(Long::longValue).sum();
+                .mapToLong(Long::longValue).sum();
     }
-    
+
     /**
      * Get the number of streams groups in the specified state.
      *
-     * @param state  the streams group state.
-     *
-     * @return   The number of streams groups in `state`.
+     * @param state the streams group state.
+     * @return The number of streams groups in `state`.
      */
     public long numStreamsGroups(StreamsGroupState state) {
         Long counter = streamsGroupGauges.get(state);
@@ -229,15 +227,14 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
      */
     public long numStreamsGroups() {
         return streamsGroupGauges.values().stream()
-            .mapToLong(Long::longValue).sum();
+                .mapToLong(Long::longValue).sum();
     }
 
     /**
      * Get the number of share groups in the specified state.
      *
-     * @param state  the share group state.
-     *
-     * @return   The number of share groups in `state`.
+     * @param state the share group state.
+     * @return The number of share groups in `state`.
      */
     public long numShareGroups(ShareGroupState state) {
         Long counter = shareGroupGauges.get(state);
@@ -252,7 +249,7 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
      */
     public long numShareGroups() {
         return shareGroupGauges.values().stream()
-            .mapToLong(Long::longValue).sum();
+                .mapToLong(Long::longValue).sum();
     }
 
     @Override
@@ -293,7 +290,7 @@ public class GroupCoordinatorMetricsShard implements CoordinatorMetricsShard {
      * @param classicGroupGauges The map counting the number of classic groups in each state.
      */
     public void setClassicGroupGauges(
-        Map<ClassicGroupState, Long> classicGroupGauges
+            Map<ClassicGroupState, Long> classicGroupGauges
     ) {
         this.classicGroupGauges = classicGroupGauges;
     }

@@ -38,7 +38,7 @@ public class DuplicateResourceException extends ApiException {
     /**
      *
      * @param message the exception's message
-     * @param cause the exception's cause
+     * @param cause   the exception's cause
      */
     public DuplicateResourceException(String message, Throwable cause) {
         this(null, message, cause);
@@ -48,7 +48,7 @@ public class DuplicateResourceException extends ApiException {
      * Constructor
      *
      * @param resource the (potentially null) resource that was referred to twice
-     * @param message the exception's message
+     * @param message  the exception's message
      */
     public DuplicateResourceException(String resource, String message) {
         super(message);
@@ -59,8 +59,8 @@ public class DuplicateResourceException extends ApiException {
      * Constructor
      *
      * @param resource the (potentially null) resource that was referred to twice
-     * @param message the exception's message
-     * @param cause the exception's cause
+     * @param message  the exception's message
+     * @param cause    the exception's cause
      */
     public DuplicateResourceException(String resource, String message, Throwable cause) {
         super(message, cause);

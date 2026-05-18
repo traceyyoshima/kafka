@@ -115,13 +115,13 @@ public class GlobalStateManagerImplTest {
                                               final Map<String, String> storeToChangelogTopic,
                                               final Map<String, Optional<InternalTopologyBuilder.ReprocessFactory<?, ?, ?, ?>>> reprocessFactoryMap) {
         return new ProcessorTopology(Collections.emptyList(),
-                                     Collections.emptyMap(),
-                                     Collections.emptyMap(),
-                                     Collections.emptyList(),
-                                     stateStores,
-                                     storeToChangelogTopic,
-                                     Collections.emptySet(),
-                                     reprocessFactoryMap);
+                Collections.emptyMap(),
+                Collections.emptyMap(),
+                Collections.emptyList(),
+                stateStores,
+                storeToChangelogTopic,
+                Collections.emptySet(),
+                reprocessFactoryMap);
     }
 
     @SuppressWarnings("unchecked")
@@ -144,13 +144,13 @@ public class GlobalStateManagerImplTest {
         optionalMockReprocessFactory = mock(Optional.class);
         when(optionalMockReprocessFactory.isPresent()).thenReturn(false);
         topology = withGlobalStores(asList(store1, store2, store3, store4, store5), storeToTopic,
-            mkMap(
-                mkEntry(storeName1, Optional.empty()),
-                mkEntry(storeName2, Optional.empty()),
-                mkEntry(storeName3, Optional.empty()),
-                mkEntry(storeName4, Optional.empty()),
-                mkEntry(storeName5, optionalMockReprocessFactory)
-            )
+                mkMap(
+                        mkEntry(storeName1, Optional.empty()),
+                        mkEntry(storeName2, Optional.empty()),
+                        mkEntry(storeName3, Optional.empty()),
+                        mkEntry(storeName4, Optional.empty()),
+                        mkEntry(storeName5, optionalMockReprocessFactory)
+                )
         );
         streamsConfig = new StreamsConfig(new Properties() {
             {
@@ -162,13 +162,13 @@ public class GlobalStateManagerImplTest {
         stateDirectory = new StateDirectory(streamsConfig, time, true, false);
         consumer = new MockConsumer<>(AutoOffsetResetStrategy.NONE.name());
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("test"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("test"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext = new InternalMockProcessorContext(stateDirectory.globalStateDir(), streamsConfig);
         stateManager.setGlobalProcessorContext(processorContext);
@@ -212,10 +212,10 @@ public class GlobalStateManagerImplTest {
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(LegacyCheckpointingStateStore.class)) {
             stateManager.commit();
             assertThat(appender.getMessages(), hasItem(containsString(
-                "Failed to write offset checkpoint file to [" + storeCheckpointFile.getPath() + "]. " +
-                "This may occur if OS cleaned the state.dir in case when it located in ${java.io.tmpdir} directory. " +
-                "This may also occur due to running multiple instances on the same machine using the same state dir. " +
-                "Changing the location of state.dir may resolve the problem.")));
+                    "Failed to write offset checkpoint file to [" + storeCheckpointFile.getPath() + "]. " +
+                            "This may occur if OS cleaned the state.dir in case when it located in ${java.io.tmpdir} directory. " +
+                            "This may also occur due to running multiple instances on the same machine using the same state dir. " +
+                            "Changing the location of state.dir may resolve the problem.")));
         }
     }
 
@@ -386,7 +386,7 @@ public class GlobalStateManagerImplTest {
         processorContext.setStateManger(stateManager);
 
         final OffsetCheckpoint offsetCheckpoint = new OffsetCheckpoint(new File(stateManager.baseDir(),
-                                                                                StateManagerUtil.CHECKPOINT_FILE_NAME));
+                StateManagerUtil.CHECKPOINT_FILE_NAME));
         offsetCheckpoint.write(Collections.singletonMap(t1, 5L));
 
         stateManager.initialize();
@@ -626,27 +626,27 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 0L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 0L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
 
         final StreamsException expected = assertThrows(
-            StreamsException.class,
-            () -> stateManager.initialize()
+                StreamsException.class,
+                () -> stateManager.initialize()
         );
         final Throwable cause = expected.getCause();
         assertThat(cause, instanceOf(TimeoutException.class));
@@ -669,27 +669,27 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
 
         final TimeoutException expected = assertThrows(
-            TimeoutException.class,
-            () -> stateManager.initialize()
+                TimeoutException.class,
+                () -> stateManager.initialize()
         );
         assertThat(expected.getMessage(), equalTo("Global task did not make progress to restore state within 100 ms. Adjust `task.timeout.ms` if needed."));
 
@@ -710,27 +710,27 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1000L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1000L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
 
         final TimeoutException expected = assertThrows(
-            TimeoutException.class,
-            () -> stateManager.initialize()
+                TimeoutException.class,
+                () -> stateManager.initialize()
         );
         assertThat(expected.getMessage(), equalTo("Global task did not make progress to restore state within 1000 ms. Adjust `task.timeout.ms` if needed."));
 
@@ -758,20 +758,20 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4, t5);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 10L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 10L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
@@ -792,27 +792,27 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 0L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 0L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
 
         final StreamsException expected = assertThrows(
-            StreamsException.class,
-            () -> stateManager.initialize()
+                StreamsException.class,
+                () -> stateManager.initialize()
         );
         final Throwable cause = expected.getCause();
         assertThat(cause, instanceOf(TimeoutException.class));
@@ -835,27 +835,27 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
 
         final TimeoutException expected = assertThrows(
-            TimeoutException.class,
-            () -> stateManager.initialize()
+                TimeoutException.class,
+                () -> stateManager.initialize()
         );
         assertThat(expected.getMessage(), equalTo("Global task did not make progress to restore state within 100 ms. Adjust `task.timeout.ms` if needed."));
 
@@ -876,27 +876,27 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1000L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1000L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
 
         final TimeoutException expected = assertThrows(
-            TimeoutException.class,
-            () -> stateManager.initialize()
+                TimeoutException.class,
+                () -> stateManager.initialize()
         );
         assertThat(expected.getMessage(), equalTo("Global task did not make progress to restore state within 1000 ms. Adjust `task.timeout.ms` if needed."));
 
@@ -924,20 +924,20 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4, t5);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 10L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 10L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
@@ -958,27 +958,27 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4, t5);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 0L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 0L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
 
         final StreamsException expected = assertThrows(
-            StreamsException.class,
-            () -> stateManager.initialize()
+                StreamsException.class,
+                () -> stateManager.initialize()
         );
         final Throwable cause = expected.getCause();
         assertThat(cause, instanceOf(TimeoutException.class));
@@ -1001,27 +1001,27 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4, t5);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
 
         final TimeoutException expected = assertThrows(
-            TimeoutException.class,
-            () -> stateManager.initialize()
+                TimeoutException.class,
+                () -> stateManager.initialize()
         );
         assertThat(expected.getMessage(), equalTo("Global task did not make progress to restore state within 100 ms. Adjust `task.timeout.ms` if needed."));
 
@@ -1042,27 +1042,27 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4, t5);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1000L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 1000L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
 
         final TimeoutException expected = assertThrows(
-            TimeoutException.class,
-            () -> stateManager.initialize()
+                TimeoutException.class,
+                () -> stateManager.initialize()
         );
         assertThat(expected.getMessage(), equalTo("Global task did not make progress to restore state within 1000 ms. Adjust `task.timeout.ms` if needed."));
 
@@ -1085,20 +1085,20 @@ public class GlobalStateManagerImplTest {
         initializeConsumer(0, 0, t1, t2, t3, t4, t5);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-            mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 10L)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                mkEntry(StreamsConfig.TASK_TIMEOUT_MS_CONFIG, 10L)
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
@@ -1127,19 +1127,19 @@ public class GlobalStateManagerImplTest {
         consumer.updateEndOffsets(endOffsets);
 
         streamsConfig = new StreamsConfig(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234"),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
         ));
 
         stateManager = new GlobalStateManagerImpl(
-            new LogContext("mock"),
-            time,
-            topology,
-            consumer,
-            stateDirectory,
-            stateRestoreListener,
-            streamsConfig
+                new LogContext("mock"),
+                time,
+                topology,
+                consumer,
+                stateDirectory,
+                stateRestoreListener,
+                streamsConfig
         );
         processorContext.setStateManger(stateManager);
         stateManager.setGlobalProcessorContext(processorContext);
@@ -1147,12 +1147,12 @@ public class GlobalStateManagerImplTest {
         final long startTime = time.milliseconds();
 
         final TimeoutException exception = assertThrows(
-            TimeoutException.class,
-            () -> stateManager.initialize()
+                TimeoutException.class,
+                () -> stateManager.initialize()
         );
         assertThat(
-            exception.getMessage(),
-            equalTo("Global task did not make progress to restore state within 301000 ms. Adjust `task.timeout.ms` if needed.")
+                exception.getMessage(),
+                equalTo("Global task did not make progress to restore state within 301000 ms. Adjust `task.timeout.ms` if needed.")
         );
         assertThat(time.milliseconds() - startTime, equalTo(331_100L));
     }
@@ -1208,17 +1208,17 @@ public class GlobalStateManagerImplTest {
         final StreamsConfig downgradeConfig = new StreamsConfig(props);
         final StateDirectory downgradeStateDir = new StateDirectory(downgradeConfig, time, true, false);
         final GlobalStateManagerImpl downgradeManager = new GlobalStateManagerImpl(
-            new LogContext("test"),
-            time,
-            topology,
-            consumer,
-            downgradeStateDir,
-            stateRestoreListener,
-            downgradeConfig
+                new LogContext("test"),
+                time,
+                topology,
+                consumer,
+                downgradeStateDir,
+                stateRestoreListener,
+                downgradeConfig
         );
 
         final InternalMockProcessorContext downgradeContext =
-            new InternalMockProcessorContext(downgradeStateDir.globalStateDir(), downgradeConfig);
+                new InternalMockProcessorContext(downgradeStateDir.globalStateDir(), downgradeConfig);
         downgradeManager.setGlobalProcessorContext(downgradeContext);
         downgradeContext.setStateManger(downgradeManager);
 
@@ -1232,7 +1232,7 @@ public class GlobalStateManagerImplTest {
 
         // verify the legacy global checkpoint was written
         final File legacyGlobalFile = new File(downgradeStateDir.globalStateDir(),
-            LegacyCheckpointingStateStore.CHECKPOINT_FILE_NAME);
+                LegacyCheckpointingStateStore.CHECKPOINT_FILE_NAME);
         assertTrue(legacyGlobalFile.exists());
         final Map<TopicPartition, Long> written = new OffsetCheckpoint(legacyGlobalFile).read();
         assertEquals(500L, written.get(t1));
@@ -1248,7 +1248,7 @@ public class GlobalStateManagerImplTest {
         stateManager.close();
 
         final File legacyGlobalFile = new File(stateDirectory.globalStateDir(),
-            LegacyCheckpointingStateStore.CHECKPOINT_FILE_NAME);
+                LegacyCheckpointingStateStore.CHECKPOINT_FILE_NAME);
         assertFalse(legacyGlobalFile.exists());
     }
 

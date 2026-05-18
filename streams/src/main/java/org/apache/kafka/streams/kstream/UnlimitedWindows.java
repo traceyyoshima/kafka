@@ -46,7 +46,9 @@ public final class UnlimitedWindows extends Windows<UnlimitedWindow> {
 
     private static final long DEFAULT_START_TIMESTAMP_MS = 0L;
 
-    /** The start timestamp of the window. */
+    /**
+     * The start timestamp of the window.
+     */
     @SuppressWarnings("WeakerAccess")
     public final long startMs;
 
@@ -125,7 +127,7 @@ public final class UnlimitedWindows extends Windows<UnlimitedWindow> {
     @Override
     public String toString() {
         return "UnlimitedWindows{" +
-            "startMs=" + startMs +
-            '}';
+                "startMs=" + startMs +
+                '}';
     }
 }

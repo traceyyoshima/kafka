@@ -37,7 +37,7 @@ import java.util.Queue;
  * from generated {@link org.apache.kafka.common.protocol.ApiMessage} types without
  * allocating new space for "zero-copy" fields (see {@link #writeByteBuffer(ByteBuffer)}
  * and {@link #writeRecords(BaseRecords)}).
- *
+ * <p>
  * See {@link org.apache.kafka.common.requests.EnvelopeRequest#toSend(RequestHeader)}
  * for example usage.
  */
@@ -181,35 +181,35 @@ public class SendBuilder implements Writable {
     }
 
     public static Send buildRequestSend(
-        RequestHeader header,
-        Message apiRequest
+            RequestHeader header,
+            Message apiRequest
     ) {
         return buildSend(
-            header.data(),
-            header.headerVersion(),
-            apiRequest,
-            header.apiVersion()
+                header.data(),
+                header.headerVersion(),
+                apiRequest,
+                header.apiVersion()
         );
     }
 
     public static Send buildResponseSend(
-        ResponseHeader header,
-        Message apiResponse,
-        short apiVersion
+            ResponseHeader header,
+            Message apiResponse,
+            short apiVersion
     ) {
         return buildSend(
-            header.data(),
-            header.headerVersion(),
-            apiResponse,
-            apiVersion
+                header.data(),
+                header.headerVersion(),
+                apiResponse,
+                apiVersion
         );
     }
 
     private static Send buildSend(
-        Message header,
-        short headerVersion,
-        Message apiMessage,
-        short apiVersion
+            Message header,
+            short headerVersion,
+            Message apiMessage,
+            short apiVersion
     ) {
         ObjectSerializationCache serializationCache = new ObjectSerializationCache();
 

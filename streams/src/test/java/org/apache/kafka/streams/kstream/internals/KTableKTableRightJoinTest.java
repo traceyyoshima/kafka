@@ -45,11 +45,10 @@ public class KTableKTableRightJoinTest {
     public void shouldLogAndMeterSkippedRecordsDueToNullLeftKeyWithBuiltInMetricsVersionLatest(final boolean withHeaders) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        @SuppressWarnings("unchecked")
-        final Processor<String, Change<String>, String, Change<Object>> join = new KTableKTableRightJoin<>(
-            (KTableImpl<String, String, String>) builder.table("left", Consumed.with(Serdes.String(), Serdes.String())),
-            (KTableImpl<String, String, String>) builder.table("right", Consumed.with(Serdes.String(), Serdes.String())),
-            null
+        @SuppressWarnings("unchecked") final Processor<String, Change<String>, String, Change<Object>> join = new KTableKTableRightJoin<>(
+                (KTableImpl<String, String, String>) builder.table("left", Consumed.with(Serdes.String(), Serdes.String())),
+                (KTableImpl<String, String, String>) builder.table("right", Consumed.with(Serdes.String(), Serdes.String())),
+                null
         ).get();
 
         setDslStoreFormat(withHeaders);
@@ -62,11 +61,11 @@ public class KTableKTableRightJoinTest {
             join.process(new Record<>(null, new Change<>("new", "old"), 0));
 
             assertThat(
-                appender.getEvents().stream()
-                    .filter(e -> e.getLevel().equals("WARN"))
-                    .map(Event::getMessage)
-                    .collect(Collectors.toList()),
-                hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
+                    appender.getEvents().stream()
+                            .filter(e -> e.getLevel().equals("WARN"))
+                            .map(Event::getMessage)
+                            .collect(Collectors.toList()),
+                    hasItem("Skipping record due to null key. topic=[left] partition=[-1] offset=[-2]")
             );
         }
     }

@@ -235,9 +235,9 @@ public class MockClient implements KafkaClient {
                 authenticationFailed(node, backoffMs);
                 AbstractRequest.Builder<?> builder = request.requestBuilder();
                 short version = nodeApiVersions.latestUsableVersion(request.apiKey(), builder.oldestAllowedVersion(),
-                    builder.latestAllowedVersion());
+                        builder.latestAllowedVersion());
                 ClientResponse resp = new ClientResponse(request.makeHeader(version), request.callback(), request.destination(),
-                    request.createdTimeMs(), time.milliseconds(), true, null,
+                        request.createdTimeMs(), time.milliseconds(), true, null,
                         new AuthenticationException("Authentication failed"), null);
                 responses.add(resp);
                 return;
@@ -439,7 +439,8 @@ public class MockClient implements KafkaClient {
     /**
      * Prepare a response for a request matching the provided matcher. If the matcher does not
      * match, {@link KafkaClient#send(ClientRequest, long)} will throw IllegalStateException
-     * @param matcher The matcher to apply
+     *
+     * @param matcher  The matcher to apply
      * @param response The response body
      */
     public void prepareResponse(RequestMatcher matcher, AbstractResponse response) {
@@ -465,8 +466,9 @@ public class MockClient implements KafkaClient {
     /**
      * Prepare a response for a request matching the provided matcher. If the matcher does not
      * match, {@link KafkaClient#send(ClientRequest, long)} will throw IllegalStateException.
-     * @param matcher The request matcher to apply
-     * @param response The response body
+     *
+     * @param matcher      The request matcher to apply
+     * @param response     The response body
      * @param disconnected Whether the request was disconnected
      */
     public void prepareResponse(RequestMatcher matcher, AbstractResponse response, boolean disconnected) {
@@ -476,6 +478,7 @@ public class MockClient implements KafkaClient {
     /**
      * Raise an unsupported version error on the next request if it matches the given matcher.
      * If the matcher does not match, {@link KafkaClient#send(ClientRequest, long)} will throw IllegalStateException.
+     *
      * @param matcher The request matcher to apply
      */
     public void prepareUnsupportedVersionResponse(RequestMatcher matcher) {
@@ -657,9 +660,11 @@ public class MockClient implements KafkaClient {
 
         void update(Time time, MetadataUpdate update);
 
-        default void updateWithCurrentMetadata(Time time) {}
+        default void updateWithCurrentMetadata(Time time) {
+        }
 
-        default void close() {}
+        default void close() {
+        }
     }
 
     private static class NoOpMetadataUpdater implements MockMetadataUpdater {
@@ -681,6 +686,7 @@ public class MockClient implements KafkaClient {
 
     private static class StaticMetadataUpdater extends NoOpMetadataUpdater {
         private final List<Node> nodes;
+
         public StaticMetadataUpdater(List<Node> nodes) {
             this.nodes = nodes;
         }
@@ -748,7 +754,7 @@ public class MockClient implements KafkaClient {
     }
 
     private static class ConnectionState {
-        enum State { CONNECTING, CONNECTED, DISCONNECTED }
+        enum State {CONNECTING, CONNECTED, DISCONNECTED}
 
         private long throttledUntilMs = 0L;
         private long readyDelayedUntilMs = 0L;

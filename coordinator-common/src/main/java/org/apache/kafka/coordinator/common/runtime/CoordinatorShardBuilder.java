@@ -35,77 +35,70 @@ public interface CoordinatorShardBuilder<S extends CoordinatorShard<U>, U> {
      * datastructures used by the coordinator.
      *
      * @param snapshotRegistry The registry.
-     *
      * @return The builder.
      */
     CoordinatorShardBuilder<S, U> withSnapshotRegistry(
-        SnapshotRegistry snapshotRegistry
+            SnapshotRegistry snapshotRegistry
     );
 
     /**
      * Sets the log context.
      *
      * @param logContext The log context.
-     *
      * @return The builder.
      */
     CoordinatorShardBuilder<S, U> withLogContext(
-        LogContext logContext
+            LogContext logContext
     );
 
     /**
      * Sets the time.
      *
      * @param time The system time.
-     *
      * @return The builder.
      */
     CoordinatorShardBuilder<S, U> withTime(
-        Time time
+            Time time
     );
 
     /**
      * Sets the coordinator timer.
      *
      * @param timer The coordinator timer.
-     *
      * @return The builder.
      */
     CoordinatorShardBuilder<S, U> withTimer(
-        CoordinatorTimer<U> timer
+            CoordinatorTimer<U> timer
     );
 
     /**
      * Sets the coordinator executor.
      *
      * @param executor The coordinator executor.
-     *
      * @return The builder.
      */
     CoordinatorShardBuilder<S, U> withExecutor(
-        CoordinatorExecutor<U> executor
+            CoordinatorExecutor<U> executor
     );
 
     /**
      * Sets the coordinator metrics.
      *
      * @param coordinatorMetrics The coordinator metrics.
-     *
      * @return The builder.
      */
     CoordinatorShardBuilder<S, U> withCoordinatorMetrics(
-        CoordinatorMetrics coordinatorMetrics
+            CoordinatorMetrics coordinatorMetrics
     );
 
     /**
      * Sets the topic partition.
      *
      * @param topicPartition The topic partition.
-     *
      * @return The builder.
      */
     CoordinatorShardBuilder<S, U> withTopicPartition(
-        TopicPartition topicPartition
+            TopicPartition topicPartition
     );
 
     /**

@@ -62,8 +62,8 @@ public class SubscribedTopicMetadataTest {
 
         // Test that the correct number of partitions are returned for a given topic ID.
         metadataImage.topicIds().forEach(id ->
-            // Test that the correct number of partitions are returned for a given topic ID.
-            assertEquals(numPartitions, subscribedTopicMetadata.numPartitions(id))
+                // Test that the correct number of partitions are returned for a given topic ID.
+                assertEquals(numPartitions, subscribedTopicMetadata.numPartitions(id))
         );
     }
 
@@ -88,9 +88,9 @@ public class SubscribedTopicMetadataTest {
 
         Uuid topicId = Uuid.randomUuid();
         CoordinatorMetadataImage metadataImage2 = new MetadataImageBuilder()
-            .addTopic(topicId, "newTopic", 5)
-            .addRacks()
-            .buildCoordinatorMetadataImage();
+                .addTopic(topicId, "newTopic", 5)
+                .addRacks()
+                .buildCoordinatorMetadataImage();
         assertNotEquals(new SubscribedTopicDescriberImpl(metadataImage2), subscribedTopicMetadata);
     }
 }

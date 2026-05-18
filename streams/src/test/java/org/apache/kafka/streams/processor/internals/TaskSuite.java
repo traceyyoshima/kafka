@@ -25,19 +25,19 @@ import org.junit.platform.suite.api.Suite;
 
 /**
  * This suite runs all the tests related to task management. It's intended to simplify feature testing from IDEs.
- *
+ * <p>
  * If desired, it can also be added to a Gradle build task, although this isn't strictly necessary, since all
  * these tests are already included in the `:streams:test` task.
  */
 @Suite
 @SelectClasses({
-    StreamTaskTest.class,
-    StandbyTaskTest.class,
-    GlobalStateTaskTest.class,
-    TaskManagerTest.class,
-    TaskMetricsTest.class,
-    LegacyStickyTaskAssignorTest.class,
-    StreamsPartitionAssignorTest.class,
+        StreamTaskTest.class,
+        StandbyTaskTest.class,
+        GlobalStateTaskTest.class,
+        TaskManagerTest.class,
+        TaskMetricsTest.class,
+        LegacyStickyTaskAssignorTest.class,
+        StreamsPartitionAssignorTest.class,
 })
 public class TaskSuite {
 }

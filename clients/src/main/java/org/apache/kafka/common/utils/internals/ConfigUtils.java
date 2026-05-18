@@ -63,8 +63,8 @@ public class ConfigUtils {
      * Finds and returns a boolean configuration option from the configuration map or the default value if the option is
      * not set.
      *
-     * @param configs Map with the configuration options
-     * @param key Configuration option for which the boolean value will be returned
+     * @param configs      Map with the configuration options
+     * @param key          Configuration option for which the boolean value will be returned
      * @param defaultValue The default value that will be used when the key is not present
      * @return A boolean value of the configuration option of the default value
      */

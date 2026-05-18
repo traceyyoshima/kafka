@@ -55,16 +55,16 @@ public class RackAwareGraphConstructorTest {
 
     private Graph<Integer> graph;
     private final SortedMap<TaskId, Set<TopicPartition>> taskTopicPartitionMap = getTaskTopicPartitionMap(
-        TP_SIZE, PARTITION_SIZE, false);
+            TP_SIZE, PARTITION_SIZE, false);
     private final SortedSet<TaskId> taskIds = (SortedSet<TaskId>) taskTopicPartitionMap.keySet();
     private final List<TaskId> taskIdList = new ArrayList<>(taskIds);
     private final SortedMap<ProcessId, ClientState> clientStateMap = getRandomClientState(CLIENT_SIZE,
-        TP_SIZE, PARTITION_SIZE, 1, false, taskIds);
+            TP_SIZE, PARTITION_SIZE, 1, false, taskIds);
     private final List<ProcessId> clientList = new ArrayList<>(clientStateMap.keySet());
     private final Map<TaskId, ProcessId> taskClientMap = new HashMap<>();
     private final Map<ProcessId, Integer> originalAssignedTaskNumber = new HashMap<>();
     private final Map<Subtopology, Set<TaskId>> tasksForTopicGroup = getTasksForTopicGroup(TP_SIZE,
-        PARTITION_SIZE);
+            PARTITION_SIZE);
     private RackAwareGraphConstructor<ClientState> constructor;
 
 
@@ -78,7 +78,7 @@ public class RackAwareGraphConstructorTest {
             constructor = new BalanceSubtopologyGraphConstructor<>(taskSetsPerTopicGroup);
         }
         graph = constructor.constructTaskGraph(
-            clientList, taskIdList, clientStateMap, taskClientMap, originalAssignedTaskNumber, ClientState::hasAssignedTask, this::getCost, 10, 1, false, false);
+                clientList, taskIdList, clientStateMap, taskClientMap, originalAssignedTaskNumber, ClientState::hasAssignedTask, this::getCost, 10, 1, false, false);
     }
 
     private int getCost(final TaskId taskId, final ProcessId processId, final boolean inCurrentAssignment, final int trafficCost, final int nonOverlapCost, final boolean isStandby) {
@@ -94,8 +94,8 @@ public class RackAwareGraphConstructorTest {
         }
         taskIdList.add(new TaskId(41, 0)); // Extra task not in subtopology map
         assertThrows(IllegalStateException.class, () -> graph = constructor.constructTaskGraph(
-            clientList, taskIdList, clientStateMap, taskClientMap, originalAssignedTaskNumber,
-            ClientState::hasAssignedTask, this::getCost, 10, 1, false, false));
+                clientList, taskIdList, clientStateMap, taskClientMap, originalAssignedTaskNumber,
+                ClientState::hasAssignedTask, this::getCost, 10, 1, false, false));
     }
 
     @ParameterizedTest
@@ -239,7 +239,7 @@ public class RackAwareGraphConstructorTest {
             final int originalAssignedCount = originalAssignedTaskNumber.get(clientId);
 
             final int clientNodeId =
-                i + tasksForTopicGroup.size() * clientList.size() + taskIdList.size();
+                    i + tasksForTopicGroup.size() * clientList.size() + taskIdList.size();
             edges = graph.edges(clientNodeId);
             assertEquals(1, edges.size());
             for (final Entry<Integer, Graph<Integer>.Edge> nodeEdge : edges.entrySet()) {
@@ -259,15 +259,15 @@ public class RackAwareGraphConstructorTest {
         setUp(constructorType);
         graph.solveMinCostFlow();
         constructor.assignTaskFromMinCostFlow(
-            graph,
-            clientList,
-            taskIdList,
-            clientStateMap,
-            originalAssignedTaskNumber,
-            taskClientMap,
-            ClientState::assignActive,
-            ClientState::unassignActive,
-            ClientState::hasAssignedTask
+                graph,
+                clientList,
+                taskIdList,
+                clientStateMap,
+                originalAssignedTaskNumber,
+                taskClientMap,
+                ClientState::assignActive,
+                ClientState::unassignActive,
+                ClientState::hasAssignedTask
         );
         assertValidAssignment(0, taskIds, emptySet(), clientStateMap, new StringBuilder());
         if (constructorType.equals(BALANCE_SUBTOPOLOGY)) {

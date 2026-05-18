@@ -18,7 +18,7 @@ package org.apache.kafka.common.utils.internals;
 
 /**
  * Primitive reference used to pass primitive typed values as parameter-by-reference.
- *
+ * <p>
  * This is cheaper than using Atomic references.
  */
 public class PrimitiveRef {

@@ -42,28 +42,28 @@ import static org.mockito.Mockito.when;
 public class MetadataVersionConfigValidatorTest {
 
     private static final LogDeltaManifest TEST_MANIFEST = LogDeltaManifest.newBuilder()
-        .provenance(MetadataProvenance.EMPTY)
-        .leaderAndEpoch(LeaderAndEpoch.UNKNOWN)
-        .numBatches(1)
-        .elapsedNs(90)
-        .numBytes(88)
-        .build();
+            .provenance(MetadataProvenance.EMPTY)
+            .leaderAndEpoch(LeaderAndEpoch.UNKNOWN)
+            .numBatches(1)
+            .elapsedNs(90)
+            .numBytes(88)
+            .build();
     public static final MetadataProvenance TEST_PROVENANCE =
-        new MetadataProvenance(50, 3, 8000, true);
+            new MetadataProvenance(50, 3, 8000, true);
 
     void executeMetadataUpdate(
-        MetadataVersion metadataVersion,
-        Supplier<Boolean> multiLogDirSupplier,
-        FaultHandler faultHandler
+            MetadataVersion metadataVersion,
+            Supplier<Boolean> multiLogDirSupplier,
+            FaultHandler faultHandler
     ) throws Exception {
         try (MetadataVersionConfigValidator validator = new MetadataVersionConfigValidator(0, multiLogDirSupplier, faultHandler)) {
             MetadataDelta delta = new MetadataDelta.Builder()
-                .setImage(MetadataImage.EMPTY)
-                .build();
+                    .setImage(MetadataImage.EMPTY)
+                    .build();
             if (metadataVersion != null) {
                 delta.replay(new FeatureLevelRecord().
-                    setName(MetadataVersion.FEATURE_NAME).
-                    setFeatureLevel(metadataVersion.featureLevel()));
+                        setName(MetadataVersion.FEATURE_NAME).
+                        setFeatureLevel(metadataVersion.featureLevel()));
             }
             MetadataImage image = delta.apply(TEST_PROVENANCE);
 
@@ -96,8 +96,8 @@ public class MetadataVersionConfigValidatorTest {
 
         verify(multiLogDirSupplier, times(1)).get();
         verify(faultHandler, times(1)).handleFault(
-            eq("Broker configuration does not support the cluster MetadataVersion"),
-            any(IllegalArgumentException.class));
+                eq("Broker configuration does not support the cluster MetadataVersion"),
+                any(IllegalArgumentException.class));
     }
 
     @Test
@@ -117,14 +117,14 @@ public class MetadataVersionConfigValidatorTest {
         faultHandler = mock(FaultHandler.class);
         validate(MetadataVersion.IBP_3_6_IV2, true, faultHandler);
         verify(faultHandler, times(1)).handleFault(
-            eq("Broker configuration does not support the cluster MetadataVersion"),
-            any(IllegalArgumentException.class));
+                eq("Broker configuration does not support the cluster MetadataVersion"),
+                any(IllegalArgumentException.class));
 
         faultHandler = mock(FaultHandler.class);
         validate(MetadataVersion.IBP_3_7_IV0, true, faultHandler);
         verify(faultHandler, times(1)).handleFault(
-            eq("Broker configuration does not support the cluster MetadataVersion"),
-            any(IllegalArgumentException.class));
+                eq("Broker configuration does not support the cluster MetadataVersion"),
+                any(IllegalArgumentException.class));
 
         faultHandler = mock(FaultHandler.class);
         validate(MetadataVersion.IBP_3_7_IV2, true, faultHandler);
@@ -132,7 +132,7 @@ public class MetadataVersionConfigValidatorTest {
     }
 
     private void validate(MetadataVersion metadataVersion, boolean jbodConfig, FaultHandler faultHandler)
-        throws Exception {
+            throws Exception {
         Supplier<Boolean> multiLogDirSupplier = () -> jbodConfig;
 
         executeMetadataUpdate(metadataVersion, multiLogDirSupplier, faultHandler);

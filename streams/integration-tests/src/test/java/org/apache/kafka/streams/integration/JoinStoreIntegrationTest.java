@@ -114,10 +114,10 @@ public class JoinStoreIntegrationTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         left.join(
-            right,
-            Integer::sum,
-            JoinWindows.of(ofMillis(100)),
-            StreamJoined.with(Serdes.String(), Serdes.Integer(), Serdes.Integer()).withStoreName("join-store"));
+                right,
+                Integer::sum,
+                JoinWindows.of(ofMillis(100)),
+                StreamJoined.with(Serdes.String(), Serdes.Integer(), Serdes.Integer()).withStoreName("join-store"));
 
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(STREAMS_CONFIG, withHeaders);
         try (final KafkaStreams kafkaStreams = new KafkaStreams(builder.build(), STREAMS_CONFIG)) {
@@ -130,13 +130,13 @@ public class JoinStoreIntegrationTest {
             kafkaStreams.start();
             latch.await();
             final UnknownStateStoreException exception =
-                assertThrows(
-                    UnknownStateStoreException.class,
-                    () -> kafkaStreams.store(fromNameAndType("join-store", keyValueStore()))
-                );
+                    assertThrows(
+                            UnknownStateStoreException.class,
+                            () -> kafkaStreams.store(fromNameAndType("join-store", keyValueStore()))
+                    );
             assertThat(
-                exception.getMessage(),
-                is("Cannot get state store join-store because no such store is registered in the topology.")
+                    exception.getMessage(),
+                    is("Cannot get state store join-store because no such store is registered in the topology.")
             );
         }
     }
@@ -152,15 +152,15 @@ public class JoinStoreIntegrationTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         left.join(
-            right,
-            Integer::sum,
-            JoinWindows.of(ofMillis(100)),
-            StreamJoined.with(Serdes.String(), Serdes.Integer(), Serdes.Integer()).withStoreName("join-store"));
+                right,
+                Integer::sum,
+                JoinWindows.of(ofMillis(100)),
+                StreamJoined.with(Serdes.String(), Serdes.Integer(), Serdes.Integer()).withStoreName("join-store"));
 
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(STREAMS_CONFIG, withHeaders);
 
         try (final KafkaStreams kafkaStreams = new KafkaStreams(builder.build(), STREAMS_CONFIG);
-            final Admin admin = Admin.create(ADMIN_CONFIG)) {
+             final Admin admin = Admin.create(ADMIN_CONFIG)) {
             kafkaStreams.setStateListener((newState, oldState) -> {
                 if (newState == KafkaStreams.State.RUNNING) {
                     latch.countDown();
@@ -171,19 +171,19 @@ public class JoinStoreIntegrationTest {
             latch.await();
 
             final Collection<ConfigResource> changelogTopics = Stream.of(
-                    "join-store-integration-test-changelog-cleanup-policy-join-store-this-join-store-changelog",
-                    "join-store-integration-test-changelog-cleanup-policy-join-store-other-join-store-changelog"
-                )
-                .map(name -> new ConfigResource(Type.TOPIC, name))
-                .collect(Collectors.toList());
+                            "join-store-integration-test-changelog-cleanup-policy-join-store-this-join-store-changelog",
+                            "join-store-integration-test-changelog-cleanup-policy-join-store-other-join-store-changelog"
+                    )
+                    .map(name -> new ConfigResource(Type.TOPIC, name))
+                    .collect(Collectors.toList());
 
             final Map<ConfigResource, org.apache.kafka.clients.admin.Config> topicConfig
-                = admin.describeConfigs(changelogTopics).all().get();
+                    = admin.describeConfigs(changelogTopics).all().get();
             topicConfig.values().forEach(
-                tc -> assertThat(
-                    tc.get("cleanup.policy").value(),
-                    is("delete")
-                )
+                    tc -> assertThat(
+                            tc.get("cleanup.policy").value(),
+                            is("delete")
+                    )
             );
         }
     }

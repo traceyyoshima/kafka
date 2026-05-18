@@ -46,9 +46,9 @@ public class ControllerRegistrationsPublisher implements MetadataPublisher {
 
     @Override
     public void onMetadataUpdate(
-        MetadataDelta delta,
-        MetadataImage newImage,
-        LoaderManifest manifest
+            MetadataDelta delta,
+            MetadataImage newImage,
+            LoaderManifest manifest
     ) {
         if (manifest.type() == LoaderManifestType.LOG_DELTA || delta.clusterDelta() != null) {
             controllers = newImage.cluster().controllers();
@@ -56,7 +56,7 @@ public class ControllerRegistrationsPublisher implements MetadataPublisher {
     }
 
     public DescribeClusterBrokerCollection describeClusterControllers(
-        String endpointName
+            String endpointName
     ) {
         DescribeClusterBrokerCollection results = new DescribeClusterBrokerCollection();
         for (ControllerRegistration registration : controllers.values()) {

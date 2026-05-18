@@ -36,7 +36,7 @@ public class BasicTopology implements Topology {
     public BasicTopology(JsonNode configRoot) {
         if (!configRoot.isObject()) {
             throw new RuntimeException("Expected the 'nodes' element to be " +
-                "a JSON object.");
+                    "a JSON object.");
         }
         nodes = new TreeMap<>();
         for (Iterator<String> iter = configRoot.fieldNames(); iter.hasNext(); ) {

@@ -23,9 +23,9 @@ import java.util.Objects;
 /**
  * Immutable topic metadata, representing the current state of a topic in the broker.
  *
- * @param id             The topic ID.
- * @param name           The topic name.
- * @param numPartitions  The number of partitions.
+ * @param id            The topic ID.
+ * @param name          The topic name.
+ * @param numPartitions The number of partitions.
  */
 public record TopicMetadata(Uuid id, String name, int numPartitions) {
 

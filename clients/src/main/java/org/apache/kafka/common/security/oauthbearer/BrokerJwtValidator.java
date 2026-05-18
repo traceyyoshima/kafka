@@ -56,7 +56,7 @@ import static org.jose4j.jwa.AlgorithmConstraints.DISALLOW_NONE;
  * by the broker to perform more extensive validation of the JWT access token that is received
  * from the client, but ultimately from posting the client credentials to the OAuth/OIDC provider's
  * token endpoint.
- *
+ * <p>
  * The validation steps performed (primarily by the jose4j library) are:
  *
  * <ol>
@@ -113,7 +113,7 @@ public class BrokerJwtValidator implements JwtValidator {
         String subClaimName = cu.validateString(SASL_OAUTHBEARER_SUB_CLAIM_NAME);
 
         CloseableVerificationKeyResolver verificationKeyResolver = verificationKeyResolverOpt.orElseGet(
-            () -> VerificationKeyResolverFactory.get(configs, saslMechanism, jaasConfigEntries)
+                () -> VerificationKeyResolverFactory.get(configs, saslMechanism, jaasConfigEntries)
         );
 
         final JwtConsumerBuilder jwtConsumerBuilder = new JwtConsumerBuilder();
@@ -128,11 +128,11 @@ public class BrokerJwtValidator implements JwtValidator {
             jwtConsumerBuilder.setExpectedIssuer(expectedIssuer);
 
         this.jwtConsumer = jwtConsumerBuilder
-            .setJwsAlgorithmConstraints(DISALLOW_NONE)
-            .setRequireExpirationTime()
-            .setRequireIssuedAt()
-            .setVerificationKeyResolver(verificationKeyResolver)
-            .build();
+                .setJwsAlgorithmConstraints(DISALLOW_NONE)
+                .setRequireExpirationTime()
+                .setRequireIssuedAt()
+                .setVerificationKeyResolver(verificationKeyResolver)
+                .build();
         this.scopeClaimName = scopeClaimName;
         this.subClaimName = subClaimName;
     }
@@ -176,16 +176,16 @@ public class BrokerJwtValidator implements JwtValidator {
 
         Set<String> scopes = ClaimValidationUtils.validateScopes(scopeClaimName, scopeRawCollection);
         long expiration = ClaimValidationUtils.validateExpiration(ReservedClaimNames.EXPIRATION_TIME,
-            expirationRaw != null ? expirationRaw.getValueInMillis() : null);
+                expirationRaw != null ? expirationRaw.getValueInMillis() : null);
         String sub = ClaimValidationUtils.validateSubject(subClaimName, subRaw);
         Long issuedAt = ClaimValidationUtils.validateIssuedAt(ReservedClaimNames.ISSUED_AT,
-            issuedAtRaw != null ? issuedAtRaw.getValueInMillis() : null);
+                issuedAtRaw != null ? issuedAtRaw.getValueInMillis() : null);
 
         return new BasicOAuthBearerToken(accessToken,
-            scopes,
-            expiration,
-            sub,
-            issuedAt);
+                scopes,
+                expiration,
+                sub,
+                issuedAt);
     }
 
     private <T> T getClaim(ClaimSupplier<T> supplier, String claimName) throws JwtValidatorException {

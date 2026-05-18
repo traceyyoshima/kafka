@@ -35,9 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ControllerMetricsTestUtils {
     public static void assertMetricsForTypeEqual(
-        MetricsRegistry registry,
-        String expectedPrefix,
-        Set<String> expected
+            MetricsRegistry registry,
+            String expectedPrefix,
+            Set<String> expected
     ) {
         Set<String> actual = new TreeSet<>();
         registry.allMetrics().forEach((name, __) -> {
@@ -62,7 +62,7 @@ public class ControllerMetricsTestUtils {
     }
 
     public static PartitionRegistration fakePartitionRegistration(
-        FakePartitionRegistrationType type
+            FakePartitionRegistrationType type
     ) {
         int leader = switch (type) {
             case NORMAL -> 0;
@@ -70,20 +70,20 @@ public class ControllerMetricsTestUtils {
             case OFFLINE -> -1;
         };
         return new PartitionRegistration.Builder().
-            setReplicas(new int[] {0, 1, 2}).
-            setDirectories(DirectoryId.migratingArray(3)).
-            setIsr(new int[] {0, 1, 2}).
-            setLeader(leader).
-            setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).
-            setLeaderEpoch(100).
-            setPartitionEpoch(200).
-            build();
+                setReplicas(new int[]{0, 1, 2}).
+                setDirectories(DirectoryId.migratingArray(3)).
+                setIsr(new int[]{0, 1, 2}).
+                setLeader(leader).
+                setLeaderRecoveryState(LeaderRecoveryState.RECOVERED).
+                setLeaderEpoch(100).
+                setPartitionEpoch(200).
+                build();
     }
 
     public static TopicImage fakeTopicImage(
-        String topicName,
-        Uuid topicId,
-        PartitionRegistration... registrations
+            String topicName,
+            Uuid topicId,
+            PartitionRegistration... registrations
     ) {
         Map<Integer, PartitionRegistration> partitions = new HashMap<>();
         int i = 0;
@@ -95,7 +95,7 @@ public class ControllerMetricsTestUtils {
     }
 
     public static TopicsImage fakeTopicsImage(
-        TopicImage... topics
+            TopicImage... topics
     ) {
         TopicsImage image = TopicsImage.EMPTY;
         for (TopicImage topic : topics) {

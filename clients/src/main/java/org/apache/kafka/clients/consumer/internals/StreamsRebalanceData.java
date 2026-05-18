@@ -73,7 +73,7 @@ public class StreamsRebalanceData {
         public int compareTo(TaskId taskId) {
             Objects.requireNonNull(taskId, "taskId cannot be null");
             return Comparator.comparing(TaskId::subtopologyId)
-                .thenComparingInt(TaskId::partitionId).compare(this, taskId);
+                    .thenComparingInt(TaskId::partitionId).compare(this, taskId);
         }
 
         @Override
@@ -115,12 +115,13 @@ public class StreamsRebalanceData {
         @Override
         public String toString() {
             return "HostInfo{" +
-                "host='" + host + '\'' +
-                ", port=" + port +
-                '}';
+                    "host='" + host + '\'' +
+                    ", port=" + port +
+                    '}';
         }
 
     }
+
     public static class EndpointPartitions {
         private final List<TopicPartition> activePartitions;
         private final List<TopicPartition> standbyPartitions;
@@ -138,6 +139,7 @@ public class StreamsRebalanceData {
         public List<TopicPartition> standbyPartitions() {
             return new ArrayList<>(standbyPartitions);
         }
+
         @Override
         public String toString() {
             return "EndpointPartitions {"
@@ -202,9 +204,9 @@ public class StreamsRebalanceData {
             }
             final Assignment that = (Assignment) o;
             return Objects.equals(activeTasks, that.activeTasks)
-                && Objects.equals(standbyTasks, that.standbyTasks)
-                && Objects.equals(warmupTasks, that.warmupTasks)
-                && isGroupReady == that.isGroupReady;
+                    && Objects.equals(standbyTasks, that.standbyTasks)
+                    && Objects.equals(warmupTasks, that.warmupTasks)
+                    && isGroupReady == that.isGroupReady;
         }
 
         @Override
@@ -219,11 +221,11 @@ public class StreamsRebalanceData {
         @Override
         public String toString() {
             return "Assignment{" +
-                "activeTasks=" + activeTasks +
-                ", standbyTasks=" + standbyTasks +
-                ", warmupTasks=" + warmupTasks +
-                ", isGroupReady=" + isGroupReady +
-                '}';
+                    "activeTasks=" + activeTasks +
+                    ", standbyTasks=" + standbyTasks +
+                    ", warmupTasks=" + warmupTasks +
+                    ", isGroupReady=" + isGroupReady +
+                    '}';
         }
     }
 
@@ -243,17 +245,17 @@ public class StreamsRebalanceData {
         ) {
             this.sourceTopics = Set.copyOf(Objects.requireNonNull(sourceTopics, "Subtopology ID cannot be null"));
             this.repartitionSinkTopics =
-                Set.copyOf(Objects.requireNonNull(repartitionSinkTopics, "Repartition sink topics cannot be null"));
+                    Set.copyOf(Objects.requireNonNull(repartitionSinkTopics, "Repartition sink topics cannot be null"));
             this.repartitionSourceTopics =
-                Map.copyOf(Objects.requireNonNull(repartitionSourceTopics, "Repartition source topics cannot be null"));
+                    Map.copyOf(Objects.requireNonNull(repartitionSourceTopics, "Repartition source topics cannot be null"));
             this.stateChangelogTopics =
-                Map.copyOf(Objects.requireNonNull(stateChangelogTopics, "State changelog topics cannot be null"));
+                    Map.copyOf(Objects.requireNonNull(stateChangelogTopics, "State changelog topics cannot be null"));
             this.copartitionGroups =
-                Collections.unmodifiableCollection(Objects.requireNonNull(
-                    copartitionGroups,
-                    "Co-partition groups cannot be null"
-                    )
-                );
+                    Collections.unmodifiableCollection(Objects.requireNonNull(
+                                    copartitionGroups,
+                                    "Co-partition groups cannot be null"
+                            )
+                    );
         }
 
         public Set<String> sourceTopics() {
@@ -279,12 +281,12 @@ public class StreamsRebalanceData {
         @Override
         public String toString() {
             return "Subtopology{" +
-                "sourceTopics=" + sourceTopics +
-                ", repartitionSinkTopics=" + repartitionSinkTopics +
-                ", stateChangelogTopics=" + stateChangelogTopics +
-                ", repartitionSourceTopics=" + repartitionSourceTopics +
-                ", copartitionGroups=" + copartitionGroups +
-                '}';
+                    "sourceTopics=" + sourceTopics +
+                    ", repartitionSinkTopics=" + repartitionSinkTopics +
+                    ", stateChangelogTopics=" + stateChangelogTopics +
+                    ", repartitionSourceTopics=" + repartitionSourceTopics +
+                    ", copartitionGroups=" + copartitionGroups +
+                    '}';
         }
     }
 
@@ -300,7 +302,7 @@ public class StreamsRebalanceData {
             this.numPartitions = Objects.requireNonNull(numPartitions, "Number of partitions cannot be null");
             this.replicationFactor = Objects.requireNonNull(replicationFactor, "Replication factor cannot be null");
             this.topicConfigs =
-                Map.copyOf(Objects.requireNonNull(topicConfigs, "Additional topic configs cannot be null"));
+                    Map.copyOf(Objects.requireNonNull(topicConfigs, "Additional topic configs cannot be null"));
         }
 
         public Optional<Integer> numPartitions() {
@@ -318,10 +320,10 @@ public class StreamsRebalanceData {
         @Override
         public String toString() {
             return "TopicInfo{" +
-                "numPartitions=" + numPartitions +
-                ", replicationFactor=" + replicationFactor +
-                ", topicConfigs=" + topicConfigs +
-                '}';
+                    "numPartitions=" + numPartitions +
+                    ", replicationFactor=" + replicationFactor +
+                    ", topicConfigs=" + topicConfigs +
+                    '}';
         }
     }
 
@@ -399,42 +401,58 @@ public class StreamsRebalanceData {
         return partitionsByHost.get();
     }
 
-    /** For the current stream thread to request a shutdown of all Streams clients belonging to the same application. */
+    /**
+     * For the current stream thread to request a shutdown of all Streams clients belonging to the same application.
+     */
     public void requestShutdown() {
         shutdownRequested.set(true);
     }
 
-    /** True if the current stream thread requested a shutdown of all Streams clients belonging to the same application. */
+    /**
+     * True if the current stream thread requested a shutdown of all Streams clients belonging to the same application.
+     */
     public boolean shutdownRequested() {
         return shutdownRequested.get();
     }
 
-    /** Updated whenever the status of the streams group is updated. */
+    /**
+     * Updated whenever the status of the streams group is updated.
+     */
     public void setStatuses(final List<StreamsGroupHeartbeatResponseData.Status> s) {
         statuses.set(s);
     }
 
-    /** For communicating the current status of the group to the stream thread */
+    /**
+     * For communicating the current status of the group to the stream thread
+     */
     public List<StreamsGroupHeartbeatResponseData.Status> statuses() {
         return statuses.get();
     }
 
-    /** Updated whenever a heartbeat response is received from the broker. */
+    /**
+     * Updated whenever a heartbeat response is received from the broker.
+     */
     public void setHeartbeatIntervalMs(final int heartbeatIntervalMs) {
         this.heartbeatIntervalMs.set(heartbeatIntervalMs);
     }
 
-    /** Returns the heartbeat interval in milliseconds, or -1 if not yet set. */
+    /**
+     * Returns the heartbeat interval in milliseconds, or -1 if not yet set.
+     */
     public int heartbeatIntervalMs() {
         return heartbeatIntervalMs.get();
     }
 
-    /** Updated whenever a heartbeat response is received from the broker. */
+    /**
+     * Updated whenever a heartbeat response is received from the broker.
+     */
     public void setTaskOffsetIntervalMs(final int taskOffsetIntervalMs) {
         this.taskOffsetIntervalMs.set(taskOffsetIntervalMs);
     }
 
-    /** Returns the task offset interval in milliseconds, or -1 if not yet set. */
+    /**
+     * Returns the task offset interval in milliseconds, or -1 if not yet set.
+     */
     public int taskOffsetIntervalMs() {
         return taskOffsetIntervalMs.get();
     }

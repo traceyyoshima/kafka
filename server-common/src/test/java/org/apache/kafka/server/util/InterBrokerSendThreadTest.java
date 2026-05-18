@@ -68,12 +68,12 @@ public class InterBrokerSendThreadTest {
 
         TestInterBrokerSendThread() {
             this(
-                InterBrokerSendThreadTest.this.networkClient,
-                t -> {
-                    throw (t instanceof RuntimeException)
-                        ? ((RuntimeException) t)
-                        : new RuntimeException(t);
-                });
+                    InterBrokerSendThreadTest.this.networkClient,
+                    t -> {
+                        throw (t instanceof RuntimeException)
+                                ? ((RuntimeException) t)
+                                : new RuntimeException(t);
+                    });
         }
 
         TestInterBrokerSendThread(KafkaClient networkClient, Consumer<Throwable> exceptionCallback) {
@@ -109,7 +109,7 @@ public class InterBrokerSendThreadTest {
 
         AtomicReference<Throwable> exception = new AtomicReference<>();
         final InterBrokerSendThread thread =
-            new TestInterBrokerSendThread(networkClient, exception::getAndSet);
+                new TestInterBrokerSendThread(networkClient, exception::getAndSet);
         thread.shutdown();
         thread.pollOnce(100);
 
@@ -130,7 +130,7 @@ public class InterBrokerSendThreadTest {
 
         AtomicReference<Throwable> throwable = new AtomicReference<>();
         final InterBrokerSendThread thread =
-            new TestInterBrokerSendThread(networkClient, throwable::getAndSet);
+                new TestInterBrokerSendThread(networkClient, throwable::getAndSet);
         thread.pollOnce(100);
 
         verify(networkClient).poll(anyLong(), anyLong());
@@ -162,19 +162,19 @@ public class InterBrokerSendThreadTest {
         final AbstractRequest.Builder<?> request = new StubRequestBuilder<>();
         final Node node = new Node(1, "", 8080);
         final RequestAndCompletionHandler handler =
-            new RequestAndCompletionHandler(time.milliseconds(), node, request, completionHandler);
+                new RequestAndCompletionHandler(time.milliseconds(), node, request, completionHandler);
         final TestInterBrokerSendThread sendThread = new TestInterBrokerSendThread();
 
         final ClientRequest clientRequest =
-            new ClientRequest("dest", request, 0, "1", 0, true, requestTimeoutMs, handler.handler);
+                new ClientRequest("dest", request, 0, "1", 0, true, requestTimeoutMs, handler.handler);
 
         when(networkClient.newClientRequest(
-            ArgumentMatchers.eq("1"),
-            same(handler.request),
-            anyLong(),
-            ArgumentMatchers.eq(true),
-            ArgumentMatchers.eq(requestTimeoutMs),
-            same(handler.handler)
+                ArgumentMatchers.eq("1"),
+                same(handler.request),
+                anyLong(),
+                ArgumentMatchers.eq(true),
+                ArgumentMatchers.eq(requestTimeoutMs),
+                same(handler.handler)
         )).thenReturn(clientRequest);
 
         when(networkClient.ready(node, time.milliseconds())).thenReturn(true);
@@ -185,13 +185,13 @@ public class InterBrokerSendThreadTest {
         sendThread.doWork();
 
         verify(networkClient)
-            .newClientRequest(
-                ArgumentMatchers.eq("1"),
-                same(handler.request),
-                anyLong(),
-                ArgumentMatchers.eq(true),
-                ArgumentMatchers.eq(requestTimeoutMs),
-                same(handler.handler));
+                .newClientRequest(
+                        ArgumentMatchers.eq("1"),
+                        same(handler.request),
+                        anyLong(),
+                        ArgumentMatchers.eq(true),
+                        ArgumentMatchers.eq(requestTimeoutMs),
+                        same(handler.handler));
         verify(networkClient).ready(any(), anyLong());
         verify(networkClient).send(same(clientRequest), anyLong());
         verify(networkClient).poll(anyLong(), anyLong());
@@ -205,19 +205,19 @@ public class InterBrokerSendThreadTest {
         final AbstractRequest.Builder<?> request = new StubRequestBuilder<>();
         final Node node = new Node(1, "", 8080);
         final RequestAndCompletionHandler handler =
-            new RequestAndCompletionHandler(time.milliseconds(), node, request, completionHandler);
+                new RequestAndCompletionHandler(time.milliseconds(), node, request, completionHandler);
         final TestInterBrokerSendThread sendThread = new TestInterBrokerSendThread();
 
         final ClientRequest clientRequest =
-            new ClientRequest("dest", request, 0, "1", 0, true, requestTimeoutMs, handler.handler);
+                new ClientRequest("dest", request, 0, "1", 0, true, requestTimeoutMs, handler.handler);
 
         when(networkClient.newClientRequest(
-            ArgumentMatchers.eq("1"),
-            same(handler.request),
-            anyLong(),
-            ArgumentMatchers.eq(true),
-            ArgumentMatchers.eq(requestTimeoutMs),
-            same(handler.handler)
+                ArgumentMatchers.eq("1"),
+                same(handler.request),
+                anyLong(),
+                ArgumentMatchers.eq(true),
+                ArgumentMatchers.eq(requestTimeoutMs),
+                same(handler.handler)
         )).thenReturn(clientRequest);
 
         when(networkClient.ready(node, time.milliseconds())).thenReturn(false);
@@ -234,13 +234,13 @@ public class InterBrokerSendThreadTest {
         sendThread.doWork();
 
         verify(networkClient)
-            .newClientRequest(
-                ArgumentMatchers.eq("1"),
-                same(handler.request),
-                anyLong(),
-                ArgumentMatchers.eq(true),
-                ArgumentMatchers.eq(requestTimeoutMs),
-                same(handler.handler));
+                .newClientRequest(
+                        ArgumentMatchers.eq("1"),
+                        same(handler.request),
+                        anyLong(),
+                        ArgumentMatchers.eq(true),
+                        ArgumentMatchers.eq(requestTimeoutMs),
+                        same(handler.handler));
         verify(networkClient).ready(any(), anyLong());
         verify(networkClient).connectionDelay(any(), anyLong());
         verify(networkClient).poll(anyLong(), anyLong());
@@ -256,21 +256,21 @@ public class InterBrokerSendThreadTest {
         final AbstractRequest.Builder<?> request = new StubRequestBuilder<>();
         final Node node = new Node(1, "", 8080);
         final RequestAndCompletionHandler handler =
-            new RequestAndCompletionHandler(time.milliseconds(), node, request, completionHandler);
+                new RequestAndCompletionHandler(time.milliseconds(), node, request, completionHandler);
         final TestInterBrokerSendThread sendThread = new TestInterBrokerSendThread();
 
         final ClientRequest clientRequest =
-            new ClientRequest(
-                "dest", request, 0, "1", time.milliseconds(), true, requestTimeoutMs, handler.handler);
+                new ClientRequest(
+                        "dest", request, 0, "1", time.milliseconds(), true, requestTimeoutMs, handler.handler);
         time.sleep(1500L);
 
         when(networkClient.newClientRequest(
-            ArgumentMatchers.eq("1"),
-            same(handler.request),
-            ArgumentMatchers.eq(handler.creationTimeMs),
-            ArgumentMatchers.eq(true),
-            ArgumentMatchers.eq(requestTimeoutMs),
-            same(handler.handler)
+                ArgumentMatchers.eq("1"),
+                same(handler.request),
+                ArgumentMatchers.eq(handler.creationTimeMs),
+                ArgumentMatchers.eq(true),
+                ArgumentMatchers.eq(requestTimeoutMs),
+                same(handler.handler)
         )).thenReturn(clientRequest);
 
         // make the node unready so the request is not cleared
@@ -287,13 +287,13 @@ public class InterBrokerSendThreadTest {
         sendThread.doWork();
 
         verify(networkClient)
-            .newClientRequest(
-                ArgumentMatchers.eq("1"),
-                same(handler.request),
-                ArgumentMatchers.eq(handler.creationTimeMs),
-                ArgumentMatchers.eq(true),
-                ArgumentMatchers.eq(requestTimeoutMs),
-                same(handler.handler));
+                .newClientRequest(
+                        ArgumentMatchers.eq("1"),
+                        same(handler.request),
+                        ArgumentMatchers.eq(handler.creationTimeMs),
+                        ArgumentMatchers.eq(true),
+                        ArgumentMatchers.eq(requestTimeoutMs),
+                        same(handler.handler));
         verify(networkClient).ready(any(), anyLong());
         verify(networkClient).connectionDelay(any(), anyLong());
         verify(networkClient).poll(anyLong(), anyLong());
@@ -317,13 +317,13 @@ public class InterBrokerSendThreadTest {
 
         AtomicReference<Throwable> exception = new AtomicReference<>();
         final InterBrokerSendThread thread =
-            new TestInterBrokerSendThread(networkClient, t -> {
-                if (isShuttingDown)
-                    assertInstanceOf(InterruptedException.class, t);
-                else
-                    assertInstanceOf(FatalExitError.class, t);
-                exception.getAndSet(t);
-            });
+                new TestInterBrokerSendThread(networkClient, t -> {
+                    if (isShuttingDown)
+                        assertInstanceOf(InterruptedException.class, t);
+                    else
+                        assertInstanceOf(FatalExitError.class, t);
+                    exception.getAndSet(t);
+                });
 
         if (isShuttingDown)
             thread.shutdown();
@@ -339,7 +339,7 @@ public class InterBrokerSendThreadTest {
     }
 
     private static class StubRequestBuilder<T extends AbstractRequest>
-        extends AbstractRequest.Builder<T> {
+            extends AbstractRequest.Builder<T> {
 
         private StubRequestBuilder() {
             super(ApiKeys.END_TXN);

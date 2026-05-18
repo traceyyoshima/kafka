@@ -79,6 +79,7 @@ public class ClientQuotaManager {
             return "user " + sanitizedUser;
         }
     }
+
     public record ClientIdEntity(String clientId) implements ClientQuotaEntity.ConfigEntity {
 
         @Override
@@ -119,10 +120,12 @@ public class ClientQuotaManager {
         public ClientQuotaEntity.ConfigEntityType entityType() {
             return ClientQuotaEntity.ConfigEntityType.DEFAULT_CLIENT_ID;
         }
+
         @Override
         public String name() {
             return DEFAULT_NAME;
         }
+
         @Override
         public String toString() {
             return "default client-id";
@@ -219,11 +222,12 @@ public class ClientQuotaManager {
      * </ul>
      * Quota limits including defaults may be updated dynamically. The implementation is optimized for the case
      * where a single level of quotas is configured.
-     * @param config the ClientQuotaManagerConfig containing quota configurations
-     * @param metrics the Metrics instance for recording quota-related metrics
-     * @param quotaType the quota type managed by this quota manager
-     * @param time the Time object used for time-based operations
-     * @param threadNamePrefix the thread name prefix used for internal threads
+     *
+     * @param config                    the ClientQuotaManagerConfig containing quota configurations
+     * @param metrics                   the Metrics instance for recording quota-related metrics
+     * @param quotaType                 the quota type managed by this quota manager
+     * @param time                      the Time object used for time-based operations
+     * @param threadNamePrefix          the thread name prefix used for internal threads
      * @param clientQuotaCallbackPlugin optional Plugin containing a ClientQuotaCallback for custom quota logic
      */
     public ClientQuotaManager(ClientQuotaManagerConfig config,
@@ -262,6 +266,7 @@ public class ClientQuotaManager {
     protected Metrics metrics() {
         return metrics;
     }
+
     protected Time time() {
         return time;
     }
@@ -323,12 +328,12 @@ public class ClientQuotaManager {
      * Records that a user/clientId accumulated or would like to accumulate the provided amount at the
      * specified time, returns throttle time in milliseconds.
      *
-     * @param session The session from which the user is extracted
+     * @param session  The session from which the user is extracted
      * @param clientId The client id
-     * @param value The value to accumulate
-     * @param timeMs The time at which to accumulate the value
+     * @param value    The value to accumulate
+     * @param timeMs   The time at which to accumulate the value
      * @return The throttle time in milliseconds defines as the time to wait until the average
-     *         rate gets back to the defined quota
+     * rate gets back to the defined quota
      */
     public int recordAndGetThrottleTimeMs(Session session, String clientId, double value, long timeMs) {
         var clientSensors = getOrCreateQuotaSensors(session, clientId);
@@ -384,9 +389,10 @@ public class ClientQuotaManager {
 
     /**
      * Throttle a client by muting the associated channel for the given throttle time.
-     * @param clientId request client id
-     * @param session request session
-     * @param throttleTimeMs Duration in milliseconds for which the channel is to be muted.
+     *
+     * @param clientId         request client id
+     * @param session          request session
+     * @param throttleTimeMs   Duration in milliseconds for which the channel is to be muted.
      * @param throttleCallback Callback for channel throttling
      */
     public void throttle(
@@ -561,10 +567,10 @@ public class ClientQuotaManager {
      * This method ensures that the `quotaTypesEnabled` field reflects the active quota types based on the
      * current state of `activeQuotaEntities`.
      * For example:
-     *  - If UserQuotaEnabled = 2 and ClientIdQuotaEnabled = 1, then quotaTypesEnabled = 3 (2 | 1 = 3)
-     *  - If UserClientIdQuotaEnabled = 4 and UserQuotaEnabled = 1, then quotaTypesEnabled = 5 (4 | 1 = 5)
-     *  - If UserClientIdQuotaEnabled = 4 and ClientIdQuotaEnabled = 2, then quotaTypesEnabled = 6 (4 | 2 = 6)
-     *  - If all three are enabled (1 | 2 | 4), then quotaTypesEnabled = 7
+     * - If UserQuotaEnabled = 2 and ClientIdQuotaEnabled = 1, then quotaTypesEnabled = 3 (2 | 1 = 3)
+     * - If UserClientIdQuotaEnabled = 4 and UserQuotaEnabled = 1, then quotaTypesEnabled = 5 (4 | 1 = 5)
+     * - If UserClientIdQuotaEnabled = 4 and ClientIdQuotaEnabled = 2, then quotaTypesEnabled = 6 (4 | 2 = 6)
+     * - If all three are enabled (1 | 2 | 4), then quotaTypesEnabled = 7
      *
      * @param quotaEntity The entity for which the quota is being updated, which can be a combination of user and client-id.
      * @param shouldAdd   A boolean indicating whether to add or remove the quota entity.
@@ -576,7 +582,7 @@ public class ClientQuotaManager {
         }
 
         boolean isActive = !(quotaCallback instanceof DefaultQuotaCallback defaultCallback) ||
-            defaultCallback.getActiveQuotasEntities().contains(quotaEntity);
+                defaultCallback.getActiveQuotasEntities().contains(quotaEntity);
 
         int activeQuotaType;
         if (quotaEntity.userEntity() != null && quotaEntity.clientIdEntity() != null) {
@@ -622,9 +628,9 @@ public class ClientQuotaManager {
      * Updates metrics configs. This is invoked when quota configs are updated when partition leaders change,
      * and custom callbacks that implement partition-based quotas have updated quotas.
      * Param updatedQuotaEntity If set to one entity and quotas have only been enabled at one
-     *    level, then an optimized update is performed with a single metric update. If None is provided,
-     *    or if custom callbacks are used or if multi-level quotas have been enabled, all metric configs
-     *    are checked and updated if required.
+     * level, then an optimized update is performed with a single metric update. If None is provided,
+     * or if custom callbacks are used or if multi-level quotas have been enabled, all metric configs
+     * are checked and updated if required.
      */
     public void updateQuotaMetricConfigs() {
         updateQuotaMetricConfigs(Optional.empty());
@@ -699,10 +705,12 @@ public class ClientQuotaManager {
         // improve shutdown time by waking up any ShutdownThread(s) blocked on poll by sending a no-op
         delayQueue.add(new ThrottledChannel(time, 0, new ThrottleCallback() {
             @Override
-            public void startThrottling() {}
+            public void startThrottling() {
+            }
 
             @Override
-            public void endThrottling() {}
+            public void endThrottling() {
+            }
         }));
     }
 
@@ -887,6 +895,7 @@ public class ClientQuotaManager {
         }
 
         @Override
-        public void close() {}
+        public void close() {
+        }
     }
 }

@@ -56,33 +56,33 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class WindowKeySchemaTest {
 
     private static final Map<SchemaType, KeySchema> SCHEMA_TYPE_MAP = mkMap(
-        mkEntry(SchemaType.WindowKeySchema, new WindowKeySchema()),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, new KeyFirstWindowKeySchema()),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, new TimeFirstWindowKeySchema())
+            mkEntry(SchemaType.WindowKeySchema, new WindowKeySchema()),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, new KeyFirstWindowKeySchema()),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, new TimeFirstWindowKeySchema())
     );
 
     private static final Map<SchemaType, Function<byte[], byte[]>> EXTRACT_STORE_KEY_MAP = mkMap(
-        mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::extractStoreKeyBytes),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::extractStoreKeyBytes),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::extractStoreKeyBytes)
+            mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::extractStoreKeyBytes),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::extractStoreKeyBytes),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::extractStoreKeyBytes)
     );
 
     private static final Map<SchemaType, BiFunction<byte[], Long, Windowed<Bytes>>> FROM_STORAGE_BYTES_KEY = mkMap(
-        mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::fromStoreBytesKey),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::fromStoreBytesKey),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::fromStoreBytesKey)
+            mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::fromStoreBytesKey),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::fromStoreBytesKey),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::fromStoreBytesKey)
     );
 
     private static final Map<SchemaType, BiFunction<Windowed<Bytes>, Integer, Bytes>> WINDOW_TO_STORE_BINARY_MAP = mkMap(
-        mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::toStoreKeyBinary),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::toStoreKeyBinary),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::toStoreKeyBinary)
+            mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::toStoreKeyBinary),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::toStoreKeyBinary),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::toStoreKeyBinary)
     );
 
     private static final Map<SchemaType, BiFunction<byte[], Long, Window>> EXTRACT_STORE_WINDOW_MAP = mkMap(
-        mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::extractStoreWindow),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::extractStoreWindow),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::extractStoreWindow)
+            mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::extractStoreWindow),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::extractStoreWindow),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::extractStoreWindow)
     );
 
     @FunctionalInterface
@@ -96,32 +96,32 @@ public class WindowKeySchemaTest {
     }
 
     private static final Map<SchemaType, TriFunction<byte[], Long, Integer, Bytes>> BYTES_TO_STORE_BINARY_MAP = mkMap(
-        mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::toStoreKeyBinary),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::toStoreKeyBinary),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::toStoreKeyBinary)
+            mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::toStoreKeyBinary),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::toStoreKeyBinary),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::toStoreKeyBinary)
     );
 
     private static final Map<SchemaType, QuadFunction<Windowed<String>, Integer, Headers, StateSerdes<String, byte[]>, Bytes>> SERDE_TO_STORE_BINARY_MAP = mkMap(
-        mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::toStoreKeyBinary),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::toStoreKeyBinary),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::toStoreKeyBinary)
+            mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::toStoreKeyBinary),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::toStoreKeyBinary),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::toStoreKeyBinary)
     );
 
     private static final Map<SchemaType, Function<byte[], Long>> EXTRACT_TS_MAP = mkMap(
-        mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::extractStoreTimestamp),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::extractStoreTimestamp),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::extractStoreTimestamp)
+            mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::extractStoreTimestamp),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::extractStoreTimestamp),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::extractStoreTimestamp)
     );
 
     private static final Map<SchemaType, Function<byte[], Integer>> EXTRACT_SEQ_MAP = mkMap(
-        mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::extractStoreSequence),
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::extractStoreSequence),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::extractStoreSequence)
+            mkEntry(SchemaType.WindowKeySchema, WindowKeySchema::extractStoreSequence),
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::extractStoreSequence),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::extractStoreSequence)
     );
 
     private static final Map<SchemaType, Function<byte[], byte[]>> FROM_WINDOW_KEY_MAP = mkMap(
-        mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::fromNonPrefixWindowKey),
-        mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::fromNonPrefixWindowKey)
+            mkEntry(SchemaType.PrefixedKeyFirstSchema, KeyFirstWindowKeySchema::fromNonPrefixWindowKey),
+            mkEntry(SchemaType.PrefixedTimeFirstSchema, TimeFirstWindowKeySchema::fromNonPrefixWindowKey)
     );
 
     private final String key = "key";
@@ -187,12 +187,12 @@ public class WindowKeySchemaTest {
         setup(type);
         final BiFunction<Windowed<Bytes>, Integer, Bytes> toStoreKeyBinary = getToStoreKeyBinaryWindowParam();
         final List<KeyValue<Bytes, Integer>> keys = asList(
-            KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[] {0, 0}), new TimeWindow(0, 1)), 0), 1),
-            KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[] {0}), new TimeWindow(0, 1)), 0), 2),
-            KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[] {0, 0, 0}), new TimeWindow(0, 1)), 0), 3),
-            KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[] {0}), new TimeWindow(10, 20)), 4), 4),
-            KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[] {0, 0}), new TimeWindow(10, 20)), 5), 5),
-            KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[] {0, 0, 0}), new TimeWindow(10, 20)), 6), 6));
+                KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[]{0, 0}), new TimeWindow(0, 1)), 0), 1),
+                KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[]{0}), new TimeWindow(0, 1)), 0), 2),
+                KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[]{0, 0, 0}), new TimeWindow(0, 1)), 0), 3),
+                KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[]{0}), new TimeWindow(10, 20)), 4), 4),
+                KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[]{0, 0}), new TimeWindow(10, 20)), 5), 5),
+                KeyValue.pair(toStoreKeyBinary.apply(new Windowed<>(Bytes.wrap(new byte[]{0, 0, 0}), new TimeWindow(10, 20)), 6), 6));
         try (final DelegatingPeekingKeyValueIterator<Bytes, Integer> iterator = new DelegatingPeekingKeyValueIterator<>("foo", new KeyValueIteratorStub<>(keys.iterator()))) {
 
             final HasNextCondition hasNextCondition = keySchema.hasNextCondition(null, null, 0, Long.MAX_VALUE, true);
@@ -204,42 +204,42 @@ public class WindowKeySchemaTest {
             assertThat(results, equalTo(asList(1, 2, 3, 4, 5, 6)));
         }
     }
-    
+
     @EnumSource(SchemaType.class)
     @ParameterizedTest
     public void testUpperBoundWithLargeTimestamps(final SchemaType type) {
         setup(type);
-        final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[] {0xA, 0xB, 0xC}), Long.MAX_VALUE);
+        final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), Long.MAX_VALUE);
         final TriFunction<byte[], Long, Integer, Bytes> toStoreKeyBinary = getToStoreKeyBinaryBytesParam();
 
         assertThat(
-            "shorter key with max timestamp should be in range",
-            upper.compareTo(
-                toStoreKeyBinary.apply(
-                    new byte[] {0xA},
-                    Long.MAX_VALUE,
-                    Integer.MAX_VALUE
-                )
-            ) >= 0
+                "shorter key with max timestamp should be in range",
+                upper.compareTo(
+                        toStoreKeyBinary.apply(
+                                new byte[]{0xA},
+                                Long.MAX_VALUE,
+                                Integer.MAX_VALUE
+                        )
+                ) >= 0
         );
 
         assertThat(
-            "shorter key with max timestamp should be in range",
-            upper.compareTo(
-                toStoreKeyBinary.apply(
-                    new byte[] {0xA, 0xB},
-                    Long.MAX_VALUE,
-                    Integer.MAX_VALUE
-                )
-            ) >= 0
+                "shorter key with max timestamp should be in range",
+                upper.compareTo(
+                        toStoreKeyBinary.apply(
+                                new byte[]{0xA, 0xB},
+                                Long.MAX_VALUE,
+                                Integer.MAX_VALUE
+                        )
+                ) >= 0
         );
 
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             assertThat(upper, equalTo(
-                toStoreKeyBinary.apply(new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF}, Long.MAX_VALUE, Integer.MAX_VALUE)));
+                    toStoreKeyBinary.apply(new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF}, Long.MAX_VALUE, Integer.MAX_VALUE)));
         } else {
             assertThat(upper, equalTo(
-                toStoreKeyBinary.apply(new byte[]{0xA}, Long.MAX_VALUE, Integer.MAX_VALUE)));
+                    toStoreKeyBinary.apply(new byte[]{0xA}, Long.MAX_VALUE, Integer.MAX_VALUE)));
         }
     }
 
@@ -247,27 +247,27 @@ public class WindowKeySchemaTest {
     @ParameterizedTest
     public void testUpperBoundWithKeyBytesLargerThanFirstTimestampByte(final SchemaType type) {
         setup(type);
-        final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[] {0xA, (byte) 0x8F, (byte) 0x9F}), Long.MAX_VALUE);
+        final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[]{0xA, (byte) 0x8F, (byte) 0x9F}), Long.MAX_VALUE);
         final TriFunction<byte[], Long, Integer, Bytes> toStoreKeyBinary = getToStoreKeyBinaryBytesParam();
 
         assertThat(
-            "shorter key with max timestamp should be in range",
-            upper.compareTo(
-                toStoreKeyBinary.apply(
-                    new byte[] {0xA, (byte) 0x8F},
-                    Long.MAX_VALUE,
-                    Integer.MAX_VALUE
-                )
-            ) >= 0
+                "shorter key with max timestamp should be in range",
+                upper.compareTo(
+                        toStoreKeyBinary.apply(
+                                new byte[]{0xA, (byte) 0x8F},
+                                Long.MAX_VALUE,
+                                Integer.MAX_VALUE
+                        )
+                ) >= 0
         );
 
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             assertThat(upper, equalTo(
-                toStoreKeyBinary.apply(new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF}, Long.MAX_VALUE, Integer.MAX_VALUE)));
+                    toStoreKeyBinary.apply(new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF}, Long.MAX_VALUE, Integer.MAX_VALUE)));
         } else {
             assertThat(upper, equalTo(
-                toStoreKeyBinary.apply(new byte[]{0xA, (byte) 0x8F, (byte) 0x9F}, Long.MAX_VALUE,
-                    Integer.MAX_VALUE)));
+                    toStoreKeyBinary.apply(new byte[]{0xA, (byte) 0x8F, (byte) 0x9F}, Long.MAX_VALUE,
+                            Integer.MAX_VALUE)));
         }
     }
 
@@ -275,26 +275,26 @@ public class WindowKeySchemaTest {
     @ParameterizedTest
     public void testUpperBoundWithKeyBytesLargerAndSmallerThanFirstTimestampByte(final SchemaType type) {
         setup(type);
-        final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[] {0xC, 0xC, 0x9}), 0x0AffffffffffffffL);
+        final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[]{0xC, 0xC, 0x9}), 0x0AffffffffffffffL);
         final TriFunction<byte[], Long, Integer, Bytes> toStoreKeyBinary = getToStoreKeyBinaryBytesParam();
 
         assertThat(
-            "shorter key with customized timestamp should be in range",
-            upper.compareTo(
-                toStoreKeyBinary.apply(
-                    new byte[] {0xC, 0xC},
-                    0x0AffffffffffffffL,
-                    Integer.MAX_VALUE
-                )
-            ) >= 0
+                "shorter key with customized timestamp should be in range",
+                upper.compareTo(
+                        toStoreKeyBinary.apply(
+                                new byte[]{0xC, 0xC},
+                                0x0AffffffffffffffL,
+                                Integer.MAX_VALUE
+                        )
+                ) >= 0
         );
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             assertThat(upper, equalTo(
-                toStoreKeyBinary.apply(new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF}, 0x0AffffffffffffffL, Integer.MAX_VALUE)));
+                    toStoreKeyBinary.apply(new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF}, 0x0AffffffffffffffL, Integer.MAX_VALUE)));
         } else {
             assertThat(upper, equalTo(
-                toStoreKeyBinary.apply(new byte[]{0xC, 0xC}, 0x0AffffffffffffffL,
-                    Integer.MAX_VALUE)));
+                    toStoreKeyBinary.apply(new byte[]{0xC, 0xC}, 0x0AffffffffffffffL,
+                            Integer.MAX_VALUE)));
         }
     }
 
@@ -302,15 +302,15 @@ public class WindowKeySchemaTest {
     @ParameterizedTest
     public void testUpperBoundWithZeroTimestamp(final SchemaType type) {
         setup(type);
-        final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[] {0xA, 0xB, 0xC}), 0);
+        final Bytes upper = keySchema.upperRange(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), 0);
         final TriFunction<byte[], Long, Integer, Bytes> toStoreKeyBinary = getToStoreKeyBinaryBytesParam();
 
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             assertThat(upper, equalTo(
-                toStoreKeyBinary.apply(new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF}, 0x0L, Integer.MAX_VALUE)));
+                    toStoreKeyBinary.apply(new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF}, 0x0L, Integer.MAX_VALUE)));
         } else {
             assertThat(upper,
-                equalTo(toStoreKeyBinary.apply(new byte[]{0xA, 0xB, 0xC}, 0L, Integer.MAX_VALUE)));
+                    equalTo(toStoreKeyBinary.apply(new byte[]{0xA, 0xB, 0xC}, 0L, Integer.MAX_VALUE)));
         }
     }
 
@@ -318,25 +318,25 @@ public class WindowKeySchemaTest {
     @ParameterizedTest
     public void testLowerBoundWithZeroTimestamp(final SchemaType type) {
         setup(type);
-        final Bytes lower = keySchema.lowerRange(Bytes.wrap(new byte[] {0xA, 0xB, 0xC}), 0);
+        final Bytes lower = keySchema.lowerRange(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), 0);
         final TriFunction<byte[], Long, Integer, Bytes> toStoreKeyBinary = getToStoreKeyBinaryBytesParam();
         assertThat(
-            "Larger key prefix should be in range.",
-            lower.compareTo(
-                toStoreKeyBinary.apply(
-                    new byte[] {0xA, 0xB, 0xC, 0x0},
-                    0L,
-                    0
-                )
-            ) < 0
+                "Larger key prefix should be in range.",
+                lower.compareTo(
+                        toStoreKeyBinary.apply(
+                                new byte[]{0xA, 0xB, 0xC, 0x0},
+                                0L,
+                                0
+                        )
+                ) < 0
         );
 
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             final Bytes expected = Bytes.wrap(ByteBuffer.allocate(1 + 8 + 3)
-                .put((byte) 0x0)
-                .putLong(0)
-                .put(new byte[] {0xA, 0xB, 0xC})
-                .array());
+                    .put((byte) 0x0)
+                    .putLong(0)
+                    .put(new byte[]{0xA, 0xB, 0xC})
+                    .array());
             assertThat(lower, equalTo(expected));
         } else {
             assertThat(lower, equalTo(toStoreKeyBinary.apply(new byte[]{0xA, 0xB, 0xC}, 0L, 0)));
@@ -347,26 +347,26 @@ public class WindowKeySchemaTest {
     @ParameterizedTest
     public void testLowerBoundWithNonZeroTimestamp(final SchemaType type) {
         setup(type);
-        final Bytes lower = keySchema.lowerRange(Bytes.wrap(new byte[] {0xA, 0xB, 0xC}), 42);
+        final Bytes lower = keySchema.lowerRange(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), 42);
         final TriFunction<byte[], Long, Integer, Bytes> toStoreKeyBinary = getToStoreKeyBinaryBytesParam();
 
         assertThat(
-            "Larger timestamp should be in range",
-            lower.compareTo(
-                toStoreKeyBinary.apply(
-                    new byte[] {0xA, 0xB, 0xC, 0x0},
-                    43L,
-                    0
-                )
-            ) < 0
+                "Larger timestamp should be in range",
+                lower.compareTo(
+                        toStoreKeyBinary.apply(
+                                new byte[]{0xA, 0xB, 0xC, 0x0},
+                                43L,
+                                0
+                        )
+                ) < 0
         );
 
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             final Bytes expected = Bytes.wrap(ByteBuffer.allocate(1 + 8 + 3)
-                .put((byte) 0x0)
-                .putLong(42)
-                .put(new byte[] {0xA, 0xB, 0xC})
-                .array());
+                    .put((byte) 0x0)
+                    .putLong(42)
+                    .put(new byte[]{0xA, 0xB, 0xC})
+                    .array());
             assertThat(lower, equalTo(expected));
         } else {
             assertThat(lower, equalTo(toStoreKeyBinary.apply(new byte[]{0xA, 0xB, 0xC}, 0L, 0)));
@@ -377,25 +377,25 @@ public class WindowKeySchemaTest {
     @ParameterizedTest
     public void testLowerBoundMatchesTrailingZeros(final SchemaType type) {
         setup(type);
-        final Bytes lower = keySchema.lowerRange(Bytes.wrap(new byte[] {0xA, 0xB, 0xC}), Long.MAX_VALUE - 1);
+        final Bytes lower = keySchema.lowerRange(Bytes.wrap(new byte[]{0xA, 0xB, 0xC}), Long.MAX_VALUE - 1);
         final TriFunction<byte[], Long, Integer, Bytes> toStoreKeyBinary = getToStoreKeyBinaryBytesParam();
 
         assertThat(
-            "appending zeros to key should still be in range",
-            lower.compareTo(
-                toStoreKeyBinary.apply(
-                    new byte[] {0xA, 0xB, 0xC, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                    Long.MAX_VALUE - 1,
-                    0
-                )
-            ) < 0
+                "appending zeros to key should still be in range",
+                lower.compareTo(
+                        toStoreKeyBinary.apply(
+                                new byte[]{0xA, 0xB, 0xC, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                Long.MAX_VALUE - 1,
+                                0
+                        )
+                ) < 0
         );
         if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             final Bytes expected = Bytes.wrap(ByteBuffer.allocate(1 + 8 + 3)
-                .put((byte) 0x0)
-                .putLong(Long.MAX_VALUE - 1)
-                .put(new byte[] {0xA, 0xB, 0xC})
-                .array());
+                    .put((byte) 0x0)
+                    .putLong(Long.MAX_VALUE - 1)
+                    .put(new byte[]{0xA, 0xB, 0xC})
+                    .array());
             assertThat(lower, equalTo(expected));
         } else {
             assertThat(lower, equalTo(toStoreKeyBinary.apply(new byte[]{0xA, 0xB, 0xC}, 0L, 0)));
@@ -418,7 +418,7 @@ public class WindowKeySchemaTest {
         setup(type);
         final byte[] bytes = keySerde.serializer().serialize(topic, windowedKey);
         final Windowed<String> result = new TimeWindowedDeserializer<>(serde.deserializer(), Long.MAX_VALUE - 1)
-            .deserialize(topic, bytes);
+                .deserialize(topic, bytes);
         assertEquals(new Windowed<>(key, new TimeWindow(startTime, Long.MAX_VALUE)), result);
     }
 
@@ -428,7 +428,7 @@ public class WindowKeySchemaTest {
         setup(type);
         final byte[] bytes = keySerde.serializer().serialize(topic, windowedKey);
         final Windowed<String> result = new TimeWindowedDeserializer<>(serde.deserializer(), endTime - startTime)
-            .deserialize(topic, bytes);
+                .deserialize(topic, bytes);
         assertEquals(windowedKey, result);
     }
 
@@ -442,9 +442,9 @@ public class WindowKeySchemaTest {
         }
         // Key-value containing serialized store key binary and the key's window size
         final List<KeyValue<Bytes, Integer>> keys = asList(
-            KeyValue.pair(WindowKeySchema.toStoreKeyBinary(new Windowed<>(Bytes.wrap(new byte[] {0}), new TimeWindow(0, 1)), 0), 1),
-            KeyValue.pair(WindowKeySchema.toStoreKeyBinary(new Windowed<>(Bytes.wrap(new byte[] {0, 0}), new TimeWindow(0, 10)), 0), 10),
-            KeyValue.pair(WindowKeySchema.toStoreKeyBinary(new Windowed<>(Bytes.wrap(new byte[] {0, 0, 0}), new TimeWindow(10, 30)), 6), 20));
+                KeyValue.pair(WindowKeySchema.toStoreKeyBinary(new Windowed<>(Bytes.wrap(new byte[]{0}), new TimeWindow(0, 1)), 0), 1),
+                KeyValue.pair(WindowKeySchema.toStoreKeyBinary(new Windowed<>(Bytes.wrap(new byte[]{0, 0}), new TimeWindow(0, 10)), 0), 10),
+                KeyValue.pair(WindowKeySchema.toStoreKeyBinary(new Windowed<>(Bytes.wrap(new byte[]{0, 0, 0}), new TimeWindow(10, 30)), 6), 20));
 
         final List<Long> results = new ArrayList<>();
         for (final KeyValue<Bytes, Integer> keyValue : keys) {
@@ -488,13 +488,13 @@ public class WindowKeySchemaTest {
         final Windowed<String> result;
         if (schemaType == SchemaType.WindowKeySchema) {
             result = WindowKeySchema.fromStoreKey(serialized.get(),
-                endTime - startTime, stateSerdes.keyDeserializer(), headers, stateSerdes.topic());
+                    endTime - startTime, stateSerdes.keyDeserializer(), headers, stateSerdes.topic());
         } else if (schemaType == SchemaType.PrefixedTimeFirstSchema) {
             result = TimeFirstWindowKeySchema.fromStoreKey(serialized.get(),
-                endTime - startTime, stateSerdes.keyDeserializer(), headers, stateSerdes.topic());
+                    endTime - startTime, stateSerdes.keyDeserializer(), headers, stateSerdes.topic());
         } else {
             result = KeyFirstWindowKeySchema.fromStoreKey(serialized.get(),
-                endTime - startTime, stateSerdes.keyDeserializer(), headers, stateSerdes.topic());
+                    endTime - startTime, stateSerdes.keyDeserializer(), headers, stateSerdes.topic());
         }
         assertEquals(windowedKey, result);
     }
@@ -549,7 +549,7 @@ public class WindowKeySchemaTest {
         final BiFunction<byte[], Long, Windowed<Bytes>> fromStoreBytesKey = getFromStorageKey();
         assertEquals(windowedBytesKey, fromStoreBytesKey.apply(serialized.get(), endTime - startTime));
     }
-    
+
     @EnumSource(SchemaType.class)
     @ParameterizedTest
     public void shouldConvertFromNonPrefixWindowKey(final SchemaType type) {

@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * Represents the strategy for resetting offsets in share consumer groups when no previous offset is found
  * for a partition or when an offset is out of range.
- *
+ * <p>
  * Supports three strategies:
  * <ul>
  *   <li>{@code EARLIEST} - Reset the offset to the earliest available offset
@@ -91,6 +91,7 @@ public class ShareGroupAutoOffsetResetStrategy {
 
     /**
      * Delegates the timestamp calculation to the base strategy.
+     *
      * @return the timestamp for the OffsetResetStrategy,
      * if the strategy is EARLIEST or LATEST or duration is provided
      * else return Optional.empty()
@@ -148,12 +149,12 @@ public class ShareGroupAutoOffsetResetStrategy {
 
         public String toString() {
             String values = Arrays.stream(StrategyType.values())
-                .map(strategyType -> {
-                    if (strategyType == StrategyType.BY_DURATION) {
-                        return strategyType + ":PnDTnHnMn.nS";
-                    }
-                    return strategyType.toString();
-                }).collect(Collectors.joining(", "));
+                    .map(strategyType -> {
+                        if (strategyType == StrategyType.BY_DURATION) {
+                            return strategyType + ":PnDTnHnMn.nS";
+                        }
+                        return strategyType.toString();
+                    }).collect(Collectors.joining(", "));
             return "[" + values + "]";
         }
     }

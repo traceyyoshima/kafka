@@ -48,6 +48,6 @@ public final class UpdateBrokerConfigAction implements TieredStorageTestAction {
     @Override
     public void describe(PrintStream output) {
         output.printf("Update broker config: %d, configs-to-be-added: %s, configs-to-be-deleted: %s%n",
-                      brokerId, configsToBeAdded, configsToBeDeleted);
+                brokerId, configsToBeAdded, configsToBeDeleted);
     }
 }

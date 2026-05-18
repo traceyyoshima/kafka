@@ -20,14 +20,14 @@ package org.apache.kafka.streams.state.internals;
  * This class was taken from Hive org.apache.hive.common.util;
  * https://github.com/apache/hive/blob/master/storage-api/src/java/org/apache/hive/common/util/Murmur3.java
  * Commit: dffa3a16588bc8e95b9d0ab5af295a74e06ef702
- *
- *
+ * <p>
+ * <p>
  * Murmur3 is successor to Murmur2 fast non-crytographic hash algorithms.
- *
+ * <p>
  * Murmur3 32 and 128 bit variants.
  * 32-bit Java port of https://code.google.com/p/smhasher/source/browse/trunk/MurmurHash3.cpp#94
  * 128-bit Java port of https://code.google.com/p/smhasher/source/browse/trunk/MurmurHash3.cpp#255
- *
+ * <p>
  * This is a public domain code with no copyrights.
  * From homepage of MurmurHash (https://code.google.com/p/smhasher/),
  * "All MurmurHash versions are public domain software, and the author disclaims all copyright
@@ -108,7 +108,7 @@ public class Murmur3 {
     /**
      * Murmur3 32-bit variant.
      *
-     * @param data - input byte array
+     * @param data   - input byte array
      * @param length - length of array
      * @return - hashcode
      */
@@ -236,7 +236,7 @@ public class Murmur3 {
         long hash = DEFAULT_SEED;
         long k1 = 0;
         k1 ^= ((long) data & 0xff) << 8;
-        k1 ^= ((long)((data & 0xFF00) >> 8) & 0xff);
+        k1 ^= ((long) ((data & 0xFF00) >> 8) & 0xff);
         k1 *= C1;
         k1 = Long.rotateLeft(k1, R1);
         k1 *= C2;
@@ -483,7 +483,8 @@ public class Murmur3 {
                     case 3:
                         k = orBytes(tail[0], tail[1], tail[2], data[offset]);
                         break;
-                    default: throw new AssertionError(tailLen);
+                    default:
+                        throw new AssertionError(tailLen);
                 }
                 // mix functions
                 k *= C1_32;

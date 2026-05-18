@@ -36,30 +36,30 @@ public class ReplicaVerificationToolTest {
     void testReplicaBufferVerifyChecksum() {
         StringBuilder sb = new StringBuilder();
         final Map<TopicPartition, Integer> expectedReplicasPerTopicAndPartition = new HashMap<TopicPartition, Integer>() {{
-                put(new TopicPartition("a", 0), 3);
-                put(new TopicPartition("a", 1), 3);
-                put(new TopicPartition("b", 0), 2);
-            }};
+            put(new TopicPartition("a", 0), 3);
+            put(new TopicPartition("a", 1), 3);
+            put(new TopicPartition("b", 0), 2);
+        }};
 
         ReplicaVerificationTool.ReplicaBuffer replicaBuffer =
-            new ReplicaVerificationTool.ReplicaBuffer(expectedReplicasPerTopicAndPartition, Map.of(), 2, 0);
+                new ReplicaVerificationTool.ReplicaBuffer(expectedReplicasPerTopicAndPartition, Map.of(), 2, 0);
         expectedReplicasPerTopicAndPartition.forEach((tp, numReplicas) ->
-            IntStream.range(0, numReplicas).forEach(replicaId -> {
-                SimpleRecord[] records = IntStream.rangeClosed(0, 5)
-                    .mapToObj(index -> new SimpleRecord(("key " + index).getBytes(), ("value " + index).getBytes()))
-                    .toArray(SimpleRecord[]::new);
+                IntStream.range(0, numReplicas).forEach(replicaId -> {
+                    SimpleRecord[] records = IntStream.rangeClosed(0, 5)
+                            .mapToObj(index -> new SimpleRecord(("key " + index).getBytes(), ("value " + index).getBytes()))
+                            .toArray(SimpleRecord[]::new);
 
-                long initialOffset = 4L;
-                MemoryRecords memoryRecords = MemoryRecords.withRecords(initialOffset, Compression.NONE, records);
-                FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-                    .setPartitionIndex(tp.partition())
-                    .setHighWatermark(20)
-                    .setLastStableOffset(20)
-                    .setLogStartOffset(0)
-                    .setRecords(memoryRecords);
+                    long initialOffset = 4L;
+                    MemoryRecords memoryRecords = MemoryRecords.withRecords(initialOffset, Compression.NONE, records);
+                    FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
+                            .setPartitionIndex(tp.partition())
+                            .setHighWatermark(20)
+                            .setLastStableOffset(20)
+                            .setLogStartOffset(0)
+                            .setRecords(memoryRecords);
 
-                replicaBuffer.addFetchedData(tp, replicaId, partitionData);
-            })
+                    replicaBuffer.addFetchedData(tp, replicaId, partitionData);
+                })
         );
 
         replicaBuffer.verifyCheckSum(line -> sb.append(format("%s%n", line)));
@@ -67,6 +67,6 @@ public class ReplicaVerificationToolTest {
 
         // if you change this assertion, you should verify that the replica_verification_test.py system test still passes
         assertTrue(output.endsWith(": max lag is 10 for partition a-1 at offset 10 among 3 partitions"),
-            format("Max lag information should be in output: %s", output));
+                format("Max lag information should be in output: %s", output));
     }
 }

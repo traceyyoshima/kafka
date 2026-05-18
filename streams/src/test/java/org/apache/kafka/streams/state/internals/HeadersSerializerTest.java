@@ -49,7 +49,7 @@ public class HeadersSerializerTest {
     @Test
     public void shouldSerializeSingleHeader() {
         final Headers headers = new RecordHeaders()
-            .add("key1", "value1".getBytes());
+                .add("key1", "value1".getBytes());
 
         final byte[] serialized = HeadersSerializer.serialize(headers);
 
@@ -69,9 +69,9 @@ public class HeadersSerializerTest {
     @Test
     public void shouldSerializeMultipleHeaders() {
         final Headers headers = new RecordHeaders()
-            .add("key0", "value0".getBytes())
-            .add("key1", "value1".getBytes())
-            .add("key2", "value2".getBytes());
+                .add("key0", "value0".getBytes())
+                .add("key1", "value1".getBytes())
+                .add("key2", "value2".getBytes());
 
         final byte[] serialized = HeadersSerializer.serialize(headers);
 
@@ -93,7 +93,7 @@ public class HeadersSerializerTest {
     @Test
     public void shouldSerializeHeaderWithNullValue() {
         final Headers headers = new RecordHeaders()
-            .add("key1", null);
+                .add("key1", null);
 
         final byte[] serialized = HeadersSerializer.serialize(headers);
 
@@ -113,7 +113,7 @@ public class HeadersSerializerTest {
     @Test
     public void shouldSerializeHeadersWithEmptyValue() {
         final Headers headers = new RecordHeaders()
-            .add("key1", new byte[0]);
+                .add("key1", new byte[0]);
 
         final byte[] serialized = HeadersSerializer.serialize(headers);
 

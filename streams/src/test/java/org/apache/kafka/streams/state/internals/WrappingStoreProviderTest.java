@@ -52,8 +52,8 @@ public class WrappingStoreProviderTest {
 
         for (int partition = 0; partition < numStateStorePartitions; partition++) {
             stubProviderOne.addStore("kv", partition, Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore("kv"),
-                    Serdes.serdeFrom(String.class),
-                    Serdes.serdeFrom(String.class))
+                            Serdes.serdeFrom(String.class),
+                            Serdes.serdeFrom(String.class))
                     .build());
             stubProviderOne.addStore("window", partition, new NoOpWindowStore());
             wrappingStoreProvider = new WrappingStoreProvider(
@@ -109,9 +109,9 @@ public class WrappingStoreProviderTest {
     public void shouldPropagateConfiguredDefaultIsolationLevel() {
         final StateStoreProviderStub stub = new StateStoreProviderStub(false);
         final WrappingStoreProvider provider = new WrappingStoreProvider(
-            Arrays.asList(stub),
-            StoreQueryParameters.fromNameAndType("kv", QueryableStoreTypes.keyValueStore()),
-            IsolationLevel.READ_COMMITTED
+                Arrays.asList(stub),
+                StoreQueryParameters.fromNameAndType("kv", QueryableStoreTypes.keyValueStore()),
+                IsolationLevel.READ_COMMITTED
         );
         assertEquals(IsolationLevel.READ_COMMITTED, provider.defaultIsolationLevel());
     }

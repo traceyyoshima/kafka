@@ -121,28 +121,28 @@ public class PageViewUntypedDemo {
         final Duration duration24Hours = Duration.ofHours(24);
 
         final KStream<JsonNode, JsonNode> regionCount = views
-            .leftJoin(userRegions, (view, region) -> {
-                final ObjectNode jNode = JsonNodeFactory.instance.objectNode();
-                return (JsonNode) jNode.put("user", view.get("user").textValue())
-                        .put("page", view.get("page").textValue())
-                        .put("region", region == null ? "UNKNOWN" : region);
+                .leftJoin(userRegions, (view, region) -> {
+                    final ObjectNode jNode = JsonNodeFactory.instance.objectNode();
+                    return (JsonNode) jNode.put("user", view.get("user").textValue())
+                            .put("page", view.get("page").textValue())
+                            .put("region", region == null ? "UNKNOWN" : region);
 
-            })
-            .map((user, viewRegion) -> new KeyValue<>(viewRegion.get("region").textValue(), viewRegion))
-            .groupByKey(Grouped.with(Serdes.String(), jsonSerde))
-            .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofDays(7), duration24Hours).advanceBy(Duration.ofSeconds(1)))
-            .count()
-            .toStream()
-            .map((key, value) -> {
-                final ObjectNode keyNode = JsonNodeFactory.instance.objectNode();
-                keyNode.put("window-start", key.window().start())
-                        .put("region", key.key());
+                })
+                .map((user, viewRegion) -> new KeyValue<>(viewRegion.get("region").textValue(), viewRegion))
+                .groupByKey(Grouped.with(Serdes.String(), jsonSerde))
+                .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofDays(7), duration24Hours).advanceBy(Duration.ofSeconds(1)))
+                .count()
+                .toStream()
+                .map((key, value) -> {
+                    final ObjectNode keyNode = JsonNodeFactory.instance.objectNode();
+                    keyNode.put("window-start", key.window().start())
+                            .put("region", key.key());
 
-                final ObjectNode valueNode = JsonNodeFactory.instance.objectNode();
-                valueNode.put("count", value);
+                    final ObjectNode valueNode = JsonNodeFactory.instance.objectNode();
+                    valueNode.put("count", value);
 
-                return new KeyValue<>((JsonNode) keyNode, (JsonNode) valueNode);
-            });
+                    return new KeyValue<>((JsonNode) keyNode, (JsonNode) valueNode);
+                });
 
         // write to the result topic
         regionCount.to("streams-pageviewstats-untyped-output", Produced.with(jsonSerde, jsonSerde));

@@ -39,27 +39,28 @@ public class RocksDBVersionedStoreSegmentValueFormatterTest {
     private static final long INSERT_VALID_FROM_TIMESTAMP = 10L;
     private static final long INSERT_VALID_TO_TIMESTAMP = 13L;
     private static final byte[] INSERT_VALUE = "new".getBytes();
+
     /**
      * Non-exceptional scenarios which are expected to occur during regular store operation.
      */
     // test cases are expected to have timestamps in strictly decreasing order (except for the degenerate case)
     private static Stream<Arguments> nonExceptionalData() {
         return Stream.of(
-            Arguments.of(new TestCase("degenerate", 10, new TestRecord(null, 10))),
-            Arguments.of(new TestCase("single record", 10, new TestRecord("foo".getBytes(), 1))),
-            Arguments.of(new TestCase("multiple records", 10, new TestRecord("foo".getBytes(), 8), new TestRecord("bar".getBytes(), 3), new TestRecord("baz".getBytes(), 0))),
-            Arguments.of(new TestCase("single tombstone", 10, new TestRecord(null, 1))),
-            Arguments.of(new TestCase("multiple tombstone", 10, new TestRecord(null, 4), new TestRecord(null, 1))),
-            Arguments.of(new TestCase("tombstones and records (r, t, r)", 10, new TestRecord("foo".getBytes(), 5), new TestRecord(null, 2), new TestRecord("bar".getBytes(), 1))),
-            Arguments.of(new TestCase("tombstones and records (t, r, t)", 10, new TestRecord(null, 5), new TestRecord("foo".getBytes(), 2), new TestRecord(null, 1))),
-            Arguments.of(new TestCase("tombstones and records (r, r, t, t)", 10, new TestRecord("foo".getBytes(), 6), new TestRecord("bar".getBytes(), 5), new TestRecord(null, 2), new TestRecord(null, 1))),
-            Arguments.of(new TestCase("tombstones and records (t, t, r, r)", 10, new TestRecord(null, 7), new TestRecord(null, 6), new TestRecord("foo".getBytes(), 2), new TestRecord("bar".getBytes(), 1))),
-            Arguments.of(new TestCase("record with empty bytes", 10, new TestRecord(new byte[0], 1))),
-            Arguments.of(new TestCase("records with empty bytes (r, e)", 10, new TestRecord("foo".getBytes(), 4), new TestRecord(new byte[0], 1))),
-            Arguments.of(new TestCase("records with empty bytes (e, e, r)", 10, new TestRecord(new byte[0], 8), new TestRecord(new byte[0], 2), new TestRecord("foo".getBytes(), 1)))
+                Arguments.of(new TestCase("degenerate", 10, new TestRecord(null, 10))),
+                Arguments.of(new TestCase("single record", 10, new TestRecord("foo".getBytes(), 1))),
+                Arguments.of(new TestCase("multiple records", 10, new TestRecord("foo".getBytes(), 8), new TestRecord("bar".getBytes(), 3), new TestRecord("baz".getBytes(), 0))),
+                Arguments.of(new TestCase("single tombstone", 10, new TestRecord(null, 1))),
+                Arguments.of(new TestCase("multiple tombstone", 10, new TestRecord(null, 4), new TestRecord(null, 1))),
+                Arguments.of(new TestCase("tombstones and records (r, t, r)", 10, new TestRecord("foo".getBytes(), 5), new TestRecord(null, 2), new TestRecord("bar".getBytes(), 1))),
+                Arguments.of(new TestCase("tombstones and records (t, r, t)", 10, new TestRecord(null, 5), new TestRecord("foo".getBytes(), 2), new TestRecord(null, 1))),
+                Arguments.of(new TestCase("tombstones and records (r, r, t, t)", 10, new TestRecord("foo".getBytes(), 6), new TestRecord("bar".getBytes(), 5), new TestRecord(null, 2), new TestRecord(null, 1))),
+                Arguments.of(new TestCase("tombstones and records (t, t, r, r)", 10, new TestRecord(null, 7), new TestRecord(null, 6), new TestRecord("foo".getBytes(), 2), new TestRecord("bar".getBytes(), 1))),
+                Arguments.of(new TestCase("record with empty bytes", 10, new TestRecord(new byte[0], 1))),
+                Arguments.of(new TestCase("records with empty bytes (r, e)", 10, new TestRecord("foo".getBytes(), 4), new TestRecord(new byte[0], 1))),
+                Arguments.of(new TestCase("records with empty bytes (e, e, r)", 10, new TestRecord(new byte[0], 8), new TestRecord(new byte[0], 2), new TestRecord("foo".getBytes(), 1)))
         );
     }
-    
+
     /**
      * These scenarios may only be hit in the event of an earlier exception, such as failure to
      * write to a particular segment store of {@link RocksDBVersionedStore} resulting in an
@@ -241,7 +242,7 @@ public class RocksDBVersionedStoreSegmentValueFormatterTest {
 
         // verify results
         final List<SegmentSearchResult> results =
-            segmentValue.findAll(testCase.records.get(testCase.records.size() - 1).timestamp, testCase.records.get(0).timestamp);
+                segmentValue.findAll(testCase.records.get(testCase.records.size() - 1).timestamp, testCase.records.get(0).timestamp);
 
         int i = 0;
         int index = 0;
@@ -282,9 +283,9 @@ public class RocksDBVersionedStoreSegmentValueFormatterTest {
         }
 
         final SegmentValue segmentValue = RocksDBVersionedStoreSegmentValueFormatter.newSegmentValueWithRecord(
-            testCase.records.get(0).value,
-            testCase.records.get(0).timestamp,
-            testCase.nextTimestamp);
+                testCase.records.get(0).value,
+                testCase.records.get(0).timestamp,
+                testCase.nextTimestamp);
 
         verifySegmentContents(segmentValue, testCase);
     }

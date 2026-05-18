@@ -132,8 +132,8 @@ public class RemoteLogSegmentMetadataSnapshot extends RemoteLogMetadata {
 
     public static RemoteLogSegmentMetadataSnapshot create(RemoteLogSegmentMetadata metadata) {
         return new RemoteLogSegmentMetadataSnapshot(metadata.remoteLogSegmentId().id(), metadata.startOffset(), metadata.endOffset(),
-                                                    metadata.maxTimestampMs(), metadata.brokerId(), metadata.eventTimestampMs(),
-                                                    metadata.segmentSizeInBytes(), metadata.customMetadata(), metadata.state(), metadata.segmentLeaderEpochs(), metadata.isTxnIdxEmpty()
+                metadata.maxTimestampMs(), metadata.brokerId(), metadata.eventTimestampMs(),
+                metadata.segmentSizeInBytes(), metadata.customMetadata(), metadata.state(), metadata.segmentLeaderEpochs(), metadata.isTxnIdxEmpty()
         );
     }
 

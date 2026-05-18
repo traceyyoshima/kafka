@@ -31,13 +31,13 @@ import java.util.Map;
  * A specialization of {@link ConnectMetrics} that uses a custom {@link MetricsReporter} to capture the metrics
  * that were created, and makes those metrics available even after the metrics were removed from the
  * {@link org.apache.kafka.common.metrics.Metrics} registry.
- *
+ * <p>
  * This is needed because many of the Connect metric groups are specific to connectors and/or tasks, and therefore
  * their metrics are removed from the {@link org.apache.kafka.common.metrics.Metrics} registry when the connector
  * and tasks are closed. This instance keeps track of the metrics that were created so that it is possible for
  * tests to {@link #currentMetricValue(MetricGroup, String) read the metrics' value} even after the connector
  * and/or tasks have been closed.
- *
+ * <p>
  * If the same metric is created a second time (e.g., a worker task is re-created), the new metric will replace
  * the previous metric in the custom reporter.
  */
@@ -107,7 +107,7 @@ public class MockConnectMetrics extends ConnectMetrics {
      * Get the current value of the named metric, which may have already been removed from the
      * {@link org.apache.kafka.common.metrics.Metrics} but will have been captured before it was removed.
      *
-     * @param metrics the {@link ConnectMetrics} instance
+     * @param metrics     the {@link ConnectMetrics} instance
      * @param metricGroup the metric metricGroup that contained the metric
      * @param name        the name of the metric
      * @return the current value of the metric
@@ -126,7 +126,7 @@ public class MockConnectMetrics extends ConnectMetrics {
      * Get the current value of the named metric, which may have already been removed from the
      * {@link org.apache.kafka.common.metrics.Metrics} but will have been captured before it was removed.
      *
-     * @param metrics the {@link ConnectMetrics} instance
+     * @param metrics     the {@link ConnectMetrics} instance
      * @param metricGroup the metric metricGroup that contained the metric
      * @param name        the name of the metric
      * @return the current value of the metric
@@ -140,7 +140,7 @@ public class MockConnectMetrics extends ConnectMetrics {
      * Get the current value of the named metric, which may have already been removed from the
      * {@link org.apache.kafka.common.metrics.Metrics} but will have been captured before it was removed.
      *
-     * @param metrics the {@link ConnectMetrics} instance
+     * @param metrics     the {@link ConnectMetrics} instance
      * @param metricGroup the metric metricGroup that contained the metric
      * @param name        the name of the metric
      * @return the current value of the metric

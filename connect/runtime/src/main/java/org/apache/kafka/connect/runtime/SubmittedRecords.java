@@ -61,7 +61,7 @@ class SubmittedRecords {
      * @param record the record about to be dispatched; may not be null but may have a null
      *               {@link SourceRecord#sourcePartition()} and/or {@link SourceRecord#sourceOffset()}
      * @return a {@link SubmittedRecord} that can be either {@link SubmittedRecord#ack() acknowledged} once ack'd by
-     *         the producer, or {@link SubmittedRecord#drop() dropped} if synchronously rejected by the producer
+     * the producer, or {@link SubmittedRecord#drop() dropped} if synchronously rejected by the producer
      */
     @SuppressWarnings("unchecked")
     public SubmittedRecord submit(SourceRecord record) {
@@ -86,6 +86,7 @@ class SubmittedRecords {
      * Note that this may take some time to complete if a large number of records has built up, which may occur if a
      * Kafka partition is offline and all records targeting that partition go unacknowledged while records targeting
      * other partitions continue to be dispatched to the producer and sent successfully
+     *
      * @return a fresh offset snapshot; never null
      */
     public CommittableOffsets committableOffsets() {
@@ -119,7 +120,8 @@ class SubmittedRecords {
     /**
      * Wait for all currently in-flight messages to be acknowledged, up to the requested timeout.
      * This method is expected to be called from the same thread that calls {@link #committableOffsets()}.
-     * @param timeout the maximum time to wait
+     *
+     * @param timeout  the maximum time to wait
      * @param timeUnit the time unit of the timeout argument
      * @return whether all in-flight messages were acknowledged before the timeout elapsed
      */
@@ -191,6 +193,7 @@ class SubmittedRecords {
          * <p>
          * This is <strong>not safe</strong> to be called from a different thread
          * than what called {@link SubmittedRecords#submit(SourceRecord)}.
+         *
          * @return whether this instance was dropped
          */
         public boolean drop() {
@@ -227,18 +230,19 @@ class SubmittedRecords {
     /**
      * Contains a snapshot of offsets that can be committed for a source task and metadata for that offset commit
      * (such as the number of messages for which offsets can and cannot be committed).
-     * @param offsets the offsets that can be committed at the time of the snapshot
-     * @param numCommittableMessages the number of committable messages at the time of the snapshot, where a
-     *                               committable message is both acknowledged and not preceded by any unacknowledged
-     *                               messages in the deque for its source partition
+     *
+     * @param offsets                  the offsets that can be committed at the time of the snapshot
+     * @param numCommittableMessages   the number of committable messages at the time of the snapshot, where a
+     *                                 committable message is both acknowledged and not preceded by any unacknowledged
+     *                                 messages in the deque for its source partition
      * @param numUncommittableMessages the number of uncommittable messages at the time of the snapshot, where an
      *                                 uncommittable message is either unacknowledged, or preceded in the deque for its
      *                                 source partition by an unacknowledged message
-     * @param numDeques the number of non-empty deques tracking uncommittable messages at the time of the snapshot
-     * @param largestDequeSize the size of the largest deque at the time of the snapshot
-     * @param largestDequePartition the applicable partition, which may be null, or null if there are no uncommitted
-     *                              messages; it is the caller's responsibility to distinguish between these two cases
-     *                              via {@link #hasPending()}
+     * @param numDeques                the number of non-empty deques tracking uncommittable messages at the time of the snapshot
+     * @param largestDequeSize         the size of the largest deque at the time of the snapshot
+     * @param largestDequePartition    the applicable partition, which may be null, or null if there are no uncommitted
+     *                                 messages; it is the caller's responsibility to distinguish between these two cases
+     *                                 via {@link #hasPending()}
      */
     record CommittableOffsets(Map<Map<String, Object>, Map<String, Object>> offsets,
                               int numCommittableMessages,

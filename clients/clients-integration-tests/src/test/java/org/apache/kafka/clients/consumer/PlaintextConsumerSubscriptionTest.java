@@ -60,14 +60,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = PlaintextConsumerSubscriptionTest.BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
-        @ClusterConfigProperty(key = GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, value = "60000"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
-    }
+        types = {Type.KRAFT},
+        brokers = PlaintextConsumerSubscriptionTest.BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
+                @ClusterConfigProperty(key = GROUP_MAX_SESSION_TIMEOUT_MS_CONFIG, value = "60000"),
+                @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
+        }
 )
 public class PlaintextConsumerSubscriptionTest {
 
@@ -91,12 +91,12 @@ public class PlaintextConsumerSubscriptionTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerPatternSubscription() throws InterruptedException {
         testPatternSubscription(GroupProtocol.CONSUMER);
@@ -105,18 +105,18 @@ public class PlaintextConsumerSubscriptionTest {
     /**
      * Verifies that pattern subscription performs as expected.
      * The pattern matches the topics 'topic' and 'tblablac', but not 'tblablak' or 'tblab1'.
-     * It is expected that the consumer is subscribed to all partitions of 'topic' and 'tblablac' after the subscription 
+     * It is expected that the consumer is subscribed to all partitions of 'topic' and 'tblablac' after the subscription
      * when metadata is refreshed.
-     * When a new topic 'tsomec' is added afterward, it is expected that upon the next metadata refresh the consumer 
+     * When a new topic 'tsomec' is added afterward, it is expected that upon the next metadata refresh the consumer
      * becomes subscribed to this new topic and all partitions of that topic are assigned to it.
      */
     public void testPatternSubscription(GroupProtocol groupProtocol) throws InterruptedException {
         var numRecords = 10000;
         Map<String, Object> config = Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 6000,
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            ENABLE_AUTO_COMMIT_CONFIG, false,
-            METADATA_MAX_AGE_CONFIG, 100
+                MAX_POLL_INTERVAL_MS_CONFIG, 6000,
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                ENABLE_AUTO_COMMIT_CONFIG, false,
+                METADATA_MAX_AGE_CONFIG, 100
         );
         try (Producer<byte[], byte[]> producer = cluster.producer();
              Consumer<byte[], byte[]> consumer = cluster.consumer(config)
@@ -171,12 +171,12 @@ public class PlaintextConsumerSubscriptionTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerSubsequentPatternSubscription() throws InterruptedException {
         testSubsequentPatternSubscription(GroupProtocol.CONSUMER);
@@ -194,10 +194,10 @@ public class PlaintextConsumerSubscriptionTest {
     public void testSubsequentPatternSubscription(GroupProtocol groupProtocol) throws InterruptedException {
         var numRecords = 10000;
         Map<String, Object> config = Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 6000,
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            ENABLE_AUTO_COMMIT_CONFIG, false,
-            METADATA_MAX_AGE_CONFIG, 30000
+                MAX_POLL_INTERVAL_MS_CONFIG, 6000,
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                ENABLE_AUTO_COMMIT_CONFIG, false,
+                METADATA_MAX_AGE_CONFIG, 30000
         );
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config);
              Producer<byte[], byte[]> producer = cluster.producer()
@@ -248,12 +248,12 @@ public class PlaintextConsumerSubscriptionTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerPatternUnsubscription() throws InterruptedException {
         testPatternUnsubscription(GroupProtocol.CONSUMER);
@@ -262,7 +262,7 @@ public class PlaintextConsumerSubscriptionTest {
     /**
      * Verifies that pattern unsubscription performs as expected.
      * The pattern matches the topics 'topic' and 'tblablac'.
-     * It is expected that the consumer is subscribed to all partitions of 'topic' and 'tblablac' after the subscription 
+     * It is expected that the consumer is subscribed to all partitions of 'topic' and 'tblablac' after the subscription
      * when metadata is refreshed.
      * When consumer unsubscribes from all its subscriptions, it is expected that its assignments are cleared right away.
      */
@@ -284,10 +284,10 @@ public class PlaintextConsumerSubscriptionTest {
             consumer.subscribe(Pattern.compile("t.*c"), new TestConsumerReassignmentListener());
 
             Set<TopicPartition> assignment = Set.of(
-                new TopicPartition(topic, 0),
-                new TopicPartition(topic, 1),
-                new TopicPartition(topic1, 0),
-                new TopicPartition(topic1, 1)
+                    new TopicPartition(topic, 0),
+                    new TopicPartition(topic, 1),
+                    new TopicPartition(topic1, 0),
+                    new TopicPartition(topic1, 1)
             );
             awaitAssignment(consumer, assignment);
 
@@ -297,12 +297,12 @@ public class PlaintextConsumerSubscriptionTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerRe2JPatternSubscription() throws InterruptedException {
         Map<String, Object> config = Map.of(GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT));
@@ -321,13 +321,13 @@ public class PlaintextConsumerSubscriptionTest {
             consumer.subscribe(pattern);
 
             Set<TopicPartition> assignment = Set.of(
-                new TopicPartition(topic, 0),
-                new TopicPartition(topic, 1),
-                new TopicPartition(topic1, 0),
-                new TopicPartition(topic1, 1)
+                    new TopicPartition(topic, 0),
+                    new TopicPartition(topic, 1),
+                    new TopicPartition(topic1, 0),
+                    new TopicPartition(topic1, 1)
             );
             awaitAssignment(consumer, assignment);
-            
+
             consumer.unsubscribe();
             assertEquals(0, consumer.assignment().size());
             // Subscribe to a different pattern to match topic2 (that did not match before)
@@ -335,8 +335,8 @@ public class PlaintextConsumerSubscriptionTest {
             consumer.subscribe(pattern);
 
             assignment = Set.of(
-                new TopicPartition(topic2, 0),
-                new TopicPartition(topic2, 1)
+                    new TopicPartition(topic2, 0),
+                    new TopicPartition(topic2, 1)
             );
             awaitAssignment(consumer, assignment);
         }
@@ -354,10 +354,10 @@ public class PlaintextConsumerSubscriptionTest {
             consumer.subscribe(pattern);
 
             Set<TopicPartition> assignment = Set.of(
-                new TopicPartition(topic, 0),
-                new TopicPartition(topic, 1),
-                new TopicPartition(topic1, 0),
-                new TopicPartition(topic1, 1)
+                    new TopicPartition(topic, 0),
+                    new TopicPartition(topic, 1),
+                    new TopicPartition(topic1, 0),
+                    new TopicPartition(topic1, 1)
             );
             awaitAssignment(consumer, assignment);
 
@@ -370,12 +370,12 @@ public class PlaintextConsumerSubscriptionTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerRe2JPatternExpandSubscription() throws InterruptedException {
         Map<String, Object> config = Map.of(GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT));
@@ -385,14 +385,14 @@ public class PlaintextConsumerSubscriptionTest {
 
             var topic2 = "topic2"; // does not match first pattern
             cluster.createTopic(topic2, 2, (short) BROKER_COUNT);
-            
+
             assertEquals(0, consumer.assignment().size());
             var pattern = new SubscriptionPattern("topic1.*");
             consumer.subscribe(pattern);
 
             Set<TopicPartition> assignment = Set.of(
-                new TopicPartition(topic1, 0),
-                new TopicPartition(topic1, 1)
+                    new TopicPartition(topic1, 0),
+                    new TopicPartition(topic1, 1)
             );
             awaitAssignment(consumer, assignment);
 
@@ -455,12 +455,12 @@ public class PlaintextConsumerSubscriptionTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testRe2JPatternSubscriptionAndTopicSubscription() throws InterruptedException {
         Map<String, Object> config = Map.of(GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT));
@@ -480,10 +480,10 @@ public class PlaintextConsumerSubscriptionTest {
             consumer.subscribe(pattern);
 
             Set<TopicPartition> patternAssignment = Set.of(
-                new TopicPartition(topic1, 0),
-                new TopicPartition(topic1, 1),
-                new TopicPartition(topic11, 0),
-                new TopicPartition(topic11, 1)
+                    new TopicPartition(topic1, 0),
+                    new TopicPartition(topic1, 1),
+                    new TopicPartition(topic11, 0),
+                    new TopicPartition(topic11, 1)
             );
             awaitAssignment(consumer, patternAssignment);
             consumer.unsubscribe();
@@ -493,8 +493,8 @@ public class PlaintextConsumerSubscriptionTest {
             consumer.subscribe(List.of(topic2));
 
             Set<TopicPartition> assignment = Set.of(
-                new TopicPartition(topic2, 0),
-                new TopicPartition(topic2, 1)
+                    new TopicPartition(topic2, 0),
+                    new TopicPartition(topic2, 1)
             );
             awaitAssignment(consumer, assignment);
             consumer.unsubscribe();
@@ -504,7 +504,7 @@ public class PlaintextConsumerSubscriptionTest {
             awaitAssignment(consumer, patternAssignment);
         }
     }
-    
+
 
     @ClusterTest
     public void testRe2JPatternSubscriptionInvalidRegex() throws InterruptedException {
@@ -526,12 +526,12 @@ public class PlaintextConsumerSubscriptionTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerExpandingTopicSubscriptions() throws InterruptedException {
         testExpandingTopicSubscriptions(GroupProtocol.CONSUMER);
@@ -543,8 +543,8 @@ public class PlaintextConsumerSubscriptionTest {
             var otherTopic = "other";
 
             Set<TopicPartition> initialAssignment = Set.of(
-                new TopicPartition(topic, 0),
-                new TopicPartition(topic, 1)
+                    new TopicPartition(topic, 0),
+                    new TopicPartition(topic, 1)
             );
             consumer.subscribe(List.of(topic));
             awaitAssignment(consumer, initialAssignment);
@@ -566,12 +566,12 @@ public class PlaintextConsumerSubscriptionTest {
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerShrinkingTopicSubscriptions() throws InterruptedException {
         testShrinkingTopicSubscriptions(GroupProtocol.CONSUMER);
@@ -584,17 +584,17 @@ public class PlaintextConsumerSubscriptionTest {
             cluster.createTopic(otherTopic, 2, (short) BROKER_COUNT);
 
             Set<TopicPartition> initialAssignment = Set.of(
-                new TopicPartition(topic, 0),
-                new TopicPartition(topic, 1),
-                new TopicPartition(otherTopic, 0),
-                new TopicPartition(otherTopic, 1)
+                    new TopicPartition(topic, 0),
+                    new TopicPartition(topic, 1),
+                    new TopicPartition(otherTopic, 0),
+                    new TopicPartition(otherTopic, 1)
             );
             consumer.subscribe(List.of(topic, otherTopic));
             awaitAssignment(consumer, initialAssignment);
 
             Set<TopicPartition> shrunkenAssignment = Set.of(
-                new TopicPartition(topic, 0),
-                new TopicPartition(topic, 1)
+                    new TopicPartition(topic, 0),
+                    new TopicPartition(topic, 1)
             );
             consumer.subscribe(List.of(topic));
             awaitAssignment(consumer, shrunkenAssignment);
@@ -604,19 +604,19 @@ public class PlaintextConsumerSubscriptionTest {
     @ClusterTest
     public void testClassicConsumerUnsubscribeTopic() throws InterruptedException {
         testUnsubscribeTopic(Map.of(
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            SESSION_TIMEOUT_MS_CONFIG, 100, // timeout quickly to avoid slow test
-            HEARTBEAT_INTERVAL_MS_CONFIG, 30
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                SESSION_TIMEOUT_MS_CONFIG, 100, // timeout quickly to avoid slow test
+                HEARTBEAT_INTERVAL_MS_CONFIG, 30
         ));
     }
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testAsyncConsumerUnsubscribeTopic() throws InterruptedException {
         testUnsubscribeTopic(Map.of(GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)));

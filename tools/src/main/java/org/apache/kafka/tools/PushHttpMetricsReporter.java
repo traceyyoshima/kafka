@@ -55,7 +55,7 @@ import java.util.function.Supplier;
 /**
  * MetricsReporter that aggregates metrics data and reports it via HTTP requests to a configurable
  * webhook endpoint in JSON format.
- *
+ * <p>
  * This is an internal class used for system tests and does not provide any compatibility guarantees.
  */
 public class PushHttpMetricsReporter implements MetricsReporter {
@@ -68,6 +68,7 @@ public class PushHttpMetricsReporter implements MetricsReporter {
     static final String CLIENT_ID_CONFIG = ProducerConfig.CLIENT_ID_CONFIG;
 
     private static final Map<String, String> HEADERS = new LinkedHashMap<>();
+
     static {
         HEADERS.put("Content-Type", "application/json");
     }
@@ -240,19 +241,19 @@ public class PushHttpMetricsReporter implements MetricsReporter {
         }
     }
 
-    private record MetricsReport(@JsonProperty("client") MetricClientInfo client, 
-                                @JsonProperty("metrics") Collection<MetricValue> metrics) {
+    private record MetricsReport(@JsonProperty("client") MetricClientInfo client,
+                                 @JsonProperty("metrics") Collection<MetricValue> metrics) {
     }
 
-    private record MetricClientInfo(@JsonProperty("host") String host, 
-                                   @JsonProperty("client_id") String clientId, 
-                                   @JsonProperty("time") long time) {
+    private record MetricClientInfo(@JsonProperty("host") String host,
+                                    @JsonProperty("client_id") String clientId,
+                                    @JsonProperty("time") long time) {
     }
 
-    private record MetricValue(@JsonProperty("name") String name, 
-                              @JsonProperty("group") String group, 
-                              @JsonProperty("tags") Map<String, String> tags, 
-                              @JsonProperty("value") Object value) {
+    private record MetricValue(@JsonProperty("name") String name,
+                               @JsonProperty("group") String group,
+                               @JsonProperty("tags") Map<String, String> tags,
+                               @JsonProperty("value") Object value) {
     }
 
     // The signature for getInt changed from returning int to Integer so to remain compatible with 0.8.2.2 jars

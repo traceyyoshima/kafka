@@ -19,6 +19,7 @@ package org.apache.kafka.clients.admin;
 
 /**
  * Options for {@link Admin#listClientMetricsResources()}.
+ *
  * @deprecated Since 4.1. Use {@link ListConfigResourcesOptions} instead.
  */
 @Deprecated(since = "4.1")

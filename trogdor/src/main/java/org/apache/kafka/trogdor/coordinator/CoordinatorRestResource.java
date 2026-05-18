@@ -51,11 +51,11 @@ import jakarta.ws.rs.core.Response;
 /**
  * The REST resource for the Coordinator. This describes the RPCs which the coordinator
  * can accept.
- *
+ * <p>
  * RPCs should be idempotent.  This is important because if the server's response is
  * lost, the client will simply retransmit the same request. The server's response must
  * be the same the second time around.
- *
+ * <p>
  * We return the empty JSON object {} rather than void for RPCs that have no results.
  * This ensures that if we want to add more return results later, we can do so in a
  * compatible way.
@@ -109,16 +109,16 @@ public class CoordinatorRestResource {
     @GET
     @Path("/tasks/")
     public Response tasks(@QueryParam("taskId") List<String> taskId,
-            @DefaultValue("0") @QueryParam("firstStartMs") long firstStartMs,
-            @DefaultValue("0") @QueryParam("lastStartMs") long lastStartMs,
-            @DefaultValue("0") @QueryParam("firstEndMs") long firstEndMs,
-            @DefaultValue("0") @QueryParam("lastEndMs") long lastEndMs,
-            @DefaultValue("") @QueryParam("state") String state) throws Throwable {
+                          @DefaultValue("0") @QueryParam("firstStartMs") long firstStartMs,
+                          @DefaultValue("0") @QueryParam("lastStartMs") long lastStartMs,
+                          @DefaultValue("0") @QueryParam("firstEndMs") long firstEndMs,
+                          @DefaultValue("0") @QueryParam("lastEndMs") long lastEndMs,
+                          @DefaultValue("") @QueryParam("state") String state) throws Throwable {
         boolean isEmptyState = state.isEmpty();
         if (!isEmptyState && !TaskStateType.Constants.VALUES.contains(state)) {
             return Response.status(400).entity(
-                String.format("State %s is invalid. Must be one of %s",
-                    state, TaskStateType.Constants.VALUES)
+                    String.format("State %s is invalid. Must be one of %s",
+                            state, TaskStateType.Constants.VALUES)
             ).build();
         }
 

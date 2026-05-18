@@ -20,7 +20,7 @@ import org.apache.kafka.streams.processor.internals.InternalTopologyBuilder;
 import org.apache.kafka.test.StreamsTestUtils;
 
 /**
- *  This class allows to access the {@link InternalTopologyBuilder} a {@link Topology} object.
+ * This class allows to access the {@link InternalTopologyBuilder} a {@link Topology} object.
  *
  */
 public class TopologyWrapper extends Topology {

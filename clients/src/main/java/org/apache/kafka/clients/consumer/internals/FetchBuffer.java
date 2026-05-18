@@ -41,7 +41,7 @@ import java.util.function.Predicate;
  * {@code FetchBuffer} buffers up {@link CompletedFetch the results} from the broker responses as they are received.
  * It is essentially a wrapper around a {@link java.util.Queue} of {@link CompletedFetch}. There is at most one
  * {@link CompletedFetch} per partition in the queue.
- *
+ * <p>
  * <p/>
  *
  * <em>Note</em>: this class is thread-safe with the intention that {@link CompletedFetch the data} will be

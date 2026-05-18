@@ -45,17 +45,17 @@ public class KafkaConfigSchemaTest {
 
     static {
         CONFIGS.put(BROKER, new ConfigDef().
-            define("foo.bar", ConfigDef.Type.LIST, "1", ConfigDef.Importance.HIGH, "foo bar doc").
-            define("baz", ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, "baz doc").
-            define("quux", ConfigDef.Type.INT, ConfigDef.Importance.HIGH, "quux doc").
-            define("quuux", ConfigDef.Type.PASSWORD, ConfigDef.Importance.HIGH, "quuux doc").
-            define("quuux2", ConfigDef.Type.PASSWORD, ConfigDef.Importance.HIGH, "quuux2 doc"));
+                define("foo.bar", ConfigDef.Type.LIST, "1", ConfigDef.Importance.HIGH, "foo bar doc").
+                define("baz", ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, "baz doc").
+                define("quux", ConfigDef.Type.INT, ConfigDef.Importance.HIGH, "quux doc").
+                define("quuux", ConfigDef.Type.PASSWORD, ConfigDef.Importance.HIGH, "quuux doc").
+                define("quuux2", ConfigDef.Type.PASSWORD, ConfigDef.Importance.HIGH, "quuux2 doc"));
         CONFIGS.put(TOPIC, new ConfigDef().
-            define("abc", ConfigDef.Type.LIST, ConfigDef.Importance.HIGH, "abc doc").
-            define("def", ConfigDef.Type.LONG, ConfigDef.Importance.HIGH, "def doc").
-            define("ghi", ConfigDef.Type.BOOLEAN, true, ConfigDef.Importance.HIGH, "ghi doc").
-            define("xyz", ConfigDef.Type.PASSWORD, "thedefault", ConfigDef.Importance.HIGH, "xyz doc").
-            defineInternal("internal", ConfigDef.Type.STRING, "internalValue", null, ConfigDef.Importance.HIGH, "internal doc"));
+                define("abc", ConfigDef.Type.LIST, ConfigDef.Importance.HIGH, "abc doc").
+                define("def", ConfigDef.Type.LONG, ConfigDef.Importance.HIGH, "def doc").
+                define("ghi", ConfigDef.Type.BOOLEAN, true, ConfigDef.Importance.HIGH, "ghi doc").
+                define("xyz", ConfigDef.Type.PASSWORD, "thedefault", ConfigDef.Importance.HIGH, "xyz doc").
+                defineInternal("internal", ConfigDef.Type.STRING, "internalValue", null, ConfigDef.Importance.HIGH, "internal doc"));
     }
 
     public static final Map<String, List<ConfigSynonym>> SYNONYMS = new HashMap<>();
@@ -89,21 +89,21 @@ public class KafkaConfigSchemaTest {
     @Test
     public void testTranslateConfigSources() {
         testTranslateConfigSource(ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG,
-            DescribeConfigsResponse.ConfigSource.TOPIC_CONFIG);
+                DescribeConfigsResponse.ConfigSource.TOPIC_CONFIG);
         testTranslateConfigSource(ConfigEntry.ConfigSource.DYNAMIC_BROKER_LOGGER_CONFIG,
-            DescribeConfigsResponse.ConfigSource.DYNAMIC_BROKER_LOGGER_CONFIG);
+                DescribeConfigsResponse.ConfigSource.DYNAMIC_BROKER_LOGGER_CONFIG);
         testTranslateConfigSource(ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG,
-            DescribeConfigsResponse.ConfigSource.DYNAMIC_BROKER_CONFIG);
+                DescribeConfigsResponse.ConfigSource.DYNAMIC_BROKER_CONFIG);
         testTranslateConfigSource(ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG,
-            DescribeConfigsResponse.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG);
+                DescribeConfigsResponse.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG);
         testTranslateConfigSource(ConfigEntry.ConfigSource.STATIC_BROKER_CONFIG,
-            DescribeConfigsResponse.ConfigSource.STATIC_BROKER_CONFIG);
+                DescribeConfigsResponse.ConfigSource.STATIC_BROKER_CONFIG);
         testTranslateConfigSource(ConfigEntry.ConfigSource.DYNAMIC_CLIENT_METRICS_CONFIG,
-            DescribeConfigsResponse.ConfigSource.CLIENT_METRICS_CONFIG);
+                DescribeConfigsResponse.ConfigSource.CLIENT_METRICS_CONFIG);
         testTranslateConfigSource(ConfigEntry.ConfigSource.DYNAMIC_GROUP_CONFIG,
-            DescribeConfigsResponse.ConfigSource.GROUP_CONFIG);
+                DescribeConfigsResponse.ConfigSource.GROUP_CONFIG);
         testTranslateConfigSource(ConfigEntry.ConfigSource.DEFAULT_CONFIG,
-            DescribeConfigsResponse.ConfigSource.DEFAULT_CONFIG);
+                DescribeConfigsResponse.ConfigSource.DEFAULT_CONFIG);
     }
 
     private static void testTranslateConfigSource(ConfigEntry.ConfigSource a,
@@ -152,45 +152,45 @@ public class KafkaConfigSchemaTest {
         dynamicTopicConfigs.put("ghi", "true");
         Map<String, ConfigEntry> expected = new HashMap<>();
         expected.put("abc", new ConfigEntry("abc", "the,dynamic,cluster,config,value",
-            ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG, false, false, List.of(),
+                ConfigEntry.ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG, false, false, List.of(),
                 ConfigEntry.ConfigType.LIST, "abc doc"));
         expected.put("def", new ConfigEntry("def", "2840400000",
-            ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG, false, false, List.of(),
-            ConfigEntry.ConfigType.LONG, "def doc"));
+                ConfigEntry.ConfigSource.DYNAMIC_BROKER_CONFIG, false, false, List.of(),
+                ConfigEntry.ConfigType.LONG, "def doc"));
         expected.put("ghi", new ConfigEntry("ghi", "true",
-            ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(),
-            ConfigEntry.ConfigType.BOOLEAN, "ghi doc"));
+                ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(),
+                ConfigEntry.ConfigType.BOOLEAN, "ghi doc"));
         expected.put("xyz", new ConfigEntry("xyz", "thedefault",
-            ConfigEntry.ConfigSource.DEFAULT_CONFIG, true, false, List.of(),
-            ConfigEntry.ConfigType.PASSWORD, "xyz doc"));
+                ConfigEntry.ConfigSource.DEFAULT_CONFIG, true, false, List.of(),
+                ConfigEntry.ConfigType.PASSWORD, "xyz doc"));
         assertEquals(expected, SCHEMA.resolveEffectiveTopicConfigs(staticNodeConfig,
-            dynamicClusterConfigs,
-            dynamicNodeConfigs,
-            dynamicTopicConfigs));
+                dynamicClusterConfigs,
+                dynamicNodeConfigs,
+                dynamicTopicConfigs));
     }
 
     @Test
     public void testResolveEffectiveDynamicInternalTopicConfig() {
         Map<String, String> dynamicTopicConfigs = Map.of(
-            "ghi", "true",
-            "internal", "internal,change"
+                "ghi", "true",
+                "internal", "internal,change"
         );
         Map<String, ConfigEntry> expected = Map.of(
-            "abc", new ConfigEntry("abc", null, 
-                    ConfigEntry.ConfigSource.DEFAULT_CONFIG, false, false, List.of(), 
-                    ConfigEntry.ConfigType.LIST, "abc doc"),
-            "def", new ConfigEntry("def", null, 
-                    ConfigEntry.ConfigSource.DEFAULT_CONFIG, false, false, List.of(), 
-                    ConfigEntry.ConfigType.LONG, "def doc"),
-            "ghi", new ConfigEntry("ghi", "true", 
-                    ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(), 
-                    ConfigEntry.ConfigType.BOOLEAN, "ghi doc"),
-            "xyz", new ConfigEntry("xyz", "thedefault", 
-                    ConfigEntry.ConfigSource.DEFAULT_CONFIG, true, false, List.of(), 
-                    ConfigEntry.ConfigType.PASSWORD, "xyz doc"),
-            "internal", new ConfigEntry("internal", "internal,change", 
-                    ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(), 
-                    ConfigEntry.ConfigType.STRING, "internal doc")
+                "abc", new ConfigEntry("abc", null,
+                        ConfigEntry.ConfigSource.DEFAULT_CONFIG, false, false, List.of(),
+                        ConfigEntry.ConfigType.LIST, "abc doc"),
+                "def", new ConfigEntry("def", null,
+                        ConfigEntry.ConfigSource.DEFAULT_CONFIG, false, false, List.of(),
+                        ConfigEntry.ConfigType.LONG, "def doc"),
+                "ghi", new ConfigEntry("ghi", "true",
+                        ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(),
+                        ConfigEntry.ConfigType.BOOLEAN, "ghi doc"),
+                "xyz", new ConfigEntry("xyz", "thedefault",
+                        ConfigEntry.ConfigSource.DEFAULT_CONFIG, true, false, List.of(),
+                        ConfigEntry.ConfigType.PASSWORD, "xyz doc"),
+                "internal", new ConfigEntry("internal", "internal,change",
+                        ConfigEntry.ConfigSource.DYNAMIC_TOPIC_CONFIG, false, false, List.of(),
+                        ConfigEntry.ConfigType.STRING, "internal doc")
         );
         assertEquals(expected, SCHEMA.resolveEffectiveTopicConfigs(Map.of(), Map.of(), Map.of(), dynamicTopicConfigs));
     }

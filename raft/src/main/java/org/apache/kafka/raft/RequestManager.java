@@ -29,15 +29,15 @@ import java.util.Random;
 
 /**
  * The request manager keeps tracks of the connection with remote replicas.
- *
+ * <p>
  * When sending a request update this type by calling {@code onRequestSent(Node, long, long)}. When
  * the RPC returns a response, update this manager with {@code onResponseResult(Node, long, boolean, long)}.
- *
+ * <p>
  * Connections start in the ready state ({@code isReady(Node, long)} returns true).
- *
+ * <p>
  * When a request times out or completes successfully the collection will transition back to the
  * ready state.
- *
+ * <p>
  * When a request completes with an error it still transitions to the backoff state until
  * {@code retryBackoffMs}.
  */
@@ -50,10 +50,10 @@ public class RequestManager {
     private final Random random;
 
     public RequestManager(
-        Collection<Node> bootstrapServers,
-        int retryBackoffMs,
-        int requestTimeoutMs,
-        Random random
+            Collection<Node> bootstrapServers,
+            int retryBackoffMs,
+            int requestTimeoutMs,
+            Random random
     ) {
         this.bootstrapServers = new ArrayList<>(bootstrapServers);
         this.retryBackoffMs = retryBackoffMs;
@@ -63,7 +63,7 @@ public class RequestManager {
 
     /**
      * Returns true if there are any connections with pending requests.
-     *
+     * <p>
      * This is useful for satisfying the invariant that there is only one pending Fetch request.
      * If there are more than one pending fetch request, it is possible for the follower to write
      * the same offset twice.
@@ -96,7 +96,7 @@ public class RequestManager {
 
     /**
      * Returns a random bootstrap node that is ready to receive a request.
-     *
+     * <p>
      * This method doesn't return a node if there is at least one request pending. In general this
      * method is used to send Fetch requests. Fetch requests have the invariant that there can
      * only be one pending Fetch request for the LEO.
@@ -129,13 +129,13 @@ public class RequestManager {
     /**
      * Computes the amount of time needed to wait before a bootstrap server is ready for a Fetch
      * request.
-     *
+     * <p>
      * If there is a connection with a pending request it returns the amount of time to wait until
      * the request times out.
-     *
+     * <p>
      * Returns zero, if there are no pending requests and at least one of the bootstrap servers is
      * ready.
-     *
+     * <p>
      * If all the bootstrap servers are backing off and there are no pending requests, return
      * the minimum amount of time until a bootstrap server becomes ready.
      *
@@ -235,10 +235,10 @@ public class RequestManager {
     /**
      * Updates the manager when a response is received.
      *
-     * @param node the source of the response
+     * @param node          the source of the response
      * @param correlationId the correlation id of the response
-     * @param success true if the request was successful, false otherwise
-     * @param timeMs the current time
+     * @param success       true if the request was successful, false otherwise
+     * @param timeMs        the current time
      */
     public void onResponseResult(Node node, long correlationId, boolean success, long timeMs) {
         if (isResponseExpected(node, correlationId)) {
@@ -255,14 +255,14 @@ public class RequestManager {
     /**
      * Updates the manager when a request is sent.
      *
-     * @param node the destination of the request
+     * @param node          the destination of the request
      * @param correlationId the correlation id of the request
-     * @param timeMs the current time
+     * @param timeMs        the current time
      */
     public void onRequestSent(Node node, long correlationId, long timeMs) {
         ConnectionState state = connections.computeIfAbsent(
-            node.idString(),
-            key -> new ConnectionState(node, retryBackoffMs, requestTimeoutMs)
+                node.idString(),
+                key -> new ConnectionState(node, retryBackoffMs, requestTimeoutMs)
         );
 
         state.onRequestSent(correlationId, timeMs);
@@ -293,9 +293,9 @@ public class RequestManager {
         private OptionalLong inFlightCorrelationId = OptionalLong.empty();
 
         private ConnectionState(
-            Node node,
-            int retryBackoffMs,
-            int requestTimeoutMs
+                Node node,
+                int retryBackoffMs,
+                int requestTimeoutMs
         ) {
             this.node = node;
             this.retryBackoffMs = retryBackoffMs;
@@ -372,12 +372,12 @@ public class RequestManager {
         @Override
         public String toString() {
             return String.format(
-                "ConnectionState(node=%s, state=%s, lastSendTimeMs=%d, lastFailTimeMs=%d, inFlightCorrelationId=%s)",
-                node,
-                state,
-                lastSendTimeMs,
-                lastFailTimeMs,
-                inFlightCorrelationId.isPresent() ? inFlightCorrelationId.getAsLong() : "undefined"
+                    "ConnectionState(node=%s, state=%s, lastSendTimeMs=%d, lastFailTimeMs=%d, inFlightCorrelationId=%s)",
+                    node,
+                    state,
+                    lastSendTimeMs,
+                    lastFailTimeMs,
+                    inFlightCorrelationId.isPresent() ? inFlightCorrelationId.getAsLong() : "undefined"
             );
         }
     }

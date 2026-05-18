@@ -46,7 +46,7 @@ public class JsonSerializationTest {
     @Test
     public void testDeserializationDoesNotProduceNulls() throws Exception {
         verify(new FilesUnreadableFaultSpec(0, 0, null,
-            null, null, 0));
+                null, null, 0));
         verify(new Kibosh.KiboshControlFile(null));
         verify(new NetworkPartitionFaultSpec(0, 0, null));
         verify(new ProcessStopFaultSpec(0, 0, null, null));
@@ -56,9 +56,9 @@ public class JsonSerializationTest {
         verify(new WorkerRunning(null, null, 0, null));
         verify(new WorkerStopping(null, null, 0, null));
         verify(new ProduceBenchSpec(0, 0, null, null,
-            0, 0, null, null, Optional.empty(), null, null, null, null, null, false, false));
+                0, 0, null, null, Optional.empty(), null, null, null, null, null, false, false));
         verify(new RoundTripWorkloadSpec(0, 0, null, null, null, null, null, null,
-            0, null, null, 0));
+                0, null, null, 0));
         verify(new TopicsSpec());
         verify(new PartitionsSpec(0, (short) 0, null, null));
         Map<Integer, List<Integer>> partitionAssignments = new HashMap<>();

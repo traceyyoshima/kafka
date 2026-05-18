@@ -46,7 +46,8 @@ public class QuorumControllerTestEnv implements AutoCloseable {
 
     public static class Builder {
         private final MockRaftClientTestEnv clientEnv;
-        private Consumer<QuorumController.Builder> controllerBuilderInitializer = __ -> { };
+        private Consumer<QuorumController.Builder> controllerBuilderInitializer = __ -> {
+        };
         private OptionalLong sessionTimeoutMillis = OptionalLong.empty();
         private OptionalLong leaderImbalanceCheckIntervalNs = OptionalLong.empty();
         private BootstrapMetadata bootstrapMetadata = BootstrapMetadata.
@@ -78,22 +79,22 @@ public class QuorumControllerTestEnv implements AutoCloseable {
 
         public QuorumControllerTestEnv build() throws Exception {
             return new QuorumControllerTestEnv(
-                clientEnv,
-                controllerBuilderInitializer,
-                sessionTimeoutMillis,
-                leaderImbalanceCheckIntervalNs,
-                bootstrapMetadata.metadataVersion().isElrSupported(),
-                bootstrapMetadata);
+                    clientEnv,
+                    controllerBuilderInitializer,
+                    sessionTimeoutMillis,
+                    leaderImbalanceCheckIntervalNs,
+                    bootstrapMetadata.metadataVersion().isElrSupported(),
+                    bootstrapMetadata);
         }
     }
 
     private QuorumControllerTestEnv(
-        MockRaftClientTestEnv clientEnv,
-        Consumer<QuorumController.Builder> controllerBuilderInitializer,
-        OptionalLong sessionTimeoutMillis,
-        OptionalLong leaderImbalanceCheckIntervalNs,
-        boolean eligibleLeaderReplicasEnabled,
-        BootstrapMetadata bootstrapMetadata
+            MockRaftClientTestEnv clientEnv,
+            Consumer<QuorumController.Builder> controllerBuilderInitializer,
+            OptionalLong sessionTimeoutMillis,
+            OptionalLong leaderImbalanceCheckIntervalNs,
+            boolean eligibleLeaderReplicasEnabled,
+            BootstrapMetadata bootstrapMetadata
     ) throws Exception {
         this.clientEnv = clientEnv;
         int numControllers = clientEnv.raftClients().size();
@@ -105,15 +106,15 @@ public class QuorumControllerTestEnv implements AutoCloseable {
                 builder.setRaftClient(clientEnv.raftClients().get(nodeId));
                 if (eligibleLeaderReplicasEnabled) {
                     bootstrapMetadata = bootstrapMetadata.copyWithFeatureRecord(
-                        EligibleLeaderReplicasVersion.FEATURE_NAME,
-                        EligibleLeaderReplicasVersion.ELRV_1.featureLevel()
+                            EligibleLeaderReplicasVersion.FEATURE_NAME,
+                            EligibleLeaderReplicasVersion.ELRV_1.featureLevel()
                     );
                 }
                 builder.setBootstrapMetadata(bootstrapMetadata);
                 builder.setLeaderImbalanceCheckIntervalNs(leaderImbalanceCheckIntervalNs);
                 builder.setQuorumFeatures(new QuorumFeatures(nodeId, QuorumFeatures.defaultSupportedFeatureMap(true), nodeIds));
                 sessionTimeoutMillis.ifPresent(timeout ->
-                    builder.setSessionTimeoutNs(NANOSECONDS.convert(timeout, TimeUnit.MILLISECONDS))
+                        builder.setSessionTimeoutNs(NANOSECONDS.convert(timeout, TimeUnit.MILLISECONDS))
                 );
                 MockFaultHandler fatalFaultHandler = new MockFaultHandler("fatalFaultHandler");
                 builder.setFatalFaultHandler(fatalFaultHandler);
@@ -142,7 +143,7 @@ public class QuorumControllerTestEnv implements AutoCloseable {
             LeaderAndEpoch leader = clientEnv.leaderAndEpoch();
             for (QuorumController controller : controllers) {
                 if (OptionalInt.of(controller.nodeId()).equals(leader.leaderId()) &&
-                    controller.curClaimEpoch() == leader.epoch()) {
+                        controller.curClaimEpoch() == leader.epoch()) {
                     value.set(controller);
                     break;
                 }
@@ -158,8 +159,8 @@ public class QuorumControllerTestEnv implements AutoCloseable {
                 // ControllerActivation happens after curClaimEpoch is set, so we need to put something on
                 // the end of the queue and wait for it to complete before returning the active controller.
                 value.get()
-                    .appendReadEvent("wait for activation", OptionalLong.empty(), () -> null)
-                    .get(20000, TimeUnit.MILLISECONDS);
+                        .appendReadEvent("wait for activation", OptionalLong.empty(), () -> null)
+                        .get(20000, TimeUnit.MILLISECONDS);
             } catch (Throwable t) {
                 throw new RuntimeException("Failed while waiting for controller activation", t);
             }

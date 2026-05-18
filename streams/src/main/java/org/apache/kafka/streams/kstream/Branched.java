@@ -48,12 +48,9 @@ public class Branched<K, V> implements NamedOperation<Branched<K, V>> {
     /**
      * Create an instance of {@code Branched} with provided branch name suffix.
      *
-     * @param name
-     *        the branch name suffix to be used (see {@link BranchedKStream} description for details)
-     *
-     * @param <K> key type
-     * @param <V> value type
-     *
+     * @param name the branch name suffix to be used (see {@link BranchedKStream} description for details)
+     * @param <K>  key type
+     * @param <V>  value type
      * @return a new instance of {@code Branched}
      */
     public static <K, V> Branched<K, V> as(final String name) {
@@ -64,15 +61,12 @@ public class Branched<K, V> implements NamedOperation<Branched<K, V>> {
     /**
      * Create an instance of {@code Branched} with provided chain function.
      *
-     * @param chain
-     *        A function that will be applied to the branch. If the provided function returns
-     *        {@code null}, its result is ignored, otherwise it is added to the {@code Map} returned
-     *        by {@link BranchedKStream#defaultBranch()} or {@link BranchedKStream#noDefaultBranch()} (see
-     *        {@link BranchedKStream} description for details).
-     *
-     * @param <K> key type
-     * @param <V> value type
-     *
+     * @param chain A function that will be applied to the branch. If the provided function returns
+     *              {@code null}, its result is ignored, otherwise it is added to the {@code Map} returned
+     *              by {@link BranchedKStream#defaultBranch()} or {@link BranchedKStream#noDefaultBranch()} (see
+     *              {@link BranchedKStream} description for details).
+     * @param <K>   key type
+     * @param <V>   value type
      * @return a new instance of {@code Branched}
      */
     public static <K, V> Branched<K, V> withFunction(
@@ -85,15 +79,12 @@ public class Branched<K, V> implements NamedOperation<Branched<K, V>> {
     /**
      * Create an instance of {@code Branched} with provided chain consumer.
      *
-     * @param chain
-     *        A consumer to which the branch will be sent. If a consumer is provided,
-     *        the respective branch will not be added to the resulting {@code Map} returned
-     *        by {@link BranchedKStream#defaultBranch()} or {@link BranchedKStream#noDefaultBranch()} (see
-     *        {@link BranchedKStream} description for details).
-     *
-     * @param <K> key type
-     * @param <V> value type
-     *
+     * @param chain A consumer to which the branch will be sent. If a consumer is provided,
+     *              the respective branch will not be added to the resulting {@code Map} returned
+     *              by {@link BranchedKStream#defaultBranch()} or {@link BranchedKStream#noDefaultBranch()} (see
+     *              {@link BranchedKStream} description for details).
+     * @param <K>   key type
+     * @param <V>   value type
      * @return a new instance of {@code Branched}
      */
     public static <K, V> Branched<K, V> withConsumer(final Consumer<KStream<K, V>> chain) {
@@ -104,23 +95,19 @@ public class Branched<K, V> implements NamedOperation<Branched<K, V>> {
     /**
      * Create an instance of {@code Branched} with provided chain function and branch name suffix.
      *
-     * @param chain
-     *        A function that will be applied to the branch. If the provided function returns
-     *        {@code null}, its result is ignored, otherwise it is added to the {@code Map} returned
-     *        by {@link BranchedKStream#defaultBranch()} or {@link BranchedKStream#noDefaultBranch()} (see
-     *        {@link BranchedKStream} description for details).
-     * @param name
-     *        the branch name suffix to be used. If {@code null}, a default branch name suffix will be generated
-     *        (see {@link BranchedKStream} description for details)
-     *
-     * @param <K> key type
-     * @param <V> value type
-     *
+     * @param chain A function that will be applied to the branch. If the provided function returns
+     *              {@code null}, its result is ignored, otherwise it is added to the {@code Map} returned
+     *              by {@link BranchedKStream#defaultBranch()} or {@link BranchedKStream#noDefaultBranch()} (see
+     *              {@link BranchedKStream} description for details).
+     * @param name  the branch name suffix to be used. If {@code null}, a default branch name suffix will be generated
+     *              (see {@link BranchedKStream} description for details)
+     * @param <K>   key type
+     * @param <V>   value type
      * @return a new instance of {@code Branched}
      */
     public static <K, V> Branched<K, V> withFunction(
-        final Function<? super KStream<K, V>, ? extends KStream<K, V>> chain,
-        final String name
+            final Function<? super KStream<K, V>, ? extends KStream<K, V>> chain,
+            final String name
     ) {
         Objects.requireNonNull(chain, "chain function cannot be null");
         return new Branched<>(name, chain, null);
@@ -129,18 +116,14 @@ public class Branched<K, V> implements NamedOperation<Branched<K, V>> {
     /**
      * Create an instance of {@code Branched} with provided chain consumer and branch name suffix.
      *
-     * @param chain
-     *        A consumer to which the branch will be sent. If a non-null consumer is provided,
-     *        the respective branch will not be added to the resulting {@code Map} returned
-     *        by {@link BranchedKStream#defaultBranch()} or {@link BranchedKStream#noDefaultBranch()} (see
-     *        {@link BranchedKStream} description for details).
-     * @param name
-     *        the branch name suffix to be used. If {@code null}, a default branch name suffix will be generated
-     *        (see {@link BranchedKStream} description for details)
-     *
-     * @param <K> key type
-     * @param <V> value type
-     *
+     * @param chain A consumer to which the branch will be sent. If a non-null consumer is provided,
+     *              the respective branch will not be added to the resulting {@code Map} returned
+     *              by {@link BranchedKStream#defaultBranch()} or {@link BranchedKStream#noDefaultBranch()} (see
+     *              {@link BranchedKStream} description for details).
+     * @param name  the branch name suffix to be used. If {@code null}, a default branch name suffix will be generated
+     *              (see {@link BranchedKStream} description for details)
+     * @param <K>   key type
+     * @param <V>   value type
      * @return a new instance of {@code Branched}
      */
     public static <K, V> Branched<K, V> withConsumer(final Consumer<? super KStream<K, V>> chain,
@@ -152,10 +135,8 @@ public class Branched<K, V> implements NamedOperation<Branched<K, V>> {
     /**
      * Configure the instance of {@code Branched} with a branch name suffix.
      *
-     * @param name
-     *        the branch name suffix to be used. If {@code null} a default branch name suffix will be generated (see
-     *        {@link BranchedKStream} description for details)
-     *
+     * @param name the branch name suffix to be used. If {@code null} a default branch name suffix will be generated (see
+     *             {@link BranchedKStream} description for details)
      * @return {@code this} to facilitate method chaining
      */
     @Override

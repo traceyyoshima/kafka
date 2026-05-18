@@ -43,6 +43,7 @@ public class To {
 
     /**
      * Forward the key/value pair to one of the downstream processors designated by the downstream processor name.
+     *
      * @param childName name of downstream processor
      * @return a new {@link To} instance configured with {@code childName}
      */
@@ -52,6 +53,7 @@ public class To {
 
     /**
      * Forward the key/value pair to all downstream processors
+     *
      * @return a new {@link To} instance configured for all downstream processor
      */
     public static To all() {
@@ -60,6 +62,7 @@ public class To {
 
     /**
      * Set the timestamp of the output record.
+     *
      * @param timestamp the output record timestamp
      * @return itself (i.e., {@code this})
      */
@@ -78,7 +81,7 @@ public class To {
         }
         final To to = (To) o;
         return timestamp == to.timestamp &&
-            Objects.equals(childName, to.childName);
+                Objects.equals(childName, to.childName);
     }
 
     /**
@@ -92,8 +95,8 @@ public class To {
     @Override
     public String toString() {
         return "To{" +
-               "childName='" + childName + '\'' +
-               ", timestamp=" + timestamp +
-               '}';
+                "childName='" + childName + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }

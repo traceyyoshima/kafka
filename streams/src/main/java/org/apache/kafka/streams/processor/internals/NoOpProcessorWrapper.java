@@ -37,11 +37,11 @@ public class NoOpProcessorWrapper implements ProcessorWrapper {
 
     @Override
     public <KIn, VIn, VOut> WrappedFixedKeyProcessorSupplier<KIn, VIn, VOut> wrapFixedKeyProcessorSupplier(final String processorName,
-                                                                                                              final FixedKeyProcessorSupplier<KIn, VIn, VOut> processorSupplier) {
+                                                                                                           final FixedKeyProcessorSupplier<KIn, VIn, VOut> processorSupplier) {
         return ProcessorWrapper.asWrappedFixedKey(processorSupplier);
     }
 
-    public static class WrappedProcessorSupplierImpl<KIn, VIn, KOut, VOut> implements  WrappedProcessorSupplier<KIn, VIn, KOut, VOut> {
+    public static class WrappedProcessorSupplierImpl<KIn, VIn, KOut, VOut> implements WrappedProcessorSupplier<KIn, VIn, KOut, VOut> {
 
         private final ProcessorSupplier<KIn, VIn, KOut, VOut> delegate;
 

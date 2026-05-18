@@ -92,6 +92,7 @@ public interface RecordCollector {
     interface Supplier {
         /**
          * Get the record collector.
+         *
          * @return the record collector
          */
         RecordCollector recordCollector();

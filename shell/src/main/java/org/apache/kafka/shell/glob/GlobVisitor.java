@@ -93,9 +93,9 @@ public final class GlobVisitor implements Consumer<MetadataShellState> {
     @Override
     public void accept(MetadataShellState state) {
         String fullGlob = glob.startsWith("/") ? glob :
-            state.workingDirectory() + "/" + glob;
+                state.workingDirectory() + "/" + glob;
         List<String> globComponents =
-            CommandUtils.stripDotPathComponents(CommandUtils.splitPath(fullGlob));
+                CommandUtils.stripDotPathComponents(CommandUtils.splitPath(fullGlob));
         MetadataNode root = state.root();
         if (root == null) {
             throw new RuntimeException("Invalid null root");
@@ -106,10 +106,10 @@ public final class GlobVisitor implements Consumer<MetadataShellState> {
     }
 
     private boolean accept(
-        List<String> globComponents,
-        int componentIndex,
-        MetadataNode node,
-        String[] path
+            List<String> globComponents,
+            int componentIndex,
+            MetadataNode node,
+            String[] path
     ) {
         if (componentIndex >= globComponents.size()) {
             handler.accept(Optional.of(new MetadataNodeInfo(path, node)));

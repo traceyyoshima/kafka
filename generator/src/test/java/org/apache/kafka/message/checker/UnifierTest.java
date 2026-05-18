@@ -41,12 +41,12 @@ public class UnifierTest {
                 "'fields': [" +
                 "{'name': 'BrokerId', 'type': 'int32', 'versions': '0+'}" +
                 "]}"),
-            toMessage("{'apiKey':62, 'type': 'request', 'name': 'BrokerRegistrationRequest', " +
-                "'validVersions': '0-1', 'flexibleVersions': '0+', " +
-                "'fields': [" +
-                "{'name': 'BrokerId', 'type': 'int32', 'versions': '0+'}," +
-                "{'name': 'ControllerId', 'type': 'int32', 'versions': '1+'}" +
-                "]}")).unify();
+                toMessage("{'apiKey':62, 'type': 'request', 'name': 'BrokerRegistrationRequest', " +
+                        "'validVersions': '0-1', 'flexibleVersions': '0+', " +
+                        "'fields': [" +
+                        "{'name': 'BrokerId', 'type': 'int32', 'versions': '0+'}," +
+                        "{'name': 'ControllerId', 'type': 'int32', 'versions': '1+'}" +
+                        "]}")).unify();
     }
 
     static final MessageSpec TOP_LEVEL_MESSAGE_1 = new MessageSpec("TopLevelMessage",
@@ -64,94 +64,94 @@ public class UnifierTest {
     @Test
     public void testFieldTypesDoNotMatch() throws Exception {
         assertEquals("Field type for field2 foo is int8, but field type for field1 foo is int16",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    field("foo", "0+", "int16"),
-                    field("foo", "0+", "int8"))).getMessage());
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                field("foo", "0+", "int16"),
+                                field("foo", "0+", "int8"))).getMessage());
     }
 
     @Test
     public void testFieldTypesMatch() throws Exception {
         new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-            field("foo", "0+", "int16"),
-            field("foo", "0+", "int16"));
+                field("foo", "0+", "int16"),
+                field("foo", "0+", "int16"));
     }
 
     @Test
     public void testArrayElementTypesDoNotMatch() throws Exception {
         assertEquals("Field type for field2 foo is []int8, but field type for field1 foo is []int16",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    field("foo", "0+", "[]int16"),
-                    field("foo", "0+", "[]int8"))).getMessage());
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                field("foo", "0+", "[]int16"),
+                                field("foo", "0+", "[]int8"))).getMessage());
     }
 
     @Test
     public void testArrayFieldTypesMatch() throws Exception {
         new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-            field("foo", "0+", "[]int16"),
-            field("foo", "0+", "[]int16"));
+                field("foo", "0+", "[]int16"),
+                field("foo", "0+", "[]int16"));
     }
 
     @Test
     public void testMaximumValidVersionForField2IsLowerThanField1() throws Exception {
         assertEquals("Maximum effective valid version for field2 foo, '1' cannot be lower than the " +
-                "maximum effective valid version for field1 foo, '2'",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    field("foo", "0-2", "int64"),
-                    field("foo", "0-1", "int64"))).getMessage());
+                        "maximum effective valid version for field1 foo, '2'",
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                field("foo", "0-2", "int64"),
+                                field("foo", "0-1", "int64"))).getMessage());
     }
 
     @Test
     public void testMaximumValidVersionForIsReasonable1() throws Exception {
         new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-            field("foo", "0-1", "int64"),
-            field("foo", "0-2", "int64"));
+                field("foo", "0-1", "int64"),
+                field("foo", "0-2", "int64"));
     }
 
     @Test
     public void testMaximumValidVersionForIsReasonable2() throws Exception {
         new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-            field("foo", "0+", "int64"), // effective max is 2, because TOP_LEVEL_MESSAGE_1 supports 0-2
-            field("foo", "0-3", "int64"));
+                field("foo", "0+", "int64"), // effective max is 2, because TOP_LEVEL_MESSAGE_1 supports 0-2
+                field("foo", "0-3", "int64"));
     }
 
     @Test
     public void testMinimumValidVersionForField2IsLowerThanField1() throws Exception {
         assertEquals("Minimum effective valid version for field2 foo, '0' cannot be different than the " +
-                "minimum effective valid version for field1 foo, '1'",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    field("foo", "1+", "int64"),
-                    field("foo", "0+", "int64"))).getMessage());
+                        "minimum effective valid version for field1 foo, '1'",
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                field("foo", "1+", "int64"),
+                                field("foo", "0+", "int64"))).getMessage());
     }
 
     @Test
     public void testMinimumValidVersionForField2IsLowerThanField1Again() throws Exception {
         assertEquals("Minimum effective valid version for field2 foo, '0' cannot be different than the " +
-                "minimum effective valid version for field1 foo, '1'",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    field("foo", "1-2", "int64"),
-                    field("foo", "0-2", "int64"))).getMessage());
+                        "minimum effective valid version for field1 foo, '1'",
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                field("foo", "1-2", "int64"),
+                                field("foo", "0-2", "int64"))).getMessage());
     }
 
     @Test
     public void testMinimumValidVersionForField2IsHigherThanField1() throws Exception {
         assertEquals("Minimum effective valid version for field2 foo, '1' cannot be different than the " +
-                "minimum effective valid version for field1 foo, '0'",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    field("foo", "0-2", "int64"),
-                    field("foo", "1-2", "int64"))).getMessage());
+                        "minimum effective valid version for field1 foo, '0'",
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                field("foo", "0-2", "int64"),
+                                field("foo", "1-2", "int64"))).getMessage());
     }
 
     @Test
     public void testNullableVersionsCheckPasses1() throws Exception {
         new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2_DROPPING_V0).unify(
-            fieldWithNulls("foo", "0-2", "string", "0+"),
-            fieldWithNulls("foo", "1-2", "string", "1-2"));
+                fieldWithNulls("foo", "0-2", "string", "0+"),
+                fieldWithNulls("foo", "1-2", "string", "1-2"));
     }
 
     @Test
@@ -164,61 +164,61 @@ public class UnifierTest {
     @Test
     public void testNullableVersionsCheckFails1() throws Exception {
         assertEquals("Minimum effective nullable version for field2 foo, '1' cannot be different than " +
-                "the minimum effective nullable version for field1 foo, '0'",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    fieldWithNulls("foo", "0-2", "string", "0-2"),
-                    fieldWithNulls("foo", "0-2", "string", "1-2"))).getMessage());
+                        "the minimum effective nullable version for field1 foo, '0'",
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                fieldWithNulls("foo", "0-2", "string", "0-2"),
+                                fieldWithNulls("foo", "0-2", "string", "1-2"))).getMessage());
     }
 
     @Test
     public void testNullableVersionsCheckFails2() throws Exception {
         assertEquals("Minimum effective nullable version for field2 foo, '1' cannot be different than " +
-                "the minimum effective nullable version for field1 foo, '0'",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    fieldWithNulls("foo", "0+", "string", "0+"),
-                    fieldWithNulls("foo", "0+", "string", "1-2"))).getMessage());
+                        "the minimum effective nullable version for field1 foo, '0'",
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                fieldWithNulls("foo", "0+", "string", "0+"),
+                                fieldWithNulls("foo", "0+", "string", "1-2"))).getMessage());
     }
 
     @Test
     public void testFlexibleVersionsChangedCausesFailure1() throws Exception {
         assertEquals("Flexible versions for field2 foo is 2+, but flexible versions for field1 is 1+",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    fieldWithDefaults("foo", "0+", null, "1+"),
-                    fieldWithDefaults("foo", "0+", null, "2+"))).getMessage());
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                fieldWithDefaults("foo", "0+", null, "1+"),
+                                fieldWithDefaults("foo", "0+", null, "2+"))).getMessage());
     }
 
     @Test
     public void testFlexibleVersionsChangedCausesFailure2() throws Exception {
         assertEquals("Flexible versions for field2 foo is 2+, but flexible versions for field1 is none",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    fieldWithDefaults("foo", "0+", null, ""),
-                    fieldWithDefaults("foo", "0+", null, "2+"))).getMessage());
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                fieldWithDefaults("foo", "0+", null, ""),
+                                fieldWithDefaults("foo", "0+", null, "2+"))).getMessage());
     }
 
     @Test
     public void testFlexibleVersionsCheckPasses() throws Exception {
         new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-            fieldWithDefaults("foo", "0+", null, "1+"),
-            fieldWithDefaults("foo", "0+", null, "1+"));
+                fieldWithDefaults("foo", "0+", null, "1+"),
+                fieldWithDefaults("foo", "0+", null, "1+"));
     }
 
     @Test
     public void testDefaultsChangedCausesFailure() throws Exception {
         assertEquals("Default for field2 foo is 'newDefault', but default for field1 foo is 'oldDefault'",
-            assertThrows(UnificationException.class,
-                () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-                    fieldWithDefaults("foo", "0+", "oldDefault", null),
-                    fieldWithDefaults("foo", "0+", "newDefault", null))).getMessage());
+                assertThrows(UnificationException.class,
+                        () -> new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
+                                fieldWithDefaults("foo", "0+", "oldDefault", null),
+                                fieldWithDefaults("foo", "0+", "newDefault", null))).getMessage());
     }
 
     @Test
     public void testDefaultsCheckPasses() throws Exception {
         new Unifier(TOP_LEVEL_MESSAGE_1, TOP_LEVEL_MESSAGE_2).unify(
-            fieldWithDefaults("foo", "0+", "oldDefault", null),
-            fieldWithDefaults("foo", "0+", "oldDefault", null));
+                fieldWithDefaults("foo", "0+", "oldDefault", null),
+                fieldWithDefaults("foo", "0+", "oldDefault", null));
     }
 }

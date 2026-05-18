@@ -931,6 +931,7 @@ public class FetchRequestManagerTest {
         // so that we can verify that our position does not advance after raising
         ByteArrayDeserializer deserializer = new ByteArrayDeserializer() {
             int i = 0;
+
             @Override
             public byte[] deserialize(String topic, byte[] data) {
                 if (i++ % 2 == 1) {
@@ -3191,16 +3192,16 @@ public class FetchRequestManagerTest {
         // The test runs with 2 partitions where 1 partition is fetched without errors, and
         // 2nd partition faces errors due to leadership changes.
         buildFetcher(new MetricConfig(), AutoOffsetResetStrategy.EARLIEST, new BytesDeserializer(),
-            new BytesDeserializer(),
-            Integer.MAX_VALUE, IsolationLevel.READ_UNCOMMITTED,
-            Duration.ofMinutes(5).toMillis());
+                new BytesDeserializer(),
+                Integer.MAX_VALUE, IsolationLevel.READ_UNCOMMITTED,
+                Duration.ofMinutes(5).toMillis());
 
         // Setup so that tp0 & tp1 are subscribed and will be fetched from.
         // Also, setup client's metadata for tp0 & tp1.
         subscriptions.assignFromUser(Set.of(tp0, tp1));
         client.updateMetadata(
-            RequestTestUtils.metadataUpdateWithIds(2, singletonMap(topicName, 4),
-                tp -> validLeaderEpoch, topicIds, false));
+                RequestTestUtils.metadataUpdateWithIds(2, singletonMap(topicName, 4),
+                        tp -> validLeaderEpoch, topicIds, false));
         Node tp0Leader = metadata.fetch().leaderFor(tp0);
         Node tp1Leader = metadata.fetch().leaderFor(tp1);
         Node nodeId0 = metadata.fetch().nodeById(0);
@@ -3212,9 +3213,9 @@ public class FetchRequestManagerTest {
         assertEquals(2, sendFetches());
         assertFalse(fetcher.hasCompletedFetches());
         client.prepareResponseFrom(fullFetchResponse(tidp0, this.records, Errors.NONE, 100L,
-            FetchResponse.INVALID_LAST_STABLE_OFFSET, 0, Optional.of(nodeId0.id())), tp0Leader);
+                FetchResponse.INVALID_LAST_STABLE_OFFSET, 0, Optional.of(nodeId0.id())), tp0Leader);
         client.prepareResponseFrom(fullFetchResponse(tidp1, this.records, Errors.NONE, 100L,
-            FetchResponse.INVALID_LAST_STABLE_OFFSET, 0, Optional.of(nodeId0.id())), tp1Leader);
+                FetchResponse.INVALID_LAST_STABLE_OFFSET, 0, Optional.of(nodeId0.id())), tp1Leader);
         networkClientDelegate.poll(time.timer(0));
         assertTrue(fetcher.hasCompletedFetches());
         Map<TopicPartition, List<ConsumerRecord<byte[], byte[]>>> partitionRecords = fetchRecords();
@@ -3236,17 +3237,17 @@ public class FetchRequestManagerTest {
         // in the FetchResponse. This is the behaviour prior to KIP-951, should keep on working.
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> partitions = new LinkedHashMap<>();
         partitions.put(tidp0,
-            new FetchResponseData.PartitionData()
-                .setPartitionIndex(tidp0.topicPartition().partition())
-                .setErrorCode(error.code()));
+                new FetchResponseData.PartitionData()
+                        .setPartitionIndex(tidp0.topicPartition().partition())
+                        .setErrorCode(error.code()));
         partitions.put(tidp1,
-            new FetchResponseData.PartitionData()
-                .setPartitionIndex(tidp1.topicPartition().partition())
-                .setErrorCode(Errors.NONE.code())
-                .setHighWatermark(100L)
-                .setLastStableOffset(FetchResponse.INVALID_LAST_STABLE_OFFSET)
-                .setLogStartOffset(0)
-                .setRecords(nextRecords));
+                new FetchResponseData.PartitionData()
+                        .setPartitionIndex(tidp1.topicPartition().partition())
+                        .setErrorCode(Errors.NONE.code())
+                        .setHighWatermark(100L)
+                        .setLastStableOffset(FetchResponse.INVALID_LAST_STABLE_OFFSET)
+                        .setLogStartOffset(0)
+                        .setRecords(nextRecords));
         client.prepareResponseFrom(FetchResponse.of(Errors.NONE, 0, INVALID_SESSION_ID, partitions, List.of()), nodeId0);
         networkClientDelegate.poll(time.timer(0));
         partitionRecords = fetchRecords();
@@ -3261,10 +3262,10 @@ public class FetchRequestManagerTest {
 
         // Validate preferred-read-replica is cleared for tp0 due to the error.
         assertEquals(Optional.empty(),
-            subscriptions.preferredReadReplica(tp0, time.milliseconds()));
+                subscriptions.preferredReadReplica(tp0, time.milliseconds()));
         // Validate preferred-read-replica is still set for tp1 as previous fetch for it was ok.
         assertEquals(Optional.of(nodeId0.id()),
-            subscriptions.preferredReadReplica(tp1, time.milliseconds()));
+                subscriptions.preferredReadReplica(tp1, time.milliseconds()));
 
         // Validate subscription is still valid & fetch-able for both tp0 & tp1. And tp0 points to original leader.
         assertTrue(subscriptions.isFetchable(tp0));
@@ -3284,16 +3285,16 @@ public class FetchRequestManagerTest {
         // The test runs with 2 partitions where 1 partition is fetched without errors, and
         // 2nd partition faces errors due to leadership changes.
         buildFetcher(new MetricConfig(), AutoOffsetResetStrategy.EARLIEST, new BytesDeserializer(),
-            new BytesDeserializer(),
-            Integer.MAX_VALUE, IsolationLevel.READ_UNCOMMITTED,
-            Duration.ofMinutes(5).toMillis());
+                new BytesDeserializer(),
+                Integer.MAX_VALUE, IsolationLevel.READ_UNCOMMITTED,
+                Duration.ofMinutes(5).toMillis());
 
         // Setup so that tp0 & tp1 are subscribed and will be fetched from.
         // Also, setup client's metadata for tp0 & tp1.
         subscriptions.assignFromUser(Set.of(tp0, tp1));
         client.updateMetadata(
-            RequestTestUtils.metadataUpdateWithIds(2, singletonMap(topicName, 4),
-                tp -> validLeaderEpoch, topicIds, false));
+                RequestTestUtils.metadataUpdateWithIds(2, singletonMap(topicName, 4),
+                        tp -> validLeaderEpoch, topicIds, false));
         Node tp0Leader = metadata.fetch().leaderFor(tp0);
         Node tp1Leader = metadata.fetch().leaderFor(tp1);
         Node nodeId0 = metadata.fetch().nodeById(0);
@@ -3305,9 +3306,9 @@ public class FetchRequestManagerTest {
         assertEquals(2, sendFetches());
         assertFalse(fetcher.hasCompletedFetches());
         client.prepareResponseFrom(fullFetchResponse(tidp0, this.records, Errors.NONE, 100L,
-            FetchResponse.INVALID_LAST_STABLE_OFFSET, 0, Optional.of(nodeId0.id())), tp0Leader);
+                FetchResponse.INVALID_LAST_STABLE_OFFSET, 0, Optional.of(nodeId0.id())), tp0Leader);
         client.prepareResponseFrom(fullFetchResponse(tidp1, this.records, Errors.NONE, 100L,
-            FetchResponse.INVALID_LAST_STABLE_OFFSET, 0, Optional.of(nodeId0.id())), tp1Leader);
+                FetchResponse.INVALID_LAST_STABLE_OFFSET, 0, Optional.of(nodeId0.id())), tp1Leader);
         networkClientDelegate.poll(time.timer(0));
         assertTrue(fetcher.hasCompletedFetches());
         Map<TopicPartition, List<ConsumerRecord<byte[], byte[]>>> partitionRecords = fetchRecords();
@@ -3330,20 +3331,20 @@ public class FetchRequestManagerTest {
         LinkedHashMap<TopicIdPartition, FetchResponseData.PartitionData> partitions = new LinkedHashMap<>();
         Node newNode = new Node(999, "newnode", 999, "newrack");
         FetchResponseData.PartitionData tp0Data = new FetchResponseData.PartitionData()
-            .setPartitionIndex(tidp0.topicPartition().partition())
-            .setErrorCode(error.code());
+                .setPartitionIndex(tidp0.topicPartition().partition())
+                .setErrorCode(error.code());
         tp0Data.currentLeader().setLeaderId(newNode.id());
         int tp0NewLeaderEpoch = validLeaderEpoch + 100;
         tp0Data.currentLeader().setLeaderEpoch(tp0NewLeaderEpoch);
         partitions.put(tidp0, tp0Data);
         partitions.put(tidp1,
-            new FetchResponseData.PartitionData()
-                .setPartitionIndex(tidp1.topicPartition().partition())
-                .setErrorCode(Errors.NONE.code())
-                .setHighWatermark(100L)
-                .setLastStableOffset(FetchResponse.INVALID_LAST_STABLE_OFFSET)
-                .setLogStartOffset(0)
-                .setRecords(nextRecords));
+                new FetchResponseData.PartitionData()
+                        .setPartitionIndex(tidp1.topicPartition().partition())
+                        .setErrorCode(Errors.NONE.code())
+                        .setHighWatermark(100L)
+                        .setLastStableOffset(FetchResponse.INVALID_LAST_STABLE_OFFSET)
+                        .setLogStartOffset(0)
+                        .setRecords(nextRecords));
         client.prepareResponseFrom(FetchResponse.of(Errors.NONE, 0, INVALID_SESSION_ID, partitions, singletonList(newNode)), nodeId0);
         networkClientDelegate.poll(time.timer(0));
         partitionRecords = fetchRecords();
@@ -3364,10 +3365,10 @@ public class FetchRequestManagerTest {
 
         // Validate preferred-read-replica is cleared for tp0 due to the error.
         assertEquals(Optional.empty(),
-            subscriptions.preferredReadReplica(tp0, time.milliseconds()));
+                subscriptions.preferredReadReplica(tp0, time.milliseconds()));
         // Validate preferred-read-replica is still set for tp1 as previous fetch is ok.
         assertEquals(Optional.of(nodeId0.id()),
-            subscriptions.preferredReadReplica(tp1, time.milliseconds()));
+                subscriptions.preferredReadReplica(tp1, time.milliseconds()));
 
         // Validate subscription is valid & fetch-able, and points to the new leader.
         assertTrue(subscriptions.isFetchable(tp0));
@@ -3614,10 +3615,10 @@ public class FetchRequestManagerTest {
         // Exclude node0Partition2 (the remaining buffered partition for node 0) when updating the assigned partitions
         // to cause it to become unassigned.
         subscriptions.assignFromUser(Set.of(
-            node0Partition1,
-            // node0Partition2,         // Intentionally omit this partition so that it is unassigned
-            node1Partition1,
-            node1Partition2
+                node0Partition1,
+                // node0Partition2,         // Intentionally omit this partition so that it is unassigned
+                node1Partition1,
+                node1Partition2
         ));
 
         // node0Partition1 (the collected partition) should have a retrievable position, but node0Partition2
@@ -3670,9 +3671,9 @@ public class FetchRequestManagerTest {
         // Overwrite tp1's position with an empty leader, but verify that it is still buffered. Having a leaderless,
         // buffered partition is key to triggering the test case.
         subscriptions.position(tp1, new SubscriptionState.FetchPosition(
-            0,
-            Optional.empty(),
-            Metadata.LeaderAndEpoch.noLeaderOrEpoch()
+                0,
+                Optional.empty(),
+                Metadata.LeaderAndEpoch.noLeaderOrEpoch()
         ));
         assertTrue(fetcher.fetchBuffer.bufferedPartitions().contains(tp1));
 
@@ -3817,10 +3818,10 @@ public class FetchRequestManagerTest {
         Cluster cluster = metadata.fetch();
 
         return partitions.stream()
-            .map(cluster::leaderFor)
-            .filter(Objects::nonNull)
-            .distinct()
-            .collect(Collectors.toList());
+                .map(cluster::leaderFor)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     /**
@@ -3831,8 +3832,8 @@ public class FetchRequestManagerTest {
         Cluster cluster = metadata.fetch();
 
         return partitions.stream()
-            .filter(tp -> node.equals(cluster.leaderFor(tp)))
-            .collect(Collectors.toList());
+                .filter(tp -> node.equals(cluster.leaderFor(tp)))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -3845,15 +3846,15 @@ public class FetchRequestManagerTest {
         partitions.forEach(tp -> {
             MemoryRecords records = buildRecords(offset, 10, 1);
             FetchResponseData.PartitionData partitionData = new FetchResponseData.PartitionData()
-                .setPartitionIndex(tp.partition())
-                .setHighWatermark(100)
-                .setRecords(records);
+                    .setPartitionIndex(tp.partition())
+                    .setHighWatermark(100)
+                    .setRecords(records);
             partitionDataMap.put(new TopicIdPartition(topicId, tp), partitionData);
         });
 
         client.prepareResponseFrom(
-            FetchResponse.of(Errors.NONE, 0, INVALID_SESSION_ID, partitionDataMap, List.of()),
-            node
+                FetchResponse.of(Errors.NONE, 0, INVALID_SESSION_ID, partitionDataMap, List.of()),
+                node
         );
     }
 
@@ -3867,8 +3868,8 @@ public class FetchRequestManagerTest {
         // Pause any remaining partitions so that when fetchRecords() is called, only the records for the
         // "fetched" partition are collected, leaving the remaining in the fetch buffer.
         Set<TopicPartition> pausedPartitions = partitions.stream()
-            .filter(tp -> !tp.equals(partition))
-            .collect(Collectors.toSet());
+                .filter(tp -> !tp.equals(partition))
+                .collect(Collectors.toSet());
 
         // Fetch the records, which should be just for the expected topic partition since the others were paused.
         pausedPartitions.forEach(tp -> subscriptions.pause(tp));
@@ -3881,13 +3882,13 @@ public class FetchRequestManagerTest {
      */
     private Set<TopicPartition> partitionsRequested(List<NetworkClientDelegate.UnsentRequest> requests) {
         return requests.stream()
-            .map(NetworkClientDelegate.UnsentRequest::requestBuilder)
-            .filter(FetchRequest.Builder.class::isInstance)
-            .map(FetchRequest.Builder.class::cast)
-            .map(FetchRequest.Builder::fetchData)
-            .map(Map::keySet)
-            .flatMap(Set::stream)
-            .collect(Collectors.toSet());
+                .map(NetworkClientDelegate.UnsentRequest::requestBuilder)
+                .filter(FetchRequest.Builder.class::isInstance)
+                .map(FetchRequest.Builder.class::cast)
+                .map(FetchRequest.Builder::fetchData)
+                .map(Map::keySet)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -3895,10 +3896,10 @@ public class FetchRequestManagerTest {
      */
     private Set<Node> nodesRequested(List<NetworkClientDelegate.UnsentRequest> requests) {
         return requests.stream()
-            .map(NetworkClientDelegate.UnsentRequest::node)
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .collect(Collectors.toSet());
+                .map(NetworkClientDelegate.UnsentRequest::node)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
     }
 
     private FetchResponse fetchResponseWithTopLevelError(TopicIdPartition tp, Errors error, int throttleTime) {
@@ -3986,6 +3987,7 @@ public class FetchRequestManagerTest {
      * {@link Fetch#records() user-visible records}, did not
      * {@link Fetch#positionAdvanced() advance the consumer's position},
      * and is {@link Fetch#isEmpty() empty}.
+     *
      * @param reason the reason to include for assertion methods such as {@link org.junit.jupiter.api.Assertions#assertTrue(boolean, String)}
      */
     private void assertEmptyFetch(String reason) {

@@ -100,8 +100,8 @@ public class SecurityUtilsTest {
         int testPlainSaslServerProviderIndex = getProviderIndexFromName(testPlainSaslServerProvider.getName(), providers);
 
         assertEquals(0, testScramSaslServerProviderIndex,
-            testScramSaslServerProvider.getName() + " testProvider not found at expected index");
+                testScramSaslServerProvider.getName() + " testProvider not found at expected index");
         assertEquals(1, testPlainSaslServerProviderIndex,
-            testPlainSaslServerProvider.getName() + " testProvider not found at expected index");
+                testPlainSaslServerProvider.getName() + " testProvider not found at expected index");
     }
 }

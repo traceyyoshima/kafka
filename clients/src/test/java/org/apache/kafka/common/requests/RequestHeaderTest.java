@@ -77,10 +77,10 @@ public class RequestHeaderTest {
     @Test
     public void parseHeaderWithNullClientId() {
         RequestHeaderData headerData = new RequestHeaderData().
-            setClientId(null).
-            setCorrelationId(123).
-            setRequestApiKey(ApiKeys.FIND_COORDINATOR.id).
-            setRequestApiVersion((short) 10);
+                setClientId(null).
+                setCorrelationId(123).
+                setRequestApiKey(ApiKeys.FIND_COORDINATOR.id).
+                setRequestApiVersion((short) 10);
         ObjectSerializationCache serializationCache = new ObjectSerializationCache();
         ByteBuffer buffer = ByteBuffer.allocate(headerData.size(serializationCache, (short) 2));
         headerData.write(new ByteBufferAccessor(buffer), serializationCache, (short) 2);
@@ -96,10 +96,10 @@ public class RequestHeaderTest {
     public void verifySizeMethodsReturnSameValue() {
         // Create a dummy RequestHeaderData
         RequestHeaderData headerData = new RequestHeaderData().
-            setClientId("hakuna-matata").
-            setCorrelationId(123).
-            setRequestApiKey(ApiKeys.FIND_COORDINATOR.id).
-            setRequestApiVersion((short) 10);
+                setClientId("hakuna-matata").
+                setCorrelationId(123).
+                setRequestApiKey(ApiKeys.FIND_COORDINATOR.id).
+                setRequestApiVersion((short) 10);
 
         // Serialize RequestHeaderData to a buffer
         ObjectSerializationCache serializationCache = new ObjectSerializationCache();

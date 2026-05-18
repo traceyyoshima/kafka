@@ -48,6 +48,7 @@ public class KafkaMetricsGroup {
     /**
      * Creates a new MetricName object for gauges, meters, etc. created for this
      * metrics group.
+     *
      * @param name Descriptive name of the metric.
      * @param tags Additional attributes which mBean will have.
      * @return Sanitized metric name object.
@@ -57,7 +58,7 @@ public class KafkaMetricsGroup {
     }
 
     private static MetricName explicitMetricName(String group, String typeName,
-                                                String name, Map<String, String> tags) {
+                                                 String name, Map<String, String> tags) {
         StringBuilder nameBuilder = new StringBuilder(100);
         nameBuilder.append(group);
         nameBuilder.append(":type=");

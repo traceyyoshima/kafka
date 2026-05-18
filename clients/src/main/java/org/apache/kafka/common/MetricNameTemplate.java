@@ -38,10 +38,10 @@ public class MetricNameTemplate {
      * Create a new template. Note that the order of the tags will be preserved if the supplied
      * {@code tagsNames} set has an order.
      *
-     * @param name the name of the metric; may not be null
-     * @param group the name of the group; may not be null
+     * @param name        the name of the metric; may not be null
+     * @param group       the name of the group; may not be null
      * @param description the description of the metric; may not be null
-     * @param tagsNames the set of metric tag names, which can/should be a set that maintains order; may not be null
+     * @param tagsNames   the set of metric tag names, which can/should be a set that maintains order; may not be null
      */
     public MetricNameTemplate(String name, String group, String description, Set<String> tagsNames) {
         this.name = Objects.requireNonNull(name);
@@ -53,10 +53,10 @@ public class MetricNameTemplate {
     /**
      * Create a new template. Note that the order of the tags will be preserved.
      *
-     * @param name the name of the metric; may not be null
-     * @param group the name of the group; may not be null
+     * @param name        the name of the metric; may not be null
+     * @param group       the name of the group; may not be null
      * @param description the description of the metric; may not be null
-     * @param tagsNames the names of the metric tags in the preferred order; none of the tag names should be null
+     * @param tagsNames   the names of the metric tags in the preferred order; none of the tag names should be null
      */
     public MetricNameTemplate(String name, String group, String description, String... tagsNames) {
         this(name, group, description, getTags(tagsNames));

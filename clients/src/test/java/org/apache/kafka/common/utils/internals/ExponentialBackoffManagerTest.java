@@ -33,7 +33,7 @@ class ExponentialBackoffManagerTest {
     @Test
     public void testInitialState() {
         ExponentialBackoffManager manager = new ExponentialBackoffManager(
-            5, 100, 2, 1000, 0.0);
+                5, 100, 2, 1000, 0.0);
         assertEquals(0, manager.attempts());
         assertTrue(manager.canAttempt());
     }
@@ -55,7 +55,7 @@ class ExponentialBackoffManagerTest {
         manager.incrementAttempt();
         manager.incrementAttempt();
         assertEquals(3, manager.attempts());
-        
+
         manager.resetAttempts();
         assertEquals(0, manager.attempts());
         assertTrue(manager.canAttempt());

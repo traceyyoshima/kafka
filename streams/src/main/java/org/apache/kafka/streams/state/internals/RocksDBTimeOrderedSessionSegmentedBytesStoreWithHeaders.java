@@ -48,28 +48,28 @@ import org.apache.kafka.streams.query.QueryResult;
  * @see SessionSegmentWithHeaders
  */
 class RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders
-    extends RocksDBTimeOrderedSessionSegmentedBytesStore<SessionSegmentWithHeaders> {
+        extends RocksDBTimeOrderedSessionSegmentedBytesStore<SessionSegmentWithHeaders> {
 
     RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders(
-        final String name,
-        final String metricsScope,
-        final long retention,
-        final long segmentInterval,
-        final boolean withIndex
+            final String name,
+            final String metricsScope,
+            final long retention,
+            final long segmentInterval,
+            final boolean withIndex
     ) {
         super(
-            name,
-            retention,
-            withIndex,
-            new SessionSegmentsWithHeaders(name, metricsScope, retention, segmentInterval)
+                name,
+                retention,
+                withIndex,
+                new SessionSegmentsWithHeaders(name, metricsScope, retention, segmentInterval)
         );
     }
 
     @Override
     public <R> QueryResult<R> query(
-        final Query<R> query,
-        final PositionBound positionBound,
-        final QueryConfig config
+            final Query<R> query,
+            final PositionBound positionBound,
+            final QueryConfig config
     ) {
         final long start = config.isCollectExecutionInfo() ? System.nanoTime() : -1L;
         final QueryResult<R> result;
@@ -80,7 +80,7 @@ class RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders
 
             if (config.isCollectExecutionInfo()) {
                 result.addExecutionInfo(
-                    "Handled in " + this.getClass() + " in " + (System.nanoTime() - start) + "ns"
+                        "Handled in " + this.getClass() + " in " + (System.nanoTime() - start) + "ns"
                 );
             }
             result.setPosition(position.copy());

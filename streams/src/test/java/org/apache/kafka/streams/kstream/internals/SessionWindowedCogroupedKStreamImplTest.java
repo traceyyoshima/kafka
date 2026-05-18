@@ -75,9 +75,9 @@ public class SessionWindowedCogroupedKStreamImplTest {
     @BeforeEach
     public void setup() {
         final KStream<String, String> stream = builder.stream(TOPIC, Consumed
-            .with(Serdes.String(), Serdes.String()));
+                .with(Serdes.String(), Serdes.String()));
         final KStream<String, String> stream2 = builder.stream(TOPIC2, Consumed
-            .with(Serdes.String(), Serdes.String()));
+                .with(Serdes.String(), Serdes.String()));
 
         groupedStream = stream.groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
         groupedStream2 = stream2.groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
@@ -103,43 +103,43 @@ public class SessionWindowedCogroupedKStreamImplTest {
     @Test
     public void shouldNotHaveNullMaterializedOnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            sessionMerger, (Named) null));
+                sessionMerger, (Named) null));
     }
 
     @Test
     public void shouldNotHaveNullSessionMerger2OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            null, Materialized.as("test")));
+                null, Materialized.as("test")));
     }
 
     @Test
     public void shouldNotHaveNullInitializer2OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(null, sessionMerger,
-            Materialized.as("test")));
+                Materialized.as("test")));
     }
 
     @Test
     public void shouldNotHaveNullMaterialized2OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            sessionMerger, Named.as("name"), null));
+                sessionMerger, Named.as("name"), null));
     }
 
     @Test
     public void shouldNotHaveNullSessionMerger3OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            null, Named.as("name"), Materialized.as("test")));
+                null, Named.as("name"), Materialized.as("test")));
     }
 
     @Test
     public void shouldNotHaveNullNamedOnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            sessionMerger, null, Materialized.as("test")));
+                sessionMerger, null, Materialized.as("test")));
     }
 
     @Test
     public void shouldNotHaveNullInitializer3OnAggregate() {
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(null, sessionMerger,
-            Named.as("name"), Materialized.as("test")));
+                Named.as("name"), Materialized.as("test")));
     }
 
     @Test
@@ -159,15 +159,15 @@ public class SessionWindowedCogroupedKStreamImplTest {
 
         assertThat(builder.build().describe().toString(), equalTo(
                 "Topologies:\n" +
-                "   Sub-topology: 0\n" +
-                "    Source: KSTREAM-SOURCE-0000000000 (topics: [topic])\n" +
-                "      --> foo-cogroup-agg-0\n" +
-                "    Processor: foo-cogroup-agg-0 (stores: [COGROUPKSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
-                "      --> foo-cogroup-merge\n" +
-                "      <-- KSTREAM-SOURCE-0000000000\n" +
-                "    Processor: foo-cogroup-merge (stores: [])\n" +
-                "      --> none\n" +
-                "      <-- foo-cogroup-agg-0\n\n"));
+                        "   Sub-topology: 0\n" +
+                        "    Source: KSTREAM-SOURCE-0000000000 (topics: [topic])\n" +
+                        "      --> foo-cogroup-agg-0\n" +
+                        "    Processor: foo-cogroup-agg-0 (stores: [COGROUPKSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
+                        "      --> foo-cogroup-merge\n" +
+                        "      <-- KSTREAM-SOURCE-0000000000\n" +
+                        "    Processor: foo-cogroup-merge (stores: [])\n" +
+                        "      --> none\n" +
+                        "      <-- foo-cogroup-agg-0\n\n"));
     }
 
     @ParameterizedTest

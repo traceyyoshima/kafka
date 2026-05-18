@@ -40,8 +40,8 @@ class AlterPartitionRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.ALTER_PARTITION)
     public void testBuildAlterPartitionRequest(short version) {
         AlterPartitionRequestData request = new AlterPartitionRequestData()
-            .setBrokerId(1)
-            .setBrokerEpoch(1);
+                .setBrokerId(1)
+                .setBrokerEpoch(1);
 
         TopicData topicData = new TopicData().setTopicId(topicId);
 
@@ -51,10 +51,10 @@ class AlterPartitionRequestTest {
         newIsrWithBrokerEpoch.add(new BrokerState().setBrokerId(3).setBrokerEpoch(1003));
 
         topicData.partitions().add(new PartitionData()
-            .setPartitionIndex(0)
-            .setLeaderEpoch(1)
-            .setPartitionEpoch(10)
-            .setNewIsrWithEpochs(newIsrWithBrokerEpoch));
+                .setPartitionIndex(0)
+                .setLeaderEpoch(1)
+                .setPartitionEpoch(10)
+                .setNewIsrWithEpochs(newIsrWithBrokerEpoch));
 
         request.topics().add(topicData);
 

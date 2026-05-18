@@ -175,29 +175,29 @@ public class UnifiedLog implements AutoCloseable {
      * <p>NOTE: this class handles state and behavior specific to tiered segments as well as any behavior combining both tiered
      * and local segments. The state and behavior specific to local segments are handled by the encapsulated LocalLog instance.
      *
-     * @param logStartOffset The earliest offset allowed to be exposed to kafka client.
-     *                       The logStartOffset can be updated by :
-     *                       - user's DeleteRecordsRequest
-     *                       - broker's log retention
-     *                       - broker's log truncation
-     *                       - broker's log recovery
-     *                       The logStartOffset is used to decide the following:
-     *                       - Log deletion. LogSegment whose nextOffset <= log's logStartOffset can be deleted.
-     *                         It may trigger log rolling if the active segment is deleted.
-     *                       - Earliest offset of the log in response to ListOffsetRequest. To avoid OffsetOutOfRange exception after user seeks to earliest offset,
-     *                         we make sure that logStartOffset <= log's highWatermark
-     *                       Other activities such as log cleaning are not affected by logStartOffset.
-     * @param localLog The LocalLog instance containing non-empty log segments recovered from disk
-     * @param brokerTopicStats Container for Broker Topic Yammer Metrics
+     * @param logStartOffset                      The earliest offset allowed to be exposed to kafka client.
+     *                                            The logStartOffset can be updated by :
+     *                                            - user's DeleteRecordsRequest
+     *                                            - broker's log retention
+     *                                            - broker's log truncation
+     *                                            - broker's log recovery
+     *                                            The logStartOffset is used to decide the following:
+     *                                            - Log deletion. LogSegment whose nextOffset <= log's logStartOffset can be deleted.
+     *                                            It may trigger log rolling if the active segment is deleted.
+     *                                            - Earliest offset of the log in response to ListOffsetRequest. To avoid OffsetOutOfRange exception after user seeks to earliest offset,
+     *                                            we make sure that logStartOffset <= log's highWatermark
+     *                                            Other activities such as log cleaning are not affected by logStartOffset.
+     * @param localLog                            The LocalLog instance containing non-empty log segments recovered from disk
+     * @param brokerTopicStats                    Container for Broker Topic Yammer Metrics
      * @param producerIdExpirationCheckIntervalMs How often to check for producer ids which need to be expired
-     * @param leaderEpochCache The LeaderEpochFileCache instance (if any) containing state associated
-     *                         with the provided logStartOffset and nextOffsetMetadata
-     * @param producerStateManager The ProducerStateManager instance containing state associated with the provided segments
-     * @param topicId optional Uuid to specify the topic ID for the topic if it exists. Should only be specified when
-     *                first creating the log through Partition.makeLeader or Partition.makeFollower. When reloading a log,
-     *                this field will be populated by reading the topic ID value from partition.metadata if it exists.
-     * @param remoteStorageSystemEnable flag to indicate whether the system level remote log storage is enabled or not.
-     * @param logOffsetsListener listener invoked when the high watermark is updated
+     * @param leaderEpochCache                    The LeaderEpochFileCache instance (if any) containing state associated
+     *                                            with the provided logStartOffset and nextOffsetMetadata
+     * @param producerStateManager                The ProducerStateManager instance containing state associated with the provided segments
+     * @param topicId                             optional Uuid to specify the topic ID for the topic if it exists. Should only be specified when
+     *                                            first creating the log through Partition.makeLeader or Partition.makeFollower. When reloading a log,
+     *                                            this field will be populated by reading the topic ID value from partition.metadata if it exists.
+     * @param remoteStorageSystemEnable           flag to indicate whether the system level remote log storage is enabled or not.
+     * @param logOffsetsListener                  listener invoked when the high watermark is updated
      */
     @SuppressWarnings({"this-escape"})
     public UnifiedLog(long logStartOffset,
@@ -242,19 +242,20 @@ public class UnifiedLog implements AutoCloseable {
 
     /**
      * Create a new UnifiedLog instance
-     * @param dir dir The directory in which log segments are created.
-     * @param config The log configuration settings
-     * @param logStartOffset The checkpoint of the log start offset
-     * @param recoveryPoint The checkpoint of the offset at which to begin the recovery
-     * @param scheduler The thread pool scheduler used for background actions
-     * @param brokerTopicStats Container for Broker Topic Yammer Metrics
-     * @param time The time instance used for checking the clock
-     * @param maxTransactionTimeoutMs The timeout in milliseconds for transactions
-     * @param producerStateManagerConfig The configuration for creating the ProducerStateManager instance
+     *
+     * @param dir                                 dir The directory in which log segments are created.
+     * @param config                              The log configuration settings
+     * @param logStartOffset                      The checkpoint of the log start offset
+     * @param recoveryPoint                       The checkpoint of the offset at which to begin the recovery
+     * @param scheduler                           The thread pool scheduler used for background actions
+     * @param brokerTopicStats                    Container for Broker Topic Yammer Metrics
+     * @param time                                The time instance used for checking the clock
+     * @param maxTransactionTimeoutMs             The timeout in milliseconds for transactions
+     * @param producerStateManagerConfig          The configuration for creating the ProducerStateManager instance
      * @param producerIdExpirationCheckIntervalMs How often to check for producer ids which need to be expired
-     * @param logDirFailureChannel The LogDirFailureChannel instance to asynchronously handle Log dir failure
-     * @param lastShutdownClean Boolean flag to indicate whether the associated log previously had a clean shutdown
-     * @param topicId optional Uuid to specify the topic ID for the topic if it exists
+     * @param logDirFailureChannel                The LogDirFailureChannel instance to asynchronously handle Log dir failure
+     * @param lastShutdownClean                   Boolean flag to indicate whether the associated log previously had a clean shutdown
+     * @param topicId                             optional Uuid to specify the topic ID for the topic if it exists
      * @throws IOException if an I/O error occurs
      */
     public static UnifiedLog create(File dir,
@@ -290,22 +291,23 @@ public class UnifiedLog implements AutoCloseable {
 
     /**
      * Create a new UnifiedLog instance
-     * @param dir dir The directory in which log segments are created.
-     * @param config The log configuration settings
-     * @param logStartOffset The checkpoint of the log start offset
-     * @param recoveryPoint The checkpoint of the offset at which to begin the recovery
-     * @param scheduler The thread pool scheduler used for background actions
-     * @param brokerTopicStats Container for Broker Topic Yammer Metrics
-     * @param time The time instance used for checking the clock
-     * @param maxTransactionTimeoutMs The timeout in milliseconds for transactions
-     * @param producerStateManagerConfig The configuration for creating the ProducerStateManager instance
+     *
+     * @param dir                                 dir The directory in which log segments are created.
+     * @param config                              The log configuration settings
+     * @param logStartOffset                      The checkpoint of the log start offset
+     * @param recoveryPoint                       The checkpoint of the offset at which to begin the recovery
+     * @param scheduler                           The thread pool scheduler used for background actions
+     * @param brokerTopicStats                    Container for Broker Topic Yammer Metrics
+     * @param time                                The time instance used for checking the clock
+     * @param maxTransactionTimeoutMs             The timeout in milliseconds for transactions
+     * @param producerStateManagerConfig          The configuration for creating the ProducerStateManager instance
      * @param producerIdExpirationCheckIntervalMs How often to check for producer ids which need to be expired
-     * @param logDirFailureChannel The LogDirFailureChannel instance to asynchronously handle Log dir failure
-     * @param lastShutdownClean Boolean flag to indicate whether the associated log previously had a clean shutdown
-     * @param topicId Optional Uuid to specify the topic ID for the topic if it exists
-     * @param numRemainingSegments The remaining segments to be recovered in this log keyed by recovery thread name
-     * @param remoteStorageSystemEnable Boolean flag to indicate whether the system level remote log storage is enabled or not.
-     * @param logOffsetsListener listener invoked when the high watermark is updated
+     * @param logDirFailureChannel                The LogDirFailureChannel instance to asynchronously handle Log dir failure
+     * @param lastShutdownClean                   Boolean flag to indicate whether the associated log previously had a clean shutdown
+     * @param topicId                             Optional Uuid to specify the topic ID for the topic if it exists
+     * @param numRemainingSegments                The remaining segments to be recovered in this log keyed by recovery thread name
+     * @param remoteStorageSystemEnable           Boolean flag to indicate whether the system level remote log storage is enabled or not.
+     * @param logOffsetsListener                  listener invoked when the high watermark is updated
      * @throws IOException if an I/O error occurs
      */
     public static UnifiedLog create(File dir,
@@ -359,7 +361,7 @@ public class UnifiedLog implements AutoCloseable {
                 producerStateManager,
                 numRemainingSegments,
                 isRemoteLogEnabled
-                ).load();
+        ).load();
         LocalLog localLog = new LocalLog(
                 dir,
                 config,
@@ -475,10 +477,10 @@ public class UnifiedLog implements AutoCloseable {
     /**
      * Initialize topic ID information for the log by maintaining the partition metadata file and setting the in-memory _topicId.
      * Set _topicId based on a few scenarios:
-     *   - Recover topic ID if present. Ensure we do not try to assign a provided topicId that is inconsistent
-     *     with the ID on file.
-     *   - If we were provided a topic ID when creating the log and one does not yet exist
-     *     set _topicId and write to the partition metadata file.
+     * - Recover topic ID if present. Ensure we do not try to assign a provided topicId that is inconsistent
+     * with the ID on file.
+     * - If we were provided a topic ID when creating the log and one does not yet exist
+     * set _topicId and write to the partition metadata file.
      */
     private void initializeTopicId() {
         PartitionMetadataFile partMetadataFile = partitionMetadataFile.orElseThrow(() ->
@@ -542,10 +544,10 @@ public class UnifiedLog implements AutoCloseable {
     public long updateHighWatermark(LogOffsetMetadata highWatermarkMetadata) throws IOException {
         LogOffsetMetadata endOffsetMetadata = localLog.logEndOffsetMetadata();
         LogOffsetMetadata newHighWatermarkMetadata = highWatermarkMetadata.messageOffset < logStartOffset
-            ? new LogOffsetMetadata(logStartOffset)
-            : highWatermarkMetadata.messageOffset >= endOffsetMetadata.messageOffset
-                ? endOffsetMetadata
-                : highWatermarkMetadata;
+                ? new LogOffsetMetadata(logStartOffset)
+                : highWatermarkMetadata.messageOffset >= endOffsetMetadata.messageOffset
+                  ? endOffsetMetadata
+                  : highWatermarkMetadata;
 
         updateHighWatermarkMetadata(newHighWatermarkMetadata);
         return newHighWatermarkMetadata.messageOffset;
@@ -623,7 +625,7 @@ public class UnifiedLog implements AutoCloseable {
             throw new IllegalArgumentException("High watermark offset should be non-negative");
         }
 
-        synchronized (lock)  {
+        synchronized (lock) {
             if (newHighWatermark.messageOffset < highWatermarkMetadata.messageOffset) {
                 logger.warn("Non-monotonic update of high watermark from {} to {}", highWatermarkMetadata, newHighWatermark);
             }
@@ -729,8 +731,8 @@ public class UnifiedLog implements AutoCloseable {
      * This metric is only meaningful for non-tiered topics with size-based retention configured.
      *
      * @return The partition size as a percentage of retention.bytes, or 0 if:
-     *         - Remote storage is enabled with remote copy enabled (metric handled by RemoteLogManager)
-     *         - Retention size is not configured (0 or negative)
+     * - Remote storage is enabled with remote copy enabled (metric handled by RemoteLogManager)
+     * - Retention size is not configured (0 or negative)
      */
     // Visible for testing
     int calculateRetentionSizeInPercent() {
@@ -766,7 +768,9 @@ public class UnifiedLog implements AutoCloseable {
         partitionMetadataFile.ifPresent(PartitionMetadataFile::maybeFlush);
     }
 
-    /** Only used for ZK clusters when we update and start using topic IDs on existing topics */
+    /**
+     * Only used for ZK clusters when we update and start using topic IDs on existing topics
+     */
     public void assignTopicId(Uuid topicId) {
         if (this.topicId.isPresent()) {
             Uuid currentId = this.topicId.get();
@@ -777,13 +781,13 @@ public class UnifiedLog implements AutoCloseable {
         } else {
             this.topicId = Optional.of(topicId);
             partitionMetadataFile.ifPresentOrElse(
-                file -> {
-                    if (!file.exists()) {
-                        file.record(topicId);
-                        scheduler().scheduleOnce("flush-metadata-file", this::maybeFlushMetadataFile);
-                    }
-                },
-                () -> logger.warn("The topic id {} will not be persisted to the partition metadata file since the partition is deleted", topicId)
+                    file -> {
+                        if (!file.exists()) {
+                            file.record(topicId);
+                            scheduler().scheduleOnce("flush-metadata-file", this::maybeFlushMetadataFile);
+                        }
+                    },
+                    () -> logger.warn("The topic id {} will not be persisted to the partition metadata file since the partition is deleted", topicId)
             );
         }
     }
@@ -869,8 +873,8 @@ public class UnifiedLog implements AutoCloseable {
             Map<Long, LastRecord> result = new HashMap<>();
             producerStateManager.activeProducers().forEach((producerId, producerIdEntry) -> {
                 Optional<Long> lastDataOffset = (producerIdEntry.lastDataOffset() >= 0)
-                    ? Optional.of(producerIdEntry.lastDataOffset())
-                    : Optional.empty();
+                        ? Optional.of(producerIdEntry.lastDataOffset())
+                        : Optional.empty();
                 LastRecord lastRecord = new LastRecord(
                         lastDataOffset.map(OptionalLong::of).orElseGet(OptionalLong::empty),
                         producerIdEntry.producerEpoch());
@@ -920,8 +924,8 @@ public class UnifiedLog implements AutoCloseable {
         synchronized (lock) {
             VerificationStateEntry entry = producerStateManager.verificationStateEntry(producerId);
             return (entry != null)
-                ? entry.verificationGuard()
-                : VerificationGuard.SENTINEL;
+                    ? entry.verificationGuard()
+                    : VerificationGuard.SENTINEL;
         }
     }
 
@@ -973,7 +977,7 @@ public class UnifiedLog implements AutoCloseable {
      * Rename the directory of the local log. If the log's directory is being renamed for async deletion due to a
      * StopReplica request, then the shouldReinitialize parameter should be set to false, otherwise it should be set to true.
      *
-     * @param name The new name that this log's directory is being renamed to
+     * @param name               The new name that this log's directory is being renamed to
      * @param shouldReinitialize Whether the log's metadata should be reinitialized after renaming
      * @throws KafkaStorageException if rename fails
      */
@@ -1014,7 +1018,7 @@ public class UnifiedLog implements AutoCloseable {
     /**
      * Append this message set to the active segment of the local log, assigning offsets and Partition Leader Epochs
      *
-     * @param records The records to append
+     * @param records     The records to append
      * @param leaderEpoch the epoch of the replica appending
      */
     public LogAppendInfo appendAsLeader(MemoryRecords records, int leaderEpoch) throws IOException {
@@ -1024,9 +1028,9 @@ public class UnifiedLog implements AutoCloseable {
     /**
      * Append this message set to the active segment of the local log, assigning offsets and Partition Leader Epochs
      *
-     * @param records The records to append
+     * @param records     The records to append
      * @param leaderEpoch the epoch of the replica appending
-     * @param origin Declares the origin of the append which affects required validations
+     * @param origin      Declares the origin of the append which affects required validations
      */
     public LogAppendInfo appendAsLeader(MemoryRecords records, int leaderEpoch, AppendOrigin origin) throws IOException {
         return appendAsLeader(records, leaderEpoch, origin, RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_UNKNOWN);
@@ -1035,16 +1039,16 @@ public class UnifiedLog implements AutoCloseable {
     /**
      * Append this message set to the active segment of the local log, assigning offsets and Partition Leader Epochs
      *
-     * @param records The records to append
-     * @param leaderEpoch the epoch of the replica appending
-     * @param origin Declares the origin of the append which affects required validations
-     * @param requestLocal request local instance
-     * @param verificationGuard verification guard for transaction verification
+     * @param records            The records to append
+     * @param leaderEpoch        the epoch of the replica appending
+     * @param origin             Declares the origin of the append which affects required validations
+     * @param requestLocal       request local instance
+     * @param verificationGuard  verification guard for transaction verification
      * @param transactionVersion the transaction version for the records (1 for TV1, 2 for TV2, etc.).
      *                           Defaults to TV_UNKNOWN (-1) to force explicit specification.
      *                           Used for epoch validation of transaction markers (KIP-1228).
-     * @throws KafkaStorageException If the append fails due to an I/O error.
      * @return Information about the appended messages including the first and last offset.
+     * @throws KafkaStorageException If the append fails due to an I/O error.
      */
     public LogAppendInfo appendAsLeader(MemoryRecords records,
                                         int leaderEpoch,
@@ -1054,7 +1058,7 @@ public class UnifiedLog implements AutoCloseable {
                                         short transactionVersion) {
         boolean validateAndAssignOffsets = origin != AppendOrigin.RAFT_LEADER;
         return append(records, origin, validateAndAssignOffsets, leaderEpoch, Optional.of(requestLocal),
-            verificationGuard, false, RecordBatch.CURRENT_MAGIC_VALUE, transactionVersion);
+                verificationGuard, false, RecordBatch.CURRENT_MAGIC_VALUE, transactionVersion);
     }
 
     /**
@@ -1072,21 +1076,21 @@ public class UnifiedLog implements AutoCloseable {
     /**
      * Append this message set to the active segment of the local log without assigning offsets or Partition Leader Epochs
      *
-     * @param records The records to append
+     * @param records     The records to append
      * @param leaderEpoch the epoch of the replica appending
-     * @throws KafkaStorageException If the append fails due to an I/O error.
      * @return Information about the appended messages including the first and last offset.
+     * @throws KafkaStorageException If the append fails due to an I/O error.
      */
     public LogAppendInfo appendAsFollower(MemoryRecords records, int leaderEpoch) {
         return append(records,
-                      AppendOrigin.REPLICATION,
-                      false,
-                      leaderEpoch,
-                      Optional.empty(),
-                      VerificationGuard.SENTINEL,
-                      true,
-                      RecordBatch.CURRENT_MAGIC_VALUE,
-                      TransactionVersion.TV_UNKNOWN);
+                AppendOrigin.REPLICATION,
+                false,
+                leaderEpoch,
+                Optional.empty(),
+                VerificationGuard.SENTINEL,
+                true,
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                TransactionVersion.TV_UNKNOWN);
     }
 
     /**
@@ -1095,22 +1099,21 @@ public class UnifiedLog implements AutoCloseable {
      * <p>This method will generally be responsible for assigning offsets to the messages,
      * however if the assignOffsets=false flag is passed we will only check that the existing offsets are valid.
      *
-     * @param records The log records to append
-     * @param origin Declares the origin of the append which affects required validations
+     * @param records                  The log records to append
+     * @param origin                   Declares the origin of the append which affects required validations
      * @param validateAndAssignOffsets Should the log assign offsets to this message set or blindly apply what it is given
-     * @param leaderEpoch The partition's leader epoch which will be applied to messages when offsets are assigned on the leader
-     * @param requestLocal The request local instance if validateAndAssignOffsets is true
-     * @param verificationGuard verification guard for transaction verification
-     * @param ignoreRecordSize true to skip validation of record size.
-     * @param toMagic the record version magic value
-     * @param transactionVersion the transaction version for the records (1 for TV1, 2 for TV2, etc.).
-     *                           Defaults to TV_UNKNOWN (-1) to force explicit specification.
-     *                           Used for epoch validation of transaction markers (KIP-1228).
-     *
-     * @throws KafkaStorageException If the append fails due to an I/O error.
-     * @throws OffsetsOutOfOrderException If out of order offsets found in 'records'
-     * @throws UnexpectedAppendOffsetException If the first or last offset in append is less than next offset
+     * @param leaderEpoch              The partition's leader epoch which will be applied to messages when offsets are assigned on the leader
+     * @param requestLocal             The request local instance if validateAndAssignOffsets is true
+     * @param verificationGuard        verification guard for transaction verification
+     * @param ignoreRecordSize         true to skip validation of record size.
+     * @param toMagic                  the record version magic value
+     * @param transactionVersion       the transaction version for the records (1 for TV1, 2 for TV2, etc.).
+     *                                 Defaults to TV_UNKNOWN (-1) to force explicit specification.
+     *                                 Used for epoch validation of transaction markers (KIP-1228).
      * @return Information about the appended messages including the first and last offset.
+     * @throws KafkaStorageException           If the append fails due to an I/O error.
+     * @throws OffsetsOutOfOrderException      If out of order offsets found in 'records'
+     * @throws UnexpectedAppendOffsetException If the first or last offset in append is less than next offset
      */
     private LogAppendInfo append(MemoryRecords records,
                                  AppendOrigin origin,
@@ -1134,7 +1137,7 @@ public class UnifiedLog implements AutoCloseable {
             // trim any invalid bytes or partial messages before appending it to the on-disk log
             final MemoryRecords trimmedRecords = trimInvalidBytes(records, appendInfo);
             // they are valid, insert them in the log
-            synchronized (lock)  {
+            synchronized (lock) {
                 return maybeHandleIOException(
                         () -> "Error while appending records to " + topicPartition() + " in dir " + dir().getParent(),
                         () -> {
@@ -1241,7 +1244,7 @@ public class UnifiedLog implements AutoCloseable {
                             // now that we have valid records, offsets assigned, and timestamps updated, we need to
                             // validate the idempotent/transactional state of the producers and collect some metadata
                             AnalyzeAndValidateProducerStateResult result = analyzeAndValidateProducerState(
-                                logOffsetMetadata, validRecords, origin, verificationGuard, transactionVersion
+                                    logOffsetMetadata, validRecords, origin, verificationGuard, transactionVersion
                             );
 
                             if (result.maybeDuplicate.isPresent()) {
@@ -1344,8 +1347,8 @@ public class UnifiedLog implements AutoCloseable {
      * `logStartOffset <= logStableOffset <= highWatermark`. The leader epoch cache is also updated
      * such that all the offsets referenced in that component point to valid offset in this log.
      *
-     * @throws OffsetOutOfRangeException if the log start offset is greater than the high watermark
      * @return true if the log start offset was updated; otherwise false
+     * @throws OffsetOutOfRangeException if the log start offset is greater than the high watermark
      */
     public boolean maybeIncrementLogStartOffset(long newLogStartOffset, LogStartOffsetIncrementReason reason) {
         // We don't have to write the log start offset to log-start-offset-checkpoint immediately.
@@ -1354,7 +1357,7 @@ public class UnifiedLog implements AutoCloseable {
         return maybeHandleIOException(
                 () -> "Exception while increasing log start offset for " + topicPartition() + " to " + newLogStartOffset + " in dir " + dir().getParent(),
                 () -> {
-                    synchronized (lock)  {
+                    synchronized (lock) {
                         if (newLogStartOffset > highWatermark()) {
                             throw new OffsetOutOfRangeException("Cannot increment the log start offset to " + newLogStartOffset + " of partition " + topicPartition() +
                                     " since it is larger than the high watermark " + highWatermark());
@@ -1376,7 +1379,7 @@ public class UnifiedLog implements AutoCloseable {
                         }
                     }
                     return false;
-            });
+                });
     }
 
     private record AnalyzeAndValidateProducerStateResult(
@@ -1428,11 +1431,11 @@ public class UnifiedLog implements AutoCloseable {
                         // Check epoch first: if producer epoch is stale, throw recoverable InvalidProducerEpochException.
                         ProducerStateEntry entry = producerStateManager.activeProducers().get(batch.producerId());
                         if (entry != null && batch.producerEpoch() < entry.producerEpoch()) {
-                            String message = "Epoch of producer " + batch.producerId() + " is " + batch.producerEpoch() + 
-                                ", which is smaller than the last seen epoch " + entry.producerEpoch();
+                            String message = "Epoch of producer " + batch.producerId() + " is " + batch.producerEpoch() +
+                                    ", which is smaller than the last seen epoch " + entry.producerEpoch();
                             throw new InvalidProducerEpochException(message);
                         }
-                        
+
                         // Only check verification if epoch is current
                         if (batchMissingRequiredVerification(batch, requestVerificationGuard)) {
                             throw new InvalidTxnStateException("Record was not part of an ongoing transaction");
@@ -1443,15 +1446,15 @@ public class UnifiedLog implements AutoCloseable {
                 // We cache offset metadata for the start of each transaction. This allows us to
                 // compute the last stable offset without relying on additional index lookups.
                 Optional<LogOffsetMetadata> firstOffsetMetadata = batch.isTransactional()
-                    ? Optional.of(new LogOffsetMetadata(batch.baseOffset(), appendOffsetMetadata.segmentBaseOffset, relativePositionInSegment))
-                    : Optional.empty();
+                        ? Optional.of(new LogOffsetMetadata(batch.baseOffset(), appendOffsetMetadata.segmentBaseOffset, relativePositionInSegment))
+                        : Optional.empty();
 
                 Optional<CompletedTxn> maybeCompletedTxn = UnifiedLog.updateProducers(
-                    producerStateManager,
-                    batch, updatedProducers,
-                    firstOffsetMetadata,
-                    origin,
-                    transactionVersion
+                        producerStateManager,
+                        batch, updatedProducers,
+                        firstOffsetMetadata,
+                        origin,
+                        transactionVersion
                 );
                 maybeCompletedTxn.ifPresent(completedTxns::add);
             }
@@ -1475,7 +1478,7 @@ public class UnifiedLog implements AutoCloseable {
      * <li> that the sequence numbers of the incoming record batches are consistent with the existing state and with each other
      * <li> that the offsets are monotonically increasing (if requireOffsetsMonotonic is true)
      * </ol>
-     *
+     * <p>
      * Also compute the following quantities:
      * <ol>
      * <li> First offset in the message set
@@ -1577,9 +1580,9 @@ public class UnifiedLog implements AutoCloseable {
             if (requireOffsetsMonotonic && !monotonic) {
                 throw new OffsetsOutOfOrderException("Out of order offsets found in append to " + topicPartition() + ": " +
                         StreamSupport.stream(records.records().spliterator(), false)
-                            .map(Record::offset)
-                            .map(String::valueOf)
-                            .collect(Collectors.joining(",")));
+                                .map(Record::offset)
+                                .map(String::valueOf)
+                                .collect(Collectors.joining(",")));
             }
         }
         Optional<Integer> lastLeaderEpochOpt = (lastLeaderEpoch != RecordBatch.NO_PARTITION_LEADER_EPOCH)
@@ -1594,11 +1597,11 @@ public class UnifiedLog implements AutoCloseable {
     /**
      * Return true if the record batch has a higher leader epoch than the specified leader epoch
      *
-     * @param batch the batch to validate
-     * @param origin the reason for appending the record batch
+     * @param batch       the batch to validate
+     * @param origin      the reason for appending the record batch
      * @param leaderEpoch the epoch to compare
      * @return true if the append reason is replication and the batch's partition leader epoch is
-     *         greater than the specified leaderEpoch, otherwise false
+     * greater than the specified leaderEpoch, otherwise false
      */
     private boolean hasHigherPartitionLeaderEpoch(RecordBatch batch, AppendOrigin origin, int leaderEpoch) {
         return origin == AppendOrigin.REPLICATION
@@ -1610,7 +1613,7 @@ public class UnifiedLog implements AutoCloseable {
      * Trim any invalid bytes from the end of this message set (if there are any)
      *
      * @param records The records to trim
-     * @param info The general information of the message set
+     * @param info    The general information of the message set
      * @return A trimmed message set. This may be the same as what was passed in, or it may not.
      */
     private MemoryRecords trimInvalidBytes(MemoryRecords records, LogAppendInfo info) {
@@ -1639,12 +1642,12 @@ public class UnifiedLog implements AutoCloseable {
     /**
      * Read messages from the log.
      *
-     * @param startOffset The offset to begin reading at
-     * @param maxLength The maximum number of bytes to read
-     * @param isolation The fetch isolation, which controls the maximum offset we are allowed to read
+     * @param startOffset   The offset to begin reading at
+     * @param maxLength     The maximum number of bytes to read
+     * @param isolation     The fetch isolation, which controls the maximum offset we are allowed to read
      * @param minOneMessage If this is true, the first message will be returned even if it exceeds `maxLength` (if one exists)
-     * @throws OffsetOutOfRangeException If startOffset is beyond the log end offset or before the log start offset
      * @return The fetch data information including fetch starting offset metadata and messages read.
+     * @throws OffsetOutOfRangeException If startOffset is beyond the log end offset or before the log start offset
      */
     public FetchDataInfo read(long startOffset,
                               int maxLength,
@@ -1668,16 +1671,16 @@ public class UnifiedLog implements AutoCloseable {
      * The offset returned is the offset of the first message whose timestamp is greater than or equals to the
      * given timestamp. If no such message is found, the log end offset is returned.
      *
-     * @param targetTimestamp The given timestamp for offset fetching.
+     * @param targetTimestamp    The given timestamp for offset fetching.
      * @param remoteOffsetReader Optional AsyncOffsetReader instance if it exists.
      * @return the offset-result holder
-     *         <ul>
-     *           <li>When the partition is not enabled with remote storage, then it contains offset of the first message
-     *           whose timestamp is greater than or equals to the given timestamp; None if no such message is found.
-     *           <li>When the partition is enabled with remote storage, then it contains the job/task future and gets
-     *           completed in the async fashion.
-     *           <li>All special timestamp offset results are returned immediately irrespective of the remote storage.
-     *         </ul>
+     * <ul>
+     *   <li>When the partition is not enabled with remote storage, then it contains offset of the first message
+     *   whose timestamp is greater than or equals to the given timestamp; None if no such message is found.
+     *   <li>When the partition is enabled with remote storage, then it contains the job/task future and gets
+     *   completed in the async fashion.
+     *   <li>All special timestamp offset results are returned immediately irrespective of the remote storage.
+     * </ul>
      */
     public OffsetResultHolder fetchOffsetByTimestamp(long targetTimestamp, Optional<AsyncOffsetReader> remoteOffsetReader) {
         return maybeHandleIOException(
@@ -1693,8 +1696,8 @@ public class UnifiedLog implements AutoCloseable {
                         // log entries written in the older format.
                         Optional<EpochEntry> earliestEpochEntry = leaderEpochCache.earliestEntry();
                         Optional<Integer> epochOpt = (earliestEpochEntry.isPresent() && earliestEpochEntry.get().startOffset() <= logStartOffset)
-                            ? Optional.of(earliestEpochEntry.get().epoch())
-                            : Optional.empty();
+                                ? Optional.of(earliestEpochEntry.get().epoch())
+                                : Optional.empty();
 
                         return new OffsetResultHolder(new FileRecords.TimestampAndOffset(RecordBatch.NO_TIMESTAMP, logStartOffset, epochOpt));
                     } else if (targetTimestamp == ListOffsetsRequest.EARLIEST_LOCAL_TIMESTAMP) {
@@ -1702,8 +1705,8 @@ public class UnifiedLog implements AutoCloseable {
 
                         OptionalInt epochForOffset = leaderEpochCache.epochForOffset(curLocalLogStartOffset);
                         Optional<Integer> epochResult = epochForOffset.isPresent()
-                            ? Optional.of(epochForOffset.getAsInt())
-                            : Optional.empty();
+                                ? Optional.of(epochForOffset.getAsInt())
+                                : Optional.empty();
 
                         return new OffsetResultHolder(new FileRecords.TimestampAndOffset(RecordBatch.NO_TIMESTAMP, curLocalLogStartOffset, epochResult));
                     } else if (targetTimestamp == ListOffsetsRequest.LATEST_TIMESTAMP) {
@@ -1713,10 +1716,10 @@ public class UnifiedLog implements AutoCloseable {
                             long curHighestRemoteOffset = highestOffsetInRemoteStorage();
                             OptionalInt epochOpt = leaderEpochCache.epochForOffset(curHighestRemoteOffset);
                             Optional<Integer> epochResult = epochOpt.isPresent()
-                                ? Optional.of(epochOpt.getAsInt())
-                                : curHighestRemoteOffset == -1
-                                    ? Optional.of(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                                    : Optional.empty();
+                                    ? Optional.of(epochOpt.getAsInt())
+                                    : curHighestRemoteOffset == -1
+                                      ? Optional.of(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                      : Optional.empty();
                             return new OffsetResultHolder(new FileRecords.TimestampAndOffset(RecordBatch.NO_TIMESTAMP, curHighestRemoteOffset, epochResult));
                         } else {
                             return new OffsetResultHolder(new FileRecords.TimestampAndOffset(RecordBatch.NO_TIMESTAMP, -1L, Optional.of(-1)));
@@ -1741,11 +1744,11 @@ public class UnifiedLog implements AutoCloseable {
                         Optional<FileRecords.TimestampAndOffset> timestampAndOffsetOpt = findFirst(
                                 latestTimestampSegment.log().batchesFrom(position.position()),
                                 item -> item.maxTimestamp() == maxTimestampSoFar.timestamp())
-                                    .flatMap(batch -> batch.offsetOfMaxTimestamp()
+                                .flatMap(batch -> batch.offsetOfMaxTimestamp()
                                         .map(offset -> new FileRecords.TimestampAndOffset(
-                                            batch.maxTimestamp(),
-                                            offset,
-                                            Optional.of(batch.partitionLeaderEpoch()).filter(epoch -> epoch >= 0))));
+                                                batch.maxTimestamp(),
+                                                offset,
+                                                Optional.of(batch.partitionLeaderEpoch()).filter(epoch -> epoch >= 0))));
                         return new OffsetResultHolder(timestampAndOffsetOpt);
                     } else {
                         // We need to search the first segment whose largest timestamp is >= the target timestamp if there is one.
@@ -1756,7 +1759,7 @@ public class UnifiedLog implements AutoCloseable {
 
                             AsyncOffsetReadFutureHolder<OffsetResultHolder.FileRecordsOrError> asyncOffsetReadFutureHolder =
                                     remoteOffsetReader.get().asyncOffsetRead(topicPartition(), targetTimestamp,
-                                    logStartOffset, leaderEpochCache, () -> searchOffsetInLocalLog(targetTimestamp, localLogStartOffset()));
+                                            logStartOffset, leaderEpochCache, () -> searchOffsetInLocalLog(targetTimestamp, localLogStartOffset()));
                             return new OffsetResultHolder(Optional.empty(), Optional.of(asyncOffsetReadFutureHolder));
                         } else {
                             return new OffsetResultHolder(searchOffsetInLocalLog(targetTimestamp, logStartOffset));
@@ -1781,8 +1784,8 @@ public class UnifiedLog implements AutoCloseable {
                 long earliestPendingUploadOffset = Math.max(curHighestRemoteOffset + 1, logStartOffset());
                 OptionalInt epochForOffset = leaderEpochCache.epochForOffset(earliestPendingUploadOffset);
                 Optional<Integer> epochResult = epochForOffset.isPresent()
-                    ? Optional.of(epochForOffset.getAsInt())
-                    : Optional.empty();
+                        ? Optional.of(epochForOffset.getAsInt())
+                        : Optional.empty();
                 return new OffsetResultHolder(new FileRecords.TimestampAndOffset(RecordBatch.NO_TIMESTAMP, earliestPendingUploadOffset, epochResult));
             }
         } else {
@@ -1792,6 +1795,7 @@ public class UnifiedLog implements AutoCloseable {
 
     /**
      * Checks if the log is empty.
+     *
      * @return Returns True when the log is empty. Otherwise, false.
      */
     public boolean isEmpty() {
@@ -1812,7 +1816,7 @@ public class UnifiedLog implements AutoCloseable {
     /**
      * Given a message offset, find its corresponding offset metadata in the log.
      * 1. If the message offset is less than the log-start-offset (or) local-log-start-offset, then it returns the
-     *     message-only metadata.
+     * message-only metadata.
      * 2. If the message offset is beyond the log-end-offset, then it returns the message-only metadata.
      * 3. For all other cases, it returns the offset metadata from the log.
      */
@@ -1833,11 +1837,11 @@ public class UnifiedLog implements AutoCloseable {
      *
      * @param predicate A function that takes in a candidate log segment and the next higher segment
      *                  (if there is one) and returns true iff it is deletable
-     * @param reason The reason for the segment deletion
+     * @param reason    The reason for the segment deletion
      * @return The number of segments deleted
      */
     private int deleteOldSegments(DeletionCondition predicate, SegmentDeletionReason reason) throws IOException {
-        synchronized (lock)  {
+        synchronized (lock) {
             List<LogSegment> deletable = deletableSegments(predicate);
             if (!deletable.isEmpty()) {
                 return deleteSegments(deletable, reason);
@@ -1921,8 +1925,8 @@ public class UnifiedLog implements AutoCloseable {
      */
     private static <T> Optional<T> nextOption(Iterator<T> iterator) {
         return iterator.hasNext()
-            ? Optional.of(iterator.next())
-            : Optional.empty();
+                ? Optional.of(iterator.next())
+                : Optional.empty();
     }
 
     private int deleteSegments(List<LogSegment> deletable, SegmentDeletionReason reason) {
@@ -1960,8 +1964,8 @@ public class UnifiedLog implements AutoCloseable {
 
     /**
      * If topic deletion is enabled, delete any local log segments that have either expired due to time based
-     * retention or because the log size is > retentionSize. Empty cleanup.policy is the same as delete with 
-     * infinite retention, so we only need to delete local segments if remote storage is enabled. Whether or 
+     * retention or because the log size is > retentionSize. Empty cleanup.policy is the same as delete with
+     * infinite retention, so we only need to delete local segments if remote storage is enabled. Whether or
      * not deletion is enabled, delete any local log segments that are before the log start offset
      */
     public int deleteOldSegments() throws IOException {
@@ -2135,13 +2139,12 @@ public class UnifiedLog implements AutoCloseable {
      * The segment will be rolled if one of the following conditions met:
      * 1. The logSegment is full
      * 2. The maxTime has elapsed since the timestamp of first message in the segment (or since the
-     *    create time if the first message does not have a timestamp)
+     * create time if the first message does not have a timestamp)
      * 3. The index is full
      *
      * @param messagesSize The messages set size in bytes.
-     * @param appendInfo log append information
-     *
-     * @return  The currently active segment after (perhaps) rolling to a new segment
+     * @param appendInfo   log append information
+     * @return The currently active segment after (perhaps) rolling to a new segment
      */
     private LogSegment maybeRoll(int messagesSize, LogAppendInfo appendInfo) throws IOException {
         synchronized (lock) {
@@ -2152,9 +2155,9 @@ public class UnifiedLog implements AutoCloseable {
 
             if (segment.shouldRoll(new RollParams(config().maxSegmentMs(), config().segmentSize(), appendInfo.maxTimestamp(), appendInfo.lastOffset(), messagesSize, now))) {
                 logger.debug("Rolling new log segment (log_size = {}/{}}, " +
-                          "offset_index_size = {}/{}, " +
-                          "time_index_size = {}/{}, " +
-                          "inactive_time_ms = {}/{}).",
+                                "offset_index_size = {}/{}, " +
+                                "time_index_size = {}/{}, " +
+                                "inactive_time_ms = {}/{}).",
                         segment.size(), config().segmentSize(),
                         segment.offsetIndex().entries(), segment.offsetIndex().maxEntries(),
                         segment.timeIndex().entries(), segment.timeIndex().maxEntries(),
@@ -2172,8 +2175,8 @@ public class UnifiedLog implements AutoCloseable {
                     in the header.
                 */
                 long rollOffset = appendInfo.firstOffset() == UnifiedLog.UNKNOWN_OFFSET
-                    ? maxOffsetInMessages - Integer.MAX_VALUE
-                    : appendInfo.firstOffset();
+                        ? maxOffsetInMessages - Integer.MAX_VALUE
+                        : appendInfo.firstOffset();
                 return roll(Optional.of(rollOffset));
             } else {
                 return segment;
@@ -2227,9 +2230,9 @@ public class UnifiedLog implements AutoCloseable {
      * Flush all local log segments
      *
      * @param forceFlushActiveSegment should be true during a clean shutdown, and false otherwise. The reason is that
-     * we have to pass logEndOffset + 1 to the `localLog.flush(offset: Long): Unit` function to flush empty
-     * active segments, which is important to make sure we persist the active segment file during shutdown, particularly
-     * when it's empty.
+     *                                we have to pass logEndOffset + 1 to the `localLog.flush(offset: Long): Unit` function to flush empty
+     *                                active segments, which is important to make sure we persist the active segment file during shutdown, particularly
+     *                                when it's empty.
      */
     public void flush(boolean forceFlushActiveSegment) {
         flush(logEndOffset(), forceFlushActiveSegment);
@@ -2248,7 +2251,7 @@ public class UnifiedLog implements AutoCloseable {
      * Flush local log segments for all offsets up to offset-1 if includingOffset=false; up to offset
      * if includingOffset=true. The recovery point is set to offset.
      *
-     * @param offset The offset to flush up to; the new recovery point
+     * @param offset          The offset to flush up to; the new recovery point
      * @param includingOffset Whether the flush includes the provided offset.
      */
     private void flush(long offset, boolean includingOffset) {
@@ -2256,7 +2259,7 @@ public class UnifiedLog implements AutoCloseable {
         String includingOffsetStr = includingOffset ? "inclusive" : "exclusive";
         maybeHandleIOException(
                 () -> "Error while flushing log for " + topicPartition() + " in dir " + dir().getParent() + " with offset " + offset +
-                " (" + includingOffsetStr + ") and recovery point " + offset,
+                        " (" + includingOffsetStr + ") and recovery point " + offset,
                 () -> {
                     if (flushOffset > localLog.recoveryPoint()) {
                         logger.debug("Flushing log up to offset {} ({}) with recovery point {}, last flushed: {},  current time: {}, unflushed: {}",
@@ -2275,18 +2278,18 @@ public class UnifiedLog implements AutoCloseable {
      */
     public void delete() {
         maybeHandleIOException(
-            () -> "Error while deleting log for " + topicPartition() + " in dir " + dir().getParent(),
-            () -> {
-                synchronized (lock) {
-                    localLog.checkIfMemoryMappedBufferClosed();
-                    producerExpireCheck.cancel(true);
-                    leaderEpochCache.clear();
-                    List<LogSegment> deletedSegments = localLog.deleteAllSegments();
-                    deleteProducerSnapshots(deletedSegments, false);
-                    localLog.deleteEmptyDir();
-                }
-                return null;
-            });
+                () -> "Error while deleting log for " + topicPartition() + " in dir " + dir().getParent(),
+                () -> {
+                    synchronized (lock) {
+                        localLog.checkIfMemoryMappedBufferClosed();
+                        producerExpireCheck.cancel(true);
+                        leaderEpochCache.clear();
+                        List<LogSegment> deletedSegments = localLog.deleteAllSegments();
+                        deleteProducerSnapshots(deletedSegments, false);
+                        localLog.deleteEmptyDir();
+                    }
+                    return null;
+                });
     }
 
     // visible for testing
@@ -2379,17 +2382,17 @@ public class UnifiedLog implements AutoCloseable {
     }
 
     /**
-     *  Delete all data in the log and start at the new offset
+     * Delete all data in the log and start at the new offset
      *
-     *  @param newOffset The new offset to start the log with
-     *  @param logStartOffsetOpt The log start offset to set for the log. If None, the new offset will be used.
+     * @param newOffset         The new offset to start the log with
+     * @param logStartOffsetOpt The log start offset to set for the log. If None, the new offset will be used.
      */
     public void truncateFullyAndStartAt(long newOffset, Optional<Long> logStartOffsetOpt) {
         maybeHandleIOException(
                 () -> "Error while truncating the entire log for " + topicPartition() + " in dir " + dir().getParent(),
                 () -> {
                     logger.debug("Truncate and start at offset {}, logStartOffset: {}", newOffset, logStartOffsetOpt.orElse(newOffset));
-                    synchronized (lock)  {
+                    synchronized (lock) {
                         localLog.truncateFullyAndStartAt(newOffset);
                         leaderEpochCache.clearAndFlush();
                         producerStateManager.truncateFullyAndStartAt(newOffset);

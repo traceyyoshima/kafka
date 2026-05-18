@@ -42,24 +42,24 @@ public class VersionConditionalTest {
     public void testAlwaysFalseConditional() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("1-2", null), Versions.parse("3+", null)).
-            ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
-            generate(buffer);
+                forVersions(Versions.parse("1-2", null), Versions.parse("3+", null)).
+                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
+                generate(buffer);
         claimEquals(buffer,
-            "System.out.println(\"foobar\");%n");
+                "System.out.println(\"foobar\");%n");
     }
 
     @Test
     public void testAnotherAlwaysFalseConditional() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("3+", null), Versions.parse("1-2", null)).
-            ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
-            generate(buffer);
+                forVersions(Versions.parse("3+", null), Versions.parse("1-2", null)).
+                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
+                generate(buffer);
         claimEquals(buffer,
-            "System.out.println(\"foobar\");%n");
+                "System.out.println(\"foobar\");%n");
     }
 
     @Test
@@ -67,11 +67,11 @@ public class VersionConditionalTest {
         try {
             CodeBuffer buffer = new CodeBuffer();
             VersionConditional.
-                forVersions(Versions.parse("1-2", null), Versions.parse("3+", null)).
-                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-                ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
-                allowMembershipCheckAlwaysFalse(false).
-                generate(buffer);
+                    forVersions(Versions.parse("1-2", null), Versions.parse("3+", null)).
+                    ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                    ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
+                    allowMembershipCheckAlwaysFalse(false).
+                    generate(buffer);
         } catch (RuntimeException e) {
             assertTrue(e.getMessage().contains("no versions in common"));
         }
@@ -81,125 +81,125 @@ public class VersionConditionalTest {
     public void testAlwaysTrueConditional() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("1-5", null), Versions.parse("2-4", null)).
-            ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
-            allowMembershipCheckAlwaysFalse(false).
-            generate(buffer);
+                forVersions(Versions.parse("1-5", null), Versions.parse("2-4", null)).
+                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
+                allowMembershipCheckAlwaysFalse(false).
+                generate(buffer);
         claimEquals(buffer,
-            "System.out.println(\"hello world\");%n");
+                "System.out.println(\"hello world\");%n");
     }
 
     @Test
     public void testAlwaysTrueConditionalWithAlwaysEmitBlockScope() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("1-5", null), Versions.parse("2-4", null)).
-            ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
-            alwaysEmitBlockScope(true).
-            generate(buffer);
+                forVersions(Versions.parse("1-5", null), Versions.parse("2-4", null)).
+                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
+                alwaysEmitBlockScope(true).
+                generate(buffer);
         claimEquals(buffer,
-            "{%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "{%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
     public void testLowerRangeCheckWithElse() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("1+", null), Versions.parse("0-100", null)).
-            ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
-            generate(buffer);
+                forVersions(Versions.parse("1+", null), Versions.parse("0-100", null)).
+                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
+                generate(buffer);
         claimEquals(buffer,
-            "if (_version >= 1) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "} else {%n",
-            "    System.out.println(\"foobar\");%n",
-            "}%n");
+                "if (_version >= 1) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "} else {%n",
+                "    System.out.println(\"foobar\");%n",
+                "}%n");
     }
 
     @Test
     public void testLowerRangeCheckWithIfMember() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("1+", null), Versions.parse("0-100", null)).
-            ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            generate(buffer);
+                forVersions(Versions.parse("1+", null), Versions.parse("0-100", null)).
+                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                generate(buffer);
         claimEquals(buffer,
-            "if (_version >= 1) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if (_version >= 1) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
     public void testLowerRangeCheckWithIfNotMember() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("1+", null), Versions.parse("0-100", null)).
-            ifNotMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            generate(buffer);
+                forVersions(Versions.parse("1+", null), Versions.parse("0-100", null)).
+                ifNotMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                generate(buffer);
         claimEquals(buffer,
-            "if (_version < 1) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if (_version < 1) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
     public void testUpperRangeCheckWithElse() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("0-10", null), Versions.parse("4+", null)).
-            ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
-            generate(buffer);
+                forVersions(Versions.parse("0-10", null), Versions.parse("4+", null)).
+                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                ifNotMember(__ -> buffer.printf("System.out.println(\"foobar\");%n")).
+                generate(buffer);
         claimEquals(buffer,
-            "if (_version <= 10) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "} else {%n",
-            "    System.out.println(\"foobar\");%n",
-            "}%n");
+                "if (_version <= 10) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "} else {%n",
+                "    System.out.println(\"foobar\");%n",
+                "}%n");
     }
 
     @Test
     public void testUpperRangeCheckWithIfMember() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("0-10", null), Versions.parse("4+", null)).
-            ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            generate(buffer);
+                forVersions(Versions.parse("0-10", null), Versions.parse("4+", null)).
+                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                generate(buffer);
         claimEquals(buffer,
-            "if (_version <= 10) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if (_version <= 10) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
     public void testUpperRangeCheckWithIfNotMember() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("1+", null), Versions.parse("0-100", null)).
-            ifNotMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            generate(buffer);
+                forVersions(Versions.parse("1+", null), Versions.parse("0-100", null)).
+                ifNotMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                generate(buffer);
         claimEquals(buffer,
-            "if (_version < 1) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if (_version < 1) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 
     @Test
     public void testFullRangeCheck() throws Exception {
         CodeBuffer buffer = new CodeBuffer();
         VersionConditional.
-            forVersions(Versions.parse("5-10", null), Versions.parse("1+", null)).
-            ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
-            allowMembershipCheckAlwaysFalse(false).
-            generate(buffer);
+                forVersions(Versions.parse("5-10", null), Versions.parse("1+", null)).
+                ifMember(__ -> buffer.printf("System.out.println(\"hello world\");%n")).
+                allowMembershipCheckAlwaysFalse(false).
+                generate(buffer);
         claimEquals(buffer,
-            "if ((_version >= 5) && (_version <= 10)) {%n",
-            "    System.out.println(\"hello world\");%n",
-            "}%n");
+                "if ((_version >= 5) && (_version <= 10)) {%n",
+                "    System.out.println(\"hello world\");%n",
+                "}%n");
     }
 }

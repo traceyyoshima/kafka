@@ -37,8 +37,8 @@ public class ListGroupsOptions extends AbstractOptions<ListGroupsOptions> {
      */
     public static ListGroupsOptions forConsumerGroups() {
         return new ListGroupsOptions()
-            .withTypes(Set.of(GroupType.CLASSIC, GroupType.CONSUMER))
-            .withProtocolTypes(Set.of("", ConsumerProtocol.PROTOCOL_TYPE));
+                .withTypes(Set.of(GroupType.CLASSIC, GroupType.CONSUMER))
+                .withProtocolTypes(Set.of("", ConsumerProtocol.PROTOCOL_TYPE));
     }
 
     /**
@@ -47,7 +47,7 @@ public class ListGroupsOptions extends AbstractOptions<ListGroupsOptions> {
      */
     public static ListGroupsOptions forShareGroups() {
         return new ListGroupsOptions()
-            .withTypes(Set.of(GroupType.SHARE));
+                .withTypes(Set.of(GroupType.SHARE));
     }
 
     /**
@@ -56,7 +56,7 @@ public class ListGroupsOptions extends AbstractOptions<ListGroupsOptions> {
      */
     public static ListGroupsOptions forStreamsGroups() {
         return new ListGroupsOptions()
-            .withTypes(Set.of(GroupType.STREAMS));
+                .withTypes(Set.of(GroupType.STREAMS));
     }
 
     /**

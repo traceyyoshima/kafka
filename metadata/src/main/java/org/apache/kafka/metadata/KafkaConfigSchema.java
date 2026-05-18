@@ -48,7 +48,7 @@ public class KafkaConfigSchema {
 
     /**
      * Translate a ConfigDef.Type to its equivalent for ConfigEntry.ConfigType.
-     *
+     * <p>
      * We do not want this code in ConfigEntry, since that is a public-facing API. On the
      * other hand, putting this code in ConfigDef.Type would introduce an unwanted dependency
      * from org.apache.kafka.common.config to org.apache.kafka.clients.admin. So it
@@ -80,7 +80,7 @@ public class KafkaConfigSchema {
 
     /**
      * Translate a ConfigEntry.ConfigSource enum to its equivalent for DescribeConfigsResponse.
-     *
+     * <p>
      * We do not want this code in ConfigEntry, since that is a public-facing API. On the
      * other hand, putting this code in DescribeConfigsResponse would introduce an unwanted
      * dependency from org.apache.kafka.common.requests to org.apache.kafka.clients.admin.
@@ -160,66 +160,66 @@ public class KafkaConfigSchema {
                 continue;
             }
             ConfigEntry entry = resolveEffectiveTopicConfig(configKey, staticNodeConfig,
-                dynamicClusterConfigs, dynamicNodeConfigs, dynamicTopicConfigs);
+                    dynamicClusterConfigs, dynamicNodeConfigs, dynamicTopicConfigs);
             effectiveConfigs.put(entry.name(), entry);
         }
         return effectiveConfigs;
     }
 
     public ConfigEntry resolveEffectiveTopicConfig(
-        String keyName,
-        Map<String, ?> staticNodeConfig,
-        Map<String, ?> dynamicClusterConfigs,
-        Map<String, ?> dynamicNodeConfigs,
-        Map<String, ?> dynamicTopicConfigs
+            String keyName,
+            Map<String, ?> staticNodeConfig,
+            Map<String, ?> dynamicClusterConfigs,
+            Map<String, ?> dynamicNodeConfigs,
+            Map<String, ?> dynamicTopicConfigs
     ) {
         ConfigDef configDef = configDefs.getOrDefault(ConfigResource.Type.TOPIC, EMPTY_CONFIG_DEF);
         ConfigDef.ConfigKey configKey = configDef.configKeys().get(keyName);
         return resolveEffectiveTopicConfig(configKey,
-            staticNodeConfig,
-            dynamicClusterConfigs,
-            dynamicNodeConfigs,
-            dynamicTopicConfigs);
+                staticNodeConfig,
+                dynamicClusterConfigs,
+                dynamicNodeConfigs,
+                dynamicTopicConfigs);
     }
 
     public ConfigEntry resolveEffectiveTopicConfig(
-        ConfigDef.ConfigKey configKey,
-        Map<String, ?> staticNodeConfig,
-        Map<String, ?> dynamicClusterConfigs,
-        Map<String, ?> dynamicNodeConfigs,
-        Map<String, ?> dynamicTopicConfigs
+            ConfigDef.ConfigKey configKey,
+            Map<String, ?> staticNodeConfig,
+            Map<String, ?> dynamicClusterConfigs,
+            Map<String, ?> dynamicNodeConfigs,
+            Map<String, ?> dynamicTopicConfigs
     ) {
         if (dynamicTopicConfigs.containsKey(configKey.name)) {
             return toConfigEntry(configKey,
-                dynamicTopicConfigs.get(configKey.name),
-                ConfigSource.DYNAMIC_TOPIC_CONFIG, Function.identity());
+                    dynamicTopicConfigs.get(configKey.name),
+                    ConfigSource.DYNAMIC_TOPIC_CONFIG, Function.identity());
         }
         List<ConfigSynonym> synonyms = logConfigSynonyms.getOrDefault(configKey.name, List.of());
         for (ConfigSynonym synonym : synonyms) {
             if (dynamicNodeConfigs.containsKey(synonym.name())) {
                 return toConfigEntry(configKey, dynamicNodeConfigs.get(synonym.name()),
-                    ConfigSource.DYNAMIC_BROKER_CONFIG, synonym.converter());
+                        ConfigSource.DYNAMIC_BROKER_CONFIG, synonym.converter());
             }
         }
         for (ConfigSynonym synonym : synonyms) {
             if (dynamicClusterConfigs.containsKey(synonym.name())) {
                 return toConfigEntry(configKey, dynamicClusterConfigs.get(synonym.name()),
-                    ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG, synonym.converter());
+                        ConfigSource.DYNAMIC_DEFAULT_BROKER_CONFIG, synonym.converter());
             }
         }
         for (ConfigSynonym synonym : synonyms) {
             if (staticNodeConfig.containsKey(synonym.name())) {
                 return toConfigEntry(configKey, staticNodeConfig.get(synonym.name()),
-                    ConfigSource.STATIC_BROKER_CONFIG, synonym.converter());
+                        ConfigSource.STATIC_BROKER_CONFIG, synonym.converter());
             }
         }
         return toConfigEntry(configKey, configKey.hasDefault() ? configKey.defaultValue : null,
-            ConfigSource.DEFAULT_CONFIG, Function.identity());
+                ConfigSource.DEFAULT_CONFIG, Function.identity());
     }
 
     public String getStaticOrDefaultConfig(
-        String configName,
-        Map<String, ?> staticNodeConfig
+            String configName,
+            Map<String, ?> staticNodeConfig
     ) {
         ConfigDef configDef = configDefs.getOrDefault(ConfigResource.Type.BROKER, EMPTY_CONFIG_DEF);
         ConfigDef.ConfigKey configKey = configDef.configKeys().get(configName);
@@ -228,11 +228,11 @@ public class KafkaConfigSchema {
         for (ConfigSynonym synonym : synonyms) {
             if (staticNodeConfig.containsKey(synonym.name())) {
                 return toConfigEntry(configKey, staticNodeConfig.get(synonym.name()),
-                    ConfigSource.STATIC_BROKER_CONFIG, synonym.converter()).value();
+                        ConfigSource.STATIC_BROKER_CONFIG, synonym.converter()).value();
             }
         }
         return toConfigEntry(configKey, configKey.hasDefault() ? configKey.defaultValue : null,
-            ConfigSource.DEFAULT_CONFIG, Function.identity()).value();
+                ConfigSource.DEFAULT_CONFIG, Function.identity()).value();
     }
 
     private ConfigEntry toConfigEntry(ConfigDef.ConfigKey configKey,
@@ -264,21 +264,21 @@ public class KafkaConfigSchema {
             stringValue = converter.apply(stringValue);
         }
         return new ConfigEntry(
-            configKey.name,
-            stringValue,
-            source,
-            configKey.type().isSensitive(),
-            false, // "readonly" is always false, for now.
-            List.of(), // we don't populate synonyms, for now.
-            translateConfigType(configKey.type()),
-            configKey.documentation);
+                configKey.name,
+                stringValue,
+                source,
+                configKey.type().isSensitive(),
+                false, // "readonly" is always false, for now.
+                List.of(), // we don't populate synonyms, for now.
+                translateConfigType(configKey.type()),
+                configKey.documentation);
     }
 
     public int getStaticallyConfiguredMinInsyncReplicas(Map<String, ?> staticNodeConfig) {
         String minInsyncReplicasString = Objects.requireNonNull(
-            getStaticOrDefaultConfig(MIN_IN_SYNC_REPLICAS_CONFIG, staticNodeConfig));
+                getStaticOrDefaultConfig(MIN_IN_SYNC_REPLICAS_CONFIG, staticNodeConfig));
         return (int) ConfigDef.parseType(MIN_IN_SYNC_REPLICAS_CONFIG,
-            minInsyncReplicasString,
-            ConfigDef.Type.INT);
+                minInsyncReplicasString,
+                ConfigDef.Type.INT);
     }
 }

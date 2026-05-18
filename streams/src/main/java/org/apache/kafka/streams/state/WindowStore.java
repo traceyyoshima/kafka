@@ -45,7 +45,7 @@ public interface WindowStore<K, V> extends StateStore, ReadOnlyWindowStore<K, V>
      * @param value                The value; can be null
      * @param windowStartTimestamp The timestamp of the beginning of the window to put the key/value into
      * @throws InvalidStateStoreException if the store is not initialized
-     * @throws NullPointerException if the given key is {@code null}
+     * @throws NullPointerException       if the given key is {@code null}
      */
     void put(K key, V value, long windowStartTimestamp);
 
@@ -91,9 +91,9 @@ public interface WindowStore<K, V> extends StateStore, ReadOnlyWindowStore<K, V>
                                          final Instant timeFrom,
                                          final Instant timeTo) throws IllegalArgumentException {
         return fetch(
-            key,
-            ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
-            ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
+                key,
+                ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
+                ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
     }
 
     default WindowStoreIterator<V> backwardFetch(final K key,
@@ -107,9 +107,9 @@ public interface WindowStore<K, V> extends StateStore, ReadOnlyWindowStore<K, V>
                                                  final Instant timeFrom,
                                                  final Instant timeTo) throws IllegalArgumentException {
         return backwardFetch(
-            key,
-            ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
-            ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
+                key,
+                ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
+                ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
     }
 
     /**
@@ -117,10 +117,10 @@ public interface WindowStore<K, V> extends StateStore, ReadOnlyWindowStore<K, V>
      * <p>
      * This iterator must be closed after use.
      *
-     * @param keyFrom     the first key in the range
-     *                    A null value indicates a starting position from the first element in the store.
-     * @param keyTo       the last key in the range
-     *                    A null value indicates that the range ends with the last element in the store.
+     * @param keyFrom  the first key in the range
+     *                 A null value indicates a starting position from the first element in the store.
+     * @param keyTo    the last key in the range
+     *                 A null value indicates that the range ends with the last element in the store.
      * @param timeFrom time range start (inclusive)
      * @param timeTo   time range end (inclusive)
      * @return an iterator over windowed key-value pairs {@code <Windowed<K>, value>}
@@ -136,10 +136,10 @@ public interface WindowStore<K, V> extends StateStore, ReadOnlyWindowStore<K, V>
                                                    final Instant timeFrom,
                                                    final Instant timeTo) throws IllegalArgumentException {
         return fetch(
-            keyFrom,
-            keyTo,
-            ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
-            ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
+                keyFrom,
+                keyTo,
+                ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
+                ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
     }
 
     default KeyValueIterator<Windowed<K>, V> backwardFetch(final K keyFrom,
@@ -151,14 +151,14 @@ public interface WindowStore<K, V> extends StateStore, ReadOnlyWindowStore<K, V>
 
     @Override
     default KeyValueIterator<Windowed<K>, V> backwardFetch(final K keyFrom,
-                                                          final K keyTo,
-                                                          final Instant timeFrom,
-                                                          final Instant timeTo) throws IllegalArgumentException {
+                                                           final K keyTo,
+                                                           final Instant timeFrom,
+                                                           final Instant timeTo) throws IllegalArgumentException {
         return backwardFetch(
-            keyFrom,
-            keyTo,
-            ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
-            ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
+                keyFrom,
+                keyTo,
+                ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
+                ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
     }
 
     /**
@@ -176,8 +176,8 @@ public interface WindowStore<K, V> extends StateStore, ReadOnlyWindowStore<K, V>
     @Override
     default KeyValueIterator<Windowed<K>, V> fetchAll(final Instant timeFrom, final Instant timeTo) throws IllegalArgumentException {
         return fetchAll(
-            ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
-            ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
+                ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
+                ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
     }
 
     default KeyValueIterator<Windowed<K>, V> backwardFetchAll(final long timeFrom, final long timeTo) {
@@ -187,7 +187,7 @@ public interface WindowStore<K, V> extends StateStore, ReadOnlyWindowStore<K, V>
     @Override
     default KeyValueIterator<Windowed<K>, V> backwardFetchAll(final Instant timeFrom, final Instant timeTo) throws IllegalArgumentException {
         return backwardFetchAll(
-            ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
-            ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
+                ApiUtils.validateMillisecondInstant(timeFrom, prepareMillisCheckFailMsgPrefix(timeFrom, "timeFrom")),
+                ApiUtils.validateMillisecondInstant(timeTo, prepareMillisCheckFailMsgPrefix(timeTo, "timeTo")));
     }
 }

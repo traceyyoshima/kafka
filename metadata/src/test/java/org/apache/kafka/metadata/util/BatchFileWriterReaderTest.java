@@ -46,10 +46,10 @@ public final class BatchFileWriterReaderTest {
 
         try (BatchFileWriter writer = BatchFileWriter.open(tempPath)) {
             ApiMessageAndVersion message = new ApiMessageAndVersion(
-                new TopicRecord()
-                    .setName("bar")
-                    .setTopicId(Uuid.fromString("cxBT72dK4si8Ied1iP4wBA")),
-                (short) 0
+                    new TopicRecord()
+                            .setName("bar")
+                            .setTopicId(Uuid.fromString("cxBT72dK4si8Ied1iP4wBA")),
+                    (short) 0
             );
 
             writer.append(message);

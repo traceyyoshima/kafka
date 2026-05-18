@@ -45,11 +45,11 @@ public final class EndpointReadyFuturesTest {
             new Endpoint("INTERNAL", SecurityProtocol.PLAINTEXT, "127.0.0.1", 9093);
 
     private static final KafkaAuthorizerServerInfo INFO = new KafkaAuthorizerServerInfo(
-        new ClusterResource("S6-01LPiQOCBhhFIunQUcQ"),
-        1,
-        List.of(EXTERNAL, INTERNAL),
-        INTERNAL,
-        List.of("INTERNAL"));
+            new ClusterResource("S6-01LPiQOCBhhFIunQUcQ"),
+            1,
+            List.of(EXTERNAL, INTERNAL),
+            INTERNAL,
+            List.of("INTERNAL"));
 
     static void assertComplete(
             EndpointReadyFutures readyFutures,
@@ -87,7 +87,7 @@ public final class EndpointReadyFuturesTest {
             assertTrue(future.isCompletedExceptionally(),
                     "Future for " + endpoint + " is not completed exceptionally.");
             Throwable cause = assertThrows(CompletionException.class,
-                () -> future.getNow(null)).getCause();
+                    () -> future.getNow(null)).getCause();
             assertNotNull(cause, "Unable to find CompletionException cause for " + endpoint);
             assertEquals(throwable.getClass(), cause.getClass());
             assertEquals(throwable.getMessage(), cause.getMessage());

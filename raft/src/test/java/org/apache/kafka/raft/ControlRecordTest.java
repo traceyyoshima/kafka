@@ -42,8 +42,8 @@ public final class ControlRecordTest {
 
         // Invalid constructions
         assertThrows(
-            IllegalArgumentException.class,
-            () -> ControlRecord.of(Mockito.mock(ApiMessage.class))
+                IllegalArgumentException.class,
+                () -> ControlRecord.of(Mockito.mock(ApiMessage.class))
         );
     }
 

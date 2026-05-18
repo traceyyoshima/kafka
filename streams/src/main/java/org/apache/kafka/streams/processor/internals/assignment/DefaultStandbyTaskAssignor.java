@@ -45,7 +45,7 @@ class DefaultStandbyTaskAssignor implements StandbyTaskAssignor {
                           final AssignmentConfigs configs) {
         final int numStandbyReplicas = configs.numStandbyReplicas();
         final Map<TaskId, Integer> tasksToRemainingStandbys = computeTasksToRemainingStandbys(numStandbyReplicas,
-                                                                                              statefulTaskIds);
+                statefulTaskIds);
 
         final ConstrainedPrioritySet standbyTaskClientsByTaskLoad = createLeastLoadedPrioritySetConstrainedByAssignedTask(clients);
 
@@ -53,11 +53,11 @@ class DefaultStandbyTaskAssignor implements StandbyTaskAssignor {
 
         for (final TaskId task : statefulTaskIds) {
             pollClientAndMaybeAssignAndUpdateRemainingStandbyTasks(numStandbyReplicas,
-                                                                   clients,
-                                                                   tasksToRemainingStandbys,
-                                                                   standbyTaskClientsByTaskLoad,
-                                                                   task,
-                                                                   log);
+                    clients,
+                    tasksToRemainingStandbys,
+                    standbyTaskClientsByTaskLoad,
+                    task,
+                    log);
         }
 
         // returning false, because standby task assignment will never require a follow-up probing rebalance.

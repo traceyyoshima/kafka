@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * The result of {@link AdminClient#listPartitionReassignments(ListPartitionReassignmentsOptions)}.
- *
+ * <p>
  * The API of this class is evolving. See {@link AdminClient} for details.
  */
 public class ListPartitionReassignmentsResult {

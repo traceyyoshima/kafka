@@ -35,42 +35,42 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class DelegationTokenDataTest {
 
     private static final List<String> UUID = List.of(
-        Uuid.randomUuid().toString(),
-        Uuid.randomUuid().toString(),
-        Uuid.randomUuid().toString());
+            Uuid.randomUuid().toString(),
+            Uuid.randomUuid().toString(),
+            Uuid.randomUuid().toString());
 
     private static final List<KafkaPrincipal> EMPTYRENEWERS = List.of();
 
     private static final List<TokenInformation> TOKENINFORMATION = List.of(
-        new TokenInformation(
-            UUID.get(0),
-            new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
-            new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
-            EMPTYRENEWERS,
-            0,
-            100,
-            100),
-        new TokenInformation(
-            UUID.get(1),
-            new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
-            new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
-            EMPTYRENEWERS,
-            0,
-            100,
-            100),
-        new TokenInformation(
-            UUID.get(2),
-            new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "fred"),
-            new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
-            EMPTYRENEWERS,
-            0,
-            100,
-            100));
+            new TokenInformation(
+                    UUID.get(0),
+                    new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
+                    new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
+                    EMPTYRENEWERS,
+                    0,
+                    100,
+                    100),
+            new TokenInformation(
+                    UUID.get(1),
+                    new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
+                    new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
+                    EMPTYRENEWERS,
+                    0,
+                    100,
+                    100),
+            new TokenInformation(
+                    UUID.get(2),
+                    new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "fred"),
+                    new KafkaPrincipal(KafkaPrincipal.USER_TYPE, "alice"),
+                    EMPTYRENEWERS,
+                    0,
+                    100,
+                    100));
 
     private static final List<DelegationTokenData> DELEGATIONTOKENDATA = List.of(
-        new DelegationTokenData(TOKENINFORMATION.get(0)),
-        new DelegationTokenData(TOKENINFORMATION.get(1)),
-        new DelegationTokenData(TOKENINFORMATION.get(2)));
+            new DelegationTokenData(TOKENINFORMATION.get(0)),
+            new DelegationTokenData(TOKENINFORMATION.get(1)),
+            new DelegationTokenData(TOKENINFORMATION.get(2)));
 
     @Test
     public void testValues() {
@@ -93,8 +93,8 @@ public class DelegationTokenDataTest {
     @Test
     public void testToString() {
         assertEquals("DelegationTokenData" +
-            "(tokenInformation=" + "[hidden]" +
-            ")", DELEGATIONTOKENDATA.get(0).toString());
+                "(tokenInformation=" + "[hidden]" +
+                ")", DELEGATIONTOKENDATA.get(0).toString());
     }
 
     @Test
@@ -106,12 +106,12 @@ public class DelegationTokenDataTest {
 
     private void testRoundTrip(DelegationTokenData origDelegationTokenData) {
         ApiMessageAndVersion messageAndVersion = new ApiMessageAndVersion(
-            origDelegationTokenData.toRecord(), (short) 0);
+                origDelegationTokenData.toRecord(), (short) 0);
         DelegationTokenData newDelegationTokenData = DelegationTokenData.fromRecord(
-            (DelegationTokenRecord) messageAndVersion.message());
+                (DelegationTokenRecord) messageAndVersion.message());
         assertEquals(origDelegationTokenData, newDelegationTokenData);
         ApiMessageAndVersion messageAndVersion2 = new ApiMessageAndVersion(
-            newDelegationTokenData.toRecord(), (short) 0);
+                newDelegationTokenData.toRecord(), (short) 0);
         assertEquals(messageAndVersion, messageAndVersion2);
     }
 }

@@ -81,7 +81,9 @@ public class DelayedProduce extends DelayedOperation {
 
     @FunctionalInterface
     public interface PartitionStatusValidator {
-        record Result(boolean hasEnough, Errors error) { }
+        record Result(boolean hasEnough, Errors error) {
+        }
+
         /**
          * Validates the status of a partition and its replicas to determine
          * if a delayed produce operation can be completed.
@@ -124,14 +126,14 @@ public class DelayedProduce extends DelayedOperation {
     /**
      * The delayed produce operation can be completed if every partition
      * it produces to is satisfied by one of the following:
-     *
+     * <p>
      * Case A: Replica not assigned to partition
      * Case B: Replica is no longer the leader of this partition
      * Case C: This broker is the leader:
-     *   C.1 - If there was a local error thrown while checking if at least requiredAcks
-     *         replicas have caught up to this operation: set an error in response
-     *   C.2 - Otherwise, set the response with no error.
-     *
+     * C.1 - If there was a local error thrown while checking if at least requiredAcks
+     * replicas have caught up to this operation: set an error in response
+     * C.2 - Otherwise, set the response with no error.
+     * <p>
      * These cases were originally validated by some methods in the ReplicaManager.
      * However, since DelayedProduce has been moved to the server module, it cannot directly access the ReplicaManager.
      * Therefore, these validations have been delegated to the method within `ReplicaManager#maybeAddDelayedProduce()`.

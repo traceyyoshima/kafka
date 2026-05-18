@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * Possible error codes.
- *
+ * <p>
  * - {@link Errors#GROUP_AUTHORIZATION_FAILED}
  * - {@link Errors#NOT_COORDINATOR}
  * - {@link Errors#COORDINATOR_NOT_AVAILABLE}
@@ -54,7 +54,7 @@ public class ConsumerGroupDescribeResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.groups().forEach(
-            group -> updateErrorCounts(counts, Errors.forCode(group.errorCode()))
+                group -> updateErrorCounts(counts, Errors.forCode(group.errorCode()))
         );
         return counts;
     }
@@ -71,7 +71,7 @@ public class ConsumerGroupDescribeResponse extends AbstractResponse {
 
     public static ConsumerGroupDescribeResponse parse(Readable readable, short version) {
         return new ConsumerGroupDescribeResponse(
-            new ConsumerGroupDescribeResponseData(readable, version)
+                new ConsumerGroupDescribeResponseData(readable, version)
         );
     }
 }

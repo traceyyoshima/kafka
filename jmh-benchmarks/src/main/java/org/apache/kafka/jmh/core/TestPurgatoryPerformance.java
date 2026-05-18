@@ -123,11 +123,13 @@ public class TestPurgatoryPerformance {
         try {
             return Optional.of(Long.parseLong(Class.forName("com.sun.management.OperatingSystemMXBean")
                     .getMethod("getProcessCpuTime").invoke(osMXBean).toString()));
-        } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                 NoSuchMethodException e) {
             try {
                 return Optional.of(Long.parseLong(Class.forName("com.ibm.lang.management.OperatingSystemMXBean")
                         .getMethod("getProcessCpuTimeByNS").invoke(osMXBean).toString()));
-            } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException ex) {
+            } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException |
+                     NoSuchMethodException ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -350,9 +352,9 @@ public class TestPurgatoryPerformance {
 
         public void printStats() {
             System.out.printf(
-                    "# interval samples: rate = %f, min = %d, max = %d%n", 
-                    1000d / (samples.stream().mapToDouble(s -> s).sum() / samples.size()), 
-                    samples.stream().min(Comparator.comparingDouble(s -> s)).get(), 
+                    "# interval samples: rate = %f, min = %d, max = %d%n",
+                    1000d / (samples.stream().mapToDouble(s -> s).sum() / samples.size()),
+                    samples.stream().min(Comparator.comparingDouble(s -> s)).get(),
                     samples.stream().max(Comparator.comparingDouble(s -> s)).get());
         }
     }

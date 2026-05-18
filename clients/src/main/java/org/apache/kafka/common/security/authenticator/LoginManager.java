@@ -59,7 +59,7 @@ public class LoginManager {
     private int refCount;
 
     private LoginManager(JaasContext jaasContext, String saslMechanism, Map<String, ?> configs,
-                 LoginMetadata<?> loginMetadata) throws LoginException {
+                         LoginMetadata<?> loginMetadata) throws LoginException {
         this.loginMetadata = loginMetadata;
         this.login = Utils.newInstance(loginMetadata.loginClass);
         loginCallbackHandler = Utils.newInstance(loginMetadata.loginCallbackClass);
@@ -75,25 +75,25 @@ public class LoginManager {
 
     /**
      * Returns an instance of `LoginManager` and increases its reference count.
-     *
+     * <p>
      * `release()` should be invoked when the `LoginManager` is no longer needed. This method will try to reuse an
      * existing `LoginManager` for the provided context type. If `jaasContext` was loaded from a dynamic config,
      * login managers are reused for the same dynamic config value. For `jaasContext` loaded from static JAAS
      * configuration, login managers are reused for static contexts with the same login context name.
-     *
+     * <p>
      * This is a bit ugly and it would be nicer if we could pass the `LoginManager` to `ChannelBuilders.create` and
      * shut it down when the broker or clients are closed. It's straightforward to do the former, but it's more
      * complicated to do the latter without making the consumer API more complex.
      *
-     * @param jaasContext Static or dynamic JAAS context. `jaasContext.dynamicJaasConfig()` is non-null for dynamic context.
-     *                    For static contexts, this may contain multiple login modules if the context type is SERVER.
-     *                    For CLIENT static contexts and dynamic contexts of CLIENT and SERVER, `jaasContext` contains
-     *                    only one login module.
-     * @param saslMechanism SASL mechanism for which login manager is being acquired. For dynamic contexts, the single
-     *                      login module in `jaasContext` corresponds to this SASL mechanism. Hence `Login` class is
-     *                      chosen based on this mechanism.
+     * @param jaasContext       Static or dynamic JAAS context. `jaasContext.dynamicJaasConfig()` is non-null for dynamic context.
+     *                          For static contexts, this may contain multiple login modules if the context type is SERVER.
+     *                          For CLIENT static contexts and dynamic contexts of CLIENT and SERVER, `jaasContext` contains
+     *                          only one login module.
+     * @param saslMechanism     SASL mechanism for which login manager is being acquired. For dynamic contexts, the single
+     *                          login module in `jaasContext` corresponds to this SASL mechanism. Hence `Login` class is
+     *                          chosen based on this mechanism.
      * @param defaultLoginClass Default login class to use if an override is not specified in `configs`
-     * @param configs Config options used to configure `Login` if a new login manager is created.
+     * @param configs           Config options used to configure `Login` if a new login manager is created.
      *
      */
     public static LoginManager acquireLoginManager(JaasContext jaasContext, String saslMechanism,
@@ -103,7 +103,7 @@ public class LoginManager {
                 saslMechanism, SaslConfigs.SASL_LOGIN_CLASS, defaultLoginClass);
         Class<? extends AuthenticateCallbackHandler> defaultLoginCallbackHandlerClass = OAuthBearerLoginModule.OAUTHBEARER_MECHANISM
                 .equals(saslMechanism) ? OAuthBearerUnsecuredLoginCallbackHandler.class
-                        : AbstractLogin.DefaultLoginCallbackHandler.class;
+                : AbstractLogin.DefaultLoginCallbackHandler.class;
         Class<? extends AuthenticateCallbackHandler> loginCallbackClass = configuredClassOrDefault(configs, jaasContext,
                 saslMechanism, SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS, defaultLoginCallbackHandlerClass);
         synchronized (LoginManager.class) {
@@ -210,11 +210,11 @@ public class LoginManager {
     }
 
     private static <T> Class<? extends T> configuredClassOrDefault(Map<String, ?> configs,
-                                                     JaasContext jaasContext,
-                                                     String saslMechanism,
-                                                     String configName,
-                                                     Class<? extends T> defaultClass) {
-        String prefix  = jaasContext.type() == JaasContext.Type.SERVER ? ListenerName.saslMechanismPrefix(saslMechanism) : "";
+                                                                   JaasContext jaasContext,
+                                                                   String saslMechanism,
+                                                                   String configName,
+                                                                   Class<? extends T> defaultClass) {
+        String prefix = jaasContext.type() == JaasContext.Type.SERVER ? ListenerName.saslMechanismPrefix(saslMechanism) : "";
         @SuppressWarnings("unchecked")
         Class<? extends T> clazz = (Class<? extends T>) configs.get(prefix + configName);
         if (clazz != null && jaasContext.configurationEntries().size() != 1) {
@@ -257,9 +257,9 @@ public class LoginManager {
 
             LoginMetadata<?> loginMetadata = (LoginMetadata<?>) o;
             return Objects.equals(configInfo, loginMetadata.configInfo) &&
-                   Objects.equals(loginClass, loginMetadata.loginClass) &&
-                   Objects.equals(loginCallbackClass, loginMetadata.loginCallbackClass) &&
-                   Objects.equals(saslConfigs, loginMetadata.saslConfigs);
+                    Objects.equals(loginClass, loginMetadata.loginClass) &&
+                    Objects.equals(loginCallbackClass, loginMetadata.loginCallbackClass) &&
+                    Objects.equals(saslConfigs, loginMetadata.saslConfigs);
         }
     }
 }

@@ -150,7 +150,8 @@ class RemoteLogOffsetReaderTest {
                     "mock-cluster-id",
                     new MockTime(),
                     tp -> Optional.empty(),
-                    (tp, logStartOffset) -> { },
+                    (tp, logStartOffset) -> {
+                    },
                     new BrokerTopicStats(true),
                     new Metrics(),
                     Optional.empty()

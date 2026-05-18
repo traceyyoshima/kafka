@@ -43,11 +43,11 @@ import java.util.Properties;
 public class ClientMetricsTestUtils {
 
     public static final String METRICS_TEST_DEFAULT =
-        "org.apache.kafka.client.producer.partition.queue.,org.apache.kafka.client.producer.partition.latency";
+            "org.apache.kafka.client.producer.partition.queue.,org.apache.kafka.client.producer.partition.latency";
     public static final int INTERVAL_MS_TEST_DEFAULT = 30 * 1000; // 30 seconds
     public static final List<String> MATCH_TEST_DEFAULT = List.of(
-        ClientMetricsConfigs.CLIENT_SOFTWARE_NAME + "=apache-kafka-java",
-        ClientMetricsConfigs.CLIENT_SOFTWARE_VERSION + "=3.5.*"
+            ClientMetricsConfigs.CLIENT_SOFTWARE_NAME + "=apache-kafka-java",
+            ClientMetricsConfigs.CLIENT_SOFTWARE_VERSION + "=3.5.*"
     );
     public static final int CLIENT_PORT = 56078;
 
@@ -61,41 +61,41 @@ public class ClientMetricsTestUtils {
 
     public static RequestContext requestContext() throws UnknownHostException {
         return new RequestContext(
-            new RequestHeader(ApiKeys.GET_TELEMETRY_SUBSCRIPTIONS, (short) 0, "producer-1", 0),
-            TestUtils.randomString(5),
-            InetAddress.getLocalHost(),
-            Optional.of(CLIENT_PORT),
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            new ClientInformation("apache-kafka-java", "3.5.2"),
-            false);
+                new RequestHeader(ApiKeys.GET_TELEMETRY_SUBSCRIPTIONS, (short) 0, "producer-1", 0),
+                TestUtils.randomString(5),
+                InetAddress.getLocalHost(),
+                Optional.of(CLIENT_PORT),
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                new ClientInformation("apache-kafka-java", "3.5.2"),
+                false);
     }
 
     public static RequestContext requestContextWithNullClientInfo() throws UnknownHostException {
         return new RequestContext(
-            new RequestHeader(ApiKeys.GET_TELEMETRY_SUBSCRIPTIONS, (short) 0, "producer-1", 0),
-             "1",
-            InetAddress.getLocalHost(),
-            Optional.of(CLIENT_PORT),
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            null,
-            false);
+                new RequestHeader(ApiKeys.GET_TELEMETRY_SUBSCRIPTIONS, (short) 0, "producer-1", 0),
+                "1",
+                InetAddress.getLocalHost(),
+                Optional.of(CLIENT_PORT),
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                null,
+                false);
     }
 
     public static RequestContext requestContextWithConnectionId(String connectionId) throws UnknownHostException {
         return new RequestContext(
-            new RequestHeader(ApiKeys.GET_TELEMETRY_SUBSCRIPTIONS, (short) 0, "producer-1", 0),
-            connectionId,
-            InetAddress.getLocalHost(),
-            Optional.of(CLIENT_PORT),
-            KafkaPrincipal.ANONYMOUS,
-            ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
-            SecurityProtocol.PLAINTEXT,
-            new ClientInformation("apache-kafka-java", "3.5.2"),
-            false);
+                new RequestHeader(ApiKeys.GET_TELEMETRY_SUBSCRIPTIONS, (short) 0, "producer-1", 0),
+                connectionId,
+                InetAddress.getLocalHost(),
+                Optional.of(CLIENT_PORT),
+                KafkaPrincipal.ANONYMOUS,
+                ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT),
+                SecurityProtocol.PLAINTEXT,
+                new ClientInformation("apache-kafka-java", "3.5.2"),
+                false);
     }
 
     @SuppressWarnings("removal")

@@ -60,21 +60,21 @@ public class RocksDBTimeOrderedWindowStoreWithHeadersTest {
         final Properties props = StreamsTestUtils.getStreamsConfig();
         baseDir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-            baseDir,
-            Serdes.String(),
-            Serdes.String(),
-            new StreamsConfig(props)
+                baseDir,
+                Serdes.String(),
+                Serdes.String(),
+                new StreamsConfig(props)
         );
 
         windowStore = new RocksDBTimeOrderedWindowStoreWithHeaders(
-            new RocksDBTimeOrderedWindowSegmentedBytesStore<>(
-                STORE_NAME,
-                RETENTION_PERIOD,
-                true,
-                new WindowSegmentsWithHeaders(STORE_NAME, "test-metrics-scope", RETENTION_PERIOD, SEGMENT_INTERVAL)
-            ),
-            false,
-            WINDOW_SIZE
+                new RocksDBTimeOrderedWindowSegmentedBytesStore<>(
+                        STORE_NAME,
+                        RETENTION_PERIOD,
+                        true,
+                        new WindowSegmentsWithHeaders(STORE_NAME, "test-metrics-scope", RETENTION_PERIOD, SEGMENT_INTERVAL)
+                ),
+                false,
+                WINDOW_SIZE
         );
         windowStore.init(context, windowStore);
     }
@@ -89,12 +89,12 @@ public class RocksDBTimeOrderedWindowStoreWithHeadersTest {
     @Test
     public void shouldReturnUnknownQueryTypeForWindowKeyQuery() {
         final WindowKeyQuery<Bytes, byte[]> query = WindowKeyQuery.withKeyAndWindowStartRange(
-            new Bytes("test-key".getBytes()),
-            Instant.ofEpochMilli(0),
-            Instant.ofEpochMilli(Long.MAX_VALUE)
+                new Bytes("test-key".getBytes()),
+                Instant.ofEpochMilli(0),
+                Instant.ofEpochMilli(Long.MAX_VALUE)
         );
         final QueryResult<WindowStoreIterator<byte[]>> result =
-            windowStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                windowStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
         assertFalse(result.isSuccess());
         assertEquals(FailureReason.UNKNOWN_QUERY_TYPE, result.getFailureReason());
@@ -104,11 +104,11 @@ public class RocksDBTimeOrderedWindowStoreWithHeadersTest {
     @Test
     public void shouldReturnUnknownQueryTypeForWindowRangeQuery() {
         final WindowRangeQuery<Bytes, byte[]> query = WindowRangeQuery.withWindowStartRange(
-            Instant.ofEpochMilli(0),
-            Instant.ofEpochMilli(Long.MAX_VALUE)
+                Instant.ofEpochMilli(0),
+                Instant.ofEpochMilli(Long.MAX_VALUE)
         );
         final QueryResult<KeyValueIterator<org.apache.kafka.streams.kstream.Windowed<Bytes>, byte[]>> result =
-            windowStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                windowStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
         assertFalse(result.isSuccess());
         assertEquals(FailureReason.UNKNOWN_QUERY_TYPE, result.getFailureReason());
@@ -118,28 +118,28 @@ public class RocksDBTimeOrderedWindowStoreWithHeadersTest {
     @Test
     public void shouldCollectExecutionInfoWhenRequested() {
         final WindowKeyQuery<Bytes, byte[]> query = WindowKeyQuery.withKeyAndWindowStartRange(
-            new Bytes("test-key".getBytes()),
-            Instant.ofEpochMilli(0),
-            Instant.ofEpochMilli(Long.MAX_VALUE)
+                new Bytes("test-key".getBytes()),
+                Instant.ofEpochMilli(0),
+                Instant.ofEpochMilli(Long.MAX_VALUE)
         );
         final QueryResult<WindowStoreIterator<byte[]>> result =
-            windowStore.query(query, PositionBound.unbounded(), new QueryConfig(true));
+                windowStore.query(query, PositionBound.unbounded(), new QueryConfig(true));
 
         assertFalse(result.getExecutionInfo().isEmpty());
         assertTrue(result.getExecutionInfo().get(0).contains("Handled in"));
         assertTrue(result.getExecutionInfo().get(0).contains(
-            RocksDBTimeOrderedWindowStoreWithHeaders.class.getName()));
+                RocksDBTimeOrderedWindowStoreWithHeaders.class.getName()));
     }
 
     @Test
     public void shouldNotCollectExecutionInfoWhenNotRequested() {
         final WindowKeyQuery<Bytes, byte[]> query = WindowKeyQuery.withKeyAndWindowStartRange(
-            new Bytes("test-key".getBytes()),
-            Instant.ofEpochMilli(0),
-            Instant.ofEpochMilli(Long.MAX_VALUE)
+                new Bytes("test-key".getBytes()),
+                Instant.ofEpochMilli(0),
+                Instant.ofEpochMilli(Long.MAX_VALUE)
         );
         final QueryResult<WindowStoreIterator<byte[]>> result =
-            windowStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
+                windowStore.query(query, PositionBound.unbounded(), new QueryConfig(false));
 
         assertTrue(result.getExecutionInfo().isEmpty());
     }

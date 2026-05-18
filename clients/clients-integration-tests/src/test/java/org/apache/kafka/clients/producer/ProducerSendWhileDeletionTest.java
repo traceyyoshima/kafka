@@ -62,15 +62,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = NUM_PARTITIONS_CONFIG, value = "2"),
-        @ClusterConfigProperty(key = DEFAULT_REPLICATION_FACTOR_CONFIG, value = "2"),
-        @ClusterConfigProperty(key = AUTO_LEADER_REBALANCE_ENABLE_CONFIG, value = "false"),
-        @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000"),
-        @ClusterConfigProperty(key = ServerLogConfigs.LOG_INITIAL_TASK_DELAY_MS_CONFIG, value = "100")
-    }
+        types = {Type.KRAFT},
+        brokers = BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = NUM_PARTITIONS_CONFIG, value = "2"),
+                @ClusterConfigProperty(key = DEFAULT_REPLICATION_FACTOR_CONFIG, value = "2"),
+                @ClusterConfigProperty(key = AUTO_LEADER_REBALANCE_ENABLE_CONFIG, value = "false"),
+                @ClusterConfigProperty(key = "log.segment.delete.delay.ms", value = "1000"),
+                @ClusterConfigProperty(key = ServerLogConfigs.LOG_INITIAL_TASK_DELAY_MS_CONFIG, value = "100")
+        }
 )
 public class ProducerSendWhileDeletionTest {
 
@@ -97,21 +97,21 @@ public class ProducerSendWhileDeletionTest {
         ) {
             // Create topic with leader as 0 for the 2 partitions.
             var topicAssignment = Map.of(
-                0, List.of(0, 1),
-                1, List.of(0, 1)
+                    0, List.of(0, 1),
+                    1, List.of(0, 1)
             );
             admin.createTopics(List.of(new NewTopic(topic, topicAssignment)));
 
             // Change leader to 1 for both the partitions to increase leader epoch from 0 -> 1
             var reassignment = Map.of(
-                new TopicPartition(topic, 0), Optional.of(new NewPartitionReassignment(List.of(1, 0))),
-                new TopicPartition(topic, 1), Optional.of(new NewPartitionReassignment(List.of(1, 0)))
+                    new TopicPartition(topic, 0), Optional.of(new NewPartitionReassignment(List.of(1, 0))),
+                    new TopicPartition(topic, 1), Optional.of(new NewPartitionReassignment(List.of(1, 0)))
             );
             admin.alterPartitionReassignments(reassignment).all().get();
 
             for (var i = 1; i <= numRecords; i++) {
                 var resp = producer.send(
-                    new ProducerRecord<>(topic, null, ("value" + i).getBytes())
+                        new ProducerRecord<>(topic, null, ("value" + i).getBytes())
                 ).get();
                 assertEquals(topic, resp.topic());
             }
@@ -214,7 +214,7 @@ public class ProducerSendWhileDeletionTest {
             }
 
             var reassignment = Map.of(
-                partition0, Optional.of(new NewPartitionReassignment(List.of(1)))
+                    partition0, Optional.of(new NewPartitionReassignment(List.of(1)))
             );
             // Change replica assignment from 0 to 1. Leadership moves to 1.
             admin.alterPartitionReassignments(reassignment).all().get();
@@ -230,49 +230,49 @@ public class ProducerSendWhileDeletionTest {
 
     private Producer<String, byte[]> createProducer() {
         return cluster.producer(Map.of(
-            MAX_BLOCK_MS_CONFIG, 5000L,
-            REQUEST_TIMEOUT_MS_CONFIG, 10000,
-            DELIVERY_TIMEOUT_MS_CONFIG, 10000 + DEFAULT_LINGER_MS,
-            KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()
+                MAX_BLOCK_MS_CONFIG, 5000L,
+                REQUEST_TIMEOUT_MS_CONFIG, 10000,
+                DELIVERY_TIMEOUT_MS_CONFIG, 10000 + DEFAULT_LINGER_MS,
+                KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()
         ));
     }
 
     private void verifyTopicDeletion() throws InterruptedException {
         var topicPartitions = List.of(
-            new TopicPartition(topic, 0),
-            new TopicPartition(topic, 1)
+                new TopicPartition(topic, 0),
+                new TopicPartition(topic, 1)
         );
 
         // ensure that the topic-partition has been deleted from all brokers' replica managers
-        TestUtils.waitForCondition(() -> 
-            cluster.brokers().values().stream()
-                .allMatch(broker -> topicPartitions.stream()
-                        .allMatch(tp -> broker.replicaManager().onlinePartition(tp).isEmpty())
-            ), "Replica manager's should have deleted all of this topic's partitions");
+        TestUtils.waitForCondition(() ->
+                cluster.brokers().values().stream()
+                        .allMatch(broker -> topicPartitions.stream()
+                                .allMatch(tp -> broker.replicaManager().onlinePartition(tp).isEmpty())
+                        ), "Replica manager's should have deleted all of this topic's partitions");
 
         // ensure that logs from all replicas are deleted
         TestUtils.waitForCondition(() -> cluster.brokers().values().stream()
-            .allMatch(broker -> topicPartitions.stream()
-                    .allMatch(tp -> broker.logManager().getLog(tp, false).isEmpty())
-            ), "Replica logs not deleted after delete topic is complete");
+                .allMatch(broker -> topicPartitions.stream()
+                        .allMatch(tp -> broker.logManager().getLog(tp, false).isEmpty())
+                ), "Replica logs not deleted after delete topic is complete");
 
         // ensure that topic is removed from all cleaner offsets
         TestUtils.waitForCondition(() -> cluster.brokers().values().stream()
-            .allMatch(broker -> topicPartitions.stream()
-                    .allMatch(tp -> partitionNotInCheckpoint(broker, tp))
-            ), "Cleaner offset for deleted partition should have been removed");
+                .allMatch(broker -> topicPartitions.stream()
+                        .allMatch(tp -> partitionNotInCheckpoint(broker, tp))
+                ), "Cleaner offset for deleted partition should have been removed");
 
         TestUtils.waitForCondition(() -> cluster.brokers().values().stream()
-            .allMatch(broker -> broker.config().logDirs().stream()
-                    .allMatch(logDir -> topicPartitions.stream().noneMatch(tp ->
-                            new File(logDir, tp.topic() + "-" + tp.partition()).exists())
-                    )
-            ), "Failed to soft-delete the data to a delete directory");
+                .allMatch(broker -> broker.config().logDirs().stream()
+                        .allMatch(logDir -> topicPartitions.stream().noneMatch(tp ->
+                                new File(logDir, tp.topic() + "-" + tp.partition()).exists())
+                        )
+                ), "Failed to soft-delete the data to a delete directory");
 
         TestUtils.waitForCondition(() -> cluster.brokers().values().stream()
-            .allMatch(broker -> broker.config().logDirs().stream()
-                    .allMatch(logDir -> deletionDirectoriesAbsent(logDir, topicPartitions))
-            ), "Failed to hard-delete the delete directory");
+                .allMatch(broker -> broker.config().logDirs().stream()
+                        .allMatch(logDir -> deletionDirectoriesAbsent(logDir, topicPartitions))
+                ), "Failed to hard-delete the delete directory");
     }
 
     private boolean partitionNotInCheckpoint(KafkaBroker broker, TopicPartition tp) {
@@ -305,7 +305,7 @@ public class ProducerSendWhileDeletionTest {
                     .allTopicNames()
                     .get()
                     .get(topic);
-            
+
         }
     }
 

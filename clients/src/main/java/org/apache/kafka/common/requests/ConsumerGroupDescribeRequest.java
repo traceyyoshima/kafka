@@ -61,14 +61,14 @@ public class ConsumerGroupDescribeRequest extends AbstractRequest {
     @Override
     public ConsumerGroupDescribeResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         ConsumerGroupDescribeResponseData data = new ConsumerGroupDescribeResponseData()
-            .setThrottleTimeMs(throttleTimeMs);
+                .setThrottleTimeMs(throttleTimeMs);
         // Set error for each group
         this.data.groupIds().forEach(
-            groupId -> data.groups().add(
-                new ConsumerGroupDescribeResponseData.DescribedGroup()
-                    .setGroupId(groupId)
-                    .setErrorCode(Errors.forException(e).code())
-            )
+                groupId -> data.groups().add(
+                        new ConsumerGroupDescribeResponseData.DescribedGroup()
+                                .setGroupId(groupId)
+                                .setErrorCode(Errors.forException(e).code())
+                )
         );
         return new ConsumerGroupDescribeResponse(data);
     }
@@ -80,19 +80,19 @@ public class ConsumerGroupDescribeRequest extends AbstractRequest {
 
     public static ConsumerGroupDescribeRequest parse(Readable readable, short version) {
         return new ConsumerGroupDescribeRequest(
-            new ConsumerGroupDescribeRequestData(readable, version),
-            version
+                new ConsumerGroupDescribeRequestData(readable, version),
+                version
         );
     }
 
     public static List<ConsumerGroupDescribeResponseData.DescribedGroup> getErrorDescribedGroupList(
-        List<String> groupIds,
-        Errors error
+            List<String> groupIds,
+            Errors error
     ) {
         return groupIds.stream()
-            .map(groupId -> new ConsumerGroupDescribeResponseData.DescribedGroup()
-                .setGroupId(groupId)
-                .setErrorCode(error.code())
-            ).collect(Collectors.toList());
+                .map(groupId -> new ConsumerGroupDescribeResponseData.DescribedGroup()
+                        .setGroupId(groupId)
+                        .setErrorCode(error.code())
+                ).collect(Collectors.toList());
     }
 }

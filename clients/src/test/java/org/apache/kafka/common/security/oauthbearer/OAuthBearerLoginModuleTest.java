@@ -82,7 +82,7 @@ public class OAuthBearerLoginModuleTest {
 
         @Override
         public void configure(Map<String, ?> configs, String saslMechanism,
-                List<AppConfigurationEntry> jaasConfigEntries) {
+                              List<AppConfigurationEntry> jaasConfigEntries) {
             // empty
         }
 
@@ -126,10 +126,10 @@ public class OAuthBearerLoginModuleTest {
         Set<Object> publicCredentials = subject.getPublicCredentials();
 
         // Create callback handler
-        OAuthBearerToken[] tokens = new OAuthBearerToken[] {mock(OAuthBearerToken.class),
-            mock(OAuthBearerToken.class), mock(OAuthBearerToken.class)};
-        SaslExtensions[] extensions = new SaslExtensions[] {saslExtensions(),
-            saslExtensions(), saslExtensions()};
+        OAuthBearerToken[] tokens = new OAuthBearerToken[]{mock(OAuthBearerToken.class),
+                mock(OAuthBearerToken.class), mock(OAuthBearerToken.class)};
+        SaslExtensions[] extensions = new SaslExtensions[]{saslExtensions(),
+                saslExtensions(), saslExtensions()};
         TestCallbackHandler testTokenCallbackHandler = new TestCallbackHandler(tokens, extensions);
 
         // Create login modules
@@ -222,10 +222,10 @@ public class OAuthBearerLoginModuleTest {
         Set<Object> publicCredentials = subject.getPublicCredentials();
 
         // Create callback handler
-        OAuthBearerToken[] tokens = new OAuthBearerToken[] {mock(OAuthBearerToken.class),
-            mock(OAuthBearerToken.class)};
-        SaslExtensions[] extensions = new SaslExtensions[] {saslExtensions(),
-            saslExtensions()};
+        OAuthBearerToken[] tokens = new OAuthBearerToken[]{mock(OAuthBearerToken.class),
+                mock(OAuthBearerToken.class)};
+        SaslExtensions[] extensions = new SaslExtensions[]{saslExtensions(),
+                saslExtensions()};
         TestCallbackHandler testTokenCallbackHandler = new TestCallbackHandler(tokens, extensions);
 
         // Create login modules
@@ -282,10 +282,10 @@ public class OAuthBearerLoginModuleTest {
         Set<Object> publicCredentials = subject.getPublicCredentials();
 
         // Create callback handler
-        OAuthBearerToken[] tokens = new OAuthBearerToken[] {mock(OAuthBearerToken.class),
-            mock(OAuthBearerToken.class)};
-        SaslExtensions[] extensions = new SaslExtensions[] {saslExtensions(),
-            saslExtensions()};
+        OAuthBearerToken[] tokens = new OAuthBearerToken[]{mock(OAuthBearerToken.class),
+                mock(OAuthBearerToken.class)};
+        SaslExtensions[] extensions = new SaslExtensions[]{saslExtensions(),
+                saslExtensions()};
         TestCallbackHandler testTokenCallbackHandler = new TestCallbackHandler(tokens, extensions);
 
         // Create login module
@@ -334,10 +334,10 @@ public class OAuthBearerLoginModuleTest {
         Set<Object> publicCredentials = subject.getPublicCredentials();
 
         // Create callback handler
-        OAuthBearerToken[] tokens = new OAuthBearerToken[] {mock(OAuthBearerToken.class),
-            mock(OAuthBearerToken.class), mock(OAuthBearerToken.class)};
-        SaslExtensions[] extensions = new SaslExtensions[] {saslExtensions(), saslExtensions(),
-            saslExtensions()};
+        OAuthBearerToken[] tokens = new OAuthBearerToken[]{mock(OAuthBearerToken.class),
+                mock(OAuthBearerToken.class), mock(OAuthBearerToken.class)};
+        SaslExtensions[] extensions = new SaslExtensions[]{saslExtensions(), saslExtensions(),
+                saslExtensions()};
         TestCallbackHandler testTokenCallbackHandler = new TestCallbackHandler(tokens, extensions);
 
         // Create login modules
@@ -415,9 +415,9 @@ public class OAuthBearerLoginModuleTest {
         Subject subject = new Subject();
 
         // Create callback handler
-        OAuthBearerToken[] tokens = new OAuthBearerToken[] {mock(OAuthBearerToken.class),
+        OAuthBearerToken[] tokens = new OAuthBearerToken[]{mock(OAuthBearerToken.class),
                 mock(OAuthBearerToken.class), mock(OAuthBearerToken.class)};
-        TestCallbackHandler testTokenCallbackHandler = new TestCallbackHandler(tokens, new SaslExtensions[] {RAISE_UNSUPPORTED_CB_EXCEPTION_FLAG});
+        TestCallbackHandler testTokenCallbackHandler = new TestCallbackHandler(tokens, new SaslExtensions[]{RAISE_UNSUPPORTED_CB_EXCEPTION_FLAG});
 
         // Create login modules
         OAuthBearerLoginModule loginModule1 = new OAuthBearerLoginModule();
@@ -438,9 +438,9 @@ public class OAuthBearerLoginModuleTest {
      * We don't want to use mocks for our tests as we need to make sure to test
      * {@link SaslExtensions}' {@link SaslExtensions#equals(Object)} and
      * {@link SaslExtensions#hashCode()} methods.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * We need to make distinct calls to this method (vs. caching the result and reusing it
      * multiple times) because we need to ensure the {@link SaslExtensions} instances are unique.
      * This properly mimics the behavior that is used during the token refresh logic.

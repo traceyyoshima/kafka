@@ -52,7 +52,7 @@ public class ApiVersionsResponseTest {
     public void shouldHaveCorrectDefaultApiVersionsResponse(ApiMessageType.ListenerType scope) {
         ApiVersionsResponse defaultResponse = TestUtils.defaultApiVersionsResponse(scope);
         assertEquals(ApiKeys.apisForListener(scope).size(), defaultResponse.data().apiKeys().size(),
-            "API versions for all API keys must be maintained.");
+                "API versions for all API keys must be maintained.");
 
         for (ApiKeys key : ApiKeys.apisForListener(scope)) {
             ApiVersion version = defaultResponse.apiVersion(key.id);
@@ -66,20 +66,20 @@ public class ApiVersionsResponseTest {
             // Check if versions less than min version are indeed set as null, i.e., removed.
             for (int i = 0; i < version.minVersion(); ++i) {
                 assertNull(key.messageType.requestSchemas()[i],
-                    "Request version " + i + " for API " + version.apiKey() + " must be null");
+                        "Request version " + i + " for API " + version.apiKey() + " must be null");
                 assertNull(key.messageType.responseSchemas()[i],
-                    "Response version " + i + " for API " + version.apiKey() + " must be null");
+                        "Response version " + i + " for API " + version.apiKey() + " must be null");
             }
 
             // The min version returned in ApiResponse for Produce is not the actual min version, so adjust it
             var minVersion = (key == ApiKeys.PRODUCE && scope == ListenerType.BROKER) ?
-                ApiKeys.PRODUCE.oldestVersion() : version.minVersion();
+                    ApiKeys.PRODUCE.oldestVersion() : version.minVersion();
             // Check if versions between min and max versions are non null, i.e., valid.
             for (int i = minVersion; i <= version.maxVersion(); ++i) {
                 assertNotNull(key.messageType.requestSchemas()[i],
-                    "Request version " + i + " for API " + version.apiKey() + " must not be null");
+                        "Request version " + i + " for API " + version.apiKey() + " must not be null");
                 assertNotNull(key.messageType.responseSchemas()[i],
-                    "Response version " + i + " for API " + version.apiKey() + " must not be null");
+                        "Response version " + i + " for API " + version.apiKey() + " must not be null");
             }
         }
 
@@ -95,41 +95,41 @@ public class ApiVersionsResponseTest {
         final short minVersion = 2;
         final short maxVersion = 3;
         Map<ApiKeys, ApiVersion> activeControllerApiVersions = Map.of(
-            forwardableAPIKey, new ApiVersion()
-                .setApiKey(forwardableAPIKey.id)
-                .setMinVersion(minVersion)
-                .setMaxVersion(maxVersion),
-            nonForwardableAPIKey, new ApiVersion()
-                .setApiKey(nonForwardableAPIKey.id)
-                .setMinVersion(minVersion)
-                .setMaxVersion(maxVersion)
+                forwardableAPIKey, new ApiVersion()
+                        .setApiKey(forwardableAPIKey.id)
+                        .setMinVersion(minVersion)
+                        .setMaxVersion(maxVersion),
+                nonForwardableAPIKey, new ApiVersion()
+                        .setApiKey(nonForwardableAPIKey.id)
+                        .setMinVersion(minVersion)
+                        .setMaxVersion(maxVersion)
         );
 
         ApiVersionCollection commonResponse = ApiVersionsResponse.intersectForwardableApis(
-            ApiMessageType.ListenerType.BROKER,
-            activeControllerApiVersions,
-            true,
-            false
+                ApiMessageType.ListenerType.BROKER,
+                activeControllerApiVersions,
+                true,
+                false
         );
 
         verifyVersions(forwardableAPIKey.id, minVersion, maxVersion, commonResponse);
 
         verifyVersions(nonForwardableAPIKey.id, ApiKeys.JOIN_GROUP.oldestVersion(),
-            ApiKeys.JOIN_GROUP.latestVersion(), commonResponse);
+                ApiKeys.JOIN_GROUP.latestVersion(), commonResponse);
     }
 
     @Test
     public void shouldReturnAllKeysWhenThrottleMsIsDefaultThrottle() {
         ApiVersionsResponse response = new ApiVersionsResponse.Builder().
-            setThrottleTimeMs(AbstractResponse.DEFAULT_THROTTLE_TIME).
-            setApiVersions(ApiVersionsResponse.filterApis(
-                ListenerType.BROKER,
-                true,
-                true)).
-            setSupportedFeatures(Features.emptySupportedFeatures()).
-            setFinalizedFeatures(Collections.emptyMap()).
-            setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
-            build();
+                setThrottleTimeMs(AbstractResponse.DEFAULT_THROTTLE_TIME).
+                setApiVersions(ApiVersionsResponse.filterApis(
+                        ListenerType.BROKER,
+                        true,
+                        true)).
+                setSupportedFeatures(Features.emptySupportedFeatures()).
+                setFinalizedFeatures(Collections.emptyMap()).
+                setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
+                build();
         assertEquals(new HashSet<>(ApiKeys.apisForListener(ListenerType.BROKER)), apiKeysInResponse(response));
         assertEquals(AbstractResponse.DEFAULT_THROTTLE_TIME, response.throttleTimeMs());
         assertTrue(response.data().supportedFeatures().isEmpty());
@@ -140,63 +140,63 @@ public class ApiVersionsResponseTest {
     @Test
     public void shouldCreateApiResponseWithTelemetryWhenEnabled() {
         ApiVersionsResponse response = new ApiVersionsResponse.Builder().
-            setThrottleTimeMs(10).
-            setApiVersions(ApiVersionsResponse.filterApis(
-                ListenerType.BROKER,
-                true,
-                true)).
-            setSupportedFeatures(Features.emptySupportedFeatures()).
-            setFinalizedFeatures(Collections.emptyMap()).
-            setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
-            build();
+                setThrottleTimeMs(10).
+                setApiVersions(ApiVersionsResponse.filterApis(
+                        ListenerType.BROKER,
+                        true,
+                        true)).
+                setSupportedFeatures(Features.emptySupportedFeatures()).
+                setFinalizedFeatures(Collections.emptyMap()).
+                setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
+                build();
         verifyApiKeysForTelemetry(response, 2);
     }
 
     @Test
     public void shouldNotCreateApiResponseWithTelemetryWhenDisabled() {
         ApiVersionsResponse response = new ApiVersionsResponse.Builder().
-            setThrottleTimeMs(10).
-            setApiVersions(ApiVersionsResponse.filterApis(
-                ListenerType.BROKER,
-                true,
-                false)).
-            setSupportedFeatures(Features.emptySupportedFeatures()).
-            setFinalizedFeatures(Collections.emptyMap()).
-            setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
-            build();
+                setThrottleTimeMs(10).
+                setApiVersions(ApiVersionsResponse.filterApis(
+                        ListenerType.BROKER,
+                        true,
+                        false)).
+                setSupportedFeatures(Features.emptySupportedFeatures()).
+                setFinalizedFeatures(Collections.emptyMap()).
+                setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
+                build();
         verifyApiKeysForTelemetry(response, 0);
     }
-    
+
     @Test
     public void testBrokerApisAreEnabled() {
         ApiVersionsResponse response = new ApiVersionsResponse.Builder().
-            setThrottleTimeMs(AbstractResponse.DEFAULT_THROTTLE_TIME).
-            setApiVersions(ApiVersionsResponse.filterApis(
-                ListenerType.BROKER,
-                true,
-                true)).
-            setSupportedFeatures(Features.emptySupportedFeatures()).
-            setFinalizedFeatures(Collections.emptyMap()).
-            setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
-            build();
+                setThrottleTimeMs(AbstractResponse.DEFAULT_THROTTLE_TIME).
+                setApiVersions(ApiVersionsResponse.filterApis(
+                        ListenerType.BROKER,
+                        true,
+                        true)).
+                setSupportedFeatures(Features.emptySupportedFeatures()).
+                setFinalizedFeatures(Collections.emptyMap()).
+                setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
+                build();
 
         Set<ApiKeys> exposed = apiKeysInResponse(response);
 
 
         Arrays.stream(ApiKeys.values())
-            .filter(key -> key.messageType.listeners().contains(ListenerType.BROKER))
-            .forEach(key -> assertTrue(exposed.contains(key)));
+                .filter(key -> key.messageType.listeners().contains(ListenerType.BROKER))
+                .forEach(key -> assertTrue(exposed.contains(key)));
         Arrays.stream(ApiKeys.values())
-            .filter(key -> key.messageType.listeners()
-                .stream().noneMatch(listener -> listener == ListenerType.BROKER))
-            .forEach(key -> assertFalse(exposed.contains(key)));
+                .filter(key -> key.messageType.listeners()
+                        .stream().noneMatch(listener -> listener == ListenerType.BROKER))
+                .forEach(key -> assertFalse(exposed.contains(key)));
     }
 
     @Test
     public void testIntersect() {
         assertFalse(ApiVersionsResponse.intersect(null, null).isPresent());
         assertThrows(IllegalArgumentException.class,
-            () -> ApiVersionsResponse.intersect(new ApiVersion().setApiKey((short) 10), new ApiVersion().setApiKey((short) 3)));
+                () -> ApiVersionsResponse.intersect(new ApiVersion().setApiKey((short) 10), new ApiVersion().setApiKey((short) 3)));
 
         short min = 0;
         short max = 10;
@@ -227,26 +227,26 @@ public class ApiVersionsResponseTest {
     @ValueSource(booleans = {false, true})
     public void testAlterV0Features(boolean alterV0Features) {
         Features<SupportedVersionRange> supported =
-            Features.supportedFeatures(Collections.singletonMap("my.feature",
-                new SupportedVersionRange((short) 0, (short) 1)));
+                Features.supportedFeatures(Collections.singletonMap("my.feature",
+                        new SupportedVersionRange((short) 0, (short) 1)));
         ApiVersionsResponse response = new ApiVersionsResponse.Builder().
-            setApiVersions(ApiVersionsResponse.filterApis(
-                ListenerType.BROKER,
-                true,
-                true)).
-            setSupportedFeatures(supported).
-            setFinalizedFeatures(Collections.emptyMap()).
-            setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
-            setAlterFeatureLevel0(alterV0Features).
-            build();
+                setApiVersions(ApiVersionsResponse.filterApis(
+                        ListenerType.BROKER,
+                        true,
+                        true)).
+                setSupportedFeatures(supported).
+                setFinalizedFeatures(Collections.emptyMap()).
+                setFinalizedFeaturesEpoch(ApiVersionsResponse.UNKNOWN_FINALIZED_FEATURES_EPOCH).
+                setAlterFeatureLevel0(alterV0Features).
+                build();
         if (alterV0Features) {
             assertNull(response.data().supportedFeatures().find("my.feature"));
         } else {
             assertEquals(new SupportedFeatureKey().
-                setName("my.feature").
-                setMinVersion((short) 0).
-                setMaxVersion((short) 1),
-                response.data().supportedFeatures().find("my.feature"));
+                            setName("my.feature").
+                            setMinVersion((short) 0).
+                            setMaxVersion((short) 1),
+                    response.data().supportedFeatures().find("my.feature"));
         }
     }
 
@@ -255,10 +255,10 @@ public class ApiVersionsResponseTest {
                                 short maxVersion,
                                 ApiVersionCollection commonResponse) {
         ApiVersion expectedVersionsForForwardableAPI =
-            new ApiVersion()
-                .setApiKey(forwardableAPIKey)
-                .setMinVersion(minVersion)
-                .setMaxVersion(maxVersion);
+                new ApiVersion()
+                        .setApiKey(forwardableAPIKey)
+                        .setMinVersion(minVersion)
+                        .setMaxVersion(maxVersion);
         assertEquals(expectedVersionsForForwardableAPI, commonResponse.find(forwardableAPIKey));
     }
 

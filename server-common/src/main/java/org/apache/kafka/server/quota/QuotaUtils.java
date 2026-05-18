@@ -66,6 +66,7 @@ public class QuotaUtils {
 
     /**
      * Casts provided Measurable to Rate
+     *
      * @throws IllegalArgumentException if given measurable is not Rate
      */
     private static Rate measurableAsRate(MetricName name, Measurable measurable) {

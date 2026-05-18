@@ -124,10 +124,10 @@ public class KTableKTableJoinMerger<K, V> implements KTableProcessorSupplier<K, 
             if (queryableName != null) {
                 store = new KeyValueStoreWrapper<>(context, queryableName);
                 tupleForwarder = new TimestampedTupleForwarder<>(
-                    store.store(),
-                    context,
-                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                    sendOldValues);
+                        store.store(),
+                        context,
+                        store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                        sendOldValues);
             }
         }
 

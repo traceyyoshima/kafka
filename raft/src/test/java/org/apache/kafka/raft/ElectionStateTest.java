@@ -41,13 +41,13 @@ final class ElectionStateTest {
     @Test
     void testVotedCandidateWithoutVotedDirectoryId() {
         ElectionState electionState = ElectionState.withVotedCandidate(
-            5,
-            ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
-            Set.of()
+                5,
+                ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
+                Set.of()
         );
         assertTrue(electionState.isVotedCandidate(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID)));
         assertTrue(
-            electionState.isVotedCandidate(ReplicaKey.of(1, Uuid.randomUuid()))
+                electionState.isVotedCandidate(ReplicaKey.of(1, Uuid.randomUuid()))
         );
     }
 
@@ -55,9 +55,9 @@ final class ElectionStateTest {
     void testVotedCandidateWithVotedDirectoryId() {
         ReplicaKey votedKey = ReplicaKey.of(1, Uuid.randomUuid());
         ElectionState electionState = ElectionState.withVotedCandidate(
-            5,
-            votedKey,
-            Set.of()
+                5,
+                votedKey,
+                Set.of()
         );
         assertFalse(electionState.isVotedCandidate(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID)));
         assertTrue(electionState.isVotedCandidate(votedKey));
@@ -68,35 +68,35 @@ final class ElectionStateTest {
     void testQuorumStateDataRoundTrip(short version) {
         ReplicaKey votedKey = ReplicaKey.of(1, Uuid.randomUuid());
         List<ElectionState> electionStates = List.of(
-            ElectionState.withUnknownLeader(5, Set.of(1, 2, 3)),
-            ElectionState.withElectedLeader(5, 1, Optional.empty(), Set.of(1, 2, 3)),
-            ElectionState.withVotedCandidate(5, votedKey, Set.of(1, 2, 3)),
-            ElectionState.withElectedLeader(5, 1, Optional.of(votedKey), Set.of(1, 2, 3))
+                ElectionState.withUnknownLeader(5, Set.of(1, 2, 3)),
+                ElectionState.withElectedLeader(5, 1, Optional.empty(), Set.of(1, 2, 3)),
+                ElectionState.withVotedCandidate(5, votedKey, Set.of(1, 2, 3)),
+                ElectionState.withElectedLeader(5, 1, Optional.of(votedKey), Set.of(1, 2, 3))
         );
 
         final List<ElectionState> expected;
         if (version == 0) {
             expected = List.of(
-                ElectionState.withUnknownLeader(5, Set.of(1, 2, 3)),
-                ElectionState.withElectedLeader(5, 1, Optional.empty(), Set.of(1, 2, 3)),
-                ElectionState.withVotedCandidate(
-                    5,
-                    ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
-                    Set.of(1, 2, 3)
-                ),
-                ElectionState.withElectedLeader(
-                    5,
-                    1,
-                    Optional.of(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID)),
-                    Set.of(1, 2, 3)
-                )
+                    ElectionState.withUnknownLeader(5, Set.of(1, 2, 3)),
+                    ElectionState.withElectedLeader(5, 1, Optional.empty(), Set.of(1, 2, 3)),
+                    ElectionState.withVotedCandidate(
+                            5,
+                            ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID),
+                            Set.of(1, 2, 3)
+                    ),
+                    ElectionState.withElectedLeader(
+                            5,
+                            1,
+                            Optional.of(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID)),
+                            Set.of(1, 2, 3)
+                    )
             );
         } else {
             expected = List.of(
-                ElectionState.withUnknownLeader(5, Set.of()),
-                ElectionState.withElectedLeader(5, 1, Optional.empty(), Set.of()),
-                ElectionState.withVotedCandidate(5, votedKey, Set.of()),
-                ElectionState.withElectedLeader(5, 1, Optional.of(votedKey), Set.of())
+                    ElectionState.withUnknownLeader(5, Set.of()),
+                    ElectionState.withElectedLeader(5, 1, Optional.empty(), Set.of()),
+                    ElectionState.withVotedCandidate(5, votedKey, Set.of()),
+                    ElectionState.withElectedLeader(5, 1, Optional.of(votedKey), Set.of())
             );
         }
 

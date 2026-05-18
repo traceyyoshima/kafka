@@ -110,7 +110,7 @@ public class UtilsTest {
         cases.put("a-little-bit-long-string".getBytes(), -985981536);
         cases.put("a-little-bit-longer-string".getBytes(), -1486304829);
         cases.put("lkjh234lh9fiuh90y23oiuhsafujhadof229phr9h19h89h8".getBytes(), -58897971);
-        cases.put(new byte[] {'a', 'b', 'c'}, 479470107);
+        cases.put(new byte[]{'a', 'b', 'c'}, 479470107);
 
         for (Map.Entry<byte[], Integer> c : cases.entrySet()) {
             assertEquals(c.getValue().intValue(), murmur2(c.getKey()));
@@ -267,11 +267,11 @@ public class UtilsTest {
         assertArrayEquals(input, Utils.toArray(buffer));
         assertEquals(0, buffer.position());
 
-        assertArrayEquals(new byte[] {1, 2}, Utils.toArray(buffer, 1, 2));
+        assertArrayEquals(new byte[]{1, 2}, Utils.toArray(buffer, 1, 2));
         assertEquals(0, buffer.position());
 
         buffer.position(2);
-        assertArrayEquals(new byte[] {2, 3, 4}, Utils.toArray(buffer));
+        assertArrayEquals(new byte[]{2, 3, 4}, Utils.toArray(buffer));
         assertEquals(2, buffer.position());
     }
 
@@ -285,11 +285,11 @@ public class UtilsTest {
         assertArrayEquals(input, Utils.toArray(buffer));
         assertEquals(0, buffer.position());
 
-        assertArrayEquals(new byte[] {1, 2}, Utils.toArray(buffer, 1, 2));
+        assertArrayEquals(new byte[]{1, 2}, Utils.toArray(buffer, 1, 2));
         assertEquals(0, buffer.position());
 
         buffer.position(2);
-        assertArrayEquals(new byte[] {2, 3, 4}, Utils.toArray(buffer));
+        assertArrayEquals(new byte[]{2, 3, 4}, Utils.toArray(buffer));
         assertEquals(2, buffer.position());
     }
 
@@ -298,7 +298,7 @@ public class UtilsTest {
         byte[] input = {0, 0, 0, 2, 1, 0};
         final ByteBuffer buffer = ByteBuffer.wrap(input);
         final byte[] array = Utils.getNullableSizePrefixedArray(buffer);
-        assertArrayEquals(new byte[] {1, 0}, array);
+        assertArrayEquals(new byte[]{1, 0}, array);
         assertEquals(6, buffer.position());
         assertFalse(buffer.hasRemaining());
     }
@@ -308,7 +308,7 @@ public class UtilsTest {
         byte[] input = {0, 0, 0, 0};
         final ByteBuffer buffer = ByteBuffer.wrap(input);
         final byte[] array = Utils.getNullableSizePrefixedArray(buffer);
-        assertArrayEquals(new byte[] {}, array);
+        assertArrayEquals(new byte[]{}, array);
         assertEquals(4, buffer.position());
         assertFalse(buffer.hasRemaining());
     }
@@ -318,7 +318,7 @@ public class UtilsTest {
         byte[] input = {0, 0, 0, 2, 1, 0, 9};
         final ByteBuffer buffer = ByteBuffer.wrap(input);
         final byte[] array = Utils.getNullableSizePrefixedArray(buffer);
-        assertArrayEquals(new byte[] {1, 0}, array);
+        assertArrayEquals(new byte[]{1, 0}, array);
         assertEquals(6, buffer.position());
         assertTrue(buffer.hasRemaining());
     }
@@ -685,10 +685,10 @@ public class UtilsTest {
     /**
      * Expectation setter for multiple reads where each one reads random bytes to the buffer.
      *
-     * @param channelMock           The mocked FileChannel object
-     * @param bufferSize            The buffer size
+     * @param channelMock The mocked FileChannel object
+     * @param bufferSize  The buffer size
      * @return Expected buffer string
-     * @throws IOException          If an I/O error occurs
+     * @throws IOException If an I/O error occurs
      */
     private String fileChannelMockExpectReadWithRandomBytes(final FileChannel channelMock,
                                                             final int bufferSize) throws IOException {
@@ -1120,47 +1120,47 @@ public class UtilsTest {
         // check some invalid formats
         // test null timestamp
         assertTrue(assertThrows(IllegalArgumentException.class, () ->
-            Utils.getDateTime(null)
+                Utils.getDateTime(null)
         ).getMessage().contains("Error parsing timestamp with null value"));
 
         // test pattern: yyyy-MM-dd'T'HH:mm:ss.X
         checkExceptionForGetDateTimeMethod(() ->
-            invokeGetDateTimeMethod(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.X"))
+                invokeGetDateTimeMethod(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.X"))
         );
 
         // test pattern: yyyy-MM-dd HH:mm:ss
         assertTrue(assertThrows(ParseException.class, () ->
-            invokeGetDateTimeMethod(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+                invokeGetDateTimeMethod(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
         ).getMessage().contains("It does not contain a 'T' according to ISO8601 format"));
 
         // KAFKA-10685: use DateTimeFormatter generate micro/nano second timestamp
         final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-            .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-            .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
-            .toFormatter();
+                .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
+                .toFormatter();
         final LocalDateTime timestampWithNanoSeconds = LocalDateTime.of(2020, 11, 9, 12, 34, 56, 123456789);
         final LocalDateTime timestampWithMicroSeconds = timestampWithNanoSeconds.truncatedTo(ChronoUnit.MICROS);
         final LocalDateTime timestampWithSeconds = timestampWithNanoSeconds.truncatedTo(ChronoUnit.SECONDS);
 
         // test pattern: yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS
         checkExceptionForGetDateTimeMethod(() ->
-            Utils.getDateTime(formatter.format(timestampWithNanoSeconds))
+                Utils.getDateTime(formatter.format(timestampWithNanoSeconds))
         );
 
         // test pattern: yyyy-MM-dd'T'HH:mm:ss.SSSSSS
         checkExceptionForGetDateTimeMethod(() ->
-            Utils.getDateTime(formatter.format(timestampWithMicroSeconds))
+                Utils.getDateTime(formatter.format(timestampWithMicroSeconds))
         );
 
         // test pattern: yyyy-MM-dd'T'HH:mm:ss
         checkExceptionForGetDateTimeMethod(() ->
-            Utils.getDateTime(formatter.format(timestampWithSeconds))
+                Utils.getDateTime(formatter.format(timestampWithSeconds))
         );
     }
 
     private void checkExceptionForGetDateTimeMethod(Executable executable) {
         assertTrue(assertThrows(ParseException.class, executable)
-            .getMessage().contains("Unparseable date"));
+                .getMessage().contains("Unparseable date"));
     }
 
     private void invokeGetDateTimeMethod(final SimpleDateFormat format) throws ParseException {
@@ -1263,38 +1263,38 @@ public class UtilsTest {
         Map<String, Object> recorded = new HashMap<>();
 
         Utils.tryAll(asList(
-            recordingCallable(recorded, "valid-0", null),
-            recordingCallable(recorded, null, new TestException("exception-1")),
-            recordingCallable(recorded, "valid-2", null),
-            recordingCallable(recorded, null, new TestException("exception-3"))
+                recordingCallable(recorded, "valid-0", null),
+                recordingCallable(recorded, null, new TestException("exception-1")),
+                recordingCallable(recorded, "valid-2", null),
+                recordingCallable(recorded, null, new TestException("exception-3"))
         ));
         Map<String, Object> expected = Map.of(
-            "valid-0", "valid-0",
-            "exception-1", new TestException("exception-1"),
-            "valid-2", "valid-2",
-            "exception-3", new TestException("exception-3")
+                "valid-0", "valid-0",
+                "exception-1", new TestException("exception-1"),
+                "valid-2", "valid-2",
+                "exception-3", new TestException("exception-3")
         );
         assertEquals(expected, recorded);
 
         recorded.clear();
         Utils.tryAll(asList(
-            recordingCallable(recorded, "valid-0", null),
-            recordingCallable(recorded, "valid-1", null)
+                recordingCallable(recorded, "valid-0", null),
+                recordingCallable(recorded, "valid-1", null)
         ));
         expected = Map.of(
-            "valid-0", "valid-0",
-            "valid-1", "valid-1"
+                "valid-0", "valid-0",
+                "valid-1", "valid-1"
         );
         assertEquals(expected, recorded);
 
         recorded.clear();
         Utils.tryAll(asList(
-            recordingCallable(recorded, null, new TestException("exception-0")),
-            recordingCallable(recorded, null, new TestException("exception-1")))
+                recordingCallable(recorded, null, new TestException("exception-0")),
+                recordingCallable(recorded, null, new TestException("exception-1")))
         );
         expected = Map.of(
-            "exception-0", new TestException("exception-0"),
-            "exception-1", new TestException("exception-1")
+                "exception-0", new TestException("exception-0"),
+                "exception-1", new TestException("exception-1")
         );
         assertEquals(expected, recorded);
     }
@@ -1321,6 +1321,7 @@ public class UtilsTest {
 
     private static class TestException extends Exception {
         final String key;
+
         TestException(String key) {
             this.key = key;
         }

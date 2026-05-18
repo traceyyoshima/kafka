@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests that transformations' configs can be composed with ConnectorConfig during its construction, ensuring no
  * conflicting fields or other issues.
- *
+ * <p>
  * This test appears here simply because it requires both connect-runtime and connect-transforms and connect-runtime
  * already depends on connect-transforms.
  */

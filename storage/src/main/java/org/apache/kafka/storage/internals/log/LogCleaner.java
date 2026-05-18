@@ -148,11 +148,11 @@ public class LogCleaner implements BrokerReconfigurable {
     private volatile CleanerConfig config;
 
     /**
-     * @param initialConfig Initial configuration parameters for the cleaner. Actual config may be dynamically updated.
-     * @param logDirs The directories where offset checkpoints reside
-     * @param logs The map of logs
+     * @param initialConfig        Initial configuration parameters for the cleaner. Actual config may be dynamically updated.
+     * @param logDirs              The directories where offset checkpoints reside
+     * @param logs                 The map of logs
      * @param logDirFailureChannel The channel used to add offline log dirs that may be encountered when cleaning the log
-     * @param time A way to control the passage of time
+     * @param time                 A way to control the passage of time
      */
     @SuppressWarnings("this-escape")
     public LogCleaner(CleanerConfig initialConfig,
@@ -301,10 +301,10 @@ public class LogCleaner implements BrokerReconfigurable {
     }
 
     /**
-     *  Abort the cleaning of a particular partition, if it's in progress. This call blocks until the cleaning of
-     *  the partition is aborted.
+     * Abort the cleaning of a particular partition, if it's in progress. This call blocks until the cleaning of
+     * the partition is aborted.
      *
-     *  @param topicPartition The topic and partition to abort cleaning
+     * @param topicPartition The topic and partition to abort cleaning
      */
     public void abortCleaning(TopicPartition topicPartition) {
         cleanerManager.abortCleaning(topicPartition);
@@ -313,7 +313,7 @@ public class LogCleaner implements BrokerReconfigurable {
     /**
      * Update checkpoint file to remove partitions if necessary.
      *
-     * @param dataDir The data dir to be updated if necessary
+     * @param dataDir           The data dir to be updated if necessary
      * @param partitionToRemove The topicPartition to be removed
      */
     public void updateCheckpoints(File dataDir, Optional<TopicPartition> partitionToRemove) {
@@ -325,8 +325,8 @@ public class LogCleaner implements BrokerReconfigurable {
      * Generally occurs when the disk balance ends and replaces the previous file with the future file.
      *
      * @param topicPartition The topic and partition to alter checkpoint
-     * @param sourceLogDir The source log dir to remove checkpoint
-     * @param destLogDir The dest log dir to remove checkpoint
+     * @param sourceLogDir   The source log dir to remove checkpoint
+     * @param destLogDir     The dest log dir to remove checkpoint
      */
     public void alterCheckpointDir(TopicPartition topicPartition, File sourceLogDir, File destLogDir) {
         cleanerManager.alterCheckpointDir(topicPartition, sourceLogDir, destLogDir);
@@ -335,7 +335,7 @@ public class LogCleaner implements BrokerReconfigurable {
     /**
      * Stop cleaning logs in the provided directory when handling log dir failure.
      *
-     * @param dir     the absolute path of the log dir
+     * @param dir the absolute path of the log dir
      */
     public void handleLogDirFailure(String dir) {
         cleanerManager.handleLogDirFailure(dir);
@@ -344,28 +344,28 @@ public class LogCleaner implements BrokerReconfigurable {
     /**
      * Truncate cleaner offset checkpoint for the given partition if its checkpoint offset is larger than the given offset.
      *
-     * @param dataDir The data dir to be truncated if necessary
+     * @param dataDir        The data dir to be truncated if necessary
      * @param topicPartition The topic and partition to truncate checkpoint offset
-     * @param offset The given offset to be compared
+     * @param offset         The given offset to be compared
      */
     public void maybeTruncateCheckpoint(File dataDir, TopicPartition topicPartition, long offset) {
         cleanerManager.maybeTruncateCheckpoint(dataDir, topicPartition, offset);
     }
 
     /**
-     *  Abort the cleaning of a particular partition if it's in progress, and pause any future cleaning of this partition.
-     *  This call blocks until the cleaning of the partition is aborted and paused.
+     * Abort the cleaning of a particular partition if it's in progress, and pause any future cleaning of this partition.
+     * This call blocks until the cleaning of the partition is aborted and paused.
      *
-     *  @param topicPartition The topic and partition to abort and pause cleaning
+     * @param topicPartition The topic and partition to abort and pause cleaning
      */
     public void abortAndPauseCleaning(TopicPartition topicPartition) {
         cleanerManager.abortAndPauseCleaning(topicPartition);
     }
 
     /**
-     *  Resume the cleaning of paused partitions.
+     * Resume the cleaning of paused partitions.
      *
-     *  @param topicPartitions The collection of topicPartitions to be resumed cleaning
+     * @param topicPartitions The collection of topicPartitions to be resumed cleaning
      */
     public void resumeCleaning(Set<TopicPartition> topicPartitions) {
         cleanerManager.resumeCleaning(topicPartitions);
@@ -376,9 +376,8 @@ public class LogCleaner implements BrokerReconfigurable {
      * cleaner has processed up to the given offset on the specified topic/partition.
      *
      * @param topicPartition The topic and partition to be cleaned
-     * @param offset The first dirty offset that the cleaner doesn't have to clean
-     * @param maxWaitMs The maximum time in ms to wait for cleaner
-     *
+     * @param offset         The first dirty offset that the cleaner doesn't have to clean
+     * @param maxWaitMs      The maximum time in ms to wait for cleaner
      * @return A boolean indicating whether the work has completed before timeout
      */
     public boolean awaitCleaned(TopicPartition topicPartition, long offset, long maxWaitMs) throws InterruptedException {
@@ -492,9 +491,9 @@ public class LogCleaner implements BrokerReconfigurable {
         }
 
         /**
-         *  Check if the cleaning for a partition is aborted. If so, throw an exception.
+         * Check if the cleaning for a partition is aborted. If so, throw an exception.
          *
-         *  @param topicPartition The topic and partition to check
+         * @param topicPartition The topic and partition to check
          */
         private void checkDone(TopicPartition topicPartition) {
             if (!isRunning()) {
@@ -612,30 +611,30 @@ public class LogCleaner implements BrokerReconfigurable {
         /**
          * Log out statistics on a single run of the cleaner.
          *
-         * @param id The cleaner thread id
-         * @param name The cleaned log name
-         * @param from The cleaned offset that is the first dirty offset to begin
-         * @param to The cleaned offset that is the first not cleaned offset to end
+         * @param id    The cleaner thread id
+         * @param name  The cleaned log name
+         * @param from  The cleaned offset that is the first dirty offset to begin
+         * @param to    The cleaned offset that is the first not cleaned offset to end
          * @param stats The statistics for this round of cleaning
          */
         private void recordStats(int id, String name, long from, long to, CleanerStats stats) {
             this.lastStats = stats;
             String message = String.format("%n\tLog cleaner thread %d cleaned log %s (dirty section = [%d, %d])%n", id, name, from, to) +
-                        String.format("\t%,.1f MB of log processed in %,.1f seconds (%,.1f MB/sec).%n", mb(stats.bytesRead),
-                                stats.elapsedSecs(),
-                                mb(stats.bytesRead / stats.elapsedSecs())) +
-                        String.format("\tIndexed %,.1f MB in %.1f seconds (%,.1f Mb/sec, %.1f%% of total time)%n", mb(stats.mapBytesRead),
-                                stats.elapsedIndexSecs(),
-                                mb(stats.mapBytesRead) / stats.elapsedIndexSecs(),
-                                100 * stats.elapsedIndexSecs() / stats.elapsedSecs()) +
-                        String.format("\tBuffer utilization: %.1f%%%n", 100 * stats.bufferUtilization) +
-                        String.format("\tCleaned %,.1f MB in %.1f seconds (%,.1f Mb/sec, %.1f%% of total time)%n", mb(stats.bytesRead),
-                                stats.elapsedSecs() - stats.elapsedIndexSecs(),
-                                mb(stats.bytesRead) / (stats.elapsedSecs() - stats.elapsedIndexSecs()), 100 * (stats.elapsedSecs() - stats.elapsedIndexSecs()) / stats.elapsedSecs()) +
-                        String.format("\tStart size: %,.1f MB (%,d messages)%n", mb(stats.bytesRead), stats.messagesRead) +
-                        String.format("\tEnd size: %,.1f MB (%,d messages)%n", mb(stats.bytesWritten), stats.messagesWritten) +
-                        String.format("\t%.1f%% size reduction (%.1f%% fewer messages)%n", 100.0 * (1.0 - Long.valueOf(stats.bytesWritten).doubleValue() / stats.bytesRead),
-                                100.0 * (1.0 - Long.valueOf(stats.messagesWritten).doubleValue() / stats.messagesRead));
+                    String.format("\t%,.1f MB of log processed in %,.1f seconds (%,.1f MB/sec).%n", mb(stats.bytesRead),
+                            stats.elapsedSecs(),
+                            mb(stats.bytesRead / stats.elapsedSecs())) +
+                    String.format("\tIndexed %,.1f MB in %.1f seconds (%,.1f Mb/sec, %.1f%% of total time)%n", mb(stats.mapBytesRead),
+                            stats.elapsedIndexSecs(),
+                            mb(stats.mapBytesRead) / stats.elapsedIndexSecs(),
+                            100 * stats.elapsedIndexSecs() / stats.elapsedSecs()) +
+                    String.format("\tBuffer utilization: %.1f%%%n", 100 * stats.bufferUtilization) +
+                    String.format("\tCleaned %,.1f MB in %.1f seconds (%,.1f Mb/sec, %.1f%% of total time)%n", mb(stats.bytesRead),
+                            stats.elapsedSecs() - stats.elapsedIndexSecs(),
+                            mb(stats.bytesRead) / (stats.elapsedSecs() - stats.elapsedIndexSecs()), 100 * (stats.elapsedSecs() - stats.elapsedIndexSecs()) / stats.elapsedSecs()) +
+                    String.format("\tStart size: %,.1f MB (%,d messages)%n", mb(stats.bytesRead), stats.messagesRead) +
+                    String.format("\tEnd size: %,.1f MB (%,d messages)%n", mb(stats.bytesWritten), stats.messagesWritten) +
+                    String.format("\t%.1f%% size reduction (%.1f%% fewer messages)%n", 100.0 * (1.0 - Long.valueOf(stats.bytesWritten).doubleValue() / stats.bytesRead),
+                            100.0 * (1.0 - Long.valueOf(stats.messagesWritten).doubleValue() / stats.messagesRead));
             logger.info(message);
             if (lastPreCleanStats.delayedPartitions() > 0) {
                 logger.info("\tCleanable partitions: {}, Delayed partitions: {}, max delay: {}",

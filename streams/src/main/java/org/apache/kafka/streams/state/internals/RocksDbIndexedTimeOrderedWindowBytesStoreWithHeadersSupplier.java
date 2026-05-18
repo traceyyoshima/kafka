@@ -25,15 +25,15 @@ import static org.apache.kafka.streams.internals.ApiUtils.prepareMillisCheckFail
 import static org.apache.kafka.streams.internals.ApiUtils.validateMillisecondDuration;
 
 public class RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier
-    extends RocksDbIndexedTimeOrderedWindowBytesStoreSupplier
-    implements HeadersBytesStoreSupplier {
+        extends RocksDbIndexedTimeOrderedWindowBytesStoreSupplier
+        implements HeadersBytesStoreSupplier {
 
     public static RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier create(
-        final String name,
-        final Duration retentionPeriod,
-        final Duration windowSize,
-        final boolean retainDuplicates,
-        final boolean hasIndex
+            final String name,
+            final Duration retentionPeriod,
+            final Duration windowSize,
+            final boolean retainDuplicates,
+            final boolean hasIndex
     ) {
         Objects.requireNonNull(name, "name cannot be null");
         final String rpMsgPrefix = prepareMillisCheckFailMsgPrefix(retentionPeriod, "retentionPeriod");
@@ -51,50 +51,50 @@ public class RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier
         }
         if (windowSizeMs > retentionMs) {
             throw new IllegalArgumentException("The retention period of the window store "
-                + name + " must be no smaller than its window size. Got size=["
-                + windowSizeMs + "], retention=[" + retentionMs + "]");
+                    + name + " must be no smaller than its window size. Got size=["
+                    + windowSizeMs + "], retention=[" + retentionMs + "]");
         }
 
         return new RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier(
-            name,
-            retentionMs,
-            defaultSegmentInterval,
-            windowSizeMs,
-            retainDuplicates,
-            hasIndex,
-            true
+                name,
+                retentionMs,
+                defaultSegmentInterval,
+                windowSizeMs,
+                retainDuplicates,
+                hasIndex,
+                true
         );
     }
 
     private RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier(
-        final String name,
-        final long retentionPeriod,
-        final long segmentInterval,
-        final long windowSize,
-        final boolean retainDuplicates,
-        final boolean withIndex,
-        final boolean withHeaders
+            final String name,
+            final long retentionPeriod,
+            final long segmentInterval,
+            final long windowSize,
+            final boolean retainDuplicates,
+            final boolean withIndex,
+            final boolean withHeaders
     ) {
         super(
-            name,
-            retentionPeriod,
-            segmentInterval,
-            windowSize,
-            retainDuplicates,
-            withIndex,
-            withHeaders
+                name,
+                retentionPeriod,
+                segmentInterval,
+                windowSize,
+                retainDuplicates,
+                withIndex,
+                withHeaders
         );
     }
 
     @Override
     public String toString() {
         return "RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier{" +
-                   "name='" + name + '\'' +
-                   ", retentionPeriod=" + retentionPeriod +
-                   ", segmentInterval=" + segmentInterval +
-                   ", windowSize=" + windowSize +
-                   ", retainDuplicates=" + retainDuplicates +
-                   ", windowStoreType=" + windowStoreType +
-                   '}';
+                "name='" + name + '\'' +
+                ", retentionPeriod=" + retentionPeriod +
+                ", segmentInterval=" + segmentInterval +
+                ", windowSize=" + windowSize +
+                ", retainDuplicates=" + retainDuplicates +
+                ", windowStoreType=" + windowStoreType +
+                '}';
     }
 }

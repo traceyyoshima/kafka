@@ -51,12 +51,13 @@ import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_
  * This class demonstrates a transactional Kafka client application that consumes messages from an input topic,
  * processes them to generate word count statistics, and produces the results to an output topic.
  * It utilizes Kafka's transactional capabilities to ensure exactly-once processing semantics.
- *
+ * <p>
  * The application continuously polls for records from the input topic, processes them, and commits the offsets
  * in a transactional manner. In case of exceptions or errors, it handles them appropriately, either aborting the
  * transaction and resetting to the last committed positions, or restarting the application.
- * 
- * Follows KIP-1050 guidelines for consistent error handling in transactions. 
+ * <p>
+ * Follows KIP-1050 guidelines for consistent error handling in transactions.
+ *
  * @see <a href="https://cwiki.apache.org/confluence/display/KAFKA/KIP-1050">KIP-1050</a>
  */
 public class TransactionalClientDemo {
@@ -102,7 +103,7 @@ public class TransactionalClientDemo {
                     producer.beginTransaction();
 
                     wordCountMap.forEach((key, value) ->
-                        producer.send(new ProducerRecord<>(OUTPUT_TOPIC, key, value.toString())));
+                            producer.send(new ProducerRecord<>(OUTPUT_TOPIC, key, value.toString())));
                     Utils.printOut("Produced %d word count records to output topic '%s'", wordCountMap.size(), OUTPUT_TOPIC);
 
                     Map<TopicPartition, OffsetAndMetadata> offsetsToCommit = new HashMap<>();
@@ -151,7 +152,7 @@ public class TransactionalClientDemo {
         Utils.printOut("Initializing Kafka consumer and producer");
         consumer = createKafkaConsumer();
         producer = createKafkaProducer();
-        
+
         producer.initTransactions();
         Utils.printOut("Producer initialized with transactions");
     }

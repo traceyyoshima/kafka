@@ -39,7 +39,7 @@ public class KeyValueStoreMaterializer<K, V> extends MaterializedStoreFactory<K,
     private static final Logger LOG = LoggerFactory.getLogger(KeyValueStoreMaterializer.class);
 
     public KeyValueStoreMaterializer(
-        final MaterializedInternal<K, V, KeyValueStore<Bytes, byte[]>> materialized
+            final MaterializedInternal<K, V, KeyValueStore<Bytes, byte[]>> materialized
     ) {
         super(materialized, DslStoreFormat.TIMESTAMPED);
     }
@@ -58,14 +58,14 @@ public class KeyValueStoreMaterializer<K, V> extends MaterializedStoreFactory<K,
                     materialized.valueSerde());
         } else if (supplier instanceof HeadersBytesStoreSupplier) {
             builder = Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde());
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde());
         } else {
             builder = Stores.timestampedKeyValueStoreBuilder(
-                supplier,
-                materialized.keySerde(),
-                materialized.valueSerde());
+                    supplier,
+                    materialized.keySerde(),
+                    materialized.valueSerde());
         }
 
         if (materialized.loggingEnabled()) {

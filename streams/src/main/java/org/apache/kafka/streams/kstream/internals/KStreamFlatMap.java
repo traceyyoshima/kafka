@@ -42,7 +42,7 @@ class KStreamFlatMap<KIn, VIn, KOut, VOut> implements ProcessorSupplier<KIn, VIn
         @Override
         public void process(final Record<KIn, VIn> record) {
             final Iterable<? extends KeyValue<? extends KOut, ? extends VOut>> newKeyValues =
-                mapper.apply(record.key(), record.value());
+                    mapper.apply(record.key(), record.value());
             Objects.requireNonNull(newKeyValues, "The provided KeyValueMapper returned null which is not allowed.");
             for (final KeyValue<? extends KOut, ? extends VOut> newPair : newKeyValues) {
                 context().forward(record.withKey(newPair.key).withValue(newPair.value));

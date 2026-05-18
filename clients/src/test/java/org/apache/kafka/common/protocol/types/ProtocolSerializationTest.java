@@ -41,47 +41,47 @@ public class ProtocolSerializationTest {
     @BeforeEach
     public void setup() {
         this.schema = new Schema(new Field("boolean", Type.BOOLEAN),
-                                 new Field("int8", Type.INT8),
-                                 new Field("int16", Type.INT16),
-                                 new Field("int32", Type.INT32),
-                                 new Field("int64", Type.INT64),
-                                 new Field("varint", Type.VARINT),
-                                 new Field("varlong", Type.VARLONG),
-                                 new Field("float64", Type.FLOAT64),
-                                 new Field("string", Type.STRING),
-                                 new Field("compact_string", Type.COMPACT_STRING),
-                                 new Field("nullable_string", Type.NULLABLE_STRING),
-                                 new Field("compact_nullable_string", Type.COMPACT_NULLABLE_STRING),
-                                 new Field("bytes", Type.BYTES),
-                                 new Field("compact_bytes", Type.COMPACT_BYTES),
-                                 new Field("nullable_bytes", Type.NULLABLE_BYTES),
-                                 new Field("compact_nullable_bytes", Type.COMPACT_NULLABLE_BYTES),
-                                 new Field("array", new ArrayOf(Type.INT32)),
-                                 new Field("compact_array", new CompactArrayOf(Type.INT32)),
-                                 new Field("null_array", ArrayOf.nullable(Type.INT32)),
-                                 new Field("compact_null_array", CompactArrayOf.nullable(Type.INT32)),
-                                 new Field("struct", new Schema(new Field("field", new ArrayOf(Type.INT32)))));
+                new Field("int8", Type.INT8),
+                new Field("int16", Type.INT16),
+                new Field("int32", Type.INT32),
+                new Field("int64", Type.INT64),
+                new Field("varint", Type.VARINT),
+                new Field("varlong", Type.VARLONG),
+                new Field("float64", Type.FLOAT64),
+                new Field("string", Type.STRING),
+                new Field("compact_string", Type.COMPACT_STRING),
+                new Field("nullable_string", Type.NULLABLE_STRING),
+                new Field("compact_nullable_string", Type.COMPACT_NULLABLE_STRING),
+                new Field("bytes", Type.BYTES),
+                new Field("compact_bytes", Type.COMPACT_BYTES),
+                new Field("nullable_bytes", Type.NULLABLE_BYTES),
+                new Field("compact_nullable_bytes", Type.COMPACT_NULLABLE_BYTES),
+                new Field("array", new ArrayOf(Type.INT32)),
+                new Field("compact_array", new CompactArrayOf(Type.INT32)),
+                new Field("null_array", ArrayOf.nullable(Type.INT32)),
+                new Field("compact_null_array", CompactArrayOf.nullable(Type.INT32)),
+                new Field("struct", new Schema(new Field("field", new ArrayOf(Type.INT32)))));
         this.struct = new Struct(this.schema).set("boolean", true)
-                                             .set("int8", (byte) 1)
-                                             .set("int16", (short) 1)
-                                             .set("int32", 1)
-                                             .set("int64", 1L)
-                                             .set("varint", 300)
-                                             .set("varlong", 500L)
-                                             .set("float64", 0.5D)
-                                             .set("string", "1")
-                                             .set("compact_string", "1")
-                                             .set("nullable_string", null)
-                                             .set("compact_nullable_string", null)
-                                             .set("bytes", ByteBuffer.wrap("1".getBytes()))
-                                             .set("compact_bytes", ByteBuffer.wrap("1".getBytes()))
-                                             .set("nullable_bytes", null)
-                                             .set("compact_nullable_bytes", null)
-                                             .set("array", new Object[] {1})
-                                             .set("compact_array", new Object[] {1})
-                                             .set("null_array", null)
-                                             .set("compact_null_array", null);
-        this.struct.set("struct", this.struct.instance("struct").set("field", new Object[] {1, 2, 3}));
+                .set("int8", (byte) 1)
+                .set("int16", (short) 1)
+                .set("int32", 1)
+                .set("int64", 1L)
+                .set("varint", 300)
+                .set("varlong", 500L)
+                .set("float64", 0.5D)
+                .set("string", "1")
+                .set("compact_string", "1")
+                .set("nullable_string", null)
+                .set("compact_nullable_string", null)
+                .set("bytes", ByteBuffer.wrap("1".getBytes()))
+                .set("compact_bytes", ByteBuffer.wrap("1".getBytes()))
+                .set("nullable_bytes", null)
+                .set("compact_nullable_bytes", null)
+                .set("array", new Object[]{1})
+                .set("compact_array", new Object[]{1})
+                .set("null_array", null)
+                .set("compact_null_array", null);
+        this.struct.set("struct", this.struct.instance("struct").set("field", new Object[]{1, 2, 3}));
     }
 
     @Test
@@ -129,16 +129,16 @@ public class ProtocolSerializationTest {
         check(Type.VARINT, Integer.MIN_VALUE, "VARINT");
         check(Type.VARLONG, Long.MAX_VALUE, "VARLONG");
         check(Type.VARLONG, Long.MIN_VALUE, "VARLONG");
-        check(new ArrayOf(Type.INT32), new Object[] {1, 2, 3, 4}, "ARRAY(INT32)");
-        check(new ArrayOf(Type.STRING), new Object[] {}, "ARRAY(STRING)");
-        check(new ArrayOf(Type.STRING), new Object[] {"hello", "there", "beautiful"},
+        check(new ArrayOf(Type.INT32), new Object[]{1, 2, 3, 4}, "ARRAY(INT32)");
+        check(new ArrayOf(Type.STRING), new Object[]{}, "ARRAY(STRING)");
+        check(new ArrayOf(Type.STRING), new Object[]{"hello", "there", "beautiful"},
                 "ARRAY(STRING)");
-        check(new CompactArrayOf(Type.INT32), new Object[] {1, 2, 3, 4},
+        check(new CompactArrayOf(Type.INT32), new Object[]{1, 2, 3, 4},
                 "COMPACT_ARRAY(INT32)");
-        check(new CompactArrayOf(Type.COMPACT_STRING), new Object[] {},
+        check(new CompactArrayOf(Type.COMPACT_STRING), new Object[]{},
                 "COMPACT_ARRAY(COMPACT_STRING)");
         check(new CompactArrayOf(Type.COMPACT_STRING),
-                new Object[] {"hello", "there", "beautiful"},
+                new Object[]{"hello", "there", "beautiful"},
                 "COMPACT_ARRAY(COMPACT_STRING)");
         check(ArrayOf.nullable(Type.STRING), null, "NULLABLE_ARRAY(STRING)");
         check(CompactArrayOf.nullable(Type.COMPACT_STRING), null,
@@ -196,8 +196,8 @@ public class ProtocolSerializationTest {
             invalidBuffer.put((byte) i);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> type.read(invalidBuffer),
-            "Array size not validated");
+                () -> type.read(invalidBuffer),
+                "Array size not validated");
     }
 
     @Test
@@ -205,14 +205,14 @@ public class ProtocolSerializationTest {
         Type type = new CompactArrayOf(Type.INT8);
         int size = 10;
         ByteBuffer invalidBuffer = ByteBuffer.allocate(
-            ByteUtils.sizeOfUnsignedVarint(Integer.MAX_VALUE) + size);
+                ByteUtils.sizeOfUnsignedVarint(Integer.MAX_VALUE) + size);
         ByteUtils.writeUnsignedVarint(Integer.MAX_VALUE, invalidBuffer);
         for (int i = 0; i < size; i++)
             invalidBuffer.put((byte) i);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> type.read(invalidBuffer),
-            "Array size not validated");
+                () -> type.read(invalidBuffer),
+                "Array size not validated");
     }
 
     @Test
@@ -234,7 +234,7 @@ public class ProtocolSerializationTest {
         // should throw SchemaException while reading the buffer, instead of OOM
         Throwable e = assertThrows(SchemaException.class, () -> type.read(buffer));
         assertEquals("Error reading field of size " + Integer.MAX_VALUE + ", only " + expectedRemaining + " bytes available",
-            e.getMessage());
+                e.getMessage());
     }
 
     @Test
@@ -247,8 +247,8 @@ public class ProtocolSerializationTest {
             invalidBuffer.put((byte) i);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> type.read(invalidBuffer),
-            "Array size not validated");
+                () -> type.read(invalidBuffer),
+                "Array size not validated");
     }
 
     @Test
@@ -256,14 +256,14 @@ public class ProtocolSerializationTest {
         Type type = new CompactArrayOf(Type.INT8);
         int size = 10;
         ByteBuffer invalidBuffer = ByteBuffer.allocate(
-            ByteUtils.sizeOfUnsignedVarint(0) + size);
+                ByteUtils.sizeOfUnsignedVarint(0) + size);
         ByteUtils.writeUnsignedVarint(0, invalidBuffer);
         for (int i = 0; i < size; i++)
             invalidBuffer.put((byte) i);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> type.read(invalidBuffer),
-            "Array size not validated");
+                () -> type.read(invalidBuffer),
+                "Array size not validated");
     }
 
     @Test
@@ -274,13 +274,13 @@ public class ProtocolSerializationTest {
         invalidBuffer.put(stringBytes);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> Type.STRING.read(invalidBuffer),
-            "String size not validated");
+                () -> Type.STRING.read(invalidBuffer),
+                "String size not validated");
 
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> Type.NULLABLE_STRING.read(invalidBuffer),
-            "String size not validated");
+                () -> Type.NULLABLE_STRING.read(invalidBuffer),
+                "String size not validated");
     }
 
     @Test
@@ -292,8 +292,8 @@ public class ProtocolSerializationTest {
         invalidBuffer.rewind();
 
         assertThrows(SchemaException.class,
-            () -> Type.STRING.read(invalidBuffer),
-            "String size not validated");
+                () -> Type.STRING.read(invalidBuffer),
+                "String size not validated");
     }
 
     @Test
@@ -304,13 +304,13 @@ public class ProtocolSerializationTest {
         invalidBuffer.put(stringBytes);
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> Type.BYTES.read(invalidBuffer),
-            "Bytes size not validated");
+                () -> Type.BYTES.read(invalidBuffer),
+                "Bytes size not validated");
 
         invalidBuffer.rewind();
         assertThrows(SchemaException.class,
-            () -> Type.NULLABLE_BYTES.read(invalidBuffer),
-            "Bytes size not validated");
+                () -> Type.NULLABLE_BYTES.read(invalidBuffer),
+                "Bytes size not validated");
     }
 
     @Test
@@ -322,8 +322,8 @@ public class ProtocolSerializationTest {
         invalidBuffer.rewind();
 
         assertThrows(SchemaException.class,
-            () -> Type.BYTES.read(invalidBuffer),
-            "Bytes size not validated");
+                () -> Type.BYTES.read(invalidBuffer),
+                "Bytes size not validated");
     }
 
     @Test
@@ -435,10 +435,10 @@ public class ProtocolSerializationTest {
     @Test
     public void testReadBytesBeyondItsSize() {
         Type[] types = new Type[]{
-            Type.BYTES,
-            Type.COMPACT_BYTES,
-            Type.NULLABLE_BYTES,
-            Type.COMPACT_NULLABLE_BYTES
+                Type.BYTES,
+                Type.COMPACT_BYTES,
+                Type.NULLABLE_BYTES,
+                Type.COMPACT_NULLABLE_BYTES
         };
         for (Type type : types) {
             ByteBuffer buffer = ByteBuffer.allocate(20);

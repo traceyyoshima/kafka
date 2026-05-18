@@ -42,9 +42,9 @@ final class ControllerResultAndOffset<T> extends ControllerResult<T> {
         }
         ControllerResultAndOffset<?> other = (ControllerResultAndOffset<?>) o;
         return records().equals(other.records()) &&
-            response().equals(other.response()) &&
-            isAtomic() == other.isAtomic() &&
-            offset == other.offset;
+                response().equals(other.response()) &&
+                isAtomic() == other.isAtomic() &&
+                offset == other.offset;
     }
 
     @Override
@@ -55,11 +55,11 @@ final class ControllerResultAndOffset<T> extends ControllerResult<T> {
     @Override
     public String toString() {
         return String.format(
-            "ControllerResultAndOffset(records=%s, response=%s, isAtomic=%s, offset=%d)",
-            records().stream().map(ApiMessageAndVersion::toString).collect(Collectors.joining(",")),
-            response(),
-            isAtomic(),
-            offset
+                "ControllerResultAndOffset(records=%s, response=%s, isAtomic=%s, offset=%d)",
+                records().stream().map(ApiMessageAndVersion::toString).collect(Collectors.joining(",")),
+                response(),
+                isAtomic(),
+                offset
         );
     }
 

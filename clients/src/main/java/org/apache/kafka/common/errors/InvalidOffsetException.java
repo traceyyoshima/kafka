@@ -19,6 +19,7 @@ package org.apache.kafka.common.errors;
 /**
  * Thrown when the offset for a set of partitions is invalid (either undefined or out of range),
  * and no reset policy has been configured.
+ *
  * @see OffsetOutOfRangeException
  */
 public class InvalidOffsetException extends ApiException {

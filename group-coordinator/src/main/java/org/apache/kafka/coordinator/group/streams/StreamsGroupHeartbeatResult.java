@@ -29,7 +29,8 @@ import java.util.Objects;
  * @param data            The data to be returned to the client.
  * @param creatableTopics The internal topics to be created.
  */
-public record StreamsGroupHeartbeatResult(StreamsGroupHeartbeatResponseData data, Map<String, CreatableTopic> creatableTopics) {
+public record StreamsGroupHeartbeatResult(StreamsGroupHeartbeatResponseData data,
+                                          Map<String, CreatableTopic> creatableTopics) {
 
     public StreamsGroupHeartbeatResult {
         Objects.requireNonNull(data);

@@ -80,20 +80,20 @@ public class GlobVisitorTest {
     static {
         DATA = new MetadataShellState();
         DATA.setRoot(new TestNode("",
-            new TestNode("alpha",
-                new TestNode("beta",
-                    new TestNode("gamma")
+                new TestNode("alpha",
+                        new TestNode("beta",
+                                new TestNode("gamma")
+                        ),
+                        new TestNode("theta")
                 ),
-                new TestNode("theta")
-            ),
-            new TestNode("foo",
-                new TestNode("a"),
-                new TestNode("beta")
-            ),
-            new TestNode("zeta",
-                new TestNode("c", false)
-            ),
-            new TestNode("zzz")
+                new TestNode("foo",
+                        new TestNode("a"),
+                        new TestNode("beta")
+                ),
+                new TestNode("zeta",
+                        new TestNode("c", false)
+                ),
+                new TestNode("zzz")
         ));
         DATA.setWorkingDirectory("foo");
     }
@@ -126,10 +126,10 @@ public class GlobVisitorTest {
         GlobVisitor visitor = new GlobVisitor("*", consumer);
         visitor.accept(DATA);
         assertEquals(Optional.of(List.of(
-            new MetadataNodeInfo(new String[] {"foo", "a"},
-                DATA.root().child("foo").child("a")),
-            new MetadataNodeInfo(new String[] {"foo", "beta"},
-                DATA.root().child("foo").child("beta")))), consumer.infos);
+                new MetadataNodeInfo(new String[]{"foo", "a"},
+                        DATA.root().child("foo").child("a")),
+                new MetadataNodeInfo(new String[]{"foo", "beta"},
+                        DATA.root().child("foo").child("beta")))), consumer.infos);
     }
 
     @Test
@@ -138,7 +138,7 @@ public class GlobVisitorTest {
         GlobVisitor visitor = new GlobVisitor("..", consumer);
         visitor.accept(DATA);
         assertEquals(Optional.of(List.of(
-            new MetadataNodeInfo(new String[0], DATA.root()))), consumer.infos);
+                new MetadataNodeInfo(new String[0], DATA.root()))), consumer.infos);
     }
 
     @Test
@@ -147,7 +147,7 @@ public class GlobVisitorTest {
         GlobVisitor visitor = new GlobVisitor("../..", consumer);
         visitor.accept(DATA);
         assertEquals(Optional.of(List.of(
-            new MetadataNodeInfo(new String[0], DATA.root()))), consumer.infos);
+                new MetadataNodeInfo(new String[0], DATA.root()))), consumer.infos);
     }
 
     @Test
@@ -156,10 +156,10 @@ public class GlobVisitorTest {
         GlobVisitor visitor = new GlobVisitor("../z*", consumer);
         visitor.accept(DATA);
         assertEquals(Optional.of(List.of(
-            new MetadataNodeInfo(new String[] {"zeta"},
-                DATA.root().child("zeta")),
-            new MetadataNodeInfo(new String[] {"zzz"},
-                DATA.root().child("zzz")))), consumer.infos);
+                new MetadataNodeInfo(new String[]{"zeta"},
+                        DATA.root().child("zeta")),
+                new MetadataNodeInfo(new String[]{"zzz"},
+                        DATA.root().child("zzz")))), consumer.infos);
     }
 
     @Test
@@ -168,12 +168,12 @@ public class GlobVisitorTest {
         GlobVisitor visitor = new GlobVisitor("../*/{beta,theta}", consumer);
         visitor.accept(DATA);
         assertEquals(Optional.of(List.of(
-            new MetadataNodeInfo(new String[] {"alpha", "beta"},
-                DATA.root().child("alpha").child("beta")),
-            new MetadataNodeInfo(new String[] {"alpha", "theta"},
-                DATA.root().child("alpha").child("theta")),
-            new MetadataNodeInfo(new String[] {"foo", "beta"},
-                DATA.root().child("foo").child("beta")))), consumer.infos);
+                new MetadataNodeInfo(new String[]{"alpha", "beta"},
+                        DATA.root().child("alpha").child("beta")),
+                new MetadataNodeInfo(new String[]{"alpha", "theta"},
+                        DATA.root().child("alpha").child("theta")),
+                new MetadataNodeInfo(new String[]{"foo", "beta"},
+                        DATA.root().child("foo").child("beta")))), consumer.infos);
     }
 
     @Test
@@ -190,7 +190,7 @@ public class GlobVisitorTest {
         GlobVisitor visitor = new GlobVisitor("/a?pha", consumer);
         visitor.accept(DATA);
         assertEquals(Optional.of(List.of(
-            new MetadataNodeInfo(new String[]{"alpha"},
-                DATA.root().child("alpha")))), consumer.infos);
+                new MetadataNodeInfo(new String[]{"alpha"},
+                        DATA.root().child("alpha")))), consumer.infos);
     }
 }

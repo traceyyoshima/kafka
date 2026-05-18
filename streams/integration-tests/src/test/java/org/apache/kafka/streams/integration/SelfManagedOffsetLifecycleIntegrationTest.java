@@ -138,10 +138,10 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final KStream<String, String> stream = builder.stream(INPUT_TOPIC);
         stream
-            .groupByKey()
-            .count(Materialized.as(STORE_NAME))
-            .toStream()
-            .to(OUTPUT_TOPIC);
+                .groupByKey()
+                .count(Materialized.as(STORE_NAME))
+                .toStream()
+                .to(OUTPUT_TOPIC);
         return builder;
     }
 
@@ -192,18 +192,18 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
 
     private void produceRecords(final List<KeyValue<String, String>> records) {
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            INPUT_TOPIC,
-            records,
-            producerConfig(),
-            CLUSTER.time
+                INPUT_TOPIC,
+                records,
+                producerConfig(),
+                CLUSTER.time
         );
     }
 
     private List<KeyValue<String, Long>> waitForOutput(final int expectedCount) throws Exception {
         return IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            readCommittedConsumerConfig(),
-            OUTPUT_TOPIC,
-            expectedCount
+                readCommittedConsumerConfig(),
+                OUTPUT_TOPIC,
+                expectedCount
         );
     }
 
@@ -224,7 +224,7 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
      */
     private Map<String, Long> queryStore(final KafkaStreams kafkaStreams) throws Exception {
         final ReadOnlyKeyValueStore<String, Long> store = kafkaStreams.store(
-            StoreQueryParameters.fromNameAndType(STORE_NAME, QueryableStoreTypes.keyValueStore())
+                StoreQueryParameters.fromNameAndType(STORE_NAME, QueryableStoreTypes.keyValueStore())
         );
         final Map<String, Long> result = new HashMap<>();
         try (var iter = store.all()) {
@@ -252,7 +252,7 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         for (final File storeDir : findAllStoreDirs(STORE_NAME)) {
             final Long status = RocksDBStoreTestingUtils.readStoreStatus(storeDir);
             assertEquals(expectedStatus, status,
-                "Store status in " + storeDir + " should be " + (expectedStatus == 0L ? "closed" : "open"));
+                    "Store status in " + storeDir + " should be " + (expectedStatus == 0L ? "closed" : "open"));
         }
     }
 
@@ -279,9 +279,9 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         streamsConfig.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, processingGuarantee);
 
         final List<KeyValue<String, String>> batch1 = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams(true);
@@ -299,8 +299,8 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         startStreams(false);
 
         final List<KeyValue<String, String>> batch2 = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("B", "v2")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("B", "v2")
         );
         produceRecords(batch2);
 
@@ -324,8 +324,8 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         // Cycle 1
         startStreams(true);
         final List<KeyValue<String, String>> batch1 = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1")
         );
         produceRecords(batch1);
         waitForOutput(batch1.size());
@@ -335,8 +335,8 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         // Cycle 2
         startStreams(false);
         final List<KeyValue<String, String>> batch2 = Arrays.asList(
-            new KeyValue<>("A", "v2"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v2"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(batch2);
         waitForOutput(batch1.size() + batch2.size());
@@ -346,9 +346,9 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         // Cycle 3
         startStreams(false);
         final List<KeyValue<String, String>> batch3 = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("B", "v2"),
-            new KeyValue<>("C", "v2")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("B", "v2"),
+                new KeyValue<>("C", "v2")
         );
         produceRecords(batch3);
 
@@ -372,9 +372,9 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         streamsConfig.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, processingGuarantee);
 
         final List<KeyValue<String, String>> batch1 = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams(true);
@@ -393,8 +393,8 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         startStreamsWithRestoreListener(restoreListener);
 
         final List<KeyValue<String, String>> batch2 = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(batch2);
 
@@ -405,7 +405,7 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         assertEquals(1L, counts.get("B"), "B count should be preserved");
         assertEquals(1L, counts.get("C"), "C count should reflect new record");
         assertEquals(0L, restoreListener.totalRestored.get(),
-            "No records should be restored from changelog after clean shutdown");
+                "No records should be restored from changelog after clean shutdown");
     }
 
     /**
@@ -434,8 +434,8 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
             startStreams(false);
 
             final List<KeyValue<String, String>> records = Arrays.asList(
-                new KeyValue<>("A", "v1"),
-                new KeyValue<>("B", "v1")
+                    new KeyValue<>("A", "v1"),
+                    new KeyValue<>("B", "v1")
             );
             produceRecords(records);
 
@@ -471,9 +471,9 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         streamsConfig.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, processingGuarantee);
 
         final List<KeyValue<String, String>> records = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams(true);
@@ -497,7 +497,7 @@ public class SelfManagedOffsetLifecycleIntegrationTest {
         final Map<String, Long> countsAfter = queryStore(streams);
 
         assertEquals(countsBefore, countsAfter,
-            "Store state via IQ should be identical after clean restart");
+                "Store state via IQ should be identical after clean restart");
     }
 
     /**

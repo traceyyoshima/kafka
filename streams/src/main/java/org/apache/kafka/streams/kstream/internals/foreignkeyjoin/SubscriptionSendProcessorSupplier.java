@@ -44,7 +44,7 @@ import static org.apache.kafka.streams.kstream.internals.foreignkeyjoin.Subscrip
 import static org.apache.kafka.streams.kstream.internals.foreignkeyjoin.SubscriptionWrapper.Instruction.PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE;
 
 public class SubscriptionSendProcessorSupplier<KLeft, VLeft, KRight>
-    implements ProcessorSupplier<KLeft, Change<VLeft>, KRight, SubscriptionWrapper<KLeft>> {
+        implements ProcessorSupplier<KLeft, Change<VLeft>, KRight, SubscriptionWrapper<KLeft>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubscriptionSendProcessorSupplier.class);
 
@@ -105,9 +105,9 @@ public class SubscriptionSendProcessorSupplier<KLeft, VLeft, KRight>
                 valueSerializer = (Serializer<VLeft>) context.valueSerde().serializer();
             }
             droppedRecordsSensor = TaskMetrics.droppedRecordsSensor(
-                Thread.currentThread().getName(),
-                context.taskId().toString(),
-                (StreamsMetricsImpl) context.metrics()
+                    Thread.currentThread().getName(),
+                    context.taskId().toString(),
+                    (StreamsMetricsImpl) context.metrics()
             );
         }
 
@@ -238,10 +238,10 @@ public class SubscriptionSendProcessorSupplier<KLeft, VLeft, KRight>
 
         private void forward(final Record<KLeft, Change<VLeft>> record, final KRight foreignKey, final Instruction deleteKeyNoPropagate) {
             final SubscriptionWrapper<KLeft> wrapper = new SubscriptionWrapper<>(
-                hash(record),
-                deleteKeyNoPropagate,
-                record.key(),
-                context().recordMetadata().get().partition()
+                    hash(record),
+                    deleteKeyNoPropagate,
+                    record.key(),
+                    context().recordMetadata().get().partition()
             );
             context().forward(record.withKey(foreignKey).withValue(wrapper));
         }
@@ -249,8 +249,8 @@ public class SubscriptionSendProcessorSupplier<KLeft, VLeft, KRight>
         private long[] hash(final Record<KLeft, Change<VLeft>> record) {
             if (recordHash == null) {
                 recordHash = record.value().newValue == null
-                    ? null
-                    : Murmur3.hash128(valueSerializer.serialize(valueSerdeTopic, record.headers(), record.value().newValue));
+                        ? null
+                        : Murmur3.hash128(valueSerializer.serialize(valueSerdeTopic, record.headers(), record.value().newValue));
             }
             return recordHash;
         }
@@ -259,8 +259,8 @@ public class SubscriptionSendProcessorSupplier<KLeft, VLeft, KRight>
             if (context().recordMetadata().isPresent()) {
                 final RecordMetadata recordMetadata = context().recordMetadata().get();
                 LOG.warn(
-                    "Skipping record due to null foreign key. topic=[{}] partition=[{}] offset=[{}]",
-                    recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                        "Skipping record due to null foreign key. topic=[{}] partition=[{}] offset=[{}]",
+                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                 );
             } else {
                 LOG.warn("Skipping record due to null foreign key. Topic, partition, and offset not known.");

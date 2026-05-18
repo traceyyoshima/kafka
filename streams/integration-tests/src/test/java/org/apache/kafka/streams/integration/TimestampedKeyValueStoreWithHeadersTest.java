@@ -77,12 +77,12 @@ public class TimestampedKeyValueStoreWithHeadersTest {
     private static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(1);
 
     private static final Headers HEADERS1 = new RecordHeaders()
-        .add("source", "test".getBytes())
-        .add("version", "1.0".getBytes());
+            .add("source", "test".getBytes())
+            .add("version", "1.0".getBytes());
 
     private static final Headers HEADERS2 = new RecordHeaders()
-        .add("source", "test".getBytes())
-        .add("version", "2.0".getBytes());
+            .add("source", "test".getBytes())
+            .add("version", "2.0".getBytes());
 
     private static final Headers EMPTY_HEADERS = new RecordHeaders();
 
@@ -124,16 +124,16 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder
-            .addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
-                    Serdes.Integer(),
-                    Serdes.String()
+                .addStateStore(
+                        Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         final Properties props = props();
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
@@ -143,23 +143,23 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         int numRecordsProduced = 0;
 
         numRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp, HEADERS1,
-            KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
+                KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
 
         numRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp + 5, HEADERS2,
-            KeyValue.pair(1, "a5"), KeyValue.pair(2, null), KeyValue.pair(3, "c5"));
+                KeyValue.pair(1, "a5"), KeyValue.pair(2, null), KeyValue.pair(3, "c5"));
 
         numRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp + 2,
-            EMPTY_HEADERS,
-            KeyValue.pair(1, "a2"), KeyValue.pair(2, "b2"), KeyValue.pair(3, null));
+                EMPTY_HEADERS,
+                KeyValue.pair(1, "a2"), KeyValue.pair(2, "b2"), KeyValue.pair(3, null));
 
         // wait for output and verify
         final List<KeyValue<Integer, Integer>> receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            numRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                numRecordsProduced);
 
         for (final KeyValue<Integer, Integer> receivedRecord : receivedRecords) {
             // verify zero failed checks for each record
@@ -172,16 +172,16 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder
-            .addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
-                    Serdes.Integer(),
-                    Serdes.String()
+                .addStateStore(
+                        Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(false), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(false), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         final Properties props = props();
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
@@ -191,12 +191,12 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         produceDataToTopicWithHeaders(inputStream, baseTimestamp, new RecordHeaders(), KeyValue.pair(0, "foo"));
 
         IntegrationTestUtils.waitUntilMinRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            1);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                1);
 
         // verify changelog topic properties
         final String changelogTopic = props.getProperty(StreamsConfig.APPLICATION_ID_CONFIG) + "-" + STORE_NAME + "-changelog";
@@ -209,16 +209,16 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder
-            .addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
-                    Serdes.Integer(),
-                    Serdes.String()
+                .addStateStore(
+                        Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         final Properties props = props();
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
@@ -229,31 +229,31 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         int initialRecordsProduced = 0;
 
         initialRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp, HEADERS1,
-            KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
+                KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
         expectedData.put(1, Optional.of(ValueTimestampHeaders.make("a0", baseTimestamp, HEADERS1)));
         expectedData.put(2, Optional.of(ValueTimestampHeaders.make("b0", baseTimestamp, HEADERS1)));
         expectedData.put(3, Optional.empty());  // null value
 
         initialRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp + 5, HEADERS2,
-            KeyValue.pair(1, "a5"), KeyValue.pair(2, null), KeyValue.pair(3, "c5"));
+                KeyValue.pair(1, "a5"), KeyValue.pair(2, null), KeyValue.pair(3, "c5"));
         expectedData.put(1, Optional.of(ValueTimestampHeaders.make("a5", baseTimestamp + 5, HEADERS2)));
         expectedData.put(2, Optional.empty());  // null value
         expectedData.put(3, Optional.of(ValueTimestampHeaders.make("c5", baseTimestamp + 5, HEADERS2)));
 
         initialRecordsProduced += produceDataToTopicWithHeaders(inputStream, baseTimestamp + 10, EMPTY_HEADERS,
-            KeyValue.pair(1, "a10"), KeyValue.pair(2, "b10"), KeyValue.pair(3, "c10"));
+                KeyValue.pair(1, "a10"), KeyValue.pair(2, "b10"), KeyValue.pair(3, "c10"));
         expectedData.put(1, Optional.of(ValueTimestampHeaders.make("a10", baseTimestamp + 10, EMPTY_HEADERS)));
         expectedData.put(2, Optional.of(ValueTimestampHeaders.make("b10", baseTimestamp + 10, EMPTY_HEADERS)));
         expectedData.put(3, Optional.of(ValueTimestampHeaders.make("c10", baseTimestamp + 10, EMPTY_HEADERS)));
 
         // wait for output
         IntegrationTestUtils.waitUntilMinRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced);
 
         // wipe out state store to trigger restore process on restart
         kafkaStreams.close();
@@ -263,16 +263,16 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         streamsBuilder = new StreamsBuilder();
 
         streamsBuilder
-            .addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
-                    Serdes.Integer(),
-                    Serdes.String()
+                .addStateStore(
+                        Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
         kafkaStreams.start();
@@ -280,16 +280,16 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         // produce additional records to verify restored store works correctly
         final Headers finalHeaders = new RecordHeaders().add("final", "true".getBytes());
         final int additionalRecordsProduced = produceDataToTopicWithHeaders(inputStream, baseTimestamp + 12, finalHeaders,
-            KeyValue.pair(1, "a12"), KeyValue.pair(2, "b12"), KeyValue.pair(3, "c12"));
+                KeyValue.pair(1, "a12"), KeyValue.pair(2, "b12"), KeyValue.pair(3, "c12"));
 
         // wait for output and verify
         final List<KeyValue<Integer, Integer>> receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced + additionalRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced + additionalRecordsProduced);
 
         for (final KeyValue<Integer, Integer> receivedRecord : receivedRecords) {
             // verify zero failed checks for each record
@@ -302,16 +302,16 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder
-            .addStateStore(
-                Stores.timestampedKeyValueStoreBuilder(
-                    Stores.persistentTimestampedKeyValueStore(STORE_NAME),
-                    Serdes.Integer(),
-                    Serdes.String()
+                .addStateStore(
+                        Stores.timestampedKeyValueStoreBuilder(
+                                Stores.persistentTimestampedKeyValueStore(STORE_NAME),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(TimestampedStoreContentCheckerProcessor::new, STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(TimestampedStoreContentCheckerProcessor::new, STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         shouldManualUpgradeFromTimestampedToHeaders(streamsBuilder.build());
     }
@@ -325,20 +325,20 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         // produce source data to legacy timestamped store (without headers)
         int initialRecordsProduced = 0;
         initialRecordsProduced += produceDataToTopic(inputStream, baseTimestamp,
-            KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
+                KeyValue.pair(1, "a0"), KeyValue.pair(2, "b0"), KeyValue.pair(3, null));
         initialRecordsProduced += produceDataToTopic(inputStream, baseTimestamp + 5,
-            KeyValue.pair(1, "a5"), KeyValue.pair(2, null), KeyValue.pair(3, "c5"));
+                KeyValue.pair(1, "a5"), KeyValue.pair(2, null), KeyValue.pair(3, "c5"));
         initialRecordsProduced += produceDataToTopic(inputStream, baseTimestamp + 2,
-            KeyValue.pair(1, "a2"), KeyValue.pair(2, "b2"), KeyValue.pair(3, null));
+                KeyValue.pair(1, "a2"), KeyValue.pair(2, "b2"), KeyValue.pair(3, null));
 
         // wait for output and verify
         List<KeyValue<Integer, Integer>> receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced);
 
         for (final KeyValue<Integer, Integer> receivedRecord : receivedRecords) {
             // verify zero failed checks for each record
@@ -355,16 +355,16 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         final StreamsBuilder streamsBuilder = new StreamsBuilder();
 
         streamsBuilder
-            .addStateStore(
-                Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                    Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
-                    Serdes.Integer(),
-                    Serdes.String()
+                .addStateStore(
+                        Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                                Stores.persistentTimestampedKeyValueStoreWithHeaders(STORE_NAME),
+                                Serdes.Integer(),
+                                Serdes.String()
+                        )
                 )
-            )
-            .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
-            .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
+                .stream(inputStream, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .process(() -> new TimestampedStoreWithHeadersContentCheckerProcessor(true), STORE_NAME)
+                .to(outputStream, Produced.with(Serdes.Integer(), Serdes.Integer()));
 
         kafkaStreams = new KafkaStreams(streamsBuilder.build(), props);
         kafkaStreams.start();
@@ -372,16 +372,16 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         // produce additional records with headers to verify upgraded store works
         final Headers upgradedHeaders = new RecordHeaders().add("upgraded", "true".getBytes());
         final int additionalRecordsProduced = produceDataToTopicWithHeaders(inputStream, baseTimestamp + 12, upgradedHeaders,
-            KeyValue.pair(1, "a12"), KeyValue.pair(2, "b12"), KeyValue.pair(3, "c12"));
+                KeyValue.pair(1, "a12"), KeyValue.pair(2, "b12"), KeyValue.pair(3, "c12"));
 
         // wait for output and verify
         receivedRecords = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            TestUtils.consumerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerDeserializer.class,
-                IntegerDeserializer.class),
-            outputStream,
-            initialRecordsProduced + additionalRecordsProduced);
+                TestUtils.consumerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerDeserializer.class,
+                        IntegerDeserializer.class),
+                outputStream,
+                initialRecordsProduced + additionalRecordsProduced);
 
         for (final KeyValue<Integer, Integer> receivedRecord : receivedRecords) {
             // verify zero failed checks for each record
@@ -409,15 +409,14 @@ public class TimestampedKeyValueStoreWithHeadersTest {
                                          final long timestamp,
                                          final KeyValue<Integer, String>... keyValues) {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            topic,
-            Arrays.asList(keyValues),
-            TestUtils.producerConfig(CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                StringSerializer.class),
-            timestamp);
+                topic,
+                Arrays.asList(keyValues),
+                TestUtils.producerConfig(CLUSTER.bootstrapServers(),
+                        IntegerSerializer.class,
+                        StringSerializer.class),
+                timestamp);
         return keyValues.length;
     }
-
 
 
     /**
@@ -432,14 +431,14 @@ public class TimestampedKeyValueStoreWithHeadersTest {
                                                     final Headers headers,
                                                     final KeyValue<Integer, String>... keyValues) {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            topic,
-            Arrays.asList(keyValues),
-            TestUtils.producerConfig(CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                StringSerializer.class),
-            headers,
-            timestamp,
-            false);
+                topic,
+                Arrays.asList(keyValues),
+                TestUtils.producerConfig(CLUSTER.bootstrapServers(),
+                        IntegerSerializer.class,
+                        StringSerializer.class),
+                headers,
+                timestamp,
+                false);
         return keyValues.length;
     }
 
@@ -472,7 +471,7 @@ public class TimestampedKeyValueStoreWithHeadersTest {
         public void process(final Record<Integer, String> record) {
             if (writeToStore) {
                 final ValueTimestampHeaders<String> valueTimestampHeaders =
-                    ValueTimestampHeaders.make(record.value(), record.timestamp(), record.headers());
+                        ValueTimestampHeaders.make(record.value(), record.timestamp(), record.headers());
                 store.put(record.key(), valueTimestampHeaders);
                 data.put(record.key(), Optional.ofNullable(valueTimestampHeaders));
             }
@@ -490,7 +489,7 @@ public class TimestampedKeyValueStoreWithHeadersTest {
             for (final Map.Entry<Integer, Optional<ValueTimestampHeaders<String>>> keyWithValueTimestampHeaders : data.entrySet()) {
                 final Integer key = keyWithValueTimestampHeaders.getKey();
                 final ValueTimestampHeaders<String> expectedValueTimestampHeaders =
-                    keyWithValueTimestampHeaders.getValue().orElse(null);
+                        keyWithValueTimestampHeaders.getValue().orElse(null);
 
                 // validate get from store
                 final ValueTimestampHeaders<String> actualValueTimestampHeaders = store.get(key);

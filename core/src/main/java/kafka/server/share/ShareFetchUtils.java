@@ -79,14 +79,14 @@ public class ShareFetchUtils {
 
             SharePartition sharePartition = sharePartitions.get(topicIdPartition);
             ShareFetchResponseData.PartitionData partitionData = new ShareFetchResponseData.PartitionData()
-                .setPartitionIndex(topicIdPartition.partition());
+                    .setPartitionIndex(topicIdPartition.partition());
 
             if (fetchPartitionData.error.code() != Errors.NONE.code()) {
                 partitionData
-                    .setRecords(MemoryRecords.EMPTY)
-                    .setErrorCode(fetchPartitionData.error.code())
-                    .setErrorMessage(fetchPartitionData.error.message())
-                    .setAcquiredRecords(List.of());
+                        .setRecords(MemoryRecords.EMPTY)
+                        .setErrorCode(fetchPartitionData.error.code())
+                        .setErrorMessage(fetchPartitionData.error.message())
+                        .setAcquiredRecords(List.of());
 
                 // In case we get OFFSET_OUT_OF_RANGE error, that's because the Log Start Offset is later than the fetch offset.
                 // So, we would update the start and end offset of the share partition and still return an empty
@@ -95,7 +95,7 @@ public class ShareFetchUtils {
                 if (fetchPartitionData.error.code() == Errors.OFFSET_OUT_OF_RANGE.code()) {
                     try {
                         sharePartition.updateCacheAndOffsets(offsetForEarliestTimestamp(topicIdPartition,
-                            replicaManager, sharePartition.leaderEpoch()));
+                                replicaManager, sharePartition.leaderEpoch()));
                     } catch (Exception e) {
                         log.error("Error while fetching offset for earliest timestamp for topicIdPartition: {}", topicIdPartition, e);
                         shareFetch.addErroneous(topicIdPartition, e);
@@ -110,13 +110,13 @@ public class ShareFetchUtils {
                 }
             } else {
                 ShareAcquiredRecords shareAcquiredRecords = sharePartition.acquire(
-                    shareFetch.memberId(),
-                    shareFetch.shareAcquireMode(),
-                    shareFetch.batchSize(),
-                    shareFetch.maxFetchRecords() - acquiredRecordsCount,
-                    shareFetchPartitionData.fetchOffset(),
-                    fetchPartitionData,
-                    shareFetch.fetchParams().isolation
+                        shareFetch.memberId(),
+                        shareFetch.shareAcquireMode(),
+                        shareFetch.batchSize(),
+                        shareFetch.maxFetchRecords() - acquiredRecordsCount,
+                        shareFetchPartitionData.fetchOffset(),
+                        fetchPartitionData,
+                        shareFetch.fetchParams().isolation
                 );
                 log.trace("Acquired records: {} for topicIdPartition: {}", shareAcquiredRecords, topicIdPartition);
                 // Maybe, in the future, check if no records are acquired, and we want to retry
@@ -124,12 +124,12 @@ public class ShareFetchUtils {
                 // if we want parallel requests for the same share partition or not.
                 if (shareAcquiredRecords.acquiredRecords().isEmpty()) {
                     partitionData
-                        .setRecords(MemoryRecords.EMPTY)
-                        .setAcquiredRecords(List.of());
+                            .setRecords(MemoryRecords.EMPTY)
+                            .setAcquiredRecords(List.of());
                 } else {
                     partitionData
-                        .setRecords(maybeSliceFetchRecords(fetchPartitionData.records, shareAcquiredRecords))
-                        .setAcquiredRecords(shareAcquiredRecords.acquiredRecords());
+                            .setRecords(maybeSliceFetchRecords(fetchPartitionData.records, shareAcquiredRecords))
+                            .setAcquiredRecords(shareAcquiredRecords.acquiredRecords());
                     acquiredRecordsCount += shareAcquiredRecords.count();
                 }
             }
@@ -162,8 +162,8 @@ public class ShareFetchUtils {
     static long offsetForLatestTimestamp(TopicIdPartition topicIdPartition, ReplicaManager replicaManager, int leaderEpoch) {
         // Isolation level is set to READ_UNCOMMITTED, matching with that used in share fetch requests
         Optional<FileRecords.TimestampAndOffset> timestampAndOffset = replicaManager.fetchOffsetForTimestamp(
-            topicIdPartition.topicPartition(), ListOffsetsRequest.LATEST_TIMESTAMP, new Some<>(IsolationLevel.READ_UNCOMMITTED),
-            Optional.of(leaderEpoch), true).timestampAndOffsetOpt();
+                topicIdPartition.topicPartition(), ListOffsetsRequest.LATEST_TIMESTAMP, new Some<>(IsolationLevel.READ_UNCOMMITTED),
+                Optional.of(leaderEpoch), true).timestampAndOffsetOpt();
         if (timestampAndOffset.isEmpty()) {
             throw new OffsetNotAvailableException("Offset for latest timestamp not found for topic partition: " + topicIdPartition);
         }
@@ -177,7 +177,7 @@ public class ShareFetchUtils {
      */
     static long offsetForTimestamp(TopicIdPartition topicIdPartition, ReplicaManager replicaManager, long timestampToSearch, int leaderEpoch) {
         Optional<FileRecords.TimestampAndOffset> timestampAndOffset = replicaManager.fetchOffsetForTimestamp(
-            topicIdPartition.topicPartition(), timestampToSearch, new Some<>(IsolationLevel.READ_UNCOMMITTED), Optional.of(leaderEpoch), true).timestampAndOffsetOpt();
+                topicIdPartition.topicPartition(), timestampToSearch, new Some<>(IsolationLevel.READ_UNCOMMITTED), Optional.of(leaderEpoch), true).timestampAndOffsetOpt();
         if (timestampAndOffset.isEmpty()) {
             throw new OffsetNotAvailableException("Offset for timestamp " + timestampToSearch + " not found for topic partition: " + topicIdPartition);
         }
@@ -203,10 +203,10 @@ public class ShareFetchUtils {
      * acquired batches rather the boundaries of the acquired list. The method expects the acquired
      * records list to be within the fetch records bounds.
      *
-     * @param records The records to be sliced.
+     * @param records              The records to be sliced.
      * @param shareAcquiredRecords The share acquired records containing the non-empty acquired records.
      * @return The sliced records, if the acquired records are a subset of the fetched records. Otherwise,
-     *         the original records are returned.
+     * the original records are returned.
      */
     static Records maybeSliceFetchRecords(Records records, ShareAcquiredRecords shareAcquiredRecords) {
         // The acquired records should be non-empty, do not check as the method is called only when the
@@ -265,7 +265,7 @@ public class ShareFetchUtils {
      * same (representing single offsets), but not necessarily required, and merges contiguous offsets
      * that have the same delivery count into ranges.
      *
-     * @param result the list to accumulate merged AcquiredRecords into
+     * @param result          the list to accumulate merged AcquiredRecords into
      * @param acquiredRecords the sorted list of AcquiredRecords to merge
      */
     static void accumulateAcquiredRecords(List<AcquiredRecords> result, List<AcquiredRecords> acquiredRecords) {
@@ -285,9 +285,9 @@ public class ShareFetchUtils {
             } else {
                 // Append the current accumulated batch and start a new batch.
                 result.add(new AcquiredRecords()
-                    .setFirstOffset(firstOffset)
-                    .setLastOffset(lastOffset)
-                    .setDeliveryCount(deliveryCount));
+                        .setFirstOffset(firstOffset)
+                        .setLastOffset(lastOffset)
+                        .setDeliveryCount(deliveryCount));
                 // Reset the accumulation variables to the current acquired records.
                 firstOffset = current.firstOffset();
                 lastOffset = current.lastOffset();
@@ -296,8 +296,8 @@ public class ShareFetchUtils {
         }
         // Add the last accumulated batch.
         result.add(new AcquiredRecords()
-            .setFirstOffset(firstOffset)
-            .setLastOffset(lastOffset)
-            .setDeliveryCount(deliveryCount));
+                .setFirstOffset(firstOffset)
+                .setLastOffset(lastOffset)
+                .setDeliveryCount(deliveryCount));
     }
 }

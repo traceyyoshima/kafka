@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * This benchmark calculates the empirical evidence of different implementation for encoding/decoding a protobuf
  * <a href="https://protobuf.dev/programming-guides/encoding/#varints">VarInt</a> and VarLong.
- *
+ * <p>
  * The benchmark uses JMH and calculates results for different sizes of variable length integer. We expect most of the
  * usage in Kafka code base to be 1 or 2 byte integers.
  */
@@ -58,6 +58,7 @@ public class ByteUtilsBenchmark {
     public static class BaseBenchmarkState {
         private ByteBuffer testBuffer;
         private SecureRandom random;
+
         @Setup(Level.Trial)
         public void setUpBenchmarkLevel() {
             // Initialize the random number generator with a seed so that for each benchmark it produces the same sequence
@@ -73,15 +74,15 @@ public class ByteUtilsBenchmark {
 
         /**
          * Generates a random int64 number which occupies exactly bytesSet in the variable length encoding for int64
-         *
+         * <p>
          * Upper bound is set by finding the largest number that can be represented by N bits. This number is found
          * by bit shifting by N and subtracting decimal 1. For example, for 2 bytes = 16 bits, we calculate the
          * upper bound by:
          * 1. 0001 0000 0000 0000 0000 // bit shift by 16 = 65536 decimal
          * 2. Subtract 1 from 65536 = 65535
          * 3. 65535 is the upper bound which is represented in binary as 1111 1111 1111 1111 i.e. largest number
-         *    that could be represented by 2 bytes.
-         *
+         * that could be represented by 2 bytes.
+         * <p>
          * Hence, range of random number of different byte length is:
          * 1 byte - [1, 255)
          * 2 byte - [256, 65535)
@@ -94,8 +95,8 @@ public class ByteUtilsBenchmark {
                 throw new IllegalArgumentException();
             }
             return lowerBound +
-                random.longs(lowerBound, upperBound).findFirst()
-                    .orElseThrow(() -> new IllegalStateException("Unable to create a random long in the range=[" + lowerBound + ", " + upperBound + "]"));
+                    random.longs(lowerBound, upperBound).findFirst()
+                            .orElseThrow(() -> new IllegalStateException("Unable to create a random long in the range=[" + lowerBound + ", " + upperBound + "]"));
         }
 
         /**
@@ -315,7 +316,7 @@ public class ByteUtilsBenchmark {
     /*
      * Implementation in Trunk as of Apr 2023 / v3.4
      */
-    private static long readUnsignedVarlongLegacy(ByteBuffer buffer)  {
+    private static long readUnsignedVarlongLegacy(ByteBuffer buffer) {
         long value = 0L;
         int i = 0;
         long b;
@@ -361,11 +362,11 @@ public class ByteUtilsBenchmark {
                 x ^= y << 28;
                 x ^= (~0 << 7) ^ (~0 << 14) ^ (~0 << 21) ^ (~0 << 28);
                 if (y < 0
-                    && buffer[tempPos++] < 0
-                    && buffer[tempPos++] < 0
-                    && buffer[tempPos++] < 0
-                    && buffer[tempPos++] < 0
-                    && buffer[tempPos++] < 0) {
+                        && buffer[tempPos++] < 0
+                        && buffer[tempPos++] < 0
+                        && buffer[tempPos++] < 0
+                        && buffer[tempPos++] < 0
+                        && buffer[tempPos++] < 0) {
                     break fastpath; // Will throw malformedVarint()
                 }
             }

@@ -60,10 +60,10 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
             when(supplier.get()).thenReturn(timestampedStoreWithHeaders);
 
             builder = new TimestampedWindowStoreWithHeadersBuilder<>(
-                supplier,
-                Serdes.String(),
-                Serdes.String(),
-                new MockTime());
+                    supplier,
+                    Serdes.String(),
+                    Serdes.String(),
+                    new MockTime());
         }
 
         @Test
@@ -102,8 +102,8 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
         public void shouldHaveChangeLoggingStoreWhenLoggingEnabled() {
             setUp();
             final TimestampedWindowStoreWithHeaders<String, String> store = builder
-                .withLoggingEnabled(Collections.emptyMap())
-                .build();
+                    .withLoggingEnabled(Collections.emptyMap())
+                    .build();
             final StateStore wrapped = ((WrappedStateStore) store).wrapped();
             assertInstanceOf(MeteredTimestampedWindowStoreWithHeaders.class, store);
             assertInstanceOf(ChangeLoggingTimestampedWindowBytesStoreWithHeaders.class, wrapped);
@@ -114,9 +114,9 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
         public void shouldHaveCachingAndChangeLoggingWhenBothEnabled() {
             setUp();
             final TimestampedWindowStoreWithHeaders<String, String> store = builder
-                .withLoggingEnabled(Collections.emptyMap())
-                .withCachingEnabled()
-                .build();
+                    .withLoggingEnabled(Collections.emptyMap())
+                    .withCachingEnabled()
+                    .build();
             final WrappedStateStore caching = (WrappedStateStore) ((WrappedStateStore) store).wrapped();
             final WrappedStateStore changeLogging = (WrappedStateStore) caching.wrapped();
             assertInstanceOf(MeteredTimestampedWindowStoreWithHeaders.class, store);
@@ -130,25 +130,25 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
             when(supplier.name()).thenReturn(STORE_NAME);
             when(supplier.metricsScope()).thenReturn(METRICS_SCOPE);
             when(supplier.get()).thenReturn(new RocksDBTimestampedWindowStoreWithHeaders(
-                new RocksDBTimestampedSegmentedBytesStoreWithHeaders(
-                    "name",
-                    "metric-scope",
-                    10L,
-                    5L,
-                    new WindowKeySchema()),
-                false,
-                1L));
+                    new RocksDBTimestampedSegmentedBytesStoreWithHeaders(
+                            "name",
+                            "metric-scope",
+                            10L,
+                            5L,
+                            new WindowKeySchema()),
+                    false,
+                    1L));
 
             builder = new TimestampedWindowStoreWithHeadersBuilder<>(
-                supplier,
-                Serdes.String(),
-                Serdes.String(),
-                new MockTime());
+                    supplier,
+                    Serdes.String(),
+                    Serdes.String(),
+                    new MockTime());
 
             final TimestampedWindowStoreWithHeaders<String, String> store = builder
-                .withLoggingDisabled()
-                .withCachingDisabled()
-                .build();
+                    .withLoggingDisabled()
+                    .withCachingDisabled()
+                    .build();
             assertInstanceOf(RocksDBTimestampedWindowStoreWithHeaders.class, ((WrappedStateStore) store).wrapped());
         }
 
@@ -157,25 +157,25 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
             when(supplier.name()).thenReturn(STORE_NAME);
             when(supplier.metricsScope()).thenReturn(METRICS_SCOPE);
             when(supplier.get()).thenReturn(new RocksDBTimestampedWindowStore(
-                new RocksDBTimestampedSegmentedBytesStore(
-                    "name",
-                    "metric-scope",
-                    10L,
-                    5L,
-                    new WindowKeySchema()),
-                false,
-                1L));
+                    new RocksDBTimestampedSegmentedBytesStore(
+                            "name",
+                            "metric-scope",
+                            10L,
+                            5L,
+                            new WindowKeySchema()),
+                    false,
+                    1L));
 
             builder = new TimestampedWindowStoreWithHeadersBuilder<>(
-                supplier,
-                Serdes.String(),
-                Serdes.String(),
-                new MockTime());
+                    supplier,
+                    Serdes.String(),
+                    Serdes.String(),
+                    new MockTime());
 
             final TimestampedWindowStoreWithHeaders<String, String> store = builder
-                .withLoggingDisabled()
-                .withCachingDisabled()
-                .build();
+                    .withLoggingDisabled()
+                    .withCachingDisabled()
+                    .build();
             assertInstanceOf(TimestampedToHeadersWindowStoreAdapter.class, ((WrappedStateStore) store).wrapped());
         }
 
@@ -187,15 +187,15 @@ public class TimestampedWindowStoreWithHeadersBuilderTest {
             when(supplier.get()).thenReturn(timestampedStoreWithHeaders);
 
             builder = new TimestampedWindowStoreWithHeadersBuilder<>(
-                supplier,
-                Serdes.String(),
-                Serdes.String(),
-                new MockTime());
+                    supplier,
+                    Serdes.String(),
+                    Serdes.String(),
+                    new MockTime());
 
             final TimestampedWindowStoreWithHeaders<String, String> store = builder
-                .withCachingEnabled()
-                .withLoggingDisabled()
-                .build();
+                    .withCachingEnabled()
+                    .withLoggingDisabled()
+                    .build();
 
             final StateStore wrapped = ((WrappedStateStore) store).wrapped();
             // Caching should be automatically disabled when retainDuplicates is true

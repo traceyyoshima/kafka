@@ -29,46 +29,46 @@ public class TopicMetadataTest {
     @Test
     public void testConstructor() {
         assertDoesNotThrow(() ->
-            new TopicMetadata(Uuid.randomUuid(), "valid-topic", 3));
+                new TopicMetadata(Uuid.randomUuid(), "valid-topic", 3));
     }
 
     @Test
     public void testConstructorWithZeroUuid() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            new TopicMetadata(Uuid.ZERO_UUID, "valid-topic", 3));
+                new TopicMetadata(Uuid.ZERO_UUID, "valid-topic", 3));
         assertEquals("Topic id cannot be ZERO_UUID.", exception.getMessage());
     }
 
     @Test
     public void testConstructorWithNullUuid() {
         assertThrows(NullPointerException.class, () ->
-            new TopicMetadata(null, "valid-topic", 3));
+                new TopicMetadata(null, "valid-topic", 3));
     }
 
     @Test
     public void testConstructorWithNullName() {
         assertThrows(NullPointerException.class, () ->
-            new TopicMetadata(Uuid.randomUuid(), null, 3));
+                new TopicMetadata(Uuid.randomUuid(), null, 3));
     }
 
     @Test
     public void testConstructorWithEmptyName() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            new TopicMetadata(Uuid.randomUuid(), "", 3));
+                new TopicMetadata(Uuid.randomUuid(), "", 3));
         assertEquals("Topic name cannot be empty.", exception.getMessage());
     }
 
     @Test
     public void testConstructorWithZeroNumPartitions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            new TopicMetadata(Uuid.randomUuid(), "valid-topic", 0));
+                new TopicMetadata(Uuid.randomUuid(), "valid-topic", 0));
         assertEquals("Number of partitions must be positive.", exception.getMessage());
     }
 
     @Test
     public void testConstructorWithNegativeNumPartitions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            new TopicMetadata(Uuid.randomUuid(), "valid-topic", -1));
+                new TopicMetadata(Uuid.randomUuid(), "valid-topic", -1));
         assertEquals("Number of partitions must be positive.", exception.getMessage());
     }
 }

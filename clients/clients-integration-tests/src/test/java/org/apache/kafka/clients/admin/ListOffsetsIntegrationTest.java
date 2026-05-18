@@ -52,11 +52,11 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = 3,
-    serverProperties = {
-        @ClusterConfigProperty(key = "log.retention.ms", value = "-1"),
-    }
+        types = {Type.KRAFT},
+        brokers = 3,
+        serverProperties = {
+                @ClusterConfigProperty(key = "log.retention.ms", value = "-1"),
+        }
 )
 public class ListOffsetsIntegrationTest {
     private static final String TOPIC = "topic";
@@ -216,7 +216,7 @@ public class ListOffsetsIntegrationTest {
 
         // change the leader to new one
         adminClient.alterPartitionReassignments(
-            Map.of(new TopicPartition(topic, 0), Optional.of(new NewPartitionReassignment(List.of(newLeader))))
+                Map.of(new TopicPartition(topic, 0), Optional.of(new NewPartitionReassignment(List.of(newLeader))))
         ).all().get();
         // wait for all reassignments get completed
         TestUtils.waitForCondition(() -> {
@@ -245,7 +245,7 @@ public class ListOffsetsIntegrationTest {
         // case 2: test the offsets from recovery path.
         // server will rebuild offset index according to log files if the index files are nonexistent
         List<String> indexFiles = clusterInstance.brokers().values().stream().flatMap(broker ->
-            broker.config().logDirs().stream()).toList();
+                broker.config().logDirs().stream()).toList();
         clusterInstance.brokers().values().forEach(KafkaBroker::shutdown);
         indexFiles.forEach(root -> {
             File[] files = new File(String.format("%s/%s-0", root, topic)).listFiles();
@@ -282,7 +282,7 @@ public class ListOffsetsIntegrationTest {
     }
 
     private ListOffsetsResultInfo runFetchOffsets(OffsetSpec offsetSpec,
-                                                String topic) throws InterruptedException, ExecutionException {
+                                                  String topic) throws InterruptedException, ExecutionException {
         TopicPartition tp = new TopicPartition(topic, 0);
         return adminClient.listOffsets(Map.of(tp, offsetSpec), new ListOffsetsOptions()).all().get().get(tp);
     }

@@ -39,9 +39,9 @@ import java.util.stream.Stream;
 
 /**
  * A type for representing the set of voters for a topic partition.
- *
+ * <p>
  * It encapsulates static information like a voter's endpoint and their supported kraft.version.
- *
+ * <p>
  * It provides functionality for converting to and from {@code VotersRecord} and for converting
  * from the static configuration.
  */
@@ -55,39 +55,39 @@ public final class VoterSet {
     /**
      * Returns the node information for all the given voter ids and listener.
      *
-     * @param voterIds the ids of the voters
+     * @param voterIds     the ids of the voters
      * @param listenerName the name of the listener
      * @return the node information for all the voter ids
      * @throws IllegalArgumentException if there are missing endpoints
      */
     public Set<Node> voterNodes(Stream<Integer> voterIds, ListenerName listenerName) {
         return voterIds
-            .map(voterId ->
-                voterNode(voterId, listenerName).orElseThrow(() ->
-                    new IllegalArgumentException(
-                        String.format(
-                            "Unable to find endpoint for voter %d and listener %s in %s",
-                            voterId,
-                            listenerName,
-                            voters
+                .map(voterId ->
+                        voterNode(voterId, listenerName).orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        String.format(
+                                                "Unable to find endpoint for voter %d and listener %s in %s",
+                                                voterId,
+                                                listenerName,
+                                                voters
+                                        )
+                                )
                         )
-                    )
                 )
-            )
-            .collect(Collectors.toSet());
+                .collect(Collectors.toSet());
     }
 
     /**
      * Returns the node information for a given voter id and listener.
      *
-     * @param voterId the id of the voter
+     * @param voterId      the id of the voter
      * @param listenerName the name of the listener
      * @return the node information if it exists, otherwise {@code Optional.empty()}
      */
     public Optional<Node> voterNode(int voterId, ListenerName listenerName) {
         return Optional.ofNullable(voters.get(voterId))
-            .flatMap(voterNode -> voterNode.address(listenerName))
-            .map(address -> new Node(voterId, address.getHostString(), address.getPort()));
+                .flatMap(voterNode -> voterNode.address(listenerName))
+                .map(address -> new Node(voterId, address.getHostString(), address.getPort()));
     }
 
     /**
@@ -98,19 +98,19 @@ public final class VoterSet {
      */
     public boolean voterNodeNeedsUpdate(VoterNode updatedVoterNode) {
         return Optional.ofNullable(voters.get(updatedVoterNode.voterKey().id()))
-            .map(
-                node -> node.isVoter(updatedVoterNode.voterKey()) &&
-                        !node.equals(updatedVoterNode)
-            )
-            .orElse(false);
+                .map(
+                        node -> node.isVoter(updatedVoterNode.voterKey()) &&
+                                !node.equals(updatedVoterNode)
+                )
+                .orElse(false);
     }
 
     /**
      * Returns if the node is a voter in the set of voters.
-     *
+     * <p>
      * If the voter set includes the directory id, the {@code replicaKey} directory id must match the
      * directory id specified by the voter set.
-     *
+     * <p>
      * If the voter set doesn't include the directory id ({@code Optional.empty()}), a node is in
      * the voter set as long as the node id matches. The directory id is not checked.
      *
@@ -119,8 +119,8 @@ public final class VoterSet {
      */
     public boolean isVoter(ReplicaKey replicaKey) {
         return Optional.ofNullable(voters.get(replicaKey.id()))
-            .map(node -> node.isVoter(replicaKey))
-            .orElse(false);
+                .map(node -> node.isVoter(replicaKey))
+                .orElse(false);
     }
 
     /**
@@ -145,10 +145,10 @@ public final class VoterSet {
      */
     public Set<ReplicaKey> voterKeys() {
         return voters
-            .values()
-            .stream()
-            .map(VoterNode::voterKey)
-            .collect(Collectors.toSet());
+                .values()
+                .stream()
+                .map(VoterNode::voterKey)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -174,7 +174,7 @@ public final class VoterSet {
 
     /**
      * Returns all of the endpoints for a voter id.
-     *
+     * <p>
      * {@code Endpoints.empty()} is returned if the id is not a voter.
      *
      * @param voterId the id of the voter
@@ -182,15 +182,15 @@ public final class VoterSet {
      */
     public Endpoints listeners(int voterId) {
         return Optional.ofNullable(voters.get(voterId))
-            .map(VoterNode::listeners)
-            .orElse(Endpoints.empty());
+                .map(VoterNode::listeners)
+                .orElse(Endpoints.empty());
     }
 
     /**
      * Adds a voter to the voter set.
-     *
+     * <p>
      * This object is immutable. A new voter set is returned if the voter was added.
-     *
+     * <p>
      * A new voter can be added to a voter set if its id doesn't already exist in the voter set.
      *
      * @param voter the new voter to add
@@ -209,9 +209,9 @@ public final class VoterSet {
 
     /**
      * Remove a voter from the voter set.
-     *
+     * <p>
      * This object is immutable. A new voter set is returned if the voter was removed.
-     *
+     * <p>
      * A voter can be removed from the voter set if its id and directory id match and there
      * are more than one voter in the set of voters.
      *
@@ -221,8 +221,8 @@ public final class VoterSet {
     public Optional<VoterSet> removeVoter(ReplicaKey voterKey) {
         VoterNode oldVoter = voters.get(voterKey.id());
         if (oldVoter != null &&
-            Objects.equals(oldVoter.voterKey(), voterKey) &&
-            voters.size() > 1
+                Objects.equals(oldVoter.voterKey(), voterKey) &&
+                voters.size() > 1
         ) {
             HashMap<Integer, VoterNode> newVoters = new HashMap<>(voters);
             newVoters.remove(voterKey.id());
@@ -253,7 +253,7 @@ public final class VoterSet {
 
     /**
      * Update a voter by only comparing the node id.
-     *
+     * <p>
      * This update voter operation doesn't compare the directory id. This is useful when upgrading
      * from a voter set that doesn't support directory id to one that supports directory ids.
      *
@@ -279,37 +279,37 @@ public final class VoterSet {
     public VotersRecord toVotersRecord(short version) {
         Function<VoterNode, VotersRecord.Voter> voterConvertor = voter -> {
             Iterator<VotersRecord.Endpoint> endpoints = voter
-                .listeners()
-                .votersRecordEndpoints();
+                    .listeners()
+                    .votersRecordEndpoints();
 
             VotersRecord.KRaftVersionFeature kraftVersionFeature = new VotersRecord.KRaftVersionFeature()
-                .setMinSupportedVersion(voter.supportedKRaftVersion().min())
-                .setMaxSupportedVersion(voter.supportedKRaftVersion().max());
+                    .setMinSupportedVersion(voter.supportedKRaftVersion().min())
+                    .setMaxSupportedVersion(voter.supportedKRaftVersion().max());
 
             return new VotersRecord.Voter()
-                .setVoterId(voter.voterKey().id())
-                .setVoterDirectoryId(voter.voterKey().directoryId().orElse(Uuid.ZERO_UUID))
-                .setEndpoints(new VotersRecord.EndpointCollection(endpoints))
-                .setKRaftVersionFeature(kraftVersionFeature);
+                    .setVoterId(voter.voterKey().id())
+                    .setVoterDirectoryId(voter.voterKey().directoryId().orElse(Uuid.ZERO_UUID))
+                    .setEndpoints(new VotersRecord.EndpointCollection(endpoints))
+                    .setKRaftVersionFeature(kraftVersionFeature);
         };
 
         List<VotersRecord.Voter> voterRecordVoters = voters
-            .values()
-            .stream()
-            .map(voterConvertor)
-            .collect(Collectors.toList());
+                .values()
+                .stream()
+                .map(voterConvertor)
+                .collect(Collectors.toList());
 
         return new VotersRecord()
-            .setVersion(version)
-            .setVoters(voterRecordVoters);
+                .setVersion(version)
+                .setVoters(voterRecordVoters);
     }
 
     /**
      * Determines if two sets of voters have an overlapping majority.
-     *
+     * <p>
      * An overlapping majority means that for all majorities in {@code this} set of voters and for
      * all majority in {@code that} set of voters, they have at least one voter in common.
-     *
+     * <p>
      * If this function returns true, it means that if one of the set of voters commits an offset,
      * the other set of voters cannot commit a conflicting offset.
      *
@@ -332,9 +332,9 @@ public final class VoterSet {
      */
     public boolean supportsVersion(KRaftVersion version) {
         return voters
-            .values()
-            .stream()
-            .allMatch(voter -> voter.supportsVersion(version));
+                .values()
+                .stream()
+                .allMatch(voter -> voter.supportsVersion(version));
     }
 
     @Override
@@ -363,9 +363,9 @@ public final class VoterSet {
         private final SupportedVersionRange supportedKRaftVersion;
 
         VoterNode(
-            ReplicaKey voterKey,
-            Endpoints listeners,
-            SupportedVersionRange supportedKRaftVersion
+                ReplicaKey voterKey,
+                Endpoints listeners,
+                SupportedVersionRange supportedKRaftVersion
         ) {
             this.voterKey = voterKey;
             this.listeners = listeners;
@@ -378,10 +378,10 @@ public final class VoterSet {
 
         /**
          * Returns if the provided replica key matches this voter node.
-         *
+         * <p>
          * If the voter node includes the directory id, the {@code replicaKey} directory id must
          * match the directory id specified by the voter set.
-         *
+         * <p>
          * If the voter node doesn't include the directory id ({@code Optional.empty()}), a replica
          * is the voter as long as the node id matches. The directory id is not checked.
          *
@@ -418,7 +418,7 @@ public final class VoterSet {
 
         private boolean supportsVersion(KRaftVersion version) {
             return version.featureLevel() >= supportedKRaftVersion.min() &&
-                   version.featureLevel() <= supportedKRaftVersion.max();
+                    version.featureLevel() <= supportedKRaftVersion.max();
         }
 
         @Override
@@ -441,23 +441,24 @@ public final class VoterSet {
         @Override
         public String toString() {
             return String.format(
-                "VoterNode(voterKey=%s, listeners=%s, supportedKRaftVersion=%s)",
-                voterKey,
-                listeners,
-                supportedKRaftVersion
+                    "VoterNode(voterKey=%s, listeners=%s, supportedKRaftVersion=%s)",
+                    voterKey,
+                    listeners,
+                    supportedKRaftVersion
             );
         }
 
         public static VoterNode of(
-            ReplicaKey voterKey,
-            Endpoints listeners,
-            SupportedVersionRange supportedKRaftVersion
+                ReplicaKey voterKey,
+                Endpoints listeners,
+                SupportedVersionRange supportedKRaftVersion
         ) {
             return new VoterNode(voterKey, listeners, supportedKRaftVersion);
         }
     }
 
     private static final VoterSet EMPTY = new VoterSet(Map.of());
+
     public static VoterSet empty() {
         return EMPTY;
     }
@@ -470,17 +471,17 @@ public final class VoterSet {
      */
     public static VoterSet fromVotersRecord(VotersRecord voters) {
         HashMap<Integer, VoterNode> voterNodes = new HashMap<>(voters.voters().size());
-        for (VotersRecord.Voter voter: voters.voters()) {
+        for (VotersRecord.Voter voter : voters.voters()) {
             voterNodes.put(
-                voter.voterId(),
-                new VoterNode(
-                    ReplicaKey.of(voter.voterId(), voter.voterDirectoryId()),
-                    Endpoints.fromVotersRecordEndpoints(voter.endpoints()),
-                    new SupportedVersionRange(
-                        voter.kRaftVersionFeature().minSupportedVersion(),
-                        voter.kRaftVersionFeature().maxSupportedVersion()
+                    voter.voterId(),
+                    new VoterNode(
+                            ReplicaKey.of(voter.voterId(), voter.voterDirectoryId()),
+                            Endpoints.fromVotersRecordEndpoints(voter.endpoints()),
+                            new SupportedVersionRange(
+                                    voter.kRaftVersionFeature().minSupportedVersion(),
+                                    voter.kRaftVersionFeature().maxSupportedVersion()
+                            )
                     )
-                )
             );
         }
 
@@ -491,23 +492,23 @@ public final class VoterSet {
      * Creates a voter set from a map of socket addresses.
      *
      * @param listener the listener name for all of the endpoints
-     * @param voters the socket addresses by voter id
+     * @param voters   the socket addresses by voter id
      * @return the voter set
      */
     public static VoterSet fromInetSocketAddresses(ListenerName listener, Map<Integer, InetSocketAddress> voters) {
         Map<Integer, VoterNode> voterNodes = voters
-            .entrySet()
-            .stream()
-            .collect(
-                Collectors.toMap(
-                    Map.Entry::getKey,
-                    entry -> new VoterNode(
-                        ReplicaKey.of(entry.getKey(), Uuid.ZERO_UUID),
-                        Endpoints.fromInetSocketAddresses(Map.of(listener, entry.getValue())),
-                        new SupportedVersionRange((short) 0, (short) 0)
-                    )
-                )
-            );
+                .entrySet()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                Map.Entry::getKey,
+                                entry -> new VoterNode(
+                                        ReplicaKey.of(entry.getKey(), Uuid.ZERO_UUID),
+                                        Endpoints.fromInetSocketAddresses(Map.of(listener, entry.getValue())),
+                                        new SupportedVersionRange((short) 0, (short) 0)
+                                )
+                        )
+                );
 
         return new VoterSet(voterNodes);
     }

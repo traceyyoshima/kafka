@@ -26,12 +26,14 @@ public interface AssignmentState {
 
     /**
      * An ordered sequence of all the broker ids that were assigned to this topic partition.
+     *
      * @return the list of broker ids
      */
     List<Integer> replicas();
 
     /**
      * The number of replicas in the assignment.
+     *
      * @return the replication factor
      */
     int replicationFactor();

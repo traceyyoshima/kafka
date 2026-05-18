@@ -23,8 +23,8 @@ public class CipherInformation {
     private final String protocol;
 
     public CipherInformation(String cipher, String protocol) {
-        this.cipher = cipher == null || cipher.isEmpty()  ? "unknown" : cipher;
-        this.protocol = protocol == null || protocol.isEmpty()  ? "unknown" : protocol;
+        this.cipher = cipher == null || cipher.isEmpty() ? "unknown" : cipher;
+        this.protocol = protocol == null || protocol.isEmpty() ? "unknown" : protocol;
     }
 
     public String cipher() {
@@ -38,7 +38,7 @@ public class CipherInformation {
     @Override
     public String toString() {
         return "CipherInformation(cipher=" + cipher +
-            ", protocol=" + protocol + ")";
+                ", protocol=" + protocol + ")";
     }
 
     @Override
@@ -56,6 +56,6 @@ public class CipherInformation {
         }
         CipherInformation other = (CipherInformation) o;
         return other.cipher.equals(cipher) &&
-            other.protocol.equals(protocol);
+                other.protocol.equals(protocol);
     }
 }

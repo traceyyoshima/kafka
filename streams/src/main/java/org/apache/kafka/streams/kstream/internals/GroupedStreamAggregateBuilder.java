@@ -76,10 +76,10 @@ class GroupedStreamAggregateBuilder<K, V> {
         final String aggFunctionName = functionName.name();
 
         final ProcessorGraphNode<K, V> aggProcessorNode =
-            new ProcessorGraphNode<>(
-                aggFunctionName,
-                new ProcessorParameters<>(aggregateSupplier, aggFunctionName)
-            );
+                new ProcessorGraphNode<>(
+                        aggFunctionName,
+                        new ProcessorParameters<>(aggregateSupplier, aggFunctionName)
+                );
 
         aggProcessorNode.setOutputVersioned(isOutputVersioned);
 
@@ -97,11 +97,11 @@ class GroupedStreamAggregateBuilder<K, V> {
         final String aggFunctionName = functionName.name();
 
         final GracePeriodGraphNode<K, V> gracePeriodAggProcessorNode =
-            new GracePeriodGraphNode<>(
-                aggFunctionName,
-                new ProcessorParameters<>(aggregateSupplier, aggFunctionName),
-                gracePeriod
-            );
+                new GracePeriodGraphNode<>(
+                        aggFunctionName,
+                        new ProcessorParameters<>(aggregateSupplier, aggFunctionName),
+                        gracePeriod
+                );
 
         gracePeriodAggProcessorNode.setOutputVersioned(isOutputVersioned);
 
@@ -117,8 +117,8 @@ class GroupedStreamAggregateBuilder<K, V> {
                                           final Serde<VR> valueSerde) {
         if (!(queryableStoreName == null || queryableStoreName.equals(storeName))) {
             throw new IllegalStateException(String.format("queryableStoreName should be null or equal to storeName"
-                                                              + " but got storeName='%s' and queryableStoreName='%s'",
-                                                          storeName, queryableStoreName));
+                            + " but got storeName='%s' and queryableStoreName='%s'",
+                    storeName, queryableStoreName));
         }
 
         String sourceName = this.name;
@@ -146,13 +146,13 @@ class GroupedStreamAggregateBuilder<K, V> {
         builder.addGraphNode(parentNode, aggProcessorNode);
 
         return new KTableImpl<>(aggFunctionName,
-                                keySerde,
-                                valueSerde,
-                                sourceName.equals(this.name) ? subTopologySourceNodes : Collections.singleton(sourceName),
-                                queryableStoreName,
-                                aggregateSupplier,
-                                aggProcessorNode,
-                                builder);
+                keySerde,
+                valueSerde,
+                sourceName.equals(this.name) ? subTopologySourceNodes : Collections.singleton(sourceName),
+                queryableStoreName,
+                aggregateSupplier,
+                aggProcessorNode,
+                builder);
     }
 
     /**
@@ -163,12 +163,12 @@ class GroupedStreamAggregateBuilder<K, V> {
                                            final boolean isRepartitionTopicNameProvidedByUser) {
 
         return KStreamImpl.createRepartitionedSource(builder,
-                                                     keySerde,
-                                                     valueSerde,
-                                                     repartitionTopicNamePrefix,
-                                                     null,
-                                                     optimizableRepartitionNodeBuilder,
-                                                     isRepartitionTopicNameProvidedByUser);
+                keySerde,
+                valueSerde,
+                repartitionTopicNamePrefix,
+                null,
+                optimizableRepartitionNodeBuilder,
+                isRepartitionTopicNameProvidedByUser);
 
     }
 }

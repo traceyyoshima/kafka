@@ -91,7 +91,7 @@ public class KafkaShareConsumerTest {
     @Test
     public void testVerifyHeartbeats() throws InterruptedException {
         ShareConsumerMetadata metadata = new ShareConsumerMetadata(0, 0, Long.MAX_VALUE, false,
-            subscription, new LogContext(), new ClusterResourceListeners());
+                subscription, new LogContext(), new ClusterResourceListeners());
         MockClient client = new MockClient(time, metadata);
 
         initMetadata(client, Map.of(topic1, 1));
@@ -143,7 +143,7 @@ public class KafkaShareConsumerTest {
     @Test
     public void testVerifyFetchAndCommitSyncImplicit() {
         ShareConsumerMetadata metadata = new ShareConsumerMetadata(0, 0, Long.MAX_VALUE, false,
-            subscription, new LogContext(), new ClusterResourceListeners());
+                subscription, new LogContext(), new ClusterResourceListeners());
         MockClient client = new MockClient(time, metadata);
 
         initMetadata(client, Map.of(topic1, 1));
@@ -160,11 +160,11 @@ public class KafkaShareConsumerTest {
             if (body instanceof ShareFetchRequest) {
                 ShareFetchRequest request = (ShareFetchRequest) body;
                 return request.data().groupId().equals(groupId) &&
-                    request.data().shareSessionEpoch() == 0 &&
-                    request.data().batchSize() == batchSize &&
-                    request.data().topics().stream().findFirst().get().topicId().equals(topicId1) &&
-                    request.data().topics().stream().findFirst().get().partitions().size() == 1 &&
-                    request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().isEmpty();
+                        request.data().shareSessionEpoch() == 0 &&
+                        request.data().batchSize() == batchSize &&
+                        request.data().topics().stream().findFirst().get().topicId().equals(topicId1) &&
+                        request.data().topics().stream().findFirst().get().partitions().size() == 1 &&
+                        request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().isEmpty();
             } else {
                 return false;
             }
@@ -175,11 +175,11 @@ public class KafkaShareConsumerTest {
             if (body instanceof ShareAcknowledgeRequest) {
                 ShareAcknowledgeRequest request = (ShareAcknowledgeRequest) body;
                 return request.data().groupId().equals(groupId) &&
-                    request.data().shareSessionEpoch() == 1 &&
-                    request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().get(0).firstOffset() == 0 &&
-                    request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().get(0).lastOffset() == 1 &&
-                    request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().get(0).acknowledgeTypes().size() == 1 &&
-                    request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().get(0).acknowledgeTypes().get(0) == (byte) 1;
+                        request.data().shareSessionEpoch() == 1 &&
+                        request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().get(0).firstOffset() == 0 &&
+                        request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().get(0).lastOffset() == 1 &&
+                        request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().get(0).acknowledgeTypes().size() == 1 &&
+                        request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().get(0).acknowledgeTypes().get(0) == (byte) 1;
             } else {
                 return false;
             }
@@ -190,8 +190,8 @@ public class KafkaShareConsumerTest {
             if (body instanceof ShareAcknowledgeRequest) {
                 ShareAcknowledgeRequest request = (ShareAcknowledgeRequest) body;
                 return request.data().groupId().equals(groupId) &&
-                    request.data().shareSessionEpoch() == -1 &&
-                    request.data().topics().isEmpty();
+                        request.data().shareSessionEpoch() == -1 &&
+                        request.data().topics().isEmpty();
             } else {
                 return false;
             }
@@ -217,7 +217,7 @@ public class KafkaShareConsumerTest {
     @Test
     public void testVerifyFetchAndCloseImplicit() {
         ShareConsumerMetadata metadata = new ShareConsumerMetadata(0, 0, Long.MAX_VALUE, false,
-            subscription, new LogContext(), new ClusterResourceListeners());
+                subscription, new LogContext(), new ClusterResourceListeners());
         MockClient client = new MockClient(time, metadata);
 
         initMetadata(client, Map.of(topic1, 1));
@@ -234,11 +234,11 @@ public class KafkaShareConsumerTest {
             if (body instanceof ShareFetchRequest) {
                 ShareFetchRequest request = (ShareFetchRequest) body;
                 return request.data().groupId().equals(groupId) &&
-                    request.data().shareSessionEpoch() == 0 &&
-                    request.data().batchSize() == batchSize &&
-                    request.data().topics().stream().findFirst().get().topicId().equals(topicId1) &&
-                    request.data().topics().stream().findFirst().get().partitions().size() == 1 &&
-                    request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().isEmpty();
+                        request.data().shareSessionEpoch() == 0 &&
+                        request.data().batchSize() == batchSize &&
+                        request.data().topics().stream().findFirst().get().topicId().equals(topicId1) &&
+                        request.data().topics().stream().findFirst().get().partitions().size() == 1 &&
+                        request.data().topics().stream().findFirst().get().partitions().stream().findFirst().get().acknowledgementBatches().isEmpty();
             } else {
                 return false;
             }
@@ -250,8 +250,8 @@ public class KafkaShareConsumerTest {
             if (body instanceof ShareAcknowledgeRequest) {
                 ShareAcknowledgeRequest request = (ShareAcknowledgeRequest) body;
                 return request.data().groupId().equals(groupId) &&
-                    request.data().shareSessionEpoch() == -1 &&
-                    request.data().topics().isEmpty();
+                        request.data().shareSessionEpoch() == -1 &&
+                        request.data().topics().isEmpty();
             } else {
                 return false;
             }
@@ -280,16 +280,16 @@ public class KafkaShareConsumerTest {
         ShareConsumerConfig config = newConsumerConfig(clientId);
 
         return new KafkaShareConsumer<>(
-            logContext,
-            clientId,
-            groupId,
-            config,
-            keyDeserializer,
-            valueDeserializer,
-            time,
-            client,
-            subscription,
-            metadata
+                logContext,
+                clientId,
+                groupId,
+                config,
+                keyDeserializer,
+                valueDeserializer,
+                time,
+                client,
+                subscription,
+                metadata
         );
     }
 
@@ -357,19 +357,19 @@ public class KafkaShareConsumerTest {
             assignedPartitions.add(new ShareGroupHeartbeatResponseData.TopicPartitions().setTopicId(tip.topicId()).setPartitions(List.of(tip.partition())));
 
             return new ShareGroupHeartbeatResponse(
-                new ShareGroupHeartbeatResponseData()
-                    .setMemberId(memberId != null ? memberId.toString() : null)
-                    .setMemberEpoch(memberEpoch)
-                    .setHeartbeatIntervalMs(heartbeatIntervalMs)
-                    .setAssignment(new ShareGroupHeartbeatResponseData.Assignment()
-                        .setTopicPartitions(assignedPartitions))
+                    new ShareGroupHeartbeatResponseData()
+                            .setMemberId(memberId != null ? memberId.toString() : null)
+                            .setMemberEpoch(memberEpoch)
+                            .setHeartbeatIntervalMs(heartbeatIntervalMs)
+                            .setAssignment(new ShareGroupHeartbeatResponseData.Assignment()
+                                    .setTopicPartitions(assignedPartitions))
             );
         } else {
             return new ShareGroupHeartbeatResponse(
-                new ShareGroupHeartbeatResponseData()
-                    .setMemberId(memberId != null ? memberId.toString() : null)
-                    .setMemberEpoch(memberEpoch)
-                    .setHeartbeatIntervalMs(heartbeatIntervalMs)
+                    new ShareGroupHeartbeatResponseData()
+                            .setMemberId(memberId != null ? memberId.toString() : null)
+                            .setMemberEpoch(memberEpoch)
+                            .setHeartbeatIntervalMs(heartbeatIntervalMs)
             );
         }
     }
@@ -377,35 +377,35 @@ public class KafkaShareConsumerTest {
     private ShareFetchResponse shareFetchResponse(TopicIdPartition tip, int count) {
         MemoryRecords records;
         try (MemoryRecordsBuilder builder = MemoryRecords.builder(ByteBuffer.allocate(1024), Compression.NONE,
-            TimestampType.CREATE_TIME, 0)) {
+                TimestampType.CREATE_TIME, 0)) {
             for (int i = 0; i < count; i++) {
                 builder.append(0L, ("key-" + i).getBytes(), ("value-" + i).getBytes());
             }
             records = builder.build();
         }
         ShareFetchResponseData.PartitionData partData = new ShareFetchResponseData.PartitionData()
-            .setPartitionIndex(tip.partition())
-            .setRecords(records)
-            .setAcquiredRecords(List.of(new ShareFetchResponseData.AcquiredRecords().setFirstOffset(0).setLastOffset(count - 1).setDeliveryCount((short) 1)));
+                .setPartitionIndex(tip.partition())
+                .setRecords(records)
+                .setAcquiredRecords(List.of(new ShareFetchResponseData.AcquiredRecords().setFirstOffset(0).setLastOffset(count - 1).setDeliveryCount((short) 1)));
         return ShareFetchResponse.of(Errors.NONE, 0, new LinkedHashMap<>(Map.of(tip, partData)), List.of(), 0);
     }
 
     private ShareAcknowledgeResponse shareAcknowledgeResponse() {
         return new ShareAcknowledgeResponse(
-            new ShareAcknowledgeResponseData()
+                new ShareAcknowledgeResponseData()
         );
     }
 
     private ShareAcknowledgeResponse shareAcknowledgeResponse(TopicIdPartition tip) {
         ShareAcknowledgeResponseData.PartitionData partData = new ShareAcknowledgeResponseData.PartitionData()
-            .setPartitionIndex(tip.partition())
-            .setErrorCode(Errors.NONE.code());
+                .setPartitionIndex(tip.partition())
+                .setErrorCode(Errors.NONE.code());
         ShareAcknowledgeResponseData.ShareAcknowledgeTopicResponse topicResponse = new ShareAcknowledgeResponseData.ShareAcknowledgeTopicResponse()
-            .setTopicId(tip.topicId())
-            .setPartitions(List.of(partData));
+                .setTopicId(tip.topicId())
+                .setPartitions(List.of(partData));
         return new ShareAcknowledgeResponse(
-            new ShareAcknowledgeResponseData()
-                .setResponses(new ShareAcknowledgeResponseData.ShareAcknowledgeTopicResponseCollection(List.of(topicResponse)))
+                new ShareAcknowledgeResponseData()
+                        .setResponses(new ShareAcknowledgeResponseData.ShareAcknowledgeTopicResponseCollection(List.of(topicResponse)))
         );
     }
 }

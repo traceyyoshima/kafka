@@ -38,4 +38,5 @@ public record TxnTransitMetadata(
         long txnStartTimestamp,
         long txnLastUpdateTimestamp,
         TransactionVersion clientTransactionVersion
-) { }
+) {
+}

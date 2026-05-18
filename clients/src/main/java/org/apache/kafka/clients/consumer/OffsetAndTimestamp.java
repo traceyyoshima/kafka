@@ -30,7 +30,7 @@ public final class OffsetAndTimestamp {
     /**
      * Constructs a new OffsetAndTimestamp with the given offset and timestamp.
      *
-     * @param offset The offset
+     * @param offset    The offset
      * @param timestamp The timestamp
      * @throws IllegalArgumentException If the offset or timestamp is negative
      */
@@ -41,8 +41,8 @@ public final class OffsetAndTimestamp {
     /**
      * Constructs a new OffsetAndTimestamp with the given offset, timestamp, and leader epoch.
      *
-     * @param offset The offset
-     * @param timestamp The timestamp
+     * @param offset      The offset
+     * @param timestamp   The timestamp
      * @param leaderEpoch The leader epoch
      * @throws IllegalArgumentException If the offset or timestamp is negative
      */

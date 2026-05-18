@@ -30,7 +30,7 @@ import java.util.Map;
 public class ShareCoordinatorTestConfig {
 
     private static final List<ConfigDef> CONFIG_DEF_LIST = List.of(
-        ShareCoordinatorConfig.CONFIG_DEF
+            ShareCoordinatorConfig.CONFIG_DEF
     );
 
     public static ShareCoordinatorConfig testConfig() {
@@ -67,6 +67,6 @@ public class ShareCoordinatorTestConfig {
 
     public static ShareCoordinatorConfig createConfig(Map<String, String> configs) {
         return new ShareCoordinatorConfig(
-            new AbstractConfig(Utils.mergeConfigs(CONFIG_DEF_LIST), configs, false));
+                new AbstractConfig(Utils.mergeConfigs(CONFIG_DEF_LIST), configs, false));
     }
 }

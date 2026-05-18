@@ -26,21 +26,17 @@ public class OAuthBearerValidationUtils {
     /**
      * Validate the given claim for existence and type. It can be required to exist
      * in the given claims, and if it exists it must be one of the types indicated
-     * 
-     * @param jwt
-     *            the mandatory JWT to which the validation will be applied
-     * @param required
-     *            true if the claim is required to exist
-     * @param claimName
-     *            the required claim name identifying the claim to be checked
-     * @param allowedTypes
-     *            one or more of {@code String.class}, {@code Number.class}, and
-     *            {@code List.class} identifying the type(s) that the claim value is
-     *            allowed to be if it exists
+     *
+     * @param jwt          the mandatory JWT to which the validation will be applied
+     * @param required     true if the claim is required to exist
+     * @param claimName    the required claim name identifying the claim to be checked
+     * @param allowedTypes one or more of {@code String.class}, {@code Number.class}, and
+     *                     {@code List.class} identifying the type(s) that the claim value is
+     *                     allowed to be if it exists
      * @return the result of the validation
      */
     public static OAuthBearerValidationResult validateClaimForExistenceAndType(OAuthBearerUnsecuredJws jwt,
-            boolean required, String claimName, Class<?>... allowedTypes) {
+                                                                               boolean required, String claimName, Class<?>... allowedTypes) {
         Object rawClaim = Objects.requireNonNull(jwt).rawClaim(Objects.requireNonNull(claimName));
         if (rawClaim == null)
             return required
@@ -60,21 +56,16 @@ public class OAuthBearerValidationUtils {
      * of seconds since the epoch defining when the JWT was issued; it is a
      * validation error if the Issued At time is after the time at which the check
      * is being done (plus any allowable clock skew).
-     * 
-     * @param jwt
-     *            the mandatory JWT to which the validation will be applied
-     * @param required
-     *            true if the claim is required to exist
-     * @param whenCheckTimeMs
-     *            the time relative to which the validation is to occur
-     * @param allowableClockSkewMs
-     *            non-negative number to take into account some potential clock skew
+     *
+     * @param jwt                  the mandatory JWT to which the validation will be applied
+     * @param required             true if the claim is required to exist
+     * @param whenCheckTimeMs      the time relative to which the validation is to occur
+     * @param allowableClockSkewMs non-negative number to take into account some potential clock skew
      * @return the result of the validation
-     * @throws OAuthBearerConfigException
-     *             if the given allowable clock skew is negative
+     * @throws OAuthBearerConfigException if the given allowable clock skew is negative
      */
     public static OAuthBearerValidationResult validateIssuedAt(OAuthBearerUnsecuredJws jwt, boolean required,
-            long whenCheckTimeMs, int allowableClockSkewMs) throws OAuthBearerConfigException {
+                                                               long whenCheckTimeMs, int allowableClockSkewMs) throws OAuthBearerConfigException {
         Number value;
         try {
             value = Objects.requireNonNull(jwt).issuedAt();
@@ -87,8 +78,8 @@ public class OAuthBearerValidationUtils {
         double doubleValue = value.doubleValue();
         return 1000 * doubleValue > whenCheckTimeMs + confirmNonNegative(allowableClockSkewMs)
                 ? OAuthBearerValidationResult.newFailure(String.format(
-                        "The Issued At value (%f seconds) was after the indicated time (%d ms) plus allowable clock skew (%d ms)",
-                        doubleValue, whenCheckTimeMs, allowableClockSkewMs))
+                "The Issued At value (%f seconds) was after the indicated time (%d ms) plus allowable clock skew (%d ms)",
+                doubleValue, whenCheckTimeMs, allowableClockSkewMs))
                 : OAuthBearerValidationResult.newSuccess();
     }
 
@@ -98,19 +89,15 @@ public class OAuthBearerValidationUtils {
      * JWT expires. It is a validation error if the time at which the check is being
      * done (minus any allowable clock skew) is on or after the Expiration Time
      * time.
-     * 
-     * @param jwt
-     *            the mandatory JWT to which the validation will be applied
-     * @param whenCheckTimeMs
-     *            the time relative to which the validation is to occur
-     * @param allowableClockSkewMs
-     *            non-negative number to take into account some potential clock skew
+     *
+     * @param jwt                  the mandatory JWT to which the validation will be applied
+     * @param whenCheckTimeMs      the time relative to which the validation is to occur
+     * @param allowableClockSkewMs non-negative number to take into account some potential clock skew
      * @return the result of the validation
-     * @throws OAuthBearerConfigException
-     *             if the given allowable clock skew is negative
+     * @throws OAuthBearerConfigException if the given allowable clock skew is negative
      */
     public static OAuthBearerValidationResult validateExpirationTime(OAuthBearerUnsecuredJws jwt, long whenCheckTimeMs,
-            int allowableClockSkewMs) throws OAuthBearerConfigException {
+                                                                     int allowableClockSkewMs) throws OAuthBearerConfigException {
         Number value;
         try {
             value = Objects.requireNonNull(jwt).expirationTime();
@@ -123,21 +110,20 @@ public class OAuthBearerValidationUtils {
         double doubleValue = value.doubleValue();
         return whenCheckTimeMs - confirmNonNegative(allowableClockSkewMs) >= 1000 * doubleValue
                 ? OAuthBearerValidationResult.newFailure(String.format(
-                        "The indicated time (%d ms) minus allowable clock skew (%d ms) was on or after the Expiration Time value (%f seconds)",
-                        whenCheckTimeMs, allowableClockSkewMs, doubleValue))
+                "The indicated time (%d ms) minus allowable clock skew (%d ms) was on or after the Expiration Time value (%f seconds)",
+                whenCheckTimeMs, allowableClockSkewMs, doubleValue))
                 : OAuthBearerValidationResult.newSuccess();
     }
 
     /**
      * Validate the 'iat' (Issued At) and 'exp' (Expiration Time) claims for
      * internal consistency. The following must be true if both claims exist:
-     * 
+     *
      * <pre>
      * exp > iat
      * </pre>
-     * 
-     * @param jwt
-     *            the mandatory JWT to which the validation will be applied
+     *
+     * @param jwt the mandatory JWT to which the validation will be applied
      * @return the result of the validation
      */
     public static OAuthBearerValidationResult validateTimeConsistency(OAuthBearerUnsecuredJws jwt) {
@@ -160,12 +146,10 @@ public class OAuthBearerValidationUtils {
      * Validate the given token's scope against the required scope. Every required
      * scope element (if any) must exist in the provided token's scope for the
      * validation to succeed.
-     * 
-     * @param token
-     *            the required token for which the scope will to validate
-     * @param requiredScope
-     *            the optional required scope against which the given token's scope
-     *            will be validated
+     *
+     * @param token         the required token for which the scope will to validate
+     * @param requiredScope the optional required scope against which the given token's scope
+     *                      will be validated
      * @return the result of the validation
      */
     public static OAuthBearerValidationResult validateScope(OAuthBearerToken token, List<String> requiredScope) {
@@ -175,8 +159,8 @@ public class OAuthBearerValidationUtils {
         for (String requiredScopeElement : requiredScope) {
             if (!tokenScope.contains(requiredScopeElement))
                 return OAuthBearerValidationResult.newFailure(String.format(
-                        "The provided scope (%s) was missing a required scope (%s).  All required scope elements: %s",
-                        tokenScope, requiredScopeElement, requiredScope),
+                                "The provided scope (%s) was missing a required scope (%s).  All required scope elements: %s",
+                                tokenScope, requiredScopeElement, requiredScope),
                         requiredScope.toString(), null);
         }
         return OAuthBearerValidationResult.newSuccess();

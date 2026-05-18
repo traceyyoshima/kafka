@@ -59,14 +59,14 @@ import java.util.stream.Stream;
 
 public class ConnectPluginPath {
     public static final Object[] LIST_TABLE_COLUMNS = {
-        "pluginName",
-        "firstAlias",
-        "secondAlias",
-        "pluginVersion",
-        "pluginType",
-        "isLoadable",
-        "hasManifest",
-        "pluginLocation" // last because it is least important and most repetitive
+            "pluginName",
+            "firstAlias",
+            "secondAlias",
+            "pluginVersion",
+            "pluginType",
+            "isLoadable",
+            "hasManifest",
+            "pluginLocation" // last because it is least important and most repetitive
     };
     public static final String NO_ALIAS = "N/A";
 
@@ -98,49 +98,49 @@ public class ConnectPluginPath {
 
     private static ArgumentParser parser() {
         ArgumentParser parser = ArgumentParsers.newArgumentParser("connect-plugin-path")
-            .defaultHelp(true)
-            .description("Manage plugins on the Connect plugin.path");
+                .defaultHelp(true)
+                .description("Manage plugins on the Connect plugin.path");
 
         ArgumentParser listCommand = parser.addSubparsers()
-            .description("List information about plugins contained within the specified plugin locations")
-            .dest("subcommand")
-            .addParser("list");
+                .description("List information about plugins contained within the specified plugin locations")
+                .dest("subcommand")
+                .addParser("list");
 
         ArgumentParser syncManifestsCommand = parser.addSubparsers()
-            .description("Mutate the specified plugins to be compatible with plugin.discovery=SERVICE_LOAD mode")
-            .dest("subcommand")
-            .addParser("sync-manifests");
+                .description("Mutate the specified plugins to be compatible with plugin.discovery=SERVICE_LOAD mode")
+                .dest("subcommand")
+                .addParser("sync-manifests");
 
-        ArgumentParser[] subparsers = new ArgumentParser[] {
-            listCommand,
-            syncManifestsCommand
+        ArgumentParser[] subparsers = new ArgumentParser[]{
+                listCommand,
+                syncManifestsCommand
         };
 
         for (ArgumentParser subparser : subparsers) {
             ArgumentGroup pluginProviders = subparser.addArgumentGroup("plugin providers");
             pluginProviders.addArgument("--plugin-location")
-                .setDefault(new ArrayList<>())
-                .action(Arguments.append())
-                .help("A single plugin location (jar file or directory)");
+                    .setDefault(new ArrayList<>())
+                    .action(Arguments.append())
+                    .help("A single plugin location (jar file or directory)");
 
             pluginProviders.addArgument("--plugin-path")
-                .setDefault(new ArrayList<>())
-                .action(Arguments.append())
-                .help("A comma-delimited list of locations containing plugins");
+                    .setDefault(new ArrayList<>())
+                    .action(Arguments.append())
+                    .help("A comma-delimited list of locations containing plugins");
 
             pluginProviders.addArgument("--worker-config")
-                .setDefault(new ArrayList<>())
-                .action(Arguments.append())
-                .help("A Connect worker configuration file");
+                    .setDefault(new ArrayList<>())
+                    .action(Arguments.append())
+                    .help("A Connect worker configuration file");
         }
 
         syncManifestsCommand.addArgument("--dry-run")
-            .action(Arguments.storeTrue())
-            .help("If specified, changes that would have been written to disk are not applied");
+                .action(Arguments.storeTrue())
+                .help("If specified, changes that would have been written to disk are not applied");
 
         syncManifestsCommand.addArgument("--keep-not-found")
-            .action(Arguments.storeTrue())
-            .help("If specified, manifests for missing plugins are not removed from the plugin path");
+                .action(Arguments.storeTrue())
+                .help("If specified, manifests for missing plugins are not removed from the plugin path");
 
         return parser;
     }
@@ -154,7 +154,7 @@ public class ConnectPluginPath {
         return switch (subcommand) {
             case "list" -> new Config(Command.LIST, locations, false, false, out, err);
             case "sync-manifests" ->
-                new Config(Command.SYNC_MANIFESTS, locations, namespace.getBoolean("dry_run"), namespace.getBoolean("keep_not_found"), out, err);
+                    new Config(Command.SYNC_MANIFESTS, locations, namespace.getBoolean("dry_run"), namespace.getBoolean("keep_not_found"), out, err);
             default -> throw new ArgumentParserException("Unrecognized subcommand: '" + subcommand + "'", parser);
         };
     }
@@ -225,11 +225,11 @@ public class ConnectPluginPath {
         @Override
         public String toString() {
             return "Config{" +
-                "command=" + command +
-                ", locations=" + locations +
-                ", dryRun=" + dryRun +
-                ", keepNotFound=" + keepNotFound +
-                '}';
+                    "command=" + command +
+                    ", locations=" + locations +
+                    ", dryRun=" + dryRun +
+                    ", keepNotFound=" + keepNotFound +
+                    '}';
         }
     }
 

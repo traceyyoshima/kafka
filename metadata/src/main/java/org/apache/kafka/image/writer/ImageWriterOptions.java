@@ -76,9 +76,9 @@ public final class ImageWriterOptions {
     private final boolean isEligibleLeaderReplicasEnabled;
 
     private ImageWriterOptions(
-        MetadataVersion metadataVersion,
-        Consumer<UnwritableMetadataException> lossHandler,
-        boolean isEligibleLeaderReplicasEnabled
+            MetadataVersion metadataVersion,
+            Consumer<UnwritableMetadataException> lossHandler,
+            boolean isEligibleLeaderReplicasEnabled
     ) {
         this.metadataVersion = metadataVersion;
         this.lossHandler = lossHandler;
@@ -88,6 +88,7 @@ public final class ImageWriterOptions {
     public MetadataVersion metadataVersion() {
         return metadataVersion;
     }
+
     public boolean isEligibleLeaderReplicasEnabled() {
         return isEligibleLeaderReplicasEnabled;
     }

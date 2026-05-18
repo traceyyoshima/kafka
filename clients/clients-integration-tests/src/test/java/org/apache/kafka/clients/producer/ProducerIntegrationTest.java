@@ -60,11 +60,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(types = {Type.KRAFT}, serverProperties = {
-    @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-    @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-    @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_MIN_ISR_CONFIG, value = "1"),
-    @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-    @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+        @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+        @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+        @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_MIN_ISR_CONFIG, value = "1"),
+        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+        @ClusterConfigProperty(key = GroupCoordinatorConfig.OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
 })
 public class ProducerIntegrationTest {
 
@@ -86,22 +86,22 @@ public class ProducerIntegrationTest {
         int expectedTotalCount = 1001 * brokerCount;
         assertEquals(expectedTotalCount, ids.size(), "Expected exactly " + expectedTotalCount + " IDs");
         assertEquals(expectedTotalCount, ids.stream().distinct().count(),
-            "Found duplicate producer IDs");
+                "Found duplicate producer IDs");
     }
 
     @ClusterTests({
-        @ClusterTest(features = {
-            @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 0)}),
-        @ClusterTest(features = {
-            @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 1)}),
-        @ClusterTest(features = {
-            @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 2)}),
+            @ClusterTest(features = {
+                    @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 0)}),
+            @ClusterTest(features = {
+                    @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 1)}),
+            @ClusterTest(features = {
+                    @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 2)}),
     })
     public void testTransactionWithAndWithoutSend(ClusterInstance cluster) {
         Map<String, Object> properties = Map.of(
-            ProducerConfig.TRANSACTIONAL_ID_CONFIG, "foobar",
-            ProducerConfig.CLIENT_ID_CONFIG, "test",
-            ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+                ProducerConfig.TRANSACTIONAL_ID_CONFIG, "foobar",
+                ProducerConfig.CLIENT_ID_CONFIG, "test",
+                ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
         try (var producer = cluster.producer(properties)) {
             producer.initTransactions();
             producer.beginTransaction();
@@ -114,21 +114,21 @@ public class ProducerIntegrationTest {
     }
 
     @ClusterTests({
-        @ClusterTest(features = {
-            @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 0)}),
-        @ClusterTest(features = {
-            @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 1)}),
-        @ClusterTest(features = {
-            @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 2)}),
+            @ClusterTest(features = {
+                    @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 0)}),
+            @ClusterTest(features = {
+                    @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 1)}),
+            @ClusterTest(features = {
+                    @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 2)}),
     })
     public void testTransactionWithInvalidSendAndEndTxnRequestSent(ClusterInstance cluster) {
         var topic = new NewTopic("foobar", 1, (short) 1)
-            .configs(Map.of(TopicConfig.MAX_MESSAGE_BYTES_CONFIG, "100"));
+                .configs(Map.of(TopicConfig.MAX_MESSAGE_BYTES_CONFIG, "100"));
         String txnId = "test-txn";
         Map<String, Object> properties = Map.of(
-            ProducerConfig.TRANSACTIONAL_ID_CONFIG, txnId,
-            ProducerConfig.CLIENT_ID_CONFIG, "test",
-            ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+                ProducerConfig.TRANSACTIONAL_ID_CONFIG, txnId,
+                ProducerConfig.CLIENT_ID_CONFIG, "test",
+                ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
 
         try (var admin = cluster.admin();
              var producer = cluster.producer(properties)) {
@@ -137,21 +137,21 @@ public class ProducerIntegrationTest {
             producer.initTransactions();
             producer.beginTransaction();
             assertInstanceOf(RecordTooLargeException.class,
-                assertThrows(ExecutionException.class,
-                    () -> producer.send(new ProducerRecord<>(
-                        topic.name(), new byte[100], new byte[100])).get()).getCause());
+                    assertThrows(ExecutionException.class,
+                            () -> producer.send(new ProducerRecord<>(
+                                    topic.name(), new byte[100], new byte[100])).get()).getCause());
 
             producer.abortTransaction();
         }
     }
 
     @ClusterTests({
-        @ClusterTest(features = {
-            @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 0)}),
-        @ClusterTest(features = {
-            @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 1)}),
-        @ClusterTest(features = {
-            @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 2)}),
+            @ClusterTest(features = {
+                    @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 0)}),
+            @ClusterTest(features = {
+                    @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 1)}),
+            @ClusterTest(features = {
+                    @ClusterFeature(feature = Feature.TRANSACTION_VERSION, version = 2)}),
     })
     public void testTransactionWithSendOffset(ClusterInstance cluster) throws ExecutionException, InterruptedException {
         String inputTopic = "my-input-topic";
@@ -165,13 +165,13 @@ public class ProducerIntegrationTest {
 
         String txnId = "foobar";
         Map<String, Object> producerProperties = Map.of(
-            ProducerConfig.TRANSACTIONAL_ID_CONFIG, txnId,
-            ProducerConfig.CLIENT_ID_CONFIG, "test",
-            ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+                ProducerConfig.TRANSACTIONAL_ID_CONFIG, txnId,
+                ProducerConfig.CLIENT_ID_CONFIG, "test",
+                ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
 
         Map<String, Object> consumerProperties = Map.of(
-            ConsumerConfig.GROUP_ID_CONFIG, "test-consumer-group",
-            ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+                ConsumerConfig.GROUP_ID_CONFIG, "test-consumer-group",
+                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         try (var producer = cluster.producer(producerProperties);
              Consumer<byte[], byte[]> consumer = cluster.consumer(consumerProperties)) {
@@ -185,18 +185,18 @@ public class ProducerIntegrationTest {
             }, "poll records size not match");
             var lastRecord = records.get(records.size() - 1);
             Map<TopicPartition, OffsetAndMetadata> offsets = Map.of(
-                new TopicPartition(lastRecord.topic(), lastRecord.partition()),
-                new OffsetAndMetadata(lastRecord.offset() + 1));
+                    new TopicPartition(lastRecord.topic(), lastRecord.partition()),
+                    new OffsetAndMetadata(lastRecord.offset() + 1));
             producer.sendOffsetsToTransaction(offsets, consumer.groupMetadata());
             producer.commitTransaction();
         }
 
         try (var admin = cluster.admin()) {
             TestUtils.waitForCondition(() ->
-                admin.listTransactions().all().get().stream()
-                    .filter(txn -> txn.transactionalId().equals(txnId))
-                    .anyMatch(txn -> txn.state() == TransactionState.COMPLETE_COMMIT),
-                "transaction is not in COMPLETE_COMMIT state");
+                            admin.listTransactions().all().get().stream()
+                                    .filter(txn -> txn.transactionalId().equals(txnId))
+                                    .anyMatch(txn -> txn.state() == TransactionState.COMPLETE_COMMIT),
+                    "transaction is not in COMPLETE_COMMIT state");
         }
     }
 
@@ -208,10 +208,10 @@ public class ProducerIntegrationTest {
         InitProducerIdResponse response = null;
         while (shouldRetry && Instant.now().isBefore(deadline)) {
             var data = new InitProducerIdRequestData()
-                .setProducerEpoch(RecordBatch.NO_PRODUCER_EPOCH)
-                .setProducerId(RecordBatch.NO_PRODUCER_ID)
-                .setTransactionalId(null)
-                .setTransactionTimeoutMs(10);
+                    .setProducerEpoch(RecordBatch.NO_PRODUCER_EPOCH)
+                    .setProducerId(RecordBatch.NO_PRODUCER_ID)
+                    .setTransactionalId(null)
+                    .setTransactionTimeoutMs(10);
             var request = new InitProducerIdRequest.Builder(data).build();
             response = IntegrationTestUtils.connectAndReceive(request, port);
             shouldRetry = response.data().errorCode() == Errors.COORDINATOR_LOAD_IN_PROGRESS.code();

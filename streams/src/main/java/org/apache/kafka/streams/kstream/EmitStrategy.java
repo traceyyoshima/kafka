@@ -83,13 +83,12 @@ public interface EmitStrategy {
      * <p>This strategy should only be used for windows which can close. An exception will be thrown
      * if it's used with {@link UnlimitedWindow}.
      *
+     * @return "window close" {@code EmitStrategy} instance
      * @see TimeWindows
      * @see SlidingWindows
      * @see SessionWindows
      * @see UnlimitedWindows
      * @see WindowUpdateStrategy
-     *
-     * @return "window close" {@code EmitStrategy} instance
      */
     static EmitStrategy onWindowClose() {
         return new WindowCloseStrategy();
@@ -99,13 +98,12 @@ public interface EmitStrategy {
      * This strategy indicates that the aggregated result for a window will be emitted every time
      * when there's an update to the window instead of when the window closes.
      *
+     * @return "window update" {@code EmitStrategy} instance
      * @see TimeWindows
      * @see SlidingWindows
      * @see SessionWindows
      * @see UnlimitedWindows
      * @see WindowCloseStrategy
-     *
-     * @return "window update" {@code EmitStrategy} instance
      */
     static EmitStrategy onWindowUpdate() {
         return new WindowUpdateStrategy();

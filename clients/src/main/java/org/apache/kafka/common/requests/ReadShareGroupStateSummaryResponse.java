@@ -46,9 +46,9 @@ public class ReadShareGroupStateSummaryResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new HashMap<>();
         data.results().forEach(
-            result -> result.partitions().forEach(
-                partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
-            )
+                result -> result.partitions().forEach(
+                        partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
+                )
         );
         return counts;
     }
@@ -65,66 +65,66 @@ public class ReadShareGroupStateSummaryResponse extends AbstractResponse {
 
     public static ReadShareGroupStateSummaryResponse parse(Readable readable, short version) {
         return new ReadShareGroupStateSummaryResponse(
-            new ReadShareGroupStateSummaryResponseData(readable, version)
+                new ReadShareGroupStateSummaryResponseData(readable, version)
         );
     }
 
     public static ReadShareGroupStateSummaryResponseData toErrorResponseData(
-        Uuid topicId,
-        int partitionId,
-        Errors error,
-        String errorMessage
+            Uuid topicId,
+            int partitionId,
+            Errors error,
+            String errorMessage
     ) {
         return new ReadShareGroupStateSummaryResponseData().setResults(
-            List.of(new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
-                .setTopicId(topicId)
-                .setPartitions(List.of(new ReadShareGroupStateSummaryResponseData.PartitionResult()
-                    .setPartition(partitionId)
-                    .setErrorCode(error.code())
-                    .setErrorMessage(errorMessage)))));
+                List.of(new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                        .setTopicId(topicId)
+                        .setPartitions(List.of(new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                .setPartition(partitionId)
+                                .setErrorCode(error.code())
+                                .setErrorMessage(errorMessage)))));
     }
 
     public static ReadShareGroupStateSummaryResponseData.PartitionResult toErrorResponsePartitionResult(
-        int partitionId,
-        Errors error,
-        String errorMessage
+            int partitionId,
+            Errors error,
+            String errorMessage
     ) {
         return new ReadShareGroupStateSummaryResponseData.PartitionResult()
-            .setPartition(partitionId)
-            .setErrorCode(error.code())
-            .setErrorMessage(errorMessage);
+                .setPartition(partitionId)
+                .setErrorCode(error.code())
+                .setErrorMessage(errorMessage);
     }
 
     public static ReadShareGroupStateSummaryResponseData toResponseData(
-        Uuid topicId,
-        int partition,
-        long startOffset,
-        int deliveryCompleteCount,
-        int leaderEpoch,
-        int stateEpoch
+            Uuid topicId,
+            int partition,
+            long startOffset,
+            int deliveryCompleteCount,
+            int leaderEpoch,
+            int stateEpoch
     ) {
         return new ReadShareGroupStateSummaryResponseData()
-            .setResults(List.of(
-                new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
-                    .setTopicId(topicId)
-                    .setPartitions(List.of(
-                        new ReadShareGroupStateSummaryResponseData.PartitionResult()
-                            .setPartition(partition)
-                            .setStartOffset(startOffset)
-                            .setDeliveryCompleteCount(deliveryCompleteCount)
-                            .setLeaderEpoch(leaderEpoch)
-                            .setStateEpoch(stateEpoch)
-                    ))
-            ));
+                .setResults(List.of(
+                        new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
+                                .setTopicId(topicId)
+                                .setPartitions(List.of(
+                                        new ReadShareGroupStateSummaryResponseData.PartitionResult()
+                                                .setPartition(partition)
+                                                .setStartOffset(startOffset)
+                                                .setDeliveryCompleteCount(deliveryCompleteCount)
+                                                .setLeaderEpoch(leaderEpoch)
+                                                .setStateEpoch(stateEpoch)
+                                ))
+                ));
     }
 
     public static ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult toResponseReadStateSummaryResult(
-        Uuid topicId,
-        List<ReadShareGroupStateSummaryResponseData.PartitionResult> partitionResults
+            Uuid topicId,
+            List<ReadShareGroupStateSummaryResponseData.PartitionResult> partitionResults
     ) {
         return new ReadShareGroupStateSummaryResponseData.ReadStateSummaryResult()
-            .setTopicId(topicId)
-            .setPartitions(partitionResults);
+                .setTopicId(topicId)
+                .setPartitions(partitionResults);
     }
 
     public static ReadShareGroupStateSummaryResponseData toGlobalErrorResponse(ReadShareGroupStateSummaryRequestData request, Errors error) {
@@ -132,7 +132,7 @@ public class ReadShareGroupStateSummaryResponse extends AbstractResponse {
         request.topics().forEach(topicData -> {
             List<ReadShareGroupStateSummaryResponseData.PartitionResult> partitionResults = new ArrayList<>();
             topicData.partitions().forEach(partitionData -> partitionResults.add(
-                toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
+                    toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
             );
             readStateSummaryResults.add(toResponseReadStateSummaryResult(topicData.topicId(), partitionResults));
         });

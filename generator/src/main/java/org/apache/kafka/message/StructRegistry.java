@@ -104,13 +104,13 @@ public final class StructRegistry {
                 } else if (structs.containsKey(typeName)) {
                     // Inline structures should only appear once.
                     throw new RuntimeException("Struct " + typeName +
-                        " was specified twice.");
+                            " was specified twice.");
                 } else {
                     // Synthesize a StructSpec object out of the fields.
                     StructSpec spec = new StructSpec(typeName,
-                        field.versions().toString(),
-                        Versions.NONE_STRING, // version deprecations not supported at field level
-                        field.fields());
+                            field.versions().toString(),
+                            Versions.NONE_STRING, // version deprecations not supported at field level
+                            field.fields());
                     structs.put(typeName, new StructInfo(spec, parentVersions));
                 }
 

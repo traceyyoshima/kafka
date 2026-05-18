@@ -136,13 +136,13 @@ public final class SourceConnectorConfig extends ConnectorConfig {
                         ConfigDef.CompositeValidator.of(
                                 new ConfigDef.NonNullValidator(),
                                 ConfigDef.LambdaValidator.with(
-                                    (name, value) -> {
-                                        List<?> groupAliases = (List<?>) value;
-                                        if (groupAliases.size() > new HashSet<>(groupAliases).size()) {
-                                            throw new ConfigException(name, value, "Duplicate alias provided.");
-                                        }
-                                    },
-                                    () -> "unique topic creation groups")),
+                                        (name, value) -> {
+                                            List<?> groupAliases = (List<?>) value;
+                                            if (groupAliases.size() > new HashSet<>(groupAliases).size()) {
+                                                throw new ConfigException(name, value, "Duplicate alias provided.");
+                                            }
+                                        },
+                                        () -> "unique topic creation groups")),
                         ConfigDef.Importance.LOW,
                         TOPIC_CREATION_GROUPS_DOC,
                         TOPIC_CREATION_GROUP,
@@ -176,13 +176,13 @@ public final class SourceConnectorConfig extends ConnectorConfig {
                         ConfigDef.Type.LONG,
                         null,
                         ConfigDef.LambdaValidator.with(
-                            (name, value) -> {
-                                if (value == null) {
-                                    return;
-                                }
-                                atLeastZero.ensureValid(name, value);
-                            },
-                            atLeastZero::toString
+                                (name, value) -> {
+                                    if (value == null) {
+                                        return;
+                                    }
+                                    atLeastZero.ensureValid(name, value);
+                                },
+                                atLeastZero::toString
                         ),
                         ConfigDef.Importance.LOW,
                         TRANSACTION_BOUNDARY_INTERVAL_DOC,
@@ -226,7 +226,7 @@ public final class SourceConnectorConfig extends ConnectorConfig {
      * Returns an enriched {@link ConfigDef} building upon the {@code ConfigDef}, using the current configuration specified in {@code props} as an input.
      *
      * @param baseConfigDef the base configuration definition to be enriched
-     * @param props the non parsed configuration properties
+     * @param props         the non parsed configuration properties
      * @return the enriched configuration definition
      */
     public static ConfigDef enrich(ConfigDef baseConfigDef, Map<String, String> props, AbstractConfig defaultGroupConfig) {
@@ -239,7 +239,7 @@ public final class SourceConnectorConfig extends ConnectorConfig {
         //Remove "topic.creation.groups" config if its present and the value is "default"
         if (topicCreationGroups.contains(DEFAULT_TOPIC_CREATION_GROUP)) {
             log.warn("'{}' topic creation group always exists and does not need to be listed explicitly",
-                DEFAULT_TOPIC_CREATION_GROUP);
+                    DEFAULT_TOPIC_CREATION_GROUP);
             topicCreationGroups.removeAll(Set.of(DEFAULT_TOPIC_CREATION_GROUP));
         }
 

@@ -125,16 +125,16 @@ public interface ClusterInstance {
 
     default List<Integer> controllerBoundPorts() {
         return controllers().values().stream()
-            .map(ControllerServer::socketServer)
-            .map(ss -> ss.boundPort(controllerListenerName()))
-            .toList();
+                .map(ControllerServer::socketServer)
+                .map(ss -> ss.boundPort(controllerListenerName()))
+                .toList();
     }
 
     default List<Integer> brokerBoundPorts() {
         return brokers().values().stream()
-            .map(KafkaBroker::socketServer)
-            .map(ss -> ss.boundPort(clientListener()))
-            .toList();
+                .map(KafkaBroker::socketServer)
+                .map(ss -> ss.boundPort(clientListener()))
+                .toList();
     }
 
     String clusterId();
@@ -206,11 +206,11 @@ public interface ClusterInstance {
             props.putIfAbsent(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name);
             props.putIfAbsent(SaslConfigs.SASL_MECHANISM, "PLAIN");
             props.putIfAbsent(
-                SaslConfigs.SASL_JAAS_CONFIG,
-                String.format(
-                    "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
-                    JaasUtils.KAFKA_PLAIN_ADMIN, JaasUtils.KAFKA_PLAIN_ADMIN_PASSWORD
-                )
+                    SaslConfigs.SASL_JAAS_CONFIG,
+                    String.format(
+                            "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
+                            JaasUtils.KAFKA_PLAIN_ADMIN, JaasUtils.KAFKA_PLAIN_ADMIN_PASSWORD
+                    )
             );
         }
         return props;
@@ -265,8 +265,8 @@ public interface ClusterInstance {
         Collection<KafkaBroker> brokers = aliveBrokers().values();
         // wait for metadata
         TestUtils.waitForCondition(
-            () -> brokers.stream().allMatch(
-                broker -> broker.metadataCache().numPartitions(topic).isEmpty()),
+                () -> brokers.stream().allMatch(
+                        broker -> broker.metadataCache().numPartitions(topic).isEmpty()),
                 60000L, topic + " metadata not propagated after 60000 ms");
 
         ensureConsistentMetadata(brokers, controllers().values());
@@ -300,15 +300,15 @@ public interface ClusterInstance {
         // Ensure that the topic directories are soft-deleted
         TestUtils.waitForCondition(() -> brokers.stream().allMatch(broker ->
                 broker.config().logDirs().stream().allMatch(logDir ->
-                    !new File(logDir, topicPartition.topic() + "-" + topicPartition.partition()).exists())
+                        !new File(logDir, topicPartition.topic() + "-" + topicPartition.partition()).exists())
         ), "Failed to soft-delete the data to a delete directory");
 
         // Ensure that the topic directories are hard-deleted
         TestUtils.waitForCondition(() -> brokers.stream().allMatch(broker ->
                 broker.config().logDirs().stream().allMatch(logDir ->
-                    Arrays.stream(Objects.requireNonNull(new File(logDir).list())).noneMatch(partitionDirectoryName ->
-                        partitionDirectoryName.startsWith(topicPartition.topic() + "-" + topicPartition.partition()) &&
-                            partitionDirectoryName.endsWith(UnifiedLog.DELETE_DIR_SUFFIX)))
+                        Arrays.stream(Objects.requireNonNull(new File(logDir).list())).noneMatch(partitionDirectoryName ->
+                                partitionDirectoryName.startsWith(topicPartition.topic() + "-" + topicPartition.partition()) &&
+                                        partitionDirectoryName.endsWith(UnifiedLog.DELETE_DIR_SUFFIX)))
         ), "Failed to hard-delete the delete directory");
     }
 
@@ -354,22 +354,22 @@ public interface ClusterInstance {
         // wait for metadata
         Collection<KafkaBroker> brokers = aliveBrokers().values();
         TestUtils.waitForCondition(
-            () -> brokers.stream().allMatch(broker -> broker.metadataCache().numPartitions(topic).filter(p -> p == partitions).isPresent()),
+                () -> brokers.stream().allMatch(broker -> broker.metadataCache().numPartitions(topic).filter(p -> p == partitions).isPresent()),
                 60000L, topic + " metadata not propagated after 60000 ms");
 
         ensureConsistentMetadata(brokers, controllers().values());
     }
 
-    default void ensureConsistentMetadata() throws InterruptedException  {
+    default void ensureConsistentMetadata() throws InterruptedException {
         ensureConsistentMetadata(aliveBrokers().values(), controllers().values());
     }
 
-    default void ensureConsistentMetadata(Collection<KafkaBroker> brokers, Collection<ControllerServer> controllers) throws InterruptedException  {
+    default void ensureConsistentMetadata(Collection<KafkaBroker> brokers, Collection<ControllerServer> controllers) throws InterruptedException {
         for (ControllerServer controller : controllers) {
             long controllerOffset = controller.raftManager().raftLog().endOffset().offset() - 1;
             TestUtils.waitForCondition(
-                () -> brokers.stream().allMatch(broker -> ((BrokerServer) broker).sharedServer().loader().lastAppliedOffset() >= controllerOffset),
-                60000L, "Timeout waiting for controller metadata propagating to brokers");
+                    () -> brokers.stream().allMatch(broker -> ((BrokerServer) broker).sharedServer().loader().lastAppliedOffset() >= controllerOffset),
+                    60000L, "Timeout waiting for controller metadata propagating to brokers");
         }
     }
 

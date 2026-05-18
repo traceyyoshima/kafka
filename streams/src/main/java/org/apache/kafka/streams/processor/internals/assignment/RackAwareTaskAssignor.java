@@ -111,7 +111,7 @@ public class RackAwareTaskAssignor {
         this.rackForProcess = new HashMap<>();
         this.time = Objects.requireNonNull(time, "Time was not specified");
         validClientRack = validateClientRack(racksForProcessConsumer, assignmentConfigs,
-            rackForProcess
+                rackForProcess
         );
     }
 
@@ -244,8 +244,8 @@ public class RackAwareTaskAssignor {
                 if (rackEntry.getValue().isEmpty()) {
                     if (!StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE.equals(assignmentConfigs.rackAwareAssignmentStrategy())) {
                         log.error(
-                            String.format("RackId doesn't exist for process %s and consumer %s",
-                                processId, rackEntry.getKey()));
+                                String.format("RackId doesn't exist for process %s and consumer %s",
+                                        processId, rackEntry.getKey()));
                     }
                     return false;
                 }
@@ -253,13 +253,13 @@ public class RackAwareTaskAssignor {
                     previousRackInfo = KeyValue.pair(rackEntry.getKey(), rackEntry.getValue().get());
                 } else if (!previousRackInfo.value.equals(rackEntry.getValue().get())) {
                     log.error(
-                        String.format("Consumers %s and %s for same process %s has different rackId %s and %s. File a ticket for this bug",
-                            previousRackInfo.key,
-                            rackEntry.getKey(),
-                            entry.getKey(),
-                            previousRackInfo.value,
-                            rackEntry.getValue().get()
-                        )
+                            String.format("Consumers %s and %s for same process %s has different rackId %s and %s. File a ticket for this bug",
+                                    previousRackInfo.key,
+                                    rackEntry.getKey(),
+                                    entry.getKey(),
+                                    previousRackInfo.value,
+                                    rackEntry.getValue().get()
+                            )
                     );
                     return false;
                 }
@@ -346,19 +346,19 @@ public class RackAwareTaskAssignor {
         final List<ProcessId> clientList = new ArrayList<>(clientStates.keySet());
         final List<TaskId> taskIdList = new ArrayList<>(tasks);
         final Graph<Integer> graph = new MinTrafficGraphConstructor<ClientState>()
-            .constructTaskGraph(
-                clientList,
-                taskIdList,
-                clientStates,
-                new HashMap<>(),
-                new HashMap<>(),
-                hasAssignedTask,
-                this::getCost,
-                trafficCost,
-                nonOverlapCost,
-                hasReplica,
-                isStandby
-            );
+                .constructTaskGraph(
+                        clientList,
+                        taskIdList,
+                        clientStates,
+                        new HashMap<>(),
+                        new HashMap<>(),
+                        hasAssignedTask,
+                        this::getCost,
+                        trafficCost,
+                        nonOverlapCost,
+                        hasReplica,
+                        isStandby
+                );
         return graph.totalCost();
     }
 
@@ -371,9 +371,10 @@ public class RackAwareTaskAssignor {
      * cross rack traffic can be higher. In extreme case, if we set {@code nonOverlapCost} to 0 and @{code trafficCost}
      * to a positive value, the computed assignment will be minimum for cross rack traffic. If we set {@code trafficCost} to 0,
      * and {@code nonOverlapCost} to a positive value, the computed assignment should be the same as input
-     * @param activeTasks Tasks to reassign if needed. They must be assigned already in clientStates
-     * @param clientStates Client states
-     * @param trafficCost Cost of cross rack traffic for each TopicPartition
+     *
+     * @param activeTasks    Tasks to reassign if needed. They must be assigned already in clientStates
+     * @param clientStates   Client states
+     * @param trafficCost    Cost of cross rack traffic for each TopicPartition
      * @param nonOverlapCost Cost of assign a task to a different client
      * @return Total cost after optimization
      */
@@ -386,7 +387,7 @@ public class RackAwareTaskAssignor {
         }
 
         log.info("Assignment before active task optimization is {}\n with cost {}", clientStates,
-            activeTasksCost(activeTasks, clientStates, trafficCost, nonOverlapCost));
+                activeTasksCost(activeTasks, clientStates, trafficCost, nonOverlapCost));
 
         final long startTime = time.milliseconds();
         final List<ProcessId> clientList = new ArrayList<>(clientStates.keySet());
@@ -395,24 +396,24 @@ public class RackAwareTaskAssignor {
         final Map<ProcessId, Integer> originalAssignedTaskNumber = new HashMap<>();
         final RackAwareGraphConstructor<ClientState> graphConstructor = RackAwareGraphConstructorFactory.create(assignmentConfigs, tasksForTopicGroup);
         final Graph<Integer> graph = graphConstructor.constructTaskGraph(
-            clientList,
-            taskIdList,
-            clientStates,
-            taskClientMap,
-            originalAssignedTaskNumber,
-            ClientState::hasActiveTask,
-            this::getCost,
-            trafficCost,
-            nonOverlapCost,
-            false,
-            false
+                clientList,
+                taskIdList,
+                clientStates,
+                taskClientMap,
+                originalAssignedTaskNumber,
+                ClientState::hasActiveTask,
+                this::getCost,
+                trafficCost,
+                nonOverlapCost,
+                false,
+                false
         );
 
         graph.solveMinCostFlow();
         final long cost = graph.totalCost();
 
         graphConstructor.assignTaskFromMinCostFlow(graph, clientList, taskIdList, clientStates, originalAssignedTaskNumber,
-            taskClientMap, ClientState::assignActive, ClientState::unassignActive, ClientState::hasActiveTask);
+                taskClientMap, ClientState::assignActive, ClientState::unassignActive, ClientState::hasActiveTask);
 
         final long duration = time.milliseconds() - startTime;
         log.info("Assignment after {} milliseconds for active task optimization is {}\n with cost {}", duration, clientStates, cost);
@@ -424,10 +425,10 @@ public class RackAwareTaskAssignor {
                                      final int nonOverlapCost,
                                      final MoveStandbyTaskPredicate moveStandbyTask) {
         final BiFunction<ClientState, ClientState, List<TaskId>> getMovableTasks = (source, destination) -> source.standbyTasks().stream()
-            .filter(task -> !destination.hasAssignedTask(task))
-            .filter(task -> moveStandbyTask.canMove(source, destination, task, clientStates))
-            .sorted()
-            .collect(Collectors.toList());
+                .filter(task -> !destination.hasAssignedTask(task))
+                .filter(task -> moveStandbyTask.canMove(source, destination, task, clientStates))
+                .sorted()
+                .collect(Collectors.toList());
 
         final long startTime = time.milliseconds();
         final List<ProcessId> clientList = new ArrayList<>(clientStates.keySet());
@@ -435,7 +436,7 @@ public class RackAwareTaskAssignor {
         clientStates.values().forEach(clientState -> standbyTasks.addAll(clientState.standbyTasks()));
 
         log.info("Assignment before standby task optimization is {}\n with cost {}", clientStates,
-            standByTasksCost(standbyTasks, clientStates, trafficCost, nonOverlapCost));
+                standByTasksCost(standbyTasks, clientStates, trafficCost, nonOverlapCost));
 
         boolean taskMoved = true;
         int round = 0;
@@ -465,35 +466,35 @@ public class RackAwareTaskAssignor {
                     }
 
                     final List<TaskId> taskIdList = Stream.concat(movable1.stream(),
-                            movable2.stream())
-                        .sorted()
-                        .collect(Collectors.toList());
+                                    movable2.stream())
+                            .sorted()
+                            .collect(Collectors.toList());
 
                     final List<ProcessId> clients = Stream.of(clientList.get(i), clientList.get(j))
-                        .sorted().collect(
-                            Collectors.toList());
+                            .sorted().collect(
+                                    Collectors.toList());
 
                     final Map<TaskId, ProcessId> taskClientMap = new HashMap<>();
                     final Map<ProcessId, Integer> originalAssignedTaskNumber = new HashMap<>();
                     final Graph<Integer> graph = graphConstructor.constructTaskGraph(
-                        clients,
-                        taskIdList,
-                        clientStates,
-                        taskClientMap,
-                        originalAssignedTaskNumber,
-                        ClientState::hasStandbyTask,
-                        this::getCost,
-                        trafficCost,
-                        nonOverlapCost,
-                        true,
-                        true
+                            clients,
+                            taskIdList,
+                            clientStates,
+                            taskClientMap,
+                            originalAssignedTaskNumber,
+                            ClientState::hasStandbyTask,
+                            this::getCost,
+                            trafficCost,
+                            nonOverlapCost,
+                            true,
+                            true
                     );
                     graph.solveMinCostFlow();
 
                     taskMoved |= graphConstructor.assignTaskFromMinCostFlow(graph, clients, taskIdList, clientStates,
-                        originalAssignedTaskNumber,
-                        taskClientMap, ClientState::assignStandby, ClientState::unassignStandby,
-                        ClientState::hasStandbyTask);
+                            originalAssignedTaskNumber,
+                            taskClientMap, ClientState::assignStandby, ClientState::unassignStandby,
+                            ClientState::hasStandbyTask);
                 }
             }
         }

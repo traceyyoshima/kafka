@@ -116,9 +116,9 @@ public class NetworkPartitionMetadataClient implements PartitionMetadataClient {
         for (TopicPartition tp : topicPartitions) {
             // Get leader node for this partition
             Optional<Node> leaderNodeOpt = metadataCache.getPartitionLeaderEndpoint(
-                tp.topic(),
-                tp.partition(),
-                listenerName
+                    tp.topic(),
+                    tp.partition(),
+                    listenerName
             );
 
             if (leaderNodeOpt.isEmpty() || leaderNodeOpt.get().isEmpty()) {
@@ -177,10 +177,10 @@ public class NetworkPartitionMetadataClient implements PartitionMetadataClient {
         if (initialized.compareAndSet(false, true)) {
             KafkaClient networkClient = networkClientSupplier.get();
             sendThread = new SendThread(
-                "NetworkPartitionMetadataClientSendThread",
-                networkClient,
-                Math.toIntExact(CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS),  //30 seconds
-                this.time
+                    "NetworkPartitionMetadataClientSendThread",
+                    networkClient,
+                    Math.toIntExact(CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS),  //30 seconds
+                    this.time
             );
             sendThread.start();
             log.info("NetworkPartitionMetadataClient sendThread initialized and started");
@@ -199,16 +199,16 @@ public class NetworkPartitionMetadataClient implements PartitionMetadataClient {
             }
             ListOffsetsTopic topic = topicsMap.get(tp.topic());
             topic.partitions().add(
-                new ListOffsetsPartition()
-                    .setPartitionIndex(tp.partition())
-                    .setTimestamp(ListOffsetsRequest.LATEST_TIMESTAMP)
-                    .setCurrentLeaderEpoch(-1) // Will be set by broker if needed
+                    new ListOffsetsPartition()
+                            .setPartitionIndex(tp.partition())
+                            .setTimestamp(ListOffsetsRequest.LATEST_TIMESTAMP)
+                            .setCurrentLeaderEpoch(-1) // Will be set by broker if needed
             );
         });
         // Isolation level will always be READ_UNCOMMITTED when finding the partition end offset.
         return ListOffsetsRequest.Builder.forConsumer(
-            true,
-            IsolationLevel.READ_UNCOMMITTED
+                true,
+                IsolationLevel.READ_UNCOMMITTED
         ).setTargetTimes(List.copyOf(topicsMap.values()));
     }
 
@@ -225,7 +225,7 @@ public class NetworkPartitionMetadataClient implements PartitionMetadataClient {
         log.debug("ListOffsets response received successfully - {}", clientResponse);
         // Reset retry attempts on success
         pendingRequest.backoffManager().resetAttempts();
-        
+
         ListOffsetsResponse response = (ListOffsetsResponse) clientResponse.responseBody();
         Map<TopicPartition, CompletableFuture<OffsetResponse>> partitionFutures = pendingRequest.futures();
 
@@ -257,7 +257,7 @@ public class NetworkPartitionMetadataClient implements PartitionMetadataClient {
         Map<TopicPartition, CompletableFuture<OffsetResponse>> partitionFutures = pendingRequest.futures();
         Errors error;
         boolean shouldRetry = false;
-        
+
         if (clientResponse == null) {
             log.error("Response for ListOffsets for topicPartitions: {} is null", partitionFutures.keySet());
             error = Errors.UNKNOWN_SERVER_ERROR;
@@ -290,12 +290,12 @@ public class NetworkPartitionMetadataClient implements PartitionMetadataClient {
                 backoffManager.incrementAttempt();
                 long backoffMs = backoffManager.backOff();
                 log.debug("Retrying ListOffsets request for TopicPartitions: {} after {} ms (attempt {}/{})",
-                    partitionFutures.keySet(), backoffMs, backoffManager.attempts(), MAX_RETRY_ATTEMPTS);
+                        partitionFutures.keySet(), backoffMs, backoffManager.attempts(), MAX_RETRY_ATTEMPTS);
                 timer.add(new RetryTimerTask(backoffMs, pendingRequest));
                 return true;
             } else {
                 log.error("Exhausted max retries ({}) for ListOffsets request for TopicPartitions: {}",
-                    MAX_RETRY_ATTEMPTS, partitionFutures.keySet());
+                        MAX_RETRY_ATTEMPTS, partitionFutures.keySet());
             }
         }
 
@@ -313,14 +313,14 @@ public class NetworkPartitionMetadataClient implements PartitionMetadataClient {
                           ListOffsetsRequest.Builder requestBuilder,
                           ExponentialBackoffManager backoffManager) {
         PendingRequest(Node node,
-                      Map<TopicPartition, CompletableFuture<OffsetResponse>> futures,
-                      ListOffsetsRequest.Builder requestBuilder) {
+                       Map<TopicPartition, CompletableFuture<OffsetResponse>> futures,
+                       ListOffsetsRequest.Builder requestBuilder) {
             this(node, futures, requestBuilder, new ExponentialBackoffManager(
-                MAX_RETRY_ATTEMPTS,
-                REQUEST_BACKOFF_MS,
-                CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
-                REQUEST_BACKOFF_MAX_MS,
-                CommonClientConfigs.RETRY_BACKOFF_JITTER));
+                    MAX_RETRY_ATTEMPTS,
+                    REQUEST_BACKOFF_MS,
+                    CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
+                    REQUEST_BACKOFF_MAX_MS,
+                    CommonClientConfigs.RETRY_BACKOFF_JITTER));
         }
     }
 
@@ -369,10 +369,10 @@ public class NetworkPartitionMetadataClient implements PartitionMetadataClient {
 
                 // Create completion handler
                 RequestAndCompletionHandler requestHandler = new RequestAndCompletionHandler(
-                    time.hiResClockMs(),
-                    current.node,
-                    requestBuilder,
-                    response -> handleResponse(current, response));
+                        time.hiResClockMs(),
+                        current.node,
+                        requestBuilder,
+                        response -> handleResponse(current, response));
 
                 requests.add(requestHandler);
             }

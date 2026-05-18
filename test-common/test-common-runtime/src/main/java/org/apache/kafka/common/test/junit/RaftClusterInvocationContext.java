@@ -61,7 +61,7 @@ import java.util.stream.Stream;
 /**
  * Wraps a {@link KafkaClusterTestKit} inside lifecycle methods for a test invocation. Each instance of this
  * class is provided with a configuration for the cluster.
- *
+ * <p>
  * This context also provides parameter resolvers for:
  *
  * <ul>
@@ -82,7 +82,7 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
      * avoid transient failures due to slow or overloaded machines.
      */
     static void waitForCondition(final java.util.function.Supplier<Boolean> testCondition,
-                                        final String conditionDetails) throws InterruptedException {
+                                 final String conditionDetails) throws InterruptedException {
         var maxWaitMs = 15_000L;
         long endTime = System.currentTimeMillis() + maxWaitMs;
 
@@ -164,21 +164,21 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
         @Override
         public ListenerName controllerListenerName() {
             return new ListenerName(
-                controllers()
-                    .values()
-                    .iterator()
-                    .next()
-                    .config()
-                    .controllerListenerNames()
-                    .get(0)
+                    controllers()
+                            .values()
+                            .iterator()
+                            .next()
+                            .config()
+                            .controllerListenerNames()
+                            .get(0)
             );
         }
 
         @Override
         public String clusterId() {
             return Stream.concat(controllers().values().stream().map(ControllerServer::clusterId),
-                brokers().values().stream().map(KafkaBroker::clusterId)).findFirst()
-                .orElseThrow(() -> new RuntimeException("No controllers or brokers!"));
+                            brokers().values().stream().map(KafkaBroker::clusterId)).findFirst()
+                    .orElseThrow(() -> new RuntimeException("No controllers or brokers!"));
         }
 
         @Override
@@ -188,11 +188,11 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
                 props.putIfAbsent(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_SSL.name);
                 props.putIfAbsent(SaslConfigs.SASL_MECHANISM, "PLAIN");
                 props.putIfAbsent(
-                    SaslConfigs.SASL_JAAS_CONFIG,
-                    String.format(
-                        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
-                        JaasUtils.KAFKA_PLAIN_ADMIN, JaasUtils.KAFKA_PLAIN_ADMIN_PASSWORD
-                    )
+                        SaslConfigs.SASL_JAAS_CONFIG,
+                        String.format(
+                                "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";",
+                                JaasUtils.KAFKA_PLAIN_ADMIN, JaasUtils.KAFKA_PLAIN_ADMIN_PASSWORD
+                        )
                 );
                 if (clusterTestKit.sslManager() != null) {
                     props.putAll(clusterTestKit.sslManager().createClientSslConfig());
@@ -308,7 +308,7 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
                     if (!featureName.equals(MetadataVersion.FEATURE_NAME)) {
                         if (!nameToSupportedFeature.containsKey(featureName)) {
                             throw new FormatterException("Unsupported feature: " + featureName +
-                                ". Supported features are: " + String.join(", ", nameToSupportedFeature.keySet()));
+                                    ". Supported features are: " + String.join(", ", nameToSupportedFeature.keySet()));
                         }
                     }
                     newFeatureLevels.put(featureName, level);
@@ -319,7 +319,7 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
                 Feature.PRODUCTION_FEATURES.forEach(supportedFeature -> {
                     if (!newFeatureLevels.containsKey(supportedFeature.featureName())) {
                         newFeatureLevels.put(supportedFeature.featureName(),
-                            supportedFeature.defaultLevel(clusterConfig.metadataVersion()));
+                                supportedFeature.defaultLevel(clusterConfig.metadataVersion()));
                     }
                 });
 
@@ -331,7 +331,7 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
                         short level = entry.getValue();
                         Feature supportedFeature = nameToSupportedFeature.get(featureName);
                         FeatureVersion featureVersion =
-                            supportedFeature.fromFeatureLevel(level, true);
+                                supportedFeature.fromFeatureLevel(level, true);
                         Feature.validateVersion(featureVersion, newFeatureLevels);
                     }
                 }

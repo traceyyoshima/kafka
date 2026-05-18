@@ -55,7 +55,7 @@ public class RequestTestUtils {
 
     public static ByteBuffer serializeResponseWithHeader(AbstractResponse response, short version, int correlationId) {
         return response.serializeWithHeader(new ResponseHeader(correlationId,
-            response.apiKey().responseHeaderVersion(version)), version);
+                response.apiKey().responseHeaderVersion(version)), version);
     }
 
     public static MetadataResponse metadataResponse(Collection<Node> brokers,
@@ -100,7 +100,8 @@ public class RequestTestUtils {
             topics.add(metadataResponseTopic);
         });
         return MetadataResponse.prepareResponse(responseVersion, throttleTimeMs, brokers, clusterId, controllerId,
-                topics, clusterAuthorizedOperations); }
+                topics, clusterAuthorizedOperations);
+    }
 
     public static MetadataResponse metadataUpdateWith(final int numNodes,
                                                       final Map<String, Integer> topicPartitionCounts) {

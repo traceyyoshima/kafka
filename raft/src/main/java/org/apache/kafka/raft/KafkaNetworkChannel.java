@@ -68,7 +68,7 @@ public class KafkaNetworkChannel implements NetworkChannel {
 
         @Override
         public Collection<RequestAndCompletionHandler> generateRequests() {
-            List<RequestAndCompletionHandler> list =  new ArrayList<>();
+            List<RequestAndCompletionHandler> list = new ArrayList<>();
             while (true) {
                 RequestAndCompletionHandler request = queue.poll();
                 if (request == null) {
@@ -94,19 +94,19 @@ public class KafkaNetworkChannel implements NetworkChannel {
     private final ListenerName listenerName;
 
     public KafkaNetworkChannel(
-        Time time,
-        ListenerName listenerName,
-        KafkaClient client,
-        int requestTimeoutMs,
-        String threadNamePrefix
+            Time time,
+            ListenerName listenerName,
+            KafkaClient client,
+            int requestTimeoutMs,
+            String threadNamePrefix
     ) {
         this.listenerName = listenerName;
         this.requestThread = new SendThread(
-            threadNamePrefix + "-outbound-request-thread",
-            client,
-            requestTimeoutMs,
-            time,
-            false
+                threadNamePrefix + "-outbound-request-thread",
+                client,
+                requestTimeoutMs,
+                time,
+                false
         );
     }
 
@@ -120,10 +120,10 @@ public class KafkaNetworkChannel implements NetworkChannel {
         Node node = request.destination();
         if (node != null) {
             requestThread.sendRequest(new RequestAndCompletionHandler(
-                request.createdTimeMs(),
-                node,
-                buildRequest(request.data()),
-                response -> sendOnComplete(request, response)
+                    request.createdTimeMs(),
+                    node,
+                    buildRequest(request.data()),
+                    response -> sendOnComplete(request, response)
             ));
         } else
             sendCompleteFuture(request, errorResponse(request.data(), Errors.BROKER_NOT_AVAILABLE));
@@ -201,8 +201,8 @@ public class KafkaNetworkChannel implements NetworkChannel {
             return new RemoveRaftVoterRequest.Builder((RemoveRaftVoterRequestData) requestData);
         else if (requestData instanceof ApiVersionsRequestData)
             return new ApiVersionsRequest.Builder((ApiVersionsRequestData) requestData,
-                ApiKeys.API_VERSIONS.oldestVersion(),
-                ApiKeys.API_VERSIONS.latestVersion());
+                    ApiKeys.API_VERSIONS.oldestVersion(),
+                    ApiKeys.API_VERSIONS.latestVersion());
         else
             throw new IllegalArgumentException("Unexpected type for requestData: " + requestData);
     }

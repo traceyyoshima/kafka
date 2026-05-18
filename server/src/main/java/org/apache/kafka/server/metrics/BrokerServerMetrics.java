@@ -94,9 +94,9 @@ public final class BrokerServerMetrics implements AutoCloseable {
                 "The number of errors encountered by the BrokerMetadataPublisher while applying a new MetadataImage based on the latest MetadataDelta."
         );
         ignoredStaticVotersName = metrics.metricName(
-            "ignored-static-voters",
-            METRIC_GROUP_NAME,
-            "1 if controller.quorum.voters is set but was not used by the broker, 0 otherwise."
+                "ignored-static-voters",
+                METRIC_GROUP_NAME,
+                "1 if controller.quorum.voters is set but was not used by the broker, 0 otherwise."
         );
 
         metrics.addMetric(lastAppliedRecordOffsetName, (Gauge<Long>) (config, now) -> lastAppliedImageProvenance.get().lastContainedOffset());

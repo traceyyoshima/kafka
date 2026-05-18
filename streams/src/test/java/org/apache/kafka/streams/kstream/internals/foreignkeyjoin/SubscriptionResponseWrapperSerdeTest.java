@@ -50,10 +50,12 @@ public class SubscriptionResponseWrapperSerdeTest {
         }
 
         @Override
-        public void configure(final Map<String, ?> configs, final boolean isKey) { }
+        public void configure(final Map<String, ?> configs, final boolean isKey) {
+        }
 
         @Override
-        public void close() { }
+        public void close() {
+        }
 
         @Override
         public Serializer<T> serializer() {
@@ -80,7 +82,7 @@ public class SubscriptionResponseWrapperSerdeTest {
 
     @Test
     public void shouldSerdeWithNonNullsTest() {
-        final long[] hashedValue = Murmur3.hash128(new byte[] {(byte) 0x01, (byte) 0x9A, (byte) 0xFF, (byte) 0x00});
+        final long[] hashedValue = Murmur3.hash128(new byte[]{(byte) 0x01, (byte) 0x9A, (byte) 0xFF, (byte) 0x00});
         final String foreignValue = "foreignValue";
         final SubscriptionResponseWrapper<String> srw = new SubscriptionResponseWrapper<>(hashedValue, foreignValue, 1);
         try (final SubscriptionResponseWrapperSerde<String> srwSerde = new SubscriptionResponseWrapperSerde<>(new NonNullableSerde<>(Serdes.String()))) {
@@ -95,7 +97,7 @@ public class SubscriptionResponseWrapperSerdeTest {
 
     @Test
     public void shouldSerdeWithNullForeignValueTest() {
-        final long[] hashedValue = Murmur3.hash128(new byte[] {(byte) 0x01, (byte) 0x9A, (byte) 0xFF, (byte) 0x00});
+        final long[] hashedValue = Murmur3.hash128(new byte[]{(byte) 0x01, (byte) 0x9A, (byte) 0xFF, (byte) 0x00});
         final SubscriptionResponseWrapper<String> srw = new SubscriptionResponseWrapper<>(hashedValue, null, 1);
         try (final SubscriptionResponseWrapperSerde<String> srwSerde = new SubscriptionResponseWrapperSerde<>(new NonNullableSerde<>(Serdes.String()))) {
             final byte[] serResponse = srwSerde.serializer().serialize(null, HEADERS, srw);
@@ -141,8 +143,8 @@ public class SubscriptionResponseWrapperSerdeTest {
     public void shouldThrowExceptionWithBadVersionTest() {
         final long[] hashedValue = null;
         assertThrows(
-            UnsupportedVersionException.class,
-            () -> new SubscriptionResponseWrapper<>(hashedValue, "foreignValue", (byte) -1, 1)
+                UnsupportedVersionException.class,
+                () -> new SubscriptionResponseWrapper<>(hashedValue, "foreignValue", (byte) -1, 1)
         );
     }
 
@@ -151,8 +153,8 @@ public class SubscriptionResponseWrapperSerdeTest {
         final SubscriptionResponseWrapper<String> srw = new InvalidSubscriptionResponseWrapper(null, null, 1);
         try (final SubscriptionResponseWrapperSerde<String> srwSerde = new SubscriptionResponseWrapperSerde<>(null)) {
             assertThrows(
-                UnsupportedVersionException.class,
-                () -> srwSerde.serializer().serialize(null, HEADERS, srw)
+                    UnsupportedVersionException.class,
+                    () -> srwSerde.serializer().serialize(null, HEADERS, srw)
             );
         }
     }

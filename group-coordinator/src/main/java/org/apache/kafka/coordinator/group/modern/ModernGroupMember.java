@@ -69,15 +69,15 @@ public abstract class ModernGroupMember {
     protected Set<String> subscribedTopicNames;
 
     protected ModernGroupMember(
-        String memberId,
-        int memberEpoch,
-        int previousMemberEpoch,
-        String instanceId,
-        String rackId,
-        String clientId,
-        String clientHost,
-        Set<String> subscribedTopicNames,
-        MemberState state
+            String memberId,
+            int memberEpoch,
+            int previousMemberEpoch,
+            String instanceId,
+            String rackId,
+            String clientId,
+            String clientHost,
+            Set<String> subscribedTopicNames,
+            MemberState state
     ) {
         this.memberId = memberId;
         this.memberEpoch = memberEpoch;

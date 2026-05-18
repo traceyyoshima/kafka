@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
  * <li><code>C0: [t0p0, t0p1, t1p0, t1p1]</code></li>
  * <li><code>C1: [t0p2, t1p2]</code></li>
  * </ul>
- *
+ * <p>
  * Since the introduction of static membership, we could leverage <code>group.instance.id</code> to make the assignment behavior more sticky.
  * For the above example, after one rolling bounce, group coordinator will attempt to assign new <code>member.id</code> towards consumers,
  * for example <code>C0</code> -&gt; <code>C3</code> <code>C1</code> -&gt; <code>C2</code>.
@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  * <li><code>C3 (was C0): [t0p2, t1p2] (before was [t0p0, t0p1, t1p0, t1p1])</code>
  * <li><code>C2 (was C1): [t0p0, t0p1, t1p0, t1p1] (before was [t0p2, t1p2])</code>
  * </ul>
- *
+ * <p>
  * The assignment change was caused by the change of <code>member.id</code> relative order, and
  * can be avoided by setting the group.instance.id.
  * Consumers will have individual instance ids <code>I1</code>, <code>I2</code>. As long as
@@ -171,15 +171,15 @@ public class RangeAssignor extends AbstractPartitionAssignor {
                                         Map<String, List<TopicPartition>> assignment) {
 
         assignmentStates.stream().collect(Collectors.groupingBy(t -> t.consumers)).forEach((consumers, states) ->
-            states.stream().collect(Collectors.groupingBy(t -> t.partitionRacks.size())).forEach((numPartitions, coPartitionedStates) -> {
-                if (coPartitionedStates.size() > 1)
-                    assignCoPartitionedWithRackMatching(consumers, numPartitions, coPartitionedStates, assignment);
-                else {
-                    TopicAssignmentState state = coPartitionedStates.get(0);
-                    if (state.needsRackAwareAssignment)
-                        assignRanges(state, state::racksMatch, assignment);
-                }
-            })
+                states.stream().collect(Collectors.groupingBy(t -> t.partitionRacks.size())).forEach((numPartitions, coPartitionedStates) -> {
+                    if (coPartitionedStates.size() > 1)
+                        assignCoPartitionedWithRackMatching(consumers, numPartitions, coPartitionedStates, assignment);
+                    else {
+                        TopicAssignmentState state = coPartitionedStates.get(0);
+                        if (state.needsRackAwareAssignment)
+                            assignRanges(state, state::racksMatch, assignment);
+                    }
+                })
         );
     }
 

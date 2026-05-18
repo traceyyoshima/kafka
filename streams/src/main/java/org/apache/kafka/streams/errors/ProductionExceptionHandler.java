@@ -31,13 +31,9 @@ public interface ProductionExceptionHandler extends Configurable {
      * Inspect a record that we attempted to produce, and the exception that resulted
      * from attempting to produce it and determine to continue or stop processing.
      *
-     * @param record
-     *     The record that failed to produce.
-     * @param exception
-     *     The exception that occurred during production.
-     *
+     * @param record    The record that failed to produce.
+     * @param exception The exception that occurred during production.
      * @return Whether to continue or stop processing, or retry the failed operation.
-     *
      * @deprecated Since 3.9. Use {@link #handle(ErrorHandlerContext, ProducerRecord, Exception)} instead.
      */
     @Deprecated
@@ -50,13 +46,9 @@ public interface ProductionExceptionHandler extends Configurable {
      * Inspect a record that we attempted to produce, and the exception that resulted
      * from attempting to produce it and determine to continue or stop processing.
      *
-     * @param context
-     *     The error handler context metadata.
-     * @param record
-     *     The record that failed to produce.
-     * @param exception
-     *     The exception that occurred during production.
-     *
+     * @param context   The error handler context metadata.
+     * @param record    The record that failed to produce.
+     * @param exception The exception that occurred during production.
      * @return Whether to continue or stop processing, or retry the failed operation.
      * @deprecated Use {@link #handleError(ErrorHandlerContext, ProducerRecord, Exception)} instead.
      */
@@ -71,13 +63,9 @@ public interface ProductionExceptionHandler extends Configurable {
      * Inspect a record that we attempted to produce, and the exception that resulted
      * from attempting to produce it and determine to continue or stop processing.
      *
-     * @param context
-     *     The error handler context metadata.
-     * @param record
-     *     The record that failed to produce.
-     * @param exception
-     *     The exception that occurred during production.
-     *
+     * @param context   The error handler context metadata.
+     * @param record    The record that failed to produce.
+     * @param exception The exception that occurred during production.
      * @return a {@link Response} object
      */
     default Response handleError(final ErrorHandlerContext context,
@@ -90,13 +78,9 @@ public interface ProductionExceptionHandler extends Configurable {
      * Handles serialization exception and determine if the process should continue. The default implementation is to
      * fail the process.
      *
-     * @param record
-     *     The record that failed to serialize.
-     * @param exception
-     *     The exception that occurred during serialization.
-     *
+     * @param record    The record that failed to serialize.
+     * @param exception The exception that occurred during serialization.
      * @return Whether to continue or stop processing, or retry the failed operation.
-     *
      * @deprecated Since 3.9. Use {@link #handleSerializationException(ErrorHandlerContext, ProducerRecord, Exception, SerializationExceptionOrigin)} instead.
      */
     @SuppressWarnings({"rawtypes", "unused"})
@@ -110,17 +94,11 @@ public interface ProductionExceptionHandler extends Configurable {
      * Handles serialization exception and determine if the process should continue. The default implementation is to
      * fail the process.
      *
-     * @param context
-     *     The error handler context metadata.
-     * @param record
-     *     The record that failed to serialize.
-     * @param exception
-     *     The exception that occurred during serialization.
-     * @param origin
-     *     The origin of the serialization exception.
-     *
+     * @param context   The error handler context metadata.
+     * @param record    The record that failed to serialize.
+     * @param exception The exception that occurred during serialization.
+     * @param origin    The origin of the serialization exception.
      * @return Whether to continue or stop processing, or retry the failed operation.
-     *
      * @deprecated Use {@link #handleSerializationError(ErrorHandlerContext, ProducerRecord, Exception, SerializationExceptionOrigin)} instead.
      */
     @SuppressWarnings("rawtypes")
@@ -136,15 +114,10 @@ public interface ProductionExceptionHandler extends Configurable {
      * Handles serialization exception and determine if the process should continue. The default implementation is to
      * fail the process.
      *
-     * @param context
-     *     The error handler context metadata.
-     * @param record
-     *     The record that failed to serialize.
-     * @param exception
-     *     The exception that occurred during serialization.
-     * @param origin
-     *     The origin of the serialization exception.
-     *
+     * @param context   The error handler context metadata.
+     * @param record    The record that failed to serialize.
+     * @param exception The exception that occurred during serialization.
+     * @param origin    The origin of the serialization exception.
      * @return a {@link Response} object
      */
     @SuppressWarnings("rawtypes")
@@ -157,20 +130,23 @@ public interface ProductionExceptionHandler extends Configurable {
 
     @Deprecated
     enum ProductionExceptionHandlerResponse {
-        /** Continue processing.
+        /**
+         * Continue processing.
          *
          * <p> For this case, output records which could not be written successfully are lost.
          * Use this option only if you can tolerate data loss.
          */
         CONTINUE(0, "CONTINUE"),
-        /** Fail processing.
+        /**
+         * Fail processing.
          *
          * <p> Kafka Streams will raise an exception and the {@code StreamsThread} will fail.
          * No offsets (for {@link org.apache.kafka.streams.StreamsConfig#AT_LEAST_ONCE at-least-once}) or transactions
          * (for {@link org.apache.kafka.streams.StreamsConfig#EXACTLY_ONCE_V2 exactly-once}) will be committed.
          */
         FAIL(1, "FAIL"),
-        /** Retry the failed operation.
+        /**
+         * Retry the failed operation.
          *
          * <p> Retrying might imply that a {@link TaskCorruptedException} exception is thrown, and that the retry
          * is started from the last committed offset.
@@ -202,20 +178,23 @@ public interface ProductionExceptionHandler extends Configurable {
      * Enumeration that describes the response from the exception handler.
      */
     enum Result {
-        /** Resume processing.
+        /**
+         * Resume processing.
          *
          * <p> For this case, output records which could not be written successfully are lost.
          * Use this option only if you can tolerate data loss.
          */
         RESUME(0, "RESUME"),
-        /** Fail processing.
+        /**
+         * Fail processing.
          *
          * <p> Kafka Streams will raise an exception and the {@code StreamsThread} will fail.
          * No offsets (for {@link org.apache.kafka.streams.StreamsConfig#AT_LEAST_ONCE at-least-once}) or transactions
          * (for {@link org.apache.kafka.streams.StreamsConfig#EXACTLY_ONCE_V2 exactly-once}) will be committed.
          */
         FAIL(1, "FAIL"),
-        /** Retry the failed operation.
+        /**
+         * Retry the failed operation.
          *
          * <p> Retrying might imply that a {@link TaskCorruptedException} exception is thrown, and that the retry
          * is started from the last committed offset.
@@ -263,9 +242,13 @@ public interface ProductionExceptionHandler extends Configurable {
     }
 
     enum SerializationExceptionOrigin {
-        /** Serialization exception occurred during serialization of the key. */
+        /**
+         * Serialization exception occurred during serialization of the key.
+         */
         KEY,
-        /** Serialization exception occurred during serialization of the value. */
+        /**
+         * Serialization exception occurred during serialization of the value.
+         */
         VALUE
     }
 
@@ -286,8 +269,8 @@ public interface ProductionExceptionHandler extends Configurable {
         /**
          * Constructs a new {@code Response} object.
          *
-         * @param result the result indicating whether processing should continue or fail;
-         *                                  must not be {@code null}.
+         * @param result                 the result indicating whether processing should continue or fail;
+         *                               must not be {@code null}.
          * @param deadLetterQueueRecords the list of records to be sent to the dead letter queue; may be {@code null}.
          */
         private Response(final Result result,
@@ -359,7 +342,7 @@ public interface ProductionExceptionHandler extends Configurable {
          * </p>
          *
          * @return an unmodifiable list of {@link ProducerRecord} instances
-         *         for the dead letter queue, or an empty list if no records are available.
+         * for the dead letter queue, or an empty list if no records are available.
          */
         public List<ProducerRecord<byte[], byte[]>> deadLetterQueueRecords() {
             if (deadLetterQueueRecords == null) {

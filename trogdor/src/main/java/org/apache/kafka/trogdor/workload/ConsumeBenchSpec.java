@@ -38,54 +38,54 @@ import java.util.Set;
 
 /**
  * The specification for a benchmark that consumer messages from a set of topic/partitions.
- *
+ * <p>
  * If a consumer group is not given to the specification, a random one will be generated and
- *  used to track offsets/subscribe to topics.
- *
+ * used to track offsets/subscribe to topics.
+ * <p>
  * This specification uses a specific way to represent a topic partition via its "activeTopics" field.
  * The notation for that is topic_name:partition_number (e.g "foo:1" represents partition-1 of topic "foo")
  * Note that a topic name cannot have more than one colon.
- *
+ * <p>
  * The "activeTopics" field also supports ranges that get expanded. See #{@link StringExpander}.
- *
+ * <p>
  * There now exists a clever and succinct way to represent multiple partitions of multiple topics.
  * Example:
  * Given "activeTopics": ["foo[1-3]:[1-3]"], "foo[1-3]:[1-3]" will get
  * expanded to [foo1:1, foo1:2, foo1:3, foo2:1, ..., foo3:3].
  * This represents all partitions 1-3 for the three topics foo1, foo2 and foo3.
- *
+ * <p>
  * If there is at least one topic:partition pair, the consumer will be manually assigned partitions via
  * #{@link org.apache.kafka.clients.consumer.KafkaConsumer#assign(Collection)}.
  * Note that in this case the consumer will fetch and assign all partitions for a topic if no partition is given for it (e.g ["foo:1", "bar"])
- *
+ * <p>
  * If there are no topic:partition pairs given, the consumer will subscribe to the topics via
  * #{@link org.apache.kafka.clients.consumer.KafkaConsumer#subscribe(Collection)}.
  * It will be assigned partitions dynamically from the consumer group.
- *
+ * <p>
  * This specification supports the spawning of multiple consumers in the single Trogdor worker agent.
  * The "threadsPerWorker" field denotes how many consumers should be spawned for this spec.
  * It is worth noting that the "targetMessagesPerSec", "maxMessages" and "activeTopics" fields apply for every consumer individually.
- *
+ * <p>
  * If a consumer group is not specified, every consumer is assigned a different, random group. When specified, all consumers use the same group.
  * Since no two consumers in the same group can be assigned the same partition,
  * explicitly specifying partitions in "activeTopics" when there are multiple "threadsPerWorker"
  * and a particular "consumerGroup" will result in an #{@link ConfigException}, aborting the task.
- *
+ * <p>
  * The "recordProcessor" field allows the specification of tasks to run on records that are consumed.  This is run
  * immediately after the messages are polled.  See the `RecordProcessor` interface for more information.
- *
+ * <p>
  * An example JSON representation which will result in a consumer that is part of the consumer group "cg" and
  * subscribed to topics foo1, foo2, foo3 and bar.
  * #{@code
- *    {
- *        "class": "org.apache.kafka.trogdor.workload.ConsumeBenchSpec",
- *        "durationMs": 10000000,
- *        "consumerNode": "node0",
- *        "bootstrapServers": "localhost:9092",
- *        "maxMessages": 100,
- *        "consumerGroup": "cg",
- *        "activeTopics": ["foo[1-3]", "bar"]
- *    }
+ * {
+ * "class": "org.apache.kafka.trogdor.workload.ConsumeBenchSpec",
+ * "durationMs": 10000000,
+ * "consumerNode": "node0",
+ * "bootstrapServers": "localhost:9092",
+ * "maxMessages": 100,
+ * "consumerGroup": "cg",
+ * "activeTopics": ["foo[1-3]", "bar"]
+ * }
  * }
  */
 public final class ConsumeBenchSpec extends TaskSpec {
@@ -198,10 +198,10 @@ public final class ConsumeBenchSpec extends TaskSpec {
 
     /**
      * Materializes a list of topic names (optionally with ranges) into a map of the topics and their partitions
-     *
+     * <p>
      * Example:
      * ['foo[1-3]', 'foobar:2', 'bar[1-2]:[1-2]'] => {'foo1': [], 'foo2': [], 'foo3': [], 'foobar': [2],
-     *                                                'bar1': [1, 2], 'bar2': [1, 2] }
+     * 'bar1': [1, 2], 'bar2': [1, 2] }
      */
     Map<String, List<TopicPartition>> materializeTopics() {
         Map<String, List<TopicPartition>> partitionsByTopics = new HashMap<>();

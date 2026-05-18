@@ -56,9 +56,9 @@ public class ShellTest {
     @Test
     public void testRunProgramWithErrorReturn() {
         Shell.ExitCodeException e = assertThrows(Shell.ExitCodeException.class,
-            () -> Shell.execCommand("head", "-c", "0", NONEXISTENT_PATH));
+                () -> Shell.execCommand("head", "-c", "0", NONEXISTENT_PATH));
         String message = e.getMessage();
         assertTrue(message.contains("No such file") || message.contains("illegal byte count"),
-            "Unexpected error message '" + message + "'");
+                "Unexpected error message '" + message + "'");
     }
 }

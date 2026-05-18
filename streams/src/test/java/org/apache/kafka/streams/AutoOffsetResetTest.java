@@ -56,9 +56,9 @@ class AutoOffsetResetTest {
     @Test
     void shouldThrowExceptionIfDurationIsNegative() {
         final IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> AutoOffsetReset.byDuration(Duration.ofSeconds(-1)),
-            "Creating an AutoOffsetReset with a negative duration should throw an IllegalArgumentException."
+                IllegalArgumentException.class,
+                () -> AutoOffsetReset.byDuration(Duration.ofSeconds(-1)),
+                "Creating an AutoOffsetReset with a negative duration should throw an IllegalArgumentException."
         );
         assertEquals("Duration cannot be negative", exception.getMessage(), "Exception message should indicate the duration cannot be negative.");
     }
@@ -68,7 +68,7 @@ class AutoOffsetResetTest {
         final AutoOffsetReset latest1 = AutoOffsetReset.latest();
         final AutoOffsetReset latest2 = AutoOffsetReset.latest();
         final AutoOffsetReset earliest1 = AutoOffsetReset.earliest();
-        final  AutoOffsetReset earliest2 = AutoOffsetReset.earliest();
+        final AutoOffsetReset earliest2 = AutoOffsetReset.earliest();
         final AutoOffsetReset custom1 = AutoOffsetReset.byDuration(Duration.ofSeconds(5));
         final AutoOffsetReset custom2 = AutoOffsetReset.byDuration(Duration.ofSeconds(5));
         final AutoOffsetReset customDifferent = AutoOffsetReset.byDuration(Duration.ofSeconds(10));

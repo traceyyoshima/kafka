@@ -50,9 +50,9 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
     private final AdminApiLookupStrategy<CoordinatorKey> lookupStrategy;
 
     public AlterConsumerGroupOffsetsHandler(
-        String groupId,
-        Map<TopicPartition, OffsetAndMetadata> offsets,
-        LogContext logContext
+            String groupId,
+            Map<TopicPartition, OffsetAndMetadata> offsets,
+            LogContext logContext
     ) {
         this.groupId = CoordinatorKey.byGroupId(groupId);
         this.offsets = offsets;
@@ -71,7 +71,7 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
     }
 
     public static AdminApiFuture.SimpleAdminApiFuture<CoordinatorKey, Map<TopicPartition, Errors>> newFuture(
-        String groupId
+            String groupId
     ) {
         return AdminApiFuture.forKeys(Collections.singleton(CoordinatorKey.byGroupId(groupId)));
     }
@@ -79,43 +79,43 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
     private void validateKeys(Set<CoordinatorKey> groupIds) {
         if (!groupIds.equals(singleton(groupId))) {
             throw new IllegalArgumentException("Received unexpected group ids " + groupIds +
-                " (expected only " + singleton(groupId) + ")");
+                    " (expected only " + singleton(groupId) + ")");
         }
     }
 
     @Override
     public OffsetCommitRequest.Builder buildBatchedRequest(
-        int coordinatorId,
-        Set<CoordinatorKey> groupIds
+            int coordinatorId,
+            Set<CoordinatorKey> groupIds
     ) {
         validateKeys(groupIds);
 
         Map<String, OffsetCommitRequestTopic> offsetData = new HashMap<>();
         offsets.forEach((topicPartition, offsetAndMetadata) -> {
             OffsetCommitRequestTopic topic = offsetData.computeIfAbsent(
-                topicPartition.topic(),
-                key -> new OffsetCommitRequestTopic().setName(topicPartition.topic())
+                    topicPartition.topic(),
+                    key -> new OffsetCommitRequestTopic().setName(topicPartition.topic())
             );
 
             topic.partitions().add(new OffsetCommitRequestPartition()
-                .setCommittedOffset(offsetAndMetadata.offset())
-                .setCommittedLeaderEpoch(offsetAndMetadata.leaderEpoch().orElse(-1))
-                .setCommittedMetadata(offsetAndMetadata.metadata())
-                .setPartitionIndex(topicPartition.partition()));
+                    .setCommittedOffset(offsetAndMetadata.offset())
+                    .setCommittedLeaderEpoch(offsetAndMetadata.leaderEpoch().orElse(-1))
+                    .setCommittedMetadata(offsetAndMetadata.metadata())
+                    .setPartitionIndex(topicPartition.partition()));
         });
 
         OffsetCommitRequestData data = new OffsetCommitRequestData()
-            .setGroupId(groupId.idValue)
-            .setTopics(new ArrayList<>(offsetData.values()));
+                .setGroupId(groupId.idValue)
+                .setTopics(new ArrayList<>(offsetData.values()));
 
         return OffsetCommitRequest.Builder.forTopicNames(data);
     }
 
     @Override
     public ApiResult<CoordinatorKey, Map<TopicPartition, Errors>> handleResponse(
-        Node coordinator,
-        Set<CoordinatorKey> groupIds,
-        AbstractResponse abstractResponse
+            Node coordinator,
+            Set<CoordinatorKey> groupIds,
+            AbstractResponse abstractResponse
     ) {
         validateKeys(groupIds);
 
@@ -131,12 +131,12 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
 
                 if (error != Errors.NONE) {
                     handleError(
-                        groupId,
-                        topicPartition,
-                        error,
-                        partitionResults,
-                        groupsToUnmap,
-                        groupsToRetry
+                            groupId,
+                            topicPartition,
+                            error,
+                            partitionResults,
+                            groupsToUnmap,
+                            groupsToRetry
                     );
                 } else {
                     partitionResults.put(topicPartition, error);
@@ -152,19 +152,19 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
     }
 
     private void handleError(
-        CoordinatorKey groupId,
-        TopicPartition topicPartition,
-        Errors error,
-        Map<TopicPartition, Errors> partitionResults,
-        Set<CoordinatorKey> groupsToUnmap,
-        Set<CoordinatorKey> groupsToRetry
+            CoordinatorKey groupId,
+            TopicPartition topicPartition,
+            Errors error,
+            Map<TopicPartition, Errors> partitionResults,
+            Set<CoordinatorKey> groupsToUnmap,
+            Set<CoordinatorKey> groupsToRetry
     ) {
         switch (error) {
             // If the coordinator is in the middle of loading, or rebalance is in progress, then we just need to retry.
             case COORDINATOR_LOAD_IN_PROGRESS:
             case REBALANCE_IN_PROGRESS:
                 log.debug("OffsetCommit request for group id {} returned error {}. Will retry.",
-                    groupId.idValue, error);
+                        groupId.idValue, error);
                 groupsToRetry.add(groupId);
                 break;
 
@@ -172,7 +172,7 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
             case COORDINATOR_NOT_AVAILABLE:
             case NOT_COORDINATOR:
                 log.debug("OffsetCommit request for group id {} returned error {}. Will rediscover the coordinator and retry.",
-                    groupId.idValue, error);
+                        groupId.idValue, error);
                 groupsToUnmap.add(groupId);
                 break;
 
@@ -181,11 +181,11 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
             case INVALID_COMMIT_OFFSET_SIZE:
             case GROUP_AUTHORIZATION_FAILED:
             case GROUP_ID_NOT_FOUND:
-            // Member level errors.
+                // Member level errors.
             case UNKNOWN_MEMBER_ID:
             case STALE_MEMBER_EPOCH:
                 log.debug("OffsetCommit request for group id {} failed due to error {}.",
-                    groupId.idValue, error);
+                        groupId.idValue, error);
                 partitionResults.put(topicPartition, error);
                 break;
 
@@ -194,14 +194,14 @@ public class AlterConsumerGroupOffsetsHandler extends AdminApiHandler.Batched<Co
             case OFFSET_METADATA_TOO_LARGE:
             case TOPIC_AUTHORIZATION_FAILED:
                 log.debug("OffsetCommit request for group id {} and partition {} failed due" +
-                    " to error {}.", groupId.idValue, topicPartition, error);
+                        " to error {}.", groupId.idValue, topicPartition, error);
                 partitionResults.put(topicPartition, error);
                 break;
 
             // Unexpected errors.
             default:
                 log.error("OffsetCommit request for group id {} and partition {} failed due" +
-                    " to unexpected error {}.", groupId.idValue, topicPartition, error);
+                        " to unexpected error {}.", groupId.idValue, topicPartition, error);
                 partitionResults.put(topicPartition, error);
         }
     }

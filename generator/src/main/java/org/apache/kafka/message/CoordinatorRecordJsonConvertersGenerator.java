@@ -55,8 +55,8 @@ public class CoordinatorRecordJsonConvertersGenerator implements TypeClassGenera
                 CoordinatorRecord record = records.computeIfAbsent(id, __ -> new CoordinatorRecord(id));
                 if (record.key != null) {
                     throw new RuntimeException("Duplicate coordinator record key for type " +
-                        id + ". Original claimant: " + record.key.name() + ". New " +
-                        "claimant: " + spec.name());
+                            id + ". Original claimant: " + record.key.name() + ". New " +
+                            "claimant: " + spec.name());
                 }
                 record.key = spec;
                 break;
@@ -67,8 +67,8 @@ public class CoordinatorRecordJsonConvertersGenerator implements TypeClassGenera
                 CoordinatorRecord record = records.computeIfAbsent(id, __ -> new CoordinatorRecord(id));
                 if (record.value != null) {
                     throw new RuntimeException("Duplicate coordinator record value for type " +
-                        id + ". Original claimant: " + record.key.name() + ". New " +
-                        "claimant: " + spec.name());
+                            id + ". Original claimant: " + record.key.name() + ". New " +
+                            "claimant: " + spec.name());
                 }
                 record.value = spec;
                 break;
@@ -118,7 +118,7 @@ public class CoordinatorRecordJsonConvertersGenerator implements TypeClassGenera
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(\"Unknown record id \"" +
-            " + key.apiKey());%n");
+                " + key.apiKey());%n");
         buffer.decrementIndent();
         buffer.decrementIndent();
         buffer.printf("}%n");
@@ -145,7 +145,7 @@ public class CoordinatorRecordJsonConvertersGenerator implements TypeClassGenera
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(\"Unknown record id \"" +
-            " + value.apiKey());%n");
+                " + value.apiKey());%n");
         buffer.decrementIndent();
         buffer.decrementIndent();
         buffer.printf("}%n");
@@ -172,7 +172,7 @@ public class CoordinatorRecordJsonConvertersGenerator implements TypeClassGenera
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(\"Unknown record id \"" +
-            " + apiKey);%n");
+                " + apiKey);%n");
         buffer.decrementIndent();
         buffer.decrementIndent();
         buffer.printf("}%n");
@@ -199,7 +199,7 @@ public class CoordinatorRecordJsonConvertersGenerator implements TypeClassGenera
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(\"Unknown record id \"" +
-            " + apiKey);%n");
+                " + apiKey);%n");
         buffer.decrementIndent();
         buffer.decrementIndent();
         buffer.printf("}%n");

@@ -53,37 +53,37 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
         super.setUp();
         OFFSETS.clear();
         OFFSETS.put(new TopicPartition(topicOne, partitionOne),
-            new CommittedOffset(
-                offset,
-                metadata,
-                Optional.of((int) leaderEpoch)));
+                new CommittedOffset(
+                        offset,
+                        metadata,
+                        Optional.of((int) leaderEpoch)));
         OFFSETS.put(new TopicPartition(topicTwo, partitionTwo),
-            new CommittedOffset(
-                offset,
-                metadata,
-                Optional.of((int) leaderEpoch)));
+                new CommittedOffset(
+                        offset,
+                        metadata,
+                        Optional.of((int) leaderEpoch)));
 
         String transactionalId = "transactionalId";
         int producerId = 10;
         short producerEpoch = 1;
         TxnOffsetCommitRequestData data = new TxnOffsetCommitRequestData()
-            .setTransactionalId(transactionalId)
-            .setGroupId(groupId)
-            .setProducerId(producerId)
-            .setProducerEpoch(producerEpoch)
-            .setTopics(TxnOffsetCommitRequest.getTopics(OFFSETS));
+                .setTransactionalId(transactionalId)
+                .setGroupId(groupId)
+                .setProducerId(producerId)
+                .setProducerEpoch(producerEpoch)
+                .setTopics(TxnOffsetCommitRequest.getTopics(OFFSETS));
         builder = TxnOffsetCommitRequest.Builder.forTopicNames(data, true);
 
         int generationId = 5;
         TxnOffsetCommitRequestData dataWithGroupMetadata = new TxnOffsetCommitRequestData()
-            .setTransactionalId(transactionalId)
-            .setGroupId(groupId)
-            .setProducerId(producerId)
-            .setProducerEpoch(producerEpoch)
-            .setMemberId(memberId)
-            .setGenerationIdOrMemberEpoch(generationId)
-            .setGroupInstanceId(groupInstanceId)
-            .setTopics(TxnOffsetCommitRequest.getTopics(OFFSETS));
+                .setTransactionalId(transactionalId)
+                .setGroupId(groupId)
+                .setProducerId(producerId)
+                .setProducerEpoch(producerEpoch)
+                .setMemberId(memberId)
+                .setGenerationIdOrMemberEpoch(generationId)
+                .setGroupInstanceId(groupInstanceId)
+                .setTopics(TxnOffsetCommitRequest.getTopics(OFFSETS));
         builderWithGroupMetadata = TxnOffsetCommitRequest.Builder.forTopicNames(dataWithGroupMetadata, true);
     }
 
@@ -91,27 +91,27 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.TXN_OFFSET_COMMIT, toVersion = 5)
     public void testConstructor(short version) {
         var errorsMap = Map.of(
-            new TopicPartition(topicOne, partitionOne), Errors.NOT_COORDINATOR,
-            new TopicPartition(topicTwo, partitionTwo), Errors.NOT_COORDINATOR
+                new TopicPartition(topicOne, partitionOne), Errors.NOT_COORDINATOR,
+                new TopicPartition(topicTwo, partitionTwo), Errors.NOT_COORDINATOR
         );
 
         List<TxnOffsetCommitRequestTopic> expectedTopics = List.of(
-            new TxnOffsetCommitRequestTopic()
-                .setName(topicOne)
-                .setPartitions(List.of(
-                    new TxnOffsetCommitRequestPartition()
-                        .setPartitionIndex(partitionOne)
-                        .setCommittedOffset(offset)
-                        .setCommittedLeaderEpoch(leaderEpoch)
-                        .setCommittedMetadata(metadata))),
-            new TxnOffsetCommitRequestTopic()
-                .setName(topicTwo)
-                .setPartitions(List.of(
-                    new TxnOffsetCommitRequestPartition()
-                        .setPartitionIndex(partitionTwo)
-                        .setCommittedOffset(offset)
-                        .setCommittedLeaderEpoch(leaderEpoch)
-                        .setCommittedMetadata(metadata))));
+                new TxnOffsetCommitRequestTopic()
+                        .setName(topicOne)
+                        .setPartitions(List.of(
+                                new TxnOffsetCommitRequestPartition()
+                                        .setPartitionIndex(partitionOne)
+                                        .setCommittedOffset(offset)
+                                        .setCommittedLeaderEpoch(leaderEpoch)
+                                        .setCommittedMetadata(metadata))),
+                new TxnOffsetCommitRequestTopic()
+                        .setName(topicTwo)
+                        .setPartitions(List.of(
+                                new TxnOffsetCommitRequestPartition()
+                                        .setPartitionIndex(partitionTwo)
+                                        .setCommittedOffset(offset)
+                                        .setCommittedLeaderEpoch(leaderEpoch)
+                                        .setCommittedMetadata(metadata))));
 
         final TxnOffsetCommitRequest request;
         if (version < 3) {
@@ -136,42 +136,42 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
         var topicTwoId = Uuid.randomUuid();
 
         var data = new TxnOffsetCommitRequestData()
-            .setTransactionalId("transactionalId")
-            .setGroupId(groupId)
-            .setProducerId(10L)
-            .setProducerEpoch((short) 1)
-            .setTopics(List.of(
-                new TxnOffsetCommitRequestTopic()
-                    .setTopicId(topicOneId)
-                    .setName(topicOne)
-                    .setPartitions(List.of(
-                        new TxnOffsetCommitRequestPartition()
-                            .setPartitionIndex(partitionOne)
-                            .setCommittedOffset(offset))),
-                new TxnOffsetCommitRequestTopic()
-                    .setTopicId(topicTwoId)
-                    .setName(topicTwo)
-                    .setPartitions(List.of(
-                        new TxnOffsetCommitRequestPartition()
-                            .setPartitionIndex(partitionTwo)
-                            .setCommittedOffset(offset)))));
+                .setTransactionalId("transactionalId")
+                .setGroupId(groupId)
+                .setProducerId(10L)
+                .setProducerEpoch((short) 1)
+                .setTopics(List.of(
+                        new TxnOffsetCommitRequestTopic()
+                                .setTopicId(topicOneId)
+                                .setName(topicOne)
+                                .setPartitions(List.of(
+                                        new TxnOffsetCommitRequestPartition()
+                                                .setPartitionIndex(partitionOne)
+                                                .setCommittedOffset(offset))),
+                        new TxnOffsetCommitRequestTopic()
+                                .setTopicId(topicTwoId)
+                                .setName(topicTwo)
+                                .setPartitions(List.of(
+                                        new TxnOffsetCommitRequestPartition()
+                                                .setPartitionIndex(partitionTwo)
+                                                .setCommittedOffset(offset)))));
 
         var expectedResponseData = new TxnOffsetCommitResponseData()
-            .setTopics(List.of(
-                new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic()
-                    .setTopicId(topicOneId)
-                    .setName(topicOne)
-                    .setPartitions(List.of(
-                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
-                            .setPartitionIndex(partitionOne)
-                            .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code()))),
-                new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic()
-                    .setTopicId(topicTwoId)
-                    .setName(topicTwo)
-                    .setPartitions(List.of(
-                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
-                            .setPartitionIndex(partitionTwo)
-                            .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())))));
+                .setTopics(List.of(
+                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic()
+                                .setTopicId(topicOneId)
+                                .setName(topicOne)
+                                .setPartitions(List.of(
+                                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
+                                                .setPartitionIndex(partitionOne)
+                                                .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code()))),
+                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponseTopic()
+                                .setTopicId(topicTwoId)
+                                .setName(topicTwo)
+                                .setPartitions(List.of(
+                                        new TxnOffsetCommitResponseData.TxnOffsetCommitResponsePartition()
+                                                .setPartitionIndex(partitionTwo)
+                                                .setErrorCode(Errors.UNKNOWN_MEMBER_ID.code())))));
 
         assertEquals(expectedResponseData, TxnOffsetCommitRequest.getErrorResponse(data, Errors.UNKNOWN_MEMBER_ID));
 
@@ -188,8 +188,8 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
             assertDoesNotThrow(() -> builderWithGroupMetadata.build(version));
         } else {
             assertEquals("Broker doesn't support group metadata commit API on version " + version +
-                ", minimum supported request version is 3 which requires brokers to be on version 2.5 or above.",
-                assertThrows(UnsupportedVersionException.class, () -> builderWithGroupMetadata.build(version)).getMessage());
+                            ", minimum supported request version is 3 which requires brokers to be on version 2.5 or above.",
+                    assertThrows(UnsupportedVersionException.class, () -> builderWithGroupMetadata.build(version)).getMessage());
         }
     }
 
@@ -197,24 +197,24 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.TXN_OFFSET_COMMIT)
     public void testForTopicIdsOrNamesWithTopicNameOnly(short version) {
         var data = new TxnOffsetCommitRequestData()
-            .setTransactionalId("tx")
-            .setGroupId(groupId)
-            .setProducerId(1)
-            .setProducerEpoch((short) 0)
-            .setTopics(List.of(
-                new TxnOffsetCommitRequestTopic()
-                    .setName("foo")
-                    .setPartitions(List.of(
-                        new TxnOffsetCommitRequestPartition()
-                            .setPartitionIndex(0)
-                            .setCommittedOffset(0L)))));
+                .setTransactionalId("tx")
+                .setGroupId(groupId)
+                .setProducerId(1)
+                .setProducerEpoch((short) 0)
+                .setTopics(List.of(
+                        new TxnOffsetCommitRequestTopic()
+                                .setName("foo")
+                                .setPartitions(List.of(
+                                        new TxnOffsetCommitRequestPartition()
+                                                .setPartitionIndex(0)
+                                                .setCommittedOffset(0L)))));
 
         if (version >= 6) {
             assertThrows(UnsupportedVersionException.class,
-                () -> TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(data, true, true).build(version));
+                    () -> TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(data, true, true).build(version));
         } else {
             assertDoesNotThrow(
-                () -> TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(data, true, true).build(version));
+                    () -> TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(data, true, true).build(version));
         }
     }
 
@@ -223,32 +223,32 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
     public void testForTopicIdsOrNamesWithTopicIdOnly(short version) {
         var topicId = Uuid.randomUuid();
         var data = new TxnOffsetCommitRequestData()
-            .setTransactionalId("tx")
-            .setGroupId(groupId)
-            .setProducerId(1)
-            .setProducerEpoch((short) 0)
-            .setTopics(List.of(
-                new TxnOffsetCommitRequestTopic()
-                    .setTopicId(topicId)
-                    .setPartitions(List.of(
-                        new TxnOffsetCommitRequestPartition()
-                            .setPartitionIndex(0)
-                            .setCommittedOffset(0L)))));
+                .setTransactionalId("tx")
+                .setGroupId(groupId)
+                .setProducerId(1)
+                .setProducerEpoch((short) 0)
+                .setTopics(List.of(
+                        new TxnOffsetCommitRequestTopic()
+                                .setTopicId(topicId)
+                                .setPartitions(List.of(
+                                        new TxnOffsetCommitRequestPartition()
+                                                .setPartitionIndex(0)
+                                                .setCommittedOffset(0L)))));
 
         if (version >= 6) {
             var request = TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(data, true, true).build(version);
             assertEquals(data, request.data());
         } else {
             assertThrows(UnsupportedVersionException.class,
-                () -> TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(data, true, true).build(version));
+                    () -> TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(data, true, true).build(version));
         }
     }
 
     @Test
     public void testForTopicNamesCapsAtTransactionV1WhenTransactionV2IsDisabled() {
         var builder = TxnOffsetCommitRequest.Builder.forTopicNames(
-            new TxnOffsetCommitRequestData(),
-            false
+                new TxnOffsetCommitRequestData(),
+                false
         );
         assertEquals(TxnOffsetCommitRequest.LAST_STABLE_VERSION_BEFORE_TRANSACTION_V2, builder.latestAllowedVersion());
     }
@@ -256,8 +256,8 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
     @Test
     public void testForTopicNamesCapsAtV5WhenTransactionV2IsEnabled() {
         var builder = TxnOffsetCommitRequest.Builder.forTopicNames(
-            new TxnOffsetCommitRequestData(),
-            true
+                new TxnOffsetCommitRequestData(),
+                true
         );
         assertEquals((short) 5, builder.latestAllowedVersion());
     }
@@ -265,9 +265,9 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
     @Test
     public void testForTopicIdsOrNamesCapsAtTransactionV1WhenTransactionV2IsDisabled() {
         var builder = TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(
-            new TxnOffsetCommitRequestData(),
-            false,
-            true
+                new TxnOffsetCommitRequestData(),
+                false,
+                true
         );
         assertEquals(TxnOffsetCommitRequest.LAST_STABLE_VERSION_BEFORE_TRANSACTION_V2, builder.latestAllowedVersion());
     }
@@ -275,9 +275,9 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
     @Test
     public void testForTopicIdsOrNamesUsesLatestStableVersionWhenUnstableIsDisabled() {
         var builder = TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(
-            new TxnOffsetCommitRequestData(),
-            true,
-            false
+                new TxnOffsetCommitRequestData(),
+                true,
+                false
         );
         assertEquals(ApiKeys.TXN_OFFSET_COMMIT.latestVersion(false), builder.latestAllowedVersion());
     }
@@ -285,9 +285,9 @@ public class TxnOffsetCommitRequestTest extends OffsetCommitRequestTest {
     @Test
     public void testForTopicIdsOrNamesUsesLatestUnstableVersionWhenUnstableIsEnabled() {
         var builder = TxnOffsetCommitRequest.Builder.forTopicIdsOrNames(
-            new TxnOffsetCommitRequestData(),
-            true,
-            true
+                new TxnOffsetCommitRequestData(),
+                true,
+                true
         );
         assertEquals(ApiKeys.TXN_OFFSET_COMMIT.latestVersion(true), builder.latestAllowedVersion());
     }

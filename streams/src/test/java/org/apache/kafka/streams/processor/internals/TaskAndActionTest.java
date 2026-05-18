@@ -72,8 +72,8 @@ class TaskAndActionTest {
     @Test
     public void shouldThrowIfRemoveTaskActionIsCreatedWithNullTaskId() {
         final Exception exception = assertThrows(
-            NullPointerException.class,
-            () -> createRemoveTask(null, new CompletableFuture<>(), StandbyUpdateListener.SuspendReason.MIGRATED)
+                NullPointerException.class,
+                () -> createRemoveTask(null, new CompletableFuture<>(), StandbyUpdateListener.SuspendReason.MIGRATED)
         );
         assertTrue(exception.getMessage().contains("Task ID of task to remove is null!"));
     }
@@ -81,8 +81,8 @@ class TaskAndActionTest {
     @Test
     public void shouldThrowIfRemoveTaskActionIsCreatedWithNullFuture() {
         final Exception exception = assertThrows(
-            NullPointerException.class,
-            () -> createRemoveTask(new TaskId(0, 0), null, StandbyUpdateListener.SuspendReason.MIGRATED)
+                NullPointerException.class,
+                () -> createRemoveTask(new TaskId(0, 0), null, StandbyUpdateListener.SuspendReason.MIGRATED)
         );
         assertTrue(exception.getMessage().contains("Future for task to remove is null!"));
     }

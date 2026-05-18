@@ -189,7 +189,7 @@ import static org.apache.kafka.common.utils.Utils.propsToMap;
  *         }
  *     }
  * }</pre>
- *
+ * <p>
  * Alternatively, you can use {@link #commitSync()} or {@link #commitAsync()} to commit the acknowledgements, but this is
  * slightly less efficient because there is an additional request sent to Kafka.
  * <pre>
@@ -239,7 +239,7 @@ import static org.apache.kafka.common.utils.Utils.propsToMap;
  *         consumer.commitSync();
  *     }
  * }</pre>
- *
+ * <p>
  * Each record processed is separately acknowledged using a call to {@link #acknowledge(ConsumerRecord, AcknowledgeType)}.
  * The {@link AcknowledgeType} argument indicates whether the record was processed successfully or not. In this case,
  * the bad records are rejected meaning that they’re not eligible for further delivery attempts. For a permanent error
@@ -373,7 +373,7 @@ import static org.apache.kafka.common.utils.Utils.propsToMap;
  *     }
  * }
  * }</pre>
- *
+ * <p>
  * Then in a separate thread, the consumer can be shutdown by setting the closed flag and waking up the consumer.
  * <pre>
  * {@code
@@ -433,11 +433,11 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * <p>
      * Note: after creating a {@code KafkaShareConsumer} you must always {@link #close()} it to avoid resource leaks.
      *
-     * @param properties The consumer configuration properties
-     * @param keyDeserializer The deserializer for key that implements {@link Deserializer}. The configure() method
-     *            won't be called in the consumer when the deserializer is passed in directly.
+     * @param properties        The consumer configuration properties
+     * @param keyDeserializer   The deserializer for key that implements {@link Deserializer}. The configure() method
+     *                          won't be called in the consumer when the deserializer is passed in directly.
      * @param valueDeserializer The deserializer for value that implements {@link Deserializer}. The configure() method
-     *            won't be called in the consumer when the deserializer is passed in directly.
+     *                          won't be called in the consumer when the deserializer is passed in directly.
      */
     public KafkaShareConsumer(Properties properties,
                               Deserializer<K> keyDeserializer,
@@ -452,11 +452,11 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * <p>
      * Note: after creating a {@code KafkaShareConsumer} you must always {@link #close()} it to avoid resource leaks.
      *
-     * @param configs The consumer configs
-     * @param keyDeserializer The deserializer for key that implements {@link Deserializer}. The configure() method
-     *            won't be called in the consumer when the deserializer is passed in directly.
+     * @param configs           The consumer configs
+     * @param keyDeserializer   The deserializer for key that implements {@link Deserializer}. The configure() method
+     *                          won't be called in the consumer when the deserializer is passed in directly.
      * @param valueDeserializer The deserializer for value that implements {@link Deserializer}. The configure() method
-     *            won't be called in the consumer when the deserializer is passed in directly.
+     *                          won't be called in the consumer when the deserializer is passed in directly.
      */
     public KafkaShareConsumer(Map<String, Object> configs,
                               Deserializer<K> keyDeserializer,
@@ -466,8 +466,8 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
     }
 
     KafkaShareConsumer(ShareConsumerConfig config,
-                              Deserializer<K> keyDeserializer,
-                              Deserializer<V> valueDeserializer) {
+                       Deserializer<K> keyDeserializer,
+                       Deserializer<V> valueDeserializer) {
         delegate = CREATOR.create(config, keyDeserializer, valueDeserializer);
     }
 
@@ -516,9 +516,8 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * </ul>
      *
      * @param topics The list of topics to subscribe to
-     *
      * @throws IllegalArgumentException if topics is null or contains null or empty elements
-     * @throws KafkaException for any other unrecoverable errors
+     * @throws KafkaException           for any other unrecoverable errors
      */
     @Override
     public void subscribe(Collection<String> topics) {
@@ -544,21 +543,19 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * If the timeout expires, an empty record set will be returned.
      *
      * @param timeout The maximum time to block (must not be greater than {@link Long#MAX_VALUE} milliseconds)
-     *
      * @return map of topic to records
-     *
-     * @throws AuthenticationException if authentication fails. See the exception for more details
-     * @throws AuthorizationException if caller lacks Read access to any of the subscribed
-     *             topics or to the share group. See the exception for more details
+     * @throws AuthenticationException  if authentication fails. See the exception for more details
+     * @throws AuthorizationException   if caller lacks Read access to any of the subscribed
+     *                                  topics or to the share group. See the exception for more details
      * @throws IllegalArgumentException if the timeout value is negative
-     * @throws IllegalStateException if the consumer is not subscribed to any topics, or it is using
-     *             explicit acknowledgement and has not acknowledged all records previously delivered
-     * @throws ArithmeticException if the timeout is greater than {@link Long#MAX_VALUE} milliseconds.
-     * @throws InvalidTopicException if the current subscription contains any invalid
-     *             topic (per {@link org.apache.kafka.common.internals.Topic#validate(String)})
-     * @throws WakeupException if {@link #wakeup()} is called before or while this method is called
-     * @throws InterruptException if the calling thread is interrupted before or while this method is called
-     * @throws KafkaException for any other unrecoverable errors
+     * @throws IllegalStateException    if the consumer is not subscribed to any topics, or it is using
+     *                                  explicit acknowledgement and has not acknowledged all records previously delivered
+     * @throws ArithmeticException      if the timeout is greater than {@link Long#MAX_VALUE} milliseconds.
+     * @throws InvalidTopicException    if the current subscription contains any invalid
+     *                                  topic (per {@link org.apache.kafka.common.internals.Topic#validate(String)})
+     * @throws WakeupException          if {@link #wakeup()} is called before or while this method is called
+     * @throws InterruptException       if the calling thread is interrupted before or while this method is called
+     * @throws KafkaException           for any other unrecoverable errors
      */
     @Override
     public ConsumerRecords<K, V> poll(Duration timeout) {
@@ -572,7 +569,6 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * <p>This method can only be used if the consumer is using <b>explicit acknowledgement</b>.
      *
      * @param record The record to acknowledge
-     *
      * @throws IllegalStateException if the record is not waiting to be acknowledged, or the consumer is not using
      *                               explicit acknowledgement
      */
@@ -588,8 +584,7 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * <p>This method can only be used if the consumer is using <b>explicit acknowledgement</b>.
      *
      * @param record The record to acknowledge
-     * @param type The acknowledge type which indicates whether it was processed successfully
-     *
+     * @param type   The acknowledge type which indicates whether it was processed successfully
      * @throws IllegalStateException if the record is not waiting to be acknowledged, or the consumer is not using
      *                               explicit acknowledgement
      */
@@ -606,11 +601,10 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * <p>It provides an alternative to {@link #acknowledge(ConsumerRecord, AcknowledgeType)} for
      * situations where the {@link ConsumerRecord} is not available, such as when the record could not be deserialized.
      *
-     * @param topic The topic of the record to acknowledge
+     * @param topic     The topic of the record to acknowledge
      * @param partition The partition of the record to acknowledge
-     * @param offset The offset of the record to acknowledge
-     * @param type The acknowledge type which indicates whether it was processed successfully
-     *
+     * @param offset    The offset of the record to acknowledge
+     * @param type      The acknowledge type which indicates whether it was processed successfully
      * @throws IllegalStateException if the record is not waiting to be acknowledged, or the consumer is not using
      *                               explicit acknowledgement
      */
@@ -632,11 +626,10 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * expires.
      *
      * @return A map of the results for each topic-partition for which delivery was acknowledged.
-     *         If the acknowledgement failed for a topic-partition, an exception is present.
-     *
-     * @throws WakeupException if {@link #wakeup()} is called before or while this method is called
+     * If the acknowledgement failed for a topic-partition, an exception is present.
+     * @throws WakeupException    if {@link #wakeup()} is called before or while this method is called
      * @throws InterruptException if the thread is interrupted while blocked
-     * @throws KafkaException for any other unrecoverable errors
+     * @throws KafkaException     for any other unrecoverable errors
      */
     @Override
     public Map<TopicIdPartition, Optional<KafkaException>> commitSync() {
@@ -654,14 +647,12 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * encountered (in which case it is thrown to the caller), or the timeout expires.
      *
      * @param timeout The maximum amount of time to await completion of the acknowledgement
-     *
      * @return A map of the results for each topic-partition for which delivery was acknowledged.
-     *         If the acknowledgement failed for a topic-partition, an exception is present.
-     *
+     * If the acknowledgement failed for a topic-partition, an exception is present.
      * @throws IllegalArgumentException if the {@code timeout} is negative
-     * @throws WakeupException if {@link #wakeup()} is called before or while this method is called
-     * @throws InterruptException if the thread is interrupted while blocked
-     * @throws KafkaException for any other unrecoverable errors
+     * @throws WakeupException          if {@link #wakeup()} is called before or while this method is called
+     * @throws InterruptException       if the thread is interrupted while blocked
+     * @throws KafkaException           for any other unrecoverable errors
      */
     @Override
     public Map<TopicIdPartition, Optional<KafkaException>> commitSync(Duration timeout) {
@@ -707,16 +698,14 @@ public class KafkaShareConsumer<K, V> implements ShareConsumer<K, V> {
      * @param timeout The maximum time to wait for consumer client to determine its client instance ID.
      *                The value must be non-negative. Specifying a timeout of zero means do not
      *                wait for the initial request to complete if it hasn't already.
-     *
      * @return The client's assigned instance id used for metrics collection.
-     *
      * @throws IllegalArgumentException if the {@code timeout} is negative
-     * @throws IllegalStateException if telemetry is not enabled
-     * @throws WakeupException if {@link #wakeup()} is called before or while this method is called
-     * @throws InterruptException if the thread is interrupted while blocked
-     * @throws KafkaException if an unexpected error occurs while trying to determine the client
-     *                        instance ID, though this error does not necessarily imply the
-     *                        consumer client is otherwise unusable
+     * @throws IllegalStateException    if telemetry is not enabled
+     * @throws WakeupException          if {@link #wakeup()} is called before or while this method is called
+     * @throws InterruptException       if the thread is interrupted while blocked
+     * @throws KafkaException           if an unexpected error occurs while trying to determine the client
+     *                                  instance ID, though this error does not necessarily imply the
+     *                                  consumer client is otherwise unusable
      */
     @Override
     public Uuid clientInstanceId(Duration timeout) {

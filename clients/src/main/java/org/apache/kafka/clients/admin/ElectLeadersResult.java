@@ -29,7 +29,7 @@ import java.util.Set;
 
 /**
  * The result of {@link Admin#electLeaders(ElectionType, Set, ElectLeadersOptions)}
- *
+ * <p>
  * The API of this class is evolving, see {@link Admin} for details.
  */
 public final class ElectLeadersResult {

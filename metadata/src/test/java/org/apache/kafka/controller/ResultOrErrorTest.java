@@ -35,12 +35,12 @@ public class ResultOrErrorTest {
     @Test
     public void testError() {
         ResultOrError<Integer> resultOrError =
-            new ResultOrError<>(Errors.INVALID_REQUEST, "missing foobar");
+                new ResultOrError<>(Errors.INVALID_REQUEST, "missing foobar");
         assertTrue(resultOrError.isError());
         assertFalse(resultOrError.isResult());
         assertNull(resultOrError.result());
         assertEquals(new ApiError(Errors.INVALID_REQUEST, "missing foobar"),
-            resultOrError.error());
+                resultOrError.error());
     }
 
     @Test

@@ -33,10 +33,10 @@ public interface RaftLog extends AutoCloseable {
      * exception.
      *
      * @param records records batches to append
-     * @param epoch the epoch of the replica
+     * @param epoch   the epoch of the replica
      * @return the metadata information of the appended batch
      * @throws IllegalArgumentException if the record set is empty
-     * @throws RuntimeException if the batch base offset doesn't match the log end offset
+     * @throws RuntimeException         if the batch base offset doesn't match the log end offset
      */
     LogAppendInfo appendAsLeader(Records records, int epoch);
 
@@ -44,15 +44,15 @@ public interface RaftLog extends AutoCloseable {
      * Append a set of records that were replicated from the leader. The main
      * difference from appendAsLeader is that we do not need to assign the epoch
      * or do additional validation.
-     *
+     * <p>
      * The log will append record batches up to and including batches that have a partition
      * leader epoch less than or equal to the passed epoch.
      *
      * @param records records batches to append
-     * @param epoch the epoch of the replica
+     * @param epoch   the epoch of the replica
      * @return the metadata information of the appended batch
      * @throws IllegalArgumentException if the record set is empty
-     * @throws RuntimeException if the batch base offset doesn't match the log end offset
+     * @throws RuntimeException         if the batch base offset doesn't match the log end offset
      */
     LogAppendInfo appendAsFollower(Records records, int epoch);
 
@@ -60,8 +60,8 @@ public interface RaftLog extends AutoCloseable {
      * Read a set of records from startOffsetInclusive. Always returns at least one records batch if one exists.
      *
      * @param startOffsetInclusive Records later and including this offset are returned.
-     * @param isolation The fetch isolation, which controls the maximum offset we are allowed to read.
-     * @param maxTotalBatchBytes The maximum number of bytes to read if there are more than one record batch.
+     * @param isolation            The fetch isolation, which controls the maximum offset we are allowed to read.
+     * @param maxTotalBatchBytes   The maximum number of bytes to read if there are more than one record batch.
      * @return Records and start offset information wrapped in a LogFetchInfo
      */
     LogFetchInfo read(long startOffsetInclusive, Isolation isolation, int maxTotalBatchBytes);
@@ -78,20 +78,20 @@ public interface RaftLog extends AutoCloseable {
 
     /**
      * Validate the given offset and epoch against the log and oldest snapshot.
-     *
+     * <p>
      * Returns the largest valid offset and epoch given `offset` and `epoch` as the upper bound.
      * This can result in three possible values returned:
-     *
+     * <p>
      * 1. ValidOffsetAndEpoch.valid if the given offset and epoch is valid in the log.
-     *
+     * <p>
      * 2. ValidOffsetAndEpoch.diverging if the given offset and epoch is not valid; and the
      * largest valid offset and epoch is in the log.
-     *
+     * <p>
      * 3. ValidOffsetAndEpoch.snapshot if the given offset and epoch is not valid; and the largest
      * valid offset and epoch is less than the oldest snapshot.
      *
      * @param offset the offset to validate
-     * @param epoch the epoch of the record at offset - 1
+     * @param epoch  the epoch of the record at offset - 1
      * @return the largest valid offset and epoch
      */
     default ValidOffsetAndEpoch validateOffsetAndEpoch(long offset, int epoch) {
@@ -101,9 +101,9 @@ public interface RaftLog extends AutoCloseable {
 
         Optional<OffsetAndEpoch> earliestSnapshotId = earliestSnapshotId();
         if (earliestSnapshotId.isPresent() &&
-            ((offset < startOffset()) ||
-             (offset == startOffset() && epoch != earliestSnapshotId.get().epoch()) ||
-             (epoch < earliestSnapshotId.get().epoch()))
+                ((offset < startOffset()) ||
+                        (offset == startOffset() && epoch != earliestSnapshotId.get().epoch()) ||
+                        (epoch < earliestSnapshotId.get().epoch()))
         ) {
             /* Send a snapshot if the leader has a snapshot at the log start offset and
              * 1. the fetch offset is less than the log start offset or
@@ -112,10 +112,10 @@ public interface RaftLog extends AutoCloseable {
              * 3. last fetch epoch is less than the oldest snapshot's epoch
              */
             OffsetAndEpoch latestSnapshotId = latestSnapshotId().orElseThrow(() -> new IllegalStateException(
-                String.format(
-                    "Log start offset (%d) is greater than zero but latest snapshot was not found",
-                    startOffset()
-                )
+                    String.format(
+                            "Log start offset (%d) is greater than zero but latest snapshot was not found",
+                            startOffset()
+                    )
             ));
 
             return ValidOffsetAndEpoch.snapshot(latestSnapshotId);
@@ -171,7 +171,7 @@ public interface RaftLog extends AutoCloseable {
 
     /**
      * Fully truncate the log if the latest snapshot is later than the log end offset.
-     *
+     * <p>
      * In general this operation empties the log and sets the log start offset, high watermark and
      * log end offset to the latest snapshot's end offset.
      *
@@ -190,7 +190,7 @@ public interface RaftLog extends AutoCloseable {
 
     /**
      * Delete all snapshots prior to the given snapshot
-     *
+     * <p>
      * The replicated log's start offset can be increased and older segments can be deleted when
      * there is a snapshot greater than the current log start offset.
      */
@@ -244,12 +244,12 @@ public interface RaftLog extends AutoCloseable {
 
     /**
      * Create a writable snapshot for the given snapshot id.
-     *
+     * <p>
      * See {@link RawSnapshotWriter} for details on how to use this object. The caller of
      * this method is responsible for invoking {@link RawSnapshotWriter#close()}. If a
      * snapshot already exists or it is less than log start offset then return an
      * {@link Optional#empty()}.
-     *
+     * <p>
      * The snapshot id will be validated against the existing snapshots and the log. The snapshot id
      * must not already exist, it must be greater than the log start offset, it must be less than
      * the high-watermark and it must exist in the log.
@@ -257,20 +257,20 @@ public interface RaftLog extends AutoCloseable {
      * @param snapshotId the end offset and epoch that identifies the snapshot
      * @return a writable snapshot
      * @throws IllegalArgumentException if the snapshot id is greater than the high-watermark or not
-     *         a valid epoch and offset in the log
+     *                                  a valid epoch and offset in the log
      */
     Optional<RawSnapshotWriter> createNewSnapshot(OffsetAndEpoch snapshotId);
 
     /**
      * Create a writable snapshot for the given snapshot id.
-     *
+     * <p>
      * See {@link RawSnapshotWriter} for details on how to use this object. The caller of
      * this method is responsible for invoking {@link RawSnapshotWriter#close()}. If a
      * snapshot already exists then return an {@link Optional#empty()}.
-     *
+     * <p>
      * The snapshot id will not be validated against the log. The snapshot id is not checked against
      * the log start offset, the high-watermark or against existing epochs and offsets in the log.
-     *
+     * <p>
      * This is useful when creating snapshots from a trusted source like the quorum leader.
      *
      * @param snapshotId the end offset and epoch that identifies the snapshot
@@ -280,14 +280,14 @@ public interface RaftLog extends AutoCloseable {
 
     /**
      * Opens a readable snapshot for the given snapshot id.
-     *
+     * <p>
      * Returns an Optional with a readable snapshot, if the snapshot exists, otherwise
      * returns an empty Optional. See {@link RawSnapshotReader} for details on how to
      * use this object.
      *
      * @param snapshotId the end offset and epoch that identifies the snapshot
      * @return an Optional with a readable snapshot, if the snapshot exists, otherwise
-     *         returns an empty Optional
+     * returns an empty Optional
      */
     Optional<RawSnapshotReader> readSnapshot(OffsetAndEpoch snapshotId);
 
@@ -295,26 +295,26 @@ public interface RaftLog extends AutoCloseable {
      * Returns the latest readable snapshot if one exists.
      *
      * @return an Optional with the latest readable snapshot, if one exists, otherwise
-     *         returns an empty Optional
+     * returns an empty Optional
      */
     Optional<RawSnapshotReader> latestSnapshot();
 
-     /**
-      * Returns the latest snapshot id if one exists.
-      *
-      * @return an Optional snapshot id of the latest snapshot if one exists, otherwise returns an
-      *         empty Optional
-      */
+    /**
+     * Returns the latest snapshot id if one exists.
+     *
+     * @return an Optional snapshot id of the latest snapshot if one exists, otherwise returns an
+     * empty Optional
+     */
     Optional<OffsetAndEpoch> latestSnapshotId();
 
     /**
      * Returns the snapshot id at the log start offset.
-     *
+     * <p>
      * If the log start offset is nonzero then it is expected that there is a snapshot with an end
      * offset equal to the start offset.
      *
      * @return an Optional snapshot id at the log start offset if nonzero, otherwise returns an empty
-     *         Optional
+     * Optional
      */
     Optional<OffsetAndEpoch> earliestSnapshotId();
 
@@ -323,5 +323,6 @@ public interface RaftLog extends AutoCloseable {
      */
     void onSnapshotFrozen(OffsetAndEpoch snapshotId);
 
-    default void close() {}
+    default void close() {
+    }
 }

@@ -104,31 +104,32 @@ public class ReplicaManagerBuilder {
         if (metadataCache == null) throw new IllegalStateException("You must set metadataCache");
         if (logDirFailureChannel == null) throw new IllegalStateException("You must set logDirFailureChannel");
         if (alterPartitionManager == null) throw new IllegalStateException("You must set alterIsrManager");
-        if (brokerTopicStats == null) brokerTopicStats = new BrokerTopicStats(config.remoteLogManagerConfig().isRemoteStorageSystemEnabled());
+        if (brokerTopicStats == null)
+            brokerTopicStats = new BrokerTopicStats(config.remoteLogManagerConfig().isRemoteStorageSystemEnabled());
         // Initialize metrics in the end just before passing it to ReplicaManager to ensure ReplicaManager closes the
         // metrics correctly. There might be a resource leak if it is initialized and an exception occurs between
         // its initialization and creation of ReplicaManager.
         if (metrics == null) metrics = new Metrics();
         return new ReplicaManager(config,
-                             metrics,
-                             time,
-                             scheduler,
-                             logManager,
-                             Option.empty(),
-                             quotaManagers,
-                             metadataCache,
-                             logDirFailureChannel,
-                             alterPartitionManager,
-                             brokerTopicStats,
-                             Option.empty(),
-                             Option.empty(),
-                             Option.empty(),
-                             Option.empty(),
-                             Option.empty(),
-                             Option.empty(),
-                             () ->  -1L,
-                             Option.empty(),
-                             DirectoryEventHandler.NOOP,
-                             new DelayedActionQueue());
+                metrics,
+                time,
+                scheduler,
+                logManager,
+                Option.empty(),
+                quotaManagers,
+                metadataCache,
+                logDirFailureChannel,
+                alterPartitionManager,
+                brokerTopicStats,
+                Option.empty(),
+                Option.empty(),
+                Option.empty(),
+                Option.empty(),
+                Option.empty(),
+                Option.empty(),
+                () -> -1L,
+                Option.empty(),
+                DirectoryEventHandler.NOOP,
+                new DelayedActionQueue());
     }
 }

@@ -30,6 +30,7 @@ public class AllowedPaths {
 
     /**
      * Constructs AllowedPaths with a list of Paths retrieved from {@code configValue}.
+     *
      * @param configValue {@code allowed.paths} config value which is a string containing comma separated list of paths
      * @throws ConfigException if any of the given paths is not absolute or does not exist.
      */
@@ -62,6 +63,7 @@ public class AllowedPaths {
     /**
      * Checks if the given {@code path} resides in the configured {@code allowed.paths}.
      * If {@code allowed.paths} is not configured, the given Path is returned as allowed.
+     *
      * @param path the Path to check if allowed
      * @return Path that can be accessed or null if the given Path does not reside in the configured {@code allowed.paths}.
      */

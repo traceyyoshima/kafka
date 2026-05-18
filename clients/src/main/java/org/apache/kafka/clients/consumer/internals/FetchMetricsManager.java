@@ -117,10 +117,10 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
         maybeRecordDeprecatedBytesFetched(name, topic, bytes);
 
         Sensor bytesFetched = new SensorBuilder(metrics, name, () -> Map.of("topic", topic))
-            .withAvg(metricsRegistry.topicFetchSizeAvg)
-            .withMax(metricsRegistry.topicFetchSizeMax)
-            .withMeter(metricsRegistry.topicBytesConsumedRate, metricsRegistry.topicBytesConsumedTotal)
-            .build();
+                .withAvg(metricsRegistry.topicFetchSizeAvg)
+                .withMax(metricsRegistry.topicFetchSizeMax)
+                .withMeter(metricsRegistry.topicBytesConsumedRate, metricsRegistry.topicBytesConsumedTotal)
+                .build();
         bytesFetched.record(bytes);
     }
 
@@ -129,9 +129,9 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
         maybeRecordDeprecatedRecordsFetched(name, topic, records);
 
         Sensor recordsFetched = new SensorBuilder(metrics, name, () -> Map.of("topic", topic))
-            .withAvg(metricsRegistry.topicRecordsPerRequestAvg)
-            .withMeter(metricsRegistry.topicRecordsConsumedRate, metricsRegistry.topicRecordsConsumedTotal)
-            .build();
+                .withAvg(metricsRegistry.topicRecordsPerRequestAvg)
+                .withMeter(metricsRegistry.topicRecordsConsumedRate, metricsRegistry.topicRecordsConsumedTotal)
+                .build();
         recordsFetched.record(records);
     }
 
@@ -142,10 +142,10 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
         maybeRecordDeprecatedPartitionLag(name, tp, lag);
 
         Sensor recordsLag = new SensorBuilder(metrics, name, () -> mkMap(mkEntry("topic", tp.topic()), mkEntry("partition", String.valueOf(tp.partition()))))
-            .withValue(metricsRegistry.partitionRecordsLag)
-            .withMax(metricsRegistry.partitionRecordsLagMax)
-            .withAvg(metricsRegistry.partitionRecordsLagAvg)
-            .build();
+                .withValue(metricsRegistry.partitionRecordsLag)
+                .withMax(metricsRegistry.partitionRecordsLagMax)
+                .withAvg(metricsRegistry.partitionRecordsLagAvg)
+                .build();
 
         recordsLag.record(lag);
     }
@@ -157,10 +157,10 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
         maybeRecordDeprecatedPartitionLead(name, tp, lead);
 
         Sensor recordsLead = new SensorBuilder(metrics, name, () -> mkMap(mkEntry("topic", tp.topic()), mkEntry("partition", String.valueOf(tp.partition()))))
-            .withValue(metricsRegistry.partitionRecordsLead)
-            .withMin(metricsRegistry.partitionRecordsLeadMin)
-            .withAvg(metricsRegistry.partitionRecordsLeadAvg)
-            .build();
+                .withValue(metricsRegistry.partitionRecordsLead)
+                .withMin(metricsRegistry.partitionRecordsLeadMin)
+                .withAvg(metricsRegistry.partitionRecordsLeadAvg)
+                .build();
 
         recordsLead.record(lead);
     }
@@ -196,9 +196,9 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
 
                     MetricName metricName = partitionPreferredReadReplicaMetricName(tp);
                     metrics.addMetricIfAbsent(
-                        metricName,
-                        null,
-                        (Gauge<Integer>) (config, now) -> subscription.preferredReadReplica(tp, 0L).orElse(-1)
+                            metricName,
+                            null,
+                            (Gauge<Integer>) (config, now) -> subscription.preferredReadReplica(tp, 0L).orElse(-1)
                     );
                 }
             }
@@ -212,10 +212,10 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
     private void maybeRecordDeprecatedBytesFetched(String name, String topic, int bytes) {
         if (shouldReportDeprecatedMetric(topic)) {
             Sensor deprecatedBytesFetched = new SensorBuilder(metrics, deprecatedMetricName(name), () -> topicTags(topic))
-                .withAvg(metricsRegistry.topicFetchSizeAvg)
-                .withMax(metricsRegistry.topicFetchSizeMax)
-                .withMeter(metricsRegistry.topicBytesConsumedRate, metricsRegistry.topicBytesConsumedTotal)
-                .build();
+                    .withAvg(metricsRegistry.topicFetchSizeAvg)
+                    .withMax(metricsRegistry.topicFetchSizeMax)
+                    .withMeter(metricsRegistry.topicBytesConsumedRate, metricsRegistry.topicBytesConsumedTotal)
+                    .build();
             deprecatedBytesFetched.record(bytes);
         }
     }
@@ -224,9 +224,9 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
     private void maybeRecordDeprecatedRecordsFetched(String name, String topic, int records) {
         if (shouldReportDeprecatedMetric(topic)) {
             Sensor deprecatedRecordsFetched = new SensorBuilder(metrics, deprecatedMetricName(name), () -> topicTags(topic))
-                .withAvg(metricsRegistry.topicRecordsPerRequestAvg)
-                .withMeter(metricsRegistry.topicRecordsConsumedRate, metricsRegistry.topicRecordsConsumedTotal)
-                .build();
+                    .withAvg(metricsRegistry.topicRecordsPerRequestAvg)
+                    .withMeter(metricsRegistry.topicRecordsConsumedRate, metricsRegistry.topicRecordsConsumedTotal)
+                    .build();
             deprecatedRecordsFetched.record(records);
         }
     }
@@ -235,10 +235,10 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
     private void maybeRecordDeprecatedPartitionLag(String name, TopicPartition tp, long lag) {
         if (shouldReportDeprecatedMetric(tp.topic())) {
             Sensor deprecatedRecordsLag = new SensorBuilder(metrics, deprecatedMetricName(name), () -> topicPartitionTags(tp))
-                .withValue(metricsRegistry.partitionRecordsLag)
-                .withMax(metricsRegistry.partitionRecordsLagMax)
-                .withAvg(metricsRegistry.partitionRecordsLagAvg)
-                .build();
+                    .withValue(metricsRegistry.partitionRecordsLag)
+                    .withMax(metricsRegistry.partitionRecordsLagMax)
+                    .withAvg(metricsRegistry.partitionRecordsLagAvg)
+                    .build();
 
             deprecatedRecordsLag.record(lag);
         }
@@ -248,10 +248,10 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
     private void maybeRecordDeprecatedPartitionLead(String name, TopicPartition tp, double lead) {
         if (shouldReportDeprecatedMetric(tp.topic())) {
             Sensor deprecatedRecordsLead = new SensorBuilder(metrics, deprecatedMetricName(name), () -> topicPartitionTags(tp))
-                .withValue(metricsRegistry.partitionRecordsLead)
-                .withMin(metricsRegistry.partitionRecordsLeadMin)
-                .withAvg(metricsRegistry.partitionRecordsLeadAvg)
-                .build();
+                    .withValue(metricsRegistry.partitionRecordsLead)
+                    .withMin(metricsRegistry.partitionRecordsLeadMin)
+                    .withAvg(metricsRegistry.partitionRecordsLeadAvg)
+                    .build();
 
             deprecatedRecordsLead.record(lead);
         }
@@ -262,9 +262,9 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
         if (shouldReportDeprecatedMetric(tp.topic())) {
             MetricName metricName = deprecatedPartitionPreferredReadReplicaMetricName(tp);
             metrics.addMetricIfAbsent(
-                metricName,
-                null,
-                (Gauge<Integer>) (config, now) -> subscription.preferredReadReplica(tp, 0L).orElse(-1)
+                    metricName,
+                    null,
+                    (Gauge<Integer>) (config, now) -> subscription.preferredReadReplica(tp, 0L).orElse(-1)
             );
         }
     }
@@ -312,7 +312,7 @@ public class FetchMetricsManager extends AbstractConsumerMetricsManager {
     @Deprecated
     static Map<String, String> topicPartitionTags(TopicPartition tp) {
         return mkMap(mkEntry("topic", tp.topic().replace('.', '_')),
-            mkEntry("partition", String.valueOf(tp.partition())));
+                mkEntry("partition", String.valueOf(tp.partition())));
     }
 
 }

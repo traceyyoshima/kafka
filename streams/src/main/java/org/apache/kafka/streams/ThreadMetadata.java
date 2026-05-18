@@ -49,7 +49,6 @@ public interface ThreadMetadata {
      * Metadata of the standby tasks assigned to the stream thread.
      *
      * @return metadata of the standby tasks
-
      */
     Set<TaskMetadata> standbyTasks();
 

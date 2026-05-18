@@ -21,9 +21,9 @@ package org.apache.kafka.common.telemetry.internals;
  * them to the given {@link MetricsEmitter}. For example, a given collector might be used to collect
  * system metrics, Kafka metrics, JVM metrics, or other metrics that are to be captured, exposed,
  * and/or forwarded.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * In general, a {@code MetricsCollector} implementation is closely managed by another entity
  * (that entity is colloquially referred to as the "telemetry reporter") that will be in
  * charge of its lifecycle via the {@link #start()} and {@link #stop()} methods. The telemetry
@@ -31,9 +31,9 @@ package org.apache.kafka.common.telemetry.internals;
  * before calls to {@link #collect(MetricsEmitter)} are made. Implementations of {@code MetricsCollector}
  * should allow for the corner-case that {@link #stop()} is called before {@link #start()},
  * which might happen in the case of error on startup of the telemetry reporter.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Regarding threading, the {@link #start()} and {@link #stop()} methods may be called from
  * different threads and so proper care should be taken by implementations of the
  * {@code MetricsCollector} interface to be thread-safe. However, the telemetry reporter must
@@ -51,7 +51,7 @@ public interface MetricsCollector {
      * them to the {@code metricsEmitter}, or they may be forwarded as they are collected.
      *
      * <p>
-     *
+     * <p>
      * In general, the implementation should try not to presume the characteristics of the
      * {@link MetricsEmitter} so as to keep a loose coupling.
      *
@@ -73,7 +73,7 @@ public interface MetricsCollector {
      * This method should ideally be invoked only once by the telemetry reporter.
      *
      * <p>
-     *
+     * <p>
      * Calls to {@link #collect(MetricsEmitter)} once this method has been invoked should be expected to
      * fail by the telemetry reporter; it should take caution to handle that case.
      */

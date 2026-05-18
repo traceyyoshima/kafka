@@ -48,25 +48,25 @@ import java.util.stream.Collectors;
  * The `KafkaAdminClient`'s internal `Call` primitive is not a good fit for multi-stage
  * request workflows such as we see with the group coordinator APIs or any request which
  * needs to be sent to a partition leader. Typically these APIs have two concrete stages:
- *
+ * <p>
  * 1. Lookup: Find the broker that can fulfill the request (e.g. partition leader or group
- *            coordinator)
+ * coordinator)
  * 2. Fulfillment: Send the request to the broker found in the first step
- *
+ * <p>
  * This is complicated by the fact that `Admin` APIs are typically batched, which
  * means the Lookup stage may result in a set of brokers. For example, take a `ListOffsets`
  * request for a set of topic partitions. In the Lookup stage, we will find the partition
  * leaders for this set of partitions; in the Fulfillment stage, we will group together
  * partition according to the IDs of the discovered leaders.
- *
+ * <p>
  * Additionally, the flow between these two stages is bi-directional. We may find after
  * sending a `ListOffsets` request to an expected leader that there was a leader change.
  * This would result in a topic partition being sent back to the Lookup stage.
- *
+ * <p>
  * Managing this complexity by chaining together `Call` implementations is challenging
  * and messy, so instead we use this class to do the bookkeeping. It handles both the
  * batching aspect as well as the transitions between the Lookup and Fulfillment stages.
- *
+ * <p>
  * Note that the interpretation of the `retries` configuration becomes ambiguous
  * for this kind of pipeline. We could treat it as an overall limit on the number
  * of requests that can be sent, but that is not very useful because each pipeline
@@ -94,21 +94,21 @@ public class AdminApiDriver<K, V> {
     private final Map<ApiRequestScope, RequestState> requestStates = new HashMap<>();
 
     public AdminApiDriver(
-        AdminApiHandler<K, V> handler,
-        AdminApiFuture<K, V> future,
-        long deadlineMs,
-        long retryBackoffMs,
-        long retryBackoffMaxMs,
-        LogContext logContext
+            AdminApiHandler<K, V> handler,
+            AdminApiFuture<K, V> future,
+            long deadlineMs,
+            long retryBackoffMs,
+            long retryBackoffMaxMs,
+            LogContext logContext
     ) {
         this.handler = handler;
         this.future = future;
         this.deadlineMs = deadlineMs;
         this.retryBackoff = new ExponentialBackoff(
-            retryBackoffMs,
-            CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
-            retryBackoffMaxMs,
-            CommonClientConfigs.RETRY_BACKOFF_JITTER);
+                retryBackoffMs,
+                CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
+                retryBackoffMaxMs,
+                CommonClientConfigs.RETRY_BACKOFF_JITTER);
         this.log = logContext.logger(AdminApiDriver.class);
 
         // For any lookup keys for which we do not have cached information, we will need to look up
@@ -161,8 +161,8 @@ public class AdminApiDriver<K, V> {
     OptionalInt keyToBrokerId(K key) {
         Optional<FulfillmentScope> scope = fulfillmentMap.getKey(key);
         return scope
-            .map(fulfillmentScope -> OptionalInt.of(fulfillmentScope.destinationBrokerId))
-            .orElseGet(OptionalInt::empty);
+                .map(fulfillmentScope -> OptionalInt.of(fulfillmentScope.destinationBrokerId))
+                .orElseGet(OptionalInt::empty);
     }
 
     /**
@@ -225,26 +225,26 @@ public class AdminApiDriver<K, V> {
      * Callback that is invoked when a `Call` returns a response successfully.
      */
     public void onResponse(
-        long currentTimeMs,
-        RequestSpec<K> spec,
-        AbstractResponse response,
-        Node node
+            long currentTimeMs,
+            RequestSpec<K> spec,
+            AbstractResponse response,
+            Node node
     ) {
         clearInflightRequest(currentTimeMs, spec);
 
         if (spec.scope instanceof FulfillmentScope) {
             AdminApiHandler.ApiResult<K, V> result = handler.handleResponse(
-                node,
-                spec.keys,
-                response
+                    node,
+                    spec.keys,
+                    response
             );
             complete(result.completedKeys);
             completeExceptionally(result.failedKeys);
             retryLookup(result.unmappedKeys);
         } else {
             AdminApiLookupStrategy.LookupResult<K> result = handler.lookupStrategy().handleResponse(
-                spec.keys,
-                response
+                    spec.keys,
+                    response
             );
 
             result.completedKeys.forEach(lookupMap::remove);
@@ -257,53 +257,53 @@ public class AdminApiDriver<K, V> {
      * Callback that is invoked when a `Call` is failed.
      */
     public void onFailure(
-        long currentTimeMs,
-        RequestSpec<K> spec,
-        Throwable t
+            long currentTimeMs,
+            RequestSpec<K> spec,
+            Throwable t
     ) {
         clearInflightRequest(currentTimeMs, spec);
         if (t instanceof DisconnectException) {
             log.debug("Node disconnected before response could be received for request {}. " +
-                "Will attempt retry", spec.request);
+                    "Will attempt retry", spec.request);
 
             // After a disconnect, we want the driver to attempt to lookup the key
             // again. This gives us a chance to find a new coordinator or partition
             // leader for example.
             Set<K> keysToUnmap = spec.keys.stream()
-                .filter(future.lookupKeys()::contains)
-                .collect(Collectors.toSet());
+                    .filter(future.lookupKeys()::contains)
+                    .collect(Collectors.toSet());
             retryLookup(keysToUnmap);
 
         } else if (t instanceof NoBatchedFindCoordinatorsException || t instanceof NoBatchedOffsetFetchRequestException) {
             ((CoordinatorStrategy) handler.lookupStrategy()).disableBatch();
             Set<K> keysToUnmap = spec.keys.stream()
-                .filter(future.lookupKeys()::contains)
-                .collect(Collectors.toSet());
+                    .filter(future.lookupKeys()::contains)
+                    .collect(Collectors.toSet());
             retryLookup(keysToUnmap);
         } else if (t instanceof UnsupportedVersionException) {
             if (spec.scope instanceof FulfillmentScope) {
                 int brokerId = ((FulfillmentScope) spec.scope).destinationBrokerId;
                 Map<K, Throwable> unrecoverableFailures =
-                    handler.handleUnsupportedVersionException(
-                        brokerId,
-                        (UnsupportedVersionException) t,
-                        spec.keys);
+                        handler.handleUnsupportedVersionException(
+                                brokerId,
+                                (UnsupportedVersionException) t,
+                                spec.keys);
                 completeExceptionally(unrecoverableFailures);
             } else {
                 Map<K, Throwable> unrecoverableLookupFailures =
-                    handler.lookupStrategy().handleUnsupportedVersionException(
-                        (UnsupportedVersionException) t,
-                        spec.keys);
+                        handler.lookupStrategy().handleUnsupportedVersionException(
+                                (UnsupportedVersionException) t,
+                                spec.keys);
                 completeLookupExceptionally(unrecoverableLookupFailures);
                 Set<K> keysToUnmap = spec.keys.stream()
-                    .filter(k -> !unrecoverableLookupFailures.containsKey(k))
-                    .collect(Collectors.toSet());
+                        .filter(k -> !unrecoverableLookupFailures.containsKey(k))
+                        .collect(Collectors.toSet());
                 retryLookup(keysToUnmap);
             }
         } else {
             Map<K, Throwable> errors = spec.keys.stream().collect(Collectors.toMap(
-                Function.identity(),
-                key -> t
+                    Function.identity(),
+                    key -> t
             ));
             if (spec.scope instanceof FulfillmentScope) {
                 completeExceptionally(errors);
@@ -326,9 +326,9 @@ public class AdminApiDriver<K, V> {
     }
 
     private <T extends ApiRequestScope> void collectRequests(
-        List<RequestSpec<K>> requests,
-        BiMultimap<T, K> multimap,
-        BiFunction<Set<K>, T, Collection<AdminApiHandler.RequestAndKeys<K>>> buildRequest
+            List<RequestSpec<K>> requests,
+            BiMultimap<T, K> multimap,
+            BiFunction<Set<K>, T, Collection<AdminApiHandler.RequestAndKeys<K>>> buildRequest
     ) {
         for (Map.Entry<T, Set<K>> entry : multimap.entrySet()) {
             T scope = entry.getKey();
@@ -355,13 +355,13 @@ public class AdminApiDriver<K, V> {
             // and we don't want to issue more than one fulfillment request per broker at a time
             AdminApiHandler.RequestAndKeys<K> newRequest = newRequests.iterator().next();
             RequestSpec<K> spec = new RequestSpec<>(
-                handler.apiName() + "(api=" + newRequest.request.apiKey() + ")",
-                scope,
-                newRequest.keys,
-                newRequest.request,
-                requestState.nextAllowedRetryMs,
-                deadlineMs,
-                requestState.tries
+                    handler.apiName() + "(api=" + newRequest.request.apiKey() + ")",
+                    scope,
+                    newRequest.keys,
+                    newRequest.request,
+                    requestState.nextAllowedRetryMs,
+                    deadlineMs,
+                    requestState.tries
             );
 
             requestState.setInflight(spec);
@@ -371,17 +371,17 @@ public class AdminApiDriver<K, V> {
 
     private void collectLookupRequests(List<RequestSpec<K>> requests) {
         collectRequests(
-            requests,
-            lookupMap,
-            (keys, scope) -> Collections.singletonList(new AdminApiHandler.RequestAndKeys<>(handler.lookupStrategy().buildRequest(keys), keys))
+                requests,
+                lookupMap,
+                (keys, scope) -> Collections.singletonList(new AdminApiHandler.RequestAndKeys<>(handler.lookupStrategy().buildRequest(keys), keys))
         );
     }
 
     private void collectFulfillmentRequests(List<RequestSpec<K>> requests) {
         collectRequests(
-            requests,
-            fulfillmentMap,
-            (keys, scope) -> handler.buildRequest(scope.destinationBrokerId, keys)
+                requests,
+                fulfillmentMap,
+                (keys, scope) -> handler.buildRequest(scope.destinationBrokerId, keys)
         );
     }
 
@@ -400,13 +400,13 @@ public class AdminApiDriver<K, V> {
         public final int tries;
 
         public RequestSpec(
-            String name,
-            ApiRequestScope scope,
-            Set<K> keys,
-            AbstractRequest.Builder<?> request,
-            long nextAllowedTryMs,
-            long deadlineMs,
-            int tries
+                String name,
+                ApiRequestScope scope,
+                Set<K> keys,
+                AbstractRequest.Builder<?> request,
+                long nextAllowedTryMs,
+                long deadlineMs,
+                int tries
         ) {
             this.name = name;
             this.scope = scope;
@@ -420,14 +420,14 @@ public class AdminApiDriver<K, V> {
         @Override
         public String toString() {
             return "RequestSpec(" +
-                "name=" + name +
-                ", scope=" + scope +
-                ", keys=" + keys +
-                ", request=" + request +
-                ", nextAllowedTryMs=" + nextAllowedTryMs +
-                ", deadlineMs=" + deadlineMs +
-                ", tries=" + tries +
-                ')';
+                    "name=" + name +
+                    ", scope=" + scope +
+                    ", keys=" + keys +
+                    ", request=" + request +
+                    ", nextAllowedTryMs=" + nextAllowedTryMs +
+                    ", deadlineMs=" + deadlineMs +
+                    ", tries=" + tries +
+                    ')';
         }
     }
 

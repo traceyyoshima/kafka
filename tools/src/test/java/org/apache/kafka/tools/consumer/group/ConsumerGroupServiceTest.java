@@ -141,10 +141,10 @@ public class ConsumerGroupServiceTest {
         ConsumerGroupDescription consumerGroupDescription = new ConsumerGroupDescription(GROUP,
                 true,
                 Set.of(
-                    new MemberDescription(
-                        "member1", Optional.of("instance1"), Optional.of("rackId1"), "client1", "host1", new MemberAssignment(assignedTopicPartitions),
-                        Optional.empty(), Optional.empty(), Optional.empty()
-                    )
+                        new MemberDescription(
+                                "member1", Optional.of("instance1"), Optional.of("rackId1"), "client1", "host1", new MemberAssignment(assignedTopicPartitions),
+                                Optional.empty(), Optional.empty(), Optional.empty()
+                        )
                 ),
                 RangeAssignor.class.getName(),
                 GroupType.CLASSIC,
@@ -182,31 +182,31 @@ public class ConsumerGroupServiceTest {
         Optional<Collection<PartitionAssignmentState>> assignments = statesAndAssignments.getValue();
 
         Map<TopicPartition, Optional<Long>> returnedOffsets = assignments.map(results ->
-            results.stream().collect(Collectors.toMap(
-                assignment -> new TopicPartition(assignment.topic().get(), assignment.partition().get()),
-                PartitionAssignmentState::offset))
+                results.stream().collect(Collectors.toMap(
+                        assignment -> new TopicPartition(assignment.topic().get(), assignment.partition().get()),
+                        PartitionAssignmentState::offset))
         ).orElse(Map.of());
         Map<TopicPartition, Optional<Integer>> returnedLeaderEpoch = assignments.map(results ->
-            results.stream().collect(Collectors.toMap(
-                assignment -> new TopicPartition(assignment.topic().get(), assignment.partition().get()),
-                PartitionAssignmentState::leaderEpoch))
+                results.stream().collect(Collectors.toMap(
+                        assignment -> new TopicPartition(assignment.topic().get(), assignment.partition().get()),
+                        PartitionAssignmentState::leaderEpoch))
         ).orElse(Map.of());
 
         Map<TopicPartition, Optional<Long>> expectedOffsets = Map.of(
-            testTopicPartition0, Optional.empty(),
-            testTopicPartition1, Optional.of(100L),
-            testTopicPartition2, Optional.empty(),
-            testTopicPartition3, Optional.of(100L),
-            testTopicPartition4, Optional.of(100L),
-            testTopicPartition5, Optional.empty()
+                testTopicPartition0, Optional.empty(),
+                testTopicPartition1, Optional.of(100L),
+                testTopicPartition2, Optional.empty(),
+                testTopicPartition3, Optional.of(100L),
+                testTopicPartition4, Optional.of(100L),
+                testTopicPartition5, Optional.empty()
         );
         Map<TopicPartition, Optional<Integer>> expectedLeaderEpoch = Map.of(
-            testTopicPartition0, Optional.empty(),
-            testTopicPartition1, Optional.of(1),
-            testTopicPartition2, Optional.empty(),
-            testTopicPartition3, Optional.of(1),
-            testTopicPartition4, Optional.of(1),
-            testTopicPartition5, Optional.empty()
+                testTopicPartition0, Optional.empty(),
+                testTopicPartition1, Optional.of(1),
+                testTopicPartition2, Optional.empty(),
+                testTopicPartition3, Optional.of(1),
+                testTopicPartition4, Optional.of(1),
+                testTopicPartition5, Optional.empty()
         );
 
         assertEquals(Optional.of(GroupState.STABLE), state);
@@ -259,8 +259,8 @@ public class ConsumerGroupServiceTest {
     @SuppressWarnings("deprecation")
     private DescribeConsumerGroupsResult describeGroupsResult(GroupState groupState) {
         MemberDescription member1 = new MemberDescription(
-            "member1", Optional.of("instance1"), Optional.of("rackId1"), "client1", "host1", null,
-            Optional.empty(), Optional.empty(), Optional.empty());
+                "member1", Optional.of("instance1"), Optional.of("rackId1"), "client1", "host1", null,
+                Optional.empty(), Optional.empty(), Optional.empty());
         ConsumerGroupDescription description = new ConsumerGroupDescription(GROUP,
                 true,
                 Set.of(member1),
@@ -314,10 +314,10 @@ public class ConsumerGroupServiceTest {
     }
 
     private DescribeTopicsResult describeTopicsResult(Collection<String> topics) {
-        var topicDescriptions  = topics.stream().collect(Collectors.toMap(Function.identity(),
-            topic -> new TopicDescription(topic, false, IntStream.range(0, NUM_PARTITIONS)
-                .mapToObj(i -> new TopicPartitionInfo(i, new Node(0, "localhost", 9092), List.of(), List.of()))
-                .toList())));
+        var topicDescriptions = topics.stream().collect(Collectors.toMap(Function.identity(),
+                topic -> new TopicDescription(topic, false, IntStream.range(0, NUM_PARTITIONS)
+                        .mapToObj(i -> new TopicPartitionInfo(i, new Node(0, "localhost", 9092), List.of(), List.of()))
+                        .toList())));
         return AdminClientTestUtils.describeTopicsResult(topicDescriptions);
     }
 

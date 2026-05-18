@@ -25,8 +25,8 @@ import java.time.Duration;
 /**
  * A processor of key-value pair records where keys are immutable.
  *
- * @param <KIn> the type of input keys
- * @param <VIn> the type of input values
+ * @param <KIn>  the type of input keys
+ * @param <VIn>  the type of input values
  * @param <VOut> the type of output values
  */
 @FunctionalInterface
@@ -43,7 +43,8 @@ public interface FixedKeyProcessor<KIn, VIn, VOut> {
      *
      * @param context the context; may not be null
      */
-    default void init(final FixedKeyProcessorContext<KIn, VOut> context) {}
+    default void init(final FixedKeyProcessorContext<KIn, VOut> context) {
+    }
 
     /**
      * Process the record. Note that record metadata is undefined in cases such as a forward call from a punctuator.
@@ -59,5 +60,6 @@ public interface FixedKeyProcessor<KIn, VIn, VOut> {
      * <p>
      * Note: Do not close any streams managed resources, like {@link StateStore}s here, as they are managed by the library.
      */
-    default void close() {}
+    default void close() {
+    }
 }

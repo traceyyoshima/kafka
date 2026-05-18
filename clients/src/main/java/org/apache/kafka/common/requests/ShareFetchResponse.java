@@ -130,9 +130,9 @@ public class ShareFetchResponse extends AbstractResponse {
     /**
      * Convenience method to find the size of a response.
      *
-     * @param version       The version of the request
-     * @param partIterator  The partition iterator.
-     * @return              The response size in bytes.
+     * @param version      The version of the request
+     * @param partIterator The partition iterator.
+     * @return The response size in bytes.
      */
     public static int sizeOf(short version,
                              Iterator<Map.Entry<TopicIdPartition, ShareFetchResponseData.PartitionData>> partIterator) {
@@ -165,8 +165,8 @@ public class ShareFetchResponse extends AbstractResponse {
     }
 
     private static ShareFetchResponseData toMessage(Errors error, int throttleTimeMs,
-                                                   Iterator<Map.Entry<TopicIdPartition, ShareFetchResponseData.PartitionData>> partIterator,
-                                                   List<Node> nodeEndpoints, int acquisitionLockTimeout) {
+                                                    Iterator<Map.Entry<TopicIdPartition, ShareFetchResponseData.PartitionData>> partIterator,
+                                                    List<Node> nodeEndpoints, int acquisitionLockTimeout) {
         ShareFetchResponseData.ShareFetchableTopicResponseCollection topicResponses = new ShareFetchResponseData.ShareFetchableTopicResponseCollection();
         while (partIterator.hasNext()) {
             Map.Entry<TopicIdPartition, ShareFetchResponseData.PartitionData> entry = partIterator.next();

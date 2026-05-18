@@ -43,17 +43,17 @@ public class ChangelogTopics {
     /**
      * Constructor for ChangelogTopics.
      *
-     * @param log                           The logger.
-     * @param subtopologies                 The subtopologies for the requested topology.
-     * @param topicPartitionCountProvider   Returns the number of partitions for a given topic, representing the current state of the broker
-     *                                      as well as any partition number decisions that have already been made. In particular, we expect
-     *                                      the number of partitions for all repartition topics defined, even if they do not exist in the
-     *                                      broker yet.
+     * @param log                         The logger.
+     * @param subtopologies               The subtopologies for the requested topology.
+     * @param topicPartitionCountProvider Returns the number of partitions for a given topic, representing the current state of the broker
+     *                                    as well as any partition number decisions that have already been made. In particular, we expect
+     *                                    the number of partitions for all repartition topics defined, even if they do not exist in the
+     *                                    broker yet.
      */
     public ChangelogTopics(
-        final Logger log,
-        final Collection<Subtopology> subtopologies,
-        final Function<String, OptionalInt> topicPartitionCountProvider
+            final Logger log,
+            final Collection<Subtopology> subtopologies,
+            final Function<String, OptionalInt> topicPartitionCountProvider
     ) {
         this.log = log;
         this.subtopologies = subtopologies;
@@ -63,18 +63,17 @@ public class ChangelogTopics {
     /**
      * Determines the number of partitions for each changelog topic in the requested topology.
      *
-     * @throws IllegalStateException If a source topic does not have a partition count defined through topicPartitionCountProvider.
-     *
      * @return the map of all changelog topics for the requested topology to their required number of partitions.
+     * @throws IllegalStateException If a source topic does not have a partition count defined through topicPartitionCountProvider.
      */
     public Map<String, Integer> setup() {
         final Map<String, Integer> changelogTopicPartitions = new HashMap<>();
         for (Subtopology subtopology : subtopologies) {
             final OptionalInt maxNumPartitions =
-                Stream.concat(
-                    subtopology.sourceTopics().stream(),
-                    subtopology.repartitionSourceTopics().stream().map(TopicInfo::name)
-                ).mapToInt(this::getPartitionCountOrFail).max();
+                    Stream.concat(
+                            subtopology.sourceTopics().stream(),
+                            subtopology.repartitionSourceTopics().stream().map(TopicInfo::name)
+                    ).mapToInt(this::getPartitionCountOrFail).max();
 
             if (maxNumPartitions.isEmpty()) {
                 throw new StreamsInvalidTopologyException("No source topics found for subtopology " + subtopology.subtopologyId());
@@ -86,7 +85,7 @@ public class ChangelogTopics {
 
         if (!changelogTopicPartitions.isEmpty()) {
             log.debug("Expecting state changelog topic partitions {} for the requested topology.",
-                changelogTopicPartitions.entrySet().stream().map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(", ")));
+                    changelogTopicPartitions.entrySet().stream().map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(", ")));
         }
 
         return changelogTopicPartitions;

@@ -53,9 +53,9 @@ public class LogAndSkipOnInvalidTimestamp extends ExtractRecordMetadataTimestamp
      * Writes a log WARN message when the extracted timestamp is invalid (negative) but returns the invalid timestamp as-is,
      * which ultimately causes the record to be skipped and not to be processed.
      *
-     * @param record a data record
+     * @param record          a data record
      * @param recordTimestamp the timestamp extractor from the record
-     * @param partitionTime the highest extracted valid timestamp of the current record's partition˙ (could be -1 if unknown)
+     * @param partitionTime   the highest extracted valid timestamp of the current record's partition˙ (could be -1 if unknown)
      * @return the originally extracted timestamp of the record
      */
     @Override

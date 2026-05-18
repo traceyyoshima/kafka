@@ -56,10 +56,10 @@ public class SessionStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn("metricScope");
 
         builder = new SessionStoreBuilder<>(
-            supplier,
-            Serdes.String(),
-            Serdes.String(),
-            new MockTime());
+                supplier,
+                Serdes.String(),
+                Serdes.String(),
+                new MockTime());
     }
 
     public void setUpWithoutInner() {

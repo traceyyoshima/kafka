@@ -45,7 +45,7 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_OAUTHBEARER_SUB_CL
  * by the client to perform some rudimentary validation of the JWT access token that is received
  * as part of the response from posting the client credentials to the OAuth/OIDC provider's
  * token endpoint.
- *
+ * <p>
  * The validation steps performed are:
  *
  * <ol>
@@ -74,12 +74,12 @@ public class ClientJwtValidator implements JwtValidator {
     public void configure(Map<String, ?> configs, String saslMechanism, List<AppConfigurationEntry> jaasConfigEntries) {
         ConfigurationUtils cu = new ConfigurationUtils(configs, saslMechanism);
         this.scopeClaimName = ClaimValidationUtils.validateClaimNameOverride(
-            DEFAULT_SASL_OAUTHBEARER_SCOPE_CLAIM_NAME,
-            cu.get(SASL_OAUTHBEARER_SCOPE_CLAIM_NAME)
+                DEFAULT_SASL_OAUTHBEARER_SCOPE_CLAIM_NAME,
+                cu.get(SASL_OAUTHBEARER_SCOPE_CLAIM_NAME)
         );
         this.subClaimName = ClaimValidationUtils.validateClaimNameOverride(
-            DEFAULT_SASL_OAUTHBEARER_SUB_CLAIM_NAME,
-            cu.get(SASL_OAUTHBEARER_SUB_CLAIM_NAME)
+                DEFAULT_SASL_OAUTHBEARER_SUB_CLAIM_NAME,
+                cu.get(SASL_OAUTHBEARER_SUB_CLAIM_NAME)
         );
     }
 
@@ -119,16 +119,16 @@ public class ClientJwtValidator implements JwtValidator {
 
         Set<String> scopes = ClaimValidationUtils.validateScopes(scopeClaimName, scopeRawCollection);
         long expiration = ClaimValidationUtils.validateExpiration(EXPIRATION_CLAIM_NAME,
-            expirationRaw != null ? expirationRaw.longValue() * 1000L : null);
+                expirationRaw != null ? expirationRaw.longValue() * 1000L : null);
         String subject = ClaimValidationUtils.validateSubject(subClaimName, subRaw);
         Long issuedAt = ClaimValidationUtils.validateIssuedAt(ISSUED_AT_CLAIM_NAME,
-            issuedAtRaw != null ? issuedAtRaw.longValue() * 1000L : null);
+                issuedAtRaw != null ? issuedAtRaw.longValue() * 1000L : null);
 
         return new BasicOAuthBearerToken(accessToken,
-            scopes,
-            expiration,
-            subject,
-            issuedAt);
+                scopes,
+                expiration,
+                subject,
+                issuedAt);
     }
 
     private Object getClaim(Map<String, Object> payload, String claimName) {

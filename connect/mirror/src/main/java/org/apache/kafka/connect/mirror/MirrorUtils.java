@@ -48,7 +48,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
-/** Internal utility methods. */
+/**
+ * Internal utility methods.
+ */
 public final class MirrorUtils {
 
     public static final String SOURCE_CLUSTER_KEY = "cluster";
@@ -58,7 +60,8 @@ public final class MirrorUtils {
     private static final Logger log = LoggerFactory.getLogger(MirrorUtils.class);
 
     // utility class
-    private MirrorUtils() {}
+    private MirrorUtils() {
+    }
 
     static KafkaProducer<byte[], byte[]> newProducer(Map<String, Object> props) {
         return new KafkaProducer<>(props, new ByteArraySerializer(), new ByteArraySerializer());
@@ -102,13 +105,11 @@ public final class MirrorUtils {
      * Validate a specific key in a source partition that may be written to the offsets topic for one of the MM2 connectors.
      * This method ensures that the key is present in the source partition map and that its value is a string.
      *
+     * @param sourcePartition the to-be-validated source partition; may not be null
+     * @param key             the key to check for in the source partition; may not be null
+     * @throws ConnectException if the offset is invalid
      * @see org.apache.kafka.connect.source.SourceConnector#alterOffsets(Map, Map)
      * @see SourceRecord#sourcePartition()
-     *
-     * @param sourcePartition the to-be-validated source partition; may not be null
-     * @param key the key to check for in the source partition; may not be null
-     *
-     * @throws ConnectException if the offset is invalid
      */
     static void validateSourcePartitionString(Map<String, ?> sourcePartition, String key) {
         Objects.requireNonNull(sourcePartition, "Source partition may not be null");
@@ -141,12 +142,10 @@ public final class MirrorUtils {
      * to a {@link SourceRecord#sourcePartition() source partition} that is stored in a Kafka Connect worker's internal offsets
      * topic (or, if running in standalone mode, offsets file).
      *
+     * @param sourcePartition the to-be-validated source partition; may not be null
+     * @throws ConnectException if the partition is invalid
      * @see org.apache.kafka.connect.source.SourceConnector#alterOffsets(Map, Map)
      * @see SourceRecord#sourcePartition()
-     *
-     * @param sourcePartition the to-be-validated source partition; may not be null
-     *
-     * @throws ConnectException if the partition is invalid
      */
     static void validateSourcePartitionPartition(Map<String, ?> sourcePartition) {
         Objects.requireNonNull(sourcePartition, "Source partition may not be null");
@@ -182,17 +181,15 @@ public final class MirrorUtils {
     /**
      * Validate a source offset that may be written to the offsets topic for one of the MM2 connectors.
      *
-     * @see org.apache.kafka.connect.source.SourceConnector#alterOffsets(Map, Map)
-     * @see SourceRecord#sourceOffset()
-     *
      * @param sourcePartition the corresponding {@link SourceRecord#sourcePartition() source partition} for the offset;
      *                        may not be null
-     * @param sourceOffset the to-be-validated source offset; may be null (which is considered valid)
-     * @param onlyOffsetZero whether the "offset" value in the source offset map must be zero;
-     *                       if {@code true}, then only zero is permitted; if {@code false}, then any non-negative
-     *                       value is permitted
-     *
+     * @param sourceOffset    the to-be-validated source offset; may be null (which is considered valid)
+     * @param onlyOffsetZero  whether the "offset" value in the source offset map must be zero;
+     *                        if {@code true}, then only zero is permitted; if {@code false}, then any non-negative
+     *                        value is permitted
      * @throws ConnectException if the offset is invalid
+     * @see org.apache.kafka.connect.source.SourceConnector#alterOffsets(Map, Map)
+     * @see SourceRecord#sourceOffset()
      */
     static void validateSourceOffset(Map<String, ?> sourcePartition, Map<String, ?> sourceOffset, boolean onlyOffsetZero) {
         Objects.requireNonNull(sourcePartition, "Source partition may not be null");

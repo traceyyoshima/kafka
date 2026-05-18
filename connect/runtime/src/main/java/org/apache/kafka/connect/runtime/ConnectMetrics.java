@@ -73,9 +73,9 @@ public class ConnectMetrics {
     /**
      * Create an instance.
      *
-     * @param workerId the worker identifier; may not be null
-     * @param config   the worker configuration; may not be null
-     * @param time     the time; may not be null
+     * @param workerId  the worker identifier; may not be null
+     * @param config    the worker configuration; may not be null
+     * @param time      the time; may not be null
      * @param clusterId the Kafka cluster ID
      */
     public ConnectMetrics(String workerId, WorkerConfig config, Time time, String clusterId) {

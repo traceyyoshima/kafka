@@ -146,14 +146,14 @@ public class LagFetchIntegrationTest {
         final List<KafkaStreamsWrapper> streamsList = new ArrayList<>();
 
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            inputTopicName,
-            Set.of(new KeyValue<>("k1", 1L), new KeyValue<>("k2", 2L), new KeyValue<>("k3", 3L), new KeyValue<>("k4", 4L), new KeyValue<>("k5", 5L)),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                StringSerializer.class,
-                LongSerializer.class,
-                new Properties()),
-            mockTime);
+                inputTopicName,
+                Set.of(new KeyValue<>("k1", 1L), new KeyValue<>("k2", 2L), new KeyValue<>("k3", 3L), new KeyValue<>("k4", 4L), new KeyValue<>("k5", 5L)),
+                TestUtils.producerConfig(
+                        CLUSTER.bootstrapServers(),
+                        StringSerializer.class,
+                        LongSerializer.class,
+                        new Properties()),
+                mockTime);
 
         // create stream threads
         for (int i = 0; i < 2; i++) {
@@ -197,16 +197,16 @@ public class LagFetchIntegrationTest {
         try {
             // First start up the active.
             TestUtils.waitForCondition(() -> activeStreams.allLocalStorePartitionLags().size() == 0,
-                WAIT_TIMEOUT_MS,
-                "Should see empty lag map before streams is started.");
+                    WAIT_TIMEOUT_MS,
+                    "Should see empty lag map before streams is started.");
             activeStreams.start();
             latchTillActiveIsRunning.await(60, TimeUnit.SECONDS);
 
             IntegrationTestUtils.waitUntilMinValuesRecordsReceived(
-                consumerConfiguration,
-                outputTopicName,
-                5,
-                WAIT_TIMEOUT_MS);
+                    consumerConfiguration,
+                    outputTopicName,
+                    5,
+                    WAIT_TIMEOUT_MS);
             // Check the active reports proper lag values.
             Map<String, Map<Integer, LagInfo>> offsetLagInfoMap = getFirstNonEmptyLagMap(activeStreams);
             assertThat(offsetLagInfoMap.size(), equalTo(1));
@@ -233,8 +233,8 @@ public class LagFetchIntegrationTest {
 
             // wait till the lag goes down to 0, on the standby
             TestUtils.waitForCondition(() -> standbyStreams.allLocalStorePartitionLags().get(stateStoreName).get(0).offsetLag() == 0,
-                WAIT_TIMEOUT_MS,
-                "Standby should eventually catchup and have zero lag.");
+                    WAIT_TIMEOUT_MS,
+                    "Standby should eventually catchup and have zero lag.");
         } finally {
             for (final KafkaStreams streams : streamsList) {
                 streams.close();
@@ -255,14 +255,14 @@ public class LagFetchIntegrationTest {
     @Test
     public void shouldFetchLagsDuringRestoration() throws Exception {
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            inputTopicName,
-            Set.of(new KeyValue<>("k1", 1L), new KeyValue<>("k2", 2L), new KeyValue<>("k3", 3L), new KeyValue<>("k4", 4L), new KeyValue<>("k5", 5L)),
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                StringSerializer.class,
-                LongSerializer.class,
-                new Properties()),
-            mockTime);
+                inputTopicName,
+                Set.of(new KeyValue<>("k1", 1L), new KeyValue<>("k2", 2L), new KeyValue<>("k3", 3L), new KeyValue<>("k4", 4L), new KeyValue<>("k5", 5L)),
+                TestUtils.producerConfig(
+                        CLUSTER.bootstrapServers(),
+                        StringSerializer.class,
+                        LongSerializer.class,
+                        new Properties()),
+                mockTime);
 
         // create stream threads
         final Properties props = (Properties) streamsConfiguration.clone();
@@ -280,16 +280,16 @@ public class LagFetchIntegrationTest {
         try {
             // First start up the active.
             TestUtils.waitForCondition(() -> streams.allLocalStorePartitionLags().size() == 0,
-                WAIT_TIMEOUT_MS,
-                "Should see empty lag map before streams is started.");
+                    WAIT_TIMEOUT_MS,
+                    "Should see empty lag map before streams is started.");
 
             // Get the instance to fully catch up and reach RUNNING state
             startApplicationAndWaitUntilRunning(streams);
             IntegrationTestUtils.waitUntilMinValuesRecordsReceived(
-                consumerConfiguration,
-                outputTopicName,
-                5,
-                WAIT_TIMEOUT_MS);
+                    consumerConfiguration,
+                    outputTopicName,
+                    5,
+                    WAIT_TIMEOUT_MS);
 
             // check for proper lag values.
             TestUtils.waitForCondition(() -> {
@@ -310,8 +310,8 @@ public class LagFetchIntegrationTest {
             assertThat("Streams instance did not close within timeout", streams.close(Duration.ofSeconds(60)));
             IntegrationTestUtils.purgeLocalStreamsState(streamsConfiguration);
             Files.walk(stateDir.toPath()).sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(f -> assertTrue(f.delete(), "Some state " + f + " could not be deleted"));
+                    .map(Path::toFile)
+                    .forEach(f -> assertTrue(f.delete(), "Some state " + f + " could not be deleted"));
         } finally {
             streams.close();
             streams.cleanUp();
@@ -352,8 +352,8 @@ public class LagFetchIntegrationTest {
             restartedStreams.start();
             restorationEndLatch.await(WAIT_TIMEOUT_MS, TimeUnit.MILLISECONDS);
             TestUtils.waitForCondition(() -> restartedStreams.allLocalStorePartitionLags().get(stateStoreName).get(0).offsetLag() == 0,
-                WAIT_TIMEOUT_MS,
-                "Standby should eventually catchup and have zero lag.");
+                    WAIT_TIMEOUT_MS,
+                    "Standby should eventually catchup and have zero lag.");
             final LagInfo fullLagInfo = restoreStartLagInfo.get(stateStoreName).get(0);
             assertThat(fullLagInfo.currentOffsetPosition(), equalTo(0L));
             assertThat(fullLagInfo.endOffsetPosition(), equalTo(5L));

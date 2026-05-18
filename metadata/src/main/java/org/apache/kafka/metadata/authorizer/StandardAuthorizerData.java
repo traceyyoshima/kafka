@@ -56,7 +56,7 @@ import static org.apache.kafka.server.authorizer.AuthorizationResult.DENIED;
 
 /**
  * A class which encapsulates the configuration and the ACL data owned by StandardAuthorizer.
- *
+ * <p>
  * The class is not thread-safe.
  */
 public class StandardAuthorizerData {
@@ -116,11 +116,11 @@ public class StandardAuthorizerData {
 
     static StandardAuthorizerData createEmpty() {
         return new StandardAuthorizerData(createLogger(-1),
-            null,
-            false,
-            Set.of(),
-            DENIED,
-            new AclCache());
+                null,
+                false,
+                Set.of(),
+                DENIED,
+                new AclCache());
     }
 
     private StandardAuthorizerData(Logger log,
@@ -140,43 +140,43 @@ public class StandardAuthorizerData {
 
     StandardAuthorizerData copyWithNewAclMutator(AclMutator newAclMutator) {
         return new StandardAuthorizerData(
-            log,
-            newAclMutator,
-            loadingComplete,
-            superUsers,
-            noAclRule.result,
-            aclCache);
+                log,
+                newAclMutator,
+                loadingComplete,
+                superUsers,
+                noAclRule.result,
+                aclCache);
     }
 
     StandardAuthorizerData copyWithNewLoadingComplete(boolean newLoadingComplete) {
         return new StandardAuthorizerData(log,
-            aclMutator,
-            newLoadingComplete,
-            superUsers,
-            noAclRule.result,
-            aclCache);
+                aclMutator,
+                newLoadingComplete,
+                superUsers,
+                noAclRule.result,
+                aclCache);
     }
 
     StandardAuthorizerData copyWithNewConfig(int nodeId,
                                              Set<String> newSuperUsers,
                                              AuthorizationResult newDefaultResult) {
         return new StandardAuthorizerData(
-            createLogger(nodeId),
-            aclMutator,
-            loadingComplete,
-            newSuperUsers,
-            newDefaultResult,
-            aclCache);
+                createLogger(nodeId),
+                aclMutator,
+                loadingComplete,
+                newSuperUsers,
+                newDefaultResult,
+                aclCache);
     }
 
     StandardAuthorizerData copyWithNewAcls(AclCache aclCache) {
         StandardAuthorizerData newData = new StandardAuthorizerData(
-            log,
-            aclMutator,
-            loadingComplete,
-            superUsers,
-            noAclRule.result,
-            aclCache);
+                log,
+                aclMutator,
+                loadingComplete,
+                superUsers,
+                noAclRule.result,
+                aclCache);
         log.info("Initialized with {} acl(s).", aclCache.count());
         return newData;
     }
@@ -216,7 +216,7 @@ public class StandardAuthorizerData {
 
     /**
      * Authorize an action based on the current set of ACLs.
-     *
+     * <p>
      * In order to know whether to allow or deny the action, we need to examine the ACLs
      * that apply to it. If any DENY ACLs match, the operation is denied, no matter how
      * many ALLOW ACLs match. If neither ALLOW nor DENY ACLs match, we return the default
@@ -224,8 +224,8 @@ public class StandardAuthorizerData {
      * DENY, but some people (and unit tests) configure it as ALLOW.
      */
     public AuthorizationResult authorize(
-        AuthorizableRequestContext requestContext,
-        Action action
+            AuthorizableRequestContext requestContext,
+            Action action
     ) {
         if (action.resourcePattern().patternType() != LITERAL) {
             throw new IllegalArgumentException("Only literal resources are supported. Got: " + action.resourcePattern().patternType());
@@ -240,9 +240,9 @@ public class StandardAuthorizerData {
             throw new AuthorizerNotReadyException();
         } else {
             rule = findAclRule(
-                matchingPrincipals(requestContext),
-                requestContext.clientAddress().getHostAddress(),
-                action
+                    matchingPrincipals(requestContext),
+                    requestContext.clientAddress().getHostAddress(),
+                    action
             );
         }
         logAuditMessage(principal, requestContext, action, rule);
@@ -250,10 +250,10 @@ public class StandardAuthorizerData {
     }
 
     private String buildAuditMessage(
-        KafkaPrincipal principal,
-        AuthorizableRequestContext context,
-        Action action,
-        MatchingRule rule
+            KafkaPrincipal principal,
+            AuthorizableRequestContext context,
+            Action action,
+            MatchingRule rule
     ) {
         StringBuilder bldr = new StringBuilder();
         bldr.append("Principal = ").append(principal);
@@ -270,17 +270,17 @@ public class StandardAuthorizerData {
 
     private void appendResourcePattern(ResourcePattern resourcePattern, StringBuilder bldr) {
         bldr.append(SecurityUtils.resourceTypeName(resourcePattern.resourceType()))
-            .append(":")
-            .append(resourcePattern.patternType())
-            .append(":")
-            .append(resourcePattern.name());
+                .append(":")
+                .append(resourcePattern.patternType())
+                .append(":")
+                .append(resourcePattern.name());
     }
 
     private void logAuditMessage(
-        KafkaPrincipal principal,
-        AuthorizableRequestContext requestContext,
-        Action action,
-        MatchingRule rule
+            KafkaPrincipal principal,
+            AuthorizableRequestContext requestContext,
+            Action action,
+            MatchingRule rule
     ) {
         switch (rule.result()) {
             case ALLOWED:
@@ -308,9 +308,9 @@ public class StandardAuthorizerData {
     }
 
     private MatchingRule findAclRule(
-        Set<KafkaPrincipal> matchingPrincipals,
-        String host,
-        Action action
+            Set<KafkaPrincipal> matchingPrincipals,
+            String host,
+            Action action
     ) {
         // This code relies on the ordering of StandardAcl within the NavigableMap.
         // Entries are sorted by resource type first, then REVERSE resource name.
@@ -335,13 +335,13 @@ public class StandardAuthorizerData {
         // Once we reached element 5, we would jump to element 7.
         MatchingRuleBuilder matchingRuleBuilder = new MatchingRuleBuilder(noAclRule);
         StandardAcl exemplar = new StandardAcl(
-            action.resourcePattern().resourceType(),
-            action.resourcePattern().name(),
-            PatternType.UNKNOWN, // Note that the UNKNOWN value sorts before all others.
-            "",
-            "",
-            AclOperation.UNKNOWN,
-            AclPermissionType.UNKNOWN);
+                action.resourcePattern().resourceType(),
+                action.resourcePattern().name(),
+                PatternType.UNKNOWN, // Note that the UNKNOWN value sorts before all others.
+                "",
+                "",
+                AclOperation.UNKNOWN,
+                AclPermissionType.UNKNOWN);
         AclCache aclCacheSnapshot = aclCache;
         checkSection(aclCacheSnapshot, action, exemplar, matchingPrincipals, host, matchingRuleBuilder);
         if (matchingRuleBuilder.foundDeny()) {
@@ -352,20 +352,20 @@ public class StandardAuthorizerData {
         // ACLs that match any resource name. These are stored as type = LITERAL,
         // name = "*". We search these next.
         exemplar = new StandardAcl(
-            action.resourcePattern().resourceType(),
-            WILDCARD,
-            LITERAL,
-            "",
-            "",
-            AclOperation.UNKNOWN,
-            AclPermissionType.UNKNOWN);
+                action.resourcePattern().resourceType(),
+                WILDCARD,
+                LITERAL,
+                "",
+                "",
+                AclOperation.UNKNOWN,
+                AclPermissionType.UNKNOWN);
         checkSection(aclCacheSnapshot, action, exemplar, matchingPrincipals, host, matchingRuleBuilder);
         return matchingRuleBuilder.build();
     }
 
     static int matchesUpTo(
-        String resource,
-        String pattern
+            String resource,
+            String pattern
     ) {
         int i = 0;
         while (true) {
@@ -409,12 +409,12 @@ public class StandardAuthorizerData {
                 // stepped outside of the section we care about. Scan for any other potential
                 // prefix matches.
                 exemplar = new StandardAcl(exemplar.resourceType(),
-                    exemplar.resourceName().substring(0, matchesUpTo),
-                    exemplar.patternType(),
-                    exemplar.principal(),
-                    exemplar.host(),
-                    exemplar.operation(),
-                    exemplar.permissionType());
+                        exemplar.resourceName().substring(0, matchesUpTo),
+                        exemplar.patternType(),
+                        exemplar.principal(),
+                        exemplar.host(),
+                        exemplar.operation(),
+                        exemplar.permissionType());
                 tailSet = aclCacheSnapshot.aclsByResource().tailSet(exemplar, true);
                 iterator = tailSet.iterator();
                 continue;
@@ -434,37 +434,37 @@ public class StandardAuthorizerData {
      * The set of operations which imply DESCRIBE permission, when used in an ALLOW acl.
      */
     private static final Set<AclOperation> IMPLIES_DESCRIBE =
-        Set.of(DESCRIBE, READ, WRITE, DELETE, ALTER);
+            Set.of(DESCRIBE, READ, WRITE, DELETE, ALTER);
 
     /**
      * The set of operations which imply DESCRIBE_CONFIGS permission, when used in an ALLOW acl.
      */
     private static final Set<AclOperation> IMPLIES_DESCRIBE_CONFIGS =
-        Set.of(DESCRIBE_CONFIGS, ALTER_CONFIGS);
+            Set.of(DESCRIBE_CONFIGS, ALTER_CONFIGS);
 
     static AuthorizationResult findResult(Action action,
                                           AuthorizableRequestContext requestContext,
                                           StandardAcl acl) {
         return findResult(
-            action,
-            matchingPrincipals(requestContext),
-            requestContext.clientAddress().getHostAddress(),
-            acl
+                action,
+                matchingPrincipals(requestContext),
+                requestContext.clientAddress().getHostAddress(),
+                acl
         );
     }
 
     static KafkaPrincipal baseKafkaPrincipal(AuthorizableRequestContext context) {
         KafkaPrincipal sessionPrincipal = context.principal();
         return sessionPrincipal.getClass().equals(KafkaPrincipal.class)
-            ? sessionPrincipal
-            : new KafkaPrincipal(sessionPrincipal.getPrincipalType(), sessionPrincipal.getName());
+                ? sessionPrincipal
+                : new KafkaPrincipal(sessionPrincipal.getPrincipalType(), sessionPrincipal.getName());
     }
 
     static Set<KafkaPrincipal> matchingPrincipals(AuthorizableRequestContext context) {
         KafkaPrincipal sessionPrincipal = context.principal();
         KafkaPrincipal basePrincipal = sessionPrincipal.getClass().equals(KafkaPrincipal.class)
-            ? sessionPrincipal
-            : new KafkaPrincipal(sessionPrincipal.getPrincipalType(), sessionPrincipal.getName());
+                ? sessionPrincipal
+                : new KafkaPrincipal(sessionPrincipal.getPrincipalType(), sessionPrincipal.getName());
         return Set.of(basePrincipal, WILDCARD_KAFKA_PRINCIPAL);
     }
 
@@ -477,8 +477,8 @@ public class StandardAuthorizerData {
      * @param matchingPrincipals The set of input matching principals
      * @param host               The input host.
      * @param acl                The input ACL.
-     * @return                   null if the ACL does not match. The authorization result
-     *                           otherwise.
+     * @return null if the ACL does not match. The authorization result
+     * otherwise.
      */
     static AuthorizationResult findResult(Action action,
                                           Set<KafkaPrincipal> matchingPrincipals,

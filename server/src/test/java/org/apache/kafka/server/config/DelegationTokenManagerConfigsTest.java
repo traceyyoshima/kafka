@@ -49,14 +49,14 @@ public class DelegationTokenManagerConfigsTest {
     @Test
     void testOverride() {
         DelegationTokenManagerConfigs config = new DelegationTokenManagerConfigs(
-            new AbstractConfig(DelegationTokenManagerConfigs.CONFIG_DEF,
-                Map.of(
-                    DELEGATION_TOKEN_SECRET_KEY_CONFIG, "test",
-                    DELEGATION_TOKEN_MAX_LIFETIME_CONFIG, "500",
-                    DELEGATION_TOKEN_EXPIRY_TIME_MS_CONFIG, "200",
-                    DELEGATION_TOKEN_EXPIRY_CHECK_INTERVAL_MS_CONFIG, "100"
+                new AbstractConfig(DelegationTokenManagerConfigs.CONFIG_DEF,
+                        Map.of(
+                                DELEGATION_TOKEN_SECRET_KEY_CONFIG, "test",
+                                DELEGATION_TOKEN_MAX_LIFETIME_CONFIG, "500",
+                                DELEGATION_TOKEN_EXPIRY_TIME_MS_CONFIG, "200",
+                                DELEGATION_TOKEN_EXPIRY_CHECK_INTERVAL_MS_CONFIG, "100"
+                        )
                 )
-            )
         );
         assertEquals(new Password("test"), config.delegationTokenSecretKey());
         assertTrue(config.tokenAuthEnabled());
@@ -67,12 +67,12 @@ public class DelegationTokenManagerConfigsTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        DELEGATION_TOKEN_MAX_LIFETIME_CONFIG,
-        DELEGATION_TOKEN_EXPIRY_TIME_MS_CONFIG,
-        DELEGATION_TOKEN_EXPIRY_CHECK_INTERVAL_MS_CONFIG
+            DELEGATION_TOKEN_MAX_LIFETIME_CONFIG,
+            DELEGATION_TOKEN_EXPIRY_TIME_MS_CONFIG,
+            DELEGATION_TOKEN_EXPIRY_CHECK_INTERVAL_MS_CONFIG
     })
     void testInvalidProperty(String field) {
         assertThrows(Exception.class, () -> new DelegationTokenManagerConfigs(
-            new AbstractConfig(DelegationTokenManagerConfigs.CONFIG_DEF, Map.of(field, "not_a_number"))));
+                new AbstractConfig(DelegationTokenManagerConfigs.CONFIG_DEF, Map.of(field, "not_a_number"))));
     }
 }

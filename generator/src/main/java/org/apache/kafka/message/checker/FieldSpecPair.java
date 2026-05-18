@@ -24,8 +24,8 @@ class FieldSpecPair {
     private final FieldSpec field2;
 
     FieldSpecPair(
-        FieldSpec field1,
-        FieldSpec field2
+            FieldSpec field1,
+            FieldSpec field2
     ) {
         this.field1 = field1;
         this.field2 = field2;

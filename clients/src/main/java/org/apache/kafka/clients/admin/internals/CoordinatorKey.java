@@ -35,7 +35,7 @@ public class CoordinatorKey {
         if (o == null || getClass() != o.getClass()) return false;
         CoordinatorKey that = (CoordinatorKey) o;
         return Objects.equals(idValue, that.idValue) &&
-            type == that.type;
+                type == that.type;
     }
 
     @Override
@@ -46,9 +46,9 @@ public class CoordinatorKey {
     @Override
     public String toString() {
         return "CoordinatorKey(" +
-            "idValue='" + idValue + '\'' +
-            ", type=" + type +
-            ')';
+                "idValue='" + idValue + '\'' +
+                ", type=" + type +
+                ')';
     }
 
     public static CoordinatorKey byGroupId(String groupId) {

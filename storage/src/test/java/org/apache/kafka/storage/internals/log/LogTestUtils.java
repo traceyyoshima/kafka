@@ -84,8 +84,8 @@ public class LogTestUtils {
      * Append an end transaction marker (commit or abort) to the log as a leader.
      *
      * @param transactionVersion the transaction version (1 = TV1, 2 = TV2) etc. Must be explicitly specified.
-     *                          TV2 markers require strict epoch validation (markerEpoch > currentEpoch),
-     *                          while legacy markers use relaxed validation (markerEpoch >= currentEpoch).
+     *                           TV2 markers require strict epoch validation (markerEpoch > currentEpoch),
+     *                           while legacy markers use relaxed validation (markerEpoch >= currentEpoch).
      */
     public static LogAppendInfo appendEndTxnMarkerAsLeader(UnifiedLog log,
                                                            long producerId,
@@ -148,14 +148,14 @@ public class LogTestUtils {
      */
     public static MemoryRecords singletonRecords(byte[] value, byte[] key) {
         return records(
-            List.of(new SimpleRecord(RecordBatch.NO_TIMESTAMP, key, value)),
-            RecordBatch.CURRENT_MAGIC_VALUE,
-            Compression.NONE,
-            RecordBatch.NO_PRODUCER_ID,
-            RecordBatch.NO_PRODUCER_EPOCH,
-            RecordBatch.NO_SEQUENCE,
-            0L,
-            RecordBatch.NO_PARTITION_LEADER_EPOCH
+                List.of(new SimpleRecord(RecordBatch.NO_TIMESTAMP, key, value)),
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                Compression.NONE,
+                RecordBatch.NO_PRODUCER_ID,
+                RecordBatch.NO_PRODUCER_EPOCH,
+                RecordBatch.NO_SEQUENCE,
+                0L,
+                RecordBatch.NO_PARTITION_LEADER_EPOCH
         );
     }
 
@@ -164,14 +164,14 @@ public class LogTestUtils {
      */
     public static MemoryRecords singletonRecords(byte[] value, Compression codec, byte[] key, long timestamp) {
         return records(
-            List.of(new SimpleRecord(timestamp, key, value)),
-            RecordBatch.CURRENT_MAGIC_VALUE,
-            codec,
-            RecordBatch.NO_PRODUCER_ID,
-            RecordBatch.NO_PRODUCER_EPOCH,
-            RecordBatch.NO_SEQUENCE,
-            0L,
-            RecordBatch.NO_PARTITION_LEADER_EPOCH
+                List.of(new SimpleRecord(timestamp, key, value)),
+                RecordBatch.CURRENT_MAGIC_VALUE,
+                codec,
+                RecordBatch.NO_PRODUCER_ID,
+                RecordBatch.NO_PRODUCER_EPOCH,
+                RecordBatch.NO_SEQUENCE,
+                0L,
+                RecordBatch.NO_PARTITION_LEADER_EPOCH
         );
     }
 
@@ -179,16 +179,16 @@ public class LogTestUtils {
      * Create a single record batch with the specified compression, timestamp, and magic value.
      */
     public static MemoryRecords singletonRecords(byte[] value, Compression codec, byte[] key,
-                                                  long timestamp, byte magicValue) {
+                                                 long timestamp, byte magicValue) {
         return records(
-            List.of(new SimpleRecord(timestamp, key, value)),
-            magicValue,
-            codec,
-            RecordBatch.NO_PRODUCER_ID,
-            RecordBatch.NO_PRODUCER_EPOCH,
-            RecordBatch.NO_SEQUENCE,
-            0L,
-            RecordBatch.NO_PARTITION_LEADER_EPOCH
+                List.of(new SimpleRecord(timestamp, key, value)),
+                magicValue,
+                codec,
+                RecordBatch.NO_PRODUCER_ID,
+                RecordBatch.NO_PRODUCER_EPOCH,
+                RecordBatch.NO_SEQUENCE,
+                0L,
+                RecordBatch.NO_PARTITION_LEADER_EPOCH
         );
     }
 
@@ -212,7 +212,7 @@ public class LogTestUtils {
                                         long timestamp) {
         ByteBuffer buf = ByteBuffer.allocate(DefaultRecordBatch.sizeInBytes(records));
         MemoryRecordsBuilder builder = MemoryRecords.builder(buf, magicValue, codec, TimestampType.CREATE_TIME, baseOffset,
-            timestamp, producerId, producerEpoch, sequence, false, partitionLeaderEpoch);
+                timestamp, producerId, producerEpoch, sequence, false, partitionLeaderEpoch);
 
         records.forEach(builder::append);
 
@@ -287,12 +287,12 @@ public class LogTestUtils {
      * and all temporary files have been deleted.
      */
     public static UnifiedLog recoverAndCheck(
-        File logDir,
-        LogConfig config,
-        List<Long> expectedKeys,
-        BrokerTopicStats brokerTopicStats,
-        Time time,
-        Scheduler scheduler
+            File logDir,
+            LogConfig config,
+            List<Long> expectedKeys,
+            BrokerTopicStats brokerTopicStats,
+            Time time,
+            Scheduler scheduler
     ) throws IOException {
         UnifiedLog recoveredLog = createLog(logDir, config, brokerTopicStats, scheduler, time, false);
         time.sleep(config.fileDeleteDelayMs + 1);
@@ -307,30 +307,30 @@ public class LogTestUtils {
     }
 
     public static UnifiedLog createLog(
-        File dir,
-        LogConfig config,
-        BrokerTopicStats brokerTopicStats,
-        Scheduler scheduler,
-        Time time,
-        boolean lastShutdownClean
+            File dir,
+            LogConfig config,
+            BrokerTopicStats brokerTopicStats,
+            Scheduler scheduler,
+            Time time,
+            boolean lastShutdownClean
     ) throws IOException {
         return UnifiedLog.create(
-            dir,
-            config,
-            0L,
-            0L,
-            scheduler,
-            brokerTopicStats,
-            time,
-            5 * 60 * 1000,
-            new ProducerStateManagerConfig(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_DEFAULT, false),
-            TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
-            new LogDirFailureChannel(10),
-            lastShutdownClean,
-            Optional.empty(),
-            new ConcurrentHashMap<>(),
-            false,
-            LogOffsetsListener.NO_OP_OFFSETS_LISTENER
+                dir,
+                config,
+                0L,
+                0L,
+                scheduler,
+                brokerTopicStats,
+                time,
+                5 * 60 * 1000,
+                new ProducerStateManagerConfig(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_DEFAULT, false),
+                TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
+                new LogDirFailureChannel(10),
+                lastShutdownClean,
+                Optional.empty(),
+                new ConcurrentHashMap<>(),
+                false,
+                LogOffsetsListener.NO_OP_OFFSETS_LISTENER
         );
     }
 
@@ -392,12 +392,12 @@ public class LogTestUtils {
             return new SimpleRecord(data, data);
         };
         segment.append(MemoryRecords.withRecords(baseOffset, Compression.NONE, 0,
-            record.apply(baseOffset)));
+                record.apply(baseOffset)));
         segment.append(MemoryRecords.withRecords(baseOffset + 1, Compression.NONE, 0,
-            record.apply(baseOffset + 1),
-            record.apply(baseOffset + 2)));
+                record.apply(baseOffset + 1),
+                record.apply(baseOffset + 2)));
         segment.append(MemoryRecords.withRecords(baseOffset + Integer.MAX_VALUE - 1, Compression.NONE, 0,
-            record.apply(baseOffset + Integer.MAX_VALUE - 1)));
+                record.apply(baseOffset + Integer.MAX_VALUE - 1)));
         // Need to create the offset files explicitly to avoid triggering segment recovery to truncate segment.
         Files.createFile(LogFileUtils.offsetIndexFile(logDir, baseOffset).toPath());
         Files.createFile(LogFileUtils.timeIndexFile(logDir, baseOffset).toPath());
@@ -447,10 +447,10 @@ public class LogTestUtils {
             }
 
             MemoryRecords records = isTransactional
-                ? MemoryRecords.withTransactionalRecords(Compression.NONE, producerId,
-                        producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]))
-                : MemoryRecords.withIdempotentRecords(Compression.NONE, producerId,
-                        producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]));
+                    ? MemoryRecords.withTransactionalRecords(Compression.NONE, producerId,
+                    producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]))
+                    : MemoryRecords.withIdempotentRecords(Compression.NONE, producerId,
+                    producerEpoch, baseSequence, simpleRecords.toArray(new SimpleRecord[0]));
 
             assertDoesNotThrow(() -> log.appendAsLeader(records, 0));
             sequence.addAndGet(numRecords);
@@ -602,7 +602,7 @@ public class LogTestUtils {
             return new LogConfig(configs);
         }
     }
-    
+
     public static class FakeOffsetMap implements OffsetMap {
 
         private final Map<String, Long> map = new HashMap<>();
@@ -621,33 +621,33 @@ public class LogTestUtils {
         public int slots() {
             return slots;
         }
-        
+
         @Override
         public void put(ByteBuffer key, long offset) {
             latestOff = offset;
             map.put(new String(Utils.readBytes(key.duplicate()), StandardCharsets.UTF_8), offset);
         }
-        
+
         @Override
         public long get(ByteBuffer key) {
             return map.getOrDefault(new String(Utils.readBytes(key.duplicate()), StandardCharsets.UTF_8), -1L);
         }
-        
+
         @Override
         public void updateLatestOffset(long offset) {
             latestOff = offset;
         }
-        
+
         @Override
         public void clear() {
             map.clear();
         }
-        
+
         @Override
         public int size() {
             return map.size();
         }
-        
+
         @Override
         public long latestOffset() {
             return latestOff;

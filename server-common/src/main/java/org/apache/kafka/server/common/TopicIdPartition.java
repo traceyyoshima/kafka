@@ -20,12 +20,13 @@ import org.apache.kafka.common.Uuid;
 
 /**
  * Represents a partition using its unique topic Id and partition number.
- * @param topicId Universally unique Id representing this topic partition.
+ *
+ * @param topicId     Universally unique Id representing this topic partition.
  * @param partitionId The partition Id.
  */
 public record TopicIdPartition(
-    Uuid topicId,
-    int partitionId
+        Uuid topicId,
+        int partitionId
 ) {
     @Override
     public String toString() {

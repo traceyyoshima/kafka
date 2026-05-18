@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @ClusterTestDefaults(
-    brokers = 3
+        brokers = 3
 )
 public class ConsumerWithLegacyMessageFormatIntegrationTest {
 

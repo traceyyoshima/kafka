@@ -56,7 +56,7 @@ public interface SinkTaskContext {
      * <p>
      * SinkTasks that do not manage their own offsets do not need to use this method.
      *
-     * @param tp the topic partition to reset offset.
+     * @param tp     the topic partition to reset offset.
      * @param offset the offset to reset to.
      */
     void offset(TopicPartition tp, long offset);
@@ -66,24 +66,28 @@ public interface SinkTaskContext {
      * operations after the timeout. SinkTasks may have certain operations on external systems that may need
      * to be retried in case of failures. For example, appending a record to an HDFS file may fail due to temporary
      * network issues. SinkTasks can use this method to set how long to wait before retrying.
+     *
      * @param timeoutMs the backoff timeout in milliseconds.
      */
     void timeout(long timeoutMs);
 
     /**
      * Get the current set of assigned TopicPartitions for this task.
+     *
      * @return the set of currently assigned TopicPartitions
      */
     Set<TopicPartition> assignment();
 
     /**
      * Pause consumption of messages from the specified TopicPartitions.
+     *
      * @param partitions the partitions which should be paused
      */
     void pause(TopicPartition... partitions);
 
     /**
      * Resume consumption of messages from previously paused TopicPartitions.
+     *
      * @param partitions the partitions to resume
      */
     void resume(TopicPartition... partitions);

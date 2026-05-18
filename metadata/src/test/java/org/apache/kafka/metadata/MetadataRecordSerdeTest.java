@@ -38,9 +38,8 @@ class MetadataRecordSerdeTest {
     @Test
     public void testSerde() {
         TopicRecord topicRecord = new TopicRecord()
-            .setName("foo")
-            .setTopicId(Uuid.randomUuid());
-
+                .setName("foo")
+                .setTopicId(Uuid.randomUuid());
 
 
         for (short version = TopicRecord.LOWEST_SUPPORTED_VERSION; version <= TopicRecord.HIGHEST_SUPPORTED_VERSION; version++) {

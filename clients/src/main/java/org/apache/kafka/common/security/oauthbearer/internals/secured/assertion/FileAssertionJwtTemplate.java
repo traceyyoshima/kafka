@@ -31,20 +31,20 @@ import static org.apache.kafka.common.security.oauthbearer.internals.secured.Cac
  * {@code FileAssertionJwtTemplate} is used by the user to specify a JSON file on disk that contains static values
  * that can be loaded and used to construct the assertion. The file structure is a JSON containing optionally a
  * header and/or payload top-level attribute.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Here is a minimally viable JSON structure:
  *
  * <pre>
  * {
  * }
  * </pre>
- *
+ * <p>
  * OK, at that point it doesn't make sense for the user to build that file.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Here is another, slightly less minimal JSON template:
  *
  * <pre>
@@ -57,11 +57,11 @@ import static org.apache.kafka.common.security.oauthbearer.internals.secured.Cac
  *   }
  * }
  * </pre>
- *
+ * <p>
  * This provides a single header value and a single payload claim.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * A more realistic example template looks like so:
  *
  * <pre>
@@ -83,7 +83,7 @@ import static org.apache.kafka.common.security.oauthbearer.internals.secured.Cac
  *   }
  * }
  * </pre>
- *
+ * <p>
  * The AssertionCreator would accept the AssertionJwtTemplate and augment the template header and/or payload
  * with dynamic values. For example, the above header would be augmented with the {@code alg} (algorithm) and
  * {@code typ} (type) values per the OAuth RFC:
@@ -96,7 +96,7 @@ import static org.apache.kafka.common.security.oauthbearer.internals.secured.Cac
  *   "typ": "JWT"
  * }
  * </pre>
- *
+ * <p>
  * And the payload would also be augmented to add the {@code iat} (issued at) and {@code exp} (expiration) timestamps:
  *
  * <pre>

@@ -95,7 +95,8 @@ public class RecordSendTest {
                 }
 
                 request.done();
-            } catch (InterruptedException e) { }
+            } catch (InterruptedException e) {
+            }
         });
         thread.start();
         return request;

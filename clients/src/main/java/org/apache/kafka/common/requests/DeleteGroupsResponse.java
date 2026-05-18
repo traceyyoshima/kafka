@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * Possible error codes:
- *
+ * <p>
  * COORDINATOR_LOAD_IN_PROGRESS (14)
  * COORDINATOR_NOT_AVAILABLE(15)
  * NOT_COORDINATOR (16)
@@ -71,7 +71,7 @@ public class DeleteGroupsResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.results().forEach(result ->
-            updateErrorCounts(counts, Errors.forCode(result.errorCode()))
+                updateErrorCounts(counts, Errors.forCode(result.errorCode()))
         );
         return counts;
     }

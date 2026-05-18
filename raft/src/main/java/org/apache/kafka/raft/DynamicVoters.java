@@ -29,7 +29,7 @@ import java.util.TreeMap;
 
 /**
  * The textual representation of a set of KIP-853 voters.
- *
+ * <p>
  * Since this is used in command-line tools, format changes to the parsing logic require a KIP,
  * and should be backwards compatible.
  */
@@ -37,11 +37,9 @@ public final class DynamicVoters {
     /**
      * Create a DynamicVoters object by parsing an input string.
      *
-     * @param input                         The input string.
-     *
-     * @return                              The DynamicVoters object.
-     *
-     * @throws IllegalArgumentException     If parsing fails.
+     * @param input The input string.
+     * @return The DynamicVoters object.
+     * @throws IllegalArgumentException If parsing fails.
      */
     public static DynamicVoters parse(String input) {
         input = input.trim();
@@ -62,7 +60,7 @@ public final class DynamicVoters {
     /**
      * Create a new DynamicVoters object.
      *
-     * @param voters        The voters.
+     * @param voters The voters.
      */
     public DynamicVoters(Collection<DynamicVoter> voters) {
         if (voters.isEmpty()) {

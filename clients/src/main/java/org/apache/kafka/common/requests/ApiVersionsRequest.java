@@ -32,15 +32,15 @@ public class ApiVersionsRequest extends AbstractRequest {
         private static final String DEFAULT_CLIENT_SOFTWARE_NAME = "apache-kafka-java";
 
         private static final ApiVersionsRequestData DEFAULT_DATA = new ApiVersionsRequestData()
-            .setClientSoftwareName(DEFAULT_CLIENT_SOFTWARE_NAME)
-            .setClientSoftwareVersion(AppInfoParser.getVersion());
+                .setClientSoftwareName(DEFAULT_CLIENT_SOFTWARE_NAME)
+                .setClientSoftwareVersion(AppInfoParser.getVersion());
 
         private final ApiVersionsRequestData data;
 
         public Builder() {
             this(DEFAULT_DATA,
-                ApiKeys.API_VERSIONS.oldestVersion(),
-                ApiKeys.API_VERSIONS.latestVersion());
+                    ApiKeys.API_VERSIONS.oldestVersion(),
+                    ApiKeys.API_VERSIONS.latestVersion());
         }
 
         public Builder(short version) {
@@ -48,9 +48,9 @@ public class ApiVersionsRequest extends AbstractRequest {
         }
 
         public Builder(
-            ApiVersionsRequestData data,
-            short oldestAllowedVersion,
-            short latestAllowedVersion
+                ApiVersionsRequestData data,
+                short oldestAllowedVersion,
+                short latestAllowedVersion
         ) {
             super(ApiKeys.API_VERSIONS, oldestAllowedVersion, latestAllowedVersion);
             this.data = data.duplicate();
@@ -96,7 +96,7 @@ public class ApiVersionsRequest extends AbstractRequest {
     public boolean isValid() {
         if (version() >= 3) {
             return SOFTWARE_NAME_VERSION_PATTERN.matcher(data.clientSoftwareName()).matches() &&
-                SOFTWARE_NAME_VERSION_PATTERN.matcher(data.clientSoftwareVersion()).matches();
+                    SOFTWARE_NAME_VERSION_PATTERN.matcher(data.clientSoftwareVersion()).matches();
         } else {
             return true;
         }
@@ -110,7 +110,7 @@ public class ApiVersionsRequest extends AbstractRequest {
     @Override
     public ApiVersionsResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         ApiVersionsResponseData data = new ApiVersionsResponseData()
-            .setErrorCode(Errors.forException(e).code());
+                .setErrorCode(Errors.forException(e).code());
 
         if (version() >= 1) {
             data.setThrottleTimeMs(throttleTimeMs);

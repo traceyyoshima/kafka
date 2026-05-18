@@ -35,13 +35,13 @@ public class AcquisitionLockTimerTask extends TimerTask {
     private volatile boolean hasExpired;
 
     public AcquisitionLockTimerTask(
-        Time time,
-        long delayMs,
-        String memberId,
-        long firstOffset,
-        long lastOffset,
-        AcquisitionLockTimeoutHandler timeoutHandler,
-        SharePartitionMetrics sharePartitionMetrics
+            Time time,
+            long delayMs,
+            String memberId,
+            long firstOffset,
+            long lastOffset,
+            AcquisitionLockTimeoutHandler timeoutHandler,
+            SharePartitionMetrics sharePartitionMetrics
     ) {
         super(delayMs);
         this.expirationMs = time.hiResClockMs() + delayMs;

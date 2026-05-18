@@ -124,9 +124,9 @@ public class SinglePointMetricTest {
         assertEquals(2, point.getAttributesCount());
         for (int i = 0; i < point.getAttributesCount(); i++) {
             assertTrue(
-                point.getAttributes(i).getKey().equals("tag1") || point.getAttributes(i).getKey().equals("tag2"));
+                    point.getAttributes(i).getKey().equals("tag1") || point.getAttributes(i).getKey().equals("tag2"));
             assertTrue(
-                point.getAttributes(i).getValue().getStringValue().equals("value1") || point.getAttributes(i).getValue().getStringValue().equals("value2"));
+                    point.getAttributes(i).getValue().getStringValue().equals("value1") || point.getAttributes(i).getValue().getStringValue().equals("value2"));
         }
 
         gaugeNumber = SinglePointMetric.gauge(metricKey, Long.valueOf(1), now, Collections.singleton("tag1"));
@@ -158,9 +158,9 @@ public class SinglePointMetricTest {
         assertEquals(2, point.getAttributesCount());
         for (int i = 0; i < point.getAttributesCount(); i++) {
             assertTrue(
-                point.getAttributes(i).getKey().equals("tag1") || point.getAttributes(i).getKey().equals("tag2"));
+                    point.getAttributes(i).getKey().equals("tag1") || point.getAttributes(i).getKey().equals("tag2"));
             assertTrue(
-                point.getAttributes(i).getValue().getStringValue().equals("value1") || point.getAttributes(i).getValue().getStringValue().equals("value2"));
+                    point.getAttributes(i).getValue().getStringValue().equals("value1") || point.getAttributes(i).getValue().getStringValue().equals("value2"));
         }
 
         gaugeNumber = SinglePointMetric.gauge(metricKey, 1.0, now, Collections.singleton("tag1"));
@@ -233,9 +233,9 @@ public class SinglePointMetricTest {
         assertEquals(2, point.getAttributesCount());
         for (int i = 0; i < point.getAttributesCount(); i++) {
             assertTrue(
-                point.getAttributes(i).getKey().equals("tag1") || point.getAttributes(i).getKey().equals("tag2"));
+                    point.getAttributes(i).getKey().equals("tag1") || point.getAttributes(i).getKey().equals("tag2"));
             assertTrue(
-                point.getAttributes(i).getValue().getStringValue().equals("value1") || point.getAttributes(i).getValue().getStringValue().equals("value2"));
+                    point.getAttributes(i).getValue().getStringValue().equals("value1") || point.getAttributes(i).getValue().getStringValue().equals("value2"));
         }
 
         gaugeNumber = SinglePointMetric.sum(metricKey, 1.0, true, now, Collections.singleton("tag1"));
@@ -286,9 +286,9 @@ public class SinglePointMetricTest {
         assertEquals(2, point.getAttributesCount());
         for (int i = 0; i < point.getAttributesCount(); i++) {
             assertTrue(
-                point.getAttributes(i).getKey().equals("tag1") || point.getAttributes(i).getKey().equals("tag2"));
+                    point.getAttributes(i).getKey().equals("tag1") || point.getAttributes(i).getKey().equals("tag2"));
             assertTrue(
-                point.getAttributes(i).getValue().getStringValue().equals("value1") || point.getAttributes(i).getValue().getStringValue().equals("value2"));
+                    point.getAttributes(i).getValue().getStringValue().equals("value1") || point.getAttributes(i).getValue().getStringValue().equals("value2"));
         }
 
         gaugeNumber = SinglePointMetric.deltaSum(metricKey, 1.0, true, now, now, Collections.singleton("tag1"));

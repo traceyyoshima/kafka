@@ -33,12 +33,13 @@ import static org.apache.kafka.tiered.storage.specs.RemoteFetchCount.OperationTy
 
 /**
  * Test Cases:
- *    Elementary offloads and fetches from tiered storage using consumer with read_committed isolation level.
+ * Elementary offloads and fetches from tiered storage using consumer with read_committed isolation level.
  */
 public final class OffloadAndTxnConsumeFromLeaderTest extends TieredStorageTestHarness {
 
     /**
      * Cluster of one broker
+     *
      * @return number of brokers in the cluster
      */
     @Override

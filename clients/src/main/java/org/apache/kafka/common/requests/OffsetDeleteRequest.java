@@ -53,9 +53,9 @@ public class OffsetDeleteRequest extends AbstractRequest {
 
     public AbstractResponse getErrorResponse(int throttleTimeMs, Errors error) {
         return new OffsetDeleteResponse(
-            new OffsetDeleteResponseData()
-                .setThrottleTimeMs(throttleTimeMs)
-                .setErrorCode(error.code())
+                new OffsetDeleteResponseData()
+                        .setThrottleTimeMs(throttleTimeMs)
+                        .setErrorCode(error.code())
         );
     }
 

@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 /**
  * This class is used for use cases which require requests to be sent to all
  * brokers in the cluster.
- *
+ * <p>
  * This is a slightly degenerate case of a lookup strategy in the sense that
  * the broker IDs are used as both the keys and values. Also, unlike
  * {@link CoordinatorStrategy} and {@link PartitionLeaderStrategy}, we do not
@@ -55,7 +55,7 @@ public class AllBrokersStrategy implements AdminApiLookupStrategy<AllBrokersStra
     private final Logger log;
 
     public AllBrokersStrategy(
-        LogContext logContext
+            LogContext logContext
     ) {
         this.log = logContext.logger(AllBrokersStrategy.class);
     }
@@ -87,14 +87,14 @@ public class AllBrokersStrategy implements AdminApiLookupStrategy<AllBrokersStra
         }
 
         Map<BrokerKey, Integer> brokerKeys = brokers.stream().collect(Collectors.toMap(
-            broker -> new BrokerKey(OptionalInt.of(broker.nodeId())),
-            MetadataResponseData.MetadataResponseBroker::nodeId
+                broker -> new BrokerKey(OptionalInt.of(broker.nodeId())),
+                MetadataResponseData.MetadataResponseBroker::nodeId
         ));
 
         return new LookupResult<>(
-            Collections.singletonList(ANY_BROKER),
-            Collections.emptyMap(),
-            brokerKeys
+                Collections.singletonList(ANY_BROKER),
+                Collections.emptyMap(),
+                brokerKeys
         );
     }
 
@@ -131,8 +131,8 @@ public class AllBrokersStrategy implements AdminApiLookupStrategy<AllBrokersStra
         @Override
         public String toString() {
             return "BrokerKey(" +
-                "brokerId=" + brokerId +
-                ')';
+                    "brokerId=" + brokerId +
+                    ')';
         }
     }
 

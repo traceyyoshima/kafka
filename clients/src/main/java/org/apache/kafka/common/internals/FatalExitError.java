@@ -21,7 +21,7 @@ import org.apache.kafka.common.utils.internals.Exit;
 /**
  * An error that indicates the need to exit the JVM process. This should only be used by the server or command-line
  * tools. Clients should never shutdown the JVM process.
- *
+ * <p>
  * This exception is expected to be caught at the highest level of the thread so that no shared lock is held by
  * the thread when it calls {@link Exit#exit(int)}.
  */

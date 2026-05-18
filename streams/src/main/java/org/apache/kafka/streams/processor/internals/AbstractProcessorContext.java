@@ -115,7 +115,8 @@ public abstract class AbstractProcessorContext<KOut, VOut> implements InternalPr
     @Override
     public void register(final StateStore store,
                          final StateRestoreCallback stateRestoreCallback) {
-        register(store, stateRestoreCallback, () -> { });
+        register(store, stateRestoreCallback, () -> {
+        });
     }
 
     @Override

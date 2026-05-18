@@ -22,9 +22,9 @@ import java.util.Properties;
 
 /**
  * The base class for in-built admin clients.
- *
+ * <p>
  * Client code should use the newer {@link Admin} interface in preference to this class.
- *
+ * <p>
  * This class may be removed in a later release, but has not been marked as deprecated to avoid unnecessary noise.
  */
 public abstract class AdminClient implements Admin {

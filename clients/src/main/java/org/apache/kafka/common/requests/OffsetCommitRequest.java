@@ -63,20 +63,20 @@ public class OffsetCommitRequest extends AbstractRequest {
         public OffsetCommitRequest build(short version) {
             if (data.groupInstanceId() != null && version < 7) {
                 throw new UnsupportedVersionException("The broker offset commit api version " +
-                    version + " does not support usage of config group.instance.id.");
+                        version + " does not support usage of config group.instance.id.");
             }
             if (version >= 10) {
                 data.topics().forEach(topic -> {
                     if (topic.topicId() == null || topic.topicId().equals(Uuid.ZERO_UUID)) {
                         throw new UnsupportedVersionException("The broker offset commit api version " +
-                            version + " does require usage of topic ids.");
+                                version + " does require usage of topic ids.");
                     }
                 });
             } else {
                 data.topics().forEach(topic -> {
                     if (topic.name() == null || topic.name().isEmpty()) {
                         throw new UnsupportedVersionException("The broker offset commit api version " +
-                            version + " does require usage of topic names.");
+                                version + " does require usage of topic names.");
                     }
                 });
             }
@@ -111,20 +111,20 @@ public class OffsetCommitRequest extends AbstractRequest {
     }
 
     public static OffsetCommitResponseData getErrorResponse(
-        OffsetCommitRequestData request,
-        Errors error
+            OffsetCommitRequestData request,
+            Errors error
     ) {
         OffsetCommitResponseData response = new OffsetCommitResponseData();
         request.topics().forEach(topic -> {
             OffsetCommitResponseTopic responseTopic = new OffsetCommitResponseTopic()
-                .setTopicId(topic.topicId())
-                .setName(topic.name());
+                    .setTopicId(topic.topicId())
+                    .setName(topic.name());
             response.topics().add(responseTopic);
 
             topic.partitions().forEach(partition ->
-                responseTopic.partitions().add(new OffsetCommitResponsePartition()
-                    .setPartitionIndex(partition.partitionIndex())
-                    .setErrorCode(error.code()))
+                    responseTopic.partitions().add(new OffsetCommitResponsePartition()
+                            .setPartitionIndex(partition.partitionIndex())
+                            .setErrorCode(error.code()))
             );
         });
         return response;
@@ -133,7 +133,7 @@ public class OffsetCommitRequest extends AbstractRequest {
     @Override
     public OffsetCommitResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new OffsetCommitResponse(getErrorResponse(data, Errors.forException(e))
-            .setThrottleTimeMs(throttleTimeMs));
+                .setThrottleTimeMs(throttleTimeMs));
     }
 
     @Override

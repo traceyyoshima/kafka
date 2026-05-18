@@ -30,7 +30,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class StreamsThreadMetricsDelegatingReporter implements MetricsReporter {
-    
+
     private static final Logger log = LoggerFactory.getLogger(StreamsThreadMetricsDelegatingReporter.class);
     private static final String THREAD_ID_TAG = "thread-id";
     private final Consumer<byte[], byte[]> consumer;

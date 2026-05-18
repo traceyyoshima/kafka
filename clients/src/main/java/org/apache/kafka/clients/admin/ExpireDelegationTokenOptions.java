@@ -25,11 +25,11 @@ public class ExpireDelegationTokenOptions extends AbstractOptions<ExpireDelegati
 
     /**
      * @param expiryTimePeriodMs the time period until we should expire this token.
-     * {@code expiryTimePeriodMs} &gt;= 0: the token will update the expiration timestamp to min(now + expiryTimePeriodMs, maxTimestamp)
-     * {@code expiryTimePeriodMs} &lt; 0: token will be expired immediately.
+     *                           {@code expiryTimePeriodMs} &gt;= 0: the token will update the expiration timestamp to min(now + expiryTimePeriodMs, maxTimestamp)
+     *                           {@code expiryTimePeriodMs} &lt; 0: token will be expired immediately.
      */
     public ExpireDelegationTokenOptions expiryTimePeriodMs(
-        long expiryTimePeriodMs
+            long expiryTimePeriodMs
     ) {
         this.expiryTimePeriodMs = expiryTimePeriodMs;
         return this;

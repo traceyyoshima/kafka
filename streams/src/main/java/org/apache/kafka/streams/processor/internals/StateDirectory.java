@@ -137,7 +137,6 @@ public class StateDirectory implements AutoCloseable {
      *                            system, we would go ahead and auto-create the corresponding application / task / store
      *                            directories whenever necessary; otherwise no directories would be created.
      * @param hasNamedTopologies  whether this application is composed of independent named topologies
-     *
      * @throws ProcessorStateException if the base state directory or application state directory does not exist
      *                                 and could not be created when hasPersistentStores is enabled.
      */
@@ -154,20 +153,20 @@ public class StateDirectory implements AutoCloseable {
         if (this.hasPersistentStores) {
             if (!baseDir.exists() && !baseDir.mkdirs()) {
                 throw new ProcessorStateException(
-                    String.format("base state directory [%s] doesn't exist and couldn't be created", stateDirName));
+                        String.format("base state directory [%s] doesn't exist and couldn't be created", stateDirName));
             }
             if (!stateDir.exists() && !stateDir.mkdir()) {
                 throw new ProcessorStateException(
-                    String.format("state directory [%s] doesn't exist and couldn't be created", stateDir.getPath()));
+                        String.format("state directory [%s] doesn't exist and couldn't be created", stateDir.getPath()));
             } else if (stateDir.exists() && !stateDir.isDirectory()) {
                 throw new ProcessorStateException(
-                    String.format("state directory [%s] can't be created as there is an existing file with the same name", stateDir.getPath()));
+                        String.format("state directory [%s] can't be created as there is an existing file with the same name", stateDir.getPath()));
             }
 
             if (stateDirName.startsWith(System.getProperty("java.io.tmpdir"))) {
                 log.warn("Using an OS temp directory in the state.dir property can cause failures with writing" +
-                    " the checkpoint file due to the fact that this directory can be cleared by the OS." +
-                    " Resolved state.dir: [" + stateDirName + "]");
+                        " the checkpoint file due to the fact that this directory can be cleared by the OS." +
+                        " Resolved state.dir: [" + stateDirName + "]");
 
             }
             // change the dir permission to "rwxr-x---" to avoid world readable
@@ -215,15 +214,15 @@ public class StateDirectory implements AutoCloseable {
         } catch (final IOException e) {
             log.error("Unable to lock the state directory due to unexpected exception", e);
             throw new ProcessorStateException(String.format("Failed to lock the state directory [%s] during startup",
-                stateDir.getAbsolutePath()), e);
+                    stateDir.getAbsolutePath()), e);
         }
         return stateDirLock != null;
     }
 
     /**
-     * @throws LockException If another process already locks any of StateDirectory
+     * @throws LockException           If another process already locks any of StateDirectory
      * @throws ProcessorStateException if any of task directory does not exist and could not be created
-    */
+     */
     public void initializeStartupStores(final TopologyMetadata topologyMetadata,
                                         final LogContext logContext,
                                         final StreamsMetricsImpl metricsImpl) {
@@ -251,12 +250,12 @@ public class StateDirectory implements AutoCloseable {
                             .collect(Collectors.toSet());
                     // Open a temporary state manager that will open the stores inside the subtopology
                     final ProcessorStateManager temporaryStateManager = ProcessorStateManager.createStartupTaskStateManager(
-                        task,
-                        eosEnabled,
-                        logContext,
-                        this,
-                        subTopology.storeToChangelogTopic(),
-                        inputPartitions
+                            task,
+                            eosEnabled,
+                            logContext,
+                            this,
+                            subTopology.storeToChangelogTopic(),
+                            inputPartitions
                     );
 
                     final StartupContext initContext = new StartupContext(task, config, temporaryStateManager, metricsImpl, dummyCache);
@@ -346,8 +345,8 @@ public class StateDirectory implements AutoCloseable {
         if (!lockStateDirectory()) {
             log.error("Unable to obtain lock as state directory is already locked by another process");
             throw new StreamsException(String.format("Unable to initialize state, this can happen if multiple instances of " +
-                                           "Kafka Streams are running in the same state directory " +
-                                           "(current state directory is [%s]", stateDir.getAbsolutePath()));
+                    "Kafka Streams are running in the same state directory " +
+                    "(current state directory is [%s]", stateDir.getAbsolutePath()));
         }
 
         final File processFile = new File(stateDir, PROCESS_FILE_NAME);
@@ -379,6 +378,7 @@ public class StateDirectory implements AutoCloseable {
 
     /**
      * Get or create the directory for the provided {@link TaskId}.
+     *
      * @return directory for the {@link TaskId}
      * @throws ProcessorStateException if the task directory does not exist and could not be created
      */
@@ -394,17 +394,17 @@ public class StateDirectory implements AutoCloseable {
                     // and the blocking one fails when trying to create it after it's unblocked
                     if (!taskParentDir.exists() && !taskParentDir.mkdir()) {
                         throw new ProcessorStateException(
-                            String.format("Parent [%s] of task directory [%s] doesn't exist and couldn't be created",
-                                taskParentDir.getPath(), taskDir.getPath()));
+                                String.format("Parent [%s] of task directory [%s] doesn't exist and couldn't be created",
+                                        taskParentDir.getPath(), taskDir.getPath()));
                     }
                     if (!taskDir.exists() && !taskDir.mkdir()) {
                         throw new ProcessorStateException(
-                            String.format("task directory [%s] doesn't exist and couldn't be created", taskDir.getPath()));
+                                String.format("task directory [%s] doesn't exist and couldn't be created", taskDir.getPath()));
                     }
                 }
             } else if (!taskDir.isDirectory()) {
                 throw new ProcessorStateException(
-                    String.format("state directory [%s] can't be created as there is an existing file with the same name", taskDir.getPath()));
+                        String.format("state directory [%s] can't be created as there is an existing file with the same name", taskDir.getPath()));
             }
         }
         return taskDir;
@@ -464,6 +464,7 @@ public class StateDirectory implements AutoCloseable {
 
     /**
      * Get or create the directory for the global stores.
+     *
      * @return directory for the global stores
      * @throws ProcessorStateException if the global store directory does not exists and could not be created
      */
@@ -472,10 +473,10 @@ public class StateDirectory implements AutoCloseable {
         if (hasPersistentStores) {
             if (!dir.exists() && !dir.mkdir()) {
                 throw new ProcessorStateException(
-                    String.format("global state directory [%s] doesn't exist and couldn't be created", dir.getPath()));
+                        String.format("global state directory [%s] doesn't exist and couldn't be created", dir.getPath()));
             } else if (dir.exists() && !dir.isDirectory()) {
                 throw new ProcessorStateException(
-                    String.format("global state directory [%s] can't be created as there is an existing file with the same name", dir.getPath()));
+                        String.format("global state directory [%s] can't be created as there is an existing file with the same name", dir.getPath()));
             }
         }
         return dir;
@@ -487,6 +488,7 @@ public class StateDirectory implements AutoCloseable {
 
     /**
      * Get the lock for the {@link TaskId}s directory if it is available
+     *
      * @param taskId task id
      * @return true if successful
      */
@@ -568,9 +570,9 @@ public class StateDirectory implements AutoCloseable {
             }
         } catch (final IOException exception) {
             log.error(
-                String.format("%s Failed to delete global state directory of %s due to an unexpected exception",
-                    logPrefix(), appId),
-                exception
+                    String.format("%s Failed to delete global state directory of %s due to an unexpected exception",
+                            logPrefix(), appId),
+                    exception
             );
             throw new StreamsException(exception);
         }
@@ -578,15 +580,15 @@ public class StateDirectory implements AutoCloseable {
         try {
             if (hasPersistentStores && stateDir.exists() && !stateDir.delete()) {
                 log.warn(
-                    String.format("%s Failed to delete state store directory of %s for it is not empty",
-                        logPrefix(), stateDir.getAbsolutePath())
+                        String.format("%s Failed to delete state store directory of %s for it is not empty",
+                                logPrefix(), stateDir.getAbsolutePath())
                 );
             }
         } catch (final SecurityException exception) {
             log.error(
-                String.format("%s Failed to delete state store directory of %s due to an unexpected exception",
-                    logPrefix(), stateDir.getAbsolutePath()),
-                exception
+                    String.format("%s Failed to delete state store directory of %s due to an unexpected exception",
+                            logPrefix(), stateDir.getAbsolutePath()),
+                    exception
             );
             throw new StreamsException(exception);
         }
@@ -596,6 +598,7 @@ public class StateDirectory implements AutoCloseable {
      * Remove the directories for any {@link TaskId}s that are no-longer
      * owned by this {@link StreamThread} and aren't locked by either
      * another process or another {@link StreamThread}
+     *
      * @param cleanupDelayMs only remove directories if they haven't been modified for at least
      *                       this amount of time (milliseconds)
      */
@@ -619,16 +622,16 @@ public class StateDirectory implements AutoCloseable {
                         if (now - cleanupDelayMs > lastModifiedMs) {
                             removeTaskOffsets(id);
                             log.info("{} Deleting obsolete state directory {} for task {} as {}ms has elapsed (cleanup delay is {}ms).",
-                                logPrefix(), dirName, id, now - lastModifiedMs, cleanupDelayMs);
+                                    logPrefix(), dirName, id, now - lastModifiedMs, cleanupDelayMs);
                             removeStartupState(id);
                             Utils.delete(taskDir.file());
                         }
                     }
                 } catch (final IOException exception) {
                     log.warn(
-                        String.format("%s Swallowed the following exception during deletion of obsolete state directory %s for task %s:",
-                            logPrefix(), dirName, id),
-                        exception
+                            String.format("%s Swallowed the following exception during deletion of obsolete state directory %s for task %s:",
+                                    logPrefix(), dirName, id),
+                            exception
                     );
                 } finally {
                     unlock(id);
@@ -643,9 +646,9 @@ public class StateDirectory implements AutoCloseable {
      * Purges local state directories and checkpoint files during application startup.
      *
      * @param dirMaxAgeMs the time-based threshold in milliseconds. Only state directories
-     * and checkpoint files that have not been modified for at least
-     * this amount of time (corresponding to the
-     * {@code state.cleanup.dir.max.age.ms} property) will be removed.
+     *                    and checkpoint files that have not been modified for at least
+     *                    this amount of time (corresponding to the
+     *                    {@code state.cleanup.dir.max.age.ms} property) will be removed.
      */
     public synchronized void cleanOutdatedDirsOnStartup(final long dirMaxAgeMs) {
         try {
@@ -681,8 +684,9 @@ public class StateDirectory implements AutoCloseable {
 
     /**
      * Cleans up any leftover named topology directories that are empty, if any exist
+     *
      * @param logExceptionAsWarn if true, an exception will be logged as a warning
-     *                       if false, an exception will be logged as error
+     *                           if false, an exception will be logged as error
      * @return the first IOException to be encountered
      */
     private IOException maybeCleanEmptyNamedTopologyDirs(final boolean logExceptionAsWarn) {
@@ -706,15 +710,15 @@ public class StateDirectory implements AutoCloseable {
                     } catch (final IOException exception) {
                         if (logExceptionAsWarn) {
                             log.warn(
-                                String.format("%sSwallowed the following exception during deletion of named topology directory %s",
-                                    logPrefix(), namedTopologyDir.getName()),
-                                exception
+                                    String.format("%sSwallowed the following exception during deletion of named topology directory %s",
+                                            logPrefix(), namedTopologyDir.getName()),
+                                    exception
                             );
                         } else {
                             log.error(
-                                String.format("%s Failed to delete named topology directory %s with exception:",
-                                    logPrefix(), namedTopologyDir.getName()),
-                                exception
+                                    String.format("%s Failed to delete named topology directory %s with exception:",
+                                            logPrefix(), namedTopologyDir.getName()),
+                                    exception
                             );
                         }
                         firstException.compareAndSet(null, exception);
@@ -742,14 +746,14 @@ public class StateDirectory implements AutoCloseable {
         } catch (final IOException e) {
             log.error("Hit an unexpected error while clearing local state for topology " + topologyName, e);
             throw new StreamsException("Unable to delete state for the named topology " + topologyName,
-                                       e, new TaskId(-1, -1, topologyName)); // use dummy taskid to report source topology for this error
+                    e, new TaskId(-1, -1, topologyName)); // use dummy taskid to report source topology for this error
         }
     }
 
     private void cleanStateAndTaskDirectoriesCalledByUser() throws Exception {
         if (!lockedTasksToOwner.isEmpty()) {
             log.warn("Found some still-locked task directories when user requested to cleaning up the state, "
-                + "since Streams is not running any more these will be ignored to complete the cleanup");
+                    + "since Streams is not running any more these will be ignored to complete the cleanup");
         }
         taskOffsetSums.clear();
         final AtomicReference<Exception> firstException = new AtomicReference<>();
@@ -758,18 +762,18 @@ public class StateDirectory implements AutoCloseable {
             final TaskId id = parseTaskDirectoryName(dirName, taskDir.namedTopology());
             try {
                 log.info("{} Deleting task directory {} for {} as user calling cleanup.",
-                    logPrefix(), dirName, id);
+                        logPrefix(), dirName, id);
 
                 if (lockedTasksToOwner.containsKey(id)) {
                     log.warn("{} Task {} in state directory {} was still locked by {}",
-                        logPrefix(), dirName, id, lockedTasksToOwner.get(id));
+                            logPrefix(), dirName, id, lockedTasksToOwner.get(id));
                 }
                 Utils.delete(taskDir.file());
             } catch (final IOException exception) {
                 log.error(
-                    String.format("%s Failed to delete task directory %s for %s with exception:",
-                        logPrefix(), dirName, id),
-                    exception
+                        String.format("%s Failed to delete task directory %s for %s with exception:",
+                                logPrefix(), dirName, id),
+                        exception
                 );
                 firstException.compareAndSet(null, exception);
             }
@@ -785,6 +789,7 @@ public class StateDirectory implements AutoCloseable {
 
     /**
      * List all of the task directories that are non-empty
+     *
      * @return The list of all the non-empty local directories for stream tasks
      */
     List<TaskDirectory> listNonEmptyTaskDirectories() {
@@ -799,6 +804,7 @@ public class StateDirectory implements AutoCloseable {
 
     /**
      * List all of the task directories along with their parent directory if they belong to a named topology
+     *
      * @return The list of all the existing local directories for stream tasks
      */
     List<TaskDirectory> listAllTaskDirectories() {
@@ -814,15 +820,15 @@ public class StateDirectory implements AutoCloseable {
                     final File[] taskDirs = namedTopologyDir.listFiles(filter);
                     if (taskDirs != null) {
                         taskDirectories.addAll(Arrays.stream(taskDirs)
-                            .map(f -> new TaskDirectory(f, namedTopology)).collect(Collectors.toList()));
+                                .map(f -> new TaskDirectory(f, namedTopology)).collect(Collectors.toList()));
                     }
                 }
             } else {
                 final File[] taskDirs =
-                    stateDir.listFiles(filter);
+                        stateDir.listFiles(filter);
                 if (taskDirs != null) {
                     taskDirectories.addAll(Arrays.stream(taskDirs)
-                                               .map(f -> new TaskDirectory(f, null)).collect(Collectors.toList()));
+                            .map(f -> new TaskDirectory(f, null)).collect(Collectors.toList()));
                 }
             }
         }
@@ -831,7 +837,7 @@ public class StateDirectory implements AutoCloseable {
     }
 
     private List<File> listNamedTopologyDirs() {
-        final File[] namedTopologyDirectories = stateDir.listFiles(f -> f.getName().startsWith("__") &&  f.getName().endsWith("__"));
+        final File[] namedTopologyDirectories = stateDir.listFiles(f -> f.getName().startsWith("__") && f.getName().endsWith("__"));
         return namedTopologyDirectories != null ? Arrays.asList(namedTopologyDirectories) : Collections.emptyList();
     }
 
@@ -874,7 +880,7 @@ public class StateDirectory implements AutoCloseable {
             }
             final TaskDirectory that = (TaskDirectory) o;
             return file.equals(that.file) &&
-                Objects.equals(namedTopology, that.namedTopology);
+                    Objects.equals(namedTopology, that.namedTopology);
         }
 
         @Override

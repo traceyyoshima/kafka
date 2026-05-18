@@ -51,7 +51,7 @@ public class MemoryLRUCache implements KeyValueStore<Bytes, byte[]> {
     protected final Map<Bytes, byte[]> map;
 
     private boolean restoring = false; // TODO: this is a sub-optimal solution to avoid logging during restoration.
-                                       // in the future we should augment the StateRestoreCallback with onComplete etc to better resolve this.
+    // in the future we should augment the StateRestoreCallback with onComplete etc to better resolve this.
     private volatile boolean open = true;
     protected StateStoreContext context;
 
@@ -87,27 +87,27 @@ public class MemoryLRUCache implements KeyValueStore<Bytes, byte[]> {
     @Override
     public void init(final StateStoreContext stateStoreContext, final StateStore root) {
         final boolean consistencyEnabled = StreamsConfig.InternalConfig.getBoolean(
-            stateStoreContext.appConfigs(),
-            IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
-            false
+                stateStoreContext.appConfigs(),
+                IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
+                false
         );
         // register the store
         stateStoreContext.register(
-            root,
-            (RecordBatchingStateRestoreCallback) records -> {
-                restoring = true;
-                synchronized (position) {
-                    for (final ConsumerRecord<byte[], byte[]> record : records) {
-                        put(Bytes.wrap(record.key()), record.value());
-                        ChangelogRecordDeserializationHelper.applyChecksAndUpdatePosition(
-                            record,
-                            consistencyEnabled,
-                            position
-                        );
+                root,
+                (RecordBatchingStateRestoreCallback) records -> {
+                    restoring = true;
+                    synchronized (position) {
+                        for (final ConsumerRecord<byte[], byte[]> record : records) {
+                            put(Bytes.wrap(record.key()), record.value());
+                            ChangelogRecordDeserializationHelper.applyChecksAndUpdatePosition(
+                                    record,
+                                    consistencyEnabled,
+                                    position
+                            );
+                        }
                     }
+                    restoring = false;
                 }
-                restoring = false;
-            }
         );
         this.context = stateStoreContext;
     }

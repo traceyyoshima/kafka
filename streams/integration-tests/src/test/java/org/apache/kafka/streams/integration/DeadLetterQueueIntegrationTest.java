@@ -102,9 +102,9 @@ public class DeadLetterQueueIntegrationTest {
     public void createTopics(final TestInfo testInfo) throws Exception {
         applicationId = "appId-" + safeUniqueTestName(testInfo);
         cluster.deleteTopics(
-            INPUT_TOPIC,
-            OUTPUT_TOPIC,
-            DLQ_TOPIC);
+                INPUT_TOPIC,
+                OUTPUT_TOPIC,
+                DLQ_TOPIC);
         cluster.createTopic(INPUT_TOPIC, NUM_TOPIC_PARTITIONS, 1);
         cluster.createTopic(OUTPUT_TOPIC, NUM_TOPIC_PARTITIONS, 1);
         cluster.createTopic(DLQ_TOPIC, NUM_TOPIC_PARTITIONS, 1);
@@ -118,10 +118,10 @@ public class DeadLetterQueueIntegrationTest {
 
             // Produce data to the input topic
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                INPUT_TOPIC,
-                data,
-                TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                cluster.time
+                    INPUT_TOPIC,
+                    data,
+                    TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    cluster.time
             );
 
             // Consume the output records
@@ -157,10 +157,10 @@ public class DeadLetterQueueIntegrationTest {
 
             // Produce data to the input topic
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                INPUT_TOPIC,
-                data,
-                TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                cluster.time
+                    INPUT_TOPIC,
+                    data,
+                    TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    cluster.time
             );
 
             // Consume the output records
@@ -198,16 +198,16 @@ public class DeadLetterQueueIntegrationTest {
 
             // Produce data to the input topic
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                INPUT_TOPIC,
-                data,
-                TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                cluster.time
+                    INPUT_TOPIC,
+                    data,
+                    TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    cluster.time
             );
 
             // Consume the output records
             final List<ConsumerRecord<String, String>> outputRecords = readResult(OUTPUT_TOPIC, 1, StringDeserializer.class, StringDeserializer.class, 30000L);
 
-           // Only the first record is available
+            // Only the first record is available
             assertEquals(1, outputRecords.size(), "Only one record should be available in the output topic");
             assertEquals("value-1", outputRecords.get(0).value(), "Output record should be the first one");
 
@@ -237,10 +237,10 @@ public class DeadLetterQueueIntegrationTest {
 
             // Produce data to the input topic
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                INPUT_TOPIC,
-                data,
-                TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                cluster.time
+                    INPUT_TOPIC,
+                    data,
+                    TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    cluster.time
             );
 
             // Consume the output records
@@ -278,21 +278,21 @@ public class DeadLetterQueueIntegrationTest {
 
             // Produce data to the input topic
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                INPUT_TOPIC,
-                bytesData,
-                TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, ByteArraySerializer.class),
-                cluster.time
+                    INPUT_TOPIC,
+                    bytesData,
+                    TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, ByteArraySerializer.class),
+                    cluster.time
             );
 
             // Consume the output records
             // No records of the same batch should be available in the output topic due to deserialization error
             final AssertionError error = assertThrows(AssertionError.class,
-                                   () -> readResult(OUTPUT_TOPIC, 1, StringDeserializer.class, StringDeserializer.class, 10000L)
+                    () -> readResult(OUTPUT_TOPIC, 1, StringDeserializer.class, StringDeserializer.class, 10000L)
             );
             assertEquals("""
-                Did not receive all 1 records from topic outputTopic within 10000 ms
-                Expected: is a value equal to or greater than <1>
-                     but: <0> was less than <1>""", error.getMessage());
+                    Did not receive all 1 records from topic outputTopic within 10000 ms
+                    Expected: is a value equal to or greater than <1>
+                         but: <0> was less than <1>""", error.getMessage());
 
             // Consume the DLQ records
             final List<ConsumerRecord<byte[], byte[]>> dlqRecords = readResult(DLQ_TOPIC, 1, ByteArrayDeserializer.class, ByteArrayDeserializer.class, 30000L);
@@ -320,10 +320,10 @@ public class DeadLetterQueueIntegrationTest {
 
             // Produce data to the input topic
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                INPUT_TOPIC,
-                bytesData,
-                TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, ByteArraySerializer.class),
-                cluster.time
+                    INPUT_TOPIC,
+                    bytesData,
+                    TestUtils.producerConfig(cluster.bootstrapServers(), StringSerializer.class, ByteArraySerializer.class),
+                    cluster.time
             );
 
             // Consume the output records
@@ -356,15 +356,15 @@ public class DeadLetterQueueIntegrationTest {
     private KafkaStreams getDslStreams(final String processingExceptionHandlerClass) {
         final StreamsBuilder builder = new StreamsBuilder();
         builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), Serdes.String()))
-            .mapValues((k, v) -> {
-                if ("KABOOM".equals(v)) {
-                    // Simulate a processing error
-                    throw new RuntimeException("KABOOM");
-                }
-                return v;
-            }
-            )
-            .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
+                .mapValues((k, v) -> {
+                            if ("KABOOM".equals(v)) {
+                                // Simulate a processing error
+                                throw new RuntimeException("KABOOM");
+                            }
+                            return v;
+                        }
+                )
+                .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         return new KafkaStreams(builder.build(), getProcessingProperties(processingExceptionHandlerClass));
     }
@@ -372,18 +372,18 @@ public class DeadLetterQueueIntegrationTest {
     private KafkaStreams getProcessorAPIStreams(final String processingExceptionHandlerClass) {
         final StreamsBuilder builder = new StreamsBuilder();
         builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), Serdes.String()))
-            .process(() -> new ContextualProcessor<String, String, String, String>() {
-                @Override
-                public void process(final Record<String, String> record) {
-                    if ("KABOOM".equals(record.value())) {
-                        // Simulate a processing error
-                        throw new RuntimeException("KABOOM");
+                .process(() -> new ContextualProcessor<String, String, String, String>() {
+                    @Override
+                    public void process(final Record<String, String> record) {
+                        if ("KABOOM".equals(record.value())) {
+                            // Simulate a processing error
+                            throw new RuntimeException("KABOOM");
+                        }
+                        // For example, forwarding to another topic
+                        context().forward(record);
                     }
-                    // For example, forwarding to another topic
-                    context().forward(record);
-                }
-            })
-            .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
+                })
+                .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         return new KafkaStreams(builder.build(), getProcessingProperties(processingExceptionHandlerClass));
     }
@@ -391,8 +391,8 @@ public class DeadLetterQueueIntegrationTest {
     private KafkaStreams getDeserializationStreams(final String deserializationExceptionHandlerClass) {
         final StreamsBuilder builder = new StreamsBuilder();
         builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), Serdes.Long()))
-            .mapValues((k, v) -> String.valueOf(v))
-            .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
+                .mapValues((k, v) -> String.valueOf(v))
+                .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         return new KafkaStreams(builder.build(), getDeserializationProperties(deserializationExceptionHandlerClass));
     }
@@ -417,11 +417,11 @@ public class DeadLetterQueueIntegrationTest {
 
     private Properties getConfig(final Properties properties) {
         return StreamsTestUtils.getStreamsConfig(
-            applicationId,
-            cluster.bootstrapServers(),
-            Serdes.StringSerde.class.getName(),
-            Serdes.StringSerde.class.getName(),
-            properties);
+                applicationId,
+                cluster.bootstrapServers(),
+                Serdes.StringSerde.class.getName(),
+                Serdes.StringSerde.class.getName(),
+                properties);
     }
 
     private List<KeyValue<String, String>> prepareData() {
@@ -450,10 +450,10 @@ public class DeadLetterQueueIntegrationTest {
                                                          final Class<? extends Deserializer<V>> valueDeserializer,
                                                          final long timeout) throws Exception {
         return IntegrationTestUtils.waitUntilMinRecordsReceived(
-            TestUtils.consumerConfig(cluster.bootstrapServers(), keyDeserializer, valueDeserializer),
-            topic,
-            numberOfRecords,
-            timeout);
+                TestUtils.consumerConfig(cluster.bootstrapServers(), keyDeserializer, valueDeserializer),
+                topic,
+                numberOfRecords,
+                timeout);
     }
 
 }

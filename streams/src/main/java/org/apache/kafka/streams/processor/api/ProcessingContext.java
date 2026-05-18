@@ -115,9 +115,8 @@ public interface ProcessingContext {
      * partition) may lead to data corruption and/or data loss.
      *
      * @param name The store name
-     * @param <S> The type or interface of the store to return
+     * @param <S>  The type or interface of the store to return
      * @return The state store instance
-     *
      * @throws ClassCastException if the return type isn't a type or interface of the actual returned store.
      */
     <S extends StateStore> S getStateStore(final String name);
@@ -151,7 +150,7 @@ public interface ProcessingContext {
      * </ul>
      *
      * @param interval the time interval between punctuations (supported minimum is 1 millisecond)
-     * @param type one of: {@link PunctuationType#STREAM_TIME}, {@link PunctuationType#WALL_CLOCK_TIME}
+     * @param type     one of: {@link PunctuationType#STREAM_TIME}, {@link PunctuationType#WALL_CLOCK_TIME}
      * @param callback a function consuming timestamps representing the current stream or system time
      * @return a handle allowing cancellation of the punctuation schedule established by this method
      * @throws IllegalArgumentException if the interval is not representable in milliseconds
@@ -187,11 +186,12 @@ public interface ProcessingContext {
      *   <li>with {@link PunctuationType#STREAM_TIME}, when stream time advances more than interval</li>
      *   <li>with {@link PunctuationType#WALL_CLOCK_TIME}, on GC pause, too short interval, ...</li>
      * </ul>
+     *
      * @param startTime the time for the first punctuation. The subsequent trigger times are calculated
      *                  using the {@code startTime} and the {@code interval}
-     * @param interval the time interval between punctuations (supported minimum is 1 millisecond)
-     * @param type one of: {@link PunctuationType#STREAM_TIME}, {@link PunctuationType#WALL_CLOCK_TIME}
-     * @param callback a function consuming timestamps representing the current stream or system time
+     * @param interval  the time interval between punctuations (supported minimum is 1 millisecond)
+     * @param type      one of: {@link PunctuationType#STREAM_TIME}, {@link PunctuationType#WALL_CLOCK_TIME}
+     * @param callback  a function consuming timestamps representing the current stream or system time
      * @return a handle allowing cancellation of the punctuation schedule established by this method
      * @throws IllegalArgumentException if the interval is not representable in milliseconds
      */

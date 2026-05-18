@@ -61,7 +61,7 @@ public class RemoveMembersFromConsumerGroupResultTest {
     public void testTopLevelErrorConstructor() {
         memberFutures.completeExceptionally(Errors.GROUP_AUTHORIZATION_FAILED.exception());
         RemoveMembersFromConsumerGroupResult topLevelErrorResult =
-            new RemoveMembersFromConsumerGroupResult(memberFutures, membersToRemove);
+                new RemoveMembersFromConsumerGroupResult(memberFutures, membersToRemove);
         TestUtils.assertFutureThrows(GroupAuthorizationException.class, topLevelErrorResult.all());
     }
 
@@ -76,7 +76,7 @@ public class RemoveMembersFromConsumerGroupResultTest {
         memberFutures.complete(errorsMap);
         assertFalse(memberFutures.isCompletedExceptionally());
         RemoveMembersFromConsumerGroupResult missingMemberResult =
-            new RemoveMembersFromConsumerGroupResult(memberFutures, membersToRemove);
+                new RemoveMembersFromConsumerGroupResult(memberFutures, membersToRemove);
 
         TestUtils.assertFutureThrows(IllegalArgumentException.class, missingMemberResult.all());
         assertNull(missingMemberResult.memberResult(instanceOne).get());
@@ -87,7 +87,7 @@ public class RemoveMembersFromConsumerGroupResultTest {
     public void testMemberLevelErrorInResponseConstructor() throws InterruptedException, ExecutionException {
         RemoveMembersFromConsumerGroupResult memberLevelErrorResult = createAndVerifyMemberLevelError();
         assertThrows(IllegalArgumentException.class, () -> memberLevelErrorResult.memberResult(
-            new MemberToRemove("invalid-instance-id"))
+                new MemberToRemove("invalid-instance-id"))
         );
     }
 
@@ -97,7 +97,7 @@ public class RemoveMembersFromConsumerGroupResultTest {
         errorsMap.put(instanceOne.toMemberIdentity(), Errors.NONE);
         errorsMap.put(instanceTwo.toMemberIdentity(), Errors.NONE);
         RemoveMembersFromConsumerGroupResult noErrorResult =
-            new RemoveMembersFromConsumerGroupResult(memberFutures, membersToRemove);
+                new RemoveMembersFromConsumerGroupResult(memberFutures, membersToRemove);
         memberFutures.complete(errorsMap);
 
         assertNull(noErrorResult.all().get());
@@ -109,7 +109,7 @@ public class RemoveMembersFromConsumerGroupResultTest {
         memberFutures.complete(errorsMap);
         assertFalse(memberFutures.isCompletedExceptionally());
         RemoveMembersFromConsumerGroupResult memberLevelErrorResult =
-            new RemoveMembersFromConsumerGroupResult(memberFutures, membersToRemove);
+                new RemoveMembersFromConsumerGroupResult(memberFutures, membersToRemove);
 
         TestUtils.assertFutureThrows(FencedInstanceIdException.class, memberLevelErrorResult.all());
         assertNull(memberLevelErrorResult.memberResult(instanceOne).get());

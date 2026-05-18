@@ -128,11 +128,11 @@ public class LegacyStickyTaskAssignor implements LegacyTaskAssignor {
                 final Set<ProcessId> ids = findClientsWithoutAssignedTask(taskId);
                 if (ids.isEmpty()) {
                     log.warn("Unable to assign {} of {} standby tasks for task [{}]. " +
-                                     "There is not enough available capacity. You should " +
-                                     "increase the number of threads and/or application instances " +
-                                     "to maintain the requested number of standby replicas.",
-                             numStandbyReplicas - i,
-                             numStandbyReplicas, taskId);
+                                    "There is not enough available capacity. You should " +
+                                    "increase the number of threads and/or application instances " +
+                                    "to maintain the requested number of standby replicas.",
+                            numStandbyReplicas - i,
+                            numStandbyReplicas, taskId);
                     break;
                 }
                 allocateTaskWithClientCandidates(taskId, ids, false);

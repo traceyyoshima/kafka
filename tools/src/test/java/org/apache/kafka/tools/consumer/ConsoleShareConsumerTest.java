@@ -126,8 +126,8 @@ public class ConsoleShareConsumerTest {
 
         //Simulate an error on formatter.writeTo() call
         doThrow(new RuntimeException())
-            .when(formatter)
-            .writeTo(any(), any());
+                .when(formatter)
+                .writeTo(any(), any());
 
         ConsoleShareConsumer.process(1, formatter, consumer, printStream, true, AcknowledgeType.ACCEPT);
 

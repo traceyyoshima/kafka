@@ -43,9 +43,9 @@ public class FenceProducersHandler extends AdminApiHandler.Unbatched<Coordinator
     private final int txnTimeoutMs;
 
     public FenceProducersHandler(
-        FenceProducersOptions options,
-        LogContext logContext,
-        int requestTimeoutMs
+            FenceProducersOptions options,
+            LogContext logContext,
+            int requestTimeoutMs
     ) {
         this.log = logContext.logger(FenceProducersHandler.class);
         this.lookupStrategy = new CoordinatorStrategy(FindCoordinatorRequest.CoordinatorType.TRANSACTION, logContext);
@@ -53,15 +53,15 @@ public class FenceProducersHandler extends AdminApiHandler.Unbatched<Coordinator
     }
 
     public static AdminApiFuture.SimpleAdminApiFuture<CoordinatorKey, ProducerIdAndEpoch> newFuture(
-        Collection<String> transactionalIds
+            Collection<String> transactionalIds
     ) {
         return AdminApiFuture.forKeys(buildKeySet(transactionalIds));
     }
 
     private static Set<CoordinatorKey> buildKeySet(Collection<String> transactionalIds) {
         return transactionalIds.stream()
-            .map(CoordinatorKey::byTransactionalId)
-            .collect(Collectors.toSet());
+                .map(CoordinatorKey::byTransactionalId)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -81,23 +81,23 @@ public class FenceProducersHandler extends AdminApiHandler.Unbatched<Coordinator
                     " when building `InitProducerId` request");
         }
         InitProducerIdRequestData data = new InitProducerIdRequestData()
-            // Because we never include a producer epoch or ID in this request, we expect that some errors
-            // (such as PRODUCER_FENCED) will never be returned in the corresponding broker response.
-            // If we ever modify this logic to include an epoch or producer ID, we will need to update the
-            // error handling logic for this handler to accommodate these new errors.
-            .setProducerEpoch(ProducerIdAndEpoch.NONE.epoch)
-            .setProducerId(ProducerIdAndEpoch.NONE.producerId)
-            .setTransactionalId(key.idValue)
-            // This timeout is used by the coordinator to append the record with the new producer epoch to the transaction log.
-            .setTransactionTimeoutMs(txnTimeoutMs);
+                // Because we never include a producer epoch or ID in this request, we expect that some errors
+                // (such as PRODUCER_FENCED) will never be returned in the corresponding broker response.
+                // If we ever modify this logic to include an epoch or producer ID, we will need to update the
+                // error handling logic for this handler to accommodate these new errors.
+                .setProducerEpoch(ProducerIdAndEpoch.NONE.epoch)
+                .setProducerId(ProducerIdAndEpoch.NONE.producerId)
+                .setTransactionalId(key.idValue)
+                // This timeout is used by the coordinator to append the record with the new producer epoch to the transaction log.
+                .setTransactionTimeoutMs(txnTimeoutMs);
         return new InitProducerIdRequest.Builder(data);
     }
 
     @Override
     public ApiResult<CoordinatorKey, ProducerIdAndEpoch> handleSingleResponse(
-        Node broker,
-        CoordinatorKey key,
-        AbstractResponse abstractResponse
+            Node broker,
+            CoordinatorKey key,
+            AbstractResponse abstractResponse
     ) {
         InitProducerIdResponse response = (InitProducerIdResponse) abstractResponse;
 
@@ -107,16 +107,16 @@ public class FenceProducersHandler extends AdminApiHandler.Unbatched<Coordinator
         }
 
         Map<CoordinatorKey, ProducerIdAndEpoch> completed = Collections.singletonMap(key, new ProducerIdAndEpoch(
-            response.data().producerId(),
-            response.data().producerEpoch()
+                response.data().producerId(),
+                response.data().producerEpoch()
         ));
 
         return new ApiResult<>(completed, Collections.emptyMap(), Collections.emptyList());
     }
 
     private ApiResult<CoordinatorKey, ProducerIdAndEpoch> handleError(
-        CoordinatorKey transactionalIdKey,
-        Errors error
+            CoordinatorKey transactionalIdKey,
+            Errors error
     ) {
         switch (error) {
             case CLUSTER_AUTHORIZATION_FAILED:
@@ -137,7 +137,7 @@ public class FenceProducersHandler extends AdminApiHandler.Unbatched<Coordinator
                 return ApiResult.empty();
             case CONCURRENT_TRANSACTIONS:
                 log.debug("InitProducerId request for transactionalId `{}` failed because of " +
-                                "a concurrent transaction. Will retry", transactionalIdKey.idValue);
+                        "a concurrent transaction. Will retry", transactionalIdKey.idValue);
                 return ApiResult.empty();
 
             case NOT_COORDINATOR:

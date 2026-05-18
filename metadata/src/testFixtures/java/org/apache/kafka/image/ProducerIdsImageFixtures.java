@@ -27,15 +27,15 @@ public final class ProducerIdsImageFixtures {
     public static final ProducerIdsImage IMAGE1 = new ProducerIdsImage(123);
 
     public static final List<ApiMessageAndVersion> DELTA1_RECORDS = List.of(
-        new ApiMessageAndVersion(new ProducerIdsRecord().setBrokerId(2).setBrokerEpoch(100).setNextProducerId(456), (short) 0),
-        new ApiMessageAndVersion(new ProducerIdsRecord().setBrokerId(3).setBrokerEpoch(100).setNextProducerId(780), (short) 0),
-        new ApiMessageAndVersion(new ProducerIdsRecord().setBrokerId(3).setBrokerEpoch(100).setNextProducerId(785), (short) 0),
-        new ApiMessageAndVersion(new ProducerIdsRecord().setBrokerId(2).setBrokerEpoch(100).setNextProducerId(800), (short) 0)
+            new ApiMessageAndVersion(new ProducerIdsRecord().setBrokerId(2).setBrokerEpoch(100).setNextProducerId(456), (short) 0),
+            new ApiMessageAndVersion(new ProducerIdsRecord().setBrokerId(3).setBrokerEpoch(100).setNextProducerId(780), (short) 0),
+            new ApiMessageAndVersion(new ProducerIdsRecord().setBrokerId(3).setBrokerEpoch(100).setNextProducerId(785), (short) 0),
+            new ApiMessageAndVersion(new ProducerIdsRecord().setBrokerId(2).setBrokerEpoch(100).setNextProducerId(800), (short) 0)
     );
 
     public static final ProducerIdsDelta DELTA1 = RecordTestUtils.replayAll(
-        new ProducerIdsDelta(IMAGE1),
-        DELTA1_RECORDS
+            new ProducerIdsDelta(IMAGE1),
+            DELTA1_RECORDS
     );
 
     public static final ProducerIdsImage IMAGE2 = new ProducerIdsImage(800);

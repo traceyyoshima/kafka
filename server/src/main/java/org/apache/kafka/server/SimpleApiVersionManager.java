@@ -40,10 +40,11 @@ public class SimpleApiVersionManager implements ApiVersionManager {
 
     /**
      * SimpleApiVersionManager constructor
-     * @param listenerType the listener type
+     *
+     * @param listenerType              the listener type
      * @param enableUnstableLastVersion whether to enable unstable last version, see
-     *   {@link org.apache.kafka.server.config.ServerConfigs#UNSTABLE_API_VERSIONS_ENABLE_CONFIG}
-     * @param featuresProvider a provider to the finalized features supported
+     *                                  {@link org.apache.kafka.server.config.ServerConfigs#UNSTABLE_API_VERSIONS_ENABLE_CONFIG}
+     * @param featuresProvider          a provider to the finalized features supported
      */
     public SimpleApiVersionManager(ApiMessageType.ListenerType listenerType,
                                    boolean enableUnstableLastVersion,

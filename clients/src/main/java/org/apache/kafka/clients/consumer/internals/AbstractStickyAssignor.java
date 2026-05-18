@@ -65,6 +65,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
     static final class ConsumerGenerationPair {
         final String consumer;
         final int generation;
+
         ConsumerGenerationPair(String consumer, int generation) {
             this.consumer = consumer;
             this.generation = generation;
@@ -102,12 +103,12 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
         AbstractAssignmentBuilder assignmentBuilder;
         if (allSubscriptionsEqual(partitionsPerTopic.keySet(), subscriptions, consumerToOwnedPartitions, partitionsWithMultiplePreviousOwners)) {
             log.debug("Detected that all consumers were subscribed to same set of topics, invoking the "
-                          + "optimized assignment algorithm");
+                    + "optimized assignment algorithm");
             partitionsTransferringOwnership = new HashMap<>();
             assignmentBuilder = new ConstrainedAssignmentBuilder(partitionsPerTopic, rackInfo, consumerToOwnedPartitions, partitionsWithMultiplePreviousOwners);
         } else {
             log.debug("Detected that not all consumers were subscribed to same set of topics, falling back to the "
-                          + "general case assignment algorithm");
+                    + "general case assignment algorithm");
             // we must set this to null for the general case so the cooperative assignor knows to compute it from scratch
             partitionsTransferringOwnership = null;
             assignmentBuilder = new GeneralAssignmentBuilder(partitionsPerTopic, rackInfo, consumerToOwnedPartitions, subscriptions);
@@ -149,7 +150,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
             if (subscribedTopics.isEmpty()) {
                 subscribedTopics.addAll(subscription.topics());
             } else if (isAllSubscriptionsEqual && !(subscription.topics().size() == subscribedTopics.size()
-                && subscribedTopics.containsAll(subscription.topics()))) {
+                    && subscribedTopics.containsAll(subscription.topics()))) {
                 isAllSubscriptionsEqual = false;
             }
 
@@ -338,7 +339,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
                 return true;
             }
 
-            for (ConsumerPair pair: pairs)
+            for (ConsumerPair pair : pairs)
                 if (pair.srcMemberId.equals(src)) {
                     Set<ConsumerPair> reducedSet = new HashSet<>(pairs);
                     reducedSet.remove(pair);
@@ -353,7 +354,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
             List<String> superCycle = new ArrayList<>(cycle);
             superCycle.remove(superCycle.size() - 1);
             superCycle.addAll(cycle);
-            for (List<String> foundCycle: cycles) {
+            for (List<String> foundCycle : cycles) {
                 if (foundCycle.size() == cycle.size() && Collections.indexOfSubList(superCycle, foundCycle) != -1)
                     return true;
             }
@@ -362,7 +363,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
 
         private boolean hasCycles(Set<ConsumerPair> pairs) {
             Set<List<String>> cycles = new HashSet<>();
-            for (ConsumerPair pair: pairs) {
+            for (ConsumerPair pair : pairs) {
                 Set<ConsumerPair> reducedPairs = new HashSet<>(pairs);
                 reducedPairs.remove(pair);
                 List<String> path = new ArrayList<>(Collections.singleton(pair.srcMemberId));
@@ -375,19 +376,19 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
             // for now we want to make sure there is no partition movements of the same topic between a pair of consumers.
             // the odds of finding a cycle among more than two consumers seem to be very low (according to various randomized
             // tests with the given sticky algorithm) that it should not worth the added complexity of handling those cases.
-            for (List<String> cycle: cycles)
+            for (List<String> cycle : cycles)
                 if (cycle.size() == 3) // indicates a cycle of length 2
                     return true;
             return false;
         }
 
         private boolean isSticky() {
-            for (Map.Entry<String, Map<ConsumerPair, Set<TopicPartition>>> topicMovements: this.partitionMovementsByTopic.entrySet()) {
+            for (Map.Entry<String, Map<ConsumerPair, Set<TopicPartition>>> topicMovements : this.partitionMovementsByTopic.entrySet()) {
                 Set<ConsumerPair> topicMovementPairs = topicMovements.getValue().keySet();
                 if (hasCycles(topicMovementPairs)) {
                     log.error("Stickiness is violated for topic {}"
-                        + "\nPartition movements for this topic occurred among the following consumer pairs:"
-                        + "\n{}", topicMovements.getKey(), topicMovements.getValue().toString());
+                            + "\nPartition movements for this topic occurred among the following consumer pairs:"
+                            + "\n{}", topicMovements.getKey(), topicMovements.getValue().toString());
                     return false;
                 }
             }
@@ -439,7 +440,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
         }
 
         private boolean in(Set<ConsumerPair> pairs) {
-            for (ConsumerPair pair: pairs)
+            for (ConsumerPair pair : pairs)
                 if (this.equals(pair))
                     return true;
             return false;
@@ -491,8 +492,8 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
             }
             numConsumersByPartition = partitionRacks.entrySet().stream()
                     .collect(Collectors.toMap(Entry::getKey, e -> e.getValue().stream()
-                        .map(r -> consumersByRack.getOrDefault(r, Collections.emptyList()).size())
-                        .reduce(0, Integer::sum)));
+                            .map(r -> consumersByRack.getOrDefault(r, Collections.emptyList()).size())
+                            .reduce(0, Integer::sum)));
         }
 
         private boolean racksMismatch(String consumer, TopicPartition tp) {
@@ -569,17 +570,17 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
     /**
      * This constrained assignment optimizes the assignment algorithm when all consumers were subscribed to same set of topics.
      * The method includes the following steps:
-     *
+     * <p>
      * 1. Reassign previously owned partitions:
-     *   a. if owned less than minQuota partitions, just assign all owned partitions, and put the member into unfilled member list.
-     *   b. if owned maxQuota or more, and we're still under the number of expected max capacity members, assign maxQuota partitions
-     *   c. if owned at least "minQuota" of partitions, assign minQuota partitions, and put the member into unfilled member list if
-     *     we're still under the number of expected max capacity members
-     *   If using rack-aware algorithm, only owned partitions with matching racks are allocated in this step.
+     * a. if owned less than minQuota partitions, just assign all owned partitions, and put the member into unfilled member list.
+     * b. if owned maxQuota or more, and we're still under the number of expected max capacity members, assign maxQuota partitions
+     * c. if owned at least "minQuota" of partitions, assign minQuota partitions, and put the member into unfilled member list if
+     * we're still under the number of expected max capacity members
+     * If using rack-aware algorithm, only owned partitions with matching racks are allocated in this step.
      * 2. Fill remaining members with rack matching up to the expected numbers of maxQuota partitions, otherwise, to minQuota partitions.
-     *    Partitions that cannot be aligned on racks within the quota are not assigned in this step. This step is only used if rack-aware.
+     * Partitions that cannot be aligned on racks within the quota are not assigned in this step. This step is only used if rack-aware.
      * 3. Fill remaining members up to the expected numbers of maxQuota partitions, otherwise, to minQuota partitions.
-     *    For rack-aware algorithm, these are partitions that could not be aligned on racks within the balancing constraints.
+     * For rack-aware algorithm, these are partitions that could not be aligned on racks within the balancing constraints.
      *
      */
     private class ConstrainedAssignmentBuilder extends AbstractAssignmentBuilder {
@@ -869,16 +870,16 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
         /**
          * get the unassigned partition list by computing the difference set of all sorted partitions
          * and sortedAssignedPartitions. If no assigned partitions, we'll just return all sorted topic partitions.
-         *
+         * <p>
          * To compute the difference set, we use two pointers technique here:
-         *
+         * <p>
          * We loop through the all sorted topics, and then iterate all partitions the topic has,
          * compared with the ith element in sortedAssignedPartitions(i starts from 0):
-         *   - if not equal to the ith element, add to unassignedPartitions
-         *   - if equal to the ith element, get next element from sortedAssignedPartitions
+         * - if not equal to the ith element, add to unassignedPartitions
+         * - if equal to the ith element, get next element from sortedAssignedPartitions
          *
-         * @param sortedAssignedPartitions  sorted partitions, all are included in the sortedPartitions
-         * @return                          the partitions not yet assigned to any consumers
+         * @param sortedAssignedPartitions sorted partitions, all are included in the sortedPartitions
+         * @return the partitions not yet assigned to any consumers
          */
         private List<TopicPartition> getUnassignedPartitions(List<TopicPartition> sortedAssignedPartitions) {
             List<String> sortedAllTopics = new ArrayList<>(partitionsPerTopic.keySet());
@@ -922,18 +923,18 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
     /**
      * This general assignment algorithm guarantees the assignment that is as balanced as possible.
      * This method includes the following steps:
-     *
+     * <p>
      * 1. Preserving all the existing partition assignments. If rack-aware algorithm is used, only assignments
-     *    within racks are preserved.
+     * within racks are preserved.
      * 2. Removing all the partition assignments that have become invalid due to the change that triggers the reassignment.
-     *    Partition assignments with mismatched racks are also removed.
+     * Partition assignments with mismatched racks are also removed.
      * 3. Assigning the unassigned partitions in a way that balances out the overall assignments of partitions to consumers.
-     *    while preserving rack-alignment. This step is used only for rack-aware assignment.
+     * while preserving rack-alignment. This step is used only for rack-aware assignment.
      * 4. Assigning the remaining unassigned partitions in a way that balances out the overall assignments of partitions to consumers.
-     *    For rack-aware algorithm, these are partitions that could not be aligned on racks within the balancing constraints.
+     * For rack-aware algorithm, these are partitions that could not be aligned on racks within the balancing constraints.
      * 5. Further balancing out the resulting assignment by finding the partitions that can be reassigned
-     *    to another consumer towards an overall more balanced assignment. For rack-aware algorithm, attempt
-     *    to retain rack alignment if possible.
+     * to another consumer towards an overall more balanced assignment. For rack-aware algorithm, attempt
+     * to retain rack alignment if possible.
      *
      */
     private class GeneralAssignmentBuilder extends AbstractAssignmentBuilder {
@@ -953,10 +954,10 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
         /**
          * Constructs a general assignment builder.
          *
-         * @param partitionsPerTopic         The partitions for each subscribed topic.
-         * @param subscriptions              Map from the member id to their respective topic subscription
-         * @param currentAssignment          Each consumer's previously owned and still-subscribed partitions
-         * @param rackInfo                   Rack information for consumers and partitions
+         * @param partitionsPerTopic The partitions for each subscribed topic.
+         * @param subscriptions      Map from the member id to their respective topic subscription
+         * @param currentAssignment  Each consumer's previously owned and still-subscribed partitions
+         * @param rackInfo           Rack information for consumers and partitions
          */
         GeneralAssignmentBuilder(Map<String, List<PartitionInfo>> partitionsPerTopic,
                                  RackInfo rackInfo,
@@ -986,8 +987,8 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
             });
 
             currentPartitionConsumer = new HashMap<>();
-            for (Map.Entry<String, List<TopicPartition>> entry: currentAssignment.entrySet())
-                for (TopicPartition topicPartition: entry.getValue())
+            for (Map.Entry<String, List<TopicPartition>> entry : currentAssignment.entrySet())
+                for (TopicPartition topicPartition : entry.getValue())
                     currentPartitionConsumer.put(topicPartition, entry.getKey());
 
             List<String> sortedAllTopics = new ArrayList<>(topic2AllPotentialConsumers.keySet());
@@ -1032,18 +1033,18 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
 
         private List<TopicPartition> assignOwnedPartitions() {
             List<TopicPartition> assignedPartitions = new ArrayList<>();
-            for (Iterator<Entry<String, List<TopicPartition>>> it = currentAssignment.entrySet().iterator(); it.hasNext();) {
+            for (Iterator<Entry<String, List<TopicPartition>>> it = currentAssignment.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry<String, List<TopicPartition>> entry = it.next();
                 String consumer = entry.getKey();
                 Subscription consumerSubscription = subscriptions.get(consumer);
                 if (consumerSubscription == null) {
                     // if a consumer that existed before (and had some partition assignments) is now removed, remove it from currentAssignment
-                    for (TopicPartition topicPartition: entry.getValue())
+                    for (TopicPartition topicPartition : entry.getValue())
                         currentPartitionConsumer.remove(topicPartition);
                     it.remove();
                 } else {
                     // otherwise (the consumer still exists)
-                    for (Iterator<TopicPartition> partitionIter = entry.getValue().iterator(); partitionIter.hasNext();) {
+                    for (Iterator<TopicPartition> partitionIter = entry.getValue().iterator(); partitionIter.hasNext(); ) {
                         TopicPartition partition = partitionIter.next();
                         if (!topic2AllPotentialConsumers.containsKey(partition.topic())) {
                             // if this topic partition of this consumer no longer exists, remove it from currentAssignment of the consumer
@@ -1069,13 +1070,13 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
         /**
          * get the unassigned partition list by computing the difference set of the sortedPartitions(all partitions)
          * and sortedAssignedPartitions. If no assigned partitions, we'll just return all sorted topic partitions.
-         *
+         * <p>
          * We loop the sortedPartition, and compare the ith element in sortedAssignedPartitions(i start from 0):
-         *   - if not equal to the ith element, add to unassignedPartitions
-         *   - if equal to the ith element, get next element from sortedAssignedPartitions
+         * - if not equal to the ith element, add to unassignedPartitions
+         * - if equal to the ith element, get next element from sortedAssignedPartitions
          *
-         * @param sortedAssignedPartitions:     sorted partitions, all are included in the sortedPartitions
-         * @return                              partitions that aren't assigned to any current consumer
+         * @param sortedAssignedPartitions: sorted partitions, all are included in the sortedPartitions
+         * @return partitions that aren't assigned to any current consumer
          */
         private List<TopicPartition> getUnassignedPartitions(List<TopicPartition> sortedAssignedPartitions) {
             if (sortedAssignedPartitions.isEmpty()) {
@@ -1109,16 +1110,16 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
         /**
          * update the prevAssignment with the partitions, consumer and generation in parameters
          *
-         * @param partitions:       The partitions to be updated the prevAssignment
-         * @param consumer:         The consumer Id
-         * @param prevAssignment:   The assignment contains the assignment with the 2nd largest generation
-         * @param generation:       The generation of this assignment (partitions)
+         * @param partitions:     The partitions to be updated the prevAssignment
+         * @param consumer:       The consumer Id
+         * @param prevAssignment: The assignment contains the assignment with the 2nd largest generation
+         * @param generation:     The generation of this assignment (partitions)
          */
         private void updatePrevAssignment(Map<TopicPartition, ConsumerGenerationPair> prevAssignment,
                                           List<TopicPartition> partitions,
                                           String consumer,
                                           int generation) {
-            for (TopicPartition partition: partitions) {
+            for (TopicPartition partition : partitions) {
                 if (prevAssignment.containsKey(partition)) {
                     // only keep the latest previous assignment
                     if (generation > prevAssignment.get(partition).generation) {
@@ -1140,7 +1141,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
             // higher generations overwrite lower generations in case of a conflict
             // note that a conflict could exist only if user data is for different generations
 
-            for (Map.Entry<String, Subscription> subscriptionEntry: subscriptions.entrySet()) {
+            for (Map.Entry<String, Subscription> subscriptionEntry : subscriptions.entrySet()) {
                 String consumer = subscriptionEntry.getKey();
                 Subscription subscription = subscriptionEntry.getValue();
                 if (subscription.userData() != null) {
@@ -1177,9 +1178,9 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
             // create a mapping from partitions to the consumer assigned to them
             final Map<TopicPartition, String> allPartitions = new HashMap<>();
             Set<Entry<String, List<TopicPartition>>> assignments = currentAssignment.entrySet();
-            for (Map.Entry<String, List<TopicPartition>> entry: assignments) {
+            for (Map.Entry<String, List<TopicPartition>> entry : assignments) {
                 List<TopicPartition> topicPartitions = entry.getValue();
-                for (TopicPartition topicPartition: topicPartitions) {
+                for (TopicPartition topicPartition : topicPartitions) {
                     if (allPartitions.containsKey(topicPartition))
                         log.error("{} is assigned to more than one consumer.", topicPartition);
                     allPartitions.put(topicPartition, entry.getKey());
@@ -1188,7 +1189,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
 
             // for each consumer that does not have all the topic partitions it can get make sure none of the topic partitions it
             // could but did not get cannot be moved to it (because that would break the balance)
-            for (String consumer: sortedCurrentSubscriptions) {
+            for (String consumer : sortedCurrentSubscriptions) {
                 List<TopicPartition> consumerPartitions = currentAssignment.get(consumer);
                 int consumerPartitionCount = consumerPartitions.size();
 
@@ -1200,7 +1201,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
                     continue;
 
                 // otherwise make sure it cannot get any more
-                for (String topic: allSubscribedTopics) {
+                for (String topic : allSubscribedTopics) {
                     int partitionCount = partitionsPerTopic.get(topic).size();
                     for (int i = 0; i < partitionCount; i++) {
                         TopicPartition topicPartition = new TopicPartition(topic, i);
@@ -1222,8 +1223,8 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
         /**
          * get the maximum assigned partition size of the {@code allSubscribedTopics}
          *
-         * @param allSubscribedTopics           the subscribed topics of a consumer
-         * @return                              maximum assigned partition size
+         * @param allSubscribedTopics the subscribed topics of a consumer
+         * @return maximum assigned partition size
          */
         private int getMaxAssignmentSize(List<String> allSubscribedTopics) {
             int maxAssignmentSize;
@@ -1244,7 +1245,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
             int score = 0;
 
             Map<String, Integer> consumer2AssignmentSize = new HashMap<>();
-            for (Entry<String, List<TopicPartition>> entry: assignment.entrySet())
+            for (Entry<String, List<TopicPartition>> entry : assignment.entrySet())
                 consumer2AssignmentSize.put(entry.getKey(), entry.getValue().size());
 
             Iterator<Entry<String, Integer>> it = consumer2AssignmentSize.entrySet().iterator();
@@ -1252,7 +1253,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
                 Entry<String, Integer> entry = it.next();
                 int consumerAssignmentSize = entry.getValue();
                 it.remove();
-                for (Entry<String, Integer> otherEntry: consumer2AssignmentSize.entrySet())
+                for (Entry<String, Integer> otherEntry : consumer2AssignmentSize.entrySet())
                     score += Math.abs(consumerAssignmentSize - otherEntry.getValue());
             }
 
@@ -1263,7 +1264,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
          * The assignment should improve the overall balance of the partition assignments to consumers.
          */
         private boolean maybeAssignPartition(TopicPartition partition, RackInfo rackInfo) {
-            for (String consumer: sortedCurrentSubscriptions) {
+            for (String consumer : sortedCurrentSubscriptions) {
                 if (consumer2AllPotentialTopics.get(consumer).contains(partition.topic()) && (rackInfo == null || !rackInfo.racksMismatch(consumer, partition))) {
                     sortedCurrentSubscriptions.remove(consumer);
                     currentAssignment.get(consumer).add(partition);
@@ -1284,7 +1285,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
          */
         private void maybeAssign(List<TopicPartition> unassignedPartitions, RackInfo rackInfo, boolean removeAssigned) {
             // assign all unassigned partitions
-            for (Iterator<TopicPartition> iter = unassignedPartitions.iterator(); iter.hasNext();) {
+            for (Iterator<TopicPartition> iter = unassignedPartitions.iterator(); iter.hasNext(); ) {
                 TopicPartition partition = iter.next();
                 // skip if there is no potential consumer for the topic
                 if (topic2AllPotentialConsumers.get(partition.topic()).isEmpty())
@@ -1313,7 +1314,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
                 // if a consumer is not assigned all its potential partitions it is subject to reassignment
                 return true;
 
-            for (TopicPartition partition: currentPartitions)
+            for (TopicPartition partition : currentPartitions)
                 // if any of the partitions assigned to a consumer is subject to reassignment the consumer itself
                 // is subject to reassignment
                 if (canTopicParticipateInReassignment(partition.topic()))
@@ -1339,7 +1340,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
 
             // narrow down the reassignment scope to only those partitions that can actually be reassigned
             Set<TopicPartition> fixedPartitions = new HashSet<>();
-            for (String topic: topic2AllPotentialConsumers.keySet())
+            for (String topic : topic2AllPotentialConsumers.keySet())
                 if (!canTopicParticipateInReassignment(topic)) {
                     for (int i = 0; i < partitionsPerTopic.get(topic).size(); i++) {
                         fixedPartitions.add(new TopicPartition(topic, i));
@@ -1350,7 +1351,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
 
             // narrow down the reassignment scope to only those consumers that are subject to reassignment
             Map<String, List<TopicPartition>> fixedAssignments = new HashMap<>();
-            for (String consumer: consumer2AllPotentialTopics.keySet())
+            for (String consumer : consumer2AllPotentialTopics.keySet())
                 if (!canConsumerParticipateInReassignment(consumer)) {
                     sortedCurrentSubscriptions.remove(consumer);
                     fixedAssignments.put(consumer, currentAssignment.remove(consumer));
@@ -1376,7 +1377,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
             }
 
             // add the fixed assignments (those that could not change) back
-            for (Entry<String, List<TopicPartition>> entry: fixedAssignments.entrySet()) {
+            for (Entry<String, List<TopicPartition>> entry : fixedAssignments.entrySet()) {
                 String consumer = entry.getKey();
                 currentAssignment.put(consumer, entry.getValue());
                 sortedCurrentSubscriptions.add(consumer);
@@ -1454,7 +1455,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
         private void reassignPartition(TopicPartition partition) {
             // find the new consumer
             String newConsumer = null;
-            for (String anotherConsumer: sortedCurrentSubscriptions) {
+            for (String anotherConsumer : sortedCurrentSubscriptions) {
                 if (consumer2AllPotentialTopics.get(anotherConsumer).contains(partition.topic())) {
                     newConsumer = anotherConsumer;
                     break;
@@ -1490,7 +1491,7 @@ public abstract class AbstractStickyAssignor extends AbstractPartitionAssignor {
 
         private void deepCopy(Map<String, List<TopicPartition>> source, Map<String, List<TopicPartition>> dest) {
             dest.clear();
-            for (Entry<String, List<TopicPartition>> entry: source.entrySet())
+            for (Entry<String, List<TopicPartition>> entry : source.entrySet())
                 dest.put(entry.getKey(), new ArrayList<>(entry.getValue()));
         }
 

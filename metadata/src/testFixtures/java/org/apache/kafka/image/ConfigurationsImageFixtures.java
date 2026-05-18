@@ -31,31 +31,31 @@ import static org.apache.kafka.common.metadata.MetadataRecordType.CONFIG_RECORD;
 public final class ConfigurationsImageFixtures {
 
     public static final ConfigurationsImage IMAGE1 = new ConfigurationsImage(Map.of(
-        new ConfigResource(BROKER, "0"), new ConfigurationImage(new ConfigResource(BROKER, "0"), Map.of("foo", "bar", "baz", "quux")),
-        new ConfigResource(BROKER, "1"), new ConfigurationImage(new ConfigResource(BROKER, "1"), Map.of("foobar", "foobaz"))
+            new ConfigResource(BROKER, "0"), new ConfigurationImage(new ConfigResource(BROKER, "0"), Map.of("foo", "bar", "baz", "quux")),
+            new ConfigResource(BROKER, "1"), new ConfigurationImage(new ConfigResource(BROKER, "1"), Map.of("foobar", "foobaz"))
     ));
 
     public static final List<ApiMessageAndVersion> DELTA1_RECORDS = List.of(
-        new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
-            .setResourceName("0").setName("foo").setValue(null), CONFIG_RECORD.highestSupportedVersion()),
-        new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
-            .setResourceName("0").setName("baz").setValue(null), CONFIG_RECORD.highestSupportedVersion()),
-        new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
-            .setResourceName("1").setName("foobar").setValue(null), CONFIG_RECORD.highestSupportedVersion()),
-        new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
-            .setResourceName("1").setName("barfoo").setValue("bazfoo"), CONFIG_RECORD.highestSupportedVersion()),
-        new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
-            .setResourceName("2").setName("foo").setValue("bar"), CONFIG_RECORD.highestSupportedVersion())
+            new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
+                    .setResourceName("0").setName("foo").setValue(null), CONFIG_RECORD.highestSupportedVersion()),
+            new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
+                    .setResourceName("0").setName("baz").setValue(null), CONFIG_RECORD.highestSupportedVersion()),
+            new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
+                    .setResourceName("1").setName("foobar").setValue(null), CONFIG_RECORD.highestSupportedVersion()),
+            new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
+                    .setResourceName("1").setName("barfoo").setValue("bazfoo"), CONFIG_RECORD.highestSupportedVersion()),
+            new ApiMessageAndVersion(new ConfigRecord().setResourceType(BROKER.id())
+                    .setResourceName("2").setName("foo").setValue("bar"), CONFIG_RECORD.highestSupportedVersion())
     );
 
     public static final ConfigurationsDelta DELTA1 = RecordTestUtils.replayAll(
-        new ConfigurationsDelta(IMAGE1, SupportedConfigChecker.TRUE),
-        DELTA1_RECORDS
+            new ConfigurationsDelta(IMAGE1, SupportedConfigChecker.TRUE),
+            DELTA1_RECORDS
     );
 
     public static final ConfigurationsImage IMAGE2 = new ConfigurationsImage(Map.of(
-        new ConfigResource(BROKER, "1"), new ConfigurationImage(new ConfigResource(BROKER, "1"), Map.of("barfoo", "bazfoo")),
-        new ConfigResource(BROKER, "2"), new ConfigurationImage(new ConfigResource(BROKER, "2"), Map.of("foo", "bar"))
+            new ConfigResource(BROKER, "1"), new ConfigurationImage(new ConfigResource(BROKER, "1"), Map.of("barfoo", "bazfoo")),
+            new ConfigResource(BROKER, "2"), new ConfigurationImage(new ConfigResource(BROKER, "2"), Map.of("foo", "bar"))
     ));
 
     private ConfigurationsImageFixtures() {

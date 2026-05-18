@@ -140,7 +140,7 @@ public class DescribeUserScramCredentialsResult {
     private static List<ScramCredentialInfo> getScramCredentialInfosFor(
             DescribeUserScramCredentialsResponseData.DescribeUserScramCredentialsResult userResult) {
         return userResult.credentialInfos().stream().map(c ->
-                new ScramCredentialInfo(ScramMechanism.fromType(c.mechanism()), c.iterations()))
+                        new ScramCredentialInfo(ScramMechanism.fromType(c.mechanism()), c.iterations()))
                 .collect(Collectors.toList());
     }
 }

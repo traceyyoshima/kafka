@@ -33,18 +33,21 @@ public interface MetricsReporter extends Reconfigurable, AutoCloseable {
 
     /**
      * This is called when the reporter is first registered to initially register all existing metrics
+     *
      * @param metrics All currently existing metrics
      */
     void init(List<KafkaMetric> metrics);
 
     /**
      * This is called whenever a metric is updated or added
+     *
      * @param metric The metric that has been added or changed
      */
     void metricChange(KafkaMetric metric);
 
     /**
      * This is called whenever a metric is removed
+     *
      * @param metric The metric that has been removed
      */
     void metricRemoval(KafkaMetric metric);

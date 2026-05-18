@@ -55,60 +55,60 @@ import java.util.Set;
  * four topics <code>t0,</code> <code>t1</code>, <code>t2</code>, <code>t3</code>, and each topic has 2 partitions,
  * resulting in partitions <code>t0p0</code>, <code>t0p1</code>, <code>t1p0</code>, <code>t1p1</code>, <code>t2p0</code>,
  * <code>t2p1</code>, <code>t3p0</code>, <code>t3p1</code>. Each consumer is subscribed to all three topics.
- *
+ * <p>
  * The assignment with both sticky and round robin assignors will be:
  * <ul>
  * <li><code>C0: [t0p0, t1p1, t3p0]</code></li>
  * <li><code>C1: [t0p1, t2p0, t3p1]</code></li>
  * <li><code>C2: [t1p0, t2p1]</code></li>
  * </ul>
- *
+ * <p>
  * Now, let's assume <code>C1</code> is removed and a reassignment is about to happen. The round robin assignor would produce:
  * <ul>
  * <li><code>C0: [t0p0, t1p0, t2p0, t3p0]</code></li>
  * <li><code>C2: [t0p1, t1p1, t2p1, t3p1]</code></li>
  * </ul>
- *
+ * <p>
  * while the sticky assignor would result in:
  * <ul>
  * <li><code>C0 [t0p0, t1p1, t3p0, t2p0]</code></li>
  * <li><code>C2 [t1p0, t2p1, t0p1, t3p1]</code></li>
  * </ul>
  * preserving all the previous assignments (unlike the round robin assignor).
- *</p>
+ * </p>
  * <p><b>Example 2.</b> There are three consumers <code>C0</code>, <code>C1</code>, <code>C2</code>,
  * and three topics <code>t0</code>, <code>t1</code>, <code>t2</code>, with 1, 2, and 3 partitions respectively.
  * Therefore, the partitions are <code>t0p0</code>, <code>t1p0</code>, <code>t1p1</code>, <code>t2p0</code>,
  * <code>t2p1</code>, <code>t2p2</code>. <code>C0</code> is subscribed to <code>t0</code>; <code>C1</code> is subscribed to
  * <code>t0</code>, <code>t1</code>; and <code>C2</code> is subscribed to <code>t0</code>, <code>t1</code>, <code>t2</code>.
- *
+ * <p>
  * The round robin assignor would come up with the following assignment:
  * <ul>
  * <li><code>C0 [t0p0]</code></li>
  * <li><code>C1 [t1p0]</code></li>
  * <li><code>C2 [t1p1, t2p0, t2p1, t2p2]</code></li>
  * </ul>
- *
+ * <p>
  * which is not as balanced as the assignment suggested by sticky assignor:
  * <ul>
  * <li><code>C0 [t0p0]</code></li>
  * <li><code>C1 [t1p0, t1p1]</code></li>
  * <li><code>C2 [t2p0, t2p1, t2p2]</code></li>
  * </ul>
- *
+ * <p>
  * Now, if consumer <code>C0</code> is removed, these two assignors would produce the following assignments.
  * Round Robin (preserves 3 partition assignments):
  * <ul>
  * <li><code>C1 [t0p0, t1p1]</code></li>
  * <li><code>C2 [t1p0, t2p0, t2p1, t2p2]</code></li>
  * </ul>
- *
+ * <p>
  * Sticky (preserves 5 partition assignments):
  * <ul>
  * <li><code>C1 [t1p0, t1p1, t0p0]</code></li>
  * <li><code>C2 [t2p0, t2p1, t2p2]</code></li>
  * </ul>
- *</p>
+ * </p>
  * <h3>Impact on <code>ConsumerRebalanceListener</code></h3>
  * The sticky assignment strategy can provide some optimization to those consumers that have some partition cleanup code
  * in their <code>onPartitionsRevoked()</code> callback listeners. The cleanup code is placed in that callback listener
@@ -134,7 +134,7 @@ import java.util.Set;
  * }
  * }
  * </pre>
- *
+ * <p>
  * As mentioned above, one advantage of the sticky assignor is that, in general, it reduces the number of partitions that
  * actually move from one consumer to another during a reassignment. Therefore, it allows consumers to do their cleanup
  * more efficiently. Of course, they still can perform the partition cleanup in the <code>onPartitionsRevoked()</code>
@@ -166,10 +166,10 @@ import java.util.Set;
  * }
  * }
  * </pre>
- *
+ * <p>
  * Any consumer that uses sticky assignment can leverage this listener like this:
  * <code>consumer.subscribe(topics, new TheNewRebalanceListener());</code>
- *
+ * <p>
  * Note that you can leverage the {@link CooperativeStickyAssignor} so that only partitions which are being
  * reassigned to another consumer will be revoked. That is the preferred assignor for newer cluster. See
  * {@link ConsumerPartitionAssignor.RebalanceProtocol} for a detailed explanation of cooperative rebalancing.
@@ -185,13 +185,13 @@ public class StickyAssignor extends AbstractStickyAssignor {
     private static final String GENERATION_KEY_NAME = "generation";
 
     static final Schema TOPIC_ASSIGNMENT = new Schema(
-        new Field(TOPIC_KEY_NAME, Type.STRING),
-        new Field(PARTITIONS_KEY_NAME, new ArrayOf(Type.INT32)));
+            new Field(TOPIC_KEY_NAME, Type.STRING),
+            new Field(PARTITIONS_KEY_NAME, new ArrayOf(Type.INT32)));
     static final Schema STICKY_ASSIGNOR_USER_DATA_V0 = new Schema(
-        new Field(TOPIC_PARTITIONS_KEY_NAME, new ArrayOf(TOPIC_ASSIGNMENT)));
+            new Field(TOPIC_PARTITIONS_KEY_NAME, new ArrayOf(TOPIC_ASSIGNMENT)));
     private static final Schema STICKY_ASSIGNOR_USER_DATA_V1 = new Schema(
-        new Field(TOPIC_PARTITIONS_KEY_NAME, new ArrayOf(TOPIC_ASSIGNMENT)),
-        new Field(GENERATION_KEY_NAME, Type.INT32));
+            new Field(TOPIC_PARTITIONS_KEY_NAME, new ArrayOf(TOPIC_ASSIGNMENT)),
+            new Field(GENERATION_KEY_NAME, Type.INT32));
 
     private List<TopicPartition> memberAssignment = null;
     private int generation = DEFAULT_GENERATION; // consumer group generation

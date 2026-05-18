@@ -74,7 +74,7 @@ public class SaslAuthenticateRequest extends AbstractRequest {
 
     public static SaslAuthenticateRequest parse(Readable readable, short version) {
         return new SaslAuthenticateRequest(new SaslAuthenticateRequestData(readable, version),
-            version);
+                version);
     }
 
     // Do not print authBytes, overwrite a temp copy of the data with empty bytes

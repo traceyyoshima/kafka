@@ -38,9 +38,9 @@ public final class RecordsBatchReader<T> implements BatchReader<T> {
     private boolean isClosed = false;
 
     private RecordsBatchReader(
-        long baseOffset,
-        RecordsIterator<T> iterator,
-        CloseListener<BatchReader<T>> closeListener
+            long baseOffset,
+            RecordsIterator<T> iterator,
+            CloseListener<BatchReader<T>> closeListener
     ) {
         this.baseOffset = baseOffset;
         this.iterator = iterator;
@@ -97,19 +97,19 @@ public final class RecordsBatchReader<T> implements BatchReader<T> {
     }
 
     public static <T> RecordsBatchReader<T> of(
-        long baseOffset,
-        Records records,
-        RecordSerde<T> serde,
-        BufferSupplier bufferSupplier,
-        int maxBatchSize,
-        CloseListener<BatchReader<T>> closeListener,
-        boolean doCrcValidation,
-        LogContext logContext
+            long baseOffset,
+            Records records,
+            RecordSerde<T> serde,
+            BufferSupplier bufferSupplier,
+            int maxBatchSize,
+            CloseListener<BatchReader<T>> closeListener,
+            boolean doCrcValidation,
+            LogContext logContext
     ) {
         return new RecordsBatchReader<>(
-            baseOffset,
-            new RecordsIterator<>(records, serde, bufferSupplier, maxBatchSize, doCrcValidation, logContext),
-            closeListener
+                baseOffset,
+                new RecordsIterator<>(records, serde, bufferSupplier, maxBatchSize, doCrcValidation, logContext),
+                closeListener
         );
     }
 

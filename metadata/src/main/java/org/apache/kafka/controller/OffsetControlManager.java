@@ -38,11 +38,11 @@ import java.util.Optional;
  * Manages read and write offsets, and in-memory snapshots.
  * <p>
  * Also manages the following metrics:
- *      kafka.controller:type=KafkaController,name=ActiveControllerCount
- *      kafka.controller:type=KafkaController,name=LastAppliedRecordLagMs
- *      kafka.controller:type=KafkaController,name=LastAppliedRecordOffset
- *      kafka.controller:type=KafkaController,name=LastAppliedRecordTimestamp
- *      kafka.controller:type=KafkaController,name=LastCommittedRecordOffset
+ * kafka.controller:type=KafkaController,name=ActiveControllerCount
+ * kafka.controller:type=KafkaController,name=LastAppliedRecordLagMs
+ * kafka.controller:type=KafkaController,name=LastAppliedRecordOffset
+ * kafka.controller:type=KafkaController,name=LastAppliedRecordTimestamp
+ * kafka.controller:type=KafkaController,name=LastCommittedRecordOffset
  */
 class OffsetControlManager {
     static class Builder {
@@ -140,10 +140,10 @@ class OffsetControlManager {
     private long nextWriteOffset;
 
     private OffsetControlManager(
-        LogContext logContext,
-        SnapshotRegistry snapshotRegistry,
-        QuorumControllerMetrics metrics,
-        Time time
+            LogContext logContext,
+            SnapshotRegistry snapshotRegistry,
+            QuorumControllerMetrics metrics,
+            Time time
     ) {
         this.log = logContext.logger(OffsetControlManager.class);
         this.snapshotRegistry = snapshotRegistry;
@@ -164,7 +164,7 @@ class OffsetControlManager {
     }
 
     /**
-     *  @return The SnapshotRegistry used by this offset control manager.
+     * @return The SnapshotRegistry used by this offset control manager.
      */
     SnapshotRegistry snapshotRegistry() {
         return snapshotRegistry;
@@ -345,7 +345,7 @@ class OffsetControlManager {
         this.currentSnapshotId = snapshotId;
         this.currentSnapshotName = Snapshots.filenameFromSnapshotId(snapshotId);
         log.info("Starting to load snapshot {}. Previous lastCommittedOffset was {}. Previous " +
-                "transactionStartOffset was {}.", currentSnapshotName, lastCommittedOffset,
+                        "transactionStartOffset was {}.", currentSnapshotName, lastCommittedOffset,
                 transactionStartOffset);
         this.snapshotRegistry.reset();
         this.lastCommittedOffset = -1L;
@@ -385,7 +385,7 @@ class OffsetControlManager {
         }
         if (transactionStartOffset != -1L) {
             throw new RuntimeException("Can't replay a BeginTransactionRecord at " + offset +
-                " because the transaction at " + transactionStartOffset + " was never closed.");
+                    " because the transaction at " + transactionStartOffset + " was never closed.");
         }
         snapshotRegistry.idempotentCreateSnapshot(offset - 1);
         transactionStartOffset = offset;

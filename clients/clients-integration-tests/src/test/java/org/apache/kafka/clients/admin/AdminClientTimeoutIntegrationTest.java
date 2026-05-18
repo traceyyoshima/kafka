@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ClusterTestDefaults(types = { Type.KRAFT })
+@ClusterTestDefaults(types = {Type.KRAFT})
 public class AdminClientTimeoutIntegrationTest {
 
     private static final Logger log = LoggerFactory.getLogger(AdminClientTimeoutIntegrationTest.class);
@@ -61,14 +61,14 @@ public class AdminClientTimeoutIntegrationTest {
         try (var client = KafkaAdminClient.createInternal(new AdminClientConfig(config), factory)) {
 
             var future = client.createTopics(Stream.of("mytopic1", "mytopic2")
-                    .map(t -> new NewTopic(t, 1, (short) 1)).toList(),
+                            .map(t -> new NewTopic(t, 1, (short) 1)).toList(),
                     new CreateTopicsOptions().validateOnly(true)).all();
 
             var e = assertThrows(ExecutionException.class, future::get);
             assertInstanceOf(TimeoutException.class, e.getCause());
 
             var future2 = client.createTopics(Stream.of("mytopic3", "mytopic4")
-                    .map(t -> new NewTopic(t, 1, (short) 1)).toList(),
+                            .map(t -> new NewTopic(t, 1, (short) 1)).toList(),
                     new CreateTopicsOptions().validateOnly(true)).all();
             future2.get();
             assertEquals(1, factory.failuresInjected());

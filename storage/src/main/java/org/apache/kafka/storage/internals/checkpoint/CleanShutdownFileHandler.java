@@ -39,7 +39,7 @@ import java.util.OptionalLong;
  * avoided by passing in the recovery point, however finding the correct position to do this
  * requires accessing the offset index which may not be safe in an unclean shutdown.
  * For more information see the discussion in PR#2104
- *
+ * <p>
  * Also, the clean shutdown file can also store the broker epoch, this can be used in the broker registration to
  * demonstrate the last reboot is a clean shutdown. (KIP-966)
  */
@@ -56,7 +56,8 @@ public class CleanShutdownFileHandler {
         public int version;
         public Long brokerEpoch;
 
-        public Content() {}
+        public Content() {
+        }
 
         public Content(int version, Long brokerEpoch) {
             this.version = version;
@@ -104,7 +105,7 @@ public class CleanShutdownFileHandler {
     }
 
     public boolean exists() {
-        return  cleanShutdownFile.exists();
+        return cleanShutdownFile.exists();
     }
 
     @Override

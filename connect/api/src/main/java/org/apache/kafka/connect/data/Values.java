@@ -1123,7 +1123,8 @@ public class Values {
 
     /**
      * Merge two schemas to a common schema which can represent values from both input schemas.
-     * @param previous One Schema, non-null
+     *
+     * @param previous  One Schema, non-null
      * @param newSchema Another schema, non-null
      * @return A schema that is a superset of both input schemas, or null if no common schema is found.
      */
@@ -1396,8 +1397,8 @@ public class Values {
                 }
             }
             return ignoreLeadingAndTrailingWhitespace
-                ? nextToken.trim().equals(expected)
-                : nextToken.equals(expected);
+                    ? nextToken.trim().equals(expected)
+                    : nextToken.equals(expected);
         }
     }
 }

@@ -34,12 +34,12 @@ import java.util.Objects;
  * Depending on the results, {@code SubscriptionResponseWrapper}s are created, which will be propagated to
  * the {@code ResponseJoinProcessorSupplier} instance.
  *
- * @param <KLeft> Type of primary keys
+ * @param <KLeft>  Type of primary keys
  * @param <KRight> Type of foreign key
  * @param <VRight> Type of foreign value
  */
 public class SubscriptionJoinProcessorSupplier<KLeft, KRight, VRight>
-    implements ProcessorSupplier<CombinedKey<KRight, KLeft>, Change<ValueTimestampHeaders<SubscriptionWrapper<KLeft>>>, KLeft, SubscriptionResponseWrapper<VRight>> {
+        implements ProcessorSupplier<CombinedKey<KRight, KLeft>, Change<ValueTimestampHeaders<SubscriptionWrapper<KLeft>>>, KLeft, SubscriptionResponseWrapper<VRight>> {
 
     private final KTableValueGetterSupplier<KRight, VRight> foreignValueGetterSupplier;
 
@@ -68,25 +68,25 @@ public class SubscriptionJoinProcessorSupplier<KLeft, KRight, VRight>
                 final SubscriptionWrapper<KLeft> value = subscriptionWrapper(valueTimestampHeaders);
 
                 final ValueTimestampHeaders<VRight> foreignValueAndTime =
-                    record.key().foreignKey() == null ?
-                        null :
-                        foreignValues.get(record.key().foreignKey());
+                        record.key().foreignKey() == null ?
+                                null :
+                                foreignValues.get(record.key().foreignKey());
 
                 final long resultTimestamp =
-                    foreignValueAndTime == null ?
-                        valueTimestampHeaders.timestamp() :
-                        Math.max(valueTimestampHeaders.timestamp(), foreignValueAndTime.timestamp());
+                        foreignValueAndTime == null ?
+                                valueTimestampHeaders.timestamp() :
+                                Math.max(valueTimestampHeaders.timestamp(), foreignValueAndTime.timestamp());
 
                 switch (value.instruction()) {
                     case DELETE_KEY_AND_PROPAGATE:
                         context().forward(
-                            record.withKey(record.key().primaryKey())
-                                .withValue(new SubscriptionResponseWrapper<VRight>(
-                                    value.hash(),
-                                    null,
-                                    value.primaryPartition()
-                                ))
-                                .withTimestamp(resultTimestamp)
+                                record.withKey(record.key().primaryKey())
+                                        .withValue(new SubscriptionResponseWrapper<VRight>(
+                                                value.hash(),
+                                                null,
+                                                value.primaryPartition()
+                                        ))
+                                        .withTimestamp(resultTimestamp)
                         );
                         break;
                     case PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE:
@@ -96,25 +96,25 @@ public class SubscriptionJoinProcessorSupplier<KLeft, KRight, VRight>
                         final VRight valueToSend = foreignValueAndTime == null ? null : foreignValueAndTime.value();
 
                         context().forward(
-                            record.withKey(record.key().primaryKey())
-                                .withValue(new SubscriptionResponseWrapper<>(
-                                        value.hash(),
-                                        valueToSend,
-                                        value.primaryPartition()
-                                ))
-                                .withTimestamp(resultTimestamp)
+                                record.withKey(record.key().primaryKey())
+                                        .withValue(new SubscriptionResponseWrapper<>(
+                                                value.hash(),
+                                                valueToSend,
+                                                value.primaryPartition()
+                                        ))
+                                        .withTimestamp(resultTimestamp)
                         );
                         break;
                     case PROPAGATE_ONLY_IF_FK_VAL_AVAILABLE:
                         if (foreignValueAndTime != null) {
                             context().forward(
-                                record.withKey(record.key().primaryKey())
-                                   .withValue(new SubscriptionResponseWrapper<>(
-                                       value.hash(),
-                                       foreignValueAndTime.value(),
-                                       value.primaryPartition()
-                                   ))
-                                   .withTimestamp(resultTimestamp)
+                                    record.withKey(record.key().primaryKey())
+                                            .withValue(new SubscriptionResponseWrapper<>(
+                                                    value.hash(),
+                                                    foreignValueAndTime.value(),
+                                                    value.primaryPartition()
+                                            ))
+                                            .withTimestamp(resultTimestamp)
                             );
                         }
                         break;

@@ -24,8 +24,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes(value = {
-    @JsonSubTypes.Type(value = UniformTransactionsGenerator.class, name = "uniform"),
-    @JsonSubTypes.Type(value = TimeIntervalTransactionsGenerator.class, name = "interval"),
+        @JsonSubTypes.Type(value = UniformTransactionsGenerator.class, name = "uniform"),
+        @JsonSubTypes.Type(value = TimeIntervalTransactionsGenerator.class, name = "interval"),
 })
 public interface TransactionGenerator {
     enum TransactionAction {

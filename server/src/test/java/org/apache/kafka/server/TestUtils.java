@@ -54,8 +54,8 @@ public class TestUtils {
      * Wait until a valid leader is propagated to the metadata cache in each broker.
      * It assumes that the leader propagated to each broker is the same.
      *
-     * @param brokers The list of brokers that the metadata should reach
-     * @param topic The topic name
+     * @param brokers   The list of brokers that the metadata should reach
+     * @param topic     The topic name
      * @param partition The partitionId
      * @return The metadata of the partition.
      */
@@ -91,7 +91,7 @@ public class TestUtils {
     /**
      * Wait for the consumer to consumer numRecords records
      *
-     * @param consumer The consumer instance
+     * @param consumer   The consumer instance
      * @param numRecords The number of records to consume
      * @return The list of consumed records
      * @throws Exception if the consumer can't consume numRecords
@@ -102,18 +102,18 @@ public class TestUtils {
         return records;
     }
 
-    private static <K, V>  void pollRecordsUntilTrue(Consumer<K, V> consumer, Function<ConsumerRecords<K, V>, Boolean> action, Supplier<String> msg) throws Exception {
+    private static <K, V> void pollRecordsUntilTrue(Consumer<K, V> consumer, Function<ConsumerRecords<K, V>, Boolean> action, Supplier<String> msg) throws Exception {
         waitForCondition(() -> action.apply(consumer.poll(Duration.ofMillis(100L))), DEFAULT_MAX_WAIT_MS, msg.get());
     }
 
     /**
      * Produce the message to the specified topic
      *
-     * @param cluster The ClusterInstance to retrieve a producer for
-     * @param topic The topic name, as used as the record key
-     * @param message The value of the record
+     * @param cluster           The ClusterInstance to retrieve a producer for
+     * @param topic             The topic name, as used as the record key
+     * @param message           The value of the record
      * @param deliveryTimeoutMs The delivery.timeout.ms configuration
-     * @param requestTimeoutMs The request.timeout.ms configuration
+     * @param requestTimeoutMs  The request.timeout.ms configuration
      * @throws Exception Any exception thrown by {@link Producer#send(ProducerRecord)}
      */
     public static void produceMessage(ClusterInstance cluster, String topic, String message, int deliveryTimeoutMs, int requestTimeoutMs) throws Exception {
@@ -132,7 +132,7 @@ public class TestUtils {
      * Produce the message to the specified topic
      *
      * @param cluster The ClusterInstance to use
-     * @param topic The topic name, as used as the record key
+     * @param topic   The topic name, as used as the record key
      * @param message The value of the record
      * @throws Exception Any exception thrown by {@link Producer#send(ProducerRecord)}
      */
@@ -143,8 +143,8 @@ public class TestUtils {
     /**
      * Find the current leader or wait for the optionally specified expected leader
      *
-     * @param cluster The ClusterInstance to use
-     * @param tp The topic partition to check the leader for
+     * @param cluster           The ClusterInstance to use
+     * @param tp                The topic partition to check the leader for
      * @param expectedLeaderOpt The new expected leader
      * @return The current leader for the topic partition
      * @throws InterruptedException If waitForCondition is interrupted
@@ -156,10 +156,10 @@ public class TestUtils {
     /**
      * Find the current leader or wait for the optionally specified expected leader
      *
-     * @param cluster The ClusterInstance to use
-     * @param tp The topic partition to check the leader for
+     * @param cluster           The ClusterInstance to use
+     * @param tp                The topic partition to check the leader for
      * @param expectedLeaderOpt The new expected leader
-     * @param timeout The duration in ms to wait for the leader
+     * @param timeout           The duration in ms to wait for the leader
      * @return The current leader for the topic partition
      * @throws InterruptedException If waitForCondition is interrupted
      */

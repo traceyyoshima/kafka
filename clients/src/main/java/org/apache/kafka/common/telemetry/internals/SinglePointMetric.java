@@ -72,7 +72,7 @@ public class SinglePointMetric implements MetricKeyable {
     }
 
     public static SinglePointMetric sum(MetricKey metricKey, double value, boolean monotonic, Instant timestamp,
-        Instant startTimestamp, Set<String> excludeLabels) {
+                                        Instant startTimestamp, Set<String> excludeLabels) {
         NumberDataPoint.Builder point = point(timestamp, value);
         if (startTimestamp != null) {
             point.setStartTimeUnixNano(toTimeUnixNanos(startTimestamp));
@@ -82,9 +82,9 @@ public class SinglePointMetric implements MetricKeyable {
     }
 
     public static SinglePointMetric deltaSum(MetricKey metricKey, double value, boolean monotonic,
-        Instant timestamp, Instant startTimestamp, Set<String> excludeLabels) {
+                                             Instant timestamp, Instant startTimestamp, Set<String> excludeLabels) {
         NumberDataPoint.Builder point = point(timestamp, value)
-            .setStartTimeUnixNano(toTimeUnixNanos(startTimestamp));
+                .setStartTimeUnixNano(toTimeUnixNanos(startTimestamp));
 
         return sum(metricKey, AggregationTemporality.AGGREGATION_TEMPORALITY_DELTA, monotonic, point, excludeLabels);
     }
@@ -93,15 +93,15 @@ public class SinglePointMetric implements MetricKeyable {
         Helper methods to support metric construction.
      */
     private static SinglePointMetric sum(MetricKey metricKey, AggregationTemporality aggregationTemporality,
-        boolean monotonic, NumberDataPoint.Builder point, Set<String> excludeLabels) {
+                                         boolean monotonic, NumberDataPoint.Builder point, Set<String> excludeLabels) {
         point.addAllAttributes(asAttributes(metricKey.tags(), excludeLabels));
 
         Metric.Builder metric = Metric.newBuilder().setName(metricKey.name());
         metric
-            .getSumBuilder()
-            .setAggregationTemporality(aggregationTemporality)
-            .setIsMonotonic(monotonic)
-            .addDataPoints(point);
+                .getSumBuilder()
+                .setAggregationTemporality(aggregationTemporality)
+                .setIsMonotonic(monotonic)
+                .addDataPoints(point);
         return new SinglePointMetric(metricKey, metric);
     }
 
@@ -123,21 +123,21 @@ public class SinglePointMetric implements MetricKeyable {
 
     private static NumberDataPoint.Builder point(Instant timestamp, long value) {
         return NumberDataPoint.newBuilder()
-            .setTimeUnixNano(toTimeUnixNanos(timestamp))
-            .setAsInt(value);
+                .setTimeUnixNano(toTimeUnixNanos(timestamp))
+                .setAsInt(value);
     }
 
     private static NumberDataPoint.Builder point(Instant timestamp, double value) {
         return NumberDataPoint.newBuilder()
-            .setTimeUnixNano(toTimeUnixNanos(timestamp))
-            .setAsDouble(value);
+                .setTimeUnixNano(toTimeUnixNanos(timestamp))
+                .setAsDouble(value);
     }
 
     private static Iterable<KeyValue> asAttributes(Map<String, String> labels, Set<String> excludeLabels) {
         return labels.entrySet().stream().filter(entry -> !excludeLabels.contains(entry.getKey())).map(
-            entry -> KeyValue.newBuilder()
-                .setKey(entry.getKey())
-                .setValue(AnyValue.newBuilder().setStringValue(entry.getValue())).build()
+                entry -> KeyValue.newBuilder()
+                        .setKey(entry.getKey())
+                        .setValue(AnyValue.newBuilder().setStringValue(entry.getValue())).build()
         )::iterator;
     }
 

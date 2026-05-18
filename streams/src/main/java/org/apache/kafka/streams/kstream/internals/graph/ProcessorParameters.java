@@ -28,7 +28,7 @@ import java.util.Set;
 /**
  * Class used to represent a {@link ProcessorSupplier} or {@link FixedKeyProcessorSupplier} and the name
  * used to register it with the {@link org.apache.kafka.streams.processor.internals.InternalTopologyBuilder}
- *
+ * <p>
  * Used by the Join nodes as there are several parameters, this abstraction helps
  * keep the number of arguments more reasonable.
  *
@@ -68,7 +68,7 @@ public class ProcessorParameters<KIn, VIn, KOut, VOut> {
             ApiUtils.checkSupplier(processorSupplier);
 
             final ProcessorSupplier<KIn, VIn, KOut, VOut> wrapped =
-                topologyBuilder.wrapProcessorSupplier(processorName, processorSupplier);
+                    topologyBuilder.wrapProcessorSupplier(processorName, processorSupplier);
 
             topologyBuilder.addProcessor(processorName, wrapped, parentNodeNames);
             final Set<StoreBuilder<?>> stores = wrapped.stores();
@@ -83,7 +83,7 @@ public class ProcessorParameters<KIn, VIn, KOut, VOut> {
             ApiUtils.checkSupplier(fixedKeyProcessorSupplier);
 
             final FixedKeyProcessorSupplier<KIn, VIn, VOut> wrapped =
-                topologyBuilder.wrapFixedKeyProcessorSupplier(processorName, fixedKeyProcessorSupplier);
+                    topologyBuilder.wrapFixedKeyProcessorSupplier(processorName, fixedKeyProcessorSupplier);
 
             topologyBuilder.addProcessor(processorName, wrapped, parentNodeNames);
             final Set<StoreBuilder<?>> stores = wrapped.stores();
@@ -102,9 +102,9 @@ public class ProcessorParameters<KIn, VIn, KOut, VOut> {
     @Override
     public String toString() {
         return "ProcessorParameters{" +
-            "processor supplier class=" + (processorSupplier != null ? processorSupplier.getClass() : "null") +
-            ", fixed key processor supplier class=" + (fixedKeyProcessorSupplier != null ? fixedKeyProcessorSupplier.getClass() : "null") +
-            ", processor name='" + processorName + '\'' +
-            '}';
+                "processor supplier class=" + (processorSupplier != null ? processorSupplier.getClass() : "null") +
+                ", fixed key processor supplier class=" + (fixedKeyProcessorSupplier != null ? fixedKeyProcessorSupplier.getClass() : "null") +
+                ", processor name='" + processorName + '\'' +
+                '}';
     }
 }

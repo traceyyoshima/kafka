@@ -64,8 +64,8 @@ public class BasicPlatform implements Platform {
         this.curNode = topology.node(curNodeName);
         if (this.curNode == null) {
             throw new RuntimeException(String.format("No node named %s found " +
-                    "in the cluster!  Cluster nodes are: %s", curNodeName,
-                String.join(",", topology.nodes().keySet())));
+                            "in the cluster!  Cluster nodes are: %s", curNodeName,
+                    String.join(",", topology.nodes().keySet())));
         }
         this.topology = topology;
         this.scheduler = scheduler;
@@ -76,15 +76,15 @@ public class BasicPlatform implements Platform {
         JsonNode nodes = configRoot.get("nodes");
         if (nodes == null) {
             throw new RuntimeException("Expected to find a 'nodes' field " +
-                "in the root JSON configuration object");
+                    "in the root JSON configuration object");
         }
         this.topology = new BasicTopology(nodes);
         this.scheduler = scheduler;
         this.curNode = topology.node(curNodeName);
         if (this.curNode == null) {
             throw new RuntimeException(String.format("No node named %s found " +
-                "in the cluster!  Cluster nodes are: %s", curNodeName,
-                String.join(",", topology.nodes().keySet())));
+                            "in the cluster!  Cluster nodes are: %s", curNodeName,
+                    String.join(",", topology.nodes().keySet())));
         }
         this.commandRunner = new ShellCommandRunner();
     }

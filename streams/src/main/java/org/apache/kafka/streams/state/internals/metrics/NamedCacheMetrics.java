@@ -23,7 +23,8 @@ import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetric
 import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.addAvgAndMinAndMaxToSensor;
 
 public class NamedCacheMetrics {
-    private NamedCacheMetrics() {}
+    private NamedCacheMetrics() {
+    }
 
     private static final String HIT_RATIO = "hit-ratio";
     private static final String HIT_RATIO_AVG_DESCRIPTION = "The average cache hit ratio";
@@ -40,20 +41,20 @@ public class NamedCacheMetrics {
         final String hitRatioName;
         hitRatioName = HIT_RATIO;
         hitRatioSensor = streamsMetrics.cacheLevelSensor(
-            threadId,
-            taskName,
-            storeName,
-            hitRatioName,
-            Sensor.RecordingLevel.DEBUG
+                threadId,
+                taskName,
+                storeName,
+                hitRatioName,
+                Sensor.RecordingLevel.DEBUG
         );
         addAvgAndMinAndMaxToSensor(
-            hitRatioSensor,
-            CACHE_LEVEL_GROUP,
-            streamsMetrics.cacheLevelTagMap(threadId, taskName, storeName),
-            hitRatioName,
-            HIT_RATIO_AVG_DESCRIPTION,
-            HIT_RATIO_MIN_DESCRIPTION,
-            HIT_RATIO_MAX_DESCRIPTION
+                hitRatioSensor,
+                CACHE_LEVEL_GROUP,
+                streamsMetrics.cacheLevelTagMap(threadId, taskName, storeName),
+                hitRatioName,
+                HIT_RATIO_AVG_DESCRIPTION,
+                HIT_RATIO_MIN_DESCRIPTION,
+                HIT_RATIO_MAX_DESCRIPTION
         );
         return hitRatioSensor;
     }

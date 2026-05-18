@@ -165,12 +165,12 @@ import java.util.function.Function;
 /**
  * This class contains all the client-server errors--those errors that must be sent from the server to the client. These
  * are thus part of the protocol. The names can be changed but the error code cannot.
- *
+ * <p>
  * Note that client library will convert an unknown error code to the non-retriable UnknownServerException if the client library
  * version is old and does not recognize the newly-added error code. Therefore when a new server-side error is added,
  * we may need extra logic to convert the new error code to another existing error code before sending the response back to
  * the client if the request version suggests that the client may not recognize the new error code.
- *
+ * <p>
  * Do not add exceptions that occur only on the client or only on the server here.
  *
  * @see org.apache.kafka.common.network.SslTransportLayer
@@ -227,7 +227,7 @@ public enum Errors {
             IllegalGenerationException::new),
     INCONSISTENT_GROUP_PROTOCOL(23,
             "The group member's supported protocols are incompatible with those of existing members " +
-            "or first group member tried to join with empty protocol type or empty protocol list.",
+                    "or first group member tried to join with empty protocol type or empty protocol list.",
             InconsistentGroupProtocolException::new),
     INVALID_GROUP_ID(24, "The group id is invalid.",
             InvalidGroupIdException::new),
@@ -235,7 +235,7 @@ public enum Errors {
             UnknownMemberIdException::new),
     INVALID_SESSION_TIMEOUT(26,
             "The session timeout is not within the range allowed by the broker " +
-            "(as configured by group.min.session.timeout.ms and group.max.session.timeout.ms).",
+                    "(as configured by group.min.session.timeout.ms and group.max.session.timeout.ms).",
             InvalidSessionTimeoutException::new),
     REBALANCE_IN_PROGRESS(27, "The group is rebalancing, so a rejoin is needed.",
             RebalanceInProgressException::new),
@@ -382,7 +382,7 @@ public enum Errors {
     INVALID_UPDATE_VERSION(95, "The given update version was invalid.", InvalidUpdateVersionException::new),
     FEATURE_UPDATE_FAILED(96, "Unable to update finalized features due to an unexpected server error.", FeatureUpdateFailedException::new),
     PRINCIPAL_DESERIALIZATION_FAILURE(97, "Request principal deserialization failed during forwarding. " +
-         "This indicates an internal error on the broker cluster security setup.", PrincipalDeserializationException::new),
+            "This indicates an internal error on the broker cluster security setup.", PrincipalDeserializationException::new),
     SNAPSHOT_NOT_FOUND(98, "Requested snapshot was not found.", SnapshotNotFoundException::new),
     POSITION_OUT_OF_RANGE(99, "Requested position is not greater than or equal to zero, and less than the size of the snapshot.", PositionOutOfRangeException::new),
     UNKNOWN_TOPIC_ID(100, "This server does not host this topic ID.", UnknownTopicIdException::new),
@@ -456,8 +456,8 @@ public enum Errors {
     /**
      * Create an instance of the ApiException that contains the given error message.
      *
-     * @param message    The message string to set.
-     * @return           The exception.
+     * @param message The message string to set.
+     * @return The exception.
      */
     public ApiException exception(String message) {
         if (message == null) {
@@ -493,6 +493,7 @@ public enum Errors {
 
     /**
      * Get a friendly description of the error (if one is available).
+     *
      * @return the error message
      */
     public String message() {

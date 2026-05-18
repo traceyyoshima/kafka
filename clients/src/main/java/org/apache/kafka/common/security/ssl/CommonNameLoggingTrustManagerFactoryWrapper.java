@@ -48,6 +48,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import javax.security.auth.x500.X500Principal;
+
 /**
  * A wrapper around the original trust manager factory for creating common name logging trust managers.
  * These trust managers log the common name of an expired but otherwise valid (client) certificate before rejecting the connection attempt.
@@ -61,14 +62,17 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
 
     /**
      * Create a wrapped trust manager factory
+     *
      * @param kmfAlgorithm the algorithm
      * @throws NoSuchAlgorithmException
      */
     protected CommonNameLoggingTrustManagerFactoryWrapper(String kmfAlgorithm) throws NoSuchAlgorithmException {
         this.origTmf = TrustManagerFactory.getInstance(kmfAlgorithm);
     }
+
     /**
      * Factory for creating a wrapped trust manager factory
+     *
      * @param kmfAlgorithm the algorithm
      * @return A wrapped trust manager factory
      * @throws NoSuchAlgorithmException
@@ -103,6 +107,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
         }
         return wrappedTrustManagers;
     }
+
     /**
      * A trust manager which logs the common name of an expired but otherwise valid (client) certificate before rejecting the connection attempt.
      * This allows to identify misconfigured clients in complex network environments, where the IP address is not sufficient.
@@ -184,7 +189,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
             } catch (NoSuchAlgorithmException e) {
                 return null;
             }
-            for (X509Certificate cert: chain) {
+            for (X509Certificate cert : chain) {
                 md.update(cert.getEncoded());
             }
             return ByteBuffer.wrap(md.digest());
@@ -207,9 +212,10 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
         public X509Certificate[] getAcceptedIssuers() {
             return this.origTm.getAcceptedIssuers();
         }
-        
-       /**
+
+        /**
          * This method sorts the certificate chain from end to root certificate and wraps the end certificate to make it "never-expireing"
+         *
          * @param origChain The original (unsorted) certificate chain
          * @return The sorted and wrapped certificate chain
          * @throws CertificateException
@@ -224,7 +230,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
             HashMap<X500Principal, X509Certificate> principalToCertMap = new HashMap<>();
             // First, create a map from principal of issuer (!) to certificate for easily finding the right certificates
             HashMap<X500Principal, X509Certificate> issuedbyPrincipalToCertificatesMap = new HashMap<>();
-            for (X509Certificate cert: origChain) {
+            for (X509Certificate cert : origChain) {
                 X500Principal principal = cert.getSubjectX500Principal();
                 X500Principal issuerPrincipal = cert.getIssuerX500Principal();
                 if (issuerPrincipal.equals(principal)) {
@@ -239,7 +245,7 @@ class CommonNameLoggingTrustManagerFactoryWrapper {
             }
             // Thus, expect certificate chain to be broken, e.g. containing multiple enbd certificates
             Set<X509Certificate> endCertificates = new HashSet<>();
-            for (X509Certificate cert: origChain) {
+            for (X509Certificate cert : origChain) {
                 X500Principal subjectPrincipal = cert.getSubjectX500Principal();
                 if (!issuedbyPrincipalToCertificatesMap.containsKey(subjectPrincipal)) {
                     // We found a certificate which is not an issuer of another certificate. We consider it to be an end certificate

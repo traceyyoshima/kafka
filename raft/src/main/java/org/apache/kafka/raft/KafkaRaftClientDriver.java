@@ -31,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
  * A single-threaded driver for {@link KafkaRaftClient}. Client APIs will only do useful work
  * as long as the driver's thread is active. To start the thread, use {@link #start()}. To
  * stop it, use {@link #shutdown()}.
- *
+ * <p>
  * Note that the driver is responsible for the lifecycle of the {@link KafkaRaftClient} instance.
  * Shutdown of the driver through {@link #shutdown()} ensures that the client itself is properly
  * shutdown and closed.
@@ -47,10 +47,10 @@ public class KafkaRaftClientDriver<T> extends ShutdownableThread {
     private final FaultHandler fatalFaultHandler;
 
     public KafkaRaftClientDriver(
-        KafkaRaftClient<T> client,
-        String threadNamePrefix,
-        FaultHandler fatalFaultHandler,
-        LogContext logContext
+            KafkaRaftClient<T> client,
+            String threadNamePrefix,
+            FaultHandler fatalFaultHandler,
+            LogContext logContext
     ) {
         super(threadNamePrefix + "-io-thread", false);
         this.client = client;
@@ -102,17 +102,17 @@ public class KafkaRaftClientDriver<T> extends ShutdownableThread {
     }
 
     public CompletableFuture<ApiMessage> handleRequest(
-        RequestContext context,
-        RequestHeader header,
-        ApiMessage request,
-        long createdTimeMs
+            RequestContext context,
+            RequestHeader header,
+            ApiMessage request,
+            long createdTimeMs
     ) {
         RaftRequest.Inbound inboundRequest = new RaftRequest.Inbound(
-            context.listenerName,
-            header.correlationId(),
-            header.apiVersion(),
-            request,
-            createdTimeMs
+                context.listenerName,
+                header.correlationId(),
+                header.apiVersion(),
+                request,
+                createdTimeMs
         );
 
         client.handle(inboundRequest);

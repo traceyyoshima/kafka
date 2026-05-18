@@ -58,13 +58,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = PlaintextConsumerFetchTest.BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"),
-        @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
-    }
+        types = {Type.KRAFT},
+        brokers = PlaintextConsumerFetchTest.BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"),
+                @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
+        }
 )
 public class PlaintextConsumerFetchTest {
 
@@ -95,8 +95,8 @@ public class PlaintextConsumerFetchTest {
 
     private void testFetchInvalidOffset(GroupProtocol groupProtocol) {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            AUTO_OFFSET_RESET_CONFIG, "none"
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                AUTO_OFFSET_RESET_CONFIG, "none"
         );
         try (var consumer = cluster.consumer(config)) {
             // produce one record
@@ -131,9 +131,9 @@ public class PlaintextConsumerFetchTest {
 
     private void testFetchOutOfRangeOffsetResetConfigEarliest(GroupProtocol groupProtocol) throws InterruptedException {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            // ensure no in-flight fetch request so that the offset can be reset immediately
-            FETCH_MAX_WAIT_MS_CONFIG, 0
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                // ensure no in-flight fetch request so that the offset can be reset immediately
+                FETCH_MAX_WAIT_MS_CONFIG, 0
         );
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config)) {
             var totalRecords = 10;
@@ -161,10 +161,10 @@ public class PlaintextConsumerFetchTest {
 
     private void testFetchOutOfRangeOffsetResetConfigLatest(GroupProtocol groupProtocol) throws InterruptedException {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            AUTO_OFFSET_RESET_CONFIG, "latest",
-            // ensure no in-flight fetch request so that the offset can be reset immediately
-            FETCH_MAX_WAIT_MS_CONFIG, 0
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                AUTO_OFFSET_RESET_CONFIG, "latest",
+                // ensure no in-flight fetch request so that the offset can be reset immediately
+                FETCH_MAX_WAIT_MS_CONFIG, 0
         );
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config);
              Producer<byte[], byte[]> producer = cluster.producer()
@@ -185,7 +185,7 @@ public class PlaintextConsumerFetchTest {
             // fetch requests per poll compared to the fix before KAFKA-20426, so the
             // offset reset from out-of-range may not complete in a single poll() call
             pollUntilTrue(consumer, () -> consumer.position(tp) == totalRecords,
-                "Consumer position should advance to the latest end offset " + totalRecords);
+                    "Consumer position should advance to the latest end offset " + totalRecords);
             sendRecords(producer, tp, totalRecords, totalRecords);
             var nextRecord = consumer.poll(Duration.ofMillis(50)).iterator().next();
             // ensure the seek went to the last known record at the time of the previous poll
@@ -205,10 +205,10 @@ public class PlaintextConsumerFetchTest {
 
     private void testFetchOutOfRangeOffsetResetConfigByDuration(GroupProtocol groupProtocol) throws InterruptedException {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            AUTO_OFFSET_RESET_CONFIG, "by_duration:PT1H",
-            // ensure no in-flight fetch request so that the offset can be reset immediately
-            FETCH_MAX_WAIT_MS_CONFIG, 0
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                AUTO_OFFSET_RESET_CONFIG, "by_duration:PT1H",
+                // ensure no in-flight fetch request so that the offset can be reset immediately
+                FETCH_MAX_WAIT_MS_CONFIG, 0
         );
         try (Consumer<byte[], byte[]> consumer1 = cluster.consumer(config);
              Consumer<byte[], byte[]> consumer2 = cluster.consumer(config)
@@ -218,12 +218,12 @@ public class PlaintextConsumerFetchTest {
             sendRecords(cluster, tp, totalRecords, startingTimestamp);
             consumer1.assign(List.of(tp));
             consumeAndVerifyRecords(
-                consumer1,
-                tp,
-                totalRecords,
-                0,
-                0,
-                startingTimestamp
+                    consumer1,
+                    tp,
+                    totalRecords,
+                    0,
+                    0,
+                    startingTimestamp
             );
 
             // seek to out of range position
@@ -231,12 +231,12 @@ public class PlaintextConsumerFetchTest {
             consumer1.seek(tp, outOfRangePos);
             // assert that poll resets to the beginning position
             consumeAndVerifyRecords(
-                consumer1,
-                tp,
-                1,
-                0,
-                0,
-                startingTimestamp
+                    consumer1,
+                    tp,
+                    1,
+                    0,
+                    0,
+                    startingTimestamp
             );
 
             // Test the scenario where starting offset is earlier than the requested duration
@@ -249,13 +249,13 @@ public class PlaintextConsumerFetchTest {
             consumer2.assign(List.of(tp2));
             // consumer should read one record from last one hour
             consumeAndVerifyRecords(
-                consumer2,
-                tp2,
-                1,
-                24,
-                24,
-                startingTimestamp + 24 * hourMillis,
-                hourMillis
+                    consumer2,
+                    tp2,
+                    1,
+                    24,
+                    24,
+                    startingTimestamp + 24 * hourMillis,
+                    hourMillis
             );
 
             // seek to out of range position
@@ -263,13 +263,13 @@ public class PlaintextConsumerFetchTest {
             consumer2.seek(tp2, outOfRangePos);
             // assert that poll resets to the duration offset. consumer should read one record from last one hour
             consumeAndVerifyRecords(
-                consumer2,
-                tp2,
-                1,
-                24,
-                24,
-                startingTimestamp + 24 * hourMillis,
-                hourMillis
+                    consumer2,
+                    tp2,
+                    1,
+                    24,
+                    24,
+                    startingTimestamp + 24 * hourMillis,
+                    hourMillis
             );
         }
     }
@@ -287,8 +287,8 @@ public class PlaintextConsumerFetchTest {
     private void testFetchRecordLargerThanFetchMaxBytes(GroupProtocol groupProtocol) throws InterruptedException {
         int maxFetchBytes = 10 * 1024;
         checkLargeRecord(Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            FETCH_MAX_BYTES_CONFIG, maxFetchBytes
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                FETCH_MAX_BYTES_CONFIG, maxFetchBytes
         ), maxFetchBytes + 1);
     }
 
@@ -305,8 +305,8 @@ public class PlaintextConsumerFetchTest {
     private void testFetchRecordLargerThanMaxPartitionFetchBytes(GroupProtocol groupProtocol) throws InterruptedException {
         int maxFetchBytes = 10 * 1024;
         checkLargeRecord(Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            MAX_PARTITION_FETCH_BYTES_CONFIG, maxFetchBytes
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                MAX_PARTITION_FETCH_BYTES_CONFIG, maxFetchBytes
         ), maxFetchBytes + 1);
     }
 
@@ -316,10 +316,10 @@ public class PlaintextConsumerFetchTest {
         ) {
             // produce a record that is larger than the configured fetch size
             var record = new ProducerRecord<>(
-                tp.topic(),
-                tp.partition(),
-                "key".getBytes(),
-                new byte[producerRecordSize]
+                    tp.topic(),
+                    tp.partition(),
+                    "key".getBytes(),
+                    new byte[producerRecordSize]
             );
             producer.send(record);
 
@@ -349,8 +349,8 @@ public class PlaintextConsumerFetchTest {
     private void testFetchHonoursFetchSizeIfLargeRecordNotFirst(GroupProtocol groupProtocol) throws ExecutionException, InterruptedException {
         int maxFetchBytes = 10 * 1024;
         checkFetchHonoursSizeIfLargeRecordNotFirst(Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            FETCH_MAX_BYTES_CONFIG, maxFetchBytes
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                FETCH_MAX_BYTES_CONFIG, maxFetchBytes
         ), maxFetchBytes);
     }
 
@@ -367,29 +367,29 @@ public class PlaintextConsumerFetchTest {
     private void testFetchHonoursMaxPartitionFetchBytesIfLargeRecordNotFirst(GroupProtocol groupProtocol) throws ExecutionException, InterruptedException {
         int maxFetchBytes = 10 * 1024;
         checkFetchHonoursSizeIfLargeRecordNotFirst(Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            MAX_PARTITION_FETCH_BYTES_CONFIG, maxFetchBytes
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                MAX_PARTITION_FETCH_BYTES_CONFIG, maxFetchBytes
         ), maxFetchBytes);
     }
 
     private void checkFetchHonoursSizeIfLargeRecordNotFirst(
-        Map<String, Object> config, 
-        int largeProducerRecordSize
+            Map<String, Object> config,
+            int largeProducerRecordSize
     ) throws ExecutionException, InterruptedException {
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config);
              Producer<byte[], byte[]> producer = cluster.producer()
         ) {
             var smallRecord = new ProducerRecord<>(
-                tp.topic(),
-                tp.partition(),
-                "small".getBytes(),
-                "value".getBytes()
+                    tp.topic(),
+                    tp.partition(),
+                    "small".getBytes(),
+                    "value".getBytes()
             );
             var largeRecord = new ProducerRecord<>(
-                tp.topic(),
-                tp.partition(),
-                "large".getBytes(),
-                new byte[largeProducerRecordSize]
+                    tp.topic(),
+                    tp.partition(),
+                    "large".getBytes(),
+                    new byte[largeProducerRecordSize]
             );
 
             producer.send(smallRecord).get();
@@ -397,7 +397,7 @@ public class PlaintextConsumerFetchTest {
 
             // we should only get the small record in the first `poll`
             consumer.assign(List.of(tp));
-            
+
             var records = consumeRecords(consumer, 1);
             assertEquals(1, records.size());
             var consumerRecord = records.iterator().next();
@@ -421,16 +421,16 @@ public class PlaintextConsumerFetchTest {
 
     private void testLowMaxFetchSizeForRequestAndPartition(GroupProtocol groupProtocol) throws InterruptedException {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            // one of the effects of this is that there will be some log reads where `0 > remaining limit bytes < message size`
-            // and we don't return the message because it's not the first message in the first non-empty partition of the fetch
-            // this behaves a little different from when remaining limit bytes is 0, and it's important to test it
-            FETCH_MAX_BYTES_CONFIG, 500,
-            MAX_PARTITION_FETCH_BYTES_CONFIG, 100,
-            // Avoid a rebalance while the records are being sent (the default is 6 seconds)
-            MAX_POLL_INTERVAL_MS_CONFIG, 20000
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                // one of the effects of this is that there will be some log reads where `0 > remaining limit bytes < message size`
+                // and we don't return the message because it's not the first message in the first non-empty partition of the fetch
+                // this behaves a little different from when remaining limit bytes is 0, and it's important to test it
+                FETCH_MAX_BYTES_CONFIG, 500,
+                MAX_PARTITION_FETCH_BYTES_CONFIG, 100,
+                // Avoid a rebalance while the records are being sent (the default is 6 seconds)
+                MAX_POLL_INTERVAL_MS_CONFIG, 20000
         );
-        
+
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config);
              Producer<byte[], byte[]> producer = cluster.producer()
         ) {

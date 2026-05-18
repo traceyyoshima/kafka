@@ -70,8 +70,8 @@ public class DelegationToken {
     @Override
     public String toString() {
         return "DelegationToken{" +
-            "tokenInformation=" + tokenInformation +
-            ", hmac=[*******]" +
-            '}';
+                "tokenInformation=" + tokenInformation +
+                ", hmac=[*******]" +
+                '}';
     }
 }

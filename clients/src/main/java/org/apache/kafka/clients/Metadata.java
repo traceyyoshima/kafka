@@ -56,7 +56,7 @@ import static org.apache.kafka.common.record.internal.RecordBatch.NO_PARTITION_L
  * A class encapsulating some of the logic around metadata.
  * <p>
  * This class is shared by the client thread (for partitioning) and the background sender thread.
- *
+ * <p>
  * Metadata is maintained for only a subset of topics, which can be added to over time. When we request metadata for a
  * topic we don't have any metadata for it will trigger a metadata update.
  * <p>
@@ -83,7 +83,9 @@ public class Metadata implements Closeable {
     private final ClusterResourceListeners clusterResourceListeners;
     private boolean isClosed;
     private final Map<TopicPartition, Integer> lastSeenLeaderEpochs;
-    /** Addresses with which the metadata was originally bootstrapped. */
+    /**
+     * Addresses with which the metadata was originally bootstrapped.
+     */
     private List<InetSocketAddress> bootstrapAddresses;
 
     /**
@@ -103,10 +105,10 @@ public class Metadata implements Closeable {
                     ClusterResourceListeners clusterResourceListeners) {
         this.log = logContext.logger(Metadata.class);
         this.refreshBackoff = new ExponentialBackoff(
-            refreshBackoffMs,
-            CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
-            refreshBackoffMaxMs,
-            CommonClientConfigs.RETRY_BACKOFF_JITTER);
+                refreshBackoffMs,
+                CommonClientConfigs.RETRY_BACKOFF_EXP_BASE,
+                refreshBackoffMaxMs,
+                CommonClientConfigs.RETRY_BACKOFF_JITTER);
         this.metadataExpireMs = metadataExpireMs;
         this.lastRefreshMs = 0L;
         this.lastSuccessfulRefreshMs = 0L;
@@ -187,14 +189,13 @@ public class Metadata implements Closeable {
     /**
      * Request an update of the current cluster metadata info, permitting backoff based on the number of
      * equivalent metadata responses, which indicates that responses did not make progress and may be stale.
-     * 
+     *
      * @param resetEquivalentResponseBackoff Whether to reset backing off based on consecutive equivalent responses.
      *                                       This should be set to <i>false</i> in situations where the update is
      *                                       being requested to retry an operation, such as when the leader has
      *                                       changed. It should be set to <i>true</i> in situations where new
      *                                       metadata is being requested, such as adding a topic to a subscription.
      *                                       In situations where it's not clear, it's best to use <i>true</i>.
-     * 
      * @return The current updateVersion before the update
      */
     public synchronized int requestUpdate(final boolean resetEquivalentResponseBackoff) {
@@ -208,6 +209,7 @@ public class Metadata implements Closeable {
     /**
      * Request an immediate update of the current cluster metadata info, because the caller is interested in
      * metadata that is being newly requested.
+     *
      * @return The current updateVersion before the update
      */
     public synchronized int requestUpdateForNewTopics() {
@@ -317,7 +319,7 @@ public class Metadata implements Closeable {
 
     /**
      * Update metadata assuming the current request version.
-     *
+     * <p>
      * For testing only.
      */
     public synchronized void updateWithCurrentRequestVersion(MetadataResponse response, boolean isPartialUpdate, long nowMs) {
@@ -328,11 +330,11 @@ public class Metadata implements Closeable {
      * Updates the cluster metadata. If topic expiry is enabled, expiry time
      * is set for topics if required and expired topics are removed from the metadata.
      *
-     * @param requestVersion The request version corresponding to the update response, as provided by
-     *     {@link #newMetadataRequestAndVersion(long)}.
-     * @param response metadata response received from the broker
+     * @param requestVersion  The request version corresponding to the update response, as provided by
+     *                        {@link #newMetadataRequestAndVersion(long)}.
+     * @param response        metadata response received from the broker
      * @param isPartialUpdate whether the metadata request was for a subset of the active topics
-     * @param nowMs current time in milliseconds
+     * @param nowMs           current time in milliseconds
      */
     public synchronized void update(int requestVersion, MetadataResponse response, boolean isPartialUpdate, long nowMs) {
         Objects.requireNonNull(response, "Metadata response cannot be null");
@@ -374,8 +376,9 @@ public class Metadata implements Closeable {
      * This is called whenever partition-leadership updates are returned in a response from broker(ex - ProduceResponse & FetchResponse).
      * Note that the updates via Metadata RPC are handled separately in ({@link #update}).
      * Both partitionLeader and leaderNodes override the existing metadata. Non-overlapping metadata is kept as it is.
+     *
      * @param partitionLeaders map of new leadership information for partitions.
-     * @param leaderNodes a list of nodes for leaders in the above map.
+     * @param leaderNodes      a list of nodes for leaders in the above map.
      * @return a set of partitions, for which leaders were updated.
      */
     public synchronized Set<TopicPartition> updatePartitionLeadership(Map<TopicPartition, LeaderIdAndEpoch> partitionLeaders, List<Node> leaderNodes) {
@@ -388,7 +391,7 @@ public class Metadata implements Closeable {
         // 2. for which corresponding leader's node is missing in the new-nodes.
         // 3. for which the existing metadata doesn't know about the partition.
         List<PartitionMetadata> updatePartitionMetadata = new ArrayList<>();
-        for (Entry<TopicPartition, Metadata.LeaderIdAndEpoch> partitionLeader: partitionLeaders.entrySet()) {
+        for (Entry<TopicPartition, Metadata.LeaderIdAndEpoch> partitionLeader : partitionLeaders.entrySet()) {
             TopicPartition partition = partitionLeader.getKey();
             Metadata.LeaderAndEpoch currentLeader = currentLeader(partition);
             Metadata.LeaderIdAndEpoch newLeader = partitionLeader.getValue();
@@ -411,13 +414,13 @@ public class Metadata implements Closeable {
 
             MetadataResponse.PartitionMetadata existingMetadata = this.metadataSnapshot.partitionMetadata(partition).get();
             MetadataResponse.PartitionMetadata updatedMetadata = new MetadataResponse.PartitionMetadata(
-                existingMetadata.error,
-                partition,
-                newLeader.leaderId,
-                newLeader.epoch,
-                existingMetadata.replicaIds,
-                existingMetadata.inSyncReplicaIds,
-                existingMetadata.offlineReplicaIds
+                    existingMetadata.error,
+                    partition,
+                    newLeader.leaderId,
+                    newLeader.epoch,
+                    existingMetadata.replicaIds,
+                    existingMetadata.inSyncReplicaIds,
+                    existingMetadata.offlineReplicaIds
             );
             updatePartitionMetadata.add(updatedMetadata);
 
@@ -434,30 +437,30 @@ public class Metadata implements Closeable {
         // Get topic-ids for updated topics from existing topic-ids.
         Map<String, Uuid> existingTopicIds = this.metadataSnapshot.topicIds();
         Map<String, Uuid> topicIdsForUpdatedTopics = updatedTopics.stream()
-            .filter(existingTopicIds::containsKey)
-            .collect(Collectors.toMap(e -> e, existingTopicIds::get));
+                .filter(existingTopicIds::containsKey)
+                .collect(Collectors.toMap(e -> e, existingTopicIds::get));
 
         if (log.isDebugEnabled()) {
             updatePartitionMetadata.forEach(
-                partMetadata -> log.debug("For {} updating leader information, updated metadata is {}.", partMetadata.topicPartition, partMetadata)
+                    partMetadata -> log.debug("For {} updating leader information, updated metadata is {}.", partMetadata.topicPartition, partMetadata)
             );
         }
 
         // Fetch responses can include partition level leader changes, when this happens, we perform a partial
         // metadata update, by keeping the unchanged partition and update the changed partitions.
         this.metadataSnapshot = metadataSnapshot.mergeWith(
-            metadataSnapshot.clusterResource().clusterId(),
-            newNodes,
-            updatePartitionMetadata,
-            Collections.emptySet(), Collections.emptySet(), Collections.emptySet(),
-            metadataSnapshot.cluster().controller(),
-            topicIdsForUpdatedTopics,
-            (topic, isInternal) -> true);
+                metadataSnapshot.clusterResource().clusterId(),
+                newNodes,
+                updatePartitionMetadata,
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(),
+                metadataSnapshot.cluster().controller(),
+                topicIdsForUpdatedTopics,
+                (topic, isInternal) -> true);
         clusterResourceListeners.onUpdate(metadataSnapshot.clusterResource());
 
         return updatePartitionMetadata.stream()
-            .map(metadata -> metadata.topicPartition)
-            .collect(Collectors.toSet());
+                .map(metadata -> metadata.topicPartition)
+                .collect(Collectors.toSet());
     }
 
     private void maybeSetMetadataError(Cluster cluster) {
@@ -519,7 +522,7 @@ public class Metadata implements Closeable {
                     // Even if the partition's metadata includes an error, we need to handle
                     // the update to catch new epochs
                     updateLatestMetadata(partitionMetadata, metadataResponse.hasReliableLeaderEpochs(), topicId, oldTopicId)
-                        .ifPresent(partitions::add);
+                            .ifPresent(partitions::add);
 
                     if (partitionMetadata.error.exception() instanceof InvalidMetadataException) {
                         log.debug("Requesting metadata update for partition {} due to error {}",
@@ -543,11 +546,11 @@ public class Metadata implements Closeable {
         Map<Integer, Node> nodes = metadataResponse.brokersById();
         if (isPartialUpdate)
             return this.metadataSnapshot.mergeWith(metadataResponse.clusterId(), nodes, partitions,
-                unauthorizedTopics, invalidTopics, internalTopics, metadataResponse.controller(), topicIds,
-                (topic, isInternal) -> !topics.contains(topic) && retainTopic(topic, isInternal, nowMs));
+                    unauthorizedTopics, invalidTopics, internalTopics, metadataResponse.controller(), topicIds,
+                    (topic, isInternal) -> !topics.contains(topic) && retainTopic(topic, isInternal, nowMs));
         else
             return new MetadataSnapshot(metadataResponse.clusterId(), nodes, partitions,
-                unauthorizedTopics, invalidTopics, internalTopics, metadataResponse.controller(), topicIds);
+                    unauthorizedTopics, invalidTopics, internalTopics, metadataResponse.controller(), topicIds);
     }
 
     /**
@@ -846,9 +849,9 @@ public class Metadata implements Closeable {
         @Override
         public String toString() {
             return "LeaderIdAndEpoch{" +
-                "leaderId=" + leaderId.map(Number::toString).orElse("absent") +
-                ", epoch=" + epoch.map(Number::toString).orElse("absent") +
-                '}';
+                    "leaderId=" + leaderId.map(Number::toString).orElse("absent") +
+                    ", epoch=" + epoch.map(Number::toString).orElse("absent") +
+                    '}';
         }
     }
 }

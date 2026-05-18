@@ -36,10 +36,10 @@ public class AbstractLegacyRecordBatchTest {
 
     @Test
     public void testSetLastOffsetCompressed() {
-        SimpleRecord[] simpleRecords = new SimpleRecord[] {
-            new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
-            new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
-            new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
+        SimpleRecord[] simpleRecords = new SimpleRecord[]{
+                new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
+                new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
+                new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
         };
 
         MemoryRecords records = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V1, 0L,
@@ -71,10 +71,10 @@ public class AbstractLegacyRecordBatchTest {
     @Test
     public void testIterateCompressedRecordWithWrapperOffsetZero() {
         for (byte magic : Arrays.asList(RecordBatch.MAGIC_VALUE_V0, RecordBatch.MAGIC_VALUE_V1)) {
-            SimpleRecord[] simpleRecords = new SimpleRecord[] {
-                new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
-                new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
-                new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
+            SimpleRecord[] simpleRecords = new SimpleRecord[]{
+                    new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
+                    new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
+                    new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
             };
 
             MemoryRecords records = MemoryRecords.withRecords(magic, 0L,
@@ -91,10 +91,10 @@ public class AbstractLegacyRecordBatchTest {
 
     @Test
     public void testInvalidWrapperOffsetV1() {
-        SimpleRecord[] simpleRecords = new SimpleRecord[] {
-            new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
-            new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
-            new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
+        SimpleRecord[] simpleRecords = new SimpleRecord[]{
+                new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
+                new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
+                new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
         };
 
         MemoryRecords records = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V1, 0L,
@@ -216,16 +216,16 @@ public class AbstractLegacyRecordBatchTest {
 
     @Test
     public void testZStdCompressionTypeWithV0OrV1() {
-        SimpleRecord[] simpleRecords = new SimpleRecord[] {
-            new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
-            new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
-            new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
+        SimpleRecord[] simpleRecords = new SimpleRecord[]{
+                new SimpleRecord(1L, "a".getBytes(), "1".getBytes()),
+                new SimpleRecord(2L, "b".getBytes(), "2".getBytes()),
+                new SimpleRecord(3L, "c".getBytes(), "3".getBytes())
         };
 
         // Check V0
         try {
             MemoryRecords records = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V0, 0L,
-                Compression.zstd().build(), TimestampType.CREATE_TIME, simpleRecords);
+                    Compression.zstd().build(), TimestampType.CREATE_TIME, simpleRecords);
 
             ByteBufferLegacyRecordBatch batch = new ByteBufferLegacyRecordBatch(records.buffer());
             batch.setLastOffset(1L);
@@ -239,7 +239,7 @@ public class AbstractLegacyRecordBatchTest {
         // Check V1
         try {
             MemoryRecords records = MemoryRecords.withRecords(RecordBatch.MAGIC_VALUE_V1, 0L,
-                Compression.zstd().build(), TimestampType.CREATE_TIME, simpleRecords);
+                    Compression.zstd().build(), TimestampType.CREATE_TIME, simpleRecords);
 
             ByteBufferLegacyRecordBatch batch = new ByteBufferLegacyRecordBatch(records.buffer());
             batch.setLastOffset(1L);

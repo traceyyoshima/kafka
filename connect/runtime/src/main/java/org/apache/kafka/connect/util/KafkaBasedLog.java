@@ -59,27 +59,27 @@ import java.util.function.Supplier;
 
 /**
  * <p>
- *     KafkaBasedLog provides a generic implementation of a shared, compacted log of records stored in Kafka that all
- *     clients need to consume and, at times, agree on their offset / that they have read to the end of the log.
+ * KafkaBasedLog provides a generic implementation of a shared, compacted log of records stored in Kafka that all
+ * clients need to consume and, at times, agree on their offset / that they have read to the end of the log.
  * </p>
  * <p>
- *     This functionality is useful for storing different types of data that all clients may need to agree on --
- *     offsets or config for example. This class runs a consumer in a background thread to continuously tail the target
- *     topic, accepts write requests which it writes to the topic using an internal producer, and provides some helpful
- *     utilities like checking the current log end offset and waiting until the current end of the log is reached.
+ * This functionality is useful for storing different types of data that all clients may need to agree on --
+ * offsets or config for example. This class runs a consumer in a background thread to continuously tail the target
+ * topic, accepts write requests which it writes to the topic using an internal producer, and provides some helpful
+ * utilities like checking the current log end offset and waiting until the current end of the log is reached.
  * </p>
  * <p>
- *     To support different use cases, this class works with either single- or multi-partition topics.
+ * To support different use cases, this class works with either single- or multi-partition topics.
  * </p>
  * <p>
- *     Since this class is generic, it delegates the details of data storage via a callback that is invoked for each
- *     record that is consumed from the topic. The invocation of callbacks is guaranteed to be serialized -- if the
- *     calling class keeps track of state based on the log and only writes to it when consume callbacks are invoked
- *     and only reads it in {@link #readToEnd(Callback)} callbacks then no additional synchronization will be required.
+ * Since this class is generic, it delegates the details of data storage via a callback that is invoked for each
+ * record that is consumed from the topic. The invocation of callbacks is guaranteed to be serialized -- if the
+ * calling class keeps track of state based on the log and only writes to it when consume callbacks are invoked
+ * and only reads it in {@link #readToEnd(Callback)} callbacks then no additional synchronization will be required.
  * </p>
  * <p>
- *     This is a useful utility that has been used outside of Connect. This isn't in Connect's public API,
- *     but we've tried to maintain the method signatures and backward compatibility since early Kafka versions.
+ * This is a useful utility that has been used outside of Connect. This isn't in Connect's public API,
+ * but we've tried to maintain the method signatures and backward compatibility since early Kafka versions.
  * </p>
  */
 public class KafkaBasedLog<K, V> {
@@ -144,7 +144,8 @@ public class KafkaBasedLog<K, V> {
         this.stopRequested = false;
         this.readLogEndOffsetCallbacks = new ArrayDeque<>();
         this.time = time;
-        this.initializer = initializer != null ? initializer : admin -> { };
+        this.initializer = initializer != null ? initializer : admin -> {
+        };
         // Initialize the producer Optional here to prevent NPEs later on
         this.producer = Optional.empty();
 
@@ -161,11 +162,11 @@ public class KafkaBasedLog<K, V> {
      * is not permitted until {@link #start()} is invoked. Note that the consumer and (if not null) producer given to this log
      * will be closed when this log is {@link #stop() stopped}.
      *
-     * @param topic the topic to treat as a log
-     * @param consumer the consumer to use for reading from the log; may not be null
-     * @param producer the producer to use for writing to the log; may be null, which will create a read-only log
-     * @param topicAdmin an admin client, the lifecycle of which is expected to be controlled by the calling component;
-     *                   may not be null
+     * @param topic              the topic to treat as a log
+     * @param consumer           the consumer to use for reading from the log; may not be null
+     * @param producer           the producer to use for writing to the log; may be null, which will create a read-only log
+     * @param topicAdmin         an admin client, the lifecycle of which is expected to be controlled by the calling component;
+     *                           may not be null
      * @param consumedCallback   callback to invoke for each {@link ConsumerRecord} consumed when tailing the log
      * @param time               Time interface
      * @param initializer        the function that should be run when this log is {@link #start() started}; may be null
@@ -343,6 +344,7 @@ public class KafkaBasedLog<K, V> {
 
     /**
      * Same as {@link #readToEnd(Callback)} but provides a {@link Future} instead of using a callback.
+     *
      * @return the future associated with the operation
      */
     public Future<Void> readToEnd() {
@@ -356,7 +358,8 @@ public class KafkaBasedLog<K, V> {
      * <p>
      * This method exists for backward compatibility reasons and delegates to the newer
      * {@link #sendWithReceipt(Object, Object)} method that returns a future.
-     * @param key the key for the {@link ProducerRecord}
+     *
+     * @param key   the key for the {@link ProducerRecord}
      * @param value the value for the {@link ProducerRecord}
      */
     public void send(K key, V value) {
@@ -368,8 +371,9 @@ public class KafkaBasedLog<K, V> {
      * <p>
      * This method exists for backward compatibility reasons and delegates to the newer
      * {@link #sendWithReceipt(Object, Object, org.apache.kafka.clients.producer.Callback)} method that returns a future.
-     * @param key the key for the {@link ProducerRecord}
-     * @param value the value for the {@link ProducerRecord}
+     *
+     * @param key      the key for the {@link ProducerRecord}
+     * @param value    the value for the {@link ProducerRecord}
      * @param callback the callback to invoke after completion; can be null if no callback is desired
      */
     public void send(K key, V value, org.apache.kafka.clients.producer.Callback callback) {
@@ -378,11 +382,11 @@ public class KafkaBasedLog<K, V> {
 
     /**
      * Send a record asynchronously to the configured {@link #topic} without using a producer callback.
-     * @param key the key for the {@link ProducerRecord}
-     * @param value the value for the {@link ProducerRecord}
      *
+     * @param key   the key for the {@link ProducerRecord}
+     * @param value the value for the {@link ProducerRecord}
      * @return the future from the call to {@link Producer#send}. {@link Future#get} can be called on this returned
-     *         future if synchronous behavior is desired.
+     * future if synchronous behavior is desired.
      */
     public Future<RecordMetadata> sendWithReceipt(K key, V value) {
         return sendWithReceipt(key, value, null);
@@ -390,12 +394,12 @@ public class KafkaBasedLog<K, V> {
 
     /**
      * Send a record asynchronously to the configured {@link #topic}.
-     * @param key the key for the {@link ProducerRecord}
-     * @param value the value for the {@link ProducerRecord}
-     * @param callback the callback to invoke after completion; can be null if no callback is desired
      *
+     * @param key      the key for the {@link ProducerRecord}
+     * @param value    the value for the {@link ProducerRecord}
+     * @param callback the callback to invoke after completion; can be null if no callback is desired
      * @return the future from the call to {@link Producer#send}. {@link Future#get} can be called on this returned
-     *         future if synchronous behavior is desired.
+     * future if synchronous behavior is desired.
      */
     public Future<RecordMetadata> sendWithReceipt(K key, V value, org.apache.kafka.clients.producer.Callback callback) {
         return producer.orElseThrow(() ->
@@ -430,6 +434,7 @@ public class KafkaBasedLog<K, V> {
      * for every partition found in the log's backing topic.
      * <p>This method can be overridden by subclasses when only a subset of the assigned partitions
      * should be read into memory. By default, all partitions are read.
+     *
      * @param topicPartition A topic partition which could be read by this log.
      * @return true if the partition should be read by this log, false if its contents should be ignored.
      */
@@ -486,13 +491,15 @@ public class KafkaBasedLog<K, V> {
     }
 
     // Visible for testing
+
     /**
      * Read to the end of the given list of topic partitions
-     * @param assignment the topic partitions to read to the end of
+     *
+     * @param assignment  the topic partitions to read to the end of
      * @param shouldRetry boolean flag to enable retry for the admin client {@code listOffsets()} call.
      * @throws UnsupportedVersionException if the log's consumer is using the "read_committed" isolation level (and
-     * therefore a separate admin client is required to read end offsets for the topic), but the broker does not support
-     * reading end offsets using an admin client
+     *                                     therefore a separate admin client is required to read end offsets for the topic), but the broker does not support
+     *                                     reading end offsets using an admin client
      */
     Map<TopicPartition, Long> readEndOffsets(Set<TopicPartition> assignment, boolean shouldRetry) throws UnsupportedVersionException {
         log.trace("Reading to end of offset log");
@@ -539,6 +546,7 @@ public class KafkaBasedLog<K, V> {
         public WorkThread() {
             super("KafkaBasedLog Work Thread - " + topic);
         }
+
         @Override
         public void run() {
             log.trace("{} started execution", this);
@@ -557,11 +565,11 @@ public class KafkaBasedLog<K, V> {
                             log.trace("Finished read to end log for topic {}", topic);
                         } catch (TimeoutException e) {
                             log.warn("Timeout while reading log to end for topic '{}'. Retrying automatically. " +
-                                "This may occur when brokers are unavailable or unreachable. Reason: {}", topic, e.getMessage());
+                                    "This may occur when brokers are unavailable or unreachable. Reason: {}", topic, e.getMessage());
                             continue;
                         } catch (RetriableException | org.apache.kafka.connect.errors.RetriableException e) {
                             log.warn("Retriable error while reading log to end for topic '{}'. Retrying automatically. " +
-                                "Reason: {}", topic, e.getMessage());
+                                    "Reason: {}", topic, e.getMessage());
                             continue;
                         } catch (WakeupException e) {
                             // Either received another get() call and need to retry reading to end of log or stop() was

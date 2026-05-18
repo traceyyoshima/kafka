@@ -142,11 +142,11 @@ public class RegexSourceIntegrationTest {
         properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 10000);
 
         streamsConfiguration = StreamsTestUtils.getStreamsConfig(
-            safeUniqueTestName(testInfo),
-            CLUSTER.bootstrapServers(),
-            STRING_SERDE_CLASSNAME,
-            STRING_SERDE_CLASSNAME,
-            properties
+                safeUniqueTestName(testInfo),
+                CLUSTER.bootstrapServers(),
+                STRING_SERDE_CLASSNAME,
+                STRING_SERDE_CLASSNAME,
+                properties
         );
     }
 
@@ -217,10 +217,10 @@ public class RegexSourceIntegrationTest {
             builder.stream(Pattern.compile("not-a-match"));
 
             pattern1Stream
-                .selectKey((k, v) -> k)
-                .groupByKey()
-                .aggregate(() -> "", (k, v, a) -> v)
-                .toStream().to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
+                    .selectKey((k, v) -> k)
+                    .groupByKey()
+                    .aggregate(() -> "", (k, v, a) -> v)
+                    .toStream().to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
 
             final Topology topology = builder.build();
             assertThat(topology.describe().subtopologies().size(), greaterThan(1));
@@ -233,21 +233,21 @@ public class RegexSourceIntegrationTest {
             final KeyValue<String, String> record1 = new KeyValue<>("1", "1");
             final KeyValue<String, String> record2 = new KeyValue<>("2", "2");
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                topic1,
-                Collections.singletonList(record1),
-                TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                CLUSTER.time
+                    topic1,
+                    Collections.singletonList(record1),
+                    TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    CLUSTER.time
             );
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                topic2,
-                Collections.singletonList(record2),
-                TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                CLUSTER.time
+                    topic2,
+                    Collections.singletonList(record2),
+                    TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    CLUSTER.time
             );
             IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-                TestUtils.consumerConfig(CLUSTER.bootstrapServers(), StringDeserializer.class, StringDeserializer.class),
-                outputTopic,
-                Arrays.asList(record1, record2)
+                    TestUtils.consumerConfig(CLUSTER.bootstrapServers(), StringDeserializer.class, StringDeserializer.class),
+                    outputTopic,
+                    Arrays.asList(record1, record2)
             );
 
             streams.close();
@@ -270,10 +270,10 @@ public class RegexSourceIntegrationTest {
             final List<String> assignedTopics = new CopyOnWriteArrayList<>();
 
             pattern1Stream
-                .selectKey((k, v) -> k)
-                .groupByKey()
-                .aggregate(() -> "", (k, v, a) -> v)
-                .toStream().to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
+                    .selectKey((k, v) -> k)
+                    .groupByKey()
+                    .aggregate(() -> "", (k, v, a) -> v)
+                    .toStream().to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));
 
             final Topology topology = builder.build();
             assertThat(topology.describe().subtopologies().size(), greaterThan(1));
@@ -297,15 +297,15 @@ public class RegexSourceIntegrationTest {
 
             final KeyValue<String, String> record1 = new KeyValue<>("1", "1");
             IntegrationTestUtils.produceKeyValuesSynchronously(
-                topic1,
-                Collections.singletonList(record1),
-                TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
-                CLUSTER.time
+                    topic1,
+                    Collections.singletonList(record1),
+                    TestUtils.producerConfig(CLUSTER.bootstrapServers(), StringSerializer.class, StringSerializer.class),
+                    CLUSTER.time
             );
             IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-                TestUtils.consumerConfig(CLUSTER.bootstrapServers(), StringDeserializer.class, StringDeserializer.class),
-                outputTopic,
-                List.of(record1)
+                    TestUtils.consumerConfig(CLUSTER.bootstrapServers(), StringDeserializer.class, StringDeserializer.class),
+                    outputTopic,
+                    List.of(record1)
             );
 
             streams.close();

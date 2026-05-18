@@ -54,7 +54,7 @@ public class RetriableCommitFailedException extends RetriableException {
      * Constructs a new RetriableCommitFailedException with the specified detail message and cause.
      *
      * @param message The detail message
-     * @param t The cause of the exception
+     * @param t       The cause of the exception
      */
     public RetriableCommitFailedException(String message, Throwable t) {
         super(message, t);

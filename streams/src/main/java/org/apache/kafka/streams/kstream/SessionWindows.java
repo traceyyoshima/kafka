@@ -100,8 +100,7 @@ public final class SessionWindows {
      *
      * @param inactivityGap the gap of inactivity between sessions
      * @return a window definition with the window size and no grace period. Note that this means out-of-order records arriving after the window end will be dropped
-     * @throws IllegalArgumentException
-     *         if {@code inactivityGap} is negative or can't be represented as {@code long milliseconds}
+     * @throws IllegalArgumentException if {@code inactivityGap} is negative or can't be represented as {@code long milliseconds}
      */
     public static SessionWindows ofInactivityGapWithNoGrace(final Duration inactivityGap) {
         return ofInactivityGapAndGrace(inactivityGap, ofMillis(NO_GRACE_PERIOD));
@@ -119,11 +118,10 @@ public final class SessionWindows {
      * The window close, after which any incoming records are considered late and will be rejected, is defined as
      * {@code windowEnd + afterWindowEnd}
      *
-     * @param inactivityGap the gap of inactivity between sessions
+     * @param inactivityGap  the gap of inactivity between sessions
      * @param afterWindowEnd The grace period to admit out-of-order events to a window.
      * @return A SessionWindows object with the specified inactivity gap and grace period
-     * @throws IllegalArgumentException
-     *         if {@code inactivityGap} or {@code afterWindowEnd} is negative or can't be represented as {@code long milliseconds}
+     * @throws IllegalArgumentException if {@code inactivityGap} or {@code afterWindowEnd} is negative or can't be represented as {@code long milliseconds}
      */
     public static SessionWindows ofInactivityGapAndGrace(final Duration inactivityGap, final Duration afterWindowEnd) {
         final String inactivityGapMsgPrefix = prepareMillisCheckFailMsgPrefix(inactivityGap, "inactivityGap");
@@ -158,7 +156,7 @@ public final class SessionWindows {
         }
         final SessionWindows that = (SessionWindows) o;
         return gapMs == that.gapMs &&
-            graceMs == that.graceMs;
+                graceMs == that.graceMs;
     }
 
     @Override
@@ -169,8 +167,8 @@ public final class SessionWindows {
     @Override
     public String toString() {
         return "SessionWindows{" +
-            "gapMs=" + gapMs +
-            ", graceMs=" + graceMs +
-            '}';
+                "gapMs=" + gapMs +
+                ", graceMs=" + graceMs +
+                '}';
     }
 }

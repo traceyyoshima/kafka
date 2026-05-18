@@ -65,12 +65,12 @@ public record ConfiguredTopology(int topologyEpoch,
 
     public StreamsGroupDescribeResponseData.Topology asStreamsGroupDescribeTopology() {
         return new StreamsGroupDescribeResponseData.Topology()
-            .setEpoch(topologyEpoch)
-            .setSubtopologies(
-                subtopologies.map(stringConfiguredSubtopologyMap -> stringConfiguredSubtopologyMap.entrySet().stream().map(
-                    entry -> entry.getValue().asStreamsGroupDescribeSubtopology(entry.getKey())
-                ).toList()).orElse(List.of())
-            );
+                .setEpoch(topologyEpoch)
+                .setSubtopologies(
+                        subtopologies.map(stringConfiguredSubtopologyMap -> stringConfiguredSubtopologyMap.entrySet().stream().map(
+                                entry -> entry.getValue().asStreamsGroupDescribeSubtopology(entry.getKey())
+                        ).toList()).orElse(List.of())
+                );
     }
 
 }

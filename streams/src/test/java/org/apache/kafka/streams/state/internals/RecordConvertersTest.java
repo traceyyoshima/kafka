@@ -65,12 +65,12 @@ public class RecordConvertersTest {
         final byte[] value = new byte[1];
         final Headers headers = new RecordHeaders().add("header-key", "header-value".getBytes());
         final ConsumerRecord<byte[], byte[]> inputRecord = new ConsumerRecord<>(
-            "topic", 1, 0, timestamp, TimestampType.CREATE_TIME, 0, 0, new byte[0], value,
-            headers, Optional.empty());
+                "topic", 1, 0, timestamp, TimestampType.CREATE_TIME, 0, 0, new byte[0], value,
+                headers, Optional.empty());
         // Expected format: [headersSize(varint)][headersBytes][timestamp(8)][value]
         final byte[] expectedValue =
-            {50, 2, 20, 'h', 'e', 'a', 'd', 'e', 'r', '-', 'k', 'e', 'y', 24, 'h', 'e', 'a', 'd', 'e',
-                'r', '-', 'v', 'a', 'l', 'u', 'e', 0, 0, 0, 0, 0, 0, 0, 10, value[0]};
+                {50, 2, 20, 'h', 'e', 'a', 'd', 'e', 'r', '-', 'k', 'e', 'y', 24, 'h', 'e', 'a', 'd', 'e',
+                        'r', '-', 'v', 'a', 'l', 'u', 'e', 0, 0, 0, 0, 0, 0, 0, 10, value[0]};
         final byte[] actualValue = headersValueConverter.convert(inputRecord).value();
         assertArrayEquals(expectedValue, actualValue);
     }
@@ -80,12 +80,12 @@ public class RecordConvertersTest {
         final byte[] value = new byte[1];
         final Headers headers = new RecordHeaders().add("header-key", "header-value".getBytes());
         final ConsumerRecord<byte[], byte[]> inputRecord = new ConsumerRecord<>(
-            "topic", 1, 0, 0, TimestampType.CREATE_TIME, 0, 0, new byte[0], value,
-            headers, Optional.empty());
+                "topic", 1, 0, 0, TimestampType.CREATE_TIME, 0, 0, new byte[0], value,
+                headers, Optional.empty());
         // Expected format: [headersSize(varint)][headersBytes][value]
         final byte[] expectedValue =
-            {50, 2, 20, 'h', 'e', 'a', 'd', 'e', 'r', '-', 'k', 'e', 'y', 24, 'h', 'e', 'a', 'd', 'e',
-                'r', '-', 'v', 'a', 'l', 'u', 'e', value[0]};
+                {50, 2, 20, 'h', 'e', 'a', 'd', 'e', 'r', '-', 'k', 'e', 'y', 24, 'h', 'e', 'a', 'd', 'e',
+                        'r', '-', 'v', 'a', 'l', 'u', 'e', value[0]};
         final byte[] actualValue = sessionValueConverter.convert(inputRecord).value();
         assertArrayEquals(expectedValue, actualValue);
     }

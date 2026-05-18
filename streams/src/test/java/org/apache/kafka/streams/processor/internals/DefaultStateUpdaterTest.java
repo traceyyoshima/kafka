@@ -113,7 +113,7 @@ class DefaultStateUpdaterTest {
     private final ChangelogReader changelogReader = mock(ChangelogReader.class);
     private final TopologyMetadata topologyMetadata = unnamedTopology().build();
     private final DefaultStateUpdater stateUpdater =
-        new DefaultStateUpdater("test-state-updater", metrics, config, null, changelogReader, topologyMetadata, time);
+            new DefaultStateUpdater("test-state-updater", metrics, config, null, changelogReader, topologyMetadata, time);
 
     @AfterEach
     public void tearDown() {
@@ -122,11 +122,11 @@ class DefaultStateUpdaterTest {
 
     private Properties configProps(final int commitInterval) {
         return mkObjectProperties(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
-            mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2171"),
-            mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE_V2),
-            mkEntry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, commitInterval),
-            mkEntry(producerPrefix(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG), commitInterval)
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "appId"),
+                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2171"),
+                mkEntry(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE_V2),
+                mkEntry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, commitInterval),
+                mkEntry(producerPrefix(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG), commitInterval)
         ));
     }
 
@@ -139,8 +139,8 @@ class DefaultStateUpdaterTest {
         when(changelogReader.completedChangelogs()).thenReturn(Set.of(TOPIC_PARTITION_B_0));
         final TaskCorruptedException taskCorruptedException = new TaskCorruptedException(Set.of(TASK_1_1));
         doThrow(taskCorruptedException).when(changelogReader).restore(mkMap(
-            mkEntry(TASK_1_1, failedStatefulTask),
-            mkEntry(TASK_0_2, standbyTask)
+                mkEntry(TASK_1_1, failedStatefulTask),
+                mkEntry(TASK_0_2, standbyTask)
         ));
         stateUpdater.add(statelessTask);
         stateUpdater.add(restoredStatefulTask);
@@ -209,8 +209,8 @@ class DefaultStateUpdaterTest {
         final IllegalStateException exception = assertThrows(IllegalStateException.class, stateUpdater::start);
 
         assertEquals("State updater started with non-empty output queues."
-            + " This indicates a bug. Please report at https://issues.apache.org/jira/projects/KAFKA/issues or to the"
-            + " dev-mailing list (https://kafka.apache.org/contact).", exception.getMessage());
+                + " This indicates a bug. Please report at https://issues.apache.org/jira/projects/KAFKA/issues or to the"
+                + " dev-mailing list (https://kafka.apache.org/contact).", exception.getMessage());
     }
 
     @Test
@@ -226,8 +226,8 @@ class DefaultStateUpdaterTest {
         final IllegalStateException exception = assertThrows(IllegalStateException.class, stateUpdater::start);
 
         assertEquals("State updater started with non-empty output queues."
-            + " This indicates a bug. Please report at https://issues.apache.org/jira/projects/KAFKA/issues or to the"
-            + " dev-mailing list (https://kafka.apache.org/contact).", exception.getMessage());
+                + " This indicates a bug. Please report at https://issues.apache.org/jira/projects/KAFKA/issues or to the"
+                + " dev-mailing list (https://kafka.apache.org/contact).", exception.getMessage());
     }
 
     @Test
@@ -294,9 +294,9 @@ class DefaultStateUpdaterTest {
 
         verifyFailedTasks(IllegalStateException.class, task1);
         waitForCondition(
-            () -> !stateUpdater.isRunning(),
-            VERIFICATION_TIMEOUT,
-            "Did not switch to non-running within the given timeout!"
+                () -> !stateUpdater.isRunning(),
+                VERIFICATION_TIMEOUT,
+                "Did not switch to non-running within the given timeout!"
         );
     }
 
@@ -330,15 +330,15 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldRestoreSingleActiveStatefulTask() throws Exception {
         final StreamTask task =
-            statefulTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0)).inState(State.RESTORING).build();
+                statefulTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0)).inState(State.RESTORING).build();
         final AtomicBoolean allChangelogCompleted = new AtomicBoolean(false);
         when(changelogReader.completedChangelogs())
-            .thenReturn(Collections.emptySet())
-            .thenReturn(Set.of(TOPIC_PARTITION_A_0))
-            .thenAnswer(invocation -> {
-                allChangelogCompleted.set(true);
-                return Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0);
-            });
+                .thenReturn(Collections.emptySet())
+                .thenReturn(Set.of(TOPIC_PARTITION_A_0))
+                .thenAnswer(invocation -> {
+                    allChangelogCompleted.set(true);
+                    return Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0);
+                });
         when(changelogReader.allChangelogsCompleted()).thenAnswer(invocation -> allChangelogCompleted.get());
         stateUpdater.start();
 
@@ -363,13 +363,13 @@ class DefaultStateUpdaterTest {
         final StreamTask task3 = statefulTask(TASK_1_0, Set.of(TOPIC_PARTITION_C_0)).inState(State.RESTORING).build();
         final AtomicBoolean allChangelogCompleted = new AtomicBoolean(false);
         when(changelogReader.completedChangelogs())
-            .thenReturn(Collections.emptySet())
-            .thenReturn(Set.of(TOPIC_PARTITION_C_0))
-            .thenReturn(Set.of(TOPIC_PARTITION_C_0, TOPIC_PARTITION_A_0))
-            .thenAnswer(invocation -> {
-                allChangelogCompleted.set(true);
-                return Set.of(TOPIC_PARTITION_C_0, TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0);
-            });
+                .thenReturn(Collections.emptySet())
+                .thenReturn(Set.of(TOPIC_PARTITION_C_0))
+                .thenReturn(Set.of(TOPIC_PARTITION_C_0, TOPIC_PARTITION_A_0))
+                .thenAnswer(invocation -> {
+                    allChangelogCompleted.set(true);
+                    return Set.of(TOPIC_PARTITION_C_0, TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0);
+                });
         when(changelogReader.allChangelogsCompleted()).thenAnswer(invocation -> allChangelogCompleted.get());
         stateUpdater.start();
 
@@ -396,7 +396,7 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldReturnTrueForRestoreActiveTasksIfTaskAdded() {
         final StreamTask task = statefulTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0))
-            .inState(State.RESTORING).build();
+                .inState(State.RESTORING).build();
         stateUpdater.add(task);
 
         assertTrue(stateUpdater.restoresActiveTasks());
@@ -405,11 +405,11 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldReturnTrueForRestoreActiveTasksIfTaskUpdating() throws Exception {
         final StreamTask task = statefulTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0))
-            .inState(State.RESTORING).build();
+                .inState(State.RESTORING).build();
         when(changelogReader.completedChangelogs())
-            .thenReturn(Collections.emptySet());
+                .thenReturn(Collections.emptySet());
         when(changelogReader.allChangelogsCompleted())
-            .thenReturn(false);
+                .thenReturn(false);
         stateUpdater.start();
         stateUpdater.add(task);
         verifyRestoredActiveTasks();
@@ -423,11 +423,11 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldReturnTrueForRestoreActiveTasksIfTaskRestored() throws Exception {
         final StreamTask task = statefulTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0))
-            .inState(State.RESTORING).build();
+                .inState(State.RESTORING).build();
         when(changelogReader.completedChangelogs())
-            .thenReturn(Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0));
+                .thenReturn(Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0));
         when(changelogReader.allChangelogsCompleted())
-            .thenReturn(true);
+                .thenReturn(true);
         stateUpdater.start();
         stateUpdater.add(task);
         verifyRestoredActiveTasks(task);
@@ -441,11 +441,11 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldReturnFalseForRestoreActiveTasksIfTaskRemoved() throws Exception {
         final StreamTask task = statefulTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0))
-            .inState(State.RESTORING).build();
+                .inState(State.RESTORING).build();
         when(changelogReader.completedChangelogs())
-            .thenReturn(Collections.emptySet());
+                .thenReturn(Collections.emptySet());
         when(changelogReader.allChangelogsCompleted())
-            .thenReturn(false);
+                .thenReturn(false);
         stateUpdater.start();
         stateUpdater.add(task);
         stateUpdater.remove(task.id(), StandbyUpdateListener.SuspendReason.MIGRATED).get();
@@ -460,11 +460,11 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldReturnTrueForRestoreActiveTasksIfTaskFailed() throws Exception {
         final StreamTask task = statefulTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0))
-            .inState(State.RESTORING).build();
+                .inState(State.RESTORING).build();
         when(changelogReader.completedChangelogs())
-            .thenReturn(Collections.emptySet());
+                .thenReturn(Collections.emptySet());
         when(changelogReader.allChangelogsCompleted())
-            .thenReturn(false);
+                .thenReturn(false);
         final TaskCorruptedException taskCorruptedException = new TaskCorruptedException(Set.of(task.id()));
         doThrow(taskCorruptedException).when(changelogReader).restore(mkMap(mkEntry(TASK_0_0, task)));
         stateUpdater.start();
@@ -480,11 +480,11 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldReturnTrueForRestoreActiveTasksIfTaskPaused() throws Exception {
         final StreamTask task = statefulTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0))
-            .inState(State.RESTORING).build();
+                .inState(State.RESTORING).build();
         when(changelogReader.completedChangelogs())
-            .thenReturn(Collections.emptySet());
+                .thenReturn(Collections.emptySet());
         when(changelogReader.allChangelogsCompleted())
-            .thenReturn(false);
+                .thenReturn(false);
         stateUpdater.start();
         stateUpdater.add(task);
         verifyUpdatingTasks(task);
@@ -500,11 +500,11 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldReturnFalseForRestoreActiveTasksIfTaskRemovedFromStateUpdater() throws Exception {
         final StreamTask task = statefulTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0))
-            .inState(State.RESTORING).build();
+                .inState(State.RESTORING).build();
         when(changelogReader.completedChangelogs())
-            .thenReturn(Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0));
+                .thenReturn(Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0));
         when(changelogReader.allChangelogsCompleted())
-            .thenReturn(true);
+                .thenReturn(true);
         stateUpdater.start();
         stateUpdater.add(task);
         stateUpdater.drainRestoredActiveTasks(Duration.ofMillis(VERIFICATION_TIMEOUT));
@@ -519,11 +519,11 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldReturnTrueForRestoreActiveTasksIfStandbyTask() throws Exception {
         final StandbyTask task = standbyTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0))
-            .inState(State.RUNNING).build();
+                .inState(State.RUNNING).build();
         when(changelogReader.completedChangelogs())
-            .thenReturn(Collections.emptySet());
+                .thenReturn(Collections.emptySet());
         when(changelogReader.allChangelogsCompleted())
-            .thenReturn(false);
+                .thenReturn(false);
         stateUpdater.start();
         stateUpdater.add(task);
         verifyRestoredActiveTasks();
@@ -557,7 +557,7 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldUpdateSingleStandbyTask() throws Exception {
         final StandbyTask task = standbyTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0))
-            .inState(State.RUNNING).build();
+                .inState(State.RUNNING).build();
         shouldUpdateStandbyTasks(task);
     }
 
@@ -597,9 +597,9 @@ class DefaultStateUpdaterTest {
         final StandbyTask task3 = standbyTask(TASK_1_0, Set.of(TOPIC_PARTITION_C_0)).inState(State.RUNNING).build();
         final StandbyTask task4 = standbyTask(TASK_1_1, Set.of(TOPIC_PARTITION_D_0)).inState(State.RUNNING).build();
         when(changelogReader.completedChangelogs())
-            .thenReturn(Collections.emptySet())
-            .thenReturn(Set.of(TOPIC_PARTITION_A_0))
-            .thenReturn(Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0));
+                .thenReturn(Collections.emptySet())
+                .thenReturn(Set.of(TOPIC_PARTITION_A_0))
+                .thenReturn(Set.of(TOPIC_PARTITION_A_0, TOPIC_PARTITION_B_0));
         when(changelogReader.allChangelogsCompleted()).thenReturn(false);
         stateUpdater.start();
 
@@ -629,9 +629,9 @@ class DefaultStateUpdaterTest {
         final StandbyTask task2 = standbyTask(TASK_1_0, Set.of(TOPIC_PARTITION_C_0)).inState(State.RUNNING).build();
         final StreamTask task3 = statefulTask(TASK_0_2, Set.of(TOPIC_PARTITION_B_0)).inState(State.RESTORING).build();
         when(changelogReader.completedChangelogs())
-            .thenReturn(Collections.emptySet())
-            .thenReturn(Set.of(TOPIC_PARTITION_A_0))
-            .thenReturn(Set.of(TOPIC_PARTITION_B_0));
+                .thenReturn(Collections.emptySet())
+                .thenReturn(Set.of(TOPIC_PARTITION_A_0))
+                .thenReturn(Set.of(TOPIC_PARTITION_B_0));
         when(changelogReader.allChangelogsCompleted()).thenReturn(false);
         stateUpdater.start();
 
@@ -659,11 +659,11 @@ class DefaultStateUpdaterTest {
         final StreamTask activeTask2 = statefulTask(TASK_0_1, Set.of(TOPIC_PARTITION_B_0)).inState(State.RESTORING).build();
         final StandbyTask standbyTask = standbyTask(TASK_1_0, Set.of(TOPIC_PARTITION_C_0)).inState(State.RUNNING).build();
         final TaskCorruptedException taskCorruptedException =
-            new TaskCorruptedException(Set.of(activeTask1.id(), activeTask2.id()));
+                new TaskCorruptedException(Set.of(activeTask1.id(), activeTask2.id()));
         final Map<TaskId, Task> updatingTasks1 = mkMap(
-            mkEntry(activeTask1.id(), activeTask1),
-            mkEntry(activeTask2.id(), activeTask2),
-            mkEntry(standbyTask.id(), standbyTask)
+                mkEntry(activeTask1.id(), activeTask1),
+                mkEntry(activeTask2.id(), activeTask2),
+                mkEntry(standbyTask.id(), standbyTask)
         );
         doThrow(taskCorruptedException).doReturn(0L).when(changelogReader).restore(updatingTasks1);
         when(changelogReader.allChangelogsCompleted()).thenReturn(false);
@@ -686,8 +686,8 @@ class DefaultStateUpdaterTest {
         final StandbyTask task1 = standbyTask(TASK_0_0, Set.of(TOPIC_PARTITION_A_0)).inState(State.RUNNING).build();
         final StandbyTask task2 = standbyTask(TASK_1_0, Set.of(TOPIC_PARTITION_B_0)).inState(State.RUNNING).build();
         final Map<TaskId, Task> updatingTasks = mkMap(
-            mkEntry(task1.id(), task1),
-            mkEntry(task2.id(), task2)
+                mkEntry(task1.id(), task1),
+                mkEntry(task2.id(), task2)
         );
         final TaskCorruptedException taskCorruptedException = new TaskCorruptedException(Set.of(task1.id()));
         final ExceptionAndTask expectedExceptionAndTasks = new ExceptionAndTask(taskCorruptedException, task1);
@@ -762,7 +762,7 @@ class DefaultStateUpdaterTest {
         verifyUpdatingTasks(task);
 
         final CompletableFuture<StateUpdater.RemovedTaskResult> future =
-            stateUpdater.remove(task.id(), StandbyUpdateListener.SuspendReason.PROMOTED);
+                stateUpdater.remove(task.id(), StandbyUpdateListener.SuspendReason.PROMOTED);
 
         assertEquals(new StateUpdater.RemovedTaskResult(task), future.get());
         verify(changelogReader).unregister(task.changelogPartitions(), StandbyUpdateListener.SuspendReason.PROMOTED);
@@ -951,8 +951,8 @@ class DefaultStateUpdaterTest {
         when(changelogReader.allChangelogsCompleted()).thenReturn(false);
         final Map<TaskId, Task> updatingTasks = mkMap(mkEntry(task.id(), task));
         doThrow(streamsException)
-            .doReturn(0L)
-            .when(changelogReader).restore(updatingTasks);
+                .doReturn(0L)
+                .when(changelogReader).restore(updatingTasks);
         stateUpdater.start();
 
         stateUpdater.add(task);
@@ -975,8 +975,8 @@ class DefaultStateUpdaterTest {
         final StreamTask failedTask = statefulTask(TASK_0_2, Set.of(TOPIC_PARTITION_C_0)).inState(State.RESTORING).build();
         final TaskCorruptedException taskCorruptedException = new TaskCorruptedException(Set.of(TASK_0_2));
         doThrow(taskCorruptedException).when(changelogReader).restore(mkMap(
-            mkEntry(TASK_0_0, updatingTask),
-            mkEntry(TASK_0_2, failedTask)
+                mkEntry(TASK_0_0, updatingTask),
+                mkEntry(TASK_0_2, failedTask)
         ));
         when(changelogReader.completedChangelogs()).thenReturn(Set.of(TOPIC_PARTITION_B_0));
         when(changelogReader.allChangelogsCompleted()).thenReturn(false);
@@ -1126,12 +1126,12 @@ class DefaultStateUpdaterTest {
         when(changelogReader.completedChangelogs()).thenReturn(Collections.emptySet());
         when(changelogReader.allChangelogsCompleted()).thenReturn(false);
         final Map<TaskId, Task> updatingTasks = mkMap(
-            mkEntry(task.id(), task),
-            mkEntry(controlTask.id(), controlTask)
+                mkEntry(task.id(), task),
+                mkEntry(controlTask.id(), controlTask)
         );
         doThrow(streamsException)
-            .doReturn(0L)
-            .when(changelogReader).restore(updatingTasks);
+                .doReturn(0L)
+                .when(changelogReader).restore(updatingTasks);
         stateUpdater.start();
 
         stateUpdater.add(task);
@@ -1245,12 +1245,12 @@ class DefaultStateUpdaterTest {
         when(changelogReader.completedChangelogs()).thenReturn(Collections.emptySet());
         when(changelogReader.allChangelogsCompleted()).thenReturn(false);
         final Map<TaskId, Task> updatingTasks = mkMap(
-            mkEntry(task.id(), task),
-            mkEntry(controlTask.id(), controlTask)
+                mkEntry(task.id(), task),
+                mkEntry(controlTask.id(), controlTask)
         );
         doThrow(streamsException)
-            .doReturn(0L)
-            .when(changelogReader).restore(updatingTasks);
+                .doReturn(0L)
+                .when(changelogReader).restore(updatingTasks);
         stateUpdater.start();
 
         stateUpdater.add(task);
@@ -1270,8 +1270,8 @@ class DefaultStateUpdaterTest {
         final String exceptionMessage = "The Streams were crossed!";
         final StreamsException streamsException = new StreamsException(exceptionMessage);
         final Map<TaskId, Task> updatingTasks = mkMap(
-            mkEntry(task1.id(), task1),
-            mkEntry(task2.id(), task2)
+                mkEntry(task1.id(), task1),
+                mkEntry(task2.id(), task2)
         );
         doReturn(0L).doThrow(streamsException).when(changelogReader).restore(updatingTasks);
         stateUpdater.start();
@@ -1297,20 +1297,20 @@ class DefaultStateUpdaterTest {
         final StreamsException streamsException1 = new StreamsException(exceptionMessage, task1.id());
         final StreamsException streamsException2 = new StreamsException(exceptionMessage, task3.id());
         final Map<TaskId, Task> updatingTasksBeforeFirstThrow = mkMap(
-            mkEntry(task1.id(), task1),
-            mkEntry(task2.id(), task2),
-            mkEntry(task3.id(), task3)
+                mkEntry(task1.id(), task1),
+                mkEntry(task2.id(), task2),
+                mkEntry(task3.id(), task3)
         );
         final Map<TaskId, Task> updatingTasksBeforeSecondThrow = mkMap(
-            mkEntry(task2.id(), task2),
-            mkEntry(task3.id(), task3)
+                mkEntry(task2.id(), task2),
+                mkEntry(task3.id(), task3)
         );
         doReturn(0L)
-            .doThrow(streamsException1)
-            .when(changelogReader).restore(updatingTasksBeforeFirstThrow);
+                .doThrow(streamsException1)
+                .when(changelogReader).restore(updatingTasksBeforeFirstThrow);
         doReturn(0L)
-            .doThrow(streamsException2)
-            .when(changelogReader).restore(updatingTasksBeforeSecondThrow);
+                .doThrow(streamsException2)
+                .when(changelogReader).restore(updatingTasksBeforeSecondThrow);
         stateUpdater.start();
 
         stateUpdater.add(task1);
@@ -1334,9 +1334,9 @@ class DefaultStateUpdaterTest {
         final Set<TaskId> expectedTaskIds = Set.of(task1.id(), task2.id());
         final TaskCorruptedException taskCorruptedException = new TaskCorruptedException(expectedTaskIds);
         final Map<TaskId, Task> updatingTasks = mkMap(
-            mkEntry(task1.id(), task1),
-            mkEntry(task2.id(), task2),
-            mkEntry(task3.id(), task3)
+                mkEntry(task1.id(), task1),
+                mkEntry(task2.id(), task2),
+                mkEntry(task3.id(), task3)
         );
         doReturn(0L).doThrow(taskCorruptedException).doReturn(0L).when(changelogReader).restore(updatingTasks);
         stateUpdater.start();
@@ -1362,8 +1362,8 @@ class DefaultStateUpdaterTest {
         final StandbyTask task2 = standbyTask(TASK_0_2, Set.of(TOPIC_PARTITION_B_0)).inState(State.RUNNING).build();
         final IllegalStateException illegalStateException = new IllegalStateException("Nobody expects the Spanish inquisition!");
         final Map<TaskId, Task> updatingTasks = mkMap(
-            mkEntry(task1.id(), task1),
-            mkEntry(task2.id(), task2)
+                mkEntry(task1.id(), task1),
+                mkEntry(task2.id(), task2)
         );
         doThrow(illegalStateException).when(changelogReader).restore(updatingTasks);
         stateUpdater.start();
@@ -1392,26 +1392,26 @@ class DefaultStateUpdaterTest {
         final String exceptionMessage = "The Streams were crossed!";
         final StreamsException streamsException1 = new StreamsException(exceptionMessage, task1.id());
         final Map<TaskId, Task> updatingTasks1 = mkMap(
-            mkEntry(task1.id(), task1)
+                mkEntry(task1.id(), task1)
         );
         doThrow(streamsException1)
-            .when(changelogReader).restore(updatingTasks1);
+                .when(changelogReader).restore(updatingTasks1);
         final StreamsException streamsException2 = new StreamsException(exceptionMessage, task2.id());
         final StreamsException streamsException3 = new StreamsException(exceptionMessage, task3.id());
         final StreamsException streamsException4 = new StreamsException(exceptionMessage, task4.id());
         final Map<TaskId, Task> updatingTasks2 = mkMap(
-            mkEntry(task2.id(), task2),
-            mkEntry(task3.id(), task3),
-            mkEntry(task4.id(), task4)
+                mkEntry(task2.id(), task2),
+                mkEntry(task3.id(), task3),
+                mkEntry(task4.id(), task4)
         );
         doThrow(streamsException2).when(changelogReader).restore(updatingTasks2);
         final Map<TaskId, Task> updatingTasks3 = mkMap(
-            mkEntry(task3.id(), task3),
-            mkEntry(task4.id(), task4)
+                mkEntry(task3.id(), task3),
+                mkEntry(task4.id(), task4)
         );
         doThrow(streamsException3).when(changelogReader).restore(updatingTasks3);
         final Map<TaskId, Task> updatingTasks4 = mkMap(
-            mkEntry(task4.id(), task4)
+                mkEntry(task4.id(), task4)
         );
         doThrow(streamsException4).when(changelogReader).restore(updatingTasks4);
         stateUpdater.start();
@@ -1554,16 +1554,16 @@ class DefaultStateUpdaterTest {
         final StandbyTask standbyTask2 = standbyTask(TASK_1_1, Set.of(TOPIC_PARTITION_D_0)).inState(State.RUNNING).build();
         final StandbyTask standbyTask1 = standbyTask(TASK_0_1, Set.of(TOPIC_PARTITION_A_1)).inState(State.RUNNING).build();
         final TaskCorruptedException taskCorruptedException =
-            new TaskCorruptedException(Set.of(standbyTask1.id(), standbyTask2.id()));
+                new TaskCorruptedException(Set.of(standbyTask1.id(), standbyTask2.id()));
         final StreamsException streamsException = new StreamsException("The Streams were crossed!", activeTask1.id());
         final Map<TaskId, Task> updatingTasks1 = mkMap(
-            mkEntry(activeTask1.id(), activeTask1),
-            mkEntry(standbyTask1.id(), standbyTask1),
-            mkEntry(standbyTask2.id(), standbyTask2)
+                mkEntry(activeTask1.id(), activeTask1),
+                mkEntry(standbyTask1.id(), standbyTask1),
+                mkEntry(standbyTask2.id(), standbyTask2)
         );
         doReturn(0L).doThrow(taskCorruptedException).doReturn(0L).when(changelogReader).restore(updatingTasks1);
         final Map<TaskId, Task> updatingTasks2 = mkMap(
-            mkEntry(activeTask1.id(), activeTask1)
+                mkEntry(activeTask1.id(), activeTask1)
         );
         doReturn(0L).doThrow(streamsException).doReturn(0L).when(changelogReader).restore(updatingTasks2);
         stateUpdater.start();
@@ -1605,14 +1605,14 @@ class DefaultStateUpdaterTest {
         final StandbyTask standbyTask3 = standbyTask(TASK_A_0_1, Set.of(TOPIC_PARTITION_A_1)).inState(State.RUNNING).build();
         final StandbyTask standbyTask4 = standbyTask(TASK_B_0_1, Set.of(TOPIC_PARTITION_B_1)).inState(State.RUNNING).build();
         final Map<TaskId, Task> tasks1234 = mkMap(
-            mkEntry(activeTask1.id(), activeTask1),
-            mkEntry(activeTask2.id(), activeTask2),
-            mkEntry(standbyTask3.id(), standbyTask3),
-            mkEntry(standbyTask4.id(), standbyTask4)
+                mkEntry(activeTask1.id(), activeTask1),
+                mkEntry(activeTask2.id(), activeTask2),
+                mkEntry(standbyTask3.id(), standbyTask3),
+                mkEntry(standbyTask4.id(), standbyTask4)
         );
         final Map<TaskId, Task> tasks13 = mkMap(
-            mkEntry(activeTask1.id(), activeTask1),
-            mkEntry(standbyTask3.id(), standbyTask3)
+                mkEntry(activeTask1.id(), activeTask1),
+                mkEntry(standbyTask3.id(), standbyTask3)
         );
 
         when(topologyMetadata.isPaused(activeTask2.id().topologyName())).thenReturn(true);
@@ -1636,63 +1636,63 @@ class DefaultStateUpdaterTest {
         tagMap.put("thread-id", "test-state-updater");
 
         MetricName metricName = new MetricName("active-restoring-tasks",
-            "stream-state-updater-metrics",
-            "The number of active tasks currently undergoing restoration",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The number of active tasks currently undergoing restoration",
+                tagMap);
         verifyMetric(metrics, metricName, is(1.0));
 
         metricName = new MetricName("standby-updating-tasks",
-            "stream-state-updater-metrics",
-            "The number of standby tasks currently undergoing state update",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The number of standby tasks currently undergoing state update",
+                tagMap);
         verifyMetric(metrics, metricName, is(1.0));
 
         metricName = new MetricName("active-paused-tasks",
-            "stream-state-updater-metrics",
-            "The number of active tasks paused restoring",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The number of active tasks paused restoring",
+                tagMap);
         verifyMetric(metrics, metricName, is(1.0));
 
         metricName = new MetricName("standby-paused-tasks",
-            "stream-state-updater-metrics",
-            "The number of standby tasks paused state update",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The number of standby tasks paused state update",
+                tagMap);
         verifyMetric(metrics, metricName, is(1.0));
 
         metricName = new MetricName("idle-ratio",
-            "stream-state-updater-metrics",
-            "The ratio, over a rolling measurement window, of the time this thread spent being idle",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The ratio, over a rolling measurement window, of the time this thread spent being idle",
+                tagMap);
         verifyMetric(metrics, metricName, greaterThanOrEqualTo(0.0d));
 
         metricName = new MetricName("active-restore-ratio",
-            "stream-state-updater-metrics",
-            "The ratio, over a rolling measurement window, of the time this thread spent restoring active tasks",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The ratio, over a rolling measurement window, of the time this thread spent restoring active tasks",
+                tagMap);
         verifyMetric(metrics, metricName, greaterThanOrEqualTo(0.0d));
 
         metricName = new MetricName("standby-update-ratio",
-            "stream-state-updater-metrics",
-            "The ratio, over a rolling measurement window, of the time this thread spent updating standby tasks",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The ratio, over a rolling measurement window, of the time this thread spent updating standby tasks",
+                tagMap);
         verifyMetric(metrics, metricName, is(0.0d));
 
         metricName = new MetricName("checkpoint-ratio",
-            "stream-state-updater-metrics",
-            "The ratio, over a rolling measurement window, of the time this thread spent checkpointing tasks restored progress",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The ratio, over a rolling measurement window, of the time this thread spent checkpointing tasks restored progress",
+                tagMap);
         verifyMetric(metrics, metricName, greaterThanOrEqualTo(0.0d));
 
         metricName = new MetricName("restore-records-rate",
-            "stream-state-updater-metrics",
-            "The average per-second number of records restored",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The average per-second number of records restored",
+                tagMap);
         verifyMetric(metrics, metricName, not(0.0d));
 
         metricName = new MetricName("restore-call-rate",
-            "stream-state-updater-metrics",
-            "The average per-second number of restore calls triggered",
-            tagMap);
+                "stream-state-updater-metrics",
+                "The average per-second number of restore calls triggered",
+                tagMap);
         verifyMetric(metrics, metricName, not(0.0d));
 
         stateUpdater.shutdown(Duration.ofMinutes(1));
@@ -1702,7 +1702,7 @@ class DefaultStateUpdaterTest {
     @Test
     public void shouldRemoveMetricsWithoutInterference() {
         final DefaultStateUpdater stateUpdater2 =
-            new DefaultStateUpdater("test-state-updater2", metrics, config, null, changelogReader, topologyMetadata, time);
+                new DefaultStateUpdater("test-state-updater2", metrics, config, null, changelogReader, topologyMetadata, time);
         final List<MetricName> threadMetrics = getMetricNames("test-state-updater");
         final List<MetricName> threadMetrics2 = getMetricNames("test-state-updater2");
 
@@ -1846,15 +1846,15 @@ class DefaultStateUpdaterTest {
     private static List<MetricName> getMetricNames(final String threadId) {
         final Map<String, String> tagMap = Map.of("thread-id", threadId);
         return List.of(
-            new MetricName("active-restoring-tasks", "stream-state-updater-metrics", "", tagMap),
-            new MetricName("standby-updating-tasks", "stream-state-updater-metrics", "", tagMap),
-            new MetricName("active-paused-tasks", "stream-state-updater-metrics", "", tagMap),
-            new MetricName("standby-paused-tasks", "stream-state-updater-metrics", "", tagMap),
-            new MetricName("idle-ratio", "stream-state-updater-metrics", "", tagMap),
-            new MetricName("standby-update-ratio", "stream-state-updater-metrics", "", tagMap),
-            new MetricName("checkpoint-ratio", "stream-state-updater-metrics", "", tagMap),
-            new MetricName("restore-records-rate", "stream-state-updater-metrics", "", tagMap),
-            new MetricName("restore-call-rate", "stream-state-updater-metrics", "", tagMap)
+                new MetricName("active-restoring-tasks", "stream-state-updater-metrics", "", tagMap),
+                new MetricName("standby-updating-tasks", "stream-state-updater-metrics", "", tagMap),
+                new MetricName("active-paused-tasks", "stream-state-updater-metrics", "", tagMap),
+                new MetricName("standby-paused-tasks", "stream-state-updater-metrics", "", tagMap),
+                new MetricName("idle-ratio", "stream-state-updater-metrics", "", tagMap),
+                new MetricName("standby-update-ratio", "stream-state-updater-metrics", "", tagMap),
+                new MetricName("checkpoint-ratio", "stream-state-updater-metrics", "", tagMap),
+                new MetricName("restore-records-rate", "stream-state-updater-metrics", "", tagMap),
+                new MetricName("restore-call-rate", "stream-state-updater-metrics", "", tagMap)
         );
     }
 
@@ -1891,22 +1891,22 @@ class DefaultStateUpdaterTest {
     private void verifyRestoredActiveTasks(final StreamTask... tasks) throws Exception {
         if (tasks.length == 0) {
             waitForCondition(
-                () -> stateUpdater.restoredActiveTasks().isEmpty(),
-                VERIFICATION_TIMEOUT,
-                "Did not get empty restored active task within the given timeout!"
+                    () -> stateUpdater.restoredActiveTasks().isEmpty(),
+                    VERIFICATION_TIMEOUT,
+                    "Did not get empty restored active task within the given timeout!"
             );
         } else {
             final Set<StreamTask> expectedRestoredTasks = Set.of(tasks);
             final Set<StreamTask> restoredTasks = new HashSet<>();
             waitForCondition(
-                () -> {
-                    restoredTasks.addAll(stateUpdater.restoredActiveTasks());
-                    return restoredTasks.containsAll(expectedRestoredTasks)
-                        && restoredTasks.size() == expectedRestoredTasks.size();
-                },
-                VERIFICATION_TIMEOUT,
-                () -> "Did not get all restored active task within the given timeout! Expected: "
-                        + expectedRestoredTasks + ", actual: " + restoredTasks
+                    () -> {
+                        restoredTasks.addAll(stateUpdater.restoredActiveTasks());
+                        return restoredTasks.containsAll(expectedRestoredTasks)
+                                && restoredTasks.size() == expectedRestoredTasks.size();
+                    },
+                    VERIFICATION_TIMEOUT,
+                    () -> "Did not get all restored active task within the given timeout! Expected: "
+                            + expectedRestoredTasks + ", actual: " + restoredTasks
             );
         }
     }
@@ -1915,14 +1915,14 @@ class DefaultStateUpdaterTest {
         final Set<StreamTask> expectedRestoredTasks = Set.of(tasks);
         final Set<StreamTask> restoredTasks = new HashSet<>();
         waitForCondition(
-            () -> {
-                restoredTasks.addAll(stateUpdater.drainRestoredActiveTasks(Duration.ofMillis(CALL_TIMEOUT)));
-                return restoredTasks.containsAll(expectedRestoredTasks)
-                    && restoredTasks.size() == expectedRestoredTasks.size();
-            },
-            VERIFICATION_TIMEOUT,
-            () -> "Did not get all restored active task within the given timeout! Expected: "
-                    + expectedRestoredTasks + ", actual: " + restoredTasks
+                () -> {
+                    restoredTasks.addAll(stateUpdater.drainRestoredActiveTasks(Duration.ofMillis(CALL_TIMEOUT)));
+                    return restoredTasks.containsAll(expectedRestoredTasks)
+                            && restoredTasks.size() == expectedRestoredTasks.size();
+                },
+                VERIFICATION_TIMEOUT,
+                () -> "Did not get all restored active task within the given timeout! Expected: "
+                        + expectedRestoredTasks + ", actual: " + restoredTasks
         );
         assertTrue(stateUpdater.drainRestoredActiveTasks(Duration.ZERO).isEmpty());
     }
@@ -1930,22 +1930,22 @@ class DefaultStateUpdaterTest {
     private void verifyUpdatingTasks(final Task... tasks) throws Exception {
         if (tasks.length == 0) {
             waitForCondition(
-                () -> stateUpdater.updatingTasks().isEmpty(),
-                VERIFICATION_TIMEOUT,
-                "Did not get empty updating task within the given timeout!"
+                    () -> stateUpdater.updatingTasks().isEmpty(),
+                    VERIFICATION_TIMEOUT,
+                    "Did not get empty updating task within the given timeout!"
             );
         } else {
             final Set<Task> expectedUpdatingTasks = Set.of(tasks);
             final Set<Task> updatingTasks = new HashSet<>();
             waitForCondition(
-                () -> {
-                    updatingTasks.addAll(stateUpdater.updatingTasks());
-                    return updatingTasks.containsAll(expectedUpdatingTasks)
-                        && updatingTasks.size() == expectedUpdatingTasks.size();
-                },
-                VERIFICATION_TIMEOUT,
-                () -> "Did not get all updating task within the given timeout! Expected: "
-                        + expectedUpdatingTasks + ", actual: " + updatingTasks
+                    () -> {
+                        updatingTasks.addAll(stateUpdater.updatingTasks());
+                        return updatingTasks.containsAll(expectedUpdatingTasks)
+                                && updatingTasks.size() == expectedUpdatingTasks.size();
+                    },
+                    VERIFICATION_TIMEOUT,
+                    () -> "Did not get all updating task within the given timeout! Expected: "
+                            + expectedUpdatingTasks + ", actual: " + updatingTasks
             );
         }
     }
@@ -1954,44 +1954,44 @@ class DefaultStateUpdaterTest {
         final Set<StandbyTask> expectedStandbyTasks = Set.of(tasks);
         final Set<StandbyTask> standbyTasks = new HashSet<>();
         waitForCondition(
-            () -> {
-                standbyTasks.addAll(stateUpdater.updatingStandbyTasks());
-                return standbyTasks.containsAll(expectedStandbyTasks)
-                    && standbyTasks.size() == expectedStandbyTasks.size();
-            },
-            VERIFICATION_TIMEOUT,
-            () -> "Did not see all standby task within the given timeout! Expected: "
-                    + expectedStandbyTasks + ", actual: " + standbyTasks
+                () -> {
+                    standbyTasks.addAll(stateUpdater.updatingStandbyTasks());
+                    return standbyTasks.containsAll(expectedStandbyTasks)
+                            && standbyTasks.size() == expectedStandbyTasks.size();
+                },
+                VERIFICATION_TIMEOUT,
+                () -> "Did not see all standby task within the given timeout! Expected: "
+                        + expectedStandbyTasks + ", actual: " + standbyTasks
         );
     }
 
     private void verifyIdle() throws Exception {
         waitForCondition(
-            stateUpdater::isIdle,
-            VERIFICATION_TIMEOUT,
-            "State updater did not enter an idling state!"
+                stateUpdater::isIdle,
+                VERIFICATION_TIMEOUT,
+                "State updater did not enter an idling state!"
         );
     }
 
     private void verifyPausedTasks(final Task... tasks) throws Exception {
         if (tasks.length == 0) {
             waitForCondition(
-                () -> stateUpdater.pausedTasks().isEmpty(),
-                VERIFICATION_TIMEOUT,
-                "Did not get empty paused task within the given timeout!"
+                    () -> stateUpdater.pausedTasks().isEmpty(),
+                    VERIFICATION_TIMEOUT,
+                    "Did not get empty paused task within the given timeout!"
             );
         } else {
             final Set<Task> expectedPausedTasks = Set.of(tasks);
             final Set<Task> pausedTasks = new HashSet<>();
             waitForCondition(
-                () -> {
-                    pausedTasks.addAll(stateUpdater.pausedTasks());
-                    return pausedTasks.containsAll(expectedPausedTasks)
-                        && pausedTasks.size() == expectedPausedTasks.size();
-                },
-                VERIFICATION_TIMEOUT,
-                () -> "Did not get all paused task within the given timeout! Expected: "
-                        + expectedPausedTasks + ", actual: " + pausedTasks
+                    () -> {
+                        pausedTasks.addAll(stateUpdater.pausedTasks());
+                        return pausedTasks.containsAll(expectedPausedTasks)
+                                && pausedTasks.size() == expectedPausedTasks.size();
+                    },
+                    VERIFICATION_TIMEOUT,
+                    () -> "Did not get all paused task within the given timeout! Expected: "
+                            + expectedPausedTasks + ", actual: " + pausedTasks
             );
         }
     }
@@ -2000,14 +2000,14 @@ class DefaultStateUpdaterTest {
         final List<ExceptionAndTask> expectedExceptionAndTasks = Arrays.asList(exceptionsAndTasks);
         final Set<ExceptionAndTask> failedTasks = new HashSet<>();
         waitForCondition(
-            () -> {
-                failedTasks.addAll(stateUpdater.exceptionsAndFailedTasks());
-                return failedTasks.containsAll(expectedExceptionAndTasks)
-                    && failedTasks.size() == expectedExceptionAndTasks.size();
-            },
-            VERIFICATION_TIMEOUT,
-            () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
-                    + expectedExceptionAndTasks + ", actual: " + failedTasks
+                () -> {
+                    failedTasks.addAll(stateUpdater.exceptionsAndFailedTasks());
+                    return failedTasks.containsAll(expectedExceptionAndTasks)
+                            && failedTasks.size() == expectedExceptionAndTasks.size();
+                },
+                VERIFICATION_TIMEOUT,
+                () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
+                        + expectedExceptionAndTasks + ", actual: " + failedTasks
         );
     }
 
@@ -2015,17 +2015,17 @@ class DefaultStateUpdaterTest {
         final List<Task> expectedFailedTasks = Arrays.asList(tasks);
         final Set<Task> failedTasks = new HashSet<>();
         waitForCondition(
-            () -> {
-                for (final ExceptionAndTask exceptionAndTask : stateUpdater.exceptionsAndFailedTasks()) {
-                    if (clazz.isInstance(exceptionAndTask.exception())) {
-                        failedTasks.add(exceptionAndTask.task());
+                () -> {
+                    for (final ExceptionAndTask exceptionAndTask : stateUpdater.exceptionsAndFailedTasks()) {
+                        if (clazz.isInstance(exceptionAndTask.exception())) {
+                            failedTasks.add(exceptionAndTask.task());
+                        }
                     }
-                }
-                return failedTasks.containsAll(expectedFailedTasks)
-                    && failedTasks.size() == expectedFailedTasks.size();
-            },
-            VERIFICATION_TIMEOUT,
-            () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
+                    return failedTasks.containsAll(expectedFailedTasks)
+                            && failedTasks.size() == expectedFailedTasks.size();
+                },
+                VERIFICATION_TIMEOUT,
+                () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
                         + expectedFailedTasks + ", actual: " + failedTasks
         );
     }
@@ -2034,18 +2034,18 @@ class DefaultStateUpdaterTest {
         final List<ExceptionAndTask> expectedExceptionAndTasks = Arrays.asList(exceptionsAndTasks);
         final List<ExceptionAndTask> failedTasks = new ArrayList<>();
         waitForCondition(
-            () -> {
-                if (stateUpdater.hasExceptionsAndFailedTasks()) {
-                    final List<ExceptionAndTask> exceptionAndTasks = stateUpdater.drainExceptionsAndFailedTasks();
-                    assertFalse(exceptionAndTasks.isEmpty());
-                    failedTasks.addAll(exceptionAndTasks);
-                }
-                return failedTasks.containsAll(expectedExceptionAndTasks)
-                    && failedTasks.size() == expectedExceptionAndTasks.size();
-            },
-            VERIFICATION_TIMEOUT,
-            () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
-                    + expectedExceptionAndTasks + ", actual: " + failedTasks
+                () -> {
+                    if (stateUpdater.hasExceptionsAndFailedTasks()) {
+                        final List<ExceptionAndTask> exceptionAndTasks = stateUpdater.drainExceptionsAndFailedTasks();
+                        assertFalse(exceptionAndTasks.isEmpty());
+                        failedTasks.addAll(exceptionAndTasks);
+                    }
+                    return failedTasks.containsAll(expectedExceptionAndTasks)
+                            && failedTasks.size() == expectedExceptionAndTasks.size();
+                },
+                VERIFICATION_TIMEOUT,
+                () -> "Did not get all exceptions and failed tasks within the given timeout! Expected: "
+                        + expectedExceptionAndTasks + ", actual: " + failedTasks
         );
         assertFalse(stateUpdater.hasExceptionsAndFailedTasks());
         assertTrue(stateUpdater.drainExceptionsAndFailedTasks().isEmpty());

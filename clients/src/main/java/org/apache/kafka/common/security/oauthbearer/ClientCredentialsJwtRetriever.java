@@ -39,9 +39,9 @@ import javax.security.auth.login.AppConfigurationEntry;
  * a JWT from an OAuth/OIDC identity provider using the <code>client_credentials</code> grant type. This
  * grant type is commonly used for non-interactive "service accounts" where there is no user available
  * to interactively supply credentials.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * This {@code JwtRetriever} is enabled by specifying its class name in the Kafka configuration.
  * For client use, specify the class name in the <code>sasl.oauthbearer.jwt.retriever.class</code>
  * configuration like so:
@@ -49,18 +49,18 @@ import javax.security.auth.login.AppConfigurationEntry;
  * <pre>
  * sasl.oauthbearer.jwt.retriever.class=org.apache.kafka.common.security.oauthbearer.ClientCredentialsJwtRetriever
  * </pre>
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * If using this {@code JwtRetriever} on the broker side (for inter-broker communication), the configuration
  * should be specified with a listener-based property:
  *
  * <pre>
  * listener.name.&lt;listener name&gt;.oauthbearer.sasl.oauthbearer.jwt.retriever.class=org.apache.kafka.common.security.oauthbearer.ClientCredentialsJwtRetriever
  * </pre>
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * The {@code ClientCredentialsJwtRetriever} also uses the following configuration:
  *
  * <ul>
@@ -69,17 +69,17 @@ import javax.security.auth.login.AppConfigurationEntry;
  *     <li><code>sasl.oauthbearer.scope</code></li>
  *     <li><code>sasl.oauthbearer.token.endpoint.url</code></li>
  * </ul>
- *
+ * <p>
  * Please refer to the official Apache Kafka documentation for more information on these, and related configuration.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Previous versions of this implementation used <code>sasl.jaas.config</code> to specify attributes such
  * as <code>clientId</code>, <code>clientSecret</code>, and <code>scope</code>. These will still work, but
  * if the configuration for each of these is specified, it will be used instead of the JAAS option.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Here's an example of the JAAS configuration for a Kafka client:
  *
  * <pre>

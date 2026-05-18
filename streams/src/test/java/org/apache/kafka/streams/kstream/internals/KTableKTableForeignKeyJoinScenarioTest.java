@@ -66,15 +66,15 @@ public class KTableKTableForeignKeyJoinScenarioTest {
         final KTable<Integer, String> bTable = builder.table("B");
 
         final KTable<Integer, String> fkJoinResult = aTable.join(
-            bTable,
-            value -> Integer.parseInt(value.split("-")[0]),
-            (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
-            Materialized.as("asdf")
+                bTable,
+                value -> Integer.parseInt(value.split("-")[0]),
+                (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
+                Materialized.as("asdf")
         );
 
         final KTable<Integer, String> finalJoinResult = aTable.join(
-            fkJoinResult,
-            (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")"
+                fkJoinResult,
+                (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")"
         );
 
         finalJoinResult.toStream().to("output");
@@ -90,15 +90,15 @@ public class KTableKTableForeignKeyJoinScenarioTest {
         final KTable<Integer, String> bTable = builder.table("B");
 
         final KTable<Integer, String> fkJoinResult = aTable.join(
-            bTable,
-            value -> Integer.parseInt(value.split("-")[0]),
-            (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
-            Materialized.as("asdf")
+                bTable,
+                value -> Integer.parseInt(value.split("-")[0]),
+                (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
+                Materialized.as("asdf")
         );
 
         final KTable<Integer, String> finalJoinResult = aTable.join(
-            fkJoinResult,
-            (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")"
+                fkJoinResult,
+                (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")"
         );
 
         finalJoinResult.toStream().to("output");
@@ -114,17 +114,17 @@ public class KTableKTableForeignKeyJoinScenarioTest {
         final KTable<Integer, String> bTable = builder.table("B");
 
         final KTable<Integer, String> fkJoinResult = aTable.join(
-            bTable,
-            value -> Integer.parseInt(value.split("-")[0]),
-            (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
-            Materialized.<Integer, String, KeyValueStore<Bytes, byte[]>>as("asdf")
-                    .withKeySerde(Serdes.Integer())
-                    .withValueSerde(Serdes.String())
+                bTable,
+                value -> Integer.parseInt(value.split("-")[0]),
+                (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
+                Materialized.<Integer, String, KeyValueStore<Bytes, byte[]>>as("asdf")
+                        .withKeySerde(Serdes.Integer())
+                        .withValueSerde(Serdes.String())
         );
 
         final KTable<Integer, String> finalJoinResult = aTable.join(
-            fkJoinResult,
-            (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")"
+                fkJoinResult,
+                (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")"
         );
 
         finalJoinResult.toStream().to("output");
@@ -140,16 +140,16 @@ public class KTableKTableForeignKeyJoinScenarioTest {
         final KTable<Integer, String> bTable = builder.table("B");
 
         final KTable<Integer, String> fkJoinResult = aTable.join(
-            bTable,
-            value -> Integer.parseInt(value.split("-")[0]),
-            (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
-            Materialized.as("asdf")
+                bTable,
+                value -> Integer.parseInt(value.split("-")[0]),
+                (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
+                Materialized.as("asdf")
         );
 
         final KTable<Integer, String> finalJoinResult = aTable.join(
-            fkJoinResult,
-            (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")",
-            Materialized.with(Serdes.Integer(), Serdes.String())
+                fkJoinResult,
+                (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")",
+                Materialized.with(Serdes.Integer(), Serdes.String())
         );
 
         finalJoinResult.toStream().to("output");
@@ -165,15 +165,15 @@ public class KTableKTableForeignKeyJoinScenarioTest {
         final KTable<Integer, String> bTable = builder.table("B");
 
         final KTable<Integer, String> fkJoinResult = aTable.join(
-            bTable,
-            value -> Integer.parseInt(value.split("-")[0]),
-            (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
-            Materialized.as("asdf")
+                bTable,
+                value -> Integer.parseInt(value.split("-")[0]),
+                (aVal, bVal) -> "(" + aVal + "," + bVal + ")",
+                Materialized.as("asdf")
         );
 
         final KTable<Integer, String> finalJoinResult = aTable.join(
-            fkJoinResult,
-            (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")"
+                fkJoinResult,
+                (aVal, fkJoinVal) -> "(" + aVal + "," + fkJoinVal + ")"
         );
 
         finalJoinResult.toStream().to("output", Produced.with(Serdes.Integer(), Serdes.String()));
@@ -186,8 +186,8 @@ public class KTableKTableForeignKeyJoinScenarioTest {
     public void shouldUseExpectedTopicsWithSerde(final boolean withHeaders) {
         final String applicationId = "ktable-ktable-joinOnForeignKey";
         final Properties streamsConfig = mkProperties(mkMap(
-            mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
-            mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
+                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, applicationId),
+                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
         ));
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(streamsConfig, withHeaders);
 
@@ -195,24 +195,24 @@ public class KTableKTableForeignKeyJoinScenarioTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KTable<Integer, String> left = builder.table(
-            LEFT_TABLE,
-            Consumed.with(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true),
+                LEFT_TABLE,
+                Consumed.with(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true),
                         serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
         );
         final KTable<Integer, String> right = builder.table(
                 RIGHT_TABLE,
                 Consumed.with(serdeScope.decorateSerde(Serdes.Integer(), streamsConfig, true),
-                              serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
+                        serdeScope.decorateSerde(Serdes.String(), streamsConfig, false))
         );
 
         left.join(
-            right,
-            value -> Integer.parseInt(value.split("\\|")[1]),
-            (value1, value2) -> "(" + value1 + "," + value2 + ")",
-            Materialized.with(null, serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)
-            ))
-            .toStream()
-            .to(OUTPUT);
+                        right,
+                        value -> Integer.parseInt(value.split("\\|")[1]),
+                        (value1, value2) -> "(" + value1 + "," + value2 + ")",
+                        Materialized.with(null, serdeScope.decorateSerde(Serdes.String(), streamsConfig, false)
+                        ))
+                .toStream()
+                .to(OUTPUT);
 
 
         final Topology topology = builder.build(streamsConfig);
@@ -225,21 +225,21 @@ public class KTableKTableForeignKeyJoinScenarioTest {
         // verifying primarily that no extra pseudo-topics were used, but it's nice to also verify the rest of the
         // topics our serdes serialize data for
         assertThat(serdeScope.registeredTopics(), is(Set.of(
-            // expected pseudo-topics
-            applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic-fk--key",
-            applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic-pk--key",
-            applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic-vh--value",
-            // internal topics
-            applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic--key",
-            applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-0000000014-topic--key",
-            applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-0000000014-topic--value",
-            applicationId + "-left_table-STATE-STORE-0000000000-changelog--key",
-            applicationId + "-left_table-STATE-STORE-0000000000-changelog--value",
-            applicationId + "-right_table-STATE-STORE-0000000003-changelog--key",
-            applicationId + "-right_table-STATE-STORE-0000000003-changelog--value",
-            // output topics
-            "output-topic--key",
-            "output-topic--value"
+                // expected pseudo-topics
+                applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic-fk--key",
+                applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic-pk--key",
+                applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic-vh--value",
+                // internal topics
+                applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic--key",
+                applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-0000000014-topic--key",
+                applicationId + "-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-0000000014-topic--value",
+                applicationId + "-left_table-STATE-STORE-0000000000-changelog--key",
+                applicationId + "-left_table-STATE-STORE-0000000000-changelog--value",
+                applicationId + "-right_table-STATE-STORE-0000000003-changelog--key",
+                applicationId + "-right_table-STATE-STORE-0000000003-changelog--value",
+                // output topics
+                "output-topic--key",
+                "output-topic--value"
         )));
     }
 
@@ -250,41 +250,41 @@ public class KTableKTableForeignKeyJoinScenarioTest {
 
         // Left table keyed by <producer_id, product_id>
         final KTable<String, String> leftTable = builder.table(
-            "left_table",
-            Consumed.with(Serdes.String(), Serdes.String())
+                "left_table",
+                Consumed.with(Serdes.String(), Serdes.String())
         );
 
         // Right table keyed by producer_id
         final KTable<String, String> rightTable = builder.table(
-            "right_table",
-            Consumed.with(Serdes.String(), Serdes.String())
+                "right_table",
+                Consumed.with(Serdes.String(), Serdes.String())
         );
 
         // Have to include producer_id in value since foreignKeyExtractor only gets value
         final KTable<String, String> joined = leftTable.join(
-            rightTable,
-            value -> value.split("\\|")[0], // extract producer_id from value
-            (leftValue, rightValue) -> "(" + leftValue + "," + rightValue + ")",
-            Materialized.as("store")
+                rightTable,
+                value -> value.split("\\|")[0], // extract producer_id from value
+                (leftValue, rightValue) -> "(" + leftValue + "," + rightValue + ")",
+                Materialized.as("store")
         );
 
         joined.toStream().to("output");
 
         try (final TopologyTestDriver driver = createTopologyTestDriver(builder, withHeaders)) {
             final TestInputTopic<String, String> leftInput = driver.createInputTopic(
-                "left_table",
-                new StringSerializer(),
-                new StringSerializer()
+                    "left_table",
+                    new StringSerializer(),
+                    new StringSerializer()
             );
             final TestInputTopic<String, String> rightInput = driver.createInputTopic(
-                "right_table",
-                new StringSerializer(),
-                new StringSerializer()
+                    "right_table",
+                    new StringSerializer(),
+                    new StringSerializer()
             );
             final TestOutputTopic<String, String> output = driver.createOutputTopic(
-                "output",
-                new StringDeserializer(),
-                new StringDeserializer()
+                    "output",
+                    new StringDeserializer(),
+                    new StringDeserializer()
             );
 
             // Key format: "producerId:productId"
@@ -312,41 +312,41 @@ public class KTableKTableForeignKeyJoinScenarioTest {
 
         // Left table keyed by <producer_id, product_id>
         final KTable<String, String> leftTable = builder.table(
-            "left_table",
-            Consumed.with(Serdes.String(), Serdes.String())
+                "left_table",
+                Consumed.with(Serdes.String(), Serdes.String())
         );
 
         // Right table keyed by producer_id
         final KTable<String, String> rightTable = builder.table(
-            "right_table",
-            Consumed.with(Serdes.String(), Serdes.String())
+                "right_table",
+                Consumed.with(Serdes.String(), Serdes.String())
         );
 
         // Can extract producer_id from composite key using BiFunction
         final KTable<String, String> joined = leftTable.join(
-            rightTable,
-            (key, value) -> key.split(":")[0], // extract producer_id from key
-            (leftValue, rightValue) -> "(" + leftValue + "," + rightValue + ")",
-            Materialized.as("store")
+                rightTable,
+                (key, value) -> key.split(":")[0], // extract producer_id from key
+                (leftValue, rightValue) -> "(" + leftValue + "," + rightValue + ")",
+                Materialized.as("store")
         );
 
         joined.toStream().to("output");
 
         try (final TopologyTestDriver driver = createTopologyTestDriver(builder, withHeaders)) {
             final TestInputTopic<String, String> leftInput = driver.createInputTopic(
-                "left_table",
-                new StringSerializer(),
-                new StringSerializer()
+                    "left_table",
+                    new StringSerializer(),
+                    new StringSerializer()
             );
             final TestInputTopic<String, String> rightInput = driver.createInputTopic(
-                "right_table",
-                new StringSerializer(),
-                new StringSerializer()
+                    "right_table",
+                    new StringSerializer(),
+                    new StringSerializer()
             );
             final TestOutputTopic<String, String> output = driver.createOutputTopic(
-                "output",
-                new StringDeserializer(),
-                new StringDeserializer()
+                    "output",
+                    new StringDeserializer(),
+                    new StringDeserializer()
             );
 
             // Now we don't need producer_id in the value

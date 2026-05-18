@@ -67,15 +67,15 @@ public class ControllerRegistration {
                             (int) endPoint.securityProtocol());
                 }
                 newListeners.put(endPoint.name(), new Endpoint(endPoint.name(),
-                    protocol,
-                    endPoint.host(),
-                    endPoint.port()));
+                        protocol,
+                        endPoint.host(),
+                        endPoint.port()));
             });
             this.listeners = Collections.unmodifiableMap(newListeners);
             Map<String, VersionRange> newSupportedFeatures = new HashMap<>();
             record.features().forEach(feature ->
-                newSupportedFeatures.put(feature.name(), VersionRange.of(
-                        feature.minSupportedVersion(), feature.maxSupportedVersion()))
+                    newSupportedFeatures.put(feature.name(), VersionRange.of(
+                            feature.minSupportedVersion(), feature.maxSupportedVersion()))
             );
             this.supportedFeatures = Collections.unmodifiableMap(newSupportedFeatures);
         }
@@ -115,10 +115,10 @@ public class ControllerRegistration {
                         MetadataVersion.latestProduction().featureLevel()));
             }
             return new ControllerRegistration(id,
-                incarnationId,
-                zkMigrationReady,
-                listeners,
-                supportedFeatures);
+                    incarnationId,
+                    zkMigrationReady,
+                    listeners,
+                    supportedFeatures);
         }
     }
 
@@ -129,10 +129,10 @@ public class ControllerRegistration {
     private final Map<String, VersionRange> supportedFeatures;
 
     private ControllerRegistration(int id,
-        Uuid incarnationId,
-        boolean zkMigrationReady,
-        Map<String, Endpoint> listeners,
-        Map<String, VersionRange> supportedFeatures
+                                   Uuid incarnationId,
+                                   boolean zkMigrationReady,
+                                   Map<String, Endpoint> listeners,
+                                   Map<String, VersionRange> supportedFeatures
     ) {
         this.id = id;
         this.incarnationId = incarnationId;
@@ -171,44 +171,44 @@ public class ControllerRegistration {
 
     public ApiMessageAndVersion toRecord(ImageWriterOptions options) {
         RegisterControllerRecord registrationRecord = new RegisterControllerRecord().
-            setControllerId(id).
-            setIncarnationId(incarnationId).
-            setZkMigrationReady(zkMigrationReady);
+                setControllerId(id).
+                setIncarnationId(incarnationId).
+                setZkMigrationReady(zkMigrationReady);
         for (Entry<String, Endpoint> entry : listeners.entrySet()) {
             Endpoint endpoint = entry.getValue();
             registrationRecord.endPoints().add(new ControllerEndpoint().
-                setName(entry.getKey()).
-                setHost(endpoint.host()).
-                setPort(endpoint.port()).
-                setSecurityProtocol(endpoint.securityProtocol().id));
+                    setName(entry.getKey()).
+                    setHost(endpoint.host()).
+                    setPort(endpoint.port()).
+                    setSecurityProtocol(endpoint.securityProtocol().id));
         }
         for (Entry<String, VersionRange> entry : supportedFeatures.entrySet()) {
             registrationRecord.features().add(new ControllerFeature().
-                setName(entry.getKey()).
-                setMinSupportedVersion(entry.getValue().min()).
-                setMaxSupportedVersion(entry.getValue().max()));
+                    setName(entry.getKey()).
+                    setMinSupportedVersion(entry.getValue().min()).
+                    setMaxSupportedVersion(entry.getValue().max()));
         }
         return new ApiMessageAndVersion(registrationRecord,
-            options.metadataVersion().registerControllerRecordVersion());
+                options.metadataVersion().registerControllerRecordVersion());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id,
-            incarnationId,
-            zkMigrationReady,
-            listeners,
-            supportedFeatures);
+                incarnationId,
+                zkMigrationReady,
+                listeners,
+                supportedFeatures);
     }
 
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof ControllerRegistration other)) return false;
         return other.id == id &&
-            other.incarnationId.equals(incarnationId) &&
-            other.zkMigrationReady == zkMigrationReady &&
-            other.listeners.equals(listeners) &&
-            other.supportedFeatures.equals(supportedFeatures);
+                other.incarnationId.equals(incarnationId) &&
+                other.zkMigrationReady == zkMigrationReady &&
+                other.listeners.equals(listeners) &&
+                other.supportedFeatures.equals(supportedFeatures);
     }
 
     @Override

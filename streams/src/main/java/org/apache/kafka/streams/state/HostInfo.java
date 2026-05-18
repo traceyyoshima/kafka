@@ -27,15 +27,15 @@ import static org.apache.kafka.common.utils.Utils.getPort;
 /**
  * Represents a user defined endpoint in a {@link org.apache.kafka.streams.KafkaStreams} application.
  * Instances of this class can be obtained by calling one of:
- *  {@link KafkaStreams#metadataForAllStreamsClients()}
- *  {@link KafkaStreams#streamsMetadataForStore(String)}
- *
- *  The HostInfo is constructed during Partition Assignment
- *  see {@link StreamsPartitionAssignor}
- *  It is extracted from the config {@link org.apache.kafka.streams.StreamsConfig#APPLICATION_SERVER_CONFIG}
- *
- *  If developers wish to expose an endpoint in their KafkaStreams applications they should provide the above
- *  config.
+ * {@link KafkaStreams#metadataForAllStreamsClients()}
+ * {@link KafkaStreams#streamsMetadataForStore(String)}
+ * <p>
+ * The HostInfo is constructed during Partition Assignment
+ * see {@link StreamsPartitionAssignor}
+ * It is extracted from the config {@link org.apache.kafka.streams.StreamsConfig#APPLICATION_SERVER_CONFIG}
+ * <p>
+ * If developers wish to expose an endpoint in their KafkaStreams applications they should provide the above
+ * config.
  */
 public class HostInfo {
     private final String host;
@@ -48,8 +48,8 @@ public class HostInfo {
     }
 
     /**
-     * @throws ConfigException if the host or port cannot be parsed from the given endpoint string
      * @return a new HostInfo or null if endPoint is null or has no characters
+     * @throws ConfigException if the host or port cannot be parsed from the given endpoint string
      */
     public static HostInfo buildFromEndpoint(final String endPoint) {
         if (Utils.isBlank(endPoint)) {
@@ -61,7 +61,7 @@ public class HostInfo {
 
         if (host == null || port == null) {
             throw new ConfigException(
-                String.format("Error parsing host address %s. Expected format host:port.", endPoint)
+                    String.format("Error parsing host address %s. Expected format host:port.", endPoint)
             );
         }
         return new HostInfo(host, port);

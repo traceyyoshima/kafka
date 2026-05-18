@@ -107,8 +107,8 @@ public class GlobalProcessorContextImpl extends AbstractProcessorContext<Object,
     @Override
     public <K, V> void forward(final FixedKeyRecord<K, V> record, final String childName) {
         forward(
-            new Record<>(record.key(), record.value(), record.timestamp(), record.headers()),
-            childName
+                new Record<>(record.key(), record.value(), record.timestamp(), record.headers()),
+                childName
         );
     }
 

@@ -39,13 +39,13 @@ public class DescribeAclsRequest extends AbstractRequest {
             ResourcePatternFilter patternFilter = filter.patternFilter();
             AccessControlEntryFilter entryFilter = filter.entryFilter();
             data = new DescribeAclsRequestData()
-                .setHostFilter(entryFilter.host())
-                .setOperation(entryFilter.operation().code())
-                .setPermissionType(entryFilter.permissionType().code())
-                .setPrincipalFilter(entryFilter.principal())
-                .setResourceNameFilter(patternFilter.name())
-                .setPatternTypeFilter(patternFilter.patternType().code())
-                .setResourceTypeFilter(patternFilter.resourceType().code());
+                    .setHostFilter(entryFilter.host())
+                    .setOperation(entryFilter.operation().code())
+                    .setPermissionType(entryFilter.permissionType().code())
+                    .setPrincipalFilter(entryFilter.principal())
+                    .setResourceNameFilter(patternFilter.name())
+                    .setPatternTypeFilter(patternFilter.patternType().code())
+                    .setResourceTypeFilter(patternFilter.resourceType().code());
         }
 
         @Override
@@ -96,9 +96,9 @@ public class DescribeAclsRequest extends AbstractRequest {
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable throwable) {
         ApiError error = ApiError.fromThrowable(throwable);
         DescribeAclsResponseData response = new DescribeAclsResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setErrorCode(error.error().code())
-            .setErrorMessage(error.message());
+                .setThrottleTimeMs(throttleTimeMs)
+                .setErrorCode(error.error().code())
+                .setErrorMessage(error.message());
         return new DescribeAclsResponse(response, version());
     }
 
@@ -111,7 +111,7 @@ public class DescribeAclsRequest extends AbstractRequest {
                 ResourceType.fromCode(data.resourceTypeFilter()),
                 data.resourceNameFilter(),
                 PatternType.fromCode(data.patternTypeFilter()));
-        AccessControlEntryFilter acef =  new AccessControlEntryFilter(
+        AccessControlEntryFilter acef = new AccessControlEntryFilter(
                 data.principalFilter(),
                 data.hostFilter(),
                 AclOperation.fromCode(data.operation()),

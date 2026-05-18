@@ -37,6 +37,7 @@ public interface Receive extends Closeable {
 
     /**
      * Read bytes into this receive from the given channel
+     *
      * @param channel The channel to read from
      * @return The number of bytes read
      * @throws IOException If the reading fails

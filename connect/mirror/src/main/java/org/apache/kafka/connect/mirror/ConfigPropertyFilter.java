@@ -21,7 +21,9 @@ import org.apache.kafka.common.Configurable;
 
 import java.util.Map;
 
-/** Defines which topic configuration properties should be replicated. */
+/**
+ * Defines which topic configuration properties should be replicated.
+ */
 public interface ConfigPropertyFilter extends Configurable, AutoCloseable {
 
     /**

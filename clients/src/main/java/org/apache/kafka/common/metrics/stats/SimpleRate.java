@@ -22,7 +22,7 @@ import org.apache.kafka.common.metrics.MetricConfig;
  * A simple rate the rate is incrementally calculated
  * based on the elapsed time between the earliest reading
  * and now.
- *
+ * <p>
  * An exception is made for the first window, which is
  * considered of fixed size. This avoids the issue of
  * an artificially high rate when the gap between readings

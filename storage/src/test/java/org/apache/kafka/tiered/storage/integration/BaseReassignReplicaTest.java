@@ -33,6 +33,7 @@ public abstract class BaseReassignReplicaTest extends TieredStorageTestHarness {
 
     /**
      * Cluster of two brokers
+     *
      * @return number of brokers in the cluster
      */
     @Override
@@ -42,6 +43,7 @@ public abstract class BaseReassignReplicaTest extends TieredStorageTestHarness {
 
     /**
      * Number of partitions in the '__remote_log_metadata' topic
+     *
      * @return number of partitions in the '__remote_log_metadata' topic
      */
     @Override
@@ -95,6 +97,7 @@ public abstract class BaseReassignReplicaTest extends TieredStorageTestHarness {
 
     /**
      * Replicas of the topic
+     *
      * @return the replica-ids of the topic
      */
     protected abstract List<Integer> replicaIds();

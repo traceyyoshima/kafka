@@ -150,11 +150,11 @@ public class LogManager {
         /**
          * Build a LogCleaner
          *
-         * @param config Initial configuration parameters for the cleaner. Actual config may be dynamically updated.
-         * @param logDirs The directories where offset checkpoints reside
-         * @param logs The map of logs
+         * @param config               Initial configuration parameters for the cleaner. Actual config may be dynamically updated.
+         * @param logDirs              The directories where offset checkpoints reside
+         * @param logs                 The map of logs
          * @param logDirFailureChannel The channel used to add offline log dirs that may be encountered when cleaning the log
-         * @param time A way to control the passage of time
+         * @param time                 A way to control the passage of time
          */
         LogCleaner build(CleanerConfig config, List<File> logDirs, ConcurrentMap<TopicPartition, UnifiedLog> logs, LogDirFailureChannel logDirFailureChannel, Time time);
     }
@@ -166,9 +166,10 @@ public class LogManager {
 
         /**
          * Retrieve the log dir Uuid hosting the specified topic-partition on the specified broker
-         * @param topicId The topic Uuid
+         *
+         * @param topicId   The topic Uuid
          * @param partition The partitionId
-         * @param brokerId The brokerId
+         * @param brokerId  The brokerId
          * @return The log dir Uuid
          */
         Uuid get(Uuid topicId, int partition, int brokerId);
@@ -177,13 +178,13 @@ public class LogManager {
     /**
      * The entry point to the kafka log management subsystem. The log manager is responsible for log creation, retrieval, and cleaning.
      * All read and write operations are delegated to the individual log instances.
-     *
+     * <p>
      * The log manager maintains logs in one or more directories. New logs are created in the data directory
      * with the fewest logs. No attempt is made to move partitions after the fact or balance based on
      * size or I/O rate.
-     *
+     * <p>
      * A background thread handles log retention by periodically truncating excess log segments.
-     *
+     * <p>
      * This class is thread-safe.
      */
     @SuppressWarnings("this-escape")
@@ -410,7 +411,7 @@ public class LogManager {
      */
     public void handleLogDirFailure(String dir) {
         LOG.warn("Stopping serving logs in dir {}", dir);
-        synchronized (logCreationOrDeletionLock)  {
+        synchronized (logCreationOrDeletionLock) {
             liveLogDirs.remove(new File(dir));
             directoryIds.remove(dir);
             if (liveLogDirs.isEmpty()) {
@@ -509,35 +510,35 @@ public class LogManager {
 
     // Visible for testing
     public UnifiedLog loadLog(File logDir,
-                               boolean hadCleanShutdown,
-                               Map<TopicPartition, Long> recoveryPoints,
-                               Map<TopicPartition, Long> logStartOffsets,
-                               LogConfig defaultConfig,
-                               Map<String, LogConfig> topicConfigOverrides,
-                               ConcurrentMap<String, Integer> numRemainingSegments,
-                               Function<UnifiedLog, Boolean> isStray) throws IOException {
+                              boolean hadCleanShutdown,
+                              Map<TopicPartition, Long> recoveryPoints,
+                              Map<TopicPartition, Long> logStartOffsets,
+                              LogConfig defaultConfig,
+                              Map<String, LogConfig> topicConfigOverrides,
+                              ConcurrentMap<String, Integer> numRemainingSegments,
+                              Function<UnifiedLog, Boolean> isStray) throws IOException {
         TopicPartition topicPartition = UnifiedLog.parseTopicPartitionName(logDir);
         LogConfig config = topicConfigOverrides.getOrDefault(topicPartition.topic(), defaultConfig);
         long logRecoveryPoint = recoveryPoints.getOrDefault(topicPartition, 0L);
         long logStartOffset = logStartOffsets.getOrDefault(topicPartition, 0L);
 
         UnifiedLog log = UnifiedLog.create(
-            logDir,
-            config,
-            logStartOffset,
-            logRecoveryPoint,
-            scheduler,
-            brokerTopicStats,
-            time,
-            maxTransactionTimeoutMs,
-            producerStateManagerConfig,
-            producerIdExpirationCheckIntervalMs,
-            logDirFailureChannel,
-            hadCleanShutdown,
-            Optional.empty(),
-            numRemainingSegments,
-            remoteStorageSystemEnable,
-            LogOffsetsListener.NO_OP_OFFSETS_LISTENER);
+                logDir,
+                config,
+                logStartOffset,
+                logRecoveryPoint,
+                scheduler,
+                brokerTopicStats,
+                time,
+                maxTransactionTimeoutMs,
+                producerStateManagerConfig,
+                producerIdExpirationCheckIntervalMs,
+                logDirFailureChannel,
+                hadCleanShutdown,
+                Optional.empty(),
+                numRemainingSegments,
+                remoteStorageSystemEnable,
+                LogOffsetsListener.NO_OP_OFFSETS_LISTENER);
 
         if (logDir.getName().endsWith(UnifiedLog.DELETE_DIR_SUFFIX)) {
             addLogToBeDeleted(log);
@@ -640,7 +641,7 @@ public class LogManager {
                     recoveryPoints.putAll(recoveryPointCheckpoints.get(dir).read());
                 } catch (Exception e) {
                     LOG.warn("Error occurred while reading recovery-point-offset-checkpoint file of directory " +
-                                    "{}, resetting the recovery checkpoint to 0", logDirAbsolutePath, e);
+                            "{}, resetting the recovery checkpoint to 0", logDirAbsolutePath, e);
                 }
 
                 final Map<TopicPartition, Long> logStartOffsets = new HashMap<>();
@@ -648,7 +649,7 @@ public class LogManager {
                     logStartOffsets.putAll(logStartOffsetCheckpoints.get(dir).read());
                 } catch (Exception e) {
                     LOG.warn("Error occurred while reading log-start-offset-checkpoint file of directory " +
-                                    "{}, resetting to the base offset of the first segment", logDirAbsolutePath, e);
+                            "{}, resetting to the base offset of the first segment", logDirAbsolutePath, e);
                 }
                 List<File> logsToLoad = Arrays.stream(Optional.ofNullable(dir.listFiles()).orElse(new File[]{}))
                         .filter(logDir -> {
@@ -722,7 +723,7 @@ public class LogManager {
             }
 
             offlineDirs.forEach(entry ->
-                logDirFailureChannel.maybeAddOfflineLogDir(entry.getKey(), "Error while loading log dir " + entry.getKey(), entry.getValue())
+                    logDirFailureChannel.maybeAddOfflineLogDir(entry.getKey(), "Error while loading log dir " + entry.getKey(), entry.getValue())
             );
         } catch (ExecutionException e) {
             LOG.error("There was an error in one of the threads during logs loading", e.getCause());
@@ -773,7 +774,7 @@ public class LogManager {
     }
 
     /**
-     *  Start the background threads to flush logs and do log cleanup
+     * Start the background threads to flush logs and do log cleanup
      */
     public void startup(Set<String> topicNames, Function<UnifiedLog, Boolean> isStray) throws Exception {
         // ensure consistency between default config and overrides
@@ -783,7 +784,7 @@ public class LogManager {
 
     // Visible for testing
     public Map<String, LogConfig> fetchTopicConfigOverrides(LogConfig defaultConfig, Set<String> topicNames) {
-        Map<String, LogConfig> topicConfigOverrides = new  HashMap<>();
+        Map<String, LogConfig> topicConfigOverrides = new HashMap<>();
         Map<String, Object> defaultProps = defaultConfig.originals();
         topicNames.forEach(topicName -> {
             Properties overrides = configRepository.topicConfig(topicName);
@@ -929,7 +930,7 @@ public class LogManager {
      * Truncate the partition logs to the specified offsets and checkpoint the recovery point to this offset
      *
      * @param partitionOffsets Partition logs that need to be truncated
-     * @param isFuture True iff the truncation should be performed on the future log of the specified partitions
+     * @param isFuture         True iff the truncation should be performed on the future log of the specified partitions
      */
     public void truncateTo(Map<TopicPartition, Long> partitionOffsets, boolean isFuture) {
         List<UnifiedLog> affectedLogs = new ArrayList<>();
@@ -937,8 +938,8 @@ public class LogManager {
             TopicPartition topicPartition = entry.getKey();
             long truncateOffset = entry.getValue();
             UnifiedLog log = isFuture
-                ? futureLogs.get(topicPartition)
-                : currentLogs.get(topicPartition);
+                    ? futureLogs.get(topicPartition)
+                    : currentLogs.get(topicPartition);
             // If the log does not exist, skip it
             if (log != null) {
                 // May need to abort and pause the cleaning of the log, and resume after truncation is done.
@@ -970,18 +971,18 @@ public class LogManager {
     /**
      * Delete all data in a partition and start the log at the new offset
      *
-     * @param topicPartition The partition whose log needs to be truncated
-     * @param newOffset The new offset to start the log with
-     * @param isFuture True iff the truncation should be performed on the future log of the specified partition
+     * @param topicPartition    The partition whose log needs to be truncated
+     * @param newOffset         The new offset to start the log with
+     * @param isFuture          True iff the truncation should be performed on the future log of the specified partition
      * @param logStartOffsetOpt The log start offset to set for the log. If None, the new offset will be used.
      */
     public void truncateFullyAndStartAt(TopicPartition topicPartition,
-                                 long newOffset,
-                                 boolean isFuture,
-                                 Optional<Long> logStartOffsetOpt) {
+                                        long newOffset,
+                                        boolean isFuture,
+                                        Optional<Long> logStartOffsetOpt) {
         UnifiedLog log = isFuture
-            ? futureLogs.get(topicPartition)
-            : currentLogs.get(topicPartition);
+                ? futureLogs.get(topicPartition)
+                : currentLogs.get(topicPartition);
         // If the log does not exist, skip it
         if (log != null) {
             // Abort and pause the cleaning of the log, and resume after truncation is done.
@@ -1022,7 +1023,7 @@ public class LogManager {
     public void checkpointLogStartOffsets() {
         Map<String, Map<TopicPartition, UnifiedLog>> logsByDirCached = logsByDir();
         liveLogDirs.forEach(logDir ->
-            checkpointLogStartOffsetsInDir(logDir, logsInDir(logsByDirCached, logDir))
+                checkpointLogStartOffsetsInDir(logDir, logsInDir(logsByDirCached, logDir))
         );
     }
 
@@ -1039,7 +1040,7 @@ public class LogManager {
     /**
      * Checkpoint recovery offsets for all the provided logs.
      *
-     * @param logDir the directory in which the logs are
+     * @param logDir           the directory in which the logs are
      * @param logsToCheckpoint the logs to be checkpointed
      */
     private void checkpointRecoveryOffsetsInDir(File logDir, Map<TopicPartition, UnifiedLog> logsToCheckpoint) {
@@ -1063,7 +1064,7 @@ public class LogManager {
     /**
      * Checkpoint log start offsets for all the provided logs in the provided directory.
      *
-     * @param logDir the directory in which logs are checkpointed
+     * @param logDir           the directory in which logs are checkpointed
      * @param logsToCheckpoint the logs to be checkpointed
      */
     private void checkpointLogStartOffsetsInDir(File logDir, Map<TopicPartition, UnifiedLog> logsToCheckpoint) {
@@ -1091,7 +1092,7 @@ public class LogManager {
      * Update the preferred log dir for the partition
      *
      * @param topicPartition The partition to update
-     * @param logDir The logDir should be an absolute path
+     * @param logDir         The logDir should be an absolute path
      */
     public void maybeUpdatePreferredLogDir(TopicPartition topicPartition, String logDir) {
         // Do not cache the preferred log directory if either the current log or the future log for this partition exists in the specified logDir
@@ -1159,12 +1160,12 @@ public class LogManager {
      * Get the log if it exists, otherwise return None
      *
      * @param topicPartition the partition of the log
-     * @param isFuture True if the future log of the specified partition should be returned
+     * @param isFuture       True if the future log of the specified partition should be returned
      */
     public Optional<UnifiedLog> getLog(TopicPartition topicPartition, boolean isFuture) {
         return isFuture
-            ? Optional.ofNullable(futureLogs.get(topicPartition))
-            : Optional.ofNullable(currentLogs.get(topicPartition));
+                ? Optional.ofNullable(futureLogs.get(topicPartition))
+                : Optional.ofNullable(currentLogs.get(topicPartition));
     }
 
     /**
@@ -1185,7 +1186,7 @@ public class LogManager {
         partitionsInitializing.keySet().stream()
                 .filter(tp -> tp.topic().equals(topic))
                 .forEach(topicPartition ->
-                    partitionsInitializing.replace(topicPartition, false, true));
+                        partitionsInitializing.replace(topicPartition, false, true));
     }
 
     /**
@@ -1227,7 +1228,7 @@ public class LogManager {
     /**
      * Method to indicate that the log initialization for the partition passed in as argument is
      * finished. This method should follow a call to {@link #initializingLog}.
-     *
+     * <p>
      * It will retrieve the topic configs a second time if they were updated while the
      * relevant log was being loaded.
      */
@@ -1252,14 +1253,14 @@ public class LogManager {
      * Otherwise if isNew=true or if there is no offline log directory, create a log for the given topic and the given partition
      * Otherwise throw KafkaStorageException
      *
-     * @param topicPartition The partition whose log needs to be returned or created
-     * @param isNew Whether the replica should have existed on the broker or not
-     * @param isFuture True if the future log of the specified partition should be returned or created
-     * @param topicId The topic ID of the partition's topic
+     * @param topicPartition       The partition whose log needs to be returned or created
+     * @param isNew                Whether the replica should have existed on the broker or not
+     * @param isFuture             True if the future log of the specified partition should be returned or created
+     * @param topicId              The topic ID of the partition's topic
      * @param targetLogDirectoryId The directory Id that should host the partition's topic.
      *                             The next selected directory will be picked up if it None or equal {@link DirectoryId#UNASSIGNED}.
      *                             The method assumes provided Id belong to online directory.
-     * @throws KafkaStorageException if isNew=false, log is not found in the cache and there is offline log directory on the broker
+     * @throws KafkaStorageException        if isNew=false, log is not found in the cache and there is offline log directory on the broker
      * @throws InconsistentTopicIdException if the topic ID in the log does not match the topic ID provided
      */
     public UnifiedLog getOrCreateLog(TopicPartition topicPartition,
@@ -1275,11 +1276,11 @@ public class LogManager {
 
             // Ensure topic IDs are consistent
             topicId.ifPresent(id ->
-                log.topicId().ifPresent(logTopicId -> {
-                    if (!id.equals(logTopicId))
-                        throw new InconsistentTopicIdException("Tried to assign topic ID " + id + " to log for topic partition " + topicPartition + "," +
-                                "but log already contained topic ID " + logTopicId);
-                })
+                    log.topicId().ifPresent(logTopicId -> {
+                        if (!id.equals(logTopicId))
+                            throw new InconsistentTopicIdException("Tried to assign topic ID " + id + " to log for topic partition " + topicPartition + "," +
+                                    "but log already contained topic ID " + logTopicId);
+                    })
             );
             return log;
         }
@@ -1372,7 +1373,8 @@ public class LogManager {
 
     /**
      * Create the log dir
-     * @param logDir The log dir path
+     *
+     * @param logDir     The log dir path
      * @param logDirName The log dir name
      */
     // Visible for testing
@@ -1406,11 +1408,11 @@ public class LogManager {
     }
 
     /**
-     *  Delete logs marked for deletion. Delete all logs for which `currentDefaultConfig.fileDeleteDelayMs`
-     *  has elapsed after the delete was scheduled. Logs for which this interval has not yet elapsed will be
-     *  considered for deletion in the next iteration of `deleteLogs`. The next iteration will be executed
-     *  after the remaining time for the first log that is not deleted. If there are no more `logsToBeDeleted`,
-     *  `deleteLogs` will be executed after `max(currentDefaultConfig.fileDeleteDelayMs, 1)`.
+     * Delete logs marked for deletion. Delete all logs for which `currentDefaultConfig.fileDeleteDelayMs`
+     * has elapsed after the delete was scheduled. Logs for which this interval has not yet elapsed will be
+     * considered for deletion in the next iteration of `deleteLogs`. The next iteration will be executed
+     * after the remaining time for the first log that is not deleted. If there are no more `logsToBeDeleted`,
+     * `deleteLogs` will be executed after `max(currentDefaultConfig.fileDeleteDelayMs, 1)`.
      */
     private void deleteLogs() {
         long fileDeleteDelayMs = currentDefaultConfig.fileDeleteDelayMs;
@@ -1503,7 +1505,7 @@ public class LogManager {
      * @param topicPartition TopicPartition that needs to be swapped
      */
     public void replaceCurrentWithFutureLog(TopicPartition topicPartition) throws IOException {
-        synchronized (logCreationOrDeletionLock)  {
+        synchronized (logCreationOrDeletionLock) {
             UnifiedLog sourceLog = currentLogs.get(topicPartition);
             UnifiedLog destLog = futureLogs.get(topicPartition);
 
@@ -1537,7 +1539,7 @@ public class LogManager {
         currentLogs.put(topicPartition, destLog);
         if (cleaner != null) {
             sourceLog.ifPresent(srcLog ->
-                cleaner.alterCheckpointDir(topicPartition, srcLog.parentDirFile(), destLog.parentDirFile())
+                    cleaner.alterCheckpointDir(topicPartition, srcLog.parentDirFile(), destLog.parentDirFile())
             );
             resumeCleaning(topicPartition);
         }
@@ -1581,14 +1583,14 @@ public class LogManager {
      * add it in the queue for deletion.
      *
      * @param topicPartition TopicPartition that needs to be deleted
-     * @param isFuture True if the future log of the specified partition should be deleted
-     * @param checkpoint True if checkpoints must be written
-     * @param isStray True is the partition is stray
+     * @param isFuture       True if the future log of the specified partition should be deleted
+     * @param checkpoint     True if checkpoints must be written
+     * @param isStray        True is the partition is stray
      * @return the removed log
      */
     public Optional<UnifiedLog> asyncDelete(TopicPartition topicPartition, boolean isFuture, boolean checkpoint, boolean isStray) {
         Optional<UnifiedLog> removedLogOpt;
-        synchronized (logCreationOrDeletionLock)  {
+        synchronized (logCreationOrDeletionLock) {
             removedLogOpt = removeLogAndMetrics(isFuture ? futureLogs : currentLogs, topicPartition);
         }
         if (removedLogOpt.isPresent()) {
@@ -1629,9 +1631,9 @@ public class LogManager {
      * deletion. Checkpoints are updated once all the directories have been renamed.
      *
      * @param topicPartitions The set of topic-partitions to delete asynchronously
-     * @param isStray True if the topic-partitions are strays
-     * @param errorHandler The error handler that will be called when an exception for a particular
-     *                     topic-partition is raised
+     * @param isStray         True if the topic-partitions are strays
+     * @param errorHandler    The error handler that will be called when an exception for a particular
+     *                        topic-partition is raised
      */
     public void asyncDelete(Set<TopicPartition> topicPartitions,
                             boolean isStray,
@@ -1772,10 +1774,10 @@ public class LogManager {
         // When changing this code please measure the changes with org.apache.kafka.jmh.server.CheckpointBench
         Map<String, Map<TopicPartition, UnifiedLog>> byDir = new HashMap<>();
         currentLogs.forEach((tp, log) ->
-            byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
+                byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
         );
         futureLogs.forEach((tp, log) ->
-            byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
+                byDir.computeIfAbsent(log.parentDir(), k -> new HashMap<>()).put(tp, log)
         );
         return byDir;
     }
@@ -1856,7 +1858,8 @@ public class LogManager {
 
     /**
      * Wait for all jobs to complete
-     * @param jobs The jobs
+     *
+     * @param jobs     The jobs
      * @param callback This will be called to handle the exception caused by each Future#get
      * @return true if all pass. Otherwise, false
      */
@@ -1876,9 +1879,9 @@ public class LogManager {
     /**
      * Returns true if the given log should not be on the current broker according to the metadata.
      *
-     * @param replicas       The replicas hosting the partition
-     * @param brokerId       The ID of the current broker.
-     * @param log            The log object to check
+     * @param replicas The replicas hosting the partition
+     * @param brokerId The ID of the current broker.
+     * @param log      The log object to check
      * @return true if the log should not exist on the broker, false otherwise.
      */
     public static boolean isStrayReplica(List<Integer> replicas, int brokerId, UnifiedLog log) {

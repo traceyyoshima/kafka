@@ -24,17 +24,17 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Serde for AggregationWithHeaders.
- *
+ * <p>
  * This serde wraps a value serde and handles serialization/deserialization of
  * aggregated values along with their headers.
- *
+ * <p>
  * This is used by KIP-1271 to support headers in session state stores.
  */
 public class AggregationWithHeadersSerde<AGG> extends WrappingNullableSerde<AggregationWithHeaders<AGG>, Void, AGG> {
     public AggregationWithHeadersSerde(final Serde<AGG> aggSerde) {
         super(
-            new AggregationWithHeadersSerializer<>(requireNonNull(aggSerde, "aggSerde was null").serializer()),
-            new AggregationWithHeadersDeserializer<>(requireNonNull(aggSerde, "aggSerde was null").deserializer())
+                new AggregationWithHeadersSerializer<>(requireNonNull(aggSerde, "aggSerde was null").serializer()),
+                new AggregationWithHeadersDeserializer<>(requireNonNull(aggSerde, "aggSerde was null").deserializer())
         );
     }
 }

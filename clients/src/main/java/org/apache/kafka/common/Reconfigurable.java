@@ -36,9 +36,10 @@ public interface Reconfigurable extends Configurable {
      * all configs including any reconfigurable configs that may be different
      * from the initial configuration. Reconfiguration will be not performed
      * if this method throws any exception.
+     *
      * @throws ConfigException if the provided configs are not valid. The exception
-     *         message from ConfigException will be returned to the client in
-     *         the AlterConfigs response.
+     *                         message from ConfigException will be returned to the client in
+     *                         the AlterConfigs response.
      */
     void validateReconfiguration(Map<String, ?> configs) throws ConfigException;
 

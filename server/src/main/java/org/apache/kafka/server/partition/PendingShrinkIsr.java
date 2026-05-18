@@ -25,8 +25,8 @@ import java.util.Set;
  * Represents a pending change to shrink the ISR of a partition.
  *
  * @param outOfSyncReplicaIds The set of replica IDs that are out of sync and will be removed from the ISR.
- * @param sentLeaderAndIsr The LeaderAndIsr object that was sent to the controller for this ISR shrinking.
- * @param lastCommittedState The last committed partition state before this ISR shrinking.
+ * @param sentLeaderAndIsr    The LeaderAndIsr object that was sent to the controller for this ISR shrinking.
+ * @param lastCommittedState  The last committed partition state before this ISR shrinking.
  */
 public record PendingShrinkIsr(Set<Integer> outOfSyncReplicaIds,
                                LeaderAndIsr sentLeaderAndIsr,
@@ -54,7 +54,7 @@ public record PendingShrinkIsr(Set<Integer> outOfSyncReplicaIds,
 
     @Override
     public String toString() {
-        return  "PendingShrinkIsr(outOfSyncReplicaIds=" + outOfSyncReplicaIds +
+        return "PendingShrinkIsr(outOfSyncReplicaIds=" + outOfSyncReplicaIds +
                 ", sentLeaderAndIsr=" + sentLeaderAndIsr +
                 ", leaderRecoveryState=" + leaderRecoveryState() +
                 ", lastCommittedState=" + lastCommittedState +

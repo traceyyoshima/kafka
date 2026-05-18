@@ -43,9 +43,9 @@ public class PartitionsSpec extends Message {
 
     @JsonCreator
     public PartitionsSpec(@JsonProperty("numPartitions") int numPartitions,
-            @JsonProperty("replicationFactor") short replicationFactor,
-            @JsonProperty("partitionAssignments") Map<Integer, List<Integer>> partitionAssignments,
-            @JsonProperty("configs")  Map<String, String> configs) {
+                          @JsonProperty("replicationFactor") short replicationFactor,
+                          @JsonProperty("partitionAssignments") Map<Integer, List<Integer>> partitionAssignments,
+                          @JsonProperty("configs") Map<String, String> configs) {
         this.numPartitions = numPartitions;
         this.replicationFactor = replicationFactor;
         HashMap<Integer, List<Integer>> partMap = new HashMap<>();
@@ -106,9 +106,9 @@ public class PartitionsSpec extends Message {
         NewTopic newTopic;
         if (partitionAssignments.isEmpty()) {
             int effectiveNumPartitions = numPartitions <= 0 ?
-                DEFAULT_NUM_PARTITIONS : numPartitions;
+                    DEFAULT_NUM_PARTITIONS : numPartitions;
             short effectiveReplicationFactor = replicationFactor <= 0 ?
-                DEFAULT_REPLICATION_FACTOR : replicationFactor;
+                    DEFAULT_REPLICATION_FACTOR : replicationFactor;
             newTopic = new NewTopic(topicName, effectiveNumPartitions, effectiveReplicationFactor);
         } else {
             newTopic = new NewTopic(topicName, partitionAssignments);

@@ -34,7 +34,7 @@ class KStreamKStreamJoinRightSide<K, VLeft, VRight, VOut> extends KStreamKStream
                                 final StoreFactory otherWindowStoreFactory,
                                 final Optional<StoreFactory> outerJoinWindowStoreFactory) {
         super(windows, joiner, outer, windows.afterMs, windows.beforeMs, sharedTimeTrackerSupplier,
-              otherWindowStoreFactory, outerJoinWindowStoreFactory);
+                otherWindowStoreFactory, outerJoinWindowStoreFactory);
     }
 
     @Override

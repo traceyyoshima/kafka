@@ -76,6 +76,7 @@ public final class LoggingContext implements AutoCloseable {
         VALIDATE("validate");
 
         private final String text;
+
         Scope(String value) {
             this.text = value;
         }
@@ -139,7 +140,7 @@ public final class LoggingContext implements AutoCloseable {
      * <pre>
      *     [&lt;connectorName>|&lt;scope>]&lt;sp>
      * </pre>
-     *
+     * <p>
      * where "<code>&lt;connectorName></code>" is the name of the connector,
      * "<code>&lt;sp></code>" indicates a trailing space, and
      * "<code>&lt;scope></code>" is one of the following:
@@ -167,8 +168,8 @@ public final class LoggingContext implements AutoCloseable {
      * </ul>
      *
      * @param connectorName the name of the connector; may not be null
-     * @param scope the scope; may not be null
-     * @param taskNumber the 0-based task number; may be null if there is no associated task
+     * @param scope         the scope; may not be null
+     * @param taskNumber    the 0-based task number; may be null if there is no associated task
      * @return the prefix; never null
      */
     static String prefixFor(String connectorName, Scope scope, Integer taskNumber) {

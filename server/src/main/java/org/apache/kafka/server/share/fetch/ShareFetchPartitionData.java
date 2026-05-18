@@ -23,9 +23,9 @@ import org.apache.kafka.server.storage.log.FetchPartitionData;
  * The ShareFetchPartitionData class holds the data and metadata for a partition that is being fetched.
  */
 public record ShareFetchPartitionData(
-    TopicIdPartition topicIdPartition,
-    long fetchOffset,
-    FetchPartitionData fetchPartitionData
+        TopicIdPartition topicIdPartition,
+        long fetchOffset,
+        FetchPartitionData fetchPartitionData
 ) {
 
 }

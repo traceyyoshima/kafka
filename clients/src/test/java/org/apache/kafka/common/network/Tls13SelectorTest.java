@@ -42,7 +42,7 @@ public class Tls13SelectorTest extends SslSelectorTest {
     @Override
     protected Map<String, Object> createSslClientConfigs(File trustStoreFile) throws GeneralSecurityException, IOException {
         Map<String, Object> configs = TestSslUtils.createSslConfig(false, false, ConnectionMode.CLIENT,
-            trustStoreFile, "client");
+                trustStoreFile, "client");
         configs.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, Collections.singletonList("TLSv1.3"));
         return configs;
     }
@@ -57,12 +57,12 @@ public class Tls13SelectorTest extends SslSelectorTest {
     /**
      * TLS 1.3 has a post-handshake key and IV update, which will update the sending and receiving keys
      * for one side of the connection.
-     *
+     * <p>
      * Key Usage Limits will trigger an update when the algorithm limits are reached, but the default
      * value is too large (2^37 bytes of plaintext data) for a unit test. This value can be overridden
      * via the security property `jdk.tls.keyLimits`, but that's also difficult to achieve in a unit
      * test.
-     *
+     * <p>
      * Applications can also trigger an update by calling `SSLSocket.startHandshake()` or
      * `SSLEngine.beginHandshake()` (this would trigger `renegotiation` with TLS 1.2) and that's the
      * approach we take here.
@@ -79,7 +79,7 @@ public class Tls13SelectorTest extends SslSelectorTest {
         selector.send(createSend(node, node + "-" + 0));
         selector.poll(0L);
         server.renegotiate();
-        selector.send(createSend(node,  node + "-" + 1));
+        selector.send(createSend(node, node + "-" + 1));
         List<NetworkReceive> received = new ArrayList<>();
         TestUtils.waitForCondition(() -> {
             try {

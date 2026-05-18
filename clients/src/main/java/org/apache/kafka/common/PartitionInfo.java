@@ -95,7 +95,7 @@ public class PartitionInfo {
     @Override
     public int hashCode() {
         return Objects.hash(topic, partition, leader, Arrays.hashCode(replicas),
-            Arrays.hashCode(inSyncReplicas), Arrays.hashCode(offlineReplicas));
+                Arrays.hashCode(inSyncReplicas), Arrays.hashCode(offlineReplicas));
     }
 
     @Override
@@ -108,22 +108,22 @@ public class PartitionInfo {
             return false;
         PartitionInfo other = (PartitionInfo) obj;
         return Objects.equals(topic, other.topic) &&
-            partition == other.partition &&
-            Objects.equals(leader, other.leader) &&
-            Objects.deepEquals(replicas, other.replicas) &&
-            Objects.deepEquals(inSyncReplicas, other.inSyncReplicas) &&
-            Objects.deepEquals(offlineReplicas, other.offlineReplicas);
+                partition == other.partition &&
+                Objects.equals(leader, other.leader) &&
+                Objects.deepEquals(replicas, other.replicas) &&
+                Objects.deepEquals(inSyncReplicas, other.inSyncReplicas) &&
+                Objects.deepEquals(offlineReplicas, other.offlineReplicas);
     }
 
     @Override
     public String toString() {
         return String.format("Partition(topic = %s, partition = %d, leader = %s, replicas = %s, isr = %s, offlineReplicas = %s)",
-                             topic,
-                             partition,
-                             leader == null ? "none" : leader.idString(),
-                             formatNodeIds(replicas),
-                             formatNodeIds(inSyncReplicas),
-                             formatNodeIds(offlineReplicas));
+                topic,
+                partition,
+                leader == null ? "none" : leader.idString(),
+                formatNodeIds(replicas),
+                formatNodeIds(inSyncReplicas),
+                formatNodeIds(offlineReplicas));
     }
 
     /* Extract the node ids from each item in the array and format for display */

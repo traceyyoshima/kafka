@@ -43,37 +43,37 @@ public final class RecordsSnapshotWriter<T> implements SnapshotWriter<T> {
     private final Time time;
 
     private RecordsSnapshotWriter(
-        RawSnapshotWriter snapshot,
-        int maxBatchSizeBytes,
-        MemoryPool memoryPool,
-        Time time,
-        Compression compression,
-        RecordSerde<T> serde
+            RawSnapshotWriter snapshot,
+            int maxBatchSizeBytes,
+            MemoryPool memoryPool,
+            Time time,
+            Compression compression,
+            RecordSerde<T> serde
     ) {
         this.snapshot = snapshot;
         this.time = time;
 
         this.accumulator = new BatchAccumulator<>(
-            snapshot.snapshotId().epoch(),
-            0,
-            Integer.MAX_VALUE,
-            maxBatchSizeBytes,
-            10, // maxNumberOfBatches
-            memoryPool,
-            time,
-            compression,
-            serde
+                snapshot.snapshotId().epoch(),
+                0,
+                Integer.MAX_VALUE,
+                maxBatchSizeBytes,
+                10, // maxNumberOfBatches
+                memoryPool,
+                time,
+                compression,
+                serde
         );
     }
 
     /**
      * Adds a {@link SnapshotFooterRecord} to the snapshot
-     *
+     * <p>
      * No more records should be appended to the snapshot after calling this method
      */
     private void finalizeSnapshotWithFooter() {
         SnapshotFooterRecord footerRecord = new SnapshotFooterRecord()
-            .setVersion(ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION);
+                .setVersion(ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION);
         accumulator.appendSnapshotFooterRecord(footerRecord, time.milliseconds());
         accumulator.forceDrain();
     }
@@ -102,8 +102,8 @@ public final class RecordsSnapshotWriter<T> implements SnapshotWriter<T> {
     public void append(List<T> records) {
         if (snapshot.isFrozen()) {
             String message = String.format(
-                "Append not supported. Snapshot is already frozen: id = '%s'.",
-                snapshot.snapshotId()
+                    "Append not supported. Snapshot is already frozen: id = '%s'.",
+                    snapshot.snapshotId()
             );
 
             throw new IllegalStateException(message);
@@ -196,21 +196,21 @@ public final class RecordsSnapshotWriter<T> implements SnapshotWriter<T> {
                 throw new IllegalStateException("Builder::build called without a RawSnapshotWriter");
             } else if (rawSnapshotWriter.get().sizeInBytes() != 0) {
                 throw new IllegalStateException(
-                    String.format("Initializing writer with a non-empty snapshot: %s", rawSnapshotWriter.get().snapshotId())
+                        String.format("Initializing writer with a non-empty snapshot: %s", rawSnapshotWriter.get().snapshotId())
                 );
             } else if (kraftVersion == KRaftVersion.KRAFT_VERSION_0 && voterSet.isPresent()) {
                 throw new IllegalStateException(
-                    String.format("Voter set (%s) not expected when the kraft.version is 0", voterSet.get())
+                        String.format("Voter set (%s) not expected when the kraft.version is 0", voterSet.get())
                 );
             }
 
             RecordsSnapshotWriter<T> writer = new RecordsSnapshotWriter<>(
-                rawSnapshotWriter.get(),
-                maxBatchSizeBytes,
-                memoryPool,
-                time,
-                compression,
-                serde
+                    rawSnapshotWriter.get(),
+                    maxBatchSizeBytes,
+                    memoryPool,
+                    time,
+                    compression,
+                    serde
             );
 
             writer.accumulator.appendControlMessages((baseOffset, epoch, compression, buffer) -> {
@@ -229,26 +229,26 @@ public final class RecordsSnapshotWriter<T> implements SnapshotWriter<T> {
                         true,  // isControlBatch
                         epoch,
                         buffer.capacity()
-                    )
+                )
                 ) {
                     builder.appendSnapshotHeaderMessage(
-                        now,
-                        new SnapshotHeaderRecord()
-                            .setVersion(ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION)
-                            .setLastContainedLogTimestamp(lastContainedLogTimestamp)
+                            now,
+                            new SnapshotHeaderRecord()
+                                    .setVersion(ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION)
+                                    .setLastContainedLogTimestamp(lastContainedLogTimestamp)
                     );
 
                     if (kraftVersion.isReconfigSupported()) {
                         builder.appendKRaftVersionMessage(
-                            now,
-                            new KRaftVersionRecord()
-                                .setVersion(ControlRecordUtils.KRAFT_VERSION_CURRENT_VERSION)
-                                .setKRaftVersion(kraftVersion.featureLevel())
+                                now,
+                                new KRaftVersionRecord()
+                                        .setVersion(ControlRecordUtils.KRAFT_VERSION_CURRENT_VERSION)
+                                        .setKRaftVersion(kraftVersion.featureLevel())
                         );
 
                         voterSet.ifPresent(set -> builder.appendVotersMessage(
-                            now,
-                            set.toVotersRecord(ControlRecordUtils.KRAFT_VOTERS_CURRENT_VERSION)
+                                now,
+                                set.toVotersRecord(ControlRecordUtils.KRAFT_VOTERS_CURRENT_VERSION)
                         ));
                     }
 

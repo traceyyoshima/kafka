@@ -76,10 +76,10 @@ public class ProcessorMetadata {
             final byte[] keyBytes = entry.getKey().getBytes(StandardCharsets.UTF_8);
             final int keyLen = keyBytes.length;
             final byte[] buffer = ByteBuffer.allocate(Integer.BYTES + keyBytes.length + Long.BYTES)
-                .putInt(keyLen)
-                .put(keyBytes)
-                .putLong(entry.getValue())
-                .array();
+                    .putInt(keyLen)
+                    .put(keyBytes)
+                    .putLong(entry.getValue())
+                    .array();
             outputStream.write(buffer, 0, buffer.length);
         }
         return outputStream.toByteArray();
@@ -97,6 +97,7 @@ public class ProcessorMetadata {
     /**
      * Merge with other metadata. Missing keys will be added. Existing key's value will be updated to
      * max
+     *
      * @param other Other metadata to be merged
      */
     public void update(final ProcessorMetadata other) {

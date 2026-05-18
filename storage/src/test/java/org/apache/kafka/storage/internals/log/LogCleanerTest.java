@@ -129,10 +129,10 @@ public class LogCleanerTest {
     public void testRemoveMetricsOnClose() {
         try (MockedConstruction<KafkaMetricsGroup> mockMetricsGroupCtor = mockConstruction(KafkaMetricsGroup.class)) {
             LogCleaner logCleaner = new LogCleaner(new CleanerConfig(true),
-                List.of(TestUtils.tempDirectory(), TestUtils.tempDirectory()),
-                new ConcurrentHashMap<>(),
-                new LogDirFailureChannel(1),
-                time);
+                    List.of(TestUtils.tempDirectory(), TestUtils.tempDirectory()),
+                    new ConcurrentHashMap<>(),
+                    new LogDirFailureChannel(1),
+                    time);
             Map<String, List<Map<String, String>>> metricsToVerify = new HashMap<>();
             logCleaner.cleanerManager().gaugeMetricNameWithTag().forEach((metricName, tagList) -> {
                 List<Map<String, String>> tags = List.copyOf(tagList);
@@ -151,16 +151,16 @@ public class LogCleanerTest {
             // verify that each metric in `LogCleanerManager` is removed
             var mockLogCleanerManagerMetricsGroup = mockMetricsGroupCtor.constructed().get(1);
             LogCleanerManager.GAUGE_METRIC_NAME_NO_TAG.forEach(metricName ->
-                verify(mockLogCleanerManagerMetricsGroup).newGauge(eq(metricName), any()));
+                    verify(mockLogCleanerManagerMetricsGroup).newGauge(eq(metricName), any()));
             metricsToVerify.forEach((metricName, tagList) ->
-                tagList.forEach(tags ->
-                    verify(mockLogCleanerManagerMetricsGroup).newGauge(eq(metricName), any(), eq(tags))));
+                    tagList.forEach(tags ->
+                            verify(mockLogCleanerManagerMetricsGroup).newGauge(eq(metricName), any(), eq(tags))));
 
             LogCleanerManager.GAUGE_METRIC_NAME_NO_TAG.forEach(name ->
-                verify(mockLogCleanerManagerMetricsGroup).removeMetric(name));
+                    verify(mockLogCleanerManagerMetricsGroup).removeMetric(name));
             metricsToVerify.forEach((metricName, tagList) ->
-                tagList.forEach(tags ->
-                    verify(mockLogCleanerManagerMetricsGroup).removeMetric(eq(metricName), eq(tags))));
+                    tagList.forEach(tags ->
+                            verify(mockLogCleanerManagerMetricsGroup).removeMetric(eq(metricName), eq(tags))));
 
             // assert that we have verified all invocations on
             verifyNoMoreInteractions(mockMetricsGroup);
@@ -171,25 +171,25 @@ public class LogCleanerTest {
     @Test
     public void testMetricsActiveAfterReconfiguration() {
         LogCleaner logCleaner = new LogCleaner(new CleanerConfig(true),
-            List.of(TestUtils.tempDirectory()),
-            new ConcurrentHashMap<>(),
-            new LogDirFailureChannel(1),
-            time);
+                List.of(TestUtils.tempDirectory()),
+                new ConcurrentHashMap<>(),
+                new LogDirFailureChannel(1),
+                time);
 
         try {
             logCleaner.startup();
             List<String> registeredMetrics = KafkaYammerMetrics.defaultRegistry()
-                .allMetrics().keySet().stream().map(MetricName::getName).toList();
+                    .allMetrics().keySet().stream().map(MetricName::getName).toList();
             List<String> nonexistent = LogCleaner.METRIC_NAMES.stream()
-                .filter(metric -> !registeredMetrics.contains(metric)).toList();
+                    .filter(metric -> !registeredMetrics.contains(metric)).toList();
             assertEquals(0, nonexistent.size(), nonexistent + " should be existent");
 
             logCleaner.reconfigure(makeReconfigureConfig(Map.of()), makeReconfigureConfig(Map.of()));
 
             List<String> registeredMetrics2 = KafkaYammerMetrics.defaultRegistry()
-                .allMetrics().keySet().stream().map(MetricName::getName).toList();
+                    .allMetrics().keySet().stream().map(MetricName::getName).toList();
             List<String> nonexistent2 = LogCleaner.METRIC_NAMES.stream()
-                .filter(n -> !registeredMetrics2.contains(n)).toList();
+                    .filter(n -> !registeredMetrics2.contains(n)).toList();
             assertEquals(0, nonexistent2.size(), nonexistent2 + " should be existent");
         } finally {
             logCleaner.shutdown();
@@ -247,36 +247,36 @@ public class LogCleanerTest {
         int producerIdExpirationCheckIntervalMs = TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT;
         var logSegments = new LogSegments(topicPartition);
         var leaderEpochCache = UnifiedLog.createLeaderEpochCache(
-            dir, topicPartition, logDirFailureChannel, Optional.empty(), time.scheduler);
+                dir, topicPartition, logDirFailureChannel, Optional.empty(), time.scheduler);
         var producerStateManager = new ProducerStateManager(topicPartition, dir,
-            maxTransactionTimeoutMs, producerStateManagerConfig, time);
+                maxTransactionTimeoutMs, producerStateManagerConfig, time);
         var offsets = new LogLoader(
-            dir,
-            topicPartition,
-            config,
-            time.scheduler,
-            time,
-            logDirFailureChannel,
-            true,
-            logSegments,
-            0L,
-            0L,
-            leaderEpochCache,
-            producerStateManager,
-            new ConcurrentHashMap<>(),
-            false
+                dir,
+                topicPartition,
+                config,
+                time.scheduler,
+                time,
+                logDirFailureChannel,
+                true,
+                logSegments,
+                0L,
+                0L,
+                leaderEpochCache,
+                producerStateManager,
+                new ConcurrentHashMap<>(),
+                false
         ).load();
         var localLog = new LocalLog(dir, config, logSegments, offsets.recoveryPoint(),
-            offsets.nextOffsetMetadata(), time.scheduler, time, topicPartition, logDirFailureChannel);
+                offsets.nextOffsetMetadata(), time.scheduler, time, topicPartition, logDirFailureChannel);
         var log = new UnifiedLog(offsets.logStartOffset(),
-            localLog,
-            new BrokerTopicStats(),
-            producerIdExpirationCheckIntervalMs,
-            leaderEpochCache,
-            producerStateManager,
-            Optional.empty(),
-            false,
-            LogOffsetsListener.NO_OP_OFFSETS_LISTENER) {
+                localLog,
+                new BrokerTopicStats(),
+                producerIdExpirationCheckIntervalMs,
+                leaderEpochCache,
+                producerStateManager,
+                Optional.empty(),
+                false,
+                LogOffsetsListener.NO_OP_OFFSETS_LISTENER) {
             @Override
             public void replaceSegments(List<LogSegment> newSegments, List<LogSegment> oldSegments) throws IOException {
                 deleteStartLatch.countDown();
@@ -352,7 +352,7 @@ public class LogCleanerTest {
         cleaner.clean(new LogToClean(log, 2, log.activeSegment().baseOffset(), false));
 
         assertTrue(log.logSegments().iterator().next().log().channel().size() < originalMaxFileSize,
-            "Cleaned segment file should be trimmed to its real size.");
+                "Cleaned segment file should be trimmed to its real size.");
     }
 
     @Test
@@ -469,8 +469,8 @@ public class LogCleanerTest {
         assertEquals(20L, log.logEndOffset());
 
         List<AbortedTxn> expectedAbortedTxns = List.of(
-            new AbortedTxn().setProducerId(producerId1).setFirstOffset(8).setLastOffset(10).setLastStableOffset(11),
-            new AbortedTxn().setProducerId(producerId2).setFirstOffset(11).setLastOffset(16).setLastStableOffset(17)
+                new AbortedTxn().setProducerId(producerId1).setFirstOffset(8).setLastOffset(10).setLastStableOffset(11),
+                new AbortedTxn().setProducerId(producerId2).setFirstOffset(11).setLastOffset(16).setLastStableOffset(17)
         );
 
         assertAllTransactionsComplete(log);
@@ -536,12 +536,12 @@ public class LogCleanerTest {
         appendProducer2.append(List.of(2, 3));
         appendProducer1.append(List.of(3, 4));
         log.appendAsLeader(abortMarker(pid1, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         log.appendAsLeader(commitMarker(pid2, producerEpoch), 0, AppendOrigin.COORDINATOR,
-            RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         appendProducer1.append(List.of(2));
         log.appendAsLeader(commitMarker(pid1, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
 
         List<AbortedTxn> abortedTransactions = log.collectAbortedTransactions(log.logStartOffset(), log.logEndOffset());
 
@@ -580,13 +580,13 @@ public class LogCleanerTest {
         appendProducer3.append(List.of(6, 7));
         appendProducer1.append(List.of(7, 8));
         log.appendAsLeader(abortMarker(pid2, producerEpoch), 0, AppendOrigin.COORDINATOR,
-            RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         appendProducer3.append(List.of(8, 9));
         log.appendAsLeader(commitMarker(pid3, producerEpoch), 0, AppendOrigin.COORDINATOR,
-            RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         appendProducer1.append(List.of(9, 10));
         log.appendAsLeader(abortMarker(pid1, producerEpoch), 0, AppendOrigin.COORDINATOR,
-            RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                RequestLocal.noCaching(), VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
 
         // we have only cleaned the records in the first segment
         long dirtyOffset = cleaner.clean(new LogToClean(log, 0L, log.activeSegment().baseOffset(), false)).getKey();
@@ -630,7 +630,7 @@ public class LogCleanerTest {
 
         appendProducer.append(List.of(1, 3));
         log.appendAsLeader(commitMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         log.roll();
 
         // the first cleaning preserves the commit marker (at offset 3) since there were still records for the transaction
@@ -667,11 +667,11 @@ public class LogCleanerTest {
 
         appendProducer.append(List.of(1));
         log.appendAsLeader(abortMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         appendProducer.append(List.of(2));
         appendProducer.append(List.of(2));
         log.appendAsLeader(commitMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         log.roll();
 
         cleaner.doClean(new LogToClean(log, 0L, log.activeSegment().baseOffset(), false), largeTimestamp);
@@ -702,7 +702,7 @@ public class LogCleanerTest {
         // [{Producer1: 2, 3}], [{Producer2: 2, 3}, {Producer2: Commit}]
         producer2.append(List.of(2, 3)); // offsets 2, 3
         log.appendAsLeader(commitMarker(2L, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel()); // offset 4
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel()); // offset 4
         log.roll();
 
         // [{Producer1: 2, 3}], [{Producer2: 2, 3}, {Producer2: Commit}], [{2}, {3}, {Producer1: Commit}]
@@ -710,7 +710,7 @@ public class LogCleanerTest {
         log.appendAsLeader(record(2, 2), 0); // offset 5
         log.appendAsLeader(record(3, 3), 0); // offset 6
         log.appendAsLeader(commitMarker(1L, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel()); // offset 7
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel()); // offset 7
         log.roll();
 
         // first time through the records are removed
@@ -732,7 +732,7 @@ public class LogCleanerTest {
         //  {1},                     {3},                     {4},                 {5}, {6}, {7},                 {8},            {9} ==> Offsets
         producer2.append(List.of(1)); // offset 8
         log.appendAsLeader(commitMarker(2L, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel()); // offset 9
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel()); // offset 9
         log.roll();
 
         // Expected State: [{Producer1: EmptyBatch}, {Producer2: Commit}, {2}, {3}, {Producer1: Commit}, {Producer2: 1}, {Producer2: Commit}]
@@ -761,7 +761,7 @@ public class LogCleanerTest {
 
         // [{Producer1: Commit}, {2}, {3}]
         log.appendAsLeader(commitMarker(1L, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel()); // offset 1
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel()); // offset 1
         log.appendAsLeader(record(2, 2), 0); // offset 2
         log.appendAsLeader(record(3, 3), 0); // offset 3
         log.roll();
@@ -797,7 +797,7 @@ public class LogCleanerTest {
         log.roll();
 
         log.appendAsLeader(commitMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         log.roll();
 
         // Both the record and the marker should remain after cleaning
@@ -820,7 +820,7 @@ public class LogCleanerTest {
         log.roll();
 
         log.appendAsLeader(abortMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         log.roll();
 
         // Both the batch and the marker should remain after cleaning. The batch is retained
@@ -850,10 +850,10 @@ public class LogCleanerTest {
         appendProducer.append(List.of(1));
         appendProducer.append(List.of(2, 3));
         log.appendAsLeader(abortMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         appendProducer.append(List.of(3));
         log.appendAsLeader(commitMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         log.roll();
 
         // Aborted records are removed, but the abort marker is still preserved.
@@ -882,12 +882,12 @@ public class LogCleanerTest {
         var appendFirstTransaction = appendTransactionalAsLeader(log, producerId, producerEpoch, 0, AppendOrigin.REPLICATION);
         appendFirstTransaction.append(List.of(1));
         log.appendAsLeader(commitMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
 
         var appendSecondTransaction = appendTransactionalAsLeader(log, producerId, producerEpoch, 0, AppendOrigin.REPLICATION);
         appendSecondTransaction.append(List.of(2));
         log.appendAsLeader(commitMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
 
         log.appendAsLeader(record(1, 1), 0);
         log.appendAsLeader(record(2, 1), 0);
@@ -920,7 +920,7 @@ public class LogCleanerTest {
 
         appendProducer.append(List.of(2, 3)); // batch last offset is 1
         log.appendAsLeader(abortMarker(producerId, producerEpoch), 0, AppendOrigin.COORDINATOR, RequestLocal.noCaching(),
-            VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
+                VerificationGuard.SENTINEL, TransactionVersion.TV_0.featureLevel());
         log.roll();
 
         assertAbortedTransactionIndexed(log, producerId);
@@ -1012,7 +1012,7 @@ public class LogCleanerTest {
         Cleaner cleaner = makeCleaner(Integer.MAX_VALUE, 1024);
         log.updateHighWatermark(log.logSegments().get(0).readNextOffset());
         cleaner.cleanSegments(log, List.of(log.logSegments().get(0)), offsetMap, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
         List<Long> shouldRemain = LogTestUtils.keysInLog(log).stream().filter(key -> !offsetMap.map().containsKey(key)).toList();
         assertEquals(shouldRemain, LogTestUtils.keysInLog(log));
     }
@@ -1034,8 +1034,8 @@ public class LogCleanerTest {
         Cleaner cleaner = makeCleaner(Integer.MAX_VALUE, 1024);
         log.updateHighWatermark(log.logSegments().get(0).readNextOffset());
         assertThrows(CorruptRecordException.class, () ->
-            cleaner.cleanSegments(log, List.of(log.logSegments().get(0)), offsetMap, 0L,
-                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1)
+                cleaner.cleanSegments(log, List.of(log.logSegments().get(0)), offsetMap, 0L,
+                        new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1)
         );
     }
 
@@ -1054,8 +1054,8 @@ public class LogCleanerTest {
 
         Cleaner cleaner = makeCleaner(Integer.MAX_VALUE, 1024);
         assertThrows(CorruptRecordException.class, () ->
-            cleaner.cleanSegments(log, List.of(log.logSegments().get(0)), offsetMap, 0L,
-                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1)
+                cleaner.cleanSegments(log, List.of(log.logSegments().get(0)), offsetMap, 0L,
+                        new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1)
         );
     }
 
@@ -1111,7 +1111,7 @@ public class LogCleanerTest {
         cleaner.clean(new LogToClean(log, 0, log.activeSegment().baseOffset(), false));
         Set<Long> keys = new HashSet<>(LogTestUtils.keysInLog(log));
         assertTrue(IntStream.iterate(0, k -> k < (int) leo, k -> k + 2)
-            .noneMatch(k -> keys.contains((long) k)), "None of the keys we deleted should still exist.");
+                .noneMatch(k -> keys.contains((long) k)), "None of the keys we deleted should still exist.");
     }
 
     @Test
@@ -1222,11 +1222,11 @@ public class LogCleanerTest {
 
         long producerId2 = 2L;
         MemoryRecords records = MemoryRecords.withTransactionalRecords(
-            Compression.NONE,
-            producerId2,
-            producerEpoch,
-            0,
-            new SimpleRecord(time.milliseconds(), commitRecordKey, ByteBuffer.wrap("foo".getBytes()))
+                Compression.NONE,
+                producerId2,
+                producerEpoch,
+                0,
+                new SimpleRecord(time.milliseconds(), commitRecordKey, ByteBuffer.wrap("foo".getBytes()))
         );
         log.appendAsLeader(records, leaderEpoch, AppendOrigin.CLIENT);
         log.appendAsLeader(commitMarker(producerId2, producerEpoch), leaderEpoch, AppendOrigin.COORDINATOR,
@@ -1303,7 +1303,7 @@ public class LogCleanerTest {
         List<Integer> distinctValuesBySegmentBeforeClean = distinctValuesBySegment(log);
         for (int i = 0; i < distinctValuesBySegmentBeforeClean.size() - 1; i++) {
             assertTrue(distinctValuesBySegmentBeforeClean.get(i) > n,
-                "Test is not effective unless each segment contains duplicates. Increase segment size or decrease number of keys.");
+                    "Test is not effective unless each segment contains duplicates. Increase segment size or decrease number of keys.");
         }
 
         cleaner.clean(new LogToClean(log, 0, firstUncleanableOffset, false));
@@ -1312,11 +1312,11 @@ public class LogCleanerTest {
 
         for (int i = 0; i < numCleanableSegments; i++) {
             assertTrue(distinctValuesBySegmentAfterClean.get(i) < distinctValuesBySegmentBeforeClean.get(i),
-                "The cleanable segments should have fewer number of values after cleaning");
+                    "The cleanable segments should have fewer number of values after cleaning");
         }
         for (int i = numCleanableSegments; i < Math.min(distinctValuesBySegmentAfterClean.size(), numTotalSegments); i++) {
             assertEquals(distinctValuesBySegmentBeforeClean.get(i), distinctValuesBySegmentAfterClean.get(i),
-                "The uncleanable segments should have the same number of values after cleaning");
+                    "The uncleanable segments should have the same number of values after cleaning");
         }
     }
 
@@ -1347,7 +1347,7 @@ public class LogCleanerTest {
         LogToClean logToClean = new LogToClean(log, log.activeSegment().baseOffset(), log.activeSegment().baseOffset(), false);
 
         assertEquals(logToClean.totalBytes(), log.size() - log.activeSegment().size(),
-            "Total bytes of LogToClean should equal size of all segments excluding the active segment");
+                "Total bytes of LogToClean should equal size of all segments excluding the active segment");
     }
 
     @Test
@@ -1370,15 +1370,15 @@ public class LogCleanerTest {
         long expectedCleanableSize = segs.get(2).size() + segs.get(3).size();
 
         assertEquals(logToClean.cleanBytes(), expectedCleanSize,
-            "Uncleanable bytes of LogToClean should equal size of all segments prior the one containing first dirty");
+                "Uncleanable bytes of LogToClean should equal size of all segments prior the one containing first dirty");
         assertEquals(logToClean.cleanableBytes(), expectedCleanableSize,
-            "Cleanable bytes of LogToClean should equal size of all segments from the one containing first dirty offset"
-                + " to the segment prior to the one with the first uncleanable offset");
+                "Cleanable bytes of LogToClean should equal size of all segments from the one containing first dirty offset"
+                        + " to the segment prior to the one with the first uncleanable offset");
         assertEquals(logToClean.totalBytes(), expectedCleanSize + expectedCleanableSize,
-            "Total bytes should be the sum of the clean and cleanable segments");
+                "Total bytes should be the sum of the clean and cleanable segments");
         assertEquals(logToClean.cleanableRatio(),
-            expectedCleanableSize / (double) (expectedCleanSize + expectedCleanableSize), 1.0e-6d,
-            "Total cleanable ratio should be the ratio of cleanable size to clean plus cleanable");
+                expectedCleanableSize / (double) (expectedCleanSize + expectedCleanableSize), 1.0e-6d,
+                "Total cleanable ratio should be the ratio of cleanable size to clean plus cleanable");
     }
 
     @Test
@@ -1490,7 +1490,7 @@ public class LogCleanerTest {
         List<LogSegment> segments = log.logSegments().subList(0, 3);
         log.updateHighWatermark(segments.get(segments.size() - 1).readNextOffset());
         assertThrows(LogCleaningAbortedException.class, () -> cleaner.cleanSegments(log, segments, map, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1)
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1)
         );
     }
 
@@ -1529,7 +1529,7 @@ public class LogCleanerTest {
         assertEquals(1, batchList.size(), "one batch should be retained in the cleaned segment");
         RecordBatch retainedBatch = batchList.get(0);
         assertEquals(log.logSegments().get(log.logSegments().size() - 1).baseOffset() - 1, retainedBatch.lastOffset(),
-            "the retained batch should be the last batch");
+                "the retained batch should be the last batch");
         assertFalse(retainedBatch.iterator().hasNext(), "the retained batch should be an empty batch");
     }
 
@@ -1608,7 +1608,7 @@ public class LogCleanerTest {
         groups = cleaner.groupSegmentsBySize(log.logSegments(), logSize, Integer.MAX_VALUE, log.logEndOffset());
         checkSegmentOrder(groups);
         assertTrue(groups.subList(0, groups.size() - 1).stream().allMatch(g -> g.size() == groupSize),
-            "All but the last group should be the target size.");
+                "All but the last group should be the target size.");
 
         // check grouping by index size
         int indexSize = 1;
@@ -1618,7 +1618,7 @@ public class LogCleanerTest {
         groups = cleaner.groupSegmentsBySize(log.logSegments(), Integer.MAX_VALUE, indexSize, log.logEndOffset());
         checkSegmentOrder(groups);
         assertTrue(groups.subList(0, groups.size() - 1).stream().allMatch(g -> g.size() == groupSize),
-            "All but the last group should be the target size.");
+                "All but the last group should be the target size.");
     }
 
     @Test
@@ -1715,7 +1715,7 @@ public class LogCleanerTest {
         assertEquals(log.numberOfSegments() - 1, groups.size());
         for (List<LogSegment> group : groups) {
             assertTrue(group.get(group.size() - 1).offsetIndex().lastOffset() - group.get(0).offsetIndex().baseOffset() <= Integer.MAX_VALUE,
-                "Relative offset greater than Int.MaxValue");
+                    "Relative offset greater than Int.MaxValue");
         }
         checkSegmentOrder(groups);
     }
@@ -1752,7 +1752,7 @@ public class LogCleanerTest {
 
         assertTrue(log.logEndOffset() - 1 - log.logStartOffset() > Integer.MAX_VALUE, "Actual offset range should be > Int.MaxValue");
         assertTrue(log.logSegments().get(log.logSegments().size() - 1).offsetIndex().lastOffset() - log.logStartOffset() <= Integer.MAX_VALUE,
-            "index.lastOffset is reporting the wrong last offset");
+                "index.lastOffset is reporting the wrong last offset");
 
         // grouping should result in two groups because the second segment takes the offset range > MaxInt
         List<List<LogSegment>> groups = cleaner.groupSegmentsBySize(log.logSegments(), Integer.MAX_VALUE, Integer.MAX_VALUE, log.logEndOffset());
@@ -1760,16 +1760,16 @@ public class LogCleanerTest {
 
         for (List<LogSegment> group : groups) {
             assertTrue(group.get(group.size() - 1).readNextOffset() - 1 - group.get(0).baseOffset() <= Integer.MAX_VALUE,
-                "Relative offset greater than Int.MaxValue");
+                    "Relative offset greater than Int.MaxValue");
         }
         checkSegmentOrder(groups);
     }
 
     private void checkSegmentOrder(List<List<LogSegment>> groups) {
         List<Long> offsets = groups.stream()
-            .flatMap(Collection::stream)
-            .map(LogSegment::baseOffset)
-            .toList();
+                .flatMap(Collection::stream)
+                .map(LogSegment::baseOffset)
+                .toList();
         List<Long> sorted = offsets.stream().sorted().toList();
         assertEquals(sorted, offsets, "Offsets should be in increasing order.");
     }
@@ -1785,8 +1785,8 @@ public class LogCleanerTest {
         int start = 0;
         int end = 500;
         List<Map.Entry<Integer, Integer>> seq = IntStream.range(start, end)
-            .mapToObj(i -> Map.entry(i, i))
-            .toList();
+                .mapToObj(i -> Map.entry(i, i))
+                .toList();
         writeToLog(log, seq);
 
         List<LogSegment> segments = log.logSegments();
@@ -1796,10 +1796,10 @@ public class LogCleanerTest {
     }
 
     private void checkRangeForBuildOffsetMap(
-        Cleaner cleaner,
-        UnifiedLog log,
-        LogTestUtils.FakeOffsetMap map,
-        int start, int end
+            Cleaner cleaner,
+            UnifiedLog log,
+            LogTestUtils.FakeOffsetMap map,
+            int start, int end
     ) throws IOException, DigestException {
         CleanerStats stats = new CleanerStats(Time.SYSTEM);
         cleaner.buildOffsetMap(log, start, end, map, stats);
@@ -1831,13 +1831,14 @@ public class LogCleanerTest {
 
         List<LogSegment> sourceSegments = log.logSegments().subList(0, 2);
         int singleBatchSize = StreamSupport.stream(sourceSegments.get(0).log().batches().spliterator(), false)
-            .mapToInt(RecordBatch::sizeInBytes)
-            .max().orElse(0);
+                .mapToInt(RecordBatch::sizeInBytes)
+                .max().orElse(0);
         // maxCleanedSize allows exactly 1 batch; adding a 2nd batch overflows.
         long maxCleanedSize = (long) singleBatchSize + 1L;
 
         // No deletions; both records are retained.
-        Cleaner cleaner = makeCleaner(Integer.MAX_VALUE, tp -> { }, 64 * 1024, maxCleanedSize, Integer.MAX_VALUE);
+        Cleaner cleaner = makeCleaner(Integer.MAX_VALUE, tp -> {
+        }, 64 * 1024, maxCleanedSize, Integer.MAX_VALUE);
         LogTestUtils.FakeOffsetMap offsetMap = new LogTestUtils.FakeOffsetMap(Integer.MAX_VALUE);
 
         // Before: sourceSegment0, sourceSegment1, activeSegment = 3 total
@@ -1845,7 +1846,7 @@ public class LogCleanerTest {
 
         log.updateHighWatermark(sourceSegments.get(sourceSegments.size() - 1).readNextOffset());
         cleaner.cleanSegments(log, sourceSegments, offsetMap, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
 
         // With overflow, 2 source segments → 2 cleaned segments; net segment count unchanged.
         // Without overflow, 2 source → 1 cleaned; net count would be segmentCountBefore - 1.
@@ -1871,17 +1872,18 @@ public class LogCleanerTest {
 
         List<LogSegment> sourceSegments = log.logSegments().subList(0, 2);
         // Allow an offset range of 0: after offset 0 is written, any record at offset > 0 overflows.
-        Cleaner cleaner = makeCleaner(Integer.MAX_VALUE, tp -> { }, 64 * 1024, Integer.MAX_VALUE, 0L);
+        Cleaner cleaner = makeCleaner(Integer.MAX_VALUE, tp -> {
+        }, 64 * 1024, Integer.MAX_VALUE, 0L);
         LogTestUtils.FakeOffsetMap offsetMap = new LogTestUtils.FakeOffsetMap(Integer.MAX_VALUE);
 
         int segmentCountBefore = log.logSegments().size();
 
         log.updateHighWatermark(sourceSegments.get(sourceSegments.size() - 1).readNextOffset());
         cleaner.cleanSegments(log, sourceSegments, offsetMap, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
 
         assertEquals(segmentCountBefore, log.logSegments().size(),
-            "offset overflow should produce 2 cleaned segments, keeping total segment count the same");
+                "offset overflow should produce 2 cleaned segments, keeping total segment count the same");
         assertEquals(List.of(0L, 1L), LogTestUtils.keysInLog(log));
         log.close();
     }
@@ -1923,7 +1925,7 @@ public class LogCleanerTest {
         log.updateHighWatermark(log.activeSegment().baseOffset());
         // clean the log
         cleaner.cleanSegments(log, log.logSegments().subList(0, 9), offsetMap, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
         // clear scheduler so that async deletes don't run
         time.scheduler.clear();
         log.close();
@@ -1934,14 +1936,14 @@ public class LogCleanerTest {
         for (File file : Objects.requireNonNull(dir.listFiles())) {
             if (file.getName().endsWith(LogFileUtils.DELETED_FILE_SUFFIX)) {
                 Utils.atomicMoveWithFallback(file.toPath(), Paths.get(
-                    Utils.replaceSuffix(file.getPath(), LogFileUtils.DELETED_FILE_SUFFIX, "")), false);
+                        Utils.replaceSuffix(file.getPath(), LogFileUtils.DELETED_FILE_SUFFIX, "")), false);
             }
         }
         log = LogTestUtils.recoverAndCheck(dir, config, allKeys, new BrokerTopicStats(), time, time.scheduler);
 
         // clean again
         cleaner.cleanSegments(log, log.logSegments().subList(0, 9), offsetMap, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
         // clear scheduler so that async deletes don't run
         time.scheduler.clear();
         log.close();
@@ -1950,18 +1952,18 @@ public class LogCleanerTest {
         //    On recovery, clean operation is aborted. All messages should be present in the log
         log.logSegments().get(0).changeFileSuffixes("", UnifiedLog.CLEANED_FILE_SUFFIX);
         log.logSegments().get(0).log().renameTo(new File(Utils.replaceSuffix(log.logSegments().get(0).log().file().getPath(),
-            UnifiedLog.CLEANED_FILE_SUFFIX, UnifiedLog.SWAP_FILE_SUFFIX)));
+                UnifiedLog.CLEANED_FILE_SUFFIX, UnifiedLog.SWAP_FILE_SUFFIX)));
         for (File file : Objects.requireNonNull(dir.listFiles())) {
             if (file.getName().endsWith(LogFileUtils.DELETED_FILE_SUFFIX)) {
                 Utils.atomicMoveWithFallback(file.toPath(), Paths.get(
-                    Utils.replaceSuffix(file.getPath(), LogFileUtils.DELETED_FILE_SUFFIX, "")), false);
+                        Utils.replaceSuffix(file.getPath(), LogFileUtils.DELETED_FILE_SUFFIX, "")), false);
             }
         }
         log = LogTestUtils.recoverAndCheck(dir, config, allKeys, new BrokerTopicStats(), time, time.scheduler);
 
         // clean again
         cleaner.cleanSegments(log, log.logSegments().subList(0, 9), offsetMap, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
         // clear scheduler so that async deletes don't run
         time.scheduler.clear();
         List<Long> cleanedKeys = LogTestUtils.keysInLog(log);
@@ -1973,7 +1975,7 @@ public class LogCleanerTest {
         for (File file : Objects.requireNonNull(dir.listFiles())) {
             if (file.getName().endsWith(LogFileUtils.DELETED_FILE_SUFFIX)) {
                 Utils.atomicMoveWithFallback(file.toPath(), Paths.get(
-                    Utils.replaceSuffix(file.getPath(), LogFileUtils.DELETED_FILE_SUFFIX, "")), false);
+                        Utils.replaceSuffix(file.getPath(), LogFileUtils.DELETED_FILE_SUFFIX, "")), false);
             }
         }
         log = LogTestUtils.recoverAndCheck(dir, config, cleanedKeys, new BrokerTopicStats(), time, time.scheduler);
@@ -1987,7 +1989,7 @@ public class LogCleanerTest {
             offsetMap.put(key(k), Long.MAX_VALUE);
         }
         cleaner.cleanSegments(log, log.logSegments().subList(0, 9), offsetMap, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
         // clear scheduler so that async deletes don't run
         time.scheduler.clear();
         cleanedKeys = LogTestUtils.keysInLog(log);
@@ -2006,7 +2008,7 @@ public class LogCleanerTest {
             offsetMap.put(key(k), Long.MAX_VALUE);
         }
         cleaner.cleanSegments(log, log.logSegments().subList(0, 9), offsetMap, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
         // clear scheduler so that async deletes don't run
         time.scheduler.clear();
         cleanedKeys = LogTestUtils.keysInLog(log);
@@ -2026,7 +2028,7 @@ public class LogCleanerTest {
             offsetMap.put(key(k), Long.MAX_VALUE);
         }
         cleaner.cleanSegments(log, log.logSegments().subList(0, 9), offsetMap, 0L,
-            new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
+                new CleanerStats(Time.SYSTEM), new CleanedTransactionMetadata(), -1);
         // clear scheduler so that async deletes don't run
         time.scheduler.clear();
         cleanedKeys = LogTestUtils.keysInLog(log);
@@ -2054,8 +2056,8 @@ public class LogCleanerTest {
         long offsetEnd = 7206178L;
         List<Long> offsetSeq = List.of(offsetStart, offsetEnd);
         List<Map.Entry<Integer, Integer>> seq = IntStream.range(keyStart, keyEnd)
-            .mapToObj(i -> Map.entry(i, i))
-            .toList();
+                .mapToObj(i -> Map.entry(i, i))
+                .toList();
         writeToLog(log, seq, offsetSeq);
         cleaner.buildOffsetMap(log, keyStart, offsetEnd + 1L, map, new CleanerStats(Time.SYSTEM));
         assertEquals(offsetEnd, map.latestOffset(), "Last offset should be the end offset.");
@@ -2112,15 +2114,15 @@ public class LogCleanerTest {
         int dupSetOffset = 25;
         List<Integer> dupSetKeys = List.of(0, 1, 0, 1);
         List<Map.Entry<Integer, Integer>> dupSet = IntStream.range(0, dupSetKeys.size())
-            .mapToObj(i -> Map.entry(dupSetKeys.get(i), dupSetOffset + i))
-            .toList();
+                .mapToObj(i -> Map.entry(dupSetKeys.get(i), dupSetOffset + i))
+                .toList();
 
         // and one without (should still be fixed by the cleaner)
         int noDupSetOffset = 50;
         List<Integer> noDupSetKeys = List.of(3, 4);
         List<Map.Entry<Integer, Integer>> noDupSet = IntStream.range(0, noDupSetKeys.size())
-            .mapToObj(i -> Map.entry(noDupSetKeys.get(i), noDupSetOffset + i))
-            .toList();
+                .mapToObj(i -> Map.entry(noDupSetKeys.get(i), noDupSetOffset + i))
+                .toList();
 
         log.appendAsFollower(invalidCleanedMessage(dupSetOffset, dupSet, codec), Integer.MAX_VALUE);
         log.appendAsFollower(invalidCleanedMessage(noDupSetOffset, noDupSet, codec), Integer.MAX_VALUE);
@@ -2171,20 +2173,20 @@ public class LogCleanerTest {
 
         // Append a message with a large timestamp.
         log.appendAsLeader(LogTestUtils.singletonRecords("0".getBytes(), Compression.NONE, "0".getBytes(),
-            time.milliseconds() + logConfig.deleteRetentionMs + 10000), 0);
+                time.milliseconds() + logConfig.deleteRetentionMs + 10000), 0);
         log.roll();
         cleaner.clean(new LogToClean(log, 0, log.activeSegment().baseOffset(), false));
         // Append a tombstone with a small timestamp and roll out a new log segment.
         log.appendAsLeader(LogTestUtils.singletonRecords(null, Compression.NONE, "0".getBytes(),
-            time.milliseconds() - logConfig.deleteRetentionMs - 10000), 0);
+                time.milliseconds() - logConfig.deleteRetentionMs - 10000), 0);
         log.roll();
 
         cleaner.clean(new LogToClean(log, 1, log.activeSegment().baseOffset(), false));
         assertEquals(1, log.logSegments().get(0).log().batches().iterator().next().lastOffset(),
-            "The tombstone should be retained.");
+                "The tombstone should be retained.");
         // Append a message and roll out another log segment.
         log.appendAsLeader(LogTestUtils.singletonRecords("1".getBytes(), Compression.NONE, "1".getBytes(),
-            time.milliseconds()), 0);
+                time.milliseconds()), 0);
         log.roll();
         cleaner.clean(new LogToClean(log, 2, log.activeSegment().baseOffset(), false));
         assertEquals(1, log.logSegments().get(0).log().batches().iterator().next().lastOffset(),
@@ -2204,8 +2206,8 @@ public class LogCleanerTest {
 
         UnifiedLog log = makeLog(TestUtils.randomPartitionLogDir(tmpdir), logConfig, 0L);
         List<Map.Entry<Integer, Integer>> seq = IntStream.rangeClosed(0, 9)
-            .mapToObj(i -> Map.entry(i, i))
-            .toList();
+                .mapToObj(i -> Map.entry(i, i))
+                .toList();
         List<Long> offsetSeq = LongStream.rangeClosed(0, 9).boxed().toList();
         writeToLog(log, seq, offsetSeq);
         // roll new segment with baseOffset 11, leaving previous with holes in offset range [9,10]
@@ -2231,16 +2233,16 @@ public class LogCleanerTest {
 
         UnifiedLog log = makeLog(TestUtils.randomPartitionLogDir(tmpdir), logConfig, 0L);
         List<Map.Entry<Integer, Integer>> seq = IntStream.rangeClosed(0, 9)
-            .mapToObj(i -> Map.entry(i, i))
-            .toList();
+                .mapToObj(i -> Map.entry(i, i))
+                .toList();
         List<Long> offsetSeq = LongStream.rangeClosed(0, 9).boxed().toList();
         writeToLog(log, seq, offsetSeq);
         // roll new segment with baseOffset 15, leaving previous with holes in offset range [10, 14]
         log.roll(Optional.of(15L));
 
         List<Map.Entry<Integer, Integer>> seq2 = IntStream.rangeClosed(15, 24)
-            .mapToObj(i -> Map.entry(i, i))
-            .toList();
+                .mapToObj(i -> Map.entry(i, i))
+                .toList();
         List<Long> offsetSeq2 = LongStream.rangeClosed(15, 24).boxed().toList();
         writeToLog(log, seq2, offsetSeq2);
         // roll new segment with baseOffset 30, leaving previous with holes in offset range [25, 29]
@@ -2256,10 +2258,10 @@ public class LogCleanerTest {
     @Test
     public void testMaxCleanTimeSecs() {
         LogCleaner logCleaner = new LogCleaner(new CleanerConfig(true),
-            List.of(TestUtils.tempDirectory()),
-            new ConcurrentHashMap<>(),
-            new LogDirFailureChannel(1),
-            time);
+                List.of(TestUtils.tempDirectory()),
+                new ConcurrentHashMap<>(),
+                new LogDirFailureChannel(1),
+                time);
 
         try {
             checkGauge(logCleaner, "max-buffer-utilization-percent");
@@ -2281,31 +2283,33 @@ public class LogCleanerTest {
         var oldConfig = makeReconfigureConfig(Map.of(CleanerConfig.LOG_CLEANER_IO_MAX_BYTES_PER_SECOND_PROP, 10000000D));
 
         LogCleaner logCleaner = new LogCleaner(new CleanerConfig(oldConfig),
-            List.of(TestUtils.tempDirectory()),
-            new ConcurrentHashMap<>(),
-            new LogDirFailureChannel(1),
-            time) {
+                List.of(TestUtils.tempDirectory()),
+                new ConcurrentHashMap<>(),
+                new LogDirFailureChannel(1),
+                time) {
             // shutdown() and startup() are called in LogCleaner.reconfigure().
             // Empty startup() and shutdown() to ensure that no unnecessary log cleaner threads remain after this test.
             @Override
-            public void startup() { }
+            public void startup() {
+            }
 
             @Override
-            public void shutdown() { }
+            public void shutdown() {
+            }
         };
 
         try {
             assertEquals(10000000, logCleaner.throttler().desiredRatePerSec(),
-                "Throttler.desiredRatePerSec should be initialized from initial `" +
-                    CleanerConfig.LOG_CLEANER_IO_MAX_BYTES_PER_SECOND_PROP + "` config.");
+                    "Throttler.desiredRatePerSec should be initialized from initial `" +
+                            CleanerConfig.LOG_CLEANER_IO_MAX_BYTES_PER_SECOND_PROP + "` config.");
 
             var newConfig = makeReconfigureConfig(Map.of(CleanerConfig.LOG_CLEANER_IO_MAX_BYTES_PER_SECOND_PROP, 20000000D));
 
             logCleaner.reconfigure(oldConfig, newConfig);
 
             assertEquals(20000000, logCleaner.throttler().desiredRatePerSec(),
-                "Throttler.desiredRatePerSec should be updated with new `" +
-                    CleanerConfig.LOG_CLEANER_IO_MAX_BYTES_PER_SECOND_PROP + "` config.");
+                    "Throttler.desiredRatePerSec should be updated with new `" +
+                            CleanerConfig.LOG_CLEANER_IO_MAX_BYTES_PER_SECOND_PROP + "` config.");
         } finally {
             logCleaner.shutdown();
         }
@@ -2314,11 +2318,11 @@ public class LogCleanerTest {
     @Test
     public void testMaxBufferUtilizationPercentMetric() throws Exception {
         LogCleaner logCleaner = new LogCleaner(
-            new CleanerConfig(true),
-            List.of(TestUtils.tempDirectory(), TestUtils.tempDirectory()),
-            new ConcurrentHashMap<>(),
-            new LogDirFailureChannel(1),
-            time);
+                new CleanerConfig(true),
+                List.of(TestUtils.tempDirectory(), TestUtils.tempDirectory()),
+                new ConcurrentHashMap<>(),
+                new LogDirFailureChannel(1),
+                time);
 
         try {
             // No CleanerThreads
@@ -2358,18 +2362,18 @@ public class LogCleanerTest {
 
     private void assertMaxBufferUtilizationPercent(LogCleaner logCleaner, int expected) {
         var gauge = logCleaner.metricsGroup().newGauge(LogCleaner.MAX_BUFFER_UTILIZATION_PERCENT_METRIC_NAME,
-            () -> (int) (logCleaner.maxOverCleanerThreads(t -> t.lastStats().bufferUtilization()) * 100));
+                () -> (int) (logCleaner.maxOverCleanerThreads(t -> t.lastStats().bufferUtilization()) * 100));
         assertEquals(expected, gauge.value());
     }
 
     @Test
     public void testMaxCleanTimeMetric() throws Exception {
         LogCleaner logCleaner = new LogCleaner(
-            new CleanerConfig(true),
-            List.of(TestUtils.tempDirectory(), TestUtils.tempDirectory()),
-            new ConcurrentHashMap<>(),
-            new LogDirFailureChannel(1),
-            time);
+                new CleanerConfig(true),
+                List.of(TestUtils.tempDirectory(), TestUtils.tempDirectory()),
+                new ConcurrentHashMap<>(),
+                new LogDirFailureChannel(1),
+                time);
 
         try {
             // No CleanerThreads
@@ -2409,18 +2413,18 @@ public class LogCleanerTest {
 
     private void assertMaxCleanTime(LogCleaner logCleaner, int expected) {
         var gauge = logCleaner.metricsGroup().newGauge(LogCleaner.MAX_CLEAN_TIME_METRIC_NAME,
-            () -> (int) logCleaner.maxOverCleanerThreads(t -> t.lastStats().elapsedSecs()));
+                () -> (int) logCleaner.maxOverCleanerThreads(t -> t.lastStats().elapsedSecs()));
         assertEquals(expected, gauge.value());
     }
 
     @Test
     public void testMaxCompactionDelayMetrics() throws Exception {
         LogCleaner logCleaner = new LogCleaner(
-            new CleanerConfig(true),
-            List.of(TestUtils.tempDirectory(), TestUtils.tempDirectory()),
-            new ConcurrentHashMap<>(),
-            new LogDirFailureChannel(1),
-            time);
+                new CleanerConfig(true),
+                List.of(TestUtils.tempDirectory(), TestUtils.tempDirectory()),
+                new ConcurrentHashMap<>(),
+                new LogDirFailureChannel(1),
+                time);
 
         try {
             // No CleanerThreads
@@ -2460,7 +2464,7 @@ public class LogCleanerTest {
 
     private void assertMaxCompactionDelay(LogCleaner logCleaner, int expected) {
         var gauge = logCleaner.metricsGroup().newGauge(LogCleaner.MAX_COMPACTION_DELAY_METRICS_NAME,
-            () -> (int) (logCleaner.maxOverCleanerThreads(t -> (double) t.lastPreCleanStats().maxCompactionDelayMs()) / 1000));
+                () -> (int) (logCleaner.maxOverCleanerThreads(t -> (double) t.lastPreCleanStats().maxCompactionDelayMs()) / 1000));
         assertEquals(expected, gauge.value());
     }
 
@@ -2487,26 +2491,26 @@ public class LogCleanerTest {
     }
 
     private MemoryRecords invalidCleanedMessage(
-        long initialOffset,
-        List<Map.Entry<Integer, Integer>> keysAndValues,
-        CompressionType compressionType
+            long initialOffset,
+            List<Map.Entry<Integer, Integer>> keysAndValues,
+            CompressionType compressionType
     ) {
         // this function replicates the old versions of the cleaner which under some circumstances
         // would write invalid compressed message sets with the outer magic set to 1 and the inner
         // magic set to 0
         List<LegacyRecord> records = keysAndValues.stream().map(kv ->
-            LegacyRecord.create(
-                RecordBatch.MAGIC_VALUE_V0,
-                RecordBatch.NO_TIMESTAMP,
-                kv.getKey().toString().getBytes(),
-                kv.getValue().toString().getBytes()))
-            .toList();
+                        LegacyRecord.create(
+                                RecordBatch.MAGIC_VALUE_V0,
+                                RecordBatch.NO_TIMESTAMP,
+                                kv.getKey().toString().getBytes(),
+                                kv.getValue().toString().getBytes()))
+                .toList();
 
         int totalSize = records.stream().mapToInt(LegacyRecord::sizeInBytes).sum();
         ByteBuffer buffer = ByteBuffer.allocate(Math.min(Math.max(totalSize / 2, 1024), 1 << 16));
         Compression codec = Compression.of(compressionType).build();
         MemoryRecordsBuilder builder = MemoryRecords.builder(buffer, RecordBatch.MAGIC_VALUE_V1, codec,
-            TimestampType.CREATE_TIME, initialOffset);
+                TimestampType.CREATE_TIME, initialOffset);
 
         long offset = initialOffset;
         for (LegacyRecord record : records) {
@@ -2535,42 +2539,44 @@ public class LogCleanerTest {
 
     private UnifiedLog makeLog(File dir, LogConfig config, long recoveryPoint) throws IOException {
         return UnifiedLog.create(
-            dir,
-            config,
-            0L,
-            recoveryPoint,
-            time.scheduler,
-            new BrokerTopicStats(),
-            time,
-            5 * 60 * 1000,
-            producerStateManagerConfig,
-            TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
-            new LogDirFailureChannel(10),
-            true,
-            Optional.empty()
+                dir,
+                config,
+                0L,
+                recoveryPoint,
+                time.scheduler,
+                new BrokerTopicStats(),
+                time,
+                5 * 60 * 1000,
+                producerStateManagerConfig,
+                TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT,
+                new LogDirFailureChannel(10),
+                true,
+                Optional.empty()
         );
     }
 
     private Cleaner makeCleaner(int capacity) {
-        return makeCleaner(capacity, tp -> { }, 64 * 1024, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        return makeCleaner(capacity, tp -> {
+        }, 64 * 1024, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     private Cleaner makeCleaner(int capacity, int maxMessageSize) {
-        return makeCleaner(capacity, tp -> { }, maxMessageSize, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        return makeCleaner(capacity, tp -> {
+        }, maxMessageSize, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     private Cleaner makeCleaner(int capacity, Consumer<TopicPartition> checkDone, int maxMessageSize,
                                 long maxCleanedSegmentSize, long maxCleanedOffsetRange) {
         return new Cleaner(0,
-            new LogTestUtils.FakeOffsetMap(capacity),
-            maxMessageSize,
-            maxMessageSize,
-            0.75,
-            throttler,
-            time,
-            checkDone,
-            maxCleanedSegmentSize,
-            maxCleanedOffsetRange);
+                new LogTestUtils.FakeOffsetMap(capacity),
+                maxMessageSize,
+                maxMessageSize,
+                0.75,
+                throttler,
+                time,
+                checkDone,
+                maxCleanedSegmentSize,
+                maxCleanedOffsetRange);
     }
 
     private ByteBuffer key(long id) {
@@ -2579,20 +2585,20 @@ public class LogCleanerTest {
 
     private MemoryRecords record(int key, int value) {
         return record(key, value, RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH,
-            RecordBatch.NO_SEQUENCE, RecordBatch.NO_PARTITION_LEADER_EPOCH);
+                RecordBatch.NO_SEQUENCE, RecordBatch.NO_PARTITION_LEADER_EPOCH);
     }
 
     private MemoryRecords record(
-        int key,
-        int value,
-        long producerId,
-        short producerEpoch,
-        int sequence,
-        int partitionLeaderEpoch
+            int key,
+            int value,
+            long producerId,
+            short producerEpoch,
+            int sequence,
+            int partitionLeaderEpoch
     ) {
         return MemoryRecords.withIdempotentRecords(RecordBatch.CURRENT_MAGIC_VALUE, 0L, Compression.NONE,
-            producerId, producerEpoch, sequence, partitionLeaderEpoch,
-            new SimpleRecord(Integer.toString(key).getBytes(), Integer.toString(value).getBytes()));
+                producerId, producerEpoch, sequence, partitionLeaderEpoch,
+                new SimpleRecord(Integer.toString(key).getBytes(), Integer.toString(value).getBytes()));
     }
 
     private MemoryRecords record(int key, byte[] value) {
@@ -2612,7 +2618,8 @@ public class LogCleanerTest {
         LogAppendInfo append(List<Integer> keys) throws IOException;
     }
 
-    private record LogAndOffsetMap(UnifiedLog log, LogTestUtils.FakeOffsetMap offsetMap) { }
+    private record LogAndOffsetMap(UnifiedLog log, LogTestUtils.FakeOffsetMap offsetMap) {
+    }
 
     private LogAppendInfo appendIdempotentAsLeader(UnifiedLog log, long producerId, short producerEpoch,
                                                    List<Integer> keys) throws IOException {
@@ -2624,7 +2631,7 @@ public class LogCleanerTest {
     }
 
     private ProducerAppender appendTransactionalAsLeader(UnifiedLog log, long producerId, short producerEpoch,
-                                                    int leaderEpoch, AppendOrigin origin) {
+                                                         int leaderEpoch, AppendOrigin origin) {
         return newProducerAppender(log, producerId, producerEpoch, true, leaderEpoch, origin);
     }
 
@@ -2634,16 +2641,16 @@ public class LogCleanerTest {
         return keys -> {
             int baseSequence = sequence.get();
             SimpleRecord[] simpleRecords = keys.stream()
-                .map(key -> {
-                    byte[] keyBytes = Integer.toString(key).getBytes();
-                    return new SimpleRecord(time.milliseconds(), keyBytes, keyBytes);
-                })
-                .toArray(SimpleRecord[]::new);
+                    .map(key -> {
+                        byte[] keyBytes = Integer.toString(key).getBytes();
+                        return new SimpleRecord(time.milliseconds(), keyBytes, keyBytes);
+                    })
+                    .toArray(SimpleRecord[]::new);
             MemoryRecords records = isTransactional
-                ? MemoryRecords.withTransactionalRecords(Compression.NONE, producerId, producerEpoch,
-                        baseSequence, simpleRecords)
-                : MemoryRecords.withIdempotentRecords(Compression.NONE, producerId, producerEpoch,
-                        baseSequence, simpleRecords);
+                    ? MemoryRecords.withTransactionalRecords(Compression.NONE, producerId, producerEpoch,
+                    baseSequence, simpleRecords)
+                    : MemoryRecords.withIdempotentRecords(Compression.NONE, producerId, producerEpoch,
+                    baseSequence, simpleRecords);
             LogAppendInfo appendInfo = log.appendAsLeader(records, leaderEpoch, origin);
             sequence.addAndGet(keys.size());
             return appendInfo;
@@ -2667,37 +2674,37 @@ public class LogCleanerTest {
     }
 
     private MemoryRecords endTxnMarker(
-        long producerId,
-        short producerEpoch,
-        ControlRecordType controlRecordType,
-        long offset,
-        long timestamp
+            long producerId,
+            short producerEpoch,
+            ControlRecordType controlRecordType,
+            long offset,
+            long timestamp
     ) {
         var endTxnMarker = new EndTransactionMarker(controlRecordType, 0);
         return MemoryRecords.withEndTransactionMarker(offset, timestamp, RecordBatch.NO_PARTITION_LEADER_EPOCH,
-            producerId, producerEpoch, endTxnMarker);
+                producerId, producerEpoch, endTxnMarker);
     }
 
     /**
      * We need to run a two pass clean to perform the following steps to stimulate a proper clean:
-     *  1. On the first run, set the delete horizon in the batches with tombstone or markers with empty txn records.
-     *  2. For the second pass, we will advance the current time by tombstoneRetentionMs, which will cause the
-     *     tombstones to expire, leading to their prompt removal from the log.
+     * 1. On the first run, set the delete horizon in the batches with tombstone or markers with empty txn records.
+     * 2. For the second pass, we will advance the current time by tombstoneRetentionMs, which will cause the
+     * tombstones to expire, leading to their prompt removal from the log.
      * Returns the first dirty offset in the log as a result of the second cleaning.
      */
     private long runTwoPassClean(
-        Cleaner cleaner,
-        LogToClean logToClean,
-        long currentTime
+            Cleaner cleaner,
+            LogToClean logToClean,
+            long currentTime
     ) throws IOException, DigestException {
         return runTwoPassClean(cleaner, logToClean, currentTime, 86400000L);
     }
 
     private long runTwoPassClean(
-        Cleaner cleaner,
-        LogToClean logToClean,
-        long currentTime,
-        long tombstoneRetentionMs
+            Cleaner cleaner,
+            LogToClean logToClean,
+            long currentTime,
+            long tombstoneRetentionMs
     ) throws IOException, DigestException {
         cleaner.doClean(logToClean, currentTime);
         return cleaner.doClean(logToClean, currentTime + tombstoneRetentionMs + 1).getKey();
@@ -2705,9 +2712,9 @@ public class LogCleanerTest {
 
     private AbstractConfig makeReconfigureConfig(Map<String, Object> overrides) {
         ConfigDef configDef = new ConfigDef(CleanerConfig.CONFIG_DEF)
-            .define(ServerConfigs.MESSAGE_MAX_BYTES_CONFIG, ConfigDef.Type.INT,
-                ServerLogConfigs.MAX_MESSAGE_BYTES_DEFAULT, ConfigDef.Importance.HIGH,
-                ServerConfigs.MESSAGE_MAX_BYTES_DOC);
+                .define(ServerConfigs.MESSAGE_MAX_BYTES_CONFIG, ConfigDef.Type.INT,
+                        ServerLogConfigs.MAX_MESSAGE_BYTES_DEFAULT, ConfigDef.Importance.HIGH,
+                        ServerConfigs.MESSAGE_MAX_BYTES_DOC);
         return new AbstractConfig(configDef, new HashMap<>(overrides));
     }
 }

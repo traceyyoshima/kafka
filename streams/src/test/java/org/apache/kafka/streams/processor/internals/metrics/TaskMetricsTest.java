@@ -48,19 +48,19 @@ public class TaskMetricsTest {
                 .thenReturn(expectedSensor);
 
         final String ratioDescription = "The fraction of time the thread spent " +
-            "on processing this task among all assigned active tasks";
+                "on processing this task among all assigned active tasks";
         when(streamsMetrics.taskLevelTagMap(THREAD_ID, TASK_ID)).thenReturn(tagMap);
 
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = TaskMetrics.activeProcessRatioSensor(THREAD_ID, TASK_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addValueMetricToSensor(
-                    expectedSensor,
-                    TASK_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    ratioDescription
-                )
+                    () -> StreamsMetricsImpl.addValueMetricToSensor(
+                            expectedSensor,
+                            TASK_LEVEL_GROUP,
+                            tagMap,
+                            operation,
+                            ratioDescription
+                    )
             );
             assertThat(sensor, is(expectedSensor));
         }
@@ -72,19 +72,19 @@ public class TaskMetricsTest {
         when(streamsMetrics.taskLevelSensor(THREAD_ID, TASK_ID, operation, RecordingLevel.DEBUG))
                 .thenReturn(expectedSensor);
         final String countDescription = "The count of buffered records that are polled " +
-            "from consumer and not yet processed for this active task";
+                "from consumer and not yet processed for this active task";
         when(streamsMetrics.taskLevelTagMap(THREAD_ID, TASK_ID)).thenReturn(tagMap);
 
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = TaskMetrics.activeBufferedRecordsSensor(THREAD_ID, TASK_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addValueMetricToSensor(
-                    expectedSensor,
-                    TASK_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    countDescription
-                )
+                    () -> StreamsMetricsImpl.addValueMetricToSensor(
+                            expectedSensor,
+                            TASK_LEVEL_GROUP,
+                            tagMap,
+                            operation,
+                            countDescription
+                    )
             );
             assertThat(sensor, is(expectedSensor));
         }
@@ -102,14 +102,14 @@ public class TaskMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = TaskMetrics.processLatencySensor(THREAD_ID, TASK_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                    expectedSensor,
-                    TASK_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    avgLatencyDescription,
-                    maxLatencyDescription
-                )
+                    () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
+                            expectedSensor,
+                            TASK_LEVEL_GROUP,
+                            tagMap,
+                            operation,
+                            avgLatencyDescription,
+                            maxLatencyDescription
+                    )
             );
             assertThat(sensor, is(expectedSensor));
         }
@@ -154,24 +154,24 @@ public class TaskMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = TaskMetrics.punctuateSensor(THREAD_ID, TASK_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedSensor,
-                    TASK_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    rateDescription,
-                    totalDescription
-                )
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                            expectedSensor,
+                            TASK_LEVEL_GROUP,
+                            tagMap,
+                            operation,
+                            rateDescription,
+                            totalDescription
+                    )
             );
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                    expectedSensor,
-                    TASK_LEVEL_GROUP,
-                    tagMap,
-                    operationLatency,
-                    avgLatencyDescription,
-                    maxLatencyDescription
-                )
+                    () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
+                            expectedSensor,
+                            TASK_LEVEL_GROUP,
+                            tagMap,
+                            operationLatency,
+                            avgLatencyDescription,
+                            maxLatencyDescription
+                    )
             );
             assertThat(sensor, is(expectedSensor));
         }
@@ -188,14 +188,14 @@ public class TaskMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = TaskMetrics.enforcedProcessingSensor(THREAD_ID, TASK_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
-                    expectedSensor,
-                    TASK_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    rateDescription,
-                    totalDescription
-                )
+                    () -> StreamsMetricsImpl.addInvocationRateAndCountToSensor(
+                            expectedSensor,
+                            TASK_LEVEL_GROUP,
+                            tagMap,
+                            operation,
+                            rateDescription,
+                            totalDescription
+                    )
             );
             assertThat(sensor, is(expectedSensor));
         }
@@ -205,25 +205,25 @@ public class TaskMetricsTest {
     public void shouldGetRecordLatenessSensor() {
         final String operation = "record-lateness";
         final String avgDescription =
-            "The observed average lateness of records in milliseconds, measured by comparing the record timestamp with "
-                + "the current stream time";
+                "The observed average lateness of records in milliseconds, measured by comparing the record timestamp with "
+                        + "the current stream time";
         final String maxDescription =
-            "The observed maximum lateness of records in milliseconds, measured by comparing the record timestamp with "
-                + "the current stream time";
+                "The observed maximum lateness of records in milliseconds, measured by comparing the record timestamp with "
+                        + "the current stream time";
         when(streamsMetrics.taskLevelSensor(THREAD_ID, TASK_ID, operation, RecordingLevel.DEBUG)).thenReturn(expectedSensor);
         when(streamsMetrics.taskLevelTagMap(THREAD_ID, TASK_ID)).thenReturn(tagMap);
 
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = TaskMetrics.recordLatenessSensor(THREAD_ID, TASK_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
-                    expectedSensor,
-                    TASK_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    avgDescription,
-                    maxDescription
-                )
+                    () -> StreamsMetricsImpl.addAvgAndMaxToSensor(
+                            expectedSensor,
+                            TASK_LEVEL_GROUP,
+                            tagMap,
+                            operation,
+                            avgDescription,
+                            maxDescription
+                    )
             );
             assertThat(sensor, is(expectedSensor));
         }
@@ -240,23 +240,23 @@ public class TaskMetricsTest {
         try (final MockedStatic<StreamsMetricsImpl> streamsMetricsStaticMock = mockStatic(StreamsMetricsImpl.class)) {
             final Sensor sensor = TaskMetrics.droppedRecordsSensor(THREAD_ID, TASK_ID, streamsMetrics);
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addInvocationRateToSensor(
-                    expectedSensor,
-                    TASK_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    rateDescription
-                )
+                    () -> StreamsMetricsImpl.addInvocationRateToSensor(
+                            expectedSensor,
+                            TASK_LEVEL_GROUP,
+                            tagMap,
+                            operation,
+                            rateDescription
+                    )
             );
             streamsMetricsStaticMock.verify(
-                () -> StreamsMetricsImpl.addSumMetricToSensor(
-                    expectedSensor,
-                    TASK_LEVEL_GROUP,
-                    tagMap,
-                    operation,
-                    true,
-                    totalDescription
-                )
+                    () -> StreamsMetricsImpl.addSumMetricToSensor(
+                            expectedSensor,
+                            TASK_LEVEL_GROUP,
+                            tagMap,
+                            operation,
+                            true,
+                            totalDescription
+                    )
             );
             assertThat(sensor, is(expectedSensor));
         }

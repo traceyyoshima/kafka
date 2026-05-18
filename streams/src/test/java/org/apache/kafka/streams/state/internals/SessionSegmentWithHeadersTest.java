@@ -48,20 +48,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SessionSegmentWithHeadersTest {
 
     private final RocksDBMetricsRecorder metricsRecorder =
-        new RocksDBMetricsRecorder("metrics-scope", "store-name");
+            new RocksDBMetricsRecorder("metrics-scope", "store-name");
 
     @BeforeEach
     public void setUp() {
         metricsRecorder.init(
-            new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime()),
-            new TaskId(0, 0)
+                new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime()),
+                new TaskId(0, 0)
         );
     }
 
     @Test
     public void shouldDeleteStateDirectoryOnDestroy() throws Exception {
         final SessionSegmentWithHeaders segment =
-            new SessionSegmentWithHeaders("segment", "window", 0L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("segment", "window", 0L, Position.emptyPosition(), metricsRecorder);
         final String directoryPath = TestUtils.tempDirectory().getAbsolutePath();
         final File directory = new File(directoryPath);
 
@@ -80,11 +80,11 @@ public class SessionSegmentWithHeadersTest {
     @Test
     public void shouldBeEqualIfIdIsEqual() {
         final SessionSegmentWithHeaders segment =
-            new SessionSegmentWithHeaders("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
         final SessionSegmentWithHeaders segmentSameId =
-            new SessionSegmentWithHeaders("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
         final SessionSegmentWithHeaders segmentDifferentId =
-            new SessionSegmentWithHeaders("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
 
         assertEquals(segment, segment);
         assertEquals(segment, segmentSameId);
@@ -100,11 +100,11 @@ public class SessionSegmentWithHeadersTest {
     @Test
     public void shouldHashOnSegmentIdOnly() {
         final SessionSegmentWithHeaders segment =
-            new SessionSegmentWithHeaders("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
         final SessionSegmentWithHeaders segmentSameId =
-            new SessionSegmentWithHeaders("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
         final SessionSegmentWithHeaders segmentDifferentId =
-            new SessionSegmentWithHeaders("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
 
         final Set<SessionSegmentWithHeaders> set = new HashSet<>();
         assertTrue(set.add(segment));
@@ -119,11 +119,11 @@ public class SessionSegmentWithHeadersTest {
     @Test
     public void shouldCompareSegmentIdOnly() {
         final SessionSegmentWithHeaders segment1 =
-            new SessionSegmentWithHeaders("a", "C", 50L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("a", "C", 50L, Position.emptyPosition(), metricsRecorder);
         final SessionSegmentWithHeaders segment2 =
-            new SessionSegmentWithHeaders("b", "B", 100L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("b", "B", 100L, Position.emptyPosition(), metricsRecorder);
         final SessionSegmentWithHeaders segment3 =
-            new SessionSegmentWithHeaders("c", "A", 0L, Position.emptyPosition(), metricsRecorder);
+                new SessionSegmentWithHeaders("c", "A", 0L, Position.emptyPosition(), metricsRecorder);
 
         assertEquals(0, segment1.compareTo(segment1));
         assertEquals(-1, segment1.compareTo(segment2));

@@ -34,7 +34,7 @@ public class ClientMetricsInstanceTest {
     public void setUp() throws UnknownHostException {
         Uuid uuid = Uuid.randomUuid();
         ClientMetricsInstanceMetadata instanceMetadata = new ClientMetricsInstanceMetadata(uuid,
-            ClientMetricsTestUtils.requestContext());
+                ClientMetricsTestUtils.requestContext());
         clientInstance = new ClientMetricsInstance(uuid, instanceMetadata, 0, 0, null, ClientMetricsConfigs.INTERVAL_MS_DEFAULT);
     }
 

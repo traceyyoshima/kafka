@@ -47,7 +47,7 @@ public class RocksDbVersionedKeyValueBytesStoreSupplierTest {
 
     private void verifyExpectedSegmentInterval(final long historyRetention, final long expectedSegmentInterval) {
         assertThat(
-            new RocksDbVersionedKeyValueBytesStoreSupplier(STORE_NAME, historyRetention).segmentIntervalMs(),
-            is(expectedSegmentInterval));
+                new RocksDbVersionedKeyValueBytesStoreSupplier(STORE_NAME, historyRetention).segmentIntervalMs(),
+                is(expectedSegmentInterval));
     }
 }

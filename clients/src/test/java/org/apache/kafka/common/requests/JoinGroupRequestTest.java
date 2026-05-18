@@ -49,18 +49,19 @@ public class JoinGroupRequestTest {
 
         for (String instanceId : invalidGroupInstanceIds) {
             assertThrows(InvalidConfigurationException.class,
-                () -> JoinGroupRequest.validateGroupInstanceId(instanceId),
-                "InvalidConfigurationException expected as instance id is invalid.");
+                    () -> JoinGroupRequest.validateGroupInstanceId(instanceId),
+                    "InvalidConfigurationException expected as instance id is invalid.");
         }
     }
+
     @Test
     public void testRequestVersionCompatibilityFailBuild() {
         assertThrows(UnsupportedVersionException.class, () -> new JoinGroupRequest.Builder(
-            new JoinGroupRequestData()
-                .setGroupId("groupId")
-                .setMemberId("consumerId")
-                .setGroupInstanceId("groupInstanceId")
-                .setProtocolType("consumer")
+                new JoinGroupRequestData()
+                        .setGroupId("groupId")
+                        .setMemberId("consumerId")
+                        .setGroupInstanceId("groupInstanceId")
+                        .setProtocolType("consumer")
         ).build((short) 4));
     }
 

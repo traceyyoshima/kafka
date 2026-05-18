@@ -139,29 +139,33 @@ public class CoordinatorClient {
 
     public CoordinatorStatusResponse status() throws Exception {
         HttpResponse<CoordinatorStatusResponse> resp =
-            JsonRestServer.httpRequest(url("/coordinator/status"), "GET",
-                null, new TypeReference<CoordinatorStatusResponse>() { }, maxTries);
+                JsonRestServer.httpRequest(url("/coordinator/status"), "GET",
+                        null, new TypeReference<CoordinatorStatusResponse>() {
+                        }, maxTries);
         return resp.body();
     }
 
     public UptimeResponse uptime() throws Exception {
         HttpResponse<UptimeResponse> resp =
-            JsonRestServer.httpRequest(url("/coordinator/uptime"), "GET",
-                null, new TypeReference<UptimeResponse>() { }, maxTries);
+                JsonRestServer.httpRequest(url("/coordinator/uptime"), "GET",
+                        null, new TypeReference<UptimeResponse>() {
+                        }, maxTries);
         return resp.body();
     }
 
     public void createTask(CreateTaskRequest request) throws Exception {
         HttpResponse<Empty> resp =
-            JsonRestServer.httpRequest(log, url("/coordinator/task/create"), "POST",
-                request, new TypeReference<Empty>() { }, maxTries);
+                JsonRestServer.httpRequest(log, url("/coordinator/task/create"), "POST",
+                        request, new TypeReference<Empty>() {
+                        }, maxTries);
         resp.body();
     }
 
     public void stopTask(StopTaskRequest request) throws Exception {
         HttpResponse<Empty> resp =
-            JsonRestServer.httpRequest(log, url("/coordinator/task/stop"), "PUT",
-                request, new TypeReference<Empty>() { }, maxTries);
+                JsonRestServer.httpRequest(log, url("/coordinator/task/stop"), "PUT",
+                        request, new TypeReference<Empty>() {
+                        }, maxTries);
         resp.body();
     }
 
@@ -169,8 +173,9 @@ public class CoordinatorClient {
         UriBuilder uriBuilder = UriBuilder.fromPath(url("/coordinator/tasks"));
         uriBuilder.queryParam("taskId", request.id());
         HttpResponse<Empty> resp =
-            JsonRestServer.httpRequest(log, uriBuilder.build().toString(), "DELETE",
-                null, new TypeReference<Empty>() { }, maxTries);
+                JsonRestServer.httpRequest(log, uriBuilder.build().toString(), "DELETE",
+                        null, new TypeReference<Empty>() {
+                        }, maxTries);
         resp.body();
     }
 
@@ -185,148 +190,151 @@ public class CoordinatorClient {
             uriBuilder.queryParam("state", request.state().get().toString());
         }
         HttpResponse<TasksResponse> resp =
-            JsonRestServer.httpRequest(log, uriBuilder.build().toString(), "GET",
-                null, new TypeReference<TasksResponse>() { }, maxTries);
+                JsonRestServer.httpRequest(log, uriBuilder.build().toString(), "GET",
+                        null, new TypeReference<TasksResponse>() {
+                        }, maxTries);
         return resp.body();
     }
 
     public TaskState task(TaskRequest request) throws Exception {
         String uri = UriBuilder.fromPath(url("/coordinator/tasks/{taskId}")).build(request.taskId()).toString();
         HttpResponse<TaskState> resp = JsonRestServer.httpRequest(log, uri, "GET",
-            null, new TypeReference<TaskState>() { }, maxTries);
+                null, new TypeReference<TaskState>() {
+                }, maxTries);
         return resp.body();
     }
 
     public void shutdown() throws Exception {
         HttpResponse<Empty> resp =
-            JsonRestServer.httpRequest(log, url("/coordinator/shutdown"), "PUT",
-                null, new TypeReference<Empty>() { }, maxTries);
+                JsonRestServer.httpRequest(log, url("/coordinator/shutdown"), "PUT",
+                        null, new TypeReference<Empty>() {
+                        }, maxTries);
         resp.body();
     }
 
     private static void addTargetArgument(ArgumentParser parser) {
         parser.addArgument("--target", "-t")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("target")
-            .metavar("TARGET")
-            .help("A colon-separated host and port pair.  For example, example.com:8889");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("target")
+                .metavar("TARGET")
+                .help("A colon-separated host and port pair.  For example, example.com:8889");
     }
 
     private static void addJsonArgument(ArgumentParser parser) {
         parser.addArgument("--json")
-            .action(storeTrue())
-            .dest("json")
-            .metavar("JSON")
-            .help("Show the full response as JSON.");
+                .action(storeTrue())
+                .dest("json")
+                .metavar("JSON")
+                .help("Show the full response as JSON.");
     }
 
     public static void main(String[] args) throws Exception {
         ArgumentParser rootParser = ArgumentParsers
-            .newArgumentParser("trogdor-coordinator-client")
-            .description("The Trogdor coordinator client.");
+                .newArgumentParser("trogdor-coordinator-client")
+                .description("The Trogdor coordinator client.");
         Subparsers subParsers = rootParser.addSubparsers().
-            dest("command");
+                dest("command");
         Subparser uptimeParser = subParsers.addParser("uptime")
-            .help("Get the coordinator uptime.");
+                .help("Get the coordinator uptime.");
         addTargetArgument(uptimeParser);
         addJsonArgument(uptimeParser);
         Subparser statusParser = subParsers.addParser("status")
-            .help("Get the coordinator status.");
+                .help("Get the coordinator status.");
         addTargetArgument(statusParser);
         addJsonArgument(statusParser);
         Subparser showTaskParser = subParsers.addParser("showTask")
-            .help("Show a coordinator task.");
+                .help("Show a coordinator task.");
         addTargetArgument(showTaskParser);
         addJsonArgument(showTaskParser);
         showTaskParser.addArgument("--id", "-i")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("taskId")
-            .metavar("TASK_ID")
-            .help("The task ID to show.");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("taskId")
+                .metavar("TASK_ID")
+                .help("The task ID to show.");
         showTaskParser.addArgument("--verbose", "-v")
-            .action(storeTrue())
-            .dest("verbose")
-            .metavar("VERBOSE")
-            .help("Print out everything.");
+                .action(storeTrue())
+                .dest("verbose")
+                .metavar("VERBOSE")
+                .help("Print out everything.");
         showTaskParser.addArgument("--show-status", "-S")
-            .action(storeTrue())
-            .dest("showStatus")
-            .metavar("SHOW_STATUS")
-            .help("Show the task status.");
+                .action(storeTrue())
+                .dest("showStatus")
+                .metavar("SHOW_STATUS")
+                .help("Show the task status.");
         Subparser showTasksParser = subParsers.addParser("showTasks")
-            .help("Show many coordinator tasks.  By default, all tasks are shown, but " +
-                "command-line options can be specified as filters.");
+                .help("Show many coordinator tasks.  By default, all tasks are shown, but " +
+                        "command-line options can be specified as filters.");
         addTargetArgument(showTasksParser);
         addJsonArgument(showTasksParser);
         MutuallyExclusiveGroup idGroup = showTasksParser.addMutuallyExclusiveGroup();
         idGroup.addArgument("--id", "-i")
-            .action(append())
-            .type(String.class)
-            .dest("taskIds")
-            .metavar("TASK_IDS")
-            .help("Show only this task ID.  This option may be specified multiple times.");
+                .action(append())
+                .type(String.class)
+                .dest("taskIds")
+                .metavar("TASK_IDS")
+                .help("Show only this task ID.  This option may be specified multiple times.");
         idGroup.addArgument("--id-pattern")
-            .action(store())
-            .type(String.class)
-            .dest("taskIdPattern")
-            .metavar("TASK_ID_PATTERN")
-            .help("Only display tasks which match the given ID pattern.");
+                .action(store())
+                .type(String.class)
+                .dest("taskIdPattern")
+                .metavar("TASK_ID_PATTERN")
+                .help("Only display tasks which match the given ID pattern.");
         showTasksParser.addArgument("--state", "-s")
-            .type(TaskStateType.class)
-            .dest("taskStateType")
-            .metavar("TASK_STATE_TYPE")
-            .help("Show only tasks in this state.");
+                .type(TaskStateType.class)
+                .dest("taskStateType")
+                .metavar("TASK_STATE_TYPE")
+                .help("Show only tasks in this state.");
         Subparser createTaskParser = subParsers.addParser("createTask")
-            .help("Create a new task.");
+                .help("Create a new task.");
         addTargetArgument(createTaskParser);
         createTaskParser.addArgument("--id", "-i")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("taskId")
-            .metavar("TASK_ID")
-            .help("The task ID to create.");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("taskId")
+                .metavar("TASK_ID")
+                .help("The task ID to create.");
         createTaskParser.addArgument("--spec", "-s")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("taskSpec")
-            .metavar("TASK_SPEC")
-            .help("The task spec to create, or a path to a file containing the task spec.");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("taskSpec")
+                .metavar("TASK_SPEC")
+                .help("The task spec to create, or a path to a file containing the task spec.");
         Subparser stopTaskParser = subParsers.addParser("stopTask")
-            .help("Stop a task.");
+                .help("Stop a task.");
         addTargetArgument(stopTaskParser);
         stopTaskParser.addArgument("--id", "-i")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("taskId")
-            .metavar("TASK_ID")
-            .help("The task ID to create.");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("taskId")
+                .metavar("TASK_ID")
+                .help("The task ID to create.");
         Subparser destroyTaskParser = subParsers.addParser("destroyTask")
-            .help("Destroy a task.");
+                .help("Destroy a task.");
         addTargetArgument(destroyTaskParser);
         destroyTaskParser.addArgument("--id", "-i")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("taskId")
-            .metavar("TASK_ID")
-            .help("The task ID to destroy.");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("taskId")
+                .metavar("TASK_ID")
+                .help("The task ID to destroy.");
         Subparser shutdownParser = subParsers.addParser("shutdown")
-            .help("Shut down the coordinator.");
+                .help("Shut down the coordinator.");
         addTargetArgument(shutdownParser);
 
         Namespace res = rootParser.parseArgsOrFail(args);
         String target = res.getString("target");
         CoordinatorClient client = new Builder().
-            maxTries(3).
-            target(target).
-            build();
+                maxTries(3).
+                target(target).
+                build();
         ZoneOffset localOffset = OffsetDateTime.now().getOffset();
         switch (res.getString("command")) {
             case "uptime": {
@@ -336,11 +344,11 @@ public class CoordinatorClient {
                 } else {
                     System.out.printf("Coordinator is running at %s.%n", target);
                     System.out.printf("\tStart time: %s%n",
-                        dateString(uptime.serverStartMs(), localOffset));
+                            dateString(uptime.serverStartMs(), localOffset));
                     System.out.printf("\tCurrent server time: %s%n",
-                        dateString(uptime.nowMs(), localOffset));
+                            dateString(uptime.nowMs(), localOffset));
                     System.out.printf("\tUptime: %s%n",
-                        durationString(uptime.nowMs() - uptime.serverStartMs()));
+                            durationString(uptime.nowMs() - uptime.serverStartMs()));
                 }
                 break;
             }
@@ -368,8 +376,8 @@ public class CoordinatorClient {
                     System.out.println(JsonUtil.toJsonString(taskState));
                 } else {
                     System.out.printf("Task %s of type %s is %s. %s%n", taskId,
-                        taskState.spec().getClass().getCanonicalName(),
-                        taskState.stateType(), prettyPrintTaskInfo(taskState, localOffset));
+                            taskState.spec().getClass().getCanonicalName(),
+                            taskState.stateType(), prettyPrintTaskInfo(taskState, localOffset));
                     if (taskState instanceof TaskDone taskDone) {
                         if ((taskDone.error() != null) && (!taskDone.error().isEmpty())) {
                             System.out.printf("Error: %s%n", taskDone.error());
@@ -402,7 +410,7 @@ public class CoordinatorClient {
                     }
                 }
                 TasksRequest req = new TasksRequest(taskIds, 0, 0, 0, 0,
-                    Optional.ofNullable(taskStateType));
+                        Optional.ofNullable(taskStateType));
                 TasksResponse response = client.tasks(req);
                 if (taskIdPattern != null) {
                     TreeMap<String, TaskState> filteredTasks = new TreeMap<>();
@@ -426,15 +434,15 @@ public class CoordinatorClient {
             case "createTask": {
                 String taskId = res.getString("taskId");
                 TaskSpec taskSpec = JsonUtil.
-                    objectFromCommandLineArgument(res.getString("taskSpec"), TaskSpec.class);
+                        objectFromCommandLineArgument(res.getString("taskSpec"), TaskSpec.class);
                 CreateTaskRequest req = new CreateTaskRequest(taskId, taskSpec);
                 try {
                     client.createTask(req);
                     System.out.printf("Sent CreateTaskRequest for task %s.%n", req.id());
                 } catch (RequestConflictException rce) {
                     System.out.printf("CreateTaskRequest for task %s got a 409 status code - " +
-                        "a task with the same ID but a different specification already exists.%nException: %s%n",
-                        req.id(), rce.getMessage());
+                                    "a task with the same ID but a different specification already exists.%nException: %s%n",
+                            req.id(), rce.getMessage());
                     Exit.exit(1);
                 }
                 break;
@@ -489,7 +497,7 @@ public class CoordinatorClient {
             return "Will start at " + dateString(taskState.spec().startMs(), zoneOffset);
         } else if (taskState instanceof TaskRunning runState) {
             return "Started " + dateString(runState.startedMs(), zoneOffset) +
-                "; will stop after " + durationString(taskState.spec().durationMs());
+                    "; will stop after " + durationString(taskState.spec().durationMs());
         } else if (taskState instanceof TaskStopping stoppingState) {
             return "Started " + dateString(stoppingState.startedMs(), zoneOffset);
         } else if (taskState instanceof TaskDone doneState) {
@@ -504,8 +512,8 @@ public class CoordinatorClient {
                 status = "FAILED";
             }
             return String.format("%s at %s after %s", status,
-                dateString(doneState.doneMs(), zoneOffset),
-                durationString(doneState.doneMs() - doneState.startedMs()));
+                    dateString(doneState.doneMs(), zoneOffset),
+                    durationString(doneState.doneMs() - doneState.startedMs()));
         } else {
             throw new RuntimeException("Unknown task state type " + taskState.stateType());
         }

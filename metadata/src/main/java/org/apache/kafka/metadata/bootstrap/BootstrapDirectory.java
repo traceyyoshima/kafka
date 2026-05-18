@@ -47,10 +47,10 @@ public class BootstrapDirectory {
     /**
      * Create a new BootstrapDirectory object.
      *
-     * @param directoryPath     The path to the directory with the bootstrap file.
+     * @param directoryPath The path to the directory with the bootstrap file.
      */
     public BootstrapDirectory(
-        String directoryPath
+            String directoryPath
     ) {
         this.directoryPath = Objects.requireNonNull(directoryPath);
     }
@@ -106,9 +106,9 @@ public class BootstrapDirectory {
             }
 
             Files.move(
-                tempPath,
-                Paths.get(directoryPath, BINARY_BOOTSTRAP_FILENAME),
-                ATOMIC_MOVE, REPLACE_EXISTING
+                    tempPath,
+                    Paths.get(directoryPath, BINARY_BOOTSTRAP_FILENAME),
+                    ATOMIC_MOVE, REPLACE_EXISTING
             );
         } finally {
             Files.deleteIfExists(tempPath);

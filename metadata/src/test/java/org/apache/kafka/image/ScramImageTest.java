@@ -78,8 +78,8 @@ public class ScramImageTest {
     private static void testToImage(ScramImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> ScramImage.EMPTY,
-            ScramDelta::new
+                () -> ScramImage.EMPTY,
+                ScramDelta::new
         ).test(image, fromRecords);
     }
 
@@ -101,6 +101,6 @@ public class ScramImageTest {
         ImageWriterOptions imageWriterOptions = new ImageWriterOptions.Builder(MetadataVersion.IBP_3_4_IV0).build();
         RecordListWriter writer = new RecordListWriter();
         assertThrows(Exception.class, () -> IMAGE1.write(writer, imageWriterOptions),
-            "expected exception writing IMAGE with SCRAM records for MetadataVersion.IBP_3_4_IV0");
+                "expected exception writing IMAGE with SCRAM records for MetadataVersion.IBP_3_4_IV0");
     }
 }

@@ -46,8 +46,8 @@ public class DelayedFutureTest {
             AtomicInteger result = new AtomicInteger();
 
             Supplier<Boolean> hasExecutorThread = () -> Thread.getAllStackTraces().keySet().stream()
-                .map(Thread::getName)
-                .anyMatch(name -> name.contains("DelayedExecutor-" + purgatoryName));
+                    .map(Thread::getName)
+                    .anyMatch(name -> name.contains("DelayedExecutor-" + purgatoryName));
 
             Consumer<List<CompletableFuture<Integer>>> updateResult = futures ->
                     result.set(futures.stream()
@@ -59,8 +59,8 @@ public class DelayedFutureTest {
 
             // Two completed futures: callback should be executed immediately on the same thread
             List<CompletableFuture<Integer>> futures1 = List.of(
-                CompletableFuture.completedFuture(10),
-                CompletableFuture.completedFuture(11)
+                    CompletableFuture.completedFuture(10),
+                    CompletableFuture.completedFuture(11)
             );
             DelayedFuture<Integer> r1 = purgatory.tryCompleteElseWatch(100000L, futures1, () -> updateResult.accept(futures1));
             assertTrue(r1.isCompleted(), "r1 not completed");
@@ -83,8 +83,8 @@ public class DelayedFutureTest {
             // One immediate and one delayed future: callback should wait for delayed task to complete
             result.set(-1);
             List<CompletableFuture<Integer>> futures3 = List.of(
-                new CompletableFuture<>(),
-                CompletableFuture.completedFuture(31)
+                    new CompletableFuture<>(),
+                    CompletableFuture.completedFuture(31)
             );
             DelayedFuture<Integer> r3 = purgatory.tryCompleteElseWatch(100000L, futures3, () -> updateResult.accept(futures3));
             assertFalse(r3.isCompleted(), "r3 should be incomplete");

@@ -54,7 +54,7 @@ public class TransactionsWithTieredStoreTest {
 
     private static final String TEST_CLASS_NAME = "transactionswithtiredstoretest";
     private static final int BROKER_COUNT = 3;
-    
+
     private static Map<String, String> baseServerProperties() {
         String storageDirPath = TestUtils.tempDirectory(
                 "kafka-remote-tier-" + TEST_CLASS_NAME).getAbsolutePath();

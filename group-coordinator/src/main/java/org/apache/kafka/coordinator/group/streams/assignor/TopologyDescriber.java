@@ -35,10 +35,9 @@ public interface TopologyDescriber {
      * The maximal number of input partitions among all source topics for the given subtopology.
      *
      * @param subtopologyId String identifying the subtopology.
-     *
-     * @throws NoSuchElementException if the subtopology ID does not exist.
-     * @throws IllegalStateException if the subtopology contains no source topics.
      * @return The maximal number of input partitions among all source topics for the given subtopology.
+     * @throws NoSuchElementException if the subtopology ID does not exist.
+     * @throws IllegalStateException  if the subtopology contains no source topics.
      */
     int maxNumInputPartitions(String subtopologyId) throws NoSuchElementException;
 
@@ -46,8 +45,8 @@ public interface TopologyDescriber {
      * Checks whether the given subtopology is associated with a changelog topic.
      *
      * @param subtopologyId String identifying the subtopology.
-     * @throws NoSuchElementException if the subtopology ID does not exist.
      * @return true if the subtopology is associated with a changelog topic, false otherwise.
+     * @throws NoSuchElementException if the subtopology ID does not exist.
      */
     boolean isStateful(String subtopologyId);
 

@@ -33,18 +33,18 @@ import static org.apache.kafka.streams.state.internals.Utils.readBytes;
 
 /**
  * Deserializer for ValueTimestampHeaders.
- *
+ * <p>
  * Deserialization format (per KIP-1271):
  * [headersSize(varint)][headersBytes][timestamp(8)][value]
- *
+ * <p>
  * Where:
  * - headersSize: Size of the headersBytes section in bytes, encoded as varint
  * - headersBytes:
- *   - For null/empty headers: headersSize = 0, headersBytes is omitted (0 bytes)
- *   - For non-empty headers: headersSize > 0, serialized headers in the format [count(varint)][header1][header2]... to be processed by HeadersDeserializer.
+ * - For null/empty headers: headersSize = 0, headersBytes is omitted (0 bytes)
+ * - For non-empty headers: headersSize > 0, serialized headers in the format [count(varint)][header1][header2]... to be processed by HeadersDeserializer.
  * - timestamp: 8-byte long timestamp
  * - value: Serialized value to be deserialized with the provided value deserializer
- *
+ * <p>
  * This is used by KIP-1271 to deserialize values with timestamps and headers from state stores.
  */
 class ValueTimestampHeadersDeserializer<V> implements WrappingNullableDeserializer<ValueTimestampHeaders<V>, Void, V> {

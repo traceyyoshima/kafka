@@ -124,15 +124,15 @@ class MetadataVersionTest {
 
         // Throws exception when unstableFeatureVersionsEnabled is false
         assertEquals("Unknown metadata.version '4.4-IV0'. Supported metadata.version are: 3.3-IV3, 3.4-IV0, 3.5-IV0, 3.5-IV1, 3.5-IV2, "
-            + "3.6-IV0, 3.6-IV1, 3.6-IV2, 3.7-IV0, 3.7-IV1, 3.7-IV2, 3.7-IV3, 3.7-IV4, 3.8-IV0, 3.9-IV0, 4.0-IV0, 4.0-IV1, 4.0-IV2, 4.0-IV3, 4.1-IV0, "
-            + "4.1-IV1, 4.2-IV0, 4.2-IV1, 4.3-IV0",
-            assertThrows(IllegalArgumentException.class, () -> MetadataVersion.fromVersionString("4.4-IV0", false)).getMessage());
+                        + "3.6-IV0, 3.6-IV1, 3.6-IV2, 3.7-IV0, 3.7-IV1, 3.7-IV2, 3.7-IV3, 3.7-IV4, 3.8-IV0, 3.9-IV0, 4.0-IV0, 4.0-IV1, 4.0-IV2, 4.0-IV3, 4.1-IV0, "
+                        + "4.1-IV1, 4.2-IV0, 4.2-IV1, 4.3-IV0",
+                assertThrows(IllegalArgumentException.class, () -> MetadataVersion.fromVersionString("4.4-IV0", false)).getMessage());
     }
 
     @Test
     public void testMetadataVersionsToString() {
         assertEquals("3.5-IV0, 3.5-IV1, 3.5-IV2, 3.6-IV0",
-            MetadataVersion.metadataVersionsToString(MetadataVersion.IBP_3_5_IV0, MetadataVersion.IBP_3_6_IV0));
+                MetadataVersion.metadataVersionsToString(MetadataVersion.IBP_3_5_IV0, MetadataVersion.IBP_3_6_IV0));
     }
 
     @Test
@@ -219,7 +219,7 @@ class MetadataVersionTest {
     @EnumSource(value = MetadataVersion.class)
     public void testIsDelegationTokenSupported(MetadataVersion metadataVersion) {
         assertEquals(metadataVersion.isAtLeast(IBP_3_6_IV2),
-            metadataVersion.isDelegationTokenSupported());
+                metadataVersion.isDelegationTokenSupported());
     }
 
     @ParameterizedTest
@@ -283,8 +283,8 @@ class MetadataVersionTest {
     @Test
     public void assertLatestProductionIsLessThanLatest() {
         assertTrue(LATEST_PRODUCTION.ordinal() < MetadataVersion.latestTesting().ordinal(),
-            "Expected LATEST_PRODUCTION " + LATEST_PRODUCTION +
-            " to be less than the latest of " + MetadataVersion.latestTesting());
+                "Expected LATEST_PRODUCTION " + LATEST_PRODUCTION +
+                        " to be less than the latest of " + MetadataVersion.latestTesting());
     }
 
     /**

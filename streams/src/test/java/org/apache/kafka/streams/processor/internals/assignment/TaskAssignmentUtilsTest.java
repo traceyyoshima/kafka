@@ -66,37 +66,37 @@ public class TaskAssignmentUtilsTest {
     @Timeout(value = 30)
     @ParameterizedTest
     @ValueSource(strings = {
-        StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC,
-        StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY,
+            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC,
+            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY,
     })
     public void shouldOptimizeActiveTaskSimple(final String strategy) {
         final AssignmentConfigs assignmentConfigs = defaultAssignmentConfigs(
-            strategy, 100, 1, 1, Collections.emptyList());
+                strategy, 100, 1, 1, Collections.emptyList());
         final Map<TaskId, TaskInfo> tasks = mkMap(
-            mkTaskInfo(TASK_0_0, true, Set.of("rack-2")),
-            mkTaskInfo(TASK_0_1, true, Set.of("rack-1"))
+                mkTaskInfo(TASK_0_0, true, Set.of("rack-2")),
+                mkTaskInfo(TASK_0_1, true, Set.of("rack-1"))
         );
         final Map<ProcessId, KafkaStreamsState> kafkaStreamsStates = mkMap(
-            mkStreamState(1, 1, Optional.of("rack-1")),
-            mkStreamState(2, 1, Optional.of("rack-2"))
+                mkStreamState(1, 1, Optional.of("rack-1")),
+                mkStreamState(2, 1, Optional.of("rack-2"))
         );
         final ApplicationState applicationState = new TestApplicationState(
-            assignmentConfigs, kafkaStreamsStates, tasks);
+                assignmentConfigs, kafkaStreamsStates, tasks);
 
         final Map<ProcessId, KafkaStreamsAssignment> assignments = mkMap(
-            mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0),
-            mkAssignment(AssignedTask.Type.ACTIVE, 2, TASK_0_1)
+                mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0),
+                mkAssignment(AssignedTask.Type.ACTIVE, 2, TASK_0_1)
         );
 
         TaskAssignmentUtils.optimizeRackAwareActiveTasks(
-            RackAwareOptimizationParams.of(applicationState), assignments);
+                RackAwareOptimizationParams.of(applicationState), assignments);
         assertThat(assignments.size(), equalTo(2));
         assertThat(assignments.get(processId(1)).tasks().keySet(), equalTo(Set.of(TASK_0_1)));
         assertThat(assignments.get(processId(2)).tasks().keySet(), equalTo(Set.of(TASK_0_0)));
 
         // Repeated to make sure nothing gets shifted around after the first round of optimization.
         TaskAssignmentUtils.optimizeRackAwareActiveTasks(
-            RackAwareOptimizationParams.of(applicationState), assignments);
+                RackAwareOptimizationParams.of(applicationState), assignments);
         assertThat(assignments.size(), equalTo(2));
         assertThat(assignments.get(processId(1)).tasks().keySet(), equalTo(Set.of(TASK_0_1)));
         assertThat(assignments.get(processId(2)).tasks().keySet(), equalTo(Set.of(TASK_0_0)));
@@ -105,28 +105,28 @@ public class TaskAssignmentUtilsTest {
     @Timeout(value = 30)
     @ParameterizedTest
     @ValueSource(strings = {
-        StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC,
-        StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY,
+            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC,
+            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY,
     })
     public void shouldOptimizeStandbyTasksBasic(final String strategy) {
         final AssignmentConfigs assignmentConfigs = defaultAssignmentConfigs(
-            strategy, 100, 1, 1, Collections.emptyList());
+                strategy, 100, 1, 1, Collections.emptyList());
         final Map<TaskId, TaskInfo> tasks = mkMap(
-            mkTaskInfo(TASK_0_0, true, Set.of("rack-2")),
-            mkTaskInfo(TASK_0_1, true, Set.of("rack-3"))
+                mkTaskInfo(TASK_0_0, true, Set.of("rack-2")),
+                mkTaskInfo(TASK_0_1, true, Set.of("rack-3"))
         );
         final Map<ProcessId, KafkaStreamsState> kafkaStreamsStates = mkMap(
-            mkStreamState(1, 2, Optional.of("rack-1")),
-            mkStreamState(2, 2, Optional.of("rack-2")),
-            mkStreamState(3, 2, Optional.of("rack-3"))
+                mkStreamState(1, 2, Optional.of("rack-1")),
+                mkStreamState(2, 2, Optional.of("rack-2")),
+                mkStreamState(3, 2, Optional.of("rack-3"))
         );
         final ApplicationState applicationState = new TestApplicationState(
-            assignmentConfigs, kafkaStreamsStates, tasks);
+                assignmentConfigs, kafkaStreamsStates, tasks);
 
         final Map<ProcessId, KafkaStreamsAssignment> assignments = mkMap(
-            mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0, TASK_0_1),
-            mkAssignment(AssignedTask.Type.STANDBY, 2, TASK_0_1),
-            mkAssignment(AssignedTask.Type.STANDBY, 3, TASK_0_0)
+                mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0, TASK_0_1),
+                mkAssignment(AssignedTask.Type.STANDBY, 2, TASK_0_1),
+                mkAssignment(AssignedTask.Type.STANDBY, 3, TASK_0_0)
         );
 
         TaskAssignmentUtils.optimizeRackAwareStandbyTasks(RackAwareOptimizationParams.of(applicationState), assignments);
@@ -140,29 +140,29 @@ public class TaskAssignmentUtilsTest {
     @Test
     public void shouldAssignStandbyTasksWithClientTags() {
         final AssignmentConfigs assignmentConfigs = defaultAssignmentConfigs(
-            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, 100, 1, 2, Collections.singletonList("az"));
+                StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, 100, 1, 2, Collections.singletonList("az"));
         final Map<TaskId, TaskInfo> tasks = mkMap(
-            mkTaskInfo(TASK_0_0, true)
+                mkTaskInfo(TASK_0_0, true)
         );
         final Map<ProcessId, KafkaStreamsState> kafkaStreamsStates = mkMap(
-            mkStreamState(1, 2, Optional.empty(), Set.of(), Set.of(), mkMap(
-                mkEntry("az", "1")
-            )),
-            mkStreamState(2, 2, Optional.empty(), Set.of(), Set.of(), mkMap(
-                mkEntry("az", "1")
-            )),
-            mkStreamState(3, 2, Optional.empty(), Set.of(), Set.of(), mkMap(
-                mkEntry("az", "2")
-            )),
-            mkStreamState(4, 2, Optional.empty(), Set.of(), Set.of(), mkMap(
-                mkEntry("az", "3")
-            ))
+                mkStreamState(1, 2, Optional.empty(), Set.of(), Set.of(), mkMap(
+                        mkEntry("az", "1")
+                )),
+                mkStreamState(2, 2, Optional.empty(), Set.of(), Set.of(), mkMap(
+                        mkEntry("az", "1")
+                )),
+                mkStreamState(3, 2, Optional.empty(), Set.of(), Set.of(), mkMap(
+                        mkEntry("az", "2")
+                )),
+                mkStreamState(4, 2, Optional.empty(), Set.of(), Set.of(), mkMap(
+                        mkEntry("az", "3")
+                ))
         );
         final ApplicationState applicationState = new TestApplicationState(
-            assignmentConfigs, kafkaStreamsStates, tasks);
+                assignmentConfigs, kafkaStreamsStates, tasks);
 
         final Map<ProcessId, KafkaStreamsAssignment> assignments = mkMap(
-            mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0)
+                mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0)
         );
 
         TaskAssignmentUtils.defaultStandbyTaskAssignment(applicationState, assignments);
@@ -179,28 +179,28 @@ public class TaskAssignmentUtilsTest {
     @Test
     public void shouldAssignStandbyTasksByClientLoad() {
         final AssignmentConfigs assignmentConfigs = defaultAssignmentConfigs(
-            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, 100, 1, 3, Collections.emptyList());
+                StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, 100, 1, 3, Collections.emptyList());
         final Map<TaskId, TaskInfo> tasks = mkMap(
-            mkTaskInfo(TASK_0_0, true),
-            mkTaskInfo(TASK_0_1, false),
-            mkTaskInfo(TASK_0_2, false),
-            mkTaskInfo(TASK_0_3, false),
-            mkTaskInfo(TASK_0_4, false),
-            mkTaskInfo(TASK_0_5, false)
+                mkTaskInfo(TASK_0_0, true),
+                mkTaskInfo(TASK_0_1, false),
+                mkTaskInfo(TASK_0_2, false),
+                mkTaskInfo(TASK_0_3, false),
+                mkTaskInfo(TASK_0_4, false),
+                mkTaskInfo(TASK_0_5, false)
         );
         final Map<ProcessId, KafkaStreamsState> kafkaStreamsStates = mkMap(
-            mkStreamState(1, 5, Optional.empty(), Set.of(), Set.of()),
-            mkStreamState(2, 5, Optional.empty(), Set.of(), Set.of()),
-            mkStreamState(3, 5, Optional.empty(), Set.of(), Set.of()),
-            mkStreamState(4, 5, Optional.empty(), Set.of(), Set.of()),
-            mkStreamState(5, 5, Optional.empty(), Set.of(), Set.of())
+                mkStreamState(1, 5, Optional.empty(), Set.of(), Set.of()),
+                mkStreamState(2, 5, Optional.empty(), Set.of(), Set.of()),
+                mkStreamState(3, 5, Optional.empty(), Set.of(), Set.of()),
+                mkStreamState(4, 5, Optional.empty(), Set.of(), Set.of()),
+                mkStreamState(5, 5, Optional.empty(), Set.of(), Set.of())
         );
         final ApplicationState applicationState = new TestApplicationState(
-            assignmentConfigs, kafkaStreamsStates, tasks);
+                assignmentConfigs, kafkaStreamsStates, tasks);
 
         final Map<ProcessId, KafkaStreamsAssignment> assignments = mkMap(
-            mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0, TASK_0_1, TASK_0_2),
-            mkAssignment(AssignedTask.Type.ACTIVE, 2, TASK_0_3, TASK_0_4, TASK_0_5)
+                mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0, TASK_0_1, TASK_0_2),
+                mkAssignment(AssignedTask.Type.ACTIVE, 2, TASK_0_3, TASK_0_4, TASK_0_5)
         );
 
         TaskAssignmentUtils.defaultStandbyTaskAssignment(applicationState, assignments);
@@ -214,50 +214,50 @@ public class TaskAssignmentUtilsTest {
     @Timeout(value = 30)
     @ParameterizedTest
     @ValueSource(strings = {
-        StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC,
-        StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY,
+            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC,
+            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY,
     })
     public void shouldNotViolateClientTagsAssignmentDuringStandbyOptimization(final String strategy) {
         final AssignmentConfigs assignmentConfigs = defaultAssignmentConfigs(
-            strategy, 100, 1, 2, Collections.singletonList("az"));
+                strategy, 100, 1, 2, Collections.singletonList("az"));
         final Map<TaskId, TaskInfo> tasks = mkMap(
-            mkTaskInfo(TASK_0_0, true, Set.of("r1")),
-            mkTaskInfo(TASK_0_1, true, Set.of("r1"))
+                mkTaskInfo(TASK_0_0, true, Set.of("r1")),
+                mkTaskInfo(TASK_0_1, true, Set.of("r1"))
         );
         final Map<ProcessId, KafkaStreamsState> kafkaStreamsStates = mkMap(
-            mkStreamState(1, 2, Optional.of("r1"), Set.of(), Set.of(), mkMap(
-                mkEntry("az", "1")
-            )),
-            mkStreamState(2, 2, Optional.of("r1"), Set.of(), Set.of(), mkMap(
-                mkEntry("az", "2")
-            )),
-            mkStreamState(3, 2, Optional.of("r1"), Set.of(), Set.of(), mkMap(
-                mkEntry("az", "3")
-            )),
-            mkStreamState(4, 2, Optional.of("r1"), Set.of(), Set.of(), mkMap(
-                mkEntry("az", "2")
-            ))
+                mkStreamState(1, 2, Optional.of("r1"), Set.of(), Set.of(), mkMap(
+                        mkEntry("az", "1")
+                )),
+                mkStreamState(2, 2, Optional.of("r1"), Set.of(), Set.of(), mkMap(
+                        mkEntry("az", "2")
+                )),
+                mkStreamState(3, 2, Optional.of("r1"), Set.of(), Set.of(), mkMap(
+                        mkEntry("az", "3")
+                )),
+                mkStreamState(4, 2, Optional.of("r1"), Set.of(), Set.of(), mkMap(
+                        mkEntry("az", "2")
+                ))
         );
         final ApplicationState applicationState = new TestApplicationState(
-            assignmentConfigs, kafkaStreamsStates, tasks);
+                assignmentConfigs, kafkaStreamsStates, tasks);
 
         final Map<ProcessId, KafkaStreamsAssignment> assignments = mkMap(
-            mkAssignment(
-                1,
-                new AssignedTask(TASK_0_0, AssignedTask.Type.ACTIVE),
-                new AssignedTask(TASK_0_1, AssignedTask.Type.STANDBY)
-            ),
-            mkAssignment(
-                2,
-                new AssignedTask(TASK_0_0, AssignedTask.Type.STANDBY),
-                new AssignedTask(TASK_0_1, AssignedTask.Type.ACTIVE)
-            ),
-            mkAssignment(
-                3,
-                new AssignedTask(TASK_0_0, AssignedTask.Type.STANDBY),
-                new AssignedTask(TASK_0_1, AssignedTask.Type.STANDBY)
-            ),
-            mkAssignment(4)
+                mkAssignment(
+                        1,
+                        new AssignedTask(TASK_0_0, AssignedTask.Type.ACTIVE),
+                        new AssignedTask(TASK_0_1, AssignedTask.Type.STANDBY)
+                ),
+                mkAssignment(
+                        2,
+                        new AssignedTask(TASK_0_0, AssignedTask.Type.STANDBY),
+                        new AssignedTask(TASK_0_1, AssignedTask.Type.ACTIVE)
+                ),
+                mkAssignment(
+                        3,
+                        new AssignedTask(TASK_0_0, AssignedTask.Type.STANDBY),
+                        new AssignedTask(TASK_0_1, AssignedTask.Type.STANDBY)
+                ),
+                mkAssignment(4)
         );
 
         TaskAssignmentUtils.optimizeRackAwareStandbyTasks(RackAwareOptimizationParams.of(applicationState), assignments);
@@ -271,35 +271,35 @@ public class TaskAssignmentUtilsTest {
     @Timeout(value = 30)
     @ParameterizedTest
     @ValueSource(strings = {
-        StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC,
-        StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY,
+            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC,
+            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY,
     })
     public void shouldOptimizeStandbyTasksWithMultipleRacks(final String strategy) {
         final AssignmentConfigs assignmentConfigs = defaultAssignmentConfigs(
-            strategy, 100, 1, 1, Collections.emptyList());
+                strategy, 100, 1, 1, Collections.emptyList());
         final Map<TaskId, TaskInfo> tasks = mkMap(
-            mkTaskInfo(TASK_0_0, true, Set.of("rack-1", "rack-2")),
-            mkTaskInfo(TASK_0_1, true, Set.of("rack-2", "rack-3")),
-            mkTaskInfo(TASK_0_2, true, Set.of("rack-3", "rack-4"))
+                mkTaskInfo(TASK_0_0, true, Set.of("rack-1", "rack-2")),
+                mkTaskInfo(TASK_0_1, true, Set.of("rack-2", "rack-3")),
+                mkTaskInfo(TASK_0_2, true, Set.of("rack-3", "rack-4"))
         );
         final Map<ProcessId, KafkaStreamsState> kafkaStreamsStates = mkMap(
-            mkStreamState(1, 2, Optional.of("rack-1")),
-            mkStreamState(2, 2, Optional.of("rack-2")),
-            mkStreamState(3, 2, Optional.of("rack-3"))
+                mkStreamState(1, 2, Optional.of("rack-1")),
+                mkStreamState(2, 2, Optional.of("rack-2")),
+                mkStreamState(3, 2, Optional.of("rack-3"))
         );
         final ApplicationState applicationState = new TestApplicationState(
-            assignmentConfigs, kafkaStreamsStates, tasks);
+                assignmentConfigs, kafkaStreamsStates, tasks);
 
         final Map<ProcessId, KafkaStreamsAssignment> assignments = mkMap(
-            mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0),
-            mkAssignment(AssignedTask.Type.ACTIVE, 2, TASK_0_1),
-            mkAssignment(AssignedTask.Type.ACTIVE, 3, TASK_0_2)
+                mkAssignment(AssignedTask.Type.ACTIVE, 1, TASK_0_0),
+                mkAssignment(AssignedTask.Type.ACTIVE, 2, TASK_0_1),
+                mkAssignment(AssignedTask.Type.ACTIVE, 3, TASK_0_2)
         );
 
         TaskAssignmentUtils.optimizeRackAwareActiveTasks(
-            RackAwareOptimizationParams.of(applicationState)
-                .forTasks(new TreeSet<>(Set.of(TASK_0_0, TASK_0_1, TASK_0_2))),
-            assignments
+                RackAwareOptimizationParams.of(applicationState)
+                        .forTasks(new TreeSet<>(Set.of(TASK_0_0, TASK_0_1, TASK_0_2))),
+                assignments
         );
         assertThat(assignments.size(), equalTo(3));
         assertThat(assignments.get(processId(1)).tasks().keySet(), equalTo(Set.of(TASK_0_0)));
@@ -311,21 +311,21 @@ public class TaskAssignmentUtilsTest {
     @Test
     public void shouldCorrectlyReturnIdentityAssignment() {
         final AssignmentConfigs assignmentConfigs = defaultAssignmentConfigs(
-            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, 100, 1, 1, Collections.emptyList());
+                StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, 100, 1, 1, Collections.emptyList());
         final Map<TaskId, TaskInfo> tasks = mkMap(
-            mkTaskInfo(TASK_0_0, true),
-            mkTaskInfo(TASK_0_1, true),
-            mkTaskInfo(TASK_0_2, true)
+                mkTaskInfo(TASK_0_0, true),
+                mkTaskInfo(TASK_0_1, true),
+                mkTaskInfo(TASK_0_2, true)
         );
         final Map<ProcessId, KafkaStreamsState> kafkaStreamsStates = mkMap(
-            mkStreamState(1, 5, Optional.empty(), Set.of(TASK_0_0, TASK_0_1, TASK_0_2), Set.of()),
-            mkStreamState(2, 5, Optional.empty(), Set.of(), Set.of(TASK_0_0, TASK_0_1, TASK_0_2)),
-            mkStreamState(3, 5, Optional.empty(), Set.of(), Set.of()),
-            mkStreamState(4, 5, Optional.empty(), Set.of(), Set.of()),
-            mkStreamState(5, 5, Optional.empty(), Set.of(), Set.of())
+                mkStreamState(1, 5, Optional.empty(), Set.of(TASK_0_0, TASK_0_1, TASK_0_2), Set.of()),
+                mkStreamState(2, 5, Optional.empty(), Set.of(), Set.of(TASK_0_0, TASK_0_1, TASK_0_2)),
+                mkStreamState(3, 5, Optional.empty(), Set.of(), Set.of()),
+                mkStreamState(4, 5, Optional.empty(), Set.of(), Set.of()),
+                mkStreamState(5, 5, Optional.empty(), Set.of(), Set.of())
         );
         final ApplicationState applicationState = new TestApplicationState(
-            assignmentConfigs, kafkaStreamsStates, tasks);
+                assignmentConfigs, kafkaStreamsStates, tasks);
 
 
         final Map<ProcessId, KafkaStreamsAssignment> assignments = TaskAssignmentUtils.identityAssignment(applicationState);
@@ -341,91 +341,91 @@ public class TaskAssignmentUtilsTest {
     @Test
     public void testValidateTaskAssignment() {
         final AssignmentConfigs assignmentConfigs = defaultAssignmentConfigs(
-            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, 100, 1, 1, Collections.emptyList());
+                StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, 100, 1, 1, Collections.emptyList());
         final Map<TaskId, TaskInfo> tasks = mkMap(
-            mkTaskInfo(TASK_1_1, false)
+                mkTaskInfo(TASK_1_1, false)
         );
         final Map<ProcessId, KafkaStreamsState> kafkaStreamsStates = mkMap(
-            mkStreamState(1, 5, Optional.empty()),
-            mkStreamState(2, 5, Optional.empty())
+                mkStreamState(1, 5, Optional.empty()),
+                mkStreamState(2, 5, Optional.empty())
         );
         final ApplicationState applicationState = new TestApplicationState(
-            assignmentConfigs, kafkaStreamsStates, tasks);
+                assignmentConfigs, kafkaStreamsStates, tasks);
 
         // ****
         final org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment noError = new org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment(
-            Set.of(
-                KafkaStreamsAssignment.of(processId(1), Set.of(
-                    new KafkaStreamsAssignment.AssignedTask(
-                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
-                    )
-                )),
-                KafkaStreamsAssignment.of(processId(2), Set.of())
-            )
+                Set.of(
+                        KafkaStreamsAssignment.of(processId(1), Set.of(
+                                new KafkaStreamsAssignment.AssignedTask(
+                                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
+                                )
+                        )),
+                        KafkaStreamsAssignment.of(processId(2), Set.of())
+                )
         );
         org.apache.kafka.streams.processor.assignment.TaskAssignor.AssignmentError error = TaskAssignmentUtils.validateTaskAssignment(applicationState, noError);
         assertThat(error, equalTo(TaskAssignor.AssignmentError.NONE));
 
         // ****
         final org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment missingProcessId = new org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment(
-            Set.of(
-                KafkaStreamsAssignment.of(processId(1), Set.of(
-                    new KafkaStreamsAssignment.AssignedTask(
-                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
-                    )
-                ))
-            )
+                Set.of(
+                        KafkaStreamsAssignment.of(processId(1), Set.of(
+                                new KafkaStreamsAssignment.AssignedTask(
+                                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
+                                )
+                        ))
+                )
         );
         error = TaskAssignmentUtils.validateTaskAssignment(applicationState, missingProcessId);
         assertThat(error, equalTo(TaskAssignor.AssignmentError.MISSING_PROCESS_ID));
 
         // ****
         final org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment unknownProcessId = new org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment(
-            Set.of(
-                KafkaStreamsAssignment.of(processId(1), Set.of(
-                    new KafkaStreamsAssignment.AssignedTask(
-                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
-                    )
-                )),
-                KafkaStreamsAssignment.of(processId(2), Set.of()),
-                KafkaStreamsAssignment.of(ProcessId.randomProcessId(), Set.of())
-            )
+                Set.of(
+                        KafkaStreamsAssignment.of(processId(1), Set.of(
+                                new KafkaStreamsAssignment.AssignedTask(
+                                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
+                                )
+                        )),
+                        KafkaStreamsAssignment.of(processId(2), Set.of()),
+                        KafkaStreamsAssignment.of(ProcessId.randomProcessId(), Set.of())
+                )
         );
         error = TaskAssignmentUtils.validateTaskAssignment(applicationState, unknownProcessId);
         assertThat(error, equalTo(TaskAssignor.AssignmentError.UNKNOWN_PROCESS_ID));
 
         // ****
         final org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment unknownTaskId = new org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment(
-            Set.of(
-                KafkaStreamsAssignment.of(processId(1), Set.of(
-                    new KafkaStreamsAssignment.AssignedTask(
-                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
-                    )
-                )),
-                KafkaStreamsAssignment.of(processId(2), Set.of(
-                    new KafkaStreamsAssignment.AssignedTask(
-                        new TaskId(13, 13), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
-                    )
-                ))
-            )
+                Set.of(
+                        KafkaStreamsAssignment.of(processId(1), Set.of(
+                                new KafkaStreamsAssignment.AssignedTask(
+                                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
+                                )
+                        )),
+                        KafkaStreamsAssignment.of(processId(2), Set.of(
+                                new KafkaStreamsAssignment.AssignedTask(
+                                        new TaskId(13, 13), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
+                                )
+                        ))
+                )
         );
         error = TaskAssignmentUtils.validateTaskAssignment(applicationState, unknownTaskId);
         assertThat(error, equalTo(TaskAssignor.AssignmentError.UNKNOWN_TASK_ID));
 
         // ****
         final org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment activeTaskDuplicated = new org.apache.kafka.streams.processor.assignment.TaskAssignor.TaskAssignment(
-            Set.of(
-                KafkaStreamsAssignment.of(processId(1), Set.of(
-                    new KafkaStreamsAssignment.AssignedTask(
-                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
-                    )
-                )),
-                KafkaStreamsAssignment.of(processId(2), Set.of(
-                    new KafkaStreamsAssignment.AssignedTask(
-                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
-                    )
-                ))
-            )
+                Set.of(
+                        KafkaStreamsAssignment.of(processId(1), Set.of(
+                                new KafkaStreamsAssignment.AssignedTask(
+                                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
+                                )
+                        )),
+                        KafkaStreamsAssignment.of(processId(2), Set.of(
+                                new KafkaStreamsAssignment.AssignedTask(
+                                        new TaskId(1, 1), KafkaStreamsAssignment.AssignedTask.Type.ACTIVE
+                                )
+                        ))
+                )
         );
         error = TaskAssignmentUtils.validateTaskAssignment(applicationState, activeTaskDuplicated);
         assertThat(error, equalTo(TaskAssignor.AssignmentError.ACTIVE_TASK_ASSIGNED_MULTIPLE_TIMES));
@@ -483,15 +483,15 @@ public class TaskAssignmentUtilsTest {
                                                                         final Map<String, String> clientTags) {
         final ProcessId processId = processIdForInt(id);
         return mkEntry(processId, new DefaultKafkaStreamsState(
-            processId,
-            numProcessingThreads,
-            clientTags,
-            new TreeSet<>(previousActiveTasks),
-            new TreeSet<>(previousStandbyTasks),
-            new TreeMap<>(),
-            Optional.empty(),
-            Optional.empty(),
-            rackId
+                processId,
+                numProcessingThreads,
+                clientTags,
+                new TreeSet<>(previousActiveTasks),
+                new TreeSet<>(previousStandbyTasks),
+                new TreeMap<>(),
+                Optional.empty(),
+                Optional.empty(),
+                rackId
         ));
     }
 
@@ -507,11 +507,11 @@ public class TaskAssignmentUtilsTest {
                 .map(taskId -> new AssignedTask(taskId, taskType))
                 .collect(Collectors.toSet());
         return mkEntry(
-            processId,
-            KafkaStreamsAssignment.of(
                 processId,
-                assignedTasks
-            )
+                KafkaStreamsAssignment.of(
+                        processId,
+                        assignedTasks
+                )
         );
     }
 
@@ -519,11 +519,11 @@ public class TaskAssignmentUtilsTest {
                                                                             final AssignedTask... tasks) {
         final ProcessId processId = processId(client);
         return mkEntry(
-            processId,
-            KafkaStreamsAssignment.of(
                 processId,
-                Arrays.stream(tasks).collect(Collectors.toSet())
-            )
+                KafkaStreamsAssignment.of(
+                        processId,
+                        Arrays.stream(tasks).collect(Collectors.toSet())
+                )
         );
     }
 
@@ -534,30 +534,30 @@ public class TaskAssignmentUtilsTest {
     public static Map.Entry<TaskId, TaskInfo> mkTaskInfo(final TaskId taskId, final boolean isStateful, final Set<String> rackIds) {
         if (!isStateful) {
             return mkEntry(
-                taskId,
-                new DefaultTaskInfo(taskId, false, Set.of(), Set.of())
+                    taskId,
+                    new DefaultTaskInfo(taskId, false, Set.of(), Set.of())
             );
         }
 
         final Set<DefaultTaskTopicPartition> partitions = new HashSet<>();
         partitions.add(new DefaultTaskTopicPartition(
-            new TopicPartition(String.format("test-topic-%d", taskId.subtopology()), taskId.partition()),
-            true,
-            true,
-            () -> partitions.forEach(partition -> {
-                if (partition != null && rackIds != null) {
-                    partition.annotateWithRackIds(rackIds);
-                }
-            })
+                new TopicPartition(String.format("test-topic-%d", taskId.subtopology()), taskId.partition()),
+                true,
+                true,
+                () -> partitions.forEach(partition -> {
+                    if (partition != null && rackIds != null) {
+                        partition.annotateWithRackIds(rackIds);
+                    }
+                })
         ));
         return mkEntry(
-            taskId,
-            new DefaultTaskInfo(
                 taskId,
-                true,
-                Set.of(String.format("test-statestore-%d", taskId.subtopology())),
-                partitions.stream().map(p -> (TaskTopicPartition) p).collect(Collectors.toSet())
-            )
+                new DefaultTaskInfo(
+                        taskId,
+                        true,
+                        Set.of(String.format("test-statestore-%d", taskId.subtopology())),
+                        partitions.stream().map(p -> (TaskTopicPartition) p).collect(Collectors.toSet())
+                )
         );
     }
 
@@ -567,14 +567,14 @@ public class TaskAssignmentUtilsTest {
                                                       final int numStandbys,
                                                       final List<String> rackAwareAssignmentTags) {
         return new AssignmentConfigs(
-            0L,
-            1,
-            numStandbys,
-            60_000L,
-            rackAwareAssignmentTags,
-            OptionalInt.of(trafficCost),
-            OptionalInt.of(nonOverlapCost),
-            rackAwareStrategy
+                0L,
+                1,
+                numStandbys,
+                60_000L,
+                rackAwareAssignmentTags,
+                OptionalInt.of(trafficCost),
+                OptionalInt.of(nonOverlapCost),
+                rackAwareStrategy
         );
     }
 

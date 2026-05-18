@@ -187,7 +187,7 @@ public class TestableSourceConnector extends SampleSourceConnector {
             batchSize = Integer.parseInt(props.getOrDefault(MESSAGES_PER_POLL_CONFIG, "1"));
             taskHandle = RuntimeHandles.get().connectorHandle(connectorName).taskHandle(taskId);
             Map<String, Object> offset = Optional.ofNullable(
-                    context.offsetStorageReader().offset(sourcePartition(taskId)))
+                            context.offsetStorageReader().offset(sourcePartition(taskId)))
                     .orElse(Map.of());
             startingSeqno = Optional.ofNullable((Long) offset.get("saved")).orElse(0L);
             seqno = startingSeqno;

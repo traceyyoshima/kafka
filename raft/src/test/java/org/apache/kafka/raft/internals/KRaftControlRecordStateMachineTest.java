@@ -49,20 +49,20 @@ final class KRaftControlRecordStateMachineTest {
     }
 
     private static KRaftControlRecordStateMachine buildPartitionListener(
-        MockLog log,
-        VoterSet staticVoterSet,
-        KafkaRaftMetrics raftMetrics,
-        ExternalKRaftMetrics externalMetrics
+            MockLog log,
+            VoterSet staticVoterSet,
+            KafkaRaftMetrics raftMetrics,
+            ExternalKRaftMetrics externalMetrics
     ) {
         return new KRaftControlRecordStateMachine(
-            staticVoterSet,
-            log,
-            STRING_SERDE,
-            BufferSupplier.NO_CACHING,
-            1024,
-            new LogContext(),
-            raftMetrics,
-            externalMetrics
+                staticVoterSet,
+                log,
+                STRING_SERDE,
+                BufferSupplier.NO_CACHING,
+                1024,
+                new LogContext(),
+                raftMetrics,
+                externalMetrics
         );
     }
 
@@ -122,27 +122,27 @@ final class KRaftControlRecordStateMachineTest {
         // Append the kraft.version control record
         KRaftVersion kraftVersion = KRaftVersion.KRAFT_VERSION_1;
         log.appendAsLeader(
-            MemoryRecords.withKRaftVersionRecord(
-                log.endOffset().offset(),
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                new KRaftVersionRecord().setKRaftVersion(kraftVersion.featureLevel())
-            ),
-            epoch
+                MemoryRecords.withKRaftVersionRecord(
+                        log.endOffset().offset(),
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        new KRaftVersionRecord().setKRaftVersion(kraftVersion.featureLevel())
+                ),
+                epoch
         );
 
         // Append the voter set control record
         VoterSet voterSet = VoterSetTest.voterSet(VoterSetTest.voterMap(IntStream.of(4, 5, 6), true));
         log.appendAsLeader(
-            MemoryRecords.withVotersRecord(
-                log.endOffset().offset(),
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                voterSet.toVotersRecord((short) 0)
-            ),
-            epoch
+                MemoryRecords.withVotersRecord(
+                        log.endOffset().offset(),
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        voterSet.toVotersRecord((short) 0)
+                ),
+                epoch
         );
 
         // Read the entire partition
@@ -171,7 +171,7 @@ final class KRaftControlRecordStateMachineTest {
 
         // Create a snapshot that doesn't have any kraft.version or voter set control records
         RecordsSnapshotWriter.Builder builder = new RecordsSnapshotWriter.Builder()
-            .setRawSnapshotWriter(log.createNewSnapshotUnchecked(new OffsetAndEpoch(10, epoch)).get());
+                .setRawSnapshotWriter(log.createNewSnapshotUnchecked(new OffsetAndEpoch(10, epoch)).get());
         try (RecordsSnapshotWriter<?> writer = builder.build(STRING_SERDE)) {
             writer.freeze();
         }
@@ -180,27 +180,27 @@ final class KRaftControlRecordStateMachineTest {
         // Append the kraft.version control record
         KRaftVersion kraftVersion = KRaftVersion.KRAFT_VERSION_1;
         log.appendAsLeader(
-            MemoryRecords.withKRaftVersionRecord(
-                log.endOffset().offset(),
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                new KRaftVersionRecord().setKRaftVersion(kraftVersion.featureLevel())
-            ),
-            epoch
+                MemoryRecords.withKRaftVersionRecord(
+                        log.endOffset().offset(),
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        new KRaftVersionRecord().setKRaftVersion(kraftVersion.featureLevel())
+                ),
+                epoch
         );
 
         // Append the voter set control record
         VoterSet voterSet = VoterSetTest.voterSet(VoterSetTest.voterMap(IntStream.of(4, 5, 6), true));
         log.appendAsLeader(
-            MemoryRecords.withVotersRecord(
-                log.endOffset().offset(),
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                voterSet.toVotersRecord((short) 0)
-            ),
-            epoch
+                MemoryRecords.withVotersRecord(
+                        log.endOffset().offset(),
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        voterSet.toVotersRecord((short) 0)
+                ),
+                epoch
         );
 
         // Read the entire partition
@@ -231,9 +231,9 @@ final class KRaftControlRecordStateMachineTest {
         VoterSet voterSet = VoterSetTest.voterSet(VoterSetTest.voterMap(IntStream.of(4, 5, 6), true));
 
         RecordsSnapshotWriter.Builder builder = new RecordsSnapshotWriter.Builder()
-            .setRawSnapshotWriter(log.createNewSnapshotUnchecked(new OffsetAndEpoch(10, epoch)).get())
-            .setKraftVersion(kraftVersion)
-            .setVoterSet(Optional.of(voterSet));
+                .setRawSnapshotWriter(log.createNewSnapshotUnchecked(new OffsetAndEpoch(10, epoch)).get())
+                .setKraftVersion(kraftVersion)
+                .setVoterSet(Optional.of(voterSet));
         try (RecordsSnapshotWriter<?> writer = builder.build(STRING_SERDE)) {
             writer.freeze();
         }
@@ -269,9 +269,9 @@ final class KRaftControlRecordStateMachineTest {
 
         OffsetAndEpoch snapshotId = new OffsetAndEpoch(10, epoch);
         RecordsSnapshotWriter.Builder builder = new RecordsSnapshotWriter.Builder()
-            .setRawSnapshotWriter(log.createNewSnapshotUnchecked(snapshotId).get())
-            .setKraftVersion(kraftVersion)
-            .setVoterSet(Optional.of(snapshotVoterSet));
+                .setRawSnapshotWriter(log.createNewSnapshotUnchecked(snapshotId).get())
+                .setKraftVersion(kraftVersion)
+                .setVoterSet(Optional.of(snapshotVoterSet));
         try (RecordsSnapshotWriter<?> writer = builder.build(STRING_SERDE)) {
             writer.freeze();
         }
@@ -280,14 +280,14 @@ final class KRaftControlRecordStateMachineTest {
         // Append the voter set control record
         VoterSet voterSet = snapshotVoterSet.addVoter(VoterSetTest.voterNode(7, true)).get();
         log.appendAsLeader(
-            MemoryRecords.withVotersRecord(
-                log.endOffset().offset(),
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                voterSet.toVotersRecord((short) 0)
-            ),
-            epoch
+                MemoryRecords.withVotersRecord(
+                        log.endOffset().offset(),
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        voterSet.toVotersRecord((short) 0)
+                ),
+                epoch
         );
 
         // Read the entire partition
@@ -320,42 +320,42 @@ final class KRaftControlRecordStateMachineTest {
         // Append the kraft.version control record
         KRaftVersion kraftVersion = KRaftVersion.KRAFT_VERSION_1;
         log.appendAsLeader(
-            MemoryRecords.withKRaftVersionRecord(
-                log.endOffset().offset(),
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                new KRaftVersionRecord().setKRaftVersion(kraftVersion.featureLevel())
-            ),
-            epoch
+                MemoryRecords.withKRaftVersionRecord(
+                        log.endOffset().offset(),
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        new KRaftVersionRecord().setKRaftVersion(kraftVersion.featureLevel())
+                ),
+                epoch
         );
 
         // Append the voter set control record
         long firstVoterSetOffset = log.endOffset().offset();
         VoterSet firstVoterSet = VoterSetTest.voterSet(VoterSetTest.voterMap(IntStream.of(4, 5, 6), true));
         log.appendAsLeader(
-            MemoryRecords.withVotersRecord(
-                firstVoterSetOffset,
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                firstVoterSet.toVotersRecord((short) 0)
-            ),
-            epoch
+                MemoryRecords.withVotersRecord(
+                        firstVoterSetOffset,
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        firstVoterSet.toVotersRecord((short) 0)
+                ),
+                epoch
         );
 
         // Append another voter set control record
         long voterSetOffset = log.endOffset().offset();
         VoterSet voterSet = firstVoterSet.addVoter(VoterSetTest.voterNode(7, true)).get();
         log.appendAsLeader(
-            MemoryRecords.withVotersRecord(
-                voterSetOffset,
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                voterSet.toVotersRecord((short) 0)
-            ),
-            epoch
+                MemoryRecords.withVotersRecord(
+                        voterSetOffset,
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        voterSet.toVotersRecord((short) 0)
+                ),
+                epoch
         );
 
         // Read the entire partition
@@ -399,42 +399,42 @@ final class KRaftControlRecordStateMachineTest {
         long kraftVersionOffset = log.endOffset().offset();
         KRaftVersion kraftVersion = KRaftVersion.KRAFT_VERSION_1;
         log.appendAsLeader(
-            MemoryRecords.withKRaftVersionRecord(
-                kraftVersionOffset,
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                new KRaftVersionRecord().setKRaftVersion(kraftVersion.featureLevel())
-            ),
-            epoch
+                MemoryRecords.withKRaftVersionRecord(
+                        kraftVersionOffset,
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        new KRaftVersionRecord().setKRaftVersion(kraftVersion.featureLevel())
+                ),
+                epoch
         );
 
         // Append the voter set control record
         long firstVoterSetOffset = log.endOffset().offset();
         VoterSet firstVoterSet = VoterSetTest.voterSet(VoterSetTest.voterMap(IntStream.of(4, 5, 6), true));
         log.appendAsLeader(
-            MemoryRecords.withVotersRecord(
-                firstVoterSetOffset,
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                firstVoterSet.toVotersRecord((short) 0)
-            ),
-            epoch
+                MemoryRecords.withVotersRecord(
+                        firstVoterSetOffset,
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        firstVoterSet.toVotersRecord((short) 0)
+                ),
+                epoch
         );
 
         // Append another voter set control record
         long voterSetOffset = log.endOffset().offset();
         VoterSet voterSet = firstVoterSet.addVoter(VoterSetTest.voterNode(7, true)).get();
         log.appendAsLeader(
-            MemoryRecords.withVotersRecord(
-                voterSetOffset,
-                0,
-                epoch,
-                bufferSupplier.get(300),
-                voterSet.toVotersRecord((short) 0)
-            ),
-            epoch
+                MemoryRecords.withVotersRecord(
+                        voterSetOffset,
+                        0,
+                        epoch,
+                        bufferSupplier.get(300),
+                        voterSet.toVotersRecord((short) 0)
+                ),
+                epoch
         );
 
         // Read the entire partition

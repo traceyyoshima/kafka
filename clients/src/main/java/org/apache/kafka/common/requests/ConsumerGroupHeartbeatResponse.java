@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 /**
  * Possible error codes.
- *
+ * <p>
  * - {@link Errors#GROUP_AUTHORIZATION_FAILED}
  * - {@link Errors#NOT_COORDINATOR}
  * - {@link Errors#COORDINATOR_NOT_AVAILABLE}
@@ -73,19 +73,19 @@ public class ConsumerGroupHeartbeatResponse extends AbstractResponse {
 
     public static ConsumerGroupHeartbeatResponse parse(Readable readable, short version) {
         return new ConsumerGroupHeartbeatResponse(new ConsumerGroupHeartbeatResponseData(
-            readable, version));
+                readable, version));
     }
 
     public static ConsumerGroupHeartbeatResponseData.Assignment createAssignment(
-        Map<Uuid, Map<Integer, Integer>> assignment
+            Map<Uuid, Map<Integer, Integer>> assignment
     ) {
         List<ConsumerGroupHeartbeatResponseData.TopicPartitions> topicPartitions = assignment.entrySet().stream()
-            .map(keyValue -> new ConsumerGroupHeartbeatResponseData.TopicPartitions()
-                .setTopicId(keyValue.getKey())
-                .setPartitions(new ArrayList<>(keyValue.getValue().keySet())))
-            .collect(Collectors.toList());
+                .map(keyValue -> new ConsumerGroupHeartbeatResponseData.TopicPartitions()
+                        .setTopicId(keyValue.getKey())
+                        .setPartitions(new ArrayList<>(keyValue.getValue().keySet())))
+                .collect(Collectors.toList());
 
         return new ConsumerGroupHeartbeatResponseData.Assignment()
-            .setTopicPartitions(topicPartitions);
+                .setTopicPartitions(topicPartitions);
     }
 }

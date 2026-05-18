@@ -88,19 +88,19 @@ public class RocksDBTimestampedStoreTest extends RocksDBStoreTest {
         final ColumnFamilyOptions columnFamilyOptions = new ColumnFamilyOptions();
 
         final List<ColumnFamilyDescriptor> columnFamilyDescriptors = asList(
-            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-            new ColumnFamilyDescriptor("keyValueWithTimestamp".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
-            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
+                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+                new ColumnFamilyDescriptor("keyValueWithTimestamp".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
+                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
         final List<ColumnFamilyHandle> columnFamilies = new ArrayList<>(columnFamilyDescriptors.size());
 
         RocksDB db = null;
         ColumnFamilyHandle noTimestampColumnFamily = null, withTimestampColumnFamily = null;
         try {
             db = RocksDB.open(
-                dbOptions,
-                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
-                columnFamilyDescriptors,
-                columnFamilies);
+                    dbOptions,
+                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
+                    columnFamilyDescriptors,
+                    columnFamilies);
 
             noTimestampColumnFamily = columnFamilies.get(0);
             withTimestampColumnFamily = columnFamilies.get(1);
@@ -265,7 +265,7 @@ public class RocksDBTimestampedStoreTest extends RocksDBStoreTest {
         }
 
         try (final KeyValueIterator<Bytes, byte[]> it =
-                rocksDBStore.range(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
+                     rocksDBStore.range(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
             {
                 final KeyValue<Bytes, byte[]> keyValue = it.next();
                 assertArrayEquals("key2".getBytes(), keyValue.key.get());
@@ -330,7 +330,7 @@ public class RocksDBTimestampedStoreTest extends RocksDBStoreTest {
         }
 
         try (final KeyValueIterator<Bytes, byte[]> it =
-                 rocksDBStore.reverseRange(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
+                     rocksDBStore.reverseRange(new Bytes("key2".getBytes()), new Bytes("key5".getBytes()))) {
             {
                 final KeyValue<Bytes, byte[]> keyValue = it.next();
                 assertArrayEquals("key5".getBytes(), keyValue.key.get());
@@ -372,9 +372,9 @@ public class RocksDBTimestampedStoreTest extends RocksDBStoreTest {
         final ColumnFamilyOptions columnFamilyOptions = new ColumnFamilyOptions();
 
         final List<ColumnFamilyDescriptor> columnFamilyDescriptors = asList(
-            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-            new ColumnFamilyDescriptor("keyValueWithTimestamp".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
-            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
+                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+                new ColumnFamilyDescriptor("keyValueWithTimestamp".getBytes(StandardCharsets.UTF_8), columnFamilyOptions),
+                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, columnFamilyOptions));
         final List<ColumnFamilyHandle> columnFamilies = new ArrayList<>(columnFamilyDescriptors.size());
 
         RocksDB db = null;
@@ -382,10 +382,10 @@ public class RocksDBTimestampedStoreTest extends RocksDBStoreTest {
         boolean errorOccurred = false;
         try {
             db = RocksDB.open(
-                dbOptions,
-                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
-                columnFamilyDescriptors,
-                columnFamilies);
+                    dbOptions,
+                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
+                    columnFamilyDescriptors,
+                    columnFamilies);
 
             noTimestampColumnFamily = columnFamilies.get(0);
             withTimestampColumnFamily = columnFamilies.get(1);
@@ -449,10 +449,10 @@ public class RocksDBTimestampedStoreTest extends RocksDBStoreTest {
         noTimestampColumnFamily = null;
         try {
             db = RocksDB.open(
-                dbOptions,
-                new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
-                columnFamilyDescriptors,
-                columnFamilies);
+                    dbOptions,
+                    new File(new File(context.stateDir(), "rocksdb"), DB_NAME).getAbsolutePath(),
+                    columnFamilyDescriptors,
+                    columnFamilies);
 
             noTimestampColumnFamily = columnFamilies.get(0);
             db.delete(noTimestampColumnFamily, "key7".getBytes());
@@ -486,14 +486,14 @@ public class RocksDBTimestampedStoreTest extends RocksDBStoreTest {
         final RocksDBStore kvStore = new RocksDBStore(DB_NAME, METRICS_SCOPE);
         try {
             final ProcessorStateException exception = assertThrows(
-                ProcessorStateException.class,
-                () -> kvStore.init(context, kvStore)
+                    ProcessorStateException.class,
+                    () -> kvStore.init(context, kvStore)
             );
 
             assertThat(exception.getMessage(), is(
-                "Store " + DB_NAME + " is a timestamped key-value store and cannot be opened as a regular key-value store. " +
-                "Downgrade from timestamped to regular store is not supported directly. " +
-                "To downgrade, you can delete the local state in the state directory, and rebuild the store as regular key-value store from the changelog."));
+                    "Store " + DB_NAME + " is a timestamped key-value store and cannot be opened as a regular key-value store. " +
+                            "Downgrade from timestamped to regular store is not supported directly. " +
+                            "To downgrade, you can delete the local state in the state directory, and rebuild the store as regular key-value store from the changelog."));
         } finally {
             kvStore.close();
         }

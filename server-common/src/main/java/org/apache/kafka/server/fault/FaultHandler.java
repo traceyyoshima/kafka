@@ -25,9 +25,8 @@ public interface FaultHandler {
     /**
      * Handle a fault.
      *
-     * @param failureMessage        The failure message to log.
-     *
-     * @return                      The fault exception.
+     * @param failureMessage The failure message to log.
+     * @return The fault exception.
      */
     default RuntimeException handleFault(String failureMessage) {
         return handleFault(failureMessage, null);
@@ -36,10 +35,9 @@ public interface FaultHandler {
     /**
      * Handle a fault.
      *
-     * @param failureMessage        The failure message to log.
-     * @param cause                 The exception that caused the problem, or null.
-     *
-     * @return                      The fault exception.
+     * @param failureMessage The failure message to log.
+     * @param cause          The exception that caused the problem, or null.
+     * @return The fault exception.
      */
     RuntimeException handleFault(String failureMessage, Throwable cause);
 }

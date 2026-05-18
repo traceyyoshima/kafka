@@ -84,7 +84,7 @@ public abstract class AbstractApiMessageSerde implements RecordSerde<ApiMessageA
 
         if (frameVersion == 0) {
             throw new MetadataParseException("Could not deserialize metadata record with frame version 0. " +
-                "Note that upgrades from the preview release of KRaft in 2.8 to newer versions are not supported.");
+                    "Note that upgrades from the preview release of KRaft in 2.8 to newer versions are not supported.");
         } else if (frameVersion != DEFAULT_FRAME_VERSION) {
             throw new MetadataParseException("Could not deserialize metadata record due to unknown frame version "
                     + frameVersion + "(only frame version " + DEFAULT_FRAME_VERSION + " is supported)");

@@ -62,11 +62,11 @@ public class SslPrincipalMapperTest {
     @Test
     public void testSslPrincipalMapper() throws Exception {
         String rules = String.join(", ",
-            "RULE:^CN=(.*?),OU=ServiceUsers.*$/$1/L",
-            "RULE:^CN=(.*?),OU=(.*?),O=(.*?),L=(.*?),ST=(.*?),C=(.*?)$/$1@$2/L",
-            "RULE:^cn=(.*?),ou=(.*?),dc=(.*?),dc=(.*?)$/$1@$2/U",
-            "RULE:^.*[Cc][Nn]=([a-zA-Z0-9.]*).*$/$1/U",
-            "DEFAULT"
+                "RULE:^CN=(.*?),OU=ServiceUsers.*$/$1/L",
+                "RULE:^CN=(.*?),OU=(.*?),O=(.*?),L=(.*?),ST=(.*?),C=(.*?)$/$1@$2/L",
+                "RULE:^cn=(.*?),ou=(.*?),dc=(.*?),dc=(.*?)$/$1@$2/U",
+                "RULE:^.*[Cc][Nn]=([a-zA-Z0-9.]*).*$/$1/U",
+                "DEFAULT"
         );
 
         SslPrincipalMapper mapper = SslPrincipalMapper.fromRules(rules);
@@ -109,8 +109,8 @@ public class SslPrincipalMapperTest {
 
         // rules rule
         testRulesSplitting(
-            "[RULE:,RULE:,/,RULE:,\\//U, RULE:,/RULE:,, RULE:,RULE:,/L,RULE:,/L, RULE:, DEFAULT, /DEFAULT, DEFAULT]",
-            "RULE:,RULE:,/,RULE:,\\//U,RULE:,/RULE:,/,RULE:,RULE:,/L,RULE:,/L,RULE:, DEFAULT, /DEFAULT/,DEFAULT"
+                "[RULE:,RULE:,/,RULE:,\\//U, RULE:,/RULE:,, RULE:,RULE:,/L,RULE:,/L, RULE:, DEFAULT, /DEFAULT, DEFAULT]",
+                "RULE:,RULE:,/,RULE:,\\//U,RULE:,/RULE:,/,RULE:,RULE:,/L,RULE:,/L,RULE:, DEFAULT, /DEFAULT/,DEFAULT"
         );
     }
 

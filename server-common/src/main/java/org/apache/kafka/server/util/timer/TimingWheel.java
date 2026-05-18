@@ -108,11 +108,11 @@ public class TimingWheel {
     private volatile TimingWheel overflowWheel = null;
 
     TimingWheel(
-        long tickMs,
-        int wheelSize,
-        long startMs,
-        AtomicInteger taskCounter,
-        DelayQueue<TimerTaskList> queue
+            long tickMs,
+            int wheelSize,
+            long startMs,
+            AtomicInteger taskCounter,
+            DelayQueue<TimerTaskList> queue
     ) {
         this.tickMs = tickMs;
         this.wheelSize = wheelSize;
@@ -133,11 +133,11 @@ public class TimingWheel {
             synchronized (this) {
                 if (overflowWheel == null) {
                     overflowWheel = new TimingWheel(
-                        interval,
-                        wheelSize,
-                        currentTimeMs,
-                        taskCounter,
-                        queue
+                            interval,
+                            wheelSize,
+                            currentTimeMs,
+                            taskCounter,
+                            queue
                     );
                 }
             }

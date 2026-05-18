@@ -49,13 +49,13 @@ public class TasksTupleTest {
     @Test
     public void testReturnUnmodifiableTaskAssignments() {
         Map<String, Set<Integer>> activeTasks = mkTasksPerSubtopology(
-            mkTasks(SUBTOPOLOGY_1, 1, 2, 3)
+                mkTasks(SUBTOPOLOGY_1, 1, 2, 3)
         );
         Map<String, Set<Integer>> standbyTasks = mkTasksPerSubtopology(
-            mkTasks(SUBTOPOLOGY_2, 9, 8, 7)
+                mkTasks(SUBTOPOLOGY_2, 9, 8, 7)
         );
         Map<String, Set<Integer>> warmupTasks = mkTasksPerSubtopology(
-            mkTasks(SUBTOPOLOGY_3, 4, 5, 6)
+                mkTasks(SUBTOPOLOGY_3, 4, 5, 6)
         );
         TasksTuple tuple = new TasksTuple(activeTasks, standbyTasks, warmupTasks);
 
@@ -71,96 +71,96 @@ public class TasksTupleTest {
     public void testFromTargetAssignmentRecord() {
         List<StreamsGroupTargetAssignmentMemberValue.TaskIds> activeTasks = new ArrayList<>();
         activeTasks.add(new StreamsGroupTargetAssignmentMemberValue.TaskIds()
-            .setSubtopologyId(SUBTOPOLOGY_1)
-            .setPartitions(Arrays.asList(1, 2, 3)));
+                .setSubtopologyId(SUBTOPOLOGY_1)
+                .setPartitions(Arrays.asList(1, 2, 3)));
         activeTasks.add(new StreamsGroupTargetAssignmentMemberValue.TaskIds()
-            .setSubtopologyId(SUBTOPOLOGY_2)
-            .setPartitions(Arrays.asList(4, 5, 6)));
+                .setSubtopologyId(SUBTOPOLOGY_2)
+                .setPartitions(Arrays.asList(4, 5, 6)));
         List<StreamsGroupTargetAssignmentMemberValue.TaskIds> standbyTasks = new ArrayList<>();
         standbyTasks.add(new StreamsGroupTargetAssignmentMemberValue.TaskIds()
-            .setSubtopologyId(SUBTOPOLOGY_1)
-            .setPartitions(Arrays.asList(7, 8, 9)));
+                .setSubtopologyId(SUBTOPOLOGY_1)
+                .setPartitions(Arrays.asList(7, 8, 9)));
         standbyTasks.add(new StreamsGroupTargetAssignmentMemberValue.TaskIds()
-            .setSubtopologyId(SUBTOPOLOGY_2)
-            .setPartitions(Arrays.asList(1, 2, 3)));
+                .setSubtopologyId(SUBTOPOLOGY_2)
+                .setPartitions(Arrays.asList(1, 2, 3)));
         List<StreamsGroupTargetAssignmentMemberValue.TaskIds> warmupTasks = new ArrayList<>();
         warmupTasks.add(new StreamsGroupTargetAssignmentMemberValue.TaskIds()
-            .setSubtopologyId(SUBTOPOLOGY_1)
-            .setPartitions(Arrays.asList(4, 5, 6)));
+                .setSubtopologyId(SUBTOPOLOGY_1)
+                .setPartitions(Arrays.asList(4, 5, 6)));
         warmupTasks.add(new StreamsGroupTargetAssignmentMemberValue.TaskIds()
-            .setSubtopologyId(SUBTOPOLOGY_2)
-            .setPartitions(Arrays.asList(7, 8, 9)));
+                .setSubtopologyId(SUBTOPOLOGY_2)
+                .setPartitions(Arrays.asList(7, 8, 9)));
 
         StreamsGroupTargetAssignmentMemberValue record = new StreamsGroupTargetAssignmentMemberValue()
-            .setActiveTasks(activeTasks)
-            .setStandbyTasks(standbyTasks)
-            .setWarmupTasks(warmupTasks);
+                .setActiveTasks(activeTasks)
+                .setStandbyTasks(standbyTasks)
+                .setWarmupTasks(warmupTasks);
 
         TasksTuple tuple = TasksTuple.fromTargetAssignmentRecord(record);
 
         assertEquals(
-            mkTasksPerSubtopology(
-                mkTasks(SUBTOPOLOGY_1, 1, 2, 3),
-                mkTasks(SUBTOPOLOGY_2, 4, 5, 6)
-            ),
-            tuple.activeTasks()
+                mkTasksPerSubtopology(
+                        mkTasks(SUBTOPOLOGY_1, 1, 2, 3),
+                        mkTasks(SUBTOPOLOGY_2, 4, 5, 6)
+                ),
+                tuple.activeTasks()
         );
         assertEquals(
-            mkTasksPerSubtopology(
-                mkTasks(SUBTOPOLOGY_1, 7, 8, 9),
-                mkTasks(SUBTOPOLOGY_2, 1, 2, 3)
-            ),
-            tuple.standbyTasks()
+                mkTasksPerSubtopology(
+                        mkTasks(SUBTOPOLOGY_1, 7, 8, 9),
+                        mkTasks(SUBTOPOLOGY_2, 1, 2, 3)
+                ),
+                tuple.standbyTasks()
         );
         assertEquals(
-            mkTasksPerSubtopology(
-                mkTasks(SUBTOPOLOGY_1, 4, 5, 6),
-                mkTasks(SUBTOPOLOGY_2, 7, 8, 9)
-            ),
-            tuple.warmupTasks()
+                mkTasksPerSubtopology(
+                        mkTasks(SUBTOPOLOGY_1, 4, 5, 6),
+                        mkTasks(SUBTOPOLOGY_2, 7, 8, 9)
+                ),
+                tuple.warmupTasks()
         );
     }
 
     @Test
     public void testContainsAny() {
         TasksTuple tuple1 = new TasksTuple(
-            Map.of(SUBTOPOLOGY_1, Set.of(1, 2, 3)),
-            Map.of(SUBTOPOLOGY_2, Set.of(4, 5, 6)),
-            Map.of(SUBTOPOLOGY_3, Set.of(7, 8, 9))
+                Map.of(SUBTOPOLOGY_1, Set.of(1, 2, 3)),
+                Map.of(SUBTOPOLOGY_2, Set.of(4, 5, 6)),
+                Map.of(SUBTOPOLOGY_3, Set.of(7, 8, 9))
         );
 
         // Test with overlapping active tasks
         TasksTupleWithEpochs tuple2 = new TasksTupleWithEpochs(
-            Map.of(SUBTOPOLOGY_1, Map.of(3, 5, 10, 5, 11, 5)),
-            Map.of(SUBTOPOLOGY_2, Set.of(12, 13)),
-            Map.of(SUBTOPOLOGY_3, Set.of(14, 15))
+                Map.of(SUBTOPOLOGY_1, Map.of(3, 5, 10, 5, 11, 5)),
+                Map.of(SUBTOPOLOGY_2, Set.of(12, 13)),
+                Map.of(SUBTOPOLOGY_3, Set.of(14, 15))
         );
 
         assertTrue(tuple1.containsAny(tuple2));
 
         // Test with no overlapping tasks
         TasksTupleWithEpochs tuple3 = new TasksTupleWithEpochs(
-            Map.of(SUBTOPOLOGY_1, Map.of(10, 5, 11, 5)),
-            Map.of(SUBTOPOLOGY_2, Set.of(12, 13)),
-            Map.of(SUBTOPOLOGY_3, Set.of(14, 15))
+                Map.of(SUBTOPOLOGY_1, Map.of(10, 5, 11, 5)),
+                Map.of(SUBTOPOLOGY_2, Set.of(12, 13)),
+                Map.of(SUBTOPOLOGY_3, Set.of(14, 15))
         );
 
         assertFalse(tuple1.containsAny(tuple3));
 
         // Test with overlapping standby tasks
         TasksTupleWithEpochs tuple4 = new TasksTupleWithEpochs(
-            Map.of(SUBTOPOLOGY_1, Map.of(10, 5, 11, 5)),
-            Map.of(SUBTOPOLOGY_2, Set.of(4, 12, 13)),
-            Map.of(SUBTOPOLOGY_3, Set.of(14, 15))
+                Map.of(SUBTOPOLOGY_1, Map.of(10, 5, 11, 5)),
+                Map.of(SUBTOPOLOGY_2, Set.of(4, 12, 13)),
+                Map.of(SUBTOPOLOGY_3, Set.of(14, 15))
         );
 
         assertTrue(tuple1.containsAny(tuple4));
 
         // Test with overlapping warmup tasks
         TasksTupleWithEpochs tuple5 = new TasksTupleWithEpochs(
-            Map.of(SUBTOPOLOGY_1, Map.of(10, 5, 11, 5)),
-            Map.of(SUBTOPOLOGY_2, Set.of(12, 13)),
-            Map.of(SUBTOPOLOGY_3, Set.of(7, 14, 15))
+                Map.of(SUBTOPOLOGY_1, Map.of(10, 5, 11, 5)),
+                Map.of(SUBTOPOLOGY_2, Set.of(12, 13)),
+                Map.of(SUBTOPOLOGY_3, Set.of(7, 14, 15))
         );
 
         assertTrue(tuple1.containsAny(tuple5));

@@ -53,6 +53,7 @@ import static org.mockito.Mockito.when;
 
 public class ExpiringCredentialRefreshingLoginTest {
     private static final Configuration EMPTY_WILDCARD_CONFIGURATION;
+
     static {
         EMPTY_WILDCARD_CONFIGURATION = new Configuration() {
             @Override
@@ -76,8 +77,8 @@ public class ExpiringCredentialRefreshingLoginTest {
         private final boolean clientReloginAllowedBeforeLogout;
 
         public TestExpiringCredentialRefreshingLogin(ExpiringCredentialRefreshConfig refreshConfig,
-                LoginContextFactory loginContextFactory, Time time, final long lifetimeMillis,
-                final long absoluteLastRefreshMs, boolean clientReloginAllowedBeforeLogout) {
+                                                     LoginContextFactory loginContextFactory, Time time, final long lifetimeMillis,
+                                                     final long absoluteLastRefreshMs, boolean clientReloginAllowedBeforeLogout) {
             super("contextName", EMPTY_WILDCARD_CONFIGURATION, refreshConfig, null,
                     TestExpiringCredentialRefreshingLogin.class, loginContextFactory, Objects.requireNonNull(time));
             this.time = time;
@@ -186,7 +187,7 @@ public class ExpiringCredentialRefreshingLoginTest {
         private final LoginContext mockLoginContext;
 
         public TestLoginContext(TestExpiringCredentialRefreshingLogin testExpiringCredentialRefreshingLogin,
-                LoginContext mockLoginContext) throws LoginException {
+                                LoginContext mockLoginContext) throws LoginException {
             super("contextName", null, null, EMPTY_WILDCARD_CONFIGURATION);
             this.testExpiringCredentialRefreshingLogin = Objects.requireNonNull(testExpiringCredentialRefreshingLogin);
             // sanity check to make sure it is likely a mock
@@ -232,7 +233,7 @@ public class ExpiringCredentialRefreshingLoginTest {
         private TestLoginContext testLoginContext;
 
         public void configure(LoginContext mockLoginContext,
-                TestExpiringCredentialRefreshingLogin testExpiringCredentialRefreshingLogin) throws LoginException {
+                              TestExpiringCredentialRefreshingLogin testExpiringCredentialRefreshingLogin) throws LoginException {
             // sanity check to make sure it is likely a mock
             if (!MockUtil.isMock(mockLoginContext))
                 throw new IllegalArgumentException();
@@ -244,12 +245,13 @@ public class ExpiringCredentialRefreshingLoginTest {
         public LoginContext createLoginContext(ExpiringCredentialRefreshingLogin expiringCredentialRefreshingLogin) throws LoginException {
             return new LoginContext("", null, null, EMPTY_WILDCARD_CONFIGURATION) {
                 private boolean loginSuccess = false;
+
                 @Override
                 public void login() throws LoginException {
                     testLoginContext.login();
                     loginSuccess = true;
                 }
-        
+
                 @Override
                 public void logout() throws LoginException {
                     if (!loginSuccess)
@@ -257,7 +259,7 @@ public class ExpiringCredentialRefreshingLoginTest {
                         throw new IllegalStateException("logout called without a successful login");
                     testLoginContext.logout();
                 }
-        
+
                 @Override
                 public Subject getSubject() {
                     return testLoginContext.getSubject();
@@ -285,7 +287,7 @@ public class ExpiringCredentialRefreshingLoginTest {
     }
 
     /*
-    * */
+     * */
     private static class MockScheduler implements MockTime.Listener {
 
         private final MockTime time;
@@ -320,8 +322,8 @@ public class ExpiringCredentialRefreshingLoginTest {
 
     @Test
     public void testRefresh() throws Exception {
-        for (int numExpectedRefreshes : new int[] {0, 1, 2}) {
-            for (boolean clientReloginAllowedBeforeLogout : new boolean[] {true, false}) {
+        for (int numExpectedRefreshes : new int[]{0, 1, 2}) {
+            for (boolean clientReloginAllowedBeforeLogout : new boolean[]{true, false}) {
                 Subject subject = new Subject();
                 final LoginContext mockLoginContext = mock(LoginContext.class);
                 when(mockLoginContext.getSubject()).thenReturn(subject);
@@ -785,7 +787,7 @@ public class ExpiringCredentialRefreshingLoginTest {
     }
 
     private static List<KafkaFutureImpl<Long>> addWaiters(MockScheduler mockScheduler, long refreshEveryMillis,
-            int numWaiters) {
+                                                          int numWaiters) {
         List<KafkaFutureImpl<Long>> retvalWaiters = new ArrayList<>(numWaiters);
         for (int i = 1; i <= numWaiters; ++i) {
             KafkaFutureImpl<Long> waiter = new KafkaFutureImpl<>();

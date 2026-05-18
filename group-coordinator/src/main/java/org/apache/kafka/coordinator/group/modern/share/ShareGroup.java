@@ -77,9 +77,9 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
      * @param deletingTopics    Set of topic ids.
      */
     public record ShareGroupStatePartitionMetadataInfo(
-        Map<Uuid, InitMapValue> initializingTopics,
-        Map<Uuid, InitMapValue> initializedTopics,
-        Set<Uuid> deletingTopics
+            Map<Uuid, InitMapValue> initializingTopics,
+            Map<Uuid, InitMapValue> initializedTopics,
+            Set<Uuid> deletingTopics
     ) {
     }
 
@@ -87,14 +87,14 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
      * Represents the value part for the initializing and initialized topic partitions in
      * ShareGroupStatePartitionMetadataValue
      *
-     * @param name          Topic name
-     * @param partitions    Set of partitions in the topic
-     * @param timestamp     Timestamp at which the record was replayed
+     * @param name       Topic name
+     * @param partitions Set of partitions in the topic
+     * @param timestamp  Timestamp at which the record was replayed
      */
     public record InitMapValue(
-        String name,
-        Set<Integer> partitions,
-        long timestamp
+            String name,
+            Set<Integer> partitions,
+            long timestamp
     ) {
     }
 
@@ -104,8 +104,8 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
     private final TimelineObject<ShareGroupState> state;
 
     public ShareGroup(
-        SnapshotRegistry snapshotRegistry,
-        String groupId
+            SnapshotRegistry snapshotRegistry,
+            String groupId
     ) {
         super(snapshotRegistry, groupId);
         this.state = new TimelineObject<>(snapshotRegistry, ShareGroupState.EMPTY);
@@ -162,20 +162,19 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
      * @param memberId          The member id.
      * @param createIfNotExists Booleans indicating whether the member must be
      *                          created if it does not exist.
-     *
      * @return A ShareGroupMember.
      * @throws UnknownMemberIdException when the member does not exist and createIfNotExists is false.
      */
     public ShareGroupMember getOrMaybeCreateMember(
-        String memberId,
-        boolean createIfNotExists
+            String memberId,
+            boolean createIfNotExists
     ) throws UnknownMemberIdException {
         ShareGroupMember member = members.get(memberId);
         if (member != null) return member;
 
         if (!createIfNotExists) {
             throw new UnknownMemberIdException(
-                String.format("Member %s is not a member of group %s.", memberId, groupId));
+                    String.format("Member %s is not a member of group %s.", memberId, groupId));
         }
 
         member = new ShareGroupMember.Builder(memberId).build();
@@ -214,20 +213,20 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
 
     @Override
     public CommitPartitionValidator validateOffsetCommit(
-        String memberId,
-        String groupInstanceId,
-        int memberEpoch,
-        boolean isTransactional,
-        int apiVersion
+            String memberId,
+            String groupInstanceId,
+            int memberEpoch,
+            boolean isTransactional,
+            int apiVersion
     ) {
         throw new GroupIdNotFoundException(String.format("Group %s is not a consumer group.", groupId));
     }
 
     @Override
     public void validateOffsetFetch(
-        String memberId,
-        int memberEpoch,
-        long lastCommittedOffset
+            String memberId,
+            int memberEpoch,
+            long lastCommittedOffset
     ) {
         throw new GroupIdNotFoundException(String.format("Group %s is not a consumer group.", groupId));
     }
@@ -259,16 +258,16 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
     @Override
     public void createGroupTombstoneRecords(List<CoordinatorRecord> records) {
         members().forEach((memberId, member) ->
-            records.add(GroupCoordinatorRecordHelpers.newShareGroupCurrentAssignmentTombstoneRecord(groupId(), memberId))
+                records.add(GroupCoordinatorRecordHelpers.newShareGroupCurrentAssignmentTombstoneRecord(groupId(), memberId))
         );
 
         members().forEach((memberId, member) ->
-            records.add(GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentTombstoneRecord(groupId(), memberId))
+                records.add(GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentTombstoneRecord(groupId(), memberId))
         );
         records.add(GroupCoordinatorRecordHelpers.newShareGroupTargetAssignmentMetadataTombstoneRecord(groupId()));
 
         members().forEach((memberId, member) ->
-            records.add(GroupCoordinatorRecordHelpers.newShareGroupMemberSubscriptionTombstoneRecord(groupId(), memberId))
+                records.add(GroupCoordinatorRecordHelpers.newShareGroupMemberSubscriptionTombstoneRecord(groupId(), memberId))
         );
 
         records.add(GroupCoordinatorRecordHelpers.newShareGroupStatePartitionMetadataTombstoneRecord(groupId()));
@@ -304,22 +303,22 @@ public class ShareGroup extends ModernGroup<ShareGroupMember> {
     }
 
     public ShareGroupDescribeResponseData.DescribedGroup asDescribedGroup(
-        long committedOffset,
-        String defaultAssignor,
-        CoordinatorMetadataImage image
+            long committedOffset,
+            String defaultAssignor,
+            CoordinatorMetadataImage image
     ) {
         ShareGroupDescribeResponseData.DescribedGroup describedGroup = new ShareGroupDescribeResponseData.DescribedGroup()
-            .setGroupId(groupId)
-            .setAssignorName(defaultAssignor)
-            .setGroupEpoch(groupEpoch.get(committedOffset))
-            .setGroupState(state.get(committedOffset).toString())
-            .setAssignmentEpoch(targetAssignmentMetadata.get(committedOffset).assignmentEpoch());
+                .setGroupId(groupId)
+                .setAssignorName(defaultAssignor)
+                .setGroupEpoch(groupEpoch.get(committedOffset))
+                .setGroupState(state.get(committedOffset).toString())
+                .setAssignmentEpoch(targetAssignmentMetadata.get(committedOffset).assignmentEpoch());
         members.entrySet(committedOffset).forEach(
-            entry -> describedGroup.members().add(
-                entry.getValue().asShareGroupDescribeMember(
-                    image
+                entry -> describedGroup.members().add(
+                        entry.getValue().asShareGroupDescribeMember(
+                                image
+                        )
                 )
-            )
         );
         return describedGroup;
     }

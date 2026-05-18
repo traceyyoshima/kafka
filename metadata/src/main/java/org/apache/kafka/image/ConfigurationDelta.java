@@ -91,7 +91,7 @@ public final class ConfigurationDelta {
         // Values are intentionally left out of this so that sensitive configs
         // do not end up in logging by mistake.
         return "ConfigurationDelta(" +
-            "changedKeys=" + changes.keySet() +
-            ')';
+                "changedKeys=" + changes.keySet() +
+                ')';
     }
 }

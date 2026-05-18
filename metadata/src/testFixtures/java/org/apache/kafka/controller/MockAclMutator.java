@@ -44,15 +44,15 @@ public class MockAclMutator implements AclMutator {
     private final AclControlManager aclControl;
 
     public MockAclMutator(
-        StandardAuthorizer authorizer
+            StandardAuthorizer authorizer
     ) {
         this.authorizer = authorizer;
         this.aclControl = new AclControlManager.Builder().build();
     }
 
     private void syncIdToAcl(
-        Map<Uuid, StandardAcl> prevIdToAcl,
-        Map<Uuid, StandardAcl> nextIdToAcl
+            Map<Uuid, StandardAcl> prevIdToAcl,
+            Map<Uuid, StandardAcl> nextIdToAcl
     ) {
         for (Entry<Uuid, StandardAcl> entry : prevIdToAcl.entrySet()) {
             if (!entry.getValue().equals(nextIdToAcl.get(entry.getKey()))) {
@@ -68,8 +68,8 @@ public class MockAclMutator implements AclMutator {
 
     @Override
     public synchronized CompletableFuture<List<AclCreateResult>> createAcls(
-        ControllerRequestContext context,
-        List<AclBinding> aclBindings
+            ControllerRequestContext context,
+            List<AclBinding> aclBindings
     ) {
         Map<Uuid, StandardAcl> prevIdToAcl = new HashMap<>(aclControl.idToAcl());
         ControllerResult<List<AclCreateResult>> result = aclControl.createAcls(aclBindings);
@@ -80,8 +80,8 @@ public class MockAclMutator implements AclMutator {
 
     @Override
     public synchronized CompletableFuture<List<AclDeleteResult>> deleteAcls(
-        ControllerRequestContext context,
-        List<AclBindingFilter> aclBindingFilters
+            ControllerRequestContext context,
+            List<AclBindingFilter> aclBindingFilters
     ) {
         Map<Uuid, StandardAcl> prevIdToAcl = new HashMap<>(aclControl.idToAcl());
         ControllerResult<List<AclDeleteResult>> result = aclControl.deleteAcls(aclBindingFilters);

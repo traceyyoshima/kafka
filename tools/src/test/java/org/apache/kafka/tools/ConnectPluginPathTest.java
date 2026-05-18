@@ -511,8 +511,9 @@ public class ConnectPluginPathTest {
     /**
      * Populate a writable disk path to be usable as a single plugin location.
      * The returned path will be usable as a single path.
-     * @param path A non-existent path immediately within a writable directory, suggesting a location for this plugin.
-     * @param type The format to which the on-disk plugin should conform
+     *
+     * @param path   A non-existent path immediately within a writable directory, suggesting a location for this plugin.
+     * @param type   The format to which the on-disk plugin should conform
      * @param plugin The plugin which should be written to the specified path
      * @return The final usable path name to this location, in case it is different from the suggested input path.
      */
@@ -564,6 +565,7 @@ public class ConnectPluginPathTest {
 
     /**
      * Populate a writable disk path to be usable as single {@code plugin.path} element providing the specified plugins
+     *
      * @param path    A directory that should contain the populated plugins, will be created if it does not exist.
      * @param type    The format to which the on-disk plugins should conform
      * @param plugins The plugins which should be written to the specified path
@@ -588,6 +590,7 @@ public class ConnectPluginPathTest {
 
     /**
      * Populate a writable disk path
+     *
      * @param path
      * @param pluginPathElements
      * @return
@@ -687,6 +690,7 @@ public class ConnectPluginPathTest {
      * Parse the main table of the list command.
      * <p>Map is keyed on the plugin name, with a list of rows which referred to that name if there are multiple.
      * Each row is pre-split into columns.
+     *
      * @param listOutput An executed list command
      * @return A parsed form of the table grouped by plugin class names
      */

@@ -21,13 +21,13 @@ import java.util.Objects;
 
 /**
  * A version range.
- *
+ * <p>
  * A range consists of two 16-bit numbers: the lowest version which is accepted, and the highest.
  * Ranges are inclusive, meaning that both the lowest and the highest version are valid versions.
  * The only exception to this is the NONE range, which contains no versions at all.
- *
+ * <p>
  * Version ranges can be represented as strings.
- *
+ * <p>
  * A single supported version V is represented as "V".
  * A bounded range from A to B is represented as "A-B".
  * All versions greater than A is represented as "A+".
@@ -50,8 +50,8 @@ public final class Versions {
         }
         if (trimmedInput.endsWith("+")) {
             return new Versions(Short.parseShort(
-            trimmedInput.substring(0, trimmedInput.length() - 1)),
-                Short.MAX_VALUE);
+                    trimmedInput.substring(0, trimmedInput.length() - 1)),
+                    Short.MAX_VALUE);
         } else {
             int dashIndex = trimmedInput.indexOf("-");
             if (dashIndex < 0) {
@@ -59,8 +59,8 @@ public final class Versions {
                 return new Versions(version, version);
             }
             return new Versions(
-                Short.parseShort(trimmedInput.substring(0, dashIndex)),
-                Short.parseShort(trimmedInput.substring(dashIndex + 1)));
+                    Short.parseShort(trimmedInput.substring(0, dashIndex)),
+                    Short.parseShort(trimmedInput.substring(dashIndex + 1)));
         }
     }
 
@@ -78,7 +78,7 @@ public final class Versions {
     public Versions(short lowest, short highest) {
         if ((lowest < 0) || (highest < 0)) {
             throw new RuntimeException("Invalid version range " +
-                lowest + " to " + highest);
+                    lowest + " to " + highest);
         }
         this.lowest = lowest;
         this.highest = highest;
@@ -112,8 +112,8 @@ public final class Versions {
     /**
      * Return the intersection of two version ranges.
      *
-     * @param other     The other version range.
-     * @return          A new version range.
+     * @param other The other version range.
+     * @return A new version range.
      */
     public Versions intersect(Versions other) {
         short newLowest = lowest > other.lowest ? lowest : other.lowest;
@@ -127,15 +127,15 @@ public final class Versions {
     /**
      * Return a new version range that trims some versions from this range, if possible.
      * We can't trim any versions if the resulting range would be disjoint.
-     *
+     * <p>
      * Some examples:
      * 1-4.trim(1-2) = 3-4
      * 3+.trim(4+) = 3
      * 4+.trim(3+) = none
      * 1-5.trim(2-4) = null
      *
-     * @param other                 The other version range.
-     * @return                      A new version range.
+     * @param other The other version range.
+     * @return A new version range.
      */
     public Versions subtract(Versions other) {
         if (other.lowest() <= lowest) {
@@ -194,6 +194,6 @@ public final class Versions {
         }
         Versions otherVersions = (Versions) other;
         return lowest == otherVersions.lowest &&
-               highest == otherVersions.highest;
+                highest == otherVersions.highest;
     }
 }

@@ -87,9 +87,9 @@ public class TimeWindowedKStreamIntegrationTest {
     private static final int NUM_BROKERS = 1;
 
     public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(NUM_BROKERS,
-        mkProperties(
-            mkMap(mkEntry("log.retention.hours", "-1"), mkEntry("log.retention.bytes", "-1")) // Don't expire records since we manipulate timestamp
-        )
+            mkProperties(
+                    mkMap(mkEntry("log.retention.hours", "-1"), mkEntry("log.retention.bytes", "-1")) // Don't expire records since we manipulate timestamp
+            )
     );
 
     @BeforeAll
@@ -140,35 +140,35 @@ public class TimeWindowedKStreamIntegrationTest {
 
     @ParameterizedTest
     @CsvSource({
-        "ON_WINDOW_UPDATE, true, false", "ON_WINDOW_UPDATE, true, true",
-        "ON_WINDOW_UPDATE, false, false", "ON_WINDOW_UPDATE, false, true",
-        "ON_WINDOW_CLOSE, true, false", "ON_WINDOW_CLOSE, true, true",
-        "ON_WINDOW_CLOSE, false, false", "ON_WINDOW_CLOSE, false, true"
+            "ON_WINDOW_UPDATE, true, false", "ON_WINDOW_UPDATE, true, true",
+            "ON_WINDOW_UPDATE, false, false", "ON_WINDOW_UPDATE, false, true",
+            "ON_WINDOW_CLOSE, true, false", "ON_WINDOW_CLOSE, true, true",
+            "ON_WINDOW_CLOSE, false, false", "ON_WINDOW_CLOSE, false, true"
     })
     public void shouldAggregateWindowedWithNoGrace(final StrategyType type, final boolean withCache, final boolean withHeaders) throws Exception {
         produceMessages(
-            streamOneInput,
-            new KeyValueTimestamp<>("A", "1", 0),
-            new KeyValueTimestamp<>("A", "2", 5),
-            new KeyValueTimestamp<>("A", "3", 10), // close [0, 10)
-            new KeyValueTimestamp<>("B", "4", 6),  // late and skip for [0, 10)
-            new KeyValueTimestamp<>("B", "5", 11),
-            new KeyValueTimestamp<>("B", "6", 15), // close [5, 15)
-            new KeyValueTimestamp<>("C", "7", 25)  // close [10, 20), [15, 25)
+                streamOneInput,
+                new KeyValueTimestamp<>("A", "1", 0),
+                new KeyValueTimestamp<>("A", "2", 5),
+                new KeyValueTimestamp<>("A", "3", 10), // close [0, 10)
+                new KeyValueTimestamp<>("B", "4", 6),  // late and skip for [0, 10)
+                new KeyValueTimestamp<>("B", "5", 11),
+                new KeyValueTimestamp<>("B", "6", 15), // close [5, 15)
+                new KeyValueTimestamp<>("C", "7", 25)  // close [10, 20), [15, 25)
         );
 
         final Serde<Windowed<String>> windowedSerde = WindowedSerdes.timeWindowedSerdeFrom(String.class, 10L);
         builder.stream(streamOneInput, Consumed.with(Serdes.String(), Serdes.String()))
-            .groupByKey()
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10L)).advanceBy(ofMillis(5L)))
-            .emitStrategy(StrategyType.forType(type))
-            .aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER,
-                getMaterialized(withCache)
-            )
-            .toStream()
-            .to(outputTopic, Produced.with(windowedSerde, new StringSerde()));
+                .groupByKey()
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10L)).advanceBy(ofMillis(5L)))
+                .emitStrategy(StrategyType.forType(type))
+                .aggregate(
+                        MockInitializer.STRING_INIT,
+                        MockAggregator.TOSTRING_ADDER,
+                        getMaterialized(withCache)
+                )
+                .toStream()
+                .to(outputTopic, Produced.with(windowedSerde, new StringSerde()));
 
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(streamsConfiguration, withHeaders);
 
@@ -197,18 +197,18 @@ public class TimeWindowedKStreamIntegrationTest {
             );
         } else {
             expectResult = asList(
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1", 0),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1+2", 5),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+2", 5),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+2+3", 10),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(10L, 20L)), "0+3", 10),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+4", 6),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+4+5", 11),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5", 11),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5+6", 15),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(15L, 25L)), "0+6", 15),
-                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(20L, 30L)), "0+7", 25),
-                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(25L, 35L)), "0+7", 25)
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1", 0),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1+2", 5),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+2", 5),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+2+3", 10),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(10L, 20L)), "0+3", 10),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+4", 6),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+4+5", 11),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5", 11),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5+6", 15),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(15L, 25L)), "0+6", 15),
+                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(20L, 30L)), "0+7", 25),
+                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(25L, 35L)), "0+7", 25)
             );
         }
 
@@ -217,35 +217,35 @@ public class TimeWindowedKStreamIntegrationTest {
 
     @ParameterizedTest
     @CsvSource({
-        "ON_WINDOW_UPDATE, true, false", "ON_WINDOW_UPDATE, true, true",
-        "ON_WINDOW_UPDATE, false, false", "ON_WINDOW_UPDATE, false, true",
-        "ON_WINDOW_CLOSE, true, false", "ON_WINDOW_CLOSE, true, true",
-        "ON_WINDOW_CLOSE, false, false", "ON_WINDOW_CLOSE, false, true"
+            "ON_WINDOW_UPDATE, true, false", "ON_WINDOW_UPDATE, true, true",
+            "ON_WINDOW_UPDATE, false, false", "ON_WINDOW_UPDATE, false, true",
+            "ON_WINDOW_CLOSE, true, false", "ON_WINDOW_CLOSE, true, true",
+            "ON_WINDOW_CLOSE, false, false", "ON_WINDOW_CLOSE, false, true"
     })
     public void shouldAggregateWindowedWithGrace(final StrategyType type, final boolean withCache, final boolean withHeaders) throws Exception {
         produceMessages(
-            streamOneInput,
-            new KeyValueTimestamp<>("A", "1", 0),
-            new KeyValueTimestamp<>("A", "2", 5),
-            new KeyValueTimestamp<>("A", "3", 10),
-            new KeyValueTimestamp<>("B", "4", 6),
-            new KeyValueTimestamp<>("B", "5", 11),
-            new KeyValueTimestamp<>("B", "6", 15), // close [0, 10), output A, B [0, 10)
-            new KeyValueTimestamp<>("C", "7", 25)  // close [5, 15), [10, 20)
+                streamOneInput,
+                new KeyValueTimestamp<>("A", "1", 0),
+                new KeyValueTimestamp<>("A", "2", 5),
+                new KeyValueTimestamp<>("A", "3", 10),
+                new KeyValueTimestamp<>("B", "4", 6),
+                new KeyValueTimestamp<>("B", "5", 11),
+                new KeyValueTimestamp<>("B", "6", 15), // close [0, 10), output A, B [0, 10)
+                new KeyValueTimestamp<>("C", "7", 25)  // close [5, 15), [10, 20)
         );
 
         final Serde<Windowed<String>> windowedSerde = WindowedSerdes.timeWindowedSerdeFrom(String.class, 10L);
         builder.stream(streamOneInput, Consumed.with(Serdes.String(), Serdes.String()))
-            .groupByKey()
-            .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(10L), ofMillis(5)).advanceBy(ofMillis(5L)))
-            .emitStrategy(StrategyType.forType(type))
-            .aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER,
-                getMaterialized(withCache)
-            )
-            .toStream()
-            .to(outputTopic, Produced.with(windowedSerde, new StringSerde()));
+                .groupByKey()
+                .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(10L), ofMillis(5)).advanceBy(ofMillis(5L)))
+                .emitStrategy(StrategyType.forType(type))
+                .aggregate(
+                        MockInitializer.STRING_INIT,
+                        MockAggregator.TOSTRING_ADDER,
+                        getMaterialized(withCache)
+                )
+                .toStream()
+                .to(outputTopic, Produced.with(windowedSerde, new StringSerde()));
 
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(streamsConfiguration, withHeaders);
 
@@ -257,35 +257,35 @@ public class TimeWindowedKStreamIntegrationTest {
 
         final boolean emitFinal = type == StrategyType.ON_WINDOW_CLOSE;
         final List<KeyValueTimestamp<Windowed<String>, String>> windowedMessages = receiveMessagesWithTimestamp(
-            new TimeWindowedDeserializer<>(new StringDeserializer(), 10L),
-            new StringDeserializer(),
-            10L,
-            String.class,
-            emitFinal ? 4 : 13);
+                new TimeWindowedDeserializer<>(new StringDeserializer(), 10L),
+                new StringDeserializer(),
+                10L,
+                String.class,
+                emitFinal ? 4 : 13);
 
         final List<KeyValueTimestamp<Windowed<String>, String>> expectResult;
         if (emitFinal) {
             expectResult = asList(
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1+2", 5),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0L, 10L)), "0+4", 6),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(10L, 20L)), "0+3", 10),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5+6", 15)
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1+2", 5),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0L, 10L)), "0+4", 6),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(10L, 20L)), "0+3", 10),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5+6", 15)
             );
         } else {
             expectResult = asList(
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1", 0),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1+2", 5),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+2", 5),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+2+3", 10),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(10L, 20L)), "0+3", 10),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0L, 10L)), "0+4", 6),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+4", 6),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+4+5", 11),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5", 11),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5+6", 15),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(15L, 25L)), "0+6", 15),
-                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(20L, 30L)), "0+7", 25),
-                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(25L, 35L)), "0+7", 25)
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1", 0),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+1+2", 5),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+2", 5),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+2+3", 10),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(10L, 20L)), "0+3", 10),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(0L, 10L)), "0+4", 6),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+4", 6),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+4+5", 11),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5", 11),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)), "0+5+6", 15),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(15L, 25L)), "0+6", 15),
+                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(20L, 30L)), "0+7", 25),
+                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(25L, 35L)), "0+7", 25)
             );
         }
 
@@ -294,51 +294,51 @@ public class TimeWindowedKStreamIntegrationTest {
 
     @ParameterizedTest
     @CsvSource({
-        "ON_WINDOW_UPDATE, true, false", "ON_WINDOW_UPDATE, true, true",
-        "ON_WINDOW_UPDATE, false, false", "ON_WINDOW_UPDATE, false, true",
-        "ON_WINDOW_CLOSE, true, false", "ON_WINDOW_CLOSE, true, true",
-        "ON_WINDOW_CLOSE, false, false", "ON_WINDOW_CLOSE, false, true"
+            "ON_WINDOW_UPDATE, true, false", "ON_WINDOW_UPDATE, true, true",
+            "ON_WINDOW_UPDATE, false, false", "ON_WINDOW_UPDATE, false, true",
+            "ON_WINDOW_CLOSE, true, false", "ON_WINDOW_CLOSE, true, true",
+            "ON_WINDOW_CLOSE, false, false", "ON_WINDOW_CLOSE, false, true"
     })
     public void shouldRestoreAfterJoinRestart(final StrategyType type, final boolean withCache, final boolean withHeaders) throws Exception {
         produceMessages(
-            streamOneInput,
-            new KeyValueTimestamp<>("A", "L1", 0),
-            new KeyValueTimestamp<>("A", "L1", 5),
-            new KeyValueTimestamp<>("B", "L2", 11), // close [0, 10)
-            new KeyValueTimestamp<>("B", "L2", 15), // close [5, 15)
-            new KeyValueTimestamp<>("C", "L3", 25)  // close [15, 25), [10, 20)
+                streamOneInput,
+                new KeyValueTimestamp<>("A", "L1", 0),
+                new KeyValueTimestamp<>("A", "L1", 5),
+                new KeyValueTimestamp<>("B", "L2", 11), // close [0, 10)
+                new KeyValueTimestamp<>("B", "L2", 15), // close [5, 15)
+                new KeyValueTimestamp<>("C", "L3", 25)  // close [15, 25), [10, 20)
         );
 
         produceMessages(
-            streamTwoInput,
-            new KeyValueTimestamp<>("A", "R1", 0),
-            new KeyValueTimestamp<>("A", "R1", 5),
-            new KeyValueTimestamp<>("B", "R2", 11), // close [0, 10)
-            new KeyValueTimestamp<>("B", "R2", 15), // close [5, 15)
-            new KeyValueTimestamp<>("C", "R3", 25)  // close [15, 25), [10, 20)
+                streamTwoInput,
+                new KeyValueTimestamp<>("A", "R1", 0),
+                new KeyValueTimestamp<>("A", "R1", 5),
+                new KeyValueTimestamp<>("B", "R2", 11), // close [0, 10)
+                new KeyValueTimestamp<>("B", "R2", 15), // close [5, 15)
+                new KeyValueTimestamp<>("C", "R3", 25)  // close [15, 25), [10, 20)
         );
 
         final Serde<Windowed<String>> windowedSerde = WindowedSerdes.timeWindowedSerdeFrom(
-            String.class, 10L);
+                String.class, 10L);
         final KStream<String, String> streamOne = builder.stream(streamOneInput,
-            Consumed.with(Serdes.String(), Serdes.String()));
+                Consumed.with(Serdes.String(), Serdes.String()));
         final KStream<String, String> streamTwo = builder.stream(streamTwoInput,
-            Consumed.with(Serdes.String(), Serdes.String()));
+                Consumed.with(Serdes.String(), Serdes.String()));
 
         final KStream<String, String> joinedStream = streamOne
-            .join(streamTwo, (v1, v2) -> v1 + "," + v2,
-                JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(2)));
+                .join(streamTwo, (v1, v2) -> v1 + "," + v2,
+                        JoinWindows.ofTimeDifferenceWithNoGrace(ofMillis(2)));
 
         joinedStream.groupByKey()
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10L)).advanceBy(ofMillis(5L)))
-            .emitStrategy(StrategyType.forType(type))
-            .aggregate(
-                MockInitializer.STRING_INIT,
-                MockAggregator.TOSTRING_ADDER,
-                getMaterialized(withCache)
-            )
-            .toStream()
-            .to(outputTopic, Produced.with(windowedSerde, new StringSerde()));
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofMillis(10L)).advanceBy(ofMillis(5L)))
+                .emitStrategy(StrategyType.forType(type))
+                .aggregate(
+                        MockInitializer.STRING_INIT,
+                        MockAggregator.TOSTRING_ADDER,
+                        getMaterialized(withCache)
+                )
+                .toStream()
+                .to(outputTopic, Produced.with(windowedSerde, new StringSerde()));
 
         StreamsTestUtils.maybeSetDslStoreFormatHeaders(streamsConfiguration, withHeaders);
 
@@ -347,44 +347,44 @@ public class TimeWindowedKStreamIntegrationTest {
         // ON_WINDOW_CLOSE expires all records.
         final boolean emitFinal = type == StrategyType.ON_WINDOW_CLOSE;
         List<KeyValueTimestamp<Windowed<String>, String>> windowedMessages = receiveMessagesWithTimestamp(
-            new TimeWindowedDeserializer<>(new StringDeserializer(), 10L),
-            new StringDeserializer(),
-            10L,
-            String.class,
-            emitFinal ? 4 : 9);
+                new TimeWindowedDeserializer<>(new StringDeserializer(), 10L),
+                new StringDeserializer(),
+                10L,
+                String.class,
+                emitFinal ? 4 : 9);
 
         List<KeyValueTimestamp<Windowed<String>, String>> expectResult;
         if (emitFinal) {
             expectResult = asList(
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)),
-                    "0+L1,R1+L1,R1", 5),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+L1,R1",
-                    5),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+L2,R2",
-                    11),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(15L, 25L)),
-                    "0+L2,R2", 15)
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)),
+                            "0+L1,R1+L1,R1", 5),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+L1,R1",
+                            5),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+L2,R2",
+                            11),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(15L, 25L)),
+                            "0+L2,R2", 15)
             );
         } else {
             expectResult = asList(
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+L1,R1",
-                    0),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)),
-                    "0+L1,R1+L1,R1", 5),
-                new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+L1,R1",
-                    5),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+L2,R2",
-                    11),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)),
-                    "0+L2,R2", 11),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)),
-                    "0+L2,R2+L2,R2", 15),
-                new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(15L, 25L)),
-                    "0+L2,R2", 15),
-                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(20L, 30L)),
-                    "0+L3,R3", 25),
-                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(25L, 35L)),
-                    "0+L3,R3", 25)
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)), "0+L1,R1",
+                            0),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(0L, 10L)),
+                            "0+L1,R1+L1,R1", 5),
+                    new KeyValueTimestamp<>(new Windowed<>("A", new TimeWindow(5L, 15L)), "0+L1,R1",
+                            5),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(5L, 15L)), "0+L2,R2",
+                            11),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)),
+                            "0+L2,R2", 11),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(10L, 20L)),
+                            "0+L2,R2+L2,R2", 15),
+                    new KeyValueTimestamp<>(new Windowed<>("B", new TimeWindow(15L, 25L)),
+                            "0+L2,R2", 15),
+                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(20L, 30L)),
+                            "0+L3,R3", 25),
+                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(25L, 35L)),
+                            "0+L3,R3", 25)
             );
         }
 
@@ -394,12 +394,12 @@ public class TimeWindowedKStreamIntegrationTest {
         kafkaStreams.cleanUp(); // Purge store to force restoration
 
         produceMessages(
-            streamOneInput,
-            new KeyValueTimestamp<>("C", "L3", 35)  // close [20, 30), [25, 35)
+                streamOneInput,
+                new KeyValueTimestamp<>("C", "L3", 35)  // close [20, 30), [25, 35)
         );
         produceMessages(
-            streamTwoInput,
-            new KeyValueTimestamp<>("C", "R3", 35)  // close [20, 30), [25, 35)
+                streamTwoInput,
+                new KeyValueTimestamp<>("C", "R3", 35)  // close [20, 30), [25, 35)
         );
 
         // Restart
@@ -415,8 +415,8 @@ public class TimeWindowedKStreamIntegrationTest {
 
             // Output just new/unexpired closed window for C
             expectResult = Collections.singletonList(
-                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(25L, 35L)),
-                    "0+L3,R3", 25)
+                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(25L, 35L)),
+                            "0+L3,R3", 25)
             );
         } else {
             windowedMessages = receiveMessagesWithTimestamp(
@@ -427,10 +427,10 @@ public class TimeWindowedKStreamIntegrationTest {
                     2);
 
             expectResult = asList(
-                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(30L, 40L)),
-                    "0+L3,R3", 35),
-                new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(35L, 45L)),
-                    "0+L3,R3", 35)
+                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(30L, 40L)),
+                            "0+L3,R3", 35),
+                    new KeyValueTimestamp<>(new Windowed<>("C", new TimeWindow(35L, 45L)),
+                            "0+L3,R3", 35)
             );
         }
 
@@ -441,10 +441,10 @@ public class TimeWindowedKStreamIntegrationTest {
     @EnumSource(StrategyType.class)
     public void shouldThrowUnlimitedWindows(final StrategyType type) {
         final TimeWindowedKStream<String, String> windowedStream = builder.stream(streamOneInput, Consumed.with(Serdes.String(), Serdes.String()))
-            .groupByKey()
-            .windowedBy(
-            UnlimitedWindows.of().startOn(ofEpochMilli(0))
-        );
+                .groupByKey()
+                .windowedBy(
+                        UnlimitedWindows.of().startOn(ofEpochMilli(0))
+                );
 
         final boolean emitFinal = type == StrategyType.ON_WINDOW_CLOSE;
         if (emitFinal) {
@@ -457,14 +457,14 @@ public class TimeWindowedKStreamIntegrationTest {
 
     private void produceMessages(final String topic, final KeyValueTimestamp<String, String>... records) {
         IntegrationTestUtils.produceSynchronously(
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                StringSerializer.class,
-                StringSerializer.class),
-            false,
-            topic,
-            Optional.empty(),
-            Arrays.asList(records)
+                TestUtils.producerConfig(
+                        CLUSTER.bootstrapServers(),
+                        StringSerializer.class,
+                        StringSerializer.class),
+                false,
+                topic,
+                Optional.empty(),
+                Arrays.asList(records)
         );
     }
 
@@ -503,15 +503,15 @@ public class TimeWindowedKStreamIntegrationTest {
         consumerProperties.put(TimeWindowedDeserializer.WINDOW_SIZE_MS_CONFIG, windowSize);
         if (keyDeserializer instanceof TimeWindowedDeserializer) {
             consumerProperties.setProperty(TimeWindowedDeserializer.WINDOWED_INNER_DESERIALIZER_CLASS,
-                Serdes.serdeFrom(innerClass).getClass().getName());
+                    Serdes.serdeFrom(innerClass).getClass().getName());
         } else if (keyDeserializer instanceof SessionWindowedDeserializer) {
             consumerProperties.setProperty(SessionWindowedDeserializer.WINDOWED_INNER_DESERIALIZER_CLASS,
-                Serdes.serdeFrom(innerClass).getClass().getName());
+                    Serdes.serdeFrom(innerClass).getClass().getName());
         }
         return IntegrationTestUtils.waitUntilMinKeyValueWithTimestampRecordsReceived(
-            consumerProperties,
-            outputTopic,
-            numMessages,
-            60 * 1000);
+                consumerProperties,
+                outputTopic,
+                numMessages,
+                60 * 1000);
     }
 }

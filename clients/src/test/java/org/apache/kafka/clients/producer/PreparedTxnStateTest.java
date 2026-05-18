@@ -143,23 +143,23 @@ public class PreparedTxnStateTest {
     public void testInvalidFormatThrowsException() {
         // Test with invalid format - missing epoch
         assertThrows(IllegalArgumentException.class,
-            () -> new PreparedTxnState("123"),
-            "String with missing epoch should throw IllegalArgumentException");
+                () -> new PreparedTxnState("123"),
+                "String with missing epoch should throw IllegalArgumentException");
 
         // Test with invalid format - too many parts
         assertThrows(IllegalArgumentException.class,
-            () -> new PreparedTxnState("123:45:67"),
-            "String with extra parts should throw IllegalArgumentException");
+                () -> new PreparedTxnState("123:45:67"),
+                "String with extra parts should throw IllegalArgumentException");
 
         // Test with non-numeric producer ID
         assertThrows(IllegalArgumentException.class,
-            () -> new PreparedTxnState("abc:45"),
-            "Non-numeric producer ID should throw IllegalArgumentException");
+                () -> new PreparedTxnState("abc:45"),
+                "Non-numeric producer ID should throw IllegalArgumentException");
 
         // Test with non-numeric epoch
         assertThrows(IllegalArgumentException.class,
-            () -> new PreparedTxnState("123:xyz"),
-            "Non-numeric epoch should throw IllegalArgumentException");
+                () -> new PreparedTxnState("123:xyz"),
+                "Non-numeric epoch should throw IllegalArgumentException");
     }
 
     @Test
@@ -170,27 +170,27 @@ public class PreparedTxnStateTest {
 
         // Invalid: producerId >= 0, epoch < 0
         assertThrows(IllegalArgumentException.class,
-            () -> new PreparedTxnState("123:-2"),
-            "Positive producerId with negative epoch (not -1) should throw IllegalArgumentException");
+                () -> new PreparedTxnState("123:-2"),
+                "Positive producerId with negative epoch (not -1) should throw IllegalArgumentException");
 
         // Invalid: producerId < 0 (not -1), epoch >= 0
         assertThrows(IllegalArgumentException.class,
-            () -> new PreparedTxnState("-2:45"),
-            "Negative producerId (not -1) with positive epoch should throw IllegalArgumentException");
+                () -> new PreparedTxnState("-2:45"),
+                "Negative producerId (not -1) with positive epoch should throw IllegalArgumentException");
 
         // Invalid: producerId < 0 (not -1), epoch < 0 (not -1)
         assertThrows(IllegalArgumentException.class,
-            () -> new PreparedTxnState("-2:-2"),
-            "Negative producerId and epoch (not -1) should throw IllegalArgumentException");
+                () -> new PreparedTxnState("-2:-2"),
+                "Negative producerId and epoch (not -1) should throw IllegalArgumentException");
 
         // Invalid: producerId = -1, epoch >= 0
         assertThrows(IllegalArgumentException.class,
-            () -> new PreparedTxnState("-1:45"),
-            "ProducerId -1 with positive epoch should throw IllegalArgumentException");
+                () -> new PreparedTxnState("-1:45"),
+                "ProducerId -1 with positive epoch should throw IllegalArgumentException");
 
         // Invalid: producerId >= 0, epoch = -1
         assertThrows(IllegalArgumentException.class,
-            () -> new PreparedTxnState("123:-1"),
-            "Positive producerId with epoch -1 should throw IllegalArgumentException");
+                () -> new PreparedTxnState("123:-1"),
+                "Positive producerId with epoch -1 should throw IllegalArgumentException");
     }
 }

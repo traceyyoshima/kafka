@@ -32,7 +32,8 @@ import java.util.Map;
  */
 public final class ProcessorContextUtils {
 
-    private ProcessorContextUtils() {}
+    private ProcessorContextUtils() {
+    }
 
     /**
      * Should be removed as part of KAFKA-10217
@@ -58,21 +59,21 @@ public final class ProcessorContextUtils {
             return applicationId;
         } else {
             return StreamsConfig.InternalConfig.getString(
-                configs,
-                StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE,
-                applicationId
+                    configs,
+                    StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE,
+                    applicationId
             );
         }
     }
 
     public static <K, V> InternalProcessorContext<K, V> asInternalProcessorContext(
-        final ProcessorContext<K, V> context
+            final ProcessorContext<K, V> context
     ) {
         if (context instanceof InternalProcessorContext) {
             return (InternalProcessorContext<K, V>) context;
         } else {
             throw new IllegalArgumentException(
-                "This component requires internal features of Kafka Streams and must be disabled for unit tests."
+                    "This component requires internal features of Kafka Streams and must be disabled for unit tests."
             );
         }
     }
@@ -82,7 +83,7 @@ public final class ProcessorContextUtils {
             return (InternalProcessorContext<?, ?>) context;
         } else {
             throw new IllegalArgumentException(
-                "This component requires internal features of Kafka Streams and must be disabled for unit tests."
+                    "This component requires internal features of Kafka Streams and must be disabled for unit tests."
             );
         }
     }

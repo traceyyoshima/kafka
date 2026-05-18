@@ -36,8 +36,8 @@ public class FeatureMetadata {
     private final Map<String, SupportedVersionRange> supportedFeatures;
 
     FeatureMetadata(final Map<String, FinalizedVersionRange> finalizedFeatures,
-                           final Optional<Long> finalizedFeaturesEpoch,
-                           final Map<String, SupportedVersionRange> supportedFeatures) {
+                    final Optional<Long> finalizedFeaturesEpoch,
+                    final Map<String, SupportedVersionRange> supportedFeatures) {
         this.finalizedFeatures = new HashMap<>(finalizedFeatures);
         this.finalizedFeaturesEpoch = finalizedFeaturesEpoch;
         this.supportedFeatures = new HashMap<>(supportedFeatures);
@@ -80,8 +80,8 @@ public class FeatureMetadata {
 
         final FeatureMetadata that = (FeatureMetadata) other;
         return Objects.equals(this.finalizedFeatures, that.finalizedFeatures) &&
-            Objects.equals(this.finalizedFeaturesEpoch, that.finalizedFeaturesEpoch) &&
-            Objects.equals(this.supportedFeatures, that.supportedFeatures);
+                Objects.equals(this.finalizedFeaturesEpoch, that.finalizedFeaturesEpoch) &&
+                Objects.equals(this.supportedFeatures, that.supportedFeatures);
     }
 
     @Override
@@ -91,21 +91,21 @@ public class FeatureMetadata {
 
     private static <ValueType> String mapToString(final Map<String, ValueType> featureVersionsMap) {
         return String.format(
-            "{%s}",
-            featureVersionsMap
-                .entrySet()
-                .stream()
-                .map(entry -> String.format("(%s -> %s)", entry.getKey(), entry.getValue()))
-                .collect(joining(", "))
+                "{%s}",
+                featureVersionsMap
+                        .entrySet()
+                        .stream()
+                        .map(entry -> String.format("(%s -> %s)", entry.getKey(), entry.getValue()))
+                        .collect(joining(", "))
         );
     }
 
     @Override
     public String toString() {
         return String.format(
-            "FeatureMetadata{finalizedFeatures:%s, finalizedFeaturesEpoch:%s, supportedFeatures:%s}",
-            mapToString(finalizedFeatures),
-            finalizedFeaturesEpoch.map(Object::toString).orElse("<none>"),
-            mapToString(supportedFeatures));
+                "FeatureMetadata{finalizedFeatures:%s, finalizedFeaturesEpoch:%s, supportedFeatures:%s}",
+                mapToString(finalizedFeatures),
+                finalizedFeaturesEpoch.map(Object::toString).orElse("<none>"),
+                mapToString(supportedFeatures));
     }
 }

@@ -29,9 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MetricsTestUtils {
     static void assertMetricsForTypeEqual(
-        MetricsRegistry registry,
-        String expectedPrefix,
-        Set<String> expected
+            MetricsRegistry registry,
+            String expectedPrefix,
+            Set<String> expected
     ) {
         Set<String> actual = new TreeSet<>();
         registry.allMetrics().forEach((name, __) -> {

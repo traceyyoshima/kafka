@@ -60,27 +60,27 @@ public class SchemaSourceTask extends SourceTask {
     private int partitionCount;
 
     private static final Schema VALUE_SCHEMA = SchemaBuilder.struct().version(1).name("record")
-        .field("boolean", Schema.BOOLEAN_SCHEMA)
-        .field("int", Schema.INT32_SCHEMA)
-        .field("long", Schema.INT64_SCHEMA)
-        .field("float", Schema.FLOAT32_SCHEMA)
-        .field("double", Schema.FLOAT64_SCHEMA)
-        .field("partitioning", Schema.INT32_SCHEMA)
-        .field("id", Schema.INT32_SCHEMA)
-        .field("seqno", Schema.INT64_SCHEMA)
-        .build();
+            .field("boolean", Schema.BOOLEAN_SCHEMA)
+            .field("int", Schema.INT32_SCHEMA)
+            .field("long", Schema.INT64_SCHEMA)
+            .field("float", Schema.FLOAT32_SCHEMA)
+            .field("double", Schema.FLOAT64_SCHEMA)
+            .field("partitioning", Schema.INT32_SCHEMA)
+            .field("id", Schema.INT32_SCHEMA)
+            .field("seqno", Schema.INT64_SCHEMA)
+            .build();
 
     private static final Schema VALUE_SCHEMA_2 = SchemaBuilder.struct().version(2).name("record")
-        .field("boolean", Schema.BOOLEAN_SCHEMA)
-        .field("int", Schema.INT32_SCHEMA)
-        .field("long", Schema.INT64_SCHEMA)
-        .field("float", Schema.FLOAT32_SCHEMA)
-        .field("double", Schema.FLOAT64_SCHEMA)
-        .field("partitioning", Schema.INT32_SCHEMA)
-        .field("string", SchemaBuilder.string().defaultValue("abc").build())
-        .field("id", Schema.INT32_SCHEMA)
-        .field("seqno", Schema.INT64_SCHEMA)
-        .build();
+            .field("boolean", Schema.BOOLEAN_SCHEMA)
+            .field("int", Schema.INT32_SCHEMA)
+            .field("long", Schema.INT64_SCHEMA)
+            .field("float", Schema.FLOAT32_SCHEMA)
+            .field("double", Schema.FLOAT64_SCHEMA)
+            .field("partitioning", Schema.INT32_SCHEMA)
+            .field("string", SchemaBuilder.string().defaultValue("abc").build())
+            .field("id", Schema.INT32_SCHEMA)
+            .field("seqno", Schema.INT64_SCHEMA)
+            .build();
 
     @Override
     public String version() {
@@ -129,27 +129,27 @@ public class SchemaSourceTask extends SourceTask {
             final SourceRecord srcRecord;
             if (!multipleSchema || count % 2 == 0) {
                 data = new Struct(VALUE_SCHEMA)
-                    .put("boolean", true)
-                    .put("int", 12)
-                    .put("long", 12L)
-                    .put("float", 12.2f)
-                    .put("double", 12.2)
-                    .put("partitioning", partitionVal)
-                    .put("id", id)
-                    .put("seqno", seqno);
+                        .put("boolean", true)
+                        .put("int", 12)
+                        .put("long", 12L)
+                        .put("float", 12.2f)
+                        .put("double", 12.2)
+                        .put("partitioning", partitionVal)
+                        .put("id", id)
+                        .put("seqno", seqno);
 
                 srcRecord = new SourceRecord(partition, ccOffset, topic, id, Schema.STRING_SCHEMA, "key", VALUE_SCHEMA, data);
             } else {
                 data = new Struct(VALUE_SCHEMA_2)
-                    .put("boolean", true)
-                    .put("int", 12)
-                    .put("long", 12L)
-                    .put("float", 12.2f)
-                    .put("double", 12.2)
-                    .put("partitioning", partitionVal)
-                    .put("string", "def")
-                    .put("id", id)
-                    .put("seqno", seqno);
+                        .put("boolean", true)
+                        .put("int", 12)
+                        .put("long", 12L)
+                        .put("float", 12.2f)
+                        .put("double", 12.2)
+                        .put("partitioning", partitionVal)
+                        .put("string", "def")
+                        .put("id", id)
+                        .put("seqno", seqno);
 
                 srcRecord = new SourceRecord(partition, ccOffset, topic, id, Schema.STRING_SCHEMA, "key", VALUE_SCHEMA_2, data);
             }

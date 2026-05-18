@@ -30,14 +30,14 @@ public interface TypeClassGenerator {
     /**
      * Registers a message spec with the generator.
      *
-     * @param spec      The spec to register.
+     * @param spec The spec to register.
      */
     void registerMessageType(MessageSpec spec);
 
     /**
      * Generate the type, and then write it out.
      *
-     * @param writer    The writer to write out the state to.
+     * @param writer The writer to write out the state to.
      */
     void generateAndWrite(BufferedWriter writer) throws IOException;
 }

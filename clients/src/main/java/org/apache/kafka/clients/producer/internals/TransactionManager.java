@@ -206,13 +206,13 @@ public class TransactionManager {
             this.priority = priority;
         }
     }
-    
+
     private enum TransactionOperation {
         SEND("send"),
         BEGIN_TRANSACTION("beginTransaction"),
         PREPARE_TRANSACTION("prepareTransaction"),
         SEND_OFFSETS_TO_TRANSACTION("sendOffsetsToTransaction");
-        
+
         final String displayName;
 
         TransactionOperation(String displayName) {
@@ -259,7 +259,7 @@ public class TransactionManager {
      *     <li><em>Application</em> threads that invokes {@link Producer} API calls</li>
      *     <li><em>{@link Sender}</em> thread operations</li>
      * </ul>
-     *
+     * <p>
      * When an invalid state transition is detected during execution on an <em>application</em> thread, the
      * {@link #currentState} is <em>not updated</em> and an {@link IllegalStateException} is thrown. This gives the
      * application the opportunity to fix the issue without permanently poisoning the state of the
@@ -279,29 +279,29 @@ public class TransactionManager {
      *         {@link #maybeTransitionToErrorState(RuntimeException)}
      *     </li>
      * </ul>
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * The {@link Producer} is implemented such that much of its work delegated to and performed asynchronously on the
      * <em>{@link Sender}</em> thread. This includes record batching, network I/O, broker response handlers, etc. If an
      * invalid state transition is detected in the <em>{@link Sender}</em> thread, in addition to throwing an
      * {@link IllegalStateException}, the transaction manager intentionally "poisons" itself by setting its
      * {@link #currentState} to {@link State#FATAL_ERROR}, a state from which it cannot recover.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * It's important to prevent possible corruption when the transaction manager has determined that it is in a
      * fatal state. Subsequent transaction operations attempted via either the <em>application</em> or the
      * <em>{@link Sender}</em> thread should fail. This is achieved when these operations invoke the
      * {@link #maybeFailWithError()} method, as it causes a {@link KafkaException} to be thrown, ensuring the stated
      * transactional guarantees are not violated.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * See KAFKA-14831 for more detail.
      *
      * @return {@code true} to set state to {@link State#FATAL_ERROR} before throwing an exception,
-     *         {@code false} to throw an exception without first changing the state
+     * {@code false} to throw an exception without first changing the state
      */
     protected boolean shouldPoisonStateOnInvalidTransition() {
         return Thread.currentThread() instanceof Sender.SenderThread;
@@ -316,8 +316,8 @@ public class TransactionManager {
     }
 
     synchronized TransactionalRequestResult initializeTransactions(
-        ProducerIdAndEpoch producerIdAndEpoch,
-        boolean keepPreparedTxn
+            ProducerIdAndEpoch producerIdAndEpoch,
+            boolean keepPreparedTxn
     ) {
         maybeFailWithError();
 
@@ -366,8 +366,8 @@ public class TransactionManager {
         maybeFailWithError();
         transitionTo(State.PREPARED_TRANSACTION);
         this.preparedTxnState = new ProducerIdAndEpoch(
-            this.producerIdAndEpoch.producerId,
-            this.producerIdAndEpoch.epoch
+                this.producerIdAndEpoch.producerId,
+                this.producerIdAndEpoch.epoch
         );
     }
 
@@ -396,12 +396,12 @@ public class TransactionManager {
             enqueueRequest(addPartitionsToTransactionHandler());
 
         EndTxnRequest.Builder builder = new EndTxnRequest.Builder(
-            new EndTxnRequestData()
-                .setTransactionalId(transactionalId)
-                .setProducerId(producerIdAndEpoch.producerId)
-                .setProducerEpoch(producerIdAndEpoch.epoch)
-                .setCommitted(transactionResult.id),
-            isTransactionV2Enabled
+                new EndTxnRequestData()
+                        .setTransactionalId(transactionalId)
+                        .setProducerId(producerIdAndEpoch.producerId)
+                        .setProducerEpoch(producerIdAndEpoch.epoch)
+                        .setCommitted(transactionResult.id),
+                isTransactionV2Enabled
         );
 
         // Maybe update the transaction version here before we enqueue the EndTxn request so there are no races with
@@ -430,7 +430,7 @@ public class TransactionManager {
 
         if (currentState != State.IN_TRANSACTION) {
             throw new IllegalStateException("Cannot send offsets if a transaction is not in progress " +
-                "(currentState= " + currentState + ")");
+                    "(currentState= " + currentState + ")");
         }
 
         // In transaction V2, the client will skip sending AddOffsetsToTxn before sending txnOffsetCommit.
@@ -462,10 +462,10 @@ public class TransactionManager {
         if (isTransactional()) {
             if (!hasProducerId()) {
                 throw new IllegalStateException("Cannot add partition " + topicPartition +
-                    " to transaction before completing a call to initTransactions");
+                        " to transaction before completing a call to initTransactions");
             } else if (currentState != State.IN_TRANSACTION) {
                 throw new IllegalStateException("Cannot add partition " + topicPartition +
-                    " to transaction while in state  " + currentState);
+                        " to transaction while in state  " + currentState);
             } else if (isTransactionV2Enabled()) {
                 txnPartitionMap.getOrCreate(topicPartition);
                 partitionsInTransaction.add(topicPartition);
@@ -503,11 +503,11 @@ public class TransactionManager {
     }
 
     /**
-     *  Check all the finalized features from apiVersions to verify whether the transaction V2 is enabled.
-     *  Sets clientSideEpochBumpRequired if upgrading to V2 since we need to bump the epoch.
-     *  This is because V2 no longer adds partitions explicitly and there are some edge cases on upgrade
-     *  that can be avoided by fencing the old V1 transaction epoch. For example, we won't consider
-     *  partitions from the previous transaction as already added to the new V2 transaction if the epoch is fenced.
+     * Check all the finalized features from apiVersions to verify whether the transaction V2 is enabled.
+     * Sets clientSideEpochBumpRequired if upgrading to V2 since we need to bump the epoch.
+     * This is because V2 no longer adds partitions explicitly and there are some edge cases on upgrade
+     * that can be avoided by fencing the old V1 transaction epoch. For example, we won't consider
+     * partitions from the previous transaction as already added to the new V2 transaction if the epoch is fenced.
      */
 
     public synchronized void maybeUpdateTransactionV2Enabled(boolean onInitiatialization) {
@@ -572,12 +572,12 @@ public class TransactionManager {
      * Transitions to an abortable error state if the coordinator can handle an abortable error or
      * to a fatal error if not.
      *
-     * @param abortableException    The exception in case of an abortable error.
-     * @param fatalException        The exception in case of a fatal error.
+     * @param abortableException The exception in case of an abortable error.
+     * @param fatalException     The exception in case of a fatal error.
      */
     private void transitionToAbortableErrorOrFatalError(
-        RuntimeException abortableException,
-        RuntimeException fatalException
+            RuntimeException abortableException,
+            RuntimeException fatalException
     ) {
         if (canHandleAbortableError()) {
             if (needToTriggerEpochBumpFromClient())
@@ -614,7 +614,7 @@ public class TransactionManager {
             // have completed, reset the partition sequence so that the next batch (with the new epoch) starts from 0
             txnPartitionMap.startSequencesAtBeginning(topicPartition, this.producerIdAndEpoch);
             log.debug("ProducerId of partition {} set to {} with epoch {}. Reinitialize sequence at beginning.",
-                      topicPartition, producerIdAndEpoch.producerId, producerIdAndEpoch.epoch);
+                    topicPartition, producerIdAndEpoch.producerId, producerIdAndEpoch.epoch);
         }
     }
 
@@ -724,9 +724,10 @@ public class TransactionManager {
     /**
      * Returns the first inflight sequence for a given partition. This is the base sequence of an inflight batch with
      * the lowest sequence number.
+     *
      * @return the lowest inflight sequence if the transaction manager is tracking inflight requests for this partition.
-     *         If there are no inflight requests being tracked for this partition, this method will return
-     *         RecordBatch.NO_SEQUENCE.
+     * If there are no inflight requests being tracked for this partition, this method will return
+     * RecordBatch.NO_SEQUENCE.
      */
     synchronized int firstInFlightSequence(TopicPartition topicPartition) {
         if (!hasInflightBatches(topicPartition))
@@ -861,7 +862,7 @@ public class TransactionManager {
     synchronized void markSequenceUnresolved(ProducerBatch batch) {
         int nextSequence = batch.lastSequence() + 1;
         partitionsWithUnresolvedSequences.compute(batch.topicPartition,
-            (k, v) -> v == null ? nextSequence : Math.max(v, nextSequence));
+                (k, v) -> v == null ? nextSequence : Math.max(v, nextSequence));
         log.debug("Marking partition {} unresolved with next sequence number {}", batch.topicPartition,
                 partitionsWithUnresolvedSequences.get(batch.topicPartition));
     }
@@ -1138,7 +1139,7 @@ public class TransactionManager {
 
     private void transitionTo(State target, RuntimeException error) {
         if (!currentState.isTransitionValid(currentState, target)) {
-            String idString = transactionalId == null ?  "" : "TransactionalId " + transactionalId + ": ";
+            String idString = transactionalId == null ? "" : "TransactionalId " + transactionalId + ": ";
             String message = idString + "Invalid transition attempted from state "
                     + currentState.name() + " to state " + target.name();
 
@@ -1232,10 +1233,10 @@ public class TransactionManager {
         pendingPartitionsInTransaction.addAll(newPartitionsInTransaction);
         newPartitionsInTransaction.clear();
         AddPartitionsToTxnRequest.Builder builder =
-            AddPartitionsToTxnRequest.Builder.forClient(transactionalId,
-                producerIdAndEpoch.producerId,
-                producerIdAndEpoch.epoch,
-                new ArrayList<>(pendingPartitionsInTransaction));
+                AddPartitionsToTxnRequest.Builder.forClient(transactionalId,
+                        producerIdAndEpoch.producerId,
+                        producerIdAndEpoch.epoch,
+                        new ArrayList<>(pendingPartitionsInTransaction));
         return new AddPartitionsToTxnHandler(builder);
     }
 
@@ -1250,16 +1251,16 @@ public class TransactionManager {
         }
 
         final TxnOffsetCommitRequestData data = new TxnOffsetCommitRequestData()
-            .setTransactionalId(transactionalId)
-            .setGroupId(groupMetadata.groupId())
-            .setProducerId(producerIdAndEpoch.producerId)
-            .setProducerEpoch(producerIdAndEpoch.epoch)
-            .setMemberId(groupMetadata.memberId())
-            .setGenerationIdOrMemberEpoch(groupMetadata.generationId())
-            .setGroupInstanceId(groupMetadata.groupInstanceId().orElse(null))
-            .setTopics(TxnOffsetCommitRequest.getTopics(pendingTxnOffsetCommits));
+                .setTransactionalId(transactionalId)
+                .setGroupId(groupMetadata.groupId())
+                .setProducerId(producerIdAndEpoch.producerId)
+                .setProducerEpoch(producerIdAndEpoch.epoch)
+                .setMemberId(groupMetadata.memberId())
+                .setGenerationIdOrMemberEpoch(groupMetadata.generationId())
+                .setGroupInstanceId(groupMetadata.groupInstanceId().orElse(null))
+                .setTopics(TxnOffsetCommitRequest.getTopics(pendingTxnOffsetCommits));
         final TxnOffsetCommitRequest.Builder builder =
-            TxnOffsetCommitRequest.Builder.forTopicNames(data, isTransactionV2Enabled());
+                TxnOffsetCommitRequest.Builder.forTopicNames(data, isTransactionV2Enabled());
         if (result == null) {
             // In this case, transaction V2 is in use.
             return new TxnOffsetCommitHandler(builder);
@@ -1273,16 +1274,16 @@ public class TransactionManager {
                 pendingTransition = null;
             } else {
                 throw new IllegalStateException("Cannot attempt operation `" + operation + "` "
-                    + "because the previous call to `" + pendingTransition.operation + "` "
-                    + "timed out and must be retried");
+                        + "because the previous call to `" + pendingTransition.operation + "` "
+                        + "timed out and must be retried");
             }
         }
     }
 
     private TransactionalRequestResult handleCachedTransactionRequestResult(
-        Supplier<TransactionalRequestResult> transactionalRequestResultSupplier,
-        State nextState,
-        String operation
+            Supplier<TransactionalRequestResult> transactionalRequestResultSupplier,
+            State nextState,
+            String operation
     ) {
         ensureTransactional();
 
@@ -1291,8 +1292,8 @@ public class TransactionManager {
                 pendingTransition = null;
             } else if (nextState != pendingTransition.state) {
                 throw new IllegalStateException("Cannot attempt operation `" + operation + "` "
-                    + "because the previous call to `" + pendingTransition.operation + "` "
-                    + "timed out and must be retried");
+                        + "because the previous call to `" + pendingTransition.operation + "` "
+                        + "timed out and must be retried");
             } else {
                 return pendingTransition.result;
             }
@@ -1388,14 +1389,15 @@ public class TransactionManager {
         /**
          * Determines if an error should be treated as abortable or fatal, based on transaction state and configuration.
          * <ol><l> NOTE: Only use this method for transactional producers </l></ol>
-         *
+         * <p>
          * - <b>Abortable Error</b>:
          *     An abortable error can be handled effectively, if epoch bumping is supported.
          *     1) If transactionV2 is enabled, automatic epoch bumping happens at the end of every transaction.
          *     2) If the client can trigger an epoch bump, the abortable error can be handled.
-         *
-         *- <b>Fatal Error</b>:
+         * <p>
+         * - <b>Fatal Error</b>:
          *      If epoch bumping is not supported, the system cannot recover and the error must be treated as fatal.
+         *
          * @param e the error to determine as either abortable or fatal.
          */
         void abortableErrorIfPossible(RuntimeException e) {
@@ -1520,14 +1522,14 @@ public class TransactionManager {
                 // If this is a transaction with keepPreparedTxn=true, transition directly
                 // to PREPARED_TRANSACTION state IFF there is an ongoing transaction.
                 if (builder.data.keepPreparedTxn() &&
-                    initProducerIdResponse.data().ongoingTxnProducerId() != RecordBatch.NO_PRODUCER_ID
+                        initProducerIdResponse.data().ongoingTxnProducerId() != RecordBatch.NO_PRODUCER_ID
                 ) {
                     transitionTo(State.PREPARED_TRANSACTION);
                     // Update the preparedTxnState with the ongoing pid and epoch from the response.
                     // This will be used to complete the transaction later.
                     TransactionManager.this.preparedTxnState = new ProducerIdAndEpoch(
-                        initProducerIdResponse.data().ongoingTxnProducerId(),
-                        initProducerIdResponse.data().ongoingTxnProducerEpoch()
+                            initProducerIdResponse.data().ongoingTxnProducerId(),
+                            initProducerIdResponse.data().ongoingTxnProducerEpoch()
                     );
                 } else {
                     transitionTo(State.READY);
@@ -1735,7 +1737,7 @@ public class TransactionManager {
                 abortableError(error.exception());
             } else {
                 fatalError(new KafkaException(String.format("Could not find a coordinator with type %s with key %s due to " +
-                        "unexpected error: %s", coordinatorType, key,
+                                "unexpected error: %s", coordinatorType, key,
                         coordinatorData.errorMessage())));
             }
         }
@@ -1779,8 +1781,8 @@ public class TransactionManager {
                 // occurring at the end of beginCompletingTransaction. The next transaction started should be TV2.
                 if (endTxnResponse.data().producerId() != -1) {
                     ProducerIdAndEpoch producerIdAndEpoch = new ProducerIdAndEpoch(
-                        endTxnResponse.data().producerId(),
-                        endTxnResponse.data().producerEpoch()
+                            endTxnResponse.data().producerId(),
+                            endTxnResponse.data().producerEpoch()
                     );
                     setProducerIdAndEpoch(producerIdAndEpoch);
                     resetSequenceNumbers();
@@ -1948,7 +1950,7 @@ public class TransactionManager {
                     // ILLEGAL_GENERATION. All four indicate a consumer group
                     // metadata mismatch and must abort the transaction.
                     abortableError(new CommitFailedException("Transaction offset Commit failed " +
-                        "due to consumer group metadata mismatch: " + error.exception().getMessage()));
+                            "due to consumer group metadata mismatch: " + error.exception().getMessage()));
                     break;
                 } else if (error == Errors.INVALID_PRODUCER_EPOCH
                         || error == Errors.PRODUCER_FENCED) {
@@ -1983,9 +1985,9 @@ public class TransactionManager {
         private final String operation;
 
         private PendingStateTransition(
-            TransactionalRequestResult result,
-            State state,
-            String operation
+                TransactionalRequestResult result,
+                State state,
+                String operation
         ) {
             this.result = result;
             this.state = state;

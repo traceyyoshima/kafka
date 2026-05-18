@@ -122,7 +122,7 @@ class BaseHashTable<T> {
             return null;
         } else if (cur instanceof Object[]) {
             T[] curArray = (T[]) cur;
-            for (int i =  0; i < curArray.length; i++) {
+            for (int i = 0; i < curArray.length; i++) {
                 T value = curArray[i];
                 if (value.equals(newObject)) {
                     curArray[i] = newObject;
@@ -140,7 +140,7 @@ class BaseHashTable<T> {
             return (T) cur;
         } else {
             size++;
-            elements[slot] = new Object[] {cur, newObject};
+            elements[slot] = new Object[]{cur, newObject};
             return null;
         }
     }

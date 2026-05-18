@@ -40,6 +40,7 @@ public class WorkerHandle {
 
     /**
      * Track the worker status during startup.
+     *
      * @return {@link Connect#herderTask()} to track or null
      */
     public Future<?> herderTask() {
@@ -49,7 +50,7 @@ public class WorkerHandle {
     /**
      * Create and start a new worker with the given properties.
      *
-     * @param name a name for this worker
+     * @param name             a name for this worker
      * @param workerProperties the worker properties
      * @return the worker's handle
      */
@@ -86,6 +87,7 @@ public class WorkerHandle {
      * Set a new timeout for REST requests to the worker, including health check requests.
      * Useful if a request is expected to block, since the time spent awaiting that request
      * can be reduced and test runtime bloat can be avoided.
+     *
      * @param timeoutMs the new timeout in milliseconds; must be positive
      */
     public void requestTimeout(long timeoutMs) {

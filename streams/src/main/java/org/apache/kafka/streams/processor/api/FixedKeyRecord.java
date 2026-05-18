@@ -25,11 +25,11 @@ import java.util.Objects;
 /**
  * A data class representing an incoming record with fixed key for processing in a {@link FixedKeyProcessor}
  * or a record to forward to downstream processors via {@link FixedKeyProcessorContext}.
- *
+ * <p>
  * This class encapsulates all the data attributes of a record: the key and value, but
  * also the timestamp of the record and any record headers.
  * Though key is not allowed to be changes.
- *
+ * <p>
  * This class is immutable, though the objects referenced in the attributes of this class
  * may themselves be mutable.
  *
@@ -52,8 +52,8 @@ public final class FixedKeyRecord<K, V> {
         this.value = value;
         if (timestamp < 0) {
             throw new StreamsException(
-                "Malformed Record",
-                new IllegalArgumentException("Timestamp may not be negative. Got: " + timestamp)
+                    "Malformed Record",
+                    new IllegalArgumentException("Timestamp may not be negative. Got: " + timestamp)
             );
         }
         this.timestamp = timestamp;
@@ -90,10 +90,10 @@ public final class FixedKeyRecord<K, V> {
 
     /**
      * A convenient way to produce a new record if you only need to change the value.
-     *
+     * <p>
      * Copies the attributes of this record with the value replaced.
      *
-     * @param value The value of the result record.
+     * @param value  The value of the result record.
      * @param <NewV> The type of the new record's value.
      * @return A new Record instance with all the same attributes (except that the value is replaced).
      */
@@ -103,7 +103,7 @@ public final class FixedKeyRecord<K, V> {
 
     /**
      * A convenient way to produce a new record if you only need to change the timestamp.
-     *
+     * <p>
      * Copies the attributes of this record with the timestamp replaced.
      *
      * @param timestamp The timestamp of the result record.
@@ -115,10 +115,10 @@ public final class FixedKeyRecord<K, V> {
 
     /**
      * A convenient way to produce a new record if you only need to change the headers.
-     *
+     * <p>
      * Copies the attributes of this record with the headers replaced.
      * Also makes a copy of the provided headers.
-     *
+     * <p>
      * See {@link FixedKeyProcessorContext#forward(FixedKeyRecord)} for
      * considerations around mutability of keys, values, and headers.
      *
@@ -132,11 +132,11 @@ public final class FixedKeyRecord<K, V> {
     @Override
     public String toString() {
         return "FixedKeyRecord{" +
-            "key=" + key +
-            ", value=" + value +
-            ", timestamp=" + timestamp +
-            ", headers=" + headers +
-            '}';
+                "key=" + key +
+                ", value=" + value +
+                ", timestamp=" + timestamp +
+                ", headers=" + headers +
+                '}';
     }
 
     @Override
@@ -145,9 +145,9 @@ public final class FixedKeyRecord<K, V> {
         if (o == null || getClass() != o.getClass()) return false;
         final FixedKeyRecord<?, ?> record = (FixedKeyRecord<?, ?>) o;
         return timestamp == record.timestamp &&
-            Objects.equals(key, record.key) &&
-            Objects.equals(value, record.value) &&
-            Objects.equals(headers, record.headers);
+                Objects.equals(key, record.key) &&
+                Objects.equals(value, record.value) &&
+                Objects.equals(headers, record.headers);
     }
 
     @Override

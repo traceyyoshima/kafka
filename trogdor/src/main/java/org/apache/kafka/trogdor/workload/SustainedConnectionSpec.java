@@ -29,41 +29,41 @@ import java.util.Set;
 
 /**
  * The specification for a benchmark that creates sustained connections.
- *
+ * <p>
  * An example JSON representation which will result in a test that creates 27 connections (9 of each), refreshes them
  * every 10 seconds using 2 threads, running against topic `topic1`, for a duration of 1 hour, and with various other
  * options set:
- *
+ * <p>
  * #{@code
- *   {
- *    "class": "org.apache.kafka.trogdor.workload.SustainedConnectionSpec",
- *    "durationMs": 3600000,
- *    "clientNode": "node0",
- *    "bootstrapServers": "localhost:9092",
- *    "commonClientConf": {
- *      "compression.type": "lz4",
- *      "auto.offset.reset": "earliest",
- *      "linger.ms": "100"
- *    },
- *    "keyGenerator": {
- *      "type": "sequential",
- *      "size": 4,
- *      "startOffset": 0
- *    },
- *    "valueGenerator": {
- *      "type": "uniformRandom",
- *      "size": 512,
- *      "seed": 0,
- *      "padding": 0
- *    },
- *    "producerConnectionCount": 9,
- *    "consumerConnectionCount": 9,
- *    "metadataConnectionCount": 9,
- *    "topicName": "test-topic1-1",
- *    "numThreads": 2,
- *    "refreshRateMs": 10000
- *   }
- *  }
+ * {
+ * "class": "org.apache.kafka.trogdor.workload.SustainedConnectionSpec",
+ * "durationMs": 3600000,
+ * "clientNode": "node0",
+ * "bootstrapServers": "localhost:9092",
+ * "commonClientConf": {
+ * "compression.type": "lz4",
+ * "auto.offset.reset": "earliest",
+ * "linger.ms": "100"
+ * },
+ * "keyGenerator": {
+ * "type": "sequential",
+ * "size": 4,
+ * "startOffset": 0
+ * },
+ * "valueGenerator": {
+ * "type": "uniformRandom",
+ * "size": 512,
+ * "seed": 0,
+ * "padding": 0
+ * },
+ * "producerConnectionCount": 9,
+ * "consumerConnectionCount": 9,
+ * "metadataConnectionCount": 9,
+ * "topicName": "test-topic1-1",
+ * "numThreads": 2,
+ * "refreshRateMs": 10000
+ * }
+ * }
  */
 public final class SustainedConnectionSpec extends TaskSpec {
     private final String clientNode;

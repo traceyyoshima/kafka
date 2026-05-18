@@ -41,7 +41,7 @@ public interface PluginMetrics {
      * Add a metric to monitor an object that implements {@link MetricValueProvider}. This metric won't be associated with any
      * sensor. This is a way to expose existing values as metrics.
      *
-     * @param metricName The name of the metric
+     * @param metricName          The name of the metric
      * @param metricValueProvider The metric value provider associated with this metric
      * @throws IllegalArgumentException if a metric with same name already exists
      */

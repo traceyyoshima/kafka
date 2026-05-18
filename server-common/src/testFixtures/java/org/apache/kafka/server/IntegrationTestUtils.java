@@ -61,8 +61,8 @@ public class IntegrationTestUtils {
     }
 
     public static <T extends AbstractResponse> T sendAndReceive(
-        AbstractRequest request,
-        Socket socket
+            AbstractRequest request,
+            Socket socket
     ) throws IOException {
         var header = nextRequestHeader(request.apiKey(), request.version());
         sendRequest(socket, Utils.toArray(request.serializeWithHeader(header)));
@@ -70,8 +70,8 @@ public class IntegrationTestUtils {
     }
 
     public static <T extends AbstractResponse> T connectAndReceive(
-        AbstractRequest request,
-        int port
+            AbstractRequest request,
+            int port
     ) throws IOException {
         try (Socket socket = connect(port)) {
             return sendAndReceive(request, socket);

@@ -47,7 +47,7 @@ import static org.apache.kafka.common.record.internal.Records.OFFSET_OFFSET;
  * {@link RecordBatch}, it also implements {@link Record}, which exposes the duality of the old message
  * format in its handling of compressed messages. The wrapper record is considered the record batch in this
  * interface, while the inner records are considered the log records (though they both share the same schema).
- *
+ * <p>
  * In general, this class should not be used directly. Instances of {@link Records} provides access to this
  * class indirectly through the {@link RecordBatch} interface.
  */
@@ -225,6 +225,7 @@ public abstract class AbstractLegacyRecordBatch extends AbstractRecordBatch impl
      * Get an iterator for the nested entries contained within this batch. Note that
      * if the batch is not compressed, then this method will return an iterator over the
      * shallow record only (i.e. this object).
+     *
      * @return An iterator over the records contained within this batch
      */
     @Override
@@ -240,7 +241,8 @@ public abstract class AbstractLegacyRecordBatch extends AbstractRecordBatch impl
             private boolean hasNext = true;
 
             @Override
-            public void close() {}
+            public void close() {
+            }
 
             @Override
             public boolean hasNext() {
@@ -413,7 +415,8 @@ public abstract class AbstractLegacyRecordBatch extends AbstractRecordBatch impl
         }
 
         @Override
-        public void close() {}
+        public void close() {
+        }
     }
 
     private static class BasicLegacyRecordBatch extends AbstractLegacyRecordBatch {
@@ -445,7 +448,7 @@ public abstract class AbstractLegacyRecordBatch extends AbstractRecordBatch impl
             BasicLegacyRecordBatch that = (BasicLegacyRecordBatch) o;
 
             return offset == that.offset &&
-                Objects.equals(record, that.record);
+                    Objects.equals(record, that.record);
         }
 
         @Override

@@ -28,9 +28,9 @@ public class SharePollEvent extends ApplicationEvent {
     private volatile boolean isComplete;
 
     /**
-     * @param deadlineMs        Time, in milliseconds, at which point the event must be completed; based on the
-     *                          {@link Duration} passed to {@link ShareConsumer#poll(Duration)}
-     * @param pollTimeMs        Time, in milliseconds, at which point the event was created
+     * @param deadlineMs Time, in milliseconds, at which point the event must be completed; based on the
+     *                   {@link Duration} passed to {@link ShareConsumer#poll(Duration)}
+     * @param pollTimeMs Time, in milliseconds, at which point the event was created
      */
     public SharePollEvent(final long deadlineMs, final long pollTimeMs) {
         super(Type.SHARE_POLL);
@@ -61,8 +61,8 @@ public class SharePollEvent extends ApplicationEvent {
     @Override
     public String toStringBase() {
         return super.toStringBase() +
-            ", deadlineMs=" + deadlineMs +
-            ", pollTimeMs=" + pollTimeMs +
-            ", isComplete=" + isComplete;
+                ", deadlineMs=" + deadlineMs +
+                ", pollTimeMs=" + pollTimeMs +
+                ", isComplete=" + isComplete;
     }
 }

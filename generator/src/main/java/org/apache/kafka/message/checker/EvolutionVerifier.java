@@ -26,8 +26,8 @@ public class EvolutionVerifier {
     private final MessageSpec topLevelMessage2;
 
     public EvolutionVerifier(
-        MessageSpec topLevelMessage1,
-        MessageSpec topLevelMessage2
+            MessageSpec topLevelMessage1,
+            MessageSpec topLevelMessage2
     ) {
         this.topLevelMessage1 = topLevelMessage1;
         this.topLevelMessage2 = topLevelMessage2;
@@ -44,31 +44,31 @@ public class EvolutionVerifier {
     static void verifyTopLevelMessages(MessageSpec topLevelMessage1, MessageSpec topLevelMessage2) {
         if (!topLevelMessage1.apiKey().equals(topLevelMessage2.apiKey())) {
             throw new EvolutionException("Initial apiKey " + topLevelMessage1.apiKey() +
-                " does not match final apiKey " + topLevelMessage2.apiKey());
+                    " does not match final apiKey " + topLevelMessage2.apiKey());
         }
         if (!topLevelMessage1.type().equals(topLevelMessage2.type())) {
             throw new EvolutionException("Initial type " + topLevelMessage1.type() +
-                " does not match final type " + topLevelMessage2.type());
+                    " does not match final type " + topLevelMessage2.type());
         }
         if (!topLevelMessage2.flexibleVersions().contains(topLevelMessage1.flexibleVersions())) {
             throw new EvolutionException("Initial flexibleVersions " + topLevelMessage1.flexibleVersions() +
-                " must be a subset of final flexibleVersions " + topLevelMessage2.flexibleVersions());
+                    " must be a subset of final flexibleVersions " + topLevelMessage2.flexibleVersions());
         }
         if (topLevelMessage2.validVersions().highest() < topLevelMessage1.validVersions().highest()) {
             throw new EvolutionException("Initial maximum valid version " +
-                topLevelMessage1.validVersions().highest() + " must not be higher than final " +
-                "maximum valid version " + topLevelMessage2.validVersions().highest());
+                    topLevelMessage1.validVersions().highest() + " must not be higher than final " +
+                    "maximum valid version " + topLevelMessage2.validVersions().highest());
         }
         if (topLevelMessage2.validVersions().lowest() < topLevelMessage1.validVersions().lowest()) {
             throw new EvolutionException("Initial minimum valid version " +
-                topLevelMessage1.validVersions().lowest() + " must not be higher than final " +
-                "minimum valid version " + topLevelMessage2.validVersions().lowest());
+                    topLevelMessage1.validVersions().lowest() + " must not be higher than final " +
+                    "minimum valid version " + topLevelMessage2.validVersions().lowest());
         }
     }
 
     static void verifyVersionsMatchTopLevelMessage(
-        String what,
-        MessageSpec topLevelMessage
+            String what,
+            MessageSpec topLevelMessage
     ) {
         for (FieldSpec field : topLevelMessage.fields()) {
             verifyVersionsMatchTopLevelMessage(what, topLevelMessage, field);
@@ -81,34 +81,34 @@ public class EvolutionVerifier {
     }
 
     static void verifyVersionsMatchTopLevelMessage(
-        String what,
-        MessageSpec topLevelMessage,
-        FieldSpec field
+            String what,
+            MessageSpec topLevelMessage,
+            FieldSpec field
     ) {
         if (topLevelMessage.validVersions().intersect(field.versions()).empty()) {
             throw new EvolutionException("Field " + field.name() + " in  " + what + " has versions " +
-                field.versions() + ", but the message versions are only " +
-                topLevelMessage.validVersions() + ".");
+                    field.versions() + ", but the message versions are only " +
+                    topLevelMessage.validVersions() + ".");
         }
         if (!field.nullableVersions().empty()) {
             if (topLevelMessage.validVersions().intersect(field.nullableVersions()).empty()) {
                 throw new EvolutionException("Field " + field.name() + " in  " + what +
-                    " has nullableVersions " + field.nullableVersions() + ", but the message " +
-                    "versions are only " + topLevelMessage.validVersions() + ".");
+                        " has nullableVersions " + field.nullableVersions() + ", but the message " +
+                        "versions are only " + topLevelMessage.validVersions() + ".");
             }
         }
         if (field.tag().isPresent()) {
             if (topLevelMessage.validVersions().intersect(field.taggedVersions()).empty()) {
                 throw new EvolutionException("Field " + field.name() + " in  " + what +
-                    " has taggedVersions " + field.taggedVersions() + ", but the message " +
-                    "versions are only " + topLevelMessage.validVersions() + ".");
+                        " has taggedVersions " + field.taggedVersions() + ", but the message " +
+                        "versions are only " + topLevelMessage.validVersions() + ".");
             }
         }
         field.flexibleVersions().ifPresent(v -> {
             if (topLevelMessage.validVersions().intersect(v).empty()) {
                 throw new EvolutionException("Field " + field.name() + " in  " + what +
-                    " has flexibleVersions " + v + ", but the message versions are only " +
-                    topLevelMessage.validVersions() + ".");
+                        " has flexibleVersions " + v + ", but the message versions are only " +
+                        topLevelMessage.validVersions() + ".");
             }
 
         });

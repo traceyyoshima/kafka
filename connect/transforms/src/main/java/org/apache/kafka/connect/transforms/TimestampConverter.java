@@ -133,6 +133,7 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
     }
 
     private static final Map<String, TimestampTranslator> TRANSLATORS = new HashMap<>();
+
     static {
         TRANSLATORS.put(TYPE_STRING, new TimestampTranslator() {
             @Override
@@ -167,11 +168,11 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
                     throw new DataException("Expected Unix timestamp to be a Long, but found " + orig.getClass());
                 return switch (config.unixPrecision) {
                     case UNIX_PRECISION_SECONDS ->
-                        Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.SECONDS.toMillis(unixTime));
+                            Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.SECONDS.toMillis(unixTime));
                     case UNIX_PRECISION_MICROS ->
-                        Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.MICROSECONDS.toMillis(unixTime));
+                            Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.MICROSECONDS.toMillis(unixTime));
                     case UNIX_PRECISION_NANOS ->
-                        Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.NANOSECONDS.toMillis(unixTime));
+                            Timestamp.toLogical(Timestamp.SCHEMA, TimeUnit.NANOSECONDS.toMillis(unixTime));
                     default -> Timestamp.toLogical(Timestamp.SCHEMA, unixTime);
                 };
             }
@@ -276,11 +277,13 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
             this.format = format;
             this.unixPrecision = unixPrecision;
         }
+
         String field;
         String type;
         SimpleDateFormat format;
         String unixPrecision;
     }
+
     private Config config;
     private Cache<Schema, Schema> schemaUpdateCache;
     private boolean replaceNullWithDefault;
@@ -478,7 +481,8 @@ public abstract class TimestampConverter<R extends ConnectRecord<R>> implements 
 
     /**
      * Convert the given timestamp to the target timestamp format.
-     * @param timestamp the input timestamp, may be null
+     *
+     * @param timestamp       the input timestamp, may be null
      * @param timestampFormat the format of the timestamp, or null if the format should be inferred
      * @return the converted timestamp
      */

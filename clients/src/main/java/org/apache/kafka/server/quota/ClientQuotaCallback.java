@@ -24,8 +24,8 @@ import java.util.Map;
 
 /**
  * Quota callback interface for brokers and controllers that enables customization of client quota computation.
- * Implement {@link org.apache.kafka.common.metrics.Monitorable} to enable the callback to register metrics. 
- * The following tags are automatically added to all metrics registered: 
+ * Implement {@link org.apache.kafka.common.metrics.Monitorable} to enable the callback to register metrics.
+ * The following tags are automatically added to all metrics registered:
  * <ul>
  *     <li><code>config</code> set to <code>client.quota.callback.class</code></li>
  *     <li><code>class</code> set to the ClientQuotaCallback class name</li>
@@ -101,9 +101,9 @@ public interface ClientQuotaCallback extends Configurable {
      * This is useful if quota computation takes partitions into account.
      * Topics that are being deleted will not be included in `cluster`.
      *
-     * @deprecated since 4.4 and should not be used any longer.
      * @param cluster Cluster metadata including partitions and their leaders if known
      * @return true if quotas have changed and metric configs may need to be updated
+     * @deprecated since 4.4 and should not be used any longer.
      */
     @Deprecated(since = "4.4", forRemoval = true)
     default boolean updateClusterMetadata(Cluster cluster) {

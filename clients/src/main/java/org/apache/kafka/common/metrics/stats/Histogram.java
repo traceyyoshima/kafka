@@ -124,8 +124,8 @@ public class Histogram {
          * Create a bin scheme with the specified number of bins that all have the same width.
          *
          * @param bins the number of bins; must be at least 2
-         * @param min the minimum value to be counted in the bins
-         * @param max the maximum value to be counted in the bins
+         * @param min  the minimum value to be counted in the bins
+         * @param max  the maximum value to be counted in the bins
          */
         public ConstantBinScheme(int bins, double min, double max) {
             if (bins < 2)
@@ -173,7 +173,7 @@ public class Histogram {
          * Create a linear bin scheme with the specified number of bins and the maximum value to be counted in the bins.
          *
          * @param numBins the number of bins; must be at least 2
-         * @param max the maximum value to be counted in the bins
+         * @param max     the maximum value to be counted in the bins
          */
         public LinearBinScheme(int numBins, double max) {
             if (numBins < 2)

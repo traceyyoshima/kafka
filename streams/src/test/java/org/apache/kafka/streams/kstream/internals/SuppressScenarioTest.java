@@ -77,7 +77,7 @@ public class SuppressScenarioTest {
     private static final Serde<String> STRING_SERDE = Serdes.String();
     private static final LongDeserializer LONG_DESERIALIZER = new LongDeserializer();
     private final Properties config = Utils.mkProperties(Utils.mkMap(
-        Utils.mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
+            Utils.mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath())
     ));
 
     @Test
@@ -85,24 +85,24 @@ public class SuppressScenarioTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KTable<String, Long> valueCounts = builder
-            .table(
-                "input",
-                Consumed.with(STRING_SERDE, STRING_SERDE),
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
-                    .withCachingDisabled()
-                    .withLoggingDisabled()
-            )
-            .groupBy((k, v) -> new KeyValue<>(v, k), Grouped.with(STRING_SERDE, STRING_SERDE))
-            .count();
+                .table(
+                        "input",
+                        Consumed.with(STRING_SERDE, STRING_SERDE),
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
+                                .withCachingDisabled()
+                                .withLoggingDisabled()
+                )
+                .groupBy((k, v) -> new KeyValue<>(v, k), Grouped.with(STRING_SERDE, STRING_SERDE))
+                .count();
 
         valueCounts
-            .suppress(untilTimeLimit(ZERO, unbounded()))
-            .toStream()
-            .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
+                .suppress(untilTimeLimit(ZERO, unbounded()))
+                .toStream()
+                .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
 
         valueCounts
-            .toStream()
-            .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
+                .toStream()
+                .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
 
         final Topology topology = builder.build();
 
@@ -113,50 +113,50 @@ public class SuppressScenarioTest {
             inputTopic.pipeInput("k1", "v2", 1L);
             inputTopic.pipeInput("k2", "v1", 2L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("v1", 1L, 0L),
-                    new KeyValueTimestamp<>("v1", 0L, 1L),
-                    new KeyValueTimestamp<>("v2", 1L, 1L),
-                    new KeyValueTimestamp<>("v1", 1L, 2L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("v1", 1L, 0L),
+                            new KeyValueTimestamp<>("v1", 0L, 1L),
+                            new KeyValueTimestamp<>("v2", 1L, 1L),
+                            new KeyValueTimestamp<>("v1", 1L, 2L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("v1", 1L, 0L),
-                    new KeyValueTimestamp<>("v1", 0L, 1L),
-                    new KeyValueTimestamp<>("v2", 1L, 1L),
-                    new KeyValueTimestamp<>("v1", 1L, 2L)
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("v1", 1L, 0L),
+                            new KeyValueTimestamp<>("v1", 0L, 1L),
+                            new KeyValueTimestamp<>("v2", 1L, 1L),
+                            new KeyValueTimestamp<>("v1", 1L, 2L)
+                    )
             );
             inputTopic.pipeInput("x", "x", 3L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(
-                    new KeyValueTimestamp<>("x", 1L, 3L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(
+                            new KeyValueTimestamp<>("x", 1L, 3L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(
-                    new KeyValueTimestamp<>("x", 1L, 3L)
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(
+                            new KeyValueTimestamp<>("x", 1L, 3L)
+                    )
             );
             inputTopic.pipeInput("x", "y", 4L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("x", 0L, 4L),
-                    new KeyValueTimestamp<>("y", 1L, 4L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("x", 0L, 4L),
+                            new KeyValueTimestamp<>("y", 1L, 4L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("x", 0L, 4L),
-                    new KeyValueTimestamp<>("y", 1L, 4L)
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("x", 0L, 4L),
+                            new KeyValueTimestamp<>("y", 1L, 4L)
+                    )
             );
         }
     }
@@ -165,22 +165,22 @@ public class SuppressScenarioTest {
     public void shouldSuppressIntermediateEventsWithTimeLimit() {
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<String, Long> valueCounts = builder
-            .table(
-                "input",
-                Consumed.with(STRING_SERDE, STRING_SERDE),
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
-                    .withCachingDisabled()
-                    .withLoggingDisabled()
-            )
-            .groupBy((k, v) -> new KeyValue<>(v, k), Grouped.with(STRING_SERDE, STRING_SERDE))
-            .count();
+                .table(
+                        "input",
+                        Consumed.with(STRING_SERDE, STRING_SERDE),
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
+                                .withCachingDisabled()
+                                .withLoggingDisabled()
+                )
+                .groupBy((k, v) -> new KeyValue<>(v, k), Grouped.with(STRING_SERDE, STRING_SERDE))
+                .count();
         valueCounts
-            .suppress(untilTimeLimit(ofMillis(2L), unbounded()))
-            .toStream()
-            .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
+                .suppress(untilTimeLimit(ofMillis(2L), unbounded()))
+                .toStream()
+                .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
         valueCounts
-            .toStream()
-            .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
+                .toStream()
+                .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
         final Topology topology = builder.build();
         try (final TopologyTestDriver driver = new TopologyTestDriver(topology, config)) {
             final TestInputTopic<String, String> inputTopic =
@@ -189,43 +189,43 @@ public class SuppressScenarioTest {
             inputTopic.pipeInput("k1", "v2", 1L);
             inputTopic.pipeInput("k2", "v1", 2L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("v1", 1L, 0L),
-                    new KeyValueTimestamp<>("v1", 0L, 1L),
-                    new KeyValueTimestamp<>("v2", 1L, 1L),
-                    new KeyValueTimestamp<>("v1", 1L, 2L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("v1", 1L, 0L),
+                            new KeyValueTimestamp<>("v1", 0L, 1L),
+                            new KeyValueTimestamp<>("v2", 1L, 1L),
+                            new KeyValueTimestamp<>("v1", 1L, 2L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("v1", 1L, 2L))
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("v1", 1L, 2L))
             );
             // inserting a dummy "tick" record just to advance stream time
             inputTopic.pipeInput("tick", "tick", 3L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("tick", 1L, 3L))
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("tick", 1L, 3L))
             );
             // the stream time is now 3, so it's time to emit this record
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("v2", 1L, 1L))
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("v2", 1L, 1L))
             );
 
 
             inputTopic.pipeInput("tick", "tock", 4L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("tick", 0L, 4L),
-                    new KeyValueTimestamp<>("tock", 1L, 4L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("tick", 0L, 4L),
+                            new KeyValueTimestamp<>("tock", 1L, 4L)
+                    )
             );
             // tick is still buffered, since it was first inserted at time 3, and it is only time 4 right now.
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                emptyList()
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    emptyList()
             );
         }
     }
@@ -234,22 +234,22 @@ public class SuppressScenarioTest {
     public void shouldSuppressIntermediateEventsWithRecordLimit() {
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<String, Long> valueCounts = builder
-            .table(
-                "input",
-                Consumed.with(STRING_SERDE, STRING_SERDE),
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
-                    .withCachingDisabled()
-                    .withLoggingDisabled()
-            )
-            .groupBy((k, v) -> new KeyValue<>(v, k), Grouped.with(STRING_SERDE, STRING_SERDE))
-            .count(Materialized.with(STRING_SERDE, Serdes.Long()));
+                .table(
+                        "input",
+                        Consumed.with(STRING_SERDE, STRING_SERDE),
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
+                                .withCachingDisabled()
+                                .withLoggingDisabled()
+                )
+                .groupBy((k, v) -> new KeyValue<>(v, k), Grouped.with(STRING_SERDE, STRING_SERDE))
+                .count(Materialized.with(STRING_SERDE, Serdes.Long()));
         valueCounts
-            .suppress(untilTimeLimit(ofMillis(Long.MAX_VALUE), maxRecords(1L).emitEarlyWhenFull()))
-            .toStream()
-            .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
+                .suppress(untilTimeLimit(ofMillis(Long.MAX_VALUE), maxRecords(1L).emitEarlyWhenFull()))
+                .toStream()
+                .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
         valueCounts
-            .toStream()
-            .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
+                .toStream()
+                .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
         final Topology topology = builder.build();
         System.out.println(topology.describe());
         try (final TopologyTestDriver driver = new TopologyTestDriver(topology, config)) {
@@ -259,36 +259,36 @@ public class SuppressScenarioTest {
             inputTopic.pipeInput("k1", "v2", 1L);
             inputTopic.pipeInput("k2", "v1", 2L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("v1", 1L, 0L),
-                    new KeyValueTimestamp<>("v1", 0L, 1L),
-                    new KeyValueTimestamp<>("v2", 1L, 1L),
-                    new KeyValueTimestamp<>("v1", 1L, 2L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("v1", 1L, 0L),
+                            new KeyValueTimestamp<>("v1", 0L, 1L),
+                            new KeyValueTimestamp<>("v2", 1L, 1L),
+                            new KeyValueTimestamp<>("v1", 1L, 2L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    // consecutive updates to v1 get suppressed into only the latter.
-                    new KeyValueTimestamp<>("v1", 0L, 1L),
-                    new KeyValueTimestamp<>("v2", 1L, 1L)
-                    // the last update won't be evicted until another key comes along.
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            // consecutive updates to v1 get suppressed into only the latter.
+                            new KeyValueTimestamp<>("v1", 0L, 1L),
+                            new KeyValueTimestamp<>("v2", 1L, 1L)
+                            // the last update won't be evicted until another key comes along.
+                    )
             );
             inputTopic.pipeInput("x", "x", 3L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(
-                    new KeyValueTimestamp<>("x", 1L, 3L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(
+                            new KeyValueTimestamp<>("x", 1L, 3L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(
-                    // now we see that last update to v1, but we won't see the update to x until it gets evicted
-                    new KeyValueTimestamp<>("v1", 1L, 2L)
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(
+                            // now we see that last update to v1, but we won't see the update to x until it gets evicted
+                            new KeyValueTimestamp<>("v1", 1L, 2L)
+                    )
             );
         }
     }
@@ -297,23 +297,23 @@ public class SuppressScenarioTest {
     public void shouldSuppressIntermediateEventsWithBytesLimit() {
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<String, Long> valueCounts = builder
-            .table(
-                "input",
-                Consumed.with(STRING_SERDE, STRING_SERDE),
-                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
-                    .withCachingDisabled()
-                    .withLoggingDisabled()
-            )
-            .groupBy((k, v) -> new KeyValue<>(v, k), Grouped.with(STRING_SERDE, STRING_SERDE))
-            .count();
+                .table(
+                        "input",
+                        Consumed.with(STRING_SERDE, STRING_SERDE),
+                        Materialized.<String, String, KeyValueStore<Bytes, byte[]>>with(STRING_SERDE, STRING_SERDE)
+                                .withCachingDisabled()
+                                .withLoggingDisabled()
+                )
+                .groupBy((k, v) -> new KeyValue<>(v, k), Grouped.with(STRING_SERDE, STRING_SERDE))
+                .count();
         valueCounts
-            // this is a bit brittle, but I happen to know that the entries are a little over 100 bytes in size.
-            .suppress(untilTimeLimit(ofMillis(Long.MAX_VALUE), maxBytes(200L).emitEarlyWhenFull()))
-            .toStream()
-            .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
+                // this is a bit brittle, but I happen to know that the entries are a little over 100 bytes in size.
+                .suppress(untilTimeLimit(ofMillis(Long.MAX_VALUE), maxBytes(200L).emitEarlyWhenFull()))
+                .toStream()
+                .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
         valueCounts
-            .toStream()
-            .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
+                .toStream()
+                .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
         final Topology topology = builder.build();
         System.out.println(topology.describe());
         try (final TopologyTestDriver driver = new TopologyTestDriver(topology, config)) {
@@ -323,36 +323,36 @@ public class SuppressScenarioTest {
             inputTopic.pipeInput("k1", "v2", 1L);
             inputTopic.pipeInput("k2", "v1", 2L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("v1", 1L, 0L),
-                    new KeyValueTimestamp<>("v1", 0L, 1L),
-                    new KeyValueTimestamp<>("v2", 1L, 1L),
-                    new KeyValueTimestamp<>("v1", 1L, 2L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("v1", 1L, 0L),
+                            new KeyValueTimestamp<>("v1", 0L, 1L),
+                            new KeyValueTimestamp<>("v2", 1L, 1L),
+                            new KeyValueTimestamp<>("v1", 1L, 2L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    // consecutive updates to v1 get suppressed into only the latter.
-                    new KeyValueTimestamp<>("v1", 0L, 1L),
-                    new KeyValueTimestamp<>("v2", 1L, 1L)
-                    // the last update won't be evicted until another key comes along.
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            // consecutive updates to v1 get suppressed into only the latter.
+                            new KeyValueTimestamp<>("v1", 0L, 1L),
+                            new KeyValueTimestamp<>("v2", 1L, 1L)
+                            // the last update won't be evicted until another key comes along.
+                    )
             );
             inputTopic.pipeInput("x", "x", 3L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(
-                    new KeyValueTimestamp<>("x", 1L, 3L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(
+                            new KeyValueTimestamp<>("x", 1L, 3L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(
-                    // now we see that last update to v1, but we won't see the update to x until it gets evicted
-                    new KeyValueTimestamp<>("v1", 1L, 2L)
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(
+                            // now we see that last update to v1, but we won't see the update to x until it gets evicted
+                            new KeyValueTimestamp<>("v1", 1L, 2L)
+                    )
             );
         }
     }
@@ -361,19 +361,19 @@ public class SuppressScenarioTest {
     public void shouldSupportFinalResultsForTimeWindows() {
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<Windowed<String>, Long> valueCounts = builder
-            .stream("input", Consumed.with(STRING_SERDE, STRING_SERDE))
-            .groupBy((String k, String v) -> k, Grouped.with(STRING_SERDE, STRING_SERDE))
-            .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(2L), ofMillis(1L)))
-            .count(Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("counts").withCachingDisabled());
+                .stream("input", Consumed.with(STRING_SERDE, STRING_SERDE))
+                .groupBy((String k, String v) -> k, Grouped.with(STRING_SERDE, STRING_SERDE))
+                .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(2L), ofMillis(1L)))
+                .count(Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("counts").withCachingDisabled());
         valueCounts
-            .suppress(untilWindowCloses(unbounded()))
-            .toStream()
-            .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
-            .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
+                .suppress(untilWindowCloses(unbounded()))
+                .toStream()
+                .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
+                .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
         valueCounts
-            .toStream()
-            .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
-            .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
+                .toStream()
+                .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
+                .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
         final Topology topology = builder.build();
         System.out.println(topology.describe());
         try (final TopologyTestDriver driver = new TopologyTestDriver(topology, config)) {
@@ -388,22 +388,22 @@ public class SuppressScenarioTest {
             // note this last record gets dropped because it is out of the grace period
             inputTopic.pipeInput("k1", "v1", 0L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("[k1@0/2]", 1L, 0L),
-                    new KeyValueTimestamp<>("[k1@0/2]", 2L, 1L),
-                    new KeyValueTimestamp<>("[k1@2/4]", 1L, 2L),
-                    new KeyValueTimestamp<>("[k1@0/2]", 3L, 1L),
-                    new KeyValueTimestamp<>("[k1@0/2]", 4L, 1L),
-                    new KeyValueTimestamp<>("[k1@4/6]", 1L, 5L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("[k1@0/2]", 1L, 0L),
+                            new KeyValueTimestamp<>("[k1@0/2]", 2L, 1L),
+                            new KeyValueTimestamp<>("[k1@2/4]", 1L, 2L),
+                            new KeyValueTimestamp<>("[k1@0/2]", 3L, 1L),
+                            new KeyValueTimestamp<>("[k1@0/2]", 4L, 1L),
+                            new KeyValueTimestamp<>("[k1@4/6]", 1L, 5L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("[k1@0/2]", 4L, 1L),
-                    new KeyValueTimestamp<>("[k1@2/4]", 1L, 2L)
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("[k1@0/2]", 4L, 1L),
+                            new KeyValueTimestamp<>("[k1@2/4]", 1L, 2L)
+                    )
             );
         }
     }
@@ -412,19 +412,19 @@ public class SuppressScenarioTest {
     public void shouldSupportFinalResultsForTimeWindowsWithLargeJump() {
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<Windowed<String>, Long> valueCounts = builder
-            .stream("input", Consumed.with(STRING_SERDE, STRING_SERDE))
-            .groupBy((String k, String v) -> k, Grouped.with(STRING_SERDE, STRING_SERDE))
-            .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(2L), ofMillis(2L)))
-            .count(Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("counts").withCachingDisabled().withKeySerde(STRING_SERDE));
+                .stream("input", Consumed.with(STRING_SERDE, STRING_SERDE))
+                .groupBy((String k, String v) -> k, Grouped.with(STRING_SERDE, STRING_SERDE))
+                .windowedBy(TimeWindows.ofSizeAndGrace(ofMillis(2L), ofMillis(2L)))
+                .count(Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("counts").withCachingDisabled().withKeySerde(STRING_SERDE));
         valueCounts
-            .suppress(untilWindowCloses(unbounded()))
-            .toStream()
-            .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
-            .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
+                .suppress(untilWindowCloses(unbounded()))
+                .toStream()
+                .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
+                .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
         valueCounts
-            .toStream()
-            .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
-            .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
+                .toStream()
+                .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
+                .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
         final Topology topology = builder.build();
         System.out.println(topology.describe());
         try (final TopologyTestDriver driver = new TopologyTestDriver(topology, config)) {
@@ -441,25 +441,25 @@ public class SuppressScenarioTest {
             inputTopic.pipeInput("k1", "v1", 0L);
             inputTopic.pipeInput("k1", "v1", 30L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("[k1@0/2]", 1L, 0L),
-                    new KeyValueTimestamp<>("[k1@0/2]", 2L, 1L),
-                    new KeyValueTimestamp<>("[k1@2/4]", 1L, 2L),
-                    new KeyValueTimestamp<>("[k1@0/2]", 3L, 1L),
-                    new KeyValueTimestamp<>("[k1@2/4]", 2L, 3L),
-                    new KeyValueTimestamp<>("[k1@0/2]", 4L, 1L),
-                    new KeyValueTimestamp<>("[k1@4/6]", 1L, 4L),
-                    new KeyValueTimestamp<>("[k1@30/32]", 1L, 30L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("[k1@0/2]", 1L, 0L),
+                            new KeyValueTimestamp<>("[k1@0/2]", 2L, 1L),
+                            new KeyValueTimestamp<>("[k1@2/4]", 1L, 2L),
+                            new KeyValueTimestamp<>("[k1@0/2]", 3L, 1L),
+                            new KeyValueTimestamp<>("[k1@2/4]", 2L, 3L),
+                            new KeyValueTimestamp<>("[k1@0/2]", 4L, 1L),
+                            new KeyValueTimestamp<>("[k1@4/6]", 1L, 4L),
+                            new KeyValueTimestamp<>("[k1@30/32]", 1L, 30L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("[k1@0/2]", 4L, 1L),
-                    new KeyValueTimestamp<>("[k1@2/4]", 2L, 3L),
-                    new KeyValueTimestamp<>("[k1@4/6]", 1L, 4L)
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("[k1@0/2]", 4L, 1L),
+                            new KeyValueTimestamp<>("[k1@2/4]", 2L, 3L),
+                            new KeyValueTimestamp<>("[k1@4/6]", 1L, 4L)
+                    )
             );
         }
     }
@@ -498,58 +498,58 @@ public class SuppressScenarioTest {
             // final record to advance stream time and flush windows
             inputTopic.pipeInput("k1", "v1", 90L);
             final Comparator<TestRecord<String, Long>> comparator =
-                Comparator.comparing((TestRecord<String, Long> o) -> o.getKey())
-                    .thenComparing((TestRecord<String, Long> o) -> o.timestamp());
+                    Comparator.comparing((TestRecord<String, Long> o) -> o.getKey())
+                            .thenComparing((TestRecord<String, Long> o) -> o.timestamp());
 
             final List<TestRecord<String, Long>> actual = drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER);
             actual.sort(comparator);
             verify(
-                actual,
-                asList(
-                    // right window for k1@10 created when k1@11 is processed
-                    new KeyValueTimestamp<>("[k1@11/16]", 1L, 11L),
-                    // right window for k1@10 updated when k1@13 is processed
-                    new KeyValueTimestamp<>("[k1@11/16]", 2L, 13L),
-                    // right window for k1@11 created when k1@13 is processed
-                    new KeyValueTimestamp<>("[k1@12/17]", 1L, 13L),
-                    // left window for k1@24 created when k1@24 is processed
-                    new KeyValueTimestamp<>("[k1@19/24]", 1L, 24L),
-                    // left window for k1@10 created when k1@10 is processed
-                    new KeyValueTimestamp<>("[k1@5/10]", 1L, 10L),
-                    // left window for k1@10 updated when k1@10 is processed
-                    new KeyValueTimestamp<>("[k1@5/10]", 2L, 10L),
-                    // left window for k1@10 updated when k1@10 is processed
-                    new KeyValueTimestamp<>("[k1@5/10]", 3L, 10L),
-                    // left window for k1@10 updated when k1@5 is processed
-                    new KeyValueTimestamp<>("[k1@5/10]", 4L, 10L),
-                    // left window for k1@10 updated when k1@7 is processed
-                    new KeyValueTimestamp<>("[k1@5/10]", 5L, 10L),
-                    // left window for k1@11 created when k1@11 is processed
-                    new KeyValueTimestamp<>("[k1@6/11]", 2L, 11L),
-                    // left window for k1@11 updated when k1@10 is processed
-                    new KeyValueTimestamp<>("[k1@6/11]", 3L, 11L),
-                    // left window for k1@11 updated when k1@10 is processed
-                    new KeyValueTimestamp<>("[k1@6/11]", 4L, 11L),
-                    // left window for k1@11 updated when k1@7 is processed
-                    new KeyValueTimestamp<>("[k1@6/11]", 5L, 11L),
-                    // left window for k1@13 created when k1@13 is processed
-                    new KeyValueTimestamp<>("[k1@8/13]", 4L, 13L),
-                    // left window for k1@13 updated when k1@10 is processed
-                    new KeyValueTimestamp<>("[k1@8/13]", 5L, 13L),
-                    // right window for k1@90 created when k1@90 is processed
-                    new KeyValueTimestamp<>("[k1@85/90]", 1L, 90L)
-                )
+                    actual,
+                    asList(
+                            // right window for k1@10 created when k1@11 is processed
+                            new KeyValueTimestamp<>("[k1@11/16]", 1L, 11L),
+                            // right window for k1@10 updated when k1@13 is processed
+                            new KeyValueTimestamp<>("[k1@11/16]", 2L, 13L),
+                            // right window for k1@11 created when k1@13 is processed
+                            new KeyValueTimestamp<>("[k1@12/17]", 1L, 13L),
+                            // left window for k1@24 created when k1@24 is processed
+                            new KeyValueTimestamp<>("[k1@19/24]", 1L, 24L),
+                            // left window for k1@10 created when k1@10 is processed
+                            new KeyValueTimestamp<>("[k1@5/10]", 1L, 10L),
+                            // left window for k1@10 updated when k1@10 is processed
+                            new KeyValueTimestamp<>("[k1@5/10]", 2L, 10L),
+                            // left window for k1@10 updated when k1@10 is processed
+                            new KeyValueTimestamp<>("[k1@5/10]", 3L, 10L),
+                            // left window for k1@10 updated when k1@5 is processed
+                            new KeyValueTimestamp<>("[k1@5/10]", 4L, 10L),
+                            // left window for k1@10 updated when k1@7 is processed
+                            new KeyValueTimestamp<>("[k1@5/10]", 5L, 10L),
+                            // left window for k1@11 created when k1@11 is processed
+                            new KeyValueTimestamp<>("[k1@6/11]", 2L, 11L),
+                            // left window for k1@11 updated when k1@10 is processed
+                            new KeyValueTimestamp<>("[k1@6/11]", 3L, 11L),
+                            // left window for k1@11 updated when k1@10 is processed
+                            new KeyValueTimestamp<>("[k1@6/11]", 4L, 11L),
+                            // left window for k1@11 updated when k1@7 is processed
+                            new KeyValueTimestamp<>("[k1@6/11]", 5L, 11L),
+                            // left window for k1@13 created when k1@13 is processed
+                            new KeyValueTimestamp<>("[k1@8/13]", 4L, 13L),
+                            // left window for k1@13 updated when k1@10 is processed
+                            new KeyValueTimestamp<>("[k1@8/13]", 5L, 13L),
+                            // right window for k1@90 created when k1@90 is processed
+                            new KeyValueTimestamp<>("[k1@85/90]", 1L, 90L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("[k1@5/10]", 5L, 10L),
-                    new KeyValueTimestamp<>("[k1@6/11]", 5L, 11L),
-                    new KeyValueTimestamp<>("[k1@8/13]", 5L, 13L),
-                    new KeyValueTimestamp<>("[k1@11/16]", 2L, 13L),
-                    new KeyValueTimestamp<>("[k1@12/17]", 1L, 13L),
-                    new KeyValueTimestamp<>("[k1@19/24]", 1L, 24L)
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("[k1@5/10]", 5L, 10L),
+                            new KeyValueTimestamp<>("[k1@6/11]", 5L, 11L),
+                            new KeyValueTimestamp<>("[k1@8/13]", 5L, 13L),
+                            new KeyValueTimestamp<>("[k1@11/16]", 2L, 13L),
+                            new KeyValueTimestamp<>("[k1@12/17]", 1L, 13L),
+                            new KeyValueTimestamp<>("[k1@19/24]", 1L, 24L)
+                    )
             );
         }
     }
@@ -558,19 +558,19 @@ public class SuppressScenarioTest {
     public void shouldSupportFinalResultsForSessionWindows() {
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<Windowed<String>, Long> valueCounts = builder
-            .stream("input", Consumed.with(STRING_SERDE, STRING_SERDE))
-            .groupBy((String k, String v) -> k, Grouped.with(STRING_SERDE, STRING_SERDE))
-            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(5L)))
-            .count(Materialized.<String, Long, SessionStore<Bytes, byte[]>>as("counts").withCachingDisabled());
+                .stream("input", Consumed.with(STRING_SERDE, STRING_SERDE))
+                .groupBy((String k, String v) -> k, Grouped.with(STRING_SERDE, STRING_SERDE))
+                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(ofMillis(5L)))
+                .count(Materialized.<String, Long, SessionStore<Bytes, byte[]>>as("counts").withCachingDisabled());
         valueCounts
-            .suppress(untilWindowCloses(unbounded()))
-            .toStream()
-            .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
-            .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
+                .suppress(untilWindowCloses(unbounded()))
+                .toStream()
+                .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
+                .to("output-suppressed", Produced.with(STRING_SERDE, Serdes.Long()));
         valueCounts
-            .toStream()
-            .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
-            .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
+                .toStream()
+                .map((final Windowed<String> k, final Long v) -> new KeyValue<>(k.toString(), v))
+                .to("output-raw", Produced.with(STRING_SERDE, Serdes.Long()));
         final Topology topology = builder.build();
         System.out.println(topology.describe());
         try (final TopologyTestDriver driver = new TopologyTestDriver(topology, config)) {
@@ -588,23 +588,23 @@ public class SuppressScenarioTest {
             // just pushing stream time forward to flush the other events through.
             inputTopic.pipeInput("k1", "v1", 30L);
             verify(
-                drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("[k1@0/0]", 1L, 0L),
-                    new KeyValueTimestamp<>("[k1@0/0]", null, 0L),
-                    new KeyValueTimestamp<>("[k1@0/5]", 2L, 5L),
-                    new KeyValueTimestamp<>("[k1@0/5]", null, 5L),
-                    new KeyValueTimestamp<>("[k1@0/5]", 3L, 5L),
-                    new KeyValueTimestamp<>("[k2@11/11]", 1L, 11L),
-                    new KeyValueTimestamp<>("[k1@30/30]", 1L, 30L)
-                )
+                    drainProducerRecords(driver, "output-raw", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("[k1@0/0]", 1L, 0L),
+                            new KeyValueTimestamp<>("[k1@0/0]", null, 0L),
+                            new KeyValueTimestamp<>("[k1@0/5]", 2L, 5L),
+                            new KeyValueTimestamp<>("[k1@0/5]", null, 5L),
+                            new KeyValueTimestamp<>("[k1@0/5]", 3L, 5L),
+                            new KeyValueTimestamp<>("[k2@11/11]", 1L, 11L),
+                            new KeyValueTimestamp<>("[k1@30/30]", 1L, 30L)
+                    )
             );
             verify(
-                drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("[k1@0/5]", 3L, 5L),
-                    new KeyValueTimestamp<>("[k2@11/11]", 1L, 11L)
-                )
+                    drainProducerRecords(driver, "output-suppressed", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("[k1@0/5]", 3L, 5L),
+                            new KeyValueTimestamp<>("[k2@11/11]", 1L, 11L)
+                    )
             );
         }
     }
@@ -614,23 +614,23 @@ public class SuppressScenarioTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder
-            .table("topic", Consumed.with(Serdes.String(), Serdes.String()))
-            .suppress(untilTimeLimit(ofMillis(10), unbounded()))
-            .groupBy(KeyValue::pair, Grouped.with(Serdes.String(), Serdes.String()))
-            .count()
-            .toStream()
-            .to("output", Produced.with(Serdes.String(), Serdes.Long()));
+                .table("topic", Consumed.with(Serdes.String(), Serdes.String()))
+                .suppress(untilTimeLimit(ofMillis(10), unbounded()))
+                .groupBy(KeyValue::pair, Grouped.with(Serdes.String(), Serdes.String()))
+                .count()
+                .toStream()
+                .to("output", Produced.with(Serdes.String(), Serdes.Long()));
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), config)) {
             final TestInputTopic<String, String> inputTopic =
-                driver.createInputTopic("topic", STRING_SERIALIZER, STRING_SERIALIZER);
+                    driver.createInputTopic("topic", STRING_SERIALIZER, STRING_SERIALIZER);
 
             inputTopic.pipeInput("A", "a", 0L);
             inputTopic.pipeInput("tick", "tick", 10L);
 
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, LONG_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("A", 1L, 0L))
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, LONG_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("A", 1L, 0L))
             );
         }
     }
@@ -640,20 +640,20 @@ public class SuppressScenarioTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KTable<String, String> left = builder
-            .table("left", Consumed.with(Serdes.String(), Serdes.String()));
+                .table("left", Consumed.with(Serdes.String(), Serdes.String()));
 
         final KTable<String, String> right = builder
-            .table("right", Consumed.with(Serdes.String(), Serdes.String()))
-            .suppress(untilTimeLimit(ofMillis(10), unbounded()));
+                .table("right", Consumed.with(Serdes.String(), Serdes.String()))
+                .suppress(untilTimeLimit(ofMillis(10), unbounded()));
 
         left
-            .outerJoin(right, (l, r) -> String.format("(%s,%s)", l, r))
-            .toStream()
-            .to("output", Produced.with(Serdes.String(), Serdes.String()));
+                .outerJoin(right, (l, r) -> String.format("(%s,%s)", l, r))
+                .toStream()
+                .to("output", Produced.with(Serdes.String(), Serdes.String()));
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), config)) {
             final TestInputTopic<String, String> inputTopicRight =
-                driver.createInputTopic("right", STRING_SERIALIZER, STRING_SERIALIZER);
+                    driver.createInputTopic("right", STRING_SERIALIZER, STRING_SERIALIZER);
             final TestInputTopic<String, String> inputTopicLeft =
                     driver.createInputTopic("left", STRING_SERIALIZER, STRING_SERIALIZER);
 
@@ -661,61 +661,61 @@ public class SuppressScenarioTest {
             inputTopicRight.pipeInput("A", "1", 0L);
             // buffered, no output
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                emptyList()
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    emptyList()
             );
 
 
             inputTopicRight.pipeInput("tick", "tick", 10L);
             // flush buffer
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("A", "(null,1)", 0L),
-                    new KeyValueTimestamp<>("B", "(null,1)", 0L)
-                )
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("A", "(null,1)", 0L),
+                            new KeyValueTimestamp<>("B", "(null,1)", 0L)
+                    )
             );
 
 
             inputTopicRight.pipeInput("A", "2", 11L);
             // buffered, no output
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                emptyList()
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    emptyList()
             );
 
 
             inputTopicLeft.pipeInput("A", "a", 12L);
             // should join with previously emitted right side
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("A", "(a,1)", 12L))
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("A", "(a,1)", 12L))
             );
 
 
             inputTopicLeft.pipeInput("B", "b", 12L);
             // should view through to the parent KTable, since B is no longer buffered
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("B", "(b,1)", 12L))
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("B", "(b,1)", 12L))
             );
 
 
             inputTopicLeft.pipeInput("A", "b", 13L);
             // should join with previously emitted right side
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("A", "(b,1)", 13L))
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("A", "(b,1)", 13L))
             );
 
 
             inputTopicRight.pipeInput("tick", "tick1", 21L);
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("tick", "(null,tick1)", 21), // just a testing artifact
-                    new KeyValueTimestamp<>("A", "(b,2)", 13L)
-                )
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("tick", "(null,tick1)", 21), // just a testing artifact
+                            new KeyValueTimestamp<>("A", "(b,2)", 13L)
+                    )
             );
         }
 
@@ -727,21 +727,21 @@ public class SuppressScenarioTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KTable<String, String> left = builder
-            .table("left", Consumed.with(Serdes.String(), Serdes.String()))
-            .suppress(untilTimeLimit(ofMillis(10), unbounded()));
+                .table("left", Consumed.with(Serdes.String(), Serdes.String()))
+                .suppress(untilTimeLimit(ofMillis(10), unbounded()));
 
         final KTable<String, String> right = builder
-            .table("right", Consumed.with(Serdes.String(), Serdes.String()));
+                .table("right", Consumed.with(Serdes.String(), Serdes.String()));
 
         left
-            .outerJoin(right, (l, r) -> String.format("(%s,%s)", l, r))
-            .toStream()
-            .to("output", Produced.with(Serdes.String(), Serdes.String()));
+                .outerJoin(right, (l, r) -> String.format("(%s,%s)", l, r))
+                .toStream()
+                .to("output", Produced.with(Serdes.String(), Serdes.String()));
 
         final Topology topology = builder.build();
         try (final TopologyTestDriver driver = new TopologyTestDriver(topology, config)) {
             final TestInputTopic<String, String> inputTopicRight =
-                driver.createInputTopic("right", STRING_SERIALIZER, STRING_SERIALIZER);
+                    driver.createInputTopic("right", STRING_SERIALIZER, STRING_SERIALIZER);
             final TestInputTopic<String, String> inputTopicLeft =
                     driver.createInputTopic("left", STRING_SERIALIZER, STRING_SERIALIZER);
 
@@ -749,61 +749,61 @@ public class SuppressScenarioTest {
             inputTopicLeft.pipeInput("A", "1", 0L);
             // buffered, no output
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                emptyList()
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    emptyList()
             );
 
 
             inputTopicLeft.pipeInput("tick", "tick", 10L);
             // flush buffer
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("A", "(1,null)", 0L),
-                    new KeyValueTimestamp<>("B", "(1,null)", 0L)
-                )
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("A", "(1,null)", 0L),
+                            new KeyValueTimestamp<>("B", "(1,null)", 0L)
+                    )
             );
 
 
             inputTopicLeft.pipeInput("A", "2", 11L);
             // buffered, no output
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                emptyList()
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    emptyList()
             );
 
 
             inputTopicRight.pipeInput("A", "a", 12L);
             // should join with previously emitted left side
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("A", "(1,a)", 12L))
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("A", "(1,a)", 12L))
             );
 
 
             inputTopicRight.pipeInput("B", "b", 12L);
             // should view through to the parent KTable, since B is no longer buffered
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("B", "(1,b)", 12L))
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("B", "(1,b)", 12L))
             );
 
 
             inputTopicRight.pipeInput("A", "b", 13L);
             // should join with previously emitted left side
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                singletonList(new KeyValueTimestamp<>("A", "(1,b)", 13L))
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    singletonList(new KeyValueTimestamp<>("A", "(1,b)", 13L))
             );
 
 
             inputTopicLeft.pipeInput("tick", "tick1", 21L);
             verify(
-                drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
-                asList(
-                    new KeyValueTimestamp<>("tick", "(tick1,null)", 21), // just a testing artifact
-                    new KeyValueTimestamp<>("A", "(2,b)", 13L)
-                )
+                    drainProducerRecords(driver, "output", STRING_DESERIALIZER, STRING_DESERIALIZER),
+                    asList(
+                            new KeyValueTimestamp<>("tick", "(tick1,null)", 21), // just a testing artifact
+                            new KeyValueTimestamp<>("A", "(2,b)", 13L)
+                    )
             );
         }
 
@@ -816,10 +816,10 @@ public class SuppressScenarioTest {
         final KGroupedStream<String, String> stream1 = builder.stream("one", Consumed.with(Serdes.String(), Serdes.String())).groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
         final KGroupedStream<String, String> stream2 = builder.stream("two", Consumed.with(Serdes.String(), Serdes.String())).groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
         stream1.cogroup((key, value, aggregate) -> aggregate + value).cogroup(stream2, (key, value, aggregate) -> aggregate + value)
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(15)))
-            .aggregate(() -> "", Named.as("test"), Materialized.as("store"))
-            .suppress(Suppressed.untilWindowCloses(unbounded()))
-            .toStream();
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(15)))
+                .aggregate(() -> "", Named.as("test"), Materialized.as("store"))
+                .suppress(Suppressed.untilWindowCloses(unbounded()))
+                .toStream();
     }
 
     @Test
@@ -829,10 +829,10 @@ public class SuppressScenarioTest {
         final KGroupedStream<String, String> stream1 = builder.stream("one", Consumed.with(Serdes.String(), Serdes.String())).groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
         final KGroupedStream<String, String> stream2 = builder.stream("two", Consumed.with(Serdes.String(), Serdes.String())).groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
         stream1.cogroup((key, value, aggregate) -> aggregate + value).cogroup(stream2, (key, value, aggregate) -> aggregate + value)
-            .windowedBy(SlidingWindows.ofTimeDifferenceWithNoGrace(Duration.ofMinutes(15)))
-            .aggregate(() -> "", Named.as("test"), Materialized.as("store"))
-            .suppress(Suppressed.untilWindowCloses(unbounded()))
-            .toStream();
+                .windowedBy(SlidingWindows.ofTimeDifferenceWithNoGrace(Duration.ofMinutes(15)))
+                .aggregate(() -> "", Named.as("test"), Materialized.as("store"))
+                .suppress(Suppressed.untilWindowCloses(unbounded()))
+                .toStream();
     }
 
     @Test
@@ -842,10 +842,10 @@ public class SuppressScenarioTest {
         final KGroupedStream<String, String> stream1 = builder.stream("one", Consumed.with(Serdes.String(), Serdes.String())).groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
         final KGroupedStream<String, String> stream2 = builder.stream("two", Consumed.with(Serdes.String(), Serdes.String())).groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
         stream1.cogroup((key, value, aggregate) -> aggregate + value).cogroup(stream2, (key, value, aggregate) -> aggregate + value)
-            .windowedBy(SessionWindows.ofInactivityGapAndGrace(Duration.ofMinutes(15), Duration.ofMinutes(5)))
-            .aggregate(() -> "", (k, v1, v2) -> "", Named.as("test"), Materialized.as("store"))
-            .suppress(Suppressed.untilWindowCloses(unbounded()))
-            .toStream();
+                .windowedBy(SessionWindows.ofInactivityGapAndGrace(Duration.ofMinutes(15), Duration.ofMinutes(5)))
+                .aggregate(() -> "", (k, v1, v2) -> "", Named.as("test"), Materialized.as("store"))
+                .suppress(Suppressed.untilWindowCloses(unbounded()))
+                .toStream();
     }
 
     private static <K, V> void verify(final List<TestRecord<K, V>> results,

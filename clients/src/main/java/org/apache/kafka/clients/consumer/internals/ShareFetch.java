@@ -59,7 +59,7 @@ public class ShareFetch<K, V> {
      * {@link #records() records}.
      *
      * @param partition the topic-partition
-     * @param batch the batch to add; may not be null
+     * @param batch     the batch to add; may not be null
      */
     public void add(TopicIdPartition partition, ShareInFlightBatch<K, V> batch) {
         Objects.requireNonNull(batch);
@@ -153,7 +153,7 @@ public class ShareFetch<K, V> {
      * Acknowledge a single record in the current batch.
      *
      * @param record The record to acknowledge
-     * @param type The acknowledge type which indicates whether it was processed successfully
+     * @param type   The acknowledge type which indicates whether it was processed successfully
      */
     public void acknowledge(final ConsumerRecord<K, V> record, final AcknowledgeType type) {
         for (Map.Entry<TopicIdPartition, ShareInFlightBatch<K, V>> tipBatch : batches.entrySet()) {
@@ -181,8 +181,8 @@ public class ShareFetch<K, V> {
             TopicIdPartition tip = tipBatch.getKey();
             ShareInFlightBatchException exception = tipBatch.getValue().getException();
             if (tip.topic().equals(topic) && (tip.partition() == partition) &&
-                exception != null &&
-                exception.offsets().contains(offset)) {
+                    exception != null &&
+                    exception.offsets().contains(offset)) {
 
                 tipBatch.getValue().addAcknowledgement(offset, type);
                 return;
@@ -243,7 +243,6 @@ public class ShareFetch<K, V> {
      * @param acknowledgementsMap      Map from topic-partition to acknowledgements for
      *                                 completed renew acknowledgements
      * @param acquisitionLockTimeoutMs Optional updated acquisition lock timeout
-     *
      * @return The number of records renewed
      */
     public int renew(Map<TopicIdPartition, Acknowledgements> acknowledgementsMap, Optional<Integer> acquisitionLockTimeoutMs) {

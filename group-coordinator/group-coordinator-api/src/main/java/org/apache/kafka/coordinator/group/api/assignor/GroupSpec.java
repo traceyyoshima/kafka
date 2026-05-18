@@ -38,10 +38,10 @@ public interface GroupSpec {
      * Determine whether a topic id and partition have been assigned to
      * a member. This method functions the same for all types of groups.
      *
-     * @param topicId           Uuid corresponding to the partition's topic.
-     * @param partitionId       Partition Id within topic.
+     * @param topicId     Uuid corresponding to the partition's topic.
+     * @param partitionId Partition Id within topic.
      * @return True, if the partition is currently assigned to a member.
-     *         False, otherwise.
+     * False, otherwise.
      */
     boolean isPartitionAssigned(Uuid topicId, int partitionId);
 
@@ -50,8 +50,8 @@ public interface GroupSpec {
      * For other group types, this initialization is not required and all partitions returned
      * by the SubscribedTopicDescriber are always assignable.
      *
-     * @param topicId           Uuid corresponding to the partition's topic.
-     * @param partitionId       Partition Id within topic.
+     * @param topicId     Uuid corresponding to the partition's topic.
+     * @param partitionId Partition Id within topic.
      * @return True, if the partition is assignable.
      */
     boolean isPartitionAssignable(Uuid topicId, int partitionId);
@@ -70,7 +70,7 @@ public interface GroupSpec {
      *
      * @param memberId The member Id.
      * @return The member's assignment or an empty assignment if the
-     *         member does not have one.
+     * member does not have one.
      */
     MemberAssignment memberAssignment(String memberId);
 }

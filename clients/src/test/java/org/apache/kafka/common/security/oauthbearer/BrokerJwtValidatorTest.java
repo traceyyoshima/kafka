@@ -56,8 +56,8 @@ public class BrokerJwtValidatorTest extends JwtValidatorTest {
         PublicJsonWebKey jwk = createRsaJwk();
 
         assertThrowsWithMessage(InvalidAlgorithmException.class,
-            () -> testEncryptionAlgorithm(jwk, "fake"),
-            "fake is an unknown, unsupported or unavailable alg algorithm");
+                () -> testEncryptionAlgorithm(jwk, "fake"),
+                "fake is an unknown, unsupported or unavailable alg algorithm");
     }
 
     @Test
@@ -66,11 +66,11 @@ public class BrokerJwtValidatorTest extends JwtValidatorTest {
         String subject = "otherSub";
         PublicJsonWebKey jwk = createRsaJwk();
         AccessTokenBuilder tokenBuilder = new AccessTokenBuilder()
-            .jwk(jwk)
-            .alg(AlgorithmIdentifiers.RSA_USING_SHA256)
-            .addCustomClaim(subClaimName, subject)
-            .subjectClaimName(subClaimName)
-            .subject(null);
+                .jwk(jwk)
+                .alg(AlgorithmIdentifiers.RSA_USING_SHA256)
+                .addCustomClaim(subClaimName, subject)
+                .subjectClaimName(subClaimName)
+                .subject(null);
         JwtValidator validator = createJwtValidator(tokenBuilder);
         Map<String, ?> saslConfigs = getSaslConfigs(SaslConfigs.SASL_OAUTHBEARER_SUB_CLAIM_NAME, subClaimName);
         validator.configure(saslConfigs, OAUTHBEARER_MECHANISM, getJaasConfigEntries());

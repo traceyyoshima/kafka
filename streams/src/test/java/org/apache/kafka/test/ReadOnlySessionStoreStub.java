@@ -107,27 +107,27 @@ public class ReadOnlySessionStoreStub<K, V> implements ReadOnlySessionStore<K, V
         }
         final Iterator<List<KeyValue<Windowed<K>, V>>> keysIterator = subSessionsMap.values().iterator();
         return new KeyValueIteratorStub<>(
-            new Iterator<>() {
+                new Iterator<>() {
 
-                Iterator<KeyValue<Windowed<K>, V>> it;
+                    Iterator<KeyValue<Windowed<K>, V>> it;
 
-                @Override
-                public boolean hasNext() {
-                    while (it == null || !it.hasNext()) {
-                        if (!keysIterator.hasNext()) {
-                            return false;
+                    @Override
+                    public boolean hasNext() {
+                        while (it == null || !it.hasNext()) {
+                            if (!keysIterator.hasNext()) {
+                                return false;
+                            }
+                            it = keysIterator.next().iterator();
                         }
-                        it = keysIterator.next().iterator();
+                        return true;
                     }
-                    return true;
-                }
 
-                @Override
-                public KeyValue<Windowed<K>, V> next() {
-                    return it.next();
-                }
+                    @Override
+                    public KeyValue<Windowed<K>, V> next() {
+                        return it.next();
+                    }
 
-            }
+                }
         );
     }
 
@@ -159,26 +159,26 @@ public class ReadOnlySessionStoreStub<K, V> implements ReadOnlySessionStore<K, V
 
         final Iterator<List<KeyValue<Windowed<K>, V>>> keysIterator = subSessionsMap.descendingMap().values().iterator();
         return new KeyValueIteratorStub<>(
-            new Iterator<>() {
+                new Iterator<>() {
 
-                Iterator<KeyValue<Windowed<K>, V>> it;
+                    Iterator<KeyValue<Windowed<K>, V>> it;
 
-                @Override
-                public boolean hasNext() {
-                    while (it == null || !it.hasNext()) {
-                        if (!keysIterator.hasNext()) {
-                            return false;
+                    @Override
+                    public boolean hasNext() {
+                        while (it == null || !it.hasNext()) {
+                            if (!keysIterator.hasNext()) {
+                                return false;
+                            }
+                            it = keysIterator.next().iterator();
                         }
-                        it = keysIterator.next().iterator();
+                        return true;
                     }
-                    return true;
-                }
 
-                @Override
-                public KeyValue<Windowed<K>, V> next() {
-                    return it.next();
+                    @Override
+                    public KeyValue<Windowed<K>, V> next() {
+                        return it.next();
+                    }
                 }
-            }
         );
     }
 
@@ -188,7 +188,8 @@ public class ReadOnlySessionStoreStub<K, V> implements ReadOnlySessionStore<K, V
     }
 
     @Override
-    public void init(StateStoreContext stateStoreContext, StateStore root) {}
+    public void init(StateStoreContext stateStoreContext, StateStore root) {
+    }
 
     @Override
     public void commit(final Map<TopicPartition, Long> changelogOffsets) {

@@ -49,7 +49,7 @@ public class TopicCreation {
     }
 
     public static TopicCreation newTopicCreation(WorkerConfig workerConfig,
-            Map<String, TopicCreationGroup> topicGroups) {
+                                                 Map<String, TopicCreationGroup> topicGroups) {
         if (!workerConfig.topicCreationEnable() || topicGroups == null) {
             return EMPTY;
         }
@@ -132,7 +132,6 @@ public class TopicCreation {
      * creation group.
      *
      * @param topic the topic name to match against group configurations
-     *
      * @return the first group that matches the given topic
      */
     public TopicCreationGroup findFirstGroup(String topic) {

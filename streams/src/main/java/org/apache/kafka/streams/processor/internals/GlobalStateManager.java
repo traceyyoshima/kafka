@@ -26,7 +26,7 @@ public interface GlobalStateManager extends StateManager {
 
     /**
      * @throws IllegalStateException If store gets registered after initialized is already finished
-     * @throws StreamsException if the store's change log does not contain the partition
+     * @throws StreamsException      if the store's change log does not contain the partition
      */
     Set<String> initialize();
 }

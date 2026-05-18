@@ -97,18 +97,18 @@ public class SourceNodeTest {
     public void shouldExposeProcessMetrics() {
         final Metrics metrics = new Metrics();
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(metrics, "test-client", new MockTime());
+                new StreamsMetricsImpl(metrics, "test-client", new MockTime());
         final InternalMockProcessorContext<String, String> context = new InternalMockProcessorContext<>(streamsMetrics);
         final SourceNode<String, String> node =
-            new SourceNode<>(context.currentNode().name(), new TheDeserializer(), new TheDeserializer());
+                new SourceNode<>(context.currentNode().name(), new TheDeserializer(), new TheDeserializer());
         node.init(context);
 
         final String threadId = Thread.currentThread().getName();
         final String groupName = "stream-processor-node-metrics";
         final Map<String, String> metricTags = mkMap(
-            mkEntry("thread-id", threadId),
-            mkEntry("task-id", context.taskId().toString()),
-            mkEntry("processor-node-id", node.name())
+                mkEntry("thread-id", threadId),
+                mkEntry("task-id", context.taskId().toString()),
+                mkEntry("processor-node-id", node.name())
         );
 
         assertTrue(StreamsTestUtils.containsMetric(metrics, "process-rate", groupName, metricTags));
@@ -122,11 +122,11 @@ public class SourceNodeTest {
 
         final String sensorNamePrefix = "internal." + threadId + ".task." + context.taskId().toString();
         final Sensor processSensor =
-            metrics.getSensor(sensorNamePrefix + ".node." + context.currentNode().name() + ".s.process");
+                metrics.getSensor(sensorNamePrefix + ".node." + context.currentNode().name() + ".s.process");
         final SensorAccessor sensorAccessor = new SensorAccessor(processSensor);
         assertThat(
-            sensorAccessor.parents().stream().map(Sensor::name).collect(Collectors.toList()),
-            contains(sensorNamePrefix + ".s.process")
+                sensorAccessor.parents().stream().map(Sensor::name).collect(Collectors.toList()),
+                contains(sensorNamePrefix + ".s.process")
         );
     }
 
@@ -135,20 +135,20 @@ public class SourceNodeTest {
         final InternalMockProcessorContext<String, String> context = new InternalMockProcessorContext<>();
 
         final SourceNode<String, String> node =
-            new SourceNode<>(context.currentNode().name(), new TheDeserializer(), new TheDeserializer());
+                new SourceNode<>(context.currentNode().name(), new TheDeserializer(), new TheDeserializer());
 
         utilsMock.when(() -> WrappingNullableUtils.prepareKeyDeserializer(any(), any()))
-            .thenThrow(new ConfigException("Please set StreamsConfig#DEFAULT_KEY_SERDE_CLASS_CONFIG"));
+                .thenThrow(new ConfigException("Please set StreamsConfig#DEFAULT_KEY_SERDE_CLASS_CONFIG"));
 
         final Throwable exception = assertThrows(StreamsException.class, () -> node.init(context));
 
         assertThat(
-            exception.getMessage(),
-            equalTo("Failed to initialize key serdes for source node TESTING_NODE")
+                exception.getMessage(),
+                equalTo("Failed to initialize key serdes for source node TESTING_NODE")
         );
         assertThat(
-            exception.getCause().getMessage(),
-            equalTo("Please set StreamsConfig#DEFAULT_KEY_SERDE_CLASS_CONFIG")
+                exception.getCause().getMessage(),
+                equalTo("Please set StreamsConfig#DEFAULT_KEY_SERDE_CLASS_CONFIG")
         );
     }
 
@@ -157,20 +157,20 @@ public class SourceNodeTest {
         final InternalMockProcessorContext<String, String> context = new InternalMockProcessorContext<>();
 
         final SourceNode<String, String> node =
-            new SourceNode<>(context.currentNode().name(), new TheDeserializer(), new TheDeserializer());
+                new SourceNode<>(context.currentNode().name(), new TheDeserializer(), new TheDeserializer());
 
         utilsMock.when(() -> WrappingNullableUtils.prepareValueDeserializer(any(), any()))
-            .thenThrow(new ConfigException("Please set StreamsConfig#DEFAULT_VALUE_SERDE_CLASS_CONFIG"));
+                .thenThrow(new ConfigException("Please set StreamsConfig#DEFAULT_VALUE_SERDE_CLASS_CONFIG"));
 
         final Throwable exception = assertThrows(StreamsException.class, () -> node.init(context));
 
         assertThat(
-            exception.getMessage(),
-            equalTo("Failed to initialize value serdes for source node TESTING_NODE")
+                exception.getMessage(),
+                equalTo("Failed to initialize value serdes for source node TESTING_NODE")
         );
         assertThat(
-            exception.getCause().getMessage(),
-            equalTo("Please set StreamsConfig#DEFAULT_VALUE_SERDE_CLASS_CONFIG")
+                exception.getCause().getMessage(),
+                equalTo("Please set StreamsConfig#DEFAULT_VALUE_SERDE_CLASS_CONFIG")
         );
     }
 
@@ -179,7 +179,7 @@ public class SourceNodeTest {
         final InternalMockProcessorContext<String, String> context = new InternalMockProcessorContext<>();
 
         final SourceNode<String, String> node =
-            new SourceNode<>(context.currentNode().name(), new TheDeserializer(), new TheDeserializer());
+                new SourceNode<>(context.currentNode().name(), new TheDeserializer(), new TheDeserializer());
 
         utilsMock.when(() -> WrappingNullableUtils.prepareKeyDeserializer(any(), any())).thenThrow(new StreamsException(""));
 

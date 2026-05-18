@@ -45,7 +45,7 @@ public class DynamicProducerStateManagerConfig implements BrokerReconfigurable {
         TransactionLogConfig transactionLogConfig = new TransactionLogConfig(newConfig);
         if (transactionLogConfig.producerIdExpirationMs() < 0)
             throw new ConfigException(TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_CONFIG + "cannot be less than 0, current value is " +
-                                      producerStateManagerConfig.producerIdExpirationMs() + ", and new value is " + transactionLogConfig.producerIdExpirationMs());
+                    producerStateManagerConfig.producerIdExpirationMs() + ", and new value is " + transactionLogConfig.producerIdExpirationMs());
     }
 
     @Override
@@ -53,16 +53,16 @@ public class DynamicProducerStateManagerConfig implements BrokerReconfigurable {
         TransactionLogConfig transactionLogConfig = new TransactionLogConfig(newConfig);
         if (producerStateManagerConfig.producerIdExpirationMs() != transactionLogConfig.producerIdExpirationMs()) {
             log.info("Reconfigure {} from {} to {}",
-                TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_CONFIG,
-                producerStateManagerConfig.producerIdExpirationMs(),
-                transactionLogConfig.producerIdExpirationMs());
+                    TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_CONFIG,
+                    producerStateManagerConfig.producerIdExpirationMs(),
+                    transactionLogConfig.producerIdExpirationMs());
             producerStateManagerConfig.setProducerIdExpirationMs(transactionLogConfig.producerIdExpirationMs());
         }
         if (producerStateManagerConfig.transactionVerificationEnabled() != transactionLogConfig.transactionPartitionVerificationEnable()) {
             log.info("Reconfigure {} from {} to {}",
-                TransactionLogConfig.TRANSACTION_PARTITION_VERIFICATION_ENABLE_CONFIG,
-                producerStateManagerConfig.transactionVerificationEnabled(),
-                transactionLogConfig.transactionPartitionVerificationEnable());
+                    TransactionLogConfig.TRANSACTION_PARTITION_VERIFICATION_ENABLE_CONFIG,
+                    producerStateManagerConfig.transactionVerificationEnabled(),
+                    transactionLogConfig.transactionPartitionVerificationEnable());
             producerStateManagerConfig.setTransactionVerificationEnabled(transactionLogConfig.transactionPartitionVerificationEnable());
         }
     }

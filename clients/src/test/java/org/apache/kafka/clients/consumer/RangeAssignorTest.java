@@ -314,14 +314,14 @@ public class RangeAssignorTest {
         }
         Map<String, List<TopicPartition>> expectedInstanceAssignment = new HashMap<>();
         expectedInstanceAssignment.put(instance1,
-                                       partitions(tp(topic1, 0), tp(topic1, 1), tp(topic2, 0), tp(topic2, 1)));
+                partitions(tp(topic1, 0), tp(topic1, 1), tp(topic2, 0), tp(topic2, 1)));
         expectedInstanceAssignment.put(instance2,
-                                       partitions(tp(topic1, 2), tp(topic1, 3), tp(topic2, 2), tp(topic2, 3)));
+                partitions(tp(topic1, 2), tp(topic1, 3), tp(topic2, 2), tp(topic2, 3)));
         expectedInstanceAssignment.put(instance3,
-                                       partitions(tp(topic1, 4), tp(topic2, 4)));
+                partitions(tp(topic1, 4), tp(topic2, 4)));
 
         Map<String, List<TopicPartition>> staticAssignment =
-            checkStaticAssignment(assignor, partitionsPerTopic, consumers);
+                checkStaticAssignment(assignor, partitionsPerTopic, consumers);
         assertEquals(expectedInstanceAssignment, staticAssignment);
 
         // Now switch the member.id fields for each member info, the assignment should
@@ -334,7 +334,7 @@ public class RangeAssignorTest {
         consumers.remove(consumer2);
 
         Map<String, List<TopicPartition>> newStaticAssignment =
-            checkStaticAssignment(assignor, partitionsPerTopic, consumers);
+                checkStaticAssignment(assignor, partitionsPerTopic, consumers);
         assertEquals(staticAssignment, newStaticAssignment);
     }
 
@@ -345,7 +345,7 @@ public class RangeAssignorTest {
         int replicationFactor = 2;
         int numBrokerRacks = 3;
         partitionsPerTopic.put(topic1, AbstractPartitionAssignorTest.partitionInfos(topic1, 5, replicationFactor, numBrokerRacks, 0));
-        partitionsPerTopic.put(topic2,  AbstractPartitionAssignorTest.partitionInfos(topic2, 5, replicationFactor, numBrokerRacks, 0));
+        partitionsPerTopic.put(topic2, AbstractPartitionAssignorTest.partitionInfos(topic2, 5, replicationFactor, numBrokerRacks, 0));
         List<MemberInfo> staticMemberInfos = new ArrayList<>();
         staticMemberInfos.add(new MemberInfo(consumer1, Optional.of(instance1), Optional.of(ALL_RACKS[0])));
         staticMemberInfos.add(new MemberInfo(consumer2, Optional.of(instance2), Optional.of(ALL_RACKS[1])));

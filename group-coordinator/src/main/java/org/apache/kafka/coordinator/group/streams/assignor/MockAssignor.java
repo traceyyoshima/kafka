@@ -43,8 +43,8 @@ public class MockAssignor implements TaskAssignor {
 
     @Override
     public GroupAssignment assign(
-        final GroupSpec groupSpec,
-        final TopologyDescriber topologyDescriber
+            final GroupSpec groupSpec,
+            final TopologyDescriber topologyDescriber
     ) throws TaskAssignorException {
 
         Map<String, MemberAssignment> newTargetAssignment = new HashMap<>();
@@ -70,7 +70,7 @@ public class MockAssignor implements TaskAssignor {
                 for (int taskId : taskIds) {
                     if (activeMembers[taskId] != null) {
                         throw new TaskAssignorException(
-                            "Task " + taskId + " of subtopology " + subtopologyId + " is assigned to multiple members");
+                                "Task " + taskId + " of subtopology " + subtopologyId + " is assigned to multiple members");
                     }
                     activeMembers[taskId] = memberId;
                 }
@@ -80,10 +80,10 @@ public class MockAssignor implements TaskAssignor {
         // Define priority queue to sort members by task count
         PriorityQueue<MemberAndTaskCount> memberAndTaskCount = new PriorityQueue<>(Comparator.comparingInt(m -> m.taskCount));
         memberAndTaskCount.addAll(
-            newTargetAssignment.keySet().stream()
-                .map(memberId -> new MemberAndTaskCount(memberId,
-                    newTargetAssignment.get(memberId).activeTasks().values().stream().mapToInt(Set::size).sum()))
-                .collect(Collectors.toSet())
+                newTargetAssignment.keySet().stream()
+                        .map(memberId -> new MemberAndTaskCount(memberId,
+                                newTargetAssignment.get(memberId).activeTasks().values().stream().mapToInt(Set::size).sum()))
+                        .collect(Collectors.toSet())
         );
 
         // Assign unassigned tasks to members with the fewest tasks

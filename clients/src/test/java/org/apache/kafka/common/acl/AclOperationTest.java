@@ -36,29 +36,29 @@ public class AclOperationTest {
     }
 
     private static final AclOperationTestInfo[] INFOS = {
-        new AclOperationTestInfo(AclOperation.UNKNOWN, 0, "unknown", true),
-        new AclOperationTestInfo(AclOperation.ANY, 1, "any", false),
-        new AclOperationTestInfo(AclOperation.ALL, 2, "all", false),
-        new AclOperationTestInfo(AclOperation.READ, 3, "read", false),
-        new AclOperationTestInfo(AclOperation.WRITE, 4, "write", false),
-        new AclOperationTestInfo(AclOperation.CREATE, 5, "create", false),
-        new AclOperationTestInfo(AclOperation.DELETE, 6, "delete", false),
-        new AclOperationTestInfo(AclOperation.ALTER, 7, "alter", false),
-        new AclOperationTestInfo(AclOperation.DESCRIBE, 8, "describe", false),
-        new AclOperationTestInfo(AclOperation.CLUSTER_ACTION, 9, "cluster_action", false),
-        new AclOperationTestInfo(AclOperation.DESCRIBE_CONFIGS, 10, "describe_configs", false),
-        new AclOperationTestInfo(AclOperation.ALTER_CONFIGS, 11, "alter_configs", false),
-        new AclOperationTestInfo(AclOperation.IDEMPOTENT_WRITE, 12, "idempotent_write", false),
-        new AclOperationTestInfo(AclOperation.CREATE_TOKENS, 13, "create_tokens", false),
-        new AclOperationTestInfo(AclOperation.DESCRIBE_TOKENS, 14, "describe_tokens", false),
-        new AclOperationTestInfo(AclOperation.TWO_PHASE_COMMIT, 15, "two_phase_commit", false)
+            new AclOperationTestInfo(AclOperation.UNKNOWN, 0, "unknown", true),
+            new AclOperationTestInfo(AclOperation.ANY, 1, "any", false),
+            new AclOperationTestInfo(AclOperation.ALL, 2, "all", false),
+            new AclOperationTestInfo(AclOperation.READ, 3, "read", false),
+            new AclOperationTestInfo(AclOperation.WRITE, 4, "write", false),
+            new AclOperationTestInfo(AclOperation.CREATE, 5, "create", false),
+            new AclOperationTestInfo(AclOperation.DELETE, 6, "delete", false),
+            new AclOperationTestInfo(AclOperation.ALTER, 7, "alter", false),
+            new AclOperationTestInfo(AclOperation.DESCRIBE, 8, "describe", false),
+            new AclOperationTestInfo(AclOperation.CLUSTER_ACTION, 9, "cluster_action", false),
+            new AclOperationTestInfo(AclOperation.DESCRIBE_CONFIGS, 10, "describe_configs", false),
+            new AclOperationTestInfo(AclOperation.ALTER_CONFIGS, 11, "alter_configs", false),
+            new AclOperationTestInfo(AclOperation.IDEMPOTENT_WRITE, 12, "idempotent_write", false),
+            new AclOperationTestInfo(AclOperation.CREATE_TOKENS, 13, "create_tokens", false),
+            new AclOperationTestInfo(AclOperation.DESCRIBE_TOKENS, 14, "describe_tokens", false),
+            new AclOperationTestInfo(AclOperation.TWO_PHASE_COMMIT, 15, "two_phase_commit", false)
     };
 
     @Test
     public void testIsUnknown() {
         for (AclOperationTestInfo info : INFOS) {
             assertEquals(info.unknown, info.operation.isUnknown(),
-                info.operation + " was supposed to have unknown == " + info.unknown);
+                    info.operation + " was supposed to have unknown == " + info.unknown);
         }
     }
 
@@ -68,7 +68,7 @@ public class AclOperationTest {
         for (AclOperationTestInfo info : INFOS) {
             assertEquals(info.code, info.operation.code(), info.operation + " was supposed to have code == " + info.code);
             assertEquals(info.operation, AclOperation.fromCode((byte) info.code),
-                "AclOperation.fromCode(" + info.code + ") was supposed to be " +  info.operation);
+                    "AclOperation.fromCode(" + info.code + ") was supposed to be " + info.operation);
         }
         assertEquals(AclOperation.UNKNOWN, AclOperation.fromCode((byte) 120));
     }
@@ -77,7 +77,7 @@ public class AclOperationTest {
     public void testName() throws Exception {
         for (AclOperationTestInfo info : INFOS) {
             assertEquals(info.operation, AclOperation.fromString(info.name),
-                "AclOperation.fromString(" + info.name + ") was supposed to be " +  info.operation);
+                    "AclOperation.fromString(" + info.name + ") was supposed to be " + info.operation);
         }
         assertEquals(AclOperation.UNKNOWN, AclOperation.fromString("something"));
     }

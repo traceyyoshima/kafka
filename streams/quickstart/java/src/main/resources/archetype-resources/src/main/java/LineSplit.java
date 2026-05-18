@@ -14,7 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ${package};
+package $
+
+{package};
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -45,8 +47,8 @@ public class LineSplit {
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.<String, String>stream("streams-plaintext-input")
-            .flatMapValues(value -> Arrays.asList(value.split("\\W+")))
-            .to("streams-linesplit-output");
+                .flatMapValues(value -> Arrays.asList(value.split("\\W+")))
+                .to("streams-linesplit-output");
 
         final Topology topology = builder.build();
         final KafkaStreams streams = new KafkaStreams(topology, props);

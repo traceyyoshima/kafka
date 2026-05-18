@@ -64,7 +64,7 @@ class SourceTaskOffsetCommitter {
 
     public SourceTaskOffsetCommitter(WorkerConfig config) {
         this(config, Executors.newSingleThreadScheduledExecutor(ThreadUtils.createThreadFactory(
-                SourceTaskOffsetCommitter.class.getSimpleName() + "-%d", false)),
+                        SourceTaskOffsetCommitter.class.getSimpleName() + "-%d", false)),
                 new ConcurrentHashMap<>());
     }
 

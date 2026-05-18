@@ -25,20 +25,20 @@ import java.util.Objects;
  * A Record which contains an {@link ApiMessage} as key and
  * an {@link ApiMessageAndVersion} as value. The value could be null to
  * represent a tombstone.
- *
+ * <p>
  * This class is immutable.
  */
 public class CoordinatorRecord {
 
     public static CoordinatorRecord record(
-        ApiMessage key,
-        ApiMessageAndVersion value
+            ApiMessage key,
+            ApiMessageAndVersion value
     ) {
         return new CoordinatorRecord(key, value);
     }
 
     public static CoordinatorRecord tombstone(
-        ApiMessage key
+            ApiMessage key
     ) {
         return new CoordinatorRecord(key, null);
     }
@@ -61,8 +61,8 @@ public class CoordinatorRecord {
      * @param value A value or null.
      */
     private CoordinatorRecord(
-        ApiMessage key,
-        ApiMessageAndVersion value
+            ApiMessage key,
+            ApiMessageAndVersion value
     ) {
         this.key = Objects.requireNonNull(key);
         if (key.apiKey() < 0) {

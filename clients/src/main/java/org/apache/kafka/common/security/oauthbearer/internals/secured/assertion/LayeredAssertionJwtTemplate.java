@@ -36,15 +36,15 @@ import java.util.Map;
  *     <li>File-based JWT headers and claims via {@link FileAssertionJwtTemplate}</li>
  *     <li>Dynamic JWT headers and claims via {@link DynamicAssertionJwtTemplate}</li>
  * </ol>
- *
+ * <p>
  * The templates are specified in ascending order of precedence. That is, in the list, a template with
  * a list index of <i>N+1</i> will effectively overwrite values provided by template at index <i>N</i>.
  * In the above example, the {@link DynamicAssertionJwtTemplate} (index 2) will overwrite any values
  * specified by the {@link FileAssertionJwtTemplate} (index 1), which will in turn overwrite any values
  * from the {@link StaticAssertionJwtTemplate}.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * In practice, there shouldn't be much in the way of overwriting. The headers and claims provided
  * by each layer are mostly distinct. For example, a {@link StaticAssertionJwtTemplate} loads values
  * mainly from the configuration, such as the <code>iss</code> (Issuer) claim
@@ -52,9 +52,9 @@ import java.util.Map;
  * doesn't change all that often, statically configuring it is sensible. However, other values, such
  * as the <code>exp</code> (Expires) claim changes dynamically over time. Specifying a static expiration
  * value doesn't make much sense.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * There are probably cases where it may make sense to overwrite static configuration with values that
  * are more up-to-date. In that case, the {@link FileAssertionJwtTemplate} allows the user to provide
  * headers and claims via a file that can be reloaded when it is modified. So, for example, if the value

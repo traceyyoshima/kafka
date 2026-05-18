@@ -82,7 +82,7 @@ public class TimestampedWindowStoreBuilderTest {
         when(supplier.get()).thenReturn(inner);
         setUpWithoutInner(storeName);
     }
-    
+
     @ValueSource(strings = {TIMESTAMP_STORE_NAME, TIMEORDERED_STORE_NAME})
     @ParameterizedTest
     public void shouldHaveMeteredStoreAsOuterStore(final String storeName) {
@@ -161,19 +161,19 @@ public class TimestampedWindowStoreBuilderTest {
     public void shouldNotWrapTimestampedByteStore(final String storeName) {
         setUp(storeName);
         when(supplier.get()).thenReturn(new RocksDBTimestampedWindowStore(
-            new RocksDBTimestampedSegmentedBytesStore(
-                "name",
-                "metric-scope",
-                10L,
-                5L,
-                new WindowKeySchema()),
-            false,
-            1L));
+                new RocksDBTimestampedSegmentedBytesStore(
+                        "name",
+                        "metric-scope",
+                        10L,
+                        5L,
+                        new WindowKeySchema()),
+                false,
+                1L));
 
         final TimestampedWindowStore<String, String> store = builder
-            .withLoggingDisabled()
-            .withCachingDisabled()
-            .build();
+                .withLoggingDisabled()
+                .withCachingDisabled()
+                .build();
         assertThat(((WrappedStateStore) store).wrapped(), instanceOf(RocksDBTimestampedWindowStore.class));
     }
 
@@ -182,19 +182,19 @@ public class TimestampedWindowStoreBuilderTest {
     public void shouldWrapPlainKeyValueStoreAsTimestampStore(final String storeName) {
         setUp(storeName);
         when(supplier.get()).thenReturn(new RocksDBWindowStore(
-            new RocksDBSegmentedBytesStore(
-                "name",
-                "metric-scope",
-                10L,
-                5L,
-                new WindowKeySchema()),
-            false,
-            1L));
+                new RocksDBSegmentedBytesStore(
+                        "name",
+                        "metric-scope",
+                        10L,
+                        5L,
+                        new WindowKeySchema()),
+                false,
+                1L));
 
         final TimestampedWindowStore<String, String> store = builder
-            .withLoggingDisabled()
-            .withCachingDisabled()
-            .build();
+                .withLoggingDisabled()
+                .withCachingDisabled()
+                .build();
         assertThat(((WrappedStateStore) store).wrapped(), instanceOf(WindowToTimestampedWindowByteStoreAdapter.class));
     }
 
@@ -204,10 +204,10 @@ public class TimestampedWindowStoreBuilderTest {
         setUpWithoutInner(storeName);
         supplier = Stores.persistentTimestampedWindowStore("name", Duration.ofMillis(10L), Duration.ofMillis(10L), true);
         final StoreBuilder<TimestampedWindowStore<String, String>> builder = new TimestampedWindowStoreBuilder<>(
-            supplier,
-            Serdes.String(),
-            Serdes.String(),
-            new MockTime()
+                supplier,
+                Serdes.String(),
+                Serdes.String(),
+                new MockTime()
         ).withCachingEnabled();
 
         builder.build();
@@ -236,7 +236,7 @@ public class TimestampedWindowStoreBuilderTest {
         setUpWithoutInner(storeName);
         when(supplier.metricsScope()).thenReturn(null);
         final Exception e = assertThrows(NullPointerException.class,
-            () -> new TimestampedWindowStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
+                () -> new TimestampedWindowStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
         assertEquals("storeSupplier's metricsScope can't be null", e.getMessage());
     }
 

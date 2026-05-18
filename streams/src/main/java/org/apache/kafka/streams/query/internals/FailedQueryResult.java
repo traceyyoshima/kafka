@@ -27,8 +27,8 @@ import org.apache.kafka.streams.query.StateQueryRequest;
  * @param <R> The result type of the query.
  */
 public final class FailedQueryResult<R>
-    extends AbstractQueryResult<R>
-    implements QueryResult<R> {
+        extends AbstractQueryResult<R>
+        implements QueryResult<R> {
 
     private final FailureReason failureReason;
     private final String failure;
@@ -83,17 +83,17 @@ public final class FailedQueryResult<R>
      */
     public R getResult() {
         throw new IllegalArgumentException(
-            "Cannot get result for failed query. Failure is " + failureReason.name() + ": "
-                + failure);
+                "Cannot get result for failed query. Failure is " + failureReason.name() + ": "
+                        + failure);
     }
 
     @Override
     public String toString() {
         return "FailedQueryResult{" +
-            "failureReason=" + failureReason +
-            ", failure='" + failure + '\'' +
-            ", executionInfo=" + getExecutionInfo() +
-            ", position=" + getPosition() +
-            '}';
+                "failureReason=" + failureReason +
+                ", failure='" + failure + '\'' +
+                ", executionInfo=" + getExecutionInfo() +
+                ", position=" + getPosition() +
+                '}';
     }
 }

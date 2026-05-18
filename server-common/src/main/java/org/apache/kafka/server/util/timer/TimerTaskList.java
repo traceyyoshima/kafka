@@ -35,14 +35,14 @@ class TimerTaskList implements Delayed {
     private final TimerTaskEntry root;
 
     TimerTaskList(
-        AtomicInteger taskCounter
+            AtomicInteger taskCounter
     ) {
         this(taskCounter, Time.SYSTEM);
     }
 
     TimerTaskList(
-        AtomicInteger taskCounter,
-        Time time
+            AtomicInteger taskCounter,
+            Time time
     ) {
         this.time = time;
         this.taskCounter = taskCounter;

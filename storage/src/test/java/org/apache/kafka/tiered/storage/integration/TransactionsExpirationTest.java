@@ -54,26 +54,26 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // Placed in the storage module to avoid a cross-module dependency from clients-integration-tests on storage.
 @ClusterTestDefaults(
-    types = {Type.CO_KRAFT},
-    brokers = 3,
-    serverProperties = {
-        @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
-        // Set a smaller value for the number of partitions for the __consumer_offsets topic
-        // so that the creation of that topic/partition(s) and subsequent leader assignment doesn't take relatively long.
-        @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "1"),
-        @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_PARTITIONS_CONFIG, value = "3"),
-        @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2"),
-        @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_MIN_ISR_CONFIG, value = "2"),
-        @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "true"),
-        @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "false"),
-        @ClusterConfigProperty(key = ReplicationConfigs.AUTO_LEADER_REBALANCE_ENABLE_CONFIG, value = "false"),
-        @ClusterConfigProperty(key = "group.initial.rebalance.delay.ms", value = "0"),
-        @ClusterConfigProperty(key = TransactionStateManagerConfig.TRANSACTIONS_ABORT_TIMED_OUT_TRANSACTION_CLEANUP_INTERVAL_MS_CONFIG, value = "200"),
-        @ClusterConfigProperty(key = TransactionStateManagerConfig.TRANSACTIONAL_ID_EXPIRATION_MS_CONFIG, value = "10000"),
-        @ClusterConfigProperty(key = TransactionStateManagerConfig.TRANSACTIONS_REMOVE_EXPIRED_TRANSACTIONAL_ID_CLEANUP_INTERVAL_MS_CONFIG, value = "500"),
-        @ClusterConfigProperty(key = TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_CONFIG, value = "5000"),
-        @ClusterConfigProperty(key = TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_CONFIG, value = "500"),
-    }
+        types = {Type.CO_KRAFT},
+        brokers = 3,
+        serverProperties = {
+                @ClusterConfigProperty(key = ServerLogConfigs.AUTO_CREATE_TOPICS_ENABLE_CONFIG, value = "false"),
+                // Set a smaller value for the number of partitions for the __consumer_offsets topic
+                // so that the creation of that topic/partition(s) and subsequent leader assignment doesn't take relatively long.
+                @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "1"),
+                @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_PARTITIONS_CONFIG, value = "3"),
+                @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "2"),
+                @ClusterConfigProperty(key = TransactionLogConfig.TRANSACTIONS_TOPIC_MIN_ISR_CONFIG, value = "2"),
+                @ClusterConfigProperty(key = ServerConfigs.CONTROLLED_SHUTDOWN_ENABLE_CONFIG, value = "true"),
+                @ClusterConfigProperty(key = TopicConfig.UNCLEAN_LEADER_ELECTION_ENABLE_CONFIG, value = "false"),
+                @ClusterConfigProperty(key = ReplicationConfigs.AUTO_LEADER_REBALANCE_ENABLE_CONFIG, value = "false"),
+                @ClusterConfigProperty(key = "group.initial.rebalance.delay.ms", value = "0"),
+                @ClusterConfigProperty(key = TransactionStateManagerConfig.TRANSACTIONS_ABORT_TIMED_OUT_TRANSACTION_CLEANUP_INTERVAL_MS_CONFIG, value = "200"),
+                @ClusterConfigProperty(key = TransactionStateManagerConfig.TRANSACTIONAL_ID_EXPIRATION_MS_CONFIG, value = "10000"),
+                @ClusterConfigProperty(key = TransactionStateManagerConfig.TRANSACTIONS_REMOVE_EXPIRED_TRANSACTIONAL_ID_CLEANUP_INTERVAL_MS_CONFIG, value = "500"),
+                @ClusterConfigProperty(key = TransactionLogConfig.PRODUCER_ID_EXPIRATION_MS_CONFIG, value = "5000"),
+                @ClusterConfigProperty(key = TransactionLogConfig.PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_CONFIG, value = "500"),
+        }
 )
 public class TransactionsExpirationTest {
     private static final String TRANSACTION_ID = "transactionalProducer";
@@ -104,7 +104,7 @@ public class TransactionsExpirationTest {
         clusterInstance.createTopic(TOPIC2, 4, (short) 3);
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
                 ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
-            ))
+        ))
         ) {
             producer.initTransactions();
             // Start and then abort a transaction to allow the transactional ID to expire.
@@ -121,7 +121,7 @@ public class TransactionsExpirationTest {
             // due to the expired transactional ID, resulting in a fatal error.
             producer.beginTransaction();
             var failedFuture = producer.send(
-                producerRecordWithExpectedTransactionStatus(TOPIC1, 3, "1", "1", false));
+                    producerRecordWithExpectedTransactionStatus(TOPIC1, 3, "1", "1", false));
             TestUtils.waitForCondition(failedFuture::isDone, "Producer future never completed.");
             org.apache.kafka.test.TestUtils.assertFutureThrows(InvalidPidMappingException.class, failedFuture);
 
@@ -131,8 +131,8 @@ public class TransactionsExpirationTest {
 
         // Reinitialize to recover from the fatal error.
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
-                 ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
-             ))
+                ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
+        ))
         ) {
             producer.initTransactions();
             // Proceed with a new transaction after reinitializing.
@@ -158,7 +158,7 @@ public class TransactionsExpirationTest {
         long oldProducerEpoch;
 
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
-            ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
+                ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
         ))
         ) {
             producer.initTransactions();
@@ -196,7 +196,7 @@ public class TransactionsExpirationTest {
 
         // Create a new producer to check that we retain the producer ID in transactional state.
         try (Producer<byte[], byte[]> producer = clusterInstance.producer(Map.of(
-            ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
+                ProducerConfig.TRANSACTIONAL_ID_CONFIG, TRANSACTION_ID
         ))
         ) {
             producer.initTransactions();

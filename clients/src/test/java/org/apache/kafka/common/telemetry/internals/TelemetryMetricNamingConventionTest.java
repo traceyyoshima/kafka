@@ -35,13 +35,13 @@ public class TelemetryMetricNamingConventionTest {
     @BeforeEach
     public void setUp() {
         metricNamingStrategy = TelemetryMetricNamingConvention
-            .getClientTelemetryMetricNamingStrategy("org.apache.kafka");
+                .getClientTelemetryMetricNamingStrategy("org.apache.kafka");
     }
 
     @Test
     public void testMetricKey() {
         MetricName metricName = new MetricName("name", "group", "description",
-            Collections.emptyMap());
+                Collections.emptyMap());
         MetricKey metricKey = metricNamingStrategy.metricKey(metricName);
 
         assertEquals("org.apache.kafka.group.name", metricKey.name());
@@ -91,7 +91,7 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testMetricKeyWithEmptyName() {
         MetricName metricName = new MetricName("", "group-1A", "description",
-            Collections.emptyMap());
+                Collections.emptyMap());
         MetricKey metricKey = metricNamingStrategy.metricKey(metricName);
 
         // If there is no name, then the telemetry metric name will have dot in the end though
@@ -103,7 +103,7 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testMetricKeyWithEmptyGroup() {
         MetricName metricName = new MetricName("name", "", "description",
-            Collections.emptyMap());
+                Collections.emptyMap());
         MetricKey metricKey = metricNamingStrategy.metricKey(metricName);
 
         // If there is no group, then the telemetry metric name will have consecutive dots, though
@@ -115,7 +115,7 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testMetricKeyWithAdditionalMetricsSuffixInGroup() {
         MetricName metricName = new MetricName("name", "group-metrics", "description",
-            Collections.emptyMap());
+                Collections.emptyMap());
         MetricKey metricKey = metricNamingStrategy.metricKey(metricName);
 
         // '-metrics' gets removed from the group name.
@@ -126,7 +126,7 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testMetricKeyWithMultipleMetricsSuffixInGroup() {
         MetricName metricName = new MetricName("name-metrics", "group-metrics-metrics", "description",
-            Collections.emptyMap());
+                Collections.emptyMap());
         MetricKey metricKey = metricNamingStrategy.metricKey(metricName);
 
         // '-metrics' gets removed from the group name.
@@ -137,7 +137,7 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testMetricKeyWithNullTagKey() {
         MetricName metricName = new MetricName("name", "group", "description",
-            Collections.singletonMap(null, "value1"));
+                Collections.singletonMap(null, "value1"));
         Exception e = assertThrows(NullPointerException.class, () -> metricNamingStrategy.metricKey(metricName));
         assertEquals("metric data cannot be null", e.getMessage());
     }
@@ -145,7 +145,7 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testMetricKeyWithBlankTagKey() {
         MetricName metricName = new MetricName("name", "group", "description",
-            Collections.singletonMap("", "value1"));
+                Collections.singletonMap("", "value1"));
         MetricKey metricKey = metricNamingStrategy.metricKey(metricName);
 
         assertEquals("org.apache.kafka.group.name", metricKey.name());
@@ -155,9 +155,9 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testDerivedMetricKey() {
         MetricName metricName = new MetricName("name", "group", "description",
-            Collections.emptyMap());
+                Collections.emptyMap());
         MetricKey metricKey = metricNamingStrategy.derivedMetricKey(
-            metricNamingStrategy.metricKey(metricName), "delta");
+                metricNamingStrategy.metricKey(metricName), "delta");
 
         assertEquals("org.apache.kafka.group.name.delta", metricKey.name());
         assertEquals(Collections.emptyMap(), metricKey.tags());
@@ -166,9 +166,9 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testDerivedMetricKeyWithTags() {
         MetricName metricName = new MetricName("name", "group", "description",
-            Collections.singletonMap("tag1", "value1"));
+                Collections.singletonMap("tag1", "value1"));
         MetricKey metricKey = metricNamingStrategy.derivedMetricKey(
-            metricNamingStrategy.metricKey(metricName), "delta");
+                metricNamingStrategy.metricKey(metricName), "delta");
 
         assertEquals("org.apache.kafka.group.name.delta", metricKey.name());
         assertEquals(Collections.singletonMap("tag1", "value1"), metricKey.tags());
@@ -177,18 +177,18 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testDerivedMetricKeyWithNullComponent() {
         MetricName metricName = new MetricName("name", "group", "description",
-            Collections.emptyMap());
+                Collections.emptyMap());
         Exception e = assertThrows(NullPointerException.class, () -> metricNamingStrategy.derivedMetricKey(
-            metricNamingStrategy.metricKey(metricName), null));
+                metricNamingStrategy.metricKey(metricName), null));
         assertEquals("derived component cannot be null", e.getMessage());
     }
 
     @Test
     public void testDerivedMetricKeyWithBlankComponent() {
         MetricName metricName = new MetricName("name", "group", "description",
-            Collections.emptyMap());
+                Collections.emptyMap());
         MetricKey metricKey = metricNamingStrategy.derivedMetricKey(
-            metricNamingStrategy.metricKey(metricName), "");
+                metricNamingStrategy.metricKey(metricName), "");
 
         // Ends with dot, though derived component should not be blank, omitting the check in the code.
         assertEquals("org.apache.kafka.group.name.", metricKey.name());
@@ -198,7 +198,7 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testNullPrefix() {
         Exception e = assertThrows(NullPointerException.class, () -> TelemetryMetricNamingConvention
-            .getClientTelemetryMetricNamingStrategy(null));
+                .getClientTelemetryMetricNamingStrategy(null));
         assertEquals("prefix cannot be null", e.getMessage());
     }
 
@@ -209,36 +209,36 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testStandardProducerMetrics() {
         assertEquals("org.apache.kafka.producer.connection.creation.rate",
-            metricNamingStrategy.metricKey(new MetricName("connection-creation-rate",
-                "producer-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("connection-creation-rate",
+                        "producer-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.producer.connection.creation.total",
-            metricNamingStrategy.metricKey(new MetricName("connection-creation-total",
-                "producer-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("connection-creation-total",
+                        "producer-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.producer.node.request.latency.avg",
-            metricNamingStrategy.metricKey(new MetricName("request-latency-avg",
-                "producer-node-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("request-latency-avg",
+                        "producer-node-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.producer.node.request.latency.max",
-            metricNamingStrategy.metricKey(new MetricName("request-latency-max",
-                "producer-node-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("request-latency-max",
+                        "producer-node-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.producer.produce.throttle.time.avg",
-            metricNamingStrategy.metricKey(new MetricName("produce-throttle-time-avg",
-                "producer-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("produce-throttle-time-avg",
+                        "producer-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.producer.produce.throttle.time.max",
-            metricNamingStrategy.metricKey(new MetricName("produce-throttle-time-max",
-                "producer-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("produce-throttle-time-max",
+                        "producer-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.producer.record.queue.time.avg",
-            metricNamingStrategy.metricKey(new MetricName("record-queue-time-avg",
-                "producer-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("record-queue-time-avg",
+                        "producer-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.producer.record.queue.time.max",
-            metricNamingStrategy.metricKey(new MetricName("record-queue-time-max",
-                "producer-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("record-queue-time-max",
+                        "producer-metrics", "description", Collections.emptyMap())).name());
     }
 
     /**
@@ -248,55 +248,55 @@ public class TelemetryMetricNamingConventionTest {
     @Test
     public void testStandardConsumerMetrics() {
         assertEquals("org.apache.kafka.consumer.connection.creation.rate",
-            metricNamingStrategy.metricKey(new MetricName("connection-creation-rate",
-                "consumer-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("connection-creation-rate",
+                        "consumer-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.connection.creation.total",
-            metricNamingStrategy.metricKey(new MetricName("connection-creation-total",
-                "consumer-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("connection-creation-total",
+                        "consumer-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.node.request.latency.avg",
-            metricNamingStrategy.metricKey(new MetricName("request-latency-avg",
-                "consumer-node-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("request-latency-avg",
+                        "consumer-node-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.node.request.latency.max",
-            metricNamingStrategy.metricKey(new MetricName("request-latency-max",
-                "consumer-node-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("request-latency-max",
+                        "consumer-node-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.poll.idle.ratio.avg",
-            metricNamingStrategy.metricKey(new MetricName("poll-idle-ratio-avg",
-                "consumer-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("poll-idle-ratio-avg",
+                        "consumer-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.coordinator.commit.latency.avg",
-            metricNamingStrategy.metricKey(new MetricName("commit-latency-avg",
-                "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("commit-latency-avg",
+                        "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.coordinator.commit.latency.max",
-            metricNamingStrategy.metricKey(new MetricName("commit-latency-max",
-                "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("commit-latency-max",
+                        "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.coordinator.assigned.partitions",
-            metricNamingStrategy.metricKey(new MetricName("assigned-partitions",
-                "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("assigned-partitions",
+                        "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.coordinator.rebalance.latency.avg",
-            metricNamingStrategy.metricKey(new MetricName("rebalance-latency-avg",
-                "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("rebalance-latency-avg",
+                        "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.coordinator.rebalance.latency.max",
-            metricNamingStrategy.metricKey(new MetricName("rebalance-latency-max",
-                "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("rebalance-latency-max",
+                        "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.coordinator.rebalance.latency.total",
-            metricNamingStrategy.metricKey(new MetricName("rebalance-latency-total",
-                "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("rebalance-latency-total",
+                        "consumer-coordinator-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.fetch.manager.fetch.latency.avg",
-            metricNamingStrategy.metricKey(new MetricName("fetch-latency-avg",
-                "consumer-fetch-manager-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("fetch-latency-avg",
+                        "consumer-fetch-manager-metrics", "description", Collections.emptyMap())).name());
 
         assertEquals("org.apache.kafka.consumer.fetch.manager.fetch.latency.max",
-            metricNamingStrategy.metricKey(new MetricName("fetch-latency-max",
-                "consumer-fetch-manager-metrics", "description", Collections.emptyMap())).name());
+                metricNamingStrategy.metricKey(new MetricName("fetch-latency-max",
+                        "consumer-fetch-manager-metrics", "description", Collections.emptyMap())).name());
     }
 }

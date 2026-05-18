@@ -104,8 +104,8 @@ public class ClusterImageTest {
     private static void testToImage(ClusterImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> ClusterImage.EMPTY,
-            ClusterDelta::new
+                () -> ClusterImage.EMPTY,
+                ClusterDelta::new
         ).test(image, fromRecords);
     }
 
@@ -118,16 +118,16 @@ public class ClusterImageTest {
     @Test
     public void testHandleLossOfControllerRegistrations() {
         ClusterImage testImage = new ClusterImage(Map.of(),
-            Map.of(1000, new ControllerRegistration.Builder().
-                setId(1000).
-                setIncarnationId(Uuid.fromString("9ABu6HEgRuS-hjHLgC4cHw")).
-                setListeners(Map.of("PLAINTEXT",
-                    new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 19092))).
-                setSupportedFeatures(Map.of()).build()));
+                Map.of(1000, new ControllerRegistration.Builder().
+                        setId(1000).
+                        setIncarnationId(Uuid.fromString("9ABu6HEgRuS-hjHLgC4cHw")).
+                        setListeners(Map.of("PLAINTEXT",
+                                new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "localhost", 19092))).
+                        setSupportedFeatures(Map.of()).build()));
         RecordListWriter writer = new RecordListWriter();
         final AtomicReference<String> lossString = new AtomicReference<>("");
         testImage.write(writer, new ImageWriterOptions.Builder(MetadataVersion.IBP_3_6_IV2).
-            setLossHandler(loss -> lossString.compareAndSet("", loss.loss())).
+                setLossHandler(loss -> lossString.compareAndSet("", loss.loss())).
                 build());
         assertEquals("controller registration data", lossString.get());
     }

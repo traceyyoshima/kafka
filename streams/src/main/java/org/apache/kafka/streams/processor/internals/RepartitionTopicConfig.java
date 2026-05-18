@@ -30,6 +30,7 @@ import java.util.Objects;
 public class RepartitionTopicConfig extends InternalTopicConfig {
 
     private static final Map<String, String> REPARTITION_TOPIC_DEFAULT_OVERRIDES;
+
     static {
         final Map<String, String> tempTopicDefaultOverrides = new HashMap<>(INTERNAL_TOPIC_DEFAULT_OVERRIDES);
         tempTopicDefaultOverrides.put(TopicConfig.CLEANUP_POLICY_CONFIG, TopicConfig.CLEANUP_POLICY_DELETE);
@@ -78,8 +79,8 @@ public class RepartitionTopicConfig extends InternalTopicConfig {
         }
         final RepartitionTopicConfig that = (RepartitionTopicConfig) o;
         return Objects.equals(name, that.name) &&
-               Objects.equals(topicConfigs, that.topicConfigs) &&
-               Objects.equals(enforceNumberOfPartitions, that.enforceNumberOfPartitions);
+                Objects.equals(topicConfigs, that.topicConfigs) &&
+                Objects.equals(enforceNumberOfPartitions, that.enforceNumberOfPartitions);
     }
 
     @Override

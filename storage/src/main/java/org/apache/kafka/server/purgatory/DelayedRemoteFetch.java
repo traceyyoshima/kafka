@@ -102,7 +102,7 @@ public class DelayedRemoteFetch extends DelayedOperation {
      * Case c: All the remote storage read requests completed (succeeded or failed)
      * <p>
      * Case d: The partition is in an offline log directory on this broker
-     *
+     * <p>
      * Upon completion, should return whatever data is available for each valid partition
      */
     @Override
@@ -156,26 +156,26 @@ public class DelayedRemoteFetch extends DelayedOperation {
         localReadResults.forEach((tpId, result) -> {
             CompletableFuture<RemoteLogReadResult> remoteFetchResult = remoteFetchResults.get(tpId);
             if (remoteFetchResults.containsKey(tpId)
-                && remoteFetchResult.isDone()
-                && result.error() == Errors.NONE
-                && result.info().delayedRemoteStorageFetch.isPresent()) {
+                    && remoteFetchResult.isDone()
+                    && result.error() == Errors.NONE
+                    && result.info().delayedRemoteStorageFetch.isPresent()) {
 
                 if (remoteFetchResult.join().error().isPresent()) {
                     fetchPartitionData.put(tpId,
-                        new LogReadResult(Errors.forException(remoteFetchResult.join().error().get())).toFetchPartitionData(false));
+                            new LogReadResult(Errors.forException(remoteFetchResult.join().error().get())).toFetchPartitionData(false));
                 } else {
                     FetchDataInfo info = remoteFetchResult.join().fetchDataInfo().get();
                     fetchPartitionData.put(tpId,
-                        new FetchPartitionData(
-                            result.error(),
-                            result.highWatermark(),
-                            result.leaderLogStartOffset(),
-                            info.records,
-                            Optional.empty(),
-                            result.lastStableOffset(),
-                            info.abortedTransactions,
-                            result.preferredReadReplica(),
-                            false));
+                            new FetchPartitionData(
+                                    result.error(),
+                                    result.highWatermark(),
+                                    result.leaderLogStartOffset(),
+                                    info.records,
+                                    Optional.empty(),
+                                    result.lastStableOffset(),
+                                    info.abortedTransactions,
+                                    result.preferredReadReplica(),
+                                    false));
                 }
             } else {
                 fetchPartitionData.put(tpId, result.toFetchPartitionData(false));

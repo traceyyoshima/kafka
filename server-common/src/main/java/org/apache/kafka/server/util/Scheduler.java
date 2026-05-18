@@ -47,9 +47,10 @@ public interface Scheduler {
 
     /**
      * Schedule a task.
-     * @param name The name of this task
-     * @param task The task to run
-     * @param delayMs The number of milliseconds to wait before the first execution
+     *
+     * @param name     The name of this task
+     * @param task     The task to run
+     * @param delayMs  The number of milliseconds to wait before the first execution
      * @param periodMs The period in milliseconds with which to execute the task. If &lt; 0 the task will execute only once.
      * @return A Future object to manage the task scheduled.
      */

@@ -180,7 +180,7 @@ import static org.apache.kafka.streams.state.ValueAndTimestamp.getValueOrNull;
  * TestInputTopic<String, String> inputTopic = driver.createInputTopic("input-topic", stringSerdeSerializer, stringSerializer);
  * inputTopic.pipeInput("key1", "value1");
  * }</pre>
- *
+ * <p>
  * When {@link TestInputTopic#pipeInput(Object, Object)} is called, the driver passes the input message through to the appropriate source that
  * consumes the named topic, and will invoke the processor(s) downstream of the source.
  * If your topology's processors forward messages to sinks, your test can then consume these output messages to verify
@@ -197,7 +197,7 @@ import static org.apache.kafka.streams.state.ValueAndTimestamp.getValueOrNull;
  * KeyValue<String, String> record2 = outputTopic2.readKeyValue();
  * KeyValue<String, String> record3 = outputTopic1.readKeyValue();
  * }</pre>
- *
+ * <p>
  * Again, our example topology generates messages with string keys and values, so we supply our string deserializer
  * instance for use on both the keys and values. Your test logic can then verify whether these output records are
  * correct.
@@ -255,13 +255,16 @@ public class TopologyTestDriver implements Closeable {
 
     private final StateRestoreListener stateRestoreListener = new StateRestoreListener() {
         @Override
-        public void onRestoreStart(final TopicPartition topicPartition, final String storeName, final long startingOffset, final long endingOffset) {}
+        public void onRestoreStart(final TopicPartition topicPartition, final String storeName, final long startingOffset, final long endingOffset) {
+        }
 
         @Override
-        public void onBatchRestored(final TopicPartition topicPartition, final String storeName, final long batchEndOffset, final long numRestored) {}
+        public void onBatchRestored(final TopicPartition topicPartition, final String storeName, final long batchEndOffset, final long numRestored) {
+        }
 
         @Override
-        public void onRestoreEnd(final TopicPartition topicPartition, final String storeName, final long totalRestored) {}
+        public void onRestoreEnd(final TopicPartition topicPartition, final String storeName, final long totalRestored) {
+        }
     };
 
     /**
@@ -289,7 +292,7 @@ public class TopologyTestDriver implements Closeable {
     /**
      * Create a new test diver instance.
      *
-     * @param topology the topology to be tested
+     * @param topology               the topology to be tested
      * @param initialWallClockTimeMs the initial value of internally mocked wall-clock time
      */
     public TopologyTestDriver(final Topology topology,
@@ -300,24 +303,24 @@ public class TopologyTestDriver implements Closeable {
     /**
      * Create a new test diver instance.
      *
-     * @param topology               the topology to be tested
-     * @param config                 the configuration for the topology
-     * @param initialWallClockTime   the initial value of internally mocked wall-clock time
+     * @param topology             the topology to be tested
+     * @param config               the configuration for the topology
+     * @param initialWallClockTime the initial value of internally mocked wall-clock time
      */
     public TopologyTestDriver(final Topology topology,
                               final Properties config,
                               final Instant initialWallClockTime) {
         this(
-            topology.internalTopologyBuilder,
-            config,
-            initialWallClockTime == null ? System.currentTimeMillis() : initialWallClockTime.toEpochMilli());
+                topology.internalTopologyBuilder,
+                config,
+                initialWallClockTime == null ? System.currentTimeMillis() : initialWallClockTime.toEpochMilli());
     }
 
     /**
      * Create a new test diver instance.
      *
-     * @param builder builder for the topology to be tested
-     * @param config the configuration for the topology
+     * @param builder                builder for the topology to be tested
+     * @param config                 the configuration for the topology
      * @param initialWallClockTimeMs the initial value of internally mocked wall-clock time
      */
     private TopologyTestDriver(final InternalTopologyBuilder builder,
@@ -343,9 +346,9 @@ public class TopologyTestDriver implements Closeable {
         setupTopology(builder, streamsConfig);
 
         final ThreadCache cache = new ThreadCache(
-            logContext,
-            Math.max(0, streamsConfig.getLong(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG)),
-            streamsMetrics
+                logContext,
+                Math.max(0, streamsConfig.getLong(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG)),
+                streamsMetrics
         );
 
         consumer = new MockConsumer<>(AutoOffsetResetStrategy.EARLIEST.name());
@@ -358,10 +361,10 @@ public class TopologyTestDriver implements Closeable {
         };
 
         testDriverProducer = new StreamsProducer(
-            producer,
-            StreamsConfigUtils.processingMode(streamsConfig),
-            mockWallClockTime,
-            logContext
+                producer,
+                StreamsConfigUtils.processingMode(streamsConfig),
+                mockWallClockTime,
+                logContext
         );
 
         setupGlobalTask(mockWallClockTime, streamsConfig, streamsMetrics, cache);
@@ -372,13 +375,13 @@ public class TopologyTestDriver implements Closeable {
         final Long taskIdleTime = streamsConfig.getLong(StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
         if (taskIdleTime > 0) {
             log.info("Detected {} config in use with TopologyTestDriver (set to {}ms)." +
-                         " This means you might need to use TopologyTestDriver#advanceWallClockTime()" +
-                         " or enqueue records on all partitions to allow Steams to make progress." +
-                         " TopologyTestDriver will log a message each time it cannot process enqueued" +
-                         " records due to {}.",
-                     StreamsConfig.MAX_TASK_IDLE_MS_CONFIG,
-                     taskIdleTime,
-                     StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
+                            " This means you might need to use TopologyTestDriver#advanceWallClockTime()" +
+                            " or enqueue records on all partitions to allow Steams to make progress." +
+                            " TopologyTestDriver will log a message each time it cannot process enqueued" +
+                            " records due to {}.",
+                    StreamsConfig.MAX_TASK_IDLE_MS_CONFIG,
+                    taskIdleTime,
+                    StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
         }
     }
 
@@ -386,9 +389,9 @@ public class TopologyTestDriver implements Closeable {
         final String threadId = Thread.currentThread().getName();
 
         final MetricConfig metricConfig = new MetricConfig()
-            .samples(streamsConfig.getInt(StreamsConfig.METRICS_NUM_SAMPLES_CONFIG))
-            .recordLevel(Sensor.RecordingLevel.forName(streamsConfig.getString(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG)))
-            .timeWindow(streamsConfig.getLong(StreamsConfig.METRICS_SAMPLE_WINDOW_MS_CONFIG), TimeUnit.MILLISECONDS);
+                .samples(streamsConfig.getInt(StreamsConfig.METRICS_NUM_SAMPLES_CONFIG))
+                .recordLevel(Sensor.RecordingLevel.forName(streamsConfig.getString(StreamsConfig.METRICS_RECORDING_LEVEL_CONFIG)))
+                .timeWindow(streamsConfig.getLong(StreamsConfig.METRICS_SAMPLE_WINDOW_MS_CONFIG), TimeUnit.MILLISECONDS);
         metrics = new Metrics(metricConfig, mockWallClockTime);
 
         final StreamsMetricsImpl streamsMetrics = new StreamsMetricsImpl(
@@ -429,39 +432,38 @@ public class TopologyTestDriver implements Closeable {
                 globalPartitionsByInputTopic.put(topicName, partition);
                 offsetsByTopicOrPatternPartition.put(partition, new AtomicLong());
                 globalConsumer.updatePartitions(topicName, Collections.singletonList(
-                    new PartitionInfo(topicName, 0, null, null, null)));
+                        new PartitionInfo(topicName, 0, null, null, null)));
                 globalConsumer.updateBeginningOffsets(Collections.singletonMap(partition, 0L));
                 globalConsumer.updateEndOffsets(Collections.singletonMap(partition, 0L));
             }
 
             globalStateManager = new GlobalStateManagerImpl(
-                logContext,
-                mockWallClockTime,
-                globalTopology,
-                globalConsumer,
-                stateDirectory,
-                stateRestoreListener,
-                streamsConfig
+                    logContext,
+                    mockWallClockTime,
+                    globalTopology,
+                    globalConsumer,
+                    stateDirectory,
+                    stateRestoreListener,
+                    streamsConfig
             );
 
             final GlobalProcessorContextImpl globalProcessorContext =
-                new GlobalProcessorContextImpl(streamsConfig, globalStateManager, streamsMetrics, cache, mockWallClockTime);
+                    new GlobalProcessorContextImpl(streamsConfig, globalStateManager, streamsMetrics, cache, mockWallClockTime);
             globalStateManager.setGlobalProcessorContext(globalProcessorContext);
 
-            @SuppressWarnings("deprecation")
-            final boolean globalEnabled = streamsConfig.getBoolean(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG);
-            final ProcessingExceptionHandler processingExceptionHandler = 
-                globalEnabled ? streamsConfig.processingExceptionHandler() : null;
+            @SuppressWarnings("deprecation") final boolean globalEnabled = streamsConfig.getBoolean(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG);
+            final ProcessingExceptionHandler processingExceptionHandler =
+                    globalEnabled ? streamsConfig.processingExceptionHandler() : null;
 
             globalStateTask = new GlobalStateUpdateTask(
-                logContext,
-                globalTopology,
-                globalProcessorContext,
-                globalStateManager,
-                new LogAndContinueExceptionHandler(),
-                processingExceptionHandler,
-                mockWallClockTime,
-                streamsConfig.getLong(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG)
+                    logContext,
+                    globalTopology,
+                    globalProcessorContext,
+                    globalStateManager,
+                    new LogAndContinueExceptionHandler(),
+                    processingExceptionHandler,
+                    mockWallClockTime,
+                    streamsConfig.getLong(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG)
             );
             globalStateTask.initialize();
         } else {
@@ -483,50 +485,51 @@ public class TopologyTestDriver implements Closeable {
             consumer.updateBeginningOffsets(startOffsets);
 
             final ProcessorStateManager stateManager = new ProcessorStateManager(
-                TASK_ID,
-                Task.TaskType.ACTIVE,
-                StreamsConfig.EXACTLY_ONCE_V2.equals(streamsConfig.getString(StreamsConfig.PROCESSING_GUARANTEE_CONFIG)),
-                streamsConfig.getBoolean(StreamsConfig.TRANSACTIONAL_STATE_STORES_CONFIG),
-                logContext,
-                stateDirectory,
-                processorTopology.storeToChangelogTopic(),
-                new HashSet<>(partitionsByInputTopic.values()));
+                    TASK_ID,
+                    Task.TaskType.ACTIVE,
+                    StreamsConfig.EXACTLY_ONCE_V2.equals(streamsConfig.getString(StreamsConfig.PROCESSING_GUARANTEE_CONFIG)),
+                    streamsConfig.getBoolean(StreamsConfig.TRANSACTIONAL_STATE_STORES_CONFIG),
+                    logContext,
+                    stateDirectory,
+                    processorTopology.storeToChangelogTopic(),
+                    new HashSet<>(partitionsByInputTopic.values()));
             final RecordCollector recordCollector = new RecordCollectorImpl(
-                logContext,
-                TASK_ID,
-                testDriverProducer,
-                streamsConfig.productionExceptionHandler(),
-                streamsMetrics,
-                processorTopology
+                    logContext,
+                    TASK_ID,
+                    testDriverProducer,
+                    streamsConfig.productionExceptionHandler(),
+                    streamsMetrics,
+                    processorTopology
             );
 
             final InternalProcessorContext<?, ?> context = new ProcessorContextImpl(
-                TASK_ID,
-                streamsConfig,
-                stateManager,
-                streamsMetrics,
-                cache
+                    TASK_ID,
+                    streamsConfig,
+                    stateManager,
+                    streamsMetrics,
+                    cache
             );
 
             task = new StreamTask(
-                TASK_ID,
-                new HashSet<>(partitionsByInputTopic.values()),
-                processorTopology,
-                consumer,
-                taskConfig,
-                streamsMetrics,
-                stateDirectory,
-                cache,
-                mockWallClockTime,
-                stateManager,
-                recordCollector,
-                context,
-                logContext,
-                false
-                );
+                    TASK_ID,
+                    new HashSet<>(partitionsByInputTopic.values()),
+                    processorTopology,
+                    consumer,
+                    taskConfig,
+                    streamsMetrics,
+                    stateDirectory,
+                    cache,
+                    mockWallClockTime,
+                    stateManager,
+                    recordCollector,
+                    context,
+                    logContext,
+                    false
+            );
             task.initializeIfNeeded();
-            task.completeRestoration(noOpResetter -> { });
-            for (final TopicPartition tp: task.inputPartitions()) {
+            task.completeRestoration(noOpResetter -> {
+            });
+            for (final TopicPartition tp : task.inputPartitions()) {
                 task.updateNextOffsets(tp, new OffsetAndMetadata(0, Optional.empty(), ""));
             }
         } else {
@@ -573,17 +576,17 @@ public class TopologyTestDriver implements Closeable {
                                    final Headers headers) {
         final long offset = offsetsByTopicOrPatternPartition.get(topicOrPatternPartition).incrementAndGet() - 1;
         task.addRecords(topicOrPatternPartition, Collections.singleton(new ConsumerRecord<>(
-            inputTopic,
-            topicOrPatternPartition.partition(),
-            offset,
-            timestamp,
-            TimestampType.CREATE_TIME,
-            key == null ? ConsumerRecord.NULL_SIZE : key.length,
-            value == null ? ConsumerRecord.NULL_SIZE : value.length,
-            key,
-            value,
-            headers,
-            Optional.empty()))
+                inputTopic,
+                topicOrPatternPartition.partition(),
+                offset,
+                timestamp,
+                TimestampType.CREATE_TIME,
+                key == null ? ConsumerRecord.NULL_SIZE : key.length,
+                value == null ? ConsumerRecord.NULL_SIZE : value.length,
+                key,
+                value,
+                headers,
+                Optional.empty()))
         );
     }
 
@@ -610,10 +613,10 @@ public class TopologyTestDriver implements Closeable {
             }
             if (task.hasRecordsQueued()) {
                 log.info("Due to the {} configuration, there are currently some records" +
-                             " that cannot be processed. Advancing wall-clock time or" +
-                             " enqueuing records on the empty topics will allow" +
-                             " Streams to process more.",
-                         StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
+                                " that cannot be processed. Advancing wall-clock time or" +
+                                " enqueuing records on the empty topics will allow" +
+                                " Streams to process more.",
+                        StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
             }
         }
     }
@@ -633,17 +636,17 @@ public class TopologyTestDriver implements Closeable {
                                      final byte[] value,
                                      final Headers headers) {
         globalStateTask.update(new ConsumerRecord<>(
-            globalInputTopicPartition.topic(),
-            globalInputTopicPartition.partition(),
-            offsetsByTopicOrPatternPartition.get(globalInputTopicPartition).incrementAndGet() - 1,
-            timestamp,
-            TimestampType.CREATE_TIME,
-            key == null ? ConsumerRecord.NULL_SIZE : key.length,
-            value == null ? ConsumerRecord.NULL_SIZE : value.length,
-            key,
-            value,
-            headers,
-            Optional.empty())
+                globalInputTopicPartition.topic(),
+                globalInputTopicPartition.partition(),
+                offsetsByTopicOrPatternPartition.get(globalInputTopicPartition).incrementAndGet() - 1,
+                timestamp,
+                TimestampType.CREATE_TIME,
+                key == null ? ConsumerRecord.NULL_SIZE : key.length,
+                value == null ? ConsumerRecord.NULL_SIZE : value.length,
+                key,
+                value,
+                headers,
+                Optional.empty())
         );
         globalStateTask.flushState();
     }
@@ -652,8 +655,8 @@ public class TopologyTestDriver implements Closeable {
         for (final String sourceTopicName : internalTopologyBuilder.fullSourceTopicNames()) {
             if (!sourceTopicName.equals(inputRecordTopic) && Pattern.compile(sourceTopicName).matcher(inputRecordTopic).matches()) {
                 throw new TopologyException("Topology add source of type String for topic: " + sourceTopicName +
-                                                " cannot contain regex pattern for input record topic: " + inputRecordTopic +
-                                                " and hence cannot process the message.");
+                        " cannot contain regex pattern for input record topic: " + inputRecordTopic +
+                        " and hence cannot process the message.");
             }
         }
     }
@@ -690,22 +693,22 @@ public class TopologyTestDriver implements Closeable {
 
             if (inputTopicOrPatternPartition != null) {
                 enqueueTaskRecord(
-                    outputTopicName,
-                    inputTopicOrPatternPartition,
-                    record.timestamp(),
-                    record.key(),
-                    record.value(),
-                    record.headers()
+                        outputTopicName,
+                        inputTopicOrPatternPartition,
+                        record.timestamp(),
+                        record.key(),
+                        record.value(),
+                        record.headers()
                 );
             }
 
             if (globalInputTopicPartition != null) {
                 processGlobalRecord(
-                    globalInputTopicPartition,
-                    record.timestamp(),
-                    record.key(),
-                    record.value(),
-                    record.headers()
+                        globalInputTopicPartition,
+                        record.timestamp(),
+                        record.key(),
+                        record.value(),
+                        record.headers()
                 );
             }
         }
@@ -733,8 +736,8 @@ public class TopologyTestDriver implements Closeable {
         final Queue<ProducerRecord<byte[], byte[]>> outputRecords = outputRecordsByTopic.get(topicName);
         if (outputRecords == null && !processorTopology.sinkTopics().contains(topicName)) {
             log.warn("Unrecognized topic: {}, this can occur if dynamic routing is used and no output has been "
-                         + "sent to this topic yet. If not using a TopicNameExtractor, check that the output topic "
-                         + "is correct.", topicName);
+                    + "sent to this topic yet. If not using a TopicNameExtractor, check that the output topic "
+                    + "is correct.", topicName);
         }
         return outputRecords;
     }
@@ -744,23 +747,23 @@ public class TopologyTestDriver implements Closeable {
      * Uses current system time as start timestamp for records.
      * Auto-advance is disabled.
      *
-     * @param topicName             the name of the topic
+     * @param topicName       the name of the topic
      * @param keySerializer   the Serializer for the key type
      * @param valueSerializer the Serializer for the value type
-     * @param <K> the key type
-     * @param <V> the value type
+     * @param <K>             the key type
+     * @param <V>             the value type
      * @return {@link TestInputTopic} object
      */
     public final <K, V> TestInputTopic<K, V> createInputTopic(final String topicName,
                                                               final Serializer<K> keySerializer,
                                                               final Serializer<V> valueSerializer) {
         return new TestInputTopic<>(
-            this,
-            topicName,
-            keySerializer,
-            valueSerializer,
-            Instant.ofEpochMilli(mockWallClockTime.milliseconds()),
-            Duration.ZERO
+                this,
+                topicName,
+                keySerializer,
+                valueSerializer,
+                Instant.ofEpochMilli(mockWallClockTime.milliseconds()),
+                Duration.ZERO
         );
     }
 
@@ -768,13 +771,13 @@ public class TopologyTestDriver implements Closeable {
      * Create {@link TestInputTopic} to be used for piping records to topic
      * Uses provided start timestamp and autoAdvance parameter for records
      *
-     * @param topicName             the name of the topic
+     * @param topicName       the name of the topic
      * @param keySerializer   the Serializer for the key type
      * @param valueSerializer the Serializer for the value type
-     * @param startTimestamp Start timestamp for auto-generated record time
-     * @param autoAdvance autoAdvance duration for auto-generated record time
-     * @param <K> the key type
-     * @param <V> the value type
+     * @param startTimestamp  Start timestamp for auto-generated record time
+     * @param autoAdvance     autoAdvance duration for auto-generated record time
+     * @param <K>             the key type
+     * @param <V>             the value type
      * @return {@link TestInputTopic} object
      */
     public final <K, V> TestInputTopic<K, V> createInputTopic(final String topicName,
@@ -788,11 +791,11 @@ public class TopologyTestDriver implements Closeable {
     /**
      * Create {@link TestOutputTopic} to be used for reading records from topic
      *
-     * @param topicName             the name of the topic
+     * @param topicName         the name of the topic
      * @param keyDeserializer   the Deserializer for the key type
      * @param valueDeserializer the Deserializer for the value type
-     * @param <K> the key type
-     * @param <V> the value type
+     * @param <K>               the key type
+     * @param <V>               the value type
      * @return {@link TestOutputTopic} object
      */
     public final <K, V> TestOutputTopic<K, V> createOutputTopic(final String topicName,
@@ -918,8 +921,7 @@ public class TopologyTestDriver implements Closeable {
      * @param name the name of the store
      * @return the state store, or {@code null} if no store has been registered with the given name
      * @throws IllegalArgumentException if the store is a built-in store like {@link KeyValueStore},
-     * {@link WindowStore}, or {@link SessionStore}
-     *
+     *                                  {@link WindowStore}, or {@link SessionStore}
      * @see #getAllStateStores()
      * @see #getKeyValueStore(String)
      * @see #getTimestampedKeyValueStore(String)
@@ -965,27 +967,27 @@ public class TopologyTestDriver implements Closeable {
     private void throwIfBuiltInStore(final StateStore stateStore) {
         if (stateStore instanceof VersionedKeyValueStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a versioned key-value store and should be accessed via `getVersionedKeyValueStore()`");
+                    + " is a versioned key-value store and should be accessed via `getVersionedKeyValueStore()`");
         }
         if (stateStore instanceof TimestampedKeyValueStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a timestamped key-value store and should be accessed via `getTimestampedKeyValueStore()`");
+                    + " is a timestamped key-value store and should be accessed via `getTimestampedKeyValueStore()`");
         }
         if (stateStore instanceof ReadOnlyKeyValueStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a key-value store and should be accessed via `getKeyValueStore()`");
+                    + " is a key-value store and should be accessed via `getKeyValueStore()`");
         }
         if (stateStore instanceof TimestampedWindowStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a timestamped window store and should be accessed via `getTimestampedWindowStore()`");
+                    + " is a timestamped window store and should be accessed via `getTimestampedWindowStore()`");
         }
         if (stateStore instanceof ReadOnlyWindowStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a window store and should be accessed via `getWindowStore()`");
+                    + " is a window store and should be accessed via `getWindowStore()`");
         }
         if (stateStore instanceof ReadOnlySessionStore) {
             throw new IllegalArgumentException("Store " + stateStore.name()
-                                                   + " is a session store and should be accessed via `getSessionStore()`");
+                    + " is a session store and should be accessed via `getSessionStore()`");
         }
     }
 
@@ -1301,8 +1303,8 @@ public class TopologyTestDriver implements Closeable {
         completeAllProcessableWork();
         if (task != null && task.hasRecordsQueued()) {
             log.warn("Found some records that cannot be processed due to the" +
-                         " {} configuration during TopologyTestDriver#close().",
-                     StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
+                            " {} configuration during TopologyTestDriver#close().",
+                    StreamsConfig.MAX_TASK_IDLE_MS_CONFIG);
         }
         producer.close();
         consumer.close();
@@ -1427,9 +1429,9 @@ public class TopologyTestDriver implements Closeable {
 
         @Override
         public <R> QueryResult<R> query(
-            final Query<R> query,
-            final PositionBound positionBound,
-            final QueryConfig config
+                final Query<R> query,
+                final PositionBound positionBound,
+                final QueryConfig config
         ) {
             return inner.query(query, positionBound, config);
         }
@@ -1482,8 +1484,8 @@ public class TopologyTestDriver implements Closeable {
 
         @Override
         public WindowStoreIterator<V> backwardFetch(final K key,
-                                                     final long timeFrom,
-                                                     final long timeTo) {
+                                                    final long timeFrom,
+                                                    final long timeTo) {
             return backwardFetch(key, Instant.ofEpochMilli(timeFrom), Instant.ofEpochMilli(timeTo));
         }
 
@@ -1546,9 +1548,9 @@ public class TopologyTestDriver implements Closeable {
 
         @Override
         public <R> QueryResult<R> query(
-            final Query<R> query,
-            final PositionBound positionBound,
-            final QueryConfig config
+                final Query<R> query,
+                final PositionBound positionBound,
+                final QueryConfig config
         ) {
             return inner.query(query, positionBound, config);
         }
@@ -1665,9 +1667,9 @@ public class TopologyTestDriver implements Closeable {
 
         @Override
         public <R> QueryResult<R> query(
-            final Query<R> query,
-            final PositionBound positionBound,
-            final QueryConfig config
+                final Query<R> query,
+                final PositionBound positionBound,
+                final QueryConfig config
         ) {
             return inner.query(query, positionBound, config);
         }
@@ -1735,9 +1737,9 @@ public class TopologyTestDriver implements Closeable {
 
         @Override
         public <R> QueryResult<R> query(
-            final Query<R> query,
-            final PositionBound positionBound,
-            final QueryConfig config
+                final Query<R> query,
+                final PositionBound positionBound,
+                final QueryConfig config
         ) {
             return inner.query(query, positionBound, config);
         }
@@ -1969,9 +1971,9 @@ public class TopologyTestDriver implements Closeable {
 
         @Override
         public <R> QueryResult<R> query(
-            final Query<R> query,
-            final PositionBound positionBound,
-            final QueryConfig config
+                final Query<R> query,
+                final PositionBound positionBound,
+                final QueryConfig config
         ) {
             return inner.query(query, positionBound, config);
         }
@@ -2069,9 +2071,9 @@ public class TopologyTestDriver implements Closeable {
 
         @Override
         public <R> QueryResult<R> query(
-            final Query<R> query,
-            final PositionBound positionBound,
-            final QueryConfig config
+                final Query<R> query,
+                final PositionBound positionBound,
+                final QueryConfig config
         ) {
             return inner.query(query, positionBound, config);
         }

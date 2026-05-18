@@ -44,16 +44,16 @@ public class MaterializedTest {
     public void shouldNotAllowInvalidTopicNames() {
         final String invalidName = "not:valid";
         final TopologyException e = assertThrows(TopologyException.class,
-            () -> Materialized.as(invalidName));
+                () -> Materialized.as(invalidName));
 
         assertEquals("Invalid topology: Name \"" + invalidName +
-            "\" is illegal, it contains a character other than " + "ASCII alphanumerics, '.', '_' and '-'", e.getMessage());
+                "\" is illegal, it contains a character other than " + "ASCII alphanumerics, '.', '_' and '-'", e.getMessage());
     }
 
     @Test
     public void shouldThrowNullPointerIfWindowBytesStoreSupplierIsNull() {
         final NullPointerException e = assertThrows(NullPointerException.class,
-            () -> Materialized.as((WindowBytesStoreSupplier) null));
+                () -> Materialized.as((WindowBytesStoreSupplier) null));
 
         assertEquals("supplier can't be null", e.getMessage());
     }
@@ -61,7 +61,7 @@ public class MaterializedTest {
     @Test
     public void shouldThrowNullPointerIfKeyValueBytesStoreSupplierIsNull() {
         final NullPointerException e = assertThrows(NullPointerException.class,
-            () -> Materialized.as((KeyValueBytesStoreSupplier) null));
+                () -> Materialized.as((KeyValueBytesStoreSupplier) null));
 
         assertEquals("supplier can't be null", e.getMessage());
     }
@@ -69,7 +69,7 @@ public class MaterializedTest {
     @Test
     public void shouldThrowNullPointerIfStoreTypeIsNull() {
         final NullPointerException e = assertThrows(NullPointerException.class,
-            () -> Materialized.as((Materialized.StoreType) null));
+                () -> Materialized.as((Materialized.StoreType) null));
 
         assertEquals("store type can't be null", e.getMessage());
     }
@@ -77,7 +77,7 @@ public class MaterializedTest {
     @Test
     public void shouldThrowNullPointerIfSessionBytesStoreSupplierIsNull() {
         final NullPointerException e = assertThrows(NullPointerException.class,
-            () -> Materialized.as((SessionBytesStoreSupplier) null));
+                () -> Materialized.as((SessionBytesStoreSupplier) null));
 
         assertEquals("supplier can't be null", e.getMessage());
     }
@@ -85,7 +85,7 @@ public class MaterializedTest {
     @Test
     public void shouldThrowIllegalArgumentExceptionIfRetentionIsNegative() {
         final IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-            () -> Materialized.as("valid-name").withRetention(Duration.of(-1, ChronoUnit.DAYS)));
+                () -> Materialized.as("valid-name").withRetention(Duration.of(-1, ChronoUnit.DAYS)));
 
         assertEquals("Retention must not be negative.", e.getMessage());
     }
@@ -104,7 +104,7 @@ public class MaterializedTest {
         final String invalidStoreName = "a".repeat(maxNameLength + 1);
 
         final TopologyException e = assertThrows(TopologyException.class,
-            () -> Materialized.as(invalidStoreName));
+                () -> Materialized.as(invalidStoreName));
         assertEquals("Invalid topology: Name is illegal, it can't be longer than " + maxNameLength +
                 " characters, name: " + invalidStoreName, e.getMessage());
     }

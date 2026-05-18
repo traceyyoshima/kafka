@@ -42,17 +42,17 @@ public class ApiKeyVersionsProvider implements ArgumentsProvider, AnnotationCons
 
         if (fromVersion > toVersion) {
             throw new IllegalArgumentException(String.format("The fromVersion %s is larger than the toVersion %s",
-                fromVersion, toVersion));
+                    fromVersion, toVersion));
         }
 
         if (fromVersion < oldestVersion) {
             throw new IllegalArgumentException(String.format("The fromVersion %s is older than the oldest version %s",
-                fromVersion, oldestVersion));
+                    fromVersion, oldestVersion));
         }
 
         if (toVersion > latestVersion) {
             throw new IllegalArgumentException(String.format("The toVersion %s is newer than the latest version %s",
-                toVersion, latestVersion));
+                    toVersion, latestVersion));
         }
     }
 

@@ -111,11 +111,11 @@ public class LogSegmentData {
         }
         LogSegmentData that = (LogSegmentData) o;
         return Objects.equals(logSegment, that.logSegment) &&
-               Objects.equals(offsetIndex, that.offsetIndex) &&
-               Objects.equals(timeIndex, that.timeIndex) &&
-               Objects.equals(transactionIndex, that.transactionIndex) &&
-               Objects.equals(producerSnapshotIndex, that.producerSnapshotIndex) &&
-               Objects.equals(leaderEpochIndex, that.leaderEpochIndex);
+                Objects.equals(offsetIndex, that.offsetIndex) &&
+                Objects.equals(timeIndex, that.timeIndex) &&
+                Objects.equals(transactionIndex, that.transactionIndex) &&
+                Objects.equals(producerSnapshotIndex, that.producerSnapshotIndex) &&
+                Objects.equals(leaderEpochIndex, that.leaderEpochIndex);
     }
 
     @Override
@@ -126,12 +126,12 @@ public class LogSegmentData {
     @Override
     public String toString() {
         return "LogSegmentData{" +
-               "logSegment=" + logSegment +
-               ", offsetIndex=" + offsetIndex +
-               ", timeIndex=" + timeIndex +
-               ", txnIndex=" + transactionIndex +
-               ", producerSnapshotIndex=" + producerSnapshotIndex +
-               ", leaderEpochIndex=" + leaderEpochIndex +
-               '}';
+                "logSegment=" + logSegment +
+                ", offsetIndex=" + offsetIndex +
+                ", timeIndex=" + timeIndex +
+                ", txnIndex=" + transactionIndex +
+                ", producerSnapshotIndex=" + producerSnapshotIndex +
+                ", leaderEpochIndex=" + leaderEpochIndex +
+                '}';
     }
 }

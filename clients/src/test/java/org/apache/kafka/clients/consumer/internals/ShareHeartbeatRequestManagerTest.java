@@ -419,7 +419,7 @@ public class ShareHeartbeatRequestManagerTest {
     @ParameterizedTest
     @MethodSource("errorProvider")
     public void testHeartbeatResponseOnErrorHandling(final Errors error, final boolean isFatal) {
-       // Handling errors on the second heartbeat
+        // Handling errors on the second heartbeat
         time.sleep(DEFAULT_HEARTBEAT_INTERVAL_MS);
         NetworkClientDelegate.PollResult result = heartbeatRequestManager.poll(time.milliseconds());
         assertEquals(1, result.unsentRequests.size());

@@ -65,7 +65,7 @@ public interface TimeWindowedCogroupedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer  an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param initializer an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key within a window
      */
@@ -105,8 +105,8 @@ public interface TimeWindowedCogroupedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer  an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param named        a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
+     * @param initializer an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param named       a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key within a window
      */
@@ -162,8 +162,8 @@ public interface TimeWindowedCogroupedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer   an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param materialized  a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
+     * @param initializer  an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param materialized a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key within a window
      */
@@ -220,9 +220,9 @@ public interface TimeWindowedCogroupedKStream<K, V> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer   an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param named         a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
-     * @param materialized  a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
+     * @param initializer  an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param named        a {@link Named} config used to name the processor in the topology. Cannot be {@code null}.
+     * @param materialized a {@link Materialized} config used to materialize a state store. Cannot be {@code null}.
      * @return a windowed {@link KTable} that contains "update" records with unmodified keys, and values that represent
      * the latest (rolling) aggregate for each key within a window
      */

@@ -172,19 +172,19 @@ public class InternalTopicIntegrationTest {
         final KStream<String, String> inputTopic = streamsBuilder.stream(DEFAULT_INPUT_TOPIC);
         final KTable<String, String> inputTable = streamsBuilder.table(DEFAULT_INPUT_TABLE_TOPIC);
         inputTopic
-            .groupBy(
-                (k, v) -> k,
-                Grouped.with("GroupName", Serdes.String(), Serdes.String())
-            )
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(10)))
-            .aggregate(
-                () -> "",
-                (k, v, a) -> a + k)
-            .leftJoin(
-                inputTable,
-                v -> v,
-                (x, y) -> x + y
-            );
+                .groupBy(
+                        (k, v) -> k,
+                        Grouped.with("GroupName", Serdes.String(), Serdes.String())
+                )
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(10)))
+                .aggregate(
+                        () -> "",
+                        (k, v, a) -> a + k)
+                .leftJoin(
+                        inputTable,
+                        v -> v,
+                        (x, y) -> x + y
+                );
 
         try (final KafkaStreams streams = new KafkaStreams(streamsBuilder.build(), streamsProp)) {
             startApplicationAndWaitUntilRunning(streams);
@@ -205,8 +205,8 @@ public class InternalTopicIntegrationTest {
         final KStream<String, String> textLines = builder.stream(DEFAULT_INPUT_TOPIC);
 
         textLines.flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
-            .groupBy(MockMapper.selectValueMapper())
-            .count(Materialized.as("Counts"));
+                .groupBy(MockMapper.selectValueMapper())
+                .count(Materialized.as("Counts"));
 
         try (final KafkaStreams streams = new KafkaStreams(builder.build(), streamsProp)) {
             startApplicationAndWaitUntilRunning(streams);
@@ -245,9 +245,9 @@ public class InternalTopicIntegrationTest {
         final int durationMs = 2000;
 
         textLines.flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
-            .groupBy(MockMapper.selectValueMapper())
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(ofSeconds(1L)))
-            .count(Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("CountWindows").withRetention(ofSeconds(2L)));
+                .groupBy(MockMapper.selectValueMapper())
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(ofSeconds(1L)))
+                .count(Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("CountWindows").withRetention(ofSeconds(2L)));
 
         try (final KafkaStreams streams = new KafkaStreams(builder.build(), streamsProp)) {
             startApplicationAndWaitUntilRunning(streams);

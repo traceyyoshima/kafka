@@ -35,10 +35,10 @@ public final class AddVoterHandlerState {
     private OptionalLong lastOffset = OptionalLong.empty();
 
     AddVoterHandlerState(
-        ReplicaKey voterKey,
-        Endpoints voterEndpoints,
-        boolean ackWhenCommitted,
-        Timer timeout
+            ReplicaKey voterKey,
+            Endpoints voterEndpoints,
+            boolean ackWhenCommitted,
+            Timer timeout
     ) {
         this.voterKey = voterKey;
         this.voterEndpoints = voterEndpoints;
@@ -58,13 +58,13 @@ public final class AddVoterHandlerState {
     public void setLastOffset(long lastOffset) {
         if (this.lastOffset.isPresent()) {
             throw new IllegalStateException(
-                String.format(
-                    "Cannot override last offset to %s for adding voter %s because it is " +
-                    "already set to %s",
-                    lastOffset,
-                    voterKey,
-                    this.lastOffset
-                )
+                    String.format(
+                            "Cannot override last offset to %s for adding voter %s because it is " +
+                                    "already set to %s",
+                            lastOffset,
+                            voterKey,
+                            this.lastOffset
+                    )
             );
         }
 

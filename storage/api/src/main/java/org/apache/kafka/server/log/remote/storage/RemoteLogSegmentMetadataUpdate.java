@@ -97,10 +97,10 @@ public class RemoteLogSegmentMetadataUpdate extends RemoteLogMetadata {
         }
         RemoteLogSegmentMetadataUpdate that = (RemoteLogSegmentMetadataUpdate) o;
         return Objects.equals(remoteLogSegmentId, that.remoteLogSegmentId) &&
-               Objects.equals(customMetadata, that.customMetadata) &&
-               state == that.state &&
-               eventTimestampMs() == that.eventTimestampMs() &&
-               brokerId() == that.brokerId();
+                Objects.equals(customMetadata, that.customMetadata) &&
+                state == that.state &&
+                eventTimestampMs() == that.eventTimestampMs() &&
+                brokerId() == that.brokerId();
     }
 
     @Override
@@ -111,11 +111,11 @@ public class RemoteLogSegmentMetadataUpdate extends RemoteLogMetadata {
     @Override
     public String toString() {
         return "RemoteLogSegmentMetadataUpdate{" +
-               "remoteLogSegmentId=" + remoteLogSegmentId +
-               ", customMetadata=" + customMetadata +
-               ", state=" + state +
-               ", eventTimestampMs=" + eventTimestampMs() +
-               ", brokerId=" + brokerId() +
-               '}';
+                "remoteLogSegmentId=" + remoteLogSegmentId +
+                ", customMetadata=" + customMetadata +
+                ", state=" + state +
+                ", eventTimestampMs=" + eventTimestampMs() +
+                ", brokerId=" + brokerId() +
+                '}';
     }
 }

@@ -123,13 +123,13 @@ public class AlterClientQuotasRequest extends AbstractRequest {
             List<AlterClientQuotasResponseData.EntityData> responseEntities = new ArrayList<>();
             for (EntityData entityData : entryData.entity()) {
                 responseEntities.add(new AlterClientQuotasResponseData.EntityData()
-                    .setEntityType(entityData.entityType())
-                    .setEntityName(entityData.entityName()));
+                        .setEntityType(entityData.entityType())
+                        .setEntityName(entityData.entityName()));
             }
             responseEntries.add(new AlterClientQuotasResponseData.EntryData()
-                .setEntity(responseEntities)
-                .setErrorCode(error.code())
-                .setErrorMessage(error.message()));
+                    .setEntity(responseEntities)
+                    .setErrorCode(error.code())
+                    .setErrorMessage(error.message()));
         }
         AlterClientQuotasResponseData responseData = new AlterClientQuotasResponseData()
                 .setThrottleTimeMs(throttleTimeMs)

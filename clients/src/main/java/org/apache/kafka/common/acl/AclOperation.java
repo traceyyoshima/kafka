@@ -22,7 +22,7 @@ import java.util.Locale;
 
 /**
  * Represents an operation which an ACL grants or denies permission to perform.
- *
+ * <p>
  * Some operations imply other operations:
  * <ul>
  * <li><code>ALLOW ALL</code> implies <code>ALLOW</code> everything
@@ -133,9 +133,8 @@ public enum AclOperation {
     /**
      * Parse the given string as an ACL operation.
      *
-     * @param str    The string to parse.
-     *
-     * @return       The AclOperation, or UNKNOWN if the string could not be matched.
+     * @param str The string to parse.
+     * @return The AclOperation, or UNKNOWN if the string could not be matched.
      */
     public static AclOperation fromString(String str) throws IllegalArgumentException {
         try {

@@ -43,7 +43,8 @@ public class SessionWindowedSerializer<T> implements WindowedSerializer<T> {
     private Serializer<T> inner;
 
     // Default constructor needed by Kafka
-    public SessionWindowedSerializer() {}
+    public SessionWindowedSerializer() {
+    }
 
     public SessionWindowedSerializer(final Serializer<T> inner) {
         this.inner = inner;
@@ -60,7 +61,7 @@ public class SessionWindowedSerializer<T> implements WindowedSerializer<T> {
                 serializerConfigKey = StreamsConfig.WINDOWED_INNER_CLASS_SERDE;
                 serializerConfigValue = windowedInnerClassSerdeConfig;
                 log.warn("Config {} is deprecated. Please use {} instead.",
-                    StreamsConfig.WINDOWED_INNER_CLASS_SERDE, WINDOWED_INNER_SERIALIZER_CLASS);
+                        StreamsConfig.WINDOWED_INNER_CLASS_SERDE, WINDOWED_INNER_SERIALIZER_CLASS);
             }
         }
         Serde<T> windowedInnerSerializerClass = null;
@@ -69,20 +70,20 @@ public class SessionWindowedSerializer<T> implements WindowedSerializer<T> {
                 windowedInnerSerializerClass = Utils.newInstance(serializerConfigValue, Serde.class);
             } catch (final ClassNotFoundException e) {
                 throw new ConfigException(serializerConfigKey, serializerConfigValue,
-                    "Serde class " + serializerConfigValue + " could not be found.");
+                        "Serde class " + serializerConfigValue + " could not be found.");
             }
         }
 
         if (inner != null && serializerConfigValue != null) {
             if (!inner.getClass().getName().equals(windowedInnerSerializerClass.serializer().getClass().getName())) {
                 throw new IllegalArgumentException("Inner class serializer set using constructor "
-                    + "(" + inner.getClass().getName() + ")" +
-                    " is different from the one set in " + serializerConfigKey + " config " +
-                    "(" + windowedInnerSerializerClass.serializer().getClass().getName() + ").");
+                        + "(" + inner.getClass().getName() + ")" +
+                        " is different from the one set in " + serializerConfigKey + " config " +
+                        "(" + windowedInnerSerializerClass.serializer().getClass().getName() + ").");
             }
         } else if (inner == null && serializerConfigValue == null) {
             throw new IllegalArgumentException("Inner class serializer should be set either via constructor " +
-                "or via the " + WINDOWED_INNER_SERIALIZER_CLASS + " config");
+                    "or via the " + WINDOWED_INNER_SERIALIZER_CLASS + " config");
         } else if (inner == null)
             inner = windowedInnerSerializerClass.serializer();
     }

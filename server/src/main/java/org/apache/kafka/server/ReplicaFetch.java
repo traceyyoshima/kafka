@@ -25,4 +25,5 @@ import java.util.Map;
 public record ReplicaFetch(
         Map<TopicPartition, FetchRequest.PartitionData> partitionData,
         FetchRequest.Builder fetchRequest
-) { }
+) {
+}

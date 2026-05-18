@@ -114,9 +114,9 @@ public class DescribeClientQuotasResponse extends AbstractResponse {
         }
 
         return new DescribeClientQuotasResponse(new DescribeClientQuotasResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setErrorCode((short) 0)
-            .setErrorMessage(null)
-            .setEntries(entries));
+                .setThrottleTimeMs(throttleTimeMs)
+                .setErrorCode((short) 0)
+                .setErrorMessage(null)
+                .setEntries(entries));
     }
 }

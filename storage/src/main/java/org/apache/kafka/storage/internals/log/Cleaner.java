@@ -77,14 +77,14 @@ public class Cleaner {
 
     /**
      *
-     * @param id An identifier used for logging
-     * @param offsetMap The map used for deduplication
-     * @param ioBufferSize The size of the buffers to use. Memory usage will be 2x this number as there is a read and write buffer.
-     * @param maxIoBufferSize The maximum size of a message that can appear in the log
+     * @param id                  An identifier used for logging
+     * @param offsetMap           The map used for deduplication
+     * @param ioBufferSize        The size of the buffers to use. Memory usage will be 2x this number as there is a read and write buffer.
+     * @param maxIoBufferSize     The maximum size of a message that can appear in the log
      * @param dupBufferLoadFactor The maximum percent full for the deduplication buffer
-     * @param throttler The throttler instance to use for limiting I/O rate
-     * @param time The time instance
-     * @param checkDone Check if the cleaning for a partition is finished or aborted
+     * @param throttler           The throttler instance to use for limiting I/O rate
+     * @param time                The time instance
+     * @param checkDone           Check if the cleaning for a partition is finished or aborted
      */
     public Cleaner(int id,
                    OffsetMap offsetMap,
@@ -141,7 +141,6 @@ public class Cleaner {
      * Clean the given log.
      *
      * @param cleanable The log to be cleaned
-     *
      * @return The first offset not cleaned and the statistics for this round of cleaning
      */
     public Map.Entry<Long, CleanerStats> clean(LogToClean cleanable) throws IOException, DigestException {
@@ -151,11 +150,11 @@ public class Cleaner {
     /**
      * Clean the given log.
      *
-     * @param cleanable The log to be cleaned
+     * @param cleanable   The log to be cleaned
      * @param currentTime The current timestamp for doing cleaning
-     *
      * @return The first offset not cleaned and the statistics for this round of cleaning
-     * */
+     *
+     */
     public Map.Entry<Long, CleanerStats> doClean(LogToClean cleanable, long currentTime) throws IOException, DigestException {
         UnifiedLog log = cleanable.log();
 
@@ -216,13 +215,13 @@ public class Cleaner {
      * (e.g., due to recompression or combining multiple source segments), the current cleaned segment is
      * finalized and a new one is started.
      *
-     * @param log The log being cleaned
-     * @param segments The group of segments being cleaned
-     * @param map The offset map to use for cleaning segments
-     * @param currentTime The current time in milliseconds
-     * @param stats Collector for cleaning statistics
-     * @param transactionMetadata State of ongoing transactions which is carried between the cleaning
-     *                            of the grouped segments
+     * @param log                   The log being cleaned
+     * @param segments              The group of segments being cleaned
+     * @param map                   The offset map to use for cleaning segments
+     * @param currentTime           The current time in milliseconds
+     * @param stats                 Collector for cleaning statistics
+     * @param transactionMetadata   State of ongoing transactions which is carried between the cleaning
+     *                              of the grouped segments
      * @param legacyDeleteHorizonMs The delete horizon used for tombstones whose version is less than 2
      */
     public void cleanSegments(UnifiedLog log,
@@ -260,7 +259,7 @@ public class Cleaner {
                 boolean retainLegacyDeletesAndTxnMarkers = currentSegment.lastModified() > legacyDeleteHorizonMs;
                 logger.info(
                         "Cleaning {} in log {} into {} with an upper bound deletion horizon {} computed from " +
-                        "the segment last modified time of {},{} deletes.",
+                                "the segment last modified time of {},{} deletes.",
                         currentSegment, log.name(), currentCleaned.baseOffset(), legacyDeleteHorizonMs, currentSegment.lastModified(),
                         retainLegacyDeletesAndTxnMarkers ? "retaining" : "discarding"
                 );
@@ -329,14 +328,14 @@ public class Cleaner {
 
         } catch (LogCleaningAbortedException e) {
             Stream.concat(cleanedSegments.stream(), Stream.of(currentCleaned))
-                .distinct()
-                .forEach(segment -> {
-                    try {
-                        segment.deleteIfExists();
-                    } catch (Exception deleteException) {
-                        e.addSuppressed(deleteException);
-                    }
-                });
+                    .distinct()
+                    .forEach(segment -> {
+                        try {
+                            segment.deleteIfExists();
+                        } catch (Exception deleteException) {
+                            e.addSuppressed(deleteException);
+                        }
+                    });
             throw e;
         }
     }
@@ -345,37 +344,36 @@ public class Cleaner {
      * Clean the given source log segment into destination segment using the key=>offset mapping
      * provided, starting from the given position.
      *
-     * @param topicPartition The topic and partition of the log segment to clean
-     * @param sourceRecords The dirty log segment
-     * @param dest The cleaned log segment
-     * @param startPosition Starting position in sourceRecords (in bytes)
-     * @param map The key=>offset mapping
+     * @param topicPartition                   The topic and partition of the log segment to clean
+     * @param sourceRecords                    The dirty log segment
+     * @param dest                             The cleaned log segment
+     * @param startPosition                    Starting position in sourceRecords (in bytes)
+     * @param map                              The key=>offset mapping
      * @param retainLegacyDeletesAndTxnMarkers Should tombstones (lower than version 2) and markers be retained while cleaning this segment
-     * @param deleteRetentionMs Defines how long a tombstone should be kept as defined by log configuration
-     * @param maxLogMessageSize The maximum message size of the corresponding topic
-     * @param transactionMetadata The state of ongoing transactions which is carried between the cleaning of the grouped segments
-     * @param lastRecordsOfActiveProducers The active producers and its last data offset
-     * @param highWatermark The high watermark of the log, used to retain the batch whose next offset equals
-     *                      the high watermark so that the last offset information is not lost after cleaning
-     * @param stats Collector for cleaning statistics
-     * @param currentTime The time at which the clean was initiated
-     *
+     * @param deleteRetentionMs                Defines how long a tombstone should be kept as defined by log configuration
+     * @param maxLogMessageSize                The maximum message size of the corresponding topic
+     * @param transactionMetadata              The state of ongoing transactions which is carried between the cleaning of the grouped segments
+     * @param lastRecordsOfActiveProducers     The active producers and its last data offset
+     * @param highWatermark                    The high watermark of the log, used to retain the batch whose next offset equals
+     *                                         the high watermark so that the last offset information is not lost after cleaning
+     * @param stats                            Collector for cleaning statistics
+     * @param currentTime                      The time at which the clean was initiated
      * @return {@code Optional.of(position)} if the destination segment would overflow (position is where overflow
-     *         was detected in the source), or {@code Optional.empty()} if cleaning completed normally
+     * was detected in the source), or {@code Optional.empty()} if cleaning completed normally
      */
     private Optional<Integer> cleanInto(TopicPartition topicPartition,
-                           FileRecords sourceRecords,
-                           LogSegment dest,
-                           int startPosition,
-                           OffsetMap map,
-                           boolean retainLegacyDeletesAndTxnMarkers,
-                           long deleteRetentionMs,
-                           int maxLogMessageSize,
-                           CleanedTransactionMetadata transactionMetadata,
-                           Map<Long, LastRecord> lastRecordsOfActiveProducers,
-                           long highWatermark,
-                           CleanerStats stats,
-                           long currentTime) throws IOException {
+                                        FileRecords sourceRecords,
+                                        LogSegment dest,
+                                        int startPosition,
+                                        OffsetMap map,
+                                        boolean retainLegacyDeletesAndTxnMarkers,
+                                        long deleteRetentionMs,
+                                        int maxLogMessageSize,
+                                        CleanedTransactionMetadata transactionMetadata,
+                                        Map<Long, LastRecord> lastRecordsOfActiveProducers,
+                                        long highWatermark,
+                                        CleanerStats stats,
+                                        long currentTime) throws IOException {
         MemoryRecords.RecordFilter logCleanerFilter = new MemoryRecords.RecordFilter(currentTime, deleteRetentionMs) {
             private boolean discardBatchRecords;
 
@@ -500,10 +498,10 @@ public class Cleaner {
      * </ol>
      * In these cases, grow the buffer to hold the next batch.
      *
-     * @param sourceRecords The dirty log segment records to process
-     * @param position The current position in the read buffer to read from
+     * @param sourceRecords     The dirty log segment records to process
+     * @param position          The current position in the read buffer to read from
      * @param maxLogMessageSize The maximum record size in bytes for the topic
-     * @param memoryRecords The memory records in read buffer
+     * @param memoryRecords     The memory records in read buffer
      */
     private void growBuffersOrFail(FileRecords sourceRecords,
                                    int position,
@@ -539,9 +537,8 @@ public class Cleaner {
     /**
      * Check if a batch should be discarded by cleaned transaction state.
      *
-     * @param batch The batch of records to check
+     * @param batch               The batch of records to check
      * @param transactionMetadata The maintained transaction state about cleaning
-     *
      * @return if the batch can be discarded
      */
     private boolean shouldDiscardBatch(RecordBatch batch,
@@ -555,13 +552,12 @@ public class Cleaner {
     /**
      * Check if a record should be retained.
      *
-     * @param map The offset map(key=>offset) to use for cleaning segments
+     * @param map                           The offset map(key=>offset) to use for cleaning segments
      * @param retainDeletesForLegacyRecords Should tombstones (lower than version 2) and markers be retained while cleaning this segment
-     * @param batch The batch of records that the record belongs to
-     * @param record The record to check
-     * @param stats The collector for cleaning statistics
-     * @param currentTime The current time that used to compare with the delete horizon time of the batch when judging a non-legacy record
-     *
+     * @param batch                         The batch of records that the record belongs to
+     * @param record                        The record to check
+     * @param stats                         The collector for cleaning statistics
+     * @param currentTime                   The current time that used to compare with the delete horizon time of the batch when judging a non-legacy record
      * @return if the record  can be retained
      */
     private boolean shouldRetainRecord(OffsetMap map,
@@ -631,11 +627,10 @@ public class Cleaner {
      * We collect a group of such segments together into a single destination segment.
      * This prevents segment sizes from shrinking too much.
      *
-     * @param segments The log segments to group
-     * @param maxSize the maximum size in bytes for the total of all log data in a group
-     * @param maxIndexSize the maximum size in bytes for the total of all index data in a group
+     * @param segments               The log segments to group
+     * @param maxSize                the maximum size in bytes for the total of all log data in a group
+     * @param maxIndexSize           the maximum size in bytes for the total of all index data in a group
      * @param firstUncleanableOffset The upper(exclusive) offset to clean to
-     *
      * @return A list of grouped segments
      */
     public List<List<LogSegment>> groupSegmentsBySize(List<LogSegment> segments, int maxSize, int maxIndexSize, long firstUncleanableOffset) throws IOException {
@@ -683,7 +678,7 @@ public class Cleaner {
      * the base offset of the next segment in the list.
      * If the next segment doesn't exist, first Uncleanable Offset will be used.
      *
-     * @param segs Remaining segments to group
+     * @param segs                   Remaining segments to group
      * @param firstUncleanableOffset The upper(exclusive) offset to clean to
      * @return The estimated last offset for the first segment in segs
      */
@@ -701,10 +696,10 @@ public class Cleaner {
     /**
      * Build a map of key_hash => offset for the keys in the cleanable dirty portion of the log to use in cleaning.
      *
-     * @param log The log to use
+     * @param log   The log to use
      * @param start The offset at which dirty messages begin
-     * @param end The ending offset for the map that is being built
-     * @param map The map in which to store the mappings
+     * @param end   The ending offset for the map that is being built
+     * @param map   The map in which to store the mappings
      * @param stats Collector for cleaning statistics
      */
     public void buildOffsetMap(UnifiedLog log,
@@ -758,15 +753,14 @@ public class Cleaner {
     /**
      * Add the messages in the given segment to the offset map.
      *
-     * @param topicPartition The topic and partition of the log segment to build offset
-     * @param segment The segment to index
-     * @param map The map in which to store the key=>offset mapping
-     * @param startOffset The offset at which dirty messages begin
+     * @param topicPartition         The topic and partition of the log segment to build offset
+     * @param segment                The segment to index
+     * @param map                    The map in which to store the key=>offset mapping
+     * @param startOffset            The offset at which dirty messages begin
      * @param nextSegmentStartOffset The base offset for next segment when building current segment
-     * @param maxLogMessageSize The maximum size in bytes for record allowed
-     * @param transactionMetadata The state of ongoing transactions for the log between offset range to build
-     * @param stats Collector for cleaning statistics
-     *
+     * @param maxLogMessageSize      The maximum size in bytes for record allowed
+     * @param transactionMetadata    The state of ongoing transactions for the log between offset range to build
+     * @param stats                  Collector for cleaning statistics
      * @return If the map was filled whilst loading from this segment
      */
     private boolean buildOffsetMapForSegment(TopicPartition topicPartition,

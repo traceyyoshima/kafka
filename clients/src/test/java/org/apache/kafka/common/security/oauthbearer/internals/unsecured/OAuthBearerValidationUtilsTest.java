@@ -37,9 +37,9 @@ public class OAuthBearerValidationUtilsTest {
     @Test
     public void validateClaimForExistenceAndType() throws OAuthBearerIllegalTokenException {
         String claimName = "foo";
-        for (Boolean exists : new Boolean[] {null, Boolean.TRUE, Boolean.FALSE}) {
+        for (Boolean exists : new Boolean[]{null, Boolean.TRUE, Boolean.FALSE}) {
             boolean useErrorValue = exists == null;
-            for (Boolean required : new boolean[] {true, false}) {
+            for (Boolean required : new boolean[]{true, false}) {
                 StringBuilder sb = new StringBuilder("{");
                 appendJsonText(sb, "exp", 100);
                 appendCommaJsonText(sb, "sub", "principalName");
@@ -65,7 +65,7 @@ public class OAuthBearerValidationUtilsTest {
     public void validateIssuedAt() {
         long nowMs = TIME.milliseconds();
         double nowClaimValue = ((double) nowMs) / 1000;
-        for (boolean exists : new boolean[] {true, false}) {
+        for (boolean exists : new boolean[]{true, false}) {
             StringBuilder sb = new StringBuilder("{");
             appendJsonText(sb, "exp", nowClaimValue);
             appendCommaJsonText(sb, "sub", "principalName");
@@ -75,9 +75,9 @@ public class OAuthBearerValidationUtilsTest {
             String compactSerialization = HEADER_COMPACT_SERIALIZATION + Base64.getUrlEncoder().withoutPadding()
                     .encodeToString(sb.toString().getBytes(StandardCharsets.UTF_8)) + ".";
             OAuthBearerUnsecuredJws testJwt = new OAuthBearerUnsecuredJws(compactSerialization, "sub", "scope");
-            for (boolean required : new boolean[] {true, false}) {
-                for (int allowableClockSkewMs : new int[] {0, 5, 10, 20}) {
-                    for (long whenCheckOffsetMs : new long[] {-10, 0, 10}) {
+            for (boolean required : new boolean[]{true, false}) {
+                for (int allowableClockSkewMs : new int[]{0, 5, 10, 20}) {
+                    for (long whenCheckOffsetMs : new long[]{-10, 0, 10}) {
                         long whenCheckMs = nowMs + whenCheckOffsetMs;
                         OAuthBearerValidationResult result = OAuthBearerValidationUtils.validateIssuedAt(testJwt,
                                 required, whenCheckMs, allowableClockSkewMs);
@@ -87,10 +87,10 @@ public class OAuthBearerValidationUtilsTest {
                             assertTrue(isSuccess(result), "!required && !exists");
                         else if (nowClaimValue * 1000 > whenCheckMs + allowableClockSkewMs) // issued in future
                             assertTrue(isFailureWithMessageAndNoFailureScope(result),
-                                assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
+                                    assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
                         else
                             assertTrue(isSuccess(result),
-                                assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
+                                    assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
                     }
                 }
             }
@@ -109,14 +109,14 @@ public class OAuthBearerValidationUtilsTest {
                 + Base64.getUrlEncoder().withoutPadding().encodeToString(sb.toString().getBytes(StandardCharsets.UTF_8))
                 + ".";
         OAuthBearerUnsecuredJws testJwt = new OAuthBearerUnsecuredJws(compactSerialization, "sub", "scope");
-        for (int allowableClockSkewMs : new int[] {0, 5, 10, 20}) {
-            for (long whenCheckOffsetMs : new long[] {-10, 0, 10}) {
+        for (int allowableClockSkewMs : new int[]{0, 5, 10, 20}) {
+            for (long whenCheckOffsetMs : new long[]{-10, 0, 10}) {
                 long whenCheckMs = nowMs + whenCheckOffsetMs;
                 OAuthBearerValidationResult result = OAuthBearerValidationUtils.validateExpirationTime(testJwt,
                         whenCheckMs, allowableClockSkewMs);
                 if (whenCheckMs - allowableClockSkewMs >= nowClaimValue * 1000) // expired
                     assertTrue(isFailureWithMessageAndNoFailureScope(result),
-                        assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
+                            assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
                 else
                     assertTrue(isSuccess(result), assertionFailureMessage(nowClaimValue, allowableClockSkewMs, whenCheckMs));
             }
@@ -127,7 +127,7 @@ public class OAuthBearerValidationUtilsTest {
     public void validateExpirationTimeAndIssuedAtConsistency() throws OAuthBearerIllegalTokenException {
         long nowMs = TIME.milliseconds();
         double nowClaimValue = ((double) nowMs) / 1000;
-        for (boolean issuedAtExists : new boolean[] {true, false}) {
+        for (boolean issuedAtExists : new boolean[]{true, false}) {
             if (!issuedAtExists) {
                 StringBuilder sb = new StringBuilder("{");
                 appendJsonText(sb, "exp", nowClaimValue);
@@ -164,11 +164,11 @@ public class OAuthBearerValidationUtilsTest {
         final List<String> noScope = Collections.emptyList();
         final List<String> scope1 = Collections.singletonList("scope1");
         final List<String> scope1And2 = Arrays.asList("scope1", "scope2");
-        for (boolean actualScopeExists : new boolean[] {true, false}) {
+        for (boolean actualScopeExists : new boolean[]{true, false}) {
             List<? extends List> scopes = !actualScopeExists ? Collections.singletonList((List) null)
                     : Arrays.asList(noScope, scope1, scope1And2);
             for (List<String> actualScope : scopes) {
-                for (boolean requiredScopeExists : new boolean[] {true, false}) {
+                for (boolean requiredScopeExists : new boolean[]{true, false}) {
                     List<? extends List> requiredScopes = !requiredScopeExists ? Collections.singletonList((List) null)
                             : Arrays.asList(noScope, scope1, scope1And2);
                     for (List<String> requiredScope : requiredScopes) {

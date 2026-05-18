@@ -87,11 +87,11 @@ public class WorkerCoordinator extends AbstractCoordinator implements Closeable 
                              ConnectProtocolCompatibility protocolCompatibility,
                              int maxDelay) {
         super(config,
-              logContext,
-              client,
-              metrics,
-              metricGrpPrefix,
-              time);
+                logContext,
+                client,
+                metrics,
+                metricGrpPrefix,
+                time);
         this.log = logContext.logger(WorkerCoordinator.class);
         this.restUrl = restUrl;
         this.configStorage = configStorage;
@@ -230,8 +230,8 @@ public class WorkerCoordinator extends AbstractCoordinator implements Closeable 
 
         ConnectProtocolCompatibility protocolCompatibility = ConnectProtocolCompatibility.fromProtocol(protocol);
         return protocolCompatibility == EAGER
-               ? eagerAssignor.performAssignment(leaderId, protocolCompatibility, allMemberMetadata, this)
-               : incrementalAssignor.performAssignment(leaderId, protocolCompatibility, allMemberMetadata, this);
+                ? eagerAssignor.performAssignment(leaderId, protocolCompatibility, allMemberMetadata, this)
+                : incrementalAssignor.performAssignment(leaderId, protocolCompatibility, allMemberMetadata, this);
     }
 
     @Override
@@ -245,7 +245,7 @@ public class WorkerCoordinator extends AbstractCoordinator implements Closeable 
                 listener.onRevoked(localAssignmentSnapshot.leader(), localAssignmentSnapshot.connectors(), localAssignmentSnapshot.tasks());
         } else {
             log.debug("Cooperative rebalance triggered. Keeping assignment {} until it's "
-                      + "explicitly revoked.", localAssignmentSnapshot);
+                    + "explicitly revoked.", localAssignmentSnapshot);
         }
         return true;
     }
@@ -388,11 +388,11 @@ public class WorkerCoordinator extends AbstractCoordinator implements Closeable 
             };
 
             metrics.addMetric(metrics.metricName("assigned-connectors",
-                              this.metricGrpName,
-                              "The number of connector instances currently assigned to this worker"), numConnectors);
+                    this.metricGrpName,
+                    "The number of connector instances currently assigned to this worker"), numConnectors);
             metrics.addMetric(metrics.metricName("assigned-tasks",
-                              this.metricGrpName,
-                              "The number of tasks currently assigned to this worker"), numTasks);
+                    this.metricGrpName,
+                    "The number of tasks currently assigned to this worker"), numTasks);
         }
     }
 

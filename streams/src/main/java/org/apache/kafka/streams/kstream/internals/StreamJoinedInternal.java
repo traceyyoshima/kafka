@@ -34,8 +34,8 @@ public class StreamJoinedInternal<K, V1, V2> extends StreamJoined<K, V1, V2> {
 
     //Needs to be public for testing
     public StreamJoinedInternal(
-        final StreamJoined<K, V1, V2> streamJoined,
-        final InternalStreamsBuilder builder
+            final StreamJoined<K, V1, V2> streamJoined,
+            final InternalStreamsBuilder builder
     ) {
         super(streamJoined);
         passedInDslStoreSuppliers = dslStoreSuppliers;

@@ -37,11 +37,11 @@ import static org.apache.kafka.common.config.ConfigDef.NO_DEFAULT_VALUE;
 /**
  * Configuration required for {@link MirrorClient} to talk to a given target cluster.
  * <p>
- *   This needs to contain at least the connection details for the target cluster (<code>bootstrap.servers</code> and
- *   any required TLS/SASL configuration), as well as {@link #REPLICATION_POLICY_CLASS} when not using the default
- *   replication policy. It can also include {@link AdminClientConfig} and {@link ConsumerConfig} to customize the
- *   internal clients this uses. For example:
- *   <pre>
+ * This needs to contain at least the connection details for the target cluster (<code>bootstrap.servers</code> and
+ * any required TLS/SASL configuration), as well as {@link #REPLICATION_POLICY_CLASS} when not using the default
+ * replication policy. It can also include {@link AdminClientConfig} and {@link ConsumerConfig} to customize the
+ * internal clients this uses. For example:
+ * <pre>
  *      bootstrap.servers = host1:9092
  *      consumer.client.id = mm2-client
  *      replication.policy.separator = __
@@ -55,16 +55,16 @@ public class MirrorClientConfig extends AbstractConfig {
     public static final String REPLICATION_POLICY_SEPARATOR = "replication.policy.separator";
     private static final String REPLICATION_POLICY_SEPARATOR_DOC = "Separator used in remote topic naming convention.";
     public static final String REPLICATION_POLICY_SEPARATOR_DEFAULT =
-        DefaultReplicationPolicy.SEPARATOR_DEFAULT;
+            DefaultReplicationPolicy.SEPARATOR_DEFAULT;
 
-    public static final String INTERNAL_TOPIC_SEPARATOR_ENABLED =  "replication.policy.internal.topic.separator.enabled";
+    public static final String INTERNAL_TOPIC_SEPARATOR_ENABLED = "replication.policy.internal.topic.separator.enabled";
     public static final String INTERNAL_TOPIC_SEPARATOR_ENABLED_DOC =
             "Whether to use replication.policy.separator to control the names of topics used for checkpoints and offset syncs. " +
                     "By default, custom separators are used in these topic names; however, if upgrading MirrorMaker 2 from older versions " +
                     "that did not allow for these topic names to be customized, it may be necessary to set this property to 'false' in order " +
                     "to continue using the same names for those topics.";
     public static final Boolean INTERNAL_TOPIC_SEPARATOR_ENABLED_DEFAULT =
-        DefaultReplicationPolicy.INTERNAL_TOPIC_SEPARATOR_ENABLED_DEFAULT;
+            DefaultReplicationPolicy.INTERNAL_TOPIC_SEPARATOR_ENABLED_DEFAULT;
     public static final String FORWARDING_ADMIN_CLASS = "forwarding.admin.class";
     public static final String FORWARDING_ADMIN_CLASS_DOC = "Class which extends ForwardingAdmin to define custom cluster resource management (topics, configs, etc). " +
             "The class must have a constructor with signature <code>(Map<String, Object> config)</code> that is used to configure a KafkaAdminClient and may also be used to configure clients for external systems if necessary.";
@@ -92,17 +92,23 @@ public class MirrorClientConfig extends AbstractConfig {
         }
     }
 
-    /** Sub-config for Admin clients. */
+    /**
+     * Sub-config for Admin clients.
+     */
     public Map<String, Object> adminConfig() {
         return clientConfig(ADMIN_CLIENT_PREFIX);
     }
 
-    /** Sub-config for Consumer clients. */
+    /**
+     * Sub-config for Consumer clients.
+     */
     public Map<String, Object> consumerConfig() {
         return clientConfig(CONSUMER_CLIENT_PREFIX);
     }
 
-    /** Sub-config for Producer clients. */
+    /**
+     * Sub-config for Producer clients.
+     */
     public Map<String, Object> producerConfig() {
         return clientConfig(PRODUCER_CLIENT_PREFIX);
     }
@@ -116,59 +122,59 @@ public class MirrorClientConfig extends AbstractConfig {
 
     // Properties passed to internal Kafka clients
     static final ConfigDef CLIENT_CONFIG_DEF = new ConfigDef()
-        .define(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,
-            Type.LIST,
-            NO_DEFAULT_VALUE,
-            ConfigDef.ValidList.anyNonDuplicateValues(false, false),
-            Importance.HIGH,
-            CommonClientConfigs.BOOTSTRAP_SERVERS_DOC)
-        // security support
-        .define(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG,
-            Type.STRING,
-            CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL,
-            in(Utils.enumOptions(SecurityProtocol.class)),
-            Importance.MEDIUM,
-            CommonClientConfigs.SECURITY_PROTOCOL_DOC)
-        .withClientSslSupport()
-        .withClientSaslSupport();
+            .define(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,
+                    Type.LIST,
+                    NO_DEFAULT_VALUE,
+                    ConfigDef.ValidList.anyNonDuplicateValues(false, false),
+                    Importance.HIGH,
+                    CommonClientConfigs.BOOTSTRAP_SERVERS_DOC)
+            // security support
+            .define(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG,
+                    Type.STRING,
+                    CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL,
+                    in(Utils.enumOptions(SecurityProtocol.class)),
+                    Importance.MEDIUM,
+                    CommonClientConfigs.SECURITY_PROTOCOL_DOC)
+            .withClientSslSupport()
+            .withClientSaslSupport();
 
     static final ConfigDef CONFIG_DEF = new ConfigDef()
-        .define(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,
-            Type.LIST,
-            NO_DEFAULT_VALUE,
-            ConfigDef.ValidList.anyNonDuplicateValues(false, false),
-            Importance.HIGH,
-            CommonClientConfigs.BOOTSTRAP_SERVERS_DOC)
-        .define(
-            REPLICATION_POLICY_CLASS,
-            ConfigDef.Type.CLASS,
-            REPLICATION_POLICY_CLASS_DEFAULT,
-            ConfigDef.Importance.LOW,
-            REPLICATION_POLICY_CLASS_DOC)
-        .define(
-            REPLICATION_POLICY_SEPARATOR,
-            ConfigDef.Type.STRING,
-            REPLICATION_POLICY_SEPARATOR_DEFAULT,
-            ConfigDef.Importance.LOW,
-            REPLICATION_POLICY_SEPARATOR_DOC)
-        .define(
-            INTERNAL_TOPIC_SEPARATOR_ENABLED,
-            ConfigDef.Type.BOOLEAN,
-            INTERNAL_TOPIC_SEPARATOR_ENABLED_DEFAULT,
-            ConfigDef.Importance.LOW,
-            INTERNAL_TOPIC_SEPARATOR_ENABLED_DOC)
-        .define(
-            FORWARDING_ADMIN_CLASS,
-            ConfigDef.Type.CLASS,
-            FORWARDING_ADMIN_CLASS_DEFAULT,
-            ConfigDef.Importance.LOW,
-            FORWARDING_ADMIN_CLASS_DOC)
-        .define(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG,
-            Type.STRING,
-            CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL,
-            in(Utils.enumOptions(SecurityProtocol.class)),
-            Importance.MEDIUM,
-            CommonClientConfigs.SECURITY_PROTOCOL_DOC)
-        .withClientSslSupport()
-        .withClientSaslSupport();
+            .define(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,
+                    Type.LIST,
+                    NO_DEFAULT_VALUE,
+                    ConfigDef.ValidList.anyNonDuplicateValues(false, false),
+                    Importance.HIGH,
+                    CommonClientConfigs.BOOTSTRAP_SERVERS_DOC)
+            .define(
+                    REPLICATION_POLICY_CLASS,
+                    ConfigDef.Type.CLASS,
+                    REPLICATION_POLICY_CLASS_DEFAULT,
+                    ConfigDef.Importance.LOW,
+                    REPLICATION_POLICY_CLASS_DOC)
+            .define(
+                    REPLICATION_POLICY_SEPARATOR,
+                    ConfigDef.Type.STRING,
+                    REPLICATION_POLICY_SEPARATOR_DEFAULT,
+                    ConfigDef.Importance.LOW,
+                    REPLICATION_POLICY_SEPARATOR_DOC)
+            .define(
+                    INTERNAL_TOPIC_SEPARATOR_ENABLED,
+                    ConfigDef.Type.BOOLEAN,
+                    INTERNAL_TOPIC_SEPARATOR_ENABLED_DEFAULT,
+                    ConfigDef.Importance.LOW,
+                    INTERNAL_TOPIC_SEPARATOR_ENABLED_DOC)
+            .define(
+                    FORWARDING_ADMIN_CLASS,
+                    ConfigDef.Type.CLASS,
+                    FORWARDING_ADMIN_CLASS_DEFAULT,
+                    ConfigDef.Importance.LOW,
+                    FORWARDING_ADMIN_CLASS_DOC)
+            .define(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG,
+                    Type.STRING,
+                    CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL,
+                    in(Utils.enumOptions(SecurityProtocol.class)),
+                    Importance.MEDIUM,
+                    CommonClientConfigs.SECURITY_PROTOCOL_DOC)
+            .withClientSslSupport()
+            .withClientSaslSupport();
 }

@@ -112,7 +112,7 @@ class KTableMapValues<KIn, VIn, VOut> implements KTableProcessorSupplier<KIn, VI
         return newValue;
     }
 
-    private ValueTimestampHeaders<VOut> computeValueAndTimestamp(final KIn key, final ValueTimestampHeaders<VIn> valueTimestampHeaders, final Headers  contextHeaders) {
+    private ValueTimestampHeaders<VOut> computeValueAndTimestamp(final KIn key, final ValueTimestampHeaders<VIn> valueTimestampHeaders, final Headers contextHeaders) {
 
         VOut newValue = null;
         long timestamp = 0;
@@ -139,10 +139,10 @@ class KTableMapValues<KIn, VIn, VOut> implements KTableProcessorSupplier<KIn, VI
             if (queryableName != null) {
                 store = new KeyValueStoreWrapper<>(context, queryableName);
                 tupleForwarder = new TimestampedTupleForwarder<>(
-                    store.store(),
-                    context,
-                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                    sendOldValues);
+                        store.store(),
+                        context,
+                        store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                        sendOldValues);
             }
         }
 
@@ -168,8 +168,8 @@ class KTableMapValues<KIn, VIn, VOut> implements KTableProcessorSupplier<KIn, VI
             }
 
             return queryableName != null
-                ? getValueOrNull(store.get(key))
-                : computeValue(key, change.oldValue);
+                    ? getValueOrNull(store.get(key))
+                    : computeValue(key, change.oldValue);
         }
     }
 

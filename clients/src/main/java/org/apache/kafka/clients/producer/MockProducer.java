@@ -76,23 +76,41 @@ public class MockProducer<K, V> implements Producer<K, V> {
     private long commitCount = 0L;
     private final List<KafkaMetric> addedMetrics = new ArrayList<>();
 
-    /** Exception to throw when {@link #initTransactions(boolean)} is called */
+    /**
+     * Exception to throw when {@link #initTransactions(boolean)} is called
+     */
     public RuntimeException initTransactionException = null;
-    /** Exception to throw when {@link #beginTransaction()} is called */
+    /**
+     * Exception to throw when {@link #beginTransaction()} is called
+     */
     public RuntimeException beginTransactionException = null;
-    /** Exception to throw when {@link #sendOffsetsToTransaction(Map, ConsumerGroupMetadata)} is called */
+    /**
+     * Exception to throw when {@link #sendOffsetsToTransaction(Map, ConsumerGroupMetadata)} is called
+     */
     public RuntimeException sendOffsetsToTransactionException = null;
-    /** Exception to throw when {@link #commitTransaction()} is called */
+    /**
+     * Exception to throw when {@link #commitTransaction()} is called
+     */
     public RuntimeException commitTransactionException = null;
-    /** Exception to throw when {@link #abortTransaction()} is called */
+    /**
+     * Exception to throw when {@link #abortTransaction()} is called
+     */
     public RuntimeException abortTransactionException = null;
-    /** Exception to throw when {@link #send(ProducerRecord)} or {@link #send(ProducerRecord, Callback)} is called */
+    /**
+     * Exception to throw when {@link #send(ProducerRecord)} or {@link #send(ProducerRecord, Callback)} is called
+     */
     public RuntimeException sendException = null;
-    /** Exception to throw when {@link #flush()} is called */
+    /**
+     * Exception to throw when {@link #flush()} is called
+     */
     public RuntimeException flushException = null;
-    /** Exception to throw when {@link #partitionsFor(String)} is called */
+    /**
+     * Exception to throw when {@link #partitionsFor(String)} is called
+     */
     public RuntimeException partitionsForException = null;
-    /** Exception to throw when {@link #close()} or {@link #close(Duration)} is called */
+    /**
+     * Exception to throw when {@link #close()} or {@link #close(Duration)} is called
+     */
     public RuntimeException closeException = null;
     private boolean telemetryDisabled = false;
     private Uuid clientInstanceId;
@@ -101,13 +119,13 @@ public class MockProducer<K, V> implements Producer<K, V> {
     /**
      * Create a mock producer
      *
-     * @param cluster The cluster holding metadata for this producer
-     * @param autoComplete If true automatically complete all requests successfully and execute the callback. Otherwise
-     *        the user must call {@link #completeNext()} or {@link #errorNext(RuntimeException)} after
-     *        {@link #send(ProducerRecord) send()} to complete the call and unblock the {@link
-     *        java.util.concurrent.Future Future&lt;RecordMetadata&gt;} that is returned.
-     * @param partitioner The partition strategy
-     * @param keySerializer The serializer for key that implements {@link Serializer}.
+     * @param cluster         The cluster holding metadata for this producer
+     * @param autoComplete    If true automatically complete all requests successfully and execute the callback. Otherwise
+     *                        the user must call {@link #completeNext()} or {@link #errorNext(RuntimeException)} after
+     *                        {@link #send(ProducerRecord) send()} to complete the call and unblock the {@link
+     *                        java.util.concurrent.Future Future&lt;RecordMetadata&gt;} that is returned.
+     * @param partitioner     The partition strategy
+     * @param keySerializer   The serializer for key that implements {@link Serializer}.
      * @param valueSerializer The serializer for value that implements {@link Serializer}.
      */
     public MockProducer(final Cluster cluster,
@@ -131,7 +149,7 @@ public class MockProducer<K, V> implements Producer<K, V> {
 
     /**
      * Create a new mock producer with invented metadata the given autoComplete setting, partitioner and key\value serializers.
-     *
+     * <p>
      * Equivalent to {@link #MockProducer(Cluster, boolean, Partitioner, Serializer, Serializer) new MockProducer(Cluster.empty(), autoComplete, partitioner, keySerializer, valueSerializer)}
      */
     public MockProducer(final boolean autoComplete,
@@ -143,7 +161,7 @@ public class MockProducer<K, V> implements Producer<K, V> {
 
     /**
      * Create a new mock producer with invented metadata.
-     *
+     * <p>
      * Equivalent to {@link #MockProducer(Cluster, boolean, Partitioner, Serializer, Serializer) new MockProducer(Cluster.empty(), false, null, null, null)}
      */
     public MockProducer() {
@@ -204,7 +222,7 @@ public class MockProducer<K, V> implements Producer<K, V> {
             return;
         }
         Map<TopicPartition, OffsetAndMetadata> uncommittedOffsets =
-            this.uncommittedConsumerGroupOffsets.computeIfAbsent(groupMetadata.groupId(), k -> new HashMap<>());
+                this.uncommittedConsumerGroupOffsets.computeIfAbsent(groupMetadata.groupId(), k -> new HashMap<>());
         uncommittedOffsets.putAll(offsets);
         this.sentOffsets = true;
     }
@@ -215,7 +233,7 @@ public class MockProducer<K, V> implements Producer<K, V> {
         verifyNotFenced();
         verifyTransactionsInitialized();
         verifyTransactionInFlight();
-        
+
         // Return a new PreparedTxnState with mock values for producerId and epoch
         // Using 1000L and (short)1 as arbitrary values for a valid PreparedTxnState
         return new PreparedTxnState(1000L, (short) 1);
@@ -271,7 +289,7 @@ public class MockProducer<K, V> implements Producer<K, V> {
         verifyNotClosed();
         verifyNotFenced();
         verifyTransactionsInitialized();
-        
+
         if (!this.transactionInFlight) {
             throw new IllegalStateException("There is no prepared transaction to complete.");
         }
@@ -279,7 +297,7 @@ public class MockProducer<K, V> implements Producer<K, V> {
         // For testing purposes, we'll consider a prepared state with producerId=1000L and epoch=1 as valid
         // This should match what's returned in prepareTransaction()
         PreparedTxnState currentState = new PreparedTxnState(1000L, (short) 1);
-        
+
         if (currentState.equals(preparedTxnState)) {
             commitTransaction();
         } else {
@@ -637,9 +655,9 @@ public class MockProducer<K, V> implements Producer<K, V> {
             // they have given us a partition, use it
             if (partition < 0 || partition >= numPartitions)
                 throw new IllegalArgumentException("Invalid partition given with record: " + partition
-                                                   + " is not in the range [0..."
-                                                   + numPartitions
-                                                   + "].");
+                        + " is not in the range [0..."
+                        + numPartitions
+                        + "].");
             return partition;
         }
         byte[] keyBytes = keySerializer.serialize(topic, record.headers(), record.key());

@@ -98,8 +98,8 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
     private final HeartbeatMetricsManager metricsManager;
 
     public static final String CONSUMER_PROTOCOL_NOT_SUPPORTED_MSG = "The cluster does not support the new CONSUMER " +
-        "group protocol. Set group.protocol=classic on the consumer configs to revert to the CLASSIC protocol " +
-        "until the cluster is upgraded.";
+            "group protocol. Set group.protocol=classic on the consumer configs to revert to the CLASSIC protocol " +
+            "until the cluster is upgraded.";
 
     AbstractHeartbeatRequestManager(
             final LogContext logContext,
@@ -170,10 +170,10 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
         pollTimer.update(currentTimeMs);
         if (pollTimer.isExpired() && !membershipManager().isLeavingGroup()) {
             logger.warn("Consumer poll timeout has expired. This means the time between " +
-                "subsequent calls to poll() was longer than the configured max.poll.interval.ms, " +
-                "which typically implies that the poll loop is spending too much time processing " +
-                "messages. You can address this either by increasing max.poll.interval.ms or by " +
-                "reducing the maximum size of batches returned in poll() with max.poll.records.");
+                    "subsequent calls to poll() was longer than the configured max.poll.interval.ms, " +
+                    "which typically implies that the poll loop is spending too much time processing " +
+                    "messages. You can address this either by increasing max.poll.interval.ms or by " +
+                    "reducing the maximum size of batches returned in poll() with max.poll.records.");
 
             membershipManager().transitionToSendingLeaveGroup(true);
             NetworkClientDelegate.UnsentRequest leaveHeartbeat = makeHeartbeatRequest(currentTimeMs, true);
@@ -187,9 +187,9 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
         // Case 1: The member state is LEAVING - if the member is a share consumer, we should immediately send leave;
         // if the member is an async consumer, this will also depend on leavingGroupOperation.
         boolean heartbeatNow = shouldSendLeaveHeartbeatNow() ||
-            // Case 2: The member state indicates it should send a heartbeat without waiting for the interval,
-            // and there is no heartbeat request currently in-flight
-            (membershipManager().shouldHeartbeatNow() && !heartbeatRequestState.requestInFlight());
+                // Case 2: The member state indicates it should send a heartbeat without waiting for the interval,
+                // and there is no heartbeat request currently in-flight
+                (membershipManager().shouldHeartbeatNow() && !heartbeatRequestState.requestInFlight());
 
         if (!heartbeatRequestState.canSendRequest(currentTimeMs) && !heartbeatNow) {
             return new NetworkClientDelegate.PollResult(heartbeatRequestState.timeToNextHeartbeatMs(currentTimeMs));
@@ -271,8 +271,8 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
         pollTimer.update(pollMs);
         if (pollTimer.isExpired()) {
             logger.warn("Time between subsequent calls to poll() was longer than the configured " +
-                "max.poll.interval.ms, exceeded approximately by {} ms. Member {} will rejoin the group now.",
-                pollTimer.isExpiredBy(), membershipManager().memberId());
+                            "max.poll.interval.ms, exceeded approximately by {} ms. Member {} will rejoin the group now.",
+                    pollTimer.isExpiredBy(), membershipManager().memberId());
             membershipManager().maybeRejoinStaleMember();
         }
         pollTimer.reset(maxPollIntervalMs);
@@ -331,9 +331,9 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
         if (exception instanceof RetriableException) {
             coordinatorRequestManager.handleCoordinatorDisconnect(exception, responseTimeMs);
             String message = String.format("%s failed because of the retriable exception. Will retry in %s ms: %s",
-                heartbeatRequestName(),
-                heartbeatRequestState.remainingBackoffMs(responseTimeMs),
-                exception.getMessage());
+                    heartbeatRequestName(),
+                    heartbeatRequestState.remainingBackoffMs(responseTimeMs),
+                    exception.getMessage());
             logger.debug(message);
         } else if (!handleSpecificFailure(exception)) {
             logger.error("{} failed due to fatal error: {}", heartbeatRequestName(), exception.getMessage());
@@ -434,7 +434,7 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
             case INVALID_REGULAR_EXPRESSION:
                 logger.error("{} failed due to {}: {}", heartbeatRequestName(), error, errorMessage);
                 handleFatalFailure(error.exception("Invalid RE2J SubscriptionPattern provided in the call to " +
-                    "subscribe. " + errorMessage));
+                        "subscribe. " + errorMessage));
                 break;
 
             case GROUP_ID_NOT_FOUND:
@@ -468,9 +468,9 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
 
     protected void logInfo(final String message, final R response, final long currentTimeMs) {
         logger.info("{} in {}ms: {}",
-            message,
-            heartbeatRequestState.remainingBackoffMs(currentTimeMs),
-            errorMessageForResponse(response));
+                message,
+                heartbeatRequestState.remainingBackoffMs(currentTimeMs),
+                errorMessageForResponse(response));
     }
 
     protected void handleFatalFailure(Throwable error) {
@@ -492,7 +492,7 @@ public abstract class AbstractHeartbeatRequestManager<R extends AbstractResponse
     /**
      * Error handling specific response exception to a group type.
      *
-     * @param response The heartbeat response
+     * @param response      The heartbeat response
      * @param currentTimeMs Current time
      * @return true if the error was handled, else false
      */

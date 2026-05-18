@@ -85,7 +85,7 @@ public interface RecordBatch extends Iterable<Record> {
 
     /**
      * Get the max timestamp or log append time of this record batch.
-     *
+     * <p>
      * If the timestamp type is create time, this is the max timestamp among all records contained in this batch and
      * the value is updated during compaction.
      *
@@ -107,12 +107,12 @@ public interface RecordBatch extends Iterable<Record> {
      * return the offset of the first record in the record batch. For magic version 2 and above, this will return
      * the first offset of the original record batch (i.e. prior to compaction). For non-compacted topics, the
      * behavior is equivalent.
-     *
+     * <p>
      * Because this requires deep iteration for older magic versions, this method should be used with
      * caution. Generally {@link #lastOffset()} is safer since access is efficient for all magic versions.
      *
      * @return The base offset of this record batch (which may or may not be the offset of the first record
-     *         as described above).
+     * as described above).
      */
     long baseOffset();
 
@@ -184,6 +184,7 @@ public interface RecordBatch extends Iterable<Record> {
 
     /**
      * Get the size in bytes of this batch, including the size of the record and the batch overhead.
+     *
      * @return The size in bytes of this batch
      */
     int sizeInBytes();
@@ -198,30 +199,35 @@ public interface RecordBatch extends Iterable<Record> {
 
     /**
      * Check whether this record batch is compressed.
+     *
      * @return true if so, false otherwise
      */
     boolean isCompressed();
 
     /**
      * Write this record batch into a buffer.
+     *
      * @param buffer The buffer to write the batch to
      */
     void writeTo(ByteBuffer buffer);
 
     /**
      * Whether or not this record batch is part of a transaction.
+     *
      * @return true if it is, false otherwise
      */
     boolean isTransactional();
 
     /**
      * Get the delete horizon, returns OptionalLong.EMPTY if the first timestamp is not the delete horizon
+     *
      * @return timestamp of the delete horizon
      */
     OptionalLong deleteHorizonMs();
 
     /**
      * Get the partition leader epoch of this record batch.
+     *
      * @return The leader epoch or -1 if it is unknown
      */
     int partitionLeaderEpoch();
@@ -253,6 +259,7 @@ public interface RecordBatch extends Iterable<Record> {
      * noted:
      * 1) that the earliest offset will return if there are multi records having same (max) timestamp
      * 2) it always returns None if the {@link RecordBatch#magic()} is equal to {@link RecordBatch#MAGIC_VALUE_V0}
+     *
      * @return offset of max timestamp
      */
     default Optional<Long> offsetOfMaxTimestamp() {

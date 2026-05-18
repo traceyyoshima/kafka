@@ -47,9 +47,9 @@ public class WindowKeySchema implements RocksDBSegmentedBytesStore.KeySchema {
             return null;
         }
         final byte[] maxSuffix = ByteBuffer.allocate(SUFFIX_SIZE)
-            .putLong(to)
-            .putInt(Integer.MAX_VALUE)
-            .array();
+                .putLong(to)
+                .putInt(Integer.MAX_VALUE)
+                .array();
 
         return OrderedBytes.upperRange(key, maxSuffix);
     }
@@ -89,9 +89,9 @@ public class WindowKeySchema implements RocksDBSegmentedBytesStore.KeySchema {
                 final Bytes keyBytes = Bytes.wrap(WindowKeySchema.extractStoreKeyBytes(bytes.get()));
                 final long time = WindowKeySchema.extractStoreTimestamp(bytes.get());
                 if ((binaryKeyFrom == null || keyBytes.compareTo(binaryKeyFrom) >= 0)
-                    && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
-                    && time >= from
-                    && time <= to) {
+                        && (binaryKeyTo == null || keyBytes.compareTo(binaryKeyTo) <= 0)
+                        && time >= from
+                        && time <= to) {
                     return true;
                 }
                 iterator.next();

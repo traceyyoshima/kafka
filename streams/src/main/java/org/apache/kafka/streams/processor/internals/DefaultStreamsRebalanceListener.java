@@ -56,7 +56,7 @@ public class DefaultStreamsRebalanceListener implements StreamsRebalanceListener
         this.streamsRebalanceData = streamsRebalanceData;
         this.streamThread = streamThread;
         this.taskManager = taskManager;
-        
+
         // Create sensors for rebalance metrics
         this.tasksRevokedSensor = RebalanceListenerMetrics.tasksRevokedSensor(threadId, streamsMetrics);
         this.tasksAssignedSensor = RebalanceListenerMetrics.tasksAssignedSensor(threadId, streamsMetrics);
@@ -66,10 +66,10 @@ public class DefaultStreamsRebalanceListener implements StreamsRebalanceListener
     @Override
     public void onTasksRevoked(final Set<StreamsRebalanceData.TaskId> tasks) {
         final Map<TaskId, Set<TopicPartition>> activeTasksToRevokeWithPartitions =
-            pairWithTopicPartitions(tasks.stream());
+                pairWithTopicPartitions(tasks.stream());
         final Set<TopicPartition> partitionsToRevoke = activeTasksToRevokeWithPartitions.values().stream()
-            .flatMap(Collection::stream)
-            .collect(Collectors.toSet());
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
 
         final long start = time.milliseconds();
         try {
@@ -89,9 +89,9 @@ public class DefaultStreamsRebalanceListener implements StreamsRebalanceListener
     public void onTasksAssigned(final StreamsRebalanceData.Assignment assignment) {
         final long start = time.milliseconds();
         final Map<TaskId, Set<TopicPartition>> activeTasksWithPartitions =
-            pairWithTopicPartitions(assignment.activeTasks().stream());
+                pairWithTopicPartitions(assignment.activeTasks().stream());
         final Map<TaskId, Set<TopicPartition>> standbyTasksWithPartitions =
-            pairWithTopicPartitions(Stream.concat(assignment.standbyTasks().stream(), assignment.warmupTasks().stream()));
+                pairWithTopicPartitions(Stream.concat(assignment.standbyTasks().stream(), assignment.warmupTasks().stream()));
 
         log.info("Processing new assignment {} from Streams Rebalance Protocol", assignment);
 
@@ -119,10 +119,10 @@ public class DefaultStreamsRebalanceListener implements StreamsRebalanceListener
 
     private Map<TaskId, Set<TopicPartition>> pairWithTopicPartitions(final Stream<StreamsRebalanceData.TaskId> taskIdStream) {
         return taskIdStream
-            .collect(Collectors.toMap(
-                this::toTaskId,
-                task -> toTopicPartitions(task, streamsRebalanceData.subtopologies().get(task.subtopologyId()))
-            ));
+                .collect(Collectors.toMap(
+                        this::toTaskId,
+                        task -> toTopicPartitions(task, streamsRebalanceData.subtopologies().get(task.subtopologyId()))
+                ));
     }
 
     private TaskId toTaskId(final StreamsRebalanceData.TaskId task) {
@@ -132,11 +132,11 @@ public class DefaultStreamsRebalanceListener implements StreamsRebalanceListener
     private Set<TopicPartition> toTopicPartitions(final StreamsRebalanceData.TaskId task,
                                                   final StreamsRebalanceData.Subtopology subTopology) {
         return
-            Stream.concat(
-                    subTopology.sourceTopics().stream(),
-                    subTopology.repartitionSourceTopics().keySet().stream()
-                )
-                .map(t -> new TopicPartition(t, task.partitionId()))
-                .collect(Collectors.toSet());
+                Stream.concat(
+                                subTopology.sourceTopics().stream(),
+                                subTopology.repartitionSourceTopics().keySet().stream()
+                        )
+                        .map(t -> new TopicPartition(t, task.partitionId()))
+                        .collect(Collectors.toSet());
     }
 }

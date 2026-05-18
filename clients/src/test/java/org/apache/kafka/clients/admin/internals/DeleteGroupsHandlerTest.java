@@ -85,21 +85,21 @@ public abstract class DeleteGroupsHandlerTest {
     private DeleteGroupsResponse buildResponse(Errors error) {
         return new DeleteGroupsResponse(
                 new DeleteGroupsResponseData()
-                    .setResults(new DeletableGroupResultCollection(singletonList(
-                            new DeletableGroupResult()
-                                .setErrorCode(error.code())
-                                .setGroupId(groupId1)))));
+                        .setResults(new DeletableGroupResultCollection(singletonList(
+                                new DeletableGroupResult()
+                                        .setErrorCode(error.code())
+                                        .setGroupId(groupId1)))));
     }
 
     private AdminApiHandler.ApiResult<CoordinatorKey, Void> handleWithError(
-        Errors error
+            Errors error
     ) {
         DeleteGroupsResponse response = buildResponse(error);
         return handler.handleResponse(new Node(1, "host", 1234), singleton(CoordinatorKey.byGroupId(groupId1)), response);
     }
 
     private void assertUnmapped(
-        AdminApiHandler.ApiResult<CoordinatorKey, Void> result
+            AdminApiHandler.ApiResult<CoordinatorKey, Void> result
     ) {
         assertEquals(emptySet(), result.completedKeys.keySet());
         assertEquals(emptySet(), result.failedKeys.keySet());
@@ -107,7 +107,7 @@ public abstract class DeleteGroupsHandlerTest {
     }
 
     private void assertRetriable(
-        AdminApiHandler.ApiResult<CoordinatorKey, Void> result
+            AdminApiHandler.ApiResult<CoordinatorKey, Void> result
     ) {
         assertEquals(emptySet(), result.completedKeys.keySet());
         assertEquals(emptySet(), result.failedKeys.keySet());
@@ -115,7 +115,7 @@ public abstract class DeleteGroupsHandlerTest {
     }
 
     private void assertCompleted(
-        AdminApiHandler.ApiResult<CoordinatorKey, Void> result
+            AdminApiHandler.ApiResult<CoordinatorKey, Void> result
     ) {
         CoordinatorKey key = CoordinatorKey.byGroupId(groupId1);
         assertEquals(emptySet(), result.failedKeys.keySet());
@@ -124,8 +124,8 @@ public abstract class DeleteGroupsHandlerTest {
     }
 
     private void assertFailed(
-        Class<? extends Throwable> expectedExceptionType,
-        AdminApiHandler.ApiResult<CoordinatorKey, Void> result
+            Class<? extends Throwable> expectedExceptionType,
+            AdminApiHandler.ApiResult<CoordinatorKey, Void> result
     ) {
         CoordinatorKey key = CoordinatorKey.byGroupId(groupId1);
         assertEquals(emptySet(), result.completedKeys.keySet());

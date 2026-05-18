@@ -69,7 +69,7 @@ import javax.security.auth.login.LoginException;
  * <td>{@code sasl.login.refresh.min.buffer.seconds}</td>
  * </tr>
  * </table>
- * 
+ *
  * @see OAuthBearerLoginModule
  * @see SaslConfigs#SASL_LOGIN_REFRESH_WINDOW_FACTOR_DOC
  * @see SaslConfigs#SASL_LOGIN_REFRESH_WINDOW_JITTER_DOC
@@ -82,7 +82,7 @@ public class OAuthBearerRefreshingLogin implements Login {
 
     @Override
     public void configure(Map<String, ?> configs, String contextName, Configuration configuration,
-            AuthenticateCallbackHandler loginCallbackHandler) {
+                          AuthenticateCallbackHandler loginCallbackHandler) {
         /*
          * Specify this class as the one to synchronize on so that only one OAuth 2
          * Bearer Token is refreshed at a given time. Specify null if we don't mind

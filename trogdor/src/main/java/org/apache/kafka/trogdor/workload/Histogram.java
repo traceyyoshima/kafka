@@ -33,7 +33,7 @@ public class Histogram {
 
     /**
      * Add a new value to the histogram.
-     *
+     * <p>
      * Note that the value will be clipped to the maximum value available in the Histogram instance.
      * So if the histogram has 100 buckets, inserting 101 will increment the last bucket.
      */
@@ -54,7 +54,7 @@ public class Histogram {
 
     /**
      * Add a new value to the histogram.
-     *
+     * <p>
      * Note that the value will be clipped to the maximum value available in the Histogram instance.
      * This method is provided for convenience, but handles the same numeric range as the method which
      * takes an int.
@@ -82,7 +82,7 @@ public class Histogram {
 
         /**
          * Percentile information.
-         *
+         * <p>
          * percentile(fraction=0.99) will have a value which is greater than or equal to 99%
          * of the samples.  percentile(fraction=0.5) is the median sample.  And so forth.
          */
@@ -167,7 +167,7 @@ public class Histogram {
         float average = (numSamples == 0) ? 0.0f : (total / numSamples);
 
         List<PercentileSummary> percentileSummaries =
-            summarizePercentiles(countsCopy, percentiles, numSamples);
+                summarizePercentiles(countsCopy, percentiles, numSamples);
         return new Summary(numSamples, average, percentileSummaries);
     }
 

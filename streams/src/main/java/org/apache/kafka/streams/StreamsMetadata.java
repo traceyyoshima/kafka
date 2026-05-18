@@ -63,7 +63,7 @@ public interface StreamsMetadata {
     Set<String> standbyStateStoreNames();
 
     /**
-     * Host where the Streams client runs. 
+     * Host where the Streams client runs.
      *
      * <p>This method is equivalent to {@code StreamsMetadata.hostInfo().host();}
      *
@@ -73,7 +73,7 @@ public interface StreamsMetadata {
 
     /**
      * Port on which the Streams client listens.
-     * 
+     *
      * <p>This method is equivalent to {@code StreamsMetadata.hostInfo().port();}
      *
      * @return the port on which Streams client listens

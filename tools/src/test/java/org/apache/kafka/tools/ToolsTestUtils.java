@@ -85,16 +85,17 @@ public class ToolsTestUtils {
 
     /**
      * Throttles all replication across the cluster.
-     * @param adminClient is the adminClient to use for making connection with the cluster
-     * @param brokerIds all broker ids in the cluster
+     *
+     * @param adminClient   is the adminClient to use for making connection with the cluster
+     * @param brokerIds     all broker ids in the cluster
      * @param throttleBytes is the target throttle
      */
     public static void throttleAllBrokersReplication(Admin adminClient, List<Integer> brokerIds, int throttleBytes) throws ExecutionException, InterruptedException {
         List<AlterConfigOp> throttleConfigs = new ArrayList<>();
         throttleConfigs.add(new AlterConfigOp(new ConfigEntry(QuotaConfig.LEADER_REPLICATION_THROTTLED_RATE_CONFIG,
-            Integer.toString(throttleBytes)), AlterConfigOp.OpType.SET));
+                Integer.toString(throttleBytes)), AlterConfigOp.OpType.SET));
         throttleConfigs.add(new AlterConfigOp(new ConfigEntry(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_RATE_CONFIG,
-            Integer.toString(throttleBytes)), AlterConfigOp.OpType.SET));
+                Integer.toString(throttleBytes)), AlterConfigOp.OpType.SET));
 
         Map<ConfigResource, Collection<AlterConfigOp>> configs = new HashMap<>();
         for (int brokerId : brokerIds) {
@@ -115,26 +116,26 @@ public class ToolsTestUtils {
 
     public static void assignThrottledPartitionReplicas(Admin adminClient, Map<TopicPartition, List<Integer>> allReplicasByPartition) throws InterruptedException, ExecutionException {
         Map<ConfigResource, List<Entry<TopicPartition, List<Integer>>>> configResourceToPartitionReplicas =
-            allReplicasByPartition.entrySet().stream()
-            .collect(Collectors.groupingBy(
-                topicPartitionListEntry -> new ConfigResource(ConfigResource.Type.TOPIC, topicPartitionListEntry.getKey().topic()))
-            );
+                allReplicasByPartition.entrySet().stream()
+                        .collect(Collectors.groupingBy(
+                                topicPartitionListEntry -> new ConfigResource(ConfigResource.Type.TOPIC, topicPartitionListEntry.getKey().topic()))
+                        );
 
         Map<ConfigResource, List<AlterConfigOp>> throttles = configResourceToPartitionReplicas.entrySet().stream()
-            .collect(
-                Collectors.toMap(Entry::getKey, entry -> {
-                    List<AlterConfigOp> alterConfigOps = new ArrayList<>();
-                    Map<TopicPartition, List<Integer>> replicaThrottle =
-                        entry.getValue().stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-                    alterConfigOps.add(new AlterConfigOp(
-                        new ConfigEntry(QuotaConfig.LEADER_REPLICATION_THROTTLED_REPLICAS_CONFIG, formatReplicaThrottles(replicaThrottle)),
-                        AlterConfigOp.OpType.SET));
-                    alterConfigOps.add(new AlterConfigOp(
-                        new ConfigEntry(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_REPLICAS_CONFIG, formatReplicaThrottles(replicaThrottle)),
-                        AlterConfigOp.OpType.SET));
-                    return alterConfigOps;
-                }
-            ));
+                .collect(
+                        Collectors.toMap(Entry::getKey, entry -> {
+                                    List<AlterConfigOp> alterConfigOps = new ArrayList<>();
+                                    Map<TopicPartition, List<Integer>> replicaThrottle =
+                                            entry.getValue().stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+                                    alterConfigOps.add(new AlterConfigOp(
+                                            new ConfigEntry(QuotaConfig.LEADER_REPLICATION_THROTTLED_REPLICAS_CONFIG, formatReplicaThrottles(replicaThrottle)),
+                                            AlterConfigOp.OpType.SET));
+                                    alterConfigOps.add(new AlterConfigOp(
+                                            new ConfigEntry(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_REPLICAS_CONFIG, formatReplicaThrottles(replicaThrottle)),
+                                            AlterConfigOp.OpType.SET));
+                                    return alterConfigOps;
+                                }
+                        ));
         adminClient.incrementalAlterConfigs(new HashMap<>(throttles)).all().get();
     }
 
@@ -144,21 +145,21 @@ public class ToolsTestUtils {
 
     public static void removePartitionReplicaThrottles(Admin adminClient, Set<TopicPartition> partitions) throws ExecutionException, InterruptedException {
         Map<ConfigResource, Collection<AlterConfigOp>> throttles = partitions.stream().collect(Collectors.toMap(
-            tp -> new ConfigResource(ConfigResource.Type.TOPIC, tp.topic()),
-            tp -> List.of(
-                    new AlterConfigOp(new ConfigEntry(QuotaConfig.LEADER_REPLICATION_THROTTLED_REPLICAS_CONFIG, ""),
-                        AlterConfigOp.OpType.DELETE),
-                    new AlterConfigOp(new ConfigEntry(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_REPLICAS_CONFIG, ""),
-                        AlterConfigOp.OpType.DELETE))
-            ));
+                tp -> new ConfigResource(ConfigResource.Type.TOPIC, tp.topic()),
+                tp -> List.of(
+                        new AlterConfigOp(new ConfigEntry(QuotaConfig.LEADER_REPLICATION_THROTTLED_REPLICAS_CONFIG, ""),
+                                AlterConfigOp.OpType.DELETE),
+                        new AlterConfigOp(new ConfigEntry(QuotaConfig.FOLLOWER_REPLICATION_THROTTLED_REPLICAS_CONFIG, ""),
+                                AlterConfigOp.OpType.DELETE))
+        ));
 
         adminClient.incrementalAlterConfigs(throttles).all().get();
     }
 
     public static String formatReplicaThrottles(Map<TopicPartition, List<Integer>> moves) {
         return moves.entrySet().stream()
-            .flatMap(entry -> entry.getValue().stream().map(replicaId -> entry.getKey().partition() + ":" + replicaId))
-            .collect(Collectors.joining(","));
+                .flatMap(entry -> entry.getValue().stream().map(replicaId -> entry.getKey().partition() + ":" + replicaId))
+                .collect(Collectors.joining(","));
     }
 
     public static File tempPropertiesFile(Map<String, String> properties) throws IOException {

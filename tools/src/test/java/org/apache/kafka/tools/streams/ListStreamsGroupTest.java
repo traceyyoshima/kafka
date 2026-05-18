@@ -122,11 +122,11 @@ public class ListStreamsGroupTest {
     public void testListStreamsGroupWithStates() throws Exception {
         try (StreamsGroupCommand.StreamsGroupService service = getStreamsGroupService(new String[]{"--bootstrap-server", cluster.bootstrapServers(), "--list", "--state"})) {
             Set<GroupListing> expectedListing = Set.of(
-                new GroupListing(
-                    APP_ID,
-                    Optional.of(GroupType.STREAMS),
-                    "streams",
-                    Optional.of(GroupState.STABLE))
+                    new GroupListing(
+                            APP_ID,
+                            Optional.of(GroupType.STREAMS),
+                            "streams",
+                            Optional.of(GroupState.STABLE))
             );
 
             final AtomicReference<Set<GroupListing>> foundListing = new AtomicReference<>();
@@ -142,11 +142,11 @@ public class ListStreamsGroupTest {
     public void testListStreamsGroupWithSpecifiedStates() throws Exception {
         try (StreamsGroupCommand.StreamsGroupService service = getStreamsGroupService(new String[]{"--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "stable"})) {
             Set<GroupListing> expectedListing = Set.of(
-                new GroupListing(
-                    APP_ID,
-                    Optional.of(GroupType.STREAMS),
-                    "streams",
-                    Optional.of(GroupState.STABLE))
+                    new GroupListing(
+                            APP_ID,
+                            Optional.of(GroupType.STREAMS),
+                            "streams",
+                            Optional.of(GroupState.STABLE))
             );
 
             final AtomicReference<Set<GroupListing>> foundListing = new AtomicReference<>();
@@ -172,53 +172,53 @@ public class ListStreamsGroupTest {
     @Test
     public void testListStreamsGroupOutput() throws Exception {
         validateListOutput(
-            List.of("--bootstrap-server", cluster.bootstrapServers(), "--list"),
-            List.of(),
-            Set.of(List.of(APP_ID))
+                List.of("--bootstrap-server", cluster.bootstrapServers(), "--list"),
+                List.of(),
+                Set.of(List.of(APP_ID))
         );
 
         validateListOutput(
-            List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state"),
-            List.of("GROUP", "STATE"),
-            Set.of(List.of(APP_ID, "Stable"))
+                List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state"),
+                List.of("GROUP", "STATE"),
+                Set.of(List.of(APP_ID, "Stable"))
         );
 
         validateListOutput(
-            List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "Stable"),
-            List.of("GROUP", "STATE"),
-            Set.of(List.of(APP_ID, "Stable"))
+                List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "Stable"),
+                List.of("GROUP", "STATE"),
+                Set.of(List.of(APP_ID, "Stable"))
         );
 
         // Check case-insensitivity in state filter.
         validateListOutput(
-            List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "stable"),
-            List.of("GROUP", "STATE"),
-            Set.of(List.of(APP_ID, "Stable"))
+                List.of("--bootstrap-server", cluster.bootstrapServers(), "--list", "--state", "stable"),
+                List.of("GROUP", "STATE"),
+                Set.of(List.of(APP_ID, "Stable"))
         );
     }
 
     private static Topology topology() {
         final StreamsBuilder builder = new StreamsBuilder();
         builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), Serdes.String()))
-            .flatMapValues(value -> List.of(value.toLowerCase(Locale.getDefault()).split("\\W+")))
-            .groupBy((key, value) -> value)
-            .count()
-            .toStream().to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
+                .flatMapValues(value -> List.of(value.toLowerCase(Locale.getDefault()).split("\\W+")))
+                .groupBy((key, value) -> value)
+                .count()
+                .toStream().to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
         return builder.build();
     }
 
     private StreamsGroupCommand.StreamsGroupService getStreamsGroupService(String[] args) {
         StreamsGroupCommandOptions opts = StreamsGroupCommandOptions.fromArgs(args);
         return new StreamsGroupCommand.StreamsGroupService(
-            opts,
-            Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
+                opts,
+                Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
         );
     }
 
     private static void validateListOutput(
-        List<String> args,
-        List<String> expectedHeader,
-        Set<List<String>> expectedRows
+            List<String> args,
+            List<String> expectedHeader,
+            Set<List<String>> expectedRows
     ) throws InterruptedException {
         final AtomicReference<String> out = new AtomicReference<>("");
         TestUtils.waitForCondition(() -> {
@@ -234,8 +234,8 @@ public class ListStreamsGroupTest {
             }
 
             Set<List<String>> groups = Arrays.stream(lines, expectedHeader.isEmpty() ? 0 : 1, lines.length)
-                .map(line -> List.of(line.split("\\s+")))
-                .collect(Collectors.toSet());
+                    .map(line -> List.of(line.split("\\s+")))
+                    .collect(Collectors.toSet());
             return expectedRows.equals(groups);
         }, () -> String.format("Expected header=%s and groups=%s, but found:%n%s", expectedHeader, expectedRows, out.get()));
     }

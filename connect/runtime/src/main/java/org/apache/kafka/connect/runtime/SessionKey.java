@@ -22,6 +22,7 @@ import javax.crypto.SecretKey;
 
 /**
  * A session key, which can be used to validate internal REST requests between workers.
+ *
  * @param key               the actual cryptographic key to use for request validation; may not be null
  * @param creationTimestamp the time at which the key was generated
  */

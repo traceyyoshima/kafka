@@ -33,8 +33,8 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 public class ControllerRequestContext {
 
     public static OptionalLong requestTimeoutMsToDeadlineNs(
-        Time time,
-        int millisecondsOffset
+            Time time,
+            int millisecondsOffset
     ) {
         return OptionalLong.of(time.nanoseconds() + NANOSECONDS.convert(millisecondsOffset, MILLISECONDS));
     }
@@ -46,18 +46,19 @@ public class ControllerRequestContext {
     private final Consumer<Integer> partitionChangeQuotaApplier;
 
     public ControllerRequestContext(
-        RequestHeaderData requestHeader,
-        KafkaPrincipal principal,
-        OptionalLong deadlineNs
+            RequestHeaderData requestHeader,
+            KafkaPrincipal principal,
+            OptionalLong deadlineNs
     ) {
-        this(requestHeader, principal, deadlineNs, __ -> { });
+        this(requestHeader, principal, deadlineNs, __ -> {
+        });
     }
 
     public ControllerRequestContext(
-        RequestHeaderData requestHeader,
-        KafkaPrincipal principal,
-        OptionalLong deadlineNs,
-        Consumer<Integer> partitionChangeQuotaApplier
+            RequestHeaderData requestHeader,
+            KafkaPrincipal principal,
+            OptionalLong deadlineNs,
+            Consumer<Integer> partitionChangeQuotaApplier
     ) {
         this.requestHeader = requestHeader;
         this.principal = principal;
@@ -66,26 +67,27 @@ public class ControllerRequestContext {
     }
 
     public ControllerRequestContext(
-        AuthorizableRequestContext requestContext,
-        OptionalLong deadlineNs
+            AuthorizableRequestContext requestContext,
+            OptionalLong deadlineNs
     ) {
-        this(requestContext, deadlineNs, __ -> { });
+        this(requestContext, deadlineNs, __ -> {
+        });
     }
 
     public ControllerRequestContext(
-        AuthorizableRequestContext requestContext,
-        OptionalLong deadlineNs,
-        Consumer<Integer> partitionChangeQuotaApplier
+            AuthorizableRequestContext requestContext,
+            OptionalLong deadlineNs,
+            Consumer<Integer> partitionChangeQuotaApplier
     ) {
         this(
-            new RequestHeaderData()
-                .setRequestApiKey((short) requestContext.requestType())
-                .setRequestApiVersion((short) requestContext.requestVersion())
-                .setCorrelationId(requestContext.correlationId())
-                .setClientId(requestContext.clientId()),
-            requestContext.principal(),
-            deadlineNs,
-            partitionChangeQuotaApplier
+                new RequestHeaderData()
+                        .setRequestApiKey((short) requestContext.requestType())
+                        .setRequestApiVersion((short) requestContext.requestVersion())
+                        .setCorrelationId(requestContext.correlationId())
+                        .setClientId(requestContext.clientId()),
+                requestContext.principal(),
+                deadlineNs,
+                partitionChangeQuotaApplier
         );
     }
 
@@ -104,7 +106,7 @@ public class ControllerRequestContext {
     /**
      * Apply the partition change quota.
      *
-     * @param requestedPartitionCount           The value to apply.
+     * @param requestedPartitionCount The value to apply.
      * @throws ThrottlingQuotaExceededException If recording this value moves a metric beyond its configured
      *                                          maximum or minimum bound
      */

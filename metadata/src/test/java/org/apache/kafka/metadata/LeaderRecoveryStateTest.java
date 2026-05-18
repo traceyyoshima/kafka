@@ -36,8 +36,8 @@ public final class LeaderRecoveryStateTest {
         Set<Byte> set = new HashSet<>();
         for (LeaderRecoveryState recovery : LeaderRecoveryState.values()) {
             assertTrue(
-                set.add(recovery.value()),
-                String.format("Value %s for election state %s has already been used", recovery.value(), recovery)
+                    set.add(recovery.value()),
+                    String.format("Value %s for election state %s has already been used", recovery.value(), recovery)
             );
         }
     }
@@ -64,8 +64,8 @@ public final class LeaderRecoveryStateTest {
     @Test
     void testInvalidValue() {
         assertThrows(
-            IllegalArgumentException.class,
-            () -> LeaderRecoveryState.of(NO_CHANGE)
+                IllegalArgumentException.class,
+                () -> LeaderRecoveryState.of(NO_CHANGE)
         );
         assertThrows(IllegalArgumentException.class, () -> LeaderRecoveryState.of((byte) 2));
     }

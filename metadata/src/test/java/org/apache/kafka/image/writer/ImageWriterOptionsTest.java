@@ -76,7 +76,7 @@ public class ImageWriterOptionsTest {
     public void testSetEligibleLeaderReplicasEnabled() {
         MetadataVersion version = MetadataVersion.MINIMUM_VERSION;
         ImageWriterOptions options = new ImageWriterOptions.Builder(version).
-            setEligibleLeaderReplicasEnabled(true).build();
+                setEligibleLeaderReplicasEnabled(true).build();
         assertTrue(options.isEligibleLeaderReplicasEnabled());
 
         options = new ImageWriterOptions.Builder(version).build();
@@ -88,26 +88,26 @@ public class ImageWriterOptionsTest {
     public void testConstructionWithImage(boolean isElrEnabled) {
         FeaturesDelta featuresDelta = new FeaturesDelta(FeaturesImage.EMPTY);
         featuresDelta.replay(new FeatureLevelRecord().
-            setName(EligibleLeaderReplicasVersion.FEATURE_NAME).
-            setFeatureLevel(isElrEnabled ?
-                EligibleLeaderReplicasVersion.ELRV_1.featureLevel() : EligibleLeaderReplicasVersion.ELRV_0.featureLevel()
-            )
+                setName(EligibleLeaderReplicasVersion.FEATURE_NAME).
+                setFeatureLevel(isElrEnabled ?
+                        EligibleLeaderReplicasVersion.ELRV_1.featureLevel() : EligibleLeaderReplicasVersion.ELRV_0.featureLevel()
+                )
         );
         featuresDelta.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(MetadataVersion.IBP_4_0_IV1.featureLevel())
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(MetadataVersion.IBP_4_0_IV1.featureLevel())
         );
         MetadataImage metadataImage = new MetadataImage(
-            new MetadataProvenance(100, 4, 2000, true),
-            featuresDelta.apply(),
-            ClusterImageTest.IMAGE1,
-            TopicsImageTest.IMAGE1,
-            ConfigurationsImageTest.IMAGE1,
-            ClientQuotasImageTest.IMAGE1,
-            ProducerIdsImageTest.IMAGE1,
-            AclsImageTest.IMAGE1,
-            ScramImageTest.IMAGE1,
-            DelegationTokenImageTest.IMAGE1
+                new MetadataProvenance(100, 4, 2000, true),
+                featuresDelta.apply(),
+                ClusterImageTest.IMAGE1,
+                TopicsImageTest.IMAGE1,
+                ConfigurationsImageTest.IMAGE1,
+                ClientQuotasImageTest.IMAGE1,
+                ProducerIdsImageTest.IMAGE1,
+                AclsImageTest.IMAGE1,
+                ScramImageTest.IMAGE1,
+                DelegationTokenImageTest.IMAGE1
         );
 
         ImageWriterOptions options = new ImageWriterOptions.Builder(metadataImage).build();

@@ -38,11 +38,12 @@ public interface AsyncOffsetReader {
     /**
      * Retrieve the offset for the specified timestamp. UnifiedLog may call this method when handling ListOffsets
      * for segments copied to remote storage.
-     * @param topicPartition The topic partition
-     * @param timestamp The timestamp
-     * @param startingOffset The log start offset
+     *
+     * @param topicPartition   The topic partition
+     * @param timestamp        The timestamp
+     * @param startingOffset   The log start offset
      * @param leaderEpochCache The leader epoch cache
-     * @param searchLocalLog A supplier to call in case an offset can't be found in the remote storage
+     * @param searchLocalLog   A supplier to call in case an offset can't be found in the remote storage
      * @return The AsyncOffsetReadFutureHolder containing the desired offset or an exception
      */
     AsyncOffsetReadFutureHolder<OffsetResultHolder.FileRecordsOrError> asyncOffsetRead(

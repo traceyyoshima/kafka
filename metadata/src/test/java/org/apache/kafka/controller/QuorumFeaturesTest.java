@@ -37,26 +37,26 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QuorumFeaturesTest {
     private static final Map<String, VersionRange> LOCAL = Map.of(
-        "foo", VersionRange.of(0, 3),
-        "bar", VersionRange.of(0, 4),
-        "baz", VersionRange.of(2, 2)
+            "foo", VersionRange.of(0, 3),
+            "bar", VersionRange.of(0, 4),
+            "baz", VersionRange.of(2, 2)
     );
 
     private static final QuorumFeatures QUORUM_FEATURES = new QuorumFeatures(0, LOCAL,
-        List.of(0, 1, 2));
+            List.of(0, 1, 2));
 
     @Test
     public void testDefaultFeatureMap() {
         Map<String, VersionRange> expectedFeatures = new HashMap<>(1);
         expectedFeatures.put(MetadataVersion.FEATURE_NAME, VersionRange.of(
-            MetadataVersion.MINIMUM_VERSION.featureLevel(),
-            MetadataVersion.LATEST_PRODUCTION.featureLevel()));
+                MetadataVersion.MINIMUM_VERSION.featureLevel(),
+                MetadataVersion.LATEST_PRODUCTION.featureLevel()));
         for (Feature feature : Feature.PRODUCTION_FEATURES) {
             short maxVersion = feature.latestProduction();
             if (maxVersion > 0) {
                 expectedFeatures.put(feature.featureName(), VersionRange.of(
-                    feature.minimumProduction(),
-                    maxVersion
+                        feature.minimumProduction(),
+                        maxVersion
                 ));
             }
         }
@@ -67,14 +67,14 @@ public class QuorumFeaturesTest {
     public void testDefaultFeatureMapWithUnstable() {
         Map<String, VersionRange> expectedFeatures = new HashMap<>(1);
         expectedFeatures.put(MetadataVersion.FEATURE_NAME, VersionRange.of(
-            MetadataVersion.MINIMUM_VERSION.featureLevel(),
-            MetadataVersion.latestTesting().featureLevel()));
+                MetadataVersion.MINIMUM_VERSION.featureLevel(),
+                MetadataVersion.latestTesting().featureLevel()));
         for (Feature feature : Feature.PRODUCTION_FEATURES) {
             short maxVersion = feature.defaultLevel(MetadataVersion.latestTesting());
             if (maxVersion > 0) {
                 expectedFeatures.put(feature.featureName(), VersionRange.of(
-                    feature.minimumProduction(),
-                    maxVersion
+                        feature.minimumProduction(),
+                        maxVersion
                 ));
             }
         }
@@ -101,11 +101,11 @@ public class QuorumFeaturesTest {
     @Test
     public void testReasonNotSupported() {
         assertEquals(Optional.of("Local controller 0 only supports versions 0-3"),
-            QuorumFeatures.reasonNotSupported((short) 10,
-                "Local controller 0", VersionRange.of(0, 3)));
+                QuorumFeatures.reasonNotSupported((short) 10,
+                        "Local controller 0", VersionRange.of(0, 3)));
         assertEquals(Optional.empty(),
-            QuorumFeatures.reasonNotSupported((short) 3,
-                "Local controller 0", VersionRange.of(0, 3)));
+                QuorumFeatures.reasonNotSupported((short) 3,
+                        "Local controller 0", VersionRange.of(0, 3)));
     }
 
     @Test

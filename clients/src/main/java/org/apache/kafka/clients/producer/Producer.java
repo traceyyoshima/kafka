@@ -34,6 +34,7 @@ import java.util.concurrent.Future;
 
 /**
  * The interface for the {@link KafkaProducer}
+ *
  * @see KafkaProducer
  * @see MockProducer
  */

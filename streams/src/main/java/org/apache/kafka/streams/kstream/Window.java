@@ -133,8 +133,8 @@ public abstract class Window {
     @Override
     public String toString() {
         return "Window{" +
-            "startMs=" + startMs +
-            ", endMs=" + endMs +
-            '}';
+                "startMs=" + startMs +
+                ", endMs=" + endMs +
+                '}';
     }
 }

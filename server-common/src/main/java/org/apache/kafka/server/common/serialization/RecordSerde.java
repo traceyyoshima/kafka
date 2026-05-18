@@ -30,7 +30,7 @@ public interface RecordSerde<T> {
      * Get the size of a record. This must be called first before writing
      * the data through {@link #write(Object, ObjectSerializationCache, Writable)}.
      *
-     * @param data the record that will be serialized
+     * @param data               the record that will be serialized
      * @param serializationCache serialization cache
      * @return the size in bytes of the serialized record
      */
@@ -41,9 +41,9 @@ public interface RecordSerde<T> {
      * computing the size with {@link #recordSize(Object, ObjectSerializationCache)}.
      * The same {@link ObjectSerializationCache} instance must be used in both calls.
      *
-     * @param data the record to serialize and write
+     * @param data               the record to serialize and write
      * @param serializationCache serialization cache
-     * @param out the output stream to write the record to
+     * @param out                the output stream to write the record to
      */
     void write(T data, ObjectSerializationCache serializationCache, Writable out);
 
@@ -51,7 +51,7 @@ public interface RecordSerde<T> {
      * Read a record from a {@link Readable} input.
      *
      * @param input the input stream to deserialize
-     * @param size the size of the record in bytes
+     * @param size  the size of the record in bytes
      * @return the deserialized record
      */
     T read(Readable input, int size);

@@ -46,8 +46,8 @@ public class CombinedKeySchemaTest {
     @Test
     public void nonNullPrimaryKeySerdeTest() {
         final CombinedKeySchema<String, Integer> cks = new CombinedKeySchema<>(
-            () -> FK_TOPIC, Serdes.String(),
-            () -> PK_TOPIC, Serdes.Integer()
+                () -> FK_TOPIC, Serdes.String(),
+                () -> PK_TOPIC, Serdes.Integer()
         );
         final Integer primary = -999;
         final Bytes result = cks.toBytes("foreignKey", primary, HEADERS);
@@ -60,8 +60,8 @@ public class CombinedKeySchemaTest {
     @Test
     public void nullPrimaryKeySerdeTest() {
         final CombinedKeySchema<String, Integer> cks = new CombinedKeySchema<>(
-            () -> FK_TOPIC, Serdes.String(),
-            () -> PK_TOPIC, Serdes.Integer()
+                () -> FK_TOPIC, Serdes.String(),
+                () -> PK_TOPIC, Serdes.Integer()
         );
         assertThrows(NullPointerException.class, () -> cks.toBytes("foreignKey", null, HEADERS));
     }
@@ -69,8 +69,8 @@ public class CombinedKeySchemaTest {
     @Test
     public void nullForeignKeySerdeTest() {
         final CombinedKeySchema<String, Integer> cks = new CombinedKeySchema<>(
-            () -> FK_TOPIC, Serdes.String(),
-            () -> PK_TOPIC, Serdes.Integer()
+                () -> FK_TOPIC, Serdes.String(),
+                () -> PK_TOPIC, Serdes.Integer()
         );
         assertThrows(NullPointerException.class, () -> cks.toBytes(null, 10, HEADERS));
     }
@@ -78,12 +78,12 @@ public class CombinedKeySchemaTest {
     @Test
     public void prefixKeySerdeTest() {
         final CombinedKeySchema<String, Integer> cks = new CombinedKeySchema<>(
-            () -> FK_TOPIC, Serdes.String(),
-            () -> PK_TOPIC, Serdes.Integer()
+                () -> FK_TOPIC, Serdes.String(),
+                () -> PK_TOPIC, Serdes.Integer()
         );
         final String foreignKey = "someForeignKey";
         final byte[] foreignKeySerializedData =
-            Serdes.String().serializer().serialize(FK_TOPIC, foreignKey);
+                Serdes.String().serializer().serialize(FK_TOPIC, foreignKey);
         final Bytes prefix = cks.prefixBytes(foreignKey, HEADERS);
 
         final ByteBuffer buf = ByteBuffer.allocate(Integer.BYTES + foreignKeySerializedData.length);
@@ -97,8 +97,8 @@ public class CombinedKeySchemaTest {
     @Test
     public void nullPrefixKeySerdeTest() {
         final CombinedKeySchema<String, Integer> cks = new CombinedKeySchema<>(
-            () -> FK_TOPIC, Serdes.String(),
-            () -> PK_TOPIC, Serdes.Integer()
+                () -> FK_TOPIC, Serdes.String(),
+                () -> PK_TOPIC, Serdes.Integer()
         );
         final String foreignKey = null;
         assertThrows(NullPointerException.class, () -> cks.prefixBytes(foreignKey, HEADERS));
@@ -115,8 +115,8 @@ public class CombinedKeySchemaTest {
         when(mockSerializer.serialize(FK_TOPIC, HEADERS, foreignKey)).thenReturn(foreignKey.getBytes());
 
         final CombinedKeySchema<String, String> cks = new CombinedKeySchema<>(
-            () -> FK_TOPIC, mockSerde,
-            () -> PK_TOPIC, mockSerde
+                () -> FK_TOPIC, mockSerde,
+                () -> PK_TOPIC, mockSerde
         );
         cks.init(mock(ProcessorContext.class));
         cks.prefixBytes(foreignKey, HEADERS);
@@ -139,8 +139,8 @@ public class CombinedKeySchemaTest {
         when(mockSerializer.serialize(PK_TOPIC, HEADERS, primaryKey)).thenReturn(primaryKey.getBytes());
 
         final CombinedKeySchema<String, String> cks = new CombinedKeySchema<>(
-            () -> FK_TOPIC, mockSerde,
-            () -> PK_TOPIC, mockSerde
+                () -> FK_TOPIC, mockSerde,
+                () -> PK_TOPIC, mockSerde
         );
         cks.init(mock(ProcessorContext.class));
         cks.toBytes(foreignKey, primaryKey, HEADERS);
@@ -164,14 +164,14 @@ public class CombinedKeySchemaTest {
         when(mockDeserializer.deserialize(PK_TOPIC, HEADERS, primaryKey.getBytes())).thenReturn(primaryKey);
 
         final CombinedKeySchema<String, String> serializerCks = new CombinedKeySchema<>(
-            () -> FK_TOPIC, Serdes.String(),
-            () -> PK_TOPIC, Serdes.String()
+                () -> FK_TOPIC, Serdes.String(),
+                () -> PK_TOPIC, Serdes.String()
         );
         final Bytes serialized = serializerCks.toBytes(foreignKey, primaryKey, HEADERS);
 
         final CombinedKeySchema<String, String> cks = new CombinedKeySchema<>(
-            () -> FK_TOPIC, mockSerde,
-            () -> PK_TOPIC, mockSerde
+                () -> FK_TOPIC, mockSerde,
+                () -> PK_TOPIC, mockSerde
         );
         cks.init(mock(ProcessorContext.class));
         cks.fromBytes(serialized, HEADERS);

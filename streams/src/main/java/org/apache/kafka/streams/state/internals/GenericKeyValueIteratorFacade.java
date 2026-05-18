@@ -25,8 +25,8 @@ import java.util.function.Function;
  * Generic iterator facade that wraps a {@link KeyValueIterator} and converts values
  * using a provided converter function.
  *
- * @param <K> key type
- * @param <InV> input value type (from inner iterator)
+ * @param <K>    key type
+ * @param <InV>  input value type (from inner iterator)
  * @param <OutV> output value type (exposed by this facade)
  */
 class GenericKeyValueIteratorFacade<K, InV, OutV> implements KeyValueIterator<K, OutV> {

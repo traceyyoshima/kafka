@@ -162,11 +162,11 @@ public class NamedTopologyIntegrationTest {
     private String changelog3;
 
     private static final List<KeyValue<String, Long>> STANDARD_INPUT_DATA =
-        asList(pair("A", 100L), pair("B", 200L), pair("A", 300L), pair("C", 400L), pair("C", -50L));
+            asList(pair("A", 100L), pair("B", 200L), pair("A", 300L), pair("C", 400L), pair("C", -50L));
     private static final List<KeyValue<String, Long>> COUNT_OUTPUT_DATA =
-        asList(pair("A", 1L), pair("B", 1L), pair("A", 2L), pair("C", 1L), pair("C", 2L));
+            asList(pair("A", 1L), pair("B", 1L), pair("A", 2L), pair("C", 1L), pair("C", 2L));
     private static final List<KeyValue<String, Long>> SUM_OUTPUT_DATA =
-        asList(pair("A", 100L), pair("B", 200L), pair("A", 400L), pair("C", 400L), pair("C", 350L));
+            asList(pair("A", 100L), pair("B", 200L), pair("A", 400L), pair("C", 400L), pair("C", 350L));
     private static final String TOPIC_PREFIX = "unique_topic_prefix";
 
     private final KafkaClientSupplier clientSupplier = new DefaultKafkaClientSupplier();
@@ -265,20 +265,20 @@ public class NamedTopologyIntegrationTest {
 
         final UniqueTopicSerdeScope serdeScope = new UniqueTopicSerdeScope();
         final KTable<String, Long> left = fkjBuilder.table(
-            INPUT_STREAM_2,
-            Consumed.with(serdeScope.decorateSerde(Serdes.String(), props, true),
-                serdeScope.decorateSerde(Serdes.Long(), props, false))
+                INPUT_STREAM_2,
+                Consumed.with(serdeScope.decorateSerde(Serdes.String(), props, true),
+                        serdeScope.decorateSerde(Serdes.Long(), props, false))
         );
         final KTable<String, Long> right = fkjBuilder.table(
-            INPUT_STREAM_3,
-            Consumed.with(serdeScope.decorateSerde(Serdes.String(), props, true),
-                serdeScope.decorateSerde(Serdes.Long(), props, false))
+                INPUT_STREAM_3,
+                Consumed.with(serdeScope.decorateSerde(Serdes.String(), props, true),
+                        serdeScope.decorateSerde(Serdes.Long(), props, false))
         );
         left.join(
-            right,
-            Object::toString,
-            (value1, value2) -> String.valueOf(value1 + value2),
-            Materialized.with(null, serdeScope.decorateSerde(Serdes.String(), props, false)));
+                right,
+                Object::toString,
+                (value1, value2) -> String.valueOf(value1 + value2),
+                Materialized.with(null, serdeScope.decorateSerde(Serdes.String(), props, false)));
 
         streams.addNamedTopology(fkjBuilder.build());
         streams.addNamedTopology(countBuilder.build());
@@ -286,29 +286,29 @@ public class NamedTopologyIntegrationTest {
 
         final String countTopicPrefix = TOPIC_PREFIX + "-" + countTopologyName;
         final String fkjTopicPrefix = TOPIC_PREFIX + "-" + fkjTopologyName;
-        final  Set<String> internalTopics = CLUSTER
-            .getAllTopicsInCluster().stream()
-            .filter(t -> t.contains(TOPIC_PREFIX))
-            .filter(t -> t.endsWith("-repartition") || t.endsWith("-changelog") || t.endsWith("-topic"))
-            .collect(Collectors.toSet());
+        final Set<String> internalTopics = CLUSTER
+                .getAllTopicsInCluster().stream()
+                .filter(t -> t.contains(TOPIC_PREFIX))
+                .filter(t -> t.endsWith("-repartition") || t.endsWith("-changelog") || t.endsWith("-topic"))
+                .collect(Collectors.toSet());
         assertThat(internalTopics, is(Set.of(
-            countTopicPrefix + "-KSTREAM-AGGREGATE-STATE-STORE-0000000002-repartition",
-            countTopicPrefix + "-KSTREAM-AGGREGATE-STATE-STORE-0000000002-changelog",
-            fkjTopicPrefix + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic",
-            fkjTopicPrefix + "-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-0000000014-topic",
-            fkjTopicPrefix + "-KTABLE-FK-JOIN-SUBSCRIPTION-STATE-STORE-0000000010-changelog",
-            fkjTopicPrefix + "-" + INPUT_STREAM_2 + "-STATE-STORE-0000000000-changelog",
-            fkjTopicPrefix + "-" + INPUT_STREAM_3 + "-STATE-STORE-0000000003-changelog"))
+                countTopicPrefix + "-KSTREAM-AGGREGATE-STATE-STORE-0000000002-repartition",
+                countTopicPrefix + "-KSTREAM-AGGREGATE-STATE-STORE-0000000002-changelog",
+                fkjTopicPrefix + "-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-0000000006-topic",
+                fkjTopicPrefix + "-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-0000000014-topic",
+                fkjTopicPrefix + "-KTABLE-FK-JOIN-SUBSCRIPTION-STATE-STORE-0000000010-changelog",
+                fkjTopicPrefix + "-" + INPUT_STREAM_2 + "-STATE-STORE-0000000000-changelog",
+                fkjTopicPrefix + "-" + INPUT_STREAM_3 + "-STATE-STORE-0000000003-changelog"))
         );
     }
 
     @Test
     public void shouldProcessSingleNamedTopologyAndPrefixInternalTopics() throws Exception {
         topology1Builder.stream(INPUT_STREAM_1)
-            .selectKey((k, v) -> k)
-            .groupByKey()
-            .count(ROCKSDB_STORE)
-            .toStream().to(OUTPUT_STREAM_1);
+                .selectKey((k, v) -> k)
+                .groupByKey()
+                .count(ROCKSDB_STORE)
+                .toStream().to(OUTPUT_STREAM_1);
         streams.addNamedTopology(topology1Builder.build());
         IntegrationTestUtils.startApplicationAndWaitUntilRunning(streams);
         final List<KeyValue<String, Long>> results = waitUntilMinKeyValueRecordsReceived(consumerConfig, OUTPUT_STREAM_1, 5);
@@ -363,11 +363,11 @@ public class NamedTopologyIntegrationTest {
             assertThat(waitUntilMinKeyValueRecordsReceived(consumerConfig, SINGLE_PARTITION_OUTPUT_STREAM, 3), equalTo(COUNT_OUTPUT_DATA));
 
             final ReadOnlyKeyValueStore<String, Long> store =
-                streams.store(NamedTopologyStoreQueryParameters.fromNamedTopologyAndStoreNameAndType(
-                    TOPOLOGY_1,
-                    topology1Store,
-                    QueryableStoreTypes.keyValueStore())
-                );
+                    streams.store(NamedTopologyStoreQueryParameters.fromNamedTopologyAndStoreNameAndType(
+                            TOPOLOGY_1,
+                            topology1Store,
+                            QueryableStoreTypes.keyValueStore())
+                    );
             assertThat(store.get("A"), equalTo(2L));
 
             final Collection<StreamsMetadata> streamsMetadata = streams.streamsMetadataForStore(topology1Store, TOPOLOGY_1);
@@ -399,32 +399,32 @@ public class NamedTopologyIntegrationTest {
             waitForApplicationState(asList(streams, streams2), State.RUNNING, Duration.ofSeconds(60));
 
             verifyMetadataForTopology(
-                TOPOLOGY_1,
-                streams.streamsMetadataForStore(topology1Store, TOPOLOGY_1),
-                streams2.streamsMetadataForStore(topology1Store, TOPOLOGY_1));
+                    TOPOLOGY_1,
+                    streams.streamsMetadataForStore(topology1Store, TOPOLOGY_1),
+                    streams2.streamsMetadataForStore(topology1Store, TOPOLOGY_1));
             verifyMetadataForTopology(
-                TOPOLOGY_2,
-                streams.streamsMetadataForStore(topology2Store, TOPOLOGY_2),
-                streams2.streamsMetadataForStore(topology2Store, TOPOLOGY_2));
+                    TOPOLOGY_2,
+                    streams.streamsMetadataForStore(topology2Store, TOPOLOGY_2),
+                    streams2.streamsMetadataForStore(topology2Store, TOPOLOGY_2));
 
             assertThat(streams.allStreamsClientsMetadataForTopology(TOPOLOGY_1).size(), equalTo(2));
             assertThat(streams2.allStreamsClientsMetadataForTopology(TOPOLOGY_1).size(), equalTo(2));
             verifyMetadataForTopology(
-                TOPOLOGY_1,
-                streams.allStreamsClientsMetadataForTopology(TOPOLOGY_1),
-                streams2.allStreamsClientsMetadataForTopology(TOPOLOGY_1));
+                    TOPOLOGY_1,
+                    streams.allStreamsClientsMetadataForTopology(TOPOLOGY_1),
+                    streams2.allStreamsClientsMetadataForTopology(TOPOLOGY_1));
             assertThat(streams.allStreamsClientsMetadataForTopology(TOPOLOGY_2).size(), equalTo(2));
             assertThat(streams2.allStreamsClientsMetadataForTopology(TOPOLOGY_2).size(), equalTo(2));
             verifyMetadataForTopology(
-                TOPOLOGY_2,
-                streams.allStreamsClientsMetadataForTopology(TOPOLOGY_2),
-                streams2.allStreamsClientsMetadataForTopology(TOPOLOGY_2));
+                    TOPOLOGY_2,
+                    streams.allStreamsClientsMetadataForTopology(TOPOLOGY_2),
+                    streams2.allStreamsClientsMetadataForTopology(TOPOLOGY_2));
 
         } finally {
             CLUSTER.deleteTopics(SINGLE_PARTITION_INPUT_STREAM, SINGLE_PARTITION_OUTPUT_STREAM);
         }
     }
-    
+
     @Test
     public void shouldAddNamedTopologyToRunningApplicationWithEmptyInitialTopology() throws Exception {
         topology1Builder.stream(INPUT_STREAM_1).groupBy((k, v) -> k).count(IN_MEMORY_STORE).toStream().to(OUTPUT_STREAM_1);
@@ -574,7 +574,7 @@ public class NamedTopologyIntegrationTest {
             CLUSTER.deleteTopics(DELAYED_INPUT_STREAM_1);
         }
     }
-    
+
     @Test
     public void shouldAllowPatternSubscriptionWithMultipleNamedTopologies() throws Exception {
         topology1Builder.stream(Pattern.compile(INPUT_STREAM_1)).groupBy((k, v) -> k).count().toStream().to(OUTPUT_STREAM_1);
@@ -666,7 +666,7 @@ public class NamedTopologyIntegrationTest {
                         + ", localThreads=" + streams.metadataForLocalThreads()
         );
         streams.removeNamedTopology(TOPOLOGY_1, true).all().get();
-        
+
         TestUtils.waitForCondition(
                 () -> !streams.hasAnyLocalTaskForTopology(TOPOLOGY_1),
                 () -> "Topology " + TOPOLOGY_1
@@ -728,15 +728,15 @@ public class NamedTopologyIntegrationTest {
 
         // first check that all partitions in the metadata correspond to the given named topology
         assertThat(
-            streams1SourceTopicsForTopology.containsAll(metadata.topicPartitions().stream()
-                                                            .map(TopicPartition::topic)
-                                                            .collect(Collectors.toList())),
-            is(true));
+                streams1SourceTopicsForTopology.containsAll(metadata.topicPartitions().stream()
+                        .map(TopicPartition::topic)
+                        .collect(Collectors.toList())),
+                is(true));
         assertThat(
-            streams2SourceTopicsForTopology.containsAll(metadata.topicPartitions().stream()
-                                                            .map(TopicPartition::topic)
-                                                            .collect(Collectors.toList())),
-            is(true));
+                streams2SourceTopicsForTopology.containsAll(metadata.topicPartitions().stream()
+                        .map(TopicPartition::topic)
+                        .collect(Collectors.toList())),
+                is(true));
 
         // then verify that only this topology's one store appears if the host has partitions assigned
         if (!metadata.topicPartitions().isEmpty()) {
@@ -751,23 +751,23 @@ public class NamedTopologyIntegrationTest {
     }
 
     /**
-     * @return  true iff all fields other than {@link StreamsMetadataImpl#topologyName()}
-     *          match between the two StreamsMetadata objects
+     * @return true iff all fields other than {@link StreamsMetadataImpl#topologyName()}
+     * match between the two StreamsMetadata objects
      */
     private static boolean verifyEquivalentMetadataForHost(final StreamsMetadataImpl left, final StreamsMetadataImpl right) {
         return left.hostInfo().equals(right.hostInfo())
-            && left.stateStoreNames().equals(right.stateStoreNames())
-            && left.topicPartitions().equals(right.topicPartitions())
-            && left.standbyStateStoreNames().equals(right.standbyStateStoreNames())
-            && left.standbyTopicPartitions().equals(right.standbyTopicPartitions());
+                && left.stateStoreNames().equals(right.stateStoreNames())
+                && left.topicPartitions().equals(right.topicPartitions())
+                && left.standbyStateStoreNames().equals(right.standbyStateStoreNames())
+                && left.standbyTopicPartitions().equals(right.standbyTopicPartitions());
     }
 
     private static void produceToInputTopics(final String topic, final Collection<KeyValue<String, Long>> records) {
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            topic,
-            records,
-            producerConfig,
-            CLUSTER.time
+                topic,
+                records,
+                producerConfig,
+                CLUSTER.time
         );
     }
 
@@ -777,9 +777,9 @@ public class NamedTopologyIntegrationTest {
         @Override
         public synchronized StreamThreadExceptionResponse handle(final Throwable exception) {
             final String topologyName =
-                exception instanceof StreamsException && ((StreamsException) exception).taskId().isPresent() ?
-                    ((StreamsException) exception).taskId().get().topologyName()
-                    : null;
+                    exception instanceof StreamsException && ((StreamsException) exception).taskId().isPresent() ?
+                            ((StreamsException) exception).taskId().get().topologyName()
+                            : null;
 
             newErrorsByTopology.computeIfAbsent(topologyName, t -> new LinkedList<>()).add(exception);
             if (exception.getCause() instanceof MissingSourceTopicException) {
@@ -791,8 +791,8 @@ public class NamedTopologyIntegrationTest {
 
         public synchronized Throwable nextError(final String topologyName) {
             return newErrorsByTopology.containsKey(topologyName) ?
-                newErrorsByTopology.get(topologyName).poll() :
-                null;
+                    newErrorsByTopology.get(topologyName).poll() :
+                    null;
         }
     }
 }

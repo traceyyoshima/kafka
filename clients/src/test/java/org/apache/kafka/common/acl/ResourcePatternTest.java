@@ -30,7 +30,7 @@ public class ResourcePatternTest {
     @Test
     public void shouldThrowIfResourceTypeIsAny() {
         assertThrows(IllegalArgumentException.class,
-            () -> new ResourcePattern(ResourceType.ANY, "name", PatternType.LITERAL));
+                () -> new ResourcePattern(ResourceType.ANY, "name", PatternType.LITERAL));
     }
 
     @Test

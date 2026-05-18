@@ -27,35 +27,35 @@ import java.util.Random;
 
 /**
  * A PayloadGenerator which generates pseudo-random payloads based on other PayloadGenerators.
- *
+ * <p>
  * Given a seed and non-null list of RandomComponents, RandomComponentPayloadGenerator
- * will use any given generator in its list of components a percentage of the time based on the 
- * percent field in the RandomComponent. These percent fields must be integers greater than 0 
+ * will use any given generator in its list of components a percentage of the time based on the
+ * percent field in the RandomComponent. These percent fields must be integers greater than 0
  * and together add up to 100. The payloads generated can be reproduced from run to run.
- * 
+ * <p>
  * An example of how to include this generator in a Trogdor taskSpec is shown below.
  * #{@code
- *    "keyGenerator": {
- *        "type": "randomComponent",
- *        "seed": 456,
- *        "components": [
- *          {
- *            "percent": 50,
- *            "component": {
- *              "type": "null"
- *            }
- *          },
- *          {
- *            "percent": 50,
- *            "component": {
- *              "type": "uniformRandom",
- *              "size": 4,
- *              "seed": 123,
- *              "padding": 0
- *            }
- *          }
- *        ]
- *    }
+ * "keyGenerator": {
+ * "type": "randomComponent",
+ * "seed": 456,
+ * "components": [
+ * {
+ * "percent": 50,
+ * "component": {
+ * "type": "null"
+ * }
+ * },
+ * {
+ * "percent": 50,
+ * "component": {
+ * "type": "uniformRandom",
+ * "size": 4,
+ * "seed": 123,
+ * "padding": 0
+ * }
+ * }
+ * ]
+ * }
  * }
  */
 public class RandomComponentPayloadGenerator implements PayloadGenerator {

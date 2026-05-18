@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MinInSyncReplicasConfigTest {
 
     @ClusterTest(serverProperties = {
-        @ClusterConfigProperty(key = TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, value = "5")
+            @ClusterConfigProperty(key = TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, value = "5")
     })
     public void testDefaultKafkaConfig(ClusterInstance cluster) {
         assertEquals(5, cluster.brokers().get(0).logManager().initialDefaultConfig().minInSyncReplicas);

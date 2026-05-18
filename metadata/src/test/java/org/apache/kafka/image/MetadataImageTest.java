@@ -48,16 +48,16 @@ public class MetadataImageTest {
         ImageWriterOptions options = new ImageWriterOptions.Builder(metadataVersion).build();
         // A metadata version is required for writing, so the expected image is not actually empty
         var expectedImage = new MetadataImage(
-            MetadataProvenance.EMPTY,
-            new FeaturesImage(Map.of(), metadataVersion),
-            ClusterImage.EMPTY,
-            TopicsImage.EMPTY,
-            ConfigurationsImage.EMPTY,
-            ClientQuotasImage.EMPTY,
-            ProducerIdsImage.EMPTY,
-            AclsImage.EMPTY,
-            ScramImage.EMPTY,
-            DelegationTokenImage.EMPTY);
+                MetadataProvenance.EMPTY,
+                new FeaturesImage(Map.of(), metadataVersion),
+                ClusterImage.EMPTY,
+                TopicsImage.EMPTY,
+                ConfigurationsImage.EMPTY,
+                ClientQuotasImage.EMPTY,
+                ProducerIdsImage.EMPTY,
+                AclsImage.EMPTY,
+                ScramImage.EMPTY,
+                DelegationTokenImage.EMPTY);
         testToImage(expectedImage, getImageRecords(image, options));
     }
 
@@ -100,8 +100,8 @@ public class MetadataImageTest {
     private static void testToImage(MetadataImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> MetadataImage.EMPTY,
-            img -> new MetadataDelta.Builder().setImage(img).build()
+                () -> MetadataImage.EMPTY,
+                img -> new MetadataDelta.Builder().setImage(img).build()
         ) {
             @Override
             public MetadataImage createImageByApplyingDelta(MetadataDelta delta) {

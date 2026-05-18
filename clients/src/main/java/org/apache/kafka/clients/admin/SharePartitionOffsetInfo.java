@@ -78,8 +78,8 @@ public class SharePartitionOffsetInfo {
         if (o == null || getClass() != o.getClass()) return false;
         SharePartitionOffsetInfo that = (SharePartitionOffsetInfo) o;
         return startOffset == that.startOffset &&
-            Objects.equals(leaderEpoch, that.leaderEpoch) &&
-            Objects.equals(lag, that.lag);
+                Objects.equals(leaderEpoch, that.leaderEpoch) &&
+                Objects.equals(lag, that.lag);
     }
 
     @Override
@@ -90,9 +90,9 @@ public class SharePartitionOffsetInfo {
     @Override
     public String toString() {
         return "SharePartitionOffsetInfo{" +
-            "startOffset=" + startOffset +
-            ", leaderEpoch=" + leaderEpoch.orElse(null) +
-            ", lag=" + lag.orElse(null) +
-            '}';
+                "startOffset=" + startOffset +
+                ", leaderEpoch=" + leaderEpoch.orElse(null) +
+                ", lag=" + lag.orElse(null) +
+                '}';
     }
 }

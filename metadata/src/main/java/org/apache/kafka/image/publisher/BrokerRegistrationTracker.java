@@ -28,13 +28,13 @@ import org.slf4j.Logger;
 
 /**
  * Tracks the registration of a specific broker, and executes a callback if it should be refreshed.
- *
+ * <p>
  * This tracker handles cases where we might want to re-register the broker. The only such case
  * right now is during the transition from non-JBOD mode, to JBOD mode. In other words, the
  * transition from a MetadataVersion less than 3.7-IV2, to one greater than or equal to 3.7-IV2.
  * In this case, the broker registration will start out containing no directories, and we need to
  * resend the BrokerRegistrationRequest to fix that.
- *
+ * <p>
  * As much as possible, the goal here is to keep things simple. We just compare the desired state
  * with the actual state, and try to make changes only if necessary.
  */
@@ -46,15 +46,15 @@ public class BrokerRegistrationTracker implements MetadataPublisher {
     /**
      * Create the tracker.
      *
-     * @param id                            The ID of this broker.
-     * @param refreshRegistrationCallback   Callback to run if we need to refresh the registration.
+     * @param id                          The ID of this broker.
+     * @param refreshRegistrationCallback Callback to run if we need to refresh the registration.
      */
     public BrokerRegistrationTracker(
-        int id,
-        Runnable refreshRegistrationCallback
+            int id,
+            Runnable refreshRegistrationCallback
     ) {
         this.log = new LogContext("[BrokerRegistrationTracker id=" + id + "] ").
-            logger(BrokerRegistrationTracker.class);
+                logger(BrokerRegistrationTracker.class);
         this.id = id;
         this.refreshRegistrationCallback = refreshRegistrationCallback;
     }
@@ -66,16 +66,16 @@ public class BrokerRegistrationTracker implements MetadataPublisher {
 
     @Override
     public void onMetadataUpdate(
-        MetadataDelta delta,
-        MetadataImage newImage,
-        LoaderManifest manifest
+            MetadataDelta delta,
+            MetadataImage newImage,
+            LoaderManifest manifest
     ) {
         boolean checkBrokerRegistration = false;
         if (delta.featuresDelta() != null) {
             if (delta.metadataVersionChanged().isPresent()) {
                 if (log.isTraceEnabled()) {
                     log.trace("Metadata version change is present: {}",
-                        delta.metadataVersionChanged());
+                            delta.metadataVersionChanged());
                 }
                 checkBrokerRegistration = true;
             }
@@ -84,7 +84,7 @@ public class BrokerRegistrationTracker implements MetadataPublisher {
             if (delta.clusterDelta().changedBrokers().get(id) != null) {
                 if (log.isTraceEnabled()) {
                     log.trace("Broker change is present: {}",
-                        delta.clusterDelta().changedBrokers().get(id));
+                            delta.clusterDelta().changedBrokers().get(id));
                 }
                 checkBrokerRegistration = true;
             }
@@ -99,13 +99,13 @@ public class BrokerRegistrationTracker implements MetadataPublisher {
     /**
      * Check if the current broker registration needs to be refreshed.
      *
-     * @param metadataVersion   The current metadata version.
-     * @param registration      The current broker registration, or null if there is none.
-     * @return                  True only if we should refresh.
+     * @param metadataVersion The current metadata version.
+     * @param registration    The current broker registration, or null if there is none.
+     * @return True only if we should refresh.
      */
     boolean brokerRegistrationNeedsRefresh(
-        MetadataVersion metadataVersion,
-        BrokerRegistration registration
+            MetadataVersion metadataVersion,
+            BrokerRegistration registration
     ) {
         // If there is no existing registration, the BrokerLifecycleManager must still be sending it.
         // So we don't need to do anything yet.

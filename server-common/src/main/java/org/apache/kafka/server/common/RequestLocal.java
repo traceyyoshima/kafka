@@ -38,7 +38,9 @@ public class RequestLocal implements AutoCloseable {
         return NO_CACHING;
     }
 
-    /** The returned instance should be confined to a single thread. */
+    /**
+     * The returned instance should be confined to a single thread.
+     */
     public static RequestLocal withThreadConfinedCaching() {
         return new RequestLocal(BufferSupplier.create());
     }

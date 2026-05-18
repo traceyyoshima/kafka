@@ -55,7 +55,7 @@ public class KafkaYammerMetrics implements Reconfigurable {
 
     private final MetricsRegistry metricsRegistry = new MetricsRegistry();
     private final FilteringJmxReporter jmxReporter = new FilteringJmxReporter(metricsRegistry,
-        metricName -> true);
+            metricName -> true);
 
     private KafkaYammerMetrics() {
         jmxReporter.start();
@@ -84,23 +84,23 @@ public class KafkaYammerMetrics implements Reconfigurable {
     }
 
     public static MetricName getMetricName(
-        String group,
-        String typeName,
-        String name
+            String group,
+            String typeName,
+            String name
     ) {
         return getMetricName(
-            group,
-            typeName,
-            name,
-            null
+                group,
+                typeName,
+                name,
+                null
         );
     }
 
     public static MetricName getMetricName(
-        String group,
-        String typeName,
-        String name,
-        LinkedHashMap<String, String> tags
+            String group,
+            String typeName,
+            String name,
+            LinkedHashMap<String, String> tags
     ) {
         StringBuilder nameBuilder = new StringBuilder();
         nameBuilder.append(group);
@@ -141,8 +141,8 @@ public class KafkaYammerMetrics implements Reconfigurable {
     }
 
     private static <T extends Map<String, String>> T collectNonEmptyTags(
-        Map<String, String> tags,
-        Supplier<T> mapSupplier
+            Map<String, String> tags,
+            Supplier<T> mapSupplier
     ) {
         T result = mapSupplier.get();
         for (Map.Entry<String, String> tagEntry : tags.entrySet()) {
@@ -165,7 +165,7 @@ public class KafkaYammerMetrics implements Reconfigurable {
         } else {
             StringBuilder tagsString = new StringBuilder();
 
-            for (Iterator<Map.Entry<String, String>> iterator = nonEmptyTags.entrySet().iterator(); iterator.hasNext();) {
+            for (Iterator<Map.Entry<String, String>> iterator = nonEmptyTags.entrySet().iterator(); iterator.hasNext(); ) {
                 // convert dot to _ since reporters like Graphite typically use dot to represent hierarchy
                 Map.Entry<String, String> tagEntry = iterator.next();
                 String convertedValue = tagEntry.getValue().replaceAll("\\.", "_");

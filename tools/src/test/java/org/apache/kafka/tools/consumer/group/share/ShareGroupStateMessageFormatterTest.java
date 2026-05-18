@@ -50,90 +50,90 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ShareGroupStateMessageFormatterTest extends CoordinatorRecordMessageFormatterTest {
     private static final SharePartitionKey KEY_1 = SharePartitionKey.getInstance("gs1", Uuid.fromString("gtb2stGYRk-vWZ2zAozmoA"), 0);
     private static final ShareGroupOffset SHARE_GROUP_OFFSET_1 = new ShareGroupOffset.Builder()
-        .setSnapshotEpoch(0)
-        .setStateEpoch(1)
-        .setLeaderEpoch(20)
-        .setStartOffset(50)
-        .setStateBatches(
-            List.of(
-                new PersisterStateBatch(
-                    100,
-                    200,
-                    (byte) 1,
-                    (short) 10
-                ),
-                new PersisterStateBatch(
-                    201,
-                    210,
-                    (byte) 2,
-                    (short) 10
-                )
-            )
-        ).build();
+            .setSnapshotEpoch(0)
+            .setStateEpoch(1)
+            .setLeaderEpoch(20)
+            .setStartOffset(50)
+            .setStateBatches(
+                    List.of(
+                            new PersisterStateBatch(
+                                    100,
+                                    200,
+                                    (byte) 1,
+                                    (short) 10
+                            ),
+                            new PersisterStateBatch(
+                                    201,
+                                    210,
+                                    (byte) 2,
+                                    (short) 10
+                            )
+                    )
+            ).build();
 
     private static final SharePartitionKey KEY_2 = SharePartitionKey.getInstance("gs2", Uuid.fromString("r9Nq4xGAQf28jvu36t7gQQ"), 0);
     private static final ShareGroupOffset SHARE_GROUP_OFFSET_2 = new ShareGroupOffset.Builder()
-        .setSnapshotEpoch(1)
-        .setStateEpoch(3)
-        .setLeaderEpoch(25)
-        .setStartOffset(55)
-        .setStateBatches(
-            List.of(
-                new PersisterStateBatch(
-                    100,
-                    150,
-                    (byte) 1,
-                    (short) 12
-                ),
-                new PersisterStateBatch(
-                    151,
-                    200,
-                    (byte) 2,
-                    (short) 15
-                )
-            )
-        ).build();
+            .setSnapshotEpoch(1)
+            .setStateEpoch(3)
+            .setLeaderEpoch(25)
+            .setStartOffset(55)
+            .setStateBatches(
+                    List.of(
+                            new PersisterStateBatch(
+                                    100,
+                                    150,
+                                    (byte) 1,
+                                    (short) 12
+                            ),
+                            new PersisterStateBatch(
+                                    151,
+                                    200,
+                                    (byte) 2,
+                                    (short) 15
+                            )
+                    )
+            ).build();
 
     private static final ShareSnapshotKey SHARE_SNAPSHOT_KEY = new ShareSnapshotKey()
-        .setGroupId(KEY_1.groupId())
-        .setTopicId(KEY_1.topicId())
-        .setPartition(KEY_1.partition());
+            .setGroupId(KEY_1.groupId())
+            .setTopicId(KEY_1.topicId())
+            .setPartition(KEY_1.partition());
 
     private static final ShareSnapshotValue SHARE_SNAPSHOT_VALUE = new ShareSnapshotValue()
-        .setSnapshotEpoch(SHARE_GROUP_OFFSET_1.snapshotEpoch())
-        .setStateEpoch(SHARE_GROUP_OFFSET_1.stateEpoch())
-        .setLeaderEpoch(SHARE_GROUP_OFFSET_1.leaderEpoch())
-        .setStartOffset(SHARE_GROUP_OFFSET_1.startOffset())
-        .setCreateTimestamp(1744279603)
-        .setWriteTimestamp(1744279603)
-        .setStateBatches(
-            SHARE_GROUP_OFFSET_1.stateBatches().stream()
-                .map(batch -> new ShareSnapshotValue.StateBatch()
-                    .setFirstOffset(batch.firstOffset())
-                    .setLastOffset(batch.lastOffset())
-                    .setDeliveryState(batch.deliveryState())
-                    .setDeliveryCount(batch.deliveryCount()))
-                .toList()
-        );
+            .setSnapshotEpoch(SHARE_GROUP_OFFSET_1.snapshotEpoch())
+            .setStateEpoch(SHARE_GROUP_OFFSET_1.stateEpoch())
+            .setLeaderEpoch(SHARE_GROUP_OFFSET_1.leaderEpoch())
+            .setStartOffset(SHARE_GROUP_OFFSET_1.startOffset())
+            .setCreateTimestamp(1744279603)
+            .setWriteTimestamp(1744279603)
+            .setStateBatches(
+                    SHARE_GROUP_OFFSET_1.stateBatches().stream()
+                            .map(batch -> new ShareSnapshotValue.StateBatch()
+                                    .setFirstOffset(batch.firstOffset())
+                                    .setLastOffset(batch.lastOffset())
+                                    .setDeliveryState(batch.deliveryState())
+                                    .setDeliveryCount(batch.deliveryCount()))
+                            .toList()
+            );
 
     private static final ShareUpdateKey SHARE_UPDATE_KEY = new ShareUpdateKey()
-        .setGroupId(KEY_2.groupId())
-        .setTopicId(KEY_2.topicId())
-        .setPartition(KEY_2.partition());
+            .setGroupId(KEY_2.groupId())
+            .setTopicId(KEY_2.topicId())
+            .setPartition(KEY_2.partition());
 
     private static final ShareUpdateValue SHARE_UPDATE_VALUE = new ShareUpdateValue()
-        .setSnapshotEpoch(SHARE_GROUP_OFFSET_2.snapshotEpoch())
-        .setLeaderEpoch(SHARE_GROUP_OFFSET_2.leaderEpoch())
-        .setStartOffset(SHARE_GROUP_OFFSET_2.startOffset())
-        .setStateBatches(
-            SHARE_GROUP_OFFSET_2.stateBatches().stream()
-                .map(batch -> new ShareUpdateValue.StateBatch()
-                    .setFirstOffset(batch.firstOffset())
-                    .setLastOffset(batch.lastOffset())
-                    .setDeliveryState(batch.deliveryState())
-                    .setDeliveryCount(batch.deliveryCount()))
-                .toList()
-        );
+            .setSnapshotEpoch(SHARE_GROUP_OFFSET_2.snapshotEpoch())
+            .setLeaderEpoch(SHARE_GROUP_OFFSET_2.leaderEpoch())
+            .setStartOffset(SHARE_GROUP_OFFSET_2.startOffset())
+            .setStateBatches(
+                    SHARE_GROUP_OFFSET_2.stateBatches().stream()
+                            .map(batch -> new ShareUpdateValue.StateBatch()
+                                    .setFirstOffset(batch.firstOffset())
+                                    .setLastOffset(batch.lastOffset())
+                                    .setDeliveryState(batch.deliveryState())
+                                    .setDeliveryCount(batch.deliveryCount()))
+                            .toList()
+            );
 
     @Override
     protected CoordinatorRecordMessageFormatter formatter() {
@@ -143,90 +143,90 @@ public class ShareGroupStateMessageFormatterTest extends CoordinatorRecordMessag
     @Override
     protected Stream<Arguments> parameters() {
         return Stream.of(
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_VALUE).array(),
-                """
-                    {"key":{"type":0,"data":{"groupId":"gs1","topicId":"gtb2stGYRk-vWZ2zAozmoA","partition":0}},
-                     "value":{"version":0,
-                              "data":{"snapshotEpoch":0,
-                                      "stateEpoch":1,
-                                      "leaderEpoch":20,
-                                      "startOffset":50,
-                                      "createTimestamp": 1744279603,
-                                      "writeTimestamp": 1744279603,
-                                      "stateBatches":[{"firstOffset":100,"lastOffset":200,"deliveryState":1,"deliveryCount":10},
-                                                      {"firstOffset":201,"lastOffset":210,"deliveryState":2,"deliveryCount":10}]}}}
-                """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_KEY).array(),
-                null,
-                """
-                    {"key":{"type":0,"data":{"groupId":"gs1","topicId":"gtb2stGYRk-vWZ2zAozmoA","partition":0}},"value":null}
-                """
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, SHARE_UPDATE_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_UPDATE_VALUE).array(),
-                """
-                    {"key":{"type":1,"data":{"groupId":"gs2","topicId":"r9Nq4xGAQf28jvu36t7gQQ","partition":0}},
-                     "value":{"version":0,
-                              "data":{"snapshotEpoch":1,
-                                      "leaderEpoch":25,
-                                      "startOffset":55,
-                                      "stateBatches":[{"firstOffset":100,"lastOffset":150,"deliveryState":1,"deliveryCount":12},
-                                                      {"firstOffset":151,"lastOffset":200,"deliveryState":2,"deliveryCount":15}]}}}
-                """
-            ),
-            // wrong versions
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 10, SHARE_SNAPSHOT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_VALUE).array(),
-                ""
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 15, SHARE_UPDATE_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_UPDATE_VALUE).array(),
-                ""
-            )
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_VALUE).array(),
+                        """
+                                    {"key":{"type":0,"data":{"groupId":"gs1","topicId":"gtb2stGYRk-vWZ2zAozmoA","partition":0}},
+                                     "value":{"version":0,
+                                              "data":{"snapshotEpoch":0,
+                                                      "stateEpoch":1,
+                                                      "leaderEpoch":20,
+                                                      "startOffset":50,
+                                                      "createTimestamp": 1744279603,
+                                                      "writeTimestamp": 1744279603,
+                                                      "stateBatches":[{"firstOffset":100,"lastOffset":200,"deliveryState":1,"deliveryCount":10},
+                                                                      {"firstOffset":201,"lastOffset":210,"deliveryState":2,"deliveryCount":10}]}}}
+                                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_KEY).array(),
+                        null,
+                        """
+                                    {"key":{"type":0,"data":{"groupId":"gs1","topicId":"gtb2stGYRk-vWZ2zAozmoA","partition":0}},"value":null}
+                                """
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, SHARE_UPDATE_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_UPDATE_VALUE).array(),
+                        """
+                                    {"key":{"type":1,"data":{"groupId":"gs2","topicId":"r9Nq4xGAQf28jvu36t7gQQ","partition":0}},
+                                     "value":{"version":0,
+                                              "data":{"snapshotEpoch":1,
+                                                      "leaderEpoch":25,
+                                                      "startOffset":55,
+                                                      "stateBatches":[{"firstOffset":100,"lastOffset":150,"deliveryState":1,"deliveryCount":12},
+                                                                      {"firstOffset":151,"lastOffset":200,"deliveryState":2,"deliveryCount":15}]}}}
+                                """
+                ),
+                // wrong versions
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 10, SHARE_SNAPSHOT_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_VALUE).array(),
+                        ""
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 15, SHARE_UPDATE_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_UPDATE_VALUE).array(),
+                        ""
+                )
         );
     }
 
     private static Stream<Arguments> exceptions() {
         return Stream.of(
-            // wrong types
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_UPDATE_VALUE).array(),
-                new RuntimeException("""
-                    Could not read record at offset 0 due to: \
-                    Could not read record with version 0 from value's buffer due to: \
-                    non-nullable field stateBatches was serialized as null.""")
-            ),
-            Arguments.of(
-                MessageUtil.toVersionPrefixedByteBuffer((short) 1, SHARE_UPDATE_KEY).array(),
-                MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_VALUE).array(),
-                new RuntimeException("""
-                    Could not read record at offset 0 due to: \
-                    Could not read record with version 0 from value's buffer due to: \
-                    non-nullable field stateBatches was serialized as null.""")
-            )
+                // wrong types
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_UPDATE_VALUE).array(),
+                        new RuntimeException("""
+                                Could not read record at offset 0 due to: \
+                                Could not read record with version 0 from value's buffer due to: \
+                                non-nullable field stateBatches was serialized as null.""")
+                ),
+                Arguments.of(
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 1, SHARE_UPDATE_KEY).array(),
+                        MessageUtil.toVersionPrefixedByteBuffer((short) 0, SHARE_SNAPSHOT_VALUE).array(),
+                        new RuntimeException("""
+                                Could not read record at offset 0 due to: \
+                                Could not read record with version 0 from value's buffer due to: \
+                                non-nullable field stateBatches was serialized as null.""")
+                )
         );
     }
 
     @ParameterizedTest
     @MethodSource("exceptions")
     public void testShareGroupStateMessageFormatterException(
-        byte[] keyBuffer,
-        byte[] valueBuffer,
-        RuntimeException expectedOutput
+            byte[] keyBuffer,
+            byte[] valueBuffer,
+            RuntimeException expectedOutput
     ) {
         ConsumerRecord<byte[], byte[]> record = new ConsumerRecord<>(
-            Topic.SHARE_GROUP_STATE_TOPIC_NAME, 0, 0,
-            0L, TimestampType.CREATE_TIME, 0,
-            0, keyBuffer, valueBuffer,
-            new RecordHeaders(), Optional.empty());
+                Topic.SHARE_GROUP_STATE_TOPIC_NAME, 0, 0,
+                0L, TimestampType.CREATE_TIME, 0,
+                0, keyBuffer, valueBuffer,
+                new RecordHeaders(), Optional.empty());
 
         try (MessageFormatter formatter = new ShareGroupStateMessageFormatter()) {
             formatter.configure(Map.of());

@@ -27,13 +27,13 @@ import java.util.function.Supplier;
  * a single {@link FixedKeyProcessor} object and returning the same object reference in {@link FixedKeyProcessorSupplier#get()} would be
  * a violation of the supplier pattern and leads to runtime exceptions.
  *
- * @param <KIn> the type of input keys
- * @param <VIn> the type of input values
+ * @param <KIn>  the type of input keys
+ * @param <VIn>  the type of input values
  * @param <VOut> the type of output values
  */
 @FunctionalInterface
 public interface FixedKeyProcessorSupplier<KIn, VIn, VOut>
-    extends ConnectedStoreProvider, Supplier<FixedKeyProcessor<KIn, VIn, VOut>> {
+        extends ConnectedStoreProvider, Supplier<FixedKeyProcessor<KIn, VIn, VOut>> {
 
     /**
      * Return a newly constructed {@link FixedKeyProcessor} instance.

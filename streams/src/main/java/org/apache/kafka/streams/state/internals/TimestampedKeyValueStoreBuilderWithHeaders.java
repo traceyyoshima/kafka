@@ -35,13 +35,13 @@ import java.util.Objects;
 
 /**
  * Builder for {@link TimestampedKeyValueStoreWithHeaders} instances.
- *
+ * <p>
  * This is analogous to {@link TimestampedKeyValueStoreBuilder}, but uses
  * {@link ValueTimestampHeaders} as the value wrapper and wires up the
  * header-aware store stack (change-logging, caching, metering).
  */
 public class TimestampedKeyValueStoreBuilderWithHeaders<K, V>
-    extends AbstractStoreBuilder<K, ValueTimestampHeaders<V>, TimestampedKeyValueStoreWithHeaders<K, V>> {
+        extends AbstractStoreBuilder<K, ValueTimestampHeaders<V>, TimestampedKeyValueStoreWithHeaders<K, V>> {
 
     private final KeyValueBytesStoreSupplier storeSupplier;
 
@@ -50,10 +50,10 @@ public class TimestampedKeyValueStoreBuilderWithHeaders<K, V>
                                                       final Serde<V> valueSerde,
                                                       final Time time) {
         super(
-            storeSupplier.name(),
-            keySerde,
-            valueSerde == null ? null : new ValueTimestampHeadersSerde<>(valueSerde),
-            time
+                storeSupplier.name(),
+                keySerde,
+                valueSerde == null ? null : new ValueTimestampHeadersSerde<>(valueSerde),
+                time
         );
         Objects.requireNonNull(storeSupplier, "storeSupplier can't be null");
         Objects.requireNonNull(storeSupplier.metricsScope(), "storeSupplier's metricsScope can't be null");
@@ -78,11 +78,11 @@ public class TimestampedKeyValueStoreBuilderWithHeaders<K, V>
         }
 
         return new MeteredTimestampedKeyValueStoreWithHeaders<>(
-            maybeWrapCaching(maybeWrapLogging(store)),
-            storeSupplier.metricsScope(),
-            time,
-            keySerde,
-            valueSerde
+                maybeWrapCaching(maybeWrapLogging(store)),
+                storeSupplier.metricsScope(),
+                time,
+                keySerde,
+                valueSerde
         );
     }
 
@@ -101,8 +101,8 @@ public class TimestampedKeyValueStoreBuilderWithHeaders<K, V>
     }
 
     private static final class InMemoryTimestampedKeyValueStoreWithHeadersMarker
-        extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
-        implements KeyValueStore<Bytes, byte[]>, HeadersBytesStore {
+            extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
+            implements KeyValueStore<Bytes, byte[]>, HeadersBytesStore {
 
         private InMemoryTimestampedKeyValueStoreWithHeadersMarker(final KeyValueStore<Bytes, byte[]> wrapped) {
             super(wrapped);

@@ -28,11 +28,12 @@ import java.nio.channels.ServerSocketChannel;
 
 public interface ServerSocketFactory {
     ServerSocketFactory INSTANCE = new KafkaServerSocketFactory();
+
     ServerSocketChannel openServerSocket(
-        String listenerName,
-        InetSocketAddress socketAddress,
-        int listenBacklogSize,
-        int recvBufferSize
+            String listenerName,
+            InetSocketAddress socketAddress,
+            int listenBacklogSize,
+            int recvBufferSize
     ) throws IOException;
 
     class KafkaServerSocketFactory implements ServerSocketFactory {
@@ -54,7 +55,7 @@ public interface ServerSocketFactory {
             } catch (SocketException e) {
                 Utils.closeQuietly(socketChannel, "server socket");
                 throw new KafkaException(String.format("Socket server failed to bind to %s:%d: %s.",
-                    socketAddress.getHostString(), socketAddress.getPort(), e.getMessage()), e);
+                        socketAddress.getHostString(), socketAddress.getPort(), e.getMessage()), e);
             }
             return socketChannel;
         }

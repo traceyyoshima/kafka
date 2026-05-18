@@ -87,32 +87,32 @@ public class AclControlManagerTest {
     @Test
     public void testValidateNewAcl() {
         AclControlManager.validateNewAcl(new AclBinding(
-            new ResourcePattern(TOPIC, "*", LITERAL),
-            new AccessControlEntry("User:*", "*", ALTER, ALLOW)));
+                new ResourcePattern(TOPIC, "*", LITERAL),
+                new AccessControlEntry("User:*", "*", ALTER, ALLOW)));
         assertEquals("Invalid patternType UNKNOWN",
-            assertThrows(InvalidRequestException.class, () ->
-                AclControlManager.validateNewAcl(new AclBinding(
-                    new ResourcePattern(TOPIC, "*", PatternType.UNKNOWN),
-                    new AccessControlEntry("User:*", "*", ALTER, ALLOW)))).
-                getMessage());
+                assertThrows(InvalidRequestException.class, () ->
+                        AclControlManager.validateNewAcl(new AclBinding(
+                                new ResourcePattern(TOPIC, "*", PatternType.UNKNOWN),
+                                new AccessControlEntry("User:*", "*", ALTER, ALLOW)))).
+                        getMessage());
         assertEquals("Invalid resourceType UNKNOWN",
-            assertThrows(InvalidRequestException.class, () ->
-                AclControlManager.validateNewAcl(new AclBinding(
-                    new ResourcePattern(ResourceType.UNKNOWN, "*", LITERAL),
-                    new AccessControlEntry("User:*", "*", ALTER, ALLOW)))).
-                getMessage());
+                assertThrows(InvalidRequestException.class, () ->
+                        AclControlManager.validateNewAcl(new AclBinding(
+                                new ResourcePattern(ResourceType.UNKNOWN, "*", LITERAL),
+                                new AccessControlEntry("User:*", "*", ALTER, ALLOW)))).
+                        getMessage());
         assertEquals("Invalid operation UNKNOWN",
-            assertThrows(InvalidRequestException.class, () ->
-                AclControlManager.validateNewAcl(new AclBinding(
-                    new ResourcePattern(TOPIC, "*", LITERAL),
-                    new AccessControlEntry("User:*", "*", AclOperation.UNKNOWN, ALLOW)))).
-                getMessage());
+                assertThrows(InvalidRequestException.class, () ->
+                        AclControlManager.validateNewAcl(new AclBinding(
+                                new ResourcePattern(TOPIC, "*", LITERAL),
+                                new AccessControlEntry("User:*", "*", AclOperation.UNKNOWN, ALLOW)))).
+                        getMessage());
         assertEquals("Invalid permissionType UNKNOWN",
-            assertThrows(InvalidRequestException.class, () ->
-                AclControlManager.validateNewAcl(new AclBinding(
-                    new ResourcePattern(TOPIC, "*", LITERAL),
-                    new AccessControlEntry("User:*", "*", ALTER, AclPermissionType.UNKNOWN)))).
-                getMessage());
+                assertThrows(InvalidRequestException.class, () ->
+                        AclControlManager.validateNewAcl(new AclBinding(
+                                new ResourcePattern(TOPIC, "*", LITERAL),
+                                new AccessControlEntry("User:*", "*", ALTER, AclPermissionType.UNKNOWN)))).
+                        getMessage());
     }
 
     /**
@@ -121,12 +121,12 @@ public class AclControlManagerTest {
     @Test
     public void testValidateAclWithBadPrincipal() {
         assertEquals("Could not parse principal from `invalid` (no colon is present " +
-                "separating the principal type from the principal name)",
-            assertThrows(InvalidRequestException.class, () ->
-                AclControlManager.validateNewAcl(new AclBinding(
-                    new ResourcePattern(TOPIC, "*", LITERAL),
-                    new AccessControlEntry("invalid", "*", ALTER, ALLOW)))).
-                getMessage());
+                        "separating the principal type from the principal name)",
+                assertThrows(InvalidRequestException.class, () ->
+                        AclControlManager.validateNewAcl(new AclBinding(
+                                new ResourcePattern(TOPIC, "*", LITERAL),
+                                new AccessControlEntry("invalid", "*", ALTER, ALLOW)))).
+                        getMessage());
     }
 
     /**
@@ -135,11 +135,11 @@ public class AclControlManagerTest {
     @Test
     public void testValidateAclWithEmptyPrincipal() {
         assertEquals("Could not parse principal from `` (no colon is present " +
-                "separating the principal type from the principal name)",
-            assertThrows(InvalidRequestException.class, () ->
-                AclControlManager.validateNewAcl(new AclBinding(
-                    new ResourcePattern(TOPIC, "*", LITERAL),
-                    new AccessControlEntry("", "*", ALTER, ALLOW)))).
+                        "separating the principal type from the principal name)",
+                assertThrows(InvalidRequestException.class, () ->
+                        AclControlManager.validateNewAcl(new AclBinding(
+                                new ResourcePattern(TOPIC, "*", LITERAL),
+                                new AccessControlEntry("", "*", ALTER, ALLOW)))).
                         getMessage());
     }
 
@@ -149,20 +149,20 @@ public class AclControlManagerTest {
     @Test
     public void testValidateFilter() {
         AclControlManager.validateFilter(new AclBindingFilter(
-            new ResourcePatternFilter(ResourceType.ANY, "*", LITERAL),
-            new AccessControlEntryFilter("User:*", "*", AclOperation.ANY, AclPermissionType.ANY)));
+                new ResourcePatternFilter(ResourceType.ANY, "*", LITERAL),
+                new AccessControlEntryFilter("User:*", "*", AclOperation.ANY, AclPermissionType.ANY)));
         assertEquals("Unknown patternFilter.",
-            assertThrows(InvalidRequestException.class, () ->
-                AclControlManager.validateFilter(new AclBindingFilter(
-                    new ResourcePatternFilter(ResourceType.ANY, "*", PatternType.UNKNOWN),
-                    new AccessControlEntryFilter("User:*", "*", AclOperation.ANY, AclPermissionType.ANY)))).
-                getMessage());
+                assertThrows(InvalidRequestException.class, () ->
+                        AclControlManager.validateFilter(new AclBindingFilter(
+                                new ResourcePatternFilter(ResourceType.ANY, "*", PatternType.UNKNOWN),
+                                new AccessControlEntryFilter("User:*", "*", AclOperation.ANY, AclPermissionType.ANY)))).
+                        getMessage());
         assertEquals("Unknown entryFilter.",
-            assertThrows(InvalidRequestException.class, () ->
-                AclControlManager.validateFilter(new AclBindingFilter(
-                    new ResourcePatternFilter(ResourceType.ANY, "*", MATCH),
-                    new AccessControlEntryFilter("User:*", "*", AclOperation.ANY, AclPermissionType.UNKNOWN)))).
-                getMessage());
+                assertThrows(InvalidRequestException.class, () ->
+                        AclControlManager.validateFilter(new AclBindingFilter(
+                                new ResourcePatternFilter(ResourceType.ANY, "*", MATCH),
+                                new AccessControlEntryFilter("User:*", "*", AclOperation.ANY, AclPermissionType.UNKNOWN)))).
+                        getMessage());
     }
 
     static class MockClusterMetadataAuthorizer implements ClusterMetadataAuthorizer {
@@ -234,8 +234,8 @@ public class AclControlManagerTest {
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         snapshotRegistry.idempotentCreateSnapshot(0);
         AclControlManager manager = new AclControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                build();
 
         // Load TEST_ACLS into the AclControlManager.
         Set<ApiMessageAndVersion> loadedAcls = new HashSet<>();
@@ -273,7 +273,7 @@ public class AclControlManagerTest {
         authorizer.loadSnapshot(manager.idToAcl());
         manager.replay(StandardAclWithIdTest.TEST_ACLS.get(0).toRecord());
         manager.replay(new RemoveAccessControlEntryRecord().
-            setId(TEST_ACLS.get(0).id()));
+                setId(TEST_ACLS.get(0).id()));
         assertTrue(manager.idToAcl().isEmpty());
     }
 
@@ -288,8 +288,8 @@ public class AclControlManagerTest {
             toCreate.add(TEST_ACLS.get(i).toBinding());
         }
         toCreate.add(new AclBinding(
-            new ResourcePattern(TOPIC, "*", PatternType.UNKNOWN),
-            new AccessControlEntry("User:*", "*", ALTER, ALLOW)));
+                new ResourcePattern(TOPIC, "*", PatternType.UNKNOWN),
+                new AccessControlEntry("User:*", "*", ALTER, ALLOW)));
 
         ControllerResult<List<AclCreateResult>> createResult = manager.createAcls(toCreate);
 
@@ -298,13 +298,13 @@ public class AclControlManagerTest {
             expectedResults.add(AclCreateResult.SUCCESS);
         }
         expectedResults.add(new AclCreateResult(
-            new InvalidRequestException("Invalid patternType UNKNOWN")));
+                new InvalidRequestException("Invalid patternType UNKNOWN")));
 
         for (int i = 0; i < expectedResults.size(); i++) {
             AclCreateResult expectedResult = expectedResults.get(i);
             if (expectedResult.exception().isPresent()) {
                 assertEquals(expectedResult.exception().get().getMessage(),
-                    createResult.response().get(i).exception().get().getMessage());
+                        createResult.response().get(i).exception().get().getMessage());
             } else {
                 assertFalse(createResult.response().get(i).exception().isPresent());
             }
@@ -313,13 +313,13 @@ public class AclControlManagerTest {
         assertFalse(manager.idToAcl().isEmpty());
 
         ControllerResult<List<AclDeleteResult>> deleteResult =
-            manager.deleteAcls(List.of(
-                new AclBindingFilter(
-                    new ResourcePatternFilter(ResourceType.ANY, null, LITERAL),
-                        AccessControlEntryFilter.ANY),
-                new AclBindingFilter(
-                    new ResourcePatternFilter(ResourceType.UNKNOWN, null, LITERAL),
-                        AccessControlEntryFilter.ANY)));
+                manager.deleteAcls(List.of(
+                        new AclBindingFilter(
+                                new ResourcePatternFilter(ResourceType.ANY, null, LITERAL),
+                                AccessControlEntryFilter.ANY),
+                        new AclBindingFilter(
+                                new ResourcePatternFilter(ResourceType.UNKNOWN, null, LITERAL),
+                                AccessControlEntryFilter.ANY)));
         assertEquals(2, deleteResult.response().size());
         Set<AclBinding> deleted = new HashSet<>();
         for (AclDeleteResult.AclBindingDeleteResult result :
@@ -328,10 +328,10 @@ public class AclControlManagerTest {
             deleted.add(result.aclBinding());
         }
         assertEquals(Set.of(
-            TEST_ACLS.get(0).toBinding(),
+                TEST_ACLS.get(0).toBinding(),
                 TEST_ACLS.get(2).toBinding()), deleted);
         assertEquals(InvalidRequestException.class,
-            deleteResult.response().get(1).exception().get().getClass());
+                deleteResult.response().get(1).exception().get().getClass());
         RecordTestUtils.replayAll(manager, deleteResult.records());
 
         Iterator<Map.Entry<Uuid, StandardAcl>> iterator = manager.idToAcl().entrySet().iterator();
@@ -397,14 +397,14 @@ public class AclControlManagerTest {
         // create MAX_RECORDS_PER_USER_OP + 2 ACLs
         for (int i = 0; i < MAX_RECORDS_PER_USER_OP + 2; i++) {
             StandardAclWithId acl = new StandardAclWithId(Uuid.randomUuid(),
-                new StandardAcl(
-                    ResourceType.TOPIC,
-                    "mytopic_" + i,
-                    PatternType.LITERAL,
-                    "User:alice",
-                    "127.0.0.1",
-                    AclOperation.READ,
-                    AclPermissionType.ALLOW));
+                    new StandardAcl(
+                            ResourceType.TOPIC,
+                            "mytopic_" + i,
+                            PatternType.LITERAL,
+                            "User:alice",
+                            "127.0.0.1",
+                            AclOperation.READ,
+                            AclPermissionType.ALLOW));
 
             // split acl creations between two create requests
             if (i % 2 == 0) {
@@ -432,8 +432,8 @@ public class AclControlManagerTest {
         ArrayList<AclBindingFilter> filters = new ArrayList<>();
         for (int i = 0; i < MAX_RECORDS_PER_USER_OP + 2; i++) {
             filters.add(new AclBindingFilter(
-                new ResourcePatternFilter(ResourceType.TOPIC, "mytopic_" + i, PatternType.LITERAL),
-                AccessControlEntryFilter.ANY));
+                    new ResourcePatternFilter(ResourceType.TOPIC, "mytopic_" + i, PatternType.LITERAL),
+                    AccessControlEntryFilter.ANY));
         }
 
         Exception exception = assertThrows(InvalidRequestException.class, () -> manager.deleteAcls(filters));

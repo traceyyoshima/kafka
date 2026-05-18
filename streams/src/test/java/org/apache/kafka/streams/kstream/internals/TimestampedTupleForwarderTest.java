@@ -43,18 +43,16 @@ public class TimestampedTupleForwarderTest {
     }
 
     private void setFlushListener(final boolean sendOldValues) {
-        @SuppressWarnings("unchecked")
-        final WrappedStateStore<StateStore, Object, ValueTimestampHeaders<Object>> store = mock(WrappedStateStore.class);
-        @SuppressWarnings("unchecked")
-        final TimestampedCacheFlushListenerWithHeaders<Object, Object> flushListener = mock(TimestampedCacheFlushListenerWithHeaders.class);
+        @SuppressWarnings("unchecked") final WrappedStateStore<StateStore, Object, ValueTimestampHeaders<Object>> store = mock(WrappedStateStore.class);
+        @SuppressWarnings("unchecked") final TimestampedCacheFlushListenerWithHeaders<Object, Object> flushListener = mock(TimestampedCacheFlushListenerWithHeaders.class);
 
         when(store.setFlushListener(flushListener, sendOldValues)).thenReturn(false);
 
         new TimestampedTupleForwarder<>(
-            store,
-            null,
-            flushListener,
-            sendOldValues
+                store,
+                null,
+                flushListener,
+                sendOldValues
         );
     }
 
@@ -65,47 +63,43 @@ public class TimestampedTupleForwarderTest {
     }
 
     private void shouldForwardRecordsIfWrappedStateStoreDoesNotCache(final boolean sendOldValues) {
-        @SuppressWarnings("unchecked")
-        final WrappedStateStore<StateStore, String, String> store = mock(WrappedStateStore.class);
-        @SuppressWarnings("unchecked")
-        final InternalProcessorContext<String, Change<String>> context = mock(InternalProcessorContext.class);
+        @SuppressWarnings("unchecked") final WrappedStateStore<StateStore, String, String> store = mock(WrappedStateStore.class);
+        @SuppressWarnings("unchecked") final InternalProcessorContext<String, Change<String>> context = mock(InternalProcessorContext.class);
 
         when(store.setFlushListener(null, sendOldValues)).thenReturn(false);
         if (sendOldValues) {
-            doNothing().when(context).forward(new Record<>("key1", new Change<>("newValue1",  "oldValue1", true), 0L));
-            doNothing().when(context).forward(new Record<>("key2", new Change<>("newValue2",  "oldValue2", false), 42L));
+            doNothing().when(context).forward(new Record<>("key1", new Change<>("newValue1", "oldValue1", true), 0L));
+            doNothing().when(context).forward(new Record<>("key2", new Change<>("newValue2", "oldValue2", false), 42L));
         } else {
             doNothing().when(context).forward(new Record<>("key1", new Change<>("newValue1", null, true), 0L));
             doNothing().when(context).forward(new Record<>("key2", new Change<>("newValue2", null, false), 42L));
         }
 
         final TimestampedTupleForwarder<String, String> forwarder =
-            new TimestampedTupleForwarder<>(
-                store,
-                context,
-                null,
-                sendOldValues
-            );
+                new TimestampedTupleForwarder<>(
+                        store,
+                        context,
+                        null,
+                        sendOldValues
+                );
         forwarder.maybeForward(new Record<>("key1", new Change<>("newValue1", "oldValue1", true), 0L));
         forwarder.maybeForward(new Record<>("key2", new Change<>("newValue2", "oldValue2", false), 42L));
     }
 
     @Test
     public void shouldNotForwardRecordsIfWrappedStateStoreDoesCache() {
-        @SuppressWarnings("unchecked")
-        final WrappedStateStore<StateStore, String, String> store = mock(WrappedStateStore.class);
-        @SuppressWarnings("unchecked")
-        final InternalProcessorContext<String, Change<String>> context = mock(InternalProcessorContext.class);
+        @SuppressWarnings("unchecked") final WrappedStateStore<StateStore, String, String> store = mock(WrappedStateStore.class);
+        @SuppressWarnings("unchecked") final InternalProcessorContext<String, Change<String>> context = mock(InternalProcessorContext.class);
 
         when(store.setFlushListener(null, false)).thenReturn(true);
 
         final TimestampedTupleForwarder<String, String> forwarder =
-            new TimestampedTupleForwarder<>(
-                store,
-                context,
-                null,
-                false
-            );
+                new TimestampedTupleForwarder<>(
+                        store,
+                        context,
+                        null,
+                        false
+                );
         forwarder.maybeForward(new Record<>("key", new Change<>("newValue", "oldValue", true), 0L));
         forwarder.maybeForward(new Record<>("key", new Change<>("newValue", "oldValue", true), 42L));
     }

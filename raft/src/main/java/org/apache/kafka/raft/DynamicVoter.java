@@ -61,7 +61,7 @@ public record DynamicVoter(Uuid directoryId, int nodeId, String host, int port) 
         }
         if (nodeId < 0) {
             throw new IllegalArgumentException("Invalid negative node id " + nodeId +
-                " in dynamic voter string.");
+                    " in dynamic voter string.");
         }
         input = input.substring(atIndex + 1);
         if (input.isEmpty()) {
@@ -72,7 +72,7 @@ public record DynamicVoter(Uuid directoryId, int nodeId, String host, int port) 
             int endBracketIndex = input.indexOf("]");
             if (endBracketIndex < 0) {
                 throw new IllegalArgumentException("Hostname began with left bracket, but no right " +
-                    "bracket was found.");
+                        "bracket was found.");
             }
             host = input.substring(1, endBracketIndex);
             input = input.substring(endBracketIndex + 1);
@@ -115,10 +115,10 @@ public record DynamicVoter(Uuid directoryId, int nodeId, String host, int port) 
     public VoterSet.VoterNode toVoterNode(String controllerListenerName) {
         ReplicaKey voterKey = ReplicaKey.of(nodeId, directoryId);
         Endpoints listeners = Endpoints.fromInetSocketAddresses(Map.of(
-            ListenerName.normalised(controllerListenerName),
-            new InetSocketAddress(host, port)));
+                ListenerName.normalised(controllerListenerName),
+                new InetSocketAddress(host, port)));
         SupportedVersionRange supportedKRaftVersion =
-            new SupportedVersionRange((short) 0, (short) 1);
+                new SupportedVersionRange((short) 0, (short) 1);
         return VoterSet.VoterNode.of(voterKey, listeners, supportedKRaftVersion);
     }
 

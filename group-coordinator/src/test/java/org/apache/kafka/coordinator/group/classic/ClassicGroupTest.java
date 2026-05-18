@@ -245,59 +245,59 @@ public class ClassicGroupTest {
     public void testSelectProtocol() {
         JoinGroupRequestProtocolCollection member1Protocols = new JoinGroupRequestProtocolCollection();
         member1Protocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         member1Protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member1 = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            member1Protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                member1Protocols
         );
         group.add(member1);
 
         JoinGroupRequestProtocolCollection member2Protocols = new JoinGroupRequestProtocolCollection();
         member2Protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         member2Protocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member2 = new ClassicGroupMember(
-            "member2",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            member2Protocols
+                "member2",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                member2Protocols
         );
         group.add(member2);
 
         // now could be either range or robin since there is no majority preference
         assertTrue(group.selectProtocol().equals("range") ||
-            group.selectProtocol().equals("roundrobin"));
+                group.selectProtocol().equals("roundrobin"));
 
         ClassicGroupMember member3 = new ClassicGroupMember(
-            "member3",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            member2Protocols
+                "member3",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                member2Protocols
         );
         group.add(member3);
 
@@ -314,44 +314,44 @@ public class ClassicGroupTest {
     public void testSelectProtocolChoosesCompatibleProtocol() {
         JoinGroupRequestProtocolCollection member1Protocols = new JoinGroupRequestProtocolCollection();
         member1Protocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         member1Protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member1 = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            member1Protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                member1Protocols
         );
         group.add(member1);
 
         JoinGroupRequestProtocolCollection member2Protocols = new JoinGroupRequestProtocolCollection();
         member2Protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         member2Protocols.add(new JoinGroupRequestProtocol()
-            .setName("foo")
-            .setMetadata(new byte[0]));
+                .setName("foo")
+                .setMetadata(new byte[0]));
 
 
         ClassicGroupMember member2 = new ClassicGroupMember(
-            "member2",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            member2Protocols
+                "member2",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                member2Protocols
         );
         group.add(member2);
 
@@ -362,22 +362,22 @@ public class ClassicGroupTest {
     public void testSupportsProtocols() {
         JoinGroupRequestProtocolCollection member1Protocols = new JoinGroupRequestProtocolCollection();
         member1Protocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         member1Protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member1 = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            member1Protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                member1Protocols
         );
 
         // by default, the group supports everything
@@ -398,21 +398,21 @@ public class ClassicGroupTest {
 
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(ConsumerProtocol.serializeSubscription(
-                new ConsumerPartitionAssignor.Subscription(
-                    List.of("foo")
-                )).array()));
+                .setName("range")
+                .setMetadata(ConsumerProtocol.serializeSubscription(
+                        new ConsumerPartitionAssignor.Subscription(
+                                List.of("foo")
+                        )).array()));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.transitionTo(PREPARING_REBALANCE);
@@ -432,18 +432,18 @@ public class ClassicGroupTest {
 
         protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember memberWithFaultyProtocol = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.transitionTo(PREPARING_REBALANCE);
@@ -461,18 +461,18 @@ public class ClassicGroupTest {
 
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember memberWithNonConsumerProtocol = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            "My Protocol",
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                "My Protocol",
+                protocols
         );
 
         group.transitionTo(PREPARING_REBALANCE);
@@ -487,18 +487,18 @@ public class ClassicGroupTest {
     public void testInitNextGeneration() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.transitionTo(PREPARING_REBALANCE);
@@ -530,30 +530,30 @@ public class ClassicGroupTest {
     public void testUpdateMember() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
 
         JoinGroupRequestProtocolCollection newProtocols = new JoinGroupRequestProtocolCollection();
         newProtocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(new byte[0]));
+                .setName("range")
+                .setMetadata(new byte[0]));
 
         newProtocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         int newRebalanceTimeoutMs = 120000;
         int newSessionTimeoutMs = 20000;
@@ -568,25 +568,25 @@ public class ClassicGroupTest {
     public void testReplaceGroupInstanceWithNonExistingMember() {
         String newMemberId = "newMemberId";
         assertThrows(IllegalArgumentException.class, () ->
-            group.replaceStaticMember(groupInstanceId, memberId, newMemberId));
+                group.replaceStaticMember(groupInstanceId, memberId, newMemberId));
     }
 
     @Test
     public void testReplaceGroupInstance() throws Exception {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.of(groupInstanceId),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.of(groupInstanceId),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         CompletableFuture<JoinGroupResponseData> joinGroupFuture = new CompletableFuture<>();
@@ -613,18 +613,18 @@ public class ClassicGroupTest {
     public void testCompleteJoinFuture() throws Exception {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         CompletableFuture<JoinGroupResponseData> joinGroupFuture = new CompletableFuture<>();
@@ -632,9 +632,9 @@ public class ClassicGroupTest {
 
         assertTrue(group.hasAllMembersJoined());
         assertTrue(
-            group.completeJoinFuture(member, new JoinGroupResponseData()
-                .setMemberId(member.memberId())
-                .setErrorCode(Errors.NONE.code()))
+                group.completeJoinFuture(member, new JoinGroupResponseData()
+                        .setMemberId(member.memberId())
+                        .setErrorCode(Errors.NONE.code()))
         );
 
         assertEquals(Errors.NONE.code(), joinGroupFuture.get().errorCode());
@@ -647,27 +647,27 @@ public class ClassicGroupTest {
     public void testNotCompleteJoinFuture() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
 
         assertFalse(member.isAwaitingJoin());
         assertFalse(
-            group.completeJoinFuture(member, new JoinGroupResponseData()
-                .setMemberId(member.memberId())
-                .setErrorCode(Errors.NONE.code()))
+                group.completeJoinFuture(member, new JoinGroupResponseData()
+                        .setMemberId(member.memberId())
+                        .setErrorCode(Errors.NONE.code()))
         );
 
         assertFalse(member.isAwaitingJoin());
@@ -677,18 +677,18 @@ public class ClassicGroupTest {
     public void testCompleteSyncFuture() throws Exception {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
@@ -696,7 +696,7 @@ public class ClassicGroupTest {
         member.setAwaitingSyncFuture(syncGroupFuture);
 
         assertTrue(group.completeSyncFuture(member, new SyncGroupResponseData()
-            .setErrorCode(Errors.NONE.code())));
+                .setErrorCode(Errors.NONE.code())));
 
         assertEquals(0, group.numAwaitingJoinResponse());
 
@@ -708,25 +708,25 @@ public class ClassicGroupTest {
     public void testNotCompleteSyncFuture() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
         assertFalse(member.isAwaitingSync());
 
         assertFalse(group.completeSyncFuture(member, new SyncGroupResponseData()
-            .setErrorCode(Errors.NONE.code())));
+                .setErrorCode(Errors.NONE.code())));
 
         assertFalse(member.isAwaitingSync());
     }
@@ -735,18 +735,18 @@ public class ClassicGroupTest {
     public void testCannotAddPendingMemberIfStable() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
@@ -757,22 +757,22 @@ public class ClassicGroupTest {
     public void testRemovalFromPendingAfterMemberIsStable() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         group.addPendingMember(memberId);
         assertFalse(group.hasMember(memberId));
         assertTrue(group.isPendingMember(memberId));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
@@ -795,18 +795,18 @@ public class ClassicGroupTest {
     public void testCannotAddStaticMemberIfAlreadyPresent() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.of(groupInstanceId),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.of(groupInstanceId),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
@@ -820,31 +820,31 @@ public class ClassicGroupTest {
     @Test
     public void testCannotAddPendingSyncOfUnknownMember() {
         assertThrows(IllegalStateException.class,
-            () -> group.addPendingSyncMember(memberId));
+                () -> group.addPendingSyncMember(memberId));
     }
 
     @Test
     public void testCannotRemovePendingSyncOfUnknownMember() {
         assertThrows(IllegalStateException.class,
-            () -> group.removePendingSyncMember(memberId));
+                () -> group.removePendingSyncMember(memberId));
     }
 
     @Test
     public void testCanAddAndRemovePendingSyncMember() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
@@ -858,18 +858,18 @@ public class ClassicGroupTest {
     public void testRemovalFromPendingSyncWhenMemberIsRemoved() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.of(groupInstanceId),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.of(groupInstanceId),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
@@ -883,18 +883,18 @@ public class ClassicGroupTest {
     public void testNewGenerationClearsPendingSyncMembers() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(member);
@@ -909,18 +909,18 @@ public class ClassicGroupTest {
     public void testElectNewJoinedLeader() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember leader = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(leader);
@@ -928,26 +928,26 @@ public class ClassicGroupTest {
         assertFalse(leader.isAwaitingJoin());
 
         ClassicGroupMember newLeader = new ClassicGroupMember(
-            "new-leader",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                "new-leader",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
         group.add(newLeader, new CompletableFuture<>());
 
         ClassicGroupMember newMember = new ClassicGroupMember(
-            "new-member",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                "new-member",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
         group.add(newMember);
 
@@ -959,18 +959,18 @@ public class ClassicGroupTest {
     public void testMaybeElectNewJoinedLeaderChooseExisting() {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         ClassicGroupMember leader = new ClassicGroupMember(
-            memberId,
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
 
         group.add(leader, new CompletableFuture<>());
@@ -978,14 +978,14 @@ public class ClassicGroupTest {
         assertTrue(leader.isAwaitingJoin());
 
         ClassicGroupMember newMember = new ClassicGroupMember(
-            "new-member",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                "new-member",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
         group.add(newMember);
 
@@ -1001,17 +1001,17 @@ public class ClassicGroupTest {
 
         // Add a member.
         group.add(new ClassicGroupMember(
-            "member-id",
-            Optional.of("instance-id"),
-            "",
-            "",
-            100,
-            100,
-            "consumer",
-            new JoinGroupRequestProtocolCollection(List.of(
-                new JoinGroupRequestProtocol()
-                    .setName("roundrobin")
-                    .setMetadata(new byte[0])))
+                "member-id",
+                Optional.of("instance-id"),
+                "",
+                "",
+                100,
+                100,
+                "consumer",
+                new JoinGroupRequestProtocolCollection(List.of(
+                        new JoinGroupRequestProtocol()
+                                .setName("roundrobin")
+                                .setMetadata(new byte[0])))
         ));
 
         group.transitionTo(PREPARING_REBALANCE);
@@ -1019,7 +1019,7 @@ public class ClassicGroupTest {
 
         // No parameters and the group is not empty.
         assertThrows(UnknownMemberIdException.class,
-            () -> group.validateOffsetCommit("", "", -1, false, version));
+                () -> group.validateOffsetCommit("", "", -1, false, version));
 
         // A transactional offset commit without any parameters
         // and a non-empty group is accepted.
@@ -1027,19 +1027,19 @@ public class ClassicGroupTest {
 
         // The member id does not exist.
         assertThrows(UnknownMemberIdException.class,
-            () -> group.validateOffsetCommit("unknown", "unknown", -1, false, version));
+                () -> group.validateOffsetCommit("unknown", "unknown", -1, false, version));
 
         // The instance id does not exist.
         assertThrows(UnknownMemberIdException.class,
-            () -> group.validateOffsetCommit("member-id", "unknown", -1, false, version));
+                () -> group.validateOffsetCommit("member-id", "unknown", -1, false, version));
 
         // The generation id is invalid.
         assertThrows(IllegalGenerationException.class,
-            () -> group.validateOffsetCommit("member-id", "instance-id", 0, false, version));
+                () -> group.validateOffsetCommit("member-id", "instance-id", 0, false, version));
 
         // Group is in prepare rebalance state.
         assertThrows(RebalanceInProgressException.class,
-            () -> group.validateOffsetCommit("member-id", "instance-id", 1, false, version));
+                () -> group.validateOffsetCommit("member-id", "instance-id", 1, false, version));
 
         // Group transitions to stable.
         group.transitionTo(STABLE);
@@ -1052,7 +1052,7 @@ public class ClassicGroupTest {
 
         // The old instance id should be fenced.
         assertThrows(FencedInstanceIdException.class,
-            () -> group.validateOffsetCommit("member-id", "instance-id", 1, false, version));
+                () -> group.validateOffsetCommit("member-id", "instance-id", 1, false, version));
 
         // Remove member and transitions to dead.
         group.remove("new-instance-id");
@@ -1060,7 +1060,7 @@ public class ClassicGroupTest {
 
         // This should fail with CoordinatorNotAvailableException.
         assertThrows(CoordinatorNotAvailableException.class,
-            () -> group.validateOffsetCommit("member-id", "new-instance-id", 1, false, version));
+                () -> group.validateOffsetCommit("member-id", "new-instance-id", 1, false, version));
     }
 
     @Test
@@ -1075,17 +1075,17 @@ public class ClassicGroupTest {
 
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
         ClassicGroupMember member = new ClassicGroupMember(
-            memberId,
-            Optional.of(groupInstanceId),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            protocolType,
-            protocols
+                memberId,
+                Optional.of(groupInstanceId),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                protocolType,
+                protocols
         );
         group.add(member);
 
@@ -1140,19 +1140,19 @@ public class ClassicGroupTest {
         // 2. Test non-consumer protocol type + Empty state. Base timestamp based off of current state timestamp.
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(ConsumerProtocol.serializeSubscription(
-                new ConsumerPartitionAssignor.Subscription(List.of("topic"))).array()));
+                .setName("range")
+                .setMetadata(ConsumerProtocol.serializeSubscription(
+                        new ConsumerPartitionAssignor.Subscription(List.of("topic"))).array()));
 
         ClassicGroupMember memberWithNonConsumerProtocol = new ClassicGroupMember(
-            "memberWithNonConsumerProtocol",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            "My Protocol",
-            protocols
+                "memberWithNonConsumerProtocol",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                "My Protocol",
+                protocols
         );
 
         group.add(memberWithNonConsumerProtocol);
@@ -1173,14 +1173,14 @@ public class ClassicGroupTest {
         // 4. Test consumer protocol type + subscribed topics + Stable state. Base timestamp based off of last commit timestamp.
         group.remove("memberWithNonConsumerProtocol");
         ClassicGroupMember memberWithConsumerProtocol = new ClassicGroupMember(
-            "memberWithConsumerProtocol",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            "consumer",
-            protocols
+                "memberWithConsumerProtocol",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                "consumer",
+                protocols
         );
         group.add(memberWithConsumerProtocol);
         group.initNextGeneration();
@@ -1210,19 +1210,19 @@ public class ClassicGroupTest {
         // 2. group does not use consumer group protocol type => not subscribed
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("range")
-            .setMetadata(ConsumerProtocol.serializeSubscription(
-                new ConsumerPartitionAssignor.Subscription(List.of("topic"))).array()));
+                .setName("range")
+                .setMetadata(ConsumerProtocol.serializeSubscription(
+                        new ConsumerPartitionAssignor.Subscription(List.of("topic"))).array()));
 
         ClassicGroupMember memberWithNonConsumerProtocol = new ClassicGroupMember(
-            "memberWithNonConsumerProtocol",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            "My Protocol",
-            protocols
+                "memberWithNonConsumerProtocol",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                "My Protocol",
+                protocols
         );
 
         group.add(memberWithNonConsumerProtocol);
@@ -1235,14 +1235,14 @@ public class ClassicGroupTest {
         // 3. group uses consumer group protocol type but empty members => not subscribed
         group.remove("memberWithNonConsumerProtocol");
         ClassicGroupMember memberWithConsumerProtocol = new ClassicGroupMember(
-            "memberWithConsumerProtocol",
-            Optional.empty(),
-            clientId,
-            clientHost,
-            rebalanceTimeoutMs,
-            sessionTimeoutMs,
-            "consumer",
-            protocols
+                "memberWithConsumerProtocol",
+                Optional.empty(),
+                clientId,
+                clientHost,
+                rebalanceTimeoutMs,
+                sessionTimeoutMs,
+                "consumer",
+                protocols
         );
 
         group.add(memberWithConsumerProtocol);
@@ -1289,20 +1289,20 @@ public class ClassicGroupTest {
     public void testCompleteAllJoinFutures() throws ExecutionException, InterruptedException {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         List<ClassicGroupMember> memberList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             memberList.add(new ClassicGroupMember(
-                memberId + i,
-                Optional.empty(),
-                clientId,
-                clientHost,
-                rebalanceTimeoutMs,
-                sessionTimeoutMs,
-                protocolType,
-                protocols
+                    memberId + i,
+                    Optional.empty(),
+                    clientId,
+                    clientHost,
+                    rebalanceTimeoutMs,
+                    sessionTimeoutMs,
+                    protocolType,
+                    protocols
             ));
         }
 
@@ -1329,20 +1329,20 @@ public class ClassicGroupTest {
     public void testCompleteAllSyncFutures() throws ExecutionException, InterruptedException {
         JoinGroupRequestProtocolCollection protocols = new JoinGroupRequestProtocolCollection();
         protocols.add(new JoinGroupRequestProtocol()
-            .setName("roundrobin")
-            .setMetadata(new byte[0]));
+                .setName("roundrobin")
+                .setMetadata(new byte[0]));
 
         List<ClassicGroupMember> memberList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             ClassicGroupMember member = new ClassicGroupMember(
-                memberId + i,
-                Optional.empty(),
-                clientId,
-                clientHost,
-                rebalanceTimeoutMs,
-                sessionTimeoutMs,
-                protocolType,
-                protocols
+                    memberId + i,
+                    Optional.empty(),
+                    clientId,
+                    clientHost,
+                    rebalanceTimeoutMs,
+                    sessionTimeoutMs,
+                    protocolType,
+                    protocols
             );
             memberList.add(member);
             group.add(member);
@@ -1376,142 +1376,142 @@ public class ClassicGroupTest {
         String fooTopicName = "foo";
 
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(fooTopicId, fooTopicName, 2)
-            .addRacks()
-            .build();
+                .addTopic(fooTopicId, fooTopicName, 2)
+                .addRacks()
+                .build();
 
         ConsumerGroup consumerGroup = new ConsumerGroup(
-            logContext,
-            new SnapshotRegistry(logContext),
-            groupId
+                logContext,
+                new SnapshotRegistry(logContext),
+                groupId
         );
         consumerGroup.setGroupEpoch(10);
         consumerGroup.setTargetAssignmentMetadata(10, time.milliseconds());
 
         consumerGroup.updateTargetAssignment(memberId1, new Assignment(mkAssignment(
-            mkTopicAssignment(fooTopicId, 0)
+                mkTopicAssignment(fooTopicId, 0)
         )));
         consumerGroup.updateTargetAssignment(memberId2, new Assignment(mkAssignment(
-            mkTopicAssignment(fooTopicId, 1)
+                mkTopicAssignment(fooTopicId, 1)
         )));
 
         List<ConsumerGroupMemberMetadataValue.ClassicProtocol> protocols1 = List.of(createClassicProtocol(
-            "range",
-            List.of(fooTopicName),
-            List.of(new TopicPartition(fooTopicName, 0))
+                "range",
+                List.of(fooTopicName),
+                List.of(new TopicPartition(fooTopicName, 0))
         ));
         List<ConsumerGroupMemberMetadataValue.ClassicProtocol> protocols2 = List.of(createClassicProtocol(
-            "range",
-            List.of(fooTopicName),
-            List.of(new TopicPartition(fooTopicName, 1))
+                "range",
+                List.of(fooTopicName),
+                List.of(new TopicPartition(fooTopicName, 1))
         ));
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder(memberId1)
-            .setState(MemberState.STABLE)
-            .setMemberEpoch(10)
-            .setPreviousMemberEpoch(9)
-            .setClientId("client-id")
-            .setClientHost("client-host")
-            .setSubscribedTopicNames(List.of(fooTopicName))
-            .setServerAssignorName("range")
-            .setRebalanceTimeoutMs(45000)
-            .setClassicMemberMetadata(
-                new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                    .setSessionTimeoutMs(5000)
-                    .setSupportedProtocols(protocols1))
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 0)), 10))
-            .build();
+                .setState(MemberState.STABLE)
+                .setMemberEpoch(10)
+                .setPreviousMemberEpoch(9)
+                .setClientId("client-id")
+                .setClientHost("client-host")
+                .setSubscribedTopicNames(List.of(fooTopicName))
+                .setServerAssignorName("range")
+                .setRebalanceTimeoutMs(45000)
+                .setClassicMemberMetadata(
+                        new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                                .setSessionTimeoutMs(5000)
+                                .setSupportedProtocols(protocols1))
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 0)), 10))
+                .build();
         consumerGroup.updateMember(member1);
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder(memberId2)
-            .setInstanceId(instanceId2)
-            .setState(MemberState.STABLE)
-            .setMemberEpoch(10)
-            .setPreviousMemberEpoch(9)
-            .setClientId("client-id")
-            .setClientHost("client-host")
-            .setSubscribedTopicNames(List.of(fooTopicName))
-            .setServerAssignorName("range")
-            .setRebalanceTimeoutMs(45000)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)), 10))
-            .build();
+                .setInstanceId(instanceId2)
+                .setState(MemberState.STABLE)
+                .setMemberEpoch(10)
+                .setPreviousMemberEpoch(9)
+                .setClientId("client-id")
+                .setClientHost("client-host")
+                .setSubscribedTopicNames(List.of(fooTopicName))
+                .setServerAssignorName("range")
+                .setRebalanceTimeoutMs(45000)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)), 10))
+                .build();
         consumerGroup.updateMember(member2);
 
         ConsumerGroupMember newMember2 = new ConsumerGroupMember.Builder(member2, newMemberId2)
-            .setMemberEpoch(10)
-            .setPreviousMemberEpoch(0)
-            .setClientId("client-id")
-            .setClientHost("client-host")
-            .setSubscribedTopicNames(List.of(fooTopicName))
-            .setServerAssignorName("range")
-            .setRebalanceTimeoutMs(45000)
-            .setClassicMemberMetadata(
-                new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                    .setSessionTimeoutMs(5000)
-                    .setSupportedProtocols(protocols2))
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)), 10))
-            .build();
+                .setMemberEpoch(10)
+                .setPreviousMemberEpoch(0)
+                .setClientId("client-id")
+                .setClientHost("client-host")
+                .setSubscribedTopicNames(List.of(fooTopicName))
+                .setServerAssignorName("range")
+                .setRebalanceTimeoutMs(45000)
+                .setClassicMemberMetadata(
+                        new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                                .setSessionTimeoutMs(5000)
+                                .setSupportedProtocols(protocols2))
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)), 10))
+                .build();
 
         ClassicGroup classicGroup = ClassicGroup.fromConsumerGroup(
-            consumerGroup,
-            Set.of(),
-            newMember2,
-            logContext,
-            time,
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                consumerGroup,
+                Set.of(),
+                newMember2,
+                logContext,
+                time,
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         ClassicGroup expectedClassicGroup = new ClassicGroup(
-            logContext,
-            groupId,
-            STABLE,
-            time,
-            10,
-            Optional.of(ConsumerProtocol.PROTOCOL_TYPE),
-            Optional.of("range"),
-            Optional.empty(),
-            Optional.of(time.milliseconds())
-        );
-        expectedClassicGroup.add(
-            new ClassicGroupMember(
-                memberId1,
+                logContext,
+                groupId,
+                STABLE,
+                time,
+                10,
+                Optional.of(ConsumerProtocol.PROTOCOL_TYPE),
+                Optional.of("range"),
                 Optional.empty(),
-                member1.clientId(),
-                member1.clientHost(),
-                member1.rebalanceTimeoutMs(),
-                member1.classicProtocolSessionTimeout().get(),
-                ConsumerProtocol.PROTOCOL_TYPE,
-                new JoinGroupRequestData.JoinGroupRequestProtocolCollection(List.of(
-                    new JoinGroupRequestData.JoinGroupRequestProtocol()
-                        .setName(protocols1.get(0).name())
-                        .setMetadata(protocols1.get(0).metadata())
-                )),
-                Utils.toArray(ConsumerProtocol.serializeAssignment(new ConsumerPartitionAssignor.Assignment(
-                    List.of(new TopicPartition(fooTopicName, 0))
-                )))
-            )
+                Optional.of(time.milliseconds())
         );
         expectedClassicGroup.add(
-            new ClassicGroupMember(
-                newMemberId2,
-                Optional.of(instanceId2),
-                newMember2.clientId(),
-                newMember2.clientHost(),
-                newMember2.rebalanceTimeoutMs(),
-                newMember2.classicProtocolSessionTimeout().get(),
-                ConsumerProtocol.PROTOCOL_TYPE,
-                new JoinGroupRequestData.JoinGroupRequestProtocolCollection(List.of(
-                    new JoinGroupRequestData.JoinGroupRequestProtocol()
-                        .setName(protocols2.get(0).name())
-                        .setMetadata(protocols2.get(0).metadata())
-                )),
-                Utils.toArray(ConsumerProtocol.serializeAssignment(new ConsumerPartitionAssignor.Assignment(
-                    List.of(new TopicPartition(fooTopicName, 1))
-                )))
-            )
+                new ClassicGroupMember(
+                        memberId1,
+                        Optional.empty(),
+                        member1.clientId(),
+                        member1.clientHost(),
+                        member1.rebalanceTimeoutMs(),
+                        member1.classicProtocolSessionTimeout().get(),
+                        ConsumerProtocol.PROTOCOL_TYPE,
+                        new JoinGroupRequestData.JoinGroupRequestProtocolCollection(List.of(
+                                new JoinGroupRequestData.JoinGroupRequestProtocol()
+                                        .setName(protocols1.get(0).name())
+                                        .setMetadata(protocols1.get(0).metadata())
+                        )),
+                        Utils.toArray(ConsumerProtocol.serializeAssignment(new ConsumerPartitionAssignor.Assignment(
+                                List.of(new TopicPartition(fooTopicName, 0))
+                        )))
+                )
+        );
+        expectedClassicGroup.add(
+                new ClassicGroupMember(
+                        newMemberId2,
+                        Optional.of(instanceId2),
+                        newMember2.clientId(),
+                        newMember2.clientHost(),
+                        newMember2.rebalanceTimeoutMs(),
+                        newMember2.classicProtocolSessionTimeout().get(),
+                        ConsumerProtocol.PROTOCOL_TYPE,
+                        new JoinGroupRequestData.JoinGroupRequestProtocolCollection(List.of(
+                                new JoinGroupRequestData.JoinGroupRequestProtocol()
+                                        .setName(protocols2.get(0).name())
+                                        .setMetadata(protocols2.get(0).metadata())
+                        )),
+                        Utils.toArray(ConsumerProtocol.serializeAssignment(new ConsumerPartitionAssignor.Assignment(
+                                List.of(new TopicPartition(fooTopicName, 1))
+                        )))
+                )
         );
 
         assertClassicGroupEquals(expectedClassicGroup, classicGroup);
@@ -1529,101 +1529,101 @@ public class ClassicGroupTest {
         String fooTopicName = "foo";
 
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(fooTopicId, fooTopicName, 2)
-            .addRacks()
-            .build();
+                .addTopic(fooTopicId, fooTopicName, 2)
+                .addRacks()
+                .build();
 
         ConsumerGroup consumerGroup = new ConsumerGroup(
-            logContext,
-            new SnapshotRegistry(logContext),
-            groupId
+                logContext,
+                new SnapshotRegistry(logContext),
+                groupId
         );
         consumerGroup.setGroupEpoch(10);
         consumerGroup.setTargetAssignmentMetadata(10, time.milliseconds());
         consumerGroup.updateTargetAssignment(memberId1, new Assignment(mkAssignment(
-            mkTopicAssignment(fooTopicId, 0)
+                mkTopicAssignment(fooTopicId, 0)
         )));
         consumerGroup.updateTargetAssignment(memberId2, new Assignment(mkAssignment(
-            mkTopicAssignment(fooTopicId, 1)
+                mkTopicAssignment(fooTopicId, 1)
         )));
 
         List<ConsumerGroupMemberMetadataValue.ClassicProtocol> protocols1 = List.of(createClassicProtocol(
-            "range",
-            List.of(fooTopicName),
-            List.of(new TopicPartition(fooTopicName, 0))
+                "range",
+                List.of(fooTopicName),
+                List.of(new TopicPartition(fooTopicName, 0))
         ));
 
         ConsumerGroupMember member1 = new ConsumerGroupMember.Builder(memberId1)
-            .setState(MemberState.STABLE)
-            .setMemberEpoch(10)
-            .setPreviousMemberEpoch(9)
-            .setClientId("client-id")
-            .setClientHost("client-host")
-            .setSubscribedTopicNames(List.of(fooTopicName))
-            .setServerAssignorName("range")
-            .setRebalanceTimeoutMs(45000)
-            .setClassicMemberMetadata(
-                new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
-                    .setSessionTimeoutMs(5000)
-                    .setSupportedProtocols(protocols1))
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 0)), 10))
-            .build();
+                .setState(MemberState.STABLE)
+                .setMemberEpoch(10)
+                .setPreviousMemberEpoch(9)
+                .setClientId("client-id")
+                .setClientHost("client-host")
+                .setSubscribedTopicNames(List.of(fooTopicName))
+                .setServerAssignorName("range")
+                .setRebalanceTimeoutMs(45000)
+                .setClassicMemberMetadata(
+                        new ConsumerGroupMemberMetadataValue.ClassicMemberMetadata()
+                                .setSessionTimeoutMs(5000)
+                                .setSupportedProtocols(protocols1))
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 0)), 10))
+                .build();
         consumerGroup.updateMember(member1);
 
         ConsumerGroupMember member2 = new ConsumerGroupMember.Builder(memberId2)
-            .setInstanceId(instanceId2)
-            .setState(MemberState.STABLE)
-            .setMemberEpoch(10)
-            .setPreviousMemberEpoch(9)
-            .setClientId("client-id")
-            .setClientHost("client-host")
-            .setSubscribedTopicNames(List.of(fooTopicName))
-            .setServerAssignorName("range")
-            .setRebalanceTimeoutMs(45000)
-            .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
-                mkTopicAssignment(fooTopicId, 1)), 10))
-            .build();
+                .setInstanceId(instanceId2)
+                .setState(MemberState.STABLE)
+                .setMemberEpoch(10)
+                .setPreviousMemberEpoch(9)
+                .setClientId("client-id")
+                .setClientHost("client-host")
+                .setSubscribedTopicNames(List.of(fooTopicName))
+                .setServerAssignorName("range")
+                .setRebalanceTimeoutMs(45000)
+                .setAssignedPartitions(toAssignmentWithEpochs(mkAssignment(
+                        mkTopicAssignment(fooTopicId, 1)), 10))
+                .build();
         consumerGroup.updateMember(member2);
 
         ClassicGroup classicGroup = ClassicGroup.fromConsumerGroup(
-            consumerGroup,
-            Set.of(member2),
-            null,
-            logContext,
-            time,
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                consumerGroup,
+                Set.of(member2),
+                null,
+                logContext,
+                time,
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         ClassicGroup expectedClassicGroup = new ClassicGroup(
-            logContext,
-            groupId,
-            STABLE,
-            time,
-            10,
-            Optional.of(ConsumerProtocol.PROTOCOL_TYPE),
-            Optional.of("range"),
-            Optional.empty(),
-            Optional.of(time.milliseconds())
+                logContext,
+                groupId,
+                STABLE,
+                time,
+                10,
+                Optional.of(ConsumerProtocol.PROTOCOL_TYPE),
+                Optional.of("range"),
+                Optional.empty(),
+                Optional.of(time.milliseconds())
         );
         expectedClassicGroup.add(
-            new ClassicGroupMember(
-                memberId1,
-                Optional.empty(),
-                member1.clientId(),
-                member1.clientHost(),
-                member1.rebalanceTimeoutMs(),
-                member1.classicProtocolSessionTimeout().get(),
-                ConsumerProtocol.PROTOCOL_TYPE,
-                new JoinGroupRequestData.JoinGroupRequestProtocolCollection(List.of(
-                    new JoinGroupRequestData.JoinGroupRequestProtocol()
-                        .setName(protocols1.get(0).name())
-                        .setMetadata(protocols1.get(0).metadata())
-                )),
-                Utils.toArray(ConsumerProtocol.serializeAssignment(new ConsumerPartitionAssignor.Assignment(
-                    List.of(new TopicPartition(fooTopicName, 0))
-                )))
-            )
+                new ClassicGroupMember(
+                        memberId1,
+                        Optional.empty(),
+                        member1.clientId(),
+                        member1.clientHost(),
+                        member1.rebalanceTimeoutMs(),
+                        member1.classicProtocolSessionTimeout().get(),
+                        ConsumerProtocol.PROTOCOL_TYPE,
+                        new JoinGroupRequestData.JoinGroupRequestProtocolCollection(List.of(
+                                new JoinGroupRequestData.JoinGroupRequestProtocol()
+                                        .setName(protocols1.get(0).name())
+                                        .setMetadata(protocols1.get(0).metadata())
+                        )),
+                        Utils.toArray(ConsumerProtocol.serializeAssignment(new ConsumerPartitionAssignor.Assignment(
+                                List.of(new TopicPartition(fooTopicName, 0))
+                        )))
+                )
         );
 
         assertClassicGroupEquals(expectedClassicGroup, classicGroup);
@@ -1650,7 +1650,7 @@ public class ClassicGroupTest {
         assertEquals(expected.generationId(), actual.generationId());
         assertEquals(expected.allMembers().size(), actual.allMembers().size());
         expected.allMembers().forEach(expectedMember ->
-            assertClassicGroupMemberEquals(expectedMember, actual.member(expectedMember.memberId())));
+                assertClassicGroupMemberEquals(expectedMember, actual.member(expectedMember.memberId())));
     }
 
     private void assertClassicGroupMemberEquals(ClassicGroupMember expected, ClassicGroupMember actual) {
@@ -1666,16 +1666,16 @@ public class ClassicGroupTest {
     }
 
     private ConsumerGroupMemberMetadataValue.ClassicProtocol createClassicProtocol(
-        String protocolName,
-        List<String> subscribedTopics,
-        List<TopicPartition> assignedTopicPartitions
+            String protocolName,
+            List<String> subscribedTopics,
+            List<TopicPartition> assignedTopicPartitions
     ) {
         return new ConsumerGroupMemberMetadataValue.ClassicProtocol()
-            .setName(protocolName)
-            .setMetadata(Utils.toArray(ConsumerProtocol.serializeSubscription(new ConsumerPartitionAssignor.Subscription(
-                subscribedTopics,
-                null,
-                assignedTopicPartitions
-            ))));
+                .setName(protocolName)
+                .setMetadata(Utils.toArray(ConsumerProtocol.serializeSubscription(new ConsumerPartitionAssignor.Subscription(
+                        subscribedTopics,
+                        null,
+                        assignedTopicPartitions
+                ))));
     }
 }

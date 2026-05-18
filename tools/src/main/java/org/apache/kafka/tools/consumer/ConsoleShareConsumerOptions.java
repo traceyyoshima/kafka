@@ -162,7 +162,7 @@ public final class ConsoleShareConsumerOptions extends CommandDefaultOptions {
                 .describedAs("share group id")
                 .ofType(String.class);
         enableSystestEventsLoggingOpt = parser.accepts("enable-systest-events",
-            "Log lifecycle events of the share consumer in addition to logging consumed messages. (This is specific for system tests.)");
+                "Log lifecycle events of the share consumer in addition to logging consumed messages. (This is specific for system tests.)");
 
         try {
             options = parser.parse(args);

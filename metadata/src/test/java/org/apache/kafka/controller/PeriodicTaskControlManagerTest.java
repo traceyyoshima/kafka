@@ -46,21 +46,21 @@ public class PeriodicTaskControlManagerTest {
         final AtomicBoolean shouldFail = new AtomicBoolean(false);
 
         FakePeriodicTask(
-            String name,
-            long periodNs
+                String name,
+                long periodNs
         ) {
             this.numCalls = new AtomicInteger();
             this.task = new PeriodicTask(name,
-                () -> {
-                    numCalls.addAndGet(1);
-                    if (shouldFail.getAndSet(false)) {
-                        throw new NullPointerException("uh oh");
-                    }
-                    return ControllerResult.of(List.of(),
-                        continuation.getAndSet(false));
-                },
-                periodNs,
-                EnumSet.noneOf(PeriodicTaskFlag.class));
+                    () -> {
+                        numCalls.addAndGet(1);
+                        if (shouldFail.getAndSet(false)) {
+                            throw new NullPointerException("uh oh");
+                        }
+                        return ControllerResult.of(List.of(),
+                                continuation.getAndSet(false));
+                    },
+                    periodNs,
+                    EnumSet.noneOf(PeriodicTaskFlag.class));
         }
     }
 
@@ -79,17 +79,17 @@ public class PeriodicTaskControlManagerTest {
         PeriodicTaskControlManagerTestEnv() {
             this.time = new MockTime(0, 0, 0);
             this.manager = new PeriodicTaskControlManager.Builder().
-                setTime(time).
-                setQueueAccessor(this).
-                build();
+                    setTime(time).
+                    setQueueAccessor(this).
+                    build();
             this.tasks = new TreeMap<>();
         }
 
         @Override
         public void scheduleDeferred(
-            String tag,
-            long deadlineNs,
-            Supplier<ControllerResult<Void>> op
+                String tag,
+                long deadlineNs,
+                Supplier<ControllerResult<Void>> op
         ) {
             if (numCalls <= 0) {
                 throw new RuntimeException("too many deferred calls.");

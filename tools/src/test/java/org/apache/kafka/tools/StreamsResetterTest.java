@@ -74,11 +74,11 @@ public class StreamsResetterTest {
     @BeforeEach
     public void beforeEach() {
         consumer.assign(List.of(topicPartition));
-        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 0L, new byte[] {}, new byte[] {}));
-        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 1L, new byte[] {}, new byte[] {}));
-        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 2L, new byte[] {}, new byte[] {}));
-        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 3L, new byte[] {}, new byte[] {}));
-        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 4L, new byte[] {}, new byte[] {}));
+        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 0L, new byte[]{}, new byte[]{}));
+        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 1L, new byte[]{}, new byte[]{}));
+        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 2L, new byte[]{}, new byte[]{}));
+        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 3L, new byte[]{}, new byte[]{}));
+        consumer.addRecord(new ConsumerRecord<>(TOPIC, 0, 4L, new byte[]{}, new byte[]{}));
     }
 
     @Test
@@ -415,8 +415,8 @@ public class StreamsResetterTest {
             nodes.put(i, new Node(i, "localhost", 8121 + i));
         }
         return new Cluster("mockClusterId", nodes.values(),
-            Set.of(), Set.of(),
-            Set.of(), nodes.get(0));
+                Set.of(), Set.of(),
+                Set.of(), nodes.get(0));
     }
 
     private static class EmptyPartitionConsumer<K, V> extends MockConsumer<K, V> {

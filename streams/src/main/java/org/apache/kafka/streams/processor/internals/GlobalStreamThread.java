@@ -100,7 +100,7 @@ public class GlobalStreamThread extends Thread {
      *                | Dead (3)    |
      *                +-------------+
      * </pre>
-     *
+     * <p>
      * Note the following:
      * <ul>
      *     <li>Any state can go to PENDING_SHUTDOWN. That is because streams can be closed at any time.</li>
@@ -321,7 +321,7 @@ public class GlobalStreamThread extends Thread {
                         }
                     } else {
                         clientInstanceIdFuture.completeExceptionally(
-                            new TimeoutException("Could not retrieve global consumer client instance id.")
+                                new TimeoutException("Could not retrieve global consumer client instance id.")
                         );
                         fetchDeadlineClientInstanceId = -1;
                     }
@@ -330,12 +330,12 @@ public class GlobalStreamThread extends Thread {
         } catch (final InvalidOffsetException recoverableException) {
             wipeStateStore = true;
             log.error(
-                "Updating global state failed due to inconsistent local state. Will attempt to clean up the local state. You can restart KafkaStreams to recover from this error.",
-                recoverableException
+                    "Updating global state failed due to inconsistent local state. Will attempt to clean up the local state. You can restart KafkaStreams to recover from this error.",
+                    recoverableException
             );
             final StreamsException e = new StreamsException(
-                "Updating global state failed. You can restart KafkaStreams to launch a new GlobalStreamThread to recover from this error.",
-                recoverableException
+                    "Updating global state failed. You can restart KafkaStreams to launch a new GlobalStreamThread to recover from this error.",
+                    recoverableException
             );
             this.streamsUncaughtExceptionHandler.accept(e);
         } catch (final Exception e) {
@@ -376,56 +376,55 @@ public class GlobalStreamThread extends Thread {
         StateConsumer stateConsumer = null;
         try {
             final GlobalStateManager stateMgr = new GlobalStateManagerImpl(
-                logContext,
-                time,
-                topology,
-                globalConsumer,
-                stateDirectory,
-                stateRestoreListener,
-                config
+                    logContext,
+                    time,
+                    topology,
+                    globalConsumer,
+                    stateDirectory,
+                    stateRestoreListener,
+                    config
             );
 
             final GlobalProcessorContextImpl globalProcessorContext = new GlobalProcessorContextImpl(
-                config,
-                stateMgr,
-                streamsMetrics,
-                cache,
-                time
+                    config,
+                    stateMgr,
+                    streamsMetrics,
+                    cache,
+                    time
             );
             stateMgr.setGlobalProcessorContext(globalProcessorContext);
             final StreamsThreadMetricsDelegatingReporter globalMetricsReporter = new StreamsThreadMetricsDelegatingReporter(globalConsumer, getName(), Optional.empty());
             streamsMetrics.metricsRegistry().addReporter(globalMetricsReporter);
-            @SuppressWarnings("deprecation")
-            final ProcessingExceptionHandler processingExceptionHandler = config.getBoolean(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG) ? config.processingExceptionHandler() : null;
+            @SuppressWarnings("deprecation") final ProcessingExceptionHandler processingExceptionHandler = config.getBoolean(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG) ? config.processingExceptionHandler() : null;
             stateConsumer = new StateConsumer(
-                logContext,
-                globalConsumer,
-                new GlobalStateUpdateTask(
                     logContext,
-                    topology,
-                    globalProcessorContext,
-                    stateMgr,
-                    config.deserializationExceptionHandler(),
-                    processingExceptionHandler,
-                    time,
-                    config.getLong(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG)
-                ),
-                Duration.ofMillis(config.getLong(StreamsConfig.POLL_MS_CONFIG))
+                    globalConsumer,
+                    new GlobalStateUpdateTask(
+                            logContext,
+                            topology,
+                            globalProcessorContext,
+                            stateMgr,
+                            config.deserializationExceptionHandler(),
+                            processingExceptionHandler,
+                            time,
+                            config.getLong(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG)
+                    ),
+                    Duration.ofMillis(config.getLong(StreamsConfig.POLL_MS_CONFIG))
             );
 
             try {
                 stateConsumer.initialize();
             } catch (final InvalidOffsetException recoverableException) {
                 log.error(
-                    "Bootstrapping global state failed due to inconsistent local state. Will attempt to clean up the local state. You can restart KafkaStreams to recover from this error.",
-                    recoverableException
+                        "Bootstrapping global state failed due to inconsistent local state. Will attempt to clean up the local state. You can restart KafkaStreams to recover from this error.",
+                        recoverableException
                 );
 
                 closeStateConsumer(stateConsumer, true);
 
                 throw new StreamsException(
-                    "Bootstrapping global state failed. You can restart KafkaStreams to recover from this error.",
-                    recoverableException
+                        "Bootstrapping global state failed. You can restart KafkaStreams to recover from this error.",
+                        recoverableException
                 );
             }
 

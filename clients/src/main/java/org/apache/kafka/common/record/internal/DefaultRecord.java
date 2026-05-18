@@ -35,34 +35,34 @@ import static org.apache.kafka.common.record.internal.RecordBatch.MAGIC_VALUE_V2
 
 /**
  * This class implements the inner record format for magic 2 and above. The schema is as follows:
- *
- *
+ * <p>
+ * <p>
  * Record =>
- *   Length => Varint
- *   Attributes => Int8
- *   TimestampDelta => Varlong
- *   OffsetDelta => Varint
- *   KeyLength => Varint
- *   Key => Bytes
- *   ValueLength => Varint
- *   Value => Bytes
- *   HeadersCount => Varint
- *   Headers => [HeaderKey HeaderValue]
- *     HeaderKeyLength => Varint
- *     HeaderKey => String
- *     HeaderValueLength => Varint
- *     HeaderValue => Bytes
- *
+ * Length => Varint
+ * Attributes => Int8
+ * TimestampDelta => Varlong
+ * OffsetDelta => Varint
+ * KeyLength => Varint
+ * Key => Bytes
+ * ValueLength => Varint
+ * Value => Bytes
+ * HeadersCount => Varint
+ * Headers => [HeaderKey HeaderValue]
+ * HeaderKeyLength => Varint
+ * HeaderKey => String
+ * HeaderValueLength => Varint
+ * HeaderValue => Bytes
+ * <p>
  * Note that in this schema, the Bytes and String types use a variable length integer to represent
  * the length of the field. The array type used for the headers also uses a Varint for the number of
  * headers.
- *
+ * <p>
  * The current record attributes are depicted below:
- *
- *  ----------------
- *  | Unused (0-7) |
- *  ----------------
- *
+ * <p>
+ * ----------------
+ * | Unused (0-7) |
+ * ----------------
+ * <p>
  * The offset and timestamp deltas compute the difference relative to the base offset and
  * base timestamp of the batch that this record is contained in.
  */
@@ -125,7 +125,8 @@ public class DefaultRecord implements Record {
     }
 
     @Override
-    public void ensureValid() {}
+    public void ensureValid() {
+    }
 
     @Override
     public int keySize() {
@@ -287,7 +288,7 @@ public class DefaultRecord implements Record {
         int bytesRead = Utils.readFully(input, recordBuffer);
         if (bytesRead != sizeOfBodyInBytes)
             throw new InvalidRecordException("Invalid record size: expected " + sizeOfBodyInBytes +
-                " bytes in record payload, but the record payload reached EOF.");
+                    " bytes in record payload, but the record payload reached EOF.");
         recordBuffer.flip(); // prepare for reading
         return readFrom(recordBuffer, sizeOfBodyInBytes, baseOffset, baseTimestamp,
                 baseSequence, logAppendTime);
@@ -300,7 +301,7 @@ public class DefaultRecord implements Record {
                                          Long logAppendTime) {
         int sizeOfBodyInBytes = ByteUtils.readVarint(buffer);
         return readFrom(buffer, sizeOfBodyInBytes, baseOffset, baseTimestamp,
-            baseSequence, logAppendTime);
+                baseSequence, logAppendTime);
     }
 
     private static DefaultRecord readFrom(ByteBuffer buffer,
@@ -311,8 +312,8 @@ public class DefaultRecord implements Record {
                                           Long logAppendTime) {
         if (buffer.remaining() < sizeOfBodyInBytes)
             throw new InvalidRecordException("Invalid record size: expected " + sizeOfBodyInBytes +
-                " bytes in record payload, but instead the buffer has only " + buffer.remaining() +
-                " remaining bytes.");
+                    " bytes in record payload, but instead the buffer has only " + buffer.remaining() +
+                    " remaining bytes.");
         try {
             int recordStart = buffer.position();
             byte attributes = buffer.get();
@@ -368,7 +369,7 @@ public class DefaultRecord implements Record {
         int totalSizeInBytes = ByteUtils.sizeOfVarint(sizeOfBodyInBytes) + sizeOfBodyInBytes;
 
         return readPartiallyFrom(input, totalSizeInBytes, baseOffset, baseTimestamp,
-            baseSequence, logAppendTime);
+                baseSequence, logAppendTime);
     }
 
     private static PartialDefaultRecord readPartiallyFrom(InputStream input,
@@ -387,8 +388,8 @@ public class DefaultRecord implements Record {
             int offsetDelta = ByteUtils.readVarint(input);
             long offset = baseOffset + offsetDelta;
             int sequence = baseSequence >= 0 ?
-                DefaultRecordBatch.incrementSequence(baseSequence, offsetDelta) :
-                RecordBatch.NO_SEQUENCE;
+                    DefaultRecordBatch.incrementSequence(baseSequence, offsetDelta) :
+                    RecordBatch.NO_SEQUENCE;
 
             // skip key
             int keySize = ByteUtils.readVarint(input);
@@ -422,14 +423,14 @@ public class DefaultRecord implements Record {
 
     /**
      * Skips over and discards exactly {@code bytesToSkip} bytes from the input stream.
-     *
+     * <p>
      * We require a loop over {@link InputStream#skip(long)} because it is possible for InputStream to skip smaller
      * number of bytes than expected (see javadoc for InputStream#skip).
-     *
+     * <p>
      * No-op for case where bytesToSkip <= 0. This could occur for cases where field is expected to be null.
+     *
      * @throws InvalidRecordException if end of stream is encountered before we could skip required bytes.
-     * @throws IOException is an I/O error occurs while trying to skip from InputStream.
-     * 
+     * @throws IOException            is an I/O error occurs while trying to skip from InputStream.
      * @see java.io.InputStream#skip(long)
      */
     private static void skipBytes(InputStream in, int bytesToSkip) throws IOException {
@@ -445,7 +446,7 @@ public class DefaultRecord implements Record {
                 // read one byte to check for EOS
                 if (in.read() == -1) {
                     throw new InvalidRecordException("Reached end of input stream before skipping all bytes. " +
-                        "Remaining bytes:" + bytesToSkip);
+                            "Remaining bytes:" + bytesToSkip);
                 }
                 // one byte read so decrement number to skip
                 bytesToSkip--;

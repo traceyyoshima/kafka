@@ -89,12 +89,12 @@ import static java.lang.String.format;
 /**
  * For verifying the consistency among replicas.
  * <p>
- *  1. start a fetcher on every broker
- *  2. each fetcher does the following
- *    2.1 issues fetch request
- *    2.2 puts the fetched result in a shared buffer
- *    2.3 waits for all other fetchers to finish step 2.2
- *    2.4 one of the fetchers verifies the consistency of fetched results among replicas
+ * 1. start a fetcher on every broker
+ * 2. each fetcher does the following
+ * 2.1 issues fetch request
+ * 2.2 puts the fetched result in a shared buffer
+ * 2.3 waits for all other fetchers to finish step 2.2
+ * 2.4 one of the fetchers verifies the consistency of fetched results among replicas
  * <p>
  * The consistency verification is up to the high watermark. The tool reports the
  * max lag between the verified offset and the high watermark among all partitions.
@@ -126,7 +126,7 @@ public class ReplicaVerificationTool {
                 Map<String, Uuid> topicIds = topicsMetadata.stream().collect(Collectors.toMap(TopicDescription::name, TopicDescription::topicId));
 
                 List<TopicDescription> filteredTopicMetadata = topicsMetadata.stream().filter(
-                    topicMetadata -> options.topicsIncludeFilter().isTopicAllowed(topicMetadata.name(), false)
+                        topicMetadata -> options.topicsIncludeFilter().isTopicAllowed(topicMetadata.name(), false)
                 ).toList();
 
                 if (filteredTopicMetadata.isEmpty()) {
@@ -135,68 +135,68 @@ public class ReplicaVerificationTool {
                 }
 
                 List<TopicPartitionReplica> topicPartitionReplicas = filteredTopicMetadata.stream().flatMap(
-                    topicMetadata -> topicMetadata.partitions().stream().flatMap(
-                        partitionMetadata -> partitionMetadata.replicas().stream().map(
-                            node -> new TopicPartitionReplica(topicMetadata.name(), partitionMetadata.partition(), node.id())
+                        topicMetadata -> topicMetadata.partitions().stream().flatMap(
+                                partitionMetadata -> partitionMetadata.replicas().stream().map(
+                                        node -> new TopicPartitionReplica(topicMetadata.name(), partitionMetadata.partition(), node.id())
+                                )
                         )
-                    )
                 ).collect(Collectors.toList());
                 LOG.debug("Selected topic partitions: {}", topicPartitionReplicas);
 
                 Map<Integer, List<TopicPartition>> brokerToTopicPartitions = topicPartitionReplicas.stream()
-                    .collect(Collectors.groupingBy(
-                        TopicPartitionReplica::brokerId,
-                        Collectors.mapping(
-                            replica -> new TopicPartition(replica.topic(), replica.partition()),
-                            Collectors.toList()
-                        )
-                    ));
+                        .collect(Collectors.groupingBy(
+                                TopicPartitionReplica::brokerId,
+                                Collectors.mapping(
+                                        replica -> new TopicPartition(replica.topic(), replica.partition()),
+                                        Collectors.toList()
+                                )
+                        ));
                 LOG.debug("Topic partitions per broker: {}", brokerToTopicPartitions);
 
                 Map<TopicPartition, Integer> expectedReplicasPerTopicPartition = topicPartitionReplicas.stream()
-                    .collect(Collectors.groupingBy(
-                        replica -> new TopicPartition(replica.topic(), replica.partition()),
-                        Collectors.collectingAndThen(
-                            Collectors.toList(),
-                            List::size
-                        )
-                    ));
+                        .collect(Collectors.groupingBy(
+                                replica -> new TopicPartition(replica.topic(), replica.partition()),
+                                Collectors.collectingAndThen(
+                                        Collectors.toList(),
+                                        List::size
+                                )
+                        ));
                 LOG.debug("Expected replicas per topic partition: {}", expectedReplicasPerTopicPartition);
 
                 List<TopicPartition> topicPartitions = filteredTopicMetadata.stream()
-                    .flatMap(topicMetadata -> topicMetadata.partitions().stream()
-                        .map(partitionMetadata -> new TopicPartition(topicMetadata.name(), partitionMetadata.partition()))
-                    )
-                    .collect(Collectors.toList());
+                        .flatMap(topicMetadata -> topicMetadata.partitions().stream()
+                                .map(partitionMetadata -> new TopicPartition(topicMetadata.name(), partitionMetadata.partition()))
+                        )
+                        .collect(Collectors.toList());
 
                 Properties consumerProps = consumerConfig(brokerList);
 
                 ReplicaBuffer replicaBuffer = new ReplicaBuffer(expectedReplicasPerTopicPartition,
-                    initialOffsets(topicPartitions, consumerProps, options.initialOffsetTime()),
-                    brokerToTopicPartitions.size(), options.reportInterval());
+                        initialOffsets(topicPartitions, consumerProps, options.initialOffsetTime()),
+                        brokerToTopicPartitions.size(), options.reportInterval());
 
                 // create all replica fetcher threads
                 int verificationBrokerId = brokerToTopicPartitions.entrySet().iterator().next().getKey();
                 AtomicInteger counter = new AtomicInteger(0);
                 List<ReplicaFetcher> fetcherThreads = brokerToTopicPartitions.entrySet().stream()
-                    .map(entry -> {
-                        int brokerId = entry.getKey();
-                        Iterable<TopicPartition> partitions = entry.getValue();
-                        return new ReplicaFetcher(
-                            "ReplicaFetcher-" + brokerId,
-                            brokerInfo.get(brokerId),
-                            partitions,
-                            topicIds,
-                            replicaBuffer,
-                            options.fetchSize(),
-                            options.maxWaitMs(),
-                            1,
-                            brokerId == verificationBrokerId,
-                            consumerProps,
-                            counter.incrementAndGet()
-                        );
-                    })
-                    .toList();
+                        .map(entry -> {
+                            int brokerId = entry.getKey();
+                            Iterable<TopicPartition> partitions = entry.getValue();
+                            return new ReplicaFetcher(
+                                    "ReplicaFetcher-" + brokerId,
+                                    brokerInfo.get(brokerId),
+                                    partitions,
+                                    topicIds,
+                                    replicaBuffer,
+                                    options.fetchSize(),
+                                    options.maxWaitMs(),
+                                    1,
+                                    brokerId == verificationBrokerId,
+                                    consumerProps,
+                                    counter.incrementAndGet()
+                            );
+                        })
+                        .toList();
 
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                     LOG.info("Stopping all fetchers");
@@ -210,7 +210,7 @@ public class ReplicaVerificationTool {
 
                 fetcherThreads.forEach(Thread::start);
                 System.out.printf("%s: verification process is started%n",
-                    DATE_FORMAT.format(new Date(Time.SYSTEM.milliseconds())));
+                        DATE_FORMAT.format(new Date(Time.SYSTEM.milliseconds())));
             }
         } catch (Throwable e) {
             System.err.println(e.getMessage());
@@ -223,15 +223,15 @@ public class ReplicaVerificationTool {
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(consumerConfig)) {
             if (ListOffsetsRequest.LATEST_TIMESTAMP == initialOffsetTime) {
                 return consumer.endOffsets(topicPartitions).entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
             } else if (ListOffsetsRequest.EARLIEST_TIMESTAMP == initialOffsetTime) {
                 return consumer.beginningOffsets(topicPartitions).entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
             } else {
                 Map<TopicPartition, Long> timestampsToSearch = topicPartitions.stream()
-                    .collect(Collectors.toMap(Function.identity(), tp -> initialOffsetTime));
+                        .collect(Collectors.toMap(Function.identity(), tp -> initialOffsetTime));
                 return consumer.offsetsForTimes(timestampsToSearch).entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().offset()));
+                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().offset()));
             }
         }
     }
@@ -271,34 +271,34 @@ public class ReplicaVerificationTool {
         ReplicaVerificationToolOptions(String[] args) {
             super(args);
             brokerListOpt = parser.accepts("broker-list", "REQUIRED: The list of hostname and port of the server to connect to.")
-                .withRequiredArg()
-                .describedAs("hostname:port,...,hostname:port")
-                .ofType(String.class);
+                    .withRequiredArg()
+                    .describedAs("hostname:port,...,hostname:port")
+                    .ofType(String.class);
             fetchSizeOpt = parser.accepts("fetch-size", "The fetch size of each request.")
-                .withRequiredArg()
-                .describedAs("bytes")
-                .ofType(Integer.class)
-                .defaultsTo(ConsumerConfig.DEFAULT_MAX_PARTITION_FETCH_BYTES);
+                    .withRequiredArg()
+                    .describedAs("bytes")
+                    .ofType(Integer.class)
+                    .defaultsTo(ConsumerConfig.DEFAULT_MAX_PARTITION_FETCH_BYTES);
             maxWaitMsOpt = parser.accepts("max-wait-ms", "The max amount of time each fetch request waits.")
-                .withRequiredArg()
-                .describedAs("ms")
-                .ofType(Integer.class)
-                .defaultsTo(1_000);
+                    .withRequiredArg()
+                    .describedAs("ms")
+                    .ofType(Integer.class)
+                    .defaultsTo(1_000);
             topicsIncludeOpt = parser.accepts("topics-include", "List of topics to verify replica consistency.")
-                .withRequiredArg()
-                .describedAs("Java regex (String)")
-                .ofType(String.class)
-                .defaultsTo(".*");
+                    .withRequiredArg()
+                    .describedAs("Java regex (String)")
+                    .ofType(String.class)
+                    .defaultsTo(".*");
             initialOffsetTimeOpt = parser.accepts("time", "Timestamp for getting the initial offsets.")
-                .withRequiredArg()
-                .describedAs("timestamp/-1(latest)/-2(earliest)")
-                .ofType(Long.class)
-                .defaultsTo(-1L);
+                    .withRequiredArg()
+                    .describedAs("timestamp/-1(latest)/-2(earliest)")
+                    .ofType(Long.class)
+                    .defaultsTo(-1L);
             reportIntervalOpt = parser.accepts("report-interval-ms", "The reporting interval.")
-                .withRequiredArg()
-                .describedAs("ms")
-                .ofType(Long.class)
-                .defaultsTo(30_000L);
+                    .withRequiredArg()
+                    .describedAs("ms")
+                    .ofType(Long.class)
+                    .defaultsTo(30_000L);
             options = parser.parse(args);
 
             CommandLineUtils.maybePrintHelpOrVersion(this, "Validate that all replicas for a set of topics have the same data.");
@@ -423,21 +423,21 @@ public class ReplicaVerificationTool {
 
                 LOG.debug("Verifying {}", topicPartition);
                 assert fetchResponsePerReplica.size() == expectedReplicasPerTopicPartition.get(topicPartition) :
-                    "fetched " + fetchResponsePerReplica.size() + " replicas for " + topicPartition +
-                        ", but expected " + expectedReplicasPerTopicPartition.get(topicPartition) + " replicas";
+                        "fetched " + fetchResponsePerReplica.size() + " replicas for " + topicPartition +
+                                ", but expected " + expectedReplicasPerTopicPartition.get(topicPartition) + " replicas";
 
                 Map<Integer, Iterator<? extends RecordBatch>> recordBatchIteratorMap = new HashMap<>();
                 for (Map.Entry<Integer, FetchResponseData.PartitionData> fetchResEntry : fetchResponsePerReplica.entrySet()) {
                     int replicaId = fetchResEntry.getKey();
                     FetchResponseData.PartitionData fetchResponse = fetchResEntry.getValue();
                     Iterator<? extends RecordBatch> recordIterator =
-                        FetchResponse.recordsOrFail(fetchResponse).batches().iterator();
+                            FetchResponse.recordsOrFail(fetchResponse).batches().iterator();
                     recordBatchIteratorMap.put(replicaId, recordIterator);
                 }
 
                 long maxHw = fetchResponsePerReplica.values().stream()
-                    .mapToLong(FetchResponseData.PartitionData::highWatermark)
-                    .max().orElse(-1L);
+                        .mapToLong(FetchResponseData.PartitionData::highWatermark)
+                        .max().orElse(-1L);
 
                 boolean isMessageInAllReplicas = true;
 
@@ -459,28 +459,28 @@ public class ReplicaVerificationTool {
                                 } else {
                                     if (messageInfoFromFirstReplicaOpt.isEmpty()) {
                                         messageInfoFromFirstReplicaOpt = Optional.of(
-                                            new MessageInfo(replicaId, batch.lastOffset(), batch.nextOffset(), batch.checksum())
+                                                new MessageInfo(replicaId, batch.lastOffset(), batch.nextOffset(), batch.checksum())
                                         );
                                     } else {
                                         MessageInfo messageInfoFromFirstReplica = messageInfoFromFirstReplicaOpt.get();
 
                                         if (messageInfoFromFirstReplica.offset != batch.lastOffset()) {
                                             println.accept(DATE_FORMAT.format(new Date(Time.SYSTEM.milliseconds())) +
-                                                ": partition " + topicPartition +
-                                                ": replica " + messageInfoFromFirstReplica.replicaId +
-                                                "'s offset " + messageInfoFromFirstReplica.offset +
-                                                " doesn't match replica " + replicaId +
-                                                "'s offset " + batch.lastOffset());
+                                                    ": partition " + topicPartition +
+                                                    ": replica " + messageInfoFromFirstReplica.replicaId +
+                                                    "'s offset " + messageInfoFromFirstReplica.offset +
+                                                    " doesn't match replica " + replicaId +
+                                                    "'s offset " + batch.lastOffset());
                                             Exit.exit(1);
                                         }
 
                                         if (messageInfoFromFirstReplica.checksum != batch.checksum())
                                             println.accept(DATE_FORMAT.format(new Date(Time.SYSTEM.milliseconds())) +
-                                                ": partition " + topicPartition +
-                                                " has unmatched checksum at offset " + batch.lastOffset() +
-                                                "; replica " + messageInfoFromFirstReplica.replicaId +
-                                                "'s checksum " + messageInfoFromFirstReplica.checksum +
-                                                "; replica " + replicaId + "'s checksum " + batch.checksum());
+                                                    ": partition " + topicPartition +
+                                                    " has unmatched checksum at offset " + batch.lastOffset() +
+                                                    "; replica " + messageInfoFromFirstReplica.replicaId +
+                                                    "'s checksum " + messageInfoFromFirstReplica.checksum +
+                                                    "; replica " + replicaId + "'s checksum " + batch.checksum());
                                     }
                                 }
                             } else {
@@ -488,8 +488,8 @@ public class ReplicaVerificationTool {
                             }
                         } catch (Throwable t) {
                             throw new RuntimeException("Error in processing replica " + replicaId +
-                                " in partition " + topicPartition + " at offset " +
-                                fetchOffsetMap.get(topicPartition), t);
+                                    " in partition " + topicPartition + " at offset " +
+                                    fetchOffsetMap.get(topicPartition), t);
                         }
                     }
 
@@ -497,7 +497,7 @@ public class ReplicaVerificationTool {
                         long nextOffset = messageInfoFromFirstReplicaOpt.map(messageInfo -> messageInfo.nextOffset).orElse(-1L);
                         fetchOffsetMap.put(topicPartition, nextOffset);
                         LOG.debug("{} replicas match at offset {} for {}",
-                            expectedReplicasPerTopicPartition.get(topicPartition), nextOffset, topicPartition);
+                                expectedReplicasPerTopicPartition.get(topicPartition), nextOffset, topicPartition);
                     }
                 }
 
@@ -513,9 +513,9 @@ public class ReplicaVerificationTool {
             long currentTimeMs = Time.SYSTEM.milliseconds();
             if (currentTimeMs - lastReportTime > reportInterval) {
                 println.accept(DATE_FORMAT.format(new Date(currentTimeMs)) +
-                    ": max lag is " + maxLag + " for partition " +
-                    maxLagTopicAndPartition + " at offset " + offsetWithMaxLag +
-                    " among " + recordsCache.size() + " partitions");
+                        ": max lag is " + maxLag + " for partition " +
+                        maxLagTopicAndPartition + " at offset " + offsetWithMaxLag +
+                        " among " + recordsCache.size() + " partitions");
                 lastReportTime = currentTimeMs;
             }
         }
@@ -554,9 +554,9 @@ public class ReplicaVerificationTool {
             this.minBytes = minBytes;
             this.doVerification = doVerification;
             this.fetchEndpoint = new ReplicaFetcherBlockingSend(sourceBroker, new ConsumerConfig(consumerConfig), new Metrics(),
-                Time.SYSTEM, fetcherId, "broker-" + FetchRequest.DEBUGGING_CONSUMER_ID + "-fetcher-" + fetcherId);
+                    Time.SYSTEM, fetcherId, "broker-" + FetchRequest.DEBUGGING_CONSUMER_ID + "-fetcher-" + fetcherId);
             this.topicNames = topicIds.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+                    .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
         }
 
         @Override
@@ -567,21 +567,21 @@ public class ReplicaVerificationTool {
             Map<TopicPartition, FetchRequest.PartitionData> requestMap = new LinkedHashMap<>();
             for (TopicPartition topicPartition : topicPartitions) {
                 requestMap.put(topicPartition, new FetchRequest.PartitionData(
-                    topicIds.getOrDefault(topicPartition.topic(), Uuid.ZERO_UUID),
-                    replicaBuffer.getOffset(topicPartition),
-                    0L,
-                    fetchSize,
-                    Optional.empty()
+                        topicIds.getOrDefault(topicPartition.topic(), Uuid.ZERO_UUID),
+                        replicaBuffer.getOffset(topicPartition),
+                        0L,
+                        fetchSize,
+                        Optional.empty()
                 ));
             }
 
             FetchRequest.Builder fetchRequestBuilder = FetchRequest.Builder.forReplica(
-                ApiKeys.FETCH.latestVersion(),
-                FetchRequest.DEBUGGING_CONSUMER_ID,
-                -1,
-                maxWait,
-                minBytes,
-                requestMap
+                    ApiKeys.FETCH.latestVersion(),
+                    FetchRequest.DEBUGGING_CONSUMER_ID,
+                    -1,
+                    maxWait,
+                    minBytes,
+                    requestMap
             );
 
             LOG.debug("Issuing fetch request");
@@ -597,13 +597,13 @@ public class ReplicaVerificationTool {
 
             if (fetchResponse != null) {
                 fetchResponse.responseData(topicNames, ApiKeys.FETCH.latestVersion()).forEach((tp, partitionData) ->
-                    replicaBuffer.addFetchedData(tp, sourceBroker.id(), partitionData));
+                        replicaBuffer.addFetchedData(tp, sourceBroker.id(), partitionData));
             } else {
                 for (TopicPartition topicAndPartition : topicPartitions) {
                     replicaBuffer.addFetchedData(
-                        topicAndPartition,
-                        sourceBroker.id(),
-                        FetchResponse.partitionResponse(topicAndPartition.partition(), Errors.NONE)
+                            topicAndPartition,
+                            sourceBroker.id(),
+                            FetchResponse.partitionResponse(topicAndPartition.partition(), Errors.NONE)
                     );
                 }
             }
@@ -659,36 +659,36 @@ public class ReplicaVerificationTool {
             LogContext logContext = new LogContext();
             ChannelBuilder channelBuilder = ClientUtils.createChannelBuilder(consumerConfig, time, logContext);
             Selector selector = new Selector(
-                NetworkReceive.UNLIMITED,
-                consumerConfig.getLong(ConsumerConfig.CONNECTIONS_MAX_IDLE_MS_CONFIG),
-                metrics,
-                time,
-                "replica-fetcher",
-                new HashMap<String, String>() {{
+                    NetworkReceive.UNLIMITED,
+                    consumerConfig.getLong(ConsumerConfig.CONNECTIONS_MAX_IDLE_MS_CONFIG),
+                    metrics,
+                    time,
+                    "replica-fetcher",
+                    new HashMap<String, String>() {{
                         put("broker-id", sourceNode.idString());
                         put("fetcher-id", String.valueOf(fetcherId));
                     }},
-                false,
-                channelBuilder,
-                logContext
+                    false,
+                    channelBuilder,
+                    logContext
             );
             this.networkClient = new NetworkClient(
-                selector,
-                new ManualMetadataUpdater(),
-                clientId,
-                1,
-                0,
-                0,
-                Selectable.USE_DEFAULT_BUFFER_SIZE,
-                consumerConfig.getInt(ConsumerConfig.RECEIVE_BUFFER_CONFIG),
-                consumerConfig.getInt(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG),
-                consumerConfig.getLong(ConsumerConfig.SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG),
-                consumerConfig.getLong(ConsumerConfig.SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG),
-                time,
-                false,
-                new ApiVersions(),
-                logContext,
-                MetadataRecoveryStrategy.forName(consumerConfig.getString(CommonClientConfigs.METADATA_RECOVERY_STRATEGY_CONFIG))
+                    selector,
+                    new ManualMetadataUpdater(),
+                    clientId,
+                    1,
+                    0,
+                    0,
+                    Selectable.USE_DEFAULT_BUFFER_SIZE,
+                    consumerConfig.getInt(ConsumerConfig.RECEIVE_BUFFER_CONFIG),
+                    consumerConfig.getInt(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG),
+                    consumerConfig.getLong(ConsumerConfig.SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG),
+                    consumerConfig.getLong(ConsumerConfig.SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG),
+                    time,
+                    false,
+                    new ApiVersions(),
+                    logContext,
+                    MetadataRecoveryStrategy.forName(consumerConfig.getString(CommonClientConfigs.METADATA_RECOVERY_STRATEGY_CONFIG))
             );
         }
 
@@ -698,7 +698,7 @@ public class ReplicaVerificationTool {
                     throw new SocketTimeoutException("Failed to connect within " + socketTimeout + " ms");
                 else {
                     ClientRequest clientRequest = networkClient.newClientRequest(sourceNode.idString(),
-                        requestBuilder, time.milliseconds(), true);
+                            requestBuilder, time.milliseconds(), true);
                     return NetworkClientUtils.sendAndReceive(networkClient, clientRequest, time);
                 }
             } catch (Throwable e) {

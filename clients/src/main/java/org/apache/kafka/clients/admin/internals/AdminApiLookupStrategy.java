@@ -37,18 +37,17 @@ public interface AdminApiLookupStrategy<T> {
      * a `Metadata` request supports arbitrary batching of topic partitions in
      * order to discover partitions leaders. This can be supported by returning
      * a single scope object for all keys.
-     *
+     * <p>
      * On the other hand, `FindCoordinator` requests only support lookup of a
      * single key. This can be supported by returning a different scope object
      * for each lookup key.
-     *
+     * <p>
      * Note that if the {@link ApiRequestScope#destinationBrokerId()} maps to
      * a specific brokerId, then lookup will be skipped. See the use of
      * {@link StaticBrokerStrategy} in {@link DescribeProducersHandler} for
      * an example of this usage.
      *
      * @param key the lookup key
-     *
      * @return request scope indicating how lookup requests can be batched together
      */
     ApiRequestScope lookupScope(T key);
@@ -59,7 +58,6 @@ public interface AdminApiLookupStrategy<T> {
      * to the same request scope object will be sent to this method.
      *
      * @param keys the set of keys that require lookup
-     *
      * @return a builder for the lookup request
      */
     AbstractRequest.Builder<?> buildRequest(Set<T> keys);
@@ -69,17 +67,16 @@ public interface AdminApiLookupStrategy<T> {
      * should parse the response, check for errors, and return a result indicating
      * which keys were mapped to a brokerId successfully and which keys received
      * a fatal error (e.g. a topic authorization failure).
-     *
+     * <p>
      * Note that keys which receive a retriable error should be left out of the
      * result. They will be retried automatically. For example, if the response of
      * `FindCoordinator` request indicates an unavailable coordinator, then the key
      * should be left out of the result so that the request will be retried.
      *
-     * @param keys the set of keys from the associated request
+     * @param keys     the set of keys from the associated request
      * @param response the response received from the broker
-     *
      * @return a result indicating which keys mapped successfully to a brokerId and
-     *         which encountered a fatal error
+     * which encountered a fatal error
      */
     LookupResult<T> handleResponse(Set<T> keys, AbstractResponse response);
 
@@ -94,8 +91,8 @@ public interface AdminApiLookupStrategy<T> {
      * the returned map.
      */
     default Map<T, Throwable> handleUnsupportedVersionException(
-        UnsupportedVersionException exception,
-        Set<T> keys
+            UnsupportedVersionException exception,
+            Set<T> keys
     ) {
         return keys.stream().collect(Collectors.toMap(k -> k, k -> exception));
     }
@@ -114,16 +111,16 @@ public interface AdminApiLookupStrategy<T> {
         public final Map<K, Throwable> failedKeys;
 
         public LookupResult(
-            Map<K, Throwable> failedKeys,
-            Map<K, Integer> mappedKeys
+                Map<K, Throwable> failedKeys,
+                Map<K, Integer> mappedKeys
         ) {
             this(Collections.emptyList(), failedKeys, mappedKeys);
         }
 
         public LookupResult(
-            List<K> completedKeys,
-            Map<K, Throwable> failedKeys,
-            Map<K, Integer> mappedKeys
+                List<K> completedKeys,
+                Map<K, Throwable> failedKeys,
+                Map<K, Integer> mappedKeys
         ) {
             this.completedKeys = Collections.unmodifiableList(completedKeys);
             this.failedKeys = Collections.unmodifiableMap(failedKeys);

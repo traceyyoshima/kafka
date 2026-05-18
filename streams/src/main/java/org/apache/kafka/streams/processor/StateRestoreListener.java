@@ -66,17 +66,17 @@ public interface StateRestoreListener {
     /**
      * Method called after restoring a batch of records.  In this case the maximum size of the batch is whatever
      * the value of the MAX_POLL_RECORDS is set to.
-     *
+     * <p>
      * This method is called after restoring each batch and it is advised to keep processing to a minimum.
      * Any heavy processing will hold up recovering the next batch, hence slowing down the restore process as a
      * whole.
-     *
+     * <p>
      * If you need to do any extended processing or connecting to an external service consider doing so asynchronously.
      *
      * @param topicPartition the TopicPartition containing the values to restore
-     * @param storeName the name of the store undergoing restoration
+     * @param storeName      the name of the store undergoing restoration
      * @param batchEndOffset the inclusive ending offset for the current restored batch for this TopicPartition
-     * @param numRestored the total number of records restored in this batch for this TopicPartition
+     * @param numRestored    the total number of records restored in this batch for this TopicPartition
      */
     void onBatchRestored(final TopicPartition topicPartition,
                          final String storeName,
@@ -87,8 +87,8 @@ public interface StateRestoreListener {
      * Method called when restoring the {@link StateStore} is complete.
      *
      * @param topicPartition the TopicPartition containing the values to restore
-     * @param storeName the name of the store just restored
-     * @param totalRestored the total number of records restored for this TopicPartition
+     * @param storeName      the name of the store just restored
+     * @param totalRestored  the total number of records restored for this TopicPartition
      */
     void onRestoreEnd(final TopicPartition topicPartition,
                       final String storeName,
@@ -100,8 +100,8 @@ public interface StateRestoreListener {
      * {@link #onRestoreStart(TopicPartition, String, long, long)} would be called.
      *
      * @param topicPartition the {@link TopicPartition} containing the values to restore
-     * @param storeName the name of the store just restored
-     * @param totalRestored the total number of records restored for this TopicPartition before being paused
+     * @param storeName      the name of the store just restored
+     * @param totalRestored  the total number of records restored for this TopicPartition before being paused
      */
     default void onRestoreSuspended(final TopicPartition topicPartition,
                                     final String storeName,

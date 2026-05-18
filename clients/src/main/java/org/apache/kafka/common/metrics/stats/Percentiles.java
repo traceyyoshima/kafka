@@ -72,8 +72,8 @@ public class Percentiles extends SampledStat implements CompoundStat {
         for (Percentile percentile : this.percentiles) {
             final double pct = percentile.percentile();
             ms.add(new NamedMeasurable(
-                percentile.name(),
-                (config, now) -> value(config, now, pct / 100.0))
+                    percentile.name(),
+                    (config, now) -> value(config, now, pct / 100.0))
             );
         }
         return ms;
@@ -115,11 +115,11 @@ public class Percentiles extends SampledStat implements CompoundStat {
         final double boundedValue;
         if (value > max) {
             log.debug("Received value {} which is greater than max recordable value {}, will be pinned to the max value",
-                     value, max);
+                    value, max);
             boundedValue = max;
         } else if (value < min) {
             log.debug("Received value {} which is less than min recordable value {}, will be pinned to the min value",
-                     value, min);
+                    value, min);
             boundedValue = min;
         } else {
             boundedValue = value;

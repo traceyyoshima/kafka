@@ -61,15 +61,15 @@ public class DefaultApplicationState implements ApplicationState {
             final ProcessId processId = clientEntry.getKey();
             final Map<TaskId, Long> taskLagTotals = computeTaskLags ? clientState.taskLagTotals() : null;
             final KafkaStreamsState kafkaStreamsState = new DefaultKafkaStreamsState(
-                processId,
-                clientState.capacity(),
-                clientState.clientTags(),
-                clientState.previousActiveTasks(),
-                clientState.previousStandbyTasks(),
-                clientState.taskIdsByPreviousConsumer(),
-                Optional.ofNullable(metadata.hostInfo()),
-                Optional.ofNullable(taskLagTotals),
-                metadata.rackId()
+                    processId,
+                    clientState.capacity(),
+                    clientState.clientTags(),
+                    clientState.previousActiveTasks(),
+                    clientState.previousStandbyTasks(),
+                    clientState.taskIdsByPreviousConsumer(),
+                    Optional.ofNullable(metadata.hostInfo()),
+                    Optional.ofNullable(taskLagTotals),
+                    metadata.rackId()
             );
             kafkaStreamsStates.put(processId, kafkaStreamsState);
         }

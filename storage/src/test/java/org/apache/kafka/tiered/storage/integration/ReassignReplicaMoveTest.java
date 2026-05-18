@@ -22,6 +22,7 @@ public final class ReassignReplicaMoveTest extends BaseReassignReplicaTest {
 
     /**
      * Move the replica of the topic from broker0 to broker1
+     *
      * @return the replica-ids of the topic
      */
     @Override

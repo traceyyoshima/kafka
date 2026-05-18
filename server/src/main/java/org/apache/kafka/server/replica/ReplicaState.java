@@ -30,20 +30,20 @@ import java.util.Optional;
  * @param brokerEpoch                 The brokerEpoch is the epoch from the Fetch request.
  */
 public record ReplicaState(
-    long logStartOffset,
-    LogOffsetMetadata logEndOffsetMetadata,
-    long lastFetchLeaderLogEndOffset,
-    long lastFetchTimeMs,
-    long lastCaughtUpTimeMs,
-    Optional<Long> brokerEpoch
+        long logStartOffset,
+        LogOffsetMetadata logEndOffsetMetadata,
+        long lastFetchLeaderLogEndOffset,
+        long lastFetchTimeMs,
+        long lastCaughtUpTimeMs,
+        Optional<Long> brokerEpoch
 ) {
     public static final ReplicaState EMPTY = new ReplicaState(
-        UnifiedLog.UNKNOWN_OFFSET,
-        LogOffsetMetadata.UNKNOWN_OFFSET_METADATA,
-        0L,
-        0L,
-        0L,
-        Optional.empty()
+            UnifiedLog.UNKNOWN_OFFSET,
+            LogOffsetMetadata.UNKNOWN_OFFSET_METADATA,
+            0L,
+            0L,
+            0L,
+            Optional.empty()
     );
 
     /**
@@ -60,9 +60,9 @@ public record ReplicaState(
      * time is smaller than the max replica lag.
      */
     public boolean isCaughtUp(
-        long leaderEndOffset,
-        long currentTimeMs,
-        long replicaMaxLagMs) {
+            long leaderEndOffset,
+            long currentTimeMs,
+            long replicaMaxLagMs) {
         return leaderEndOffset == logEndOffset() || currentTimeMs - lastCaughtUpTimeMs <= replicaMaxLagMs;
     }
 }

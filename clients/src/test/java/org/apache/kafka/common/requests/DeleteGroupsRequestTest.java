@@ -34,16 +34,16 @@ public class DeleteGroupsRequestTest {
         String groupId1 = "group-id-1";
         String groupId2 = "group-id-2";
         DeleteGroupsRequestData data = new DeleteGroupsRequestData()
-            .setGroupsNames(Arrays.asList(groupId1, groupId2));
+                .setGroupsNames(Arrays.asList(groupId1, groupId2));
         DeleteGroupsResponseData.DeletableGroupResultCollection expectedResultCollection =
-            new DeleteGroupsResponseData.DeletableGroupResultCollection(Arrays.asList(
-                new DeleteGroupsResponseData.DeletableGroupResult()
-                    .setGroupId(groupId1)
-                    .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
-                new DeleteGroupsResponseData.DeletableGroupResult()
-                    .setGroupId(groupId2)
-                    .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
-            ));
+                new DeleteGroupsResponseData.DeletableGroupResultCollection(Arrays.asList(
+                        new DeleteGroupsResponseData.DeletableGroupResult()
+                                .setGroupId(groupId1)
+                                .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code()),
+                        new DeleteGroupsResponseData.DeletableGroupResult()
+                                .setGroupId(groupId2)
+                                .setErrorCode(Errors.COORDINATOR_LOAD_IN_PROGRESS.code())
+                ));
 
         assertEquals(expectedResultCollection, getErrorResultCollection(data.groupsNames(), Errors.COORDINATOR_LOAD_IN_PROGRESS));
     }

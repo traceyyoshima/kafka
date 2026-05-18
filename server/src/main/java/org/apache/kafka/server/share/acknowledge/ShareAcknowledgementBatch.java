@@ -29,16 +29,16 @@ import java.util.List;
  * type defined in {@link org.apache.kafka.clients.consumer.AcknowledgeType}.
  */
 public record ShareAcknowledgementBatch(
-    long firstOffset,
-    long lastOffset,
-    List<Byte> acknowledgeTypes
+        long firstOffset,
+        long lastOffset,
+        List<Byte> acknowledgeTypes
 ) {
     @Override
     public String toString() {
         return "ShareAcknowledgementBatch(" +
-            "firstOffset=" + firstOffset +
-            ", lastOffset=" + lastOffset +
-            ", acknowledgeTypes=" + ((acknowledgeTypes == null) ? "" : acknowledgeTypes) +
-            ")";
+                "firstOffset=" + firstOffset +
+                ", lastOffset=" + lastOffset +
+                ", acknowledgeTypes=" + ((acknowledgeTypes == null) ? "" : acknowledgeTypes) +
+                ")";
     }
 }

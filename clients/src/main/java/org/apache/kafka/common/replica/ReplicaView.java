@@ -48,8 +48,8 @@ public interface ReplicaView {
      */
     static Comparator<ReplicaView> comparator() {
         return Comparator.comparingLong(ReplicaView::logEndOffset)
-            .thenComparing(Comparator.comparingLong(ReplicaView::timeSinceLastCaughtUpMs).reversed())
-            .thenComparing(replicaInfo -> replicaInfo.endpoint().id());
+                .thenComparing(Comparator.comparingLong(ReplicaView::timeSinceLastCaughtUpMs).reversed())
+                .thenComparing(replicaInfo -> replicaInfo.endpoint().id());
     }
 
     class DefaultReplicaView implements ReplicaView {

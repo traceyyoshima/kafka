@@ -49,14 +49,14 @@ public class RaftVoterEndpoint {
     /**
      * Create an endpoint for a metadata quorum voter.
      *
-     * @param listener          The human-readable name for this endpoint. For example, CONTROLLER.
-     * @param host              The DNS hostname for this endpoint.
-     * @param port              The network port for this endpoint.
+     * @param listener The human-readable name for this endpoint. For example, CONTROLLER.
+     * @param host     The DNS hostname for this endpoint.
+     * @param port     The network port for this endpoint.
      */
     public RaftVoterEndpoint(
-        String listener,
-        String host,
-        int port
+            String listener,
+            String host,
+            int port
     ) {
         this.listener = requireNonNullAllCapsNonEmpty(listener);
         this.host = Objects.requireNonNull(host);
@@ -91,8 +91,8 @@ public class RaftVoterEndpoint {
         if (o == null || (!o.getClass().equals(getClass()))) return false;
         RaftVoterEndpoint other = (RaftVoterEndpoint) o;
         return listener.equals(other.listener) &&
-            host.equals(other.host) &&
-            port == other.port;
+                host.equals(other.host) &&
+                port == other.port;
     }
 
     @Override

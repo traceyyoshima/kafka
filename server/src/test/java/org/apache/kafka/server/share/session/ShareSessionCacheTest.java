@@ -300,7 +300,7 @@ public class ShareSessionCacheTest {
     }
 
     private void assertShareCacheContains(ShareSessionCache cache,
-                                         List<ShareSessionKey> sessionKeys) {
+                                          List<ShareSessionKey> sessionKeys) {
         int i = 0;
         assertEquals(sessionKeys.size(), cache.size());
         for (ShareSessionKey sessionKey : sessionKeys) {
@@ -310,15 +310,15 @@ public class ShareSessionCacheTest {
     }
 
     private void assertMetricsValues(
-        int shareSessionsCount,
-        int sharePartitionsCount,
-        int evictionsCount,
-        ShareSessionCache cache
+            int shareSessionsCount,
+            int sharePartitionsCount,
+            int evictionsCount,
+            ShareSessionCache cache
     ) throws InterruptedException {
         TestUtils.waitForCondition(() -> yammerMetricValue(ShareSessionCache.SHARE_SESSIONS_COUNT).intValue() == shareSessionsCount,
-            "Share session count should be " + shareSessionsCount);
+                "Share session count should be " + shareSessionsCount);
         TestUtils.waitForCondition(() -> yammerMetricValue(ShareSessionCache.SHARE_PARTITIONS_COUNT).intValue() == sharePartitionsCount,
-            "Share partition count should be " + sharePartitionsCount);
+                "Share partition count should be " + sharePartitionsCount);
         assertEquals(evictionsCount, cache.evictionsMeter().count());
     }
 }

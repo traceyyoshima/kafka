@@ -111,7 +111,7 @@ public class SaslClientAuthenticator implements Authenticator {
 
     /**
      * the reserved range of correlation id for Sasl requests.
-     *
+     * <p>
      * Noted: there is a story about reserved range. The response of LIST_OFFSET is compatible to response of SASL_HANDSHAKE.
      * Hence, we could miss the schema error when using schema of SASL_HANDSHAKE to parse response of LIST_OFFSET.
      * For example: the IllegalStateException caused by mismatched correlation id is thrown if following steps happens.
@@ -217,7 +217,7 @@ public class SaslClientAuthenticator implements Authenticator {
             return SecurityManagerCompatibility.get().callAs(subject, () -> {
                 String[] mechs = {mechanism};
                 log.debug("Creating SaslClient: client={};service={};serviceHostname={};mechs={}",
-                    clientPrincipalName, servicePrincipal, host, Arrays.toString(mechs));
+                        clientPrincipalName, servicePrincipal, host, Arrays.toString(mechs));
                 SaslClient retvalSaslClient = Sasl.createSaslClient(mechs, clientPrincipalName, servicePrincipal, host, configs, callbackHandler);
                 if (retvalSaslClient == null) {
                     throw new SaslAuthenticationException("Failed to create SaslClient with mechanism " + mechanism);
@@ -232,7 +232,7 @@ public class SaslClientAuthenticator implements Authenticator {
     /**
      * Sends an empty message to the server to initiate the authentication process. It then evaluates server challenges
      * via `SaslClient.evaluateChallenge` and returns client responses until authentication succeeds or fails.
-     *
+     * <p>
      * The messages are sent and received as size delimited bytes that consists of a 4 byte network-ordered size N
      * followed by N bytes representing the opaque payload.
      */
@@ -374,12 +374,12 @@ public class SaslClientAuthenticator implements Authenticator {
         String clientId = (String) configs.get(CommonClientConfigs.CLIENT_ID_CONFIG);
         short requestApiKey = apiKey.id;
         currentRequestHeader = new RequestHeader(
-            new RequestHeaderData().
-                setRequestApiKey(requestApiKey).
-                setRequestApiVersion(version).
-                setClientId(clientId).
-                setCorrelationId(nextCorrelationId()),
-            apiKey.requestHeaderVersion(version));
+                new RequestHeaderData().
+                        setRequestApiKey(requestApiKey).
+                        setRequestApiVersion(version).
+                        setClientId(clientId).
+                        setCorrelationId(nextCorrelationId()),
+                apiKey.requestHeaderVersion(version));
         return currentRequestHeader;
     }
 
@@ -427,6 +427,7 @@ public class SaslClientAuthenticator implements Authenticator {
     /**
      * Sends a SASL client token to server if required. This may be an initial token to start
      * SASL token exchange or response to a challenge from the server.
+     *
      * @return true if a token was sent to the server
      */
     private boolean sendSaslClientToken(byte[] serverToken, boolean isInitial) throws IOException {
@@ -539,10 +540,10 @@ public class SaslClientAuthenticator implements Authenticator {
             // Try to provide hints to use about what went wrong so they can fix their configuration.
             if (kerberosError == KerberosError.SERVER_NOT_FOUND) {
                 error += " This may be caused by Java's being unable to resolve the Kafka Broker's" +
-                    " hostname correctly. You may want to try to adding" +
-                    " '-Dsun.net.spi.nameservice.provider.1=dns,sun' to your client's JVMFLAGS environment." +
-                    " Users must configure FQDN of kafka brokers when authenticating using SASL and" +
-                    " `socketChannel.socket().getInetAddress().getHostName()` must match the hostname in `principal/hostname@realm`";
+                        " hostname correctly. You may want to try to adding" +
+                        " '-Dsun.net.spi.nameservice.provider.1=dns,sun' to your client's JVMFLAGS environment." +
+                        " Users must configure FQDN of kafka brokers when authenticating using SASL and" +
+                        " `socketChannel.socket().getInetAddress().getHostName()` must match the hostname in `principal/hostname@realm`";
             }
             //Unwrap the SaslException
             Throwable cause = e.getCause();
@@ -607,21 +608,22 @@ public class SaslClientAuthenticator implements Authenticator {
                 break;
             case UNSUPPORTED_SASL_MECHANISM:
                 throw new UnsupportedSaslMechanismException(String.format("Client SASL mechanism '%s' not enabled in the server, enabled mechanisms are %s",
-                    mechanism, response.enabledMechanisms()));
+                        mechanism, response.enabledMechanisms()));
             case ILLEGAL_SASL_STATE:
                 throw new IllegalSaslStateException(String.format("Unexpected handshake request with client mechanism %s, enabled mechanisms are %s",
-                    mechanism, response.enabledMechanisms()));
+                        mechanism, response.enabledMechanisms()));
             default:
                 throw new IllegalSaslStateException(String.format("Unknown error code %s, client mechanism is %s, enabled mechanisms are %s",
-                    response.error(), mechanism, response.enabledMechanisms()));
+                        response.error(), mechanism, response.enabledMechanisms()));
         }
     }
 
     /**
      * Returns the first Principal from Subject.
+     *
      * @throws KafkaException if there are no Principals in the Subject.
-     *     During Kerberos re-login, principal is reset on Subject. An exception is
-     *     thrown so that the connection is retried after any configured backoff.
+     *                        During Kerberos re-login, principal is reset on Subject. An exception is
+     *                        thrown so that the connection is retried after any configured backoff.
      */
     public static String firstPrincipal(Subject subject) {
         Set<Principal> principals = subject.getPrincipals();
@@ -669,10 +671,10 @@ public class SaslClientAuthenticator implements Authenticator {
          * re-authentication; the request was made when the channel was successfully
          * authenticated, and the response arrived during the re-authentication
          * process.
-         * 
+         *
          * @return the (always non-null but possibly empty) NetworkReceive response
-         *         that arrived during re-authentication that is unrelated to
-         *         re-authentication, if any
+         * that arrived during re-authentication that is unrelated to
+         * re-authentication, if any
          */
         public Optional<NetworkReceive> pollResponseReceivedDuringReauthentication() {
             if (pendingAuthenticatedReceives.isEmpty())

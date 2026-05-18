@@ -143,41 +143,41 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return leader node
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, PARTITION, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
 
         // Prepare response for ListOffsets request
         client.prepareResponseFrom(body -> {
             if (body instanceof ListOffsetsRequest request) {
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().get(0).partitionIndex() == PARTITION;
+                        requestTopic.partitions().get(0).partitionIndex() == PARTITION;
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(TOPIC)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(PARTITION)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset)
-                                .setTimestamp(System.currentTimeMillis())
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(TOPIC)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(PARTITION)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset)
+                                                        .setTimestamp(System.currentTimeMillis())
+                                        ))
                         ))
-                ))
         ), LEADER_NODE);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(() -> client)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(() -> client)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp);
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertEquals(1, futures.size());
@@ -197,17 +197,17 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return leader node
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, PARTITION, LISTENER_NAME))
-            .thenReturn(Optional.empty());
+                .thenReturn(Optional.empty());
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .build();
+                .withMetadataCache(metadataCache)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp);
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertEquals(1, futures.size());
@@ -226,17 +226,17 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return leader node
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, PARTITION, LISTENER_NAME))
-            .thenReturn(Optional.of(Node.noNode()));
+                .thenReturn(Optional.of(Node.noNode()));
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .build();
+                .withMetadataCache(metadataCache)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp);
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertEquals(1, futures.size());
@@ -256,7 +256,7 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return leader node
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, PARTITION, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
 
         // Prepare null response
         client.prepareResponseFrom(body -> {
@@ -264,21 +264,21 @@ class NetworkPartitionMetadataClientTest {
                 ListOffsetsRequest request = (ListOffsetsRequest) body;
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().get(0).partitionIndex() == PARTITION;
+                        requestTopic.partitions().get(0).partitionIndex() == PARTITION;
             }
             return false;
         }, null, LEADER_NODE);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(() -> client)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(() -> client)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp);
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertEquals(1, futures.size());
@@ -295,15 +295,15 @@ class NetworkPartitionMetadataClientTest {
         TopicPartition tp = new TopicPartition(TOPIC, PARTITION);
         CompletableFuture<PartitionMetadataClient.OffsetResponse> partitionFuture = new CompletableFuture<>();
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures = Map.of(
-            tp,
-            partitionFuture);
+                tp,
+                partitionFuture);
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder().build();
         Node node = mock(Node.class);
         ListOffsetsRequest.Builder builder = mock(ListOffsetsRequest.Builder.class);
         NetworkPartitionMetadataClient.PendingRequest pendingRequest = new NetworkPartitionMetadataClient.PendingRequest(
-            node,
-            futures,
-            builder);
+                node,
+                futures,
+                builder);
         // Pass null as clientResponse.
         networkPartitionMetadataClient.handleResponse(pendingRequest, null);
         assertTrue(partitionFuture.isDone() && !partitionFuture.isCompletedExceptionally());
@@ -317,8 +317,8 @@ class NetworkPartitionMetadataClientTest {
         TopicPartition tp = new TopicPartition(TOPIC, PARTITION);
         CompletableFuture<PartitionMetadataClient.OffsetResponse> partitionFuture = new CompletableFuture<>();
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures = Map.of(
-            tp,
-            partitionFuture);
+                tp,
+                partitionFuture);
         AuthenticationException authenticationException = new AuthenticationException("Test authentication exception");
         ClientResponse clientResponse = mock(ClientResponse.class);
         // Mock authentication exception in client response.
@@ -327,9 +327,9 @@ class NetworkPartitionMetadataClientTest {
         Node node = mock(Node.class);
         ListOffsetsRequest.Builder builder = mock(ListOffsetsRequest.Builder.class);
         NetworkPartitionMetadataClient.PendingRequest pendingRequest = new NetworkPartitionMetadataClient.PendingRequest(
-            node,
-            futures,
-            builder);
+                node,
+                futures,
+                builder);
         networkPartitionMetadataClient.handleResponse(pendingRequest, clientResponse);
         assertTrue(partitionFuture.isDone() && !partitionFuture.isCompletedExceptionally());
         PartitionMetadataClient.OffsetResponse response = partitionFuture.get();
@@ -342,8 +342,8 @@ class NetworkPartitionMetadataClientTest {
         TopicPartition tp = new TopicPartition(TOPIC, PARTITION);
         CompletableFuture<PartitionMetadataClient.OffsetResponse> partitionFuture = new CompletableFuture<>();
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures = Map.of(
-            tp,
-            partitionFuture);
+                tp,
+                partitionFuture);
         UnsupportedVersionException unsupportedVersionException = new UnsupportedVersionException("Test unsupportedVersionException exception");
         ClientResponse clientResponse = mock(ClientResponse.class);
         when(clientResponse.authenticationException()).thenReturn(null);
@@ -353,9 +353,9 @@ class NetworkPartitionMetadataClientTest {
         Node node = mock(Node.class);
         ListOffsetsRequest.Builder builder = mock(ListOffsetsRequest.Builder.class);
         NetworkPartitionMetadataClient.PendingRequest pendingRequest = new NetworkPartitionMetadataClient.PendingRequest(
-            node,
-            futures,
-            builder);
+                node,
+                futures,
+                builder);
         networkPartitionMetadataClient.handleResponse(pendingRequest, clientResponse);
         assertTrue(partitionFuture.isDone() && !partitionFuture.isCompletedExceptionally());
         PartitionMetadataClient.OffsetResponse response = partitionFuture.get();
@@ -375,9 +375,9 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return same leader for both partitions
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, 0, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, 1, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
 
         // Prepare response for ListOffsets request with both partitions
         client.prepareResponseFrom(body -> {
@@ -385,40 +385,40 @@ class NetworkPartitionMetadataClientTest {
                 ListOffsetsRequest request = (ListOffsetsRequest) body;
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().size() == 2;
+                        requestTopic.partitions().size() == 2;
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(TOPIC)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(0)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset1)
-                                .setTimestamp(System.currentTimeMillis()),
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(1)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset2)
-                                .setTimestamp(System.currentTimeMillis())
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(TOPIC)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(0)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset1)
+                                                        .setTimestamp(System.currentTimeMillis()),
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(1)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset2)
+                                                        .setTimestamp(System.currentTimeMillis())
+                                        ))
                         ))
-                ))
         ), LEADER_NODE);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(() -> client)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(() -> client)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp1);
         partitions.add(tp2);
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertEquals(2, futures.size());
@@ -452,9 +452,9 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return different leaders
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, 0, LISTENER_NAME))
-            .thenReturn(Optional.of(leaderNode1));
+                .thenReturn(Optional.of(leaderNode1));
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, 1, LISTENER_NAME))
-            .thenReturn(Optional.of(leaderNode2));
+                .thenReturn(Optional.of(leaderNode2));
 
         // Prepare response for first leader
         client.prepareResponseFrom(body -> {
@@ -462,23 +462,23 @@ class NetworkPartitionMetadataClientTest {
                 ListOffsetsRequest request = (ListOffsetsRequest) body;
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().size() == 1 &&
-                    requestTopic.partitions().get(0).partitionIndex() == 0;
+                        requestTopic.partitions().size() == 1 &&
+                        requestTopic.partitions().get(0).partitionIndex() == 0;
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(TOPIC)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(0)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset1)
-                                .setTimestamp(System.currentTimeMillis())
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(TOPIC)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(0)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset1)
+                                                        .setTimestamp(System.currentTimeMillis())
+                                        ))
                         ))
-                ))
         ), leaderNode1);
 
         // Prepare response for second leader
@@ -487,36 +487,36 @@ class NetworkPartitionMetadataClientTest {
                 ListOffsetsRequest request = (ListOffsetsRequest) body;
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().size() == 1 &&
-                    requestTopic.partitions().get(0).partitionIndex() == 1;
+                        requestTopic.partitions().size() == 1 &&
+                        requestTopic.partitions().get(0).partitionIndex() == 1;
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(TOPIC)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(1)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset2)
-                                .setTimestamp(System.currentTimeMillis())
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(TOPIC)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(1)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset2)
+                                                        .setTimestamp(System.currentTimeMillis())
+                                        ))
                         ))
-                ))
         ), leaderNode2);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(() -> client)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(() -> client)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp1);
         partitions.add(tp2);
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertEquals(2, futures.size());
@@ -550,9 +550,9 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return same leader for both topics
         when(metadataCache.getPartitionLeaderEndpoint(topic1, 0, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
         when(metadataCache.getPartitionLeaderEndpoint(topic2, 0, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
 
         // Prepare response for ListOffsets request with both topics
         client.prepareResponseFrom(body -> {
@@ -562,40 +562,40 @@ class NetworkPartitionMetadataClientTest {
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(topic1)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(0)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset1)
-                                .setTimestamp(System.currentTimeMillis())
-                        )),
-                    new ListOffsetsTopicResponse()
-                        .setName(topic2)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(0)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset2)
-                                .setTimestamp(System.currentTimeMillis())
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(topic1)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(0)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset1)
+                                                        .setTimestamp(System.currentTimeMillis())
+                                        )),
+                                new ListOffsetsTopicResponse()
+                                        .setName(topic2)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(0)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset2)
+                                                        .setTimestamp(System.currentTimeMillis())
+                                        ))
                         ))
-                ))
         ), LEADER_NODE);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(() -> client)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(() -> client)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp1);
         partitions.add(tp2);
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertEquals(2, futures.size());
@@ -620,7 +620,7 @@ class NetworkPartitionMetadataClientTest {
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder().build();
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(null);
+                networkPartitionMetadataClient.listLatestOffsets(null);
 
         assertNotNull(futures);
         assertTrue(futures.isEmpty());
@@ -633,7 +633,7 @@ class NetworkPartitionMetadataClientTest {
         Set<TopicPartition> partitions = new HashSet<>();
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertTrue(futures.isEmpty());
@@ -647,7 +647,7 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return leader node
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, PARTITION, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
 
         // Prepare error response
         client.prepareResponseFrom(body -> {
@@ -655,32 +655,32 @@ class NetworkPartitionMetadataClientTest {
                 ListOffsetsRequest request = (ListOffsetsRequest) body;
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().get(0).partitionIndex() == PARTITION;
+                        requestTopic.partitions().get(0).partitionIndex() == PARTITION;
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(TOPIC)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(PARTITION)
-                                .setErrorCode(Errors.UNKNOWN_TOPIC_OR_PARTITION.code())
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(TOPIC)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(PARTITION)
+                                                        .setErrorCode(Errors.UNKNOWN_TOPIC_OR_PARTITION.code())
+                                        ))
                         ))
-                ))
         ), LEADER_NODE);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(() -> client)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(() -> client)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp);
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertEquals(1, futures.size());
@@ -700,7 +700,7 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return leader node
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, PARTITION, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
 
         // Prepare response without the requested partition
         client.prepareResponseFrom(body -> {
@@ -708,28 +708,28 @@ class NetworkPartitionMetadataClientTest {
                 ListOffsetsRequest request = (ListOffsetsRequest) body;
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().get(0).partitionIndex() == PARTITION;
+                        requestTopic.partitions().get(0).partitionIndex() == PARTITION;
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(TOPIC)
-                        .setPartitions(List.of())
-                ))
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(TOPIC)
+                                        .setPartitions(List.of())
+                        ))
         ), LEADER_NODE);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(() -> client)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(() -> client)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp);
 
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures =
-            networkPartitionMetadataClient.listLatestOffsets(partitions);
+                networkPartitionMetadataClient.listLatestOffsets(partitions);
 
         assertNotNull(futures);
         assertEquals(1, futures.size());
@@ -745,8 +745,8 @@ class NetworkPartitionMetadataClientTest {
     public void testClose() {
         KafkaClient client = mock(KafkaClient.class);
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withKafkaClientSupplier(() -> client)
-            .build();
+                .withKafkaClientSupplier(() -> client)
+                .build();
         try {
             verify(client, times(0)).close();
             // Ensure send thread is initialized.
@@ -775,35 +775,35 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return leader node
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, PARTITION, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
 
         // Prepare response for ListOffsets request
         client.prepareResponseFrom(body -> {
             if (body instanceof ListOffsetsRequest request) {
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().get(0).partitionIndex() == PARTITION;
+                        requestTopic.partitions().get(0).partitionIndex() == PARTITION;
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(TOPIC)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(PARTITION)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset)
-                                .setTimestamp(System.currentTimeMillis())
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(TOPIC)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(PARTITION)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset)
+                                                        .setTimestamp(System.currentTimeMillis())
+                                        ))
                         ))
-                ))
         ), LEADER_NODE);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(kafkaClientSupplier)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(kafkaClientSupplier)
+                .build();
 
         // Verify supplier was not called before listLatestOffsets
         assertFalse(supplierCalled[0]);
@@ -827,8 +827,8 @@ class NetworkPartitionMetadataClientTest {
         };
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withKafkaClientSupplier(clientSupplier)
-            .build();
+                .withKafkaClientSupplier(clientSupplier)
+                .build();
 
         // Close without calling listLatestOffsets
         networkPartitionMetadataClient.close();
@@ -849,9 +849,9 @@ class NetworkPartitionMetadataClientTest {
         };
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(clientSupplier)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(clientSupplier)
+                .build();
 
         // Call listLatestOffsets with empty partitions
         networkPartitionMetadataClient.listLatestOffsets(new HashSet<>());
@@ -870,9 +870,9 @@ class NetworkPartitionMetadataClientTest {
         };
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(clientSupplier)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(clientSupplier)
+                .build();
 
         // Call listLatestOffsets with null partitions
         networkPartitionMetadataClient.listLatestOffsets(null);
@@ -897,57 +897,57 @@ class NetworkPartitionMetadataClientTest {
 
         // Mock metadata cache to return leader node
         when(metadataCache.getPartitionLeaderEndpoint(TOPIC, PARTITION, LISTENER_NAME))
-            .thenReturn(Optional.of(LEADER_NODE));
+                .thenReturn(Optional.of(LEADER_NODE));
 
         // Prepare multiple responses for multiple calls
         client.prepareResponseFrom(body -> {
             if (body instanceof ListOffsetsRequest request) {
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().get(0).partitionIndex() == PARTITION;
+                        requestTopic.partitions().get(0).partitionIndex() == PARTITION;
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(TOPIC)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(PARTITION)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset)
-                                .setTimestamp(System.currentTimeMillis())
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(TOPIC)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(PARTITION)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset)
+                                                        .setTimestamp(System.currentTimeMillis())
+                                        ))
                         ))
-                ))
         ), LEADER_NODE);
 
         client.prepareResponseFrom(body -> {
             if (body instanceof ListOffsetsRequest request) {
                 ListOffsetsTopic requestTopic = request.data().topics().get(0);
                 return requestTopic.name().equals(TOPIC) &&
-                    requestTopic.partitions().get(0).partitionIndex() == PARTITION;
+                        requestTopic.partitions().get(0).partitionIndex() == PARTITION;
             }
             return false;
         }, new ListOffsetsResponse(
-            new org.apache.kafka.common.message.ListOffsetsResponseData()
-                .setTopics(List.of(
-                    new ListOffsetsTopicResponse()
-                        .setName(TOPIC)
-                        .setPartitions(List.of(
-                            new ListOffsetsPartitionResponse()
-                                .setPartitionIndex(PARTITION)
-                                .setErrorCode(Errors.NONE.code())
-                                .setOffset(expectedOffset + 1)
-                                .setTimestamp(System.currentTimeMillis())
+                new org.apache.kafka.common.message.ListOffsetsResponseData()
+                        .setTopics(List.of(
+                                new ListOffsetsTopicResponse()
+                                        .setName(TOPIC)
+                                        .setPartitions(List.of(
+                                                new ListOffsetsPartitionResponse()
+                                                        .setPartitionIndex(PARTITION)
+                                                        .setErrorCode(Errors.NONE.code())
+                                                        .setOffset(expectedOffset + 1)
+                                                        .setTimestamp(System.currentTimeMillis())
+                                        ))
                         ))
-                ))
         ), LEADER_NODE);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withMetadataCache(metadataCache)
-            .withKafkaClientSupplier(clientSupplier)
-            .build();
+                .withMetadataCache(metadataCache)
+                .withKafkaClientSupplier(clientSupplier)
+                .build();
 
         Set<TopicPartition> partitions = new HashSet<>();
         partitions.add(tp);
@@ -970,8 +970,8 @@ class NetworkPartitionMetadataClientTest {
         TopicPartition tp = new TopicPartition(TOPIC, PARTITION);
         CompletableFuture<PartitionMetadataClient.OffsetResponse> partitionFuture = new CompletableFuture<>();
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures = Map.of(
-            tp,
-            partitionFuture);
+                tp,
+                partitionFuture);
         MockTimer timer = new MockTimer(MOCK_TIME);
         ClientResponse clientResponse = mock(ClientResponse.class);
         when(clientResponse.authenticationException()).thenReturn(null);
@@ -979,22 +979,22 @@ class NetworkPartitionMetadataClientTest {
         when(clientResponse.wasDisconnected()).thenReturn(true);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withTimer(timer)
-            .build();
+                .withTimer(timer)
+                .build();
 
         ExponentialBackoffManager exponentialBackoffManager = new ExponentialBackoffManager(
-            MAX_RETRY_ATTEMPTS,
-            REQUEST_BACKOFF_MS,
-            RETRY_BACKOFF_EXP_BASE,
-            REQUEST_BACKOFF_MAX_MS,
-            RETRY_BACKOFF_JITTER);
+                MAX_RETRY_ATTEMPTS,
+                REQUEST_BACKOFF_MS,
+                RETRY_BACKOFF_EXP_BASE,
+                REQUEST_BACKOFF_MAX_MS,
+                RETRY_BACKOFF_JITTER);
         Node node = mock(Node.class);
         ListOffsetsRequest.Builder builder = mock(ListOffsetsRequest.Builder.class);
         NetworkPartitionMetadataClient.PendingRequest pendingRequest = new NetworkPartitionMetadataClient.PendingRequest(
-            node,
-            futures,
-            builder,
-            exponentialBackoffManager);
+                node,
+                futures,
+                builder,
+                exponentialBackoffManager);
 
         // Initially, timer should be empty
         assertEquals(0, timer.size());
@@ -1015,8 +1015,8 @@ class NetworkPartitionMetadataClientTest {
         TopicPartition tp = new TopicPartition(TOPIC, PARTITION);
         CompletableFuture<PartitionMetadataClient.OffsetResponse> partitionFuture = new CompletableFuture<>();
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures = Map.of(
-            tp,
-            partitionFuture);
+                tp,
+                partitionFuture);
         MockTimer timer = new MockTimer(MOCK_TIME);
         ClientResponse clientResponse = mock(ClientResponse.class);
         when(clientResponse.authenticationException()).thenReturn(null);
@@ -1025,22 +1025,22 @@ class NetworkPartitionMetadataClientTest {
         when(clientResponse.wasTimedOut()).thenReturn(true);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withTimer(timer)
-            .build();
+                .withTimer(timer)
+                .build();
 
         ExponentialBackoffManager exponentialBackoffManager = new ExponentialBackoffManager(
-            MAX_RETRY_ATTEMPTS,
-            REQUEST_BACKOFF_MS,
-            RETRY_BACKOFF_EXP_BASE,
-            REQUEST_BACKOFF_MAX_MS,
-            RETRY_BACKOFF_JITTER);
+                MAX_RETRY_ATTEMPTS,
+                REQUEST_BACKOFF_MS,
+                RETRY_BACKOFF_EXP_BASE,
+                REQUEST_BACKOFF_MAX_MS,
+                RETRY_BACKOFF_JITTER);
         Node node = mock(Node.class);
         ListOffsetsRequest.Builder builder = mock(ListOffsetsRequest.Builder.class);
         NetworkPartitionMetadataClient.PendingRequest pendingRequest = new NetworkPartitionMetadataClient.PendingRequest(
-            node,
-            futures,
-            builder,
-            exponentialBackoffManager);
+                node,
+                futures,
+                builder,
+                exponentialBackoffManager);
 
         // Initially, timer should be empty
         assertEquals(0, timer.size());
@@ -1061,8 +1061,8 @@ class NetworkPartitionMetadataClientTest {
         TopicPartition tp = new TopicPartition(TOPIC, PARTITION);
         CompletableFuture<PartitionMetadataClient.OffsetResponse> partitionFuture = new CompletableFuture<>();
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures = Map.of(
-            tp,
-            partitionFuture);
+                tp,
+                partitionFuture);
         MockTimer timer = new MockTimer(MOCK_TIME);
         ClientResponse clientResponse = mock(ClientResponse.class);
         when(clientResponse.authenticationException()).thenReturn(null);
@@ -1070,23 +1070,23 @@ class NetworkPartitionMetadataClientTest {
         when(clientResponse.wasDisconnected()).thenReturn(true);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withTimer(timer)
-            .build();
+                .withTimer(timer)
+                .build();
 
         ExponentialBackoffManager exponentialBackoffManager = new ExponentialBackoffManager(
-            MAX_RETRY_ATTEMPTS,
-            REQUEST_BACKOFF_MS,
-            RETRY_BACKOFF_EXP_BASE,
-            REQUEST_BACKOFF_MAX_MS,
-            RETRY_BACKOFF_JITTER);
+                MAX_RETRY_ATTEMPTS,
+                REQUEST_BACKOFF_MS,
+                RETRY_BACKOFF_EXP_BASE,
+                REQUEST_BACKOFF_MAX_MS,
+                RETRY_BACKOFF_JITTER);
         Node node = mock(Node.class);
         ListOffsetsRequest.Builder builder = mock(ListOffsetsRequest.Builder.class);
 
         NetworkPartitionMetadataClient.PendingRequest pendingRequest = new NetworkPartitionMetadataClient.PendingRequest(
-            node,
-            futures,
-            builder,
-            exponentialBackoffManager);
+                node,
+                futures,
+                builder,
+                exponentialBackoffManager);
 
         // Initially, timer should be empty
         assertEquals(0, timer.size());
@@ -1116,8 +1116,8 @@ class NetworkPartitionMetadataClientTest {
         TopicPartition tp = new TopicPartition(TOPIC, PARTITION);
         CompletableFuture<PartitionMetadataClient.OffsetResponse> partitionFuture = new CompletableFuture<>();
         Map<TopicPartition, CompletableFuture<PartitionMetadataClient.OffsetResponse>> futures = Map.of(
-            tp,
-            partitionFuture);
+                tp,
+                partitionFuture);
         MockTimer timer = new MockTimer(MOCK_TIME);
         ClientResponse clientResponse = mock(ClientResponse.class);
         when(clientResponse.authenticationException()).thenReturn(null);
@@ -1126,23 +1126,23 @@ class NetworkPartitionMetadataClientTest {
         when(clientResponse.wasTimedOut()).thenReturn(true);
 
         networkPartitionMetadataClient = NetworkPartitionMetadataClientBuilder.builder()
-            .withTimer(timer)
-            .build();
+                .withTimer(timer)
+                .build();
 
         ExponentialBackoffManager exponentialBackoffManager = new ExponentialBackoffManager(
-            MAX_RETRY_ATTEMPTS,
-            REQUEST_BACKOFF_MS,
-            RETRY_BACKOFF_EXP_BASE,
-            REQUEST_BACKOFF_MAX_MS,
-            RETRY_BACKOFF_JITTER);
+                MAX_RETRY_ATTEMPTS,
+                REQUEST_BACKOFF_MS,
+                RETRY_BACKOFF_EXP_BASE,
+                REQUEST_BACKOFF_MAX_MS,
+                RETRY_BACKOFF_JITTER);
         Node node = mock(Node.class);
         ListOffsetsRequest.Builder builder = mock(ListOffsetsRequest.Builder.class);
 
         NetworkPartitionMetadataClient.PendingRequest pendingRequest = new NetworkPartitionMetadataClient.PendingRequest(
-            node,
-            futures,
-            builder,
-            exponentialBackoffManager);
+                node,
+                futures,
+                builder,
+                exponentialBackoffManager);
 
         // Initially, timer should be empty
         assertEquals(0, timer.size());

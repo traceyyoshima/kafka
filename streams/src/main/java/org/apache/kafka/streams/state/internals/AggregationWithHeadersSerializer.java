@@ -31,15 +31,15 @@ import static org.apache.kafka.streams.kstream.internals.WrappingNullableUtils.i
 
 /**
  * Serializer for AggregationWithHeaders.
- <p>
+ * <p>
  * Serialization format (per KIP-1271):
  * [headersSize(varint)][headersBytes][aggregation]
  * <p>
  * Where:
  * - headersSize: Size of the headersBytes section in bytes, encoded as varint
  * - headersBytes:
- *   - For null/empty headers: headersSize = 0, headersBytes is omitted (0 bytes)
- *   - For non-empty headers: headersSize > 0, serialized headers ([count(varint)][header1][header2]...) from HeadersSerializer
+ * - For null/empty headers: headersSize = 0, headersBytes is omitted (0 bytes)
+ * - For non-empty headers: headersSize > 0, serialized headers ([count(varint)][header1][header2]...) from HeadersSerializer
  * - aggregation: Serialized aggregation using the provided aggregation serializer
  * <p>
  * This is used by KIP-1271 to serialize aggregations with headers for session state stores.
@@ -91,8 +91,8 @@ class AggregationWithHeadersSerializer<AGG> implements WrappingNullableSerialize
 
         // empty (byte[0]) for null/empty headers, or [count][header1][header2]... for non-empty
         return HeadersSerializer.serialize(preSerializedHeaders, buffer)
-            .put(rawAggregation)
-            .array();
+                .put(rawAggregation)
+                .array();
     }
 
     @Override

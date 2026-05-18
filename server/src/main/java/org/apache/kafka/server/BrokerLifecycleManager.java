@@ -220,7 +220,8 @@ public class BrokerLifecycleManager {
             Time time,
             String threadNamePrefix,
             Map<String, Uuid> logDirs) {
-        this(config, time, threadNamePrefix, logDirs, () -> { }, () -> false);
+        this(config, time, threadNamePrefix, logDirs, () -> {
+        }, () -> false);
     }
 
     public BrokerLifecycleManager(
@@ -258,11 +259,11 @@ public class BrokerLifecycleManager {
      * @param previousBrokerEpoch           The broker epoch before the reboot.
      */
     public void start(Supplier<Long> highestMetadataOffsetProvider,
-               NodeToControllerChannelManager channelManager,
-               String clusterId,
-               ListenerCollection advertisedListeners,
-               Map<String, VersionRange> supportedFeatures,
-               OptionalLong previousBrokerEpoch) {
+                      NodeToControllerChannelManager channelManager,
+                      String clusterId,
+                      ListenerCollection advertisedListeners,
+                      Map<String, VersionRange> supportedFeatures,
+                      OptionalLong previousBrokerEpoch) {
         this.previousBrokerEpoch = previousBrokerEpoch;
         eventQueue.append(new StartupEvent(highestMetadataOffsetProvider,
                 channelManager, clusterId, advertisedListeners, supportedFeatures));
@@ -288,6 +289,7 @@ public class BrokerLifecycleManager {
 
     /**
      * Propagate directory cordoned to the controller.
+     *
      * @param directories The IDs for the directories that is cordoned.
      */
     public void propagateDirectoryCordoned(Set<Uuid> directories) {
@@ -337,7 +339,7 @@ public class BrokerLifecycleManager {
         public void run() {
             switch (state) {
                 case PENDING_CONTROLLED_SHUTDOWN ->
-                    logger.info("Attempted to enter pending controlled shutdown state, but we are already in that state.");
+                        logger.info("Attempted to enter pending controlled shutdown state, but we are already in that state.");
                 case RUNNING -> {
                     logger.info("Beginning controlled shutdown.");
                     state = BrokerState.PENDING_CONTROLLED_SHUTDOWN;
@@ -483,15 +485,15 @@ public class BrokerLifecycleManager {
         List<Uuid> sortedLogDirs = new ArrayList<>(logDirs.values());
         sortedLogDirs.sort(Uuid::compareTo);
         BrokerRegistrationRequestData data = new BrokerRegistrationRequestData()
-            .setBrokerId(nodeId)
-            .setIsMigratingZkBroker(false)
-            .setClusterId(clusterId)
-            .setFeatures(features)
-            .setIncarnationId(incarnationId)
-            .setListeners(advertisedListeners)
-            .setRack(rack.orElse(null))
-            .setPreviousBrokerEpoch(previousBrokerEpoch.orElse(-1L))
-            .setLogDirs(sortedLogDirs);
+                .setBrokerId(nodeId)
+                .setIsMigratingZkBroker(false)
+                .setClusterId(clusterId)
+                .setFeatures(features)
+                .setIncarnationId(incarnationId)
+                .setListeners(advertisedListeners)
+                .setRack(rack.orElse(null))
+                .setPreviousBrokerEpoch(previousBrokerEpoch.orElse(-1L))
+                .setLogDirs(sortedLogDirs);
         if (logger.isDebugEnabled()) {
             logger.debug("Sending broker registration {}", data);
         }
@@ -564,12 +566,12 @@ public class BrokerLifecycleManager {
     private void sendBrokerHeartbeat() {
         Long metadataOffset = highestMetadataOffsetProvider.get();
         BrokerHeartbeatRequestData data = new BrokerHeartbeatRequestData()
-            .setBrokerEpoch(brokerEpoch)
-            .setBrokerId(nodeId)
-            .setCurrentMetadataOffset(metadataOffset)
-            .setWantFence(!readyToUnfence)
-            .setWantShutDown(state == BrokerState.PENDING_CONTROLLED_SHUTDOWN)
-            .setOfflineLogDirs(new ArrayList<>(offlineDirs.keySet()));
+                .setBrokerEpoch(brokerEpoch)
+                .setBrokerId(nodeId)
+                .setCurrentMetadataOffset(metadataOffset)
+                .setWantFence(!readyToUnfence)
+                .setWantShutDown(state == BrokerState.PENDING_CONTROLLED_SHUTDOWN)
+                .setOfflineLogDirs(new ArrayList<>(offlineDirs.keySet()));
         if (initialCatchUpFuture.isDone() && !initialCatchUpFuture.isCompletedExceptionally() && cordonedLogDirsSupported.get()) {
             data.setCordonedLogDirs(List.copyOf(cordonedLogDirs));
         }
@@ -652,8 +654,8 @@ public class BrokerLifecycleManager {
                                 // be up to date, so we can retrieve the cordoned log dirs to include them in the
                                 // next heartbeat request
                                 cordonedLogDirs = config.cordonedLogDirs().stream()
-                                    .flatMap(logDir -> Optional.ofNullable(logDirs.get(logDir)).stream())
-                                    .collect(Collectors.toSet());
+                                        .flatMap(logDir -> Optional.ofNullable(logDirs.get(logDir)).stream())
+                                        .collect(Collectors.toSet());
                             } else {
                                 logger.debug("The broker is STARTING. Still waiting to catch up with cluster metadata.");
                             }

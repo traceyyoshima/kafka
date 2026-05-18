@@ -34,8 +34,8 @@ public class EndTxnResponseTest {
         int throttleTimeMs = 10;
 
         EndTxnResponseData data = new EndTxnResponseData()
-            .setErrorCode(Errors.NOT_COORDINATOR.code())
-            .setThrottleTimeMs(throttleTimeMs);
+                .setErrorCode(Errors.NOT_COORDINATOR.code())
+                .setThrottleTimeMs(throttleTimeMs);
 
         Map<Errors, Integer> expectedErrorCounts = Collections.singletonMap(Errors.NOT_COORDINATOR, 1);
 

@@ -110,7 +110,7 @@ public class PositionRestartIntegrationTest {
     private static final String STORE_NAME = "kv-store";
     private static final long RECORD_TIME = System.currentTimeMillis();
     private static final long WINDOW_START =
-        (RECORD_TIME / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis();
+            (RECORD_TIME / WINDOW_SIZE.toMillis()) * WINDOW_SIZE.toMillis();
     public static final EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(NUM_BROKERS);
     private KafkaStreams kafkaStreams;
 
@@ -168,7 +168,7 @@ public class PositionRestartIntegrationTest {
             @Override
             public StoreSupplier<?> supplier() {
                 return Stores.inMemoryWindowStore(STORE_NAME, Duration.ofDays(1), WINDOW_SIZE,
-                                                  false
+                        false
                 );
             }
 
@@ -181,7 +181,7 @@ public class PositionRestartIntegrationTest {
             @Override
             public StoreSupplier<?> supplier() {
                 return Stores.persistentWindowStore(STORE_NAME, Duration.ofDays(1), WINDOW_SIZE,
-                                                    false
+                        false
                 );
             }
 
@@ -199,7 +199,7 @@ public class PositionRestartIntegrationTest {
             @Override
             public StoreSupplier<?> supplier() {
                 return Stores.persistentTimestampedWindowStore(STORE_NAME, Duration.ofDays(1),
-                                                               WINDOW_SIZE, false
+                        WINDOW_SIZE, false
                 );
             }
 
@@ -271,7 +271,7 @@ public class PositionRestartIntegrationTest {
 
     @BeforeAll
     public static void before()
-        throws InterruptedException, IOException, ExecutionException, TimeoutException {
+            throws InterruptedException, IOException, ExecutionException, TimeoutException {
 
         CLUSTER.start();
         CLUSTER.deleteAllTopics();
@@ -287,14 +287,14 @@ public class PositionRestartIntegrationTest {
         try (final Producer<Integer, Integer> producer = new KafkaProducer<>(producerProps)) {
             for (int i = 0; i < 4; i++) {
                 final Future<RecordMetadata> send = producer.send(
-                    new ProducerRecord<>(
-                        INPUT_TOPIC_NAME,
-                        i % partitions,
-                        RECORD_TIME,
-                        i,
-                        i,
-                        null
-                    )
+                        new ProducerRecord<>(
+                                INPUT_TOPIC_NAME,
+                                i % partitions,
+                                RECORD_TIME,
+                                i,
+                                i,
+                                null
+                        )
                 );
                 futures.add(send);
                 Time.SYSTEM.sleep(1L);
@@ -305,25 +305,25 @@ public class PositionRestartIntegrationTest {
                 final RecordMetadata recordMetadata = future.get(1, TimeUnit.MINUTES);
                 assertThat(recordMetadata.hasOffset(), is(true));
                 INPUT_POSITION.withComponent(
-                    recordMetadata.topic(),
-                    recordMetadata.partition(),
-                    recordMetadata.offset()
+                        recordMetadata.topic(),
+                        recordMetadata.partition(),
+                        recordMetadata.offset()
                 );
             }
         }
 
         assertThat(INPUT_POSITION, equalTo(
-            Position
-                .emptyPosition()
-                .withComponent(INPUT_TOPIC_NAME, 0, 1L)
-                .withComponent(INPUT_TOPIC_NAME, 1, 1L)
+                Position
+                        .emptyPosition()
+                        .withComponent(INPUT_TOPIC_NAME, 0, 1L)
+                        .withComponent(INPUT_TOPIC_NAME, 1, 1L)
         ));
     }
 
     public static StreamsBuilder getStreamBuilder(final boolean cache,
-                                           final boolean log,
-                                           final StoresToTest storeToTest,
-                                           final String kind) {
+                                                  final boolean log,
+                                                  final StoresToTest storeToTest,
+                                                  final String kind) {
         final StoreSupplier<?> supplier = storeToTest.supplier();
 
         final StreamsBuilder builder = new StreamsBuilder();
@@ -371,9 +371,9 @@ public class PositionRestartIntegrationTest {
             query = RangeQuery.withNoBounds();
         } else if (storeToTest.isWindowed()) {
             query = WindowKeyQuery.withKeyAndWindowStartRange(
-                2,
-                Instant.ofEpochMilli(WINDOW_START),
-                Instant.ofEpochMilli(WINDOW_START)
+                    2,
+                    Instant.ofEpochMilli(WINDOW_START),
+                    Instant.ofEpochMilli(WINDOW_START)
             );
         } else if (storeToTest.isSession()) {
             query = WindowRangeQuery.withKey(2);
@@ -391,23 +391,23 @@ public class PositionRestartIntegrationTest {
 
     private void shouldReachExpectedPosition(final Query<?> query) {
         final StateQueryRequest<?> request =
-            inStore(STORE_NAME)
-                .withQuery(query)
-                .withPartitions(Set.of(0, 1))
-                .withPositionBound(PositionBound.at(INPUT_POSITION));
+                inStore(STORE_NAME)
+                        .withQuery(query)
+                        .withPartitions(Set.of(0, 1))
+                        .withPositionBound(PositionBound.at(INPUT_POSITION));
 
         final StateQueryResult<?> result =
-            IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
+                IntegrationTestUtils.iqv2WaitForResult(kafkaStreams, request);
 
         assertThat(result.getPosition(), is(INPUT_POSITION));
     }
 
     private static void setUpSessionDSLTopology(final SessionBytesStoreSupplier supplier,
-                                         final StreamsBuilder builder,
-                                         final boolean cache,
-                                         final boolean log) {
+                                                final StreamsBuilder builder,
+                                                final boolean cache,
+                                                final boolean log) {
         final Materialized<Integer, Integer, SessionStore<Bytes, byte[]>> materialized =
-            Materialized.as(supplier);
+                Materialized.as(supplier);
 
         if (cache) {
             materialized.withCachingEnabled();
@@ -422,23 +422,23 @@ public class PositionRestartIntegrationTest {
         }
 
         builder
-            .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-            .groupByKey()
-            .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(WINDOW_SIZE))
-            .aggregate(
-                () -> 0,
-                (key, value, aggregate) -> aggregate + value,
-                (aggKey, aggOne, aggTwo) -> aggOne + aggTwo,
-                materialized
-            );
+                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                .groupByKey()
+                .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(WINDOW_SIZE))
+                .aggregate(
+                        () -> 0,
+                        (key, value, aggregate) -> aggregate + value,
+                        (aggKey, aggOne, aggTwo) -> aggOne + aggTwo,
+                        materialized
+                );
     }
 
     private static void setUpWindowDSLTopology(final WindowBytesStoreSupplier supplier,
-                                        final StreamsBuilder builder,
-                                        final boolean cache,
-                                        final boolean log) {
+                                               final StreamsBuilder builder,
+                                               final boolean cache,
+                                               final boolean log) {
         final Materialized<Integer, Integer, WindowStore<Bytes, byte[]>> materialized =
-            Materialized.as(supplier);
+                Materialized.as(supplier);
 
         if (cache) {
             materialized.withCachingEnabled();
@@ -453,22 +453,22 @@ public class PositionRestartIntegrationTest {
         }
 
         builder
-            .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-            .groupByKey()
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(WINDOW_SIZE))
-            .aggregate(
-                () -> 0,
-                (key, value, aggregate) -> aggregate + value,
-                materialized
-            );
+                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                .groupByKey()
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(WINDOW_SIZE))
+                .aggregate(
+                        () -> 0,
+                        (key, value, aggregate) -> aggregate + value,
+                        materialized
+                );
     }
 
     private static void setUpKeyValueDSLTopology(final KeyValueBytesStoreSupplier supplier,
-                                          final StreamsBuilder builder,
-                                          final boolean cache,
-                                          final boolean log) {
+                                                 final StreamsBuilder builder,
+                                                 final boolean cache,
+                                                 final boolean log) {
         final Materialized<Integer, Integer, KeyValueStore<Bytes, byte[]>> materialized =
-            Materialized.as(supplier);
+                Materialized.as(supplier);
 
         if (cache) {
             materialized.withCachingEnabled();
@@ -483,53 +483,53 @@ public class PositionRestartIntegrationTest {
         }
 
         builder.table(
-            INPUT_TOPIC_NAME,
-            Consumed.with(Serdes.Integer(), Serdes.Integer()),
-            materialized
+                INPUT_TOPIC_NAME,
+                Consumed.with(Serdes.Integer(), Serdes.Integer()),
+                materialized
         );
     }
 
     private static void setUpKeyValuePAPITopology(final KeyValueBytesStoreSupplier supplier,
-                                           final StreamsBuilder builder,
-                                           final boolean cache,
-                                           final boolean log,
-                                           final StoresToTest storeToTest) {
+                                                  final StreamsBuilder builder,
+                                                  final boolean cache,
+                                                  final boolean log,
+                                                  final StoresToTest storeToTest) {
         final StoreBuilder<?> keyValueStoreStoreBuilder;
         final ProcessorSupplier<Integer, Integer, Void, Void> processorSupplier;
         if (storeToTest.timestamped()) {
             keyValueStoreStoreBuilder = Stores.timestampedKeyValueStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier = () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
                 @Override
                 public void process(final Record<Integer, Integer> record) {
                     final TimestampedKeyValueStore<Integer, Integer> stateStore =
-                        context().getStateStore(keyValueStoreStoreBuilder.name());
+                            context().getStateStore(keyValueStoreStoreBuilder.name());
                     stateStore.put(
-                        record.key(),
-                        ValueAndTimestamp.make(
-                            record.value(), record.timestamp()
-                        )
+                            record.key(),
+                            ValueAndTimestamp.make(
+                                    record.value(), record.timestamp()
+                            )
                     );
                 }
             };
         } else {
             keyValueStoreStoreBuilder = Stores.keyValueStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier =
-                () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
-                    @Override
-                    public void process(final Record<Integer, Integer> record) {
-                        final KeyValueStore<Integer, Integer> stateStore =
-                            context().getStateStore(keyValueStoreStoreBuilder.name());
-                        stateStore.put(record.key(), record.value());
-                    }
-                };
+                    () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
+                        @Override
+                        public void process(final Record<Integer, Integer> record) {
+                            final KeyValueStore<Integer, Integer> stateStore =
+                                    context().getStateStore(keyValueStoreStoreBuilder.name());
+                            stateStore.put(record.key(), record.value());
+                        }
+                    };
         }
         if (cache) {
             keyValueStoreStoreBuilder.withCachingEnabled();
@@ -543,53 +543,53 @@ public class PositionRestartIntegrationTest {
         }
         builder.addStateStore(keyValueStoreStoreBuilder);
         builder
-            .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-            .process(processorSupplier, keyValueStoreStoreBuilder.name());
+                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                .process(processorSupplier, keyValueStoreStoreBuilder.name());
 
     }
 
     private static void setUpWindowPAPITopology(final WindowBytesStoreSupplier supplier,
-                                         final StreamsBuilder builder,
-                                         final boolean cache,
-                                         final boolean log,
-                                         final StoresToTest storeToTest) {
+                                                final StreamsBuilder builder,
+                                                final boolean cache,
+                                                final boolean log,
+                                                final StoresToTest storeToTest) {
         final StoreBuilder<?> windowStoreStoreBuilder;
         final ProcessorSupplier<Integer, Integer, Void, Void> processorSupplier;
         if (storeToTest.timestamped()) {
             windowStoreStoreBuilder = Stores.timestampedWindowStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier = () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
                 @Override
                 public void process(final Record<Integer, Integer> record) {
                     final TimestampedWindowStore<Integer, Integer> stateStore =
-                        context().getStateStore(windowStoreStoreBuilder.name());
+                            context().getStateStore(windowStoreStoreBuilder.name());
                     stateStore.put(
-                        record.key(),
-                        ValueAndTimestamp.make(
-                            record.value(), record.timestamp()
-                        ),
-                        WINDOW_START
+                            record.key(),
+                            ValueAndTimestamp.make(
+                                    record.value(), record.timestamp()
+                            ),
+                            WINDOW_START
                     );
                 }
             };
         } else {
             windowStoreStoreBuilder = Stores.windowStoreBuilder(
-                supplier,
-                Serdes.Integer(),
-                Serdes.Integer()
+                    supplier,
+                    Serdes.Integer(),
+                    Serdes.Integer()
             );
             processorSupplier =
-                () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
-                    @Override
-                    public void process(final Record<Integer, Integer> record) {
-                        final WindowStore<Integer, Integer> stateStore =
-                            context().getStateStore(windowStoreStoreBuilder.name());
-                        stateStore.put(record.key(), record.value(), WINDOW_START);
-                    }
-                };
+                    () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
+                        @Override
+                        public void process(final Record<Integer, Integer> record) {
+                            final WindowStore<Integer, Integer> stateStore =
+                                    context().getStateStore(windowStoreStoreBuilder.name());
+                            stateStore.put(record.key(), record.value(), WINDOW_START);
+                        }
+                    };
         }
         if (cache) {
             windowStoreStoreBuilder.withCachingEnabled();
@@ -603,30 +603,30 @@ public class PositionRestartIntegrationTest {
         }
         builder.addStateStore(windowStoreStoreBuilder);
         builder
-            .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-            .process(processorSupplier, windowStoreStoreBuilder.name());
+                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                .process(processorSupplier, windowStoreStoreBuilder.name());
 
     }
 
     private static void setUpSessionPAPITopology(final SessionBytesStoreSupplier supplier,
-                                          final StreamsBuilder builder,
-                                          final boolean cache,
-                                          final boolean log) {
+                                                 final StreamsBuilder builder,
+                                                 final boolean cache,
+                                                 final boolean log) {
         final StoreBuilder<?> sessionStoreStoreBuilder;
         final ProcessorSupplier<Integer, Integer, Void, Void> processorSupplier;
         sessionStoreStoreBuilder = Stores.sessionStoreBuilder(
-            supplier,
-            Serdes.Integer(),
-            Serdes.Integer()
+                supplier,
+                Serdes.Integer(),
+                Serdes.Integer()
         );
         processorSupplier = () -> new ContextualProcessor<Integer, Integer, Void, Void>() {
             @Override
             public void process(final Record<Integer, Integer> record) {
                 final SessionStore<Integer, Integer> stateStore =
-                    context().getStateStore(sessionStoreStoreBuilder.name());
+                        context().getStateStore(sessionStoreStoreBuilder.name());
                 stateStore.put(
-                    new Windowed<>(record.key(), new SessionWindow(WINDOW_START, WINDOW_START)),
-                    record.value()
+                        new Windowed<>(record.key(), new SessionWindow(WINDOW_START, WINDOW_START)),
+                        record.value()
                 );
             }
         };
@@ -642,17 +642,17 @@ public class PositionRestartIntegrationTest {
         }
         builder.addStateStore(sessionStoreStoreBuilder);
         builder
-            .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
-            .process(processorSupplier, sessionStoreStoreBuilder.name());
+                .stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Integer()))
+                .process(processorSupplier, sessionStoreStoreBuilder.name());
     }
 
     private static Properties streamsConfiguration(final boolean cache,
-                                            final boolean log,
-                                            final String supplier,
-                                            final String kind) {
+                                                   final boolean log,
+                                                   final String supplier,
+                                                   final String kind) {
         final String safeTestName =
-            PositionRestartIntegrationTest.class.getName() + "-" + cache + "-" + log + "-"
-                + supplier + "-" + kind;
+                PositionRestartIntegrationTest.class.getName() + "-" + cache + "-" + log + "-"
+                        + supplier + "-" + kind;
         final Properties config = new Properties();
         config.put(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, StreamsConfig.OPTIMIZE);
         config.put(StreamsConfig.APPLICATION_ID_CONFIG, "app-" + safeTestName);

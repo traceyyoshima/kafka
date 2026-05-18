@@ -26,6 +26,7 @@ import java.util.Map;
  * Drops all records, filtering them from subsequent transformations in the chain.
  * This is intended to be used conditionally to filter out records matching (or not matching)
  * a particular {@link org.apache.kafka.connect.transforms.predicates.Predicate}.
+ *
  * @param <R> The type of record.
  */
 public class Filter<R extends ConnectRecord<R>> implements Transformation<R> {

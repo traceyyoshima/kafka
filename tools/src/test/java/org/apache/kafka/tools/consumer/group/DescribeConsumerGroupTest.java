@@ -80,14 +80,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @ClusterTestDefaults(
-    types = {Type.CO_KRAFT},
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-    }
+        types = {Type.CO_KRAFT},
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "1000"),
+                @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+                @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+        }
 )
 public class DescribeConsumerGroupTest {
     private static final String TOPIC_PREFIX = "test.topic.";
@@ -122,7 +122,7 @@ public class DescribeConsumerGroupTest {
     public void testDescribeOffsetsOfNonExistingGroup(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
         String missingGroup = "missing.group";
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -136,7 +136,7 @@ public class DescribeConsumerGroupTest {
                 fail("Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
             } catch (ExecutionException ee) {
                 assertInstanceOf(GroupIdNotFoundException.class, ee.getCause(),
-                    "Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
+                        "Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
             }
         }
     }
@@ -145,7 +145,7 @@ public class DescribeConsumerGroupTest {
     public void testDescribeMembersOfNonExistingGroup(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
         String missingGroup = "missing.group";
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -157,7 +157,7 @@ public class DescribeConsumerGroupTest {
                 fail("Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
             } catch (ExecutionException ee) {
                 assertInstanceOf(GroupIdNotFoundException.class, ee.getCause(),
-                    "Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
+                        "Expected the group '" + missingGroup + "' to throw GroupIdNotFoundException");
             }
         }
     }
@@ -166,7 +166,7 @@ public class DescribeConsumerGroupTest {
     public void testDescribeStateOfNonExistingGroup(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
         String missingGroup = "missing.group";
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -186,7 +186,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeGroupOffsets(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             clusterInstance.createTopic(topic, 1, (short) 1);
             sendRecords(topic, 0, 1);
@@ -211,13 +211,13 @@ public class DescribeConsumerGroupTest {
                         List<String> expectedValues;
                         if (describeType.contains("--verbose")) {
                             expectedValues = List.of(group, topic, "0", "-", "1", "1", "0", memberDescription.consumerId(),
-                                memberDescription.host(), memberDescription.clientId());
+                                    memberDescription.host(), memberDescription.clientId());
                         } else {
                             expectedValues = List.of(group, topic, "0", "1", "1", "0", memberDescription.consumerId(),
-                                memberDescription.host(), memberDescription.clientId());
+                                    memberDescription.host(), memberDescription.clientId());
                         }
                         return checkArgsHeaderOutput(cgcArgs, lines[0]) &&
-                            Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
+                                Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
                     }, "Expected a data row and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                 }
             }
@@ -227,7 +227,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeGroupMembers(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             boolean isConsumer = groupProtocol.equals(GroupProtocol.CONSUMER);
             String topic1 = TOPIC_PREFIX + groupProtocol.name() + "1";
             String topic2 = TOPIC_PREFIX + groupProtocol.name() + "2";
@@ -255,15 +255,15 @@ public class DescribeConsumerGroupTest {
                         List<String> expectedValues;
                         if (describeType.contains("--verbose")) {
                             expectedValues = List.of(group, memberDescription.consumerId(), memberDescription.host(),
-                                memberDescription.clientId(), "3", isConsumer ? memberDescription.memberEpoch().get().toString() : "-",
-                                topicAssignment, isConsumer ? consumerGroupDescription.targetAssignmentEpoch().get().toString() : "-",
-                                isConsumer ? topicAssignment : "-");
+                                    memberDescription.clientId(), "3", isConsumer ? memberDescription.memberEpoch().get().toString() : "-",
+                                    topicAssignment, isConsumer ? consumerGroupDescription.targetAssignmentEpoch().get().toString() : "-",
+                                    isConsumer ? topicAssignment : "-");
                         } else {
                             expectedValues = List.of(group, memberDescription.consumerId(), memberDescription.host(),
-                                memberDescription.clientId(), "3");
+                                    memberDescription.clientId(), "3");
                         }
                         return checkArgsHeaderOutput(cgcArgs, lines[0]) &&
-                            Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
+                                Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
                     }, "Expected a data row and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                 }
             }
@@ -284,12 +284,12 @@ public class DescribeConsumerGroupTest {
         ) {
             // Make sure the classic consumer is stable before starting another consumer.
             TestUtils.waitForCondition(
-                () -> {
-                    ConsumerGroupDescription consumerGroupDescription = admin.describeConsumerGroups(Set.of(group)).describedGroups().get(group).get();
-                    MemberDescription memberDescription = consumerGroupDescription.members().iterator().next();
-                    return !memberDescription.assignment().topicPartitions().isEmpty();
-                },
-                "Expected the classic consumer to join the group."
+                    () -> {
+                        ConsumerGroupDescription consumerGroupDescription = admin.describeConsumerGroups(Set.of(group)).describedGroups().get(group).get();
+                        MemberDescription memberDescription = consumerGroupDescription.members().iterator().next();
+                        return !memberDescription.assignment().topicPartitions().isEmpty();
+                    },
+                    "Expected the classic consumer to join the group."
             );
 
             try (AutoCloseable consumerConsumer = consumerGroupClosable(GroupProtocol.CONSUMER, group, topic, Map.of(ConsumerConfig.CLIENT_ID_CONFIG, consumerClientId));
@@ -324,7 +324,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeGroupState(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             boolean isConsumer = groupProtocol.equals(GroupProtocol.CONSUMER);
             String topic = TOPIC_PREFIX + groupProtocol.name();
             clusterInstance.createTopic(topic, 1, (short) 1);
@@ -350,13 +350,13 @@ public class DescribeConsumerGroupTest {
                         String coordinatorId = "(" + consumerGroupDescription.coordinator().idString() + ")";
                         if (describeType.contains("--verbose")) {
                             expectedValues = List.of(group, coordinatorAddress, coordinatorId, consumerGroupDescription.partitionAssignor(), GroupState.STABLE.toString(),
-                                isConsumer ? consumerGroupDescription.groupEpoch().get().toString() : "-",
-                                isConsumer ? consumerGroupDescription.targetAssignmentEpoch().get().toString() : "-", "1");
+                                    isConsumer ? consumerGroupDescription.groupEpoch().get().toString() : "-",
+                                    isConsumer ? consumerGroupDescription.targetAssignmentEpoch().get().toString() : "-", "1");
                         } else {
                             expectedValues = List.of(group, coordinatorAddress, coordinatorId, consumerGroupDescription.partitionAssignor(), GroupState.STABLE.toString(), "1");
                         }
                         return checkArgsHeaderOutput(cgcArgs, lines[0]) &&
-                            Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
+                                Arrays.stream(lines[1].trim().split("\\s+")).toList().equals(expectedValues);
                     }, "Expected two data rows and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                 }
             }
@@ -366,7 +366,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeExistingGroups(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             createTopic(topic);
 
@@ -391,8 +391,8 @@ public class DescribeConsumerGroupTest {
                             Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                             long numLines = Arrays.stream(res.getKey().trim().split("\n")).filter(line -> !line.isEmpty()).count();
                             return (numLines == expectedNumLines) &&
-                                res.getValue().isEmpty() &&
-                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                    res.getValue().isEmpty() &&
+                                    checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                         }, "Expected a data row and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                     }
                 }
@@ -407,7 +407,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeAllExistingGroups(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             createTopic(topic);
 
@@ -429,8 +429,8 @@ public class DescribeConsumerGroupTest {
                             Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                             long numLines = Arrays.stream(res.getKey().trim().split("\n")).filter(line -> !line.isEmpty()).count();
                             return (numLines == expectedNumLines) &&
-                                res.getValue().isEmpty() &&
-                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                    res.getValue().isEmpty() &&
+                                    checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                         }, "Expected a data row and no error in describe results with describe type " + String.join(" ", describeType) + ".");
                     }
                 }
@@ -448,7 +448,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeOffsetsOfExistingGroup(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -488,7 +488,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeMembersOfExistingGroup(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -515,7 +515,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeStateOfExistingGroup(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -538,7 +538,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeStateOfExistingGroupWithNonDefaultAssignor(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -576,7 +576,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeExistingGroupWithNoMembers(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             createTopic(topic);
 
@@ -591,10 +591,10 @@ public class DescribeConsumerGroupTest {
                     TestUtils.waitForCondition(() -> {
                         Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                         return res.getKey().trim().split("\n").length == 2 &&
-                            res.getValue().isEmpty() &&
-                            checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                res.getValue().isEmpty() &&
+                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                     }, "Expected describe group results with one data row for describe type '" + String.join(" ", describeType) + "'");
-                    
+
                     protocolConsumerGroupExecutor.close();
                     TestUtils.waitForCondition(
                             () -> ToolsTestUtils.grabConsoleError(describeGroups(service)).contains("Consumer group '" + group + "' has no active members."),
@@ -607,7 +607,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeOffsetsOfExistingGroupWithNoMembers(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -644,7 +644,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeMembersOfExistingGroupWithNoMembers(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -673,7 +673,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeStateOfExistingGroupWithNoMembers(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -704,7 +704,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeWithConsumersWithoutAssignedPartitions(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             createTopic(topic);
 
@@ -720,8 +720,8 @@ public class DescribeConsumerGroupTest {
                         Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                         int expectedNumRows = DESCRIBE_TYPE_MEMBERS.contains(describeType) ? 3 : 2;
                         return res.getValue().isEmpty() &&
-                            res.getKey().trim().split("\n").length == expectedNumRows &&
-                            checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                res.getKey().trim().split("\n").length == expectedNumRows &&
+                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                     }, "Expected a single data row in describe group result with describe type '" + String.join(" ", describeType) + "'");
                 }
             }
@@ -731,7 +731,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeOffsetsWithConsumersWithoutAssignedPartitions(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -754,7 +754,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeMembersWithConsumersWithoutAssignedPartitions(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -784,7 +784,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeStateWithConsumersWithoutAssignedPartitions(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -804,7 +804,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeWithMultiPartitionTopicAndMultipleConsumers(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             createTopic(topic, 2);
 
@@ -820,8 +820,8 @@ public class DescribeConsumerGroupTest {
                         Entry<String, String> res = ToolsTestUtils.grabConsoleOutputAndError(describeGroups(service));
                         int expectedNumRows = DESCRIBE_TYPE_STATE.contains(describeType) ? 2 : 3;
                         return res.getValue().isEmpty() &&
-                            res.getKey().trim().split("\n").length == expectedNumRows &&
-                            checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
+                                res.getKey().trim().split("\n").length == expectedNumRows &&
+                                checkArgsHeaderOutput(cgcArgs, res.getKey().trim().split("\n")[0]);
                     }, "Expected a single data row in describe group result with describe type '" + String.join(" ", describeType) + "'");
                 }
             }
@@ -831,7 +831,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeOffsetsWithMultiPartitionTopicAndMultipleConsumers(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic, 2);
@@ -855,7 +855,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeMembersWithMultiPartitionTopicAndMultipleConsumers(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic, 2);
@@ -883,7 +883,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeStateWithMultiPartitionTopicAndMultipleConsumers(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic, 2);
@@ -904,7 +904,7 @@ public class DescribeConsumerGroupTest {
     public void testDescribeSimpleConsumerGroup(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
         // Ensure that the offsets of consumers which don't use group management are still displayed
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic, 2);
@@ -924,7 +924,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeGroupWithShortInitializationTimeout(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             createTopic(topic);
 
@@ -950,7 +950,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeGroupOffsetsWithShortInitializationTimeout(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -972,7 +972,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeGroupMembersWithShortInitializationTimeout(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -996,7 +996,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeGroupStateWithShortInitializationTimeout(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -1018,7 +1018,7 @@ public class DescribeConsumerGroupTest {
     @ClusterTest
     public void testDescribeNonOffsetCommitGroup(ClusterInstance clusterInstance) throws Exception {
         this.clusterInstance = clusterInstance;
-        for (GroupProtocol groupProtocol: clusterInstance.supportedGroupProtocols()) {
+        for (GroupProtocol groupProtocol : clusterInstance.supportedGroupProtocols()) {
             String topic = TOPIC_PREFIX + groupProtocol.name();
             String group = GROUP_PREFIX + groupProtocol.name();
             createTopic(topic);
@@ -1113,7 +1113,7 @@ public class DescribeConsumerGroupTest {
 
     @Test
     public void testDescribeWithUnrecognizedNewConsumerOption() {
-        String group = GROUP_PREFIX +  "unrecognized";
+        String group = GROUP_PREFIX + "unrecognized";
         String[] cgcArgs = new String[]{"--new-consumer", "--bootstrap-server", "localhost:9092", "--describe", "--group", group};
         assertThrows(joptsimple.OptionException.class, () -> ConsumerGroupCommandOptions.fromArgs(cgcArgs));
     }
@@ -1221,11 +1221,11 @@ public class DescribeConsumerGroupTest {
     }
 
     private AutoCloseable consumerGroupClosable(
-        GroupProtocol protocol,
-        String groupId,
-        Set<String> topicNames,
-        Map<String, Object> customConfigs,
-        int numConsumers
+            GroupProtocol protocol,
+            String groupId,
+            Set<String> topicNames,
+            Map<String, Object> customConfigs,
+            int numConsumers
     ) {
         Map<String, Object> configs = composeConfigs(
                 groupId,
@@ -1275,8 +1275,8 @@ public class DescribeConsumerGroupTest {
 
     private boolean checkOffsetsArgsHeaderOutput(String output, boolean verbose) {
         List<String> expectedKeys = verbose ?
-            List.of("GROUP", "TOPIC", "PARTITION", "LEADER-EPOCH", "CURRENT-OFFSET", "LOG-END-OFFSET", "LAG", "CONSUMER-ID", "HOST", "CLIENT-ID") :
-            List.of("GROUP", "TOPIC", "PARTITION", "CURRENT-OFFSET", "LOG-END-OFFSET", "LAG", "CONSUMER-ID", "HOST", "CLIENT-ID");
+                List.of("GROUP", "TOPIC", "PARTITION", "LEADER-EPOCH", "CURRENT-OFFSET", "LOG-END-OFFSET", "LAG", "CONSUMER-ID", "HOST", "CLIENT-ID") :
+                List.of("GROUP", "TOPIC", "PARTITION", "CURRENT-OFFSET", "LOG-END-OFFSET", "LAG", "CONSUMER-ID", "HOST", "CLIENT-ID");
         return Arrays.stream(output.trim().split("\\s+")).toList().equals(expectedKeys);
     }
 
@@ -1286,26 +1286,26 @@ public class DescribeConsumerGroupTest {
 
     private boolean checkMembersArgsHeaderOutput(String output, boolean verbose) {
         List<String> expectedKeys = verbose ?
-            List.of("GROUP", "CONSUMER-ID", "HOST", "CLIENT-ID", "#PARTITIONS", "CURRENT-EPOCH", "CURRENT-ASSIGNMENT", "TARGET-EPOCH", "TARGET-ASSIGNMENT") :
-            List.of("GROUP", "CONSUMER-ID", "HOST", "CLIENT-ID", "#PARTITIONS");
+                List.of("GROUP", "CONSUMER-ID", "HOST", "CLIENT-ID", "#PARTITIONS", "CURRENT-EPOCH", "CURRENT-ASSIGNMENT", "TARGET-EPOCH", "TARGET-ASSIGNMENT") :
+                List.of("GROUP", "CONSUMER-ID", "HOST", "CLIENT-ID", "#PARTITIONS");
         return Arrays.stream(output.trim().split("\\s+")).toList().equals(expectedKeys);
     }
 
     private boolean checkStateArgsHeaderOutput(String output, boolean verbose) {
         List<String> expectedKeys = verbose ?
-            List.of("GROUP", "COORDINATOR", "(ID)", "ASSIGNMENT-STRATEGY", "STATE", "GROUP-EPOCH", "TARGET-ASSIGNMENT-EPOCH", "#MEMBERS") :
-            List.of("GROUP", "COORDINATOR", "(ID)", "ASSIGNMENT-STRATEGY", "STATE", "#MEMBERS");
+                List.of("GROUP", "COORDINATOR", "(ID)", "ASSIGNMENT-STRATEGY", "STATE", "GROUP-EPOCH", "TARGET-ASSIGNMENT-EPOCH", "#MEMBERS") :
+                List.of("GROUP", "COORDINATOR", "(ID)", "ASSIGNMENT-STRATEGY", "STATE", "#MEMBERS");
         return Arrays.stream(output.trim().split("\\s+")).toList().equals(expectedKeys);
     }
 
     private void sendRecords(String topic, int partition, int recordsCount) {
         try (KafkaProducer<String, String> producer = new KafkaProducer<>(Map.of(
-            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
-            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
-            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, clusterInstance.bootstrapServers(),
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName(),
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName()
         ))) {
             IntStream.range(0, recordsCount).forEach(i ->
-                producer.send(new org.apache.kafka.clients.producer.ProducerRecord<>(topic, partition, Integer.toString(i), Integer.toString(i))));
+                    producer.send(new org.apache.kafka.clients.producer.ProducerRecord<>(topic, partition, Integer.toString(i), Integer.toString(i))));
             producer.flush();
         }
     }

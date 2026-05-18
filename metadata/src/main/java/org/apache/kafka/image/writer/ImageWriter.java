@@ -28,11 +28,10 @@ public interface ImageWriter extends AutoCloseable {
     /**
      * Write a record.
      *
-     * @param version                       The version of the record to write out.
-     *                                      For convenience, this is an int rather than a short.
-     * @param message                       The message of the record to write out.
-     *
-     * @throws ImageWriterClosedException   If the writer has already been completed or closed.
+     * @param version The version of the record to write out.
+     *                For convenience, this is an int rather than a short.
+     * @param message The message of the record to write out.
+     * @throws ImageWriterClosedException If the writer has already been completed or closed.
      */
     default void write(int version, ApiMessage message) {
         write(new ApiMessageAndVersion(message, (short) version));
@@ -41,9 +40,8 @@ public interface ImageWriter extends AutoCloseable {
     /**
      * Write a record.
      *
-     * @param record                The versioned record to write out.
-     *
-     * @throws ImageWriterClosedException   If the writer has already been completed or closed.
+     * @param record The versioned record to write out.
+     * @throws ImageWriterClosedException If the writer has already been completed or closed.
      */
     void write(ApiMessageAndVersion record);
 
@@ -55,11 +53,11 @@ public interface ImageWriter extends AutoCloseable {
         close(false);
     }
 
-   /**
-    * Close the image writer. Calling this function more than once has no effect.
-    *
-    * @param complete               True if we should complete the image successfully.
-    *                               False if we should discard all progress.
-    */
+    /**
+     * Close the image writer. Calling this function more than once has no effect.
+     *
+     * @param complete True if we should complete the image successfully.
+     *                 False if we should discard all progress.
+     */
     void close(boolean complete);
 }

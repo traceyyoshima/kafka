@@ -63,14 +63,13 @@ import org.apache.kafka.streams.state.StoreBuilder;
  *
  * // query the value for a key
  * ValueAndTimestamp value = view.get(key);
- *}</pre>
- *
+ * }</pre>
+ * <p>
  * Note that in contrast to {@link KTable} a {@code GlobalKTable}'s state holds a full copy of the underlying topic,
  * thus all keys can be queried locally.
  *
  * @param <K> the key type of this table
  * @param <V> the value type of this table
- *
  * @see StreamsBuilder#addGlobalStore(StoreBuilder, String, Consumed, ProcessorSupplier)
  */
 public interface GlobalKTable<K, V> {

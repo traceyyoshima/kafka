@@ -154,13 +154,13 @@ final class SchemaGenerator {
                 continue;
             }
             Versions fieldFlexibleVersions =
-                field.flexibleVersions().orElse(messageFlexibleVersions);
+                    field.flexibleVersions().orElse(messageFlexibleVersions);
             headerGenerator.addImport(MessageGenerator.FIELD_CLASS);
             buffer.printf("new Field(\"%s\", %s, \"%s\")%s%n",
-                field.snakeCaseName(),
-                fieldTypeToSchemaType(field, version, fieldFlexibleVersions),
-                field.about(),
-                i == finalLine ? "" : ",");
+                    field.snakeCaseName(),
+                    fieldTypeToSchemaType(field, version, fieldFlexibleVersions),
+                    field.about(),
+                    i == finalLine ? "" : ",");
         }
         if (messageFlexibleVersions.contains(version)) {
             generateTaggedFieldsSchemaForVersion(struct, version, buffer);
@@ -170,7 +170,7 @@ final class SchemaGenerator {
     }
 
     private void generateTaggedFieldsSchemaForVersion(StructSpec struct,
-            short version, CodeBuffer buffer) {
+                                                      short version, CodeBuffer buffer) {
         headerGenerator.addStaticImport(MessageGenerator.TAGGED_FIELDS_SECTION_CLASS);
 
         // Find the last valid tagged field index.
@@ -181,7 +181,7 @@ final class SchemaGenerator {
             }
             FieldSpec field = struct.fields().get(lastValidIndex);
             if ((field.taggedVersions().contains(version)) &&
-                field.versions().contains(version)) {
+                    field.versions().contains(version)) {
                 break;
             }
             lastValidIndex--;
@@ -197,13 +197,13 @@ final class SchemaGenerator {
             }
             headerGenerator.addImport(MessageGenerator.FIELD_CLASS);
             Versions fieldFlexibleVersions =
-                field.flexibleVersions().orElse(messageFlexibleVersions);
+                    field.flexibleVersions().orElse(messageFlexibleVersions);
             buffer.printf("%d, new Field(\"%s\", %s, \"%s\")%s%n",
-                field.tag().get(),
-                field.snakeCaseName(),
-                fieldTypeToSchemaType(field, version, fieldFlexibleVersions),
-                field.about(),
-                i == lastValidIndex ? "" : ",");
+                    field.tag().get(),
+                    field.snakeCaseName(),
+                    fieldTypeToSchemaType(field, version, fieldFlexibleVersions),
+                    field.about(),
+                    i == lastValidIndex ? "" : ",");
         }
         buffer.decrementIndent();
         buffer.printf(")%n");
@@ -213,10 +213,10 @@ final class SchemaGenerator {
                                          short version,
                                          Versions fieldFlexibleVersions) {
         return fieldTypeToSchemaType(field.type(),
-            field.nullableVersions().contains(version),
-            version,
-            fieldFlexibleVersions,
-            field.zeroCopy());
+                field.nullableVersions().contains(version),
+                version,
+                fieldFlexibleVersions,
+                field.zeroCopy());
     }
 
     private String fieldTypeToSchemaType(FieldType type,
@@ -319,7 +319,7 @@ final class SchemaGenerator {
                 headerGenerator.addImport(MessageGenerator.NULLABLE_SCHEMA_CLASS);
             }
             String schemaType = String.format("%s.SCHEMA_%d", type,
-                floorVersion(type.toString(), version));
+                    floorVersion(type.toString(), version));
             return nullable ? String.format("new NullableSchema(%s)", schemaType) : schemaType;
         } else {
             throw new RuntimeException("Unsupported type " + type);
@@ -338,8 +338,8 @@ final class SchemaGenerator {
     /**
      * Write the message schema to the provided buffer.
      *
-     * @param className     The class name.
-     * @param buffer        The destination buffer.
+     * @param className The class name.
+     * @param buffer    The destination buffer.
      */
     void writeSchema(String className, CodeBuffer buffer) {
         MessageInfo messageInfo = messages.get(className);

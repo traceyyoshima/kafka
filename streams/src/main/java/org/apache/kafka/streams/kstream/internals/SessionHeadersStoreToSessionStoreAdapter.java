@@ -41,8 +41,8 @@ import java.time.Instant;
  * {@link AggregationWithHeaders} type with an empty {@link org.apache.kafka.common.header.Headers} object.
  */
 public class SessionHeadersStoreToSessionStoreAdapter<K, V>
-    extends WrappedStateStore<SessionStore<K, V>, K, V>
-    implements SessionStoreWithHeaders<K, V> {
+        extends WrappedStateStore<SessionStore<K, V>, K, V>
+        implements SessionStoreWithHeaders<K, V> {
 
     public SessionHeadersStoreToSessionStoreAdapter(final SessionStore<K, V> sessionStore) {
         super(sessionStore);

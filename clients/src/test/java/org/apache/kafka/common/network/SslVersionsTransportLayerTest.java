@@ -80,17 +80,17 @@ public class SslVersionsTransportLayerTest {
     @MethodSource("parameters")
     public void testTlsDefaults(List<String> serverProtocols, List<String> clientProtocols) throws Exception {
         // Create certificates for use by client and server. Add server cert to client truststore and vice versa.
-        CertStores serverCertStores = new CertStores(true, "server",  "localhost");
+        CertStores serverCertStores = new CertStores(true, "server", "localhost");
         CertStores clientCertStores = new CertStores(false, "client", "localhost");
 
         Map<String, Object> sslClientConfigs = getTrustingConfig(clientCertStores, serverCertStores, clientProtocols);
         Map<String, Object> sslServerConfigs = getTrustingConfig(serverCertStores, clientCertStores, serverProtocols);
 
         NioEchoServer server = NetworkTestUtils.createEchoServer(ListenerName.forSecurityProtocol(SecurityProtocol.SSL),
-            SecurityProtocol.SSL,
-            new TestSecurityConfig(sslServerConfigs),
-            null,
-            TIME);
+                SecurityProtocol.SSL,
+                new TestSecurityConfig(sslServerConfigs),
+                null,
+                TIME);
         Selector selector = createClientSelector(sslClientConfigs);
 
         String node = "0";
@@ -131,7 +131,7 @@ public class SslVersionsTransportLayerTest {
      * > contains the value TLSv1.3; if the client requests TLS 1.2, then the client version field has the
      * > value TLSv1.2 and this extension either doesn't exist or contains the value TLSv1.2 but not the value TLSv1.3.
      * <p>
-     *
+     * <p>
      * This mean that TLSv1.3 client can fallback to TLSv1.2 but TLSv1.2 client can't change protocol to TLSv1.3.
      *
      * @param serverProtocols Server protocols. Expected to be non empty.
@@ -145,7 +145,7 @@ public class SslVersionsTransportLayerTest {
         assertFalse(clientProtocols.isEmpty());
 
         return serverProtocols.contains(clientProtocols.get(0)) ||
-            (clientProtocols.get(0).equals("TLSv1.3") && !Collections.disjoint(serverProtocols, clientProtocols));
+                (clientProtocols.get(0).equals("TLSv1.3") && !Collections.disjoint(serverProtocols, clientProtocols));
     }
 
     private static Map<String, Object> getTrustingConfig(CertStores certStores, CertStores peerCertStores, List<String> tlsProtocols) {
@@ -163,7 +163,7 @@ public class SslVersionsTransportLayerTest {
 
     private Selector createClientSelector(Map<String, Object> sslClientConfigs) {
         SslTransportLayerTest.TestSslChannelBuilder channelBuilder =
-            new SslTransportLayerTest.TestSslChannelBuilder(ConnectionMode.CLIENT);
+                new SslTransportLayerTest.TestSslChannelBuilder(ConnectionMode.CLIENT);
         channelBuilder.configureBufferSizes(null, null, null);
         channelBuilder.configure(sslClientConfigs);
         return new Selector(100 * 5000, new Metrics(), TIME, "MetricGroup", channelBuilder, new LogContext());

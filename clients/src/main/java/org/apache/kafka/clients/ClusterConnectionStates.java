@@ -70,7 +70,8 @@ final class ClusterConnectionStates {
     /**
      * Return true iff we can currently initiate a new connection. This will be the case if we are not
      * connected and haven't been connected for at least the minimum reconnection backoff period.
-     * @param id the connection id to check
+     *
+     * @param id  the connection id to check
      * @param now the current time in ms
      * @return true if we can initiate a new connection
      */
@@ -80,12 +81,13 @@ final class ClusterConnectionStates {
             return true;
         else
             return state.state.isDisconnected() &&
-                   now - state.lastConnectAttemptMs >= state.reconnectBackoffMs;
+                    now - state.lastConnectAttemptMs >= state.reconnectBackoffMs;
     }
 
     /**
      * Return true if we are disconnected from the given node and can't re-establish a connection yet.
-     * @param id the connection to check
+     *
+     * @param id  the connection to check
      * @param now the current time in ms
      */
     public boolean isBlackedOut(String id, long now) {
@@ -99,7 +101,8 @@ final class ClusterConnectionStates {
      * Returns the number of milliseconds to wait, based on the connection state, before attempting to send data. When
      * disconnected, this respects the reconnect backoff time. When connecting, return a delay based on the connection timeout.
      * When connected, wait indefinitely (i.e. until a wakeup).
-     * @param id the connection to check
+     *
+     * @param id  the connection to check
      * @param now the current time in ms
      */
     public long connectionDelay(String id, long now) {
@@ -120,6 +123,7 @@ final class ClusterConnectionStates {
 
     /**
      * Return true if a specific connection establishment is currently underway
+     *
      * @param id The id of the node to check
      */
     public boolean isConnecting(String id) {
@@ -129,6 +133,7 @@ final class ClusterConnectionStates {
 
     /**
      * Check whether a connection is either being established or awaiting API version information.
+     *
      * @param id The id of the node to check
      * @return true if the node is either connecting or has connected and is awaiting API versions, false otherwise
      */
@@ -140,8 +145,9 @@ final class ClusterConnectionStates {
 
     /**
      * Enter the connecting state for the given connection, moving to a new resolved address if necessary.
-     * @param id the id of the connection
-     * @param now the current time in ms
+     *
+     * @param id   the id of the connection
+     * @param now  the current time in ms
      * @param host the host of the connection, to be resolved internally if needed
      */
     public void connecting(String id, long now, String host) {
@@ -166,6 +172,7 @@ final class ClusterConnectionStates {
 
     /**
      * Returns a resolved address for the given connection, resolving it if necessary.
+     *
      * @param id the id of the connection
      * @throws UnknownHostException if the address was not resolvable
      */
@@ -175,7 +182,8 @@ final class ClusterConnectionStates {
 
     /**
      * Enter the disconnected state for the given node.
-     * @param id the connection we have disconnected
+     *
+     * @param id  the connection we have disconnected
      * @param now the current time in ms
      */
     public void disconnected(String id, long now) {
@@ -198,7 +206,8 @@ final class ClusterConnectionStates {
 
     /**
      * Indicate that the connection is throttled until the specified deadline.
-     * @param id the connection to be throttled
+     *
+     * @param id                  the connection to be throttled
      * @param throttleUntilTimeMs the throttle deadline in milliseconds
      */
     public void throttle(String id, long throttleUntilTimeMs) {
@@ -211,7 +220,8 @@ final class ClusterConnectionStates {
 
     /**
      * Return the remaining throttling delay in milliseconds if throttling is in progress. Return 0, otherwise.
-     * @param id the connection to check
+     *
+     * @param id  the connection to check
      * @param now the current time in ms
      */
     public long throttleDelayMs(String id, long now) {
@@ -227,7 +237,8 @@ final class ClusterConnectionStates {
      * Return the number of milliseconds to wait, based on the connection state and the throttle time, before
      * attempting to send data. If the connection has been established but being throttled, return throttle delay.
      * Otherwise, return connection delay.
-     * @param id the connection to check
+     *
+     * @param id  the connection to check
      * @param now the current time in ms
      */
     public long pollDelayMs(String id, long now) {
@@ -241,6 +252,7 @@ final class ClusterConnectionStates {
 
     /**
      * Enter the checking_api_versions state for the given node.
+     *
      * @param id the connection identifier
      */
     public void checkingApiVersions(String id) {
@@ -252,6 +264,7 @@ final class ClusterConnectionStates {
 
     /**
      * Enter the ready state for the given node.
+     *
      * @param id the connection identifier
      */
     public void ready(String id) {
@@ -265,8 +278,9 @@ final class ClusterConnectionStates {
 
     /**
      * Enter the authentication failed state for the given node.
-     * @param id the connection identifier
-     * @param now the current time in ms
+     *
+     * @param id        the connection identifier
+     * @param now       the current time in ms
      * @param exception the authentication exception
      */
     public void authenticationFailed(String id, long now, AuthenticationException exception) {
@@ -280,7 +294,7 @@ final class ClusterConnectionStates {
     /**
      * Return true if the connection is in the READY state and currently not throttled.
      *
-     * @param id the connection identifier
+     * @param id  the connection identifier
      * @param now the current time in ms
      */
     public boolean isReady(String id, long now) {
@@ -308,6 +322,7 @@ final class ClusterConnectionStates {
 
     /**
      * Return true if the connection has been established
+     *
      * @param id The id of the node to check
      */
     public boolean isConnected(String id) {
@@ -317,6 +332,7 @@ final class ClusterConnectionStates {
 
     /**
      * Return true if the connection has been disconnected
+     *
      * @param id The id of the node to check
      */
     public boolean isDisconnected(String id) {
@@ -326,6 +342,7 @@ final class ClusterConnectionStates {
 
     /**
      * Return authentication exception if an authentication error occurred
+     *
      * @param id The id of the node to check
      */
     public AuthenticationException authenticationException(String id) {
@@ -393,6 +410,7 @@ final class ClusterConnectionStates {
 
     /**
      * Get the state of a given connection.
+     *
      * @param id the id of the connection
      * @return the state of our connection
      */
@@ -402,6 +420,7 @@ final class ClusterConnectionStates {
 
     /**
      * Get the state of a given node.
+     *
      * @param id the connection to fetch the state for
      */
     private NodeConnectionState nodeState(String id) {
@@ -421,6 +440,7 @@ final class ClusterConnectionStates {
 
     /**
      * Get the timestamp of the latest connection attempt of a given node
+     *
      * @param id the connection to fetch the state for
      */
     public long lastConnectAttemptMs(String id) {
@@ -431,6 +451,7 @@ final class ClusterConnectionStates {
     /**
      * Get the current socket connection setup timeout of the given node.
      * The base value is defined via socket.connection.setup.timeout.
+     *
      * @param id the connection to fetch the state for
      */
     public long connectionSetupTimeoutMs(String id) {
@@ -440,7 +461,8 @@ final class ClusterConnectionStates {
 
     /**
      * Test if the connection to the given node has reached its timeout
-     * @param id the connection to fetch the state for
+     *
+     * @param id  the connection to fetch the state for
      * @param now the current time in ms
      */
     public boolean isConnectionSetupTimeout(String id, long now) {
@@ -452,12 +474,13 @@ final class ClusterConnectionStates {
 
     /**
      * Return the List of nodes whose connection setup has timed out.
+     *
      * @param now the current time in ms
      */
     public List<String> nodesWithConnectionSetupTimeout(long now) {
         return connectingNodes.stream()
-            .filter(id -> isConnectionSetupTimeout(id, now))
-            .collect(Collectors.toList());
+                .filter(id -> isConnectionSetupTimeout(id, now))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -482,7 +505,7 @@ final class ClusterConnectionStates {
         private InetAddress lastAttemptedAddress;
 
         private NodeConnectionState(ConnectionState state, long lastConnectAttemptMs, long reconnectBackoffMs,
-                long connectionSetupTimeoutMs, String host, HostResolver hostResolver, Logger log) {
+                                    long connectionSetupTimeoutMs, String host, HostResolver hostResolver, Logger log) {
             this.state = state;
             this.addresses = Collections.emptyList();
             this.addressIndex = -1;
@@ -503,6 +526,7 @@ final class ClusterConnectionStates {
 
         /**
          * Fetches the current selected IP address for this node, resolving {@link #host()} if necessary.
+         *
          * @return the selected address
          * @throws UnknownHostException if resolving {@link #host()} fails
          */
@@ -557,11 +581,11 @@ final class ClusterConnectionStates {
 
         public String toString() {
             return "NodeConnectionState(" +
-                "state=" + state + ", " +
-                "lastConnectAttemptMs=" + lastConnectAttemptMs + ", " +
-                "failedAttempts=" + failedAttempts + ", " +
-                "failedConnectAttempts=" + failedConnectAttempts + ", " +
-                "throttleUntilTimeMs=" + throttleUntilTimeMs + ")";
+                    "state=" + state + ", " +
+                    "lastConnectAttemptMs=" + lastConnectAttemptMs + ", " +
+                    "failedAttempts=" + failedAttempts + ", " +
+                    "failedConnectAttempts=" + failedConnectAttempts + ", " +
+                    "throttleUntilTimeMs=" + throttleUntilTimeMs + ")";
         }
     }
 }

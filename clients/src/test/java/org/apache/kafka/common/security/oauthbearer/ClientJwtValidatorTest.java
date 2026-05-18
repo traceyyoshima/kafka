@@ -50,8 +50,8 @@ public class ClientJwtValidatorTest extends JwtValidatorTest {
         try (JwtValidator validator = createJwtValidator()) {
             validator.configure(getSaslConfigs(), OAUTHBEARER_MECHANISM, getJaasConfigEntries());
             assertDoesNotThrow(
-                () -> validator.validate(jwt),
-                "Valid, URL-safe base 64-encoded JWT should be decodable"
+                    () -> validator.validate(jwt),
+                    "Valid, URL-safe base 64-encoded JWT should be decodable"
             );
         }
     }

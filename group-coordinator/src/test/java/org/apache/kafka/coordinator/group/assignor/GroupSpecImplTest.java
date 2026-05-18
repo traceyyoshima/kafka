@@ -51,17 +51,17 @@ public class GroupSpecImplTest {
         invertedTargetAssignment = new HashMap<>();
         topicId = Uuid.randomUuid();
 
-        members.put(TEST_MEMBER,  new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topicId),
-            Assignment.EMPTY
+        members.put(TEST_MEMBER, new MemberSubscriptionAndAssignmentImpl(
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topicId),
+                Assignment.EMPTY
         ));
 
         groupSpec = new GroupSpecImpl(
-            members,
-            subscriptionType,
-            invertedTargetAssignment
+                members,
+                subscriptionType,
+                invertedTargetAssignment
         );
     }
 
@@ -96,14 +96,14 @@ public class GroupSpecImplTest {
     void testMemberAssignment() {
         Map<Uuid, Set<Integer>> topicPartitions = new HashMap<>();
         topicPartitions.put(
-            topicId,
-            Set.of(0, 1)
+                topicId,
+                Set.of(0, 1)
         );
         members.put(TEST_MEMBER, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(topicId),
-            new Assignment(topicPartitions)
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(topicId),
+                new Assignment(topicPartitions)
         ));
 
         assertEquals(topicPartitions, groupSpec.memberAssignment(TEST_MEMBER).partitions());
@@ -117,10 +117,10 @@ public class GroupSpecImplTest {
 
         // Allowed map with data.
         groupSpec = new GroupSpecImpl(
-            members,
-            subscriptionType,
-            invertedTargetAssignment,
-            Optional.of(Map.of(topicId, Set.of(0)))
+                members,
+                subscriptionType,
+                invertedTargetAssignment,
+                Optional.of(Map.of(topicId, Set.of(0)))
         );
 
         assertTrue(groupSpec.isPartitionAssignable(topicId, 0));

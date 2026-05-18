@@ -38,7 +38,7 @@ import org.apache.kafka.streams.state.TimestampedKeyValueStore;
  * {@link CogroupedKStream#cogroup(KGroupedStream, Aggregator) grouped record streams},
  * before windowing or aggregation is applied.
  *
- * @param <K> the key type of this co-grouped stream
+ * @param <K>    the key type of this co-grouped stream
  * @param <VOut> the result value type of the applied aggregation
  */
 public interface CogroupedKStream<K, VOut> {
@@ -57,13 +57,9 @@ public interface CogroupedKStream<K, VOut> {
      * using the initial intermediate aggregation result provided via the {@link Initializer} that is passed into
      * {@link #aggregate(Initializer)}) and the record's value.
      *
-     * @param groupedStream
-     *        a group stream
-     * @param aggregator
-     *        an {@link Aggregator} that computes a new aggregate result
-     *
-     * @param <V> Type of input values
-     *
+     * @param groupedStream a group stream
+     * @param aggregator    an {@link Aggregator} that computes a new aggregate result
+     * @param <V>           Type of input values
      * @return a {@code CogroupedKStream}
      */
     <V> CogroupedKStream<K, VOut> cogroup(final KGroupedStream<K, V> groupedStream,
@@ -112,10 +108,8 @@ public interface CogroupedKStream<K, VOut> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer
-     *        an {@link Initializer} that computes an initial intermediate aggregation
-     *        result. Cannot be {@code null}.
-     *
+     * @param initializer an {@link Initializer} that computes an initial intermediate aggregation
+     *                    result. Cannot be {@code null}.
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that
      * represent the latest (rolling) aggregate for each key
      */
@@ -165,11 +159,8 @@ public interface CogroupedKStream<K, VOut> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer
-     *        an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param named
-     *        name the processor. Cannot be {@code null}.
-     *
+     * @param initializer an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param named       name the processor. Cannot be {@code null}.
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that
      * represent the latest (rolling) aggregate for each key
      */
@@ -219,11 +210,8 @@ public interface CogroupedKStream<K, VOut> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer
-     *        an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param materialized
-     *        an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
-     *
+     * @param initializer  an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that
      * represent the latest (rolling) aggregate for each key
      */
@@ -274,13 +262,9 @@ public interface CogroupedKStream<K, VOut> {
      * <p>
      * You can retrieve all generated internal topic names via {@link Topology#describe()}.
      *
-     * @param initializer
-     *        an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
-     * @param materialized
-     *        an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
-     * @param named
-     *        name the processors. Cannot be {@code null}.
-     *
+     * @param initializer  an {@link Initializer} that computes an initial intermediate aggregation result. Cannot be {@code null}.
+     * @param materialized an instance of {@link Materialized} used to materialize a state store. Cannot be {@code null}.
+     * @param named        name the processors. Cannot be {@code null}.
      * @return a {@link KTable} that contains "update" records with unmodified keys, and values that
      * represent the latest (rolling) aggregate for each key
      */
@@ -292,11 +276,8 @@ public interface CogroupedKStream<K, VOut> {
      * Create a new {@link TimeWindowedCogroupedKStream} instance that can be used to perform windowed
      * aggregations.
      *
-     * @param windows
-     *        the specification of the aggregation {@link Windows}
-     *
+     * @param windows the specification of the aggregation {@link Windows}
      * @param <W>     the window type
-     *
      * @return an instance of {@link TimeWindowedCogroupedKStream}
      */
     <W extends Window> TimeWindowedCogroupedKStream<K, VOut> windowedBy(final Windows<W> windows);
@@ -305,9 +286,7 @@ public interface CogroupedKStream<K, VOut> {
      * Create a new {@link TimeWindowedCogroupedKStream} instance that can be used to perform sliding
      * windowed aggregations.
      *
-     * @param windows
-     *        the specification of the aggregation {@link SlidingWindows}
-     *
+     * @param windows the specification of the aggregation {@link SlidingWindows}
      * @return an instance of {@link TimeWindowedCogroupedKStream}
      */
     TimeWindowedCogroupedKStream<K, VOut> windowedBy(final SlidingWindows windows);
@@ -316,9 +295,7 @@ public interface CogroupedKStream<K, VOut> {
      * Create a new {@link SessionWindowedCogroupedKStream} instance that can be used to perform session
      * windowed aggregations.
      *
-     * @param windows
-     *        the specification of the aggregation {@link SessionWindows}
-     *
+     * @param windows the specification of the aggregation {@link SessionWindows}
      * @return an instance of {@link SessionWindowedCogroupedKStream}
      */
     SessionWindowedCogroupedKStream<K, VOut> windowedBy(final SessionWindows windows);

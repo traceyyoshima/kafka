@@ -54,8 +54,8 @@ public class DeleteGroupsRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new DeleteGroupsResponse(new DeleteGroupsResponseData()
-            .setResults(getErrorResultCollection(data.groupsNames(), Errors.forException(e)))
-            .setThrottleTimeMs(throttleTimeMs)
+                .setResults(getErrorResultCollection(data.groupsNames(), Errors.forException(e)))
+                .setThrottleTimeMs(throttleTimeMs)
         );
     }
 
@@ -69,15 +69,15 @@ public class DeleteGroupsRequest extends AbstractRequest {
     }
 
     public static DeleteGroupsResponseData.DeletableGroupResultCollection getErrorResultCollection(
-        List<String> groupIds,
-        Errors error
+            List<String> groupIds,
+            Errors error
     ) {
         DeleteGroupsResponseData.DeletableGroupResultCollection resultCollection =
-            new DeleteGroupsResponseData.DeletableGroupResultCollection();
+                new DeleteGroupsResponseData.DeletableGroupResultCollection();
         groupIds.forEach(groupId -> resultCollection.add(
-            new DeleteGroupsResponseData.DeletableGroupResult()
-                .setGroupId(groupId)
-                .setErrorCode(error.code())
+                new DeleteGroupsResponseData.DeletableGroupResult()
+                        .setGroupId(groupId)
+                        .setErrorCode(error.code())
         ));
         return resultCollection;
     }

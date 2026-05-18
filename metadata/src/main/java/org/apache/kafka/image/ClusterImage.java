@@ -33,12 +33,12 @@ import java.util.Map;
  */
 public record ClusterImage(Map<Integer, BrokerRegistration> brokers, Map<Integer, ControllerRegistration> controllers) {
     public static final ClusterImage EMPTY = new ClusterImage(
-        Map.of(),
-        Map.of());
+            Map.of(),
+            Map.of());
 
     public ClusterImage(
-        Map<Integer, BrokerRegistration> brokers,
-        Map<Integer, ControllerRegistration> controllers
+            Map<Integer, BrokerRegistration> brokers,
+            Map<Integer, ControllerRegistration> controllers
     ) {
         this.brokers = Collections.unmodifiableMap(brokers);
         this.controllers = Collections.unmodifiableMap(controllers);

@@ -30,6 +30,7 @@ public class PlainAuthenticateCallback implements Callback {
 
     /**
      * Creates a callback with the password provided by the client
+     *
      * @param password The password provided by the client during SASL/PLAIN authentication
      */
     public PlainAuthenticateCallback(char[] password) {

@@ -32,9 +32,9 @@ public class ClientQuotaFilterComponent {
      * A filter to be applied.
      *
      * @param entityType the entity type the filter component applies to
-     * @param match if present, the name that's matched exactly
-     *              if empty, matches the default name
-     *              if null, matches any specified name
+     * @param match      if present, the name that's matched exactly
+     *                   if empty, matches the default name
+     *                   if null, matches any specified name
      */
     private ClientQuotaFilterComponent(String entityType, Optional<String> match) {
         this.entityType = Objects.requireNonNull(entityType);
@@ -81,9 +81,9 @@ public class ClientQuotaFilterComponent {
 
     /**
      * @return the optional match string, where:
-     *         if present, the name that's matched exactly
-     *         if empty, matches the default name
-     *         if null, matches any specified name
+     * if present, the name that's matched exactly
+     * if empty, matches the default name
+     * if null, matches any specified name
      */
     public Optional<String> match() {
         return this.match;

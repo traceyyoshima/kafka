@@ -29,23 +29,23 @@ public class CoordinatorOperationExceptionHelper {
      * This is the handler commonly used by all the operations that requires to convert errors to
      * coordinator errors. The handler also handles and logs unexpected errors.
      *
-     * @param operationName     The name of the operation.
-     * @param operationInput    The operation's input for logging purposes.
-     * @param exception         The exception to handle.
-     * @param handler           A function which takes an Errors and a String and builds the expected
-     *                          output. The String can be null. Note that the function could further
-     *                          transform the error depending on the context.
-     * @param log               The logger.
+     * @param operationName  The name of the operation.
+     * @param operationInput The operation's input for logging purposes.
+     * @param exception      The exception to handle.
+     * @param handler        A function which takes an Errors and a String and builds the expected
+     *                       output. The String can be null. Note that the function could further
+     *                       transform the error depending on the context.
+     * @param log            The logger.
+     * @param <IN>           The type of the operation input. It must be a toString'able object.
+     * @param <OUT>          The type of the value returned by handler.
      * @return The output built by the handler.
-     * @param <IN> The type of the operation input. It must be a toString'able object.
-     * @param <OUT> The type of the value returned by handler.
      */
     public static <IN, OUT> OUT handleOperationException(
-        String operationName,
-        IN operationInput,
-        Throwable exception,
-        BiFunction<Errors, String, OUT> handler,
-        Logger log
+            String operationName,
+            IN operationInput,
+            Throwable exception,
+            BiFunction<Errors, String, OUT> handler,
+            Logger log
     ) {
         ApiError apiError = ApiError.fromThrowable(exception);
 
@@ -61,12 +61,12 @@ public class CoordinatorOperationExceptionHelper {
                 // retriable error which older clients may not expect and retry correctly. We
                 // translate the error to `COORDINATOR_LOAD_IN_PROGRESS` because it causes clients
                 // to retry the request without an unnecessary coordinator lookup.
-                handler.apply(Errors.COORDINATOR_LOAD_IN_PROGRESS, null);
+                    handler.apply(Errors.COORDINATOR_LOAD_IN_PROGRESS, null);
             case UNKNOWN_TOPIC_OR_PARTITION, NOT_ENOUGH_REPLICAS, REQUEST_TIMED_OUT ->
-                handler.apply(Errors.COORDINATOR_NOT_AVAILABLE, null);
+                    handler.apply(Errors.COORDINATOR_NOT_AVAILABLE, null);
             case NOT_LEADER_OR_FOLLOWER, KAFKA_STORAGE_ERROR -> handler.apply(Errors.NOT_COORDINATOR, null);
             case MESSAGE_TOO_LARGE, RECORD_LIST_TOO_LARGE, INVALID_FETCH_SIZE ->
-                handler.apply(Errors.UNKNOWN_SERVER_ERROR, null);
+                    handler.apply(Errors.UNKNOWN_SERVER_ERROR, null);
             default -> handler.apply(apiError.error(), apiError.message());
         };
     }

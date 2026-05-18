@@ -37,9 +37,10 @@ public interface Selectable {
 
     /**
      * Begin establishing a socket connection to the given address identified by the given address
-     * @param id The id for this connection
-     * @param address The address to connect to
-     * @param sendBufferSize The send buffer for the socket
+     *
+     * @param id                The id for this connection
+     * @param address           The address to connect to
+     * @param sendBufferSize    The send buffer for the socket
      * @param receiveBufferSize The receive buffer for the socket
      * @throws IOException If we cannot begin connecting
      */
@@ -62,12 +63,14 @@ public interface Selectable {
 
     /**
      * Queue the given request for sending in the subsequent {@link #poll(long) poll()} calls
+     *
      * @param send The request to send
      */
     void send(NetworkSend send);
 
     /**
      * Do I/O. Reads, writes, connection establishment, etc.
+     *
      * @param timeout The amount of time to block if there is nothing to do
      * @throws IOException
      */
@@ -80,7 +83,7 @@ public interface Selectable {
 
     /**
      * The collection of receives that completed on the last {@link #poll(long) poll()} call.
-     *
+     * <p>
      * Note that the caller of this method assumes responsibility to close the NetworkReceive resources which may be
      * backed by a {@link MemoryPool}. In such scenarios (when NetworkReceive uses a {@link MemoryPool}), it is necessary
      * to close the {@link NetworkReceive} to prevent any memory leaks.
@@ -101,12 +104,14 @@ public interface Selectable {
 
     /**
      * Disable reads from the given connection
+     *
      * @param id The id for the connection
      */
     void mute(String id);
 
     /**
      * Re-enable reads from the given connection
+     *
      * @param id The id for the connection
      */
     void unmute(String id);
@@ -123,6 +128,7 @@ public interface Selectable {
 
     /**
      * returns true  if a channel is ready
+     *
      * @param id The id for the connection
      */
     boolean isChannelReady(String id);

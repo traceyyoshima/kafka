@@ -29,11 +29,11 @@ class PrintVersionAndExitAction implements ArgumentAction {
 
     @Override
     public void run(
-        ArgumentParser parser,
-        Argument arg,
-        Map<String, Object> attrs,
-        String flag,
-        Object value
+            ArgumentParser parser,
+            Argument arg,
+            Map<String, Object> attrs,
+            String flag,
+            Object value
     ) {
         String version = AppInfoParser.getVersion();
         String commitId = AppInfoParser.getCommitId();

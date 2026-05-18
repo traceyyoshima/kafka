@@ -48,20 +48,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TimestampedSegmentWithHeadersTest {
 
     private final RocksDBMetricsRecorder metricsRecorder =
-        new RocksDBMetricsRecorder("metrics-scope", "store-name");
+            new RocksDBMetricsRecorder("metrics-scope", "store-name");
 
     @BeforeEach
     public void setUp() {
         metricsRecorder.init(
-            new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime()),
-            new TaskId(0, 0)
+                new StreamsMetricsImpl(new Metrics(), "test-client", new MockTime()),
+                new TaskId(0, 0)
         );
     }
 
     @Test
     public void shouldDeleteStateDirectoryOnDestroy() throws Exception {
         final TimestampedSegmentWithHeaders segment =
-            new TimestampedSegmentWithHeaders("segment", "window", 0L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("segment", "window", 0L, Position.emptyPosition(), metricsRecorder);
         final String directoryPath = TestUtils.tempDirectory().getAbsolutePath();
         final File directory = new File(directoryPath);
 
@@ -80,11 +80,11 @@ public class TimestampedSegmentWithHeadersTest {
     @Test
     public void shouldBeEqualIfIdIsEqual() {
         final TimestampedSegmentWithHeaders segment =
-            new TimestampedSegmentWithHeaders("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegmentWithHeaders segmentSameId =
-            new TimestampedSegmentWithHeaders("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegmentWithHeaders segmentDifferentId =
-            new TimestampedSegmentWithHeaders("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
 
         assertEquals(segment, segment);
         assertEquals(segment, segmentSameId);
@@ -100,11 +100,11 @@ public class TimestampedSegmentWithHeadersTest {
     @Test
     public void shouldHashOnSegmentIdOnly() {
         final TimestampedSegmentWithHeaders segment =
-            new TimestampedSegmentWithHeaders("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("anyName", "anyName", 0L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegmentWithHeaders segmentSameId =
-            new TimestampedSegmentWithHeaders("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("someOtherName", "someOtherName", 0L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegmentWithHeaders segmentDifferentId =
-            new TimestampedSegmentWithHeaders("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("anyName", "anyName", 1L, Position.emptyPosition(), metricsRecorder);
 
         final Set<TimestampedSegmentWithHeaders> set = new HashSet<>();
         assertTrue(set.add(segment));
@@ -119,11 +119,11 @@ public class TimestampedSegmentWithHeadersTest {
     @Test
     public void shouldCompareSegmentIdOnly() {
         final TimestampedSegmentWithHeaders segment1 =
-            new TimestampedSegmentWithHeaders("a", "C", 50L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("a", "C", 50L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegmentWithHeaders segment2 =
-            new TimestampedSegmentWithHeaders("b", "B", 100L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("b", "B", 100L, Position.emptyPosition(), metricsRecorder);
         final TimestampedSegmentWithHeaders segment3 =
-            new TimestampedSegmentWithHeaders("c", "A", 0L, Position.emptyPosition(), metricsRecorder);
+                new TimestampedSegmentWithHeaders("c", "A", 0L, Position.emptyPosition(), metricsRecorder);
 
         assertEquals(0, segment1.compareTo(segment1));
         assertEquals(-1, segment1.compareTo(segment2));

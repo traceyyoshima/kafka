@@ -50,13 +50,13 @@ public class ClientSecretRequestFormatterTest extends OAuthBearerTest {
     @MethodSource("testFormatterMissingValuesSource")
     public void testFormatterMissingValues(String clientId, String clientSecret, boolean urlencode) {
         assertThrows(
-            ConfigException.class,
-            () -> new ClientSecretRequestFormatter(
-                clientId,
-                clientSecret,
-                SCOPE,
-                urlencode
-            )
+                ConfigException.class,
+                () -> new ClientSecretRequestFormatter(
+                        clientId,
+                        clientSecret,
+                        SCOPE,
+                        urlencode
+                )
         );
     }
 
@@ -75,9 +75,9 @@ public class ClientSecretRequestFormatterTest extends OAuthBearerTest {
     }
 
     private static Stream<Arguments> testFormatterMissingValuesSource() {
-        String[] clientIds = new String[] {null, "", "  ", CLIENT_ID};
-        String[] clientSecrets = new String[] {null, "", "  ", CLIENT_SECRET};
-        boolean[] urlencodes = new boolean[] {true, false};
+        String[] clientIds = new String[]{null, "", "  ", CLIENT_ID};
+        String[] clientSecrets = new String[]{null, "", "  ", CLIENT_SECRET};
+        boolean[] urlencodes = new boolean[]{true, false};
 
         List<Arguments> list = new ArrayList<>();
 
@@ -96,8 +96,8 @@ public class ClientSecretRequestFormatterTest extends OAuthBearerTest {
     }
 
     private static Stream<Arguments> testMissingScopesSource() {
-        String[] scopes = new String[] {null, "", "  "};
-        boolean[] urlencodes = new boolean[] {true, false};
+        String[] scopes = new String[]{null, "", "  "};
+        boolean[] urlencodes = new boolean[]{true, false};
 
         List<Arguments> list = new ArrayList<>();
 
@@ -112,21 +112,21 @@ public class ClientSecretRequestFormatterTest extends OAuthBearerTest {
 
     private static Stream<Arguments> testScopeEscapingSource() {
         return Stream.of(
-            Arguments.of("test-scope", true, "test-scope"),
-            Arguments.of("test-scope", false, "test-scope"),
-            Arguments.of("earth is great!", true, "earth+is+great%21"),
-            Arguments.of("earth is great!", false, "earth is great!"),
-            Arguments.of("what on earth?!?!?", true, "what+on+earth%3F%21%3F%21%3F"),
-            Arguments.of("what on earth?!?!?", false, "what on earth?!?!?")
+                Arguments.of("test-scope", true, "test-scope"),
+                Arguments.of("test-scope", false, "test-scope"),
+                Arguments.of("earth is great!", true, "earth+is+great%21"),
+                Arguments.of("earth is great!", false, "earth is great!"),
+                Arguments.of("what on earth?!?!?", true, "what+on+earth%3F%21%3F%21%3F"),
+                Arguments.of("what on earth?!?!?", false, "what on earth?!?!?")
         );
     }
 
     private void assertRequestBodyEquals(String scope, boolean urlencode, String expected) {
         ClientSecretRequestFormatter formatter = new ClientSecretRequestFormatter(
-            CLIENT_ID,
-            CLIENT_SECRET,
-            scope,
-            urlencode
+                CLIENT_ID,
+                CLIENT_SECRET,
+                scope,
+                urlencode
         );
         String actual = formatter.formatBody();
         assertEquals(expected, actual);

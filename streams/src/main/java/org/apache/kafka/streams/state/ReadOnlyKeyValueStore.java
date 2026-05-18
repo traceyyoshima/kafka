@@ -109,14 +109,14 @@ public interface ReadOnlyKeyValueStore<K, V> {
      * and must not return null values.
      * Since {@code prefixScan()} relies on byte lexicographical ordering and not on the ordering of the key type, results for some types might be unexpected.
      * For example, if the key type is {@code Integer}, and the store contains keys [1, 2, 11, 13],
-     * then running {@code store.prefixScan(1, new IntegerSerializer())} will return [1] and not [1,11,13]. 
-     * In contrast, if the key type is {@code String} the keys will be sorted [1, 11, 13, 2] in the store and {@code store.prefixScan(1, new StringSerializer())} will return [1,11,13]. 
+     * then running {@code store.prefixScan(1, new IntegerSerializer())} will return [1] and not [1,11,13].
+     * In contrast, if the key type is {@code String} the keys will be sorted [1, 11, 13, 2] in the store and {@code store.prefixScan(1, new StringSerializer())} will return [1,11,13].
      * In both cases {@code prefixScan()} starts the scan at 1 and stops at 2.
      *
-     * @param prefix The prefix.
+     * @param prefix              The prefix.
      * @param prefixKeySerializer Serializer for the Prefix key type
-     * @param <PS> Prefix Serializer type
-     * @param <P> Prefix Type.
+     * @param <PS>                Prefix Serializer type
+     * @param <P>                 Prefix Type.
      * @return The iterator for keys having the specified prefix.
      * @throws InvalidStateStoreException if the store is not initialized
      */

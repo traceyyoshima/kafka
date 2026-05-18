@@ -136,29 +136,47 @@ public class ExactlyOnceWorkerSourceTaskTest {
     private SourceConnectorConfig sourceConfig;
     private Plugins plugins;
     private MockConnectMetrics metrics;
-    @Mock private ErrorHandlingMetrics errorHandlingMetrics;
+    @Mock
+    private ErrorHandlingMetrics errorHandlingMetrics;
     private Time time;
     private ExactlyOnceWorkerSourceTask workerTask;
-    @Mock private SourceTask sourceTask;
-    @Mock private Converter keyConverter;
-    @Mock private Converter valueConverter;
-    @Mock private HeaderConverter headerConverter;
-    @Mock private TransformationChain<SourceRecord, SourceRecord> transformationChain;
-    @Mock private Producer<byte[], byte[]> producer;
-    @Mock private TopicAdmin admin;
-    @Mock private CloseableOffsetStorageReader offsetReader;
-    @Mock private OffsetStorageWriter offsetWriter;
-    @Mock private ClusterConfigState clusterConfigState;
-    @Mock private TaskStatus.Listener statusListener;
-    @Mock private StatusBackingStore statusBackingStore;
-    @Mock private ConnectorOffsetBackingStore offsetStore;
-    @Mock private Runnable preProducerCheck;
-    @Mock private Runnable postProducerCheck;
+    @Mock
+    private SourceTask sourceTask;
+    @Mock
+    private Converter keyConverter;
+    @Mock
+    private Converter valueConverter;
+    @Mock
+    private HeaderConverter headerConverter;
+    @Mock
+    private TransformationChain<SourceRecord, SourceRecord> transformationChain;
+    @Mock
+    private Producer<byte[], byte[]> producer;
+    @Mock
+    private TopicAdmin admin;
+    @Mock
+    private CloseableOffsetStorageReader offsetReader;
+    @Mock
+    private OffsetStorageWriter offsetWriter;
+    @Mock
+    private ClusterConfigState clusterConfigState;
+    @Mock
+    private TaskStatus.Listener statusListener;
+    @Mock
+    private StatusBackingStore statusBackingStore;
+    @Mock
+    private ConnectorOffsetBackingStore offsetStore;
+    @Mock
+    private Runnable preProducerCheck;
+    @Mock
+    private Runnable postProducerCheck;
 
     private static final Map<String, String> TASK_PROPS = new HashMap<>();
+
     static {
         TASK_PROPS.put(TaskConfig.TASK_CLASS_CONFIG, TestSourceTask.class.getName());
     }
+
     private static final TaskConfig TASK_CONFIG = new TaskConfig(TASK_PROPS);
 
     private static final SourceRecord SOURCE_RECORD_1 =
@@ -277,8 +295,8 @@ public class ExactlyOnceWorkerSourceTaskTest {
     }
 
     private void createWorkerTask(TargetState initialState, Converter keyConverter, Converter valueConverter, HeaderConverter headerConverter) {
-        Plugin<Converter> keyConverterPlugin = metrics.wrap(keyConverter, taskId,  true);
-        Plugin<Converter> valueConverterPlugin = metrics.wrap(valueConverter, taskId,  false);
+        Plugin<Converter> keyConverterPlugin = metrics.wrap(keyConverter, taskId, true);
+        Plugin<Converter> valueConverterPlugin = metrics.wrap(valueConverter, taskId, false);
         Plugin<HeaderConverter> headerConverterPlugin = metrics.wrap(headerConverter, taskId);
         workerTask = new ExactlyOnceWorkerSourceTask(taskId, sourceTask, statusListener, initialState, keyConverterPlugin, valueConverterPlugin, headerConverterPlugin,
                 transformationChain, producer, admin, TopicCreationGroup.configuredGroups(sourceConfig), offsetReader, offsetWriter, offsetStore,

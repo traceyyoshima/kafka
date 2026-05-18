@@ -35,17 +35,17 @@ public class PCollectionsImmutableSet<E> implements ImmutableSet<E> {
     private final MapPSet<E> underlying;
 
     /**
-     * @return a wrapped hash-based persistent set that is empty
      * @param <E> the element type
+     * @return a wrapped hash-based persistent set that is empty
      */
     public static <E> PCollectionsImmutableSet<E> empty() {
         return new PCollectionsImmutableSet<>(HashTreePSet.empty());
     }
 
     /**
-     * @param e the element
-     * @return a wrapped hash-based persistent set that has a single element
+     * @param e   the element
      * @param <E> the element type
+     * @return a wrapped hash-based persistent set that has a single element
      */
     public static <E> PCollectionsImmutableSet<E> singleton(E e) {
         return new PCollectionsImmutableSet<>(HashTreePSet.singleton(e));
@@ -59,7 +59,7 @@ public class PCollectionsImmutableSet<E> implements ImmutableSet<E> {
     public ImmutableSet<E> added(E e) {
         return new PCollectionsImmutableSet<>(underlying().plus(e));
     }
-    
+
     @Override
     public ImmutableSet<E> removed(E e) {
         return new PCollectionsImmutableSet<>(underlying().minus(e));
@@ -178,8 +178,8 @@ public class PCollectionsImmutableSet<E> implements ImmutableSet<E> {
     @Override
     public String toString() {
         return "PCollectionsImmutableSet{" +
-            "underlying=" + underlying() +
-            '}';
+                "underlying=" + underlying() +
+                '}';
     }
 
     // package-private for testing

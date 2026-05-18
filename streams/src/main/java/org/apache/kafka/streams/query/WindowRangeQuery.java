@@ -61,9 +61,9 @@ public class WindowRangeQuery<K, V> implements Query<KeyValueIterator<Windowed<K
     @Override
     public String toString() {
         return "WindowRangeQuery{" +
-            "key=" + key +
-            ", timeFrom=" + timeFrom +
-            ", timeTo=" + timeTo +
-            '}';
+                "key=" + key +
+                ", timeFrom=" + timeFrom +
+                ", timeTo=" + timeTo +
+                '}';
     }
 }

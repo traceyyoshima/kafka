@@ -71,14 +71,14 @@ public class ListConfigResourcesRequest extends AbstractRequest {
     public ListConfigResourcesResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         Errors error = Errors.forException(e);
         ListConfigResourcesResponseData response = new ListConfigResourcesResponseData()
-            .setErrorCode(error.code())
-            .setThrottleTimeMs(throttleTimeMs);
+                .setErrorCode(error.code())
+                .setThrottleTimeMs(throttleTimeMs);
         return new ListConfigResourcesResponse(response);
     }
 
     public static ListConfigResourcesRequest parse(Readable readable, short version) {
         return new ListConfigResourcesRequest(new ListConfigResourcesRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 
     @Override
@@ -94,13 +94,13 @@ public class ListConfigResourcesRequest extends AbstractRequest {
      */
     public Set<Byte> supportedResourceTypes() {
         return version() == 0 ?
-            Set.of(ConfigResource.Type.CLIENT_METRICS.id()) :
-            Set.of(
-                ConfigResource.Type.TOPIC.id(),
-                ConfigResource.Type.BROKER.id(),
-                ConfigResource.Type.BROKER_LOGGER.id(),
-                ConfigResource.Type.CLIENT_METRICS.id(),
-                ConfigResource.Type.GROUP.id()
-            );
+                Set.of(ConfigResource.Type.CLIENT_METRICS.id()) :
+                Set.of(
+                        ConfigResource.Type.TOPIC.id(),
+                        ConfigResource.Type.BROKER.id(),
+                        ConfigResource.Type.BROKER_LOGGER.id(),
+                        ConfigResource.Type.CLIENT_METRICS.id(),
+                        ConfigResource.Type.GROUP.id()
+                );
     }
 }

@@ -48,7 +48,7 @@ public class DeferredEventQueue {
     /**
      * Complete some purgatory entries.
      *
-     * @param offset        The offset which the high water mark has advanced to.
+     * @param offset The offset which the high water mark has advanced to.
      */
     public void completeUpTo(long offset) {
         Iterator<Entry<Long, List<DeferredEvent>>> iter = pending.entrySet().iterator();
@@ -74,7 +74,7 @@ public class DeferredEventQueue {
     /**
      * Fail all deferred events with the provided exception.
      *
-     * @param exception     The exception to fail the entries with.
+     * @param exception The exception to fail the entries with.
      */
     public void failAll(Throwable exception) {
         Iterator<Entry<Long, List<DeferredEvent>>> iter = pending.entrySet().iterator();
@@ -91,16 +91,16 @@ public class DeferredEventQueue {
     /**
      * Add a new deferred event to be completed by the provided offset.
      *
-     * @param offset        The offset to add the new event at.
-     * @param event         The new event.
+     * @param offset The offset to add the new event at.
+     * @param event  The new event.
      */
     public void add(long offset, DeferredEvent event) {
         if (!pending.isEmpty()) {
             long lastKey = pending.lastKey();
             if (offset < lastKey) {
                 throw new IllegalArgumentException("There is already a deferred event with " +
-                    "offset " + lastKey + ". We should not add one with an offset of " +
-                    offset + " which is lower than that.");
+                        "offset " + lastKey + ". We should not add one with an offset of " +
+                        offset + " which is lower than that.");
             }
         }
         List<DeferredEvent> events = pending.computeIfAbsent(offset, k -> new ArrayList<>());

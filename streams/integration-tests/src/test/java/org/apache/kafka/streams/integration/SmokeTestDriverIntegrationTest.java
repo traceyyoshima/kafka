@@ -107,7 +107,7 @@ public class SmokeTestDriverIntegrationTest {
         public void run() {
             try {
                 final Map<String, Set<Integer>> allData =
-                    generate(bootstrapServers, numKeys, maxRecordsPerKey, Duration.ofSeconds(20));
+                        generate(bootstrapServers, numKeys, maxRecordsPerKey, Duration.ofSeconds(20));
                 result = verify(bootstrapServers, allData, maxRecordsPerKey, false);
 
             } catch (final Exception ex) {
@@ -132,12 +132,12 @@ public class SmokeTestDriverIntegrationTest {
     // The processing thread variations where disabled since they triggered a race condition, see KAFKA-19696
     @ParameterizedTest
     @CsvSource({
-        "false, true",
-        "false, false"
+            "false, true",
+            "false, false"
     })
     public void shouldWorkWithRebalance(
-        final boolean processingThreadsEnabled,
-        final boolean streamsProtocolEnabled
+            final boolean processingThreadsEnabled,
+            final boolean streamsProtocolEnabled
     ) throws InterruptedException {
         Exit.setExitProcedure((statusCode, message) -> {
             throw new AssertionError("Test called exit(). code:" + statusCode + " message:" + message);
@@ -228,9 +228,9 @@ public class SmokeTestDriverIntegrationTest {
         // We check that we did no have to reprocess any records, which would indicate a bug since everything
         // runs locally in this test.
         assertEquals(expectedRecords, numDataRecordsProcessed,
-            String.format("It seems we had to reprocess records, expected %d records, processed %d records.",
-                expectedRecords,
-                numDataRecordsProcessed)
+                String.format("It seems we had to reprocess records, expected %d records, processed %d records.",
+                        expectedRecords,
+                        numDataRecordsProcessed)
         );
     }
 }

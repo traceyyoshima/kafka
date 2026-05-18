@@ -36,7 +36,7 @@ public class StartAndStopLatch {
     private final Time clock;
 
     StartAndStopLatch(int expectedStarts, int expectedStops, Consumer<StartAndStopLatch> uponCompletion,
-                 List<StartAndStopLatch> dependents, Time clock) {
+                      List<StartAndStopLatch> dependents, Time clock) {
         this.startLatch = new CountDownLatch(Math.max(expectedStarts, 0));
         this.stopLatch = new CountDownLatch(Math.max(expectedStops, 0));
         this.dependents = dependents;
@@ -89,9 +89,9 @@ public class StartAndStopLatch {
      * @param timeout the maximum time to wait
      * @param unit    the time unit of the {@code timeout} argument
      * @return {@code true} if the counts reached zero and {@code false}
-     *         if the waiting time elapsed before the counts reached zero
+     * if the waiting time elapsed before the counts reached zero
      * @throws InterruptedException if the current thread is interrupted
-     *         while waiting
+     *                              while waiting
      */
     public boolean await(long timeout, TimeUnit unit) throws InterruptedException {
         final long start = clock.milliseconds();

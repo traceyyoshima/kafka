@@ -155,24 +155,24 @@ public class IQv2EndpointToPartitionsIntegrationTest {
                             IntegrationTestUtils.DEFAULT_TIMEOUT,
                             () -> "Kafka Streams one or two never transitioned to a RUNNING state.");
 
-                    waitForCondition(() ->  {
-                        final ThreadMetadata threadMetadata = streamsOne.metadataForLocalThreads().iterator().next();
-                        return threadMetadata.activeTasks().size() == 2 && threadMetadata.standbyTasks().size() == expectedStandbyCount;
-                    }, TestUtils.DEFAULT_MAX_WAIT_MS,
+                    waitForCondition(() -> {
+                                final ThreadMetadata threadMetadata = streamsOne.metadataForLocalThreads().iterator().next();
+                                return threadMetadata.activeTasks().size() == 2 && threadMetadata.standbyTasks().size() == expectedStandbyCount;
+                            }, TestUtils.DEFAULT_MAX_WAIT_MS,
                             "KafkaStreams one never released active tasks and received standby task");
 
                     waitForCondition(() -> {
-                        final ThreadMetadata threadMetadata = streamsTwo.metadataForLocalThreads().iterator().next();
-                        return threadMetadata.activeTasks().size() == 2 && threadMetadata.standbyTasks().size() == expectedStandbyCount;
-                    }, TestUtils.DEFAULT_MAX_WAIT_MS,
+                                final ThreadMetadata threadMetadata = streamsTwo.metadataForLocalThreads().iterator().next();
+                                return threadMetadata.activeTasks().size() == 2 && threadMetadata.standbyTasks().size() == expectedStandbyCount;
+                            }, TestUtils.DEFAULT_MAX_WAIT_MS,
                             "KafkaStreams two never received active tasks and standby");
 
                     waitForCondition(() -> {
-                        final List<StreamsMetadata> metadata = new ArrayList<>(streamsTwo.metadataForAllStreamsClients());
-                        return metadata.size() == 2 &&
-                               metadata.get(0).standbyTopicPartitions().size() == expectedStandbyCount &&
-                               metadata.get(1).standbyTopicPartitions().size() == expectedStandbyCount;
-                    }, TestUtils.DEFAULT_MAX_WAIT_MS,
+                                final List<StreamsMetadata> metadata = new ArrayList<>(streamsTwo.metadataForAllStreamsClients());
+                                return metadata.size() == 2 &&
+                                        metadata.get(0).standbyTopicPartitions().size() == expectedStandbyCount &&
+                                        metadata.get(1).standbyTopicPartitions().size() == expectedStandbyCount;
+                            }, TestUtils.DEFAULT_MAX_WAIT_MS,
                             "Kafka Streams clients 1 and 2 never got metadata about standby tasks");
 
                     waitForCondition(() -> streamsOne.metadataForAllStreamsClients().iterator().next().topicPartitions().size() == 2,

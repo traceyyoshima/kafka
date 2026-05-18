@@ -64,10 +64,9 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 
-
 public class InternalTopicManager {
     private static final String BUG_ERROR_MESSAGE = "This indicates a bug. " +
-        "Please report at https://issues.apache.org/jira/projects/KAFKA/issues or to the dev-mailing list (https://kafka.apache.org/contact).";
+            "Please report at https://issues.apache.org/jira/projects/KAFKA/issues or to the dev-mailing list (https://kafka.apache.org/contact).";
     private static final String INTERRUPTED_ERROR_MESSAGE = "Thread got interrupted. " + BUG_ERROR_MESSAGE;
 
     private final Logger log;
@@ -101,10 +100,10 @@ public class InternalTopicManager {
         retryTimeoutMs = new QuietConsumerConfig(consumerConfig).getInt(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG) / 2L;
 
         log.debug("Configs:" + Utils.NL +
-            "\t{} = {}" + Utils.NL +
-            "\t{} = {}",
-            StreamsConfig.REPLICATION_FACTOR_CONFIG, replicationFactor,
-            StreamsConfig.WINDOW_STORE_CHANGE_LOG_ADDITIONAL_RETENTION_MS_CONFIG, windowChangeLogAdditionalRetention);
+                        "\t{} = {}" + Utils.NL +
+                        "\t{} = {}",
+                StreamsConfig.REPLICATION_FACTOR_CONFIG, replicationFactor,
+                StreamsConfig.WINDOW_STORE_CHANGE_LOG_ADDITIONAL_RETENTION_MS_CONFIG, windowChangeLogAdditionalRetention);
 
         for (final Map.Entry<String, Object> entry : streamsConfig.originalsWithPrefix(StreamsConfig.TOPIC_PREFIX).entrySet()) {
             if (entry.getValue() != null) {
@@ -127,7 +126,7 @@ public class InternalTopicManager {
 
         public void addMisconfiguration(final String topic, final String message) {
             misconfigurationsForTopics.computeIfAbsent(topic, ignored -> new ArrayList<>())
-                .add(message);
+                    .add(message);
         }
 
         public Map<String, List<String>> misconfigurationsForTopics() {
@@ -137,17 +136,16 @@ public class InternalTopicManager {
 
     /**
      * Validates the internal topics passed.
-     *
+     * <p>
      * The validation of the internal topics verifies if the topics:
      * - are missing on the brokers
      * - have the expected number of partitions
      * - have configured a clean-up policy that avoids data loss
      *
      * @param topicConfigs internal topics to validate
-     *
      * @return validation results that contains
-     *         - the set of missing internal topics on the brokers
-     *         - descriptions of misconfigurations per topic
+     * - the set of missing internal topics on the brokers
+     * - descriptions of misconfigurations per topic
      */
     public ValidationResult validate(final Map<String, InternalTopicConfig> topicConfigs) {
         log.info("Starting to validate internal topics {}.", topicConfigs.keySet());
@@ -167,31 +165,31 @@ public class InternalTopicManager {
             Map<String, KafkaFuture<Config>> configsForTopic = Collections.emptyMap();
             if (!topicConfigsStillToValidate.isEmpty()) {
                 final DescribeConfigsResult describeConfigsResult = adminClient.describeConfigs(
-                    topicConfigsStillToValidate.stream()
-                        .map(topic -> new ConfigResource(Type.TOPIC, topic))
-                        .collect(Collectors.toSet())
+                        topicConfigsStillToValidate.stream()
+                                .map(topic -> new ConfigResource(Type.TOPIC, topic))
+                                .collect(Collectors.toSet())
                 );
                 configsForTopic = describeConfigsResult.values().entrySet().stream()
-                    .collect(Collectors.toMap(entry -> entry.getKey().name(), Map.Entry::getValue));
+                        .collect(Collectors.toMap(entry -> entry.getKey().name(), Map.Entry::getValue));
             }
 
             while (!descriptionsForTopic.isEmpty() || !configsForTopic.isEmpty()) {
                 if (!descriptionsForTopic.isEmpty()) {
                     doValidateTopic(
-                        validationResult,
-                        descriptionsForTopic,
-                        topicConfigs,
-                        topicDescriptionsStillToValidate,
-                        (streamsSide, brokerSide) -> validatePartitionCount(validationResult, streamsSide, brokerSide)
+                            validationResult,
+                            descriptionsForTopic,
+                            topicConfigs,
+                            topicDescriptionsStillToValidate,
+                            (streamsSide, brokerSide) -> validatePartitionCount(validationResult, streamsSide, brokerSide)
                     );
                 }
                 if (!configsForTopic.isEmpty()) {
                     doValidateTopic(
-                        validationResult,
-                        configsForTopic,
-                        topicConfigs,
-                        topicConfigsStillToValidate,
-                        (streamsSide, brokerSide) -> validateCleanupPolicy(validationResult, streamsSide, brokerSide)
+                            validationResult,
+                            configsForTopic,
+                            topicConfigs,
+                            topicConfigsStillToValidate,
+                            (streamsSide, brokerSide) -> validateCleanupPolicy(validationResult, streamsSide, brokerSide)
                     );
                 }
 
@@ -200,12 +198,12 @@ public class InternalTopicManager {
                 topicsStillToValidate.addAll(topicConfigsStillToValidate);
 
                 maybeThrowTimeout(new TimeoutContext(
-                    topicsStillToValidate,
-                    deadline,
-                    "Validation timeout",
-                    String.format("Could not validate internal topics within %d milliseconds. " +
-                        "This can happen if the Kafka cluster is temporarily not available.", retryTimeoutMs),
-                    null
+                        topicsStillToValidate,
+                        deadline,
+                        "Validation timeout",
+                        String.format("Could not validate internal topics within %d milliseconds. " +
+                                "This can happen if the Kafka cluster is temporarily not available.", retryTimeoutMs),
+                        null
                 ));
 
                 if (!descriptionsForTopic.isEmpty() || !configsForTopic.isEmpty()) {
@@ -214,9 +212,9 @@ public class InternalTopicManager {
             }
 
             maybeSleep(
-                Arrays.asList(topicDescriptionsStillToValidate, topicConfigsStillToValidate),
-                deadline,
-                "validated"
+                    Arrays.asList(topicDescriptionsStillToValidate, topicConfigsStillToValidate),
+                    deadline,
+                    "validated"
             );
         }
 
@@ -253,8 +251,8 @@ public class InternalTopicManager {
                     } else {
                         log.error("Unexpected error during internal topic validation: ", cause);
                         throw new StreamsException(
-                            String.format("Could not validate internal topic %s for the following reason: ", topicName),
-                            cause
+                                String.format("Could not validate internal topic %s for the following reason: ", topicName),
+                                cause
                         );
                     }
                 } catch (final InterruptedException interruptedException) {
@@ -271,14 +269,14 @@ public class InternalTopicManager {
                                         final TopicDescription topicDescription) {
         final String topicName = topicConfig.name();
         final int requiredPartitionCount = topicConfig.numberOfPartitions()
-            .orElseThrow(() -> new IllegalStateException("No partition count is specified for internal topic " +
-                topicName + ". " + BUG_ERROR_MESSAGE));
+                .orElseThrow(() -> new IllegalStateException("No partition count is specified for internal topic " +
+                        topicName + ". " + BUG_ERROR_MESSAGE));
         final int actualPartitionCount = topicDescription.partitions().size();
         if (actualPartitionCount != requiredPartitionCount) {
             validationResult.addMisconfiguration(
-                topicName,
-                "Internal topic " + topicName + " requires " + requiredPartitionCount + " partitions, " +
-                "but the existing topic on the broker has " + actualPartitionCount + " partitions."
+                    topicName,
+                    "Internal topic " + topicName + " requires " + requiredPartitionCount + " partitions, " +
+                            "but the existing topic on the broker has " + actualPartitionCount + " partitions."
             );
         }
     }
@@ -306,10 +304,10 @@ public class InternalTopicManager {
         final String cleanupPolicy = getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.CLEANUP_POLICY_CONFIG, topicName);
         if (cleanupPolicy.contains(TopicConfig.CLEANUP_POLICY_DELETE)) {
             validationResult.addMisconfiguration(
-                topicName,
-                "Cleanup policy (" + TopicConfig.CLEANUP_POLICY_CONFIG + ") of existing internal topic "
-                    + topicName + " should not contain \""
-                + TopicConfig.CLEANUP_POLICY_DELETE + "\"."
+                    topicName,
+                    "Cleanup policy (" + TopicConfig.CLEANUP_POLICY_CONFIG + ") of existing internal topic "
+                            + topicName + " should not contain \""
+                            + TopicConfig.CLEANUP_POLICY_DELETE + "\"."
             );
         }
     }
@@ -321,24 +319,24 @@ public class InternalTopicManager {
         final String cleanupPolicy = getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.CLEANUP_POLICY_CONFIG, topicName);
         if (cleanupPolicy.contains(TopicConfig.CLEANUP_POLICY_DELETE)) {
             final long brokerSideRetentionMs =
-                Long.parseLong(getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.RETENTION_MS_CONFIG, topicName));
+                    Long.parseLong(getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.RETENTION_MS_CONFIG, topicName));
             final Map<String, String> streamsSideConfig =
-                topicConfig.properties(defaultTopicConfigs, windowChangeLogAdditionalRetention);
+                    topicConfig.properties(defaultTopicConfigs, windowChangeLogAdditionalRetention);
             final long streamsSideRetentionMs = Long.parseLong(streamsSideConfig.get(TopicConfig.RETENTION_MS_CONFIG));
             if (brokerSideRetentionMs < streamsSideRetentionMs) {
                 validationResult.addMisconfiguration(
-                    topicName,
-                    "Retention time (" + TopicConfig.RETENTION_MS_CONFIG + ") of existing internal topic "
-                        + topicName + " is " + brokerSideRetentionMs + " but should be " + streamsSideRetentionMs + " or larger."
+                        topicName,
+                        "Retention time (" + TopicConfig.RETENTION_MS_CONFIG + ") of existing internal topic "
+                                + topicName + " is " + brokerSideRetentionMs + " but should be " + streamsSideRetentionMs + " or larger."
                 );
             }
             final String brokerSideRetentionBytes =
-                getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.RETENTION_BYTES_CONFIG, topicName);
+                    getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.RETENTION_BYTES_CONFIG, topicName);
             if (brokerSideRetentionBytes != null) {
                 validationResult.addMisconfiguration(
-                    topicName,
-                    "Retention byte (" + TopicConfig.RETENTION_BYTES_CONFIG + ") of existing internal topic "
-                        + topicName + " is set but it should be unset."
+                        topicName,
+                        "Retention byte (" + TopicConfig.RETENTION_BYTES_CONFIG + ") of existing internal topic "
+                                + topicName + " is set but it should be unset."
                 );
             }
         }
@@ -352,23 +350,23 @@ public class InternalTopicManager {
 
         if (cleanupPolicy.contains(TopicConfig.CLEANUP_POLICY_DELETE)) {
             validationResult.addMisconfiguration(
-                topicName,
-                "Cleanup policy (" + TopicConfig.CLEANUP_POLICY_CONFIG + ") of existing internal topic "
-                    + topicName + " should not contain \""
-                    + TopicConfig.CLEANUP_POLICY_DELETE + "\"."
+                    topicName,
+                    "Cleanup policy (" + TopicConfig.CLEANUP_POLICY_CONFIG + ") of existing internal topic "
+                            + topicName + " should not contain \""
+                            + TopicConfig.CLEANUP_POLICY_DELETE + "\"."
             );
         }
 
         final long brokerSideCompactionLagMs =
-            Long.parseLong(getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.MIN_COMPACTION_LAG_MS_CONFIG, topicName));
+                Long.parseLong(getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.MIN_COMPACTION_LAG_MS_CONFIG, topicName));
         final Map<String, String> streamsSideConfig =
-            topicConfig.properties(defaultTopicConfigs, windowChangeLogAdditionalRetention);
+                topicConfig.properties(defaultTopicConfigs, windowChangeLogAdditionalRetention);
         final long streamsSideCompactionLagMs = Long.parseLong(streamsSideConfig.get(TopicConfig.MIN_COMPACTION_LAG_MS_CONFIG));
         if (brokerSideCompactionLagMs < streamsSideCompactionLagMs) {
             validationResult.addMisconfiguration(
-                topicName,
-                "Min compaction lag (" + TopicConfig.MIN_COMPACTION_LAG_MS_CONFIG + ") of existing internal topic "
-                    + topicName + " is " + brokerSideCompactionLagMs + " but should be " + streamsSideCompactionLagMs + " or larger."
+                    topicName,
+                    "Min compaction lag (" + TopicConfig.MIN_COMPACTION_LAG_MS_CONFIG + ") of existing internal topic "
+                            + topicName + " is " + brokerSideCompactionLagMs + " but should be " + streamsSideCompactionLagMs + " or larger."
             );
         }
     }
@@ -380,27 +378,27 @@ public class InternalTopicManager {
         final String cleanupPolicy = getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.CLEANUP_POLICY_CONFIG, topicName);
         if (cleanupPolicy.contains(TopicConfig.CLEANUP_POLICY_COMPACT)) {
             validationResult.addMisconfiguration(
-                topicName,
-                "Cleanup policy (" + TopicConfig.CLEANUP_POLICY_CONFIG + ") of existing internal topic "
-                    + topicName + " should not contain \"" + TopicConfig.CLEANUP_POLICY_COMPACT + "\"."
+                    topicName,
+                    "Cleanup policy (" + TopicConfig.CLEANUP_POLICY_CONFIG + ") of existing internal topic "
+                            + topicName + " should not contain \"" + TopicConfig.CLEANUP_POLICY_COMPACT + "\"."
             );
         } else if (cleanupPolicy.contains(TopicConfig.CLEANUP_POLICY_DELETE)) {
             final long brokerSideRetentionMs =
-                Long.parseLong(getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.RETENTION_MS_CONFIG, topicName));
+                    Long.parseLong(getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.RETENTION_MS_CONFIG, topicName));
             if (brokerSideRetentionMs != -1) {
                 validationResult.addMisconfiguration(
-                    topicName,
-                    "Retention time (" + TopicConfig.RETENTION_MS_CONFIG + ") of existing internal topic "
-                        + topicName + " is " + brokerSideRetentionMs + " but should be -1."
+                        topicName,
+                        "Retention time (" + TopicConfig.RETENTION_MS_CONFIG + ") of existing internal topic "
+                                + topicName + " is " + brokerSideRetentionMs + " but should be -1."
                 );
             }
             final String brokerSideRetentionBytes =
-                getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.RETENTION_BYTES_CONFIG, topicName);
+                    getBrokerSideConfigValue(brokerSideTopicConfig, TopicConfig.RETENTION_BYTES_CONFIG, topicName);
             if (brokerSideRetentionBytes != null) {
                 validationResult.addMisconfiguration(
-                    topicName,
-                    "Retention byte (" + TopicConfig.RETENTION_BYTES_CONFIG + ") of existing internal topic "
-                        + topicName + " is set but it should be unset."
+                        topicName,
+                        "Retention byte (" + TopicConfig.RETENTION_BYTES_CONFIG + ") of existing internal topic "
+                                + topicName + " is set but it should be unset."
                 );
             }
         }
@@ -412,7 +410,7 @@ public class InternalTopicManager {
         final ConfigEntry brokerSideConfigEntry = brokerSideTopicConfig.get(configName);
         if (brokerSideConfigEntry == null) {
             throw new IllegalStateException("The config " + configName + " for topic " +
-                topicName + " could not be " + "retrieved from the brokers. " + BUG_ERROR_MESSAGE);
+                    topicName + " could not be " + "retrieved from the brokers. " + BUG_ERROR_MESSAGE);
         }
         return brokerSideConfigEntry.value();
     }
@@ -436,17 +434,17 @@ public class InternalTopicManager {
 
                 if (currentWallClockMs >= deadlineMs) {
                     final String timeoutError = String.format(
-                        "Could not create topics within %d milliseconds. " +
-                            "This can happen if the Kafka cluster is temporarily not available.",
-                        retryTimeoutMs);
+                            "Could not create topics within %d milliseconds. " +
+                                    "This can happen if the Kafka cluster is temporarily not available.",
+                            retryTimeoutMs);
                     log.error(timeoutError);
                     throw new TimeoutException(timeoutError);
                 }
                 log.info(
-                    "Topics {} could not be describe fully. Will retry in {} milliseconds. Remaining time in milliseconds: {}",
-                    topics,
-                    retryBackOffMs,
-                    deadlineMs - currentWallClockMs
+                        "Topics {} could not be describe fully. Will retry in {} milliseconds. Remaining time in milliseconds: {}",
+                        topics,
+                        retryBackOffMs,
+                        deadlineMs - currentWallClockMs
                 );
                 Utils.sleep(retryBackOffMs);
             }
@@ -457,10 +455,11 @@ public class InternalTopicManager {
 
     /**
      * Prepares a set of given internal topics.
-     *
+     * <p>
      * If a topic does not exist creates a new topic.
      * If a topic with the correct number of partitions exists ignores it.
      * If a topic exists already but has different number of partitions we fail and throw exception requesting user to reset the app before restarting again.
+     *
      * @return the set of topics which had to be newly created
      */
     public Set<String> makeReady(final Map<String, InternalTopicConfig> topics) {
@@ -498,11 +497,11 @@ public class InternalTopicManager {
             }
             if (!topicsNotReady.isEmpty()) {
                 maybeThrowTimeout(new TimeoutContext(
-                    topicsNotReady,
-                    deadlineMs,
-                    "MakeReady timeout",
-                    String.format("Could not create topics within %d milliseconds. This can happen if the Kafka cluster is temporarily not available.", retryTimeoutMs),
-                    null
+                        topicsNotReady,
+                        deadlineMs,
+                        "MakeReady timeout",
+                        String.format("Could not create topics within %d milliseconds. This can happen if the Kafka cluster is temporarily not available.", retryTimeoutMs),
+                        null
                 ));
 
             }
@@ -516,7 +515,7 @@ public class InternalTopicManager {
         final Set<String> topicsNotYetCreated = identifyTopicsNotCreated(topics, tempUnknownTopics);
 
         final Set<NewTopic> topicsToCreate = new HashSet<>();
-        
+
         for (final String topicName : topicsNotYetCreated) {
             // Topic already exists or non-deterministic result
             if (tempUnknownTopics.contains(topicName) || topics.get(topicName) == null) {
@@ -554,7 +553,7 @@ public class InternalTopicManager {
                 createTopicResult.getValue().get();
                 topicsNotReady.remove(topicName);
                 createdTopics.add(topicName);
-                
+
             } catch (final InterruptedException fatalException) {
                 // this should not happen; if it ever happens it indicate a bug
                 Thread.currentThread().interrupt();
@@ -608,21 +607,21 @@ public class InternalTopicManager {
                                 retryTimeoutMs),
                         null));
                 log.info(
-                    "Topics {} could not be made ready. Will retry in {} milliseconds. Remaining time in milliseconds: {}",
-                    topicsNotReady,
-                    retryBackOffMs,
-                    deadlineMs - time.milliseconds()
+                        "Topics {} could not be made ready. Will retry in {} milliseconds. Remaining time in milliseconds: {}",
+                        topicsNotReady,
+                        retryBackOffMs,
+                        deadlineMs - time.milliseconds()
                 );
                 Utils.sleep(retryBackOffMs);
             }
-        } 
+        }
         return createdTopics;
-    } 
-        
+    }
+
 
     /**
      * Try to get the partition information for the given topics; return the partition info for topics that already exists.
-     *
+     * <p>
      * Topics that were not able to get its description will simply not be returned
      */
     // visible for testing
@@ -647,13 +646,13 @@ public class InternalTopicManager {
                 if (cause instanceof UnknownTopicOrPartitionException) {
                     // This topic didn't exist
                     log.debug("Topic {} is unknown or not found, hence not existed yet.\n" +
-                        "Error message was: {}", topicName, cause.toString());
+                            "Error message was: {}", topicName, cause.toString());
                 } else if (cause instanceof LeaderNotAvailableException) {
                     if (tempUnknownTopics != null) {
                         tempUnknownTopics.add(topicName);
                     }
                     log.debug("The leader of topic {} is not available.\n" +
-                        "Error message was: {}", topicName, cause.toString());
+                            "Error message was: {}", topicName, cause.toString());
                 } else if (cause instanceof TimeoutException) {
                     if (tempUnknownTopics != null) {
                         tempUnknownTopics.add(topicName);
@@ -662,7 +661,7 @@ public class InternalTopicManager {
                             "Error message was: {}", topicName, cause.toString());
                 } else {
                     log.error("Unexpected error during topic description for {}.\n" +
-                        "Error message was: {}", topicName, cause.toString());
+                            "Error message was: {}", topicName, cause.toString());
                     throw new StreamsException(String.format("Could not create topic %s.", topicName), cause);
                 }
             }
@@ -673,7 +672,7 @@ public class InternalTopicManager {
 
     /**
      * Try to get the number of partitions for the given topics; return the number of partitions for topics that already exists.
-     *
+     * <p>
      * Topics that were not able to get its description will simply not be returned
      */
     // visible for testing
@@ -683,7 +682,7 @@ public class InternalTopicManager {
 
         final Map<String, List<TopicPartitionInfo>> topicPartitionInfo = getTopicPartitionInfo(topics, tempUnknownTopics);
         return topicPartitionInfo.entrySet().stream().collect(Collectors.toMap(
-            Entry::getKey, e -> e.getValue().size()));
+                Entry::getKey, e -> e.getValue().size()));
     }
 
     /**
@@ -705,9 +704,9 @@ public class InternalTopicManager {
             if (existedTopicPartition.containsKey(topicName)) {
                 if (!existedTopicPartition.get(topicName).equals(numberOfPartitions.get())) {
                     final String errorMsg = String.format("Existing internal topic %s has invalid partitions: " +
-                            "expected: %d; actual: %d. " +
-                            "Use 'org.apache.kafka.tools.StreamsResetter' tool to clean up invalid topics before processing.",
-                        topicName, numberOfPartitions.get(), existedTopicPartition.get(topicName));
+                                    "expected: %d; actual: %d. " +
+                                    "Use 'org.apache.kafka.tools.StreamsResetter' tool to clean up invalid topics before processing.",
+                            topicName, numberOfPartitions.get(), existedTopicPartition.get(topicName));
                     log.error(errorMsg);
                     throw new StreamsException(errorMsg);
                 } else {
@@ -723,7 +722,7 @@ public class InternalTopicManager {
 
     /**
      * Sets up internal topics.
-     *
+     * <p>
      * Either the given topic are all created or the method fails with an exception.
      *
      * @param topicConfigs internal topics to setup
@@ -735,20 +734,20 @@ public class InternalTopicManager {
         final long deadline = now + retryTimeoutMs;
 
         final Map<String, Map<String, String>> streamsSideTopicConfigs = topicConfigs.values().stream()
-            .collect(Collectors.toMap(
-                InternalTopicConfig::name,
-                topicConfig -> topicConfig.properties(defaultTopicConfigs, windowChangeLogAdditionalRetention)
-            ));
+                .collect(Collectors.toMap(
+                        InternalTopicConfig::name,
+                        topicConfig -> topicConfig.properties(defaultTopicConfigs, windowChangeLogAdditionalRetention)
+                ));
         final Set<String> createdTopics = new HashSet<>();
         final Set<String> topicStillToCreate = new HashSet<>(topicConfigs.keySet());
         while (!topicStillToCreate.isEmpty()) {
             final Set<NewTopic> newTopics = topicStillToCreate.stream()
-                .map(topicName -> new NewTopic(
-                        topicName,
-                        topicConfigs.get(topicName).numberOfPartitions(),
-                        Optional.of(replicationFactor)
-                    ).configs(streamsSideTopicConfigs.get(topicName))
-                ).collect(Collectors.toSet());
+                    .map(topicName -> new NewTopic(
+                                    topicName,
+                                    topicConfigs.get(topicName).numberOfPartitions(),
+                                    Optional.of(replicationFactor)
+                            ).configs(streamsSideTopicConfigs.get(topicName))
+                    ).collect(Collectors.toSet());
 
             log.info("Going to create internal topics: " + newTopics);
             final CreateTopicsResult createTopicsResult = adminClient.createTopics(newTopics);
@@ -772,7 +771,7 @@ public class InternalTopicManager {
                 if (!createResultForTopic.containsKey(topicName)) {
                     cleanUpCreatedTopics(createdTopics);
                     throw new IllegalStateException("Create topic results do not contain internal topic " + topicName
-                        + " to setup. " + BUG_ERROR_MESSAGE);
+                            + " to setup. " + BUG_ERROR_MESSAGE);
                 }
                 final KafkaFuture<Void> createResult = createResultForTopic.get(topicName);
                 if (createResult.isDone()) {
@@ -785,8 +784,8 @@ public class InternalTopicManager {
                         if (cause instanceof TopicExistsException) {
                             lastErrorsSeenForTopic.put(topicName, cause);
                             log.info("Internal topic {} already exists. Topic is probably marked for deletion. " +
-                                "Will retry to create this topic later (to let broker complete async delete operation first)",
-                                topicName);
+                                            "Will retry to create this topic later (to let broker complete async delete operation first)",
+                                    topicName);
                         } else if (cause instanceof TimeoutException) {
                             lastErrorsSeenForTopic.put(topicName, cause);
                             log.info("Creating internal topic {} timed out.", topicName);
@@ -794,8 +793,8 @@ public class InternalTopicManager {
                             cleanUpCreatedTopics(createdTopics);
                             log.error("Unexpected error during creation of internal topic: ", cause);
                             throw new StreamsException(
-                                String.format("Could not create internal topic %s for the following reason: ", topicName),
-                                cause
+                                    String.format("Could not create internal topic %s for the following reason: ", topicName),
+                                    cause
                             );
                         }
                     } catch (final InterruptedException interruptedException) {
@@ -807,16 +806,16 @@ public class InternalTopicManager {
             }
 
             maybeThrowTimeout(new TimeoutContext(
-                topicStillToCreate,
-                deadline,
-                "Setup timeout",
-                String.format(
-                    "Could not create internal topics within %d milliseconds. This can happen if the " +
-                    "Kafka cluster is temporarily not available or a topic is marked for deletion and the broker " +
-                    "did not complete its deletion within the timeout. The last errors seen per topic are: %s",
-                    retryTimeoutMs, lastErrorsSeenForTopic
-                ),
-                () -> cleanUpCreatedTopics(createdTopics)
+                    topicStillToCreate,
+                    deadline,
+                    "Setup timeout",
+                    String.format(
+                            "Could not create internal topics within %d milliseconds. This can happen if the " +
+                                    "Kafka cluster is temporarily not available or a topic is marked for deletion and the broker " +
+                                    "did not complete its deletion within the timeout. The last errors seen per topic are: %s",
+                            retryTimeoutMs, lastErrorsSeenForTopic
+                    ),
+                    () -> cleanUpCreatedTopics(createdTopics)
             ));
 
             if (!createResultForTopic.isEmpty()) {
@@ -840,7 +839,7 @@ public class InternalTopicManager {
                 for (final String topicName : new HashSet<>(topicsStillToCleanup)) {
                     if (!deleteResultForTopic.containsKey(topicName)) {
                         throw new IllegalStateException("Delete topic results do not contain internal topic " + topicName
-                            + " to clean up. " + BUG_ERROR_MESSAGE);
+                                + " to clean up. " + BUG_ERROR_MESSAGE);
                     }
                     final KafkaFuture<Void> deleteResult = deleteResultForTopic.get(topicName);
                     if (deleteResult.isDone()) {
@@ -858,10 +857,10 @@ public class InternalTopicManager {
                             } else {
                                 log.error("Unexpected error during cleanup of internal topics: ", cause);
                                 throw new StreamsException(
-                                    String.format("Could not clean up internal topics %s, because during the cleanup " +
-                                            "of topic %s the following error occurred: ",
-                                        topicsStillToCleanup, topicName),
-                                    cause
+                                        String.format("Could not clean up internal topics %s, because during the cleanup " +
+                                                        "of topic %s the following error occurred: ",
+                                                topicsStillToCleanup, topicName),
+                                        cause
                                 );
                             }
                         } catch (final InterruptedException interruptedException) {
@@ -873,14 +872,14 @@ public class InternalTopicManager {
                 }
 
                 maybeThrowTimeout(new TimeoutContext(
-                    topicsStillToCleanup,
-                    deadline,
-                    "Cleanup timeout",
-                    String.format("Could not cleanup internal topics within %d milliseconds. This can happen if the " +
-                                "Kafka cluster is temporarily not available or the broker did not complete topic creation " +
-                                "before the cleanup. The following internal topics could not be cleaned up: %s",
+                        topicsStillToCleanup,
+                        deadline,
+                        "Cleanup timeout",
+                        String.format("Could not cleanup internal topics within %d milliseconds. This can happen if the " +
+                                        "Kafka cluster is temporarily not available or the broker did not complete topic creation " +
+                                        "before the cleanup. The following internal topics could not be cleaned up: %s",
                                 retryTimeoutMs, topicsStillToCleanup),
-                    null
+                        null
                 ));
 
                 if (!deleteResultForTopic.isEmpty()) {
@@ -889,15 +888,15 @@ public class InternalTopicManager {
             }
 
             maybeSleep(
-                Collections.singletonList(topicsStillToCleanup),
-                deadline,
-                "validated"
+                    Collections.singletonList(topicsStillToCleanup),
+                    deadline,
+                    "validated"
             );
         }
 
         log.info("Completed cleanup of internal topics {}.", topicsToCleanUp);
     }
-   
+
     private void maybeThrowTimeout(final TimeoutContext context) {
         if (!context.pendingItems.isEmpty() && time.milliseconds() >= context.deadline) {
             log.error("{}: {}", context.prefix, context.errorDetails);
@@ -916,11 +915,11 @@ public class InternalTopicManager {
         final Runnable onTimeout;
 
         TimeoutContext(
-            final Collection<?> pendingItems,
-            final long deadline,
-            final String prefix,
-            final String errorDetails,
-            final Runnable onTimeout) {
+                final Collection<?> pendingItems,
+                final long deadline,
+                final String prefix,
+                final String errorDetails,
+                final Runnable onTimeout) {
             this.pendingItems = pendingItems;
             this.deadline = deadline;
             this.prefix = prefix;
@@ -930,18 +929,17 @@ public class InternalTopicManager {
     }
 
 
-
     private void maybeSleep(final List<Set<String>> resultSetsStillToValidate,
                             final long deadline,
                             final String action) {
         if (resultSetsStillToValidate.stream().anyMatch(resultSet -> !resultSet.isEmpty())) {
             final long now = time.milliseconds();
             log.info(
-                "Internal topics {} could not be {}. Will retry in {} milliseconds. Remaining time in milliseconds: {}",
-                resultSetsStillToValidate.stream().flatMap(Collection::stream).collect(Collectors.toSet()),
-                action,
-                retryBackOffMs,
-                deadline - now
+                    "Internal topics {} could not be {}. Will retry in {} milliseconds. Remaining time in milliseconds: {}",
+                    resultSetsStillToValidate.stream().flatMap(Collection::stream).collect(Collectors.toSet()),
+                    action,
+                    retryBackOffMs,
+                    deadline - now
             );
             Utils.sleep(retryBackOffMs);
         }

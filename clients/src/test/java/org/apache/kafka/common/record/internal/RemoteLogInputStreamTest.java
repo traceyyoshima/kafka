@@ -125,14 +125,14 @@ public class RemoteLogInputStreamTest {
             return;
 
         SimpleRecord[] firstBatchRecords = new SimpleRecord[]{
-            new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
-            new SimpleRecord(234280L, "b".getBytes(), "2".getBytes())
+                new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
+                new SimpleRecord(234280L, "b".getBytes(), "2".getBytes())
         };
 
         SimpleRecord[] secondBatchRecords = new SimpleRecord[]{
-            new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
-            new SimpleRecord(897839L, null, "4".getBytes()),
-            new SimpleRecord(8234020L, "e".getBytes(), null)
+                new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
+                new SimpleRecord(897839L, null, "4".getBytes()),
+                new SimpleRecord(8234020L, "e".getBytes(), null)
         };
 
         File file = tempFile();
@@ -173,23 +173,23 @@ public class RemoteLogInputStreamTest {
         Header[] headers = new Header[]{new RecordHeader("header-key",
                 "header-value".getBytes(StandardCharsets.UTF_8))};
         SimpleRecord[] firstBatchRecords = new SimpleRecord[]{
-            new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
-            // Add a record with headers.
-            new SimpleRecord(234280L, "b".getBytes(), "2".getBytes(), headers)
+                new SimpleRecord(3241324L, "a".getBytes(), "1".getBytes()),
+                // Add a record with headers.
+                new SimpleRecord(234280L, "b".getBytes(), "2".getBytes(), headers)
         };
 
         SimpleRecord[] secondBatchRecords = new SimpleRecord[]{
-            new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
-            new SimpleRecord(897839L, null, "4".getBytes()),
-            new SimpleRecord(8234020L, "e".getBytes(), null)
+                new SimpleRecord(238423489L, "c".getBytes(), "3".getBytes()),
+                new SimpleRecord(897839L, null, "4".getBytes()),
+                new SimpleRecord(8234020L, "e".getBytes(), null)
         };
 
         File file = tempFile();
         try (FileRecords fileRecords = FileRecords.open(file)) {
             fileRecords.append(MemoryRecords.withIdempotentRecords(magic, 15L, compression, producerId,
-                                                                   producerEpoch, baseSequence, partitionLeaderEpoch, firstBatchRecords));
+                    producerEpoch, baseSequence, partitionLeaderEpoch, firstBatchRecords));
             fileRecords.append(MemoryRecords.withTransactionalRecords(magic, 27L, compression, producerId,
-                                                                      producerEpoch, baseSequence + firstBatchRecords.length, partitionLeaderEpoch, secondBatchRecords));
+                    producerEpoch, baseSequence + firstBatchRecords.length, partitionLeaderEpoch, secondBatchRecords));
             fileRecords.flush();
         }
 
@@ -203,7 +203,7 @@ public class RemoteLogInputStreamTest {
 
             RecordBatch secondBatch = logInputStream.nextBatch();
             assertProducerData(secondBatch, producerId, producerEpoch, baseSequence + firstBatchRecords.length,
-                               true, secondBatchRecords);
+                    true, secondBatchRecords);
             assertGenericRecordBatchData(args, secondBatch, 27L, 238423489L, secondBatchRecords);
             assertEquals(partitionLeaderEpoch, secondBatch.partitionLeaderEpoch());
 

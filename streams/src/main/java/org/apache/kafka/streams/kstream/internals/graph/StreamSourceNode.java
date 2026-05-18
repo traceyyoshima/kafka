@@ -49,9 +49,9 @@ public class StreamSourceNode<K, V> extends SourceGraphNode<K, V> {
         final AutoOffsetReset resetPolicy = consumedInternal().offsetResetPolicy();
         final AutoOffsetReset otherResetPolicy = other.consumedInternal().offsetResetPolicy();
         if (resetPolicy != null && !resetPolicy.equals(otherResetPolicy)
-            || otherResetPolicy != null && !otherResetPolicy.equals(resetPolicy)) {
+                || otherResetPolicy != null && !otherResetPolicy.equals(resetPolicy)) {
             log.error("Tried to merge source nodes {} and {} which are subscribed to the same topic/pattern, but "
-                          + "the offset reset policies do not match", this, other);
+                    + "the offset reset policies do not match", this, other);
             throw new TopologyException("Can't configure different offset reset policies on the same input topic(s)");
         }
         for (final GraphNode otherChild : other.children()) {
@@ -63,10 +63,10 @@ public class StreamSourceNode<K, V> extends SourceGraphNode<K, V> {
     @Override
     public String toString() {
         return "StreamSourceNode{" +
-               "topicNames=" + (topicNames().isPresent() ? topicNames().get() : null) +
-               ", topicPattern=" + (topicPattern().isPresent() ? topicPattern().get() : null) +
-               ", consumedInternal=" + consumedInternal() +
-               "} " + super.toString();
+                "topicNames=" + (topicNames().isPresent() ? topicNames().get() : null) +
+                ", topicPattern=" + (topicPattern().isPresent() ? topicPattern().get() : null) +
+                ", consumedInternal=" + consumedInternal() +
+                "} " + super.toString();
     }
 
     @Override
@@ -74,18 +74,18 @@ public class StreamSourceNode<K, V> extends SourceGraphNode<K, V> {
 
         if (topicPattern().isPresent()) {
             topologyBuilder.addSource(consumedInternal().offsetResetPolicy(),
-                                      nodeName(),
-                                      consumedInternal().timestampExtractor(),
-                                      consumedInternal().keyDeserializer(),
-                                      consumedInternal().valueDeserializer(),
-                                      topicPattern().get());
+                    nodeName(),
+                    consumedInternal().timestampExtractor(),
+                    consumedInternal().keyDeserializer(),
+                    consumedInternal().valueDeserializer(),
+                    topicPattern().get());
         } else {
             topologyBuilder.addSource(consumedInternal().offsetResetPolicy(),
-                                      nodeName(),
-                                      consumedInternal().timestampExtractor(),
-                                      consumedInternal().keyDeserializer(),
-                                      consumedInternal().valueDeserializer(),
-                                      topicNames().get().toArray(new String[0]));
+                    nodeName(),
+                    consumedInternal().timestampExtractor(),
+                    consumedInternal().keyDeserializer(),
+                    consumedInternal().valueDeserializer(),
+                    topicNames().get().toArray(new String[0]));
         }
     }
 

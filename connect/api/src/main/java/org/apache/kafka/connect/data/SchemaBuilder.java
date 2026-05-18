@@ -27,13 +27,13 @@ import java.util.Map;
 
 /**
  * <p>
- *     SchemaBuilder provides a fluent API for constructing {@link Schema} objects. It allows you to set each of the
- *     properties for the schema and each call returns the SchemaBuilder so the calls can be chained. When nested types
- *     are required, use one of the predefined schemas from {@link Schema} or use a second SchemaBuilder inline.
+ * SchemaBuilder provides a fluent API for constructing {@link Schema} objects. It allows you to set each of the
+ * properties for the schema and each call returns the SchemaBuilder so the calls can be chained. When nested types
+ * are required, use one of the predefined schemas from {@link Schema} or use a second SchemaBuilder inline.
  * </p>
  * <p>
- *     Here is an example of building a struct schema:
- *     <pre>
+ * Here is an example of building a struct schema:
+ * <pre>
  *     Schema dateSchema = SchemaBuilder.struct()
  *         .name("com.example.CalendarDate").version(2).doc("A calendar date including month, day, and year.")
  *         .field("month", Schema.STRING_SCHEMA)
@@ -43,8 +43,8 @@ import java.util.Map;
  *     </pre>
  * </p>
  * <p>
- *     Here is an example of using a second SchemaBuilder to construct complex, nested types:
- *     <pre>
+ * Here is an example of using a second SchemaBuilder to construct complex, nested types:
+ * <pre>
  *     Schema userListSchema = SchemaBuilder.array(
  *         SchemaBuilder.struct().name("com.example.User").field("username", Schema.STRING_SCHEMA).field("id", Schema.INT64_SCHEMA).build()
  *     ).build();
@@ -93,6 +93,7 @@ public class SchemaBuilder implements Schema {
 
     /**
      * Set this schema as optional.
+     *
      * @return the SchemaBuilder
      */
     public SchemaBuilder optional() {
@@ -103,6 +104,7 @@ public class SchemaBuilder implements Schema {
 
     /**
      * Set this schema as required. This is the default, but this method can be used to make this choice explicit.
+     *
      * @return the SchemaBuilder
      */
     public SchemaBuilder required() {
@@ -119,6 +121,7 @@ public class SchemaBuilder implements Schema {
     /**
      * Set the default value for this schema. The value is validated against the schema type, throwing a
      * {@link SchemaBuilderException} if it does not match.
+     *
      * @param value the default value
      * @return the SchemaBuilder
      */
@@ -141,6 +144,7 @@ public class SchemaBuilder implements Schema {
 
     /**
      * Set the name of this schema.
+     *
      * @param name the schema name
      * @return the SchemaBuilder
      */
@@ -158,6 +162,7 @@ public class SchemaBuilder implements Schema {
     /**
      * Set the version of this schema. Schema versions are integers which, if provided, must indicate which schema is
      * newer and which is older by their ordering.
+     *
      * @param version the schema version
      * @return the SchemaBuilder
      */
@@ -174,6 +179,7 @@ public class SchemaBuilder implements Schema {
 
     /**
      * Set the documentation for this schema.
+     *
      * @param doc the documentation
      * @return the SchemaBuilder
      */
@@ -190,7 +196,8 @@ public class SchemaBuilder implements Schema {
 
     /**
      * Set a schema parameter.
-     * @param propertyName name of the schema property to define
+     *
+     * @param propertyName  name of the schema property to define
      * @param propertyValue value of the schema property to define, as a String
      * @return the SchemaBuilder
      */
@@ -206,6 +213,7 @@ public class SchemaBuilder implements Schema {
     /**
      * Set schema parameters. This operation is additive; it does not remove existing parameters that do not appear in
      * the set of properties pass to this method.
+     *
      * @param props Map of properties to set
      * @return the SchemaBuilder
      */
@@ -314,7 +322,8 @@ public class SchemaBuilder implements Schema {
 
     /**
      * Add a field to this {@link Schema.Type#STRUCT} schema. Throws a {@link SchemaBuilderException} if this is not a struct schema.
-     * @param fieldName the name of the field to add
+     *
+     * @param fieldName   the name of the field to add
      * @param fieldSchema the Schema for the field's value
      * @return the SchemaBuilder
      */
@@ -334,6 +343,7 @@ public class SchemaBuilder implements Schema {
 
     /**
      * Get the list of fields for this Schema. Throws a {@link DataException} if this schema is not a {@link Schema.Type#STRUCT}.
+     *
      * @return the list of fields for this Schema
      */
     @Override
@@ -351,7 +361,6 @@ public class SchemaBuilder implements Schema {
     }
 
 
-
     // Maps & Arrays
 
     /**
@@ -367,7 +376,7 @@ public class SchemaBuilder implements Schema {
     }
 
     /**
-     * @param keySchema the schema for keys in the map
+     * @param keySchema   the schema for keys in the map
      * @param valueSchema the schema for values in the map
      * @return a new {@link Schema.Type#MAP} SchemaBuilder
      */
@@ -415,6 +424,7 @@ public class SchemaBuilder implements Schema {
 
     /**
      * Build the Schema using the current settings
+     *
      * @return the {@link Schema}
      */
     public Schema build() {
@@ -425,6 +435,7 @@ public class SchemaBuilder implements Schema {
 
     /**
      * Return a concrete instance of the {@link Schema} specified by this builder
+     *
      * @return the {@link Schema}
      */
     @Override

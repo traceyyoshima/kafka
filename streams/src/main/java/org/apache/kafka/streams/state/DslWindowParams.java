@@ -37,7 +37,6 @@ public class DslWindowParams {
     private final DslStoreFormat dslStoreFormat;
 
     /**
-     * @deprecated Since 4.3. Use {@link #DslWindowParams(String, Duration, Duration, boolean, EmitStrategy, boolean, DslStoreFormat)} Params(String, DslStoreFormat)} instead.
      * @param name             name of the store (cannot be {@code null})
      * @param retentionPeriod  length of time to retain data in the store (cannot be negative)
      *                         (note that the retention period must be at least long enough to contain the
@@ -49,6 +48,7 @@ public class DslWindowParams {
      * @param emitStrategy     defines how to emit results
      * @param isSlidingWindow  whether the requested store is a sliding window
      * @param isTimestamped    whether the requested store should be timestamped (see {@link TimestampedWindowStore}
+     * @deprecated Since 4.3. Use {@link #DslWindowParams(String, Duration, Duration, boolean, EmitStrategy, boolean, DslStoreFormat)} Params(String, DslStoreFormat)} instead.
      */
     @Deprecated
     public DslWindowParams(
@@ -126,8 +126,8 @@ public class DslWindowParams {
     }
 
     /**
-     * @deprecated Since 4.3. Use {@link #dslStoreFormat()} instead to check the store format.
      * @return {@code true} if the store format is {@link DslStoreFormat#TIMESTAMPED}, {@code false} otherwise
+     * @deprecated Since 4.3. Use {@link #dslStoreFormat()} instead to check the store format.
      */
     @Deprecated
     public boolean isTimestamped() {
@@ -136,7 +136,8 @@ public class DslWindowParams {
 
     /**
      * Returns the store format for this window store.
-     *`
+     * `
+     *
      * @return the {@link DslStoreFormat} specifying whether to use plain, timestamped, or headers-aware stores
      */
     public DslStoreFormat dslStoreFormat() {

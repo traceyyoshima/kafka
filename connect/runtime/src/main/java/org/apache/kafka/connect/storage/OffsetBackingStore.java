@@ -53,6 +53,7 @@ public interface OffsetBackingStore {
 
     /**
      * Get the values for the specified keys
+     *
      * @param keys list of keys to look up
      * @return future for the resulting map from key to value
      */
@@ -60,7 +61,8 @@ public interface OffsetBackingStore {
 
     /**
      * Set the specified keys and values.
-     * @param values map from key to value
+     *
+     * @param values   map from key to value
      * @param callback callback to invoke on completion
      * @return void future for the operation
      */
@@ -68,6 +70,7 @@ public interface OffsetBackingStore {
 
     /**
      * Get all the partitions for the specified connector.
+     *
      * @param connectorName the name of the connector whose partitions are to be retrieved
      * @return set of connector partitions
      */
@@ -75,6 +78,7 @@ public interface OffsetBackingStore {
 
     /**
      * Configure class with the given key-value pairs
+     *
      * @param config can be DistributedConfig or StandaloneConfig
      */
     void configure(WorkerConfig config);

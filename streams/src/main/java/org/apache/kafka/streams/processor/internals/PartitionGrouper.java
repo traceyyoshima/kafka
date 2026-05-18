@@ -35,7 +35,7 @@ import java.util.Set;
 
 /**
  * Groups partitions by the partition id.
- *
+ * <p>
  * Join operations requires that topics of the joining entities are copartitioned, i.e., being partitioned by the same key and having the same
  * number of partitions. Copartitioning is ensured by having the same number of partitions on
  * joined topics, and by using the serialization and Producer's default partitioner.
@@ -47,8 +47,8 @@ public class PartitionGrouper {
     /**
      * Generate tasks with the assigned topic partitions.
      *
-     * @param topicGroups   group of topics that need to be joined together
-     * @param metadata      metadata of the consuming cluster
+     * @param topicGroups group of topics that need to be joined together
+     * @param metadata    metadata of the consuming cluster
      * @return The map from generated task ids to the assigned partitions
      */
     public Map<TaskId, Set<TopicPartition>> partitionGroups(final Map<Subtopology, Set<String>> topicGroups, final Cluster metadata) {

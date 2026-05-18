@@ -41,7 +41,7 @@ import java.util.Collections;
 import java.util.Set;
 
 public class SubscriptionReceiveProcessorSupplier<KLeft, KRight>
-    implements ProcessorSupplier<KRight, SubscriptionWrapper<KLeft>, CombinedKey<KRight, KLeft>, Change<ValueTimestampHeaders<SubscriptionWrapper<KLeft>>>> {
+        implements ProcessorSupplier<KRight, SubscriptionWrapper<KLeft>, CombinedKey<KRight, KLeft>, Change<ValueTimestampHeaders<SubscriptionWrapper<KLeft>>>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubscriptionReceiveProcessorSupplier.class);
 
@@ -71,9 +71,9 @@ public class SubscriptionReceiveProcessorSupplier<KLeft, KRight>
                 final InternalProcessorContext<?, ?> internalProcessorContext = (InternalProcessorContext<?, ?>) context;
 
                 droppedRecordsSensor = TaskMetrics.droppedRecordsSensor(
-                    Thread.currentThread().getName(),
-                    internalProcessorContext.taskId().toString(),
-                    internalProcessorContext.metrics()
+                        Thread.currentThread().getName(),
+                        internalProcessorContext.taskId().toString(),
+                        internalProcessorContext.metrics()
                 );
                 store = internalProcessorContext.getStateStore(subscriptionStoreFactory.storeName());
 
@@ -94,9 +94,9 @@ public class SubscriptionReceiveProcessorSupplier<KLeft, KRight>
                     throw new UnsupportedVersionException("SubscriptionWrapper is of an incompatible version.");
                 }
                 context().forward(
-                    record.withKey(new CombinedKey<>(foreignKey, record.value().primaryKey()))
-                        .withValue(inferChange(record))
-                        .withTimestamp(record.timestamp())
+                        record.withKey(new CombinedKey<>(foreignKey, record.value().primaryKey()))
+                                .withValue(inferChange(record))
+                                .withTimestamp(record.timestamp())
                 );
             }
 
@@ -116,7 +116,7 @@ public class SubscriptionReceiveProcessorSupplier<KLeft, KRight>
 
                 //This store is used by the prefix scanner in ForeignTableJoinProcessorSupplier
                 if (record.value().instruction().equals(SubscriptionWrapper.Instruction.DELETE_KEY_AND_PROPAGATE) ||
-                    record.value().instruction().equals(SubscriptionWrapper.Instruction.DELETE_KEY_NO_PROPAGATE)) {
+                        record.value().instruction().equals(SubscriptionWrapper.Instruction.DELETE_KEY_NO_PROPAGATE)) {
                     store.delete(subscriptionKey);
                 } else {
                     store.put(subscriptionKey, newValue);
@@ -128,13 +128,13 @@ public class SubscriptionReceiveProcessorSupplier<KLeft, KRight>
                 if (context().recordMetadata().isPresent()) {
                     final RecordMetadata recordMetadata = context().recordMetadata().get();
                     LOG.warn(
-                        "Skipping record due to null foreign key. "
-                            + "topic=[{}] partition=[{}] offset=[{}]",
-                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                            "Skipping record due to null foreign key. "
+                                    + "topic=[{}] partition=[{}] offset=[{}]",
+                            recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                     );
                 } else {
                     LOG.warn(
-                        "Skipping record due to null foreign key. Topic, partition, and offset not known."
+                            "Skipping record due to null foreign key. Topic, partition, and offset not known."
                     );
                 }
                 droppedRecordsSensor.record();

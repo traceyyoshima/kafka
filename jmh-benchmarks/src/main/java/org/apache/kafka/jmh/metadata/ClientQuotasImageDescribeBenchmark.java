@@ -74,27 +74,27 @@ public class ClientQuotasImageDescribeBenchmark {
     @Benchmark
     public DescribeClientQuotasResponseData describeSpecified() {
         return clientQuotasImage.describe(new DescribeClientQuotasRequestData()
-            .setComponents(List.of(new DescribeClientQuotasRequestData.ComponentData()
-                .setEntityType(ClientQuotaEntity.USER)
-                .setMatchType(DescribeClientQuotasRequest.MATCH_TYPE_SPECIFIED)
-                .setMatch(null))));
+                .setComponents(List.of(new DescribeClientQuotasRequestData.ComponentData()
+                        .setEntityType(ClientQuotaEntity.USER)
+                        .setMatchType(DescribeClientQuotasRequest.MATCH_TYPE_SPECIFIED)
+                        .setMatch(null))));
     }
 
     @Benchmark
     public DescribeClientQuotasResponseData describeDefault() {
         return clientQuotasImage.describe(new DescribeClientQuotasRequestData()
-            .setComponents(List.of(new DescribeClientQuotasRequestData.ComponentData()
-                .setEntityType(ClientQuotaEntity.USER)
-                .setMatchType(DescribeClientQuotasRequest.MATCH_TYPE_DEFAULT)
-                .setMatch(null))));
+                .setComponents(List.of(new DescribeClientQuotasRequestData.ComponentData()
+                        .setEntityType(ClientQuotaEntity.USER)
+                        .setMatchType(DescribeClientQuotasRequest.MATCH_TYPE_DEFAULT)
+                        .setMatch(null))));
     }
 
     @Benchmark
     public DescribeClientQuotasResponseData describeExact() {
         return clientQuotasImage.describe(new DescribeClientQuotasRequestData()
-            .setComponents(List.of(new DescribeClientQuotasRequestData.ComponentData()
-                .setEntityType(ClientQuotaEntity.USER)
-                .setMatchType(DescribeClientQuotasRequest.MATCH_TYPE_EXACT)
-                .setMatch("user-0"))));
+                .setComponents(List.of(new DescribeClientQuotasRequestData.ComponentData()
+                        .setEntityType(ClientQuotaEntity.USER)
+                        .setMatchType(DescribeClientQuotasRequest.MATCH_TYPE_EXACT)
+                        .setMatch("user-0"))));
     }
 }

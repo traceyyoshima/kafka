@@ -69,19 +69,19 @@ public final class GroupConfig extends AbstractConfig {
     public static final String SHARE_AUTO_OFFSET_RESET_CONFIG = "share.auto.offset.reset";
     public static final String SHARE_AUTO_OFFSET_RESET_DEFAULT = ShareGroupAutoOffsetResetStrategy.LATEST.name();
     public static final String SHARE_AUTO_OFFSET_RESET_DOC = "The strategy to initialize the share-partition start offset. " +
-        "<ul><li>earliest: automatically reset the offset to the earliest offset</li>" +
-        "<li>latest: automatically reset the offset to the latest offset</li>" +
-        "<li>by_duration:&lt;duration&gt;: automatically reset the offset to a configured duration from the current timestamp. " +
-        "&lt;duration&gt; must be specified in ISO8601 format (PnDTnHnMn.nS). " +
-        "Negative duration is not allowed.</li>" +
-        "<li>anything else: throw exception to the share consumer.</li></ul>";
+            "<ul><li>earliest: automatically reset the offset to the earliest offset</li>" +
+            "<li>latest: automatically reset the offset to the latest offset</li>" +
+            "<li>by_duration:&lt;duration&gt;: automatically reset the offset to a configured duration from the current timestamp. " +
+            "&lt;duration&gt; must be specified in ISO8601 format (PnDTnHnMn.nS). " +
+            "Negative duration is not allowed.</li>" +
+            "<li>anything else: throw exception to the share consumer.</li></ul>";
 
     public static final String SHARE_ISOLATION_LEVEL_CONFIG = "share.isolation.level";
     public static final String SHARE_ISOLATION_LEVEL_DEFAULT = IsolationLevel.READ_UNCOMMITTED.toString();
     public static final String SHARE_ISOLATION_LEVEL_DOC = "Controls how to read records written transactionally. " +
-        "If set to \"read_committed\", the share group will only deliver transactional records which have been committed. " +
-        "If set to \"read_uncommitted\", the share group will return all messages, even transactional messages which have been aborted. " +
-        "Non-transactional records will be returned unconditionally in either mode.";
+            "If set to \"read_committed\", the share group will only deliver transactional records which have been committed. " +
+            "If set to \"read_uncommitted\", the share group will return all messages, even transactional messages which have been aborted. " +
+            "Non-transactional records will be returned unconditionally in either mode.";
 
     public static final String SHARE_RENEW_ACKNOWLEDGE_ENABLE_CONFIG = "share.renew.acknowledge.enable";
     public static final boolean SHARE_RENEW_ACKNOWLEDGE_ENABLE_DEFAULT = true;
@@ -164,183 +164,183 @@ public final class GroupConfig extends AbstractConfig {
     public final boolean errorsDLQCopyRecordEnable;
 
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
-        .define(CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.CONSUMER_GROUP_SESSION_TIMEOUT_MS_DEFAULT,
-            atLeast(1),
-            MEDIUM,
-            GroupCoordinatorConfig.CONSUMER_GROUP_SESSION_TIMEOUT_MS_DOC)
-        .define(CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_DEFAULT,
-            atLeast(1),
-            MEDIUM,
-            GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_DOC)
-        .define(CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_DEFAULT,
-            atLeast(0),
-            MEDIUM,
-            GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_DOC)
-        .define(CONSUMER_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
-            BOOLEAN,
-            GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DEFAULT,
-            MEDIUM,
-            GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DOC)
-        .define(SHARE_SESSION_TIMEOUT_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.SHARE_GROUP_SESSION_TIMEOUT_MS_DEFAULT,
-            atLeast(1),
-            MEDIUM,
-            GroupCoordinatorConfig.SHARE_GROUP_SESSION_TIMEOUT_MS_DOC)
-        .define(SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.SHARE_GROUP_HEARTBEAT_INTERVAL_MS_DEFAULT,
-            atLeast(1),
-            MEDIUM,
-            GroupCoordinatorConfig.SHARE_GROUP_HEARTBEAT_INTERVAL_MS_DOC)
-        .define(SHARE_RECORD_LOCK_DURATION_MS_CONFIG,
-            INT,
-            ShareGroupConfig.SHARE_GROUP_RECORD_LOCK_DURATION_MS_DEFAULT,
-            atLeast(1000),
-            MEDIUM,
-            ShareGroupConfig.SHARE_GROUP_RECORD_LOCK_DURATION_MS_DOC)
-        .define(SHARE_DELIVERY_COUNT_LIMIT_CONFIG,
-            INT,
-            ShareGroupConfig.SHARE_GROUP_DELIVERY_COUNT_LIMIT_DEFAULT,
-            atLeast(2),
-            MEDIUM,
-            ShareGroupConfig.SHARE_GROUP_DELIVERY_COUNT_LIMIT_DOC)
-        .define(SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG,
-            INT,
-            ShareGroupConfig.SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_DEFAULT,
-            atLeast(100),
-            MEDIUM,
-            ShareGroupConfig.SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_DOC)
-        .define(SHARE_AUTO_OFFSET_RESET_CONFIG,
-            STRING,
-            SHARE_AUTO_OFFSET_RESET_DEFAULT,
-            new ShareGroupAutoOffsetResetStrategy.Validator(),
-            MEDIUM,
-            SHARE_AUTO_OFFSET_RESET_DOC)
-        .define(SHARE_ISOLATION_LEVEL_CONFIG,
-            STRING,
-            SHARE_ISOLATION_LEVEL_DEFAULT,
-            in(IsolationLevel.READ_COMMITTED.toString(), IsolationLevel.READ_UNCOMMITTED.toString()),
-            MEDIUM,
-            SHARE_ISOLATION_LEVEL_DOC)
-        .define(SHARE_RENEW_ACKNOWLEDGE_ENABLE_CONFIG,
-            BOOLEAN,
-            SHARE_RENEW_ACKNOWLEDGE_ENABLE_DEFAULT,
-            MEDIUM,
-            SHARE_RENEW_ACKNOWLEDGE_ENABLE_DOC)
-        .define(SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_DEFAULT,
-            atLeast(0),
-            MEDIUM,
-            GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_DOC)
-        .define(SHARE_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
-            BOOLEAN,
-            GroupCoordinatorConfig.SHARE_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DEFAULT,
-            MEDIUM,
-            GroupCoordinatorConfig.SHARE_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DOC)
-        .define(STREAMS_SESSION_TIMEOUT_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_DEFAULT,
-            atLeast(1),
-            MEDIUM,
-            GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_DOC)
-        .define(STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_DEFAULT,
-            atLeast(1),
-            MEDIUM,
-            GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_DOC)
-        .define(STREAMS_NUM_STANDBY_REPLICAS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.STREAMS_GROUP_NUM_STANDBY_REPLICAS_DEFAULT,
-            atLeast(0),
-            MEDIUM,
-            GroupCoordinatorConfig.STREAMS_GROUP_NUM_STANDBY_REPLICAS_DOC)
-        .define(STREAMS_INITIAL_REBALANCE_DELAY_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.STREAMS_GROUP_INITIAL_REBALANCE_DELAY_MS_DEFAULT,
-            atLeast(0),
-            MEDIUM,
-            GroupCoordinatorConfig.STREAMS_GROUP_INITIAL_REBALANCE_DELAY_MS_DOC)
-        .define(STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_DEFAULT,
-            atLeast(0),
-            MEDIUM,
-            GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_DOC)
-        .define(STREAMS_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
-            BOOLEAN,
-            GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DEFAULT,
-            MEDIUM,
-            GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DOC)
-        .define(STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_DEFAULT,
-            atLeast(1),
-            MEDIUM,
-            GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_DOC)
-        .define(STREAMS_NUM_WARMUP_REPLICAS_CONFIG,
-            INT,
-            GroupCoordinatorConfig.STREAMS_GROUP_NUM_WARMUP_REPLICAS_DEFAULT,
-            atLeast(0),
-            MEDIUM,
-            GroupCoordinatorConfig.STREAMS_GROUP_NUM_WARMUP_REPLICAS_DOC)
+            .define(CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.CONSUMER_GROUP_SESSION_TIMEOUT_MS_DEFAULT,
+                    atLeast(1),
+                    MEDIUM,
+                    GroupCoordinatorConfig.CONSUMER_GROUP_SESSION_TIMEOUT_MS_DOC)
+            .define(CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_DEFAULT,
+                    atLeast(1),
+                    MEDIUM,
+                    GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_DOC)
+            .define(CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_DEFAULT,
+                    atLeast(0),
+                    MEDIUM,
+                    GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_DOC)
+            .define(CONSUMER_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
+                    BOOLEAN,
+                    GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DEFAULT,
+                    MEDIUM,
+                    GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DOC)
+            .define(SHARE_SESSION_TIMEOUT_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.SHARE_GROUP_SESSION_TIMEOUT_MS_DEFAULT,
+                    atLeast(1),
+                    MEDIUM,
+                    GroupCoordinatorConfig.SHARE_GROUP_SESSION_TIMEOUT_MS_DOC)
+            .define(SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.SHARE_GROUP_HEARTBEAT_INTERVAL_MS_DEFAULT,
+                    atLeast(1),
+                    MEDIUM,
+                    GroupCoordinatorConfig.SHARE_GROUP_HEARTBEAT_INTERVAL_MS_DOC)
+            .define(SHARE_RECORD_LOCK_DURATION_MS_CONFIG,
+                    INT,
+                    ShareGroupConfig.SHARE_GROUP_RECORD_LOCK_DURATION_MS_DEFAULT,
+                    atLeast(1000),
+                    MEDIUM,
+                    ShareGroupConfig.SHARE_GROUP_RECORD_LOCK_DURATION_MS_DOC)
+            .define(SHARE_DELIVERY_COUNT_LIMIT_CONFIG,
+                    INT,
+                    ShareGroupConfig.SHARE_GROUP_DELIVERY_COUNT_LIMIT_DEFAULT,
+                    atLeast(2),
+                    MEDIUM,
+                    ShareGroupConfig.SHARE_GROUP_DELIVERY_COUNT_LIMIT_DOC)
+            .define(SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG,
+                    INT,
+                    ShareGroupConfig.SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_DEFAULT,
+                    atLeast(100),
+                    MEDIUM,
+                    ShareGroupConfig.SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_DOC)
+            .define(SHARE_AUTO_OFFSET_RESET_CONFIG,
+                    STRING,
+                    SHARE_AUTO_OFFSET_RESET_DEFAULT,
+                    new ShareGroupAutoOffsetResetStrategy.Validator(),
+                    MEDIUM,
+                    SHARE_AUTO_OFFSET_RESET_DOC)
+            .define(SHARE_ISOLATION_LEVEL_CONFIG,
+                    STRING,
+                    SHARE_ISOLATION_LEVEL_DEFAULT,
+                    in(IsolationLevel.READ_COMMITTED.toString(), IsolationLevel.READ_UNCOMMITTED.toString()),
+                    MEDIUM,
+                    SHARE_ISOLATION_LEVEL_DOC)
+            .define(SHARE_RENEW_ACKNOWLEDGE_ENABLE_CONFIG,
+                    BOOLEAN,
+                    SHARE_RENEW_ACKNOWLEDGE_ENABLE_DEFAULT,
+                    MEDIUM,
+                    SHARE_RENEW_ACKNOWLEDGE_ENABLE_DOC)
+            .define(SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_DEFAULT,
+                    atLeast(0),
+                    MEDIUM,
+                    GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_DOC)
+            .define(SHARE_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
+                    BOOLEAN,
+                    GroupCoordinatorConfig.SHARE_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DEFAULT,
+                    MEDIUM,
+                    GroupCoordinatorConfig.SHARE_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DOC)
+            .define(STREAMS_SESSION_TIMEOUT_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_DEFAULT,
+                    atLeast(1),
+                    MEDIUM,
+                    GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_DOC)
+            .define(STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_DEFAULT,
+                    atLeast(1),
+                    MEDIUM,
+                    GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_DOC)
+            .define(STREAMS_NUM_STANDBY_REPLICAS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.STREAMS_GROUP_NUM_STANDBY_REPLICAS_DEFAULT,
+                    atLeast(0),
+                    MEDIUM,
+                    GroupCoordinatorConfig.STREAMS_GROUP_NUM_STANDBY_REPLICAS_DOC)
+            .define(STREAMS_INITIAL_REBALANCE_DELAY_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.STREAMS_GROUP_INITIAL_REBALANCE_DELAY_MS_DEFAULT,
+                    atLeast(0),
+                    MEDIUM,
+                    GroupCoordinatorConfig.STREAMS_GROUP_INITIAL_REBALANCE_DELAY_MS_DOC)
+            .define(STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_DEFAULT,
+                    atLeast(0),
+                    MEDIUM,
+                    GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_DOC)
+            .define(STREAMS_ASSIGNOR_OFFLOAD_ENABLE_CONFIG,
+                    BOOLEAN,
+                    GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DEFAULT,
+                    MEDIUM,
+                    GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNOR_OFFLOAD_ENABLE_DOC)
+            .define(STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_DEFAULT,
+                    atLeast(1),
+                    MEDIUM,
+                    GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_DOC)
+            .define(STREAMS_NUM_WARMUP_REPLICAS_CONFIG,
+                    INT,
+                    GroupCoordinatorConfig.STREAMS_GROUP_NUM_WARMUP_REPLICAS_DEFAULT,
+                    atLeast(0),
+                    MEDIUM,
+                    GroupCoordinatorConfig.STREAMS_GROUP_NUM_WARMUP_REPLICAS_DOC)
 
-        // DLQ configurations (KIP-1191)
-        .define(ERRORS_DEADLETTERQUEUE_TOPIC_NAME_CONFIG,
-            STRING,
-            ERRORS_DEADLETTERQUEUE_TOPIC_NAME_DEFAULT,
-            MEDIUM,
-            ERRORS_DEADLETTERQUEUE_TOPIC_NAME_DOC)
-        .define(ERRORS_DEADLETTERQUEUE_COPY_RECORD_ENABLE_CONFIG,
-            BOOLEAN,
-            ERRORS_DEADLETTERQUEUE_COPY_RECORD_ENABLE_DEFAULT,
-            MEDIUM,
-            ERRORS_DEADLETTERQUEUE_COPY_RECORD_ENABLE_DOC);
+            // DLQ configurations (KIP-1191)
+            .define(ERRORS_DEADLETTERQUEUE_TOPIC_NAME_CONFIG,
+                    STRING,
+                    ERRORS_DEADLETTERQUEUE_TOPIC_NAME_DEFAULT,
+                    MEDIUM,
+                    ERRORS_DEADLETTERQUEUE_TOPIC_NAME_DOC)
+            .define(ERRORS_DEADLETTERQUEUE_COPY_RECORD_ENABLE_CONFIG,
+                    BOOLEAN,
+                    ERRORS_DEADLETTERQUEUE_COPY_RECORD_ENABLE_DEFAULT,
+                    MEDIUM,
+                    ERRORS_DEADLETTERQUEUE_COPY_RECORD_ENABLE_DOC);
 
     /**
      * Mapping from GroupConfig name to its broker-level synonym config name.
      * {@code Optional.empty()} indicates that the config has no broker-level synonym.
      */
     public static final Map<String, Optional<String>> ALL_GROUP_CONFIG_SYNONYMS = Map.ofEntries(
-        // Consumer group configs.
-        Map.entry(CONSUMER_SESSION_TIMEOUT_MS_CONFIG, Optional.of(GroupCoordinatorConfig.CONSUMER_GROUP_SESSION_TIMEOUT_MS_CONFIG)),
-        Map.entry(CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG)),
-        Map.entry(CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG)),
-        Map.entry(CONSUMER_ASSIGNOR_OFFLOAD_ENABLE_CONFIG, Optional.of(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG)),
+            // Consumer group configs.
+            Map.entry(CONSUMER_SESSION_TIMEOUT_MS_CONFIG, Optional.of(GroupCoordinatorConfig.CONSUMER_GROUP_SESSION_TIMEOUT_MS_CONFIG)),
+            Map.entry(CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG)),
+            Map.entry(CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG)),
+            Map.entry(CONSUMER_ASSIGNOR_OFFLOAD_ENABLE_CONFIG, Optional.of(GroupCoordinatorConfig.CONSUMER_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG)),
 
-        // Share group configs.
-        Map.entry(SHARE_SESSION_TIMEOUT_MS_CONFIG, Optional.of(GroupCoordinatorConfig.SHARE_GROUP_SESSION_TIMEOUT_MS_CONFIG)),
-        Map.entry(SHARE_HEARTBEAT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.SHARE_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG)),
-        Map.entry(SHARE_RECORD_LOCK_DURATION_MS_CONFIG, Optional.of(ShareGroupConfig.SHARE_GROUP_RECORD_LOCK_DURATION_MS_CONFIG)),
-        Map.entry(SHARE_DELIVERY_COUNT_LIMIT_CONFIG, Optional.of(ShareGroupConfig.SHARE_GROUP_DELIVERY_COUNT_LIMIT_CONFIG)),
-        Map.entry(SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG, Optional.of(ShareGroupConfig.SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_CONFIG)),
-        Map.entry(SHARE_AUTO_OFFSET_RESET_CONFIG, Optional.empty()),
-        Map.entry(SHARE_ISOLATION_LEVEL_CONFIG, Optional.empty()),
-        Map.entry(SHARE_RENEW_ACKNOWLEDGE_ENABLE_CONFIG, Optional.empty()),
-        Map.entry(SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG)),
-        Map.entry(SHARE_ASSIGNOR_OFFLOAD_ENABLE_CONFIG, Optional.of(GroupCoordinatorConfig.SHARE_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG)),
+            // Share group configs.
+            Map.entry(SHARE_SESSION_TIMEOUT_MS_CONFIG, Optional.of(GroupCoordinatorConfig.SHARE_GROUP_SESSION_TIMEOUT_MS_CONFIG)),
+            Map.entry(SHARE_HEARTBEAT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.SHARE_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG)),
+            Map.entry(SHARE_RECORD_LOCK_DURATION_MS_CONFIG, Optional.of(ShareGroupConfig.SHARE_GROUP_RECORD_LOCK_DURATION_MS_CONFIG)),
+            Map.entry(SHARE_DELIVERY_COUNT_LIMIT_CONFIG, Optional.of(ShareGroupConfig.SHARE_GROUP_DELIVERY_COUNT_LIMIT_CONFIG)),
+            Map.entry(SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG, Optional.of(ShareGroupConfig.SHARE_GROUP_PARTITION_MAX_RECORD_LOCKS_CONFIG)),
+            Map.entry(SHARE_AUTO_OFFSET_RESET_CONFIG, Optional.empty()),
+            Map.entry(SHARE_ISOLATION_LEVEL_CONFIG, Optional.empty()),
+            Map.entry(SHARE_RENEW_ACKNOWLEDGE_ENABLE_CONFIG, Optional.empty()),
+            Map.entry(SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG)),
+            Map.entry(SHARE_ASSIGNOR_OFFLOAD_ENABLE_CONFIG, Optional.of(GroupCoordinatorConfig.SHARE_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG)),
 
-        // Streams group configs.
-        Map.entry(STREAMS_SESSION_TIMEOUT_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG)),
-        Map.entry(STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG)),
-        Map.entry(STREAMS_NUM_STANDBY_REPLICAS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_NUM_STANDBY_REPLICAS_CONFIG)),
-        Map.entry(STREAMS_INITIAL_REBALANCE_DELAY_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG)),
-        Map.entry(STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG)),
-        Map.entry(STREAMS_ASSIGNOR_OFFLOAD_ENABLE_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG)),
-        Map.entry(STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_CONFIG)),
-        Map.entry(STREAMS_NUM_WARMUP_REPLICAS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_NUM_WARMUP_REPLICAS_CONFIG)),
+            // Streams group configs.
+            Map.entry(STREAMS_SESSION_TIMEOUT_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_SESSION_TIMEOUT_MS_CONFIG)),
+            Map.entry(STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG)),
+            Map.entry(STREAMS_NUM_STANDBY_REPLICAS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_NUM_STANDBY_REPLICAS_CONFIG)),
+            Map.entry(STREAMS_INITIAL_REBALANCE_DELAY_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG)),
+            Map.entry(STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG)),
+            Map.entry(STREAMS_ASSIGNOR_OFFLOAD_ENABLE_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_ASSIGNOR_OFFLOAD_ENABLE_CONFIG)),
+            Map.entry(STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_TASK_OFFSET_INTERVAL_MS_CONFIG)),
+            Map.entry(STREAMS_NUM_WARMUP_REPLICAS_CONFIG, Optional.of(GroupCoordinatorConfig.STREAMS_GROUP_NUM_WARMUP_REPLICAS_CONFIG)),
 
-        // DLQ configs
-        Map.entry(ERRORS_DEADLETTERQUEUE_TOPIC_NAME_CONFIG, Optional.empty()),
-        Map.entry(ERRORS_DEADLETTERQUEUE_COPY_RECORD_ENABLE_CONFIG, Optional.empty())
+            // DLQ configs
+            Map.entry(ERRORS_DEADLETTERQUEUE_TOPIC_NAME_CONFIG, Optional.empty()),
+            Map.entry(ERRORS_DEADLETTERQUEUE_COPY_RECORD_ENABLE_CONFIG, Optional.empty())
     );
 
     /**
@@ -366,7 +366,7 @@ public final class GroupConfig extends AbstractConfig {
         this.shareDeliveryCountLimit = optionalInt(SHARE_DELIVERY_COUNT_LIMIT_CONFIG);
         this.sharePartitionMaxRecordLocks = optionalInt(SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG);
         this.shareAutoOffsetReset = optionalString(SHARE_AUTO_OFFSET_RESET_CONFIG)
-            .map(ShareGroupAutoOffsetResetStrategy::fromString);
+                .map(ShareGroupAutoOffsetResetStrategy::fromString);
         this.shareAssignmentIntervalMs = optionalInt(SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG);
         this.shareAssignorOffloadEnable = optionalBoolean(SHARE_ASSIGNOR_OFFLOAD_ENABLE_CONFIG);
         this.streamsSessionTimeoutMs = optionalInt(STREAMS_SESSION_TIMEOUT_MS_CONFIG);
@@ -378,7 +378,7 @@ public final class GroupConfig extends AbstractConfig {
         this.streamsTaskOffsetIntervalMs = optionalInt(STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG);
         this.streamsNumWarmupReplicas = optionalInt(STREAMS_NUM_WARMUP_REPLICAS_CONFIG);
         this.shareIsolationLevel = optionalString(SHARE_ISOLATION_LEVEL_CONFIG)
-            .map(s -> IsolationLevel.valueOf(s.toUpperCase(Locale.ROOT)));
+                .map(s -> IsolationLevel.valueOf(s.toUpperCase(Locale.ROOT)));
         this.shareRenewAcknowledgeEnable = optionalBoolean(SHARE_RENEW_ACKNOWLEDGE_ENABLE_CONFIG);
         this.errorsDLQTopicName = getString(ERRORS_DEADLETTERQUEUE_TOPIC_NAME_CONFIG);
         this.errorsDLQCopyRecordEnable = getBoolean(ERRORS_DEADLETTERQUEUE_COPY_RECORD_ENABLE_CONFIG);
@@ -407,7 +407,7 @@ public final class GroupConfig extends AbstractConfig {
     /**
      * Check that property names are valid.
      *
-     * @param newGroupConfig         The new group config overrides.
+     * @param newGroupConfig The new group config overrides.
      */
     public static void validateNames(Map<String, ?> newGroupConfig) {
         Set<String> names = configNames();
@@ -427,17 +427,17 @@ public final class GroupConfig extends AbstractConfig {
      * @param shareGroupConfig       The share group config.
      */
     public static void validate(
-        Map<String, ?> newGroupConfig,
-        GroupCoordinatorConfig groupCoordinatorConfig,
-        ShareGroupConfig shareGroupConfig
+            Map<String, ?> newGroupConfig,
+            GroupCoordinatorConfig groupCoordinatorConfig,
+            ShareGroupConfig shareGroupConfig
     ) {
         validateNames(newGroupConfig);
         var parsed = CONFIG_DEF.parse(newGroupConfig);
         parsed.keySet().retainAll(newGroupConfig.keySet());
         validateValues(
-            parsed,
-            groupCoordinatorConfig,
-            shareGroupConfig
+                parsed,
+                groupCoordinatorConfig,
+                shareGroupConfig
         );
     }
 
@@ -450,124 +450,124 @@ public final class GroupConfig extends AbstractConfig {
      * @param shareGroupConfig       The share group config.
      */
     private static void validateValues(
-        Map<String, Object> parsed,
-        GroupCoordinatorConfig groupCoordinatorConfig,
-        ShareGroupConfig shareGroupConfig
+            Map<String, Object> parsed,
+            GroupCoordinatorConfig groupCoordinatorConfig,
+            ShareGroupConfig shareGroupConfig
     ) {
         // Consumer group configs.
         validateIntRange(
-            parsed,
-            CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupMinHeartbeatIntervalMs(),
-            groupCoordinatorConfig.consumerGroupMaxHeartbeatIntervalMs()
+                parsed,
+                CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupMinHeartbeatIntervalMs(),
+                groupCoordinatorConfig.consumerGroupMaxHeartbeatIntervalMs()
         );
         validateIntRange(
-            parsed,
-            CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupMinSessionTimeoutMs(),
-            groupCoordinatorConfig.consumerGroupMaxSessionTimeoutMs()
+                parsed,
+                CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupMinSessionTimeoutMs(),
+                groupCoordinatorConfig.consumerGroupMaxSessionTimeoutMs()
         );
         validateIntRange(
-            parsed,
-            CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupMinAssignmentIntervalMs(),
-            groupCoordinatorConfig.consumerGroupMaxAssignmentIntervalMs()
+                parsed,
+                CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupMinAssignmentIntervalMs(),
+                groupCoordinatorConfig.consumerGroupMaxAssignmentIntervalMs()
         );
 
         // Share group configs.
         validateIntRange(
-            parsed,
-            SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupMinHeartbeatIntervalMs(),
-            groupCoordinatorConfig.shareGroupMaxHeartbeatIntervalMs()
+                parsed,
+                SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupMinHeartbeatIntervalMs(),
+                groupCoordinatorConfig.shareGroupMaxHeartbeatIntervalMs()
         );
         validateIntRange(
-            parsed,
-            SHARE_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupMinSessionTimeoutMs(),
-            groupCoordinatorConfig.shareGroupMaxSessionTimeoutMs()
+                parsed,
+                SHARE_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupMinSessionTimeoutMs(),
+                groupCoordinatorConfig.shareGroupMaxSessionTimeoutMs()
         );
         validateIntRange(
-            parsed,
-            SHARE_RECORD_LOCK_DURATION_MS_CONFIG,
-            shareGroupConfig.shareGroupMinRecordLockDurationMs(),
-            shareGroupConfig.shareGroupMaxRecordLockDurationMs()
+                parsed,
+                SHARE_RECORD_LOCK_DURATION_MS_CONFIG,
+                shareGroupConfig.shareGroupMinRecordLockDurationMs(),
+                shareGroupConfig.shareGroupMaxRecordLockDurationMs()
         );
         validateIntRange(
-            parsed,
-            SHARE_DELIVERY_COUNT_LIMIT_CONFIG,
-            shareGroupConfig.shareGroupMinDeliveryCountLimit(),
-            shareGroupConfig.shareGroupMaxDeliveryCountLimit()
+                parsed,
+                SHARE_DELIVERY_COUNT_LIMIT_CONFIG,
+                shareGroupConfig.shareGroupMinDeliveryCountLimit(),
+                shareGroupConfig.shareGroupMaxDeliveryCountLimit()
         );
         validateIntRange(
-            parsed,
-            SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG,
-            shareGroupConfig.shareGroupMinPartitionMaxRecordLocks(),
-            shareGroupConfig.shareGroupMaxPartitionMaxRecordLocks()
+                parsed,
+                SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG,
+                shareGroupConfig.shareGroupMinPartitionMaxRecordLocks(),
+                shareGroupConfig.shareGroupMaxPartitionMaxRecordLocks()
         );
         validateIntRange(
-            parsed,
-            SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupMinAssignmentIntervalMs(),
-            groupCoordinatorConfig.shareGroupMaxAssignmentIntervalMs()
+                parsed,
+                SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupMinAssignmentIntervalMs(),
+                groupCoordinatorConfig.shareGroupMaxAssignmentIntervalMs()
         );
 
         // Streams group configs.
         validateIntRange(
-            parsed,
-            STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMinHeartbeatIntervalMs(),
-            groupCoordinatorConfig.streamsGroupMaxHeartbeatIntervalMs()
+                parsed,
+                STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMinHeartbeatIntervalMs(),
+                groupCoordinatorConfig.streamsGroupMaxHeartbeatIntervalMs()
         );
         validateIntRange(
-            parsed,
-            STREAMS_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMinSessionTimeoutMs(),
-            groupCoordinatorConfig.streamsGroupMaxSessionTimeoutMs()
+                parsed,
+                STREAMS_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMinSessionTimeoutMs(),
+                groupCoordinatorConfig.streamsGroupMaxSessionTimeoutMs()
         );
         validateIntMax(
-            parsed,
-            STREAMS_NUM_STANDBY_REPLICAS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMaxNumStandbyReplicas()
+                parsed,
+                STREAMS_NUM_STANDBY_REPLICAS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMaxNumStandbyReplicas()
         );
         validateIntRange(
-            parsed,
-            STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMinAssignmentIntervalMs(),
-            groupCoordinatorConfig.streamsGroupMaxAssignmentIntervalMs()
+                parsed,
+                STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMinAssignmentIntervalMs(),
+                groupCoordinatorConfig.streamsGroupMaxAssignmentIntervalMs()
         );
         validateIntMin(
-            parsed,
-            STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMinTaskOffsetIntervalMs()
+                parsed,
+                STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMinTaskOffsetIntervalMs()
         );
         validateIntMax(
-            parsed,
-            STREAMS_NUM_WARMUP_REPLICAS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMaxWarmupReplicas()
+                parsed,
+                STREAMS_NUM_WARMUP_REPLICAS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMaxWarmupReplicas()
         );
 
         // Cross-field validations: session timeout must be greater than heartbeat interval.
         validateSessionExceedsHeartbeat(
-            parsed,
-            CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupSessionTimeoutMs(),
-            CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupHeartbeatIntervalMs()
+                parsed,
+                CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupSessionTimeoutMs(),
+                CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupHeartbeatIntervalMs()
         );
         validateSessionExceedsHeartbeat(
-            parsed,
-            SHARE_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupSessionTimeoutMs(),
-            SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupHeartbeatIntervalMs()
+                parsed,
+                SHARE_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupSessionTimeoutMs(),
+                SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupHeartbeatIntervalMs()
         );
         validateSessionExceedsHeartbeat(
-            parsed,
-            STREAMS_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupSessionTimeoutMs(),
-            STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupHeartbeatIntervalMs()
+                parsed,
+                STREAMS_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupSessionTimeoutMs(),
+                STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupHeartbeatIntervalMs()
         );
 
         // DLQ validation (KIP-1191)
@@ -575,7 +575,7 @@ public final class GroupConfig extends AbstractConfig {
         String dlqTopicName = (String) parsed.get(ERRORS_DEADLETTERQUEUE_TOPIC_NAME_CONFIG);
         if (dlqTopicName != null && !dlqTopicName.isEmpty() && dlqTopicName.startsWith("__")) {
             throw new InvalidConfigurationException(ERRORS_DEADLETTERQUEUE_TOPIC_NAME_CONFIG +
-                ": DLQ topic name must not start with '__'");
+                    ": DLQ topic name must not start with '__'");
         }
     }
 
@@ -583,16 +583,16 @@ public final class GroupConfig extends AbstractConfig {
      * Validates that an integer config value falls within [min, max].
      * No-op when the key is absent from the parsed map.
      *
-     * @param parsed                 The parsed group config overrides.
-     * @param key                    The config key.
-     * @param min                    The minimum allowed value (inclusive).
-     * @param max                    The maximum allowed value (inclusive).
+     * @param parsed The parsed group config overrides.
+     * @param key    The config key.
+     * @param min    The minimum allowed value (inclusive).
+     * @param max    The maximum allowed value (inclusive).
      */
     private static void validateIntRange(
-        Map<String, Object> parsed,
-        String key,
-        int min,
-        int max
+            Map<String, Object> parsed,
+            String key,
+            int min,
+            int max
     ) {
         if (!parsed.containsKey(key)) return;
         int value = (Integer) parsed.get(key);
@@ -604,14 +604,14 @@ public final class GroupConfig extends AbstractConfig {
      * Validates that an integer config value does not exceed max.
      * No-op when the key is absent from the parsed map.
      *
-     * @param parsed                 The parsed group config overrides.
-     * @param key                    The config key.
-     * @param max                    The maximum allowed value (inclusive).
+     * @param parsed The parsed group config overrides.
+     * @param key    The config key.
+     * @param max    The maximum allowed value (inclusive).
      */
     private static void validateIntMax(
-        Map<String, Object> parsed,
-        String key,
-        int max
+            Map<String, Object> parsed,
+            String key,
+            int max
     ) {
         if (!parsed.containsKey(key)) return;
         int value = (Integer) parsed.get(key);
@@ -623,14 +623,14 @@ public final class GroupConfig extends AbstractConfig {
      * Validates that an integer config value is at least min.
      * No-op when the key is absent from the parsed map.
      *
-     * @param parsed                 The parsed group config overrides.
-     * @param key                    The config key.
-     * @param min                    The minimum allowed value (inclusive).
+     * @param parsed The parsed group config overrides.
+     * @param key    The config key.
+     * @param min    The minimum allowed value (inclusive).
      */
     private static void validateIntMin(
-        Map<String, Object> parsed,
-        String key,
-        int min
+            Map<String, Object> parsed,
+            String key,
+            int min
     ) {
         if (!parsed.containsKey(key)) return;
         int value = (Integer) parsed.get(key);
@@ -642,24 +642,24 @@ public final class GroupConfig extends AbstractConfig {
      * Validates that the session timeout is greater than the heartbeat interval.
      * Uses broker defaults for any config not present in the parsed map.
      *
-     * @param parsed                 The parsed group config overrides.
-     * @param sessionKey             The session timeout config key.
-     * @param defaultSession         The default session timeout value when there is no override.
-     * @param heartbeatKey           The heartbeat interval config key.
-     * @param defaultHeartbeat       The default heartbeat interval value when there is no override.
+     * @param parsed           The parsed group config overrides.
+     * @param sessionKey       The session timeout config key.
+     * @param defaultSession   The default session timeout value when there is no override.
+     * @param heartbeatKey     The heartbeat interval config key.
+     * @param defaultHeartbeat The default heartbeat interval value when there is no override.
      */
     private static void validateSessionExceedsHeartbeat(
-        Map<String, Object> parsed,
-        String sessionKey,
-        int defaultSession,
-        String heartbeatKey,
-        int defaultHeartbeat
+            Map<String, Object> parsed,
+            String sessionKey,
+            int defaultSession,
+            String heartbeatKey,
+            int defaultHeartbeat
     ) {
         if (parsed.containsKey(sessionKey) || parsed.containsKey(heartbeatKey)) {
             int effectiveSession = parsed.containsKey(sessionKey)
-                ? (Integer) parsed.get(sessionKey) : defaultSession;
+                    ? (Integer) parsed.get(sessionKey) : defaultSession;
             int effectiveHeartbeat = parsed.containsKey(heartbeatKey)
-                ? (Integer) parsed.get(heartbeatKey) : defaultHeartbeat;
+                    ? (Integer) parsed.get(heartbeatKey) : defaultHeartbeat;
             if (effectiveSession <= effectiveHeartbeat)
                 throw new InvalidConfigurationException(sessionKey + " must be greater than " + heartbeatKey);
         }
@@ -676,18 +676,18 @@ public final class GroupConfig extends AbstractConfig {
      * @return A new {@link Properties} with out-of-range values capped.
      */
     public static Properties evaluate(
-        Properties newGroupConfig,
-        String groupId,
-        GroupCoordinatorConfig groupCoordinatorConfig,
-        ShareGroupConfig shareGroupConfig
+            Properties newGroupConfig,
+            String groupId,
+            GroupCoordinatorConfig groupCoordinatorConfig,
+            ShareGroupConfig shareGroupConfig
     ) {
         Properties evaluatedGroupConfig = new Properties();
         evaluatedGroupConfig.putAll(newGroupConfig);
         evaluateValues(
-            evaluatedGroupConfig,
-            groupId,
-            groupCoordinatorConfig,
-            shareGroupConfig
+                evaluatedGroupConfig,
+                groupId,
+                groupCoordinatorConfig,
+                shareGroupConfig
         );
         return evaluatedGroupConfig;
     }
@@ -702,143 +702,143 @@ public final class GroupConfig extends AbstractConfig {
      * @param shareGroupConfig       The share group config.
      */
     private static void evaluateValues(
-        Properties evaluatedGroupConfig,
-        String groupId,
-        GroupCoordinatorConfig groupCoordinatorConfig,
-        ShareGroupConfig shareGroupConfig
+            Properties evaluatedGroupConfig,
+            String groupId,
+            GroupCoordinatorConfig groupCoordinatorConfig,
+            ShareGroupConfig shareGroupConfig
     ) {
         // Consumer group configs.
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupMinSessionTimeoutMs(),
-            groupCoordinatorConfig.consumerGroupMaxSessionTimeoutMs()
+                evaluatedGroupConfig,
+                groupId,
+                CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupMinSessionTimeoutMs(),
+                groupCoordinatorConfig.consumerGroupMaxSessionTimeoutMs()
         );
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupMinHeartbeatIntervalMs(),
-            groupCoordinatorConfig.consumerGroupMaxHeartbeatIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupMinHeartbeatIntervalMs(),
+                groupCoordinatorConfig.consumerGroupMaxHeartbeatIntervalMs()
         );
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupMinAssignmentIntervalMs(),
-            groupCoordinatorConfig.consumerGroupMaxAssignmentIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                CONSUMER_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupMinAssignmentIntervalMs(),
+                groupCoordinatorConfig.consumerGroupMaxAssignmentIntervalMs()
         );
 
         // Share group configs.
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            SHARE_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupMinSessionTimeoutMs(),
-            groupCoordinatorConfig.shareGroupMaxSessionTimeoutMs()
+                evaluatedGroupConfig,
+                groupId,
+                SHARE_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupMinSessionTimeoutMs(),
+                groupCoordinatorConfig.shareGroupMaxSessionTimeoutMs()
         );
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupMinHeartbeatIntervalMs(),
-            groupCoordinatorConfig.shareGroupMaxHeartbeatIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupMinHeartbeatIntervalMs(),
+                groupCoordinatorConfig.shareGroupMaxHeartbeatIntervalMs()
         );
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            SHARE_RECORD_LOCK_DURATION_MS_CONFIG,
-            shareGroupConfig.shareGroupMinRecordLockDurationMs(),
-            shareGroupConfig.shareGroupMaxRecordLockDurationMs()
+                evaluatedGroupConfig,
+                groupId,
+                SHARE_RECORD_LOCK_DURATION_MS_CONFIG,
+                shareGroupConfig.shareGroupMinRecordLockDurationMs(),
+                shareGroupConfig.shareGroupMaxRecordLockDurationMs()
         );
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            SHARE_DELIVERY_COUNT_LIMIT_CONFIG,
-            shareGroupConfig.shareGroupMinDeliveryCountLimit(),
-            shareGroupConfig.shareGroupMaxDeliveryCountLimit()
+                evaluatedGroupConfig,
+                groupId,
+                SHARE_DELIVERY_COUNT_LIMIT_CONFIG,
+                shareGroupConfig.shareGroupMinDeliveryCountLimit(),
+                shareGroupConfig.shareGroupMaxDeliveryCountLimit()
         );
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG,
-            shareGroupConfig.shareGroupMinPartitionMaxRecordLocks(),
-            shareGroupConfig.shareGroupMaxPartitionMaxRecordLocks()
+                evaluatedGroupConfig,
+                groupId,
+                SHARE_PARTITION_MAX_RECORD_LOCKS_CONFIG,
+                shareGroupConfig.shareGroupMinPartitionMaxRecordLocks(),
+                shareGroupConfig.shareGroupMaxPartitionMaxRecordLocks()
         );
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupMinAssignmentIntervalMs(),
-            groupCoordinatorConfig.shareGroupMaxAssignmentIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                SHARE_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupMinAssignmentIntervalMs(),
+                groupCoordinatorConfig.shareGroupMaxAssignmentIntervalMs()
         );
 
         // Streams group configs.
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            STREAMS_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMinSessionTimeoutMs(),
-            groupCoordinatorConfig.streamsGroupMaxSessionTimeoutMs()
+                evaluatedGroupConfig,
+                groupId,
+                STREAMS_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMinSessionTimeoutMs(),
+                groupCoordinatorConfig.streamsGroupMaxSessionTimeoutMs()
         );
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMinHeartbeatIntervalMs(),
-            groupCoordinatorConfig.streamsGroupMaxHeartbeatIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMinHeartbeatIntervalMs(),
+                groupCoordinatorConfig.streamsGroupMaxHeartbeatIntervalMs()
         );
         clampToMax(
-            evaluatedGroupConfig,
-            groupId,
-            STREAMS_NUM_STANDBY_REPLICAS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMaxNumStandbyReplicas()
+                evaluatedGroupConfig,
+                groupId,
+                STREAMS_NUM_STANDBY_REPLICAS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMaxNumStandbyReplicas()
         );
         clampToRange(
-            evaluatedGroupConfig,
-            groupId,
-            STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMinAssignmentIntervalMs(),
-            groupCoordinatorConfig.streamsGroupMaxAssignmentIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                STREAMS_ASSIGNMENT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMinAssignmentIntervalMs(),
+                groupCoordinatorConfig.streamsGroupMaxAssignmentIntervalMs()
         );
         clampToMin(
-            evaluatedGroupConfig,
-            groupId,
-            STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMinTaskOffsetIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                STREAMS_TASK_OFFSET_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMinTaskOffsetIntervalMs()
         );
         clampToMax(
-            evaluatedGroupConfig,
-            groupId,
-            STREAMS_NUM_WARMUP_REPLICAS_CONFIG,
-            groupCoordinatorConfig.streamsGroupMaxWarmupReplicas()
+                evaluatedGroupConfig,
+                groupId,
+                STREAMS_NUM_WARMUP_REPLICAS_CONFIG,
+                groupCoordinatorConfig.streamsGroupMaxWarmupReplicas()
         );
 
         // Verify that clamping did not break the session > heartbeat invariant.
         checkSessionExceedsHeartbeat(
-            evaluatedGroupConfig,
-            groupId,
-            CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupSessionTimeoutMs(),
-            CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.consumerGroupHeartbeatIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                CONSUMER_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupSessionTimeoutMs(),
+                CONSUMER_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.consumerGroupHeartbeatIntervalMs()
         );
         checkSessionExceedsHeartbeat(
-            evaluatedGroupConfig,
-            groupId,
-            SHARE_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupSessionTimeoutMs(),
-            SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.shareGroupHeartbeatIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                SHARE_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupSessionTimeoutMs(),
+                SHARE_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.shareGroupHeartbeatIntervalMs()
         );
         checkSessionExceedsHeartbeat(
-            evaluatedGroupConfig,
-            groupId,
-            STREAMS_SESSION_TIMEOUT_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupSessionTimeoutMs(),
-            STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
-            groupCoordinatorConfig.streamsGroupHeartbeatIntervalMs()
+                evaluatedGroupConfig,
+                groupId,
+                STREAMS_SESSION_TIMEOUT_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupSessionTimeoutMs(),
+                STREAMS_HEARTBEAT_INTERVAL_MS_CONFIG,
+                groupCoordinatorConfig.streamsGroupHeartbeatIntervalMs()
         );
     }
 
@@ -846,20 +846,20 @@ public final class GroupConfig extends AbstractConfig {
      * Log a WARN if the session timeout is not greater than the heartbeat interval after
      * evaluation. When a key is absent from newGroupConfig, the broker-level default is used.
      *
-     * @param newGroupConfig         The new unparsed group config overrides.
-     * @param groupId                The group id.
-     * @param sessionKey             The session timeout config key.
-     * @param defaultSession         The default session timeout value when there is no override.
-     * @param heartbeatKey           The heartbeat interval config key.
-     * @param defaultHeartbeat       The default heartbeat interval value when there is no override.
+     * @param newGroupConfig   The new unparsed group config overrides.
+     * @param groupId          The group id.
+     * @param sessionKey       The session timeout config key.
+     * @param defaultSession   The default session timeout value when there is no override.
+     * @param heartbeatKey     The heartbeat interval config key.
+     * @param defaultHeartbeat The default heartbeat interval value when there is no override.
      */
     private static void checkSessionExceedsHeartbeat(
-        Properties newGroupConfig,
-        String groupId,
-        String sessionKey,
-        int defaultSession,
-        String heartbeatKey,
-        int defaultHeartbeat
+            Properties newGroupConfig,
+            String groupId,
+            String sessionKey,
+            int defaultSession,
+            String heartbeatKey,
+            int defaultHeartbeat
     ) {
         Object rawSession = newGroupConfig.get(sessionKey);
         Object rawHeartbeat = newGroupConfig.get(heartbeatKey);
@@ -869,9 +869,9 @@ public final class GroupConfig extends AbstractConfig {
         int heartbeat = rawHeartbeat != null ? Integer.parseInt(rawHeartbeat.toString()) : defaultHeartbeat;
         if (session <= heartbeat) {
             LOG.warn("The effective {} ({}) for group '{}' is not greater than {} ({}). "
-                    + "Check that the broker-level min/max bounds for session timeout "
-                    + "and heartbeat interval do not overlap.",
-                sessionKey, session, groupId, heartbeatKey, heartbeat);
+                            + "Check that the broker-level min/max bounds for session timeout "
+                            + "and heartbeat interval do not overlap.",
+                    sessionKey, session, groupId, heartbeatKey, heartbeat);
         }
     }
 
@@ -879,18 +879,18 @@ public final class GroupConfig extends AbstractConfig {
      * Clamp a config value to [min, max]. A WARN log is emitted on adjustment.
      * No-op when the key is absent from evaluatedGroupConfig.
      *
-     * @param evaluatedGroupConfig   The unparsed group config overrides to modify in place.
-     * @param groupId                The group id.
-     * @param key                    The config key.
-     * @param min                    The minimum allowed value (inclusive).
-     * @param max                    The maximum allowed value (inclusive).
+     * @param evaluatedGroupConfig The unparsed group config overrides to modify in place.
+     * @param groupId              The group id.
+     * @param key                  The config key.
+     * @param min                  The minimum allowed value (inclusive).
+     * @param max                  The maximum allowed value (inclusive).
      */
     private static void clampToRange(
-        Properties evaluatedGroupConfig,
-        String groupId,
-        String key,
-        int min,
-        int max
+            Properties evaluatedGroupConfig,
+            String groupId,
+            String key,
+            int min,
+            int max
     ) {
         Object rawValue = evaluatedGroupConfig.get(key);
         if (rawValue == null) return;
@@ -898,13 +898,13 @@ public final class GroupConfig extends AbstractConfig {
         int value = Integer.parseInt(rawValue.toString());
         if (value < min) {
             LOG.warn("The group config '{}' for group '{}' has value {} which is below the broker's " +
-                    "allowed minimum {}. The effective value will be capped to {}.",
-                key, groupId, value, min, min);
+                            "allowed minimum {}. The effective value will be capped to {}.",
+                    key, groupId, value, min, min);
             evaluatedGroupConfig.put(key, min);
         } else if (value > max) {
             LOG.warn("The group config '{}' for group '{}' has value {} which exceeds the broker's " +
-                    "allowed maximum {}. The effective value will be capped to {}.",
-                key, groupId, value, max, max);
+                            "allowed maximum {}. The effective value will be capped to {}.",
+                    key, groupId, value, max, max);
             evaluatedGroupConfig.put(key, max);
         }
     }
@@ -913,16 +913,16 @@ public final class GroupConfig extends AbstractConfig {
      * Clamp a config value to at most max. A WARN log is emitted on adjustment.
      * No-op when the key is absent from evaluatedGroupConfig.
      *
-     * @param evaluatedGroupConfig   The unparsed group config overrides to modify in place.
-     * @param groupId                The group id.
-     * @param key                    The config key.
-     * @param max                    The maximum allowed value (inclusive).
+     * @param evaluatedGroupConfig The unparsed group config overrides to modify in place.
+     * @param groupId              The group id.
+     * @param key                  The config key.
+     * @param max                  The maximum allowed value (inclusive).
      */
     private static void clampToMax(
-        Properties evaluatedGroupConfig,
-        String groupId,
-        String key,
-        int max
+            Properties evaluatedGroupConfig,
+            String groupId,
+            String key,
+            int max
     ) {
         Object rawValue = evaluatedGroupConfig.get(key);
         if (rawValue == null) return;
@@ -930,8 +930,8 @@ public final class GroupConfig extends AbstractConfig {
         int value = Integer.parseInt(rawValue.toString());
         if (value > max) {
             LOG.warn("The group config '{}' for group '{}' has value {} which exceeds the broker's " +
-                    "allowed maximum {}. The effective value will be capped to {}.",
-                key, groupId, value, max, max);
+                            "allowed maximum {}. The effective value will be capped to {}.",
+                    key, groupId, value, max, max);
             evaluatedGroupConfig.put(key, max);
         }
     }
@@ -940,16 +940,16 @@ public final class GroupConfig extends AbstractConfig {
      * Clamp a config value to at least min. A WARN log is emitted on adjustment.
      * No-op when the key is absent from evaluatedGroupConfig.
      *
-     * @param evaluatedGroupConfig   The unparsed group config overrides to modify in place.
-     * @param groupId                The group id.
-     * @param key                    The config key.
-     * @param min                    The minimum allowed value (inclusive).
+     * @param evaluatedGroupConfig The unparsed group config overrides to modify in place.
+     * @param groupId              The group id.
+     * @param key                  The config key.
+     * @param min                  The minimum allowed value (inclusive).
      */
     private static void clampToMin(
-        Properties evaluatedGroupConfig,
-        String groupId,
-        String key,
-        int min
+            Properties evaluatedGroupConfig,
+            String groupId,
+            String key,
+            int min
     ) {
         Object rawValue = evaluatedGroupConfig.get(key);
         if (rawValue == null) return;
@@ -957,8 +957,8 @@ public final class GroupConfig extends AbstractConfig {
         int value = Integer.parseInt(rawValue.toString());
         if (value < min) {
             LOG.warn("The group config '{}' for group '{}' has value {} which is below the broker's " +
-                    "allowed minimum {}. The effective value will be capped to {}.",
-                key, groupId, value, min, min);
+                            "allowed minimum {}. The effective value will be capped to {}.",
+                    key, groupId, value, min, min);
             evaluatedGroupConfig.put(key, min);
         }
     }
@@ -970,8 +970,8 @@ public final class GroupConfig extends AbstractConfig {
      * @param overrides The group config overrides.
      */
     public static GroupConfig fromProps(
-        Map<?, ?> defaults,
-        Properties overrides
+            Map<?, ?> defaults,
+            Properties overrides
     ) {
         Properties props = new Properties();
         props.putAll(defaults);

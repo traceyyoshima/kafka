@@ -67,8 +67,8 @@ public class SafeObjectInputStream extends ObjectInputStream {
         if (!allowedClasses.contains(name)) {
             throw new InvalidClassException(name,
                     "Rejected by deserialization allowlist. If this class is legitimately " +
-                    "required, pass an explicit allowedClasses set to " +
-                    "SafeObjectInputStream(InputStream, Set).");
+                            "required, pass an explicit allowedClasses set to " +
+                            "SafeObjectInputStream(InputStream, Set).");
         }
         return super.resolveClass(desc);
     }

@@ -58,8 +58,8 @@ public class RocksDBBlockCacheMetricsTest {
     public static Stream<Arguments> stores() {
         final File stateDir = TestUtils.tempDirectory("state");
         return Stream.of(
-            Arguments.of(new RocksDBStore(STORE_NAME, METRICS_SCOPE), new MockInternalProcessorContext<>(new Properties(), TASK_ID, stateDir)),
-            Arguments.of(new RocksDBTimestampedStore(STORE_NAME, METRICS_SCOPE), new MockInternalProcessorContext<>(new Properties(), TASK_ID, stateDir))
+                Arguments.of(new RocksDBStore(STORE_NAME, METRICS_SCOPE), new MockInternalProcessorContext<>(new Properties(), TASK_ID, stateDir)),
+                Arguments.of(new RocksDBTimestampedStore(STORE_NAME, METRICS_SCOPE), new MockInternalProcessorContext<>(new Properties(), TASK_ID, stateDir))
         );
     }
 
@@ -81,9 +81,9 @@ public class RocksDBBlockCacheMetricsTest {
     @MethodSource("stores")
     public void shouldRecordCorrectBlockCacheCapacity(final RocksDBStore store, final StateStoreContext ctx) {
         withStore(
-            store,
-            ctx,
-            () -> assertMetric(ctx, STATE_STORE_LEVEL_GROUP, RocksDBMetrics.CAPACITY_OF_BLOCK_CACHE, BigInteger.valueOf(50 * 1024 * 1024L))
+                store,
+                ctx,
+                () -> assertMetric(ctx, STATE_STORE_LEVEL_GROUP, RocksDBMetrics.CAPACITY_OF_BLOCK_CACHE, BigInteger.valueOf(50 * 1024 * 1024L))
         );
     }
 

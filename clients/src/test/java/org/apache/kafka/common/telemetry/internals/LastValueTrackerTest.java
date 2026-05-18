@@ -51,7 +51,7 @@ public class LastValueTrackerTest {
         lastValueTracker.getAndSet(METRIC_NAME, instant1, 1d);
 
         Optional<InstantAndValue<Double>> result = lastValueTracker
-            .getAndSet(METRIC_NAME, instant2, 1000d);
+                .getAndSet(METRIC_NAME, instant2, 1000d);
 
         assertTrue(result.isPresent());
         assertEquals(instant1, result.get().getIntervalStart());
@@ -70,7 +70,7 @@ public class LastValueTrackerTest {
         LastValueTracker<Long> lastValueTracker = new LastValueTracker<>();
         lastValueTracker.getAndSet(METRIC_NAME, instant1, 2L);
         Optional<InstantAndValue<Long>> result = lastValueTracker
-            .getAndSet(METRIC_NAME, instant2, 10000L);
+                .getAndSet(METRIC_NAME, instant2, 10000L);
 
         assertTrue(result.isPresent());
         assertEquals(instant1, result.get().getIntervalStart());

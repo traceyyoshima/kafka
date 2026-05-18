@@ -52,16 +52,16 @@ public class PartitionMaxBytesStrategyTest {
 
         // acquired partitions size is 0.
         assertThrows(IllegalArgumentException.class, () -> PartitionMaxBytesStrategy.checkValidArguments(
-            100, partitions, 0));
+                100, partitions, 0));
         // empty partitions set.
         assertThrows(IllegalArgumentException.class, () -> PartitionMaxBytesStrategy.checkValidArguments(
-            100, Set.of(), 20));
+                100, Set.of(), 20));
         // partitions is null.
         assertThrows(IllegalArgumentException.class, () -> PartitionMaxBytesStrategy.checkValidArguments(
-            100, null, 20));
+                100, null, 20));
         // request max bytes is 0.
         assertThrows(IllegalArgumentException.class, () -> PartitionMaxBytesStrategy.checkValidArguments(
-            0, partitions, 20));
+                0, partitions, 20));
 
         // Valid arguments.
         assertDoesNotThrow(() -> PartitionMaxBytesStrategy.checkValidArguments(100, partitions, 20));
@@ -80,26 +80,26 @@ public class PartitionMaxBytesStrategyTest {
 
         // Case 1: requestMaxBytes is greater than acquiredPartitions, so max bytes is distributed evenly.
         LinkedHashMap<TopicIdPartition, Integer> result = partitionMaxBytesStrategy.maxBytes(
-            100, partitions, 3);
+                100, partitions, 3);
         assertEquals(List.of(33, 33, 34), result.values().stream().sorted().toList());
 
         result = partitionMaxBytesStrategy.maxBytes(
-            100, partitions, 5);
+                100, partitions, 5);
         assertEquals(List.of(20, 20, 20), result.values().stream().toList());
 
         // Case 2: requestMaxBytes < acquiredPartitions and requestMaxBytes >= partitions for which we want to
         // calculate the max bytes.
         result = partitionMaxBytesStrategy.maxBytes(
-            9, partitions, 12);
+                9, partitions, 12);
         assertEquals(List.of(3, 3, 3), result.values().stream().toList());
 
         result = partitionMaxBytesStrategy.maxBytes(
-            10, partitions, 12);
+                10, partitions, 12);
         assertEquals(List.of(3, 3, 4), result.values().stream().sorted().toList());
 
         // Case 3: requestMaxBytes < partitions for which we want to calculate the max bytes.
         result = partitionMaxBytesStrategy.maxBytes(
-            2, partitions, 4);
+                2, partitions, 4);
         assertEquals(List.of(0, 1, 1), result.values().stream().sorted().toList());
     }
 }

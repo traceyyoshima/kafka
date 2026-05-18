@@ -113,6 +113,7 @@ public class ClusterConfigState {
     /**
      * Get the last offset read to generate this config state. This offset is not guaranteed to be perfectly consistent
      * with the recorded state because some partial updates to task configs may have been read.
+     *
      * @return the latest config offset
      */
     public long offset() {
@@ -121,6 +122,7 @@ public class ClusterConfigState {
 
     /**
      * Get the latest session key from the config state
+     *
      * @return the {@link SessionKey session key}; may be null if no key has been read yet
      */
     public SessionKey sessionKey() {
@@ -129,6 +131,7 @@ public class ClusterConfigState {
 
     /**
      * Check whether this snapshot contains configuration for a connector.
+     *
      * @param connector name of the connector
      * @return true if this state contains configuration for the connector, false otherwise
      */
@@ -148,6 +151,7 @@ public class ClusterConfigState {
      * {@link org.apache.kafka.common.config.ConfigTransformer} by having all variable
      * references replaced with the current values from external instances of
      * {@link ConfigProvider}, and may include secrets.
+     *
      * @param connector name of the connector
      * @return a map containing configuration parameters
      */
@@ -167,17 +171,19 @@ public class ClusterConfigState {
      * Get the most recent configuration for the connector from which task configs have
      * been generated. The configuration will have been transformed by
      * {@link org.apache.kafka.common.config.ConfigTransformer}
+     *
      * @param connector name of the connector
      * @return the connector config, or null if no config exists from which task configs have
      * been generated
      */
     public Map<String, String> appliedConnectorConfig(String connector) {
-        AppliedConnectorConfig appliedConfig =  appliedConnectorConfigs.get(connector);
+        AppliedConnectorConfig appliedConfig = appliedConnectorConfigs.get(connector);
         return appliedConfig != null ? appliedConfig.transformedConfig(configTransformer) : null;
     }
 
     /**
      * Get the target state of the connector
+     *
      * @param connector name of the connector
      * @return the target state
      */
@@ -190,6 +196,7 @@ public class ClusterConfigState {
      * {@link org.apache.kafka.common.config.ConfigTransformer} by having all variable
      * references replaced with the current values from external instances of
      * {@link ConfigProvider}, and may include secrets.
+     *
      * @param task id of the task
      * @return a map containing configuration parameters
      */
@@ -207,6 +214,7 @@ public class ClusterConfigState {
 
     /**
      * Get the number of tasks for a given connector.
+     *
      * @param connectorName name of the connector to look up tasks for
      * @return the number of tasks
      */
@@ -218,6 +226,7 @@ public class ClusterConfigState {
     /**
      * Get whether the connector requires a round of zombie fencing before
      * a new generation of tasks can be brought up for it.
+     *
      * @param connectorName name of the connector
      */
     public boolean pendingFencing(String connectorName) {
@@ -226,6 +235,7 @@ public class ClusterConfigState {
 
     /**
      * Get the current set of task IDs for the specified connector.
+     *
      * @param connectorName the name of the connector to look up task configs for
      * @return the current set of connector task IDs
      */
@@ -249,6 +259,7 @@ public class ClusterConfigState {
 
     /**
      * Get the task count record for the connector, if one exists
+     *
      * @param connector name of the connector
      * @return the latest task count record for the connector, or {@code null} if none exists
      */
@@ -259,6 +270,7 @@ public class ClusterConfigState {
     /**
      * Get the generation number for the connector's task configurations, if one exists.
      * Generation numbers increase monotonically each time a new set of task configurations is detected for the connector
+     *
      * @param connector name of the connector
      * @return the latest task config generation number for the connector, or {@code null} if none exists
      */

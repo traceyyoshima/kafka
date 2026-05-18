@@ -80,7 +80,7 @@ public class ValueTimestampHeadersDeserializerTest {
     public void shouldDeserializeWithEmptyHeaders() {
         final Headers headers = new RecordHeaders();
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.make("test-value", 123456789L, headers);
+                ValueTimestampHeaders.make("test-value", 123456789L, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         final ValueTimestampHeaders<String> deserialized = deserializer.deserialize(TOPIC, serialized);
@@ -95,9 +95,9 @@ public class ValueTimestampHeadersDeserializerTest {
     @Test
     public void shouldDeserializeWithSingleHeader() {
         final Headers headers = new RecordHeaders()
-            .add("key1", "value1".getBytes());
+                .add("key1", "value1".getBytes());
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.make("test-value", 123456789L, headers);
+                ValueTimestampHeaders.make("test-value", 123456789L, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         final ValueTimestampHeaders<String> deserialized = deserializer.deserialize(TOPIC, serialized);
@@ -119,11 +119,11 @@ public class ValueTimestampHeadersDeserializerTest {
     @Test
     public void shouldDeserializeWithMultipleHeaders() {
         final Headers headers = new RecordHeaders()
-            .add("key0", "value0".getBytes())
-            .add("key0", "value1".getBytes())
-            .add("key2", "value2".getBytes());
+                .add("key0", "value0".getBytes())
+                .add("key0", "value1".getBytes())
+                .add("key2", "value2".getBytes());
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.make("test-value", 123456789L, headers);
+                ValueTimestampHeaders.make("test-value", 123456789L, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         final ValueTimestampHeaders<String> deserialized = deserializer.deserialize(TOPIC, serialized);
@@ -152,9 +152,9 @@ public class ValueTimestampHeadersDeserializerTest {
     @Test
     public void shouldReturnNullWhenSerializingNullValue() {
         final Headers headers = new RecordHeaders()
-            .add("key1", "value1".getBytes());
+                .add("key1", "value1".getBytes());
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.makeAllowNullable(null, 123456789L, headers);
+                ValueTimestampHeaders.makeAllowNullable(null, 123456789L, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         assertNull(serialized, "Serializer should return null when value is null");
@@ -166,9 +166,9 @@ public class ValueTimestampHeadersDeserializerTest {
     @Test
     public void shouldDeserializeWithHeaderContainingNullValue() {
         final Headers headers = new RecordHeaders()
-            .add("key1", null);
+                .add("key1", null);
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.make("test-value", 123456789L, headers);
+                ValueTimestampHeaders.make("test-value", 123456789L, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         final ValueTimestampHeaders<String> deserialized = deserializer.deserialize(TOPIC, serialized);
@@ -187,7 +187,7 @@ public class ValueTimestampHeadersDeserializerTest {
     @MethodSource("headers")
     public void shouldExtractTimestamp(final Headers headers) {
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.make("test-value", 123456789L, headers);
+                ValueTimestampHeaders.make("test-value", 123456789L, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         final long timestamp = Utils.timestamp(serialized);
@@ -199,24 +199,24 @@ public class ValueTimestampHeadersDeserializerTest {
         return Stream.of(
                 new RecordHeaders().add("key1", "value1".getBytes()),
                 new RecordHeaders()
-            ).map(Arguments::of);
+        ).map(Arguments::of);
     }
 
     @Test
     public void shouldThrowExceptionWhenExtractingTimestampFromNull() {
         // ByteBuffer.wrap() throws NullPointerException for null input
         assertThrows(NullPointerException.class, () ->
-            Utils.timestamp(null)
+                Utils.timestamp(null)
         );
     }
 
     @Test
     public void shouldExtractHeaders() {
         final Headers headers = new RecordHeaders()
-            .add("key1", "value1".getBytes())
-            .add("key2", "value2".getBytes());
+                .add("key1", "value1".getBytes())
+                .add("key2", "value2".getBytes());
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.make("test-value", 123456789L, headers);
+                ValueTimestampHeaders.make("test-value", 123456789L, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         final Headers extractedHeaders = Utils.headers(serialized);
@@ -231,7 +231,7 @@ public class ValueTimestampHeadersDeserializerTest {
     public void shouldExtractEmptyHeaders() {
         final Headers headers = new RecordHeaders();
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.make("test-value", 123456789L, headers);
+                ValueTimestampHeaders.make("test-value", 123456789L, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         final Headers extractedHeaders = Utils.headers(serialized);
@@ -249,25 +249,25 @@ public class ValueTimestampHeadersDeserializerTest {
     @Test
     public void shouldThrowExceptionWhenDataIsTooShort() {
         // Create malformed data: only headersSize varint, no actual headers or timestamp
-        final byte[] malformedData = new byte[] {0x02};  // headersSize = 1 but no data follows
+        final byte[] malformedData = new byte[]{0x02};  // headersSize = 1 but no data follows
 
         assertThrows(SerializationException.class, () ->
-            deserializer.deserialize(TOPIC, malformedData),
-            "Should throw SerializationException for malformed data"
+                        deserializer.deserialize(TOPIC, malformedData),
+                "Should throw SerializationException for malformed data"
         );
     }
 
     @Test
     public void shouldThrowExceptionWhenHeadersSizeIsInconsistent() {
         // Create data with headersSize = 10 but not enough actual data
-        final byte[] malformedData = new byte[] {
-            0x14,  // headersSize = 10 (ZigZag encoding)
-            0x00, 0x00  // Only 2 bytes when 10 + 8 (timestamp) are expected
+        final byte[] malformedData = new byte[]{
+                0x14,  // headersSize = 10 (ZigZag encoding)
+                0x00, 0x00  // Only 2 bytes when 10 + 8 (timestamp) are expected
         };
 
         assertThrows(SerializationException.class, () ->
-            deserializer.deserialize(TOPIC, malformedData),
-            "Should throw SerializationException when buffer doesn't have enough data"
+                        deserializer.deserialize(TOPIC, malformedData),
+                "Should throw SerializationException when buffer doesn't have enough data"
         );
     }
 
@@ -276,15 +276,15 @@ public class ValueTimestampHeadersDeserializerTest {
     public void shouldPassHeadersToDeserializer() {
         final Deserializer<String> mockDeserializer = mock(Deserializer.class);
         when(mockDeserializer.deserialize(anyString(), any(Headers.class), any(byte[].class)))
-            .thenReturn("test-value");
+                .thenReturn("test-value");
 
         final Headers headers = new RecordHeaders().add("key1", "value1".getBytes());
         final ValueTimestampHeaders<String> original =
-            ValueTimestampHeaders.make("test-value", 123456789L, headers);
+                ValueTimestampHeaders.make("test-value", 123456789L, headers);
 
         final byte[] serialized = serializer.serialize(TOPIC, original);
         final ValueTimestampHeadersDeserializer<String> testDeserializer =
-            new ValueTimestampHeadersDeserializer<>(mockDeserializer);
+                new ValueTimestampHeadersDeserializer<>(mockDeserializer);
         testDeserializer.deserialize(TOPIC, serialized);
 
         // we should invoke the deserialize(String, Headers, byte) instead of deserialize(String, byte)

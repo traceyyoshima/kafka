@@ -101,9 +101,9 @@ public final class DeleteRecordsHandler extends Batched<TopicPartition, DeletedR
 
     @Override
     public ApiResult<TopicPartition, DeletedRecords> handleResponse(
-        Node broker,
-        Set<TopicPartition> keys,
-        AbstractResponse abstractResponse
+            Node broker,
+            Set<TopicPartition> keys,
+            AbstractResponse abstractResponse
     ) {
         DeleteRecordsResponse response = (DeleteRecordsResponse) abstractResponse;
         Map<TopicPartition, DeletedRecords> completed = new HashMap<>();
@@ -111,7 +111,7 @@ public final class DeleteRecordsHandler extends Batched<TopicPartition, DeletedR
         List<TopicPartition> unmapped = new ArrayList<>();
         Set<TopicPartition> retriable = new HashSet<>();
 
-        for (DeleteRecordsResponseData.DeleteRecordsTopicResult topicResult: response.data().topics()) {
+        for (DeleteRecordsResponseData.DeleteRecordsTopicResult topicResult : response.data().topics()) {
             for (DeleteRecordsResponseData.DeleteRecordsPartitionResult partitionResult : topicResult.partitions()) {
                 Errors error = Errors.forCode(partitionResult.errorCode());
                 TopicPartition topicPartition = new TopicPartition(topicResult.name(), partitionResult.partitionIndex());
@@ -145,35 +145,35 @@ public final class DeleteRecordsHandler extends Batched<TopicPartition, DeletedR
     }
 
     private void handlePartitionError(
-        TopicPartition topicPartition,
-        Errors error,
-        Map<TopicPartition, Throwable> failed,
-        List<TopicPartition> unmapped,
-        Set<TopicPartition> retriable
+            TopicPartition topicPartition,
+            Errors error,
+            Map<TopicPartition, Throwable> failed,
+            List<TopicPartition> unmapped,
+            Set<TopicPartition> retriable
     ) {
         if (error.exception() instanceof InvalidMetadataException) {
             log.debug(
-                "DeleteRecords lookup request for topic partition {} will be retried due to invalid leader metadata {}",
-                 topicPartition,
-                 error);
+                    "DeleteRecords lookup request for topic partition {} will be retried due to invalid leader metadata {}",
+                    topicPartition,
+                    error);
             unmapped.add(topicPartition);
         } else if (error.exception() instanceof RetriableException) {
             log.debug(
-                "DeleteRecords fulfillment request for topic partition {} will be retried due to {}",
-                topicPartition,
-                error);
+                    "DeleteRecords fulfillment request for topic partition {} will be retried due to {}",
+                    topicPartition,
+                    error);
             retriable.add(topicPartition);
         } else if (error.exception() instanceof TopicAuthorizationException) {
             log.error(
-                "DeleteRecords request for topic partition {} failed due to an error {}",
-                topicPartition,
-                error);
+                    "DeleteRecords request for topic partition {} failed due to an error {}",
+                    topicPartition,
+                    error);
             failed.put(topicPartition, error.exception());
         } else {
             log.error(
-                "DeleteRecords request for topic partition {} failed due to an unexpected error {}",
-                topicPartition,
-                error);
+                    "DeleteRecords request for topic partition {} failed due to an unexpected error {}",
+                    topicPartition,
+                    error);
             failed.put(topicPartition, error.exception());
         }
     }

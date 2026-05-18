@@ -64,9 +64,9 @@ class PeriodicTaskControlManager {
 
     interface QueueAccessor {
         void scheduleDeferred(
-            String tag,
-            long deadlineNs,
-            Supplier<ControllerResult<Void>> op
+                String tag,
+                long deadlineNs,
+                Supplier<ControllerResult<Void>> op
         );
 
         void cancelDeferred(String tag);
@@ -95,7 +95,7 @@ class PeriodicTaskControlManager {
                 // that it is handled correctly in QuorumController::handleEventException. We want it to
                 // cause the metadata error metric to be incremented, but not cause a controller failover.
                 throw new PeriodicControlTaskException(task.name() + ": periodic task failed: " +
-                    e.getMessage(), e);
+                        e.getMessage(), e);
             }
             if (log.isDebugEnabled() || task.flags().contains(PeriodicTaskFlag.VERBOSE)) {
                 long endNs = time.nanoseconds();
@@ -143,9 +143,9 @@ class PeriodicTaskControlManager {
     private final Map<String, PeriodicTask> tasks;
 
     private PeriodicTaskControlManager(
-        LogContext logContext,
-        Time time,
-        QueueAccessor queueAccessor
+            LogContext logContext,
+            Time time,
+            QueueAccessor queueAccessor
     ) {
         this.log = logContext.logger(PeriodicTaskControlManager.class);
         this.time = time;

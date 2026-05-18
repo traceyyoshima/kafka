@@ -63,26 +63,26 @@ public class SocketServerConfigs {
     public static final String LISTENERS_CONFIG = "listeners";
     public static final String LISTENERS_DEFAULT = "PLAINTEXT://:9092";
     public static final String LISTENERS_DOC = String.format("Listener List - Comma-separated list of URIs we will listen on and the listener names." +
-                    " If the listener name is not a security protocol, <code>%s</code> must also be set.%n" +
-                    " Listener names and port numbers must be unique unless one listener is an IPv4 address and the other listener is an IPv6 address (for the same port).%n" +
-                    " Specify hostname as 0.0.0.0 to bind to all interfaces.%n" +
-                    " Leave hostname empty to bind to default interface.%n" +
-                    " Examples of legal listener lists:%n" +
-                    " <code>PLAINTEXT://myhost:9092,SSL://:9091</code>%n" +
-                    " <code>CLIENT://0.0.0.0:9092,REPLICATION://localhost:9093</code>%n" +
-                    " <code>PLAINTEXT://127.0.0.1:9092,SSL://[::1]:9092</code>%n", LISTENER_SECURITY_PROTOCOL_MAP_CONFIG);
+            " If the listener name is not a security protocol, <code>%s</code> must also be set.%n" +
+            " Listener names and port numbers must be unique unless one listener is an IPv4 address and the other listener is an IPv6 address (for the same port).%n" +
+            " Specify hostname as 0.0.0.0 to bind to all interfaces.%n" +
+            " Leave hostname empty to bind to default interface.%n" +
+            " Examples of legal listener lists:%n" +
+            " <code>PLAINTEXT://myhost:9092,SSL://:9091</code>%n" +
+            " <code>CLIENT://0.0.0.0:9092,REPLICATION://localhost:9093</code>%n" +
+            " <code>PLAINTEXT://127.0.0.1:9092,SSL://[::1]:9092</code>%n", LISTENER_SECURITY_PROTOCOL_MAP_CONFIG);
 
     public static final String ADVERTISED_LISTENERS_CONFIG = "advertised.listeners";
     public static final String ADVERTISED_LISTENERS_DOC = String.format("Specifies the listener addresses that the Kafka brokers will advertise to clients and other brokers." +
-                    " The config is useful where the actual listener configuration <code>%s</code> does not represent the addresses that clients should" +
-                    " use to connect, such as in cloud environments." +
-                    " The addresses are published to and managed by the controller, the brokers pull these data from the controller as needed." +
-                    " In IaaS environments, this may need to be different from the interface to which the broker binds." +
-                    " If this is not set, the value for <code>%1$1s</code> will be used." +
-                    " Unlike <code>%1$1s</code>, it is not valid to advertise the 0.0.0.0 meta-address.%n" +
-                    " Also unlike <code>%1$1s</code>, there can be duplicated ports in this property," +
-                    " so that one listener can be configured to advertise another listener's address." +
-                    " This can be useful in some cases where external load balancers are used.", LISTENERS_CONFIG);
+            " The config is useful where the actual listener configuration <code>%s</code> does not represent the addresses that clients should" +
+            " use to connect, such as in cloud environments." +
+            " The addresses are published to and managed by the controller, the brokers pull these data from the controller as needed." +
+            " In IaaS environments, this may need to be different from the interface to which the broker binds." +
+            " If this is not set, the value for <code>%1$1s</code> will be used." +
+            " Unlike <code>%1$1s</code>, it is not valid to advertise the 0.0.0.0 meta-address.%n" +
+            " Also unlike <code>%1$1s</code>, there can be duplicated ports in this property," +
+            " so that one listener can be configured to advertise another listener's address." +
+            " This can be useful in some cases where external load balancers are used.", LISTENERS_CONFIG);
 
     public static final String SOCKET_SEND_BUFFER_BYTES_CONFIG = "socket.send.buffer.bytes";
     public static final int SOCKET_SEND_BUFFER_BYTES_DEFAULT = 100 * 1024;
@@ -171,18 +171,18 @@ public class SocketServerConfigs {
             .define(NUM_NETWORK_THREADS_CONFIG, INT, NUM_NETWORK_THREADS_DEFAULT, atLeast(1), HIGH, NUM_NETWORK_THREADS_DOC);
 
     private static final Pattern URI_PARSE_REGEXP = Pattern.compile(
-        "^(.*)://\\[?([0-9a-zA-Z\\-%._:]*)\\]?:(-?[0-9]+)");
+            "^(.*)://\\[?([0-9a-zA-Z\\-%._:]*)\\]?:(-?[0-9]+)");
 
     public static final Map<ListenerName, SecurityProtocol> DEFAULT_NAME_TO_SECURITY_PROTO =
-        Arrays.stream(SecurityProtocol.values())
-            .collect(Collectors.toUnmodifiableMap(
-                ListenerName::forSecurityProtocol,
-                Function.identity()
-            ));
+            Arrays.stream(SecurityProtocol.values())
+                    .collect(Collectors.toUnmodifiableMap(
+                            ListenerName::forSecurityProtocol,
+                            Function.identity()
+                    ));
 
     public static List<Endpoint> listenerListToEndPoints(
-        List<String> input,
-        Map<ListenerName, SecurityProtocol> nameToSecurityProto
+            List<String> input,
+            Map<ListenerName, SecurityProtocol> nameToSecurityProto
     ) {
         return listenerListToEndPoints(input, n -> {
             SecurityProtocol result = nameToSecurityProto.get(n);
@@ -194,8 +194,8 @@ public class SocketServerConfigs {
     }
 
     public static List<Endpoint> listenerListToEndPoints(
-        List<String> input,
-        Function<ListenerName, SecurityProtocol> nameToSecurityProto
+            List<String> input,
+            Function<ListenerName, SecurityProtocol> nameToSecurityProto
     ) {
         List<Endpoint> results = new ArrayList<>();
         for (String entry : input) {
@@ -214,9 +214,9 @@ public class SocketServerConfigs {
             int port = Integer.parseInt(portString);
             SecurityProtocol securityProtocol = nameToSecurityProto.apply(listenerName);
             results.add(new Endpoint(listenerName.value(),
-                securityProtocol,
-                host,
-                port));
+                    securityProtocol,
+                    host,
+                    port));
         }
         return results;
     }
