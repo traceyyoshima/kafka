@@ -25,8 +25,8 @@ interface Revertable {
     /**
      * Revert to the target epoch.
      *
-     * @param targetEpoch   The epoch to revert to.
-     * @param delta         The delta associated with this epoch for this object.
+     * @param targetEpoch The epoch to revert to.
+     * @param delta       The delta associated with this epoch for this object.
      */
     void executeRevert(long targetEpoch, Delta delta);
 

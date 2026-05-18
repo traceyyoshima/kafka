@@ -32,7 +32,7 @@ public enum TransactionState {
     UNKNOWN("Unknown");
 
     private static final Map<String, TransactionState> NAME_TO_ENUM = Arrays.stream(values())
-        .collect(Collectors.toMap(state -> state.name, Function.identity()));
+            .collect(Collectors.toMap(state -> state.name, Function.identity()));
 
     private final String name;
 

@@ -32,7 +32,7 @@ public class ConfigData {
      * Creates a new ConfigData with the given data and TTL (in milliseconds).
      *
      * @param data a Map of key-value pairs
-     * @param ttl the time-to-live of the data in milliseconds, or null if there is no TTL
+     * @param ttl  the time-to-live of the data in milliseconds, or null if there is no TTL
      */
     public ConfigData(Map<String, String> data, Long ttl) {
         this.data = data;

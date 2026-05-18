@@ -93,17 +93,25 @@ public class AdminClientConfig extends AbstractConfig {
     public static final String ENABLE_METRICS_PUSH_CONFIG = CommonClientConfigs.ENABLE_METRICS_PUSH_CONFIG;
     public static final String ENABLE_METRICS_PUSH_DOC = CommonClientConfigs.ENABLE_METRICS_PUSH_DOC;
 
-    /** <code>socket.connection.setup.timeout.ms</code> */
+    /**
+     * <code>socket.connection.setup.timeout.ms</code>
+     */
     public static final String SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG = CommonClientConfigs.SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG;
 
-    /** <code>socket.connection.setup.timeout.max.ms</code> */
+    /**
+     * <code>socket.connection.setup.timeout.max.ms</code>
+     */
     public static final String SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG = CommonClientConfigs.SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG;
 
-    /** <code>connections.max.idle.ms</code> */
+    /**
+     * <code>connections.max.idle.ms</code>
+     */
     public static final String CONNECTIONS_MAX_IDLE_MS_CONFIG = CommonClientConfigs.CONNECTIONS_MAX_IDLE_MS_CONFIG;
     private static final String CONNECTIONS_MAX_IDLE_MS_DOC = CommonClientConfigs.CONNECTIONS_MAX_IDLE_MS_DOC;
 
-    /** <code>request.timeout.ms</code> */
+    /**
+     * <code>request.timeout.ms</code>
+     */
     public static final String REQUEST_TIMEOUT_MS_CONFIG = CommonClientConfigs.REQUEST_TIMEOUT_MS_CONFIG;
     private static final String REQUEST_TIMEOUT_MS_DOC = CommonClientConfigs.REQUEST_TIMEOUT_MS_DOC;
 
@@ -157,148 +165,148 @@ public class AdminClientConfig extends AbstractConfig {
 
     static {
         CONFIG = new ConfigDef().define(BOOTSTRAP_SERVERS_CONFIG,
-                                        Type.LIST,
-                                        List.of(),
-                                        ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                                        Importance.HIGH,
-                                        BOOTSTRAP_SERVERS_DOC).
-                                 define(BOOTSTRAP_CONTROLLERS_CONFIG,
-                                         Type.LIST,
-                                         List.of(),
-                                         ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                                         Importance.HIGH,
-                                         BOOTSTRAP_CONTROLLERS_DOC)
-                                .define(CLIENT_ID_CONFIG, Type.STRING, "", Importance.MEDIUM, CLIENT_ID_DOC)
-                                .define(METADATA_MAX_AGE_CONFIG, Type.LONG, 5 * 60 * 1000, atLeast(0), Importance.LOW, METADATA_MAX_AGE_DOC)
-                                .define(SEND_BUFFER_CONFIG, Type.INT, 128 * 1024, atLeast(CommonClientConfigs.SEND_BUFFER_LOWER_BOUND), Importance.MEDIUM, SEND_BUFFER_DOC)
-                                .define(RECEIVE_BUFFER_CONFIG, Type.INT, 64 * 1024, atLeast(CommonClientConfigs.RECEIVE_BUFFER_LOWER_BOUND), Importance.MEDIUM, RECEIVE_BUFFER_DOC)
-                                .define(RECONNECT_BACKOFF_MS_CONFIG,
-                                        Type.LONG,
-                                        50L,
-                                        atLeast(0L),
-                                        Importance.LOW,
-                                        RECONNECT_BACKOFF_MS_DOC)
-                                .define(RECONNECT_BACKOFF_MAX_MS_CONFIG,
-                                        Type.LONG,
-                                        1000L,
-                                        atLeast(0L),
-                                        Importance.LOW,
-                                        RECONNECT_BACKOFF_MAX_MS_DOC)
-                                .define(RETRY_BACKOFF_MS_CONFIG,
-                                        Type.LONG,
-                                        CommonClientConfigs.DEFAULT_RETRY_BACKOFF_MS,
-                                        atLeast(0L),
-                                        Importance.LOW,
-                                        RETRY_BACKOFF_MS_DOC)
-                                .define(RETRY_BACKOFF_MAX_MS_CONFIG,
-                                        Type.LONG,
-                                        CommonClientConfigs.DEFAULT_RETRY_BACKOFF_MAX_MS,
-                                        atLeast(0L),
-                                        Importance.LOW,
-                                        RETRY_BACKOFF_MAX_MS_DOC)
-                                .define(ENABLE_METRICS_PUSH_CONFIG,
-                                        Type.BOOLEAN,
-                                        false,
-                                        Importance.LOW,
-                                        ENABLE_METRICS_PUSH_DOC)
-                                .define(REQUEST_TIMEOUT_MS_CONFIG,
-                                        Type.INT,
-                                        30000,
-                                        atLeast(0),
-                                        Importance.MEDIUM,
-                                        REQUEST_TIMEOUT_MS_DOC)
-                                .define(SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG,
-                                        Type.LONG,
-                                        CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MS,
-                                        Importance.MEDIUM,
-                                        CommonClientConfigs.SOCKET_CONNECTION_SETUP_TIMEOUT_MS_DOC)
-                                .define(SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG,
-                                        Type.LONG,
-                                        CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS,
-                                        Importance.MEDIUM,
-                                        CommonClientConfigs.SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_DOC)
-                                .define(CONNECTIONS_MAX_IDLE_MS_CONFIG,
-                                        Type.LONG,
-                                        5 * 60 * 1000,
-                                        Importance.MEDIUM,
-                                        CONNECTIONS_MAX_IDLE_MS_DOC)
-                                .define(RETRIES_CONFIG,
-                                        Type.INT,
-                                        Integer.MAX_VALUE,
-                                        between(0, Integer.MAX_VALUE),
-                                        Importance.LOW,
-                                        CommonClientConfigs.RETRIES_DOC)
-                                .define(DEFAULT_API_TIMEOUT_MS_CONFIG,
-                                        Type.INT,
-                                        60000,
-                                        atLeast(0),
-                                        Importance.MEDIUM,
-                                        CommonClientConfigs.DEFAULT_API_TIMEOUT_MS_DOC)
-                                .define(METRICS_SAMPLE_WINDOW_MS_CONFIG,
-                                        Type.LONG,
-                                        30000,
-                                        atLeast(0),
-                                        Importance.LOW,
-                                        METRICS_SAMPLE_WINDOW_MS_DOC)
-                                .define(METRICS_NUM_SAMPLES_CONFIG, Type.INT, 2, atLeast(1), Importance.LOW, METRICS_NUM_SAMPLES_DOC)
-                                .define(METRIC_REPORTER_CLASSES_CONFIG,
-                                        Type.LIST,
-                                        JmxReporter.class.getName(),
-                                        ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                                        Importance.LOW,
-                                        METRIC_REPORTER_CLASSES_DOC)
-                                .define(METRICS_RECORDING_LEVEL_CONFIG,
-                                        Type.STRING,
-                                        Sensor.RecordingLevel.INFO.toString(),
-                                        in(Sensor.RecordingLevel.INFO.toString(), Sensor.RecordingLevel.DEBUG.toString(), Sensor.RecordingLevel.TRACE.toString()),
-                                        Importance.LOW,
-                                        METRICS_RECORDING_LEVEL_DOC)
-                                .define(CLIENT_DNS_LOOKUP_CONFIG,
-                                        Type.STRING,
-                                        ClientDnsLookup.USE_ALL_DNS_IPS.toString(),
-                                        in(ClientDnsLookup.USE_ALL_DNS_IPS.toString(),
-                                           ClientDnsLookup.RESOLVE_CANONICAL_BOOTSTRAP_SERVERS_ONLY.toString()),
-                                        Importance.MEDIUM,
-                                        CLIENT_DNS_LOOKUP_DOC)
-                                // security support
-                                .define(SECURITY_PROVIDERS_CONFIG,
-                                        Type.STRING,
-                                        null,
-                                        Importance.LOW,
-                                        SECURITY_PROVIDERS_DOC)
-                                .define(SECURITY_PROTOCOL_CONFIG,
-                                        Type.STRING,
-                                        DEFAULT_SECURITY_PROTOCOL,
-                                        ConfigDef.CaseInsensitiveValidString
-                                                .in(Utils.enumOptions(SecurityProtocol.class)),
-                                        Importance.MEDIUM,
-                                        SECURITY_PROTOCOL_DOC)
-                                .withClientSslSupport()
-                                .withClientSaslSupport()
-                                .define(METADATA_RECOVERY_STRATEGY_CONFIG,
-                                        Type.STRING,
-                                        DEFAULT_METADATA_RECOVERY_STRATEGY,
-                                        ConfigDef.CaseInsensitiveValidString
-                                                .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
-                                        Importance.LOW,
-                                        METADATA_RECOVERY_STRATEGY_DOC)
-                                .define(METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_CONFIG,
-                                        Type.LONG,
-                                        DEFAULT_METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS,
-                                        atLeast(0),
-                                        Importance.LOW,
-                                        METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_DOC)
-                                .define(METADATA_CLUSTER_CHECK_ENABLE_CONFIG,
-                                        Type.BOOLEAN,
-                                        true,
-                                        Importance.LOW,
-                                        METADATA_CLUSTER_CHECK_ENABLE_DOC)
-                                .define(CONFIG_PROVIDERS_CONFIG, 
-                                        ConfigDef.Type.LIST,
-                                        List.of(),
-                                        ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                                        ConfigDef.Importance.LOW, 
-                                        CONFIG_PROVIDERS_DOC);
+                        Type.LIST,
+                        List.of(),
+                        ConfigDef.ValidList.anyNonDuplicateValues(true, false),
+                        Importance.HIGH,
+                        BOOTSTRAP_SERVERS_DOC).
+                define(BOOTSTRAP_CONTROLLERS_CONFIG,
+                        Type.LIST,
+                        List.of(),
+                        ConfigDef.ValidList.anyNonDuplicateValues(true, false),
+                        Importance.HIGH,
+                        BOOTSTRAP_CONTROLLERS_DOC)
+                .define(CLIENT_ID_CONFIG, Type.STRING, "", Importance.MEDIUM, CLIENT_ID_DOC)
+                .define(METADATA_MAX_AGE_CONFIG, Type.LONG, 5 * 60 * 1000, atLeast(0), Importance.LOW, METADATA_MAX_AGE_DOC)
+                .define(SEND_BUFFER_CONFIG, Type.INT, 128 * 1024, atLeast(CommonClientConfigs.SEND_BUFFER_LOWER_BOUND), Importance.MEDIUM, SEND_BUFFER_DOC)
+                .define(RECEIVE_BUFFER_CONFIG, Type.INT, 64 * 1024, atLeast(CommonClientConfigs.RECEIVE_BUFFER_LOWER_BOUND), Importance.MEDIUM, RECEIVE_BUFFER_DOC)
+                .define(RECONNECT_BACKOFF_MS_CONFIG,
+                        Type.LONG,
+                        50L,
+                        atLeast(0L),
+                        Importance.LOW,
+                        RECONNECT_BACKOFF_MS_DOC)
+                .define(RECONNECT_BACKOFF_MAX_MS_CONFIG,
+                        Type.LONG,
+                        1000L,
+                        atLeast(0L),
+                        Importance.LOW,
+                        RECONNECT_BACKOFF_MAX_MS_DOC)
+                .define(RETRY_BACKOFF_MS_CONFIG,
+                        Type.LONG,
+                        CommonClientConfigs.DEFAULT_RETRY_BACKOFF_MS,
+                        atLeast(0L),
+                        Importance.LOW,
+                        RETRY_BACKOFF_MS_DOC)
+                .define(RETRY_BACKOFF_MAX_MS_CONFIG,
+                        Type.LONG,
+                        CommonClientConfigs.DEFAULT_RETRY_BACKOFF_MAX_MS,
+                        atLeast(0L),
+                        Importance.LOW,
+                        RETRY_BACKOFF_MAX_MS_DOC)
+                .define(ENABLE_METRICS_PUSH_CONFIG,
+                        Type.BOOLEAN,
+                        false,
+                        Importance.LOW,
+                        ENABLE_METRICS_PUSH_DOC)
+                .define(REQUEST_TIMEOUT_MS_CONFIG,
+                        Type.INT,
+                        30000,
+                        atLeast(0),
+                        Importance.MEDIUM,
+                        REQUEST_TIMEOUT_MS_DOC)
+                .define(SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG,
+                        Type.LONG,
+                        CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MS,
+                        Importance.MEDIUM,
+                        CommonClientConfigs.SOCKET_CONNECTION_SETUP_TIMEOUT_MS_DOC)
+                .define(SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_CONFIG,
+                        Type.LONG,
+                        CommonClientConfigs.DEFAULT_SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS,
+                        Importance.MEDIUM,
+                        CommonClientConfigs.SOCKET_CONNECTION_SETUP_TIMEOUT_MAX_MS_DOC)
+                .define(CONNECTIONS_MAX_IDLE_MS_CONFIG,
+                        Type.LONG,
+                        5 * 60 * 1000,
+                        Importance.MEDIUM,
+                        CONNECTIONS_MAX_IDLE_MS_DOC)
+                .define(RETRIES_CONFIG,
+                        Type.INT,
+                        Integer.MAX_VALUE,
+                        between(0, Integer.MAX_VALUE),
+                        Importance.LOW,
+                        CommonClientConfigs.RETRIES_DOC)
+                .define(DEFAULT_API_TIMEOUT_MS_CONFIG,
+                        Type.INT,
+                        60000,
+                        atLeast(0),
+                        Importance.MEDIUM,
+                        CommonClientConfigs.DEFAULT_API_TIMEOUT_MS_DOC)
+                .define(METRICS_SAMPLE_WINDOW_MS_CONFIG,
+                        Type.LONG,
+                        30000,
+                        atLeast(0),
+                        Importance.LOW,
+                        METRICS_SAMPLE_WINDOW_MS_DOC)
+                .define(METRICS_NUM_SAMPLES_CONFIG, Type.INT, 2, atLeast(1), Importance.LOW, METRICS_NUM_SAMPLES_DOC)
+                .define(METRIC_REPORTER_CLASSES_CONFIG,
+                        Type.LIST,
+                        JmxReporter.class.getName(),
+                        ConfigDef.ValidList.anyNonDuplicateValues(true, false),
+                        Importance.LOW,
+                        METRIC_REPORTER_CLASSES_DOC)
+                .define(METRICS_RECORDING_LEVEL_CONFIG,
+                        Type.STRING,
+                        Sensor.RecordingLevel.INFO.toString(),
+                        in(Sensor.RecordingLevel.INFO.toString(), Sensor.RecordingLevel.DEBUG.toString(), Sensor.RecordingLevel.TRACE.toString()),
+                        Importance.LOW,
+                        METRICS_RECORDING_LEVEL_DOC)
+                .define(CLIENT_DNS_LOOKUP_CONFIG,
+                        Type.STRING,
+                        ClientDnsLookup.USE_ALL_DNS_IPS.toString(),
+                        in(ClientDnsLookup.USE_ALL_DNS_IPS.toString(),
+                                ClientDnsLookup.RESOLVE_CANONICAL_BOOTSTRAP_SERVERS_ONLY.toString()),
+                        Importance.MEDIUM,
+                        CLIENT_DNS_LOOKUP_DOC)
+                // security support
+                .define(SECURITY_PROVIDERS_CONFIG,
+                        Type.STRING,
+                        null,
+                        Importance.LOW,
+                        SECURITY_PROVIDERS_DOC)
+                .define(SECURITY_PROTOCOL_CONFIG,
+                        Type.STRING,
+                        DEFAULT_SECURITY_PROTOCOL,
+                        ConfigDef.CaseInsensitiveValidString
+                                .in(Utils.enumOptions(SecurityProtocol.class)),
+                        Importance.MEDIUM,
+                        SECURITY_PROTOCOL_DOC)
+                .withClientSslSupport()
+                .withClientSaslSupport()
+                .define(METADATA_RECOVERY_STRATEGY_CONFIG,
+                        Type.STRING,
+                        DEFAULT_METADATA_RECOVERY_STRATEGY,
+                        ConfigDef.CaseInsensitiveValidString
+                                .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
+                        Importance.LOW,
+                        METADATA_RECOVERY_STRATEGY_DOC)
+                .define(METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_CONFIG,
+                        Type.LONG,
+                        DEFAULT_METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS,
+                        atLeast(0),
+                        Importance.LOW,
+                        METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_DOC)
+                .define(METADATA_CLUSTER_CHECK_ENABLE_CONFIG,
+                        Type.BOOLEAN,
+                        true,
+                        Importance.LOW,
+                        METADATA_CLUSTER_CHECK_ENABLE_DOC)
+                .define(CONFIG_PROVIDERS_CONFIG,
+                        ConfigDef.Type.LIST,
+                        List.of(),
+                        ConfigDef.ValidList.anyNonDuplicateValues(true, false),
+                        ConfigDef.Importance.LOW,
+                        CONFIG_PROVIDERS_DOC);
     }
 
     @Override
@@ -321,7 +329,7 @@ public class AdminClientConfig extends AbstractConfig {
     }
 
     public static ConfigDef configDef() {
-        return  new ConfigDef(CONFIG);
+        return new ConfigDef(CONFIG);
     }
 
     public static void main(String[] args) {

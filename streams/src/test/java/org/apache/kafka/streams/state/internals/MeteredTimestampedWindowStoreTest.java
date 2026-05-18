@@ -65,7 +65,7 @@ public class MeteredTimestampedWindowStoreTest {
     // timestamp is 97 what is ASCII of 'a'
     private static final long TIMESTAMP = 97L;
     private static final ValueAndTimestamp<String> VALUE_AND_TIMESTAMP =
-        ValueAndTimestamp.make("value", TIMESTAMP);
+            ValueAndTimestamp.make("value", TIMESTAMP);
     private static final byte[] VALUE_AND_TIMESTAMP_BYTES = "\0\0\0\0\0\0\0avalue".getBytes();
     private static final int WINDOW_SIZE_MS = 10;
 
@@ -78,29 +78,29 @@ public class MeteredTimestampedWindowStoreTest {
 
     public void setUp() {
         final StreamsMetricsImpl streamsMetrics =
-            new StreamsMetricsImpl(metrics, "test", new MockTime());
+                new StreamsMetricsImpl(metrics, "test", new MockTime());
 
         context = new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            streamsMetrics,
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
-            MockRecordCollector::new,
-            new ThreadCache(new LogContext("testCache "), 0, streamsMetrics),
-            Time.SYSTEM,
-            taskId
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                streamsMetrics,
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig()),
+                MockRecordCollector::new,
+                new ThreadCache(new LogContext("testCache "), 0, streamsMetrics),
+                Time.SYSTEM,
+                taskId
         );
 
         when(innerStoreMock.name()).thenReturn(STORE_NAME);
 
         store = new MeteredTimestampedWindowStore<>(
-            innerStoreMock,
-            WINDOW_SIZE_MS, // any size
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new ValueAndTimestampSerde<>(new SerdeThatDoesntHandleNull())
+                innerStoreMock,
+                WINDOW_SIZE_MS, // any size
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new ValueAndTimestampSerde<>(new SerdeThatDoesntHandleNull())
         );
     }
 
@@ -133,15 +133,14 @@ public class MeteredTimestampedWindowStoreTest {
     @Test
     public void shouldDelegateInit() {
         setUpWithoutContextName();
-        @SuppressWarnings("unchecked")
-        final WindowStore<Bytes, byte[]> inner = mock(WindowStore.class);
+        @SuppressWarnings("unchecked") final WindowStore<Bytes, byte[]> inner = mock(WindowStore.class);
         final MeteredTimestampedWindowStore<String, String> outer = new MeteredTimestampedWindowStore<>(
-            inner,
-            WINDOW_SIZE_MS, // any size
-            STORE_TYPE,
-            new MockTime(),
-            Serdes.String(),
-            new ValueAndTimestampSerde<>(new SerdeThatDoesntHandleNull())
+                inner,
+                WINDOW_SIZE_MS, // any size
+                STORE_TYPE,
+                new MockTime(),
+                Serdes.String(),
+                new ValueAndTimestampSerde<>(new SerdeThatDoesntHandleNull())
         );
         when(inner.name()).thenReturn("store");
 
@@ -161,21 +160,16 @@ public class MeteredTimestampedWindowStoreTest {
     public void shouldPassDefaultChangelogTopicNameToStateStoreSerdeIfLoggingDisabled() {
         setUp();
         final String defaultChangelogTopicName =
-            ProcessorStateManager.storeChangelogTopic(context.applicationId(), STORE_NAME, taskId.topologyName());
+                ProcessorStateManager.storeChangelogTopic(context.applicationId(), STORE_NAME, taskId.topologyName());
         doShouldPassChangelogTopicNameToStateStoreSerde(defaultChangelogTopicName);
     }
 
     private void doShouldPassChangelogTopicNameToStateStoreSerde(final String topic) {
-        @SuppressWarnings("unchecked")
-        final Serde<String> keySerde = mock(Serde.class);
-        @SuppressWarnings("unchecked")
-        final Serializer<String> keySerializer = mock(Serializer.class);
-        @SuppressWarnings("unchecked")
-        final Serde<ValueAndTimestamp<String>> valueSerde = mock(Serde.class);
-        @SuppressWarnings("unchecked")
-        final Deserializer<ValueAndTimestamp<String>> valueDeserializer = mock(Deserializer.class);
-        @SuppressWarnings("unchecked")
-        final Serializer<ValueAndTimestamp<String>> valueSerializer = mock(Serializer.class);
+        @SuppressWarnings("unchecked") final Serde<String> keySerde = mock(Serde.class);
+        @SuppressWarnings("unchecked") final Serializer<String> keySerializer = mock(Serializer.class);
+        @SuppressWarnings("unchecked") final Serde<ValueAndTimestamp<String>> valueSerde = mock(Serde.class);
+        @SuppressWarnings("unchecked") final Deserializer<ValueAndTimestamp<String>> valueDeserializer = mock(Deserializer.class);
+        @SuppressWarnings("unchecked") final Serializer<ValueAndTimestamp<String>> valueSerializer = mock(Serializer.class);
         when(keySerde.serializer()).thenReturn(keySerializer);
         when(keySerializer.serialize(topic, new RecordHeaders(), KEY)).thenReturn(KEY.getBytes());
         when(valueSerde.deserializer()).thenReturn(valueDeserializer);
@@ -184,12 +178,12 @@ public class MeteredTimestampedWindowStoreTest {
         when(valueSerializer.serialize(topic, new RecordHeaders(), VALUE_AND_TIMESTAMP)).thenReturn(VALUE_AND_TIMESTAMP_BYTES);
         when(innerStoreMock.fetch(KEY_BYTES, TIMESTAMP)).thenReturn(VALUE_AND_TIMESTAMP_BYTES);
         store = new MeteredTimestampedWindowStore<>(
-            innerStoreMock,
-            WINDOW_SIZE_MS,
-            STORE_TYPE,
-            new MockTime(),
-            keySerde,
-            valueSerde
+                innerStoreMock,
+                WINDOW_SIZE_MS,
+                STORE_TYPE,
+                new MockTime(),
+                keySerde,
+                valueSerde
         );
 
         store.init(context, store);
@@ -223,12 +217,12 @@ public class MeteredTimestampedWindowStoreTest {
         setUp();
         when(innerStoreMock.name()).thenReturn("mocked-store");
         final MeteredTimestampedWindowStore<String, Long> store = new MeteredTimestampedWindowStore<>(
-            innerStoreMock,
-            10L, // any size
-            "scope",
-            new MockTime(),
-            null,
-            null
+                innerStoreMock,
+                10L, // any size
+                "scope",
+                new MockTime(),
+                null,
+                null
         );
         store.init(context, innerStoreMock);
 
@@ -247,12 +241,12 @@ public class MeteredTimestampedWindowStoreTest {
         setUp();
         when(innerStoreMock.name()).thenReturn("mocked-store");
         final MeteredTimestampedWindowStore<String, Long> store = new MeteredTimestampedWindowStore<>(
-            innerStoreMock,
-            10L, // any size
-            "scope",
-            new MockTime(),
-            Serdes.String(),
-            new ValueAndTimestampSerde<>(Serdes.Long())
+                innerStoreMock,
+                10L, // any size
+                "scope",
+                new MockTime(),
+                Serdes.String(),
+                new ValueAndTimestampSerde<>(Serdes.Long())
         );
         store.init(context, innerStoreMock);
 

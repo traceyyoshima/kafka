@@ -41,17 +41,15 @@ public enum RecordState {
      * {@code RecordState}.
      *
      * @param newState State into which requesting to transition; must be non-<code>null</code>
-     *
      * @return {@code RecordState} <code>newState</code> if validation succeeds. Returning
-     *         <code>newState</code> helps state assignment chaining.
-     *
+     * <code>newState</code> helps state assignment chaining.
      * @throws IllegalStateException if the state transition validation fails.
      */
     public RecordState validateTransition(RecordState newState) throws IllegalStateException {
         Objects.requireNonNull(newState, "newState cannot be null");
         if (this == newState) {
             throw new IllegalStateException("The state transition is invalid as the new state is "
-                + "the same as the current state");
+                    + "the same as the current state");
         }
 
         if (this == ACKNOWLEDGED || this == ARCHIVED) {

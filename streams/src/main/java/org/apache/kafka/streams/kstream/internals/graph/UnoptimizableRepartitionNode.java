@@ -37,15 +37,15 @@ public class UnoptimizableRepartitionNode<K, V> extends BaseRepartitionNode<K, V
                                          final StreamPartitioner<K, V> partitioner,
                                          final InternalTopicProperties internalTopicProperties) {
         super(
-            nodeName,
-            sourceName,
-            processorParameters,
-            keySerde,
-            valueSerde,
-            sinkName,
-            repartitionTopic,
-            partitioner,
-            internalTopicProperties
+                nodeName,
+                sourceName,
+                processorParameters,
+                keySerde,
+                valueSerde,
+                sinkName,
+                repartitionTopic,
+                partitioner,
+                internalTopicProperties
         );
     }
 
@@ -56,21 +56,21 @@ public class UnoptimizableRepartitionNode<K, V> extends BaseRepartitionNode<K, V
         processorParameters.addProcessorTo(topologyBuilder, parentNodeNames());
 
         topologyBuilder.addSink(
-            sinkName,
-            repartitionTopic,
-            keySerializer(),
-            valueSerializer(),
-            partitioner,
-            processorParameters.processorName()
+                sinkName,
+                repartitionTopic,
+                keySerializer(),
+                valueSerializer(),
+                partitioner,
+                processorParameters.processorName()
         );
 
         topologyBuilder.addSource(
-            null,
-            sourceName,
-            new FailOnInvalidTimestamp(),
-            keyDeserializer(),
-            valueDeserializer(),
-            repartitionTopic
+                null,
+                sourceName,
+                new FailOnInvalidTimestamp(),
+                keyDeserializer(),
+                valueDeserializer(),
+                repartitionTopic
         );
     }
 
@@ -87,14 +87,14 @@ public class UnoptimizableRepartitionNode<K, V> extends BaseRepartitionNode<K, V
         @Override
         public UnoptimizableRepartitionNode<K, V> build() {
             return new UnoptimizableRepartitionNode<>(nodeName,
-                                                      sourceName,
-                                                      processorParameters,
-                                                      keySerde,
-                                                      valueSerde,
-                                                      sinkName,
-                                                      repartitionTopic,
-                                                      partitioner,
-                                                      internalTopicProperties);
+                    sourceName,
+                    processorParameters,
+                    keySerde,
+                    valueSerde,
+                    sinkName,
+                    repartitionTopic,
+                    partitioner,
+                    internalTopicProperties);
         }
     }
 }

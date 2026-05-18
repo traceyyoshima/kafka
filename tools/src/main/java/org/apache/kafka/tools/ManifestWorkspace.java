@@ -95,8 +95,9 @@ public class ManifestWorkspace {
 
     /**
      * Commits all queued changes to disk
+     *
      * @return true if any workspace wrote changes to disk, false if all workspaces did not have writes to apply
-     * @throws IOException if an error occurs reading or writing to the filesystem
+     * @throws IOException    if an error occurs reading or writing to the filesystem
      * @throws TerseException if a path is not writable on disk and should be.
      */
     public boolean commit(boolean dryRun) throws IOException, TerseException {
@@ -110,6 +111,7 @@ public class ManifestWorkspace {
     /**
      * A workspace scoped to a single plugin source.
      * <p>Buffers simulated reads and writes to the plugin path before they can be written to disk.
+     *
      * @param <T> The data structure used by the workspace to store in-memory manifests internally.
      */
     public abstract static class SourceWorkspace<T> {
@@ -473,9 +475,9 @@ public class ManifestWorkspace {
      * Will create the file if it does not exist and at least one element is specified.
      * Will delete the file if it exists and no elements are specified.
      *
-     * @param dryRun              True if the rewrite should be applied, false if it should be simulated.
-     * @param filePath            Path to file which should be rewritten.
-     * @param elements            Class names of plugins which should appear in the manifest
+     * @param dryRun   True if the rewrite should be applied, false if it should be simulated.
+     * @param filePath Path to file which should be rewritten.
+     * @param elements Class names of plugins which should appear in the manifest
      */
     private void rewriteManifestFile(boolean dryRun, Path filePath, Set<String> elements) throws IOException, TerseException {
         Objects.requireNonNull(filePath, "filePath must be non-null");
@@ -514,8 +516,9 @@ public class ManifestWorkspace {
 
     /**
      * Get a path which is always writable
+     *
      * @param dryRun If true, substitute a temporary file instead of the real file on disk.
-     * @param path Path which must be writable
+     * @param path   Path which must be writable
      * @return Path which is writable, and may be different from the input path
      */
     private Path getWritablePath(boolean dryRun, Path path) throws IOException, TerseException {

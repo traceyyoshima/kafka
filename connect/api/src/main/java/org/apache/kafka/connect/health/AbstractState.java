@@ -33,8 +33,8 @@ public abstract class AbstractState {
     /**
      * Construct a state for a connector or task.
      *
-     * @param state the status of a connector or task; may not be null or empty
-     * @param workerId the workerId associated with the connector or the task; may not be null or empty
+     * @param state        the status of a connector or task; may not be null or empty
+     * @param workerId     the workerId associated with the connector or the task; may not be null or empty
      * @param traceMessage any error trace message associated with the connector or the task; may be null or empty
      */
     public AbstractState(String state, String workerId, String traceMessage) {
@@ -84,8 +84,8 @@ public abstract class AbstractState {
             return false;
         AbstractState that = (AbstractState) o;
         return state.equals(that.state)
-            && Objects.equals(traceMessage, that.traceMessage)
-            && workerId.equals(that.workerId);
+                && Objects.equals(traceMessage, that.traceMessage)
+                && workerId.equals(that.workerId);
     }
 
     @Override

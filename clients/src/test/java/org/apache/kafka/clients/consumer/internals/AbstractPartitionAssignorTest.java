@@ -99,7 +99,7 @@ public class AbstractPartitionAssignorTest {
             // the comparison result will break.
             String id = Integer.toString(i + 100);
             Optional<String> groupInstanceId = rand.nextInt(bound) < bound / 2 ?
-                                                       Optional.of(id) : Optional.empty();
+                    Optional.of(id) : Optional.empty();
             MemberInfo m = new MemberInfo(id, groupInstanceId);
             memberInfoList.add(m);
             if (m.groupInstanceId.isPresent()) {
@@ -116,7 +116,7 @@ public class AbstractPartitionAssignorTest {
     @Test
     public void testUseRackAwareAssignment() {
         AbstractPartitionAssignor assignor = new RangeAssignor();
-        String[] racks = new String[] {"a", "b", "c"};
+        String[] racks = new String[]{"a", "b", "c"};
         Set<String> allRacks = Set.of(racks);
         Set<String> twoRacks = Set.of("a", "b");
         Map<TopicPartition, Set<String>> partitionsOnAllRacks = new HashMap<>();

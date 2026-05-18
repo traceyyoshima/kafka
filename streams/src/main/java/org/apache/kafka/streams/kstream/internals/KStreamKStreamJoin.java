@@ -120,11 +120,11 @@ abstract class KStreamKStreamJoin<K, VLeft, VRight, VOut, VThis, VOther> impleme
                 outerJoinStore = outerJoinWindowStoreFactory.map(s -> context.getStateStore(s.storeName()));
 
                 sharedTimeTracker.setEmitInterval(
-                    StreamsConfig.InternalConfig.getLong(
-                        context.appConfigs(),
-                        EMIT_INTERVAL_MS_KSTREAMS_OUTER_JOIN_SPURIOUS_RESULTS_FIX,
-                        1000L
-                    )
+                        StreamsConfig.InternalConfig.getLong(
+                                context.appConfigs(),
+                                EMIT_INTERVAL_MS_KSTREAMS_OUTER_JOIN_SPURIOUS_RESULTS_FIX,
+                                1000L
+                        )
                 );
             }
         }
@@ -288,7 +288,7 @@ abstract class KStreamKStreamJoin<K, VLeft, VRight, VOut, VThis, VOther> impleme
         }
 
         private long getOuterJoinLookBackTimeMs(
-            final TimestampedKeyAndJoinSide<K> timestampedKeyAndJoinSide) {
+                final TimestampedKeyAndJoinSide<K> timestampedKeyAndJoinSide) {
             // depending on the JoinSide we fill in the outerJoinLookBackTimeMs
             if (timestampedKeyAndJoinSide.isLeftSide()) {
                 return windowsAfterMs; // On the left-JoinSide we look back in time

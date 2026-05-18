@@ -111,7 +111,7 @@ public class SnapshotRegistry {
      * A collection of all Revertable objects registered here. Since we store only weak
      * references, every time we access a revertable through this list, we must check to
      * see if it has been garbage collected. If so, WeakReference.get will return null.
-     *
+     * <p>
      * Although the garbage collector handles freeing the underlying Revertables, over
      * time slots in the ArrayList will fill up with expired references. Therefore, after
      * enough registrations, we scrub the ArrayList of the expired references by creating
@@ -193,10 +193,11 @@ public class SnapshotRegistry {
 
     private String epochsToString() {
         return epochsList()
-            .stream()
-            .map(Object::toString)
-            .collect(Collectors.joining(", "));
+                .stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
     }
+
     /**
      * Gets the snapshot for a specific epoch.
      */
@@ -204,7 +205,7 @@ public class SnapshotRegistry {
         Snapshot snapshot = snapshots.get(epoch);
         if (snapshot == null) {
             throw new RuntimeException("No in-memory snapshot for epoch " + epoch + ". Snapshot " +
-                "epochs are: " + epochsToString());
+                    "epochs are: " + epochsToString());
         }
         return snapshot;
     }
@@ -214,15 +215,15 @@ public class SnapshotRegistry {
      * <p>
      * If {@code epoch} already exists, and it is the last snapshot then just return that snapshot.
      *
-     * @param epoch             The epoch to create the snapshot at. The current epoch
-     *                          will be advanced to one past this epoch.
+     * @param epoch The epoch to create the snapshot at. The current epoch
+     *              will be advanced to one past this epoch.
      */
     Snapshot getOrCreateSnapshot(long epoch) {
         Snapshot last = head.prev();
         if (last.epoch() > epoch) {
             throw new RuntimeException("Can't create a new in-memory snapshot at epoch " + epoch +
-                " because there is already a snapshot with epoch " + last.epoch() + ". Snapshot epochs are " +
-                epochsToString());
+                    " because there is already a snapshot with epoch " + last.epoch() + ". Snapshot epochs are " +
+                    epochsToString());
         } else if (last.epoch() == epoch) {
             return last;
         }
@@ -238,8 +239,8 @@ public class SnapshotRegistry {
      * <p>
      * If {@code epoch} already exists, and it is the last snapshot then this operation will do nothing.
      *
-     * @param epoch             The epoch to create the snapshot at. The current epoch
-     *                          will be advanced to one past this epoch.
+     * @param epoch The epoch to create the snapshot at. The current epoch
+     *              will be advanced to one past this epoch.
      */
     public void idempotentCreateSnapshot(long epoch) {
         getOrCreateSnapshot(epoch);
@@ -248,7 +249,7 @@ public class SnapshotRegistry {
     /**
      * Reverts the state of all data structures to the state at the given epoch.
      *
-     * @param targetEpoch       The epoch of the snapshot to revert to.
+     * @param targetEpoch The epoch of the snapshot to revert to.
      */
     public void revertToSnapshot(long targetEpoch) {
         log.debug("Reverting to in-memory snapshot {}", targetEpoch);
@@ -258,7 +259,7 @@ public class SnapshotRegistry {
         while (iterator.hasNext()) {
             Snapshot snapshot = iterator.next();
             log.debug("Deleting in-memory snapshot {} because we are reverting to {}",
-                snapshot.epoch(), targetEpoch);
+                    snapshot.epoch(), targetEpoch);
             iterator.remove();
         }
         target.handleRevert();
@@ -267,7 +268,7 @@ public class SnapshotRegistry {
     /**
      * Deletes the snapshot with the given epoch.
      *
-     * @param targetEpoch       The epoch of the snapshot to delete.
+     * @param targetEpoch The epoch of the snapshot to delete.
      */
     public void deleteSnapshot(long targetEpoch) {
         deleteSnapshot(getSnapshot(targetEpoch));
@@ -276,7 +277,7 @@ public class SnapshotRegistry {
     /**
      * Deletes the given snapshot.
      *
-     * @param snapshot          The snapshot to delete.
+     * @param snapshot The snapshot to delete.
      */
     void deleteSnapshot(Snapshot snapshot) {
         Snapshot prev = snapshot.prev();
@@ -292,7 +293,7 @@ public class SnapshotRegistry {
     /**
      * Deletes all the snapshots up to the given epoch
      *
-     * @param targetEpoch       The epoch to delete up to.
+     * @param targetEpoch The epoch to delete up to.
      */
     public void deleteSnapshotsUpTo(long targetEpoch) {
         for (Iterator<Snapshot> iterator = iterator(); iterator.hasNext(); ) {
@@ -334,7 +335,7 @@ public class SnapshotRegistry {
      */
     void scrub() {
         ArrayList<WeakReference<Revertable>> newRevertables =
-            new ArrayList<>(revertables.size() / 2);
+                new ArrayList<>(revertables.size() / 2);
         for (WeakReference<Revertable> ref : revertables) {
             if (ref.get() != null) {
                 newRevertables.add(ref);

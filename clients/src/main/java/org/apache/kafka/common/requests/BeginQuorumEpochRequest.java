@@ -61,7 +61,7 @@ public class BeginQuorumEpochRequest extends AbstractRequest {
     @Override
     public BeginQuorumEpochResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new BeginQuorumEpochResponse(new BeginQuorumEpochResponseData()
-            .setErrorCode(Errors.forException(e).code()));
+                .setErrorCode(Errors.forException(e).code()));
     }
 
     public static BeginQuorumEpochRequest parse(Readable readable, short version) {
@@ -69,21 +69,21 @@ public class BeginQuorumEpochRequest extends AbstractRequest {
     }
 
     public static BeginQuorumEpochRequestData singletonRequest(
-        TopicPartition topicPartition,
-        String clusterId,
-        int leaderEpoch,
-        int leaderId
+            TopicPartition topicPartition,
+            String clusterId,
+            int leaderEpoch,
+            int leaderId
     ) {
         return new BeginQuorumEpochRequestData()
-                   .setClusterId(clusterId)
-                   .setTopics(List.of(
-                       new BeginQuorumEpochRequestData.TopicData()
-                           .setTopicName(topicPartition.topic())
-                           .setPartitions(List.of(
-                               new BeginQuorumEpochRequestData.PartitionData()
-                                   .setPartitionIndex(topicPartition.partition())
-                                   .setLeaderEpoch(leaderEpoch)
-                                   .setLeaderId(leaderId))))
-                   );
+                .setClusterId(clusterId)
+                .setTopics(List.of(
+                        new BeginQuorumEpochRequestData.TopicData()
+                                .setTopicName(topicPartition.topic())
+                                .setPartitions(List.of(
+                                        new BeginQuorumEpochRequestData.PartitionData()
+                                                .setPartitionIndex(topicPartition.partition())
+                                                .setLeaderEpoch(leaderEpoch)
+                                                .setLeaderId(leaderId))))
+                );
     }
 }

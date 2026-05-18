@@ -108,10 +108,9 @@ public final class ClientUtils {
     /**
      * Create a new channel builder from the provided configuration.
      *
-     * @param config client configs
-     * @param time the time implementation
+     * @param config     client configs
+     * @param time       the time implementation
      * @param logContext the logging context
-     *
      * @return configured ChannelBuilder based on the configs.
      */
     public static ChannelBuilder createChannelBuilder(AbstractConfig config, Time time, LogContext logContext) {
@@ -132,7 +131,7 @@ public final class ClientUtils {
     /**
      * Return a list containing the first address in `allAddresses` and subsequent addresses
      * that are a subtype of the first address.
-     *
+     * <p>
      * The outcome is that all returned addresses are either IPv4 or IPv6 (InetAddress has two
      * subclasses: Inet4Address and Inet6Address).
      */
@@ -231,8 +230,8 @@ public final class ClientUtils {
     }
 
     public static <T> List<?> configuredInterceptors(AbstractConfig config,
-                                                    String interceptorClassesConfigName,
-                                                    Class<T> clazz) {
+                                                     String interceptorClassesConfigName,
+                                                     Class<T> clazz) {
         String clientId = config.getString(CommonClientConfigs.CLIENT_ID_CONFIG);
         return config.getConfiguredInstances(
                 interceptorClassesConfigName,
@@ -243,7 +242,7 @@ public final class ClientUtils {
     public static ClusterResourceListeners configureClusterResourceListeners(List<?>... candidateLists) {
         ClusterResourceListeners clusterResourceListeners = new ClusterResourceListeners();
 
-        for (List<?> candidateList: candidateLists)
+        for (List<?> candidateList : candidateLists)
             clusterResourceListeners.maybeAddAll(candidateList);
 
         return clusterResourceListeners;

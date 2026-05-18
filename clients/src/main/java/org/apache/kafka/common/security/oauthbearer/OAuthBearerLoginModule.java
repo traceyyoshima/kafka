@@ -129,7 +129,7 @@ import javax.security.auth.spi.LoginModule;
  *      unsecuredLoginStringClaim_sub="thePrincipalName";
  * };
  * </pre>
- *
+ * <p>
  * An implementation of the {@link Login} interface specific to the
  * {@code OAUTHBEARER} mechanism is automatically applied; it periodically
  * refreshes any token before it expires so that the client can continue to make
@@ -204,7 +204,7 @@ import javax.security.auth.spi.LoginModule;
  *      unsecuredLoginStringClaim_sub="thePrincipalName";
  * };
  * </pre>
- *
+ * <p>
  * Production use cases will require writing an implementation of
  * {@link AuthenticateCallbackHandler} that can handle an instance of
  * {@link OAuthBearerValidatorCallback} and declaring it via the
@@ -240,11 +240,11 @@ public class OAuthBearerLoginModule implements LoginModule {
 
     /**
      * Login state transitions:
-     *   Initial state: NOT_LOGGED_IN
-     *   login()      : NOT_LOGGED_IN => LOGGED_IN_NOT_COMMITTED
-     *   commit()     : LOGGED_IN_NOT_COMMITTED => COMMITTED
-     *   abort()      : LOGGED_IN_NOT_COMMITTED => NOT_LOGGED_IN
-     *   logout()     : Any state => NOT_LOGGED_IN
+     * Initial state: NOT_LOGGED_IN
+     * login()      : NOT_LOGGED_IN => LOGGED_IN_NOT_COMMITTED
+     * commit()     : LOGGED_IN_NOT_COMMITTED => COMMITTED
+     * abort()      : LOGGED_IN_NOT_COMMITTED => NOT_LOGGED_IN
+     * logout()     : Any state => NOT_LOGGED_IN
      */
     private enum LoginState {
         NOT_LOGGED_IN,
@@ -273,7 +273,7 @@ public class OAuthBearerLoginModule implements LoginModule {
 
     @Override
     public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
-            Map<String, ?> options) {
+                           Map<String, ?> options) {
         this.subject = Objects.requireNonNull(subject);
         if (!(Objects.requireNonNull(callbackHandler) instanceof AuthenticateCallbackHandler))
             throw new IllegalArgumentException(String.format("Callback handler must be castable to %s: %s",
@@ -286,15 +286,15 @@ public class OAuthBearerLoginModule implements LoginModule {
         if (loginState == LoginState.LOGGED_IN_NOT_COMMITTED) {
             if (tokenRequiringCommit != null)
                 throw new IllegalStateException(String.format(
-                    "Already have an uncommitted token with private credential token count=%d", committedTokenCount()));
+                        "Already have an uncommitted token with private credential token count=%d", committedTokenCount()));
             else
                 throw new IllegalStateException("Already logged in without a token");
         }
         if (loginState == LoginState.COMMITTED) {
             if (myCommittedToken != null)
                 throw new IllegalStateException(String.format(
-                    "Already have a committed token with private credential token count=%d; must login on another login context or logout here first before reusing the same login context",
-                    committedTokenCount()));
+                        "Already have a committed token with private credential token count=%d; must login on another login context or logout here first before reusing the same login context",
+                        committedTokenCount()));
             else
                 throw new IllegalStateException("Login has already been committed without a token");
         }
@@ -314,7 +314,7 @@ public class OAuthBearerLoginModule implements LoginModule {
     private void identifyToken() throws LoginException {
         OAuthBearerTokenCallback tokenCallback = new OAuthBearerTokenCallback();
         try {
-            callbackHandler.handle(new Callback[] {tokenCallback});
+            callbackHandler.handle(new Callback[]{tokenCallback});
         } catch (IOException | UnsupportedCallbackException e) {
             log.error(e.getMessage(), e);
             throw new LoginException("An internal error occurred while retrieving token from callback handler");
@@ -334,7 +334,7 @@ public class OAuthBearerLoginModule implements LoginModule {
     private void identifyExtensions() throws LoginException {
         SaslExtensionsCallback extensionsCallback = new SaslExtensionsCallback();
         try {
-            callbackHandler.handle(new Callback[] {extensionsCallback});
+            callbackHandler.handle(new Callback[]{extensionsCallback});
             extensionsRequiringCommit = extensionsCallback.extensions();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -343,7 +343,7 @@ public class OAuthBearerLoginModule implements LoginModule {
             extensionsRequiringCommit = EMPTY_EXTENSIONS;
             log.debug("CallbackHandler {} does not support SASL extensions. No extensions will be added", callbackHandler.getClass().getName());
         }
-        if (extensionsRequiringCommit ==  null) {
+        if (extensionsRequiringCommit == null) {
             log.error("SASL Extensions cannot be null. Check whether your callback handler is explicitly setting them as null.");
             throw new LoginException("Extensions cannot be null.");
         }

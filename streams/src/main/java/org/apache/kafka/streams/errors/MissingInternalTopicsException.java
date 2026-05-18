@@ -24,11 +24,11 @@ public class MissingInternalTopicsException extends StreamsException {
 
     private final List<String> topics;
 
-    /** 
+    /**
      * Constructs a new MissingInternalTopicsException.
-     * 
+     *
      * @param message The detail message
-     * @param topics the list of missing internal topic names
+     * @param topics  the list of missing internal topic names
      */
     public MissingInternalTopicsException(final String message, final List<String> topics) {
         super(message);

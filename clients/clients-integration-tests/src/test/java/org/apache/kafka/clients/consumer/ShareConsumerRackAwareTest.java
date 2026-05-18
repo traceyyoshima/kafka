@@ -44,24 +44,24 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = 3,
-    serverProperties = {
-        @ClusterConfigProperty(id = 0, key = "broker.rack", value = "rack0"),
-        @ClusterConfigProperty(id = 1, key = "broker.rack", value = "rack1"),
-        @ClusterConfigProperty(id = 2, key = "broker.rack", value = "rack2"),
-        @ClusterConfigProperty(key = GroupCoordinatorConfig.SHARE_GROUP_ASSIGNORS_CONFIG, value = "org.apache.kafka.clients.consumer.RackAwareAssignor")
-    }
+        types = {Type.KRAFT},
+        brokers = 3,
+        serverProperties = {
+                @ClusterConfigProperty(id = 0, key = "broker.rack", value = "rack0"),
+                @ClusterConfigProperty(id = 1, key = "broker.rack", value = "rack1"),
+                @ClusterConfigProperty(id = 2, key = "broker.rack", value = "rack2"),
+                @ClusterConfigProperty(key = GroupCoordinatorConfig.SHARE_GROUP_ASSIGNORS_CONFIG, value = "org.apache.kafka.clients.consumer.RackAwareAssignor")
+        }
 )
 public class ShareConsumerRackAwareTest {
 
     @ClusterTests({
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
-        }),
-        @ClusterTest(serverProperties = {
-            @ClusterConfigProperty(key = GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
-        })
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "0")
+            }),
+            @ClusterTest(serverProperties = {
+                    @ClusterConfigProperty(key = GroupCoordinatorConfig.SHARE_GROUP_ASSIGNMENT_INTERVAL_MS_CONFIG, value = "1000")
+            })
     })
     public void testShareConsumerWithRackAwareAssignor(ClusterInstance clusterInstance) throws ExecutionException, InterruptedException {
         String groupId = "group0";
@@ -69,19 +69,19 @@ public class ShareConsumerRackAwareTest {
         try (Admin admin = clusterInstance.admin();
              Producer<byte[], byte[]> producer = clusterInstance.producer();
              ShareConsumer<byte[], byte[]> consumer0 = clusterInstance.shareConsumer(Map.of(
-                 CommonClientConfigs.GROUP_ID_CONFIG, groupId,
-                 CommonClientConfigs.CLIENT_ID_CONFIG, "client0",
-                 CommonClientConfigs.CLIENT_RACK_CONFIG, "rack0"
+                     CommonClientConfigs.GROUP_ID_CONFIG, groupId,
+                     CommonClientConfigs.CLIENT_ID_CONFIG, "client0",
+                     CommonClientConfigs.CLIENT_RACK_CONFIG, "rack0"
              ));
              ShareConsumer<byte[], byte[]> consumer1 = clusterInstance.shareConsumer(Map.of(
-                 CommonClientConfigs.GROUP_ID_CONFIG, groupId,
-                 CommonClientConfigs.CLIENT_ID_CONFIG, "client1",
-                 CommonClientConfigs.CLIENT_RACK_CONFIG, "rack1"
+                     CommonClientConfigs.GROUP_ID_CONFIG, groupId,
+                     CommonClientConfigs.CLIENT_ID_CONFIG, "client1",
+                     CommonClientConfigs.CLIENT_RACK_CONFIG, "rack1"
              ));
              ShareConsumer<byte[], byte[]> consumer2 = clusterInstance.shareConsumer(Map.of(
-                 CommonClientConfigs.GROUP_ID_CONFIG, groupId,
-                 CommonClientConfigs.CLIENT_ID_CONFIG, "client2",
-                 CommonClientConfigs.CLIENT_RACK_CONFIG, "rack2"
+                     CommonClientConfigs.GROUP_ID_CONFIG, groupId,
+                     CommonClientConfigs.CLIENT_ID_CONFIG, "client2",
+                     CommonClientConfigs.CLIENT_RACK_CONFIG, "rack2"
              ))
         ) {
             // Create a new topic with 1 partition on broker 0.
@@ -102,18 +102,18 @@ public class ShareConsumerRackAwareTest {
                 Map<String, ShareGroupDescription> groups = assertDoesNotThrow(() -> admin.describeShareGroups(Set.of("group0")).all().get());
                 ShareGroupDescription groupDescription = groups.get(groupId);
                 return isExpectedAssignment(groupDescription, 3, Map.of(
-                    "client0", Set.of(new TopicPartition(topic, 0)),
-                    "client1", Set.of(),
-                    "client2", Set.of()
+                        "client0", Set.of(new TopicPartition(topic, 0)),
+                        "client1", Set.of(),
+                        "client2", Set.of()
                 ));
             }, "Consumer 0 should be assigned to topic partition 0");
 
             // Add a new partition 1 and 2 to broker 1.
             admin.createPartitions(
-                Map.of(
-                    topic,
-                    NewPartitions.increaseTo(3, List.of(List.of(1), List.of(1)))
-                )
+                    Map.of(
+                            topic,
+                            NewPartitions.increaseTo(3, List.of(List.of(1), List.of(1)))
+                    )
             );
             clusterInstance.waitTopicCreation(topic, 3);
 
@@ -124,18 +124,18 @@ public class ShareConsumerRackAwareTest {
                 Map<String, ShareGroupDescription> groups = assertDoesNotThrow(() -> admin.describeShareGroups(Set.of("group0")).all().get());
                 ShareGroupDescription groupDescription = groups.get(groupId);
                 return isExpectedAssignment(groupDescription, 3, Map.of(
-                    "client0", Set.of(new TopicPartition(topic, 0)),
-                    "client1", Set.of(new TopicPartition(topic, 1), new TopicPartition(topic, 2)),
-                    "client2", Set.of()
+                        "client0", Set.of(new TopicPartition(topic, 0)),
+                        "client1", Set.of(new TopicPartition(topic, 1), new TopicPartition(topic, 2)),
+                        "client2", Set.of()
                 ));
             }, "Consumer 1 should be assigned to topic partition 1 and 2");
 
             // Add a new partition 3, 4, and 5 to broker 2.
             admin.createPartitions(
-                Map.of(
-                    topic,
-                    NewPartitions.increaseTo(6, List.of(List.of(2), List.of(2), List.of(2)))
-                )
+                    Map.of(
+                            topic,
+                            NewPartitions.increaseTo(6, List.of(List.of(2), List.of(2), List.of(2)))
+                    )
             );
             TestUtils.waitForCondition(() -> {
                 consumer0.poll(Duration.ofMillis(1000));
@@ -144,9 +144,9 @@ public class ShareConsumerRackAwareTest {
                 Map<String, ShareGroupDescription> groups = assertDoesNotThrow(() -> admin.describeShareGroups(Set.of("group0")).all().get());
                 ShareGroupDescription groupDescription = groups.get(groupId);
                 return isExpectedAssignment(groupDescription, 3, Map.of(
-                    "client0", Set.of(new TopicPartition(topic, 0)),
-                    "client1", Set.of(new TopicPartition(topic, 1), new TopicPartition(topic, 2)),
-                    "client2", Set.of(new TopicPartition(topic, 3), new TopicPartition(topic, 4), new TopicPartition(topic, 5))
+                        "client0", Set.of(new TopicPartition(topic, 0)),
+                        "client1", Set.of(new TopicPartition(topic, 1), new TopicPartition(topic, 2)),
+                        "client2", Set.of(new TopicPartition(topic, 3), new TopicPartition(topic, 4), new TopicPartition(topic, 5))
                 ));
             }, "Consumer 2 should be assigned to topic partition 3, 4, and 5");
 
@@ -158,12 +158,12 @@ public class ShareConsumerRackAwareTest {
             // partition 4 -> broker 1
             // partition 5 -> broker 0
             admin.alterPartitionReassignments(Map.of(
-                new TopicPartition(topic, 0), Optional.of(new NewPartitionReassignment(List.of(2))),
-                new TopicPartition(topic, 1), Optional.of(new NewPartitionReassignment(List.of(2))),
-                new TopicPartition(topic, 2), Optional.of(new NewPartitionReassignment(List.of(2))),
-                new TopicPartition(topic, 3), Optional.of(new NewPartitionReassignment(List.of(1))),
-                new TopicPartition(topic, 4), Optional.of(new NewPartitionReassignment(List.of(1))),
-                new TopicPartition(topic, 5), Optional.of(new NewPartitionReassignment(List.of(0)))
+                    new TopicPartition(topic, 0), Optional.of(new NewPartitionReassignment(List.of(2))),
+                    new TopicPartition(topic, 1), Optional.of(new NewPartitionReassignment(List.of(2))),
+                    new TopicPartition(topic, 2), Optional.of(new NewPartitionReassignment(List.of(2))),
+                    new TopicPartition(topic, 3), Optional.of(new NewPartitionReassignment(List.of(1))),
+                    new TopicPartition(topic, 4), Optional.of(new NewPartitionReassignment(List.of(1))),
+                    new TopicPartition(topic, 5), Optional.of(new NewPartitionReassignment(List.of(0)))
             )).all().get();
             TestUtils.waitForCondition(() -> {
                 consumer0.poll(Duration.ofMillis(1000));
@@ -172,27 +172,27 @@ public class ShareConsumerRackAwareTest {
                 Map<String, ShareGroupDescription> groups = assertDoesNotThrow(() -> admin.describeShareGroups(Set.of("group0")).all().get());
                 ShareGroupDescription groupDescription = groups.get(groupId);
                 return isExpectedAssignment(groupDescription, 3, Map.of(
-                    "client0", Set.of(new TopicPartition(topic, 5)),
-                    "client1", Set.of(new TopicPartition(topic, 3), new TopicPartition(topic, 4)),
-                    "client2", Set.of(new TopicPartition(topic, 0), new TopicPartition(topic, 1), new TopicPartition(topic, 2))
+                        "client0", Set.of(new TopicPartition(topic, 5)),
+                        "client1", Set.of(new TopicPartition(topic, 3), new TopicPartition(topic, 4)),
+                        "client2", Set.of(new TopicPartition(topic, 0), new TopicPartition(topic, 1), new TopicPartition(topic, 2))
                 ));
             }, "Consumer with topic partition mapping should be 0 -> 5 | 1 -> 3, 4 | 2 -> 0, 1, 2");
         }
     }
 
     boolean isExpectedAssignment(
-        ShareGroupDescription groupDescription,
-        int memberCount,
-        Map<String, Set<TopicPartition>> expectedAssignments
+            ShareGroupDescription groupDescription,
+            int memberCount,
+            Map<String, Set<TopicPartition>> expectedAssignments
     ) {
         return groupDescription != null &&
-            groupDescription.members().size() == memberCount &&
-            groupDescription.members().stream().allMatch(
-                member -> {
-                    String clientId = member.clientId();
-                    Set<TopicPartition> expectedPartitions = expectedAssignments.get(clientId);
-                    return member.assignment().topicPartitions().equals(expectedPartitions);
-                }
-            );
+                groupDescription.members().size() == memberCount &&
+                groupDescription.members().stream().allMatch(
+                        member -> {
+                            String clientId = member.clientId();
+                            Set<TopicPartition> expectedPartitions = expectedAssignments.get(clientId);
+                            return member.assignment().topicPartitions().equals(expectedPartitions);
+                        }
+                );
     }
 }

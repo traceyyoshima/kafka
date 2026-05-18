@@ -29,7 +29,7 @@ public interface TopicNameExtractor<K, V> {
      * @param key           the record key
      * @param value         the record value
      * @param recordContext current context metadata of the record
-     * @return              the topic name this record should be sent to
+     * @return the topic name this record should be sent to
      */
     String extract(final K key, final V value, final RecordContext recordContext);
 }

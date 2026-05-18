@@ -35,7 +35,7 @@ public class WallclockTimestampExtractor implements TimestampExtractor {
     /**
      * Return the current wall clock time as timestamp.
      *
-     * @param record a data record
+     * @param record        a data record
      * @param partitionTime the highest extracted valid timestamp of the current record's partition˙ (could be -1 if unknown)
      * @return the current wall clock time, expressed in milliseconds since midnight, January 1, 1970 UTC
      */

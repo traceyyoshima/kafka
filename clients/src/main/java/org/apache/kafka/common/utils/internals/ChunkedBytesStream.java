@@ -356,7 +356,7 @@ public class ChunkedBytesStream extends FilterInputStream {
         int n = count - pos;
         int avail = getInIfOpen().available();
         return n > (Integer.MAX_VALUE - avail)
-            ? Integer.MAX_VALUE
-            : n + avail;
+                ? Integer.MAX_VALUE
+                : n + avail;
     }
 }

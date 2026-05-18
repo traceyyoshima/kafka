@@ -47,7 +47,7 @@ public class StreamsStandByReplicaTest {
     public static void main(final String[] args) throws IOException {
         if (args.length < 2) {
             System.err.println("StreamsStandByReplicaTest are expecting two parameters: " +
-                "propFile, additionalConfigs; but only see " + args.length + " parameter");
+                    "propFile, additionalConfigs; but only see " + args.length + " parameter");
             Exit.exit(1);
         }
 
@@ -63,7 +63,7 @@ public class StreamsStandByReplicaTest {
             System.err.println("No bootstrap kafka servers specified in " + StreamsConfig.BOOTSTRAP_SERVERS_CONFIG);
             Exit.exit(1);
         }
-        
+
         streamsProperties.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100L);
         streamsProperties.put(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 1);
         streamsProperties.put(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 0);
@@ -86,10 +86,10 @@ public class StreamsStandByReplicaTest {
 
         if (sourceTopic == null || sinkTopic1 == null || sinkTopic2 == null) {
             System.err.printf(
-                "one or more required topics null sourceTopic[%s], sinkTopic1[%s], sinkTopic2[%s]%n",
-                sourceTopic,
-                sinkTopic1,
-                sinkTopic2);
+                    "one or more required topics null sourceTopic[%s], sinkTopic1[%s], sinkTopic2[%s]%n",
+                    sourceTopic,
+                    sinkTopic1,
+                    sinkTopic2);
             System.err.flush();
             Exit.exit(1);
         }
@@ -122,10 +122,10 @@ public class StreamsStandByReplicaTest {
         final KStream<String, String> inputStream = builder.stream(sourceTopic, Consumed.with(stringSerde, stringSerde));
 
         inputStream.groupByKey().count(Materialized.as(inMemoryStoreSupplier)).toStream().mapValues(countMapper)
-            .to(sinkTopic1, Produced.with(stringSerde, stringSerde));
+                .to(sinkTopic1, Produced.with(stringSerde, stringSerde));
 
         inputStream.groupByKey().count(Materialized.as(persistentStoreSupplier)).toStream().mapValues(countMapper)
-            .to(sinkTopic2, Produced.with(stringSerde, stringSerde));
+                .to(sinkTopic2, Produced.with(stringSerde, stringSerde));
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), streamsProperties);
 
@@ -141,8 +141,8 @@ public class StreamsStandByReplicaTest {
                 final Set<ThreadMetadata> threadMetadata = streams.metadataForLocalThreads();
                 for (final ThreadMetadata threadMetadatum : threadMetadata) {
                     System.out.println(
-                        "ACTIVE_TASKS:" + threadMetadatum.activeTasks().size()
-                        + " STANDBY_TASKS:" + threadMetadatum.standbyTasks().size());
+                            "ACTIVE_TASKS:" + threadMetadatum.activeTasks().size()
+                                    + " STANDBY_TASKS:" + threadMetadatum.standbyTasks().size());
                 }
             }
         });
@@ -162,9 +162,9 @@ public class StreamsStandByReplicaTest {
 
     private static boolean confirmCorrectConfigs(final Properties properties) {
         return properties.containsKey(StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG)) &&
-               properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG)) &&
-               properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG)) &&
-               properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
+                properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG)) &&
+                properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG)) &&
+                properties.containsKey(StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG));
     }
 
 }

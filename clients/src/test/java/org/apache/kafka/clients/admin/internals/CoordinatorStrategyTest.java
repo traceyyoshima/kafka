@@ -47,7 +47,7 @@ public class CoordinatorStrategyTest {
         CoordinatorStrategy strategy = new CoordinatorStrategy(CoordinatorType.GROUP, new LogContext());
         strategy.disableBatch();
         FindCoordinatorRequest.Builder request = strategy.buildRequest(singleton(
-            CoordinatorKey.byGroupId("foo")));
+                CoordinatorKey.byGroupId("foo")));
         assertEquals("foo", request.data().key());
         assertEquals(CoordinatorType.GROUP, CoordinatorType.forId(request.data().keyType()));
     }
@@ -56,8 +56,8 @@ public class CoordinatorStrategyTest {
     public void testBuildLookupRequest() {
         CoordinatorStrategy strategy = new CoordinatorStrategy(CoordinatorType.GROUP, new LogContext());
         FindCoordinatorRequest.Builder request = strategy.buildRequest(Set.of(
-            CoordinatorKey.byGroupId("foo"),
-            CoordinatorKey.byGroupId("bar")));
+                CoordinatorKey.byGroupId("foo"),
+                CoordinatorKey.byGroupId("bar")));
         assertEquals("", request.data().key());
         assertEquals(2, request.data().coordinatorKeys().size());
         assertEquals(CoordinatorType.GROUP, CoordinatorType.forId(request.data().keyType()));
@@ -67,8 +67,8 @@ public class CoordinatorStrategyTest {
     public void testBuildLookupRequestNonRepresentable() {
         CoordinatorStrategy strategy = new CoordinatorStrategy(CoordinatorType.GROUP, new LogContext());
         FindCoordinatorRequest.Builder request = strategy.buildRequest(new HashSet<>(Arrays.asList(
-            CoordinatorKey.byGroupId("foo"),
-            null)));
+                CoordinatorKey.byGroupId("foo"),
+                null)));
         assertEquals("", request.data().key());
         assertEquals(1, request.data().coordinatorKeys().size());
     }
@@ -105,9 +105,9 @@ public class CoordinatorStrategyTest {
         CoordinatorStrategy strategy = new CoordinatorStrategy(CoordinatorType.GROUP, new LogContext());
 
         assertThrows(IllegalArgumentException.class, () -> strategy.buildRequest(
-            Set.of(
-                CoordinatorKey.byGroupId("group"),
-                CoordinatorKey.byTransactionalId("txnid"))));
+                Set.of(
+                        CoordinatorKey.byGroupId("group"),
+                        CoordinatorKey.byTransactionalId("txnid"))));
     }
 
     @Test
@@ -118,12 +118,12 @@ public class CoordinatorStrategyTest {
         CoordinatorStrategy strategy = new CoordinatorStrategy(CoordinatorType.GROUP, new LogContext());
         strategy.disableBatch();
         assertThrows(IllegalArgumentException.class, () ->
-            strategy.handleResponse(Collections.emptySet(), response));
+                strategy.handleResponse(Collections.emptySet(), response));
 
         CoordinatorKey group1 = CoordinatorKey.byGroupId("foo");
         CoordinatorKey group2 = CoordinatorKey.byGroupId("bar");
         assertThrows(IllegalArgumentException.class, () ->
-            strategy.handleResponse(Set.of(group1, group2), response));
+                strategy.handleResponse(Set.of(group1, group2), response));
     }
 
     @Test
@@ -131,10 +131,10 @@ public class CoordinatorStrategyTest {
         CoordinatorKey group = CoordinatorKey.byGroupId("foo");
 
         FindCoordinatorResponseData responseData = new FindCoordinatorResponseData()
-            .setErrorCode(Errors.NONE.code())
-            .setHost("localhost")
-            .setPort(9092)
-            .setNodeId(1);
+                .setErrorCode(Errors.NONE.code())
+                .setHost("localhost")
+                .setPort(9092)
+                .setNodeId(1);
 
         AdminApiLookupStrategy.LookupResult<CoordinatorKey> result = runOldLookup(group, responseData);
         assertEquals(singletonMap(group, 1), result.mappedKeys);
@@ -147,19 +147,19 @@ public class CoordinatorStrategyTest {
         CoordinatorKey group2 = CoordinatorKey.byGroupId("bar");
 
         FindCoordinatorResponseData responseData = new FindCoordinatorResponseData()
-            .setCoordinators(Arrays.asList(
-                    new FindCoordinatorResponseData.Coordinator()
-                        .setKey("foo")
-                        .setErrorCode(Errors.NONE.code())
-                        .setHost("localhost")
-                        .setPort(9092)
-                        .setNodeId(1),
-                    new FindCoordinatorResponseData.Coordinator()
-                        .setKey("bar")
-                        .setErrorCode(Errors.NONE.code())
-                        .setHost("localhost")
-                        .setPort(9092)
-                        .setNodeId(2)));
+                .setCoordinators(Arrays.asList(
+                        new FindCoordinatorResponseData.Coordinator()
+                                .setKey("foo")
+                                .setErrorCode(Errors.NONE.code())
+                                .setHost("localhost")
+                                .setPort(9092)
+                                .setNodeId(1),
+                        new FindCoordinatorResponseData.Coordinator()
+                                .setKey("bar")
+                                .setErrorCode(Errors.NONE.code())
+                                .setHost("localhost")
+                                .setPort(9092)
+                                .setNodeId(2)));
 
         AdminApiLookupStrategy.LookupResult<CoordinatorKey> result = runLookup(Set.of(group1, group2), responseData);
         Map<CoordinatorKey, Integer> expectedResult = new HashMap<>();
@@ -196,14 +196,14 @@ public class CoordinatorStrategyTest {
         FindCoordinatorResponseData responseData = new FindCoordinatorResponseData()
                 .setCoordinators(Arrays.asList(
                         new FindCoordinatorResponseData.Coordinator()
-                            .setKey("foo")
-                            .setErrorCode(error.code()),
+                                .setKey("foo")
+                                .setErrorCode(error.code()),
                         new FindCoordinatorResponseData.Coordinator()
-                            .setKey("bar")
-                            .setErrorCode(Errors.NONE.code())
-                            .setHost("localhost")
-                            .setPort(9092)
-                            .setNodeId(2)));
+                                .setKey("bar")
+                                .setErrorCode(Errors.NONE.code())
+                                .setHost("localhost")
+                                .setPort(9092)
+                                .setNodeId(2)));
         AdminApiLookupStrategy.LookupResult<CoordinatorKey> result = runLookup(Set.of(group1, group2), responseData);
 
         assertEquals(emptyMap(), result.failedKeys);
@@ -223,8 +223,8 @@ public class CoordinatorStrategyTest {
     }
 
     public Throwable assertFatalOldLookup(
-        CoordinatorKey key,
-        Errors error
+            CoordinatorKey key,
+            Errors error
     ) {
         FindCoordinatorResponseData responseData = new FindCoordinatorResponseData().setErrorCode(error.code());
         AdminApiLookupStrategy.LookupResult<CoordinatorKey> result = runOldLookup(key, responseData);
@@ -250,14 +250,14 @@ public class CoordinatorStrategyTest {
     }
 
     public Throwable assertFatalLookup(
-        CoordinatorKey key,
-        Errors error
+            CoordinatorKey key,
+            Errors error
     ) {
         FindCoordinatorResponseData responseData = new FindCoordinatorResponseData()
                 .setCoordinators(Collections.singletonList(
                         new FindCoordinatorResponseData.Coordinator()
-                            .setKey(key.idValue)
-                            .setErrorCode(error.code())));
+                                .setKey(key.idValue)
+                                .setErrorCode(error.code())));
         AdminApiLookupStrategy.LookupResult<CoordinatorKey> result = runLookup(singleton(key), responseData);
 
         assertEquals(emptyMap(), result.mappedKeys);
@@ -269,8 +269,8 @@ public class CoordinatorStrategyTest {
     }
 
     private AdminApiLookupStrategy.LookupResult<CoordinatorKey> runOldLookup(
-        CoordinatorKey key,
-        FindCoordinatorResponseData responseData
+            CoordinatorKey key,
+            FindCoordinatorResponseData responseData
     ) {
         CoordinatorStrategy strategy = new CoordinatorStrategy(key.type, new LogContext());
         strategy.disableBatch();
@@ -279,8 +279,8 @@ public class CoordinatorStrategyTest {
     }
 
     private AdminApiLookupStrategy.LookupResult<CoordinatorKey> runLookup(
-        Set<CoordinatorKey> keys,
-        FindCoordinatorResponseData responseData
+            Set<CoordinatorKey> keys,
+            FindCoordinatorResponseData responseData
     ) {
         CoordinatorStrategy strategy = new CoordinatorStrategy(keys.iterator().next().type, new LogContext());
         strategy.buildRequest(keys);

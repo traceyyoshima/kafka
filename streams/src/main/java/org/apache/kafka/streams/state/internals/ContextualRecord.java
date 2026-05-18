@@ -61,7 +61,7 @@ public class ContextualRecord {
         }
         final ContextualRecord that = (ContextualRecord) o;
         return Arrays.equals(value, that.value) &&
-            Objects.equals(recordContext, that.recordContext);
+                Objects.equals(recordContext, that.recordContext);
     }
 
     /**
@@ -70,14 +70,14 @@ public class ContextualRecord {
     @Override
     public int hashCode() {
         throw new UnsupportedOperationException("ContextualRecord.ProcessorRecordContext is unsafe for use in Hash collections "
-            + "due to the mutable Headers field");
+                + "due to the mutable Headers field");
     }
 
     @Override
     public String toString() {
         return "ContextualRecord{" +
-            "recordContext=" + recordContext +
-            ", value=" + Arrays.toString(value) +
-            '}';
+                "recordContext=" + recordContext +
+                ", value=" + Arrays.toString(value) +
+                '}';
     }
 }

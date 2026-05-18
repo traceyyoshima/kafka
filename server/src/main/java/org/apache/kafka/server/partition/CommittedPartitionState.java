@@ -20,7 +20,8 @@ import org.apache.kafka.metadata.LeaderRecoveryState;
 
 import java.util.Set;
 
-public record CommittedPartitionState(Set<Integer> isr, LeaderRecoveryState leaderRecoveryState) implements PartitionState {
+public record CommittedPartitionState(Set<Integer> isr,
+                                      LeaderRecoveryState leaderRecoveryState) implements PartitionState {
 
     public CommittedPartitionState {
         isr = Set.copyOf(isr);

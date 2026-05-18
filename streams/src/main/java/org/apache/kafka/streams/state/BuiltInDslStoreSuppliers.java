@@ -49,7 +49,7 @@ public class BuiltInDslStoreSuppliers {
                     return Stores.persistentKeyValueStore(params.name());
                 default:
                     throw new IllegalArgumentException("Unsupported DslStoreFormat: " + storeFormat +
-                        ". Expected one of: HEADERS, TIMESTAMPED, or PLAIN");
+                            ". Expected one of: HEADERS, TIMESTAMPED, or PLAIN");
             }
         }
 
@@ -60,19 +60,19 @@ public class BuiltInDslStoreSuppliers {
                 final boolean withHeaders = (storeFormat == DslStoreFormat.HEADERS);
                 if (!withHeaders) {
                     return RocksDbIndexedTimeOrderedWindowBytesStoreSupplier.create(
-                        params.name(),
-                        params.retentionPeriod(),
-                        params.windowSize(),
-                        params.retainDuplicates(),
-                        params.isSlidingWindow()
+                            params.name(),
+                            params.retentionPeriod(),
+                            params.windowSize(),
+                            params.retainDuplicates(),
+                            params.isSlidingWindow()
                     );
                 } else {
                     return RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier.create(
-                        params.name(),
-                        params.retentionPeriod(),
-                        params.windowSize(),
-                        params.retainDuplicates(),
-                        params.isSlidingWindow()
+                            params.name(),
+                            params.retentionPeriod(),
+                            params.windowSize(),
+                            params.retainDuplicates(),
+                            params.isSlidingWindow()
                     );
                 }
             }
@@ -81,26 +81,26 @@ public class BuiltInDslStoreSuppliers {
             switch (format) {
                 case HEADERS:
                     return Stores.persistentTimestampedWindowStoreWithHeaders(
-                        params.name(),
-                        params.retentionPeriod(),
-                        params.windowSize(),
-                        params.retainDuplicates()
+                            params.name(),
+                            params.retentionPeriod(),
+                            params.windowSize(),
+                            params.retainDuplicates()
                     );
                 case TIMESTAMPED:
                     return Stores.persistentTimestampedWindowStore(
-                        params.name(),
-                        params.retentionPeriod(),
-                        params.windowSize(),
-                        params.retainDuplicates());
+                            params.name(),
+                            params.retentionPeriod(),
+                            params.windowSize(),
+                            params.retainDuplicates());
                 case PLAIN:
                     return Stores.persistentWindowStore(
-                        params.name(),
-                        params.retentionPeriod(),
-                        params.windowSize(),
-                        params.retainDuplicates());
+                            params.name(),
+                            params.retentionPeriod(),
+                            params.windowSize(),
+                            params.retainDuplicates());
                 default:
                     throw new IllegalStateException("Unsupported DslStoreFormat: " + format +
-                        ". Expected one of: HEADERS, TIMESTAMPED, or PLAIN");
+                            ". Expected one of: HEADERS, TIMESTAMPED, or PLAIN");
             }
         }
 
@@ -109,15 +109,15 @@ public class BuiltInDslStoreSuppliers {
             if (params.emitStrategy().type() == EmitStrategy.StrategyType.ON_WINDOW_CLOSE) {
                 if (params.storeFormat() == DslStoreFormat.HEADERS) {
                     return new RocksDbTimeOrderedSessionHeadersBytesStoreSupplier(
-                        params.name(),
-                        params.retentionPeriod().toMillis(),
-                        true
+                            params.name(),
+                            params.retentionPeriod().toMillis(),
+                            true
                     );
                 } else {
                     return new RocksDbTimeOrderedSessionBytesStoreSupplier(
-                        params.name(),
-                        params.retentionPeriod().toMillis(),
-                        true
+                            params.name(),
+                            params.retentionPeriod().toMillis(),
+                            true
                     );
                 }
             }

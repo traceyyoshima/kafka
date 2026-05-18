@@ -108,7 +108,9 @@ public class ShareGroupAssignorBenchmark {
 
     private PartitionAssignor partitionAssignor;
 
-    /** The number of homogeneous subgroups to create for the heterogeneous subscription case. */
+    /**
+     * The number of homogeneous subgroups to create for the heterogeneous subscription case.
+     */
     private static final int MAX_BUCKET_COUNT = 5;
 
     private GroupSpec groupSpec;
@@ -149,16 +151,16 @@ public class ShareGroupAssignorBenchmark {
 
         if (subscriptionType == HOMOGENEOUS) {
             return AssignorBenchmarkUtils.createHomogeneousShareGroupMembers(
-                numberOfMembers,
-                this::memberId,
-                allTopicNames
+                    numberOfMembers,
+                    this::memberId,
+                    allTopicNames
             );
         } else {
             return AssignorBenchmarkUtils.createHeterogeneousBucketedShareGroupMembers(
-                numberOfMembers,
-                MAX_BUCKET_COUNT,
-                this::memberId,
-                allTopicNames
+                    numberOfMembers,
+                    MAX_BUCKET_COUNT,
+                    this::memberId,
+                    allTopicNames
             );
         }
     }
@@ -177,15 +179,15 @@ public class ShareGroupAssignorBenchmark {
 
         for (String memberId : groupSpec.memberIds()) {
             MemberAssignment memberAssignment = members.getOrDefault(
-                memberId,
-                new MemberAssignmentImpl(Map.of())
+                    memberId,
+                    new MemberAssignmentImpl(Map.of())
             );
 
             updatedMemberSpec.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                groupSpec.memberSubscription(memberId).rackId(),
-                Optional.empty(),
-                groupSpec.memberSubscription(memberId).subscribedTopicIds(),
-                new Assignment(Map.copyOf(memberAssignment.partitions()))
+                    groupSpec.memberSubscription(memberId).rackId(),
+                    Optional.empty(),
+                    groupSpec.memberSubscription(memberId).subscribedTopicIds(),
+                    new Assignment(Map.copyOf(memberAssignment.partitions()))
             ));
         }
 
@@ -197,16 +199,16 @@ public class ShareGroupAssignorBenchmark {
         }
 
         updatedMemberSpec.put("newMember", new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            subscribedTopicIdsForNewMember,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                subscribedTopicIdsForNewMember,
+                Assignment.EMPTY
         ));
 
         groupSpec = new GroupSpecImpl(
-            updatedMemberSpec,
-            subscriptionType,
-            invertedTargetAssignment
+                updatedMemberSpec,
+                subscriptionType,
+                invertedTargetAssignment
         );
     }
 

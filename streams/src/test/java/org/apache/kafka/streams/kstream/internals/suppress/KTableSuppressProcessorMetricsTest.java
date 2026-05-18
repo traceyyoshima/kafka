@@ -64,69 +64,69 @@ public class KTableSuppressProcessorMetricsTest {
     private final String threadId = Thread.currentThread().getName();
 
     private final MetricName evictionTotalMetricLatest = new MetricName(
-        "suppression-emit-total",
-        "stream-processor-node-metrics",
-        "The total number of emitted records from the suppression buffer",
-        mkMap(
-            mkEntry("thread-id", threadId),
-            mkEntry("task-id", TASK_ID.toString()),
-            mkEntry("processor-node-id", "testNode")
-        )
+            "suppression-emit-total",
+            "stream-processor-node-metrics",
+            "The total number of emitted records from the suppression buffer",
+            mkMap(
+                    mkEntry("thread-id", threadId),
+                    mkEntry("task-id", TASK_ID.toString()),
+                    mkEntry("processor-node-id", "testNode")
+            )
     );
 
     private final MetricName evictionRateMetricLatest = new MetricName(
-        "suppression-emit-rate",
-        "stream-processor-node-metrics",
-        "The average number of emitted records from the suppression buffer per second",
-        mkMap(
-            mkEntry("thread-id", threadId),
-            mkEntry("task-id", TASK_ID.toString()),
-            mkEntry("processor-node-id", "testNode")
-        )
+            "suppression-emit-rate",
+            "stream-processor-node-metrics",
+            "The average number of emitted records from the suppression buffer per second",
+            mkMap(
+                    mkEntry("thread-id", threadId),
+                    mkEntry("task-id", TASK_ID.toString()),
+                    mkEntry("processor-node-id", "testNode")
+            )
     );
 
     private final MetricName bufferSizeAvgMetricLatest = new MetricName(
-        "suppression-buffer-size-avg",
-        "stream-state-metrics",
-        "The average size of buffered records",
-        mkMap(
-            mkEntry("thread-id", threadId),
-            mkEntry("task-id", TASK_ID.toString()),
-            mkEntry("in-memory-suppression-state-id", "test-store")
-        )
+            "suppression-buffer-size-avg",
+            "stream-state-metrics",
+            "The average size of buffered records",
+            mkMap(
+                    mkEntry("thread-id", threadId),
+                    mkEntry("task-id", TASK_ID.toString()),
+                    mkEntry("in-memory-suppression-state-id", "test-store")
+            )
     );
 
     private final MetricName bufferSizeMaxMetricLatest = new MetricName(
-        "suppression-buffer-size-max",
-        "stream-state-metrics",
-        "The maximum size of buffered records",
-        mkMap(
-            mkEntry("thread-id", threadId),
-            mkEntry("task-id", TASK_ID.toString()),
-            mkEntry("in-memory-suppression-state-id", "test-store")
-        )
+            "suppression-buffer-size-max",
+            "stream-state-metrics",
+            "The maximum size of buffered records",
+            mkMap(
+                    mkEntry("thread-id", threadId),
+                    mkEntry("task-id", TASK_ID.toString()),
+                    mkEntry("in-memory-suppression-state-id", "test-store")
+            )
     );
 
     private final MetricName bufferCountAvgMetricLatest = new MetricName(
-        "suppression-buffer-count-avg",
-        "stream-state-metrics",
-        "The average count of buffered records",
-        mkMap(
-            mkEntry("thread-id", threadId),
-            mkEntry("task-id", TASK_ID.toString()),
-            mkEntry("in-memory-suppression-state-id", "test-store")
-        )
+            "suppression-buffer-count-avg",
+            "stream-state-metrics",
+            "The average count of buffered records",
+            mkMap(
+                    mkEntry("thread-id", threadId),
+                    mkEntry("task-id", TASK_ID.toString()),
+                    mkEntry("in-memory-suppression-state-id", "test-store")
+            )
     );
 
     private final MetricName bufferCountMaxMetricLatest = new MetricName(
-        "suppression-buffer-count-max",
-        "stream-state-metrics",
-        "The maximum count of buffered records",
-        mkMap(
-            mkEntry("thread-id", threadId),
-            mkEntry("task-id", TASK_ID.toString()),
-            mkEntry("in-memory-suppression-state-id", "test-store")
-        )
+            "suppression-buffer-count-max",
+            "stream-state-metrics",
+            "The maximum count of buffered records",
+            mkMap(
+                    mkEntry("thread-id", threadId),
+                    mkEntry("task-id", TASK_ID.toString()),
+                    mkEntry("in-memory-suppression-state-id", "test-store")
+            )
     );
 
     @Test
@@ -134,24 +134,23 @@ public class KTableSuppressProcessorMetricsTest {
         final String storeName = "test-store";
 
         final StateStore buffer = new InMemoryTimeOrderedKeyValueChangeBuffer.Builder<>(
-            storeName, Serdes.String(),
-            Serdes.Long()
+                storeName, Serdes.String(),
+                Serdes.Long()
         )
-            .withLoggingDisabled()
-            .build();
+                .withLoggingDisabled()
+                .build();
 
-        @SuppressWarnings("unchecked")
-        final KTableImpl<String, ?, Long> mock = mock(KTableImpl.class);
+        @SuppressWarnings("unchecked") final KTableImpl<String, ?, Long> mock = mock(KTableImpl.class);
         final Processor<String, Change<Long>, String, Change<Long>> processor =
-            new KTableSuppressProcessorSupplier<>(
-                (SuppressedInternal<String>) Suppressed.<String>untilTimeLimit(Duration.ofDays(100), maxRecords(1)),
-                mockBuilderWithName(storeName),
-                mock
-            ).get();
+                new KTableSuppressProcessorSupplier<>(
+                        (SuppressedInternal<String>) Suppressed.<String>untilTimeLimit(Duration.ofDays(100), maxRecords(1)),
+                        mockBuilderWithName(storeName),
+                        mock
+                ).get();
 
         streamsConfig.setProperty(StreamsConfig.BUILT_IN_METRICS_VERSION_CONFIG, StreamsConfig.METRICS_LATEST);
         final MockInternalProcessorContext<String, Change<Long>> context =
-            new MockInternalProcessorContext<>(streamsConfig, TASK_ID, TestUtils.tempDirectory());
+                new MockInternalProcessorContext<>(streamsConfig, TASK_ID, TestUtils.tempDirectory());
         final Time time = Time.SYSTEM;
         context.setCurrentNode(new ProcessorNode<>("testNode"));
         context.setSystemTimeMs(time.milliseconds());

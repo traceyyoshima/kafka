@@ -32,8 +32,8 @@ public final class AdminBootstrapAddresses {
     private final List<InetSocketAddress> addresses;
 
     AdminBootstrapAddresses(
-        boolean usingBootstrapControllers,
-        List<InetSocketAddress> addresses
+            boolean usingBootstrapControllers,
+            List<InetSocketAddress> addresses
     ) {
         this.usingBootstrapControllers = usingBootstrapControllers;
         this.addresses = addresses;
@@ -64,12 +64,12 @@ public final class AdminBootstrapAddresses {
                         AdminClientConfig.BOOTSTRAP_CONTROLLERS_CONFIG);
             } else {
                 return new AdminBootstrapAddresses(true,
-                    ClientUtils.parseAndValidateAddresses(controllerServers, clientDnsLookupConfig));
+                        ClientUtils.parseAndValidateAddresses(controllerServers, clientDnsLookupConfig));
             }
         } else {
             if (controllerServers.isEmpty()) {
                 return new AdminBootstrapAddresses(false,
-                    ClientUtils.parseAndValidateAddresses(bootstrapServers, clientDnsLookupConfig));
+                        ClientUtils.parseAndValidateAddresses(bootstrapServers, clientDnsLookupConfig));
             } else {
                 throw new ConfigException("You cannot set both " +
                         CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG + " and " +
@@ -88,7 +88,7 @@ public final class AdminBootstrapAddresses {
         if (o == null || (!o.getClass().equals(AdminBootstrapAddresses.class))) return false;
         AdminBootstrapAddresses other = (AdminBootstrapAddresses) o;
         return usingBootstrapControllers == other.usingBootstrapControllers &&
-            addresses.equals(other.addresses);
+                addresses.equals(other.addresses);
     }
 
     @Override

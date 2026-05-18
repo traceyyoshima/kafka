@@ -27,19 +27,19 @@ import static org.apache.kafka.streams.state.internals.Utils.readBytes;
 
 /**
  * Deserializer for Kafka Headers.
- *
+ * <p>
  * Deserialization format (per KIP-1271):
  * [NumHeaders(varint)][Header1][Header2]...
- *
+ * <p>
  * Each header:
  * [KeyLength(varint)][KeyBytes(UTF-8)][ValueLength(varint)][ValueBytes]
- *
+ * <p>
  * Note: ValueLength is -1 for null values (encoded as varint).
  * All integers are decoded from varints (signed varint encoding).
- *
+ * <p>
  * This deserializer expects the headersBytes portion without a size prefix.
  * The size prefix is handled by the outer deserializer (e.g., ValueTimestampHeadersDeserializer).
- *
+ * <p>
  * This is used by KIP-1271 to deserialize headers from state stores.
  */
 class HeadersDeserializer {
@@ -69,7 +69,7 @@ class HeadersDeserializer {
         for (int i = 0; i < headersCount; i++) {
             final int keyLength = ByteUtils.readVarint(buffer);
             final byte[] keyBytes = readBytes(buffer, keyLength);
-            
+
             final String key = new String(keyBytes, StandardCharsets.UTF_8);
 
             final int valueLength = ByteUtils.readVarint(buffer);

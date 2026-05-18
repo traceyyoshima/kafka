@@ -27,11 +27,11 @@ import java.util.Map;
 
 /**
  * Possible error codes.
- *
+ * <p>
  * Top level errors:
  * - {@link Errors#CLUSTER_AUTHORIZATION_FAILED}
  * - {@link Errors#BROKER_NOT_AVAILABLE}
- *
+ * <p>
  * Partition level errors:
  * - {@link Errors#FENCED_LEADER_EPOCH}
  * - {@link Errors#INVALID_REQUEST}
@@ -55,7 +55,7 @@ public class BeginQuorumEpochResponse extends AbstractResponse {
         for (BeginQuorumEpochResponseData.TopicData topicResponse : data.topics()) {
             for (BeginQuorumEpochResponseData.PartitionData partitionResponse : topicResponse.partitions()) {
                 errors.compute(Errors.forCode(partitionResponse.errorCode()),
-                    (error, count) -> count == null ? 1 : count + 1);
+                        (error, count) -> count == null ? 1 : count + 1);
             }
         }
         return errors;

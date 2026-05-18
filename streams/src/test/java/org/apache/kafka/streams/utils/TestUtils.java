@@ -56,9 +56,8 @@ public class TestUtils {
      * This method uses polling, which can be more error prone and slightly slower.
      *
      * @param streamsList the list of streams instances to run.
-     * @param state the expected state that all the streams to be in within timeout
-     * @param timeout the time to wait for the streams to all be in the specific state.
-     *
+     * @param state       the expected state that all the streams to be in within timeout
+     * @param timeout     the time to wait for the streams to all be in the specific state.
      * @throws InterruptedException if the streams doesn't change to the expected state in time.
      */
     public static void waitForApplicationState(final List<KafkaStreams> streamsList,
@@ -66,20 +65,20 @@ public class TestUtils {
                                                final Duration timeout) throws InterruptedException {
         retryOnExceptionWithTimeout(timeout.toMillis(), () -> {
             final Map<KafkaStreams, KafkaStreams.State> streamsToStates = streamsList
-                .stream()
-                .collect(Collectors.toMap(stream -> stream, KafkaStreams::state));
+                    .stream()
+                    .collect(Collectors.toMap(stream -> stream, KafkaStreams::state));
 
             final Map<KafkaStreams, KafkaStreams.State> wrongStateMap = streamsToStates.entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() != state)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                    .stream()
+                    .filter(entry -> entry.getValue() != state)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             final String reason = String.format(
-                "Expected all streams instances in %s to be %s within %d ms, but the following were not: %s",
-                streamsList,
-                state,
-                timeout.toMillis(),
-                wrongStateMap
+                    "Expected all streams instances in %s to be %s within %d ms, but the following were not: %s",
+                    streamsList,
+                    state,
+                    timeout.toMillis(),
+                    wrongStateMap
             );
             assertThat(reason, wrongStateMap.isEmpty());
         });
@@ -96,14 +95,14 @@ public class TestUtils {
 
     private static String sanitize(final String str) {
         return str
-            // The `-` is used in Streams' thread name as a separator and some tests rely on this.
-            .replace('-', '_')
-            .replace(':', '_')
-            .replace('.', '_')
-            .replace('[', '_')
-            .replace(']', '_')
-            .replace(' ', '_')
-            .replace('=', '_');
+                // The `-` is used in Streams' thread name as a separator and some tests rely on this.
+                .replace('-', '_')
+                .replace(':', '_')
+                .replace('.', '_')
+                .replace('[', '_')
+                .replace(']', '_')
+                .replace(' ', '_')
+                .replace('=', '_');
     }
 
     /**
@@ -204,7 +203,7 @@ public class TestUtils {
     }
 
     private static class CountingDelegatingProcessorSupplier<KIn, VIn, KOut, VOut>
-        implements WrappedProcessorSupplier<KIn, VIn, KOut, VOut> {
+            implements WrappedProcessorSupplier<KIn, VIn, KOut, VOut> {
 
         private final WrapperRecorder counter;
         private final String processorName;
@@ -238,7 +237,7 @@ public class TestUtils {
     }
 
     private static class CountingDelegatingFixedKeyProcessorSupplier<KIn, VIn, VOut>
-        implements WrappedFixedKeyProcessorSupplier<KIn, VIn, VOut> {
+            implements WrappedFixedKeyProcessorSupplier<KIn, VIn, VOut> {
 
         private final WrapperRecorder counter;
         private final String processorName;

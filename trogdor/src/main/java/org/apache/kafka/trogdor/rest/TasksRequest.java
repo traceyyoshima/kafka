@@ -62,11 +62,11 @@ public class TasksRequest extends Message {
 
     @JsonCreator
     public TasksRequest(@JsonProperty("taskIds") Collection<String> taskIds,
-            @JsonProperty("firstStartMs") long firstStartMs,
-            @JsonProperty("lastStartMs") long lastStartMs,
-            @JsonProperty("firstEndMs") long firstEndMs,
-            @JsonProperty("lastEndMs") long lastEndMs,
-            @JsonProperty("state") Optional<TaskStateType> state) {
+                        @JsonProperty("firstStartMs") long firstStartMs,
+                        @JsonProperty("lastStartMs") long lastStartMs,
+                        @JsonProperty("firstEndMs") long firstEndMs,
+                        @JsonProperty("lastEndMs") long lastEndMs,
+                        @JsonProperty("state") Optional<TaskStateType> state) {
         this.taskIds = taskIds == null ? Set.of() : Set.copyOf(taskIds);
         this.firstStartMs = Math.max(0, firstStartMs);
         this.lastStartMs = Math.max(0, lastStartMs);
@@ -108,10 +108,10 @@ public class TasksRequest extends Message {
     /**
      * Determine if this TaskRequest should return a particular task.
      *
-     * @param taskId    The task ID.
-     * @param startMs   The task start time, or -1 if the task hasn't started.
-     * @param endMs     The task end time, or -1 if the task hasn't ended.
-     * @return          True if information about the task should be returned.
+     * @param taskId  The task ID.
+     * @param startMs The task start time, or -1 if the task hasn't started.
+     * @param endMs   The task end time, or -1 if the task hasn't ended.
+     * @return True if information about the task should be returned.
      */
     public boolean matches(String taskId, long startMs, long endMs, TaskStateType state) {
         if ((!taskIds.isEmpty()) && (!taskIds.contains(taskId))) {

@@ -22,7 +22,7 @@ import org.apache.kafka.common.metrics.MetricConfig;
 /**
  * An non-sampled cumulative total maintained over all time.
  * This is a non-sampled version of {@link WindowedSum}.
- *
+ * <p>
  * See also {@link CumulativeCount} if you just want to increment the value by 1 on each recording.
  */
 public class CumulativeSum implements MeasurableStat {

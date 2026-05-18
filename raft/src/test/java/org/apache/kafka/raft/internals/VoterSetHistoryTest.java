@@ -69,8 +69,8 @@ public final class VoterSetHistoryTest {
         VoterSetHistory votersHistory = voterSetHistory(staticVoterSet);
 
         assertThrows(
-            IllegalArgumentException.class,
-            () -> votersHistory.addAt(-2, VoterSet.fromMap(VoterSetTest.voterMap(IntStream.of(1, 2, 3), true)))
+                IllegalArgumentException.class,
+                () -> votersHistory.addAt(-2, VoterSet.fromMap(VoterSetTest.voterMap(IntStream.of(1, 2, 3), true)))
         );
         assertEquals(staticVoterSet, votersHistory.lastValue());
 
@@ -135,8 +135,8 @@ public final class VoterSetHistoryTest {
 
         // Assert multiple voters can be removed at a time
         VoterSet nonOverlappingRemovedSet = voterSet
-            .removeVoter(voterMap.get(1).voterKey()).get()
-            .removeVoter(voterMap.get(2).voterKey()).get();
+                .removeVoter(voterMap.get(1).voterKey()).get()
+                .removeVoter(voterMap.get(2).voterKey()).get();
 
         votersHistory.addAt(200, nonOverlappingRemovedSet);
 
@@ -144,8 +144,8 @@ public final class VoterSetHistoryTest {
 
         // Assert multiple voters can be added at a time
         VoterSet nonOverlappingAddSet = nonOverlappingRemovedSet
-            .addVoter(VoterSetTest.voterNode(1, true)).get()
-            .addVoter(VoterSetTest.voterNode(2, true)).get();
+                .addVoter(VoterSetTest.voterNode(1, true)).get()
+                .addVoter(VoterSetTest.voterNode(2, true)).get();
 
         votersHistory.addAt(300, nonOverlappingAddSet);
 
@@ -160,8 +160,8 @@ public final class VoterSetHistoryTest {
 
         // Remove voter so that it doesn't overlap
         VoterSet nonoverlappingRemovedSet = staticVoterSet
-            .removeVoter(voterMap.get(1).voterKey()).get()
-            .removeVoter(voterMap.get(2).voterKey()).get();
+                .removeVoter(voterMap.get(1).voterKey()).get()
+                .removeVoter(voterMap.get(2).voterKey()).get();
 
         votersHistory.addAt(100, nonoverlappingRemovedSet);
         assertEquals(nonoverlappingRemovedSet, votersHistory.lastValue());

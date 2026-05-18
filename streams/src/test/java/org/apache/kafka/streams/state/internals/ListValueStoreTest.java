@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ListValueStoreTest {
-    public enum StoreType { InMemory, RocksDB }
+    public enum StoreType {InMemory, RocksDB}
 
     private KeyValueStore<Integer, String> listStore;
 
@@ -55,14 +55,14 @@ public class ListValueStoreTest {
 
         final MockRecordCollector recordCollector = new MockRecordCollector();
         final InternalMockProcessorContext<Integer, String> context = new InternalMockProcessorContext<>(
-            baseDir,
-            Serdes.String(),
-            Serdes.Integer(),
-            recordCollector,
-            new ThreadCache(
-                new LogContext("testCache"),
-                0,
-                new MockStreamsMetrics(new Metrics())));
+                baseDir,
+                Serdes.String(),
+                Serdes.Integer(),
+                recordCollector,
+                new ThreadCache(
+                        new LogContext("testCache"),
+                        0,
+                        new MockStreamsMetrics(new Metrics())));
         context.setTime(1L);
 
         listStore.init(context, listStore);
@@ -77,12 +77,12 @@ public class ListValueStoreTest {
                                           final Serde<V> valueSerde,
                                           final StoreType storeType) {
         return new ListValueStoreBuilder<>(
-            storeType == StoreType.RocksDB ? Stores.persistentKeyValueStore("rocksDB list store")
-                : Stores.inMemoryKeyValueStore("in-memory list store"),
-            keySerde,
-            valueSerde,
-            Time.SYSTEM)
-            .build();
+                storeType == StoreType.RocksDB ? Stores.persistentKeyValueStore("rocksDB list store")
+                        : Stores.inMemoryKeyValueStore("in-memory list store"),
+                keySerde,
+                valueSerde,
+                Time.SYSTEM)
+                .build();
     }
 
     @ParameterizedTest
@@ -101,8 +101,8 @@ public class ListValueStoreTest {
         final KeyValue<Integer, String> two = KeyValue.pair(2, "two");
 
         assertEquals(
-            asList(zero, zeroAgain, one, two),
-            toListAndCloseIterator(listStore.all())
+                asList(zero, zeroAgain, one, two),
+                toListAndCloseIterator(listStore.all())
         );
     }
 
@@ -128,8 +128,8 @@ public class ListValueStoreTest {
         final KeyValue<Integer, String> four = KeyValue.pair(4, "four");
 
         assertEquals(
-            asList(zero, two, four),
-            toListAndCloseIterator(listStore.all())
+                asList(zero, two, four),
+                toListAndCloseIterator(listStore.all())
         );
     }
 
@@ -156,8 +156,8 @@ public class ListValueStoreTest {
         final KeyValue<Integer, String> four = KeyValue.pair(4, "four");
 
         assertEquals(
-            asList(zero, one, two1, two2, three, four),
-            toListAndCloseIterator(listStore.all())
+                asList(zero, one, two1, two2, three, four),
+                toListAndCloseIterator(listStore.all())
         );
     }
 

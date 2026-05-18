@@ -53,15 +53,15 @@ public class WindowedWordCountProcessorTest {
 
         // Create, initialize, and register the state store.
         final WindowStore<String, Integer> store =
-            Stores.windowStoreBuilder(Stores.inMemoryWindowStore("WindowedCounts",
-                                                                 Duration.ofDays(24),
-                                                                 Duration.ofMillis(100),
-                                                                 false),
-                                      Serdes.String(),
-                                      Serdes.Integer())
-                  .withLoggingDisabled() // Changelog is not supported by MockProcessorContext.
-                  .withCachingDisabled() // Caching is not supported by MockProcessorContext.
-                  .build();
+                Stores.windowStoreBuilder(Stores.inMemoryWindowStore("WindowedCounts",
+                                        Duration.ofDays(24),
+                                        Duration.ofMillis(100),
+                                        false),
+                                Serdes.String(),
+                                Serdes.Integer())
+                        .withLoggingDisabled() // Changelog is not supported by MockProcessorContext.
+                        .withCachingDisabled() // Caching is not supported by MockProcessorContext.
+                        .build();
         final InternalProcessorContext<?, ?> internalProcessorContext = mockInternalProcessorContext(context);
         store.init(internalProcessorContext, store);
         internalProcessorContext.register(store, null);
@@ -85,11 +85,11 @@ public class WindowedWordCountProcessorTest {
         // finally, we can verify the output.
         final List<CapturedForward<? extends String, ? extends String>> capturedForwards = context.forwarded();
         final List<CapturedForward<? extends String, ? extends String>> expected = asList(
-            new CapturedForward<>(new Record<>("[alpha@100/200]", "2", 1_000L)),
-            new CapturedForward<>(new Record<>("[beta@100/200]", "1", 1_000L)),
-            new CapturedForward<>(new Record<>("[gamma@100/200]", "1", 1_000L)),
-            new CapturedForward<>(new Record<>("[delta@200/300]", "1", 1_000L)),
-            new CapturedForward<>(new Record<>("[gamma@200/300]", "1", 1_000L))
+                new CapturedForward<>(new Record<>("[alpha@100/200]", "2", 1_000L)),
+                new CapturedForward<>(new Record<>("[beta@100/200]", "1", 1_000L)),
+                new CapturedForward<>(new Record<>("[gamma@100/200]", "1", 1_000L)),
+                new CapturedForward<>(new Record<>("[delta@200/300]", "1", 1_000L)),
+                new CapturedForward<>(new Record<>("[gamma@200/300]", "1", 1_000L))
         );
 
         assertThat(capturedForwards, is(expected));
@@ -103,22 +103,22 @@ public class WindowedWordCountProcessorTest {
 
         try {
             final MockProcessorContext<String, String> context = new MockProcessorContext<>(
-                new Properties(),
-                new TaskId(0, 0),
-                stateDir
+                    new Properties(),
+                    new TaskId(0, 0),
+                    stateDir
             );
 
             // Create, initialize, and register the state store.
             final WindowStore<String, Integer> store =
-                Stores.windowStoreBuilder(Stores.persistentWindowStore("WindowedCounts",
-                                                                       Duration.ofDays(24),
-                                                                       Duration.ofMillis(100),
-                                                                       false),
-                                          Serdes.String(),
-                                          Serdes.Integer())
-                      .withLoggingDisabled() // Changelog is not supported by MockProcessorContext.
-                      .withCachingDisabled() // Caching is not supported by MockProcessorContext.
-                      .build();
+                    Stores.windowStoreBuilder(Stores.persistentWindowStore("WindowedCounts",
+                                            Duration.ofDays(24),
+                                            Duration.ofMillis(100),
+                                            false),
+                                    Serdes.String(),
+                                    Serdes.Integer())
+                            .withLoggingDisabled() // Changelog is not supported by MockProcessorContext.
+                            .withCachingDisabled() // Caching is not supported by MockProcessorContext.
+                            .build();
             final InternalProcessorContext<?, ?> internalProcessorContext = mockInternalProcessorContext(context, stateDir);
             store.init(internalProcessorContext, store);
             internalProcessorContext.register(store, null);
@@ -142,11 +142,11 @@ public class WindowedWordCountProcessorTest {
             // finally, we can verify the output.
             final List<CapturedForward<? extends String, ? extends String>> capturedForwards = context.forwarded();
             final List<CapturedForward<? extends String, ? extends String>> expected = asList(
-                new CapturedForward<>(new Record<>("[alpha@100/200]", "2", 1_000L)),
-                new CapturedForward<>(new Record<>("[beta@100/200]", "1", 1_000L)),
-                new CapturedForward<>(new Record<>("[delta@200/300]", "1", 1_000L)),
-                new CapturedForward<>(new Record<>("[gamma@100/200]", "1", 1_000L)),
-                new CapturedForward<>(new Record<>("[gamma@200/300]", "1", 1_000L))
+                    new CapturedForward<>(new Record<>("[alpha@100/200]", "2", 1_000L)),
+                    new CapturedForward<>(new Record<>("[beta@100/200]", "1", 1_000L)),
+                    new CapturedForward<>(new Record<>("[delta@200/300]", "1", 1_000L)),
+                    new CapturedForward<>(new Record<>("[gamma@100/200]", "1", 1_000L)),
+                    new CapturedForward<>(new Record<>("[gamma@200/300]", "1", 1_000L))
             );
 
             assertThat(capturedForwards, is(expected));
@@ -162,7 +162,7 @@ public class WindowedWordCountProcessorTest {
     }
 
     private InternalProcessorContext<?, ?> mockInternalProcessorContext(final MockProcessorContext<String, String> context,
-                                                                  final File stateDir) {
+                                                                        final File stateDir) {
         final InternalProcessorContext<?, ?> internalProcessorContext = mock(InternalProcessorContext.class);
         when(internalProcessorContext.taskId()).thenReturn(context.taskId());
         when(internalProcessorContext.metrics()).thenReturn((StreamsMetricsImpl) context.metrics());

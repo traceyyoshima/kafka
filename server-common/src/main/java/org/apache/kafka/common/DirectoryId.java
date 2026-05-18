@@ -44,7 +44,7 @@ public class DirectoryId {
 
     /**
      * Static factory to generate a directory ID.
-     *
+     * <p>
      * This will not generate a reserved UUID (first 100), or one whose string representation
      * starts with a dash ("-")
      */
@@ -63,20 +63,21 @@ public class DirectoryId {
      * Check if a directory ID is part of the first 100 reserved IDs.
      *
      * @param uuid the directory ID to check.
-     * @return     true only if the directory ID is reserved.
+     * @return true only if the directory ID is reserved.
      */
     public static boolean reserved(Uuid uuid) {
         return uuid.getMostSignificantBits() == 0 &&
-            uuid.getLeastSignificantBits() < 100;
+                uuid.getLeastSignificantBits() < 100;
     }
 
     /**
      * Build a mapping from replica to directory based on two lists of the same size and order.
-     * @param replicas                      The replicas, represented by the broker IDs
-     * @param directories                   The directory information
-     * @return                              A map, linking each replica to its assigned directory
-     * @throws IllegalArgumentException     If replicas and directories have different lengths,
-     *                                      or if there are duplicate broker IDs in the replica list
+     *
+     * @param replicas    The replicas, represented by the broker IDs
+     * @param directories The directory information
+     * @return A map, linking each replica to its assigned directory
+     * @throws IllegalArgumentException If replicas and directories have different lengths,
+     *                                  or if there are duplicate broker IDs in the replica list
      */
     public static Map<Integer, Uuid> createAssignmentMap(int[] replicas, Uuid[] directories) {
         if (replicas.length != directories.length) {
@@ -118,9 +119,10 @@ public class DirectoryId {
 
     /**
      * Check if a directory is online, given a sorted list of online directories.
+     *
      * @param dir              The directory to check
      * @param sortedOnlineDirs The sorted list of online directories
-     * @return                 true if the directory is considered online, false otherwise
+     * @return true if the directory is considered online, false otherwise
      */
     public static boolean isOnline(Uuid dir, List<Uuid> sortedOnlineDirs) {
         if (UNASSIGNED.equals(dir) || MIGRATING.equals(dir)) {

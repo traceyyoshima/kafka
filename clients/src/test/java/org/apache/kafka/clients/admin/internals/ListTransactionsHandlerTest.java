@@ -68,7 +68,7 @@ public class ListTransactionsHandlerTest {
         BrokerKey brokerKey = new BrokerKey(OptionalInt.of(brokerId));
         long filteredProducerId = 23423L;
         ListTransactionsOptions options = new ListTransactionsOptions()
-            .filterProducerIds(singleton(filteredProducerId));
+                .filterProducerIds(singleton(filteredProducerId));
         ListTransactionsHandler handler = new ListTransactionsHandler(options, logContext);
         ListTransactionsRequest request = handler.buildBatchedRequest(brokerId, singleton(brokerKey)).build();
         assertEquals(Collections.singletonList(filteredProducerId), request.data().producerIdFilters());
@@ -81,7 +81,7 @@ public class ListTransactionsHandlerTest {
         BrokerKey brokerKey = new BrokerKey(OptionalInt.of(brokerId));
         TransactionState filteredState = TransactionState.ONGOING;
         ListTransactionsOptions options = new ListTransactionsOptions()
-            .filterStates(singleton(filteredState));
+                .filterStates(singleton(filteredState));
         ListTransactionsHandler handler = new ListTransactionsHandler(options, logContext);
         ListTransactionsRequest request = handler.buildBatchedRequest(brokerId, singleton(brokerKey)).build();
         assertEquals(Collections.singletonList(filteredState.toString()), request.data().stateFilters());
@@ -95,7 +95,7 @@ public class ListTransactionsHandlerTest {
         BrokerKey brokerKey = new BrokerKey(OptionalInt.of(brokerId));
         String filteredTransactionalIdPattern = "^special-.*";
         ListTransactionsOptions options = new ListTransactionsOptions()
-            .filterOnTransactionalIdPattern(filteredTransactionalIdPattern);
+                .filterOnTransactionalIdPattern(filteredTransactionalIdPattern);
         ListTransactionsHandler handler = new ListTransactionsHandler(options, logContext);
         ListTransactionsRequest request = handler.buildBatchedRequest(brokerId, Set.of(brokerKey)).build();
         assertEquals(filteredTransactionalIdPattern, request.data().transactionalIdPattern());
@@ -107,7 +107,7 @@ public class ListTransactionsHandlerTest {
         int brokerId = 1;
         BrokerKey brokerKey = new BrokerKey(OptionalInt.of(brokerId));
         ListTransactionsOptions options = new ListTransactionsOptions()
-            .filterOnTransactionalIdPattern(null);
+                .filterOnTransactionalIdPattern(null);
         ListTransactionsHandler handler = new ListTransactionsHandler(options, logContext);
         ListTransactionsRequest request = handler.buildBatchedRequest(brokerId, Set.of(brokerKey)).build();
         assertNull(request.data().transactionalIdPattern());
@@ -118,7 +118,7 @@ public class ListTransactionsHandlerTest {
         int brokerId = 1;
         BrokerKey brokerKey = new BrokerKey(OptionalInt.of(brokerId));
         ListTransactionsOptions options = new ListTransactionsOptions()
-            .filterOnTransactionalIdPattern("");
+                .filterOnTransactionalIdPattern("");
         ListTransactionsHandler handler = new ListTransactionsHandler(options, logContext);
         ListTransactionsRequest request = handler.buildBatchedRequest(brokerId, Set.of(brokerKey)).build();
         assertNull(request.data().transactionalIdPattern());
@@ -156,7 +156,7 @@ public class ListTransactionsHandlerTest {
         ListTransactionsHandler handler = new ListTransactionsHandler(options, logContext);
         ListTransactionsResponse response = sampleListTransactionsResponse1();
         ApiResult<BrokerKey, Collection<TransactionListing>> result = handler.handleResponse(
-            node, singleton(brokerKey), response);
+                node, singleton(brokerKey), response);
         assertEquals(singleton(brokerKey), result.completedKeys.keySet());
         assertExpectedTransactions(response.data().transactionStates(), result.completedKeys.get(brokerKey));
     }
@@ -165,7 +165,7 @@ public class ListTransactionsHandlerTest {
     public void testCoordinatorLoadingErrorIsRetriable() {
         int brokerId = 1;
         ApiResult<BrokerKey, Collection<TransactionListing>> result =
-            handleResponseWithError(brokerId, Errors.COORDINATOR_LOAD_IN_PROGRESS);
+                handleResponseWithError(brokerId, Errors.COORDINATOR_LOAD_IN_PROGRESS);
         assertEquals(Collections.emptyMap(), result.completedKeys);
         assertEquals(Collections.emptyMap(), result.failedKeys);
         assertEquals(Collections.emptyList(), result.unmappedKeys);
@@ -178,7 +178,7 @@ public class ListTransactionsHandlerTest {
     }
 
     private void assertFatalError(
-        Errors error
+            Errors error
     ) {
         int brokerId = 1;
         BrokerKey brokerKey = new BrokerKey(OptionalInt.of(brokerId));
@@ -191,58 +191,58 @@ public class ListTransactionsHandlerTest {
     }
 
     private ApiResult<BrokerKey, Collection<TransactionListing>> handleResponseWithError(
-        int brokerId,
-        Errors error
+            int brokerId,
+            Errors error
     ) {
         BrokerKey brokerKey = new BrokerKey(OptionalInt.of(brokerId));
         ListTransactionsOptions options = new ListTransactionsOptions();
         ListTransactionsHandler handler = new ListTransactionsHandler(options, logContext);
 
         ListTransactionsResponse response = new ListTransactionsResponse(
-            new ListTransactionsResponseData().setErrorCode(error.code())
+                new ListTransactionsResponseData().setErrorCode(error.code())
         );
         return handler.handleResponse(node, singleton(brokerKey), response);
     }
 
     private ListTransactionsResponse sampleListTransactionsResponse1() {
         return new ListTransactionsResponse(
-            new ListTransactionsResponseData()
-                .setErrorCode(Errors.NONE.code())
-                .setTransactionStates(asList(
-                    new ListTransactionsResponseData.TransactionState()
-                        .setTransactionalId("foo")
-                        .setProducerId(12345L)
-                        .setTransactionState("Ongoing"),
-                    new ListTransactionsResponseData.TransactionState()
-                        .setTransactionalId("bar")
-                        .setProducerId(98765L)
-                        .setTransactionState("PrepareAbort")
-            ))
+                new ListTransactionsResponseData()
+                        .setErrorCode(Errors.NONE.code())
+                        .setTransactionStates(asList(
+                                new ListTransactionsResponseData.TransactionState()
+                                        .setTransactionalId("foo")
+                                        .setProducerId(12345L)
+                                        .setTransactionState("Ongoing"),
+                                new ListTransactionsResponseData.TransactionState()
+                                        .setTransactionalId("bar")
+                                        .setProducerId(98765L)
+                                        .setTransactionState("PrepareAbort")
+                        ))
         );
     }
 
     private void assertExpectedTransactions(
-        List<ListTransactionsResponseData.TransactionState> expected,
-        Collection<TransactionListing> actual
+            List<ListTransactionsResponseData.TransactionState> expected,
+            Collection<TransactionListing> actual
     ) {
         assertEquals(expected.size(), actual.size());
 
         Map<String, ListTransactionsResponseData.TransactionState> expectedMap = expected.stream().collect(Collectors.toMap(
-            ListTransactionsResponseData.TransactionState::transactionalId,
-            Function.identity()
+                ListTransactionsResponseData.TransactionState::transactionalId,
+                Function.identity()
         ));
 
         for (TransactionListing actualListing : actual) {
             ListTransactionsResponseData.TransactionState expectedState =
-                expectedMap.get(actualListing.transactionalId());
+                    expectedMap.get(actualListing.transactionalId());
             assertNotNull(expectedState);
             assertExpectedTransactionState(expectedState, actualListing);
         }
     }
 
     private void assertExpectedTransactionState(
-        ListTransactionsResponseData.TransactionState expected,
-        TransactionListing actual
+            ListTransactionsResponseData.TransactionState expected,
+            TransactionListing actual
     ) {
         assertEquals(expected.transactionalId(), actual.transactionalId());
         assertEquals(expected.producerId(), actual.producerId());

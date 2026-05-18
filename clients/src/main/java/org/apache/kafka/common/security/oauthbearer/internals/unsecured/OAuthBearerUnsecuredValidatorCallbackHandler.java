@@ -71,7 +71,7 @@ import javax.security.auth.login.AppConfigurationEntry;
  * };
  * </pre>
  * It also recognizes {@link OAuthBearerExtensionsValidatorCallback} and validates every extension passed to it.
- *
+ * <p>
  * This class is the default when the SASL mechanism is OAUTHBEARER and no value
  * is explicitly set via the
  * {@code listener.name.sasl_[plaintext|ssl].oauthbearer.sasl.server.callback.handler.class}
@@ -93,8 +93,7 @@ public class OAuthBearerUnsecuredValidatorCallbackHandler implements Authenticat
     /**
      * For testing
      *
-     * @param time
-     *            the mandatory time to set
+     * @param time the mandatory time to set
      */
     void time(Time time) {
         this.time = Objects.requireNonNull(time);

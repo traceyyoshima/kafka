@@ -38,22 +38,22 @@ import java.util.function.Function;
 
 /**
  * PartitionGroup is used to buffer all co-partitioned records for processing.
- *
+ * <p>
  * In other words, it represents the "same" partition over multiple co-partitioned topics, and it is used
  * to buffer records from that partition in each of the contained topic-partitions.
  * Each StreamTask has exactly one PartitionGroup.
- *
+ * <p>
  * PartitionGroup implements the algorithm that determines in what order buffered records are selected for processing.
- *
+ * <p>
  * Specifically, when polled, it returns the record from the topic-partition with the lowest stream-time.
  * Stream-time for a topic-partition is defined as the highest timestamp
  * yet observed at the head of that topic-partition.
- *
+ * <p>
  * PartitionGroup also maintains a stream-time for the group as a whole.
  * This is defined as the highest timestamp of any record yet polled from the PartitionGroup.
  * Note however that any computation that depends on stream-time should track it on a per-operator basis to obtain an
  * accurate view of the local time as seen by that processor.
- *
+ * <p>
  * The PartitionGroups's stream-time is initially UNKNOWN (-1), and it set to a known value upon first poll.
  * As a consequence of the definition, the PartitionGroup's stream-time is non-decreasing
  * (i.e., it increases or stays the same over time).
@@ -131,7 +131,7 @@ class PartitionGroup extends AbstractPartitionGroup {
             } else {
                 final Long fetchedLag = fetchedLags.getOrDefault(partition, -1L);
                 appendLog(logMessageBuilder, String.format("Partition %s has fetched lag of %d", partition, fetchedLag));
-                
+
                 if (fetchedLag == -1L) {
                     // must wait to fetch metadata for the partition
                     idlePartitionDeadlines.remove(partition);
@@ -142,8 +142,8 @@ class PartitionGroup extends AbstractPartitionGroup {
                     // must wait to poll the data we know to be on the broker
                     idlePartitionDeadlines.remove(partition);
                     appendLog(logMessageBuilder,
-                        String.format("Partition %s has current lag %d, but no data is buffered locally. Waiting to buffer some records.",
-                        partition, fetchedLag));
+                            String.format("Partition %s has current lag %d, but no data is buffered locally. Waiting to buffer some records.",
+                                    partition, fetchedLag));
 
                     return new ReadyToProcessResult(false, Optional.of(logMessageBuilder.toString()));
                 } else {
@@ -157,9 +157,9 @@ class PartitionGroup extends AbstractPartitionGroup {
                     final long deadline = idlePartitionDeadlines.get(partition);
                     if (wallClockTime < deadline) {
                         appendLog(logMessageBuilder, String.format(
-                            "Partition %s has current lag 0 and current time is %d. " +
-                                "Waiting for new data to be produced for configured idle time %d (deadline is %d).",
-                            partition, wallClockTime, maxTaskIdleMs, deadline));
+                                "Partition %s has current lag 0 and current time is %d. " +
+                                        "Waiting for new data to be produced for configured idle time %d (deadline is %d).",
+                                partition, wallClockTime, maxTaskIdleMs, deadline));
 
                         return new ReadyToProcessResult(false, Optional.of(logMessageBuilder.toString()));
                     } else {
@@ -255,7 +255,7 @@ class PartitionGroup extends AbstractPartitionGroup {
             if (record != null) {
                 totalBuffered -= oldSize - queue.size();
                 logger.trace("Partition {} polling next record:, oldSize={}, newSize={}, totalBuffered={}, recordTimestamp={}",
-                    queue.partition(), oldSize, queue.size(), totalBuffered, record.timestamp);
+                        queue.partition(), oldSize, queue.size(), totalBuffered, record.timestamp);
 
                 if (queue.isEmpty()) {
                     // if a certain queue has been drained, reset the flag

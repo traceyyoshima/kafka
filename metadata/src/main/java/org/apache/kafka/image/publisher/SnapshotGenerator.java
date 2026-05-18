@@ -91,14 +91,14 @@ public class SnapshotGenerator implements MetadataPublisher {
                 disabledReason = new AtomicReference<>();
             }
             return new SnapshotGenerator(
-                nodeId,
-                time,
-                emitter,
-                faultHandler,
-                maxBytesSinceLastSnapshot,
-                maxTimeSinceLastSnapshotNs,
-                disabledReason,
-                threadNamePrefix
+                    nodeId,
+                    time,
+                    emitter,
+                    faultHandler,
+                    maxBytesSinceLastSnapshot,
+                    maxTimeSinceLastSnapshotNs,
+                    disabledReason,
+                    threadNamePrefix
             );
         }
     }
@@ -109,11 +109,11 @@ public class SnapshotGenerator implements MetadataPublisher {
     public interface Emitter {
         /**
          * Emit a snapshot for the given image.
-         *
+         * <p>
          * Note: if a snapshot has already been emitted for the given offset and epoch pair, this
          * function will not recreate it.
          *
-         * @param image     The metadata image to emit.
+         * @param image The metadata image to emit.
          */
         void maybeEmit(MetadataImage image);
     }
@@ -175,14 +175,14 @@ public class SnapshotGenerator implements MetadataPublisher {
     private long lastSnapshotTimeNs;
 
     private SnapshotGenerator(
-        int nodeId,
-        Time time,
-        Emitter emitter,
-        FaultHandler faultHandler,
-        long maxBytesSinceLastSnapshot,
-        long maxTimeSinceLastSnapshotNs,
-        AtomicReference<String> disabledReason,
-        String threadNamePrefix
+            int nodeId,
+            Time time,
+            Emitter emitter,
+            FaultHandler faultHandler,
+            long maxBytesSinceLastSnapshot,
+            long maxTimeSinceLastSnapshotNs,
+            AtomicReference<String> disabledReason,
+            String threadNamePrefix
     ) {
         this.nodeId = nodeId;
         this.time = time;
@@ -210,9 +210,9 @@ public class SnapshotGenerator implements MetadataPublisher {
 
     @Override
     public void onMetadataUpdate(
-        MetadataDelta delta,
-        MetadataImage newImage,
-        LoaderManifest manifest
+            MetadataDelta delta,
+            MetadataImage newImage,
+            LoaderManifest manifest
     ) {
         switch (manifest.type()) {
             case LOG_DELTA:
@@ -234,7 +234,7 @@ public class SnapshotGenerator implements MetadataPublisher {
         if (bytesSinceLastSnapshot >= maxBytesSinceLastSnapshot) {
             if (eventQueue.isEmpty()) {
                 maybeScheduleEmit("we have replayed at least " + maxBytesSinceLastSnapshot +
-                    " bytes", newImage, manifest.provenance().isOffsetBatchAligned());
+                        " bytes", newImage, manifest.provenance().isOffsetBatchAligned());
             } else if (log.isTraceEnabled()) {
                 log.trace("Not scheduling bytes-based snapshot because event queue is not empty yet.");
             }
@@ -242,8 +242,8 @@ public class SnapshotGenerator implements MetadataPublisher {
                 (time.nanoseconds() - lastSnapshotTimeNs >= maxTimeSinceLastSnapshotNs)) {
             if (eventQueue.isEmpty()) {
                 maybeScheduleEmit("we have waited at least " +
-                    TimeUnit.NANOSECONDS.toMinutes(maxTimeSinceLastSnapshotNs) +
-                    " minute(s)", newImage, manifest.provenance().isOffsetBatchAligned());
+                        TimeUnit.NANOSECONDS.toMinutes(maxTimeSinceLastSnapshotNs) +
+                        " minute(s)", newImage, manifest.provenance().isOffsetBatchAligned());
             } else if (log.isTraceEnabled()) {
                 log.trace("Not scheduling time-based snapshot because event queue is not empty yet.");
             }
@@ -253,17 +253,17 @@ public class SnapshotGenerator implements MetadataPublisher {
     }
 
     void maybeScheduleEmit(
-        String reason,
-        MetadataImage image,
-        boolean isOffsetBatchAligned
+            String reason,
+            MetadataImage image,
+            boolean isOffsetBatchAligned
     ) {
         String currentDisabledReason = disabledReason.get();
         if (currentDisabledReason != null) {
             log.error("Not emitting {} despite the fact that {} because snapshots are " +
-                "disabled; {}", image.provenance().snapshotName(), reason, currentDisabledReason);
+                    "disabled; {}", image.provenance().snapshotName(), reason, currentDisabledReason);
         } else if (!isOffsetBatchAligned) {
             log.debug("Not emitting {} despite the fact that {} because snapshots are " +
-                "disabled; {}", image.provenance().snapshotName(), reason, "metadata image is not batch aligned");
+                    "disabled; {}", image.provenance().snapshotName(), reason, "metadata image is not batch aligned");
         } else {
             eventQueue.append(() -> {
                 resetSnapshotCounters();

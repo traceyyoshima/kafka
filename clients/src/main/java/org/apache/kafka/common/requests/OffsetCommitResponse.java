@@ -33,23 +33,23 @@ import java.util.function.Function;
 
 /**
  * Possible error codes:
- *
- *   - {@link Errors#UNKNOWN_TOPIC_OR_PARTITION}
- *   - {@link Errors#REQUEST_TIMED_OUT}
- *   - {@link Errors#OFFSET_METADATA_TOO_LARGE}
- *   - {@link Errors#COORDINATOR_LOAD_IN_PROGRESS}
- *   - {@link Errors#COORDINATOR_NOT_AVAILABLE}
- *   - {@link Errors#NOT_COORDINATOR}
- *   - {@link Errors#ILLEGAL_GENERATION}
- *   - {@link Errors#UNKNOWN_MEMBER_ID}
- *   - {@link Errors#REBALANCE_IN_PROGRESS}
- *   - {@link Errors#INVALID_COMMIT_OFFSET_SIZE}
- *   - {@link Errors#TOPIC_AUTHORIZATION_FAILED}
- *   - {@link Errors#GROUP_AUTHORIZATION_FAILED}
- *   - {@link Errors#INVALID_PRODUCER_ID_MAPPING}
- *   - {@link Errors#INVALID_TXN_STATE}
- *   - {@link Errors#GROUP_ID_NOT_FOUND}
- *   - {@link Errors#STALE_MEMBER_EPOCH}
+ * <p>
+ * - {@link Errors#UNKNOWN_TOPIC_OR_PARTITION}
+ * - {@link Errors#REQUEST_TIMED_OUT}
+ * - {@link Errors#OFFSET_METADATA_TOO_LARGE}
+ * - {@link Errors#COORDINATOR_LOAD_IN_PROGRESS}
+ * - {@link Errors#COORDINATOR_NOT_AVAILABLE}
+ * - {@link Errors#NOT_COORDINATOR}
+ * - {@link Errors#ILLEGAL_GENERATION}
+ * - {@link Errors#UNKNOWN_MEMBER_ID}
+ * - {@link Errors#REBALANCE_IN_PROGRESS}
+ * - {@link Errors#INVALID_COMMIT_OFFSET_SIZE}
+ * - {@link Errors#TOPIC_AUTHORIZATION_FAILED}
+ * - {@link Errors#GROUP_AUTHORIZATION_FAILED}
+ * - {@link Errors#INVALID_PRODUCER_ID_MAPPING}
+ * - {@link Errors#INVALID_TXN_STATE}
+ * - {@link Errors#GROUP_ID_NOT_FOUND}
+ * - {@link Errors#STALE_MEMBER_EPOCH}
  */
 public class OffsetCommitResponse extends AbstractResponse {
 
@@ -70,11 +70,11 @@ public class OffsetCommitResponse extends AbstractResponse {
             String topicName = topicPartition.topic();
 
             OffsetCommitResponseTopic topic = responseTopicDataMap.getOrDefault(
-                topicName, new OffsetCommitResponseTopic().setName(topicName));
+                    topicName, new OffsetCommitResponseTopic().setName(topicName));
 
             topic.partitions().add(new OffsetCommitResponsePartition()
-                                       .setErrorCode(entry.getValue().code())
-                                       .setPartitionIndex(topicPartition.partition()));
+                    .setErrorCode(entry.getValue().code())
+                    .setPartitionIndex(topicPartition.partition()));
             responseTopicDataMap.put(topicName, topic);
         }
 
@@ -139,50 +139,50 @@ public class OffsetCommitResponse extends AbstractResponse {
         protected OffsetCommitResponseData data = new OffsetCommitResponseData();
 
         protected abstract void add(
-            OffsetCommitResponseTopic topic
+                OffsetCommitResponseTopic topic
         );
 
         protected abstract OffsetCommitResponseTopic get(
-            Uuid topicId,
-            String topicName
+                Uuid topicId,
+                String topicName
         );
 
         protected abstract OffsetCommitResponseTopic getOrCreate(
-            Uuid topicId,
-            String topicName
+                Uuid topicId,
+                String topicName
         );
 
         public Builder addPartition(
-            Uuid topicId,
-            String topicName,
-            int partitionIndex,
-            Errors error
+                Uuid topicId,
+                String topicName,
+                int partitionIndex,
+                Errors error
         ) {
             final OffsetCommitResponseTopic topicResponse = getOrCreate(topicId, topicName);
             topicResponse.partitions().add(new OffsetCommitResponsePartition()
-                .setPartitionIndex(partitionIndex)
-                .setErrorCode(error.code()));
+                    .setPartitionIndex(partitionIndex)
+                    .setErrorCode(error.code()));
             return this;
         }
 
         public <P> Builder addPartitions(
-            Uuid topicId,
-            String topicName,
-            List<P> partitions,
-            Function<P, Integer> partitionIndex,
-            Errors error
+                Uuid topicId,
+                String topicName,
+                List<P> partitions,
+                Function<P, Integer> partitionIndex,
+                Errors error
         ) {
             final OffsetCommitResponseTopic topicResponse = getOrCreate(topicId, topicName);
             partitions.forEach(partition ->
-                topicResponse.partitions().add(new OffsetCommitResponsePartition()
-                    .setPartitionIndex(partitionIndex.apply(partition))
-                    .setErrorCode(error.code()))
+                    topicResponse.partitions().add(new OffsetCommitResponsePartition()
+                            .setPartitionIndex(partitionIndex.apply(partition))
+                            .setErrorCode(error.code()))
             );
             return this;
         }
 
         public Builder merge(
-            OffsetCommitResponseData newData
+                OffsetCommitResponseData newData
         ) {
             if (data.topics().isEmpty()) {
                 // If the current data is empty, we can discard it and use the new data.
@@ -232,8 +232,8 @@ public class OffsetCommitResponse extends AbstractResponse {
             OffsetCommitResponseTopic topic = byTopicId.get(topicId);
             if (topic == null) {
                 topic = new OffsetCommitResponseTopic()
-                    .setName(topicName)
-                    .setTopicId(topicId);
+                        .setName(topicName)
+                        .setTopicId(topicId);
                 data.topics().add(topic);
                 byTopicId.put(topicId, topic);
             }
@@ -269,8 +269,8 @@ public class OffsetCommitResponse extends AbstractResponse {
             OffsetCommitResponseTopic topic = byTopicName.get(topicName);
             if (topic == null) {
                 topic = new OffsetCommitResponseTopic()
-                    .setName(topicName)
-                    .setTopicId(topicId);
+                        .setName(topicName)
+                        .setTopicId(topicId);
                 data.topics().add(topic);
                 byTopicName.put(topicName, topic);
             }

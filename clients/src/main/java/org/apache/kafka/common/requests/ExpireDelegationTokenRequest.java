@@ -35,7 +35,7 @@ public class ExpireDelegationTokenRequest extends AbstractRequest {
 
     public static ExpireDelegationTokenRequest parse(Readable readable, short version) {
         return new ExpireDelegationTokenRequest(
-            new ExpireDelegationTokenRequestData(readable, version), version);
+                new ExpireDelegationTokenRequestData(readable, version), version);
     }
 
     @Override
@@ -47,8 +47,8 @@ public class ExpireDelegationTokenRequest extends AbstractRequest {
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new ExpireDelegationTokenResponse(
                 new ExpireDelegationTokenResponseData()
-                    .setErrorCode(Errors.forException(e).code())
-                    .setThrottleTimeMs(throttleTimeMs));
+                        .setErrorCode(Errors.forException(e).code())
+                        .setThrottleTimeMs(throttleTimeMs));
     }
 
     public ByteBuffer hmac() {

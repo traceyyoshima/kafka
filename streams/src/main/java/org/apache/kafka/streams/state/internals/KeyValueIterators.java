@@ -49,7 +49,7 @@ class KeyValueIterators {
     }
 
     private static class EmptyWindowStoreIterator<V> extends EmptyKeyValueIterator<Long, V>
-        implements WindowStoreIterator<V> {
+            implements WindowStoreIterator<V> {
     }
 
     private static final KeyValueIterator<?, ?> EMPTY_ITERATOR = new EmptyKeyValueIterator<>();

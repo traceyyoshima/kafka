@@ -28,7 +28,7 @@ import java.util.Set;
 public class FetchMetricsRegistry {
 
     private static final String DEPRECATED_TOPIC_METRICS_MESSAGE = "Note: For topic names with periods (.), an additional "
-        + "metric with underscores is emitted. However, the periods replaced metric is deprecated. Please use the metric with actual topic name instead.";
+            + "metric with underscores is emitted. However, the periods replaced metric is deprecated. Please use the metric with actual topic name instead.";
 
     public MetricNameTemplate fetchSizeAvg;
     public MetricNameTemplate fetchSizeMax;
@@ -158,35 +158,35 @@ public class FetchMetricsRegistry {
 
     public List<MetricNameTemplate> getAllTemplates() {
         return Arrays.asList(
-            fetchSizeAvg,
-            fetchSizeMax,
-            bytesConsumedRate,
-            bytesConsumedTotal,
-            recordsPerRequestAvg,
-            recordsConsumedRate,
-            recordsConsumedTotal,
-            fetchLatencyAvg,
-            fetchLatencyMax,
-            fetchRequestRate,
-            fetchRequestTotal,
-            recordsLagMax,
-            recordsLeadMin,
-            fetchThrottleTimeAvg,
-            fetchThrottleTimeMax,
-            topicFetchSizeAvg,
-            topicFetchSizeMax,
-            topicBytesConsumedRate,
-            topicBytesConsumedTotal,
-            topicRecordsPerRequestAvg,
-            topicRecordsConsumedRate,
-            topicRecordsConsumedTotal,
-            partitionRecordsLag,
-            partitionRecordsLagAvg,
-            partitionRecordsLagMax,
-            partitionRecordsLead,
-            partitionRecordsLeadMin,
-            partitionRecordsLeadAvg,
-            partitionPreferredReadReplica
+                fetchSizeAvg,
+                fetchSizeMax,
+                bytesConsumedRate,
+                bytesConsumedTotal,
+                recordsPerRequestAvg,
+                recordsConsumedRate,
+                recordsConsumedTotal,
+                fetchLatencyAvg,
+                fetchLatencyMax,
+                fetchRequestRate,
+                fetchRequestTotal,
+                recordsLagMax,
+                recordsLeadMin,
+                fetchThrottleTimeAvg,
+                fetchThrottleTimeMax,
+                topicFetchSizeAvg,
+                topicFetchSizeMax,
+                topicBytesConsumedRate,
+                topicBytesConsumedTotal,
+                topicRecordsPerRequestAvg,
+                topicRecordsConsumedRate,
+                topicRecordsConsumedTotal,
+                partitionRecordsLag,
+                partitionRecordsLagAvg,
+                partitionRecordsLagMax,
+                partitionRecordsLead,
+                partitionRecordsLeadMin,
+                partitionRecordsLeadAvg,
+                partitionPreferredReadReplica
         );
     }
 

@@ -140,7 +140,7 @@ public class GraphTest {
         graph1.addEdge(0, 1, 1, 1, 1);
         exception = assertThrows(IllegalArgumentException.class, () -> graph1.addEdge(1, 0, 1, 0, 0));
         assertEquals("There is already an edge from 0 to 1. Can not add an edge from 1 to 0 since "
-            + "there will create a cycle between two nodes", exception.getMessage());
+                + "there will create a cycle between two nodes", exception.getMessage());
 
         final Graph<Integer> residualGraph = graph1.residualGraph();
         exception = assertThrows(IllegalStateException.class, residualGraph::solveMinCostFlow);
@@ -193,7 +193,7 @@ public class GraphTest {
         graph1.setSinkNode(3);
         final Exception exception = assertThrows(IllegalStateException.class, graph1::solveMinCostFlow);
         assertEquals("Output flow for source null is null which doesn't match input flow 3 for sink 3",
-            exception.getMessage());
+                exception.getMessage());
     }
 
     @Test
@@ -205,7 +205,7 @@ public class GraphTest {
         graph1.setSinkNode(1);
         final Exception exception = assertThrows(IllegalStateException.class, graph1::solveMinCostFlow);
         assertEquals("Input flow for node 3 is 2 which doesn't match output flow null",
-            exception.getMessage());
+                exception.getMessage());
     }
 
     @Test
@@ -217,7 +217,7 @@ public class GraphTest {
         graph1.setSinkNode(3);
         final Exception exception = assertThrows(IllegalStateException.class, graph1::solveMinCostFlow);
         assertEquals("Input flow for node 1 is 1 which doesn't match output flow null",
-            exception.getMessage());
+                exception.getMessage());
     }
 
     @Test

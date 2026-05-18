@@ -30,8 +30,8 @@ public class LoggingFaultHandler implements FaultHandler {
     private final Runnable action;
 
     public LoggingFaultHandler(
-        String type,
-        Runnable action
+            String type,
+            Runnable action
     ) {
         this.type = type;
         this.action = action;

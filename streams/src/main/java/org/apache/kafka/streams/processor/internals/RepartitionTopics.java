@@ -75,7 +75,7 @@ public class RepartitionTopics {
                 log.info("Skipping the repartition topic validation since there are no repartition topics.");
             } else {
                 log.info("Skipping the repartition topic validation since all topologies containing repartition"
-                             + "topics are missing external user source topics and cannot be processed.");
+                        + "topics are missing external user source topics and cannot be processed.");
             }
         } else {
             // ensure the co-partitioning topics within the group have the same number of partitions,
@@ -95,8 +95,8 @@ public class RepartitionTopics {
 
                 for (int partition = 0; partition < numPartitions; partition++) {
                     topicPartitionInfos.put(
-                        new TopicPartition(topic, partition),
-                        new PartitionInfo(topic, partition, null, new Node[0], new Node[0])
+                            new TopicPartition(topic, partition),
+                            new PartitionInfo(topic, partition, null, new Node[0], new Node[0])
                     );
                 }
             }
@@ -105,9 +105,9 @@ public class RepartitionTopics {
 
     public Set<String> topologiesWithMissingInputTopics() {
         return missingInputTopicsBySubtopology.keySet()
-            .stream()
-            .map(s -> getTopologyNameOrElseUnnamed(s.namedTopology))
-            .collect(Collectors.toSet());
+                .stream()
+                .map(s -> getTopologyNameOrElseUnnamed(s.namedTopology))
+                .collect(Collectors.toSet());
     }
 
     public Set<String> missingSourceTopics() {
@@ -124,10 +124,10 @@ public class RepartitionTopics {
             final String topologyName = entry.getKey().namedTopology;
 
             return new StreamsException(
-                new MissingSourceTopicException(String.format(
-                    "Missing source topics %s for subtopology %d of topology %s",
-                    missingSourceTopics, subtopologyId, topologyName)),
-                new TaskId(subtopologyId, 0, topologyName));
+                    new MissingSourceTopicException(String.format(
+                            "Missing source topics %s for subtopology %d of topology %s",
+                            missingSourceTopics, subtopologyId, topologyName)),
+                    new TaskId(subtopologyId, 0, topologyName));
         }).collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -136,7 +136,7 @@ public class RepartitionTopics {
     }
 
     /**
-     * @param clusterMetadata  cluster metadata, eg which topics exist on the brokers
+     * @param clusterMetadata cluster metadata, eg which topics exist on the brokers
      */
     private Map<String, InternalTopicConfig> computeRepartitionTopicConfig(final Cluster clusterMetadata) {
         final Set<TopicsInfo> allTopicsInfo = new HashSet<>();
@@ -153,10 +153,10 @@ public class RepartitionTopics {
 
                 topicsInfoForTopology.add(topicsInfo);
                 repartitionTopicConfigsForTopology.putAll(
-                    topicsInfo.repartitionSourceTopics
-                        .values()
-                        .stream()
-                        .collect(Collectors.toMap(InternalTopicConfig::name, topicConfig -> topicConfig)));
+                        topicsInfo.repartitionSourceTopics
+                                .values()
+                                .stream()
+                                .collect(Collectors.toMap(InternalTopicConfig::name, topicConfig -> topicConfig)));
 
                 final Set<String> missingSourceTopicsForSubtopology = computeMissingExternalSourceTopics(topicsInfo, clusterMetadata);
                 missingSourceTopicsForTopology.addAll(missingSourceTopicsForSubtopology);
@@ -164,11 +164,11 @@ public class RepartitionTopics {
                     final Subtopology subtopology = subtopologyEntry.getKey();
                     missingInputTopicsBySubtopology.put(subtopology, missingSourceTopicsForSubtopology);
                     log.error("Subtopology {} has missing source topics {} and will be excluded from the current assignment, "
-                        + "this can be due to the consumer client's metadata being stale or because they have "
-                        + "not been created yet. Please verify that you have created all input topics; if they "
-                        + "do exist, you just need to wait for the metadata to be updated, at which time a new "
-                        + "rebalance will be kicked off automatically and the topology will be retried at that time.",
-                        subtopology.nodeGroupId, missingSourceTopicsForSubtopology);
+                                    + "this can be due to the consumer client's metadata being stale or because they have "
+                                    + "not been created yet. Please verify that you have created all input topics; if they "
+                                    + "do exist, you just need to wait for the metadata to be updated, at which time a new "
+                                    + "rebalance will be kicked off automatically and the topology will be retried at that time.",
+                            subtopology.nodeGroupId, missingSourceTopicsForSubtopology);
                 }
             }
 
@@ -177,7 +177,7 @@ public class RepartitionTopics {
                 allTopicsInfo.addAll(topicsInfoForTopology);
             } else {
                 log.debug("Skipping repartition topic validation for entire topology {} due to missing source topics {}",
-                    topologyName, missingSourceTopicsForTopology);
+                        topologyName, missingSourceTopicsForTopology);
             }
         }
         setRepartitionSourceTopicPartitionCount(allRepartitionTopicConfigs, allTopicsInfo, clusterMetadata);
@@ -215,20 +215,20 @@ public class RepartitionTopics {
             for (final TopicsInfo topicsInfo : topicGroups) {
                 for (final String repartitionSourceTopic : topicsInfo.repartitionSourceTopics.keySet()) {
                     final Optional<Integer> repartitionSourceTopicPartitionCount =
-                        repartitionTopicMetadata.get(repartitionSourceTopic).numberOfPartitions();
+                            repartitionTopicMetadata.get(repartitionSourceTopic).numberOfPartitions();
 
                     if (repartitionSourceTopicPartitionCount.isEmpty()) {
                         final Integer numPartitions = computePartitionCount(
-                            repartitionTopicMetadata,
-                            topicGroups,
-                            clusterMetadata,
-                            repartitionSourceTopic
+                                repartitionTopicMetadata,
+                                topicGroups,
+                                clusterMetadata,
+                                repartitionSourceTopic
                         );
 
                         if (numPartitions == null) {
                             partitionCountNeeded = true;
                             log.trace("Unable to determine number of partitions for {}, another iteration is needed",
-                                repartitionSourceTopic);
+                                    repartitionSourceTopic);
                         } else {
                             log.trace("Determined number of partitions for {} to be {}", repartitionSourceTopic, numPartitions);
                             repartitionTopicMetadata.get(repartitionSourceTopic).setNumberOfPartitions(numPartitions);
@@ -239,10 +239,10 @@ public class RepartitionTopics {
             }
             if (!progressMadeThisIteration && partitionCountNeeded) {
                 log.error("Unable to determine the number of partitions of all repartition topics, most likely a source topic is missing or pattern doesn't match any topics\n" +
-                    "topic groups: {}\n" +
-                    "cluster topics: {}.", topicGroups, clusterMetadata.topics());
+                        "topic groups: {}\n" +
+                        "cluster topics: {}.", topicGroups, clusterMetadata.topics());
                 throw new TaskAssignmentException("Failed to compute number of partitions for all repartition topics, " +
-                    "make sure all user input topics are created and all Pattern subscriptions match at least one topic in the cluster");
+                        "make sure all user input topics are created and all Pattern subscriptions match at least one topic in the cluster");
             }
         } while (partitionCountNeeded);
     }
@@ -266,15 +266,15 @@ public class RepartitionTopics {
                     if (repartitionTopicMetadata.containsKey(upstreamSourceTopic)) {
                         if (repartitionTopicMetadata.get(upstreamSourceTopic).numberOfPartitions().isPresent()) {
                             numPartitionsCandidate =
-                                repartitionTopicMetadata.get(upstreamSourceTopic).numberOfPartitions().get();
+                                    repartitionTopicMetadata.get(upstreamSourceTopic).numberOfPartitions().get();
                         }
                     } else {
                         final Integer count = clusterMetadata.partitionCountForTopic(upstreamSourceTopic);
                         if (count == null) {
                             throw new TaskAssignmentException(
-                                "No partition count found for source topic "
-                                    + upstreamSourceTopic
-                                    + ", but it should have been."
+                                    "No partition count found for source topic "
+                                            + upstreamSourceTopic
+                                            + ", but it should have been."
                             );
                         }
                         numPartitionsCandidate = count;

@@ -338,7 +338,7 @@ public class BufferPoolTest {
     public static class StressTestThread extends Thread {
         private final int iterations;
         private final BufferPool pool;
-        private final long maxBlockTimeMs =  20_000;
+        private final long maxBlockTimeMs = 20_000;
         public final AtomicBoolean success = new AtomicBoolean(false);
 
         public StressTestThread(BufferPool pool, int iterations) {

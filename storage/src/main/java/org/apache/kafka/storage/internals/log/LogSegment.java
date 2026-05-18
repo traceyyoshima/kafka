@@ -58,9 +58,9 @@ import java.util.regex.Pattern;
  * the actual messages. The index is an OffsetIndex that maps from logical offsets to physical file positions. Each
  * segment has a base offset which is an offset <= the least offset of any message in this segment and > any offset in
  * any previous segment.
- *
+ * <p>
  * A segment with a base offset of [base_offset] would be stored in two files, a [base_offset].index and a [base_offset].log file.
- *
+ * <p>
  * This class is not thread-safe.
  */
 public class LogSegment implements Closeable {
@@ -105,14 +105,14 @@ public class LogSegment implements Closeable {
     /**
      * Create a LogSegment with the provided parameters.
      *
-     * @param log The file records containing log entries
-     * @param lazyOffsetIndex The offset index
-     * @param lazyTimeIndex The timestamp index
-     * @param txnIndex The transaction index
-     * @param baseOffset A lower bound on the offsets in this segment
+     * @param log                The file records containing log entries
+     * @param lazyOffsetIndex    The offset index
+     * @param lazyTimeIndex      The timestamp index
+     * @param txnIndex           The transaction index
+     * @param baseOffset         A lower bound on the offsets in this segment
      * @param indexIntervalBytes The approximate number of bytes between entries in the index
-     * @param rollJitterMs The maximum random jitter subtracted from the scheduled segment roll time
-     * @param time The time instance
+     * @param rollJitterMs       The maximum random jitter subtracted from the scheduled segment roll time
+     * @param time               The time instance
      */
     public LogSegment(FileRecords log,
                       LazyIndex<OffsetIndex> lazyOffsetIndex,
@@ -169,8 +169,8 @@ public class LogSegment implements Closeable {
         boolean reachedRollMs = timeWaitedForRoll(rollParams.now(), rollParams.maxTimestampInMessages()) > rollParams.maxSegmentMs() - rollJitterMs;
         int size = size();
         return size > rollParams.maxSegmentBytes() - rollParams.messagesSize() ||
-            (size > 0 && reachedRollMs) ||
-            offsetIndex().isFull() || timeIndex().isFull() || !canConvertToRelativeOffset(rollParams.maxOffsetInMessages());
+                (size > 0 && reachedRollMs) ||
+                offsetIndex().isFull() || timeIndex().isFull() || !canConvertToRelativeOffset(rollParams.maxOffsetInMessages());
     }
 
     public void resizeIndexes(int size) throws IOException {
@@ -212,7 +212,7 @@ public class LogSegment implements Closeable {
 
     /**
      * The maximum timestamp we see so far.
-     *
+     * <p>
      * Note that this may result in time index materialization.
      */
     public long maxTimestampSoFar() throws IOException {
@@ -241,7 +241,7 @@ public class LogSegment implements Closeable {
     /**
      * Append the given messages starting with the given offset. Add
      * an entry to the index if needed.
-     *
+     * <p>
      * It is assumed this method is being called from within a lock, it is not thread-safe otherwise.
      *
      * @param largestOffset The last offset in the message set
@@ -252,7 +252,7 @@ public class LogSegment implements Closeable {
                        MemoryRecords records) throws IOException {
         if (records.sizeInBytes() > 0) {
             LOGGER.trace("Inserting {} bytes at end offset {} at position {}",
-                records.sizeInBytes(), largestOffset, log.sizeInBytes());
+                    records.sizeInBytes(), largestOffset, log.sizeInBytes());
             int physicalPosition = log.sizeInBytes();
 
             ensureOffsetInRange(largestOffset);
@@ -331,7 +331,7 @@ public class LogSegment implements Closeable {
      * is reached or an offset is found which is too large to convert to a relative offset for the indexes.
      *
      * @return the number of bytes appended to the log (may be less than the size of the input if an
-     *         offset is encountered which would overflow this segment)
+     * offset is encountered which would overflow this segment)
      */
     public int appendFromFile(FileRecords records, int start) throws IOException {
         int position = start;
@@ -350,10 +350,10 @@ public class LogSegment implements Closeable {
         if (completedTxn.isAborted()) {
             LOGGER.trace("Writing aborted transaction {} to transaction index, last stable offset is {}", completedTxn, lastStableOffset);
             txnIndex.append(new AbortedTxn()
-                .setProducerId(completedTxn.producerId())
-                .setFirstOffset(completedTxn.firstOffset())
-                .setLastOffset(completedTxn.lastOffset())
-                .setLastStableOffset(lastStableOffset));
+                    .setProducerId(completedTxn.producerId())
+                    .setFirstOffset(completedTxn.firstOffset())
+                    .setLastOffset(completedTxn.lastOffset())
+                    .setLastStableOffset(lastStableOffset));
         }
     }
 
@@ -375,7 +375,7 @@ public class LogSegment implements Closeable {
 
     /**
      * Equivalent to {@code translateOffset(offset, 0)}.
-     *
+     * <p>
      * See {@link #translateOffset(long, int)} for details.
      */
     public LogOffsetPosition translateOffset(long offset) throws IOException {
@@ -384,15 +384,15 @@ public class LogSegment implements Closeable {
 
     /**
      * Find the physical file position for the message batch that contains the requested offset.
-     *
+     * <p>
      * The startingFilePosition argument is an optimization that can be used if we already know a valid starting position
      * in the file higher than the greatest-lower-bound from the index.
-     *
+     * <p>
      * This method is thread-safe.
      *
-     * @param offset The offset we want to translate
+     * @param offset               The offset we want to translate
      * @param startingFilePosition A lower bound on the file position from which to begin the search. This is purely an optimization and
-     * when omitted, the search will begin at the position in the offset index.
+     *                             when omitted, the search will begin at the position in the offset index.
      * @return The base offset, position in the log, and size of the message batch that contains the requested offset,
      * or null if no such batch is found.
      */
@@ -403,7 +403,7 @@ public class LogSegment implements Closeable {
 
     /**
      * Equivalent to {@code read(startOffset, maxSize, size())}.
-     *
+     * <p>
      * See {@link #read(long, int, Optional, boolean)} for details.
      */
     public FetchDataInfo read(long startOffset, int maxSize) throws IOException {
@@ -412,7 +412,7 @@ public class LogSegment implements Closeable {
 
     /**
      * Equivalent to {@code read(startOffset, maxSize, maxPosition, false)}.
-     *
+     * <p>
      * See {@link #read(long, int, Optional, boolean)} for details.
      */
     public FetchDataInfo read(long startOffset, int maxSize, long maxPosition) throws IOException {
@@ -422,16 +422,15 @@ public class LogSegment implements Closeable {
     /**
      * Read a message set from this segment that contains startOffset. The message set will include
      * no more than maxSize bytes and will end before maxOffset if a maxOffset is specified.
-     *
+     * <p>
      * This method is thread-safe.
      *
-     * @param startOffset The logical log offset we are trying to read
-     * @param maxSize The maximum number of bytes to include in the message set we read
+     * @param startOffset    The logical log offset we are trying to read
+     * @param maxSize        The maximum number of bytes to include in the message set we read
      * @param maxPositionOpt The maximum position in the log segment that should be exposed for read
-     * @param minOneMessage If this is true, the first message will be returned even if it exceeds `maxSize` (if one exists)
-     *
+     * @param minOneMessage  If this is true, the first message will be returned even if it exceeds `maxSize` (if one exists)
      * @return The fetched data and the base offset metadata of the message batch that contains startOffset,
-     *         or null if the startOffset is larger than the largest offset in this log
+     * or null if the startOffset is larger than the largest offset in this log
      */
     public FetchDataInfo read(long startOffset, int maxSize, Optional<Long> maxPositionOpt, boolean minOneMessage) throws IOException {
         if (maxSize < 0)
@@ -460,7 +459,7 @@ public class LogSegment implements Closeable {
         int fetchSize = Math.min((int) (maxPositionOpt.get() - startPosition), adjustedMaxSize);
 
         return new FetchDataInfo(offsetMetadata, log.slice(startPosition, fetchSize),
-            adjustedMaxSize < startOffsetAndSize.size, Optional.empty());
+                adjustedMaxSize < startOffsetAndSize.size, Optional.empty());
     }
 
     public OptionalLong fetchUpperBoundOffset(OffsetPosition startOffsetPosition, int fetchSize) throws IOException {
@@ -471,12 +470,12 @@ public class LogSegment implements Closeable {
     /**
      * Run recovery on the given segment. This will rebuild the index from the log file and lop off any invalid bytes
      * from the end of the log and index.
-     *
+     * <p>
      * This method is not thread-safe.
      *
      * @param producerStateManager Producer state corresponding to the segment's base offset. This is needed to recover
      *                             the transaction index.
-     * @param leaderEpochCache a cache for updating the leader epoch during recovery.
+     * @param leaderEpochCache     a cache for updating the leader epoch during recovery.
      * @return The number of bytes truncated from the log
      * @throws LogSegmentOffsetOverflowException if the log segment contains an offset that causes the index offset to overflow
      */
@@ -514,7 +513,7 @@ public class LogSegment implements Closeable {
             }
         } catch (CorruptRecordException | InvalidRecordException e) {
             LOGGER.warn("Found invalid messages in log segment {} at byte offset {}.", log.file().getAbsolutePath(),
-                validBytes, e);
+                    validBytes, e);
         }
         int truncated = log.sizeInBytes() - validBytes;
         if (truncated > 0)
@@ -544,16 +543,16 @@ public class LogSegment implements Closeable {
     public String toString() {
         // We don't call `largestRecordTimestamp` below to avoid materializing the time index when `toString` is invoked
         return "LogSegment(baseOffset=" + baseOffset +
-            ", size=" + size() +
-            ", lastModifiedTime=" + lastModified() +
-            ", largestRecordTimestamp=" + maxTimestampAndOffsetSoFar.timestamp() +
-            ")";
+                ", size=" + size() +
+                ", lastModifiedTime=" + lastModified() +
+                ", largestRecordTimestamp=" + maxTimestampAndOffsetSoFar.timestamp() +
+                ")";
     }
 
     /**
      * Truncate off all index and log entries with offsets >= the given offset.
      * If the given offset is larger than the largest message in this segment, do nothing.
-     *
+     * <p>
      * This method is not thread-safe.
      *
      * @param offset The offset to truncate to
@@ -608,7 +607,7 @@ public class LogSegment implements Closeable {
     /**
      * Calculate the offset that would be used for the next message to be append to this segment.
      * Note that this is expensive.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public long readNextOffset() throws IOException {
@@ -617,13 +616,13 @@ public class LogSegment implements Closeable {
             return baseOffset;
         else
             return fetchData.records.lastBatch()
-                .map(RecordBatch::nextOffset)
-                .orElse(baseOffset);
+                    .map(RecordBatch::nextOffset)
+                    .orElse(baseOffset);
     }
 
     /**
      * Flush this log segment to disk.
-     *
+     * <p>
      * This method is thread-safe.
      */
     public void flush() throws IOException {
@@ -673,14 +672,14 @@ public class LogSegment implements Closeable {
 
     public boolean hasSuffix(String suffix) {
         return log.file().getName().endsWith(suffix) &&
-            offsetIndexFile().getName().endsWith(suffix) &&
-            timeIndexFile().getName().endsWith(suffix) &&
-            txnIndex.file().getName().endsWith(suffix);
+                offsetIndexFile().getName().endsWith(suffix) &&
+                timeIndexFile().getName().endsWith(suffix) &&
+                txnIndex.file().getName().endsWith(suffix);
     }
 
     /**
      * Append the largest time index entry to the time index and trim the log and indexes.
-     *
+     * <p>
      * The time index entry appended will be used to decide when to delete the segment.
      */
     public void onBecomeInactiveSegment() throws IOException {
@@ -733,22 +732,22 @@ public class LogSegment implements Closeable {
 
     /**
      * Search the message offset based on timestamp and offset.
-     *
+     * <p>
      * This method returns an option of TimestampOffset. The returned value is determined using the following ordered list of rules:
-     *
+     * <p>
      * - If all the messages in the segment have smaller offsets, return Empty
      * - If all the messages in the segment have smaller timestamps, return Empty
      * - If all the messages in the segment have larger timestamps, or no message in the segment has a timestamp
-     *   the returned the offset will be max(the base offset of the segment, startingOffset) and the timestamp will be Message.NoTimestamp.
+     * the returned the offset will be max(the base offset of the segment, startingOffset) and the timestamp will be Message.NoTimestamp.
      * - Otherwise, return an option of TimestampOffset. The offset is the offset of the first message whose timestamp
-     *   is greater than or equals to the target timestamp and whose offset is greater than or equals to the startingOffset.
-     *
+     * is greater than or equals to the target timestamp and whose offset is greater than or equals to the startingOffset.
+     * <p>
      * This method only returns Empty when 1) all messages' offset < startOffing or 2) the log is not empty, but we did not
      * see any message when scanning the log from the indexed position. The latter could happen if the log is truncated
      * after we get the indexed position but before we scan the log from there. In this case we simply return Empty and the
      * caller will need to check on the truncated log and maybe retry or even do the search on another log segment.
      *
-     * @param timestampMs The timestamp to search for.
+     * @param timestampMs    The timestamp to search for.
      * @param startingOffset The starting offset to search.
      * @return the timestamp and offset of the first message that meets the requirements. Empty will be returned if there is no such message.
      */
@@ -787,10 +786,10 @@ public class LogSegment implements Closeable {
     public void deleteIfExists() throws IOException {
         try {
             Utils.tryAll(List.of(
-                () -> deleteTypeIfExists(log::deleteIfExists, "log", log.file(), true),
-                () -> deleteTypeIfExists(lazyOffsetIndex::deleteIfExists, "offset index", offsetIndexFile(), true),
-                () -> deleteTypeIfExists(lazyTimeIndex::deleteIfExists, "time index", timeIndexFile(), true),
-                () -> deleteTypeIfExists(txnIndex::deleteIfExists, "transaction index", txnIndex.file(), false)));
+                    () -> deleteTypeIfExists(log::deleteIfExists, "log", log.file(), true),
+                    () -> deleteTypeIfExists(lazyOffsetIndex::deleteIfExists, "offset index", offsetIndexFile(), true),
+                    () -> deleteTypeIfExists(lazyTimeIndex::deleteIfExists, "time index", timeIndexFile(), true),
+                    () -> deleteTypeIfExists(txnIndex::deleteIfExists, "transaction index", txnIndex.file(), false)));
         } catch (Throwable t) {
             if (t instanceof IOException)
                 throw (IOException) t;
@@ -883,14 +882,14 @@ public class LogSegment implements Closeable {
                                   int initFileSize, boolean preallocate, String fileSuffix) throws IOException {
         int maxIndexSize = config.maxIndexSize;
         return new LogSegment(
-            FileRecords.open(LogFileUtils.logFile(dir, baseOffset, fileSuffix), fileAlreadyExists, initFileSize, preallocate),
-            LazyIndex.forOffset(LogFileUtils.offsetIndexFile(dir, baseOffset, fileSuffix), baseOffset, maxIndexSize),
-            LazyIndex.forTime(LogFileUtils.timeIndexFile(dir, baseOffset, fileSuffix), baseOffset, maxIndexSize),
-            new TransactionIndex(baseOffset, LogFileUtils.transactionIndexFile(dir, baseOffset, fileSuffix)),
-            baseOffset,
-            config.indexInterval,
-            config.randomSegmentJitter(),
-            time);
+                FileRecords.open(LogFileUtils.logFile(dir, baseOffset, fileSuffix), fileAlreadyExists, initFileSize, preallocate),
+                LazyIndex.forOffset(LogFileUtils.offsetIndexFile(dir, baseOffset, fileSuffix), baseOffset, maxIndexSize),
+                LazyIndex.forTime(LogFileUtils.timeIndexFile(dir, baseOffset, fileSuffix), baseOffset, maxIndexSize),
+                new TransactionIndex(baseOffset, LogFileUtils.transactionIndexFile(dir, baseOffset, fileSuffix)),
+                baseOffset,
+                config.indexInterval,
+                config.randomSegmentJitter(),
+                time);
     }
 
     public static void deleteIfExists(File dir, long baseOffset, String fileSuffix) throws IOException {

@@ -25,7 +25,7 @@ import org.apache.kafka.streams.state.KeyValueIterator;
  *
  */
 class MergedSortedCacheKeyValueBytesStoreIterator
-    extends AbstractMergedSortedCacheStoreIterator<Bytes, Bytes, byte[], byte[]> {
+        extends AbstractMergedSortedCacheStoreIterator<Bytes, Bytes, byte[], byte[]> {
 
 
     MergedSortedCacheKeyValueBytesStoreIterator(final PeekingKeyValueIterator<Bytes, LRUCacheEntry> cacheIterator,

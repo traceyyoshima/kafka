@@ -64,18 +64,19 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
 
     /**
      * This class provides an iterator over records retrieved via the raft client or from a snapshot
-     * @param records the records
-     * @param serde the serde to deserialize records
+     *
+     * @param records        the records
+     * @param serde          the serde to deserialize records
      * @param bufferSupplier the buffer supplier implementation to allocate buffers when reading records. This must return ByteBuffer allocated on the heap
-     * @param batchSize the maximum batch size
+     * @param batchSize      the maximum batch size
      */
     public RecordsIterator(
-        Records records,
-        RecordSerde<T> serde,
-        BufferSupplier bufferSupplier,
-        int batchSize,
-        boolean doCrcValidation,
-        LogContext logContext
+            Records records,
+            RecordSerde<T> serde,
+            BufferSupplier bufferSupplier,
+            int batchSize,
+            boolean doCrcValidation,
+            LogContext logContext
     ) {
         this.records = records;
         this.serde = serde;
@@ -151,9 +152,9 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
             return memoryRecords;
         } else {
             logger.info(
-                "Creating a new buffer; previous buffer {} cannot fit at least {} bytes",
-                buffer,
-                firstBatchSize
+                    "Creating a new buffer; previous buffer {} cannot fit at least {} bytes",
+                    buffer,
+                    firstBatchSize
             );
             // Not enough bytes read; create a bigger buffer
             ByteBuffer newBuffer = bufferSupplier.get(memoryRecords.firstBatchSize());
@@ -197,7 +198,7 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
 
             if (!(nextBatch instanceof DefaultRecordBatch)) {
                 throw new IllegalStateException(
-                    String.format("DefaultRecordBatch expected by record type was %s", nextBatch.getClass())
+                        String.format("DefaultRecordBatch expected by record type was %s", nextBatch.getClass())
                 );
             }
 
@@ -225,18 +226,18 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
                 List<ControlRecord> records = new ArrayList<>(numRecords);
                 for (int i = 0; i < numRecords; i++) {
                     ControlRecord record = readRecord(
-                        input,
-                        batch.sizeInBytes(),
-                        RecordsIterator::decodeControlRecord
+                            input,
+                            batch.sizeInBytes(),
+                            RecordsIterator::decodeControlRecord
                     );
                     records.add(record);
                 }
                 result = Batch.control(
-                    batch.baseOffset(),
-                    batch.partitionLeaderEpoch(),
-                    batch.maxTimestamp(),
-                    batch.sizeInBytes(),
-                    records
+                        batch.baseOffset(),
+                        batch.partitionLeaderEpoch(),
+                        batch.maxTimestamp(),
+                        batch.sizeInBytes(),
+                        records
                 );
             } else {
                 List<T> records = new ArrayList<>(numRecords);
@@ -246,11 +247,11 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
                 }
 
                 result = Batch.data(
-                    batch.baseOffset(),
-                    batch.partitionLeaderEpoch(),
-                    batch.maxTimestamp(),
-                    batch.sizeInBytes(),
-                    records
+                        batch.baseOffset(),
+                        batch.partitionLeaderEpoch(),
+                        batch.maxTimestamp(),
+                        batch.sizeInBytes(),
+                        records
                 );
             }
         } finally {
@@ -261,9 +262,9 @@ public final class RecordsIterator<T> implements Iterator<Batch<T>>, AutoCloseab
     }
 
     private <U> U readRecord(
-        InputStream stream,
-        int totalBatchSize,
-        BiFunction<Optional<ByteBuffer>, Optional<ByteBuffer>, U> decoder
+            InputStream stream,
+            int totalBatchSize,
+            BiFunction<Optional<ByteBuffer>, Optional<ByteBuffer>, U> decoder
     ) {
         // Read size of body in bytes
         int size;

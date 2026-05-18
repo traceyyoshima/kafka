@@ -64,10 +64,10 @@ public class TimeOrderedWindowStoreUpgradeTest {
         final Properties props = StreamsTestUtils.getStreamsConfig();
         baseDir = TestUtils.tempDirectory();
         context = new InternalMockProcessorContext<>(
-            baseDir,
-            Serdes.Bytes(),
-            Serdes.ByteArray(),
-            new StreamsConfig(props)
+                baseDir,
+                Serdes.Bytes(),
+                Serdes.ByteArray(),
+                new StreamsConfig(props)
         );
     }
 
@@ -140,15 +140,15 @@ public class TimeOrderedWindowStoreUpgradeTest {
     @Test
     public void shouldMigrateFromWithoutHeadersToWithHeaders() {
         final RocksDbIndexedTimeOrderedWindowBytesStoreSupplier oldSupplier =
-            new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
-                STORE_NAME,
-                RETENTION_MS,
-                SEGMENT_INTERVAL_MS,
-                WINDOW_SIZE_MS,
-                false,
-                true,
-                false   // withHeaders = FALSE (old format)
-            );
+                new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
+                        STORE_NAME,
+                        RETENTION_MS,
+                        SEGMENT_INTERVAL_MS,
+                        WINDOW_SIZE_MS,
+                        false,
+                        true,
+                        false   // withHeaders = FALSE (old format)
+                );
 
         final WindowStore<Bytes, byte[]> oldStore = oldSupplier.get();
         oldStore.init(context, oldStore);
@@ -171,15 +171,15 @@ public class TimeOrderedWindowStoreUpgradeTest {
         oldStore.close();
 
         final RocksDbIndexedTimeOrderedWindowBytesStoreSupplier newSupplier =
-            new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
-                STORE_NAME,
-                RETENTION_MS,
-                SEGMENT_INTERVAL_MS,
-                WINDOW_SIZE_MS,
-                false,  // retainDuplicates
-                true,   // withIndex
-                true    // withHeaders = TRUE (new format with headers support)
-            );
+                new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
+                        STORE_NAME,
+                        RETENTION_MS,
+                        SEGMENT_INTERVAL_MS,
+                        WINDOW_SIZE_MS,
+                        false,  // retainDuplicates
+                        true,   // withIndex
+                        true    // withHeaders = TRUE (new format with headers support)
+                );
 
         final WindowStore<Bytes, byte[]> newStore = newSupplier.get();
         newStore.init(context, newStore);
@@ -231,10 +231,10 @@ public class TimeOrderedWindowStoreUpgradeTest {
     public void shouldMigrateFromWithIndexToWithIndexAndHeaders() {
         // Test: withIndex=true, withHeaders=false → withIndex=true, withHeaders=true
         final RocksDbIndexedTimeOrderedWindowBytesStoreSupplier oldSupplier =
-            new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
-                STORE_NAME, RETENTION_MS, SEGMENT_INTERVAL_MS, WINDOW_SIZE_MS,
-                false, true, false  // withIndex=true, withHeaders=false
-            );
+                new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
+                        STORE_NAME, RETENTION_MS, SEGMENT_INTERVAL_MS, WINDOW_SIZE_MS,
+                        false, true, false  // withIndex=true, withHeaders=false
+                );
 
         final WindowStore<Bytes, byte[]> oldStore = oldSupplier.get();
         oldStore.init(context, oldStore);
@@ -247,10 +247,10 @@ public class TimeOrderedWindowStoreUpgradeTest {
 
         // Upgrade to headers
         final RocksDbIndexedTimeOrderedWindowBytesStoreSupplier newSupplier =
-            new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
-                STORE_NAME, RETENTION_MS, SEGMENT_INTERVAL_MS, WINDOW_SIZE_MS,
-                false, true, true  // withIndex=true, withHeaders=true
-            );
+                new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
+                        STORE_NAME, RETENTION_MS, SEGMENT_INTERVAL_MS, WINDOW_SIZE_MS,
+                        false, true, true  // withIndex=true, withHeaders=true
+                );
 
         final WindowStore<Bytes, byte[]> newStore = newSupplier.get();
         newStore.init(context, newStore);
@@ -265,10 +265,10 @@ public class TimeOrderedWindowStoreUpgradeTest {
     public void shouldMigrateFromWithoutIndexToWithIndexAndHeaders() {
         // Test: withIndex=false, withHeaders=false → withIndex=true, withHeaders=true
         final RocksDbIndexedTimeOrderedWindowBytesStoreSupplier oldSupplier =
-            new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
-                STORE_NAME, RETENTION_MS, SEGMENT_INTERVAL_MS, WINDOW_SIZE_MS,
-                false, false, false  // withIndex=false, withHeaders=false
-            );
+                new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
+                        STORE_NAME, RETENTION_MS, SEGMENT_INTERVAL_MS, WINDOW_SIZE_MS,
+                        false, false, false  // withIndex=false, withHeaders=false
+                );
 
         final WindowStore<Bytes, byte[]> oldStore = oldSupplier.get();
         oldStore.init(context, oldStore);
@@ -281,10 +281,10 @@ public class TimeOrderedWindowStoreUpgradeTest {
 
         // Upgrade to both index and headers
         final RocksDbIndexedTimeOrderedWindowBytesStoreSupplier newSupplier =
-            new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
-                STORE_NAME, RETENTION_MS, SEGMENT_INTERVAL_MS, WINDOW_SIZE_MS,
-                false, true, true  // withIndex=true, withHeaders=true
-            );
+                new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
+                        STORE_NAME, RETENTION_MS, SEGMENT_INTERVAL_MS, WINDOW_SIZE_MS,
+                        false, true, true  // withIndex=true, withHeaders=true
+                );
 
         final WindowStore<Bytes, byte[]> newStore = newSupplier.get();
         newStore.init(context, newStore);

@@ -176,10 +176,10 @@ public class DelayedRemoteListOffsets extends DelayedOperation {
 
     private ListOffsetsResponseData.ListOffsetsPartitionResponse buildErrorResponse(Errors e, int partitionIndex) {
         return new ListOffsetsResponseData.ListOffsetsPartitionResponse()
-                        .setPartitionIndex(partitionIndex)
-                        .setErrorCode(e.code())
-                        .setTimestamp(ListOffsetsResponse.UNKNOWN_TIMESTAMP)
-                        .setOffset(ListOffsetsResponse.UNKNOWN_OFFSET);
+                .setPartitionIndex(partitionIndex)
+                .setErrorCode(e.code())
+                .setTimestamp(ListOffsetsResponse.UNKNOWN_TIMESTAMP)
+                .setOffset(ListOffsetsResponse.UNKNOWN_OFFSET);
     }
 
     private static void recordExpiration(TopicPartition partition) {

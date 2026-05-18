@@ -68,25 +68,25 @@ public abstract class AbstractKafkaConfig extends AbstractConfig {
     private static final InetAddressValidator INET_ADDRESS_VALIDATOR = InetAddressValidator.getInstance();
 
     public static final ConfigDef CONFIG_DEF = Utils.mergeConfigs(List.of(
-        RemoteLogManagerConfig.configDef(),
-        ServerConfigs.CONFIG_DEF,
-        KRaftConfigs.CONFIG_DEF,
-        MetadataLogConfig.CONFIG_DEF,
-        SocketServerConfigs.CONFIG_DEF,
-        ReplicationConfigs.CONFIG_DEF,
-        GroupCoordinatorConfig.CONFIG_DEF,
-        CleanerConfig.CONFIG_DEF,
-        LogConfig.SERVER_CONFIG_DEF,
-        ShareGroupConfig.CONFIG_DEF,
-        ShareCoordinatorConfig.CONFIG_DEF,
-        TransactionLogConfig.CONFIG_DEF,
-        TransactionStateManagerConfig.CONFIG_DEF,
-        QuorumConfig.CONFIG_DEF,
-        MetricConfigs.CONFIG_DEF,
-        QuotaConfig.CONFIG_DEF,
-        BrokerSecurityConfigs.CONFIG_DEF,
-        DelegationTokenManagerConfigs.CONFIG_DEF,
-        AddPartitionsToTxnConfig.CONFIG_DEF
+            RemoteLogManagerConfig.configDef(),
+            ServerConfigs.CONFIG_DEF,
+            KRaftConfigs.CONFIG_DEF,
+            MetadataLogConfig.CONFIG_DEF,
+            SocketServerConfigs.CONFIG_DEF,
+            ReplicationConfigs.CONFIG_DEF,
+            GroupCoordinatorConfig.CONFIG_DEF,
+            CleanerConfig.CONFIG_DEF,
+            LogConfig.SERVER_CONFIG_DEF,
+            ShareGroupConfig.CONFIG_DEF,
+            ShareCoordinatorConfig.CONFIG_DEF,
+            TransactionLogConfig.CONFIG_DEF,
+            TransactionStateManagerConfig.CONFIG_DEF,
+            QuorumConfig.CONFIG_DEF,
+            MetricConfigs.CONFIG_DEF,
+            QuotaConfig.CONFIG_DEF,
+            BrokerSecurityConfigs.CONFIG_DEF,
+            DelegationTokenManagerConfigs.CONFIG_DEF,
+            AddPartitionsToTxnConfig.CONFIG_DEF
     ));
 
     public AbstractKafkaConfig(ConfigDef definition, Map<?, ?> originals, Map<String, ?> configProviderProps, boolean doLog) {
@@ -238,44 +238,44 @@ public abstract class AbstractKafkaConfig extends AbstractConfig {
         if (!requireDistinctPorts) return;
 
         endPoints.stream()
-            .filter(ep -> ep.port() != 0) // filter port 0 for unit tests
-            .collect(Collectors.groupingBy(Endpoint::port))
-            .entrySet().stream()
-            .filter(entry -> entry.getValue().size() > 1)
-            .forEach(entry -> {
-                // Iterate through every grouping of duplicates by port to see if they are valid
-                int port = entry.getKey();
-                List<Endpoint> eps = entry.getValue();
-                // Exception case, let's allow duplicate ports if one host is on IPv4 and the other one is on IPv6
-                Map<Boolean, List<Endpoint>> partitionedByValidIp = eps.stream()
-                        .collect(Collectors.partitioningBy(ep -> ep.host() != null && INET_ADDRESS_VALIDATOR.isValid(ep.host())));
+                .filter(ep -> ep.port() != 0) // filter port 0 for unit tests
+                .collect(Collectors.groupingBy(Endpoint::port))
+                .entrySet().stream()
+                .filter(entry -> entry.getValue().size() > 1)
+                .forEach(entry -> {
+                    // Iterate through every grouping of duplicates by port to see if they are valid
+                    int port = entry.getKey();
+                    List<Endpoint> eps = entry.getValue();
+                    // Exception case, let's allow duplicate ports if one host is on IPv4 and the other one is on IPv6
+                    Map<Boolean, List<Endpoint>> partitionedByValidIp = eps.stream()
+                            .collect(Collectors.partitioningBy(ep -> ep.host() != null && INET_ADDRESS_VALIDATOR.isValid(ep.host())));
 
-                List<Endpoint> duplicatesWithIpHosts = partitionedByValidIp.get(true);
-                List<Endpoint> duplicatesWithoutIpHosts = partitionedByValidIp.get(false);
+                    List<Endpoint> duplicatesWithIpHosts = partitionedByValidIp.get(true);
+                    List<Endpoint> duplicatesWithoutIpHosts = partitionedByValidIp.get(false);
 
-                checkDuplicateListenerPorts(duplicatesWithoutIpHosts, listeners);
+                    checkDuplicateListenerPorts(duplicatesWithoutIpHosts, listeners);
 
-                if (duplicatesWithIpHosts.isEmpty()) return;
-                if (duplicatesWithIpHosts.size() == 2) {
-                    String errorMessage = "If you have two listeners on the same port then one needs to be IPv4 and the other IPv6, listeners: " + listeners + ", port: " + port;
-                    Endpoint ep1 = duplicatesWithIpHosts.get(0);
-                    Endpoint ep2 = duplicatesWithIpHosts.get(1);
-                    if (!validateOneIsIpv4AndOtherIpv6(ep1.host(), ep2.host())) {
-                        throw new IllegalArgumentException(errorMessage);
+                    if (duplicatesWithIpHosts.isEmpty()) return;
+                    if (duplicatesWithIpHosts.size() == 2) {
+                        String errorMessage = "If you have two listeners on the same port then one needs to be IPv4 and the other IPv6, listeners: " + listeners + ", port: " + port;
+                        Endpoint ep1 = duplicatesWithIpHosts.get(0);
+                        Endpoint ep2 = duplicatesWithIpHosts.get(1);
+                        if (!validateOneIsIpv4AndOtherIpv6(ep1.host(), ep2.host())) {
+                            throw new IllegalArgumentException(errorMessage);
+                        }
+
+                        // If we reach this point it means that even though duplicatesWithIpHosts in isolation can be valid, if
+                        // there happens to be ANOTHER listener on this port without an IP host (such as a null host) then its
+                        // not valid.
+                        if (!duplicatesWithoutIpHosts.isEmpty()) {
+                            throw new IllegalArgumentException(errorMessage);
+                        }
+                        return;
                     }
-
-                    // If we reach this point it means that even though duplicatesWithIpHosts in isolation can be valid, if
-                    // there happens to be ANOTHER listener on this port without an IP host (such as a null host) then its
-                    // not valid.
-                    if (!duplicatesWithoutIpHosts.isEmpty()) {
-                        throw new IllegalArgumentException(errorMessage);
-                    }
-                    return;
-                }
-                // Having more than 2 duplicate endpoints doesn't make sense since we only have 2 IP stacks (one is IPv4
-                // and the other is IPv6)
-                throw new IllegalArgumentException("Each listener must have a different port unless exactly one listener has an IPv4 address and the other IPv6 address, listeners: " + listeners + ", port: " + port);
-            });
+                    // Having more than 2 duplicate endpoints doesn't make sense since we only have 2 IP stacks (one is IPv4
+                    // and the other is IPv6)
+                    throw new IllegalArgumentException("Each listener must have a different port unless exactly one listener has an IPv4 address and the other IPv6 address, listeners: " + listeners + ", port: " + port);
+                });
     }
 
     private static boolean validateOneIsIpv4AndOtherIpv6(String first, String second) {
@@ -631,7 +631,7 @@ public abstract class AbstractKafkaConfig extends AbstractConfig {
     public Map<String, Object> extractGroupConfigMap() {
         Map<String, Object> defaults = new HashMap<>();
         GroupConfig.ALL_GROUP_CONFIG_SYNONYMS.forEach((groupConfigName, brokerConfigName) ->
-            brokerConfigName.ifPresent(name -> defaults.put(groupConfigName, get(name)))
+                brokerConfigName.ifPresent(name -> defaults.put(groupConfigName, get(name)))
         );
         return defaults;
     }

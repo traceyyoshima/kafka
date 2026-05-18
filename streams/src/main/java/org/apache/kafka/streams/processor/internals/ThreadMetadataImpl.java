@@ -109,26 +109,26 @@ public class ThreadMetadataImpl implements ThreadMetadata {
         }
         final ThreadMetadataImpl that = (ThreadMetadataImpl) o;
         return Objects.equals(threadName, that.threadName) &&
-               Objects.equals(threadState, that.threadState) &&
-               Objects.equals(activeTasks, that.activeTasks) &&
-               Objects.equals(standbyTasks, that.standbyTasks) &&
-               mainConsumerClientId.equals(that.mainConsumerClientId) &&
-               restoreConsumerClientId.equals(that.restoreConsumerClientId) &&
-               Objects.equals(producerClientIds, that.producerClientIds) &&
-               adminClientId.equals(that.adminClientId);
+                Objects.equals(threadState, that.threadState) &&
+                Objects.equals(activeTasks, that.activeTasks) &&
+                Objects.equals(standbyTasks, that.standbyTasks) &&
+                mainConsumerClientId.equals(that.mainConsumerClientId) &&
+                restoreConsumerClientId.equals(that.restoreConsumerClientId) &&
+                Objects.equals(producerClientIds, that.producerClientIds) &&
+                adminClientId.equals(that.adminClientId);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-            threadName,
-            threadState,
-            activeTasks,
-            standbyTasks,
-            mainConsumerClientId,
-            restoreConsumerClientId,
-            producerClientIds,
-            adminClientId);
+                threadName,
+                threadState,
+                activeTasks,
+                standbyTasks,
+                mainConsumerClientId,
+                restoreConsumerClientId,
+                producerClientIds,
+                adminClientId);
     }
 
     @Override

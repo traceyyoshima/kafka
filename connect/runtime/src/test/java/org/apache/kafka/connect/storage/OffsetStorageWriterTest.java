@@ -138,8 +138,7 @@ public class OffsetStorageWriterTest {
         // When a flush fails, we shouldn't just lose the offsets. Instead, they should be restored
         // such that a subsequent flush will write them.
 
-        @SuppressWarnings("unchecked")
-        final Callback<Void> callback = mock(Callback.class);
+        @SuppressWarnings("unchecked") final Callback<Void> callback = mock(Callback.class);
         // First time the write fails
         expectStore(OFFSET_KEY, OFFSET_KEY_SERIALIZED, OFFSET_VALUE, OFFSET_VALUE_SERIALIZED, true, null);
         writer.offset(OFFSET_KEY, OFFSET_VALUE);
@@ -159,8 +158,7 @@ public class OffsetStorageWriterTest {
 
     @Test
     public void testAlreadyFlushing() throws InterruptedException, TimeoutException {
-        @SuppressWarnings("unchecked")
-        final Callback<Void> callback = mock(Callback.class);
+        @SuppressWarnings("unchecked") final Callback<Void> callback = mock(Callback.class);
         // Trigger the send, but don't invoke the callback so we'll still be mid-flush
         CountDownLatch allowStoreCompleteCountdown = new CountDownLatch(1);
         expectStore(OFFSET_KEY, OFFSET_KEY_SERIALIZED, OFFSET_VALUE, OFFSET_VALUE_SERIALIZED, false, allowStoreCompleteCountdown);
@@ -202,11 +200,11 @@ public class OffsetStorageWriterTest {
     /**
      * Expect a request to store data to the underlying OffsetBackingStore.
      *
-     * @param key the key for the offset
-     * @param keySerialized serialized version of the key
-     * @param value the value for the offset
-     * @param valueSerialized serialized version of the value
-     * @param fail if true, treat
+     * @param key               the key for the offset
+     * @param keySerialized     serialized version of the key
+     * @param value             the value for the offset
+     * @param valueSerialized   serialized version of the value
+     * @param fail              if true, treat
      * @param waitForCompletion if non-null, a CountDownLatch that should be awaited on before
      *                          invoking the callback. A (generous) timeout is still imposed to
      *                          ensure tests complete.

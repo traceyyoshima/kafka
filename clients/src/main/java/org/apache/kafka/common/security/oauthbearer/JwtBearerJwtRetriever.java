@@ -41,9 +41,9 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_OAUTHBEARER_SCOPE;
  * {@code JwtBearerJwtRetriever} is a {@link JwtRetriever} that performs the steps to request
  * a JWT from an OAuth/OIDC identity provider using the <code>urn:ietf:params:oauth:grant-type:jwt-bearer</code>
  * grant type. This grant type is used for machine-to-machine "service accounts".
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * This {@code JwtRetriever} is enabled by specifying its class name in the Kafka configuration.
  * For client use, specify the class name in the <code>sasl.oauthbearer.jwt.retriever.class</code>
  * configuration like so:
@@ -51,18 +51,18 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_OAUTHBEARER_SCOPE;
  * <pre>
  * sasl.oauthbearer.jwt.retriever.class=org.apache.kafka.common.security.oauthbearer.JwtBearerJwtRetriever
  * </pre>
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * If using this {@code JwtRetriever} on the broker side (for inter-broker communication), the configuration
  * should be specified with a listener-based property:
  *
  * <pre>
  * listener.name.&lt;listener name&gt;.oauthbearer.sasl.oauthbearer.jwt.retriever.class=org.apache.kafka.common.security.oauthbearer.JwtBearerJwtRetriever
  * </pre>
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * The {@code JwtBearerJwtRetriever} also uses the following configuration:
  *
  * <ul>
@@ -81,11 +81,11 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_OAUTHBEARER_SCOPE;
  *     <li><code>sasl.oauthbearer.scope</code></li>
  *     <li><code>sasl.oauthbearer.token.endpoint.url</code></li>
  * </ul>
- *
+ * <p>
  * Please refer to the official Apache Kafka documentation for more information on these, and related, configuration.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Here's an example of the JAAS configuration for a Kafka client:
  *
  * <pre>

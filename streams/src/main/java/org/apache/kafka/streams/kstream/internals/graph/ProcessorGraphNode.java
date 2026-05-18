@@ -21,7 +21,7 @@ import org.apache.kafka.streams.processor.internals.InternalTopologyBuilder;
 
 /**
  * Used to represent any type of stateless operation:
- *
+ * <p>
  * map, mapValues, flatMap, flatMapValues, filter, filterNot, branch
  */
 public class ProcessorGraphNode<K, V> extends GraphNode {
@@ -43,8 +43,8 @@ public class ProcessorGraphNode<K, V> extends GraphNode {
     @Override
     public String toString() {
         return "ProcessorNode{" +
-               "processorParameters=" + processorParameters +
-               "} " + super.toString();
+                "processorParameters=" + processorParameters +
+                "} " + super.toString();
     }
 
     @Override

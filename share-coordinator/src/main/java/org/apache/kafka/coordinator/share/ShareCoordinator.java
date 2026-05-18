@@ -67,6 +67,7 @@ public interface ShareCoordinator {
 
     /**
      * Handle write share state call
+     *
      * @param context - represents the incoming write request context
      * @param request - actual RPC request object
      * @return completable future comprising write RPC response data
@@ -76,6 +77,7 @@ public interface ShareCoordinator {
 
     /**
      * Handle read share state call
+     *
      * @param context - represents the incoming read request context
      * @param request - actual RPC request object
      * @return completable future comprising read RPC response data
@@ -84,6 +86,7 @@ public interface ShareCoordinator {
 
     /**
      * Handle read share state summary call
+     *
      * @param context - represents the incoming read summary request context
      * @param request - actual RPC request object
      * @return completable future comprising ReadShareGroupStateSummaryRequestData
@@ -92,6 +95,7 @@ public interface ShareCoordinator {
 
     /**
      * Handle delete share group state call
+     *
      * @param context - represents the incoming delete share group request context
      * @param request - actual RPC request object
      * @return completable future representing delete share group RPC response data
@@ -100,6 +104,7 @@ public interface ShareCoordinator {
 
     /**
      * Handle initialize share group state call
+     *
      * @param context - represents the incoming initialize share group request context
      * @param request - actual RPC request object
      * @return completable future representing initialize share group RPC response data
@@ -108,14 +113,16 @@ public interface ShareCoordinator {
 
     /**
      * Called when new coordinator is elected
-     * @param partitionIndex - The partition index (internal topic)
+     *
+     * @param partitionIndex       - The partition index (internal topic)
      * @param partitionLeaderEpoch - Leader epoch of the partition (internal topic)
      */
     void onElection(int partitionIndex, int partitionLeaderEpoch);
 
     /**
      * Called when coordinator goes down
-     * @param partitionIndex - The partition index (internal topic)
+     *
+     * @param partitionIndex       - The partition index (internal topic)
      * @param partitionLeaderEpoch - Leader epoch of the partition (internal topic). Empty optional means deleted.
      */
     void onResignation(int partitionIndex, OptionalInt partitionLeaderEpoch);
@@ -123,11 +130,11 @@ public interface ShareCoordinator {
     /**
      * A new metadata image is available.
      *
-     * @param delta     The metadata delta.
-     * @param newImage  The new metadata image.
+     * @param delta    The metadata delta.
+     * @param newImage The new metadata image.
      */
     void onMetadataUpdate(
-        MetadataDelta delta,
-        MetadataImage newImage
+            MetadataDelta delta,
+            MetadataImage newImage
     );
 }

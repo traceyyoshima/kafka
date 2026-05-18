@@ -82,6 +82,7 @@ public class Timer {
 
     /**
      * Check whether the timer has not yet expired.
+     *
      * @return true if there is still time remaining before expiration
      */
     public boolean notExpired() {

@@ -38,6 +38,7 @@ public interface KeyValueIterator<K, V> extends Iterator<KeyValue<K, V>>, Closea
 
     /**
      * Peek at the next key without advancing the iterator
+     *
      * @return the key of the next value that would be returned from the next call to next
      */
     K peekNextKey();

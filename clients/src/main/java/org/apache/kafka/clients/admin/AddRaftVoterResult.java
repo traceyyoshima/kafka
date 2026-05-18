@@ -21,7 +21,7 @@ import org.apache.kafka.common.annotation.InterfaceStability;
 
 /**
  * The result of {@link org.apache.kafka.clients.admin.Admin#addRaftVoter(int, org.apache.kafka.common.Uuid, java.util.Set, org.apache.kafka.clients.admin.AddRaftVoterOptions)}.
- *
+ * <p>
  * The API of this class is evolving, see {@link Admin} for details.
  */
 @InterfaceStability.Stable

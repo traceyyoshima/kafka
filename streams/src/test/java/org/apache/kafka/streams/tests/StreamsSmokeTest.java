@@ -33,8 +33,8 @@ import static org.apache.kafka.streams.tests.SmokeTestDriver.generatePerpetually
 public class StreamsSmokeTest {
 
     /**
-     *  args ::= kafka propFileName command disableAutoTerminate
-     *  command := "run" | "process"
+     * args ::= kafka propFileName command disableAutoTerminate
+     * command := "run" | "process"
      *
      * @param args
      */
@@ -59,11 +59,11 @@ public class StreamsSmokeTest {
 
         if ("process".equals(command)) {
             if (!StreamsConfig.AT_LEAST_ONCE.equals(processingGuarantee) &&
-                !StreamsConfig.EXACTLY_ONCE_V2.equals(processingGuarantee)) {
+                    !StreamsConfig.EXACTLY_ONCE_V2.equals(processingGuarantee)) {
 
                 System.err.println("processingGuarantee must be either " +
-                                       StreamsConfig.AT_LEAST_ONCE + ", " +
-                                       StreamsConfig.EXACTLY_ONCE_V2);
+                        StreamsConfig.AT_LEAST_ONCE + ", " +
+                        StreamsConfig.EXACTLY_ONCE_V2);
 
                 Exit.exit(1);
             }
@@ -85,12 +85,12 @@ public class StreamsSmokeTest {
                     // slow down data production so that system tests have time to
                     // do their bounces, etc.
                     final Map<String, Set<Integer>> allData =
-                        generate(kafka, numKeys, maxRecordsPerKey, Duration.ofSeconds(90));
+                            generate(kafka, numKeys, maxRecordsPerKey, Duration.ofSeconds(90));
                     SmokeTestDriver.verify(
-                        kafka,
-                        allData,
-                        maxRecordsPerKey,
-                        StreamsConfig.EXACTLY_ONCE_V2.equals(processingGuarantee)
+                            kafka,
+                            allData,
+                            maxRecordsPerKey,
+                            StreamsConfig.EXACTLY_ONCE_V2.equals(processingGuarantee)
                     );
                 }
                 break;

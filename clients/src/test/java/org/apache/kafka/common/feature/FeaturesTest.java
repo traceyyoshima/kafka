@@ -43,8 +43,8 @@ public class FeaturesTest {
     @Test
     public void testNullFeatures() {
         assertThrows(
-            NullPointerException.class,
-            () -> Features.supportedFeatures(null));
+                NullPointerException.class,
+                () -> Features.supportedFeatures(null));
     }
 
     @Test
@@ -76,8 +76,8 @@ public class FeaturesTest {
         Features<SupportedVersionRange> features = Features.supportedFeatures(allFeatures);
 
         Map<String, Map<String, Short>> expected = Map.of(
-            "feature_1", Map.of("min_version", (short) 1, "max_version", (short) 2),
-            "feature_2", Map.of("min_version", (short) 3, "max_version", (short) 4));
+                "feature_1", Map.of("min_version", (short) 1, "max_version", (short) 2),
+                "feature_2", Map.of("min_version", (short) 3, "max_version", (short) 4));
         assertEquals(expected, features.toMap());
         assertEquals(features, Features.fromSupportedFeaturesMap(expected));
     }
@@ -87,7 +87,7 @@ public class FeaturesTest {
         SupportedVersionRange v1 = new SupportedVersionRange((short) 1, (short) 2);
         SupportedVersionRange v2 = new SupportedVersionRange((short) 3, (short) 4);
         Features<SupportedVersionRange> features = Features.supportedFeatures(
-            Map.of("feature_1", v1, "feature_2", v2));
+                Map.of("feature_1", v1, "feature_2", v2));
 
         String result = features.toString();
         assertTrue(result.startsWith("Features{"));
@@ -100,8 +100,8 @@ public class FeaturesTest {
         // This is invalid because 'max_version' key is missing.
         Map<String, Map<String, Short>> invalidFeatures = Map.of("feature_1", Map.of("min_version", (short) 1));
         assertThrows(
-            IllegalArgumentException.class,
-            () -> Features.fromSupportedFeaturesMap(invalidFeatures));
+                IllegalArgumentException.class,
+                () -> Features.fromSupportedFeaturesMap(invalidFeatures));
     }
 
     @Test

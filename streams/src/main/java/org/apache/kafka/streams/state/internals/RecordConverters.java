@@ -29,22 +29,22 @@ public final class RecordConverters {
         final byte[] rawValue = record.value();
         final long timestamp = record.timestamp();
         final byte[] recordValueWithTimestamp = rawValue == null ? null :
-            ByteBuffer.allocate(8 + rawValue.length)
+                ByteBuffer.allocate(8 + rawValue.length)
                 .putLong(timestamp)
                 .put(rawValue)
                 .array();
         return new ConsumerRecord<>(
-            record.topic(),
-            record.partition(),
-            record.offset(),
-            timestamp,
-            record.timestampType(),
-            record.serializedKeySize(),
-            recordValueWithTimestamp != null ? recordValueWithTimestamp.length : 0,
-            record.key(),
-            recordValueWithTimestamp,
-            record.headers(),
-            record.leaderEpoch()
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                timestamp,
+                record.timestampType(),
+                record.serializedKeySize(),
+                recordValueWithTimestamp != null ? recordValueWithTimestamp.length : 0,
+                record.key(),
+                recordValueWithTimestamp,
+                record.headers(),
+                record.leaderEpoch()
         );
     };
 
@@ -53,23 +53,23 @@ public final class RecordConverters {
 
         // Format: [headersSize(varint)][headersBytes][timestamp(8)][value]
         final byte[] recordValueWithTimestampAndHeaders = reconstructFromRaw(
-            rawValue,
-            record.timestamp(),
-            record.headers()
+                rawValue,
+                record.timestamp(),
+                record.headers()
         );
 
         return new ConsumerRecord<>(
-            record.topic(),
-            record.partition(),
-            record.offset(),
-            record.timestamp(),
-            record.timestampType(),
-            record.serializedKeySize(),
-            recordValueWithTimestampAndHeaders != null ? recordValueWithTimestampAndHeaders.length : 0,
-            record.key(),
-            recordValueWithTimestampAndHeaders,
-            record.headers(),
-            record.leaderEpoch()
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                record.timestamp(),
+                record.timestampType(),
+                record.serializedKeySize(),
+                recordValueWithTimestampAndHeaders != null ? recordValueWithTimestampAndHeaders.length : 0,
+                record.key(),
+                recordValueWithTimestampAndHeaders,
+                record.headers(),
+                record.leaderEpoch()
         );
     };
 
@@ -82,22 +82,22 @@ public final class RecordConverters {
 
         // Format: [headersSize(varint)][headersBytes][aggregation] (no timestamp)
         final byte[] recordValueWithHeaders = reconstructSessionFromRaw(
-            rawValue,
-            record.headers()
+                rawValue,
+                record.headers()
         );
 
         return new ConsumerRecord<>(
-            record.topic(),
-            record.partition(),
-            record.offset(),
-            record.timestamp(),
-            record.timestampType(),
-            record.serializedKeySize(),
-            recordValueWithHeaders != null ? recordValueWithHeaders.length : 0,
-            record.key(),
-            recordValueWithHeaders,
-            record.headers(),
-            record.leaderEpoch()
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                record.timestamp(),
+                record.timestampType(),
+                record.serializedKeySize(),
+                recordValueWithHeaders != null ? recordValueWithHeaders.length : 0,
+                record.key(),
+                recordValueWithHeaders,
+                record.headers(),
+                record.leaderEpoch()
         );
     };
 
@@ -106,7 +106,8 @@ public final class RecordConverters {
     }
 
     // privatize the constructor so the class cannot be instantiated (only used for its static members)
-    private RecordConverters() {}
+    private RecordConverters() {
+    }
 
     public static RecordConverter rawValueToTimestampedValue() {
         return RAW_TO_TIMESTAMED_INSTANCE;
@@ -121,7 +122,7 @@ public final class RecordConverters {
      * Used during state restoration from changelog topics for session stores.
      *
      * @param rawValue the raw aggregation bytes
-     * @param headers the headers
+     * @param headers  the headers
      * @return the serialized AggregationWithHeaders format
      */
     static byte[] reconstructSessionFromRaw(final byte[] rawValue, final Headers headers) {
@@ -138,17 +139,17 @@ public final class RecordConverters {
         ByteUtils.writeVarint(preSerializedHeaders.requiredBufferSizeForHeaders, buffer);
 
         return HeadersSerializer.serialize(preSerializedHeaders, buffer)
-            .put(rawValue)
-            .array();
+                .put(rawValue)
+                .array();
     }
 
     /**
      * Reconstructs the ValueTimestampHeaders format from raw value bytes, timestamp, and headers.
      * Used during state restoration from changelog topics.
      *
-     * @param rawValue the raw value bytes
+     * @param rawValue  the raw value bytes
      * @param timestamp the timestamp
-     * @param headers the headers
+     * @param headers   the headers
      * @return the serialized ValueTimestampHeaders format
      */
     static byte[] reconstructFromRaw(final byte[] rawValue, final long timestamp, final Headers headers) {
@@ -165,8 +166,8 @@ public final class RecordConverters {
         ByteUtils.writeVarint(preSerializedHeaders.requiredBufferSizeForHeaders, buffer);
 
         return HeadersSerializer.serialize(preSerializedHeaders, buffer)
-            .putLong(timestamp)
-            .put(rawValue)
-            .array();
+                .putLong(timestamp)
+                .put(rawValue)
+                .array();
     }
 }

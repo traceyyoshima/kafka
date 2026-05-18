@@ -128,9 +128,9 @@ public class AppInfoParserTest {
     @Test
     public void testClientIdWontAddRepeatedly() throws JMException {
         Map<String, String> tags = Map.of(
-            "client-id", METRICS_ID,
-            "other-tag", "tag-value",
-            "another-tag", "another-value"
+                "client-id", METRICS_ID,
+                "other-tag", "tag-value",
+                "another-tag", "another-value"
         );
         Metrics metrics = new Metrics(new MetricConfig().tags(tags), new MockTime(1));
         AppInfoParser.registerAppInfo(METRICS_PREFIX, METRICS_ID, metrics, EXPECTED_START_MS);

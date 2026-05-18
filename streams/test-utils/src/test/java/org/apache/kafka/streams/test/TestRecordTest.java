@@ -42,9 +42,9 @@ public class TestRecordTest {
     private final int value = 1;
     private final Headers headers = new RecordHeaders(
             new Header[]{
-                new RecordHeader("foo", "value".getBytes()),
-                new RecordHeader("bar", null),
-                new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
+                    new RecordHeader("foo", "value".getBytes()),
+                    new RecordHeader("bar", null),
+                    new RecordHeader("\"A\\u00ea\\u00f1\\u00fcC\"", "value".getBytes())
             });
     private final Instant recordTime = Instant.parse("2019-06-01T10:00:00Z");
     private final long recordMs = recordTime.toEpochMilli();
@@ -100,8 +100,8 @@ public class TestRecordTest {
 
         final Headers headers2 = new RecordHeaders(
                 new Header[]{
-                    new RecordHeader("foo", "value".getBytes()),
-                    new RecordHeader("bar", null),
+                        new RecordHeader("foo", "value".getBytes()),
+                        new RecordHeader("bar", null),
                 });
         final TestRecord<String, Integer> headerMismatch = new TestRecord<>(key, value, headers2, recordTime);
         assertNotEquals(testRecord, headerMismatch);
@@ -138,7 +138,7 @@ public class TestRecordTest {
     @Test
     public void testInvalidRecords() {
         assertThrows(IllegalArgumentException.class,
-            () -> new TestRecord<>(key, value, headers,  -1L));
+                () -> new TestRecord<>(key, value, headers, -1L));
     }
 
     @Test
@@ -154,7 +154,7 @@ public class TestRecordTest {
     public void testConsumerRecord() {
         final String topicName = "topic";
         final ConsumerRecord<String, Integer> consumerRecord = new ConsumerRecord<>(topicName, 1, 0, recordMs,
-            TimestampType.CREATE_TIME, 0, 0, key, value, headers, Optional.empty());
+                TimestampType.CREATE_TIME, 0, 0, key, value, headers, Optional.empty());
         final TestRecord<String, Integer> testRecord = new TestRecord<>(consumerRecord);
         final TestRecord<String, Integer> expectedRecord = new TestRecord<>(key, value, headers, recordTime);
         assertEquals(expectedRecord, testRecord);
@@ -164,7 +164,7 @@ public class TestRecordTest {
     public void testProducerRecord() {
         final String topicName = "topic";
         final ProducerRecord<String, Integer> producerRecord =
-            new ProducerRecord<>(topicName, 1, recordMs, key, value, headers);
+                new ProducerRecord<>(topicName, 1, recordMs, key, value, headers);
         final TestRecord<String, Integer> testRecord = new TestRecord<>(producerRecord);
         final TestRecord<String, Integer> expectedRecord = new TestRecord<>(key, value, headers, recordTime);
         assertEquals(expectedRecord, testRecord);

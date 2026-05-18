@@ -38,9 +38,9 @@ public class WindowedStreamPartitioner<K, V> implements StreamPartitioner<Window
      * and the current number of partitions. The partition number id determined by the original key of the windowed key
      * using the same logic as DefaultPartitioner so that the topic is partitioned by the original key.
      *
-     * @param topic the topic name this record is sent to
-     * @param windowedKey the key of the record
-     * @param value the value of the record
+     * @param topic         the topic name this record is sent to
+     * @param windowedKey   the key of the record
+     * @param value         the value of the record
      * @param numPartitions the total number of partitions
      * @return an integer between 0 and {@code numPartitions-1}, or {@code null} if the default partitioning logic should be used
      */

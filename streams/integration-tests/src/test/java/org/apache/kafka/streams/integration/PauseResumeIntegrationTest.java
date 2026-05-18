@@ -76,7 +76,7 @@ public class PauseResumeIntegrationTest {
     private static Properties consumerConfig;
 
     private static final Materialized<Object, Long, KeyValueStore<Bytes, byte[]>> IN_MEMORY_STORE =
-        Materialized.as(Stores.inMemoryKeyValueStore("store"));
+            Materialized.as(Stores.inMemoryKeyValueStore("store"));
 
     private static final String INPUT_STREAM_1 = "input-stream-1";
     private static final String INPUT_STREAM_2 = "input-stream-2";
@@ -86,15 +86,15 @@ public class PauseResumeIntegrationTest {
     private static final String TOPOLOGY2 = "topology2";
 
     private static final List<KeyValue<String, Long>> STANDARD_INPUT_DATA =
-        asList(pair("A", 100L), pair("B", 200L), pair("A", 300L), pair("C", 400L), pair("C", -50L));
+            asList(pair("A", 100L), pair("B", 200L), pair("A", 300L), pair("C", 400L), pair("C", -50L));
     private static final List<KeyValue<String, Long>> COUNT_OUTPUT_DATA =
-        asList(pair("A", 1L), pair("B", 1L), pair("A", 2L), pair("C", 1L), pair("C", 2L));
+            asList(pair("A", 1L), pair("B", 1L), pair("A", 2L), pair("C", 1L), pair("C", 2L));
     private static final List<KeyValue<String, Long>> COUNT_OUTPUT_DATA2 =
-        asList(pair("A", 3L), pair("B", 2L), pair("A", 4L), pair("C", 3L), pair("C", 4L));
+            asList(pair("A", 3L), pair("B", 2L), pair("A", 4L), pair("C", 3L), pair("C", 4L));
     private static final List<KeyValue<String, Long>> COUNT_OUTPUT_DATA_ALL = new ArrayList<KeyValue<String, Long>>() {{
-            addAll(COUNT_OUTPUT_DATA);
-            addAll(COUNT_OUTPUT_DATA2);
-        }};
+        addAll(COUNT_OUTPUT_DATA);
+        addAll(COUNT_OUTPUT_DATA2);
+    }};
 
     private String appId;
     private KafkaStreams kafkaStreams, kafkaStreams2;
@@ -105,9 +105,9 @@ public class PauseResumeIntegrationTest {
     public static void startCluster() throws Exception {
         CLUSTER.start();
         producerConfig = TestUtils.producerConfig(CLUSTER.bootstrapServers(),
-            StringSerializer.class, LongSerializer.class);
+                StringSerializer.class, LongSerializer.class);
         consumerConfig = TestUtils.consumerConfig(CLUSTER.bootstrapServers(),
-            StringDeserializer.class, LongDeserializer.class);
+                StringDeserializer.class, LongDeserializer.class);
     }
 
     @AfterAll
@@ -361,8 +361,8 @@ public class PauseResumeIntegrationTest {
 
     private void assertStreamsLocalStoreLagStaysConstant(final KafkaStreams streams) throws InterruptedException {
         waitForCondition(
-            () -> streams.allLocalStorePartitionLags().containsKey("test-store"),
-            "Lags for test-store partitions were not found within the timeout!");
+                () -> streams.allLocalStorePartitionLags().containsKey("test-store"),
+                "Lags for test-store partitions were not found within the timeout!");
         waitUntilStreamsHasPolled(streams, 2);
         final long stateStoreLag1 = streams.allLocalStorePartitionLags().get("test-store").get(0).offsetLag();
         waitUntilStreamsHasPolled(streams, 2);
@@ -386,7 +386,7 @@ public class PauseResumeIntegrationTest {
     }
 
     private void awaitOutput(final String topicName, final int count, final List<KeyValue<String, Long>> output)
-        throws Exception {
+            throws Exception {
         assertThat(waitUntilMinKeyValueRecordsReceived(consumerConfig, topicName, count), CoreMatchers.equalTo(output));
     }
 
@@ -401,10 +401,10 @@ public class PauseResumeIntegrationTest {
     private NamedTopologyBuilder getNamedTopologyBuilder2() {
         final NamedTopologyBuilder builder2 = streamsNamedTopologyWrapper.newNamedTopologyBuilder(TOPOLOGY2);
         builder2.stream(INPUT_STREAM_2)
-            .groupBy((k, v) -> k)
-            .count(IN_MEMORY_STORE)
-            .toStream()
-            .to(OUTPUT_STREAM_2);
+                .groupBy((k, v) -> k)
+                .count(IN_MEMORY_STORE)
+                .toStream()
+                .to(OUTPUT_STREAM_2);
         return builder2;
     }
 }

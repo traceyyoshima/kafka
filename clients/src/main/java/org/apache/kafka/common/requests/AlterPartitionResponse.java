@@ -44,7 +44,7 @@ public class AlterPartitionResponse extends AbstractResponse {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         updateErrorCounts(counts, Errors.forCode(data.errorCode()));
         data.topics().forEach(topicResponse -> topicResponse.partitions().forEach(partitionResponse ->
-            updateErrorCounts(counts, Errors.forCode(partitionResponse.errorCode()))
+                updateErrorCounts(counts, Errors.forCode(partitionResponse.errorCode()))
         ));
         return counts;
     }

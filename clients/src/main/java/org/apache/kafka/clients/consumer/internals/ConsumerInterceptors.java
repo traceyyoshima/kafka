@@ -44,7 +44,9 @@ public class ConsumerInterceptors<K, V> implements Closeable {
         this.interceptorPlugins = Plugin.wrapInstances(interceptors, metrics, ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG);
     }
 
-    /** Returns true if no interceptors are defined. All other methods will be no-ops in this case. */
+    /**
+     * Returns true if no interceptors are defined. All other methods will be no-ops in this case.
+     */
     public boolean isEmpty() {
         return interceptorPlugins.isEmpty();
     }

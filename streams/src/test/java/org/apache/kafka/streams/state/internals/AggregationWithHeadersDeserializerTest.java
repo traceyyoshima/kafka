@@ -122,7 +122,7 @@ public class AggregationWithHeadersDeserializerTest {
         return Stream.of(
                 new RecordHeaders().add("key1", "value1".getBytes()),
                 new RecordHeaders()
-            ).map(Arguments::of);
+        ).map(Arguments::of);
     }
 
     @Test

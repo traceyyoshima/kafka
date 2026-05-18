@@ -83,15 +83,15 @@ public class ShareFetch {
     private Map<TopicIdPartition, Throwable> erroneous;
 
     public ShareFetch(
-        FetchParams fetchParams,
-        String groupId,
-        String memberId,
-        CompletableFuture<Map<TopicIdPartition, PartitionData>> future,
-        List<TopicIdPartition> topicIdPartitions,
-        byte shareAcquireMode,
-        int batchSize,
-        int maxFetchRecords,
-        BrokerTopicStats brokerTopicStats
+            FetchParams fetchParams,
+            String groupId,
+            String memberId,
+            CompletableFuture<Map<TopicIdPartition, PartitionData>> future,
+            List<TopicIdPartition> topicIdPartitions,
+            byte shareAcquireMode,
+            int batchSize,
+            int maxFetchRecords,
+            BrokerTopicStats brokerTopicStats
     ) {
         this.fetchParams = fetchParams;
         this.groupId = groupId;
@@ -141,7 +141,7 @@ public class ShareFetch {
      * share fetch request can be processed in purgatory.
      *
      * @param topicIdPartition The partition that had an error.
-     * @param throwable The error that occurred.
+     * @param throwable        The error that occurred.
      */
     public synchronized void addErroneous(TopicIdPartition topicIdPartition, Throwable throwable) {
         if (erroneous == null) {
@@ -152,6 +152,7 @@ public class ShareFetch {
 
     /**
      * Check if the share fetch request is completed.
+     *
      * @return true if the request is completed, false otherwise.
      */
     public boolean isCompleted() {
@@ -160,6 +161,7 @@ public class ShareFetch {
 
     /**
      * Check if all the partitions in the request have errored.
+     *
      * @return true if all the partitions in the request have errored, false otherwise.
      */
     public synchronized boolean errorInAllPartitions() {
@@ -189,7 +191,7 @@ public class ShareFetch {
      * they will be added to the response.
      *
      * @param topicIdPartitions The topic id partitions which errored out.
-     * @param throwable The exception to complete the fetch with.
+     * @param throwable         The exception to complete the fetch with.
      */
     public void maybeCompleteWithException(Collection<TopicIdPartition> topicIdPartitions, Throwable throwable) {
         if (isCompleted()) {
@@ -227,10 +229,10 @@ public class ShareFetch {
             erroneous.forEach((topicIdPartition, throwable) -> {
                 erroneousTopics.add(topicIdPartition.topic());
                 response.put(topicIdPartition, new PartitionData()
-                    .setPartitionIndex(topicIdPartition.partition())
-                    .setErrorCode(Errors.forException(throwable).code())
-                    .setErrorMessage(throwable.getMessage())
-                    .setRecords(MemoryRecords.EMPTY));
+                        .setPartitionIndex(topicIdPartition.partition())
+                        .setErrorCode(Errors.forException(throwable).code())
+                        .setErrorMessage(throwable.getMessage())
+                        .setRecords(MemoryRecords.EMPTY));
             });
             erroneousTopics.forEach(topic -> {
                 brokerTopicStats.allTopicsStats().failedShareFetchRequestRate().mark();

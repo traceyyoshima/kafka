@@ -57,6 +57,7 @@ public abstract class PluginScanner {
     /**
      * Entry point for plugin scanning. Discovers plugins present in any of the provided plugin sources.
      * <p>See the implementation-specific documentation for the conditions for a plugin to appear in this result.
+     *
      * @param sources to scan for contained plugins
      * @return A {@link PluginScanResult} containing all plugins which this scanning implementation could discover.
      */
@@ -84,6 +85,7 @@ public abstract class PluginScanner {
 
     /**
      * Implementation-specific strategy for scanning a single {@link PluginSource}.
+     *
      * @param source A single source to scan for plugins.
      * @return A {@link PluginScanResult} containing all plugins which this scanning implementation could discover.
      */
@@ -93,29 +95,29 @@ public abstract class PluginScanner {
         // Apply here what java.sql.DriverManager does to discover and register classes
         // implementing the java.sql.Driver interface.
         SecurityManagerCompatibility.get().doPrivileged(
-            () -> {
-                ServiceLoader<Driver> loadedDrivers = ServiceLoader.load(
-                        Driver.class,
-                        loader
-                );
-                Iterator<Driver> driversIterator = loadedDrivers.iterator();
-                try {
-                    while (driversIterator.hasNext()) {
-                        Driver driver = driversIterator.next();
+                () -> {
+                    ServiceLoader<Driver> loadedDrivers = ServiceLoader.load(
+                            Driver.class,
+                            loader
+                    );
+                    Iterator<Driver> driversIterator = loadedDrivers.iterator();
+                    try {
+                        while (driversIterator.hasNext()) {
+                            Driver driver = driversIterator.next();
+                            log.debug(
+                                    "Registered java.sql.Driver: {} to java.sql.DriverManager",
+                                    driver
+                            );
+                        }
+                    } catch (Throwable t) {
                         log.debug(
-                                "Registered java.sql.Driver: {} to java.sql.DriverManager",
-                                driver
+                                "Ignoring java.sql.Driver classes listed in resources but not"
+                                        + " present in class loader's classpath: ",
+                                t
                         );
                     }
-                } catch (Throwable t) {
-                    log.debug(
-                            "Ignoring java.sql.Driver classes listed in resources but not"
-                                    + " present in class loader's classpath: ",
-                            t
-                    );
+                    return null;
                 }
-                return null;
-            }
         );
     }
 
@@ -154,11 +156,11 @@ public abstract class PluginScanner {
     /**
      * Helper to evaluate a {@link ServiceLoader} operation while handling {@link LinkageError}s.
      *
-     * @param type The plugin type which is being loaded
+     * @param type     The plugin type which is being loaded
      * @param function A function on a {@link ServiceLoader}'s {@link Iterator} which may throw {@link LinkageError}
+     * @param <U>      Return value of the passed-in function
      * @return the return value of function
      * @throws Error errors thrown by the passed-in function
-     * @param <U> Return value of the passed-in function
      */
     private <U> U handleLinkageError(PluginType type, PluginSource source, Supplier<U> function) {
         // It's difficult to know for sure if the iterator was able to advance past the first broken

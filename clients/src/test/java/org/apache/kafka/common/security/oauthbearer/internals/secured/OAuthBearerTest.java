@@ -76,16 +76,16 @@ public abstract class OAuthBearerTest {
     protected ObjectMapper mapper = new ObjectMapper();
 
     protected void assertThrowsWithMessage(Class<? extends Exception> clazz,
-        Executable executable,
-        String substring) {
+                                           Executable executable,
+                                           String substring) {
         assertErrorMessageContains(assertThrows(clazz, executable).getMessage(), substring);
     }
 
     protected void assertErrorMessageContains(String actual, String expectedSubstring) {
         assertTrue(actual.contains(expectedSubstring),
-            String.format("Expected exception message (\"%s\") to contain substring (\"%s\")",
-                actual,
-                expectedSubstring));
+                String.format("Expected exception message (\"%s\") to contain substring (\"%s\")",
+                        actual,
+                        expectedSubstring));
     }
 
     protected String createBase64JsonJwtSection(Consumer<ObjectNode> c) {
@@ -164,11 +164,11 @@ public abstract class OAuthBearerTest {
 
     protected List<AppConfigurationEntry> getJaasConfigEntries(Map<String, ?> options) {
         return List.of(
-            new AppConfigurationEntry(
-                OAuthBearerLoginModule.class.getName(),
-                AppConfigurationEntry.LoginModuleControlFlag.REQUIRED,
-                options
-            )
+                new AppConfigurationEntry(
+                        OAuthBearerLoginModule.class.getName(),
+                        AppConfigurationEntry.LoginModuleControlFlag.REQUIRED,
+                        options
+                )
         );
     }
 
@@ -180,14 +180,14 @@ public abstract class OAuthBearerTest {
 
     protected PublicJsonWebKey createEcJwk() throws JoseException {
         PublicJsonWebKey jwk = PublicJsonWebKey.Factory.newPublicJwk("{" +
-            "  \"kty\": \"EC\"," +
-            "  \"d\": \"Tk7qzHNnSBMioAU7NwZ9JugFWmWbUCyzeBRjVcTp_so\"," +
-            "  \"use\": \"sig\"," +
-            "  \"crv\": \"P-256\"," +
-            "  \"kid\": \"key-1\"," +
-            "  \"x\": \"qqeGjWmYZU5M5bBrRw1zqZcbPunoFVxsfaa9JdA0R5I\"," +
-            "  \"y\": \"wnoj0YjheNP80XYh1SEvz1-wnKByEoHvb6KrDcjMuWc\"" +
-            "}");
+                "  \"kty\": \"EC\"," +
+                "  \"d\": \"Tk7qzHNnSBMioAU7NwZ9JugFWmWbUCyzeBRjVcTp_so\"," +
+                "  \"use\": \"sig\"," +
+                "  \"crv\": \"P-256\"," +
+                "  \"kid\": \"key-1\"," +
+                "  \"x\": \"qqeGjWmYZU5M5bBrRw1zqZcbPunoFVxsfaa9JdA0R5I\"," +
+                "  \"y\": \"wnoj0YjheNP80XYh1SEvz1-wnKByEoHvb6KrDcjMuWc\"" +
+                "}");
         jwk.setKeyId("key-1");
         return jwk;
     }
@@ -205,14 +205,14 @@ public abstract class OAuthBearerTest {
         long nowSeconds = time.milliseconds() / 1000;
 
         return createJwt(
-            "{}",
-            String.format(
-                "{\"iat\":%s, \"exp\":%s, \"sub\":\"%s\"}",
-                nowSeconds,
-                nowSeconds + 300,
-                subject
-            ),
-            "sign"
+                "{}",
+                String.format(
+                        "{\"iat\":%s, \"exp\":%s, \"sub\":\"%s\"}",
+                        nowSeconds,
+                        nowSeconds + 300,
+                        subject
+                ),
+                "sign"
         );
     }
 
@@ -229,10 +229,10 @@ public abstract class OAuthBearerTest {
 
     protected JwtConsumer jwtConsumer(PublicKey publicKey) {
         return new JwtConsumerBuilder()
-            .setVerificationKey(publicKey)
-            .setRequireExpirationTime()
-            .setAllowedClockSkewInSeconds(30)               // Sure, let's give it some slack
-            .build();
+                .setVerificationKey(publicKey)
+                .setRequireExpirationTime()
+                .setAllowedClockSkewInSeconds(30)               // Sure, let's give it some slack
+                .build();
     }
 
     protected File generatePrivateKey(PrivateKey privateKey) throws IOException {

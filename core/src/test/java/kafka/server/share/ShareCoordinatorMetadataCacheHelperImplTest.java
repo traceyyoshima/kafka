@@ -51,23 +51,23 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         Function<SharePartitionKey, Integer> func = sharePartitionKey -> 0;
 
         Exception e = assertThrows(NullPointerException.class, () -> new ShareCoordinatorMetadataCacheHelperImpl(
-            null,
-            func,
-            mock(ListenerName.class)
+                null,
+                func,
+                mock(ListenerName.class)
         ));
         assertEquals("metadataCache must not be null", e.getMessage());
 
         e = assertThrows(NullPointerException.class, () -> new ShareCoordinatorMetadataCacheHelperImpl(
-            mock(MetadataCache.class),
-            null,
-            mock(ListenerName.class)
+                mock(MetadataCache.class),
+                null,
+                mock(ListenerName.class)
         ));
         assertEquals("keyToPartitionMapper must not be null", e.getMessage());
 
         e = assertThrows(NullPointerException.class, () -> new ShareCoordinatorMetadataCacheHelperImpl(
-            mock(MetadataCache.class),
-            func,
-            null
+                mock(MetadataCache.class),
+                func,
+                null
         ));
         assertEquals("interBrokerListenerName must not be null", e.getMessage());
     }
@@ -77,18 +77,18 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         Function<SharePartitionKey, Integer> func = sharePartitionKey -> 0;
         MetadataCache mockMetadataCache = mock(MetadataCache.class);
         when(mockMetadataCache.contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME)))
-            .thenReturn(false);
+                .thenReturn(false);
 
         ShareCoordinatorMetadataCacheHelper cache = new ShareCoordinatorMetadataCacheHelperImpl(
-            mockMetadataCache,
-            func,
-            mock(ListenerName.class)
+                mockMetadataCache,
+                func,
+                mock(ListenerName.class)
         );
 
         when(mockMetadataCache.contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME)))
-            .thenThrow(
-                new RuntimeException("bad stuff")
-            );
+                .thenThrow(
+                        new RuntimeException("bad stuff")
+                );
 
         assertFalse(cache.containsTopic(Topic.SHARE_GROUP_STATE_TOPIC_NAME));
         verify(mockMetadataCache, times(1)).contains(Topic.SHARE_GROUP_STATE_TOPIC_NAME);
@@ -99,18 +99,18 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         Function<SharePartitionKey, Integer> func = sharePartitionKey -> 0;
         MetadataCache mockMetadataCache = mock(MetadataCache.class);
         when(mockMetadataCache.contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME)))
-            .thenReturn(false);
+                .thenReturn(false);
 
         ShareCoordinatorMetadataCacheHelper cache = new ShareCoordinatorMetadataCacheHelperImpl(
-            mockMetadataCache,
-            func,
-            mock(ListenerName.class)
+                mockMetadataCache,
+                func,
+                mock(ListenerName.class)
         );
 
         when(mockMetadataCache.contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME)))
-            .thenReturn(
-                true
-            );
+                .thenReturn(
+                        true
+                );
 
         assertTrue(cache.containsTopic(Topic.SHARE_GROUP_STATE_TOPIC_NAME));
         verify(mockMetadataCache, times(1)).contains(Topic.SHARE_GROUP_STATE_TOPIC_NAME);
@@ -121,17 +121,17 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         Function<SharePartitionKey, Integer> func = sharePartitionKey -> 0;
         MetadataCache mockMetadataCache = mock(MetadataCache.class);
         when(mockMetadataCache.contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME)))
-            .thenReturn(false);
+                .thenReturn(false);
 
         ShareCoordinatorMetadataCacheHelper cache = new ShareCoordinatorMetadataCacheHelperImpl(
-            mockMetadataCache,
-            func,
-            mock(ListenerName.class)
+                mockMetadataCache,
+                func,
+                mock(ListenerName.class)
         );
 
         assertEquals(
-            Node.noNode(),
-            cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
+                Node.noNode(),
+                cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
         );
 
         verify(mockMetadataCache, times(1)).contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME));
@@ -144,84 +144,84 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         ListenerName mockListenerName = mock(ListenerName.class);
 
         ShareCoordinatorMetadataCacheHelper cache = new ShareCoordinatorMetadataCacheHelperImpl(
-            mockMetadataCache,
-            func,
-            mockListenerName
+                mockMetadataCache,
+                func,
+                mockListenerName
         );
 
         when(mockMetadataCache.contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME)))
-            .thenReturn(true);
+                .thenReturn(true);
 
         // null topic metadata response
         when(mockMetadataCache.getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         )).thenReturn(
-            null
+                null
         );
 
         assertEquals(
-            Node.noNode(),
-            cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
+                Node.noNode(),
+                cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
         );
 
         verify(mockMetadataCache, times(1)).contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME));
         verify(mockMetadataCache, times(1)).getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         );
 
         // empty topic metadata response
         when(mockMetadataCache.getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         )).thenReturn(
-            List.of()
+                List.of()
         );
 
         assertEquals(
-            Node.noNode(),
-            cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
+                Node.noNode(),
+                cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
         );
 
         verify(mockMetadataCache, times(2)).contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME));
         verify(mockMetadataCache, times(2)).getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         );
 
         // erroneous topic metadata response
         when(mockMetadataCache.getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         )).thenReturn(
-            List.of(
-                new MetadataResponseData.MetadataResponseTopic()
-                    .setErrorCode(Errors.BROKER_NOT_AVAILABLE.code())
-            )
+                List.of(
+                        new MetadataResponseData.MetadataResponseTopic()
+                                .setErrorCode(Errors.BROKER_NOT_AVAILABLE.code())
+                )
         );
 
         assertEquals(
-            Node.noNode(),
-            cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
+                Node.noNode(),
+                cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
         );
 
         verify(mockMetadataCache, times(3)).contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME));
         verify(mockMetadataCache, times(3)).getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         );
     }
 
@@ -232,51 +232,51 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         ListenerName mockListenerName = mock(ListenerName.class);
 
         ShareCoordinatorMetadataCacheHelper cache = new ShareCoordinatorMetadataCacheHelperImpl(
-            mockMetadataCache,
-            func,
-            mockListenerName
+                mockMetadataCache,
+                func,
+                mockListenerName
         );
 
         when(mockMetadataCache.contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME)))
-            .thenReturn(true);
+                .thenReturn(true);
 
         // correct topic metadata response
         when(mockMetadataCache.getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         )).thenReturn(
-            List.of(
-                new MetadataResponseData.MetadataResponseTopic()
-                    .setErrorCode(Errors.NONE.code())
-                    .setPartitions(List.of(
-                        new MetadataResponseData.MetadataResponsePartition()
-                            .setPartitionIndex(0)
-                            .setLeaderId(1)
-                    ))
-            )
+                List.of(
+                        new MetadataResponseData.MetadataResponseTopic()
+                                .setErrorCode(Errors.NONE.code())
+                                .setPartitions(List.of(
+                                        new MetadataResponseData.MetadataResponsePartition()
+                                                .setPartitionIndex(0)
+                                                .setLeaderId(1)
+                                ))
+                )
         );
 
         // get alive broker node throws exception
         when(mockMetadataCache.getAliveBrokerNode(
-            eq(1),
-            eq(mockListenerName)
+                eq(1),
+                eq(mockListenerName)
         )).thenReturn(
-            Optional.empty()
+                Optional.empty()
         );
 
         assertEquals(
-            Node.noNode(),
-            cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
+                Node.noNode(),
+                cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
         );
 
         verify(mockMetadataCache, times(1)).contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME));
         verify(mockMetadataCache, times(1)).getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         );
         verify(mockMetadataCache, times(1)).getAliveBrokerNode(eq(1), eq(mockListenerName));
     }
@@ -288,51 +288,51 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         ListenerName mockListenerName = mock(ListenerName.class);
 
         ShareCoordinatorMetadataCacheHelper cache = new ShareCoordinatorMetadataCacheHelperImpl(
-            mockMetadataCache,
-            func,
-            mockListenerName
+                mockMetadataCache,
+                func,
+                mockListenerName
         );
 
         when(mockMetadataCache.contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME)))
-            .thenReturn(true);
+                .thenReturn(true);
 
         // correct topic metadata response
         when(mockMetadataCache.getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         )).thenReturn(
-            List.of(
-                new MetadataResponseData.MetadataResponseTopic()
-                    .setErrorCode(Errors.NONE.code())
-                    .setPartitions(List.of(
-                        new MetadataResponseData.MetadataResponsePartition()
-                            .setPartitionIndex(0)
-                            .setLeaderId(1)
-                    ))
-            )
+                List.of(
+                        new MetadataResponseData.MetadataResponseTopic()
+                                .setErrorCode(Errors.NONE.code())
+                                .setPartitions(List.of(
+                                        new MetadataResponseData.MetadataResponsePartition()
+                                                .setPartitionIndex(0)
+                                                .setLeaderId(1)
+                                ))
+                )
         );
 
         // get alive broker node throws exception
         when(mockMetadataCache.getAliveBrokerNode(
-            eq(1),
-            eq(mockListenerName)
+                eq(1),
+                eq(mockListenerName)
         )).thenThrow(
-            new CoordinatorNotAvailableException("bad stuff")
+                new CoordinatorNotAvailableException("bad stuff")
         );
 
         assertEquals(
-            Node.noNode(),
-            cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
+                Node.noNode(),
+                cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
         );
 
         verify(mockMetadataCache, times(1)).contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME));
         verify(mockMetadataCache, times(1)).getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         );
         verify(mockMetadataCache, times(1)).getAliveBrokerNode(eq(1), eq(mockListenerName));
     }
@@ -344,52 +344,52 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         ListenerName mockListenerName = mock(ListenerName.class);
 
         ShareCoordinatorMetadataCacheHelper cache = new ShareCoordinatorMetadataCacheHelperImpl(
-            mockMetadataCache,
-            func,
-            mockListenerName
+                mockMetadataCache,
+                func,
+                mockListenerName
         );
 
         when(mockMetadataCache.contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME)))
-            .thenReturn(true);
+                .thenReturn(true);
 
         // correct topic metadata response
         when(mockMetadataCache.getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         )).thenReturn(
-            List.of(
-                new MetadataResponseData.MetadataResponseTopic()
-                    .setErrorCode(Errors.NONE.code())
-                    .setPartitions(List.of(
-                        new MetadataResponseData.MetadataResponsePartition()
-                            .setPartitionIndex(0)
-                            .setLeaderId(1)
-                    ))
-            )
+                List.of(
+                        new MetadataResponseData.MetadataResponseTopic()
+                                .setErrorCode(Errors.NONE.code())
+                                .setPartitions(List.of(
+                                        new MetadataResponseData.MetadataResponsePartition()
+                                                .setPartitionIndex(0)
+                                                .setLeaderId(1)
+                                ))
+                )
         );
 
         // get alive broker node throws exception
         Node node = new Node(2, "some.domain.name", 65534);
         when(mockMetadataCache.getAliveBrokerNode(
-            eq(1),
-            eq(mockListenerName)
+                eq(1),
+                eq(mockListenerName)
         )).thenReturn(
-            Optional.of(node)
+                Optional.of(node)
         );
 
         assertEquals(
-            node,
-            cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
+                node,
+                cache.getShareCoordinator(SharePartitionKey.getInstance("group", Uuid.randomUuid(), 0), Topic.SHARE_GROUP_STATE_TOPIC_NAME)
         );
 
         verify(mockMetadataCache, times(1)).contains(eq(Topic.SHARE_GROUP_STATE_TOPIC_NAME));
         verify(mockMetadataCache, times(1)).getTopicMetadata(
-            any(),
-            eq(mockListenerName),
-            eq(false),
-            eq(false)
+                any(),
+                eq(mockListenerName),
+                eq(false),
+                eq(false)
         );
         verify(mockMetadataCache, times(1)).getAliveBrokerNode(eq(1), eq(mockListenerName));
     }
@@ -401,20 +401,20 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         ListenerName mockListenerName = mock(ListenerName.class);
 
         ShareCoordinatorMetadataCacheHelper cache = new ShareCoordinatorMetadataCacheHelperImpl(
-            mockMetadataCache,
-            func,
-            mockListenerName
+                mockMetadataCache,
+                func,
+                mockListenerName
         );
 
         when(mockMetadataCache.getAliveBrokerNodes(
-            eq(mockListenerName)
+                eq(mockListenerName)
         )).thenThrow(
-            new CoordinatorNotAvailableException("scary stuff")
+                new CoordinatorNotAvailableException("scary stuff")
         );
 
         assertEquals(
-            List.of(),
-            cache.getClusterNodes()
+                List.of(),
+                cache.getClusterNodes()
         );
 
         verify(mockMetadataCache, times(1)).getAliveBrokerNodes(eq(mockListenerName));
@@ -427,25 +427,25 @@ public class ShareCoordinatorMetadataCacheHelperImplTest {
         ListenerName mockListenerName = mock(ListenerName.class);
 
         ShareCoordinatorMetadataCacheHelper cache = new ShareCoordinatorMetadataCacheHelperImpl(
-            mockMetadataCache,
-            func,
-            mockListenerName
+                mockMetadataCache,
+                func,
+                mockListenerName
         );
 
         List<Node> nodes = List.of(
-            new Node(0, "some.domain.name", 65534),
-            new Node(1, "some.domain.name", 12345)
+                new Node(0, "some.domain.name", 65534),
+                new Node(1, "some.domain.name", 12345)
         );
 
         when(mockMetadataCache.getAliveBrokerNodes(
-            eq(mockListenerName)
+                eq(mockListenerName)
         )).thenReturn(
-            nodes
+                nodes
         );
 
         assertEquals(
-            nodes,
-            cache.getClusterNodes()
+                nodes,
+                cache.getClusterNodes()
         );
 
         verify(mockMetadataCache, times(1)).getAliveBrokerNodes(eq(mockListenerName));

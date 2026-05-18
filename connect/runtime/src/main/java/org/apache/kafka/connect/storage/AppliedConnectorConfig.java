@@ -32,6 +32,7 @@ public class AppliedConnectorConfig {
     /**
      * Create a new applied config that has not yet undergone
      * {@link WorkerConfigTransformer#transform(Map) transformation}.
+     *
      * @param rawConfig the non-transformed connector configuration; may be null
      */
     public AppliedConnectorConfig(Map<String, String> rawConfig) {
@@ -46,6 +47,7 @@ public class AppliedConnectorConfig {
      * This method is thread-safe: different threads may invoke it at any time and the same
      * transformed config should always be returned, with transformation still only ever
      * taking place once before its results are cached.
+     *
      * @param configTransformer the transformer to use, if no transformed connector
      *                          config has been cached yet; may be null
      * @return the possibly-cached, transformed, connector config; may be null

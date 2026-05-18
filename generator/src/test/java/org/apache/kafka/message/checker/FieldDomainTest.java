@@ -28,32 +28,32 @@ public class FieldDomainTest {
     @Test
     public void testMessage1Only() {
         assertEquals(FieldDomain.MESSAGE1_ONLY,
-            FieldDomain.of(field("bar", "1-1", "string"),
-                new Versions((short) 0, (short) 1),
-                new Versions((short) 2, (short) 5)));
+                FieldDomain.of(field("bar", "1-1", "string"),
+                        new Versions((short) 0, (short) 1),
+                        new Versions((short) 2, (short) 5)));
     }
 
     @Test
     public void testBoth() {
         assertEquals(FieldDomain.BOTH,
-            FieldDomain.of(field("bar", "1+", "string"),
-                new Versions((short) 0, (short) 1),
-                new Versions((short) 0, (short) 3)));
+                FieldDomain.of(field("bar", "1+", "string"),
+                        new Versions((short) 0, (short) 1),
+                        new Versions((short) 0, (short) 3)));
     }
 
     @Test
     public void testMessage2Only() {
         assertEquals(FieldDomain.MESSAGE2_ONLY,
-            FieldDomain.of(field("bar", "1+", "string"),
-                new Versions((short) 0, (short) 0),
-                new Versions((short) 0, (short) 1)));
+                FieldDomain.of(field("bar", "1+", "string"),
+                        new Versions((short) 0, (short) 0),
+                        new Versions((short) 0, (short) 1)));
     }
 
     @Test
     public void testNeither() {
         assertEquals(FieldDomain.NEITHER,
-            FieldDomain.of(field("bar", "2+", "string"),
-                new Versions((short) 0, (short) 0),
-                new Versions((short) 0, (short) 1)));
+                FieldDomain.of(field("bar", "2+", "string"),
+                        new Versions((short) 0, (short) 0),
+                        new Versions((short) 0, (short) 1)));
     }
 }

@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 /**
  * Built-in default partitioner.  Note, that this is just a utility class that is used directly from
  * RecordAccumulator, it does not implement the Partitioner interface.
- *
+ * <p>
  * The class keeps track of various bookkeeping information required for adaptive sticky partitioning
  * (described in detail in KIP-794).  There is one partitioner object per topic.
  */
@@ -51,7 +51,7 @@ public class BuiltInPartitioner {
     /**
      * BuiltInPartitioner constructor.
      *
-     * @param topic The topic
+     * @param topic           The topic
      * @param stickyBatchSize How much to produce to partition before switch
      */
     public BuiltInPartitioner(LogContext logContext, String topic, int stickyBatchSize, boolean rackAware, String rack) {
@@ -84,8 +84,8 @@ public class BuiltInPartitioner {
                 // Select only partitions with leaders in this rack if configured so, falling back if none are available.
                 if (rackAware) {
                     List<PartitionInfo> availablePartitionsInRack = availablePartitions.stream()
-                        .filter(p -> p.leader().hasRack() && p.leader().rack().equals(rack))
-                        .collect(Collectors.toList());
+                            .filter(p -> p.leader().hasRack() && p.leader().rack().equals(rack))
+                            .collect(Collectors.toList());
                     if (!availablePartitionsInRack.isEmpty()) {
                         availablePartitions = availablePartitionsInRack;
                     }
@@ -156,14 +156,14 @@ public class BuiltInPartitioner {
     /**
      * Peek currently chosen sticky partition.  This method works in conjunction with {@link #isPartitionChanged}
      * and {@link #updatePartitionInfo}.  The workflow is the following:
-     *
+     * <p>
      * 1. peekCurrentPartitionInfo is called to know which partition to lock.
      * 2. Lock partition's batch queue.
      * 3. isPartitionChanged under lock to make sure that nobody raced us.
      * 4. Append data to buffer.
      * 5. updatePartitionInfo to update produced bytes and maybe switch partition.
-     *
-     *  It's important that steps 3-5 are under partition's batch queue lock.
+     * <p>
+     * It's important that steps 3-5 are under partition's batch queue lock.
      *
      * @param cluster The cluster information (needed if there is no current partition)
      * @return sticky partition info object
@@ -200,7 +200,7 @@ public class BuiltInPartitioner {
      *
      * @param partitionInfo The sticky partition info object returned by peekCurrentPartitionInfo
      * @param appendedBytes The number of bytes appended to this partition
-     * @param cluster The cluster information
+     * @param cluster       The cluster information
      */
     void updatePartitionInfo(StickyPartitionInfo partitionInfo, int appendedBytes, Cluster cluster) {
         updatePartitionInfo(partitionInfo, appendedBytes, cluster, true);
@@ -212,8 +212,8 @@ public class BuiltInPartitioner {
      *
      * @param partitionInfo The sticky partition info object returned by peekCurrentPartitionInfo
      * @param appendedBytes The number of bytes appended to this partition
-     * @param cluster The cluster information
-     * @param enableSwitch If true, switch partition once produced enough bytes
+     * @param cluster       The cluster information
+     * @param enableSwitch  If true, switch partition once produced enough bytes
      */
     void updatePartitionInfo(StickyPartitionInfo partitionInfo, int appendedBytes, Cluster cluster, boolean enableSwitch) {
         // partitionInfo may be null if the caller didn't use built-in partitioner.
@@ -245,7 +245,7 @@ public class BuiltInPartitioner {
         // between stickyBatchSize and stickyBatchSize * 2 bytes, to better align with batch boundary.
         if (producedBytes >= stickyBatchSize * 2) {
             log.trace("Produced {} bytes, exceeding twice the batch size of {} bytes, with switching set to {}",
-                producedBytes, stickyBatchSize, enableSwitch);
+                    producedBytes, stickyBatchSize, enableSwitch);
         }
 
         if (producedBytes >= stickyBatchSize && enableSwitch || producedBytes >= stickyBatchSize * 2) {
@@ -259,13 +259,13 @@ public class BuiltInPartitioner {
      * Update partition load stats from the queue sizes of each partition
      * NOTE: queueSizes are modified in place to avoid allocations
      *
-     * @param queueSizes The queue sizes, partitions without leaders are excluded
-     * @param partitionIds The partition ids for the queues, partitions without leaders are excluded
+     * @param queueSizes           The queue sizes, partitions without leaders are excluded
+     * @param partitionIds         The partition ids for the queues, partitions without leaders are excluded
      * @param partitionLeaderRacks The racks of partition leaders for the queues, partitions without leaders are excluded
-     * @param length The logical length of the arrays (could be less): we may eliminate some partitions
-     *               based on latency, but to avoid reallocation of the arrays, we just decrement
-     *               logical length
-     * Visible for testing
+     * @param length               The logical length of the arrays (could be less): we may eliminate some partitions
+     *                             based on latency, but to avoid reallocation of the arrays, we just decrement
+     *                             logical length
+     *                             Visible for testing
      */
     public void updatePartitionLoadStats(int[] queueSizes, int[] partitionIds, String[] partitionLeaderRacks, int length) {
         if (queueSizes == null) {
@@ -337,8 +337,8 @@ public class BuiltInPartitioner {
         log.trace("Partition load stats for topic {}: CFT={}, IDs={}, length={}",
                 topic, queueSizes, partitionIds, length);
         partitionLoadStatsHolder = new PartitionLoadStatsHolder(
-            new PartitionLoadStats(queueSizes, partitionIds, length),
-            partitionLoadStatsInThisRack
+                new PartitionLoadStats(queueSizes, partitionIds, length),
+                partitionLoadStatsInThisRack
         );
     }
 

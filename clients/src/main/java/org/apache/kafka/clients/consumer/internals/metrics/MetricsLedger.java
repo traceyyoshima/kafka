@@ -34,9 +34,9 @@ import java.util.Set;
  * using the internal {@link Metrics} instance in a ledger. Then, in {@link #close()}, the
  * ledger is reviewed and each of the {@link MetricName}s and {@link Sensor}s are removed from
  * the underlying {@link Metrics} instance.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * Because {@link Metrics} is a <code>final</code> class, we cannot extend it in a delegation
  * pattern. Instead, we mimic the subset of APIs that are needed by the callers.
  */

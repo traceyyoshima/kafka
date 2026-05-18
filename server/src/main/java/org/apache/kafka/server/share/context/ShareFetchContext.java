@@ -44,6 +44,7 @@ public abstract class ShareFetchContext {
 
     /**
      * Return an empty throttled response due to quota violation.
+     *
      * @param throttleTimeMs - The time to throttle the response.
      * @return - An empty throttled response.
      */
@@ -60,19 +61,21 @@ public abstract class ShareFetchContext {
     /**
      * Get the response size to be used for quota computation. Since we are returning an empty response in case of
      * throttling, we are not supposed to update the context until we know that we are not going to throttle.
+     *
      * @param updates - The updates to be sent in the response.
      * @param version - The version of the share fetch request.
      * @return - The size of the response.
      */
     public abstract int responseSize(LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> updates,
-                              short version);
+                                     short version);
 
     /**
      * Updates the share fetch context with new partition information. Generates response data.
      * The response data may require subsequent down-conversion.
-     * @param groupId - The group id.
+     *
+     * @param groupId  - The group id.
      * @param memberId - The member id.
-     * @param updates - The updates to be sent in the response.
+     * @param updates  - The updates to be sent in the response.
      * @return - The share fetch response.
      */
     public abstract ShareFetchResponse updateAndGenerateResponseData(String groupId, String memberId, LinkedHashMap<TopicIdPartition, ShareFetchResponseData.PartitionData> updates);

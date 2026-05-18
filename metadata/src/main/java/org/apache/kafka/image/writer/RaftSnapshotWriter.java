@@ -35,8 +35,8 @@ public class RaftSnapshotWriter implements ImageWriter {
     private OptionalLong frozenSize = OptionalLong.empty();
 
     public RaftSnapshotWriter(
-        SnapshotWriter<ApiMessageAndVersion> snapshotWriter,
-        int batchSize
+            SnapshotWriter<ApiMessageAndVersion> snapshotWriter,
+            int batchSize
     ) {
         this.snapshotWriter = snapshotWriter;
         this.batchSize = batchSize;

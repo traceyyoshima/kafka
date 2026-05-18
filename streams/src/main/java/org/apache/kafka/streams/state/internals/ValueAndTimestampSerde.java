@@ -25,8 +25,8 @@ import static java.util.Objects.requireNonNull;
 public class ValueAndTimestampSerde<V> extends WrappingNullableSerde<ValueAndTimestamp<V>, Void, V> {
     public ValueAndTimestampSerde(final Serde<V> valueSerde) {
         super(
-            new ValueAndTimestampSerializer<>(requireNonNull(valueSerde, "valueSerde was null").serializer()),
-            new ValueAndTimestampDeserializer<>(requireNonNull(valueSerde, "valueSerde was null").deserializer())
+                new ValueAndTimestampSerializer<>(requireNonNull(valueSerde, "valueSerde was null").serializer()),
+                new ValueAndTimestampDeserializer<>(requireNonNull(valueSerde, "valueSerde was null").deserializer())
         );
     }
 }

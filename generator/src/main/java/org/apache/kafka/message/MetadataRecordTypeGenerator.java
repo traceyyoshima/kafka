@@ -46,8 +46,8 @@ public final class MetadataRecordTypeGenerator implements TypeClassGenerator {
             MessageSpec prevSpec = apis.put(id, spec);
             if (prevSpec != null) {
                 throw new RuntimeException("Duplicate metadata record entry for type " +
-                    id + ". Original claimant: " + prevSpec.name() + ". New " +
-                    "claimant: " + spec.name());
+                        id + ". Original claimant: " + prevSpec.name() + ". New " +
+                        "claimant: " + spec.name());
             }
         }
     }
@@ -90,12 +90,12 @@ public final class MetadataRecordTypeGenerator implements TypeClassGenerator {
             String name = spec.name();
             numProcessed++;
             buffer.printf("%s(\"%s\", (short) %d, (short) %d, (short) %d)%s%n",
-                MessageGenerator.toSnakeCase(name).toUpperCase(Locale.ROOT),
-                MessageGenerator.capitalizeFirst(name),
-                entry.getKey(),
-                entry.getValue().validVersions().lowest(),
-                entry.getValue().validVersions().highest(),
-                (numProcessed == apis.size()) ? ";" : ",");
+                    MessageGenerator.toSnakeCase(name).toUpperCase(Locale.ROOT),
+                    MessageGenerator.capitalizeFirst(name),
+                    entry.getKey(),
+                    entry.getValue().validVersions().lowest(),
+                    entry.getValue().validVersions().highest(),
+                    (numProcessed == apis.size()) ? ";" : ",");
         }
     }
 
@@ -126,14 +126,14 @@ public final class MetadataRecordTypeGenerator implements TypeClassGenerator {
             buffer.printf("case %d:%n", entry.getKey());
             buffer.incrementIndent();
             buffer.printf("return %s;%n", MessageGenerator.
-                toSnakeCase(entry.getValue().name()).toUpperCase(Locale.ROOT));
+                    toSnakeCase(entry.getValue().name()).toUpperCase(Locale.ROOT));
             buffer.decrementIndent();
         }
         buffer.printf("default:%n");
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(\"Unknown metadata id \"" +
-            " + id);%n");
+                " + id);%n");
         buffer.decrementIndent();
         buffer.decrementIndent();
         buffer.printf("}%n");
@@ -151,14 +151,14 @@ public final class MetadataRecordTypeGenerator implements TypeClassGenerator {
             buffer.printf("case %d:%n", entry.getKey());
             buffer.incrementIndent();
             buffer.printf("return new %s();%n",
-                MessageGenerator.capitalizeFirst(entry.getValue().name()));
+                    MessageGenerator.capitalizeFirst(entry.getValue().name()));
             buffer.decrementIndent();
         }
         buffer.printf("default:%n");
         buffer.incrementIndent();
         headerGenerator.addImport(MessageGenerator.UNSUPPORTED_VERSION_EXCEPTION_CLASS);
         buffer.printf("throw new UnsupportedVersionException(\"Unknown metadata id \"" +
-            " + id);%n");
+                " + id);%n");
         buffer.decrementIndent();
         buffer.decrementIndent();
         buffer.printf("}%n");

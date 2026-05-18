@@ -130,7 +130,8 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
      */
     private class ShareAcknowledgementEventProcessor implements EventProcessor<ShareAcknowledgementEvent> {
 
-        public ShareAcknowledgementEventProcessor() {}
+        public ShareAcknowledgementEventProcessor() {
+        }
 
         @Override
         public void process(final ShareAcknowledgementEvent event) {
@@ -151,7 +152,8 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
      */
     private class BackgroundEventProcessor implements EventProcessor<BackgroundEvent> {
 
-        public BackgroundEventProcessor() {}
+        public BackgroundEventProcessor() {
+        }
 
         @Override
         public void process(final BackgroundEvent event) {
@@ -280,7 +282,7 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
             final BlockingQueue<ApplicationEvent> applicationEventQueue = new LinkedBlockingQueue<>();
             this.acknowledgementEventHandler = new ShareAcknowledgementEventHandler(acknowledgementEventQueue);
             this.backgroundEventHandler = new BackgroundEventHandler(
-                backgroundEventQueue, time, asyncConsumerMetrics);
+                    backgroundEventQueue, time, asyncConsumerMetrics);
 
             // This FetchBuffer is shared between the application and network threads.
             this.fetchBuffer = new ShareFetchBuffer(logContext);
@@ -401,7 +403,7 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
         this.acknowledgementEventHandler = new ShareAcknowledgementEventHandler(acknowledgementEventQueue);
         this.backgroundEventQueue = new LinkedBlockingQueue<>();
         this.backgroundEventHandler = new BackgroundEventHandler(
-            backgroundEventQueue, time, asyncConsumerMetrics);
+                backgroundEventQueue, time, asyncConsumerMetrics);
 
         final Supplier<NetworkClientDelegate> networkClientDelegateSupplier =
                 NetworkClientDelegate.supplier(time, config, logContext, client, metadata, backgroundEventHandler, true, asyncConsumerMetrics);
@@ -1082,7 +1084,7 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
      */
     private void sendAcknowledgementsAndLeaveGroup(final Timer timer, final AtomicReference<Throwable> firstException) {
         if (applicationEventHandler == null || backgroundEventProcessor == null ||
-            backgroundEventReaper == null || backgroundEventQueue == null) {
+                backgroundEventReaper == null || backgroundEventQueue == null) {
             return;
         }
         completeQuietly(
@@ -1096,7 +1098,7 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
             // If users have fatal error, they will get some exceptions in the background queue.
             // When running unsubscribe, these exceptions should be ignored, or users can't unsubscribe successfully.
             processBackgroundEvents(unsubscribeEvent.future(), timer, e -> (e instanceof GroupAuthorizationException
-                || e instanceof TopicAuthorizationException || e instanceof InvalidTopicException));
+                    || e instanceof TopicAuthorizationException || e instanceof InvalidTopicException));
             log.info("Completed releasing assignment and leaving group to close consumer.");
         } catch (TimeoutException e) {
             log.warn("Consumer triggered an unsubscribe event to leave the group but couldn't " +
@@ -1318,9 +1320,9 @@ public class ShareConsumerImpl<K, V> implements ShareConsumerDelegate<K, V> {
      *     <li>Process background events, if any</li>
      *     <li><em>Briefly</em> wait for {@link CompletableApplicationEvent an event} to complete</li>
      * </ol>
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * Each iteration gives the application thread an opportunity to process background events, which may be
      * necessary to complete the overall processing.
      *

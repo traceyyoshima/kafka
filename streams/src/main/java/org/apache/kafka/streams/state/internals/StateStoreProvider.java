@@ -26,6 +26,7 @@ import java.util.List;
  * Provides access to {@link StateStore}s that have been created
  * as part of the {@link org.apache.kafka.streams.processor.internals.ProcessorTopology}.
  * To get access to custom stores developers should implement {@link QueryableStoreType}.
+ *
  * @see QueryableStoreTypes
  */
 public interface StateStoreProvider {
@@ -34,10 +35,10 @@ public interface StateStoreProvider {
      * Find instances of StateStore that are accepted by {@link QueryableStoreType#accepts} and
      * have the provided storeName.
      *
-     * @param storeName             name of the store
-     * @param queryableStoreType    filter stores based on this queryableStoreType
-     * @param <T>                   The type of the Store
-     * @return  List of the instances of the store in this topology. Empty List if not found
+     * @param storeName          name of the store
+     * @param queryableStoreType filter stores based on this queryableStoreType
+     * @param <T>                The type of the Store
+     * @return List of the instances of the store in this topology. Empty List if not found
      */
     <T> List<T> stores(String storeName, QueryableStoreType<T> queryableStoreType);
 }

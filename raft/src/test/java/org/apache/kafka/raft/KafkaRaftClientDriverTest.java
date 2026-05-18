@@ -39,10 +39,10 @@ class KafkaRaftClientDriverTest {
         KafkaRaftClient<String> raftClient = (KafkaRaftClient<String>) Mockito.mock(KafkaRaftClient.class);
         MockFaultHandler faultHandler = new MockFaultHandler("TestFaultHandler");
         KafkaRaftClientDriver<String> driver = new KafkaRaftClientDriver<>(
-            raftClient,
-            "test-raft",
-            faultHandler,
-            new LogContext()
+                raftClient,
+                "test-raft",
+                faultHandler,
+                new LogContext()
         );
 
         when(raftClient.isRunning()).thenReturn(true);
@@ -73,10 +73,10 @@ class KafkaRaftClientDriverTest {
         KafkaRaftClient<String> raftClient = (KafkaRaftClient<String>) Mockito.mock(KafkaRaftClient.class);
         MockFaultHandler faultHandler = new MockFaultHandler("TestFaultHandler");
         KafkaRaftClientDriver<String> driver = new KafkaRaftClientDriver<>(
-            raftClient,
-            "test-raft",
-            faultHandler,
-            new LogContext()
+                raftClient,
+                "test-raft",
+                faultHandler,
+                new LogContext()
         );
 
         when(raftClient.isRunning()).thenReturn(true);

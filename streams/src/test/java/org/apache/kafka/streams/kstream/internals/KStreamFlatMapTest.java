@@ -52,13 +52,13 @@ public class KStreamFlatMapTest {
         final String topicName = "topic";
 
         final KeyValueMapper<Number, Object, Iterable<KeyValue<String, String>>> mapper =
-            (key, value) -> {
-                final ArrayList<KeyValue<String, String>> result = new ArrayList<>();
-                for (int i = 0; i < key.intValue(); i++) {
-                    result.add(KeyValue.pair(Integer.toString(key.intValue() * 10 + i), value.toString()));
-                }
-                return result;
-            };
+                (key, value) -> {
+                    final ArrayList<KeyValue<String, String>> result = new ArrayList<>();
+                    for (int i = 0; i < key.intValue(); i++) {
+                        result.add(KeyValue.pair(Integer.toString(key.intValue() * 10 + i), value.toString()));
+                    }
+                    return result;
+                };
 
         final int[] expectedKeys = {0, 1, 2, 3};
 
@@ -78,11 +78,11 @@ public class KStreamFlatMapTest {
         assertEquals(6, supplier.theCapturedProcessor().processed().size());
 
         final KeyValueTimestamp[] expected = {new KeyValueTimestamp<>("10", "V1", 0),
-            new KeyValueTimestamp<>("20", "V2", 0),
-            new KeyValueTimestamp<>("21", "V2", 0),
-            new KeyValueTimestamp<>("30", "V3", 0),
-            new KeyValueTimestamp<>("31", "V3", 0),
-            new KeyValueTimestamp<>("32", "V3", 0)};
+                new KeyValueTimestamp<>("20", "V2", 0),
+                new KeyValueTimestamp<>("21", "V2", 0),
+                new KeyValueTimestamp<>("30", "V3", 0),
+                new KeyValueTimestamp<>("31", "V3", 0),
+                new KeyValueTimestamp<>("32", "V3", 0)};
 
         for (int i = 0; i < expected.length; i++) {
             assertEquals(expected[i], supplier.theCapturedProcessor().processed().get(i));

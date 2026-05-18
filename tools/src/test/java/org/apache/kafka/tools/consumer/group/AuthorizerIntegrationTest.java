@@ -46,7 +46,7 @@ public class AuthorizerIntegrationTest extends AbstractAuthorizerIntegrationTest
             fail("Non-existent group should throw an exception");
         } catch (ExecutionException e) {
             assertInstanceOf(GroupIdNotFoundException.class, e.getCause(),
-                "Non-existent group should throw GroupIdNotFoundException");
+                    "Non-existent group should throw GroupIdNotFoundException");
         }
     }
 }

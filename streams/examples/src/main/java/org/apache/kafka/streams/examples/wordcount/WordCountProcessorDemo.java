@@ -123,9 +123,9 @@ public final class WordCountProcessorDemo {
         builder.addProcessor("Process", WordCountProcessor::new, "Source");
 
         builder.addStateStore(Stores.keyValueStoreBuilder(
-                Stores.inMemoryKeyValueStore("Counts"),
-                Serdes.String(),
-                Serdes.Integer()),
+                        Stores.inMemoryKeyValueStore("Counts"),
+                        Serdes.String(),
+                        Serdes.Integer()),
                 "Process");
 
         builder.addSink("Sink", "streams-wordcount-processor-output", "Process");

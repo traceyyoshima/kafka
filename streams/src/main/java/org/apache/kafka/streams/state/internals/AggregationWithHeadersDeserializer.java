@@ -37,8 +37,8 @@ import static org.apache.kafka.streams.state.internals.Utils.readBytes;
  * Where:
  * - headersSize: Size of the headersBytes section in bytes, encoded as varint
  * - headersBytes:
- *   - For null/empty headers: headersSize = 0, headersBytes is omitted (0 bytes)
- *   - For non-empty headers: headersSize > 0, serialized headers in the format [count(varint)][header1][header2]... to be processed by HeadersDeserializer.
+ * - For null/empty headers: headersSize = 0, headersBytes is omitted (0 bytes)
+ * - For non-empty headers: headersSize > 0, serialized headers in the format [count(varint)][header1][header2]... to be processed by HeadersDeserializer.
  * - aggregation: Serialized aggregation to be deserialized with the provided aggregation deserializer
  * <p>
  * This is used by KIP-1271 to deserialize aggregations with headers from session state stores.

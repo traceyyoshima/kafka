@@ -36,43 +36,44 @@ public class DescribeTransactionsResult {
      *
      * @param transactionalId the transactional ID to describe
      * @return a future which completes when the transaction description of a particular
-     *         transactional ID is available.
+     * transactional ID is available.
      * @throws IllegalArgumentException if the `transactionalId` was not included in the
-     *         respective call to {@link Admin#describeTransactions(Collection, DescribeTransactionsOptions)}.
+     *                                  respective call to {@link Admin#describeTransactions(Collection, DescribeTransactionsOptions)}.
      */
     public KafkaFuture<TransactionDescription> description(String transactionalId) {
         CoordinatorKey key = CoordinatorKey.byTransactionalId(transactionalId);
         KafkaFuture<TransactionDescription> future = futures.get(key);
         if (future == null) {
             throw new IllegalArgumentException("TransactionalId " +
-                "`" + transactionalId + "` was not included in the request");
+                    "`" + transactionalId + "` was not included in the request");
         }
         return future;
     }
+
     /**
      * Get a future which returns a map of the transaction descriptions requested in the respective
      * call to {@link Admin#describeTransactions(Collection, DescribeTransactionsOptions)}.
-     *
+     * <p>
      * If the description fails on any of the transactional IDs in the request, then this future
      * will also fail.
      *
      * @return a future which either completes when all transaction descriptions complete or fails
-     *         if any of the descriptions cannot be obtained
+     * if any of the descriptions cannot be obtained
      */
     public KafkaFuture<Map<String, TransactionDescription>> all() {
         return KafkaFuture.allOf(futures.values().toArray(new KafkaFuture<?>[0]))
-            .thenApply(nil -> {
-                Map<String, TransactionDescription> results = new HashMap<>(futures.size());
-                for (Map.Entry<CoordinatorKey, KafkaFuture<TransactionDescription>> entry : futures.entrySet()) {
-                    try {
-                        results.put(entry.getKey().idValue, entry.getValue().get());
-                    } catch (InterruptedException | ExecutionException e) {
-                        // This should be unreachable, because allOf ensured that all the futures completed successfully.
-                        throw new RuntimeException(e);
+                .thenApply(nil -> {
+                    Map<String, TransactionDescription> results = new HashMap<>(futures.size());
+                    for (Map.Entry<CoordinatorKey, KafkaFuture<TransactionDescription>> entry : futures.entrySet()) {
+                        try {
+                            results.put(entry.getKey().idValue, entry.getValue().get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            // This should be unreachable, because allOf ensured that all the futures completed successfully.
+                            throw new RuntimeException(e);
+                        }
                     }
-                }
-                return results;
-            });
+                    return results;
+                });
     }
 
 }

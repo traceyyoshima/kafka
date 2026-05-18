@@ -60,13 +60,13 @@ import java.util.stream.Collectors;
 /**
  * This is currently an internal and experimental feature for enabling certain kinds of topology upgrades. Use at
  * your own risk.
- *
+ * <p>
  * Status: deprecated and planned for removal. PLEASE REACH OUT IF YOU ARE USING THIS FEATURE. Any concerns about
- *         the deprecation can be raised by filing a ticket at https://issues.apache.org/jira/projects/KAFKA/issues
- *
+ * the deprecation can be raised by filing a ticket at https://issues.apache.org/jira/projects/KAFKA/issues
+ * <p>
  * Note: some standard features of Kafka Streams are not yet supported with NamedTopologies. These include:
- *       - global state stores
- *       - TopologyTestDriver (TTD)
+ * - global state stores
+ * - TopologyTestDriver (TTD)
  */
 @Deprecated
 public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
@@ -99,7 +99,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
     /**
      * Start up Streams with a collection of initial NamedTopologies (may be empty)
-     *
+     * <p>
      * Note: this is synchronized to ensure that the application state cannot change while we add topologies
      */
     public synchronized void start(final Collection<NamedTopology> initialTopologies) {
@@ -119,9 +119,8 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
      * Provides a high-level DSL for specifying the processing logic of your application and building it into an
      * independent topology that can be executed by this {@link KafkaStreams}.
      *
-     * @param topologyName              The name for this topology
-     * @param topologyOverrides         The properties and any config overrides for this topology
-     *
+     * @param topologyName      The name for this topology
+     * @param topologyOverrides The properties and any config overrides for this topology
      * @throws IllegalArgumentException if the name contains the character sequence "__"
      */
     public NamedTopologyBuilder newNamedTopologyBuilder(final String topologyName, final Properties topologyOverrides) {
@@ -136,8 +135,8 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
      * independent topology that can be executed by this {@link KafkaStreams}. This method will use the global
      * application {@link StreamsConfig} passed in to the constructor for all topology-level configs. To override
      * any of these for this specific Topology, use {@link #newNamedTopologyBuilder(String, Properties)}.
-     * @param topologyName              The name for this topology
      *
+     * @param topologyName The name for this topology
      * @throws IllegalArgumentException if the name contains the character sequence "__"
      */
     public NamedTopologyBuilder newNamedTopologyBuilder(final String topologyName) {
@@ -160,7 +159,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
      * you should inform all of them by calling {@code #addNamedTopology(NamedTopology)} on each client in order for
      * it to begin processing the new topology.
      * This method is not purely Async.
-     *
+     * <p>
      * May complete exceptionally (does not actually directly throw) with:
      *
      * @throws IllegalArgumentException if this topology name is already in use
@@ -173,12 +172,12 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
         if (hasStartedOrFinishedShuttingDown()) {
             future.completeExceptionally(
-                new IllegalStateException("Cannot add a NamedTopology while the state is " + super.state)
+                    new IllegalStateException("Cannot add a NamedTopology while the state is " + super.state)
             );
         } else if (getTopologyByName(newTopology.name()).isPresent()) {
             future.completeExceptionally(
-                new IllegalArgumentException("Unable to add the new NamedTopology " + newTopology.name() +
-                                                   " as another of the same name already exists")
+                    new IllegalArgumentException("Unable to add the new NamedTopology " + newTopology.name() +
+                            " as another of the same name already exists")
             );
         } else {
             topologyMetadata.registerAndBuildNewTopology(future, newTopology.internalTopologyBuilder());
@@ -194,11 +193,10 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
      * it stops processing the old topology.
      * This method is not purely Async.
      *
-     * @param topologyToRemove          name of the topology to be removed
-     * @param resetOffsets              whether to reset the committed offsets for any source topics
-     *
-     * May complete exceptionally (does not actually directly throw) with:
-     *
+     * @param topologyToRemove name of the topology to be removed
+     * @param resetOffsets     whether to reset the committed offsets for any source topics
+     *                         <p>
+     *                         May complete exceptionally (does not actually directly throw) with:
      * @throws IllegalArgumentException if this topology name cannot be found
      * @throws IllegalStateException    if streams has not been started or has already shut down
      */
@@ -209,45 +207,45 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
         if (hasStartedOrFinishedShuttingDown()) {
             log.error("Attempted to remove topology {} from while the Kafka Streams was in state {}, "
-                          + "topologies cannot be modified if the application has begun or completed shutting down.",
-                      topologyToRemove, state
+                            + "topologies cannot be modified if the application has begun or completed shutting down.",
+                    topologyToRemove, state
             );
             removeTopologyFuture.completeExceptionally(
-                new IllegalStateException("Cannot remove a NamedTopology while the state is " + super.state)
+                    new IllegalStateException("Cannot remove a NamedTopology while the state is " + super.state)
             );
         } else if (getTopologyByName(topologyToRemove).isEmpty()) {
             log.error("Attempted to remove unknown topology {}. This application currently contains the"
-                          + "following topologies: {}.", topologyToRemove, topologyMetadata.namedTopologiesView()
+                    + "following topologies: {}.", topologyToRemove, topologyMetadata.namedTopologiesView()
             );
             removeTopologyFuture.completeExceptionally(
-                new UnknownTopologyException("Unable to remove topology", topologyToRemove)
+                    new UnknownTopologyException("Unable to remove topology", topologyToRemove)
             );
         }
 
         final Set<TopicPartition> partitionsToReset = metadataForLocalThreads()
-            .stream()
-            .flatMap(t -> {
-                final Set<TaskMetadata> tasks = new HashSet<>(t.activeTasks());
-                return tasks.stream();
-            })
-            .flatMap(t -> t.topicPartitions().stream())
-            .filter(t -> topologyMetadata.sourceTopicsForTopology(topologyToRemove).contains(t.topic()))
-            .collect(Collectors.toSet());
+                .stream()
+                .flatMap(t -> {
+                    final Set<TaskMetadata> tasks = new HashSet<>(t.activeTasks());
+                    return tasks.stream();
+                })
+                .flatMap(t -> t.topicPartitions().stream())
+                .filter(t -> topologyMetadata.sourceTopicsForTopology(topologyToRemove).contains(t.topic()))
+                .collect(Collectors.toSet());
 
         topologyMetadata.unregisterTopology(removeTopologyFuture, topologyToRemove);
 
         final boolean skipResetForUnstartedApplication =
-            maybeCompleteFutureIfStillInCREATED(removeTopologyFuture, "removing topology " + topologyToRemove);
+                maybeCompleteFutureIfStillInCREATED(removeTopologyFuture, "removing topology " + topologyToRemove);
 
         if (resetOffsets && !skipResetForUnstartedApplication && !partitionsToReset.isEmpty()) {
             log.info("Resetting offsets for the following partitions of {} removed NamedTopology {}: {}",
-                     removeTopologyFuture.isCompletedExceptionally() ? "unsuccessfully" : "successfully",
-                     topologyToRemove, partitionsToReset
+                    removeTopologyFuture.isCompletedExceptionally() ? "unsuccessfully" : "successfully",
+                    topologyToRemove, partitionsToReset
             );
             return new RemoveNamedTopologyResult(
-                removeTopologyFuture,
-                topologyToRemove,
-                () -> resetOffsets(partitionsToReset)
+                    removeTopologyFuture,
+                    topologyToRemove,
+                    () -> resetOffsets(partitionsToReset)
             );
         } else {
             return new RemoveNamedTopologyResult(removeTopologyFuture);
@@ -256,6 +254,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
     /**
      * Pauses a topology by name
+     *
      * @param topologyName Name of the topology to pause
      */
     public void pauseNamedTopology(final String topologyName) {
@@ -264,6 +263,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
     /**
      * Checks if a given topology is paused.
+     *
      * @param topologyName If null, assume that we are checking the `UNNAMED_TOPOLOGY`.
      * @return A boolean indicating if the topology is paused.
      */
@@ -273,6 +273,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
     /**
      * Resumes a topology by name
+     *
      * @param topologyName Name of the topology to resume
      */
     public void resumeNamedTopology(final String topologyName) {
@@ -281,7 +282,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
     }
 
     /**
-     * @return  true iff the application is still in CREATED and the future was completed
+     * @return true iff the application is still in CREATED and the future was completed
      */
     private boolean maybeCompleteFutureIfStillInCREATED(final KafkaFutureImpl<Void> updateTopologyFuture,
                                                         final String operation) {
@@ -300,8 +301,8 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
         while (true) {
             try {
                 final DeleteConsumerGroupOffsetsResult deleteOffsetsResult = adminClient.deleteConsumerGroupOffsets(
-                    applicationConfigs.getString(StreamsConfig.APPLICATION_ID_CONFIG),
-                    partitionsToReset);
+                        applicationConfigs.getString(StreamsConfig.APPLICATION_ID_CONFIG),
+                        partitionsToReset);
                 deleteOffsetsResult.all().get();
                 log.info("Successfully completed resetting offsets.");
                 break;
@@ -313,8 +314,8 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
                 final Throwable error = ex.getCause() != null ? ex.getCause() : ex;
 
                 if (error instanceof GroupSubscribedToTopicException &&
-                    error.getMessage()
-                        .equals("Deleting offsets of a topic is forbidden while the consumer group is actively subscribed to it.")) {
+                        error.getMessage()
+                                .equals("Deleting offsets of a topic is forbidden while the consumer group is actively subscribed to it.")) {
                     log.debug("Offset reset failed, there may be other nodes which have not yet finished removing this topology", error);
                 } else if (error instanceof GroupIdNotFoundException) {
                     log.info("The offsets have been reset by another client or the group has been deleted, no need to retry further.");
@@ -342,8 +343,7 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
      * it stops processing the old topology.
      * This method is not purely Async.
      *
-     * @param topologyToRemove          name of the topology to be removed
-     *
+     * @param topologyToRemove name of the topology to be removed
      * @throws IllegalArgumentException if this topology name cannot be found
      * @throws IllegalStateException    if streams has not been started or has already shut down
      * @throws TopologyException        if this topology subscribes to any input topics or pattern already in use
@@ -354,6 +354,9 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
 
     /**
      * Do a clean up of the local state directory for this NamedTopology by deleting all data with regard to the
+     *
+     * @throws IllegalStateException if this {@code NamedTopology} hasn't been removed
+     * @throws StreamsException      if cleanup failed
      * @link StreamsConfig#APPLICATION_ID_CONFIG application ID} in the ({@link StreamsConfig#STATE_DIR_CONFIG})
      * <p>
      * May be called while the Streams is in any state, but only on a {@link NamedTopology} that has already been
@@ -361,9 +364,6 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
      * <p>
      * Calling this method triggers a restore of local {@link StateStore}s for this {@link NamedTopology} if it is
      * ever re-added via {@link #addNamedTopology(NamedTopology)}.
-     *
-     * @throws IllegalStateException if this {@code NamedTopology} hasn't been removed
-     * @throws StreamsException if cleanup failed
      */
     public void cleanUpNamedTopology(final String name) {
         if (getTopologyByName(name).isPresent()) {
@@ -382,8 +382,8 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
             throw new UnknownTopologyException("Cannot get state store " + storeName, topologyName);
         } else if (!builder.hasStore(storeName)) {
             throw new UnknownStateStoreException(
-                "Cannot get state store " + storeName + " from NamedTopology " + topologyName +
-                    " because no such state store exists in this topology."
+                    "Cannot get state store " + storeName + " from NamedTopology " + topologyName +
+                            " because no such state store exists in this topology."
             );
         }
     }
@@ -433,14 +433,14 @@ public class KafkaStreamsNamedTopologyWrapper extends KafkaStreams {
     public Map<String, Map<Integer, LagInfo>> allLocalStorePartitionLagsForTopology(final String topologyName) {
         if (getTopologyByName(topologyName).isEmpty()) {
             log.error("Can't get local store partition lags since topology {} does not exist in this application",
-                      topologyName);
+                    topologyName);
             throw new UnknownTopologyException("Can't get local store partition lags", topologyName);
         }
         final List<Task> allTopologyTasks = new ArrayList<>();
         processStreamThread(thread -> allTopologyTasks.addAll(
-            thread.readyOnlyAllTasks().stream()
-                .filter(t -> topologyName.equals(t.id().topologyName()))
-                .collect(Collectors.toList())));
+                thread.readyOnlyAllTasks().stream()
+                        .filter(t -> topologyName.equals(t.id().topologyName()))
+                        .collect(Collectors.toList())));
         return allLocalStorePartitionLags(allTopologyTasks);
     }
 }

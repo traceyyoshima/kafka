@@ -41,10 +41,10 @@ public class BrokersToElrs {
     /**
      * Update our records of a partition's ELR.
      *
-     * @param topicId       The topic ID of the partition.
-     * @param partitionId   The partition ID of the partition.
-     * @param prevElr       The previous ELR, or null if the partition is new.
-     * @param nextElr       The new ELR, or null if the partition is being removed.
+     * @param topicId     The topic ID of the partition.
+     * @param partitionId The partition ID of the partition.
+     * @param prevElr     The previous ELR, or null if the partition is new.
+     * @param nextElr     The new ELR, or null if the partition is being removed.
      */
 
     void update(Uuid topicId, int partitionId, int[] prevElr, int[] nextElr) {

@@ -92,28 +92,28 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
 
     private LeaveGroupResponse buildResponse(Errors error) {
         return new LeaveGroupResponse(
-            new LeaveGroupResponseData()
-                .setErrorCode(error.code())
-                .setMembers(singletonList(
-                    new MemberResponse()
-                        .setErrorCode(Errors.NONE.code())
-                        .setMemberId("m1")
-                        .setGroupInstanceId("m1-gii"))));
+                new LeaveGroupResponseData()
+                        .setErrorCode(error.code())
+                        .setMembers(singletonList(
+                                new MemberResponse()
+                                        .setErrorCode(Errors.NONE.code())
+                                        .setMemberId("m1")
+                                        .setGroupInstanceId("m1-gii"))));
     }
 
     private LeaveGroupResponse buildResponseWithMemberError(Errors error) {
         return new LeaveGroupResponse(
-            new LeaveGroupResponseData()
-                .setErrorCode(Errors.NONE.code())
-                .setMembers(singletonList(
-                    new MemberResponse()
-                        .setErrorCode(error.code())
-                        .setMemberId("m1")
-                        .setGroupInstanceId("m1-gii"))));
+                new LeaveGroupResponseData()
+                        .setErrorCode(Errors.NONE.code())
+                        .setMembers(singletonList(
+                                new MemberResponse()
+                                        .setErrorCode(error.code())
+                                        .setMemberId("m1")
+                                        .setGroupInstanceId("m1-gii"))));
     }
 
     private AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> handleWithGroupError(
-        Errors error
+            Errors error
     ) {
         RemoveMembersFromConsumerGroupHandler handler = new RemoveMembersFromConsumerGroupHandler(groupId, members, logContext);
         LeaveGroupResponse response = buildResponse(error);
@@ -121,7 +121,7 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
     }
 
     private AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> handleWithMemberError(
-        Errors error
+            Errors error
     ) {
         RemoveMembersFromConsumerGroupHandler handler = new RemoveMembersFromConsumerGroupHandler(groupId, members, logContext);
         LeaveGroupResponse response = buildResponseWithMemberError(error);
@@ -129,7 +129,7 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
     }
 
     private void assertUnmapped(
-        AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result
+            AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result
     ) {
         assertEquals(emptySet(), result.completedKeys.keySet());
         assertEquals(emptySet(), result.failedKeys.keySet());
@@ -137,7 +137,7 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
     }
 
     private void assertRetriable(
-        AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result
+            AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result
     ) {
         assertEquals(emptySet(), result.completedKeys.keySet());
         assertEquals(emptySet(), result.failedKeys.keySet());
@@ -145,8 +145,8 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
     }
 
     private void assertCompleted(
-        AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result,
-        Map<MemberIdentity, Errors> expected
+            AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result,
+            Map<MemberIdentity, Errors> expected
     ) {
         CoordinatorKey key = CoordinatorKey.byGroupId(groupId);
         assertEquals(emptySet(), result.failedKeys.keySet());
@@ -156,8 +156,8 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
     }
 
     private void assertFailed(
-        Class<? extends Throwable> expectedExceptionType,
-        AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result
+            Class<? extends Throwable> expectedExceptionType,
+            AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result
     ) {
         CoordinatorKey key = CoordinatorKey.byGroupId(groupId);
         assertEquals(emptySet(), result.completedKeys.keySet());
@@ -167,8 +167,8 @@ public class RemoveMembersFromConsumerGroupHandlerTest {
     }
 
     private void assertMemberFailed(
-        Errors expectedError,
-        AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result
+            Errors expectedError,
+            AdminApiHandler.ApiResult<CoordinatorKey, Map<MemberIdentity, Errors>> result
     ) {
         Map<MemberIdentity, Errors> expectedResponseData = Collections.singletonMap(m1, expectedError);
         CoordinatorKey key = CoordinatorKey.byGroupId(groupId);

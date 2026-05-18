@@ -51,35 +51,35 @@ public class PrefixedSessionKeySchemas {
                 return Bytes.wrap(ByteBuffer.allocate(PREFIX_SIZE).put(nextPrefix).array());
             }
             return Bytes.wrap(ByteBuffer.allocate(PREFIX_SIZE + 2 * TIMESTAMP_SIZE + key.get().length)
-                .put(TIME_FIRST_PREFIX)
-                // the end timestamp can be as large as possible as long as it's larger than start time
-                .putLong(Long.MAX_VALUE)
-                // this is the start timestamp
-                .putLong(to)
-                .put(key.get())
-                .array());
+                    .put(TIME_FIRST_PREFIX)
+                    // the end timestamp can be as large as possible as long as it's larger than start time
+                    .putLong(Long.MAX_VALUE)
+                    // this is the start timestamp
+                    .putLong(to)
+                    .put(key.get())
+                    .array());
         }
 
         @Override
         public Bytes lowerRange(final Bytes key, final long from) {
             if (key == null) {
                 return Bytes.wrap(ByteBuffer.allocate(PREFIX_SIZE + TIMESTAMP_SIZE)
-                    .put(TIME_FIRST_PREFIX)
-                    .putLong(from)
-                    .array());
+                        .put(TIME_FIRST_PREFIX)
+                        .putLong(from)
+                        .array());
             }
 
             return Bytes.wrap(ByteBuffer.allocate(PREFIX_SIZE + 2 * TIMESTAMP_SIZE + key.get().length)
-                .put(TIME_FIRST_PREFIX)
-                .putLong(from)
-                .putLong(0L)
-                .put(key.get())
-                .array());
+                    .put(TIME_FIRST_PREFIX)
+                    .putLong(from)
+                    .putLong(0L)
+                    .put(key.get())
+                    .array());
         }
 
         /**
          * @param key the key in the range
-         * @param to the latest start time
+         * @param to  the latest start time
          */
         @Override
         public Bytes upperRangeFixedSize(final Bytes key, final long to) {
@@ -87,7 +87,7 @@ public class PrefixedSessionKeySchemas {
         }
 
         /**
-         * @param key the key in the range
+         * @param key  the key in the range
          * @param from the earliest end timestamp in the range
          */
         @Override
@@ -126,8 +126,8 @@ public class PrefixedSessionKeySchemas {
                     }
 
                     if ((binaryKeyFrom == null || windowedKey.key().compareTo(binaryKeyFrom) >= 0)
-                        && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
-                        && endTime >= earliestWindowEndTime && startTime <= latestWindowStartTime) {
+                            && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
+                            && endTime >= earliestWindowEndTime && startTime <= latestWindowStartTime) {
                         return true;
                     }
                     iterator.next();
@@ -287,9 +287,9 @@ public class PrefixedSessionKeySchemas {
                     final long startTime = windowedKey.window().start();
 
                     if ((binaryKeyFrom == null || windowedKey.key().compareTo(binaryKeyFrom) >= 0)
-                        && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
-                        && endTime >= from
-                        && startTime <= to) {
+                            && (binaryKeyTo == null || windowedKey.key().compareTo(binaryKeyTo) <= 0)
+                            && endTime >= from
+                            && startTime <= to) {
                         return true;
                     }
                     iterator.next();
@@ -375,14 +375,14 @@ public class PrefixedSessionKeySchemas {
             if (noPrefixKey == null) {
                 final byte prefix = upperRange ? KEY_FIRST_PREFIX + 1 : KEY_FIRST_PREFIX;
                 final byte[] ret = ByteBuffer.allocate(PREFIX_SIZE)
-                    .put(prefix)
-                    .array();
+                        .put(prefix)
+                        .array();
                 return Bytes.wrap(ret);
             }
             final byte[] ret = ByteBuffer.allocate(PREFIX_SIZE + noPrefixKey.get().length)
-                .put(KEY_FIRST_PREFIX)
-                .put(noPrefixKey.get())
-                .array();
+                    .put(KEY_FIRST_PREFIX)
+                    .put(noPrefixKey.get())
+                    .array();
             return Bytes.wrap(ret);
         }
 

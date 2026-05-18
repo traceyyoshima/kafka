@@ -49,9 +49,9 @@ public class TopologyTest {
                 conf.put(Platform.Config.TROGDOR_AGENT_PORT, String.valueOf(Agent.DEFAULT_PORT));
             }
             BasicNode node = new BasicNode(String.format("node%02d", i),
-                String.format("node%d.example.com", i),
-                conf,
-                new HashSet<>());
+                    String.format("node%d.example.com", i),
+                    conf,
+                    new HashSet<>());
             nodes.put(node.name(), node);
         }
         Topology topology = new BasicTopology(nodes);

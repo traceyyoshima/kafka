@@ -38,40 +38,38 @@ public class TimestampedCacheFlushListenerWithHeadersTest {
 
     @Test
     public void shouldForwardValueTimestampIfNewValueExists() {
-        @SuppressWarnings("unchecked")
-        final InternalProcessorContext<String, Change<String>> context = mock(InternalProcessorContext.class);
+        @SuppressWarnings("unchecked") final InternalProcessorContext<String, Change<String>> context = mock(InternalProcessorContext.class);
         doNothing().when(context).forward(
-            new Record<>(
-                "key",
-                new Change<>("newValue", "oldValue"),
-                42L));
+                new Record<>(
+                        "key",
+                        new Change<>("newValue", "oldValue"),
+                        42L));
 
         new TimestampedCacheFlushListenerWithHeaders<>(context).apply(
-            new Record<>(
-                "key",
-                new Change<>(
-                    ValueTimestampHeaders.make("newValue", 42L, new RecordHeaders()),
-                    ValueTimestampHeaders.make("oldValue", 21L, new RecordHeaders())),
-                73L));
+                new Record<>(
+                        "key",
+                        new Change<>(
+                                ValueTimestampHeaders.make("newValue", 42L, new RecordHeaders()),
+                                ValueTimestampHeaders.make("oldValue", 21L, new RecordHeaders())),
+                        73L));
 
         verify(context, times(2)).setCurrentNode(null);
     }
 
     @Test
     public void shouldForwardParameterTimestampIfNewValueIsNull() {
-        @SuppressWarnings("unchecked")
-        final InternalProcessorContext<String, Change<String>> context = mock(InternalProcessorContext.class);
+        @SuppressWarnings("unchecked") final InternalProcessorContext<String, Change<String>> context = mock(InternalProcessorContext.class);
         doNothing().when(context).forward(
-            new Record<>(
-                "key",
-                new Change<>(null, "oldValue"),
-                73L));
+                new Record<>(
+                        "key",
+                        new Change<>(null, "oldValue"),
+                        73L));
 
         new TimestampedCacheFlushListenerWithHeaders<>(context).apply(
-            new Record<>(
-                "key",
-                new Change<>(null, ValueTimestampHeaders.make("oldValue", 21L, new RecordHeaders())),
-                73L));
+                new Record<>(
+                        "key",
+                        new Change<>(null, ValueTimestampHeaders.make("oldValue", 21L, new RecordHeaders())),
+                        73L));
 
         verify(context, times(2)).setCurrentNode(null);
     }

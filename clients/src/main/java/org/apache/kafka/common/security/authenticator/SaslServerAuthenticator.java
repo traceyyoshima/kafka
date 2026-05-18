@@ -206,7 +206,7 @@ public class SaslServerAuthenticator implements Authenticator {
         } else {
             try {
                 saslServer = SecurityManagerCompatibility.get().callAs(subject, () ->
-                    Sasl.createSaslServer(saslMechanism, "kafka", serverAddress().getHostName(), configs, callbackHandler));
+                        Sasl.createSaslServer(saslMechanism, "kafka", serverAddress().getHostName(), configs, callbackHandler));
                 if (saslServer == null) {
                     throw new SaslException("Kafka Server failed to create a SaslServer to interact with a client during session authentication with server mechanism " + saslMechanism);
                 }
@@ -241,7 +241,7 @@ public class SaslServerAuthenticator implements Authenticator {
     /**
      * Evaluates client responses via `SaslServer.evaluateResponse` and returns the issued challenge to the client until
      * authentication succeeds or fails.
-     *
+     * <p>
      * The messages are sent and received as size delimited bytes that consists of a 4 byte network-ordered size N
      * followed by N bytes representing the opaque payload.
      */
@@ -468,15 +468,15 @@ public class SaslServerAuthenticator implements Authenticator {
                         : reauthInfo.calcCompletionTimesAndReturnSessionLifetimeMs();
                 sendKafkaResponse(requestContext, new SaslAuthenticateResponse(
                         new SaslAuthenticateResponseData()
-                        .setErrorCode(Errors.NONE.code())
-                        .setAuthBytes(responseBytes)
-                        .setSessionLifetimeMs(sessionLifetimeMs)));
+                                .setErrorCode(Errors.NONE.code())
+                                .setAuthBytes(responseBytes)
+                                .setSessionLifetimeMs(sessionLifetimeMs)));
             } catch (SaslAuthenticationException e) {
                 buildResponseOnAuthenticateFailure(requestContext,
                         new SaslAuthenticateResponse(
                                 new SaslAuthenticateResponseData()
-                                .setErrorCode(Errors.SASL_AUTHENTICATION_FAILED.code())
-                                .setErrorMessage(e.getMessage())));
+                                        .setErrorCode(Errors.SASL_AUTHENTICATION_FAILED.code())
+                                        .setErrorMessage(e.getMessage())));
                 throw e;
             } catch (SaslException e) {
                 KerberosError kerberosError = KerberosError.fromException(e);
@@ -491,8 +491,8 @@ public class SaslServerAuthenticator implements Authenticator {
                             + " due to invalid credentials with SASL mechanism " + saslMechanism;
                     buildResponseOnAuthenticateFailure(requestContext, new SaslAuthenticateResponse(
                             new SaslAuthenticateResponseData()
-                            .setErrorCode(Errors.SASL_AUTHENTICATION_FAILED.code())
-                            .setErrorMessage(errorMessage)));
+                                    .setErrorCode(Errors.SASL_AUTHENTICATION_FAILED.code())
+                                    .setErrorMessage(errorMessage)));
                     throw new SaslAuthenticationException(errorMessage, e);
                 }
             }
@@ -501,8 +501,8 @@ public class SaslServerAuthenticator implements Authenticator {
 
     /**
      * @throws InvalidRequestException if the request is not in Kafka format or if the API key is invalid. Clients
-     * that support SASL without support for KIP-43 (e.g. Kafka Clients 0.9.x) are in the former bucket - the first
-     * packet such clients send is a GSSAPI token starting with 0x60.
+     *                                 that support SASL without support for KIP-43 (e.g. Kafka Clients 0.9.x) are in the former bucket - the first
+     *                                 packet such clients send is a GSSAPI token starting with 0x60.
      */
     private void handleKafkaRequest(byte[] requestBytes) throws IOException, AuthenticationException {
         try {
@@ -540,7 +540,7 @@ public class SaslServerAuthenticator implements Authenticator {
                 // If it's the initial request, this could be an ancient client (see method documentation for more details),
                 // a client configured with the wrong security protocol or a non kafka-client altogether (eg http client).
                 throw new InvalidRequestException("Invalid request, potential reasons: kafka client configured with the " +
-                    "wrong security protocol, it does not support KIP-43 or it is not a kafka client.", e);
+                        "wrong security protocol, it does not support KIP-43 or it is not a kafka client.", e);
             }
             throw e;
         }
@@ -579,7 +579,7 @@ public class SaslServerAuthenticator implements Authenticator {
             sendKafkaResponse(context, apiVersionsRequest.getErrorResponse(0, Errors.INVALID_REQUEST.exception()));
         else {
             metadataRegistry.registerClientInformation(new ClientInformation(apiVersionsRequest.data().clientSoftwareName(),
-                apiVersionsRequest.data().clientSoftwareVersion()));
+                    apiVersionsRequest.data().clientSoftwareVersion()));
             sendKafkaResponse(context, apiVersionSupplier.apply(apiVersionsRequest.version()));
             setSaslState(SaslState.HANDSHAKE_REQUEST);
         }
@@ -625,7 +625,7 @@ public class SaslServerAuthenticator implements Authenticator {
         public String badMechanismErrorMessage;
 
         public void reauthenticating(String previousSaslMechanism, KafkaPrincipal previousKafkaPrincipal,
-                long reauthenticationBeginNanos) {
+                                     long reauthenticationBeginNanos) {
             this.previousSaslMechanism = Objects.requireNonNull(previousSaslMechanism);
             this.previousKafkaPrincipal = Objects.requireNonNull(previousKafkaPrincipal);
             this.reauthenticationBeginNanos = reauthenticationBeginNanos;
@@ -715,6 +715,6 @@ public class SaslServerAuthenticator implements Authenticator {
 
         private long zeroIfNegative(long value) {
             return Math.max(0L, value);
-        }        
+        }
     }
 }

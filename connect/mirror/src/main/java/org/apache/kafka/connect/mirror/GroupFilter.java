@@ -21,7 +21,9 @@ import org.apache.kafka.common.Configurable;
 
 import java.util.Map;
 
-/** Defines which consumer groups should be replicated. */
+/**
+ * Defines which consumer groups should be replicated.
+ */
 public interface GroupFilter extends Configurable, AutoCloseable {
 
     boolean shouldReplicateGroup(String group);

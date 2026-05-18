@@ -71,11 +71,11 @@ public class ShareGroupAssignmentBuilder {
     /**
      * Sets the metadata image.
      *
-     * @param metadataImage    The metadata image.
+     * @param metadataImage The metadata image.
      * @return This object.
      */
     public ShareGroupAssignmentBuilder withMetadataImage(
-        CoordinatorMetadataImage metadataImage
+            CoordinatorMetadataImage metadataImage
     ) {
         this.metadataImage = metadataImage;
         return this;
@@ -90,8 +90,8 @@ public class ShareGroupAssignmentBuilder {
      * @return This object.
      */
     public ShareGroupAssignmentBuilder withTargetAssignment(
-        int targetAssignmentEpoch,
-        Assignment targetAssignment
+            int targetAssignmentEpoch,
+            Assignment targetAssignment
     ) {
         this.targetAssignmentEpoch = targetAssignmentEpoch;
         this.targetAssignment = Objects.requireNonNull(targetAssignment);
@@ -105,7 +105,7 @@ public class ShareGroupAssignmentBuilder {
      * @return This object.
      */
     public ShareGroupAssignmentBuilder withHasSubscriptionChanged(
-        boolean hasSubscriptionChanged
+            boolean hasSubscriptionChanged
     ) {
         this.hasSubscriptionChanged = hasSubscriptionChanged;
         return this;
@@ -124,26 +124,26 @@ public class ShareGroupAssignmentBuilder {
             // We transition to the target epoch. The transition to the new state is done
             // when the member is updated.
             return new ShareGroupMember.Builder(member)
-                .setState(MemberState.STABLE)
-                // If we have client-side assignors, the latest target assignment may not
-                // be consistent with the latest subscribed topics, so we must always
-                // filter the assigned partitions to ensure they are consistent with the
-                // subscribed topics.
-                .setAssignedPartitions(filterAssignedPartitions(targetAssignment.partitions(), member.subscribedTopicNames()))
-                .updateMemberEpoch(targetAssignmentEpoch)
-                .build();
+                    .setState(MemberState.STABLE)
+                    // If we have client-side assignors, the latest target assignment may not
+                    // be consistent with the latest subscribed topics, so we must always
+                    // filter the assigned partitions to ensure they are consistent with the
+                    // subscribed topics.
+                    .setAssignedPartitions(filterAssignedPartitions(targetAssignment.partitions(), member.subscribedTopicNames()))
+                    .updateMemberEpoch(targetAssignmentEpoch)
+                    .build();
         } else if (hasSubscriptionChanged) {
             return new ShareGroupMember.Builder(member)
-                .setAssignedPartitions(filterAssignedPartitions(targetAssignment.partitions(), member.subscribedTopicNames()))
-                .build();
+                    .setAssignedPartitions(filterAssignedPartitions(targetAssignment.partitions(), member.subscribedTopicNames()))
+                    .build();
         } else {
             return member;
         }
     }
 
     private Map<Uuid, Set<Integer>> filterAssignedPartitions(
-        Map<Uuid, Set<Integer>> partitions,
-        Set<String> subscribedTopicNames
+            Map<Uuid, Set<Integer>> partitions,
+            Set<String> subscribedTopicNames
     ) {
         TopicIds subscribedTopicIds = new TopicIds(subscribedTopicNames, metadataImage);
 

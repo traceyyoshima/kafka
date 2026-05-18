@@ -32,39 +32,39 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AclBindingTest {
     private static final AclBinding ACL1 = new AclBinding(
-        new ResourcePattern(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
-        new AccessControlEntry("User:ANONYMOUS", "", AclOperation.ALL, AclPermissionType.ALLOW));
+            new ResourcePattern(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
+            new AccessControlEntry("User:ANONYMOUS", "", AclOperation.ALL, AclPermissionType.ALLOW));
 
     private static final AclBinding ACL2 = new AclBinding(
-        new ResourcePattern(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
-        new AccessControlEntry("User:*", "", AclOperation.READ, AclPermissionType.ALLOW));
+            new ResourcePattern(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
+            new AccessControlEntry("User:*", "", AclOperation.READ, AclPermissionType.ALLOW));
 
     private static final AclBinding ACL3 = new AclBinding(
-        new ResourcePattern(ResourceType.TOPIC, "mytopic2", PatternType.LITERAL),
-        new AccessControlEntry("User:ANONYMOUS", "127.0.0.1", AclOperation.READ, AclPermissionType.DENY));
+            new ResourcePattern(ResourceType.TOPIC, "mytopic2", PatternType.LITERAL),
+            new AccessControlEntry("User:ANONYMOUS", "127.0.0.1", AclOperation.READ, AclPermissionType.DENY));
 
     private static final AclBinding UNKNOWN_ACL = new AclBinding(
-        new ResourcePattern(ResourceType.TOPIC, "mytopic2", PatternType.LITERAL),
-        new AccessControlEntry("User:ANONYMOUS", "127.0.0.1", AclOperation.UNKNOWN, AclPermissionType.DENY));
+            new ResourcePattern(ResourceType.TOPIC, "mytopic2", PatternType.LITERAL),
+            new AccessControlEntry("User:ANONYMOUS", "127.0.0.1", AclOperation.UNKNOWN, AclPermissionType.DENY));
 
     private static final AclBindingFilter ANY_ANONYMOUS = new AclBindingFilter(
-        ResourcePatternFilter.ANY,
-        new AccessControlEntryFilter("User:ANONYMOUS", null, AclOperation.ANY, AclPermissionType.ANY));
+            ResourcePatternFilter.ANY,
+            new AccessControlEntryFilter("User:ANONYMOUS", null, AclOperation.ANY, AclPermissionType.ANY));
 
     private static final AclBindingFilter ANY_DENY = new AclBindingFilter(
-        ResourcePatternFilter.ANY,
-        new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.DENY));
+            ResourcePatternFilter.ANY,
+            new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.DENY));
 
     private static final AclBindingFilter ANY_MYTOPIC = new AclBindingFilter(
-        new ResourcePatternFilter(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
-        new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY));
+            new ResourcePatternFilter(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
+            new AccessControlEntryFilter(null, null, AclOperation.ANY, AclPermissionType.ANY));
 
     @Test
     public void testMatching() {
         assertEquals(ACL1, ACL1);
         final AclBinding acl1Copy = new AclBinding(
-            new ResourcePattern(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
-            new AccessControlEntry("User:ANONYMOUS", "", AclOperation.ALL, AclPermissionType.ALLOW));
+                new ResourcePattern(ResourceType.TOPIC, "mytopic", PatternType.LITERAL),
+                new AccessControlEntry("User:ANONYMOUS", "", AclOperation.ALL, AclPermissionType.ALLOW));
         assertEquals(ACL1, acl1Copy);
         assertEquals(acl1Copy, ACL1);
         assertEquals(ACL2, ACL2);
@@ -129,18 +129,18 @@ public class AclBindingTest {
     @Test
     public void shouldThrowOnMatchPatternType() {
         assertThrows(IllegalArgumentException.class,
-            () -> new AclBinding(new ResourcePattern(ResourceType.TOPIC, "foo", PatternType.MATCH), ACL1.entry()));
+                () -> new AclBinding(new ResourcePattern(ResourceType.TOPIC, "foo", PatternType.MATCH), ACL1.entry()));
     }
 
     @Test
     public void shouldThrowOnAnyPatternType() {
         assertThrows(IllegalArgumentException.class,
-            () -> new AclBinding(new ResourcePattern(ResourceType.TOPIC, "foo", PatternType.ANY), ACL1.entry()));
+                () -> new AclBinding(new ResourcePattern(ResourceType.TOPIC, "foo", PatternType.ANY), ACL1.entry()));
     }
 
     @Test
     public void shouldThrowOnAnyResourceType() {
         assertThrows(IllegalArgumentException.class,
-            () -> new AclBinding(new ResourcePattern(ResourceType.ANY, "foo", PatternType.LITERAL), ACL1.entry()));
+                () -> new AclBinding(new ResourcePattern(ResourceType.ANY, "foo", PatternType.LITERAL), ACL1.entry()));
     }
 }

@@ -71,20 +71,20 @@ public class DefaultStreamsRebalanceListenerTest {
     private void createRebalanceListenerWithRebalanceData(final StreamsRebalanceData streamsRebalanceData) {
         try (MockedStatic<RebalanceListenerMetrics> rebalanceMetricsMock = mockStatic(RebalanceListenerMetrics.class)) {
             rebalanceMetricsMock.when(() -> RebalanceListenerMetrics.tasksRevokedSensor(anyString(), any(StreamsMetricsImpl.class)))
-                .thenReturn(tasksRevokedSensor);
+                    .thenReturn(tasksRevokedSensor);
             rebalanceMetricsMock.when(() -> RebalanceListenerMetrics.tasksAssignedSensor(anyString(), any(StreamsMetricsImpl.class)))
-                .thenReturn(tasksAssignedSensor);
+                    .thenReturn(tasksAssignedSensor);
             rebalanceMetricsMock.when(() -> RebalanceListenerMetrics.tasksLostSensor(anyString(), any(StreamsMetricsImpl.class)))
-                .thenReturn(tasksLostSensor);
+                    .thenReturn(tasksLostSensor);
 
             defaultStreamsRebalanceListener = new DefaultStreamsRebalanceListener(
-                LoggerFactory.getLogger(DefaultStreamsRebalanceListener.class),
-                mockTime,
-                streamsRebalanceData,
-                streamThread,
-                taskManager,
-                streamsMetrics,
-                THREAD_ID
+                    LoggerFactory.getLogger(DefaultStreamsRebalanceListener.class),
+                    mockTime,
+                    streamsRebalanceData,
+                    streamThread,
+                    taskManager,
+                    streamsMetrics,
+                    THREAD_ID
             );
         }
     }
@@ -93,30 +93,30 @@ public class DefaultStreamsRebalanceListenerTest {
     @EnumSource(StreamThread.State.class)
     void testOnTasksRevoked(final StreamThread.State state) {
         createRebalanceListenerWithRebalanceData(new StreamsRebalanceData(
-            UUID.randomUUID(),
-            Optional.empty(),
-            Optional.empty(),
-            Map.of(
-                "1",
-                new StreamsRebalanceData.Subtopology(
-                    Set.of("source1"),
-                    Set.of(),
-                    Map.of("repartition1", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
-                    Map.of(),
-                    Set.of()
-                )
-            ),
-            Map.of()
+                UUID.randomUUID(),
+                Optional.empty(),
+                Optional.empty(),
+                Map.of(
+                        "1",
+                        new StreamsRebalanceData.Subtopology(
+                                Set.of("source1"),
+                                Set.of(),
+                                Map.of("repartition1", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
+                                Map.of(),
+                                Set.of()
+                        )
+                ),
+                Map.of()
         ));
         when(streamThread.state()).thenReturn(state);
 
         assertDoesNotThrow(() -> defaultStreamsRebalanceListener.onTasksRevoked(
-            Set.of(new StreamsRebalanceData.TaskId("1", 0))
+                Set.of(new StreamsRebalanceData.TaskId("1", 0))
         ));
 
         final InOrder inOrder = inOrder(taskManager, streamThread);
         inOrder.verify(taskManager).handleRevocation(
-            Set.of(new TopicPartition("source1", 0), new TopicPartition("repartition1", 0))
+                Set.of(new TopicPartition("source1", 0), new TopicPartition("repartition1", 0))
         );
         inOrder.verify(streamThread).state();
         if (state != StreamThread.State.PENDING_SHUTDOWN) {
@@ -144,38 +144,38 @@ public class DefaultStreamsRebalanceListenerTest {
     void testOnTasksAssigned() {
         final StreamsRebalanceData streamsRebalanceData = mock(StreamsRebalanceData.class);
         when(streamsRebalanceData.subtopologies()).thenReturn(Map.of(
-            "1",
-            new StreamsRebalanceData.Subtopology(
-                Set.of("source1"),
-                Set.of(),
-                Map.of("repartition1", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
-                Map.of(),
-                Set.of()
-            ),
-            "2",
-            new StreamsRebalanceData.Subtopology(
-                Set.of("source2"),
-                Set.of(),
-                Map.of("repartition2", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
-                Map.of(),
-                Set.of()
-            ),
-            "3",
-            new StreamsRebalanceData.Subtopology(
-                Set.of("source3"),
-                Set.of(),
-                Map.of("repartition3", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
-                Map.of(),
-                Set.of()
-            )
+                "1",
+                new StreamsRebalanceData.Subtopology(
+                        Set.of("source1"),
+                        Set.of(),
+                        Map.of("repartition1", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
+                        Map.of(),
+                        Set.of()
+                ),
+                "2",
+                new StreamsRebalanceData.Subtopology(
+                        Set.of("source2"),
+                        Set.of(),
+                        Map.of("repartition2", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
+                        Map.of(),
+                        Set.of()
+                ),
+                "3",
+                new StreamsRebalanceData.Subtopology(
+                        Set.of("source3"),
+                        Set.of(),
+                        Map.of("repartition3", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
+                        Map.of(),
+                        Set.of()
+                )
         ));
         createRebalanceListenerWithRebalanceData(streamsRebalanceData);
 
         final StreamsRebalanceData.Assignment assignment = new StreamsRebalanceData.Assignment(
-            Set.of(new StreamsRebalanceData.TaskId("1", 0)),
-            Set.of(new StreamsRebalanceData.TaskId("2", 0)),
-            Set.of(new StreamsRebalanceData.TaskId("3", 0)),
-            false
+                Set.of(new StreamsRebalanceData.TaskId("1", 0)),
+                Set.of(new StreamsRebalanceData.TaskId("2", 0)),
+                Set.of(new StreamsRebalanceData.TaskId("3", 0)),
+                false
         );
 
         assertDoesNotThrow(() -> defaultStreamsRebalanceListener.onTasksAssigned(assignment));
@@ -183,11 +183,11 @@ public class DefaultStreamsRebalanceListenerTest {
         final InOrder inOrder = inOrder(taskManager, streamThread, streamsRebalanceData);
         inOrder.verify(streamThread).setStreamsGroupReady(false);
         inOrder.verify(taskManager).handleAssignment(
-            Map.of(new TaskId(1, 0), Set.of(new TopicPartition("source1", 0), new TopicPartition("repartition1", 0))),
-            Map.of(
-                new TaskId(2, 0), Set.of(new TopicPartition("source2", 0), new TopicPartition("repartition2", 0)),
-                new TaskId(3, 0), Set.of(new TopicPartition("source3", 0), new TopicPartition("repartition3", 0))
-            )
+                Map.of(new TaskId(1, 0), Set.of(new TopicPartition("source1", 0), new TopicPartition("repartition1", 0))),
+                Map.of(
+                        new TaskId(2, 0), Set.of(new TopicPartition("source2", 0), new TopicPartition("repartition2", 0)),
+                        new TaskId(3, 0), Set.of(new TopicPartition("source3", 0), new TopicPartition("repartition3", 0))
+                )
         );
         inOrder.verify(streamThread).setState(StreamThread.State.PARTITIONS_ASSIGNED);
         inOrder.verify(taskManager).handleRebalanceComplete();
@@ -204,7 +204,7 @@ public class DefaultStreamsRebalanceListenerTest {
         createRebalanceListenerWithRebalanceData(streamsRebalanceData);
 
         final Exception actualException = assertThrows(RuntimeException.class, () -> defaultStreamsRebalanceListener.onTasksAssigned(
-            new StreamsRebalanceData.Assignment(Set.of(), Set.of(), Set.of(), false)
+                new StreamsRebalanceData.Assignment(Set.of(), Set.of(), Set.of(), false)
         ));
 
         assertEquals(exception, actualException);
@@ -220,9 +220,9 @@ public class DefaultStreamsRebalanceListenerTest {
         final StreamsRebalanceData streamsRebalanceData = mock(StreamsRebalanceData.class);
         when(streamsRebalanceData.subtopologies()).thenReturn(Map.of());
         createRebalanceListenerWithRebalanceData(streamsRebalanceData);
-        
+
         assertDoesNotThrow(() -> defaultStreamsRebalanceListener.onAllTasksLost());
-        
+
         final InOrder inOrder = inOrder(taskManager, streamsRebalanceData);
         inOrder.verify(taskManager).handleLostAll();
         inOrder.verify(streamsRebalanceData).setReconciledAssignment(StreamsRebalanceData.Assignment.EMPTY);
@@ -253,29 +253,29 @@ public class DefaultStreamsRebalanceListenerTest {
         }).when(taskManager).handleRevocation(any());
 
         createRebalanceListenerWithRebalanceData(new StreamsRebalanceData(
-            UUID.randomUUID(),
-            Optional.empty(),
-            Optional.empty(),
-            Map.of(
-                "1",
-                new StreamsRebalanceData.Subtopology(
-                    Set.of("source1"),
-                    Set.of(),
-                    Map.of("repartition1", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
-                    Map.of(),
-                    Set.of()
-                )
-            ),
-            Map.of()
+                UUID.randomUUID(),
+                Optional.empty(),
+                Optional.empty(),
+                Map.of(
+                        "1",
+                        new StreamsRebalanceData.Subtopology(
+                                Set.of("source1"),
+                                Set.of(),
+                                Map.of("repartition1", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
+                                Map.of(),
+                                Set.of()
+                        )
+                ),
+                Map.of()
         ));
 
         defaultStreamsRebalanceListener.onTasksRevoked(
-            Set.of(new StreamsRebalanceData.TaskId("1", 0))
+                Set.of(new StreamsRebalanceData.TaskId("1", 0))
         );
 
         verify(tasksRevokedSensor).record(100L);
         verify(taskManager).handleRevocation(
-            Set.of(new TopicPartition("source1", 0), new TopicPartition("repartition1", 0))
+                Set.of(new TopicPartition("source1", 0), new TopicPartition("repartition1", 0))
         );
     }
 
@@ -288,36 +288,36 @@ public class DefaultStreamsRebalanceListenerTest {
         }).when(taskManager).handleAssignment(any(), any());
 
         createRebalanceListenerWithRebalanceData(new StreamsRebalanceData(
-            UUID.randomUUID(),
-            Optional.empty(),
-            Optional.empty(),
-            Map.of(
-                "1",
-                new StreamsRebalanceData.Subtopology(
-                    Set.of("source1"),
-                    Set.of(),
-                    Map.of("repartition1", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
-                    Map.of(),
-                    Set.of()
-                )
-            ),
-            Map.of()
+                UUID.randomUUID(),
+                Optional.empty(),
+                Optional.empty(),
+                Map.of(
+                        "1",
+                        new StreamsRebalanceData.Subtopology(
+                                Set.of("source1"),
+                                Set.of(),
+                                Map.of("repartition1", new StreamsRebalanceData.TopicInfo(Optional.of(1), Optional.of((short) 1), Map.of())),
+                                Map.of(),
+                                Set.of()
+                        )
+                ),
+                Map.of()
         ));
 
         defaultStreamsRebalanceListener.onTasksAssigned(
-            new StreamsRebalanceData.Assignment(
-                Set.of(new StreamsRebalanceData.TaskId("1", 0)),
-                Set.of(),
-                Set.of(),
-                true
-            )
+                new StreamsRebalanceData.Assignment(
+                        Set.of(new StreamsRebalanceData.TaskId("1", 0)),
+                        Set.of(),
+                        Set.of(),
+                        true
+                )
         );
 
         verify(tasksAssignedSensor).record(150L);
         verify(streamThread).setStreamsGroupReady(true);
         verify(taskManager).handleAssignment(
-            Map.of(new TaskId(1, 0), Set.of(new TopicPartition("source1", 0), new TopicPartition("repartition1", 0))),
-            Map.of()
+                Map.of(new TaskId(1, 0), Set.of(new TopicPartition("source1", 0), new TopicPartition("repartition1", 0))),
+                Map.of()
         );
         verify(streamThread).setState(StreamThread.State.PARTITIONS_ASSIGNED);
         verify(taskManager).handleRebalanceComplete();
@@ -349,24 +349,24 @@ public class DefaultStreamsRebalanceListenerTest {
         }).when(taskManager).handleRevocation(any());
 
         createRebalanceListenerWithRebalanceData(new StreamsRebalanceData(
-            UUID.randomUUID(),
-            Optional.empty(),
-            Optional.empty(),
-            Map.of(
-                "1",
-                new StreamsRebalanceData.Subtopology(
-                    Set.of("source1"),
-                    Set.of(),
-                    Map.of(),
-                    Map.of(),
-                    Set.of()
-                )
-            ),
-            Map.of()
+                UUID.randomUUID(),
+                Optional.empty(),
+                Optional.empty(),
+                Map.of(
+                        "1",
+                        new StreamsRebalanceData.Subtopology(
+                                Set.of("source1"),
+                                Set.of(),
+                                Map.of(),
+                                Map.of(),
+                                Set.of()
+                        )
+                ),
+                Map.of()
         ));
 
         assertThrows(RuntimeException.class, () -> defaultStreamsRebalanceListener.onTasksRevoked(
-            Set.of(new StreamsRebalanceData.TaskId("1", 0))
+                Set.of(new StreamsRebalanceData.TaskId("1", 0))
         ));
 
         verify(tasksRevokedSensor).record(50L);
@@ -385,7 +385,7 @@ public class DefaultStreamsRebalanceListenerTest {
         createRebalanceListenerWithRebalanceData(new StreamsRebalanceData(UUID.randomUUID(), Optional.empty(), Optional.empty(), Map.of(), Map.of()));
 
         assertThrows(RuntimeException.class, () -> defaultStreamsRebalanceListener.onTasksAssigned(
-            new StreamsRebalanceData.Assignment(Set.of(), Set.of(), Set.of(), false)
+                new StreamsRebalanceData.Assignment(Set.of(), Set.of(), Set.of(), false)
         ));
 
         verify(tasksAssignedSensor).record(75L);

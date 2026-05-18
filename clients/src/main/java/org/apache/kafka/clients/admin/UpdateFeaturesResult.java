@@ -22,15 +22,15 @@ import java.util.Map;
 
 /**
  * The result of the {@link Admin#updateFeatures(Map, UpdateFeaturesOptions)} call.
- *
+ * <p>
  * The API of this class is evolving, see {@link Admin} for details.
  */
 public class UpdateFeaturesResult {
     private final Map<String, KafkaFuture<Void>> futures;
 
     /**
-     * @param futures   a map from feature name to future, which can be used to check the status of
-     *                  individual feature updates.
+     * @param futures a map from feature name to future, which can be used to check the status of
+     *                individual feature updates.
      */
     UpdateFeaturesResult(final Map<String, KafkaFuture<Void>> futures) {
         this.futures = futures;

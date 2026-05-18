@@ -53,68 +53,68 @@ public class ClientMetricsCommandTest {
     @Test
     public void testOptionsNoActionFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer});
+                new String[]{"--bootstrap-server", bootstrapServer});
     }
 
     @Test
     public void testOptionsListSucceeds() {
         ClientMetricsCommand.ClientMetricsCommandOptions opts = new ClientMetricsCommand.ClientMetricsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--list"});
+                new String[]{"--bootstrap-server", bootstrapServer, "--list"});
         assertTrue(opts.hasListOption());
     }
 
     @Test
     public void testOptionsDescribeNoNameSucceeds() {
         ClientMetricsCommand.ClientMetricsCommandOptions opts = new ClientMetricsCommand.ClientMetricsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--describe"});
+                new String[]{"--bootstrap-server", bootstrapServer, "--describe"});
         assertTrue(opts.hasDescribeOption());
     }
 
     @Test
     public void testOptionsDescribeWithNameSucceeds() {
         ClientMetricsCommand.ClientMetricsCommandOptions opts = new ClientMetricsCommand.ClientMetricsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--describe", "--name", clientMetricsName});
+                new String[]{"--bootstrap-server", bootstrapServer, "--describe", "--name", clientMetricsName});
         assertTrue(opts.hasDescribeOption());
     }
 
     @Test
     public void testOptionsDeleteNoNameFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--delete"});
+                new String[]{"--bootstrap-server", bootstrapServer, "--delete"});
     }
 
     @Test
     public void testOptionsDeleteWithNameSucceeds() {
         ClientMetricsCommand.ClientMetricsCommandOptions opts = new ClientMetricsCommand.ClientMetricsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--delete", "--name", clientMetricsName});
+                new String[]{"--bootstrap-server", bootstrapServer, "--delete", "--name", clientMetricsName});
         assertTrue(opts.hasDeleteOption());
     }
 
     @Test
     public void testOptionsAlterNoNameFails() {
         assertInitializeInvalidOptionsExitCode(1,
-            new String[] {"--bootstrap-server", bootstrapServer, "--alter"});
+                new String[]{"--bootstrap-server", bootstrapServer, "--alter"});
     }
 
     @Test
     public void testOptionsAlterGenerateNameSucceeds() {
         ClientMetricsCommand.ClientMetricsCommandOptions opts = new ClientMetricsCommand.ClientMetricsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--alter", "--generate-name"});
+                new String[]{"--bootstrap-server", bootstrapServer, "--alter", "--generate-name"});
         assertTrue(opts.hasAlterOption());
     }
 
     @Test
     public void testOptionsAlterWithNameSucceeds() {
         ClientMetricsCommand.ClientMetricsCommandOptions opts = new ClientMetricsCommand.ClientMetricsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--alter", "--name", clientMetricsName});
+                new String[]{"--bootstrap-server", bootstrapServer, "--alter", "--name", clientMetricsName});
         assertTrue(opts.hasAlterOption());
     }
 
     @Test
     public void testOptionsAlterAllOptionsSucceeds() {
         ClientMetricsCommand.ClientMetricsCommandOptions opts = new ClientMetricsCommand.ClientMetricsCommandOptions(
-            new String[] {"--bootstrap-server", bootstrapServer, "--alter", "--name", clientMetricsName,
-                "--interval", "1000", "--match", "client_id=abc", "--metrics", "org.apache.kafka."});
+                new String[]{"--bootstrap-server", bootstrapServer, "--alter", "--name", clientMetricsName,
+                        "--interval", "1000", "--match", "client_id=abc", "--metrics", "org.apache.kafka."});
         assertTrue(opts.hasAlterOption());
 
     }
@@ -122,8 +122,8 @@ public class ClientMetricsCommandTest {
     @Test
     public void testOptionsAlterInvalidInterval() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> new ClientMetricsCommand.ClientMetricsCommandOptions(
-            new String[]{"--bootstrap-server", bootstrapServer, "--alter", "--name", clientMetricsName,
-                "--interval", "abc"}));
+                new String[]{"--bootstrap-server", bootstrapServer, "--alter", "--name", clientMetricsName,
+                        "--interval", "abc"}));
         assertEquals("Invalid interval value. Enter an integer, or leave empty to reset.", exception.getMessage());
     }
 
@@ -139,8 +139,8 @@ public class ClientMetricsCommandTest {
             try {
                 service.alterClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
                         new String[]{"--bootstrap-server", bootstrapServer, "--alter",
-                                     "--name", clientMetricsName, "--metrics", "org.apache.kafka.producer.",
-                                     "--interval", "5000", "--match", "client_id=CLIENT1"}));
+                                "--name", clientMetricsName, "--metrics", "org.apache.kafka.producer.",
+                                "--interval", "5000", "--match", "client_id=CLIENT1"}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -160,8 +160,8 @@ public class ClientMetricsCommandTest {
             try {
                 service.alterClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
                         new String[]{"--bootstrap-server", bootstrapServer, "--alter",
-                                     "--generate-name", "--metrics", "org.apache.kafka.producer.",
-                                     "--interval", "5000", "--match", "client_id=CLIENT1"}));
+                                "--generate-name", "--metrics", "org.apache.kafka.producer.",
+                                "--interval", "5000", "--match", "client_id=CLIENT1"}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -175,16 +175,15 @@ public class ClientMetricsCommandTest {
         ClientMetricsCommand.ClientMetricsService service = new ClientMetricsCommand.ClientMetricsService(adminClient);
 
         AlterConfigsResult result = AdminClientTestUtils.alterConfigsResult(new ConfigResource(ConfigResource.Type.CLIENT_METRICS, clientMetricsName));
-        @SuppressWarnings("unchecked")
-        final ArgumentCaptor<Map<ConfigResource, Collection<AlterConfigOp>>> configCaptor = ArgumentCaptor.forClass(Map.class);
+        @SuppressWarnings("unchecked") final ArgumentCaptor<Map<ConfigResource, Collection<AlterConfigOp>>> configCaptor = ArgumentCaptor.forClass(Map.class);
         when(adminClient.incrementalAlterConfigs(configCaptor.capture(), any())).thenReturn(result);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.alterClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
                         new String[]{"--bootstrap-server", bootstrapServer, "--alter",
-                                     "--name", clientMetricsName, "--metrics", "",
-                                     "--interval", "", "--match", ""}));
+                                "--name", clientMetricsName, "--metrics", "",
+                                "--interval", "", "--match", ""}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -218,7 +217,7 @@ public class ClientMetricsCommandTest {
             try {
                 service.deleteClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
                         new String[]{"--bootstrap-server", bootstrapServer, "--delete",
-                                     "--name", clientMetricsName}));
+                                "--name", clientMetricsName}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -233,7 +232,7 @@ public class ClientMetricsCommandTest {
 
         ConfigResource cr = new ConfigResource(ConfigResource.Type.CLIENT_METRICS, clientMetricsName);
         ListConfigResourcesResult listConfigResourcesResult = AdminClientTestUtils.listConfigResourcesResult(Map.of(
-            ConfigResource.Type.CLIENT_METRICS, Set.of(clientMetricsName)
+                ConfigResource.Type.CLIENT_METRICS, Set.of(clientMetricsName)
         ));
         when(adminClient.listConfigResources(any(), any())).thenReturn(listConfigResourcesResult);
         Config cfg = new Config(Set.of(new ConfigEntry("metrics", "org.apache.kafka.producer.")));
@@ -244,7 +243,7 @@ public class ClientMetricsCommandTest {
             try {
                 service.describeClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
                         new String[]{"--bootstrap-server", bootstrapServer, "--describe",
-                                     "--name", clientMetricsName}));
+                                "--name", clientMetricsName}));
             } catch (Throwable t) {
                 fail(t);
             }
@@ -259,15 +258,15 @@ public class ClientMetricsCommandTest {
         ClientMetricsCommand.ClientMetricsService service = new ClientMetricsCommand.ClientMetricsService(adminClient);
 
         ListConfigResourcesResult listConfigResourcesResult = AdminClientTestUtils.listConfigResourcesResult(Map.of(
-            ConfigResource.Type.CLIENT_METRICS, Set.of()
+                ConfigResource.Type.CLIENT_METRICS, Set.of()
         ));
         when(adminClient.listConfigResources(any(), any())).thenReturn(listConfigResourcesResult);
 
         String capturedOutput = ToolsTestUtils.captureStandardOut(() -> {
             try {
                 service.describeClientMetrics(new ClientMetricsCommand.ClientMetricsCommandOptions(
-                    new String[]{"--bootstrap-server", bootstrapServer, "--describe",
-                        "--name", clientMetricsName}));
+                        new String[]{"--bootstrap-server", bootstrapServer, "--describe",
+                                "--name", clientMetricsName}));
             } catch (Throwable t) {
                 fail(t);
             }

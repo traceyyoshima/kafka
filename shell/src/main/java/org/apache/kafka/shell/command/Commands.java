@@ -50,16 +50,16 @@ public final class Commands {
     static {
         TreeMap<String, Type> typesMap = new TreeMap<>();
         for (Type type : List.of(
-            CatCommandHandler.TYPE,
-            CdCommandHandler.TYPE,
-            ExitCommandHandler.TYPE,
-            FindCommandHandler.TYPE,
-            HelpCommandHandler.TYPE,
-            HistoryCommandHandler.TYPE,
-            LsCommandHandler.TYPE,
-            ManCommandHandler.TYPE,
-            PwdCommandHandler.TYPE,
-            TreeCommandHandler.TYPE
+                CatCommandHandler.TYPE,
+                CdCommandHandler.TYPE,
+                ExitCommandHandler.TYPE,
+                FindCommandHandler.TYPE,
+                HelpCommandHandler.TYPE,
+                HistoryCommandHandler.TYPE,
+                LsCommandHandler.TYPE,
+                ManCommandHandler.TYPE,
+                PwdCommandHandler.TYPE,
+                TreeCommandHandler.TYPE
         )) {
             typesMap.put(type.name(), type);
         }
@@ -72,9 +72,9 @@ public final class Commands {
      */
     public interface Handler {
         void run(
-            Optional<InteractiveShell> shell,
-            PrintWriter writer,
-            MetadataShellState state
+                Optional<InteractiveShell> shell,
+                PrintWriter writer,
+                MetadataShellState state
         ) throws Exception;
     }
 
@@ -85,14 +85,19 @@ public final class Commands {
      */
     public interface Type {
         String name();
+
         String description();
+
         boolean shellOnly();
+
         void addArguments(ArgumentParser parser);
+
         Handler createHandler(Namespace namespace);
+
         void completeNext(
-            MetadataShellState nodeManager,
-            List<String> nextWords,
-            List<Candidate> candidates
+                MetadataShellState nodeManager,
+                List<String> nextWords,
+                List<Candidate> candidates
         ) throws Exception;
     }
 
@@ -101,7 +106,7 @@ public final class Commands {
     /**
      * Create the commands instance.
      *
-     * @param addShellCommands  True if we should include the shell-only commands.
+     * @param addShellCommands True if we should include the shell-only commands.
      */
     public Commands(boolean addShellCommands) {
         this.parser = ArgumentParsers.newArgumentParser("", false);
@@ -121,12 +126,12 @@ public final class Commands {
 
     /**
      * Handle the given command.
-     *
+     * <p>
      * In general this function should not throw exceptions. Instead, it should
      * return ErroneousCommandHandler if the input was invalid.
      *
-     * @param arguments     The command line arguments.
-     * @return              The command handler.
+     * @param arguments The command line arguments.
+     * @return The command handler.
      */
     public Handler parseCommand(List<String> arguments) {
         List<String> trimmedArguments = new ArrayList<>(arguments);
@@ -151,7 +156,7 @@ public final class Commands {
         String command = namespace.get("command");
         if (!command.equals(trimmedArguments.get(0))) {
             return new ErroneousCommandHandler("invalid choice: '" +
-                trimmedArguments.get(0) + "': did you mean '" + command + "'?");
+                    trimmedArguments.get(0) + "': did you mean '" + command + "'?");
         }
         Type type = TYPES.get(command);
         if (type == null) {

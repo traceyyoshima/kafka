@@ -40,8 +40,8 @@ public class UnionSetTest {
     @Test
     public void testUnion() {
         UnionSet<Integer> union = new UnionSet<>(
-            Set.of(1, 2, 3),
-            Set.of(2, 3, 4, 5)
+                Set.of(1, 2, 3),
+                Set.of(2, 3, 4, 5)
         );
 
         List<Integer> result = new ArrayList<>(union);
@@ -53,8 +53,8 @@ public class UnionSetTest {
     @Test
     public void testSize() {
         UnionSet<Integer> union = new UnionSet<>(
-            Set.of(1, 2, 3),
-            Set.of(2, 3, 4, 5)
+                Set.of(1, 2, 3),
+                Set.of(2, 3, 4, 5)
         );
 
         assertEquals(5, union.size());
@@ -63,29 +63,29 @@ public class UnionSetTest {
     @Test
     public void testIsEmpty() {
         UnionSet<Integer> union = new UnionSet<>(
-            Set.of(1, 2, 3),
-            Set.of(2, 3, 4, 5)
+                Set.of(1, 2, 3),
+                Set.of(2, 3, 4, 5)
         );
 
         assertFalse(union.isEmpty());
 
         union = new UnionSet<>(
-            Set.of(1, 2, 3),
-            Set.of()
+                Set.of(1, 2, 3),
+                Set.of()
         );
 
         assertFalse(union.isEmpty());
 
         union = new UnionSet<>(
-            Set.of(),
-            Set.of(2, 3, 4, 5)
+                Set.of(),
+                Set.of(2, 3, 4, 5)
         );
 
         assertFalse(union.isEmpty());
 
         union = new UnionSet<>(
-            Set.of(),
-            Set.of()
+                Set.of(),
+                Set.of()
         );
         assertTrue(union.isEmpty());
     }
@@ -93,8 +93,8 @@ public class UnionSetTest {
     @Test
     public void testContains() {
         UnionSet<Integer> union = new UnionSet<>(
-            Set.of(1, 2, 3),
-            Set.of(2, 3, 4, 5)
+                Set.of(1, 2, 3),
+                Set.of(2, 3, 4, 5)
         );
 
         IntStream.range(1, 6).forEach(item -> assertTrue(union.contains(item)));
@@ -106,8 +106,8 @@ public class UnionSetTest {
     @Test
     public void testToArray() {
         UnionSet<Integer> union = new UnionSet<>(
-            Set.of(1, 2, 3),
-            Set.of(2, 3, 4, 5)
+                Set.of(1, 2, 3),
+                Set.of(2, 3, 4, 5)
         );
 
         Object[] expected = {1, 2, 3, 4, 5};
@@ -119,8 +119,8 @@ public class UnionSetTest {
     @Test
     public void testToArrayWithArrayParameter() {
         UnionSet<Integer> union = new UnionSet<>(
-            Set.of(1, 2, 3),
-            Set.of(2, 3, 4, 5)
+                Set.of(1, 2, 3),
+                Set.of(2, 3, 4, 5)
         );
 
         Integer[] input = new Integer[5];
@@ -133,8 +133,8 @@ public class UnionSetTest {
     @Test
     public void testEquals() {
         UnionSet<Integer> union = new UnionSet<>(
-            Set.of(1, 2, 3),
-            Set.of(2, 3, 4, 5)
+                Set.of(1, 2, 3),
+                Set.of(2, 3, 4, 5)
         );
 
         assertEquals(Set.of(1, 2, 3, 4, 5), union);

@@ -60,8 +60,8 @@ public final class ConnectUtils {
      * <p>If there is a pre-existing value for the key in the properties, log a warning to the user
      * that this value will be ignored, and the expected value will be used instead.
      *
-     * @param props the configuration properties provided by the user; may not be null
-     * @param key the name of the property to check on; may not be null
+     * @param props         the configuration properties provided by the user; may not be null
+     * @param key           the name of the property to check on; may not be null
      * @param expectedValue the expected value for the property; may not be null
      * @param justification the reason the property cannot be overridden.
      *                      Will follow the phrase "The value... for the... property will be ignored as it cannot be overridden ".
@@ -80,6 +80,7 @@ public final class ConnectUtils {
     }
 
     // Visible for testing
+
     /**
      * Ensure that a given key has an expected value in the properties, inserting the expected value into the
      * properties if necessary. If a user-supplied value is overridden, return a warning message that can
@@ -122,10 +123,10 @@ public final class ConnectUtils {
 
     /**
      * Adds Connect metrics context properties.
-     * @param prop the properties map to which the metrics context properties are to be added
-     * @param config the worker config
-     * @param clusterId the Connect cluster's backing Kafka cluster ID
      *
+     * @param prop      the properties map to which the metrics context properties are to be added
+     * @param config    the worker config
+     * @param clusterId the Connect cluster's backing Kafka cluster ID
      * @see <a href="https://cwiki.apache.org/confluence/display/KAFKA/KIP-606%3A+Add+Metadata+Context+to+MetricsReporter">KIP-606</a>
      */
     public static void addMetricsContextProperties(Map<String, Object> prop, WorkerConfig config, String clusterId) {
@@ -149,12 +150,13 @@ public final class ConnectUtils {
 
     /**
      * Apply a specified transformation {@link Function} to every value in a Map.
-     * @param map the Map to be transformed
+     *
+     * @param map            the Map to be transformed
      * @param transformation the transformation function
+     * @param <K>            the key type
+     * @param <I>            the pre-transform value type
+     * @param <O>            the post-transform value type
      * @return the transformed Map
-     * @param <K> the key type
-     * @param <I> the pre-transform value type
-     * @param <O> the post-transform value type
      */
     public static <K, I, O> Map<K, O> transformValues(Map<K, I> map, Function<I, O> transformation) {
         return map.entrySet().stream().collect(Collectors.toMap(
@@ -198,6 +200,7 @@ public final class ConnectUtils {
      * to the end of this base ID to include extra information on what they are using it for; for example,
      * {@code clientIdBase(config) + "configs"} could be used as the client ID for a consumer, producer,
      * or admin client used to interact with a worker's config topic.
+     *
      * @param config the worker config; may not be null
      * @return the base client ID for this worker; never null, never empty, and will always end in a
      * hyphen ('-')
@@ -214,6 +217,7 @@ public final class ConnectUtils {
 
     /**
      * Get the class name for an object in a null-safe manner.
+     *
      * @param o the object whose class name is to be returned
      * @return "null" if the object is null; or else the object's class name
      */
@@ -226,8 +230,9 @@ public final class ConnectUtils {
      *
      * <p>In the output, the values from the patch will override the values from the config.
      * {@code null} values will cause the corresponding key to be removed completely.
+     *
      * @param config the config to be patched.
-     * @param patch the patch.
+     * @param patch  the patch.
      * @return the output config map.
      */
     public static Map<String, String> patchConfig(

@@ -63,12 +63,12 @@ public class EndToEndLatencyTest {
 
     // legacy format test arguments
     private static final String[] LEGACY_INVALID_ARGS_UNEXPECTED = {
-        "localhost:9092", "test", "10000", "1", "200", "propsfile.properties", "random"
+            "localhost:9092", "test", "10000", "1", "200", "propsfile.properties", "random"
     };
 
     private static class ArgsBuilder {
         private final Map<String, String> params = new LinkedHashMap<>();
-        
+
         private ArgsBuilder() {
             params.put("--bootstrap-server", "localhost:9092");
             params.put("--topic", "test-topic");
@@ -76,16 +76,16 @@ public class EndToEndLatencyTest {
             params.put("--producer-acks", "1");
             params.put("--record-size", "200");
         }
-        
+
         public static ArgsBuilder defaults() {
             return new ArgsBuilder();
         }
-        
+
         public ArgsBuilder with(String param, String value) {
             params.put(param, value);
             return this;
         }
-        
+
         public String[] build() {
             return params.entrySet().stream()
                     .flatMap(entry -> Stream.of(entry.getKey(), entry.getValue()))
@@ -95,7 +95,7 @@ public class EndToEndLatencyTest {
         public ArgsBuilder withNegative(String param) {
             return with(param, "-1");
         }
-        
+
         public ArgsBuilder withZero(String param) {
             return with(param, "0");
         }
@@ -128,19 +128,19 @@ public class EndToEndLatencyTest {
     private void testInvalidNumRecords() {
         String expectedMsg = "Value for --num-records must be a positive integer.";
         assertInitializeInvalidOptionsExitCodeAndMsg(
-            ArgsBuilder.defaults().withNegative("--num-records").build(), expectedMsg);
+                ArgsBuilder.defaults().withNegative("--num-records").build(), expectedMsg);
     }
 
     private void testInvalidRecordSize() {
         String expectedMsg = "Value for --record-size must be a non-negative integer.";
         assertInitializeInvalidOptionsExitCodeAndMsg(
-            ArgsBuilder.defaults().withNegative("--record-size").build(), expectedMsg);
+                ArgsBuilder.defaults().withNegative("--record-size").build(), expectedMsg);
     }
 
     private void testInvalidRecordKey() {
         String expectedMsg = "Value for --record-key-size must be a non-negative integer.";
         assertInitializeInvalidOptionsExitCodeAndMsg(
-            ArgsBuilder.defaults().withNegative("--record-key-size").build(), expectedMsg);
+                ArgsBuilder.defaults().withNegative("--record-key-size").build(), expectedMsg);
     }
 
     private void testInvalidNumHeaders() {
@@ -152,13 +152,13 @@ public class EndToEndLatencyTest {
     private void testInvalidRecordHeaderKey() {
         String expectedMsg = "Value for --record-header-key-size must be a non-negative integer.";
         assertInitializeInvalidOptionsExitCodeAndMsg(
-            ArgsBuilder.defaults().withNegative("--record-header-key-size").build(), expectedMsg);
+                ArgsBuilder.defaults().withNegative("--record-header-key-size").build(), expectedMsg);
     }
 
     private void testInvalidRecordHeaderValue() {
         String expectedMsg = "Value for --record-header-size must be a non-negative integer.";
         assertInitializeInvalidOptionsExitCodeAndMsg(
-            ArgsBuilder.defaults().withNegative("--record-header-size").build(), expectedMsg);
+                ArgsBuilder.defaults().withNegative("--record-header-size").build(), expectedMsg);
     }
 
     private void testInvalidProducerAcks() {
@@ -186,11 +186,11 @@ public class EndToEndLatencyTest {
         String[] legacyArgs = {"localhost:9092", "test", "100", "1", "200"};
         String[] convertedArgs = EndToEndLatency.convertLegacyArgsIfNeeded(legacyArgs);
         String[] expectedArgs = {
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--num-records", "100",
-            "--producer-acks", "1",
-            "--record-size", "200"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--num-records", "100",
+                "--producer-acks", "1",
+                "--record-size", "200"
         };
         assertArrayEquals(expectedArgs, convertedArgs);
     }

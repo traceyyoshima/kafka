@@ -55,6 +55,7 @@ import static org.apache.kafka.connect.util.ConnectUtils.transformValues;
 /**
  * An assignor that computes a distribution of connectors and tasks according to the incremental
  * cooperative strategy for rebalancing. Note that this class is NOT thread-safe.
+ *
  * @see <a href="https://cwiki.apache.org/confluence/display/KAFKA/KIP-415%3A+Incremental+Cooperative+Rebalancing+in+Kafka+Connect">
  * KIP-415 for a description of the assignment policy. </a>
  *
@@ -113,7 +114,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
         // the response so members that have fallen behind will not use the assignment until they have caught up.
         long maxOffset = memberConfigs.values().stream().map(ExtendedWorkerState::offset).max(Long::compare).get();
         log.debug("Max config offset root: {}, local snapshot config offsets root: {}",
-                  maxOffset, coordinator.configSnapshot().offset());
+                maxOffset, coordinator.configSnapshot().offset());
 
         short protocolVersion = protocol.protocolVersion();
 
@@ -137,7 +138,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
             ClusterConfigState updatedSnapshot = coordinator.configFreshSnapshot();
             if (updatedSnapshot.offset() < maxOffset) {
                 log.info("Was selected to perform assignments, but do not have latest config found in sync request. "
-                         + "Returning an empty configuration to trigger re-sync.");
+                        + "Returning an empty configuration to trigger re-sync.");
                 return null;
             } else {
                 coordinator.configSnapshot(updatedSnapshot);
@@ -153,12 +154,12 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
      * <a href="https://cwiki.apache.org/confluence/display/KAFKA/KIP-415%3A+Incremental+Cooperative+Rebalancing+in+Kafka+Connect">
      * KIP-415</a>
      *
-     * @param leaderId the ID of the group leader
-     * @param maxOffset the latest known offset of the configuration topic
-     * @param memberConfigs the metadata of all the members of the group as gather in the current
-     * round of rebalancing
-     * @param coordinator the worker coordinator instance that provide the configuration snapshot
-     * and get assigned the leader state during this assignment
+     * @param leaderId        the ID of the group leader
+     * @param maxOffset       the latest known offset of the configuration topic
+     * @param memberConfigs   the metadata of all the members of the group as gather in the current
+     *                        round of rebalancing
+     * @param coordinator     the worker coordinator instance that provide the configuration snapshot
+     *                        and get assigned the leader state during this assignment
      * @param protocolVersion the Connect subprotocol version
      * @return the serialized assignment of tasks to the whole group, including assigned or
      * revoked tasks
@@ -205,11 +206,11 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
         log.debug("Previous assignments: {}", previousAssignment);
         if (previousGenerationId != lastCompletedGenerationId) {
             log.debug("Clearing the view of previous assignments due to generation mismatch between "
-                    + "previous generation ID {} and last completed generation ID {}. This can "
-                    + "happen if the leader fails to sync the assignment within a rebalancing round. "
-                    + "The following view of previous assignments might be outdated and will be "
-                    + "ignored by the leader in the current computation of new assignments. "
-                    + "Possibly outdated previous assignments: {}",
+                            + "previous generation ID {} and last completed generation ID {}. This can "
+                            + "happen if the leader fails to sync the assignment within a rebalancing round. "
+                            + "The following view of previous assignments might be outdated and will be "
+                            + "ignored by the leader in the current computation of new assignments. "
+                            + "Possibly outdated previous assignments: {}",
                     previousGenerationId, lastCompletedGenerationId, previousAssignment);
             this.previousAssignment = ConnectorsAndTasks.EMPTY;
         }
@@ -460,7 +461,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
             return;
         } else if (maxDelay == 0) {
             log.debug("Scheduled rebalance delays are disabled ({} = 0); "
-                    + "reassigning all lost connectors and tasks immediately",
+                            + "reassigning all lost connectors and tasks immediately",
                     SCHEDULED_REBALANCE_MAX_DELAY_MS_CONFIG
             );
             lostAssignmentsToReassign.addAll(lostAssignments);
@@ -476,7 +477,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
             }
 
             if (!candidateWorkerLoad.isEmpty()) {
-                log.debug("Assigning lost tasks to {} candidate workers: {}", 
+                log.debug("Assigning lost tasks to {} candidate workers: {}",
                         candidateWorkerLoad.size(),
                         candidateWorkerLoad.stream().map(WorkerLoad::worker).collect(Collectors.joining(",")));
                 Iterator<WorkerLoad> candidateWorkerIterator = candidateWorkerLoad.iterator();
@@ -584,8 +585,8 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
         return assignments.entrySet()
                 .stream()
                 .collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    e -> IncrementalCooperativeConnectProtocol.serializeAssignment(e.getValue(), sessioned)));
+                        Map.Entry::getKey,
+                        e -> IncrementalCooperativeConnectProtocol.serializeAssignment(e.getValue(), sessioned)));
     }
 
     private static ConnectorsAndTasks diff(ConnectorsAndTasks base,
@@ -621,9 +622,10 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
     /**
      * Revoke connectors and tasks from each worker in the cluster until no worker is running more than it
      * would be with a perfectly-balanced assignment.
+     *
      * @param configured the set of configured connectors and tasks across the entire cluster
-     * @param workers the workers in the cluster, whose assignments should not include any deleted or duplicated connectors or tasks
-     *                that are already due to be revoked from the worker in this rebalance
+     * @param workers    the workers in the cluster, whose assignments should not include any deleted or duplicated connectors or tasks
+     *                   that are already due to be revoked from the worker in this rebalance
      * @return which connectors and tasks should be revoked from which workers; never null, but may be empty
      * if no load-balancing revocations are necessary or possible
      */
@@ -766,7 +768,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
      * that have equal load, starting with the least loaded workers.
      *
      * @param workerAssignment the current worker assignment; assigned connectors are added to this list
-     * @param connectors the connectors to be assigned
+     * @param connectors       the connectors to be assigned
      */
     protected void assignConnectors(List<WorkerLoad> workerAssignment, Collection<String> connectors) {
         workerAssignment.sort(WorkerLoad.connectorComparator());
@@ -796,7 +798,7 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
      * have equal load, starting with the least loaded workers.
      *
      * @param workerAssignment the current worker assignment; assigned tasks are added to this list
-     * @param tasks the tasks to be assigned
+     * @param tasks            the tasks to be assigned
      */
     protected void assignTasks(List<WorkerLoad> workerAssignment, Collection<ConnectorTaskId> tasks) {
         workerAssignment.sort(WorkerLoad.taskComparator());
@@ -828,12 +830,12 @@ public class IncrementalCooperativeAssignor implements ConnectAssignor {
 
         return memberAssignments.entrySet().stream()
                 .map(e -> new WorkerLoad.Builder(e.getKey()).with(
-                        e.getValue().connectors().stream()
-                                .filter(v -> !ignore.connectors().contains(v))
-                                .collect(Collectors.toList()),
-                        e.getValue().tasks().stream()
-                                .filter(v -> !ignore.tasks().contains(v))
-                                .collect(Collectors.toList())
+                                e.getValue().connectors().stream()
+                                        .filter(v -> !ignore.connectors().contains(v))
+                                        .collect(Collectors.toList()),
+                                e.getValue().tasks().stream()
+                                        .filter(v -> !ignore.tasks().contains(v))
+                                        .collect(Collectors.toList())
                         ).build()
                 ).collect(Collectors.toList());
     }

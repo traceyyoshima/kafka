@@ -31,7 +31,9 @@ import static org.apache.kafka.common.config.ConfigDef.Type.LONG;
 import static org.apache.kafka.common.config.ConfigDef.Type.STRING;
 
 public class MetricConfigs {
-    /** ********* Kafka Metrics Configuration ***********/
+    /**
+     * ******** Kafka Metrics Configuration
+     ***********/
     public static final String METRIC_SAMPLE_WINDOW_MS_CONFIG = CommonClientConfigs.METRICS_SAMPLE_WINDOW_MS_CONFIG;
     public static final int METRIC_SAMPLE_WINDOW_MS_DEFAULT = 30000;
     public static final String METRIC_SAMPLE_WINDOW_MS_DOC = CommonClientConfigs.METRICS_SAMPLE_WINDOW_MS_DOC;
@@ -48,7 +50,9 @@ public class MetricConfigs {
     public static final String METRIC_RECORDING_LEVEL_DEFAULT = Sensor.RecordingLevel.INFO.toString();
     public static final String METRIC_RECORDING_LEVEL_DOC = CommonClientConfigs.METRICS_RECORDING_LEVEL_DOC;
 
-    /** ********* Kafka Yammer Metrics Reporters Configuration ***********/
+    /**
+     * ******** Kafka Yammer Metrics Reporters Configuration
+     ***********/
     public static final String KAFKA_METRICS_REPORTER_CLASSES_CONFIG = "kafka.metrics.reporters";
     public static final List<String> KAFKA_METRIC_REPORTER_CLASSES_DEFAULT = List.of();
     public static final String KAFKA_METRICS_REPORTER_CLASSES_DOC = "A list of classes to use as Yammer metrics custom reporters." +
@@ -61,13 +65,15 @@ public class MetricConfigs {
     public static final String KAFKA_METRICS_POLLING_INTERVAL_SECONDS_DOC = "The metrics polling interval (in seconds) which can be used in " +
             KAFKA_METRICS_REPORTER_CLASSES_CONFIG + " implementations.";
 
-    /** ********* Kafka Client Telemetry Metrics Configuration ***********/
+    /**
+     * ******** Kafka Client Telemetry Metrics Configuration
+     ***********/
     public static final String CLIENT_TELEMETRY_MAX_BYTES_CONFIG = "telemetry.max.bytes";
     public static final int CLIENT_TELEMETRY_MAX_BYTES_DEFAULT = 1024 * 1024;
     public static final String CLIENT_TELEMETRY_MAX_BYTES_DOC = "The maximum size (after compression if compression is used) of" +
             " telemetry metrics pushed from a client to the broker. The default value is 1048576 (1 MB).";
 
-    public static final ConfigDef CONFIG_DEF =  new ConfigDef()
+    public static final ConfigDef CONFIG_DEF = new ConfigDef()
             // Kafka Metrics Configuration
             .define(METRIC_NUM_SAMPLES_CONFIG, INT, METRIC_NUM_SAMPLES_DEFAULT, atLeast(1), LOW, METRIC_NUM_SAMPLES_DOC)
             .define(METRIC_SAMPLE_WINDOW_MS_CONFIG, LONG, METRIC_SAMPLE_WINDOW_MS_DEFAULT, atLeast(1), LOW, METRIC_SAMPLE_WINDOW_MS_DOC)

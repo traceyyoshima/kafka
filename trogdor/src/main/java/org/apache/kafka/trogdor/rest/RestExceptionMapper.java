@@ -74,7 +74,7 @@ public class RestExceptionMapper implements ExceptionMapper<Throwable> {
 
     private Response buildResponse(Response.Status code, Throwable e) {
         return Response.status(code).
-            entity(new ErrorResponse(code.getStatusCode(), e.getMessage())).
-            build();
+                entity(new ErrorResponse(code.getStatusCode(), e.getMessage())).
+                build();
     }
 }

@@ -58,16 +58,16 @@ public class InFlightBatch {
     private NavigableMap<Long, InFlightState> offsetState;
 
     public InFlightBatch(
-        Timer timer,
-        Time time,
-        String memberId,
-        long firstOffset,
-        long lastOffset,
-        RecordState state,
-        int deliveryCount,
-        AcquisitionLockTimerTask acquisitionLockTimeoutTask,
-        AcquisitionLockTimeoutHandler timeoutHandler,
-        SharePartitionMetrics sharePartitionMetrics
+            Timer timer,
+            Time time,
+            String memberId,
+            long firstOffset,
+            long lastOffset,
+            RecordState state,
+            int deliveryCount,
+            AcquisitionLockTimerTask acquisitionLockTimeoutTask,
+            AcquisitionLockTimeoutHandler timeoutHandler,
+            SharePartitionMetrics sharePartitionMetrics
     ) {
         this.timer = timer;
         this.time = time;
@@ -135,6 +135,7 @@ public class InFlightBatch {
      * Cancel the acquisition lock timeout task and clear the reference to it.
      * This method is used to cancel the acquisition lock timeout task if it exists
      * and clear the reference to it.
+     *
      * @throws IllegalStateException if the offset state is maintained and the batch state is not available.
      */
     public void cancelAndClearAcquisitionLockTimeoutTask() {
@@ -152,6 +153,7 @@ public class InFlightBatch {
     /**
      * Archive the batch state. This is used to mark the batch as archived and no further updates
      * are allowed to the batch state.
+     *
      * @throws IllegalStateException if the offset state is maintained and the batch state is not available.
      */
     public void archiveBatch() {
@@ -162,10 +164,10 @@ public class InFlightBatch {
      * Try to update the batch state. The state of the batch can only be updated if the new state is allowed
      * to be transitioned from old state. The delivery count is not changed if the state update is unsuccessful.
      *
-     * @param newState The new state of the records.
-     * @param ops      The behavior on the delivery count.
+     * @param newState         The new state of the records.
+     * @param ops              The behavior on the delivery count.
      * @param maxDeliveryCount The maximum delivery count for the records.
-     * @param newMemberId The new member id for the records.
+     * @param newMemberId      The new member id for the records.
      * @return {@code InFlightState} if update succeeds, null otherwise. Returning state helps update chaining.
      * @throws IllegalStateException if the offset state is maintained and the batch state is not available.
      */
@@ -177,15 +179,15 @@ public class InFlightBatch {
      * Start a state transition for the batch. This is used to mark the batch as in-flight and
      * no further updates are allowed to the batch state.
      *
-     * @param newState The new state of the records.
-     * @param ops      The behavior on the delivery count.
+     * @param newState         The new state of the records.
+     * @param ops              The behavior on the delivery count.
      * @param maxDeliveryCount The maximum delivery count for the records.
-     * @param newMemberId The new member id for the records.
+     * @param newMemberId      The new member id for the records.
      * @return {@code InFlightState} if update succeeds, null otherwise. Returning state helps update chaining.
      * @throws IllegalStateException if the offset state is maintained and the batch state is not available.
      */
     public InFlightState startBatchStateTransition(RecordState newState, DeliveryCountOps ops, int maxDeliveryCount,
-        String newMemberId
+                                                   String newMemberId
     ) {
         return inFlightState().startStateTransition(newState, ops, maxDeliveryCount, newMemberId);
     }
@@ -198,7 +200,7 @@ public class InFlightBatch {
      * and do not schedule any timer task for these offsets.
      *
      * @param targetOffset The target offset up to which the offset states are initialized using the current batch state.
-     * @param delayMs The delay in milliseconds for the acquisition lock timeout task.
+     * @param delayMs      The delay in milliseconds for the acquisition lock timeout task.
      */
     public void maybeInitializeOffsetStateUpdate(long targetOffset, int delayMs) {
         if (offsetState == null) {
@@ -265,10 +267,10 @@ public class InFlightBatch {
     }
 
     private AcquisitionLockTimerTask acquisitionLockTimerTask(
-        String memberId,
-        long firstOffset,
-        long lastOffset,
-        long delayMs
+            String memberId,
+            long firstOffset,
+            long lastOffset,
+            long delayMs
     ) {
         return new AcquisitionLockTimerTask(time, delayMs, memberId, firstOffset, lastOffset, timeoutHandler, sharePartitionMetrics);
     }
@@ -276,10 +278,10 @@ public class InFlightBatch {
     @Override
     public String toString() {
         return "InFlightBatch(" +
-            "firstOffset=" + firstOffset +
-            ", lastOffset=" + lastOffset +
-            ", inFlightState=" + batchState +
-            ", offsetState=" + ((offsetState == null) ? "null" : offsetState) +
-            ")";
+                "firstOffset=" + firstOffset +
+                ", lastOffset=" + lastOffset +
+                ", inFlightState=" + batchState +
+                ", offsetState=" + ((offsetState == null) ? "null" : offsetState) +
+                ")";
     }
 }

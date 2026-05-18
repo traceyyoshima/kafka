@@ -80,11 +80,11 @@ public class SnapshotGeneratorTest {
 
     static LogDeltaManifest.Builder logDeltaManifestBuilder() {
         return LogDeltaManifest.newBuilder()
-            .provenance(new MetadataProvenance(-1L, -1, -1L, true))
-            .leaderAndEpoch(LeaderAndEpoch.UNKNOWN)
-            .numBatches(1)
-            .elapsedNs(100)
-            .numBytes(100);
+                .provenance(new MetadataProvenance(-1L, -1, -1L, true))
+                .leaderAndEpoch(LeaderAndEpoch.UNKNOWN)
+                .numBatches(1)
+                .elapsedNs(100)
+                .numBytes(100);
     }
 
     static LogDeltaManifest.Builder notBatchAlignedLogDeltaManifestBuilder() {
@@ -228,7 +228,7 @@ public class SnapshotGeneratorTest {
                 build()) {
             for (int i = 0; i < 2; i++) {
                 generator.publishLogDelta(TEST_IMAGE,
-                    logDeltaManifestBuilder().elapsedNs(10000).numBytes(50000).build());
+                        logDeltaManifestBuilder().elapsedNs(10000).numBytes(50000).build());
             }
         }
         assertEquals(List.of(), emitter.images());

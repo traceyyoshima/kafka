@@ -32,12 +32,18 @@ public class TaskId implements Comparable<TaskId> {
 
     public static final String NAMED_TOPOLOGY_DELIMITER = "__";
 
-    /** The ID of the subtopology. */
+    /**
+     * The ID of the subtopology.
+     */
     private final int subtopology;
-    /** The ID of the partition. */
+    /**
+     * The ID of the partition.
+     */
     private final int partition;
 
-    /** The namedTopology that this task belongs to, or null if it does not belong to one */
+    /**
+     * The namedTopology that this task belongs to, or null if it does not belong to one
+     */
     private final String topologyName;
 
     public TaskId(final int subtopology, final int partition) {
@@ -49,7 +55,7 @@ public class TaskId implements Comparable<TaskId> {
         this.partition = partition;
         if (topologyName != null && topologyName.length() == 0) {
             LOG.warn("Empty string passed in for task's namedTopology, since NamedTopology name cannot be empty, we "
-                         + "assume this task does not belong to a NamedTopology and downgrade this to null");
+                    + "assume this task does not belong to a NamedTopology and downgrade this to null");
             this.topologyName = null;
         } else {
             this.topologyName = topologyName;

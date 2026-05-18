@@ -28,21 +28,21 @@ import org.junit.platform.suite.api.Suite;
 
 /**
  * This suite runs all the tests related to querying StateStores (IQ).
- *
+ * <p>
  * It can be used from an IDE to selectively just run these tests.
- *
+ * <p>
  * Tests ending in the word "Suite" are excluded from the gradle build because it
  * already runs the component tests individually.
  */
 @Suite
 @SelectClasses({
-    CompositeReadOnlyKeyValueStoreTest.class,
-    CompositeReadOnlyWindowStoreTest.class,
-    CompositeReadOnlySessionStoreTest.class,
-    GlobalStateStoreProviderTest.class,
-    StreamThreadStateStoreProviderTest.class,
-    WrappingStoreProviderTest.class,
-    QueryableStateIntegrationTest.class,
+        CompositeReadOnlyKeyValueStoreTest.class,
+        CompositeReadOnlyWindowStoreTest.class,
+        CompositeReadOnlySessionStoreTest.class,
+        GlobalStateStoreProviderTest.class,
+        StreamThreadStateStoreProviderTest.class,
+        WrappingStoreProviderTest.class,
+        QueryableStateIntegrationTest.class,
 })
 public class StoreQuerySuite {
 }

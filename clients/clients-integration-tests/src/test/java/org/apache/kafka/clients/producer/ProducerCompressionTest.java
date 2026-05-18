@@ -69,7 +69,7 @@ public class ProducerCompressionTest {
 
 
     void processCompressionTest(ClusterInstance cluster, CompressionType compression) throws InterruptedException,
-        ExecutionException {
+            ExecutionException {
         String compressionTopic = topicName + "_" + compression.name;
         cluster.createTopic(compressionTopic, 1, (short) 1);
         Map<String, Object> producerProps = new HashMap<>();
@@ -91,20 +91,20 @@ public class ProducerCompressionTest {
             messages.forEach(message -> {
                 // 1. send message without key and header
                 responses.add(producer.send(new ProducerRecord<>(compressionTopic, null, now, null,
-                    message.getBytes())));
+                        message.getBytes())));
                 // 2. send message with key, without header
                 responses.add(producer.send(new ProducerRecord<>(compressionTopic, null, now,
-                    String.valueOf(message.length()).getBytes(), message.getBytes())));
+                        String.valueOf(message.length()).getBytes(), message.getBytes())));
                 // 3. send message with key and header
                 responses.add(producer.send(new ProducerRecord<>(compressionTopic, null, now,
-                    String.valueOf(message.length()).getBytes(), message.getBytes(), headers)));
+                        String.valueOf(message.length()).getBytes(), message.getBytes(), headers)));
             });
             for (int offset = 0; offset < responses.size(); offset++) {
                 assertEquals(offset, responses.get(offset).get().offset(), compression.name);
             }
             verifyConsumerRecords(consumer, messages, now, headerArr, partition, compressionTopic, compression.name);
             verifyConsumerRecords(classicConsumer, messages, now, headerArr, partition, compressionTopic,
-                compression.name);
+                    compression.name);
         } finally {
             //  This consumer close very slowly, which may cause the entire test to time out, and we can't wait for 
             //  it to  auto close 
@@ -165,10 +165,10 @@ public class ProducerCompressionTest {
     private String messageValue(int length) {
         Random random = new Random();
         return IntStream.range(0, length)
-            .map(i -> random.nextInt(TestUtils.LETTERS_AND_DIGITS.length()))
-            .mapToObj(TestUtils.LETTERS_AND_DIGITS::charAt)
-            .map(String::valueOf)
-            .collect(Collectors.joining());
+                .map(i -> random.nextInt(TestUtils.LETTERS_AND_DIGITS.length()))
+                .mapToObj(TestUtils.LETTERS_AND_DIGITS::charAt)
+                .map(String::valueOf)
+                .collect(Collectors.joining());
     }
 
     private String errorMessage(String compression) {

@@ -30,26 +30,26 @@ public class RepartitionTopicConfigTest {
     public void shouldThrowAnExceptionWhenSettingNumberOfPartitionsIfTheyAreEnforced() {
         final String name = "my-topic";
         final RepartitionTopicConfig repartitionTopicConfig = new RepartitionTopicConfig(name,
-                                                                                         Collections.emptyMap(),
-                                                                                         10,
-                                                                                         true);
+                Collections.emptyMap(),
+                10,
+                true);
 
         final UnsupportedOperationException ex = assertThrows(
-            UnsupportedOperationException.class,
-            () -> repartitionTopicConfig.setNumberOfPartitions(2)
+                UnsupportedOperationException.class,
+                () -> repartitionTopicConfig.setNumberOfPartitions(2)
         );
 
         assertEquals(String.format("number of partitions are enforced on topic " +
-                                   "%s and can't be altered.", name), ex.getMessage());
+                "%s and can't be altered.", name), ex.getMessage());
     }
 
     @Test
     public void shouldNotThrowAnExceptionWhenSettingNumberOfPartitionsIfTheyAreNotEnforced() {
         final String name = "my-topic";
         final RepartitionTopicConfig repartitionTopicConfig = new RepartitionTopicConfig(name,
-                                                                                         Collections.emptyMap(),
-                                                                                         10,
-                                                                                         false);
+                Collections.emptyMap(),
+                10,
+                false);
 
         repartitionTopicConfig.setNumberOfPartitions(4);
 

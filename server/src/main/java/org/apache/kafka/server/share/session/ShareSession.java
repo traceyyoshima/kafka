@@ -51,16 +51,16 @@ public class ShareSession {
      * Each share session is protected by its own lock, which must be taken before mutable
      * fields are read or modified. This includes modification of the share session partition map.
      *
-     * @param key                The share session key to identify the share session uniquely.
-     * @param partitionMap       The CachedPartitionMap.
-     * @param epoch              The share session sequence number.
-     * @param connectionId       The connection id associated with this share session.
+     * @param key          The share session key to identify the share session uniquely.
+     * @param partitionMap The CachedPartitionMap.
+     * @param epoch        The share session sequence number.
+     * @param connectionId The connection id associated with this share session.
      */
     public ShareSession(
-        ShareSessionKey key,
-        ImplicitLinkedHashCollection<CachedSharePartition> partitionMap,
-        int epoch,
-        String connectionId
+            ShareSessionKey key,
+            ImplicitLinkedHashCollection<CachedSharePartition> partitionMap,
+            int epoch,
+            String connectionId
     ) {
         this.key = key;
         this.partitionMap = partitionMap;
@@ -99,8 +99,8 @@ public class ShareSession {
 
     // Update the cached partition data based on the request.
     public synchronized Map<ModifiedTopicIdPartitionType, List<TopicIdPartition>> update(
-        List<TopicIdPartition> shareFetchData,
-        List<TopicIdPartition> toForget
+            List<TopicIdPartition> shareFetchData,
+            List<TopicIdPartition> toForget
     ) {
         List<TopicIdPartition> added = new ArrayList<>();
         List<TopicIdPartition> updated = new ArrayList<>();
@@ -128,8 +128,9 @@ public class ShareSession {
 
     /**
      * Updates the cached size of the session to represent the current partitionMap size.
+     *
      * @return The difference between the current cached size and the previously stored cached size. This is required to
-     *         update the total number of share partitions stored in the share session cache.
+     * update the total number of share partitions stored in the share session cache.
      */
     public synchronized int updateCachedSize() {
         var previousSize = cachedSize;

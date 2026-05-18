@@ -39,11 +39,11 @@ import jakarta.ws.rs.core.MediaType;
 
 /**
  * The REST resource for the Agent. This describes the RPCs which the agent can accept.
- *
+ * <p>
  * RPCs should be idempotent.  This is important because if the server's response is
  * lost, the client will simply retransmit the same request. The server's response must
  * be the same the second time around.
- *
+ * <p>
  * We return the empty JSON object {} rather than void for RPCs that have no results.
  * This ensures that if we want to add more return results later, we can do so in a
  * compatible way.

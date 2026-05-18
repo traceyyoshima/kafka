@@ -69,16 +69,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(
-    types = {Type.KRAFT},
-    brokers = PlaintextConsumerPollTest.BROKER_COUNT,
-    serverProperties = {
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
-        @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"),
-        @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-        @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
-        @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
-    }
+        types = {Type.KRAFT},
+        brokers = PlaintextConsumerPollTest.BROKER_COUNT,
+        serverProperties = {
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_PARTITIONS_CONFIG, value = "1"),
+                @ClusterConfigProperty(key = OFFSETS_TOPIC_REPLICATION_FACTOR_CONFIG, value = "3"),
+                @ClusterConfigProperty(key = GROUP_MIN_SESSION_TIMEOUT_MS_CONFIG, value = "100"),
+                @ClusterConfigProperty(key = CONSUMER_GROUP_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+                @ClusterConfigProperty(key = CONSUMER_GROUP_MIN_HEARTBEAT_INTERVAL_MS_CONFIG, value = "500"),
+                @ClusterConfigProperty(key = GROUP_INITIAL_REBALANCE_DELAY_MS_CONFIG, value = "10"),
+        }
 )
 public class PlaintextConsumerPollTest {
 
@@ -113,22 +113,22 @@ public class PlaintextConsumerPollTest {
         var maxPollRecords = 100;
         var numRecords = 5000;
         Map<String, Object> config = Map.of(
-            MAX_POLL_RECORDS_CONFIG, maxPollRecords,
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT)
+                MAX_POLL_RECORDS_CONFIG, maxPollRecords,
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT)
         );
         var startingTimestamp = System.currentTimeMillis();
         sendRecords(cluster, tp, numRecords, startingTimestamp);
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config)) {
             consumer.assign(List.of(tp));
             consumeAndVerifyRecords(
-                consumer,
-                tp,
-                numRecords,
-                maxPollRecords,
-                0,
-                0,
-                startingTimestamp,
-                -1
+                    consumer,
+                    tp,
+                    numRecords,
+                    maxPollRecords,
+                    0,
+                    0,
+                    startingTimestamp,
+                    -1
             );
         }
     }
@@ -136,18 +136,18 @@ public class PlaintextConsumerPollTest {
     @ClusterTest
     public void testClassicConsumerMaxPollIntervalMs() throws InterruptedException {
         testMaxPollIntervalMs(Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 1000,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            HEARTBEAT_INTERVAL_MS_CONFIG, 500,
-            SESSION_TIMEOUT_MS_CONFIG, 2000
+                MAX_POLL_INTERVAL_MS_CONFIG, 1000,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                HEARTBEAT_INTERVAL_MS_CONFIG, 500,
+                SESSION_TIMEOUT_MS_CONFIG, 2000
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerMaxPollIntervalMs() throws InterruptedException {
         testMaxPollIntervalMs(Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 1000,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                MAX_POLL_INTERVAL_MS_CONFIG, 1000,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -174,20 +174,20 @@ public class PlaintextConsumerPollTest {
     @ClusterTest
     public void testClassicConsumerMaxPollIntervalMsDelayInRevocation() throws InterruptedException {
         testMaxPollIntervalMsDelayInRevocation(Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 5000,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            HEARTBEAT_INTERVAL_MS_CONFIG, 500,
-            SESSION_TIMEOUT_MS_CONFIG, 1000,
-            ENABLE_AUTO_COMMIT_CONFIG, false
+                MAX_POLL_INTERVAL_MS_CONFIG, 5000,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                HEARTBEAT_INTERVAL_MS_CONFIG, 500,
+                SESSION_TIMEOUT_MS_CONFIG, 1000,
+                ENABLE_AUTO_COMMIT_CONFIG, false
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerMaxPollIntervalMsDelayInRevocation() throws InterruptedException {
         testMaxPollIntervalMsDelayInRevocation(Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 5000,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            ENABLE_AUTO_COMMIT_CONFIG, false
+                MAX_POLL_INTERVAL_MS_CONFIG, 5000,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                ENABLE_AUTO_COMMIT_CONFIG, false
         ));
     }
 
@@ -242,20 +242,20 @@ public class PlaintextConsumerPollTest {
     @ClusterTest
     public void testClassicConsumerMaxPollIntervalMsDelayInAssignment() throws InterruptedException {
         testMaxPollIntervalMsDelayInAssignment(Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 5000,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            HEARTBEAT_INTERVAL_MS_CONFIG, 500,
-            SESSION_TIMEOUT_MS_CONFIG, 1000,
-            ENABLE_AUTO_COMMIT_CONFIG, false
+                MAX_POLL_INTERVAL_MS_CONFIG, 5000,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                HEARTBEAT_INTERVAL_MS_CONFIG, 500,
+                SESSION_TIMEOUT_MS_CONFIG, 1000,
+                ENABLE_AUTO_COMMIT_CONFIG, false
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerMaxPollIntervalMsDelayInAssignment() throws InterruptedException {
         testMaxPollIntervalMsDelayInAssignment(Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 5000,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
-            ENABLE_AUTO_COMMIT_CONFIG, false
+                MAX_POLL_INTERVAL_MS_CONFIG, 5000,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT),
+                ENABLE_AUTO_COMMIT_CONFIG, false
         ));
     }
 
@@ -280,17 +280,17 @@ public class PlaintextConsumerPollTest {
     @ClusterTest
     public void testClassicConsumerMaxPollIntervalMsShorterThanPollTimeout() throws InterruptedException {
         testMaxPollIntervalMsShorterThanPollTimeout(Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 1000,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
-            HEARTBEAT_INTERVAL_MS_CONFIG, 500
+                MAX_POLL_INTERVAL_MS_CONFIG, 1000,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CLASSIC.name().toLowerCase(Locale.ROOT),
+                HEARTBEAT_INTERVAL_MS_CONFIG, 500
         ));
     }
 
     @ClusterTest
     public void testAsyncConsumerMaxPollIntervalMsShorterThanPollTimeout() throws InterruptedException {
         testMaxPollIntervalMsShorterThanPollTimeout(Map.of(
-            MAX_POLL_INTERVAL_MS_CONFIG, 1000,
-            GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
+                MAX_POLL_INTERVAL_MS_CONFIG, 1000,
+                GROUP_PROTOCOL_CONFIG, GroupProtocol.CONSUMER.name().toLowerCase(Locale.ROOT)
         ));
     }
 
@@ -327,10 +327,10 @@ public class PlaintextConsumerPollTest {
         int numMessages = 1000;
         int maxPollRecords = 10;
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, "testPerPartitionLeadWithMaxPollRecords",
-            CLIENT_ID_CONFIG, "testPerPartitionLeadWithMaxPollRecords",
-            MAX_POLL_RECORDS_CONFIG, maxPollRecords
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, "testPerPartitionLeadWithMaxPollRecords",
+                CLIENT_ID_CONFIG, "testPerPartitionLeadWithMaxPollRecords",
+                MAX_POLL_RECORDS_CONFIG, maxPollRecords
         );
 
         sendRecords(cluster, tp, numMessages);
@@ -339,9 +339,9 @@ public class PlaintextConsumerPollTest {
             awaitNonEmptyRecords(consumer, tp, 100);
 
             var tags = Map.of(
-                "client-id", "testPerPartitionLeadWithMaxPollRecords",
-                "topic", tp.topic(),
-                "partition", String.valueOf(tp.partition())
+                    "client-id", "testPerPartitionLeadWithMaxPollRecords",
+                    "topic", tp.topic(),
+                    "partition", String.valueOf(tp.partition())
             );
             var lead = consumer.metrics()
                     .get(new MetricName("records-lead", "consumer-fetch-manager-metrics", "", tags));
@@ -363,10 +363,10 @@ public class PlaintextConsumerPollTest {
         int numMessages = 1000;
         int maxPollRecords = 10;
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, "testPerPartitionLagWithMaxPollRecords",
-            CLIENT_ID_CONFIG, "testPerPartitionLagWithMaxPollRecords",
-            MAX_POLL_RECORDS_CONFIG, maxPollRecords
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, "testPerPartitionLagWithMaxPollRecords",
+                CLIENT_ID_CONFIG, "testPerPartitionLagWithMaxPollRecords",
+                MAX_POLL_RECORDS_CONFIG, maxPollRecords
         );
         sendRecords(cluster, tp, numMessages);
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config)) {
@@ -374,9 +374,9 @@ public class PlaintextConsumerPollTest {
             var records = awaitNonEmptyRecords(consumer, tp, 100);
 
             var tags = Map.of(
-                "client-id", "testPerPartitionLagWithMaxPollRecords",
-                "topic", tp.topic(),
-                "partition", String.valueOf(tp.partition())
+                    "client-id", "testPerPartitionLagWithMaxPollRecords",
+                    "topic", tp.topic(),
+                    "partition", String.valueOf(tp.partition())
             );
             var lag = consumer.metrics()
                     .get(new MetricName("records-lag", "consumer-fetch-manager-metrics", "", tags));
@@ -384,10 +384,10 @@ public class PlaintextConsumerPollTest {
             // Count the number of records received
             var recordCount = records.count();
             assertEquals(
-                numMessages - recordCount,
-                (Double) lag.metricValue(),
-                EPSILON,
-                "The lag should be " + (numMessages - recordCount)
+                    numMessages - recordCount,
+                    (Double) lag.metricValue(),
+                    EPSILON,
+                    "The lag should be " + (numMessages - recordCount)
             );
         }
     }
@@ -416,9 +416,9 @@ public class PlaintextConsumerPollTest {
         String topic1 = "topic1";
         int partitions = 6;
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            GROUP_ID_CONFIG, "test-group",
-            MAX_POLL_INTERVAL_MS_CONFIG, 1000
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                GROUP_ID_CONFIG, "test-group",
+                MAX_POLL_INTERVAL_MS_CONFIG, 1000
         );
         // use consumers defined in this class plus one additional consumer
         // Use topic defined in this class + one additional topic
@@ -505,8 +505,8 @@ public class PlaintextConsumerPollTest {
 
     private void testNoOffsetForPartitionExceptionOnPollZero(GroupProtocol groupProtocol) throws InterruptedException {
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            AUTO_OFFSET_RESET_CONFIG, "none"
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                AUTO_OFFSET_RESET_CONFIG, "none"
         );
         try (Consumer<byte[], byte[]> consumer = cluster.consumer(config)) {
             consumer.assign(List.of(tp));
@@ -530,9 +530,9 @@ public class PlaintextConsumerPollTest {
     public void testConsumerRecoveryOnPollAfterDelayedRebalance(GroupProtocol groupProtocol) throws InterruptedException {
         var rebalanceTimeout = 1000;
         Map<String, Object> config = Map.of(
-            GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
-            MAX_POLL_INTERVAL_MS_CONFIG, 1000,
-            ENABLE_AUTO_COMMIT_CONFIG, false
+                GROUP_PROTOCOL_CONFIG, groupProtocol.name().toLowerCase(Locale.ROOT),
+                MAX_POLL_INTERVAL_MS_CONFIG, 1000,
+                ENABLE_AUTO_COMMIT_CONFIG, false
         );
         try (Producer<byte[], byte[]> producer = cluster.producer();
              // Subscribe consumer that will reconcile in time on the first rebalance, but will
@@ -569,9 +569,9 @@ public class PlaintextConsumerPollTest {
             // Subscribe to different topic. This will trigger the delayed revocation exceeding rebalance timeout and get fenced
             consumer.subscribe(List.of(otherTopic), listener);
             ClientsTestUtils.pollUntilTrue(
-                consumer,
-                rebalanceTimeoutExceeded::get,
-                "Timeout waiting for delayed callback to complete"
+                    consumer,
+                    rebalanceTimeoutExceeded::get,
+                    "Timeout waiting for delayed callback to complete"
             );
 
             // Verify consumer recovers after being fenced, being able to continue consuming.
@@ -590,8 +590,8 @@ public class PlaintextConsumerPollTest {
      * @return consumer poller for the given consumer
      */
     private ConsumerAssignmentPoller subscribeConsumerAndStartPolling(
-        Consumer<byte[], byte[]> consumer,
-        List<String> topicsToSubscribe
+            Consumer<byte[], byte[]> consumer,
+            List<String> topicsToSubscribe
     ) {
         assertEquals(0, consumer.assignment().size());
         ConsumerAssignmentPoller consumerPoller;
@@ -608,17 +608,17 @@ public class PlaintextConsumerPollTest {
      * 3. Every partition is assigned to one of the consumers
      *
      * @param assignments set of consumer assignments; one per each consumer
-     * @param partitions set of partitions that consumers subscribed to
+     * @param partitions  set of partitions that consumers subscribed to
      * @return true if partition assignment is valid
      */
     private boolean isPartitionAssignmentValid(
-        List<Set<TopicPartition>> assignments,
-        Set<TopicPartition> partitions
+            List<Set<TopicPartition>> assignments,
+            Set<TopicPartition> partitions
     ) {
         // check that all consumers got at least one partition
         var allNonEmptyAssignments = assignments
-            .stream()
-            .noneMatch(Set::isEmpty);
+                .stream()
+                .noneMatch(Set::isEmpty);
 
         if (!allNonEmptyAssignments) {
             // at least one consumer got empty assignment
@@ -656,26 +656,26 @@ public class PlaintextConsumerPollTest {
      * @param msg             message to print when waiting for/validating assignment fails
      */
     private void validateGroupAssignment(
-        List<ConsumerAssignmentPoller> consumerPollers,
-        Set<TopicPartition> subscriptions,
-        String msg
+            List<ConsumerAssignmentPoller> consumerPollers,
+            Set<TopicPartition> subscriptions,
+            String msg
     ) throws InterruptedException {
         List<Set<TopicPartition>> assignments = new ArrayList<>();
         TestUtils.waitForCondition(() -> {
-            assignments.clear();
-            for (ConsumerAssignmentPoller poller : consumerPollers) {
-                assignments.add(poller.consumerAssignment());
-            }
-            return isPartitionAssignmentValid(assignments, subscriptions);
-        }, GROUP_MAX_SESSION_TIMEOUT_MS * 3,
+                    assignments.clear();
+                    for (ConsumerAssignmentPoller poller : consumerPollers) {
+                        assignments.add(poller.consumerAssignment());
+                    }
+                    return isPartitionAssignmentValid(assignments, subscriptions);
+                }, GROUP_MAX_SESSION_TIMEOUT_MS * 3,
                 () -> msg != null ? msg : "Did not get valid assignment for partitions " + subscriptions + ". Instead, got " + assignments
         );
     }
 
     private ConsumerRecords<byte[], byte[]> awaitNonEmptyRecords(
-        Consumer<byte[], byte[]> consumer,
-        TopicPartition partition,
-        long pollTimeoutMs
+            Consumer<byte[], byte[]> consumer,
+            TopicPartition partition,
+            long pollTimeoutMs
     ) throws InterruptedException {
         List<ConsumerRecords<byte[], byte[]>> result = new ArrayList<>();
         TestUtils.waitForCondition(() -> {

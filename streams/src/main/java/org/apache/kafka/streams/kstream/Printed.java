@@ -37,7 +37,7 @@ public class Printed<K, V> implements NamedOperation<Printed<K, V>> {
     protected String label;
     protected String processorName;
     protected KeyValueMapper<? super K, ? super V, String> mapper =
-        (KeyValueMapper<K, V, String>) (key, value) -> String.format("%s, %s", key, value);
+            (KeyValueMapper<K, V, String>) (key, value) -> String.format("%s, %s", key, value);
 
     private Printed(final OutputStream outputStream) {
         this.outputStream = outputStream;
@@ -45,7 +45,8 @@ public class Printed<K, V> implements NamedOperation<Printed<K, V>> {
 
     /**
      * Copy constructor.
-     * @param printed   instance of {@link Printed} to copy
+     *
+     * @param printed instance of {@link Printed} to copy
      */
     protected Printed(final Printed<K, V> printed) {
         this.outputStream = printed.outputStream;
@@ -109,7 +110,7 @@ public class Printed<K, V> implements NamedOperation<Printed<K, V>> {
      *     }
      * };
      * }</pre>
-     *
+     * <p>
      * Implementors will need to override {@code toString()} for keys and values that are not of type {@link String},
      * {@link Integer} etc. to get meaningful information.
      *
@@ -126,7 +127,7 @@ public class Printed<K, V> implements NamedOperation<Printed<K, V>> {
      * Print the records of a {@link KStream} with provided processor name.
      *
      * @param processorName the processor name to be used. If {@code null} a default processor name will be generated
-     ** @return this
+     *                      * @return this
      */
     @Override
     public Printed<K, V> withName(final String processorName) {

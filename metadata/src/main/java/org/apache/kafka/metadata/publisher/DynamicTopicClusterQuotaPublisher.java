@@ -37,12 +37,12 @@ public class DynamicTopicClusterQuotaPublisher implements MetadataPublisher {
     private final QuotaConfigChangeListener quotaConfigChangeListener;
 
     public DynamicTopicClusterQuotaPublisher(
-        String clusterId,
-        int nodeId,
-        FaultHandler faultHandler,
-        String nodeType,
-        Optional<Plugin<ClientQuotaCallback>> clientQuotaCallbackPlugin,
-        QuotaConfigChangeListener quotaConfigChangeListener
+            String clusterId,
+            int nodeId,
+            FaultHandler faultHandler,
+            String nodeType,
+            Optional<Plugin<ClientQuotaCallback>> clientQuotaCallbackPlugin,
+            QuotaConfigChangeListener quotaConfigChangeListener
     ) {
         this.clusterId = clusterId;
         this.nodeId = nodeId;

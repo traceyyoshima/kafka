@@ -35,15 +35,15 @@ import static org.apache.kafka.metadata.Replicas.NONE;
 
 /**
  * Associates brokers with their in-sync partitions.
- *
+ * <p>
  * This is useful when we need to remove a broker from all the ISRs, or move all leaders
  * away from a broker.
- *
+ * <p>
  * We also track all the partitions that currently have no leader.
- *
+ * <p>
  * The core data structure is a map from broker IDs to topic maps.  Each topic map relates
  * topic UUIDs to arrays of partition IDs.
- *
+ * <p>
  * Each entry in the array has a high bit which indicates that the broker is the leader
  * for the given partition, as well as 31 low bits which contain the partition id.  This
  * works because partition IDs cannot be negative.
@@ -103,7 +103,7 @@ public class BrokersToIsrs {
      * Partitions with no isr members appear in this map under id NO_LEADER.
      */
     private final TimelineHashMap<Integer, TimelineHashMap<Uuid, int[]>> isrMembers;
-    
+
     BrokersToIsrs(SnapshotRegistry snapshotRegistry) {
         this.snapshotRegistry = snapshotRegistry;
         this.isrMembers = new TimelineHashMap<>(snapshotRegistry, 0);
@@ -112,12 +112,12 @@ public class BrokersToIsrs {
     /**
      * Update our records of a partition's ISR.
      *
-     * @param topicId       The topic ID of the partition.
-     * @param partitionId   The partition ID of the partition.
-     * @param prevIsr       The previous ISR, or null if the partition is new.
-     * @param nextIsr       The new ISR, or null if the partition is being removed.
-     * @param prevLeader    The previous leader, or NO_LEADER if the partition had no leader.
-     * @param nextLeader    The new leader, or NO_LEADER if the partition now has no leader.
+     * @param topicId     The topic ID of the partition.
+     * @param partitionId The partition ID of the partition.
+     * @param prevIsr     The previous ISR, or null if the partition is new.
+     * @param nextIsr     The new ISR, or null if the partition is being removed.
+     * @param prevLeader  The previous leader, or NO_LEADER if the partition had no leader.
+     * @param nextLeader  The new leader, or NO_LEADER if the partition now has no leader.
      */
     void update(Uuid topicId, int partitionId, int[] prevIsr, int[] nextIsr,
                 int prevLeader, int nextLeader) {
@@ -211,12 +211,12 @@ public class BrokersToIsrs {
         TimelineHashMap<Uuid, int[]> topicMap = isrMembers.get(brokerId);
         if (topicMap == null) {
             throw new RuntimeException("Broker " + brokerId + " has no isrMembers " +
-                "entry, so we can't change " + topicId + ":" + partition);
+                    "entry, so we can't change " + topicId + ":" + partition);
         }
         int[] partitions = topicMap.get(topicId);
         if (partitions == null) {
             throw new RuntimeException("Broker " + brokerId + " has no " +
-                "entry in isrMembers for topic " + topicId);
+                    "entry in isrMembers for topic " + topicId);
         }
         int[] newPartitions = new int[partitions.length];
         int target = wasLeader ? partition | LEADER_FLAG : partition;
@@ -238,17 +238,17 @@ public class BrokersToIsrs {
         TimelineHashMap<Uuid, int[]> topicMap = isrMembers.get(brokerId);
         if (topicMap == null) {
             throw new RuntimeException("Broker " + brokerId + " has no isrMembers " +
-                "entry, so we can't remove " + topicId + ":" + removedPartition);
+                    "entry, so we can't remove " + topicId + ":" + removedPartition);
         }
         int[] partitions = topicMap.get(topicId);
         if (partitions == null) {
             throw new RuntimeException("Broker " + brokerId + " has no " +
-                "entry in isrMembers for topic " + topicId);
+                    "entry in isrMembers for topic " + topicId);
         }
         if (partitions.length == 1) {
             if (partitions[0] != removedPartition) {
                 throw new RuntimeException("Broker " + brokerId + " has no " +
-                    "entry in isrMembers for " + topicId + ":" + removedPartition);
+                        "entry in isrMembers for " + topicId + ":" + removedPartition);
             }
             topicMap.remove(topicId);
             if (topicMap.isEmpty()) {

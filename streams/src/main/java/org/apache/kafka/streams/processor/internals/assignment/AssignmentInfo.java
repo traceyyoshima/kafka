@@ -62,12 +62,12 @@ public class AssignmentInfo {
     public AssignmentInfo(final int version,
                           final int commonlySupportedVersion) {
         this(version,
-             commonlySupportedVersion,
-             Collections.emptyList(),
-             Collections.emptyMap(),
-             Collections.emptyMap(),
-             Collections.emptyMap(),
-             0);
+                commonlySupportedVersion,
+                Collections.emptyList(),
+                Collections.emptyMap(),
+                Collections.emptyMap(),
+                Collections.emptyMap(),
+                0);
     }
 
     public AssignmentInfo(final int version,
@@ -96,7 +96,7 @@ public class AssignmentInfo {
 
         if (version < 1 || version > LATEST_SUPPORTED_VERSION) {
             throw new IllegalArgumentException("version must be between 1 and " + LATEST_SUPPORTED_VERSION
-                + "; was: " + version);
+                    + "; was: " + version);
         }
     }
 
@@ -138,7 +138,7 @@ public class AssignmentInfo {
 
     /**
      * @throws TaskAssignmentException if method fails to encode the data, e.g., if there is an
-     * IO exception during encoding
+     *                                 IO exception during encoding
      */
     public ByteBuffer encode() {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -274,15 +274,15 @@ public class AssignmentInfo {
 
     private void encodePartitionsByHostAsDictionary(final DataOutputStream out) throws IOException {
         final Set<TopicPartition> allTopicPartitions = partitionsByHost.values().stream()
-            .flatMap(Collection::stream).collect(Collectors.toSet());
+                .flatMap(Collection::stream).collect(Collectors.toSet());
         final Map<String, Integer> topicNameDict = encodeTopicDictionaryAndGet(out, allTopicPartitions);
         encodeHostPartitionMapUsingDictionary(out, topicNameDict, partitionsByHost);
     }
 
     private void encodeActiveAndStandbyHostPartitions(final DataOutputStream out) throws IOException {
         final Set<TopicPartition> allTopicPartitions = Stream
-            .concat(partitionsByHost.values().stream(), standbyPartitionsByHost.values().stream())
-            .flatMap(Collection::stream).collect(Collectors.toSet());
+                .concat(partitionsByHost.values().stream(), standbyPartitionsByHost.values().stream())
+                .flatMap(Collection::stream).collect(Collectors.toSet());
         final Map<String, Integer> topicNameDict = encodeTopicDictionaryAndGet(out, allTopicPartitions);
         encodeHostPartitionMapUsingDictionary(out, topicNameDict, partitionsByHost);
         encodeHostPartitionMapUsingDictionary(out, topicNameDict, standbyPartitionsByHost);
@@ -373,7 +373,7 @@ public class AssignmentInfo {
                     break;
                 default:
                     final TaskAssignmentException fatalException = new TaskAssignmentException("Unable to decode assignment data: " +
-                        "used version: " + usedVersion + "; latest supported version: " + LATEST_SUPPORTED_VERSION);
+                            "used version: " + usedVersion + "; latest supported version: " + LATEST_SUPPORTED_VERSION);
                     log.error(fatalException.getMessage(), fatalException);
                     throw fatalException;
             }
@@ -477,12 +477,12 @@ public class AssignmentInfo {
         if (o instanceof AssignmentInfo) {
             final AssignmentInfo other = (AssignmentInfo) o;
             return usedVersion == other.usedVersion &&
-                   commonlySupportedVersion == other.commonlySupportedVersion &&
-                   errCode == other.errCode &&
-                   activeTasks.equals(other.activeTasks) &&
-                   standbyTasks.equals(other.standbyTasks) &&
-                   partitionsByHost.equals(other.partitionsByHost) &&
-                   standbyPartitionsByHost.equals(other.standbyPartitionsByHost);
+                    commonlySupportedVersion == other.commonlySupportedVersion &&
+                    errCode == other.errCode &&
+                    activeTasks.equals(other.activeTasks) &&
+                    standbyTasks.equals(other.standbyTasks) &&
+                    partitionsByHost.equals(other.partitionsByHost) &&
+                    standbyPartitionsByHost.equals(other.standbyPartitionsByHost);
         } else {
             return false;
         }
@@ -491,11 +491,11 @@ public class AssignmentInfo {
     @Override
     public String toString() {
         return "[version=" + usedVersion
-            + ", supported version=" + commonlySupportedVersion
-            + ", active tasks=" + activeTasks
-            + ", standby tasks=" + standbyTasks
-            + ", partitions by host=" + partitionsByHost
-            + ", standbyPartitions by host=" + standbyPartitionsByHost
-            + "]";
+                + ", supported version=" + commonlySupportedVersion
+                + ", active tasks=" + activeTasks
+                + ", standby tasks=" + standbyTasks
+                + ", partitions by host=" + partitionsByHost
+                + ", standbyPartitions by host=" + standbyPartitionsByHost
+                + "]";
     }
 }

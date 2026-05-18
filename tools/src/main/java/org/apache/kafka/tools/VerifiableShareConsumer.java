@@ -178,7 +178,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name" })
+    @JsonPropertyOrder({"timestamp", "name"})
     private abstract static class ShareConsumerEvent {
         private final long timestamp = System.currentTimeMillis();
 
@@ -199,7 +199,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "offsetResetStrategy" })
+    @JsonPropertyOrder({"timestamp", "name", "offsetResetStrategy"})
     protected static class OffsetResetStrategySet extends ShareConsumerEvent {
 
         private final String offsetResetStrategy;
@@ -235,7 +235,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "count", "partitions" })
+    @JsonPropertyOrder({"timestamp", "name", "count", "partitions"})
     public static class RecordsConsumed extends ShareConsumerEvent {
         private final long count;
         private final List<RecordSetSummary> partitionSummaries;
@@ -261,7 +261,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         }
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "count", "partitions", "success", "error" })
+    @JsonPropertyOrder({"timestamp", "name", "count", "partitions", "success", "error"})
     protected static class OffsetsAcknowledged extends ShareConsumerEvent {
 
         private final long count;
@@ -304,7 +304,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
 
     }
 
-    @JsonPropertyOrder({ "timestamp", "name", "key", "value", "topic", "partition", "offset" })
+    @JsonPropertyOrder({"timestamp", "name", "key", "value", "topic", "partition", "offset"})
     public static class RecordData extends ShareConsumerEvent {
 
         private final ConsumerRecord<String, String> record;
@@ -434,18 +434,18 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
 
             if (!Objects.equals(offsetResetStrategy, "")) {
                 ShareGroupAutoOffsetResetStrategy offsetResetStrategy =
-                    ShareGroupAutoOffsetResetStrategy.fromString(this.offsetResetStrategy);
+                        ShareGroupAutoOffsetResetStrategy.fromString(this.offsetResetStrategy);
 
                 ConfigResource configResource = new ConfigResource(ConfigResource.Type.GROUP, groupId);
                 Map<ConfigResource, Collection<AlterConfigOp>> alterEntries = new HashMap<>();
                 alterEntries.put(configResource, List.of(new AlterConfigOp(new ConfigEntry(
-                    GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG, offsetResetStrategy.type().toString()), AlterConfigOp.OpType.SET)));
+                        GroupConfig.SHARE_AUTO_OFFSET_RESET_CONFIG, offsetResetStrategy.type().toString()), AlterConfigOp.OpType.SET)));
                 AlterConfigsOptions alterOptions = new AlterConfigsOptions();
 
                 // Setting the share group auto offset reset strategy
                 adminClient.incrementalAlterConfigs(alterEntries, alterOptions)
-                    .all()
-                    .get(60, TimeUnit.SECONDS);
+                        .all()
+                        .get(60, TimeUnit.SECONDS);
 
                 printJson(new OffsetResetStrategySet(offsetResetStrategy.type().toString()));
             }
@@ -520,75 +520,75 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
 
     private static ArgumentParser argParser() {
         ArgumentParser parser = ArgumentParsers
-            .newArgumentParser("verifiable-share-consumer")
-            .defaultHelp(true)
-            .description("This tool creates a share group and consumes messages from a specific topic and emits share consumer events (e.g. share consumer startup, received messages, and offsets acknowledged) as JSON objects to STDOUT.");
+                .newArgumentParser("verifiable-share-consumer")
+                .defaultHelp(true)
+                .description("This tool creates a share group and consumes messages from a specific topic and emits share consumer events (e.g. share consumer startup, received messages, and offsets acknowledged) as JSON objects to STDOUT.");
         MutuallyExclusiveGroup connectionGroup = parser.addMutuallyExclusiveGroup("Connection Group")
-            .description("Group of arguments for connection to brokers")
-            .required(true);
+                .description("Group of arguments for connection to brokers")
+                .required(true);
         connectionGroup.addArgument("--bootstrap-server")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("bootstrapServer")
-            .metavar("HOST1:PORT1[,HOST2:PORT2[...]]")
-            .help("The server(s) to connect to. Comma-separated list of Kafka brokers in the form HOST1:PORT1,HOST2:PORT2,...");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("bootstrapServer")
+                .metavar("HOST1:PORT1[,HOST2:PORT2[...]]")
+                .help("The server(s) to connect to. Comma-separated list of Kafka brokers in the form HOST1:PORT1,HOST2:PORT2,...");
 
         parser.addArgument("--topic")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .metavar("TOPIC")
-            .help("Consumes messages from this topic.");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .metavar("TOPIC")
+                .help("Consumes messages from this topic.");
 
         parser.addArgument("--group-id")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("groupId")
-            .metavar("GROUP-ID")
-            .help("The group id of the share group");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("groupId")
+                .metavar("GROUP-ID")
+                .help("The group id of the share group");
 
         parser.addArgument("--max-messages")
-            .action(store())
-            .required(false)
-            .type(Integer.class)
-            .setDefault(-1)
-            .dest("maxMessages")
-            .metavar("MAX-MESSAGES")
-            .help("Consume this many messages. If -1 (the default), the share consumers will consume until the process is killed externally");
+                .action(store())
+                .required(false)
+                .type(Integer.class)
+                .setDefault(-1)
+                .dest("maxMessages")
+                .metavar("MAX-MESSAGES")
+                .help("Consume this many messages. If -1 (the default), the share consumers will consume until the process is killed externally");
 
         parser.addArgument("--verbose")
-            .action(storeTrue())
-            .type(Boolean.class)
-            .metavar("VERBOSE")
-            .help("Enable to log individual consumed records");
+                .action(storeTrue())
+                .type(Boolean.class)
+                .metavar("VERBOSE")
+                .help("Enable to log individual consumed records");
 
         parser.addArgument("--acknowledgement-mode")
-            .action(store())
-            .required(false)
-            .setDefault("auto")
-            .type(String.class)
-            .dest("acknowledgementMode")
-            .metavar("ACKNOWLEDGEMENT-MODE")
-            .help("Acknowledgement mode for the share consumers (must be either 'auto', 'sync' or 'async')");
+                .action(store())
+                .required(false)
+                .setDefault("auto")
+                .type(String.class)
+                .dest("acknowledgementMode")
+                .metavar("ACKNOWLEDGEMENT-MODE")
+                .help("Acknowledgement mode for the share consumers (must be either 'auto', 'sync' or 'async')");
 
         parser.addArgument("--offset-reset-strategy")
-            .action(store())
-            .required(false)
-            .setDefault("")
-            .type(String.class)
-            .dest("offsetResetStrategy")
-            .metavar("OFFSET-RESET-STRATEGY")
-            .help("Share group offset reset strategy (must be either 'earliest' or 'latest')");
+                .action(store())
+                .required(false)
+                .setDefault("")
+                .type(String.class)
+                .dest("offsetResetStrategy")
+                .metavar("OFFSET-RESET-STRATEGY")
+                .help("Share group offset reset strategy (must be either 'earliest' or 'latest')");
 
         parser.addArgument("--command-config")
-            .action(store())
-            .required(false)
-            .type(String.class)
-            .dest("commandConfig")
-            .metavar("CONFIG-FILE")
-            .help("Config properties file (config options shared with command line parameters will be overridden).");
+                .action(store())
+                .required(false)
+                .type(String.class)
+                .dest("commandConfig")
+                .metavar("CONFIG-FILE")
+                .help("Config properties file (config options shared with command line parameters will be overridden).");
 
         return parser;
     }
@@ -597,7 +597,7 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         Namespace res = parser.parseArgs(args);
 
         AcknowledgementMode acknowledgementMode =
-            AcknowledgementMode.valueOf(res.getString("acknowledgementMode").toUpperCase(Locale.ROOT));
+                AcknowledgementMode.valueOf(res.getString("acknowledgementMode").toUpperCase(Locale.ROOT));
         String offsetResetStrategy = res.getString("offsetResetStrategy").toLowerCase(Locale.ROOT);
         String configFile = res.getString("commandConfig");
         String brokerHostAndPort = res.getString("bootstrapServer");
@@ -637,15 +637,15 @@ public class VerifiableShareConsumer implements Closeable, AcknowledgementCommit
         Admin adminClient = Admin.create(adminClientProps);
 
         return new VerifiableShareConsumer(
-            consumer,
-            adminClient,
-            System.out,
-            maxMessages,
-            topic,
-            acknowledgementMode,
-            offsetResetStrategy,
-            groupId,
-            verbose);
+                consumer,
+                adminClient,
+                System.out,
+                maxMessages,
+                topic,
+                acknowledgementMode,
+                offsetResetStrategy,
+                groupId,
+                verbose);
     }
 
     public static void main(String[] args) {

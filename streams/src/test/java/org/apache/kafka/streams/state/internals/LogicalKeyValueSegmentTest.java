@@ -65,10 +65,10 @@ public class LogicalKeyValueSegmentTest {
     public void setUp() {
         physicalStore = new RocksDBStore(STORE_NAME, DB_FILE_DIR, new RocksDBMetricsRecorder(METRICS_SCOPE, STORE_NAME), false);
         physicalStore.init(new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.String(),
-            new StreamsConfig(StreamsTestUtils.getStreamsConfig())
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.String(),
+                new StreamsConfig(StreamsTestUtils.getStreamsConfig())
         ), physicalStore);
 
         segment0 = new LogicalKeyValueSegment(0, "segment-0", physicalStore);
@@ -124,27 +124,27 @@ public class LogicalKeyValueSegmentTest {
     public void shouldPutAll() {
         final List<KeyValue<Bytes, byte[]>> segment0Records = new ArrayList<>();
         segment0Records.add(new KeyValue<>(
-            new Bytes(serializeBytes("shared")),
-            serializeBytes("v1")));
+                new Bytes(serializeBytes("shared")),
+                serializeBytes("v1")));
         segment0Records.add(new KeyValue<>(
-            new Bytes(serializeBytes("segment0_only")),
-            serializeBytes("foo")));
+                new Bytes(serializeBytes("segment0_only")),
+                serializeBytes("foo")));
 
         final List<KeyValue<Bytes, byte[]>> segment1Records = new ArrayList<>();
         segment1Records.add(new KeyValue<>(
-            new Bytes(serializeBytes("shared")),
-            serializeBytes("v2")));
+                new Bytes(serializeBytes("shared")),
+                serializeBytes("v2")));
         segment1Records.add(new KeyValue<>(
-            new Bytes(serializeBytes("segment1_only")),
-            serializeBytes("bar")));
+                new Bytes(serializeBytes("segment1_only")),
+                serializeBytes("bar")));
 
         final List<KeyValue<Bytes, byte[]>> negativeSegmentRecords = new ArrayList<>();
         negativeSegmentRecords.add(new KeyValue<>(
-            new Bytes(serializeBytes("shared")),
-            serializeBytes("v3")));
+                new Bytes(serializeBytes("shared")),
+                serializeBytes("v3")));
         negativeSegmentRecords.add(new KeyValue<>(
-            new Bytes(serializeBytes("negative_segment_only")),
-            serializeBytes("baz")));
+                new Bytes(serializeBytes("negative_segment_only")),
+                serializeBytes("baz")));
 
         segment0.putAll(segment0Records);
         segment1.putAll(segment1Records);

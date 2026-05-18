@@ -180,11 +180,11 @@ public class StreamsAssignmentScaleTest {
         }
 
         final Cluster clusterMetadata = new Cluster(
-            "cluster",
-            Collections.singletonList(Node.noNode()),
-            partitionInfos,
-            emptySet(),
-            emptySet()
+                "cluster",
+                Collections.singletonList(Node.noNode()),
+                partitionInfos,
+                emptySet(),
+                emptySet()
         );
         final Map<String, Object> configMap = new HashMap<>();
         configMap.put(StreamsConfig.APPLICATION_ID_CONFIG, APPLICATION_ID);
@@ -196,8 +196,7 @@ public class StreamsAssignmentScaleTest {
         final TopologyMetadata topologyMetadata = new TopologyMetadata(builder, new StreamsConfig(configMap));
         topologyMetadata.buildAndRewriteTopology();
 
-        @SuppressWarnings("unchecked")
-        final Consumer<byte[], byte[]> mainConsumer = mock(Consumer.class);
+        @SuppressWarnings("unchecked") final Consumer<byte[], byte[]> mainConsumer = mock(Consumer.class);
         final TaskManager taskManager = mock(TaskManager.class);
         when(taskManager.topologyMetadata()).thenReturn(topologyMetadata);
 
@@ -214,34 +213,34 @@ public class StreamsAssignmentScaleTest {
         configMap.put(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, numStandbys);
 
         configMap.put(StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_CONFIG,
-            StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE);
+                StreamsConfig.RACK_AWARE_ASSIGNMENT_STRATEGY_NONE);
 
         final MockInternalTopicManager mockInternalTopicManager = spy(new MockInternalTopicManager(
-            new MockTime(),
-            new StreamsConfig(configMap),
-            new MockClientSupplier().restoreConsumer,
-            false
+                new MockTime(),
+                new StreamsConfig(configMap),
+                new MockClientSupplier().restoreConsumer,
+                false
         ));
 
         lenient().when(mockInternalTopicManager.getTopicPartitionInfo(anySet())).thenAnswer(
-            invocation -> {
-                final Map<String, List<TopicPartitionInfo>> answer = new HashMap<>();
-                final Set<String> topics = invocation.getArgument(0);
-                for (final String thisTopic : topics) {
-                    final List<TopicPartitionInfo> topicPartitionInfos = new ArrayList<>();
-                    partitionInfos.forEach(info -> {
-                        final TopicPartitionInfo topicPartitionInfo = new TopicPartitionInfo(
-                            info.partition(),
-                            info.leader(),
-                            singletonList(new Node(1, "host1", 80, "rack-1")),
-                            asList(info.inSyncReplicas())
-                        );
-                        topicPartitionInfos.add(topicPartitionInfo);
-                    });
-                    answer.put(thisTopic, topicPartitionInfos);
+                invocation -> {
+                    final Map<String, List<TopicPartitionInfo>> answer = new HashMap<>();
+                    final Set<String> topics = invocation.getArgument(0);
+                    for (final String thisTopic : topics) {
+                        final List<TopicPartitionInfo> topicPartitionInfos = new ArrayList<>();
+                        partitionInfos.forEach(info -> {
+                            final TopicPartitionInfo topicPartitionInfo = new TopicPartitionInfo(
+                                    info.partition(),
+                                    info.leader(),
+                                    singletonList(new Node(1, "host1", 80, "rack-1")),
+                                    asList(info.inSyncReplicas())
+                            );
+                            topicPartitionInfos.add(topicPartitionInfo);
+                        });
+                        answer.put(thisTopic, topicPartitionInfos);
+                    }
+                    return answer;
                 }
-                return answer;
-            }
         );
 
         final StreamsPartitionAssignor partitionAssignor = new StreamsPartitionAssignor();
@@ -252,14 +251,14 @@ public class StreamsAssignmentScaleTest {
         for (int client = 0; client < numClients; ++client) {
             for (int i = 0; i < numThreadsPerClient; ++i) {
                 subscriptions.put(
-                    getConsumerName(i, client),
-                    new Subscription(
-                        topic,
-                        getInfo(processIdForInt(client), EMPTY_TASKS, EMPTY_TASKS).encode(),
-                        Collections.emptyList(),
-                        DEFAULT_GENERATION,
-                        Optional.of(String.format("rack-%d", client % 31))
-                    )
+                        getConsumerName(i, client),
+                        new Subscription(
+                                topic,
+                                getInfo(processIdForInt(client), EMPTY_TASKS, EMPTY_TASKS).encode(),
+                                Collections.emptyList(),
+                                DEFAULT_GENERATION,
+                                Optional.of(String.format("rack-%d", client % 31))
+                        )
                 );
             }
         }
@@ -283,11 +282,11 @@ public class StreamsAssignmentScaleTest {
                 final AssignmentInfo info = AssignmentInfo.decode(assignment.userData());
 
                 subscriptions.put(
-                    consumer,
-                    new Subscription(
-                        topic,
-                        getInfo(processIdForInt(client), new HashSet<>(info.activeTasks()), info.standbyTasks().keySet()).encode(),
-                        assignment.partitions())
+                        consumer,
+                        new Subscription(
+                                topic,
+                                getInfo(processIdForInt(client), new HashSet<>(info.activeTasks()), info.standbyTasks().keySet()).encode(),
+                                assignment.partitions())
                 );
             }
         }

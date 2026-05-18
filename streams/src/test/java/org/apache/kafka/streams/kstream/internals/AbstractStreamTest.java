@@ -53,7 +53,7 @@ public class AbstractStreamTest {
     @Test
     public void testToInternalValueTransformerWithKeySupplierSuppliesNewTransformers() {
         final ValueTransformerWithKeySupplier<?, ?, ?> valueTransformerWithKeySupplier =
-            mock(ValueTransformerWithKeySupplier.class);
+                mock(ValueTransformerWithKeySupplier.class);
         when(valueTransformerWithKeySupplier.get()).thenReturn(new NoopValueTransformerWithKey<>());
         valueTransformerWithKeySupplier.get();
         valueTransformerWithKeySupplier.get();
@@ -91,8 +91,8 @@ public class AbstractStreamTest {
         KStream<K, V> randomFilter() {
             final String name = builder.newProcessorName("RANDOM-FILTER-");
             final ProcessorGraphNode<K, V> processorNode = new ProcessorGraphNode<>(
-                name,
-                new ProcessorParameters<>(new ExtendedKStreamDummy<>(), name));
+                    name,
+                    new ProcessorParameters<>(new ExtendedKStreamDummy<>(), name));
             builder.addGraphNode(this.graphNode, processorNode);
             return new KStreamImpl<>(name, null, null, subTopologySourceNodes, false, processorNode, builder);
         }

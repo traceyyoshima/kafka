@@ -26,7 +26,7 @@ import static java.util.stream.Collectors.joining;
 /**
  * Represents an immutable dictionary with key being feature name, and value being <VersionRangeType>.
  * Also provides API to convert the features and their version ranges to/from a map.
- *
+ * <p>
  * This class can be instantiated only using its factory functions, with the important ones being:
  * Features.supportedFeatures(...) and Features.finalizedFeatures(...).
  *
@@ -40,7 +40,7 @@ public class Features<VersionRangeType extends BaseVersionRange> {
      * Constructor is made private, as for readability it is preferred the caller uses one of the
      * static factory functions for instantiation (see below).
      *
-     * @param features   Map of feature name to a type of VersionRange.
+     * @param features Map of feature name to a type of VersionRange.
      */
     private Features(Map<String, VersionRangeType> features) {
         Objects.requireNonNull(features, "Provided features can not be null.");
@@ -48,9 +48,8 @@ public class Features<VersionRangeType extends BaseVersionRange> {
     }
 
     /**
-     * @param features   Map of feature name to SupportedVersionRange.
-     *
-     * @return           Returns a new Features object representing supported features.
+     * @param features Map of feature name to SupportedVersionRange.
+     * @return Returns a new Features object representing supported features.
      */
     public static Features<SupportedVersionRange> supportedFeatures(Map<String, SupportedVersionRange> features) {
         return new Features<>(features);
@@ -69,10 +68,9 @@ public class Features<VersionRangeType extends BaseVersionRange> {
     }
 
     /**
-     * @param  feature   name of the feature
-     *
-     * @return           the VersionRangeType corresponding to the feature name, or null if the
-     *                   feature is absent
+     * @param feature name of the feature
+     * @return the VersionRangeType corresponding to the feature name, or null if the
+     * feature is absent
      */
     public VersionRangeType get(String feature) {
         return features.get(feature);
@@ -80,24 +78,24 @@ public class Features<VersionRangeType extends BaseVersionRange> {
 
     public String toString() {
         return String.format(
-            "Features{%s}",
-            features
-                .entrySet()
-                .stream()
-                .map(entry -> String.format("(%s -> %s)", entry.getKey(), entry.getValue()))
-                .collect(joining(", "))
+                "Features{%s}",
+                features
+                        .entrySet()
+                        .stream()
+                        .map(entry -> String.format("(%s -> %s)", entry.getKey(), entry.getValue()))
+                        .collect(joining(", "))
         );
     }
 
     /**
-     * @return   A map representation of the underlying features. The returned value can be converted
-     *           back to Features using one of the from*FeaturesMap() APIs of this class.
+     * @return A map representation of the underlying features. The returned value can be converted
+     * back to Features using one of the from*FeaturesMap() APIs of this class.
      */
     public Map<String, Map<String, Short>> toMap() {
         return features.entrySet().stream().collect(
-            Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> entry.getValue().toMap()));
+                Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().toMap()));
     }
 
     /**
@@ -108,31 +106,29 @@ public class Features<VersionRangeType extends BaseVersionRange> {
         /**
          * Convert the map representation of an object of type <V>, to an object of type <V>.
          *
-         * @param  baseVersionRangeMap   the map representation of a BaseVersionRange object.
-         *
-         * @return                       the object of type <V>
+         * @param baseVersionRangeMap the map representation of a BaseVersionRange object.
+         * @return the object of type <V>
          */
         V fromMap(Map<String, Short> baseVersionRangeMap);
     }
 
     private static <V extends BaseVersionRange> Features<V> fromFeaturesMap(
-        Map<String, Map<String, Short>> featuresMap, MapToBaseVersionRangeConverter<V> converter) {
+            Map<String, Map<String, Short>> featuresMap, MapToBaseVersionRangeConverter<V> converter) {
         return new Features<>(featuresMap.entrySet().stream().collect(
-            Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> converter.fromMap(entry.getValue()))));
+                Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> converter.fromMap(entry.getValue()))));
     }
 
     /**
      * Converts from a map to Features<SupportedVersionRange>.
      *
-     * @param featuresMap  the map representation of a Features<SupportedVersionRange> object,
-     *                     generated using the toMap() API.
-     *
-     * @return             the Features<SupportedVersionRange> object
+     * @param featuresMap the map representation of a Features<SupportedVersionRange> object,
+     *                    generated using the toMap() API.
+     * @return the Features<SupportedVersionRange> object
      */
     public static Features<SupportedVersionRange> fromSupportedFeaturesMap(
-        Map<String, Map<String, Short>> featuresMap) {
+            Map<String, Map<String, Short>> featuresMap) {
         return fromFeaturesMap(featuresMap, SupportedVersionRange::fromMap);
     }
 

@@ -50,15 +50,15 @@ public record ConfigurationImage(ConfigResource resource, Map<String, String> da
     }
 
     public void write(
-        ConfigResource configResource,
-        ImageWriter writer
+            ConfigResource configResource,
+            ImageWriter writer
     ) {
         for (Map.Entry<String, String> entry : data.entrySet()) {
             writer.write(0, new ConfigRecord().
-                setResourceType(configResource.type().id()).
-                setResourceName(configResource.name()).
-                setName(entry.getKey()).
-                setValue(entry.getValue()));
+                    setResourceType(configResource.type().id()).
+                    setResourceName(configResource.name()).
+                    setName(entry.getKey()).
+                    setValue(entry.getValue()));
         }
     }
 

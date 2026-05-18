@@ -47,7 +47,7 @@ public class ConsumerInterceptorsTest {
     private final TopicPartition filterTopicPart1 = new TopicPartition("test5", filterPartition1);
     private final TopicPartition filterTopicPart2 = new TopicPartition("test6", filterPartition2);
     private final ConsumerRecord<Integer, Integer> consumerRecord = new ConsumerRecord<>(topic, partition, 0, 0L,
-        TimestampType.CREATE_TIME, 0, 0, 1, 1, new RecordHeaders(), Optional.empty());
+            TimestampType.CREATE_TIME, 0, 0, 1, 1, new RecordHeaders(), Optional.empty());
     private int onCommitCount = 0;
     private int onConsumeCount = 0;
 
@@ -109,7 +109,7 @@ public class ConsumerInterceptorsTest {
 
     @Test
     public void testOnConsumeChain() {
-        List<ConsumerInterceptor<Integer, Integer>>  interceptorList = new ArrayList<>();
+        List<ConsumerInterceptor<Integer, Integer>> interceptorList = new ArrayList<>();
         // we are testing two different interceptors by configuring the same interceptor differently, which is not
         // how it would be done in KafkaConsumer, but ok for testing interceptor callbacks
         FilterConsumerInterceptor<Integer, Integer> interceptor1 = new FilterConsumerInterceptor<>(filterPartition1);
@@ -126,10 +126,10 @@ public class ConsumerInterceptorsTest {
         list1.add(consumerRecord);
         List<ConsumerRecord<Integer, Integer>> list2 = new ArrayList<>();
         list2.add(new ConsumerRecord<>(filterTopicPart1.topic(), filterTopicPart1.partition(), 0, 0L,
-            TimestampType.CREATE_TIME, 0, 0, 1, 1, new RecordHeaders(), Optional.empty()));
+                TimestampType.CREATE_TIME, 0, 0, 1, 1, new RecordHeaders(), Optional.empty()));
         List<ConsumerRecord<Integer, Integer>> list3 = new ArrayList<>();
         list3.add(new ConsumerRecord<>(filterTopicPart2.topic(), filterTopicPart2.partition(), 0, 0L, TimestampType.CREATE_TIME,
-            0, 0, 1, 1, new RecordHeaders(), Optional.empty()));
+                0, 0, 1, 1, new RecordHeaders(), Optional.empty()));
         records.put(tp, list1);
         nextOffsets.put(tp, new OffsetAndMetadata(1, Optional.empty(), ""));
 

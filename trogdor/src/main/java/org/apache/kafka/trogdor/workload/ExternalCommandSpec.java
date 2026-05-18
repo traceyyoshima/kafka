@@ -32,7 +32,7 @@ import java.util.Set;
 
 /**
  * ExternalCommandSpec describes a task that executes Trogdor tasks with the command.
- *
+ * <p>
  * An example uses the python runner to execute the ProduceBenchSpec task.
  *
  * <pre>{@code

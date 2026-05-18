@@ -54,31 +54,31 @@ public class Replica {
      * Update the replica's fetch state only if the broker epoch is -1 or it is larger or equal to the current broker
      * epoch. Otherwise, NOT_LEADER_OR_FOLLOWER exception will be thrown. This can fence fetch state update from a
      * stale request.
-     *
+     * <p>
      * If the FetchRequest reads up to the log end offset of the leader when the current fetch request is received,
      * set `lastCaughtUpTimeMs` to the time when the current fetch request was received.
-     *
+     * <p>
      * Else if the FetchRequest reads up to the log end offset of the leader when the previous fetch request was received,
      * set `lastCaughtUpTimeMs` to the time when the previous fetch request was received.
-     *
+     * <p>
      * This is needed to enforce the semantics of ISR, i.e. a replica is in ISR if and only if it lags behind leader's LEO
      * by at most `replicaLagTimeMaxMs`. These semantics allow a follower to be added to the ISR even if the offset of its
      * fetch request is always smaller than the leader's LEO, which can happen if small produce requests are received at
      * high frequency.
      */
     public void updateFetchStateOrThrow(
-        LogOffsetMetadata followerFetchOffsetMetadata,
-        long followerStartOffset,
-        long followerFetchTimeMs,
-        long leaderEndOffset,
-        long brokerEpoch
+            LogOffsetMetadata followerFetchOffsetMetadata,
+            long followerStartOffset,
+            long followerFetchTimeMs,
+            long leaderEndOffset,
+            long brokerEpoch
     ) {
         replicaState.updateAndGet(currentReplicaState -> {
             var cachedBrokerEpoch = metadataCache.getAliveBrokerEpoch(brokerId);
             // Fence the update if it provides a stale broker epoch.
             if (brokerEpoch != -1 && cachedBrokerEpoch.filter(e -> e > brokerEpoch).isPresent()) {
                 throw new NotLeaderOrFollowerException("Received stale fetch state update. broker epoch=" + brokerEpoch +
-                    " vs expected=" + currentReplicaState.brokerEpoch());
+                        " vs expected=" + currentReplicaState.brokerEpoch());
             }
 
             long lastCaughtUpTime;
@@ -91,12 +91,12 @@ public class Replica {
             }
 
             return new ReplicaState(
-                followerStartOffset,
-                followerFetchOffsetMetadata,
-                Math.max(leaderEndOffset, currentReplicaState.lastFetchLeaderLogEndOffset()),
-                followerFetchTimeMs,
-                lastCaughtUpTime,
-                Optional.of(brokerEpoch)
+                    followerStartOffset,
+                    followerFetchOffsetMetadata,
+                    Math.max(leaderEndOffset, currentReplicaState.lastFetchLeaderLogEndOffset()),
+                    followerFetchTimeMs,
+                    lastCaughtUpTime,
+                    Optional.of(brokerEpoch)
             );
         });
     }
@@ -106,10 +106,10 @@ public class Replica {
      * accordingly.
      */
     public void resetReplicaState(
-        long currentTimeMs,
-        long leaderEndOffset,
-        boolean isNewLeader,
-        boolean isFollowerInSync
+            long currentTimeMs,
+            long leaderEndOffset,
+            boolean isNewLeader,
+            boolean isFollowerInSync
     ) {
         replicaState.updateAndGet(currentReplicaState -> {
             // When the leader is elected or re-elected, the follower's last caught up time
@@ -120,25 +120,25 @@ public class Replica {
 
             if (isNewLeader) {
                 return new ReplicaState(
-                    UnifiedLog.UNKNOWN_OFFSET,
-                    LogOffsetMetadata.UNKNOWN_OFFSET_METADATA,
-                    UnifiedLog.UNKNOWN_OFFSET,
-                    0L,
-                    lastCaughtUpTimeMs,
-                    Optional.empty()
+                        UnifiedLog.UNKNOWN_OFFSET,
+                        LogOffsetMetadata.UNKNOWN_OFFSET_METADATA,
+                        UnifiedLog.UNKNOWN_OFFSET,
+                        0L,
+                        lastCaughtUpTimeMs,
+                        Optional.empty()
                 );
             } else {
                 return new ReplicaState(
-                    currentReplicaState.logStartOffset(),
-                    currentReplicaState.logEndOffsetMetadata(),
-                    leaderEndOffset,
-                    // When the leader is re-elected, the follower's last fetch time is
-                    // set to the current time if the follower is in the ISR, else to 0.
-                    // The latter is done to ensure that the follower is not brought back
-                    // into the ISR before a fetch is received.
-                    isFollowerInSync ? currentTimeMs : 0L,
-                    lastCaughtUpTimeMs,
-                    currentReplicaState.brokerEpoch()
+                        currentReplicaState.logStartOffset(),
+                        currentReplicaState.logEndOffsetMetadata(),
+                        leaderEndOffset,
+                        // When the leader is re-elected, the follower's last fetch time is
+                        // set to the current time if the follower is in the ISR, else to 0.
+                        // The latter is done to ensure that the follower is not brought back
+                        // into the ISR before a fetch is received.
+                        isFollowerInSync ? currentTimeMs : 0L,
+                        lastCaughtUpTimeMs,
+                        currentReplicaState.brokerEpoch()
                 );
             }
         });
@@ -149,16 +149,16 @@ public class Replica {
     public String toString() {
         ReplicaState replicaState = this.replicaState.get();
         return "Replica(replicaId=" + brokerId +
-            ", topic=" + topicPartition.topic() +
-            ", partition=" + topicPartition.partition() +
-            ", lastCaughtUpTimeMs=" + replicaState.lastCaughtUpTimeMs() +
-            ", logStartOffset=" + replicaState.logStartOffset() +
-            ", logEndOffset=" + replicaState.logEndOffsetMetadata().messageOffset +
-            ", logEndOffsetMetadata=" + replicaState.logEndOffsetMetadata() +
-            ", lastFetchLeaderLogEndOffset=" + replicaState.lastFetchLeaderLogEndOffset() +
-            ", brokerEpoch=" + replicaState.brokerEpoch().orElse(-2L) +
-            ", lastFetchTimeMs=" + replicaState.lastFetchTimeMs() +
-            ")";
+                ", topic=" + topicPartition.topic() +
+                ", partition=" + topicPartition.partition() +
+                ", lastCaughtUpTimeMs=" + replicaState.lastCaughtUpTimeMs() +
+                ", logStartOffset=" + replicaState.logStartOffset() +
+                ", logEndOffset=" + replicaState.logEndOffsetMetadata().messageOffset +
+                ", logEndOffsetMetadata=" + replicaState.logEndOffsetMetadata() +
+                ", lastFetchLeaderLogEndOffset=" + replicaState.lastFetchLeaderLogEndOffset() +
+                ", brokerEpoch=" + replicaState.brokerEpoch().orElse(-2L) +
+                ", lastFetchTimeMs=" + replicaState.lastFetchTimeMs() +
+                ")";
     }
 
     @Override

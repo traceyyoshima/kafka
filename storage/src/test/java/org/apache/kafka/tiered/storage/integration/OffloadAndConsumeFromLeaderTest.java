@@ -25,12 +25,13 @@ import java.util.Map;
 
 /**
  * Test Cases:
- *    Elementary offloads and fetches from tiered storage.
+ * Elementary offloads and fetches from tiered storage.
  */
 public final class OffloadAndConsumeFromLeaderTest extends TieredStorageTestHarness {
 
     /**
      * Cluster of one broker
+     *
      * @return number of brokers in the cluster
      */
     @Override

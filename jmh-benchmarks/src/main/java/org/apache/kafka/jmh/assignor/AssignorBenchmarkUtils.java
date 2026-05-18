@@ -49,11 +49,11 @@ public class AssignorBenchmarkUtils {
     /**
      * Generate a reverse look up map of partition to member target assignments from the given member spec.
      *
-     * @param groupAssignment       The group assignment.
+     * @param groupAssignment The group assignment.
      * @return Map of topic partition to member assignments.
      */
     public static Map<Uuid, Map<Integer, String>> computeInvertedTargetAssignment(
-        GroupAssignment groupAssignment
+            GroupAssignment groupAssignment
     ) {
         Map<Uuid, Map<Integer, String>> invertedTargetAssignment = new HashMap<>();
         for (Map.Entry<String, MemberAssignment> memberEntry : groupAssignment.members().entrySet()) {
@@ -77,7 +77,7 @@ public class AssignorBenchmarkUtils {
     /**
      * Generates a list of topic names for use in benchmarks.
      *
-     * @param topicCount            The number of topic names to generate.
+     * @param topicCount The number of topic names to generate.
      * @return The list of topic names.
      */
     public static List<String> createTopicNames(int topicCount) {
@@ -94,22 +94,22 @@ public class AssignorBenchmarkUtils {
      * @param allTopicNames      The topic names.
      * @param partitionsPerTopic Number of partitions per topic.
      * @return A TopicsImage containing the topic ids, names and partition counts from the
-     *         subscription metadata.
+     * subscription metadata.
      */
     public static CoordinatorMetadataImage createMetadataImage(
-        List<String> allTopicNames,
-        int partitionsPerTopic
+            List<String> allTopicNames,
+            int partitionsPerTopic
     ) {
         MetadataDelta delta = new MetadataDelta.Builder()
-            .setImage(MetadataImage.EMPTY)
-            .build();
+                .setImage(MetadataImage.EMPTY)
+                .build();
 
         for (String topicName : allTopicNames) {
             AssignorBenchmarkUtils.addTopic(
-                delta,
-                Uuid.randomUuid(),
-                topicName,
-                partitionsPerTopic
+                    delta,
+                    Uuid.randomUuid(),
+                    topicName,
+                    partitionsPerTopic
             );
         }
 
@@ -119,15 +119,15 @@ public class AssignorBenchmarkUtils {
     /**
      * Creates a GroupSpec from the given ConsumerGroupMembers.
      *
-     * @param members               The ConsumerGroupMembers.
-     * @param subscriptionType      The group's subscription type.
-     * @param topicResolver         The TopicResolver to use.
+     * @param members          The ConsumerGroupMembers.
+     * @param subscriptionType The group's subscription type.
+     * @param topicResolver    The TopicResolver to use.
      * @return The new GroupSpec.
      */
     public static GroupSpec createConsumerGroupSpec(
-        Map<String, ConsumerGroupMember> members,
-        SubscriptionType subscriptionType,
-        TopicIds.TopicResolver topicResolver
+            Map<String, ConsumerGroupMember> members,
+            SubscriptionType subscriptionType,
+            TopicIds.TopicResolver topicResolver
     ) {
         Map<String, MemberSubscriptionAndAssignmentImpl> memberSpecs = new HashMap<>();
 
@@ -136,32 +136,32 @@ public class AssignorBenchmarkUtils {
             ConsumerGroupMember member = memberEntry.getValue();
 
             memberSpecs.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.ofNullable(member.rackId()),
-                Optional.ofNullable(member.instanceId()),
-                new TopicIds(member.subscribedTopicNames(), topicResolver),
-                new Assignment(Utils.toAssignmentWithoutEpochs(member.assignedPartitions()))
+                    Optional.ofNullable(member.rackId()),
+                    Optional.ofNullable(member.instanceId()),
+                    new TopicIds(member.subscribedTopicNames(), topicResolver),
+                    new Assignment(Utils.toAssignmentWithoutEpochs(member.assignedPartitions()))
             ));
         }
 
         return new GroupSpecImpl(
-            memberSpecs,
-            subscriptionType,
-            Map.of()
+                memberSpecs,
+                subscriptionType,
+                Map.of()
         );
     }
 
     /**
      * Creates a GroupSpec from the given ShareGroupMembers.
      *
-     * @param members               The ShareGroupMembers.
-     * @param subscriptionType      The group's subscription type.
-     * @param topicResolver         The TopicResolver to use.
+     * @param members          The ShareGroupMembers.
+     * @param subscriptionType The group's subscription type.
+     * @param topicResolver    The TopicResolver to use.
      * @return The new GroupSpec.
      */
     public static GroupSpec createShareGroupSpec(
-        Map<String, ShareGroupMember> members,
-        SubscriptionType subscriptionType,
-        TopicIds.TopicResolver topicResolver
+            Map<String, ShareGroupMember> members,
+            SubscriptionType subscriptionType,
+            TopicIds.TopicResolver topicResolver
     ) {
         Map<String, MemberSubscriptionAndAssignmentImpl> memberSpecs = new HashMap<>();
 
@@ -170,34 +170,34 @@ public class AssignorBenchmarkUtils {
             ShareGroupMember member = memberEntry.getValue();
 
             memberSpecs.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.ofNullable(member.rackId()),
-                Optional.empty(),
-                new TopicIds(member.subscribedTopicNames(), topicResolver),
-                new Assignment(member.assignedPartitions())
+                    Optional.ofNullable(member.rackId()),
+                    Optional.empty(),
+                    new TopicIds(member.subscribedTopicNames(), topicResolver),
+                    new Assignment(member.assignedPartitions())
             ));
         }
 
         return new GroupSpecImpl(
-            memberSpecs,
-            subscriptionType,
-            Map.of()
+                memberSpecs,
+                subscriptionType,
+                Map.of()
         );
     }
 
     /**
      * Creates a ConsumerGroupMembers map where all members have the same topic subscriptions.
      *
-     * @param memberCount           The number of members in the group.
-     * @param getMemberId           A function to map member indices to member ids.
-     * @param getMemberRackId       A function to map member indices to rack ids.
-     * @param topicNames            The topics to subscribe to.
+     * @param memberCount     The number of members in the group.
+     * @param getMemberId     A function to map member indices to member ids.
+     * @param getMemberRackId A function to map member indices to rack ids.
+     * @param topicNames      The topics to subscribe to.
      * @return The new ConsumerGroupMembers map.
      */
     public static Map<String, ConsumerGroupMember> createHomogeneousMembers(
-        int memberCount,
-        Function<Integer, String> getMemberId,
-        Function<Integer, Optional<String>> getMemberRackId,
-        List<String> topicNames
+            int memberCount,
+            Function<Integer, String> getMemberId,
+            Function<Integer, Optional<String>> getMemberRackId,
+            List<String> topicNames
     ) {
         Map<String, ConsumerGroupMember> members = new HashMap<>();
 
@@ -206,9 +206,9 @@ public class AssignorBenchmarkUtils {
             Optional<String> rackId = getMemberRackId.apply(i);
 
             members.put(memberId, new ConsumerGroupMember.Builder("member" + i)
-                .setRackId(rackId.orElse(null))
-                .setSubscribedTopicNames(topicNames)
-                .build()
+                    .setRackId(rackId.orElse(null))
+                    .setSubscribedTopicNames(topicNames)
+                    .build()
             );
         }
 
@@ -217,23 +217,23 @@ public class AssignorBenchmarkUtils {
 
     /**
      * Creates a ConsumerGroupMembers map where members have different topic subscriptions.
-     *
+     * <p>
      * Divides members and topics into a given number of buckets. Within each bucket, members are
      * subscribed to the same topics.
      *
-     * @param memberCount           The number of members in the group.
-     * @param bucketCount           The number of buckets.
-     * @param getMemberId           A function to map member indices to member ids.
-     * @param getMemberRackId       A function to map member indices to rack ids.
-     * @param topicNames            The topics to subscribe to.
+     * @param memberCount     The number of members in the group.
+     * @param bucketCount     The number of buckets.
+     * @param getMemberId     A function to map member indices to member ids.
+     * @param getMemberRackId A function to map member indices to rack ids.
+     * @param topicNames      The topics to subscribe to.
      * @return The new ConsumerGroupMembers map.
      */
     public static Map<String, ConsumerGroupMember> createHeterogeneousBucketedMembers(
-        int memberCount,
-        int bucketCount,
-        Function<Integer, String> getMemberId,
-        Function<Integer, Optional<String>> getMemberRackId,
-        List<String> topicNames
+            int memberCount,
+            int bucketCount,
+            Function<Integer, String> getMemberId,
+            Function<Integer, Optional<String>> getMemberRackId,
+            List<String> topicNames
     ) {
         Map<String, ConsumerGroupMember> members = new HashMap<>();
 
@@ -264,9 +264,9 @@ public class AssignorBenchmarkUtils {
                 Optional<String> rackId = getMemberRackId.apply(i);
 
                 members.put(memberId, new ConsumerGroupMember.Builder("member" + i)
-                    .setRackId(rackId.orElse(null))
-                    .setSubscribedTopicNames(bucketTopicNames)
-                    .build()
+                        .setRackId(rackId.orElse(null))
+                        .setSubscribedTopicNames(bucketTopicNames)
+                        .build()
                 );
             }
         }
@@ -277,15 +277,15 @@ public class AssignorBenchmarkUtils {
     /**
      * Creates a ShareGroupMembers map where all members have the same topic subscriptions.
      *
-     * @param memberCount           The number of members in the group.
-     * @param getMemberId           A function to map member indices to member ids.
-     * @param topicNames            The topics to subscribe to.
+     * @param memberCount The number of members in the group.
+     * @param getMemberId A function to map member indices to member ids.
+     * @param topicNames  The topics to subscribe to.
      * @return The new ShareGroupMembers map.
      */
     public static Map<String, ShareGroupMember> createHomogeneousShareGroupMembers(
-        int memberCount,
-        Function<Integer, String> getMemberId,
-        List<String> topicNames
+            int memberCount,
+            Function<Integer, String> getMemberId,
+            List<String> topicNames
     ) {
         Map<String, ShareGroupMember> members = new HashMap<>();
 
@@ -293,8 +293,8 @@ public class AssignorBenchmarkUtils {
             String memberId = getMemberId.apply(i);
 
             members.put(memberId, new ShareGroupMember.Builder("member" + i)
-                .setSubscribedTopicNames(topicNames)
-                .build()
+                    .setSubscribedTopicNames(topicNames)
+                    .build()
             );
         }
 
@@ -303,21 +303,21 @@ public class AssignorBenchmarkUtils {
 
     /**
      * Creates a ShareGroupMembers map where members have different topic subscriptions.
-     *
+     * <p>
      * Divides members and topics into a given number of buckets. Within each bucket, members are
      * subscribed to the same topics.
      *
-     * @param memberCount           The number of members in the group.
-     * @param bucketCount           The number of buckets.
-     * @param getMemberId           A function to map member indices to member ids.
-     * @param topicNames            The topics to subscribe to.
+     * @param memberCount The number of members in the group.
+     * @param bucketCount The number of buckets.
+     * @param getMemberId A function to map member indices to member ids.
+     * @param topicNames  The topics to subscribe to.
      * @return The new ShareGroupMembers map.
      */
     public static Map<String, ShareGroupMember> createHeterogeneousBucketedShareGroupMembers(
-        int memberCount,
-        int bucketCount,
-        Function<Integer, String> getMemberId,
-        List<String> topicNames
+            int memberCount,
+            int bucketCount,
+            Function<Integer, String> getMemberId,
+            List<String> topicNames
     ) {
         Map<String, ShareGroupMember> members = new HashMap<>();
 
@@ -347,8 +347,8 @@ public class AssignorBenchmarkUtils {
                 String memberId = getMemberId.apply(i);
 
                 members.put(memberId, new ShareGroupMember.Builder("member" + i)
-                    .setSubscribedTopicNames(bucketTopicNames)
-                    .build()
+                        .setSubscribedTopicNames(bucketTopicNames)
+                        .build()
                 );
             }
         }
@@ -357,10 +357,10 @@ public class AssignorBenchmarkUtils {
     }
 
     public static void addTopic(
-        MetadataDelta delta,
-        Uuid topicId,
-        String topicName,
-        int numPartitions
+            MetadataDelta delta,
+            Uuid topicId,
+            String topicName,
+            int numPartitions
     ) {
         // For testing purposes, the following criteria are used:
         // - Number of replicas for each partition: 2
@@ -368,9 +368,9 @@ public class AssignorBenchmarkUtils {
         delta.replay(new TopicRecord().setTopicId(topicId).setName(topicName));
         for (int i = 0; i < numPartitions; i++) {
             delta.replay(new PartitionRecord()
-                .setTopicId(topicId)
-                .setPartitionId(i)
-                .setReplicas(List.of(i % 4, (i + 1) % 4)));
+                    .setTopicId(topicId)
+                    .setPartitionId(i)
+                    .setReplicas(List.of(i % 4, (i + 1) % 4)));
         }
     }
 }

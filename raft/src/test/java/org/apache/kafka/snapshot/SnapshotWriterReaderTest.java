@@ -136,7 +136,7 @@ public final class SnapshotWriterReaderTest {
         try (SnapshotWriter<String> snapshot = context.client.createSnapshot(id, 0).get()) {
             assertEquals(id, snapshot.snapshotId());
             expected.forEach(batch ->
-                assertDoesNotThrow(() -> snapshot.append(batch))
+                    assertDoesNotThrow(() -> snapshot.append(batch))
             );
         }
 
@@ -163,7 +163,7 @@ public final class SnapshotWriterReaderTest {
         try (SnapshotWriter<String> snapshot = context.client.createSnapshot(id, 0).get()) {
             assertEquals(id, snapshot.snapshotId());
             expected.forEach(batch ->
-                assertDoesNotThrow(() -> snapshot.append(batch))
+                    assertDoesNotThrow(() -> snapshot.append(batch))
             );
 
             snapshot.freeze();
@@ -187,23 +187,23 @@ public final class SnapshotWriterReaderTest {
     }
 
     private SnapshotReader<String> readSnapshot(
-        RaftClientTestContext context,
-        OffsetAndEpoch snapshotId,
-        int maxBatchSize
+            RaftClientTestContext context,
+            OffsetAndEpoch snapshotId,
+            int maxBatchSize
     ) {
         return RecordsSnapshotReader.of(
-            context.log.readSnapshot(snapshotId).get(),
-            context.serde,
-            BufferSupplier.create(),
-            maxBatchSize,
-            true,
-            new LogContext()
+                context.log.readSnapshot(snapshotId).get(),
+                context.serde,
+                BufferSupplier.create(),
+                maxBatchSize,
+                true,
+                new LogContext()
         );
     }
 
     private int validateDelimiters(
-        RawSnapshotReader snapshot,
-        long lastContainedLogTime
+            RawSnapshotReader snapshot,
+            long lastContainedLogTime
     ) {
         assertNotEquals(0, snapshot.sizeInBytes());
 
@@ -250,21 +250,21 @@ public final class SnapshotWriterReaderTest {
 
     public static void assertDataSnapshot(List<List<String>> batches, RawSnapshotReader reader) {
         assertDataSnapshot(
-            batches,
-            RecordsSnapshotReader.of(
-                reader,
-                new StringSerde(),
-                BufferSupplier.create(),
-                Integer.MAX_VALUE,
-                true,
-                new LogContext()
-            )
+                batches,
+                RecordsSnapshotReader.of(
+                        reader,
+                        new StringSerde(),
+                        BufferSupplier.create(),
+                        Integer.MAX_VALUE,
+                        true,
+                        new LogContext()
+                )
         );
     }
 
     public static void assertDataSnapshot(
-        List<List<String>> batches,
-        SnapshotReader<String> reader
+            List<List<String>> batches,
+            SnapshotReader<String> reader
     ) {
         List<String> expected = new ArrayList<>();
         batches.forEach(expected::addAll);
@@ -281,8 +281,8 @@ public final class SnapshotWriterReaderTest {
     }
 
     public static void assertControlSnapshot(
-        List<List<ControlRecord>> expectedBatches,
-        SnapshotReader<?> reader
+            List<List<ControlRecord>> expectedBatches,
+            SnapshotReader<?> reader
     ) {
         List<List<ControlRecord>> actualBatches = new ArrayList<>(expectedBatches.size());
         while (reader.hasNext()) {

@@ -49,9 +49,9 @@ class TopologyMetadataTest {
     @BeforeEach
     void setUp() {
         metadataImage = new KRaftCoordinatorMetadataImage(new MetadataImageBuilder()
-            .addTopic(Uuid.randomUuid(), "source_topic", 3)
-            .addTopic(Uuid.randomUuid(), "repartition_source_topic", 4)
-            .build());
+                .addTopic(Uuid.randomUuid(), "source_topic", 3)
+                .addTopic(Uuid.randomUuid(), "repartition_source_topic", 4)
+                .build());
         subtopologyMap = new TreeMap<>();
         topologyMetadata = new TopologyMetadata(metadataImage, subtopologyMap);
     }

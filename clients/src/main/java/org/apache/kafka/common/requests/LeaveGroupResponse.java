@@ -30,17 +30,17 @@ import java.util.Objects;
 
 /**
  * Possible error codes.
- *
+ * <p>
  * Top level errors:
  * - {@link Errors#COORDINATOR_LOAD_IN_PROGRESS}
  * - {@link Errors#COORDINATOR_NOT_AVAILABLE}
  * - {@link Errors#NOT_COORDINATOR}
  * - {@link Errors#GROUP_AUTHORIZATION_FAILED}
- *
+ * <p>
  * Member level errors:
  * - {@link Errors#FENCED_INSTANCE_ID}
  * - {@link Errors#UNKNOWN_MEMBER_ID}
- *
+ * <p>
  * If the top level error code is set, normally this indicates that broker early stops the request
  * handling due to some severe global error, so it is expected to see the member level errors to be empty.
  * For older version response, we may populate member level error towards top level because older client
@@ -65,7 +65,7 @@ public class LeaveGroupResponse extends AbstractResponse {
         } else {
             if (data.members().size() != 1) {
                 throw new UnsupportedVersionException("LeaveGroup response version " + version +
-                    " can only contain one member, got " + data.members().size() + " members.");
+                        " can only contain one member, got " + data.members().size() + " members.");
             }
 
             this.data = new LeaveGroupResponseData().setErrorCode(data.members().get(0).errorCode());
@@ -82,11 +82,11 @@ public class LeaveGroupResponse extends AbstractResponse {
             final short errorCode = getError(topLevelError, memberResponses).code();
 
             this.data = new LeaveGroupResponseData()
-                            .setErrorCode(errorCode);
+                    .setErrorCode(errorCode);
         } else {
             this.data = new LeaveGroupResponseData()
-                            .setErrorCode(topLevelError.code())
-                            .setMembers(memberResponses);
+                    .setErrorCode(topLevelError.code())
+                    .setMembers(memberResponses);
         }
 
         if (version >= 1) {
@@ -138,7 +138,7 @@ public class LeaveGroupResponse extends AbstractResponse {
 
         // Member level error.
         data.members().forEach(memberResponse ->
-            updateErrorCounts(combinedErrorCounts, Errors.forCode(memberResponse.errorCode()))
+                updateErrorCounts(combinedErrorCounts, Errors.forCode(memberResponse.errorCode()))
         );
         return combinedErrorCounts;
     }
@@ -160,7 +160,7 @@ public class LeaveGroupResponse extends AbstractResponse {
     @Override
     public boolean equals(Object other) {
         return other instanceof LeaveGroupResponse &&
-                   ((LeaveGroupResponse) other).data.equals(this.data);
+                ((LeaveGroupResponse) other).data.equals(this.data);
     }
 
     @Override

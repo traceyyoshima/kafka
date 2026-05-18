@@ -40,10 +40,8 @@ public interface Deserializer<T> extends Closeable {
     /**
      * Configure this class.
      *
-     * @param configs
-     *        configs in key/value pairs
-     * @param isKey
-     *        whether the deserializer is used for the key or the value
+     * @param configs configs in key/value pairs
+     * @param isKey   whether the deserializer is used for the key or the value
      */
     default void configure(Map<String, ?> configs, boolean isKey) {
         // intentionally left blank
@@ -54,11 +52,8 @@ public interface Deserializer<T> extends Closeable {
      *
      * <p>It is recommended to deserialize a {@code null} byte array to a {@code null} object.
      *
-     * @param topic
-     *        topic associated with the data
-     * @param data
-     *        serialized bytes; may be {@code null}
-     *
+     * @param topic topic associated with the data
+     * @param data  serialized bytes; may be {@code null}
      * @return deserialized typed data; may be {@code null}
      */
     T deserialize(String topic, byte[] data);
@@ -72,13 +67,9 @@ public interface Deserializer<T> extends Closeable {
      * The implementation is allowed to modify the passed in headers, as a side effect of deserialization.
      * It is considered best practice to not delete or modify existing headers, but rather only add new ones.
      *
-     * @param topic
-     *        topic associated with the data
-     * @param headers
-     *        headers associated with the record
-     * @param data
-     *        serialized bytes; may be {@code null}
-     *
+     * @param topic   topic associated with the data
+     * @param headers headers associated with the record
+     * @param data    serialized bytes; may be {@code null}
      * @return deserialized typed data; may be {@code null}
      */
     default T deserialize(String topic, Headers headers, byte[] data) {
@@ -101,13 +92,9 @@ public interface Deserializer<T> extends Closeable {
      * The implementation is allowed to modify the passed in headers, as a side effect of deserialization.
      * It is considered best practice to not delete or modify existing headers, but rather only add new ones.
      *
-     * @param topic
-     *        topic associated with the data
-     * @param headers
-     *        headers associated with the record
-     * @param data
-     *        serialized ByteBuffer; may be {@code null}
-     *
+     * @param topic   topic associated with the data
+     * @param headers headers associated with the record
+     * @param data    serialized ByteBuffer; may be {@code null}
      * @return deserialized typed data; may be {@code null}
      */
     default T deserialize(String topic, Headers headers, ByteBuffer data) {

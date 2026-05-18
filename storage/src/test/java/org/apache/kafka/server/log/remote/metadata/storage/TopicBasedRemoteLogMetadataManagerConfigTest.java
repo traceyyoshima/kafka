@@ -214,13 +214,13 @@ public class TopicBasedRemoteLogMetadataManagerConfigTest {
 
     private void assertMaskedSensitiveConfigurations(String configString) {
         String[] sensitiveConfigKeys = {
-            SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG,
-            SslConfigs.SSL_KEY_PASSWORD_CONFIG,
-            SslConfigs.SSL_KEYSTORE_KEY_CONFIG,
-            SslConfigs.SSL_KEYSTORE_CERTIFICATE_CHAIN_CONFIG,
-            SslConfigs.SSL_TRUSTSTORE_CERTIFICATES_CONFIG,
-            SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,
-            SaslConfigs.SASL_JAAS_CONFIG
+                SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG,
+                SslConfigs.SSL_KEY_PASSWORD_CONFIG,
+                SslConfigs.SSL_KEYSTORE_KEY_CONFIG,
+                SslConfigs.SSL_KEYSTORE_CERTIFICATE_CHAIN_CONFIG,
+                SslConfigs.SSL_TRUSTSTORE_CERTIFICATES_CONFIG,
+                SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,
+                SaslConfigs.SASL_JAAS_CONFIG
         };
         Arrays.stream(sensitiveConfigKeys)
                 .forEach(config -> assertTrue(configString.contains(config + "=(redacted)")));

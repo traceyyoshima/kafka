@@ -31,24 +31,28 @@ public interface Record {
 
     /**
      * The offset of this record in the log
+     *
      * @return the offset
      */
     long offset();
 
     /**
      * Get the sequence number assigned by the producer.
+     *
      * @return the sequence number
      */
     int sequence();
 
     /**
      * Get the size in bytes of this record.
+     *
      * @return the size of the record in bytes
      */
     int sizeInBytes();
 
     /**
      * Get the record's timestamp.
+     *
      * @return the record's timestamp
      */
     long timestamp();
@@ -60,36 +64,42 @@ public interface Record {
 
     /**
      * Get the size in bytes of the key.
+     *
      * @return the size of the key, or -1 if there is no key
      */
     int keySize();
 
     /**
      * Check whether this record has a key
+     *
      * @return true if there is a key, false otherwise
      */
     boolean hasKey();
 
     /**
      * Get the record's key.
+     *
      * @return the key or null if there is none
      */
     ByteBuffer key();
 
     /**
      * Get the size in bytes of the value.
+     *
      * @return the size of the value, or -1 if the value is null
      */
     int valueSize();
 
     /**
      * Check whether a value is present (i.e. if the value is not null)
+     *
      * @return true if so, false otherwise
      */
     boolean hasValue();
 
     /**
      * Get the record's value
+     *
      * @return the (nullable) value
      */
     ByteBuffer value();
@@ -107,6 +117,7 @@ public interface Record {
     /**
      * For versions prior to 2, check whether the record is compressed (and therefore
      * has nested record content). For versions 2 and above, this always returns false.
+     *
      * @return true if the magic is lower than 2 and the record is compressed
      */
     boolean isCompressed();

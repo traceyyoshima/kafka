@@ -69,9 +69,13 @@ import static org.apache.kafka.streams.internals.ApiUtils.validateMillisecondDur
  */
 public class JoinWindows extends Windows<Window> {
 
-    /** Maximum time difference for tuples that are before the join tuple. */
+    /**
+     * Maximum time difference for tuples that are before the join tuple.
+     */
     public final long beforeMs;
-    /** Maximum time difference for tuples that are after the join tuple. */
+    /**
+     * Maximum time difference for tuples that are after the join tuple.
+     */
     public final long afterMs;
 
     private final long graceMs;
@@ -220,7 +224,7 @@ public class JoinWindows extends Windows<Window> {
      * @param afterWindowEnd The grace period to admit out-of-order events to a window.
      * @return this updated builder
      * @throws IllegalArgumentException if the {@code afterWindowEnd} is negative or can't be represented as {@code long milliseconds}
-     * @throws IllegalStateException if {@link #grace(Duration)} is called after {@link #ofTimeDifferenceAndGrace(Duration, Duration)} or {@link #ofTimeDifferenceWithNoGrace(Duration)}
+     * @throws IllegalStateException    if {@link #grace(Duration)} is called after {@link #ofTimeDifferenceAndGrace(Duration, Duration)} or {@link #ofTimeDifferenceWithNoGrace(Duration)}
      * @deprecated Since 3.0. Use {@link #ofTimeDifferenceAndGrace(Duration, Duration)} instead.
      */
     @Deprecated
@@ -228,7 +232,7 @@ public class JoinWindows extends Windows<Window> {
         // re-use the enableSpuriousResultFix flag to identify if grace is called after ofTimeDifferenceAndGrace/ofTimeDifferenceWithNoGrace
         if (this.enableSpuriousResultFix) {
             throw new IllegalStateException(
-                "Cannot call grace() after setting grace value via ofTimeDifferenceAndGrace or ofTimeDifferenceWithNoGrace.");
+                    "Cannot call grace() after setting grace value via ofTimeDifferenceAndGrace or ofTimeDifferenceWithNoGrace.");
         }
 
         final String msgPrefix = prepareMillisCheckFailMsgPrefix(afterWindowEnd, "afterWindowEnd");
@@ -251,8 +255,8 @@ public class JoinWindows extends Windows<Window> {
         }
         final JoinWindows that = (JoinWindows) o;
         return beforeMs == that.beforeMs &&
-            afterMs == that.afterMs &&
-            graceMs == that.graceMs;
+                afterMs == that.afterMs &&
+                graceMs == that.graceMs;
     }
 
     @Override
@@ -263,9 +267,9 @@ public class JoinWindows extends Windows<Window> {
     @Override
     public String toString() {
         return "JoinWindows{" +
-            "beforeMs=" + beforeMs +
-            ", afterMs=" + afterMs +
-            ", graceMs=" + graceMs +
-            '}';
+                "beforeMs=" + beforeMs +
+                ", afterMs=" + afterMs +
+                ", graceMs=" + graceMs +
+                '}';
     }
 }

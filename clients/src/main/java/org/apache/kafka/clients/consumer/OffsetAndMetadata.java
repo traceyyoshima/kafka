@@ -41,9 +41,9 @@ public class OffsetAndMetadata implements Serializable {
     /**
      * Construct a new OffsetAndMetadata object for committing through {@link KafkaConsumer}.
      *
-     * @param offset The offset to be committed
+     * @param offset      The offset to be committed
      * @param leaderEpoch Optional leader epoch of the last consumed record
-     * @param metadata Non-null metadata
+     * @param metadata    Non-null metadata
      */
     public OffsetAndMetadata(long offset, Optional<Integer> leaderEpoch, String metadata) {
         if (offset < 0)
@@ -59,7 +59,8 @@ public class OffsetAndMetadata implements Serializable {
 
     /**
      * Construct a new OffsetAndMetadata object for committing through {@link KafkaConsumer}.
-     * @param offset The offset to be committed
+     *
+     * @param offset   The offset to be committed
      * @param metadata Non-null metadata
      */
     public OffsetAndMetadata(long offset, String metadata) {
@@ -69,6 +70,7 @@ public class OffsetAndMetadata implements Serializable {
     /**
      * Construct a new OffsetAndMetadata object for committing through {@link KafkaConsumer}. The metadata
      * associated with the commit will be empty.
+     *
      * @param offset The offset to be committed
      */
     public OffsetAndMetadata(long offset) {

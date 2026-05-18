@@ -139,9 +139,9 @@ public class FeatureCommand {
         Subparser describeParser = subparsers.addParser("describe")
                 .help("Describes the current active feature flags.");
         describeParser.addArgument("--node-id")
-            .type(Integer.class)
-            .help("The node id to which the requests should be sent. If not specified, the requests will be sent to an arbitrary controller/broker.")
-            .action(store());
+                .type(Integer.class)
+                .help("The node id to which the requests should be sent. If not specified, the requests will be sent to an arbitrary controller/broker.")
+                .action(store());
     }
 
     private static void addUpgradeParser(Subparsers subparsers) {
@@ -152,7 +152,7 @@ public class FeatureCommand {
                 .action(store());
         upgradeParser.addArgument("--release-version")
                 .help("The release version to update all features to. For example, 3.9-IV0 will set metadata.version=21 and kraft.version=1." +
-                      " Use the version-mapping command to learn which features will be set for any given version.")
+                        " Use the version-mapping command to learn which features will be set for any given version.")
                 .action(store());
         upgradeParser.addArgument("--feature")
                 .help("A feature upgrade we should perform, in feature=level format. For example: `metadata.version=5`.")
@@ -319,7 +319,7 @@ public class FeatureCommand {
                 }
             } catch (Throwable e) {
                 throw new TerseException(upgradeType.name() + " for release version " + releaseVersion +
-                    " failed because at least one feature had the following error: " + e.getMessage());
+                        " failed because at least one feature had the following error: " + e.getMessage());
             }
         } else {
             if (metadata != null) {
@@ -366,7 +366,7 @@ public class FeatureCommand {
     static void handleVersionMapping(Namespace namespace, List<Feature> validFeatures) throws TerseException {
         // Get the release version from the command-line arguments or default to the latest stable version
         String releaseVersion = Optional.ofNullable(namespace.getString("release_version"))
-            .orElseGet(() -> MetadataVersion.latestProduction().version());
+                .orElseGet(() -> MetadataVersion.latestProduction().version());
 
         try {
             MetadataVersion version = MetadataVersion.fromVersionString(releaseVersion, true);
@@ -450,7 +450,7 @@ public class FeatureCommand {
         });
 
         int numFailures = 0;
-        for (Map.Entry<String, Optional<Throwable>> feature: errors.entrySet()) {
+        for (Map.Entry<String, Optional<Throwable>> feature : errors.entrySet()) {
             short level = updates.get(feature.getKey()).maxVersionLevel();
             Optional<Throwable> maybeThrowable = feature.getValue();
             if (maybeThrowable != null && maybeThrowable.isPresent()) {

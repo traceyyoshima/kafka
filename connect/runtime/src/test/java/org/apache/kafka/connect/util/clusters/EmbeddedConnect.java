@@ -209,6 +209,7 @@ abstract class EmbeddedConnect {
      * Set a new timeout for REST requests to each worker in the cluster. Useful if a request
      * is expected to block, since the time spent awaiting that request can be reduced
      * and test runtime bloat can be avoided.
+     *
      * @param requestTimeoutMs the new timeout in milliseconds; must be positive
      */
     public void requestTimeout(long requestTimeoutMs) {
@@ -226,6 +227,7 @@ abstract class EmbeddedConnect {
     /**
      * Check to see if the worker is running, using the health check endpoint introduced in
      * <a href="https://cwiki.apache.org/confluence/display/KAFKA/KIP-1017%3A+Health+check+endpoint+for+Kafka+Connect">KIP-1017</a>.
+     *
      * @param workerHandle the worker to check; may not be null
      * @return whether the worker is ready, based on its health check endpoint
      */
@@ -240,6 +242,7 @@ abstract class EmbeddedConnect {
 
     /**
      * Contact the health check endpoint for the worker
+     *
      * @param workerHandle the worker to contact; may not be null
      * @return the response from the worker
      */
@@ -255,7 +258,7 @@ abstract class EmbeddedConnect {
      * @param connName   the name of the connector
      * @param connConfig the intended configuration
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException if the configuration fails to be serialized or if the request could not be sent
+     * @throws ConnectException     if the configuration fails to be serialized or if the request could not be sent
      */
     public String configureConnector(String connName, Map<String, String> connConfig) {
         String url = endpointForResource(String.format("connectors/%s/config", connName));
@@ -268,7 +271,7 @@ abstract class EmbeddedConnect {
      *
      * @param createConnectorRequest the connector creation request
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException if the request could not be sent
+     * @throws ConnectException     if the request could not be sent
      */
     public String configureConnector(CreateConnectorRequest createConnectorRequest) {
         String url = endpointForResource("connectors");
@@ -286,8 +289,8 @@ abstract class EmbeddedConnect {
             return responseToString(response);
         } else {
             throw new ConnectRestException(
-                response.getStatus(),
-                "Could not execute 'POST /connectors' request. Error response: " + responseToString(response)
+                    response.getStatus(),
+                    "Could not execute 'POST /connectors' request. Error response: " + responseToString(response)
             );
         }
     }
@@ -300,7 +303,7 @@ abstract class EmbeddedConnect {
      * @param connClassName the name of the connector class
      * @param connConfig    the intended configuration
      * @throws ConnectRestException if the REST api returns error status
-     * @throws ConnectException if the configuration fails to serialize/deserialize or if the request failed to send
+     * @throws ConnectException     if the configuration fails to serialize/deserialize or if the request failed to send
      */
     public ConfigInfos validateConnectorConfig(String connClassName, Map<String, String> connConfig) {
         String url = endpointForResource(String.format("connector-plugins/%s/config/validate", connClassName));
@@ -320,7 +323,7 @@ abstract class EmbeddedConnect {
      * @param url        the full URL of the endpoint that corresponds to the given REST resource
      * @param connConfig the intended configuration
      * @throws ConnectRestException if the REST api returns error status
-     * @throws ConnectException if the configuration fails to be serialized or if the request could not be sent
+     * @throws ConnectException     if the configuration fails to be serialized or if the request could not be sent
      */
     protected String putConnectorConfig(String url, Map<String, String> connConfig) {
         ObjectMapper mapper = new ObjectMapper();
@@ -341,10 +344,10 @@ abstract class EmbeddedConnect {
     /**
      * Patch the config of a connector.
      *
-     * @param connName   the name of the connector
+     * @param connName        the name of the connector
      * @param connConfigPatch the configuration patch
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException if the configuration fails to be serialized or if the request could not be sent
+     * @throws ConnectException     if the configuration fails to be serialized or if the request could not be sent
      */
     public String patchConnectorConfig(String connName, Map<String, String> connConfigPatch) {
         String url = endpointForResource(String.format("connectors/%s/config", connName));
@@ -354,10 +357,10 @@ abstract class EmbeddedConnect {
     /**
      * Execute a PATCH request with the given connector configuration on the given URL endpoint.
      *
-     * @param url        the full URL of the endpoint that corresponds to the given REST resource
+     * @param url             the full URL of the endpoint that corresponds to the given REST resource
      * @param connConfigPatch the configuration patch
      * @throws ConnectRestException if the REST api returns error status
-     * @throws ConnectException if the configuration fails to be serialized or if the request could not be sent
+     * @throws ConnectException     if the configuration fails to be serialized or if the request could not be sent
      */
     protected String doPatchConnectorConfig(String url, Map<String, String> connConfigPatch) {
         ObjectMapper mapper = new ObjectMapper();
@@ -380,7 +383,7 @@ abstract class EmbeddedConnect {
      *
      * @param connName name of the connector to be deleted
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public void deleteConnector(String connName) {
         String url = endpointForResource(String.format("connectors/%s", connName));
@@ -396,7 +399,7 @@ abstract class EmbeddedConnect {
      *
      * @param connName name of the connector to be paused
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public void stopConnector(String connName) {
         String url = endpointForResource(String.format("connectors/%s/stop", connName));
@@ -412,7 +415,7 @@ abstract class EmbeddedConnect {
      *
      * @param connName name of the connector to be paused
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public void pauseConnector(String connName) {
         String url = endpointForResource(String.format("connectors/%s/pause", connName));
@@ -428,7 +431,7 @@ abstract class EmbeddedConnect {
      *
      * @param connName name of the connector to be resumed
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public void resumeConnector(String connName) {
         String url = endpointForResource(String.format("connectors/%s/resume", connName));
@@ -444,7 +447,7 @@ abstract class EmbeddedConnect {
      *
      * @param connName name of the connector to be restarted
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public void restartConnector(String connName) {
         String url = endpointForResource(String.format("connectors/%s/restart", connName));
@@ -459,9 +462,9 @@ abstract class EmbeddedConnect {
      * Restart an existing task.
      *
      * @param connName name of the connector
-     * @param taskNum ID of the task (starting from 0)
+     * @param taskNum  ID of the task (starting from 0)
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public void restartTask(String connName, int taskNum) {
         String url = endpointForResource(String.format("connectors/%s/tasks/%d/restart", connName, taskNum));
@@ -475,12 +478,12 @@ abstract class EmbeddedConnect {
     /**
      * Restart an existing connector and its tasks.
      *
-     * @param connName  name of the connector to be restarted
-     * @param onlyFailed    true if only failed instances should be restarted
-     * @param includeTasks  true if tasks should be restarted, or false if only the connector should be restarted
+     * @param connName              name of the connector to be restarted
+     * @param onlyFailed            true if only failed instances should be restarted
+     * @param includeTasks          true if tasks should be restarted, or false if only the connector should be restarted
      * @param onlyCallOnEmptyWorker true if the REST API call should be called on a worker not running this connector or its tasks
      * @throws ConnectRestException if the REST API returns error status
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public ConnectorStateInfo restartConnectorAndTasks(String connName, boolean onlyFailed, boolean includeTasks, boolean onlyCallOnEmptyWorker) {
         ObjectMapper mapper = new ObjectMapper();
@@ -507,12 +510,13 @@ abstract class EmbeddedConnect {
             throw new ConnectException("Could not parse connector state", e);
         }
     }
+
     /**
      * Get the connector names of the connectors currently running on this cluster.
      *
      * @return the list of connector names
      * @throws ConnectRestException if the HTTP request to the REST API failed with a valid status code.
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public Collection<String> connectors() {
         ObjectMapper mapper = new ObjectMapper();
@@ -538,7 +542,7 @@ abstract class EmbeddedConnect {
      * @param connectorName name of the connector
      * @return an instance of {@link ConnectorStateInfo} populated with state information of the connector and its tasks.
      * @throws ConnectRestException if the HTTP request to the REST API failed with a valid status code.
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public ConnectorStateInfo connectorStatus(String connectorName) {
         ObjectMapper mapper = new ObjectMapper();
@@ -564,7 +568,7 @@ abstract class EmbeddedConnect {
      * @param connectorName name of the connector
      * @return an instance of {@link ConnectorStateInfo} populated with state information of the connector and its tasks.
      * @throws ConnectRestException if the HTTP request to the REST API failed with a valid status code.
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public ActiveTopicsInfo connectorTopics(String connectorName) {
         ObjectMapper mapper = new ObjectMapper();
@@ -573,7 +577,8 @@ abstract class EmbeddedConnect {
         try {
             if (response.getStatus() < Response.Status.BAD_REQUEST.getStatusCode()) {
                 Map<String, Map<String, List<String>>> activeTopics = mapper
-                        .readerFor(new TypeReference<Map<String, Map<String, List<String>>>>() { })
+                        .readerFor(new TypeReference<Map<String, Map<String, List<String>>>>() {
+                        })
                         .readValue(responseToString(response));
                 return new ActiveTopicsInfo(connectorName,
                         activeTopics.get(connectorName).getOrDefault("topics", List.of()));
@@ -589,7 +594,7 @@ abstract class EmbeddedConnect {
 
     /**
      * Get the info of a connector running in this cluster (retrieved via the <code>GET /connectors/{connector}</code> endpoint).
-
+     *
      * @param connectorName name of the connector
      * @return an instance of {@link ConnectorInfo} populated with state information of the connector and its tasks.
      */
@@ -624,7 +629,8 @@ abstract class EmbeddedConnect {
             if (response.getStatus() < Response.Status.BAD_REQUEST.getStatusCode()) {
                 // We use String instead of ConnectorTaskId as the key here since the latter can't be automatically
                 // deserialized by Jackson when used as a JSON object key (i.e., when it's serialized as a JSON string)
-                return mapper.readValue(responseToString(response), new TypeReference<>() { });
+                return mapper.readValue(responseToString(response), new TypeReference<>() {
+                });
             }
         } catch (IOException e) {
             log.error("Could not read task configs from response: {}",
@@ -640,7 +646,7 @@ abstract class EmbeddedConnect {
      *
      * @param connectorName name of the connector
      * @throws ConnectRestException if the HTTP request to the REST API failed with a valid status code.
-     * @throws ConnectException for any other error.
+     * @throws ConnectException     for any other error.
      */
     public void resetConnectorTopics(String connectorName) {
         String url = endpointForResource(String.format("connectors/%s/topics/reset", connectorName));
@@ -679,9 +685,8 @@ abstract class EmbeddedConnect {
      * endpoint
      *
      * @param connectorName name of the source connector whose offset is to be altered
-     * @param partition the source partition for which the offset is to be altered
-     * @param offset the source offset to be written
-     *
+     * @param partition     the source partition for which the offset is to be altered
+     * @param offset        the source offset to be written
      * @return the API response as a {@link java.lang.String}
      */
     public String alterSourceConnectorOffset(String connectorName, Map<String, ?> partition, Map<String, ?> offset) {
@@ -695,10 +700,9 @@ abstract class EmbeddedConnect {
      * Alter the offset for a sink connector's topic partition via the <strong><em>PATCH /connectors/{connector}/offsets</em></strong>
      * endpoint
      *
-     * @param connectorName name of the sink connector whose offset is to be altered
+     * @param connectorName  name of the sink connector whose offset is to be altered
      * @param topicPartition the topic partition for which the offset is to be altered
-     * @param offset the offset to be written
-     *
+     * @param offset         the offset to be written
      * @return the API response as a {@link java.lang.String}
      */
     public String alterSinkConnectorOffset(String connectorName, TopicPartition topicPartition, Long offset) {
@@ -712,8 +716,7 @@ abstract class EmbeddedConnect {
      * Alter a connector's offsets via the <strong><em>PATCH /connectors/{connector}/offsets</em></strong> endpoint
      *
      * @param connectorName name of the connector whose offsets are to be altered
-     * @param offsets offsets to alter
-     *
+     * @param offsets       offsets to alter
      * @return the API response as a {@link java.lang.String}
      */
     public String alterConnectorOffsets(String connectorName, ConnectorOffsets offsets) {
@@ -753,6 +756,7 @@ abstract class EmbeddedConnect {
 
     /**
      * Get the {@link LoggerLevel level} for a specific logger
+     *
      * @param logger the name of the logger
      * @return the level for the logger, as reported by the Connect REST API
      */
@@ -780,6 +784,7 @@ abstract class EmbeddedConnect {
 
     /**
      * Get the {@link LoggerLevel levels} for all known loggers
+     *
      * @return the levels of all known loggers, as reported by the Connect REST API
      */
     public Map<String, LoggerLevel> allLogLevels() {
@@ -791,7 +796,8 @@ abstract class EmbeddedConnect {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 return mapper
-                        .readerFor(new TypeReference<Map<String, LoggerLevel>>() { })
+                        .readerFor(new TypeReference<Map<String, LoggerLevel>>() {
+                        })
                         .readValue(responseToString(response));
             } catch (IOException e) {
                 log.error("Could not read logger levels from response: {}",
@@ -808,9 +814,10 @@ abstract class EmbeddedConnect {
 
     /**
      * Adjust the level of a logging namespace.
+     *
      * @param namespace the namespace to adjust; may not be null
-     * @param level the level to set the namespace to; may not be null
-     * @param scope the scope of the operation; may be null
+     * @param level     the level to set the namespace to; may not be null
+     * @param scope     the scope of the operation; may be null
      * @return the list of affected loggers, as reported by the Connect REST API;
      * may be null if no body was included in the response
      */
@@ -837,7 +844,8 @@ abstract class EmbeddedConnect {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 return mapper
-                        .readerFor(new TypeReference<List<String>>() { })
+                        .readerFor(new TypeReference<List<String>>() {
+                        })
                         .readValue(responseToString(response));
             } catch (IOException e) {
                 log.error("Could not read loggers from response: {}",
@@ -890,7 +898,7 @@ abstract class EmbeddedConnect {
      * Get the full URL of the endpoint that corresponds to the given REST resource using a worker
      * that is not running any tasks or connector instance for the connectorName provided in the arguments
      *
-     * @param resource the resource under the worker's admin endpoint
+     * @param resource      the resource under the worker's admin endpoint
      * @param connectorName the name of the connector
      * @return the admin endpoint URL
      * @throws ConnectException if no REST endpoint is available
@@ -934,7 +942,7 @@ abstract class EmbeddedConnect {
     /**
      * Execute a PUT request on the given URL.
      *
-     * @param url the HTTP endpoint
+     * @param url  the HTTP endpoint
      * @param body the payload of the PUT request
      * @return the response to the PUT request
      * @throws ConnectException if execution of the PUT request fails
@@ -946,8 +954,8 @@ abstract class EmbeddedConnect {
     /**
      * Execute a POST request on the given URL.
      *
-     * @param url the HTTP endpoint
-     * @param body the payload of the POST request
+     * @param url     the HTTP endpoint
+     * @param body    the payload of the POST request
      * @param headers a map that stores the POST request headers
      * @return the response to the POST request
      * @throws ConnectException if execution of the POST request fails
@@ -959,7 +967,7 @@ abstract class EmbeddedConnect {
     /**
      * Execute a PATCH request on the given URL.
      *
-     * @param url the HTTP endpoint
+     * @param url  the HTTP endpoint
      * @param body the payload of the PATCH request
      * @return the response to the PATCH request
      * @throws ConnectException if execution of the PATCH request fails
@@ -982,9 +990,9 @@ abstract class EmbeddedConnect {
     /**
      * A general method that executes an HTTP request on a given URL.
      *
-     * @param url the HTTP endpoint
-     * @param body the payload of the request; null if there isn't one
-     * @param headers a map that stores the request headers; empty if there are no headers
+     * @param url        the HTTP endpoint
+     * @param body       the payload of the request; null if there isn't one
+     * @param headers    a map that stores the request headers; empty if there are no headers
      * @param httpMethod the name of the HTTP method to execute
      * @return the response to the HTTP request
      * @throws ConnectException if execution of the HTTP method fails

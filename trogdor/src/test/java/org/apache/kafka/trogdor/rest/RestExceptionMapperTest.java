@@ -89,19 +89,19 @@ public class RestExceptionMapperTest {
     @Test
     public void testToExceptionNotFoundException() {
         assertThrows(NotFoundException.class,
-            () -> RestExceptionMapper.toException(Response.Status.NOT_FOUND.getStatusCode(), "Not Found"));
+                () -> RestExceptionMapper.toException(Response.Status.NOT_FOUND.getStatusCode(), "Not Found"));
     }
 
     @Test
     public void testToExceptionClassNotFoundException() {
         assertThrows(ClassNotFoundException.class,
-            () -> RestExceptionMapper.toException(Response.Status.NOT_IMPLEMENTED.getStatusCode(), "Not Implemented"));
+                () -> RestExceptionMapper.toException(Response.Status.NOT_IMPLEMENTED.getStatusCode(), "Not Implemented"));
     }
 
     @Test
     public void testToExceptionSerializationException() {
         assertThrows(InvalidRequestException.class,
-            () -> RestExceptionMapper.toException(Response.Status.BAD_REQUEST.getStatusCode(), "Bad Request"));
+                () -> RestExceptionMapper.toException(Response.Status.BAD_REQUEST.getStatusCode(), "Bad Request"));
     }
 
     @Test

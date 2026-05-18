@@ -24,8 +24,8 @@ import org.apache.kafka.common.record.TimestampType;
 import java.nio.ByteBuffer;
 
 /**
- *  This exception is raised for any error that occurs while deserializing records received by the consumer using 
- *  the configured {@link org.apache.kafka.common.serialization.Deserializer}.
+ * This exception is raised for any error that occurs while deserializing records received by the consumer using
+ * the configured {@link org.apache.kafka.common.serialization.Deserializer}.
  */
 public class RecordDeserializationException extends SerializationException {
 

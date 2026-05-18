@@ -45,14 +45,14 @@ import java.util.stream.Collectors;
 
 /**
  * Possible topic-level error codes:
- *  UnknownTopic (3)
- *  LeaderNotAvailable (5)
- *  InvalidTopic (17)
- *  TopicAuthorizationFailed (29)
-
+ * UnknownTopic (3)
+ * LeaderNotAvailable (5)
+ * InvalidTopic (17)
+ * TopicAuthorizationFailed (29)
+ * <p>
  * Possible partition-level error codes:
- *  LeaderNotAvailable (5)
- *  ReplicaNotAvailable (9)
+ * LeaderNotAvailable (5)
+ * ReplicaNotAvailable (9)
  */
 public class MetadataResponse extends AbstractResponse {
     public static final int NO_CONTROLLER_ID = -1;
@@ -90,6 +90,7 @@ public class MetadataResponse extends AbstractResponse {
 
     /**
      * Get a map of the topics which had metadata errors
+     *
      * @return the map
      */
     public Map<String, Errors> errors() {
@@ -110,6 +111,7 @@ public class MetadataResponse extends AbstractResponse {
 
     /**
      * Get a map of the topicIds which had metadata errors
+     *
      * @return the map
      */
     public Map<Uuid, Errors> errorsByTopicId() {
@@ -148,6 +150,7 @@ public class MetadataResponse extends AbstractResponse {
 
     /**
      * Get a snapshot of the cluster metadata from this response
+     *
      * @return the cluster snapshot
      */
     public Cluster buildCluster() {
@@ -224,6 +227,7 @@ public class MetadataResponse extends AbstractResponse {
 
     /**
      * Get all brokers returned in metadata response
+     *
      * @return the brokers
      */
     public Collection<Node> brokers() {
@@ -236,6 +240,7 @@ public class MetadataResponse extends AbstractResponse {
 
     /**
      * Get all topic metadata returned in the metadata response
+     *
      * @return the topicMetadata
      */
     public Collection<TopicMetadata> topicMetadata() {
@@ -244,6 +249,7 @@ public class MetadataResponse extends AbstractResponse {
 
     /**
      * The controller node returned in metadata response
+     *
      * @return the controller node or null if it doesn't exist
      */
     public Node controller() {
@@ -252,6 +258,7 @@ public class MetadataResponse extends AbstractResponse {
 
     /**
      * The cluster identifier returned in the metadata response.
+     *
      * @return cluster identifier if it is present in the response, null otherwise.
      */
     public String clusterId() {
@@ -282,7 +289,7 @@ public class MetadataResponse extends AbstractResponse {
 
     public static MetadataResponse parse(Readable readable, short version) {
         return new MetadataResponse(new MetadataResponseData(readable, version),
-            hasReliableLeaderEpochs(version));
+                hasReliableLeaderEpochs(version));
     }
 
     public static class TopicMetadata {
@@ -348,11 +355,11 @@ public class MetadataResponse extends AbstractResponse {
             if (o == null || getClass() != o.getClass()) return false;
             final TopicMetadata that = (TopicMetadata) o;
             return isInternal == that.isInternal &&
-                error == that.error &&
-                Objects.equals(topic, that.topic) &&
-                Objects.equals(topicId, that.topicId) &&
-                Objects.equals(partitionMetadata, that.partitionMetadata) &&
-                Objects.equals(authorizedOperations, that.authorizedOperations);
+                    error == that.error &&
+                    Objects.equals(topic, that.topic) &&
+                    Objects.equals(topicId, that.topicId) &&
+                    Objects.equals(partitionMetadata, that.partitionMetadata) &&
+                    Objects.equals(authorizedOperations, that.authorizedOperations);
         }
 
         @Override
@@ -363,13 +370,13 @@ public class MetadataResponse extends AbstractResponse {
         @Override
         public String toString() {
             return "TopicMetadata{" +
-                "error=" + error +
-                ", topic='" + topic + '\'' +
-                ", topicId='" + topicId + '\'' +
-                ", isInternal=" + isInternal +
-                ", partitionMetadata=" + partitionMetadata +
-                ", authorizedOperations=" + authorizedOperations +
-                '}';
+                    "error=" + error +
+                    ", topic='" + topic + '\'' +
+                    ", topicId='" + topicId + '\'' +
+                    ", isInternal=" + isInternal +
+                    ", partitionMetadata=" + partitionMetadata +
+                    ", authorizedOperations=" + authorizedOperations +
+                    '}';
         }
     }
 
@@ -499,11 +506,11 @@ public class MetadataResponse extends AbstractResponse {
         MetadataResponseData responseData = new MetadataResponseData();
         responseData.setThrottleTimeMs(throttleTimeMs);
         brokers.forEach(broker ->
-            responseData.brokers().add(new MetadataResponseBroker()
-                .setNodeId(broker.id())
-                .setHost(broker.host())
-                .setPort(broker.port())
-                .setRack(broker.rack()))
+                responseData.brokers().add(new MetadataResponseBroker()
+                        .setNodeId(broker.id())
+                        .setHost(broker.host())
+                        .setPort(broker.port())
+                        .setRack(broker.rack()))
         );
 
         responseData.setClusterId(clusterId);

@@ -43,7 +43,7 @@ import java.util.concurrent.CompletionStage;
 /**
  *
  * Pluggable authorizer interface for Kafka brokers.
- *
+ * <p>
  * Startup sequence in brokers:
  * <ol>
  *   <li>Broker creates authorizer instance if configured in `authorizer.class.name`.</li>
@@ -56,7 +56,7 @@ import java.util.concurrent.CompletionStage;
  *       For each request, broker invokes {@link #authorize(AuthorizableRequestContext, List)} to authorize
  *       actions performed by the request.</li>
  * </ol>
- *
+ * <p>
  * Authorizer implementation class may optionally implement @{@link org.apache.kafka.common.Reconfigurable}
  * to enable dynamic reconfiguration without restarting the broker.
  * <p>Authorizer implementation class may also optionally implement {@link org.apache.kafka.common.metrics.Monitorable}
@@ -88,7 +88,7 @@ public interface Authorizer extends Configurable, Closeable {
      *
      * @param serverInfo Metadata for the broker including broker id and listener endpoints
      * @return CompletionStage for each endpoint that completes when authorizer is ready to
-     *         start authorizing requests on that listener.
+     * start authorizing requests on that listener.
      */
     Map<Endpoint, ? extends CompletionStage<Void>> start(AuthorizerServerInfo serverInfo);
 
@@ -101,7 +101,7 @@ public interface Authorizer extends Configurable, Closeable {
      * remote communication that may block request threads.
      *
      * @param requestContext Request context including request type, security protocol and listener name
-     * @param actions Actions being authorized including resource and operation for each action
+     * @param actions        Actions being authorized including resource and operation for each action
      * @return List of authorization results for each action in the same order as the provided actions
      */
     List<AuthorizationResult> authorize(AuthorizableRequestContext requestContext, List<Action> actions);
@@ -114,11 +114,10 @@ public interface Authorizer extends Configurable, Closeable {
      * to process the update synchronously on the request thread.
      *
      * @param requestContext Request context if the ACL is being created by a broker to handle
-     *        a client request to create ACLs.
-     * @param aclBindings ACL bindings to create
-     *
+     *                       a client request to create ACLs.
+     * @param aclBindings    ACL bindings to create
      * @return Create result for each ACL binding in the same order as in the input list. Each result
-     *         is returned as a CompletionStage that completes when the result is available.
+     * is returned as a CompletionStage that completes when the result is available.
      */
     List<? extends CompletionStage<AclCreateResult>> createAcls(AuthorizableRequestContext requestContext, List<AclBinding> aclBindings);
 
@@ -131,14 +130,13 @@ public interface Authorizer extends Configurable, Closeable {
      * <p>
      * Refer to the authorizer implementation docs for details on concurrent update guarantees.
      *
-     * @param requestContext Request context if the ACL is being deleted by a broker to handle
-     *        a client request to delete ACLs.
+     * @param requestContext    Request context if the ACL is being deleted by a broker to handle
+     *                          a client request to delete ACLs.
      * @param aclBindingFilters Filters to match ACL bindings that are to be deleted
-     *
      * @return Delete result for each filter in the same order as in the input list.
-     *         Each result indicates which ACL bindings were actually deleted as well as any
-     *         bindings that matched but could not be deleted. Each result is returned as a
-     *         CompletionStage that completes when the result is available.
+     * Each result indicates which ACL bindings were actually deleted as well as any
+     * bindings that matched but could not be deleted. Each result is returned as a
+     * CompletionStage that completes when the result is available.
      */
     List<? extends CompletionStage<AclDeleteResult>> deleteAcls(AuthorizableRequestContext requestContext, List<AclBindingFilter> aclBindingFilters);
 
@@ -164,22 +162,22 @@ public interface Authorizer extends Configurable, Closeable {
     /**
      * Check if the caller is authorized to perform the given ACL operation on at least one
      * resource of the given type.
-     *
+     * <p>
      * Custom authorizer implementations should consider overriding this default implementation because:
      * 1. The default implementation iterates all AclBindings multiple times, without any caching
-     *    by principal, host, operation, permission types, and resource types. More efficient
-     *    implementations may be added in custom authorizers that directly access cached entries.
+     * by principal, host, operation, permission types, and resource types. More efficient
+     * implementations may be added in custom authorizers that directly access cached entries.
      * 2. The default implementation cannot integrate with any audit logging included in the
-     *    authorizer implementation.
+     * authorizer implementation.
      * 3. The default implementation does not support any custom authorizer configs or other access
-     *    rules apart from ACLs.
+     * rules apart from ACLs.
      *
      * @param requestContext Request context including request resourceType, security protocol and listener name
      * @param op             The ACL operation to check
      * @param resourceType   The resource type to check
-     * @return               Return {@link AuthorizationResult#ALLOWED} if the caller is authorized
-     *                       to perform the given ACL operation on at least one resource of the
-     *                       given type. Return {@link AuthorizationResult#DENIED} otherwise.
+     * @return Return {@link AuthorizationResult#ALLOWED} if the caller is authorized
+     * to perform the given ACL operation on at least one resource of the
+     * given type. Return {@link AuthorizationResult#DENIED} otherwise.
      */
     default AuthorizationResult authorizeByResourceType(AuthorizableRequestContext requestContext, AclOperation op, ResourceType resourceType) {
         SecurityUtils.authorizeByResourceTypeCheckArgs(op, resourceType);
@@ -196,17 +194,17 @@ public interface Authorizer extends Configurable, Closeable {
         // Filter out all the resource pattern corresponding to the RequestContext,
         // AclOperation, and ResourceType
         ResourcePatternFilter resourceTypeFilter = new ResourcePatternFilter(
-            resourceType, null, PatternType.ANY);
+                resourceType, null, PatternType.ANY);
         AclBindingFilter aclFilter = new AclBindingFilter(
-            resourceTypeFilter, AccessControlEntryFilter.ANY);
+                resourceTypeFilter, AccessControlEntryFilter.ANY);
 
         EnumMap<PatternType, Set<String>> denyPatterns =
-            new EnumMap<>(PatternType.class) {{
+                new EnumMap<>(PatternType.class) {{
                     put(PatternType.LITERAL, new HashSet<>());
                     put(PatternType.PREFIXED, new HashSet<>());
                 }};
         EnumMap<PatternType, Set<String>> allowPatterns =
-            new EnumMap<>(PatternType.class) {{
+                new EnumMap<>(PatternType.class) {{
                     put(PatternType.LITERAL, new HashSet<>());
                     put(PatternType.PREFIXED, new HashSet<>());
                 }};
@@ -214,8 +212,8 @@ public interface Authorizer extends Configurable, Closeable {
         boolean hasWildCardAllow = false;
 
         KafkaPrincipal principal = new KafkaPrincipal(
-            requestContext.principal().getPrincipalType(),
-            requestContext.principal().getName());
+                requestContext.principal().getPrincipalType(),
+                requestContext.principal().getName());
         String hostAddr = requestContext.clientAddress().getHostAddress();
 
         for (AclBinding binding : acls(aclFilter)) {

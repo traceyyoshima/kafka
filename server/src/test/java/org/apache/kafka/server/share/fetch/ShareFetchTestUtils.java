@@ -42,14 +42,14 @@ public class ShareFetchTestUtils {
     /**
      * Validate that the rotated list is equal to the original list rotated by the given position.
      *
-     * @param original The original list.
-     * @param result The rotated list.
+     * @param original   The original list.
+     * @param result     The rotated list.
      * @param rotationAt The position to rotate the elements at.
      */
     public static void validateRotatedListEquals(
-        List<TopicIdPartition> original,
-        List<TopicIdPartition> result,
-        int rotationAt
+            List<TopicIdPartition> original,
+            List<TopicIdPartition> result,
+            int rotationAt
     ) {
 
         TopicIdPartition[] originalKeysArray = new TopicIdPartition[original.size()];
@@ -86,7 +86,7 @@ public class ShareFetchTestUtils {
     /**
      * Create a memory records builder with the given number of records and start offset.
      *
-     * @param startOffset The start offset of the records.
+     * @param startOffset  The start offset of the records.
      * @param numOfRecords The number of records to create.
      * @return The memory records builder.
      */
@@ -97,14 +97,14 @@ public class ShareFetchTestUtils {
     /**
      * Create a memory records builder with the number of records and start offset, in the given buffer.
      *
-     * @param buffer The buffer to write the records to.
-     * @param startOffset The start offset of the records.
+     * @param buffer       The buffer to write the records to.
+     * @param startOffset  The start offset of the records.
      * @param numOfRecords The number of records to create.
      * @return The memory records builder.
      */
     public static MemoryRecordsBuilder memoryRecordsBuilder(ByteBuffer buffer, long startOffset, int numOfRecords) {
         MemoryRecordsBuilder builder = MemoryRecords.builder(buffer, Compression.NONE,
-            TimestampType.CREATE_TIME, startOffset, 2);
+                TimestampType.CREATE_TIME, startOffset, 2);
         for (int i = 0; i < numOfRecords; i++) {
             builder.appendWithOffset(startOffset + i, 0L, TestUtils.randomString(10).getBytes(), TestUtils.randomString(10).getBytes());
         }
@@ -119,7 +119,7 @@ public class ShareFetchTestUtils {
      */
     public static ShareAcquiredRecords createShareAcquiredRecords(AcquiredRecords acquiredRecords) {
         return new ShareAcquiredRecords(
-            List.of(acquiredRecords), (int) (acquiredRecords.lastOffset() - acquiredRecords.firstOffset() + 1)
+                List.of(acquiredRecords), (int) (acquiredRecords.lastOffset() - acquiredRecords.firstOffset() + 1)
         );
     }
 

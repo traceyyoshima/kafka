@@ -90,8 +90,8 @@ public class DeleteAclsResponse extends AbstractResponse {
     private void validate(short version) {
         if (version == 0) {
             final boolean unsupported = filterResults().stream()
-                .flatMap(r -> r.matchingAcls().stream())
-                .anyMatch(matchingAcl -> matchingAcl.patternType() != PatternType.LITERAL.code());
+                    .flatMap(r -> r.matchingAcls().stream())
+                    .anyMatch(matchingAcl -> matchingAcl.patternType() != PatternType.LITERAL.code());
             if (unsupported)
                 throw new UnsupportedVersionException("Version 0 only supports literal resource pattern types");
         }
@@ -99,9 +99,9 @@ public class DeleteAclsResponse extends AbstractResponse {
         final boolean unknown = filterResults().stream()
                 .flatMap(r -> r.matchingAcls().stream())
                 .anyMatch(matchingAcl -> matchingAcl.patternType() == PatternType.UNKNOWN.code()
-                    || matchingAcl.resourceType() == ResourceType.UNKNOWN.code()
-                    || matchingAcl.permissionType() == AclPermissionType.UNKNOWN.code()
-                    || matchingAcl.operation() == AclOperation.UNKNOWN.code());
+                        || matchingAcl.resourceType() == ResourceType.UNKNOWN.code()
+                        || matchingAcl.permissionType() == AclPermissionType.UNKNOWN.code()
+                        || matchingAcl.operation() == AclOperation.UNKNOWN.code());
         if (unknown)
             throw new IllegalArgumentException("DeleteAclsMatchingAcls contain UNKNOWN elements");
     }
@@ -109,12 +109,12 @@ public class DeleteAclsResponse extends AbstractResponse {
     public static DeleteAclsFilterResult filterResult(AclDeleteResult result) {
         ApiError error = result.exception().map(ApiError::fromThrowable).orElse(ApiError.NONE);
         List<DeleteAclsMatchingAcl> matchingAcls = result.aclBindingDeleteResults().stream()
-            .map(DeleteAclsResponse::matchingAcl)
-            .collect(Collectors.toList());
+                .map(DeleteAclsResponse::matchingAcl)
+                .collect(Collectors.toList());
         return new DeleteAclsFilterResult()
-            .setErrorCode(error.error().code())
-            .setErrorMessage(error.message())
-            .setMatchingAcls(matchingAcls);
+                .setErrorCode(error.error().code())
+                .setErrorMessage(error.message())
+                .setMatchingAcls(matchingAcls);
     }
 
     private static DeleteAclsMatchingAcl matchingAcl(AclDeleteResult.AclBindingDeleteResult result) {
@@ -126,22 +126,22 @@ public class DeleteAclsResponse extends AbstractResponse {
     // Visible for testing
     public static DeleteAclsMatchingAcl matchingAcl(AclBinding acl, ApiError error) {
         return new DeleteAclsMatchingAcl()
-            .setErrorCode(error.error().code())
-            .setErrorMessage(error.message())
-            .setResourceName(acl.pattern().name())
-            .setResourceType(acl.pattern().resourceType().code())
-            .setPatternType(acl.pattern().patternType().code())
-            .setHost(acl.entry().host())
-            .setOperation(acl.entry().operation().code())
-            .setPermissionType(acl.entry().permissionType().code())
-            .setPrincipal(acl.entry().principal());
+                .setErrorCode(error.error().code())
+                .setErrorMessage(error.message())
+                .setResourceName(acl.pattern().name())
+                .setResourceType(acl.pattern().resourceType().code())
+                .setPatternType(acl.pattern().patternType().code())
+                .setHost(acl.entry().host())
+                .setOperation(acl.entry().operation().code())
+                .setPermissionType(acl.entry().permissionType().code())
+                .setPrincipal(acl.entry().principal());
     }
 
     public static AclBinding aclBinding(DeleteAclsMatchingAcl matchingAcl) {
         ResourcePattern resourcePattern = new ResourcePattern(ResourceType.fromCode(matchingAcl.resourceType()),
-            matchingAcl.resourceName(), PatternType.fromCode(matchingAcl.patternType()));
+                matchingAcl.resourceName(), PatternType.fromCode(matchingAcl.patternType()));
         AccessControlEntry accessControlEntry = new AccessControlEntry(matchingAcl.principal(), matchingAcl.host(),
-            AclOperation.fromCode(matchingAcl.operation()), AclPermissionType.fromCode(matchingAcl.permissionType()));
+                AclOperation.fromCode(matchingAcl.operation()), AclPermissionType.fromCode(matchingAcl.permissionType()));
         return new AclBinding(resourcePattern, accessControlEntry);
     }
 

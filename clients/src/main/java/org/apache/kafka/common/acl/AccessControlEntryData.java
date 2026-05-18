@@ -75,9 +75,9 @@ class AccessControlEntryData {
     @Override
     public String toString() {
         return "(principal=" + (principal == null ? "<any>" : principal) +
-               ", host=" + (host == null ? "<any>" : host) +
-               ", operation=" + operation +
-               ", permissionType=" + permissionType + ")";
+                ", host=" + (host == null ? "<any>" : host) +
+                ", operation=" + operation +
+                ", permissionType=" + permissionType + ")";
     }
 
     /**
@@ -93,9 +93,9 @@ class AccessControlEntryData {
             return false;
         AccessControlEntryData other = (AccessControlEntryData) o;
         return Objects.equals(principal, other.principal) &&
-            Objects.equals(host, other.host) &&
-            Objects.equals(operation, other.operation) &&
-            Objects.equals(permissionType, other.permissionType);
+                Objects.equals(host, other.host) &&
+                Objects.equals(operation, other.operation) &&
+                Objects.equals(permissionType, other.permissionType);
     }
 
     @Override

@@ -25,7 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Simple memory pool that tries to maintain a limited number of fixed-size buffers.
- *
+ * <p>
  * This type implements an unbounded memory pool. When releasing byte buffers they will get pooled
  * up to the maximum retained number of batches.
  */
@@ -39,12 +39,12 @@ public class BatchMemoryPool implements MemoryPool {
 
     /**
      * Construct a memory pool.
-     *
+     * <p>
      * The byte buffers are always of batchSize size. The memory pool is unbounded but it will retain
      * up to maxRetainedBatches byte buffers for reuse.
      *
      * @param maxRetainedBatches maximum number of byte buffers to pool for reuse
-     * @param batchSize the size of each byte buffer
+     * @param batchSize          the size of each byte buffer
      */
     public BatchMemoryPool(int maxRetainedBatches, int batchSize) {
         this.maxRetainedBatches = maxRetainedBatches;
@@ -55,7 +55,7 @@ public class BatchMemoryPool implements MemoryPool {
 
     /**
      * Allocate a byte buffer with {@code batchSize} in this pool.
-     *
+     * <p>
      * This method should always succeed and never return null. The sizeBytes parameter must be less than
      * the batchSize used in the constructor.
      *
@@ -66,7 +66,7 @@ public class BatchMemoryPool implements MemoryPool {
     public ByteBuffer tryAllocate(int sizeBytes) {
         if (sizeBytes > batchSize) {
             throw new IllegalArgumentException("Cannot allocate buffers larger than max " +
-                "batch size of " + batchSize);
+                    "batch size of " + batchSize);
         }
 
         lock.lock();
@@ -86,7 +86,7 @@ public class BatchMemoryPool implements MemoryPool {
 
     /**
      * Release a previously allocated byte buffer.
-     *
+     * <p>
      * The byte buffer is pooled if the number of pooled byte buffer is less than the maxRetainedBatches in
      * the constructor. Otherwise, the byte buffer is return to the JVM for garbage collection.
      */
@@ -98,7 +98,7 @@ public class BatchMemoryPool implements MemoryPool {
 
             if (previouslyAllocated.capacity() != batchSize) {
                 throw new IllegalArgumentException("Released buffer with unexpected size "
-                    + previouslyAllocated.capacity());
+                        + previouslyAllocated.capacity());
             }
 
             // Free the buffer if the number of pooled buffers is already the maximum number of batches.

@@ -135,28 +135,28 @@ public class KStreamRepartitionIntegrationTest {
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Integer().getClass());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         streamsConfiguration.put(StreamsConfig.TOPOLOGY_OPTIMIZATION_CONFIG, topologyOptimization);
-        
+
         if (useNewProtocol) {
             streamsConfiguration.put(StreamsConfig.GROUP_PROTOCOL_CONFIG, GroupProtocol.STREAMS.name().toLowerCase(Locale.getDefault()));
         }
-        
+
         return streamsConfiguration;
     }
 
     private static Stream<Arguments> protocolAndOptimizationParameters() {
         return Stream.of(
-            Arguments.of(StreamsConfig.OPTIMIZE, false),          // OPTIMIZE with CLASSIC protocol
-            Arguments.of(StreamsConfig.OPTIMIZE, true),           // OPTIMIZE with STREAMS protocol
-            Arguments.of(StreamsConfig.NO_OPTIMIZATION, false),   // NO_OPTIMIZATION with CLASSIC protocol
-            Arguments.of(StreamsConfig.NO_OPTIMIZATION, true)     // NO_OPTIMIZATION with STREAMS protocol
+                Arguments.of(StreamsConfig.OPTIMIZE, false),          // OPTIMIZE with CLASSIC protocol
+                Arguments.of(StreamsConfig.OPTIMIZE, true),           // OPTIMIZE with STREAMS protocol
+                Arguments.of(StreamsConfig.NO_OPTIMIZATION, false),   // NO_OPTIMIZATION with CLASSIC protocol
+                Arguments.of(StreamsConfig.NO_OPTIMIZATION, true)     // NO_OPTIMIZATION with STREAMS protocol
         );
     }
 
     @AfterEach
     public void whenShuttingDown() throws IOException {
         kafkaStreamsInstances.stream()
-                             .filter(Objects::nonNull)
-                             .forEach(ks -> ks.close(Duration.ofSeconds(60)));
+                .filter(Objects::nonNull)
+                .forEach(ks -> ks.close(Duration.ofSeconds(60)));
 
         Utils.delete(testFolder);
     }
@@ -174,23 +174,23 @@ public class KStreamRepartitionIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Repartitioned<Integer, String> inputTopicRepartitioned = Repartitioned
-            .<Integer, String>as(inputTopicRepartitionName)
-            .withNumberOfPartitions(inputTopicRepartitionedNumOfPartitions);
+                .<Integer, String>as(inputTopicRepartitionName)
+                .withNumberOfPartitions(inputTopicRepartitionedNumOfPartitions);
 
         final KStream<Integer, String> topicBStream = builder
-            .stream(topicB, Consumed.with(Serdes.Integer(), Serdes.String()));
+                .stream(topicB, Consumed.with(Serdes.Integer(), Serdes.String()));
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .repartition(inputTopicRepartitioned)
-               .join(topicBStream, (value1, value2) -> value2, JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofSeconds(10)))
-               .to(outputTopic);
+                .repartition(inputTopicRepartitioned)
+                .join(topicBStream, (value1, value2) -> value2, JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofSeconds(10)))
+                .to(outputTopic);
 
         final Properties streamsConfiguration = createStreamsConfig(topologyOptimization, useNewProtocol);
         try (final KafkaStreams ks = new KafkaStreams(builder.build(streamsConfiguration), streamsConfiguration)) {
             ks.setUncaughtExceptionHandler(exception -> {
                 expectedThrowable.set(exception);
-                System.out.println(String.format("[%s Protocol] Exception caught: %s", 
-                    useNewProtocol ? "STREAMS" : "CLASSIC", exception.getMessage()));
+                System.out.println(String.format("[%s Protocol] Exception caught: %s",
+                        useNewProtocol ? "STREAMS" : "CLASSIC", exception.getMessage()));
                 return SHUTDOWN_CLIENT;
             });
             ks.start();
@@ -218,8 +218,8 @@ public class KStreamRepartitionIntegrationTest {
         CLUSTER.createTopic(topicB, topicBNumberOfPartitions, 1);
 
         final List<KeyValue<Integer, String>> expectedRecords = Arrays.asList(
-            new KeyValue<>(1, "A"),
-            new KeyValue<>(2, "B")
+                new KeyValue<>(1, "A"),
+                new KeyValue<>(2, "B")
         );
 
         sendEvents(timestamp, expectedRecords);
@@ -228,17 +228,17 @@ public class KStreamRepartitionIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Repartitioned<Integer, String> inputTopicRepartitioned = Repartitioned
-            .<Integer, String>as(inputTopicRepartitionName)
-            .withNumberOfPartitions(inputTopicRepartitionedNumOfPartitions);
+                .<Integer, String>as(inputTopicRepartitionName)
+                .withNumberOfPartitions(inputTopicRepartitionedNumOfPartitions);
 
         final KStream<Integer, String> topicBStream = builder
-            .stream(topicB, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .map(KeyValue::new, Named.as(topicBMapperName));
+                .stream(topicB, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .map(KeyValue::new, Named.as(topicBMapperName));
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .repartition(inputTopicRepartitioned)
-               .join(topicBStream, (value1, value2) -> value2, JoinWindows.of(Duration.ofSeconds(10)))
-               .to(outputTopic);
+                .repartition(inputTopicRepartitioned)
+                .join(topicBStream, (value1, value2) -> value2, JoinWindows.of(Duration.ofSeconds(10)))
+                .to(outputTopic);
 
         final Properties streamsConfiguration = createStreamsConfig(topologyOptimization, useNewProtocol);
         builder.build(streamsConfiguration);
@@ -246,15 +246,15 @@ public class KStreamRepartitionIntegrationTest {
         startStreams(builder, streamsConfiguration);
 
         assertEquals(inputTopicRepartitionedNumOfPartitions,
-                     getNumberOfPartitionsForTopic(toRepartitionTopicName(inputTopicRepartitionName)));
+                getNumberOfPartitionsForTopic(toRepartitionTopicName(inputTopicRepartitionName)));
 
         assertEquals(inputTopicRepartitionedNumOfPartitions,
-                     getNumberOfPartitionsForTopic(toRepartitionTopicName(topicBMapperName)));
+                getNumberOfPartitionsForTopic(toRepartitionTopicName(topicBMapperName)));
 
         validateReceivedMessages(
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            expectedRecords
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                expectedRecords
         );
     }
 
@@ -269,8 +269,8 @@ public class KStreamRepartitionIntegrationTest {
         CLUSTER.createTopic(topicB, 1, 1);
 
         final List<KeyValue<Integer, String>> expectedRecords = Arrays.asList(
-            new KeyValue<>(1, "A"),
-            new KeyValue<>(2, "B")
+                new KeyValue<>(1, "A"),
+                new KeyValue<>(2, "B")
         );
 
         final List<KeyValue<Integer, String>> recordsToSend = new ArrayList<>(expectedRecords);
@@ -282,21 +282,21 @@ public class KStreamRepartitionIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Repartitioned<Integer, String> inputTopicRepartitioned = Repartitioned
-            .<Integer, String>as(inputTopicRepartitionedName)
-            .withNumberOfPartitions(4);
+                .<Integer, String>as(inputTopicRepartitionedName)
+                .withNumberOfPartitions(4);
 
         final Repartitioned<Integer, String> topicBRepartitioned = Repartitioned
-            .<Integer, String>as(topicBRepartitionedName)
-            .withNumberOfPartitions(4);
+                .<Integer, String>as(topicBRepartitionedName)
+                .withNumberOfPartitions(4);
 
         final KStream<Integer, String> topicBStream = builder
-            .stream(topicB, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .repartition(topicBRepartitioned);
+                .stream(topicB, Consumed.with(Serdes.Integer(), Serdes.String()))
+                .repartition(topicBRepartitioned);
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .repartition(inputTopicRepartitioned)
-               .join(topicBStream, (value1, value2) -> value2, JoinWindows.of(Duration.ofSeconds(10)))
-               .to(outputTopic);
+                .repartition(inputTopicRepartitioned)
+                .join(topicBStream, (value1, value2) -> value2, JoinWindows.of(Duration.ofSeconds(10)))
+                .to(outputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
@@ -304,9 +304,9 @@ public class KStreamRepartitionIntegrationTest {
         assertEquals(4, getNumberOfPartitionsForTopic(toRepartitionTopicName(inputTopicRepartitionedName)));
 
         validateReceivedMessages(
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            expectedRecords
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                expectedRecords
         );
     }
 
@@ -322,14 +322,14 @@ public class KStreamRepartitionIntegrationTest {
         CLUSTER.createTopic(broadcastingOutputTopic, 4, 1);
 
         final List<KeyValue<Integer, String>> expectedRecordsOnRepartition = Arrays.asList(
-            new KeyValue<>(1, "A"),
-            new KeyValue<>(1, "A"),
-            new KeyValue<>(1, "A"),
-            new KeyValue<>(1, "A"),
-            new KeyValue<>(2, "B"),
-            new KeyValue<>(2, "B"),
-            new KeyValue<>(2, "B"),
-            new KeyValue<>(2, "B")
+                new KeyValue<>(1, "A"),
+                new KeyValue<>(1, "A"),
+                new KeyValue<>(1, "A"),
+                new KeyValue<>(1, "A"),
+                new KeyValue<>(2, "B"),
+                new KeyValue<>(2, "B"),
+                new KeyValue<>(2, "B"),
+                new KeyValue<>(2, "B")
         );
 
         final List<KeyValue<Integer, String>> expectedRecords = expectedRecordsOnRepartition.subList(3, 5);
@@ -347,12 +347,12 @@ public class KStreamRepartitionIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Repartitioned<Integer, String> repartitioned = Repartitioned
-            .<Integer, String>as(repartitionName)
-            .withStreamPartitioner(new BroadcastingPartitioner());
+                .<Integer, String>as(repartitionName)
+                .withStreamPartitioner(new BroadcastingPartitioner());
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-            .repartition(repartitioned)
-            .to(broadcastingOutputTopic);
+                .repartition(repartitioned)
+                .to(broadcastingOutputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
@@ -360,18 +360,18 @@ public class KStreamRepartitionIntegrationTest {
 
         // Both records should be there on all 4 partitions of repartition and output topic
         validateReceivedMessages(
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            expectedRecordsOnRepartition,
-            topic
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                expectedRecordsOnRepartition,
+                topic
         );
 
 
         validateReceivedMessages(
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            expectedRecordsOnRepartition,
-            broadcastingOutputTopic
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                expectedRecordsOnRepartition,
+                broadcastingOutputTopic
         );
 
         assertTrue(topicExists(topic));
@@ -388,8 +388,8 @@ public class KStreamRepartitionIntegrationTest {
         final AtomicInteger partitionerInvocation = new AtomicInteger(0);
 
         final List<KeyValue<Integer, String>> expectedRecords = Arrays.asList(
-            new KeyValue<>(1, "A"),
-            new KeyValue<>(2, "B")
+                new KeyValue<>(1, "A"),
+                new KeyValue<>(2, "B")
         );
 
         sendEvents(timestamp, expectedRecords);
@@ -397,24 +397,24 @@ public class KStreamRepartitionIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Repartitioned<Integer, String> repartitioned = Repartitioned
-            .<Integer, String>as(repartitionName)
-            .withStreamPartitioner((topic, key, value, numPartitions) -> {
-                partitionerInvocation.incrementAndGet();
-                return Optional.of(Collections.singleton(partition));
-            });
+                .<Integer, String>as(repartitionName)
+                .withStreamPartitioner((topic, key, value, numPartitions) -> {
+                    partitionerInvocation.incrementAndGet();
+                    return Optional.of(Collections.singleton(partition));
+                });
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .repartition(repartitioned)
-               .to(outputTopic);
+                .repartition(repartitioned)
+                .to(outputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
         final String topic = toRepartitionTopicName(repartitionName);
 
         validateReceivedMessages(
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            expectedRecords
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                expectedRecords
         );
 
         assertTrue(topicExists(topic));
@@ -427,29 +427,29 @@ public class KStreamRepartitionIntegrationTest {
         final long timestamp = System.currentTimeMillis();
 
         sendEvents(
-            timestamp,
-            Arrays.asList(
-                new KeyValue<>(1, "10"),
-                new KeyValue<>(2, "20")
-            )
+                timestamp,
+                Arrays.asList(
+                        new KeyValue<>(1, "10"),
+                        new KeyValue<>(2, "20")
+                )
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .selectKey((key, value) -> Integer.valueOf(value))
-               .repartition()
-               .to(outputTopic);
+                .selectKey((key, value) -> Integer.valueOf(value))
+                .repartition()
+                .to(outputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
         validateReceivedMessages(
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            Arrays.asList(
-                new KeyValue<>(10, "10"),
-                new KeyValue<>(20, "20")
-            )
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                Arrays.asList(
+                        new KeyValue<>(10, "10"),
+                        new KeyValue<>(20, "20")
+                )
         );
 
         final String topology = builder.build().describe().toString();
@@ -464,28 +464,28 @@ public class KStreamRepartitionIntegrationTest {
         final long timestamp = System.currentTimeMillis();
 
         sendEvents(
-            timestamp,
-            Arrays.asList(
-                new KeyValue<>(1, "A"),
-                new KeyValue<>(2, "B")
-            )
+                timestamp,
+                Arrays.asList(
+                        new KeyValue<>(1, "A"),
+                        new KeyValue<>(2, "B")
+                )
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .repartition(Repartitioned.as(repartitionName))
-               .to(outputTopic);
+                .repartition(Repartitioned.as(repartitionName))
+                .to(outputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
         validateReceivedMessages(
-            new IntegerDeserializer(),
-            new StringDeserializer(),
-            Arrays.asList(
-                new KeyValue<>(1, "A"),
-                new KeyValue<>(2, "B")
-            )
+                new IntegerDeserializer(),
+                new StringDeserializer(),
+                Arrays.asList(
+                        new KeyValue<>(1, "A"),
+                        new KeyValue<>(2, "B")
+                )
         );
 
         final String topology = builder.build().describe().toString();
@@ -501,35 +501,35 @@ public class KStreamRepartitionIntegrationTest {
         final long timestamp = System.currentTimeMillis();
 
         sendEvents(
-            timestamp,
-            Arrays.asList(
-                new KeyValue<>(1, "A"),
-                new KeyValue<>(2, "B")
-            )
+                timestamp,
+                Arrays.asList(
+                        new KeyValue<>(1, "A"),
+                        new KeyValue<>(2, "B")
+                )
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Repartitioned<String, String> repartitioned = Repartitioned.<String, String>as(repartitionedName)
-            .withKeySerde(Serdes.String());
+                .withKeySerde(Serdes.String());
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .selectKey((key, value) -> key.toString(), Named.as(repartitionedName))
-               .repartition(repartitioned)
-               .groupByKey()
-               .count()
-               .toStream()
-               .to(outputTopic);
+                .selectKey((key, value) -> key.toString(), Named.as(repartitionedName))
+                .repartition(repartitioned)
+                .groupByKey()
+                .count()
+                .toStream()
+                .to(outputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
         validateReceivedMessages(
-            new StringDeserializer(),
-            new LongDeserializer(),
-            Arrays.asList(
-                new KeyValue<>("1", 1L),
-                new KeyValue<>("2", 1L)
-            )
+                new StringDeserializer(),
+                new LongDeserializer(),
+                Arrays.asList(
+                        new KeyValue<>("1", 1L),
+                        new KeyValue<>("2", 1L)
+                )
         );
 
         final String topology = builder.build().describe().toString();
@@ -547,31 +547,31 @@ public class KStreamRepartitionIntegrationTest {
         final long timestamp = System.currentTimeMillis();
 
         sendEvents(
-            timestamp,
-            Arrays.asList(
-                new KeyValue<>(1, "A"),
-                new KeyValue<>(2, "B")
-            )
+                timestamp,
+                Arrays.asList(
+                        new KeyValue<>(1, "A"),
+                        new KeyValue<>(2, "B")
+                )
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .repartition(Repartitioned.<Integer, String>as(repartitionName).withNumberOfPartitions(2))
-               .groupByKey()
-               .count()
-               .toStream()
-               .to(outputTopic);
+                .repartition(Repartitioned.<Integer, String>as(repartitionName).withNumberOfPartitions(2))
+                .groupByKey()
+                .count()
+                .toStream()
+                .to(outputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
         validateReceivedMessages(
-            new IntegerDeserializer(),
-            new LongDeserializer(),
-            Arrays.asList(
-                new KeyValue<>(1, 1L),
-                new KeyValue<>(2, 1L)
-            )
+                new IntegerDeserializer(),
+                new LongDeserializer(),
+                Arrays.asList(
+                        new KeyValue<>(1, 1L),
+                        new KeyValue<>(2, 1L)
+                )
         );
 
         final String repartitionTopicName = toRepartitionTopicName(repartitionName);
@@ -587,31 +587,31 @@ public class KStreamRepartitionIntegrationTest {
         final long timestamp = System.currentTimeMillis();
 
         sendEvents(
-            timestamp,
-            Arrays.asList(
-                new KeyValue<>(1, "A"),
-                new KeyValue<>(2, "B")
-            )
+                timestamp,
+                Arrays.asList(
+                        new KeyValue<>(1, "A"),
+                        new KeyValue<>(2, "B")
+                )
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .repartition(Repartitioned.as(repartitionName))
-               .groupByKey()
-               .count()
-               .toStream()
-               .to(outputTopic);
+                .repartition(Repartitioned.as(repartitionName))
+                .groupByKey()
+                .count()
+                .toStream()
+                .to(outputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
         validateReceivedMessages(
-            new IntegerDeserializer(),
-            new LongDeserializer(),
-            Arrays.asList(
-                new KeyValue<>(1, 1L),
-                new KeyValue<>(2, 1L)
-            )
+                new IntegerDeserializer(),
+                new LongDeserializer(),
+                Arrays.asList(
+                        new KeyValue<>(1, 1L),
+                        new KeyValue<>(2, 1L)
+                )
         );
 
         final String repartitionTopicName = toRepartitionTopicName(repartitionName);
@@ -627,39 +627,39 @@ public class KStreamRepartitionIntegrationTest {
         final long timestamp = System.currentTimeMillis();
 
         sendEvents(
-            timestamp,
-            Arrays.asList(
-                new KeyValue<>(1, "A"),
-                new KeyValue<>(2, "B")
-            )
+                timestamp,
+                Arrays.asList(
+                        new KeyValue<>(1, "A"),
+                        new KeyValue<>(2, "B")
+                )
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Repartitioned<String, String> repartitioned = Repartitioned.<String, String>as(repartitionName)
-            .withKeySerde(Serdes.String())
-            .withValueSerde(Serdes.String())
-            .withNumberOfPartitions(1);
+                .withKeySerde(Serdes.String())
+                .withValueSerde(Serdes.String())
+                .withNumberOfPartitions(1);
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .selectKey((key, value) -> key.toString())
-               .repartition(repartitioned)
-               .groupByKey()
-               .count()
-               .toStream()
-               .to(outputTopic);
+                .selectKey((key, value) -> key.toString())
+                .repartition(repartitioned)
+                .groupByKey()
+                .count()
+                .toStream()
+                .to(outputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
         final String topology = builder.build().describe().toString();
 
         validateReceivedMessages(
-            new StringDeserializer(),
-            new LongDeserializer(),
-            Arrays.asList(
-                new KeyValue<>("1", 1L),
-                new KeyValue<>("2", 1L)
-            )
+                new StringDeserializer(),
+                new LongDeserializer(),
+                Arrays.asList(
+                        new KeyValue<>("1", 1L),
+                        new KeyValue<>("2", 1L)
+                )
         );
 
         assertTrue(topicExists(toRepartitionTopicName(repartitionName)));
@@ -672,29 +672,29 @@ public class KStreamRepartitionIntegrationTest {
         final long timestamp = System.currentTimeMillis();
 
         sendEvents(
-            timestamp,
-            Arrays.asList(
-                new KeyValue<>(1, "A"),
-                new KeyValue<>(2, "B")
-            )
+                timestamp,
+                Arrays.asList(
+                        new KeyValue<>(1, "A"),
+                        new KeyValue<>(2, "B")
+                )
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .selectKey((key, value) -> key.toString())
-               .repartition(Repartitioned.with(Serdes.String(), Serdes.String()))
-               .to(outputTopic);
+                .selectKey((key, value) -> key.toString())
+                .repartition(Repartitioned.with(Serdes.String(), Serdes.String()))
+                .to(outputTopic);
 
         startStreams(builder, createStreamsConfig(topologyOptimization, useNewProtocol));
 
         validateReceivedMessages(
-            new StringDeserializer(),
-            new StringDeserializer(),
-            Arrays.asList(
-                new KeyValue<>("1", "A"),
-                new KeyValue<>("2", "B")
-            )
+                new StringDeserializer(),
+                new StringDeserializer(),
+                Arrays.asList(
+                        new KeyValue<>("1", "A"),
+                        new KeyValue<>("2", "B")
+                )
         );
 
         final String topology = builder.build().describe().toString();
@@ -709,27 +709,27 @@ public class KStreamRepartitionIntegrationTest {
         final long timestamp = System.currentTimeMillis();
 
         sendEvents(
-            timestamp,
-            Arrays.asList(
-                new KeyValue<>(1, "A"),
-                new KeyValue<>(2, "B")
-            )
+                timestamp,
+                Arrays.asList(
+                        new KeyValue<>(1, "A"),
+                        new KeyValue<>(2, "B")
+                )
         );
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         final Repartitioned<String, String> repartitioned = Repartitioned.<String, String>as(repartitionName)
-            .withKeySerde(Serdes.String())
-            .withValueSerde(Serdes.String())
-            .withNumberOfPartitions(2);
+                .withKeySerde(Serdes.String())
+                .withValueSerde(Serdes.String())
+                .withNumberOfPartitions(2);
 
         builder.stream(inputTopic, Consumed.with(Serdes.Integer(), Serdes.String()))
-               .selectKey((key, value) -> key.toString())
-               .repartition(repartitioned)
-               .groupByKey()
-               .count()
-               .toStream()
-               .to(outputTopic);
+                .selectKey((key, value) -> key.toString())
+                .repartition(repartitioned)
+                .groupByKey()
+                .count()
+                .toStream()
+                .to(outputTopic);
 
         final Properties streamsConfiguration = createStreamsConfig(topologyOptimization, useNewProtocol);
         startStreams(builder, streamsConfiguration);
@@ -739,31 +739,31 @@ public class KStreamRepartitionIntegrationTest {
         final KafkaStreams kafkaStreamsToClose = startStreams(builder, streamsToCloseConfigs);
 
         validateReceivedMessages(
-            new StringDeserializer(),
-            new LongDeserializer(),
-            Arrays.asList(
-                new KeyValue<>("1", 1L),
-                new KeyValue<>("2", 1L)
-            )
+                new StringDeserializer(),
+                new LongDeserializer(),
+                Arrays.asList(
+                        new KeyValue<>("1", 1L),
+                        new KeyValue<>("2", 1L)
+                )
         );
 
         kafkaStreamsToClose.close(Duration.ofSeconds(5));
 
         sendEvents(
-            timestamp,
-            Arrays.asList(
-                new KeyValue<>(1, "C"),
-                new KeyValue<>(2, "D")
-            )
+                timestamp,
+                Arrays.asList(
+                        new KeyValue<>(1, "C"),
+                        new KeyValue<>(2, "D")
+                )
         );
 
         validateReceivedMessages(
-            new StringDeserializer(),
-            new LongDeserializer(),
-            Arrays.asList(
-                new KeyValue<>("1", 2L),
-                new KeyValue<>("2", 2L)
-            )
+                new StringDeserializer(),
+                new LongDeserializer(),
+                Arrays.asList(
+                        new KeyValue<>("1", 2L),
+                        new KeyValue<>("2", 2L)
+                )
         );
 
         final String repartitionTopicName = toRepartitionTopicName(repartitionName);
@@ -775,9 +775,9 @@ public class KStreamRepartitionIntegrationTest {
     private int getNumberOfPartitionsForTopic(final String topic) throws Exception {
         try (final Admin adminClient = createAdminClient()) {
             final TopicDescription topicDescription = adminClient.describeTopics(Collections.singleton(topic))
-                                                                 .topicNameValues()
-                                                                 .get(topic)
-                                                                 .get();
+                    .topicNameValues()
+                    .get(topic)
+                    .get();
 
             return topicDescription.partitions().size();
         }
@@ -786,8 +786,8 @@ public class KStreamRepartitionIntegrationTest {
     private boolean topicExists(final String topic) throws Exception {
         try (final Admin adminClient = createAdminClient()) {
             final Set<String> topics = adminClient.listTopics()
-                                                  .names()
-                                                  .get();
+                    .names()
+                    .get();
 
             return topics.contains(topic);
         }
@@ -825,15 +825,15 @@ public class KStreamRepartitionIntegrationTest {
                             final long timestamp,
                             final List<KeyValue<Integer, String>> events) {
         IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-            topic,
-            events,
-            TestUtils.producerConfig(
-                CLUSTER.bootstrapServers(),
-                IntegerSerializer.class,
-                StringSerializer.class,
-                new Properties()
-            ),
-            timestamp
+                topic,
+                events,
+                TestUtils.producerConfig(
+                        CLUSTER.bootstrapServers(),
+                        IntegerSerializer.class,
+                        StringSerializer.class,
+                        new Properties()
+                ),
+                timestamp
         );
     }
 

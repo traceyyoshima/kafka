@@ -82,10 +82,10 @@ public class BrokerCompatibilityTest {
 
         final StreamsBuilder builder = new StreamsBuilder();
         builder.<String, String>stream(SOURCE_TOPIC).groupByKey(Grouped.with(stringSerde, stringSerde))
-            .count()
-            .toStream()
-            .mapValues(Object::toString)
-            .to(SINK_TOPIC);
+                .count()
+                .toStream()
+                .mapValues(Object::toString)
+                .to(SINK_TOPIC);
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), streamsProperties);
         streams.setUncaughtExceptionHandler(e -> {

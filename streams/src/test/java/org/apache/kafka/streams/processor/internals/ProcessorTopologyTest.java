@@ -226,9 +226,9 @@ public class ProcessorTopologyTest {
         final ProcessorTopology processorTopology = topology.getInternalBuilder("X").buildTopology();
 
         processorTopology.updateSourceTopics(mkMap(
-            mkEntry(sourceNodeWithinSubtopology, Collections.singletonList(topicWithinSubtopology)),
-            mkEntry(sourceNodeOutsideSubtopology, Collections.singletonList(topicOutsideSubtopology))
-            )
+                        mkEntry(sourceNodeWithinSubtopology, Collections.singletonList(topicWithinSubtopology)),
+                        mkEntry(sourceNodeOutsideSubtopology, Collections.singletonList(topicOutsideSubtopology))
+                )
         );
 
         assertThat(processorTopology.source(topicOutsideSubtopology), is(nullValue()));
@@ -245,10 +245,10 @@ public class ProcessorTopologyTest {
         final ProcessorTopology processorTopology = topology.getInternalBuilder("X").buildTopology();
 
         final Throwable exception = assertThrows(
-            IllegalStateException.class,
-            () -> processorTopology.updateSourceTopics(Collections.singletonMap(
-                existingSourceNode, Collections.singletonList(topicOfExistingSourceNode)
-            ))
+                IllegalStateException.class,
+                () -> processorTopology.updateSourceTopics(Collections.singletonMap(
+                        existingSourceNode, Collections.singletonList(topicOfExistingSourceNode)
+                ))
         );
         assertThat(exception.getMessage(), is("Node " + nonExistingSourceNode + " not found in full topology"));
     }
@@ -264,15 +264,15 @@ public class ProcessorTopologyTest {
         final ProcessorTopology processorTopology = topology.getInternalBuilder("X").buildTopology();
 
         final Throwable exception = assertThrows(
-            IllegalStateException.class,
-            () -> processorTopology.updateSourceTopics(mkMap(
-                mkEntry(sourceNode, Collections.singletonList(doublySubscribedTopic)),
-                mkEntry(updatedSourceNode, Arrays.asList(topic, doublySubscribedTopic))
-            ))
+                IllegalStateException.class,
+                () -> processorTopology.updateSourceTopics(mkMap(
+                        mkEntry(sourceNode, Collections.singletonList(doublySubscribedTopic)),
+                        mkEntry(updatedSourceNode, Arrays.asList(topic, doublySubscribedTopic))
+                ))
         );
         assertThat(
-            exception.getMessage(),
-            startsWith("Topic " + doublySubscribedTopic + " was already registered to source node")
+                exception.getMessage(),
+                startsWith("Topic " + doublySubscribedTopic + " was already registered to source node")
         );
     }
 
@@ -338,7 +338,7 @@ public class ProcessorTopologyTest {
         driver = new TopologyTestDriver(createConnectedStateStoreTopology("connectedStore"), props);
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -357,19 +357,19 @@ public class ProcessorTopologyTest {
     public void testDrivingConnectedStateStoreInDifferentProcessorsTopology() {
         final String storeName = "connectedStore";
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(storeName), Serdes.String(), Serdes.String());
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(storeName), Serdes.String(), Serdes.String());
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addSource("source2", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_2)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(storeName), Collections.singleton(storeBuilder)), "source1")
-            .addProcessor("processor2", defineWithStores(() -> new StatefulProcessor(storeName), Collections.singleton(storeBuilder)), "source2")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1", "processor2");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addSource("source2", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_2)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(storeName), Collections.singleton(storeBuilder)), "source1")
+                .addProcessor("processor2", defineWithStores(() -> new StatefulProcessor(storeName), Collections.singleton(storeBuilder)), "source2")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1", "processor2");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -387,19 +387,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanInMemoryStoreNoCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
-                .withCachingDisabled()
-                .withLoggingDisabled();
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                        .withCachingDisabled()
+                        .withLoggingDisabled();
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -422,19 +422,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanInMemoryStoreWithCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
-                .withCachingEnabled()
-                .withLoggingDisabled();
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                        .withCachingEnabled()
+                        .withLoggingDisabled();
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -457,19 +457,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanInMemoryStoreWithCachingWithLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
-                .withCachingEnabled()
-                .withLoggingEnabled(Collections.emptyMap());
+                Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                        .withCachingEnabled()
+                        .withLoggingEnabled(Collections.emptyMap());
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -492,19 +492,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentStoreNoCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
-                .withCachingDisabled()
-                .withLoggingDisabled();
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                        .withCachingDisabled()
+                        .withLoggingDisabled();
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -527,19 +527,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentStoreWithCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
-                .withCachingEnabled()
-                .withLoggingDisabled();
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                        .withCachingEnabled()
+                        .withLoggingDisabled();
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -562,19 +562,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentStoreWithCachingWithLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
-                .withCachingEnabled()
-                .withLoggingEnabled(Collections.emptyMap());
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                        .withCachingEnabled()
+                        .withLoggingEnabled(Collections.emptyMap());
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -597,19 +597,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentTimestampedStoreNoCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
-                .withCachingDisabled()
-                .withLoggingDisabled();
+                Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                        .withCachingDisabled()
+                        .withLoggingDisabled();
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -632,19 +632,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentTimestampedStoreWithCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
-                .withCachingEnabled()
-                .withLoggingDisabled();
+                Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                        .withCachingEnabled()
+                        .withLoggingDisabled();
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -667,19 +667,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanPersistentTimestampedStoreWithCachingWithLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
-                .withCachingEnabled()
-                .withLoggingEnabled(Collections.emptyMap());
+                Stores.keyValueStoreBuilder(Stores.persistentTimestampedKeyValueStore(DEFAULT_STORE_NAME), Serdes.String(), Serdes.String())
+                        .withCachingEnabled()
+                        .withLoggingEnabled(Collections.emptyMap());
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -702,19 +702,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanLruMapNoCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
-                .withCachingDisabled()
-                .withLoggingDisabled();
+                Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
+                        .withCachingDisabled()
+                        .withLoggingDisabled();
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -737,19 +737,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanLruMapWithCachingNoLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
-                .withCachingEnabled()
-                .withLoggingDisabled();
+                Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
+                        .withCachingEnabled()
+                        .withLoggingDisabled();
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -772,19 +772,19 @@ public class ProcessorTopologyTest {
     @Test
     public void testPrefixScanLruMapWithCachingWithLogging() {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder =
-            Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
-                .withCachingEnabled()
-                .withLoggingEnabled(Collections.emptyMap());
+                Stores.keyValueStoreBuilder(Stores.lruMap(DEFAULT_STORE_NAME, 100), Serdes.String(), Serdes.String())
+                        .withCachingEnabled()
+                        .withLoggingEnabled(Collections.emptyMap());
         topology
-            .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor1");
+                .addSource("source1", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor1", defineWithStores(() -> new StatefulProcessor(DEFAULT_STORE_NAME), Collections.singleton(storeBuilder)), "source1")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor1");
 
         driver = new TopologyTestDriver(topology, props);
 
         final TestInputTopic<String, String> inputTopic = driver.createInputTopic(INPUT_TOPIC_1, STRING_SERIALIZER, STRING_SERIALIZER);
         final TestOutputTopic<Integer, String> outputTopic1 =
-            driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
+                driver.createOutputTopic(OUTPUT_TOPIC_1, new IntegerDeserializer(), new StringDeserializer());
 
         inputTopic.pipeInput("key1", "value1");
         inputTopic.pipeInput("key2", "value2");
@@ -1048,7 +1048,6 @@ public class ProcessorTopologyTest {
     }
 
 
-
     private void assertNextOutputRecord(final TestRecord<String, String> record,
                                         final String key,
                                         final String value) {
@@ -1079,26 +1078,26 @@ public class ProcessorTopologyTest {
 
     private Topology createSimpleTopology(final int partition) {
         return topology
-            .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor", ForwardingProcessor::new, "source")
-            .addSink("sink", OUTPUT_TOPIC_1, constantPartitioner(partition), "processor");
+                .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor", ForwardingProcessor::new, "source")
+                .addSink("sink", OUTPUT_TOPIC_1, constantPartitioner(partition), "processor");
     }
 
     private Topology createTimestampTopology(final int partition) {
         return topology
-            .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor", TimestampProcessor::new, "source")
-            .addSink("sink", OUTPUT_TOPIC_1, constantPartitioner(partition), "processor");
+                .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor", TimestampProcessor::new, "source")
+                .addSink("sink", OUTPUT_TOPIC_1, constantPartitioner(partition), "processor");
     }
 
     private Topology createMultiProcessorTimestampTopology(final int partition) {
         return topology
-            .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor", () -> new FanOutTimestampProcessor("child1", "child2"), "source")
-            .addProcessor("child1", ForwardingProcessor::new, "processor")
-            .addProcessor("child2", TimestampProcessor::new, "processor")
-            .addSink("sink1", OUTPUT_TOPIC_1, constantPartitioner(partition), "child1")
-            .addSink("sink2", OUTPUT_TOPIC_2, constantPartitioner(partition), "child2");
+                .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor", () -> new FanOutTimestampProcessor("child1", "child2"), "source")
+                .addProcessor("child1", ForwardingProcessor::new, "processor")
+                .addProcessor("child2", TimestampProcessor::new, "processor")
+                .addSink("sink1", OUTPUT_TOPIC_1, constantPartitioner(partition), "child1")
+                .addSink("sink2", OUTPUT_TOPIC_2, constantPartitioner(partition), "child2");
     }
 
     static class DroppingPartitioner implements StreamPartitioner<String, String> {
@@ -1124,25 +1123,25 @@ public class ProcessorTopologyTest {
 
     private Topology createStatefulTopology(final String storeName) {
         return topology
-            .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor", () -> new StatefulProcessor(storeName), "source")
-            .addStateStore(Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(storeName), Serdes.String(), Serdes.String()), "processor")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor");
+                .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor", () -> new StatefulProcessor(storeName), "source")
+                .addStateStore(Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(storeName), Serdes.String(), Serdes.String()), "processor")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor");
     }
 
     private Topology createConnectedStateStoreTopology(final String storeName) {
         final StoreBuilder<KeyValueStore<String, String>> storeBuilder = Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(storeName), Serdes.String(), Serdes.String());
         return topology
-            .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
-            .addProcessor("processor", defineWithStores(() -> new StatefulProcessor(storeName), Collections.singleton(storeBuilder)), "source")
-            .addSink("counts", OUTPUT_TOPIC_1, "processor");
+                .addSource("source", STRING_DESERIALIZER, STRING_DESERIALIZER, INPUT_TOPIC_1)
+                .addProcessor("processor", defineWithStores(() -> new StatefulProcessor(storeName), Collections.singleton(storeBuilder)), "source")
+                .addSink("counts", OUTPUT_TOPIC_1, "processor");
     }
 
     private Topology createInternalRepartitioningTopology() {
         topology.addSource("source", INPUT_TOPIC_1)
-            .addSink("sink0", THROUGH_TOPIC_1, "source")
-            .addSource("source1", THROUGH_TOPIC_1)
-            .addSink("sink1", OUTPUT_TOPIC_1, "source1");
+                .addSink("sink0", THROUGH_TOPIC_1, "source")
+                .addSource("source1", THROUGH_TOPIC_1)
+                .addSink("sink1", OUTPUT_TOPIC_1, "source1");
 
         // use wrapper to get the internal topology builder to add internal topic
         final InternalTopologyBuilder internalTopologyBuilder = TopologyWrapper.getInternalTopologyBuilder(topology);
@@ -1346,7 +1345,7 @@ public class ProcessorTopologyTest {
     /**
      * A custom timestamp extractor that extracts the timestamp from the record's value if the value is in ".*@[0-9]+"
      * format. Otherwise, it returns the record's timestamp or the default timestamp if the record's timestamp is negative.
-    */
+     */
     public static class CustomTimestampExtractor implements TimestampExtractor {
         private static final long DEFAULT_TIMESTAMP = 1000L;
 

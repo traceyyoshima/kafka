@@ -58,8 +58,8 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
     public void testHandleTokenCallback() throws Exception {
         Map<String, ?> configs = getSaslConfigs();
         AccessTokenBuilder builder = new AccessTokenBuilder()
-            .jwk(createRsaJwk())
-            .alg(AlgorithmIdentifiers.RSA_USING_SHA256);
+                .jwk(createRsaJwk())
+                .alg(AlgorithmIdentifiers.RSA_USING_SHA256);
         String accessToken = builder.build();
         JwtRetriever jwtRetriever = () -> accessToken;
         JwtValidator jwtValidator = createJwtValidator();
@@ -68,7 +68,7 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
 
         try {
             OAuthBearerTokenCallback callback = new OAuthBearerTokenCallback();
-            handler.handle(new Callback[] {callback});
+            handler.handle(new Callback[]{callback});
 
             assertNotNull(callback.token());
             OAuthBearerToken token = callback.token();
@@ -131,8 +131,8 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
         try {
             SaslExtensionsCallback callback = new SaslExtensionsCallback();
             assertThrowsWithMessage(ConfigException.class,
-                () -> handler.handle(new Callback[]{callback}),
-                "Extension name " + OAuthBearerClientInitialResponse.AUTH_KEY + " is invalid");
+                    () -> handler.handle(new Callback[]{callback}),
+                    "Extension name " + OAuthBearerClientInitialResponse.AUTH_KEY + " is invalid");
         } finally {
             handler.close();
         }
@@ -147,7 +147,8 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
         handler.configure(configs, OAUTHBEARER_MECHANISM, getJaasConfigEntries(), jwtRetriever, jwtValidator);
 
         try {
-            Callback unsupportedCallback = new Callback() { };
+            Callback unsupportedCallback = new Callback() {
+            };
             assertThrows(UnsupportedCallbackException.class, () -> handler.handle(new Callback[]{unsupportedCallback}));
         } finally {
             handler.close();
@@ -175,8 +176,8 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
         try {
             OAuthBearerTokenCallback callback = new OAuthBearerTokenCallback();
             assertThrowsWithMessage(JwtRetrieverException.class,
-                () -> handler.handle(new Callback[]{callback}),
-                "token endpoint response access_token value must be non-null");
+                    () -> handler.handle(new Callback[]{callback}),
+                    "token endpoint response access_token value must be non-null");
         } finally {
             handler.close();
         }
@@ -210,7 +211,7 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
     @Test
     public void testNotConfigured() {
         OAuthBearerLoginCallbackHandler handler = new OAuthBearerLoginCallbackHandler();
-        assertThrowsWithMessage(IllegalStateException.class, () -> handler.handle(new Callback[] {}), "first call the configure method");
+        assertThrowsWithMessage(IllegalStateException.class, () -> handler.handle(new Callback[]{}), "first call the configure method");
     }
 
     private void testInvalidAccessToken(String accessToken, String expectedMessageSubstring) throws Exception {
@@ -228,8 +229,8 @@ public class OAuthBearerLoginCallbackHandlerTest extends OAuthBearerTest {
             String actualMessage = callback.errorDescription();
             assertNotNull(actualMessage);
             assertTrue(actualMessage.contains(expectedMessageSubstring), String.format(
-                "The error message \"%s\" didn't contain the expected substring \"%s\"",
-                actualMessage, expectedMessageSubstring));
+                    "The error message \"%s\" didn't contain the expected substring \"%s\"",
+                    actualMessage, expectedMessageSubstring));
         } finally {
             handler.close();
         }

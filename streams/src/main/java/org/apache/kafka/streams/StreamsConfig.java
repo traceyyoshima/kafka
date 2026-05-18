@@ -106,7 +106,7 @@ import static org.apache.kafka.common.config.ConfigDef.parseType;
  *
  * StreamsConfig streamsConfig = new StreamsConfig(streamsProperties);
  * }</pre>
- *
+ * <p>
  * This instance can also be used to pass in custom configurations to different modules (e.g. passing a special config in your customized serde class).
  * The consumer/producer/admin prefix can also be used to distinguish these custom config values passed to different clients with the same config name.
  * * Example:
@@ -124,28 +124,28 @@ import static org.apache.kafka.common.config.ConfigDef.parseType;
  * // and "my.custom.config2" -> "boom" from the config map
  * StreamsConfig streamsConfig = new StreamsConfig(streamsProperties);
  * }</pre>
- *
- *
+ * <p>
+ * <p>
  * When increasing {@link ProducerConfig#MAX_BLOCK_MS_CONFIG} to be more resilient to non-available brokers you should also
  * increase {@link ConsumerConfig#MAX_POLL_INTERVAL_MS_CONFIG} using the following guidance:
  * <pre>
  *     max.poll.interval.ms &gt; max.block.ms
  * </pre>
- *
- *
+ * <p>
+ * <p>
  * Kafka Streams requires at least the following properties to be set:
  * <ul>
  *  <li>{@link #APPLICATION_ID_CONFIG "application.id"}</li>
  *  <li>{@link #BOOTSTRAP_SERVERS_CONFIG "bootstrap.servers"}</li>
  * </ul>
- *
+ * <p>
  * By default, Kafka Streams does not allow users to overwrite the following properties (Streams setting shown in parentheses):
  * <ul>
  *   <li>{@link ConsumerConfig#GROUP_ID_CONFIG "group.id"} (&lt;application.id&gt;) - Streams client will always use the application ID a consumer group ID</li>
  *   <li>{@link ConsumerConfig#ENABLE_AUTO_COMMIT_CONFIG "enable.auto.commit"} (false) - Streams client will always disable/turn off auto committing</li>
  *   <li>{@link ConsumerConfig#PARTITION_ASSIGNMENT_STRATEGY_CONFIG "partition.assignment.strategy"} (<code>StreamsPartitionAssignor</code>) - Streams client will always use its own partition assignor</li>
  * </ul>
- *
+ * <p>
  * If {@link #PROCESSING_GUARANTEE_CONFIG "processing.guarantee"} is set to {@link #EXACTLY_ONCE_V2 "exactly_once_v2"},
  * Kafka Streams does not allow users to overwrite the following properties (Streams setting shown in parentheses):
  * <ul>
@@ -285,8 +285,8 @@ public class StreamsConfig extends AbstractConfig {
     public static final String SINGLE_STORE_SELF_JOIN = "single.store.self.join";
 
     private static final List<String> TOPOLOGY_OPTIMIZATION_CONFIGS = Arrays.asList(
-        OPTIMIZE, NO_OPTIMIZATION, REUSE_KTABLE_SOURCE_TOPICS, MERGE_REPARTITION_TOPICS,
-        SINGLE_STORE_SELF_JOIN);
+            OPTIMIZE, NO_OPTIMIZATION, REUSE_KTABLE_SOURCE_TOPICS, MERGE_REPARTITION_TOPICS,
+            SINGLE_STORE_SELF_JOIN);
 
     /**
      * Config value for parameter {@link #UPGRADE_FROM_CONFIG "upgrade.from"} for upgrading an application from version {@code 2.4.x}.
@@ -419,70 +419,95 @@ public class StreamsConfig extends AbstractConfig {
      */
     public static final String METRICS_LATEST = "latest";
 
-    /** {@code acceptable.recovery.lag} */
+    /**
+     * {@code acceptable.recovery.lag}
+     */
     public static final String ACCEPTABLE_RECOVERY_LAG_CONFIG = "acceptable.recovery.lag";
     private static final String ACCEPTABLE_RECOVERY_LAG_DOC = "The maximum acceptable lag (number of offsets to catch up) for a client to be considered caught-up enough" +
-                                                                  " to receive an active task assignment. Upon assignment, it will still restore the rest of the changelog" +
-                                                                  " before processing. To avoid a pause in processing during rebalances, this config" +
-                                                                  " should correspond to a recovery time of well under a minute for a given workload. Must be at least 0.";
+            " to receive an active task assignment. Upon assignment, it will still restore the rest of the changelog" +
+            " before processing. To avoid a pause in processing during rebalances, this config" +
+            " should correspond to a recovery time of well under a minute for a given workload. Must be at least 0.";
 
-    /** {@code allow.os.group.write.access} */
+    /**
+     * {@code allow.os.group.write.access}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String ALLOW_OS_GROUP_WRITE_ACCESS_CONFIG = "allow.os.group.write.access";
     private static final String ALLOW_OS_GROUP_WRITE_ACCESS_DOC = "Allows state store directories created by Kafka Streams to have write access for the OS group. Default is false";
 
-    /** {@code application.id} */
+    /**
+     * {@code application.id}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String APPLICATION_ID_CONFIG = "application.id";
     private static final String APPLICATION_ID_DOC = "An identifier for the stream processing application. Must be unique within the Kafka cluster. It is used as 1) the default client-id prefix, 2) the group-id for membership management, 3) the changelog topic prefix.";
 
-    /**{@code application.server} */
+    /**
+     * {@code application.server}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String APPLICATION_SERVER_CONFIG = "application.server";
     private static final String APPLICATION_SERVER_DOC = "A host:port pair pointing to a user-defined endpoint that can be used for state store discovery and interactive queries on this KafkaStreams instance.";
 
-    /** {@code bootstrap.servers} */
+    /**
+     * {@code bootstrap.servers}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String BOOTSTRAP_SERVERS_CONFIG = CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 
-    /** {@code buffered.records.per.partition} */
+    /**
+     * {@code buffered.records.per.partition}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String BUFFERED_RECORDS_PER_PARTITION_CONFIG = "buffered.records.per.partition";
     @Deprecated
     public static final String BUFFERED_RECORDS_PER_PARTITION_DOC = "Maximum number of records to buffer per partition.";
 
-    /** {@code built.in.metrics.version} */
+    /**
+     * {@code built.in.metrics.version}
+     */
     public static final String BUILT_IN_METRICS_VERSION_CONFIG = "built.in.metrics.version";
     private static final String BUILT_IN_METRICS_VERSION_DOC = "Version of the built-in metrics to use.";
 
-    /** {@code cache.max.bytes.buffering}
-     * @deprecated Since 3.4. Use {@link #STATESTORE_CACHE_MAX_BYTES_CONFIG "statestore.cache.max.bytes"} instead. */
+    /**
+     * {@code cache.max.bytes.buffering}
+     *
+     * @deprecated Since 3.4. Use {@link #STATESTORE_CACHE_MAX_BYTES_CONFIG "statestore.cache.max.bytes"} instead.
+     */
     @SuppressWarnings("WeakerAccess")
     @Deprecated
     public static final String CACHE_MAX_BYTES_BUFFERING_CONFIG = "cache.max.bytes.buffering";
     @Deprecated
     public static final String CACHE_MAX_BYTES_BUFFERING_DOC = "Maximum number of memory bytes to be used for buffering across all threads";
 
-    /** {@code client.id} */
+    /**
+     * {@code client.id}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String CLIENT_ID_CONFIG = CommonClientConfigs.CLIENT_ID_CONFIG;
     private static final String CLIENT_ID_DOC = "An ID prefix string used for the client IDs of internal (main, restore, and global) consumers , producers, and admin clients" +
-        " with pattern <code>&lt;client.id&gt;-[Global]StreamThread[-&lt;threadSequenceNumber&gt;]-&lt;consumer|producer|restore-consumer|global-consumer&gt;</code>.";
+            " with pattern <code>&lt;client.id&gt;-[Global]StreamThread[-&lt;threadSequenceNumber&gt;]-&lt;consumer|producer|restore-consumer|global-consumer&gt;</code>.";
 
-    /** {@code commit.interval.ms} */
+    /**
+     * {@code commit.interval.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String COMMIT_INTERVAL_MS_CONFIG = "commit.interval.ms";
     private static final String COMMIT_INTERVAL_MS_DOC = "The frequency in milliseconds with which to commit processing progress." +
-        " For at-least-once processing, committing means to save the position (ie, offsets) of the processor." +
-        " For exactly-once processing, it means to commit the transaction which includes to save the position and to make the committed data in the output topic visible to consumers with isolation level read_committed." +
-        " (Note, if <code>processing.guarantee</code> is set to <code>" + EXACTLY_ONCE_V2 + "</code>, the default value is <code>" + EOS_DEFAULT_COMMIT_INTERVAL_MS + "</code>," +
-        " otherwise the default value is <code>" + DEFAULT_COMMIT_INTERVAL_MS + "</code>.";
+            " For at-least-once processing, committing means to save the position (ie, offsets) of the processor." +
+            " For exactly-once processing, it means to commit the transaction which includes to save the position and to make the committed data in the output topic visible to consumers with isolation level read_committed." +
+            " (Note, if <code>processing.guarantee</code> is set to <code>" + EXACTLY_ONCE_V2 + "</code>, the default value is <code>" + EOS_DEFAULT_COMMIT_INTERVAL_MS + "</code>," +
+            " otherwise the default value is <code>" + DEFAULT_COMMIT_INTERVAL_MS + "</code>.";
 
-    /** {@code connections.max.idle.ms} */
+    /**
+     * {@code connections.max.idle.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String CONNECTIONS_MAX_IDLE_MS_CONFIG = CommonClientConfigs.CONNECTIONS_MAX_IDLE_MS_CONFIG;
 
-    /** {@code default.client.supplier} */
+    /**
+     * {@code default.client.supplier}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String DEFAULT_CLIENT_SUPPLIER_CONFIG = "default.client.supplier";
     @Deprecated
@@ -490,6 +515,7 @@ public class StreamsConfig extends AbstractConfig {
 
     /**
      * {@code default.deserialization.exception.handler}
+     *
      * @deprecated Since 4.0. Use {@link #DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG} instead.
      */
     @SuppressWarnings("WeakerAccess")
@@ -498,26 +524,32 @@ public class StreamsConfig extends AbstractConfig {
     @Deprecated
     public static final String DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC = "Exception handling class that implements the <code>org.apache.kafka.streams.errors.DeserializationExceptionHandler</code> interface.";
 
-    /** {@code deserialization.exception.handler} */
+    /**
+     * {@code deserialization.exception.handler}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG = "deserialization.exception.handler";
     static final String DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC = "Exception handling class that implements the <code>org.apache.kafka.streams.errors.DeserializationExceptionHandler</code> interface.";
 
     /**
      * {@code default.production.exception.handler}
+     *
      * @deprecated Since 4.0. Use {@link #PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG} instead.
      */
     @SuppressWarnings("WeakerAccess")
     @Deprecated
     public static final String DEFAULT_PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG = "default.production.exception.handler";
 
-    /** {@code production.exception.handler} */
+    /**
+     * {@code production.exception.handler}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG = "production.exception.handler";
     private static final String PRODUCTION_EXCEPTION_HANDLER_CLASS_DOC = "Exception handling class that implements the <code>org.apache.kafka.streams.errors.ProductionExceptionHandler</code> interface.";
 
     /**
      * {@code default.dsl.store}
+     *
      * @deprecated Since 3.7. Use {@link #DSL_STORE_SUPPLIERS_CLASS_CONFIG} instead.
      */
     @Deprecated
@@ -533,57 +565,71 @@ public class StreamsConfig extends AbstractConfig {
     @Deprecated
     public static final String DEFAULT_DSL_STORE = ROCKS_DB;
 
-    /** {@code dsl.store.suppliers.class } */
+    /**
+     * {@code dsl.store.suppliers.class }
+     */
     public static final String DSL_STORE_SUPPLIERS_CLASS_CONFIG = "dsl.store.suppliers.class";
     static final String DSL_STORE_SUPPLIERS_CLASS_DOC = "Defines which store implementations to plug in to DSL operators. Must implement the <code>org.apache.kafka.streams.state.DslStoreSuppliers</code> interface.";
     static final Class<?> DSL_STORE_SUPPLIERS_CLASS_DEFAULT = BuiltInDslStoreSuppliers.RocksDBDslStoreSuppliers.class;
 
-    /** {@code dsl.store.suppliers.class } */
+    /**
+     * {@code dsl.store.suppliers.class }
+     */
     public static final String DSL_STORE_FORMAT_CONFIG = "dsl.store.format";
     public static final String DSL_STORE_FORMAT_DEFAULT = "DEFAULT";
     public static final String DSL_STORE_FORMAT_HEADERS = "HEADERS";
     private static final String DSL_STORE_FORMAT_DOC = "Specifies the state store format for DSL operators. " +
-        "'DEFAULT' creates either timestamped or plain state stores, depending on context. " +
-        "'HEADERS' creates headers-aware stores that preserve record headers.";
+            "'DEFAULT' creates either timestamped or plain state stores, depending on context. " +
+            "'HEADERS' creates headers-aware stores that preserve record headers.";
 
-    /** {@code default key.serde} */
+    /**
+     * {@code default key.serde}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String DEFAULT_KEY_SERDE_CLASS_CONFIG = "default.key.serde";
     private static final String DEFAULT_KEY_SERDE_CLASS_DOC = "Default serializer / deserializer class for key that implements the <code>org.apache.kafka.common.serialization.Serde</code> interface. ";
 
-    /** {@code default.value.serde} */
+    /**
+     * {@code default.value.serde}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String DEFAULT_VALUE_SERDE_CLASS_CONFIG = "default.value.serde";
     private static final String DEFAULT_VALUE_SERDE_CLASS_DOC = "Default serializer / deserializer class for value that implements the <code>org.apache.kafka.common.serialization.Serde</code> interface. ";
 
-    /** {@code default.timestamp.extractor} */
+    /**
+     * {@code default.timestamp.extractor}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG = "default.timestamp.extractor";
     @Deprecated
     public static final String DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_DOC = "Default timestamp extractor class that implements the <code>org.apache.kafka.streams.processor.TimestampExtractor</code> interface.";
 
-    /** {@code enable.metrics.push} */
+    /**
+     * {@code enable.metrics.push}
+     */
     @SuppressWarnings("WeakerAccess")
-    public static  final String ENABLE_METRICS_PUSH_CONFIG = CommonClientConfigs.ENABLE_METRICS_PUSH_CONFIG;
+    public static final String ENABLE_METRICS_PUSH_CONFIG = CommonClientConfigs.ENABLE_METRICS_PUSH_CONFIG;
     @Deprecated
     public static final String ENABLE_METRICS_PUSH_DOC = "Whether to enable pushing of internal client metrics for (main, restore, and global) consumers, producers, and admin clients." +
-        " The cluster must have a client metrics subscription which corresponds to a client.";
+            " The cluster must have a client metrics subscription which corresponds to a client.";
 
-    /** {@code ensure.explicit.internal.resource.naming} */
+    /**
+     * {@code ensure.explicit.internal.resource.naming}
+     */
     public static final String ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_CONFIG = "ensure.explicit.internal.resource.naming";
     static final String ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_DOC = "Whether to enforce explicit naming for all internal resources of the topology, including internal" +
-        " topics (e.g., changelog and repartition topics) and their associated state stores." +
-        " When enabled, the application will refuse to start if any internal resource has an auto-generated name.";
+            " topics (e.g., changelog and repartition topics) and their associated state stores." +
+            " When enabled, the application will refuse to start if any internal resource has an auto-generated name.";
 
     /**
      * <code>group.protocol</code>
      */
     public static final String GROUP_PROTOCOL_CONFIG = "group.protocol";
     public static final String DEFAULT_GROUP_PROTOCOL = GroupProtocol.CLASSIC.name().toLowerCase(
-        Locale.ROOT);
+            Locale.ROOT);
     private static final String GROUP_PROTOCOL_DOC = "The group protocol streams should use. We currently " +
-        "support \"classic\" or \"streams\". If \"streams\" is specified, then the streams rebalance protocol will be " +
-        "used. Otherwise, the classic group protocol will be used.";
+            "support \"classic\" or \"streams\". If \"streams\" is specified, then the streams rebalance protocol will be " +
+            "used. Otherwise, the classic group protocol will be used.";
 
     public static final String ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG = "errors.dead.letter.queue.topic.name";
 
@@ -591,79 +637,105 @@ public class StreamsConfig extends AbstractConfig {
             "If a custom deserialization/production or processing exception handler is set, this parameter is ignored for this handler.\n" +
             "Note: This configuration applies only to regular stream processing tasks. It does not apply to global state store updates (global threads).";
 
-    /** {@code log.summary.interval.ms} */
+    /**
+     * {@code log.summary.interval.ms}
+     */
     public static final String LOG_SUMMARY_INTERVAL_MS_CONFIG = "log.summary.interval.ms";
     private static final String LOG_SUMMARY_INTERVAL_MS_DOC = "The output interval in milliseconds for logging summary information.\n" +
-        "If greater or equal to 0, the summary log will be output according to the set time interval;\n" +
-        "If less than 0, summary output is disabled.";
+            "If greater or equal to 0, the summary log will be output according to the set time interval;\n" +
+            "If less than 0, summary output is disabled.";
 
-    /** {@code max.task.idle.ms} */
+    /**
+     * {@code max.task.idle.ms}
+     */
     public static final String MAX_TASK_IDLE_MS_CONFIG = "max.task.idle.ms";
     @Deprecated
     public static final String MAX_TASK_IDLE_MS_DOC = "This config controls whether joins and merges"
-        + " may produce out-of-order results."
-        + " The config value is the maximum amount of time in milliseconds a stream task will stay idle"
-        + " when it is fully caught up on some (but not all) input partitions"
-        + " to wait for producers to send additional records and avoid potential"
-        + " out-of-order record processing across multiple input streams."
-        + " The default (zero) does not wait for producers to send more records,"
-        + " but it does wait to fetch data that is already present on the brokers."
-        + " This default means that for records that are already present on the brokers,"
-        + " Streams will process them in timestamp order."
-        + " Set to -1 to disable idling entirely and process any locally available data,"
-        + " even though doing so may produce out-of-order processing.";
+            + " may produce out-of-order results."
+            + " The config value is the maximum amount of time in milliseconds a stream task will stay idle"
+            + " when it is fully caught up on some (but not all) input partitions"
+            + " to wait for producers to send additional records and avoid potential"
+            + " out-of-order record processing across multiple input streams."
+            + " The default (zero) does not wait for producers to send more records,"
+            + " but it does wait to fetch data that is already present on the brokers."
+            + " This default means that for records that are already present on the brokers,"
+            + " Streams will process them in timestamp order."
+            + " Set to -1 to disable idling entirely and process any locally available data,"
+            + " even though doing so may produce out-of-order processing.";
 
-    /** {@code max.warmup.replicas} */
+    /**
+     * {@code max.warmup.replicas}
+     */
     public static final String MAX_WARMUP_REPLICAS_CONFIG = "max.warmup.replicas";
     private static final String MAX_WARMUP_REPLICAS_DOC = "The maximum number of warmup replicas (extra standbys beyond the configured num.standbys) that can be assigned at once for the purpose of keeping " +
-                                                              " the task available on one instance while it is warming up on another instance it has been reassigned to. Used to throttle how much extra broker " +
-                                                              " traffic and cluster state can be used for high availability. Must be at least 1." +
-                                                              "Note that one warmup replica corresponds to one Stream Task. Furthermore, note that each warmup replica can only be promoted to an active task " +
-                                                              "during a rebalance (normally during a so-called probing rebalance, which occur at a frequency specified by the <code>probing.rebalance.interval.ms</code> config). This means " +
-                                                              "that the maximum rate at which active tasks can be migrated from one Kafka Streams Instance to another instance can be determined by " +
-                                                              "(<code>max.warmup.replicas</code> / <code>probing.rebalance.interval.ms</code>).";
+            " the task available on one instance while it is warming up on another instance it has been reassigned to. Used to throttle how much extra broker " +
+            " traffic and cluster state can be used for high availability. Must be at least 1." +
+            "Note that one warmup replica corresponds to one Stream Task. Furthermore, note that each warmup replica can only be promoted to an active task " +
+            "during a rebalance (normally during a so-called probing rebalance, which occur at a frequency specified by the <code>probing.rebalance.interval.ms</code> config). This means " +
+            "that the maximum rate at which active tasks can be migrated from one Kafka Streams Instance to another instance can be determined by " +
+            "(<code>max.warmup.replicas</code> / <code>probing.rebalance.interval.ms</code>).";
 
-    /** {@code metadata.max.age.ms} */
+    /**
+     * {@code metadata.max.age.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String METADATA_MAX_AGE_CONFIG = CommonClientConfigs.METADATA_MAX_AGE_CONFIG;
 
-    /** {@code metrics.num.samples} */
+    /**
+     * {@code metrics.num.samples}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String METRICS_NUM_SAMPLES_CONFIG = CommonClientConfigs.METRICS_NUM_SAMPLES_CONFIG;
 
-    /** {@code metrics.record.level} */
+    /**
+     * {@code metrics.record.level}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String METRICS_RECORDING_LEVEL_CONFIG = CommonClientConfigs.METRICS_RECORDING_LEVEL_CONFIG;
 
-    /** {@code metric.reporters} */
+    /**
+     * {@code metric.reporters}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String METRIC_REPORTER_CLASSES_CONFIG = CommonClientConfigs.METRIC_REPORTER_CLASSES_CONFIG;
 
-    /** {@code metrics.sample.window.ms} */
+    /**
+     * {@code metrics.sample.window.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String METRICS_SAMPLE_WINDOW_MS_CONFIG = CommonClientConfigs.METRICS_SAMPLE_WINDOW_MS_CONFIG;
 
-    /** {@code num.standby.replicas} */
+    /**
+     * {@code num.standby.replicas}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String NUM_STANDBY_REPLICAS_CONFIG = "num.standby.replicas";
     private static final String NUM_STANDBY_REPLICAS_DOC = "The number of standby replicas for each task.";
 
-    /** {@code num.stream.threads} */
+    /**
+     * {@code num.stream.threads}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String NUM_STREAM_THREADS_CONFIG = "num.stream.threads";
     private static final String NUM_STREAM_THREADS_DOC = "The number of threads to execute stream processing.";
 
-    /** {@code poll.ms} */
+    /**
+     * {@code poll.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String POLL_MS_CONFIG = "poll.ms";
     private static final String POLL_MS_DOC = "The amount of time in milliseconds to block waiting for input.";
 
-    /** {@code probing.rebalance.interval.ms} */
+    /**
+     * {@code probing.rebalance.interval.ms}
+     */
     public static final String PROBING_REBALANCE_INTERVAL_MS_CONFIG = "probing.rebalance.interval.ms";
     private static final String PROBING_REBALANCE_INTERVAL_MS_DOC = "The maximum time in milliseconds to wait before triggering a rebalance to probe for warmup replicas that have finished warming up and are ready to become active." +
-        " Probing rebalances will continue to be triggered until the assignment is balanced. Must be at least 1 minute.";
+            " Probing rebalances will continue to be triggered until the assignment is balanced. Must be at least 1 minute.";
 
-    /** {@code processing.exception.handler} */
+    /**
+     * {@code processing.exception.handler}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG = "processing.exception.handler";
     @Deprecated
@@ -671,139 +743,185 @@ public class StreamsConfig extends AbstractConfig {
             "Note: This handler applies only to regular stream processing tasks. It does not apply to global state store updates (global threads). " +
             "Exceptions occurring in global threads will bubble up to the configured uncaught exception handler.";
 
-    /** {@code processing.guarantee} */
+    /**
+     * {@code processing.guarantee}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String PROCESSING_GUARANTEE_CONFIG = "processing.guarantee";
     private static final String PROCESSING_GUARANTEE_DOC = "The processing guarantee that should be used. " +
-        "Possible values are <code>" + AT_LEAST_ONCE + "</code> (default) " +
-        "and <code>" + EXACTLY_ONCE_V2 + "</code> (requires brokers version 2.5 or higher). " +
-        "Note that exactly-once processing requires a cluster of at least three brokers by default what is the " +
-        "recommended setting for production; for development you can change this, by adjusting broker setting " +
-        "<code>transaction.state.log.replication.factor</code> and <code>transaction.state.log.min.isr</code>.";
+            "Possible values are <code>" + AT_LEAST_ONCE + "</code> (default) " +
+            "and <code>" + EXACTLY_ONCE_V2 + "</code> (requires brokers version 2.5 or higher). " +
+            "Note that exactly-once processing requires a cluster of at least three brokers by default what is the " +
+            "recommended setting for production; for development you can change this, by adjusting broker setting " +
+            "<code>transaction.state.log.replication.factor</code> and <code>transaction.state.log.min.isr</code>.";
 
-    /** {@code processor.wrapper.class} */
+    /**
+     * {@code processor.wrapper.class}
+     */
     public static final String PROCESSOR_WRAPPER_CLASS_CONFIG = "processor.wrapper.class";
     static final String PROCESSOR_WRAPPER_CLASS_DOC = "A processor wrapper class or class name that implements the <code>org.apache.kafka.streams.state.ProcessorWrapper</code> interface. "
-        + "Must be passed in to the StreamsBuilder or Topology constructor in order to take effect";
+            + "Must be passed in to the StreamsBuilder or Topology constructor in order to take effect";
 
-    /** {@code repartition.purge.interval.ms} */
+    /**
+     * {@code repartition.purge.interval.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String REPARTITION_PURGE_INTERVAL_MS_CONFIG = "repartition.purge.interval.ms";
     private static final String REPARTITION_PURGE_INTERVAL_MS_DOC = "The frequency in milliseconds with which to delete fully consumed records from repartition topics." +
-        " Purging will occur after at least this value since the last purge, but may be delayed until later." +
-        " (Note, unlike <code>commit.interval.ms</code>, the default for this value remains unchanged when <code>processing.guarantee</code> is set to <code>" + EXACTLY_ONCE_V2 + "</code>).";
+            " Purging will occur after at least this value since the last purge, but may be delayed until later." +
+            " (Note, unlike <code>commit.interval.ms</code>, the default for this value remains unchanged when <code>processing.guarantee</code> is set to <code>" + EXACTLY_ONCE_V2 + "</code>).";
 
-    /** {@code receive.buffer.bytes} */
+    /**
+     * {@code receive.buffer.bytes}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String RECEIVE_BUFFER_CONFIG = CommonClientConfigs.RECEIVE_BUFFER_CONFIG;
 
-    /** {@code rack.aware.assignment.non_overlap_cost} */
+    /**
+     * {@code rack.aware.assignment.non_overlap_cost}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String RACK_AWARE_ASSIGNMENT_NON_OVERLAP_COST_CONFIG = "rack.aware.assignment.non_overlap_cost";
     @Deprecated
     public static final String RACK_AWARE_ASSIGNMENT_NON_OVERLAP_COST_DOC = "Cost associated with moving tasks from existing assignment. This config and <code>rack.aware.assignment.traffic_cost</code> controls whether the "
-        + "optimization algorithm favors minimizing cross rack traffic or minimize the movement of tasks in existing assignment. If set a larger value <code>" + RackAwareTaskAssignor.class.getName() + "</code> will "
-        + "optimize to maintain the existing assignment. The default value is null which means it will use default non_overlap cost values in different assignors.";
+            + "optimization algorithm favors minimizing cross rack traffic or minimize the movement of tasks in existing assignment. If set a larger value <code>" + RackAwareTaskAssignor.class.getName() + "</code> will "
+            + "optimize to maintain the existing assignment. The default value is null which means it will use default non_overlap cost values in different assignors.";
 
-    /** {@code rack.aware.assignment.strategy} */
+    /**
+     * {@code rack.aware.assignment.strategy}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String RACK_AWARE_ASSIGNMENT_STRATEGY_CONFIG = "rack.aware.assignment.strategy";
     @Deprecated
     public static final String RACK_AWARE_ASSIGNMENT_STRATEGY_DOC = "The strategy we use for rack aware assignment. Rack aware assignment will take <code>client.rack</code> and <code>racks</code> of <code>TopicPartition</code> into account when assigning"
-        + " tasks to minimize cross rack traffic. Valid settings are : <code>" + RACK_AWARE_ASSIGNMENT_STRATEGY_NONE + "</code> (default), which will disable rack aware assignment; <code>" + RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC
-        + "</code>, which will compute minimum cross rack traffic assignment; <code>" + RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY + "</code>, which will compute minimum cross rack traffic and try to balance the tasks of same subtopologies across different clients";
+            + " tasks to minimize cross rack traffic. Valid settings are : <code>" + RACK_AWARE_ASSIGNMENT_STRATEGY_NONE + "</code> (default), which will disable rack aware assignment; <code>" + RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC
+            + "</code>, which will compute minimum cross rack traffic assignment; <code>" + RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY + "</code>, which will compute minimum cross rack traffic and try to balance the tasks of same subtopologies across different clients";
 
-    /** {@code rack.aware.assignment.tags} */
+    /**
+     * {@code rack.aware.assignment.tags}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String RACK_AWARE_ASSIGNMENT_TAGS_CONFIG = "rack.aware.assignment.tags";
     private static final String RACK_AWARE_ASSIGNMENT_TAGS_DOC = "List of client tag keys used to distribute standby replicas across Kafka Streams instances." +
-                                                                 " When configured, Kafka Streams will make a best-effort to distribute" +
-                                                                 " the standby tasks over each client tag dimension.";
+            " When configured, Kafka Streams will make a best-effort to distribute" +
+            " the standby tasks over each client tag dimension.";
 
-    /** {@code rack.aware.assignment.traffic_cost} */
+    /**
+     * {@code rack.aware.assignment.traffic_cost}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String RACK_AWARE_ASSIGNMENT_TRAFFIC_COST_CONFIG = "rack.aware.assignment.traffic_cost";
     @Deprecated
     public static final String RACK_AWARE_ASSIGNMENT_TRAFFIC_COST_DOC = "Cost associated with cross rack traffic. This config and <code>rack.aware.assignment.non_overlap_cost</code> controls whether the "
-        + "optimization algorithm favors minimizing cross rack traffic or minimize the movement of tasks in existing assignment. If set a larger value <code>" + RackAwareTaskAssignor.class.getName() + "</code> will "
-        + "optimize for minimizing cross rack traffic. The default value is null which means it will use default traffic cost values in different assignors.";
+            + "optimization algorithm favors minimizing cross rack traffic or minimize the movement of tasks in existing assignment. If set a larger value <code>" + RackAwareTaskAssignor.class.getName() + "</code> will "
+            + "optimize for minimizing cross rack traffic. The default value is null which means it will use default traffic cost values in different assignors.";
 
-    /** {@code reconnect.backoff.ms} */
+    /**
+     * {@code reconnect.backoff.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String RECONNECT_BACKOFF_MS_CONFIG = CommonClientConfigs.RECONNECT_BACKOFF_MS_CONFIG;
 
-    /** {@code reconnect.backoff.max} */
+    /**
+     * {@code reconnect.backoff.max}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String RECONNECT_BACKOFF_MAX_MS_CONFIG = CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG;
 
-    /** {@code replication.factor} */
+    /**
+     * {@code replication.factor}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String REPLICATION_FACTOR_CONFIG = "replication.factor";
     private static final String REPLICATION_FACTOR_DOC = "The replication factor for change log topics and repartition topics created by the stream processing application."
-        + " The default of <code>-1</code> (meaning: use broker default replication factor) requires broker version 2.4 or newer";
+            + " The default of <code>-1</code> (meaning: use broker default replication factor) requires broker version 2.4 or newer";
 
-    /** {@code request.timeout.ms} */
+    /**
+     * {@code request.timeout.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String REQUEST_TIMEOUT_MS_CONFIG = CommonClientConfigs.REQUEST_TIMEOUT_MS_CONFIG;
 
-    /** {@code retry.backoff.ms} */
+    /**
+     * {@code retry.backoff.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String RETRY_BACKOFF_MS_CONFIG = CommonClientConfigs.RETRY_BACKOFF_MS_CONFIG;
 
-    /** {@code rocksdb.config.setter} */
+    /**
+     * {@code rocksdb.config.setter}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String ROCKSDB_CONFIG_SETTER_CLASS_CONFIG = "rocksdb.config.setter";
     private static final String ROCKSDB_CONFIG_SETTER_CLASS_DOC = "A Rocks DB config setter class or class name that implements the <code>org.apache.kafka.streams.state.RocksDBConfigSetter</code> interface";
 
-    /** {@code security.protocol} */
+    /**
+     * {@code security.protocol}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String SECURITY_PROTOCOL_CONFIG = CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 
-    /** {@code send.buffer.bytes} */
+    /**
+     * {@code send.buffer.bytes}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String SEND_BUFFER_CONFIG = CommonClientConfigs.SEND_BUFFER_CONFIG;
 
-    /** {@code state.cleanup.delay} */
+    /**
+     * {@code state.cleanup.delay}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String STATE_CLEANUP_DELAY_MS_CONFIG = "state.cleanup.delay.ms";
     private static final String STATE_CLEANUP_DELAY_MS_DOC = "The amount of time in milliseconds to wait before deleting state when a partition has migrated. Only state directories that have not been modified for at least <code>state.cleanup.delay.ms</code> will be removed";
 
-    /** {@code state.cleanup.dir.max.age} */
+    /**
+     * {@code state.cleanup.dir.max.age}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String STATE_CLEANUP_DIR_MAX_AGE_MS_CONFIG = "state.cleanup.dir.max.age.ms";
     private static final String STATE_CLEANUP_DIR_MAX_AGE_MS_DOC = "Time-based threshold for purging local state directories and checkpoint files during application startup. State directories that have not been modified for at least <code>" + STATE_CLEANUP_DIR_MAX_AGE_MS_CONFIG + "</code> will be removed.";
 
-    /** {@code state.dir} */
+    /**
+     * {@code state.dir}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String STATE_DIR_CONFIG = "state.dir";
     private static final String STATE_DIR_DOC = "Directory location for state store. This path must be unique for each streams instance sharing the same underlying filesystem. Note that if not configured, then the default location will be different in each environment as it is computed using System.getProperty(\"java.io.tmpdir\")";
 
-    /** {@code statestore.cache.max.bytes} */
+    /**
+     * {@code statestore.cache.max.bytes}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String STATESTORE_CACHE_MAX_BYTES_CONFIG = "statestore.cache.max.bytes";
     @Deprecated
     public static final String STATESTORE_CACHE_MAX_BYTES_DOC = "Maximum number of memory bytes to be used for statestore cache across all threads";
 
-    /** {@code task.assignor.class} */
+    /**
+     * {@code task.assignor.class}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String TASK_ASSIGNOR_CLASS_CONFIG = "task.assignor.class";
     private static final String TASK_ASSIGNOR_CLASS_DOC = "A task assignor class or class name implementing the <code>" +
-        TaskAssignor.class.getName() + "</code> interface. Defaults to the <code>HighAvailabilityTaskAssignor</code> class.";
+            TaskAssignor.class.getName() + "</code> interface. Defaults to the <code>HighAvailabilityTaskAssignor</code> class.";
 
-    /** {@code task.timeout.ms} */
+    /**
+     * {@code task.timeout.ms}
+     */
     public static final String TASK_TIMEOUT_MS_CONFIG = "task.timeout.ms";
     @Deprecated
     public static final String TASK_TIMEOUT_MS_DOC = "The maximum amount of time in milliseconds a task might stall due to internal errors and retries until an error is raised. " +
-        "For a timeout of 0ms, a task would raise an error for the first internal error. " +
-        "For any timeout larger than 0ms, a task will retry at least once before an error is raised.";
+            "For a timeout of 0ms, a task would raise an error for the first internal error. " +
+            "For any timeout larger than 0ms, a task will retry at least once before an error is raised.";
 
-    /** {@code upgrade.from} */
+    /**
+     * {@code upgrade.from}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String UPGRADE_FROM_CONFIG = "upgrade.from";
     private static final String UPGRADE_FROM_DOC = "Allows live upgrading (and downgrading in some cases -- see upgrade guide) in a backward compatible way. Default is <code>null</code>. " +
-        "Please refer to the Kafka Streams upgrade guide for instructions on how and when to use this config. " +
-        "Note that when upgrading from 3.5 to a newer version it is never required to specify this config, " +
-        "while upgrading live directly to 4.0+ from 2.3 or below is no longer supported even with this config.";
+            "Please refer to the Kafka Streams upgrade guide for instructions on how and when to use this config. " +
+            "Note that when upgrading from 3.5 to a newer version it is never required to specify this config, " +
+            "while upgrading live directly to 4.0+ from 2.3 or below is no longer supported even with this config.";
 
     /**
      * {@code topology.optimization}
@@ -816,16 +934,16 @@ public class StreamsConfig extends AbstractConfig {
      */
     public static final String TOPOLOGY_OPTIMIZATION_CONFIG = "topology.optimization";
     private static final String CONFIG_ERROR_MSG = "Acceptable values are:"
-        + " \"+NO_OPTIMIZATION+\", \"+OPTIMIZE+\", "
-        + "or a comma separated list of specific optimizations: "
-        + "(\"+REUSE_KTABLE_SOURCE_TOPICS+\", \"+MERGE_REPARTITION_TOPICS+\" + "
-        + "\"SINGLE_STORE_SELF_JOIN+\").";
+            + " \"+NO_OPTIMIZATION+\", \"+OPTIMIZE+\", "
+            + "or a comma separated list of specific optimizations: "
+            + "(\"+REUSE_KTABLE_SOURCE_TOPICS+\", \"+MERGE_REPARTITION_TOPICS+\" + "
+            + "\"SINGLE_STORE_SELF_JOIN+\").";
     private static final String TOPOLOGY_OPTIMIZATION_DOC = "A configuration telling Kafka "
-        + "Streams if it should optimize the topology and what optimizations to apply. "
-        + CONFIG_ERROR_MSG
-        + "\"NO_OPTIMIZATION\" by default. "
-        + "Note: this config must also be passed to StreamsBuilder#build(Properties) "
-        + "for optimizations to take effect.";
+            + "Streams if it should optimize the topology and what optimizations to apply. "
+            + CONFIG_ERROR_MSG
+            + "\"NO_OPTIMIZATION\" by default. "
+            + "Note: this config must also be passed to StreamsBuilder#build(Properties) "
+            + "for optimizations to take effect.";
 
     /**
      * {@code windowed.inner.class.serde}
@@ -839,8 +957,8 @@ public class StreamsConfig extends AbstractConfig {
     @Deprecated
     public static final String WINDOWED_INNER_CLASS_SERDE = "windowed.inner.class.serde";
     private static final String WINDOWED_INNER_CLASS_SERDE_DOC = " Default serializer / deserializer for the inner class of a windowed record. Must implement the " +
-        "<code>org.apache.kafka.common.serialization.Serde</code> interface. Note that setting this config in KafkaStreams application would result " +
-        "in an error as it is meant to be used only from Plain consumer client.";
+            "<code>org.apache.kafka.common.serialization.Serde</code> interface. Note that setting this config in KafkaStreams application would result " +
+            "in an error as it is meant to be used only from Plain consumer client.";
 
     /**
      * {@code window.size.ms}
@@ -852,23 +970,26 @@ public class StreamsConfig extends AbstractConfig {
     public static final String WINDOW_SIZE_MS_CONFIG = "window.size.ms";
     private static final String WINDOW_SIZE_MS_DOC = "Sets window size for the deserializer in order to calculate window end times.";
 
-    /** {@code windowstore.changelog.additional.retention.ms} */
+    /**
+     * {@code windowstore.changelog.additional.retention.ms}
+     */
     @SuppressWarnings("WeakerAccess")
     public static final String WINDOW_STORE_CHANGE_LOG_ADDITIONAL_RETENTION_MS_CONFIG = "windowstore.changelog.additional.retention.ms";
     private static final String WINDOW_STORE_CHANGE_LOG_ADDITIONAL_RETENTION_MS_DOC = "Added to a windows maintainMs to ensure data is not deleted from the log prematurely. Allows for clock drift. Default is 1 day";
 
     private static final String[] NON_CONFIGURABLE_CONSUMER_DEFAULT_CONFIGS =
-        new String[] {ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, ConsumerConfig.GROUP_PROTOCOL_CONFIG, ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG};
+            new String[]{ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, ConsumerConfig.GROUP_PROTOCOL_CONFIG, ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG};
     private static final String[] NON_CONFIGURABLE_CONSUMER_EOS_CONFIGS =
-        new String[] {ConsumerConfig.ISOLATION_LEVEL_CONFIG};
+            new String[]{ConsumerConfig.ISOLATION_LEVEL_CONFIG};
     private static final String[] NON_CONFIGURABLE_PRODUCER_EOS_CONFIGS =
-        new String[] {
-            ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG,
-            ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION,
-            ProducerConfig.TRANSACTIONAL_ID_CONFIG
-        };
+            new String[]{
+                    ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG,
+                    ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION,
+                    ProducerConfig.TRANSACTIONAL_ID_CONFIG
+            };
     /**
      * {@code processing.exception.handler.global.enabled}
+     *
      * @deprecated Since 4.3. Default will change to {@code true} when removed.
      */
     @Deprecated
@@ -881,431 +1002,431 @@ public class StreamsConfig extends AbstractConfig {
     static {
         CONFIG = new ConfigDef()
 
-            // HIGH
+                // HIGH
 
-            .define(APPLICATION_ID_CONFIG, // required with no default value
-                    Type.STRING,
-                    Importance.HIGH,
-                    APPLICATION_ID_DOC)
-            .define(BOOTSTRAP_SERVERS_CONFIG, // required with no default value
-                    Type.LIST,
-                    NO_DEFAULT_VALUE,
-                    ConfigDef.ValidList.anyNonDuplicateValues(false, false),
-                    Importance.HIGH,
-                    CommonClientConfigs.BOOTSTRAP_SERVERS_DOC)
-            .define(NUM_STANDBY_REPLICAS_CONFIG,
-                    Type.INT,
-                    0,
-                    Importance.HIGH,
-                    NUM_STANDBY_REPLICAS_DOC)
-            .define(PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG,
-                    Type.BOOLEAN,
-                    false,
-                    Importance.HIGH,
-                    PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_DOC)
-            .define(STATE_DIR_CONFIG,
-                    Type.STRING,
-                    System.getProperty("java.io.tmpdir") + File.separator + "kafka-streams",
-                    Importance.HIGH,
-                    STATE_DIR_DOC,
-                    "${java.io.tmpdir}")
-            .define(ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_CONFIG,
-                    Type.BOOLEAN,
-                    false,
-                    Importance.HIGH,
-                    ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_DOC)
+                .define(APPLICATION_ID_CONFIG, // required with no default value
+                        Type.STRING,
+                        Importance.HIGH,
+                        APPLICATION_ID_DOC)
+                .define(BOOTSTRAP_SERVERS_CONFIG, // required with no default value
+                        Type.LIST,
+                        NO_DEFAULT_VALUE,
+                        ConfigDef.ValidList.anyNonDuplicateValues(false, false),
+                        Importance.HIGH,
+                        CommonClientConfigs.BOOTSTRAP_SERVERS_DOC)
+                .define(NUM_STANDBY_REPLICAS_CONFIG,
+                        Type.INT,
+                        0,
+                        Importance.HIGH,
+                        NUM_STANDBY_REPLICAS_DOC)
+                .define(PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG,
+                        Type.BOOLEAN,
+                        false,
+                        Importance.HIGH,
+                        PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_DOC)
+                .define(STATE_DIR_CONFIG,
+                        Type.STRING,
+                        System.getProperty("java.io.tmpdir") + File.separator + "kafka-streams",
+                        Importance.HIGH,
+                        STATE_DIR_DOC,
+                        "${java.io.tmpdir}")
+                .define(ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_CONFIG,
+                        Type.BOOLEAN,
+                        false,
+                        Importance.HIGH,
+                        ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_DOC)
 
-            // MEDIUM
+                // MEDIUM
 
-            .define(ACCEPTABLE_RECOVERY_LAG_CONFIG,
-                    Type.LONG,
-                    10_000L,
-                    atLeast(0),
-                    Importance.MEDIUM,
-                    ACCEPTABLE_RECOVERY_LAG_DOC)
-            .define(CACHE_MAX_BYTES_BUFFERING_CONFIG,
-                    Type.LONG,
-                    10 * 1024 * 1024L,
-                    atLeast(0),
-                    Importance.MEDIUM,
-                    CACHE_MAX_BYTES_BUFFERING_DOC)
-            .define(STATESTORE_CACHE_MAX_BYTES_CONFIG,
-                    Type.LONG,
-                    10 * 1024 * 1024L,
-                    atLeast(0),
-                    Importance.MEDIUM,
-                    STATESTORE_CACHE_MAX_BYTES_DOC)
-            .define(CLIENT_ID_CONFIG,
-                    Type.STRING,
-                    "",
-                    Importance.MEDIUM,
-                    CLIENT_ID_DOC,
-                    "<code>&lt;application.id&gt-&lt;random-UUID&gt</code>")
-            .define(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,
-                    Type.CLASS,
-                    LogAndFailExceptionHandler.class.getName(),
-                    Importance.MEDIUM,
-                    DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC)
-            .define(DEFAULT_KEY_SERDE_CLASS_CONFIG,
-                    Type.CLASS,
-                    null,
-                    Importance.MEDIUM,
-                    DEFAULT_KEY_SERDE_CLASS_DOC)
-            .define(CommonClientConfigs.DEFAULT_LIST_KEY_SERDE_INNER_CLASS,
-                    Type.CLASS,
-                    null,
-                    Importance.MEDIUM,
-                    CommonClientConfigs.DEFAULT_LIST_KEY_SERDE_INNER_CLASS_DOC)
-            .define(CommonClientConfigs.DEFAULT_LIST_VALUE_SERDE_INNER_CLASS,
-                    Type.CLASS,
-                    null,
-                    Importance.MEDIUM,
-                    CommonClientConfigs.DEFAULT_LIST_VALUE_SERDE_INNER_CLASS_DOC)
-            .define(CommonClientConfigs.DEFAULT_LIST_KEY_SERDE_TYPE_CLASS,
-                    Type.CLASS,
-                    null,
-                    Importance.MEDIUM,
-                    CommonClientConfigs.DEFAULT_LIST_KEY_SERDE_TYPE_CLASS_DOC)
-            .define(CommonClientConfigs.DEFAULT_LIST_VALUE_SERDE_TYPE_CLASS,
-                    Type.CLASS,
-                    null,
-                    Importance.MEDIUM,
-                    CommonClientConfigs.DEFAULT_LIST_VALUE_SERDE_TYPE_CLASS_DOC)
-            .define(DEFAULT_PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG,
-                    Type.CLASS,
-                    DefaultProductionExceptionHandler.class.getName(),
-                    Importance.MEDIUM,
-                    PRODUCTION_EXCEPTION_HANDLER_CLASS_DOC)
-            .define(DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG,
-                    Type.CLASS,
-                    FailOnInvalidTimestamp.class.getName(),
-                    Importance.MEDIUM,
-                    DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_DOC)
-            .define(DEFAULT_VALUE_SERDE_CLASS_CONFIG,
-                    Type.CLASS,
-                    null,
-                    Importance.MEDIUM,
-                    DEFAULT_VALUE_SERDE_CLASS_DOC)
-            .define(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,
-                    Type.CLASS,
-                    LogAndFailExceptionHandler.class.getName(),
-                    Importance.MEDIUM,
-                    DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC)
-            .define(ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG,
-                    Type.STRING,
-                    null,
-                    Importance.MEDIUM,
-                    ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_DOC)
-            .define(MAX_TASK_IDLE_MS_CONFIG,
-                    Type.LONG,
-                    0L,
-                    Importance.MEDIUM,
-                    MAX_TASK_IDLE_MS_DOC)
-            .define(MAX_WARMUP_REPLICAS_CONFIG,
-                    Type.INT,
-                    2,
-                    atLeast(1),
-                    Importance.MEDIUM,
-                    MAX_WARMUP_REPLICAS_DOC)
-            .define(NUM_STREAM_THREADS_CONFIG,
-                    Type.INT,
-                    1,
-                    Importance.MEDIUM,
-                    NUM_STREAM_THREADS_DOC)
-            .define(PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG,
-                    Type.CLASS,
-                    LogAndFailProcessingExceptionHandler.class.getName(),
-                    Importance.MEDIUM,
-                    PROCESSING_EXCEPTION_HANDLER_CLASS_DOC)
-            .define(PROCESSING_GUARANTEE_CONFIG,
-                    Type.STRING,
-                    AT_LEAST_ONCE,
-                    in(AT_LEAST_ONCE, EXACTLY_ONCE_V2),
-                    Importance.MEDIUM,
-                    PROCESSING_GUARANTEE_DOC)
-            .define(PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG,
-                    Type.CLASS,
-                    DefaultProductionExceptionHandler.class.getName(),
-                    Importance.MEDIUM,
-                    PRODUCTION_EXCEPTION_HANDLER_CLASS_DOC)
-            .define(TASK_ASSIGNOR_CLASS_CONFIG,
-                    Type.STRING,
-                    null,
-                    Importance.MEDIUM,
-                    TASK_ASSIGNOR_CLASS_DOC)
-            .define(REPLICATION_FACTOR_CONFIG,
-                    Type.INT,
-                    -1,
-                    Importance.MEDIUM,
-                    REPLICATION_FACTOR_DOC)
-            .define(SECURITY_PROTOCOL_CONFIG,
-                    Type.STRING,
-                    CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL,
-                    ConfigDef.CaseInsensitiveValidString.in(Utils.enumOptions(SecurityProtocol.class)),
-                    Importance.MEDIUM,
-                    CommonClientConfigs.SECURITY_PROTOCOL_DOC)
-            .define(TASK_TIMEOUT_MS_CONFIG,
-                    Type.LONG,
-                    Duration.ofMinutes(5L).toMillis(),
-                    atLeast(0L),
-                    Importance.MEDIUM,
-                    TASK_TIMEOUT_MS_DOC)
-            .define(TOPOLOGY_OPTIMIZATION_CONFIG,
-                    Type.STRING,
-                    NO_OPTIMIZATION,
-                    ConfigDef.LambdaValidator.with(
-                        (name, value) -> verifyTopologyOptimizationConfigs((String) value),
-                        TOPOLOGY_OPTIMIZATION_CONFIGS::toString),
-                    Importance.MEDIUM,
-                    TOPOLOGY_OPTIMIZATION_DOC)
-            .define(GROUP_PROTOCOL_CONFIG,
-                    Type.STRING,
-                    DEFAULT_GROUP_PROTOCOL,
-                    ConfigDef.CaseInsensitiveValidString.in(Utils.enumOptions(GroupProtocol.class)),
-                    Importance.MEDIUM,
-                    GROUP_PROTOCOL_DOC)
+                .define(ACCEPTABLE_RECOVERY_LAG_CONFIG,
+                        Type.LONG,
+                        10_000L,
+                        atLeast(0),
+                        Importance.MEDIUM,
+                        ACCEPTABLE_RECOVERY_LAG_DOC)
+                .define(CACHE_MAX_BYTES_BUFFERING_CONFIG,
+                        Type.LONG,
+                        10 * 1024 * 1024L,
+                        atLeast(0),
+                        Importance.MEDIUM,
+                        CACHE_MAX_BYTES_BUFFERING_DOC)
+                .define(STATESTORE_CACHE_MAX_BYTES_CONFIG,
+                        Type.LONG,
+                        10 * 1024 * 1024L,
+                        atLeast(0),
+                        Importance.MEDIUM,
+                        STATESTORE_CACHE_MAX_BYTES_DOC)
+                .define(CLIENT_ID_CONFIG,
+                        Type.STRING,
+                        "",
+                        Importance.MEDIUM,
+                        CLIENT_ID_DOC,
+                        "<code>&lt;application.id&gt-&lt;random-UUID&gt</code>")
+                .define(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,
+                        Type.CLASS,
+                        LogAndFailExceptionHandler.class.getName(),
+                        Importance.MEDIUM,
+                        DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC)
+                .define(DEFAULT_KEY_SERDE_CLASS_CONFIG,
+                        Type.CLASS,
+                        null,
+                        Importance.MEDIUM,
+                        DEFAULT_KEY_SERDE_CLASS_DOC)
+                .define(CommonClientConfigs.DEFAULT_LIST_KEY_SERDE_INNER_CLASS,
+                        Type.CLASS,
+                        null,
+                        Importance.MEDIUM,
+                        CommonClientConfigs.DEFAULT_LIST_KEY_SERDE_INNER_CLASS_DOC)
+                .define(CommonClientConfigs.DEFAULT_LIST_VALUE_SERDE_INNER_CLASS,
+                        Type.CLASS,
+                        null,
+                        Importance.MEDIUM,
+                        CommonClientConfigs.DEFAULT_LIST_VALUE_SERDE_INNER_CLASS_DOC)
+                .define(CommonClientConfigs.DEFAULT_LIST_KEY_SERDE_TYPE_CLASS,
+                        Type.CLASS,
+                        null,
+                        Importance.MEDIUM,
+                        CommonClientConfigs.DEFAULT_LIST_KEY_SERDE_TYPE_CLASS_DOC)
+                .define(CommonClientConfigs.DEFAULT_LIST_VALUE_SERDE_TYPE_CLASS,
+                        Type.CLASS,
+                        null,
+                        Importance.MEDIUM,
+                        CommonClientConfigs.DEFAULT_LIST_VALUE_SERDE_TYPE_CLASS_DOC)
+                .define(DEFAULT_PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG,
+                        Type.CLASS,
+                        DefaultProductionExceptionHandler.class.getName(),
+                        Importance.MEDIUM,
+                        PRODUCTION_EXCEPTION_HANDLER_CLASS_DOC)
+                .define(DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG,
+                        Type.CLASS,
+                        FailOnInvalidTimestamp.class.getName(),
+                        Importance.MEDIUM,
+                        DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_DOC)
+                .define(DEFAULT_VALUE_SERDE_CLASS_CONFIG,
+                        Type.CLASS,
+                        null,
+                        Importance.MEDIUM,
+                        DEFAULT_VALUE_SERDE_CLASS_DOC)
+                .define(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,
+                        Type.CLASS,
+                        LogAndFailExceptionHandler.class.getName(),
+                        Importance.MEDIUM,
+                        DESERIALIZATION_EXCEPTION_HANDLER_CLASS_DOC)
+                .define(ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG,
+                        Type.STRING,
+                        null,
+                        Importance.MEDIUM,
+                        ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_DOC)
+                .define(MAX_TASK_IDLE_MS_CONFIG,
+                        Type.LONG,
+                        0L,
+                        Importance.MEDIUM,
+                        MAX_TASK_IDLE_MS_DOC)
+                .define(MAX_WARMUP_REPLICAS_CONFIG,
+                        Type.INT,
+                        2,
+                        atLeast(1),
+                        Importance.MEDIUM,
+                        MAX_WARMUP_REPLICAS_DOC)
+                .define(NUM_STREAM_THREADS_CONFIG,
+                        Type.INT,
+                        1,
+                        Importance.MEDIUM,
+                        NUM_STREAM_THREADS_DOC)
+                .define(PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG,
+                        Type.CLASS,
+                        LogAndFailProcessingExceptionHandler.class.getName(),
+                        Importance.MEDIUM,
+                        PROCESSING_EXCEPTION_HANDLER_CLASS_DOC)
+                .define(PROCESSING_GUARANTEE_CONFIG,
+                        Type.STRING,
+                        AT_LEAST_ONCE,
+                        in(AT_LEAST_ONCE, EXACTLY_ONCE_V2),
+                        Importance.MEDIUM,
+                        PROCESSING_GUARANTEE_DOC)
+                .define(PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG,
+                        Type.CLASS,
+                        DefaultProductionExceptionHandler.class.getName(),
+                        Importance.MEDIUM,
+                        PRODUCTION_EXCEPTION_HANDLER_CLASS_DOC)
+                .define(TASK_ASSIGNOR_CLASS_CONFIG,
+                        Type.STRING,
+                        null,
+                        Importance.MEDIUM,
+                        TASK_ASSIGNOR_CLASS_DOC)
+                .define(REPLICATION_FACTOR_CONFIG,
+                        Type.INT,
+                        -1,
+                        Importance.MEDIUM,
+                        REPLICATION_FACTOR_DOC)
+                .define(SECURITY_PROTOCOL_CONFIG,
+                        Type.STRING,
+                        CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL,
+                        ConfigDef.CaseInsensitiveValidString.in(Utils.enumOptions(SecurityProtocol.class)),
+                        Importance.MEDIUM,
+                        CommonClientConfigs.SECURITY_PROTOCOL_DOC)
+                .define(TASK_TIMEOUT_MS_CONFIG,
+                        Type.LONG,
+                        Duration.ofMinutes(5L).toMillis(),
+                        atLeast(0L),
+                        Importance.MEDIUM,
+                        TASK_TIMEOUT_MS_DOC)
+                .define(TOPOLOGY_OPTIMIZATION_CONFIG,
+                        Type.STRING,
+                        NO_OPTIMIZATION,
+                        ConfigDef.LambdaValidator.with(
+                                (name, value) -> verifyTopologyOptimizationConfigs((String) value),
+                                TOPOLOGY_OPTIMIZATION_CONFIGS::toString),
+                        Importance.MEDIUM,
+                        TOPOLOGY_OPTIMIZATION_DOC)
+                .define(GROUP_PROTOCOL_CONFIG,
+                        Type.STRING,
+                        DEFAULT_GROUP_PROTOCOL,
+                        ConfigDef.CaseInsensitiveValidString.in(Utils.enumOptions(GroupProtocol.class)),
+                        Importance.MEDIUM,
+                        GROUP_PROTOCOL_DOC)
 
-            // LOW
+                // LOW
 
-            .define(ALLOW_OS_GROUP_WRITE_ACCESS_CONFIG,
-                    Type.BOOLEAN,
-                    false,
-                    Importance.LOW,
-                    ALLOW_OS_GROUP_WRITE_ACCESS_DOC)
-            .define(APPLICATION_SERVER_CONFIG,
-                    Type.STRING,
-                    "",
-                    Importance.LOW,
-                    APPLICATION_SERVER_DOC)
-            .define(BUFFERED_RECORDS_PER_PARTITION_CONFIG,
-                    Type.INT,
-                    1000,
-                    Importance.LOW,
-                    BUFFERED_RECORDS_PER_PARTITION_DOC)
-            .define(BUILT_IN_METRICS_VERSION_CONFIG,
-                    Type.STRING,
-                    METRICS_LATEST,
-                    in(
-                        METRICS_LATEST
-                    ),
-                    Importance.LOW,
-                    BUILT_IN_METRICS_VERSION_DOC)
-            .define(COMMIT_INTERVAL_MS_CONFIG,
-                    Type.LONG,
-                    DEFAULT_COMMIT_INTERVAL_MS,
-                    atLeast(0),
-                    Importance.LOW,
-                    COMMIT_INTERVAL_MS_DOC)
-            .define(CONFIG_PROVIDERS_CONFIG,
-                    Type.LIST,
-                    List.of(),
-                    ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                    Importance.LOW,
-                    CONFIG_PROVIDERS_DOC)
-            .define(ENABLE_METRICS_PUSH_CONFIG,
-                    Type.BOOLEAN,
-                    true,
-                    Importance.LOW,
-                    ENABLE_METRICS_PUSH_DOC)
-            .define(RACK_AWARE_ASSIGNMENT_NON_OVERLAP_COST_CONFIG,
-                    Type.INT,
-                    null,
-                    Importance.LOW,
-                    RACK_AWARE_ASSIGNMENT_NON_OVERLAP_COST_DOC)
-            .define(RACK_AWARE_ASSIGNMENT_STRATEGY_CONFIG,
-                    Type.STRING,
-                    RACK_AWARE_ASSIGNMENT_STRATEGY_NONE,
-                    in(RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC, RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY),
-                    Importance.LOW,
-                    RACK_AWARE_ASSIGNMENT_STRATEGY_DOC)
-            .define(RACK_AWARE_ASSIGNMENT_TAGS_CONFIG,
-                    Type.LIST,
-                    Collections.emptyList(),
-                    atMostOfSize(MAX_RACK_AWARE_ASSIGNMENT_TAG_LIST_SIZE),
-                    Importance.LOW,
-                    RACK_AWARE_ASSIGNMENT_TAGS_DOC)
-            .define(RACK_AWARE_ASSIGNMENT_TRAFFIC_COST_CONFIG,
-                    Type.INT,
-                    null,
-                    Importance.LOW,
-                    RACK_AWARE_ASSIGNMENT_TRAFFIC_COST_DOC)
-            .define(REPARTITION_PURGE_INTERVAL_MS_CONFIG,
-                    Type.LONG,
-                    DEFAULT_COMMIT_INTERVAL_MS,
-                    atLeast(0),
-                    Importance.LOW,
-                    REPARTITION_PURGE_INTERVAL_MS_DOC)
-            .define(CONNECTIONS_MAX_IDLE_MS_CONFIG,
-                    Type.LONG,
-                    9 * 60 * 1000L,
-                    Importance.LOW,
-                    CommonClientConfigs.CONNECTIONS_MAX_IDLE_MS_DOC)
-            .define(DEFAULT_DSL_STORE_CONFIG,
-                    Type.STRING,
-                    DEFAULT_DSL_STORE,
-                    in(ROCKS_DB, IN_MEMORY),
-                    Importance.LOW,
-                    DEFAULT_DSL_STORE_DOC)
-            .define(DSL_STORE_SUPPLIERS_CLASS_CONFIG,
-                    Type.CLASS,
-                    DSL_STORE_SUPPLIERS_CLASS_DEFAULT,
-                    Importance.LOW,
-                    DSL_STORE_SUPPLIERS_CLASS_DOC)
-            .define(DSL_STORE_FORMAT_CONFIG,
-                    Type.STRING,
-                    DSL_STORE_FORMAT_DEFAULT,
-                    ConfigDef.CaseInsensitiveValidString.in(DSL_STORE_FORMAT_DEFAULT, DSL_STORE_FORMAT_HEADERS),
-                    Importance.LOW,
-                    DSL_STORE_FORMAT_DOC)
-            .define(DEFAULT_CLIENT_SUPPLIER_CONFIG,
-                    Type.CLASS,
-                    DefaultKafkaClientSupplier.class.getName(),
-                    Importance.LOW,
-                    DEFAULT_CLIENT_SUPPLIER_DOC)
-            .define(LOG_SUMMARY_INTERVAL_MS_CONFIG,
-                    Type.LONG,
-                    2 * 60 * 1000L,
-                    Importance.LOW,
-                    LOG_SUMMARY_INTERVAL_MS_DOC)
-            .define(METADATA_MAX_AGE_CONFIG,
-                    Type.LONG,
-                    5 * 60 * 1000L,
-                    atLeast(0),
-                    Importance.LOW,
-                    CommonClientConfigs.METADATA_MAX_AGE_DOC)
-            .define(METRICS_NUM_SAMPLES_CONFIG,
-                    Type.INT,
-                    2,
-                    atLeast(1),
-                    Importance.LOW,
-                    CommonClientConfigs.METRICS_NUM_SAMPLES_DOC)
-            .define(METRIC_REPORTER_CLASSES_CONFIG,
-                    Type.LIST,
-                    JmxReporter.class.getName(),
-                    ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                    Importance.LOW,
-                    CommonClientConfigs.METRIC_REPORTER_CLASSES_DOC)
-            .define(METRICS_RECORDING_LEVEL_CONFIG,
-                    Type.STRING,
-                    Sensor.RecordingLevel.INFO.toString(),
-                    in(Sensor.RecordingLevel.INFO.toString(), Sensor.RecordingLevel.DEBUG.toString(), RecordingLevel.TRACE.toString()),
-                    Importance.LOW,
-                    CommonClientConfigs.METRICS_RECORDING_LEVEL_DOC)
-            .define(METRICS_SAMPLE_WINDOW_MS_CONFIG,
-                    Type.LONG,
-                    30000L,
-                    atLeast(0),
-                    Importance.LOW,
-                    CommonClientConfigs.METRICS_SAMPLE_WINDOW_MS_DOC)
-            .define(POLL_MS_CONFIG,
-                    Type.LONG,
-                    100L,
-                    Importance.LOW,
-                    POLL_MS_DOC)
-            .define(PROBING_REBALANCE_INTERVAL_MS_CONFIG,
-                    Type.LONG,
-                    10 * 60 * 1000L,
-                    atLeast(60 * 1000L),
-                    Importance.LOW,
-                    PROBING_REBALANCE_INTERVAL_MS_DOC)
-            .define(PROCESSOR_WRAPPER_CLASS_CONFIG,
-                    Type.CLASS,
-                    NoOpProcessorWrapper.class,
-                    Importance.LOW,
-                    PROCESSOR_WRAPPER_CLASS_DOC)
-            .define(RECEIVE_BUFFER_CONFIG,
-                    Type.INT,
-                    32 * 1024,
-                    atLeast(CommonClientConfigs.RECEIVE_BUFFER_LOWER_BOUND),
-                    Importance.LOW,
-                    CommonClientConfigs.RECEIVE_BUFFER_DOC)
-            .define(RECONNECT_BACKOFF_MS_CONFIG,
-                    Type.LONG,
-                    50L,
-                    atLeast(0L),
-                    Importance.LOW,
-                    CommonClientConfigs.RECONNECT_BACKOFF_MS_DOC)
-            .define(RECONNECT_BACKOFF_MAX_MS_CONFIG,
-                    Type.LONG,
-                    1000L,
-                    atLeast(0L),
-                    Importance.LOW,
-                    CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_DOC)
-            .define(RETRY_BACKOFF_MS_CONFIG,
-                    Type.LONG,
-                    100L,
-                    atLeast(0L),
-                    Importance.LOW,
-                    CommonClientConfigs.RETRY_BACKOFF_MS_DOC)
-            .define(REQUEST_TIMEOUT_MS_CONFIG,
-                    Type.INT,
-                    40 * 1000,
-                    atLeast(0),
-                    Importance.LOW,
-                    CommonClientConfigs.REQUEST_TIMEOUT_MS_DOC)
-            .define(CommonClientConfigs.METADATA_RECOVERY_STRATEGY_CONFIG,
-                    Type.STRING,
-                    CommonClientConfigs.DEFAULT_METADATA_RECOVERY_STRATEGY,
-                    ConfigDef.CaseInsensitiveValidString
-                    .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
-                    Importance.LOW,
-                    CommonClientConfigs.METADATA_RECOVERY_STRATEGY_DOC)
-            .define(CommonClientConfigs.METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_CONFIG,
-                    Type.LONG,
-                    CommonClientConfigs.DEFAULT_METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS,
-                    atLeast(0),
-                    Importance.LOW,
-                    CommonClientConfigs.METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_DOC)
-            .define(CommonClientConfigs.METADATA_CLUSTER_CHECK_ENABLE_CONFIG,
-                    Type.BOOLEAN,
-                    true,
-                    Importance.LOW,
-                    CommonClientConfigs.METADATA_CLUSTER_CHECK_ENABLE_DOC)
-            .define(ROCKSDB_CONFIG_SETTER_CLASS_CONFIG,
-                    Type.CLASS,
-                    null,
-                    Importance.LOW,
-                    ROCKSDB_CONFIG_SETTER_CLASS_DOC)
-            .define(SEND_BUFFER_CONFIG,
-                    Type.INT,
-                    128 * 1024,
-                    atLeast(CommonClientConfigs.SEND_BUFFER_LOWER_BOUND),
-                    Importance.LOW,
-                    CommonClientConfigs.SEND_BUFFER_DOC)
-            .define(STATE_CLEANUP_DELAY_MS_CONFIG,
-                    Type.LONG,
-                    10 * 60 * 1000L,
-                    Importance.LOW,
-                    STATE_CLEANUP_DELAY_MS_DOC)
-            .define(STATE_CLEANUP_DIR_MAX_AGE_MS_CONFIG,
-                    Type.LONG,
-                    STATE_CLEANUP_DIR_MAX_AGE_MS_DISABLED,
-                    Importance.LOW,
-                    STATE_CLEANUP_DIR_MAX_AGE_MS_DOC)
-            .define(UPGRADE_FROM_CONFIG,
-                    Type.STRING,
-                    null,
-                    in(Stream.concat(
-                        Stream.of((String) null),
-                        Arrays.stream(UpgradeFromValues.values()).map(UpgradeFromValues::toString)
-                    ).toArray(String[]::new)),
-                    Importance.LOW,
-                    UPGRADE_FROM_DOC)
-            .define(WINDOWED_INNER_CLASS_SERDE,
-                    Type.STRING,
-                    null,
-                    Importance.LOW,
-                    WINDOWED_INNER_CLASS_SERDE_DOC)
-            .define(WINDOW_STORE_CHANGE_LOG_ADDITIONAL_RETENTION_MS_CONFIG,
-                    Type.LONG,
-                    24 * 60 * 60 * 1000L,
-                    Importance.LOW,
-                    WINDOW_STORE_CHANGE_LOG_ADDITIONAL_RETENTION_MS_DOC)
-            .define(WINDOW_SIZE_MS_CONFIG,
-                    Type.LONG,
-                    null,
-                    Importance.LOW,
-                    WINDOW_SIZE_MS_DOC);
+                .define(ALLOW_OS_GROUP_WRITE_ACCESS_CONFIG,
+                        Type.BOOLEAN,
+                        false,
+                        Importance.LOW,
+                        ALLOW_OS_GROUP_WRITE_ACCESS_DOC)
+                .define(APPLICATION_SERVER_CONFIG,
+                        Type.STRING,
+                        "",
+                        Importance.LOW,
+                        APPLICATION_SERVER_DOC)
+                .define(BUFFERED_RECORDS_PER_PARTITION_CONFIG,
+                        Type.INT,
+                        1000,
+                        Importance.LOW,
+                        BUFFERED_RECORDS_PER_PARTITION_DOC)
+                .define(BUILT_IN_METRICS_VERSION_CONFIG,
+                        Type.STRING,
+                        METRICS_LATEST,
+                        in(
+                                METRICS_LATEST
+                        ),
+                        Importance.LOW,
+                        BUILT_IN_METRICS_VERSION_DOC)
+                .define(COMMIT_INTERVAL_MS_CONFIG,
+                        Type.LONG,
+                        DEFAULT_COMMIT_INTERVAL_MS,
+                        atLeast(0),
+                        Importance.LOW,
+                        COMMIT_INTERVAL_MS_DOC)
+                .define(CONFIG_PROVIDERS_CONFIG,
+                        Type.LIST,
+                        List.of(),
+                        ConfigDef.ValidList.anyNonDuplicateValues(true, false),
+                        Importance.LOW,
+                        CONFIG_PROVIDERS_DOC)
+                .define(ENABLE_METRICS_PUSH_CONFIG,
+                        Type.BOOLEAN,
+                        true,
+                        Importance.LOW,
+                        ENABLE_METRICS_PUSH_DOC)
+                .define(RACK_AWARE_ASSIGNMENT_NON_OVERLAP_COST_CONFIG,
+                        Type.INT,
+                        null,
+                        Importance.LOW,
+                        RACK_AWARE_ASSIGNMENT_NON_OVERLAP_COST_DOC)
+                .define(RACK_AWARE_ASSIGNMENT_STRATEGY_CONFIG,
+                        Type.STRING,
+                        RACK_AWARE_ASSIGNMENT_STRATEGY_NONE,
+                        in(RACK_AWARE_ASSIGNMENT_STRATEGY_NONE, RACK_AWARE_ASSIGNMENT_STRATEGY_MIN_TRAFFIC, RACK_AWARE_ASSIGNMENT_STRATEGY_BALANCE_SUBTOPOLOGY),
+                        Importance.LOW,
+                        RACK_AWARE_ASSIGNMENT_STRATEGY_DOC)
+                .define(RACK_AWARE_ASSIGNMENT_TAGS_CONFIG,
+                        Type.LIST,
+                        Collections.emptyList(),
+                        atMostOfSize(MAX_RACK_AWARE_ASSIGNMENT_TAG_LIST_SIZE),
+                        Importance.LOW,
+                        RACK_AWARE_ASSIGNMENT_TAGS_DOC)
+                .define(RACK_AWARE_ASSIGNMENT_TRAFFIC_COST_CONFIG,
+                        Type.INT,
+                        null,
+                        Importance.LOW,
+                        RACK_AWARE_ASSIGNMENT_TRAFFIC_COST_DOC)
+                .define(REPARTITION_PURGE_INTERVAL_MS_CONFIG,
+                        Type.LONG,
+                        DEFAULT_COMMIT_INTERVAL_MS,
+                        atLeast(0),
+                        Importance.LOW,
+                        REPARTITION_PURGE_INTERVAL_MS_DOC)
+                .define(CONNECTIONS_MAX_IDLE_MS_CONFIG,
+                        Type.LONG,
+                        9 * 60 * 1000L,
+                        Importance.LOW,
+                        CommonClientConfigs.CONNECTIONS_MAX_IDLE_MS_DOC)
+                .define(DEFAULT_DSL_STORE_CONFIG,
+                        Type.STRING,
+                        DEFAULT_DSL_STORE,
+                        in(ROCKS_DB, IN_MEMORY),
+                        Importance.LOW,
+                        DEFAULT_DSL_STORE_DOC)
+                .define(DSL_STORE_SUPPLIERS_CLASS_CONFIG,
+                        Type.CLASS,
+                        DSL_STORE_SUPPLIERS_CLASS_DEFAULT,
+                        Importance.LOW,
+                        DSL_STORE_SUPPLIERS_CLASS_DOC)
+                .define(DSL_STORE_FORMAT_CONFIG,
+                        Type.STRING,
+                        DSL_STORE_FORMAT_DEFAULT,
+                        ConfigDef.CaseInsensitiveValidString.in(DSL_STORE_FORMAT_DEFAULT, DSL_STORE_FORMAT_HEADERS),
+                        Importance.LOW,
+                        DSL_STORE_FORMAT_DOC)
+                .define(DEFAULT_CLIENT_SUPPLIER_CONFIG,
+                        Type.CLASS,
+                        DefaultKafkaClientSupplier.class.getName(),
+                        Importance.LOW,
+                        DEFAULT_CLIENT_SUPPLIER_DOC)
+                .define(LOG_SUMMARY_INTERVAL_MS_CONFIG,
+                        Type.LONG,
+                        2 * 60 * 1000L,
+                        Importance.LOW,
+                        LOG_SUMMARY_INTERVAL_MS_DOC)
+                .define(METADATA_MAX_AGE_CONFIG,
+                        Type.LONG,
+                        5 * 60 * 1000L,
+                        atLeast(0),
+                        Importance.LOW,
+                        CommonClientConfigs.METADATA_MAX_AGE_DOC)
+                .define(METRICS_NUM_SAMPLES_CONFIG,
+                        Type.INT,
+                        2,
+                        atLeast(1),
+                        Importance.LOW,
+                        CommonClientConfigs.METRICS_NUM_SAMPLES_DOC)
+                .define(METRIC_REPORTER_CLASSES_CONFIG,
+                        Type.LIST,
+                        JmxReporter.class.getName(),
+                        ConfigDef.ValidList.anyNonDuplicateValues(true, false),
+                        Importance.LOW,
+                        CommonClientConfigs.METRIC_REPORTER_CLASSES_DOC)
+                .define(METRICS_RECORDING_LEVEL_CONFIG,
+                        Type.STRING,
+                        Sensor.RecordingLevel.INFO.toString(),
+                        in(Sensor.RecordingLevel.INFO.toString(), Sensor.RecordingLevel.DEBUG.toString(), RecordingLevel.TRACE.toString()),
+                        Importance.LOW,
+                        CommonClientConfigs.METRICS_RECORDING_LEVEL_DOC)
+                .define(METRICS_SAMPLE_WINDOW_MS_CONFIG,
+                        Type.LONG,
+                        30000L,
+                        atLeast(0),
+                        Importance.LOW,
+                        CommonClientConfigs.METRICS_SAMPLE_WINDOW_MS_DOC)
+                .define(POLL_MS_CONFIG,
+                        Type.LONG,
+                        100L,
+                        Importance.LOW,
+                        POLL_MS_DOC)
+                .define(PROBING_REBALANCE_INTERVAL_MS_CONFIG,
+                        Type.LONG,
+                        10 * 60 * 1000L,
+                        atLeast(60 * 1000L),
+                        Importance.LOW,
+                        PROBING_REBALANCE_INTERVAL_MS_DOC)
+                .define(PROCESSOR_WRAPPER_CLASS_CONFIG,
+                        Type.CLASS,
+                        NoOpProcessorWrapper.class,
+                        Importance.LOW,
+                        PROCESSOR_WRAPPER_CLASS_DOC)
+                .define(RECEIVE_BUFFER_CONFIG,
+                        Type.INT,
+                        32 * 1024,
+                        atLeast(CommonClientConfigs.RECEIVE_BUFFER_LOWER_BOUND),
+                        Importance.LOW,
+                        CommonClientConfigs.RECEIVE_BUFFER_DOC)
+                .define(RECONNECT_BACKOFF_MS_CONFIG,
+                        Type.LONG,
+                        50L,
+                        atLeast(0L),
+                        Importance.LOW,
+                        CommonClientConfigs.RECONNECT_BACKOFF_MS_DOC)
+                .define(RECONNECT_BACKOFF_MAX_MS_CONFIG,
+                        Type.LONG,
+                        1000L,
+                        atLeast(0L),
+                        Importance.LOW,
+                        CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_DOC)
+                .define(RETRY_BACKOFF_MS_CONFIG,
+                        Type.LONG,
+                        100L,
+                        atLeast(0L),
+                        Importance.LOW,
+                        CommonClientConfigs.RETRY_BACKOFF_MS_DOC)
+                .define(REQUEST_TIMEOUT_MS_CONFIG,
+                        Type.INT,
+                        40 * 1000,
+                        atLeast(0),
+                        Importance.LOW,
+                        CommonClientConfigs.REQUEST_TIMEOUT_MS_DOC)
+                .define(CommonClientConfigs.METADATA_RECOVERY_STRATEGY_CONFIG,
+                        Type.STRING,
+                        CommonClientConfigs.DEFAULT_METADATA_RECOVERY_STRATEGY,
+                        ConfigDef.CaseInsensitiveValidString
+                                .in(Utils.enumOptions(MetadataRecoveryStrategy.class)),
+                        Importance.LOW,
+                        CommonClientConfigs.METADATA_RECOVERY_STRATEGY_DOC)
+                .define(CommonClientConfigs.METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_CONFIG,
+                        Type.LONG,
+                        CommonClientConfigs.DEFAULT_METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS,
+                        atLeast(0),
+                        Importance.LOW,
+                        CommonClientConfigs.METADATA_RECOVERY_REBOOTSTRAP_TRIGGER_MS_DOC)
+                .define(CommonClientConfigs.METADATA_CLUSTER_CHECK_ENABLE_CONFIG,
+                        Type.BOOLEAN,
+                        true,
+                        Importance.LOW,
+                        CommonClientConfigs.METADATA_CLUSTER_CHECK_ENABLE_DOC)
+                .define(ROCKSDB_CONFIG_SETTER_CLASS_CONFIG,
+                        Type.CLASS,
+                        null,
+                        Importance.LOW,
+                        ROCKSDB_CONFIG_SETTER_CLASS_DOC)
+                .define(SEND_BUFFER_CONFIG,
+                        Type.INT,
+                        128 * 1024,
+                        atLeast(CommonClientConfigs.SEND_BUFFER_LOWER_BOUND),
+                        Importance.LOW,
+                        CommonClientConfigs.SEND_BUFFER_DOC)
+                .define(STATE_CLEANUP_DELAY_MS_CONFIG,
+                        Type.LONG,
+                        10 * 60 * 1000L,
+                        Importance.LOW,
+                        STATE_CLEANUP_DELAY_MS_DOC)
+                .define(STATE_CLEANUP_DIR_MAX_AGE_MS_CONFIG,
+                        Type.LONG,
+                        STATE_CLEANUP_DIR_MAX_AGE_MS_DISABLED,
+                        Importance.LOW,
+                        STATE_CLEANUP_DIR_MAX_AGE_MS_DOC)
+                .define(UPGRADE_FROM_CONFIG,
+                        Type.STRING,
+                        null,
+                        in(Stream.concat(
+                                Stream.of((String) null),
+                                Arrays.stream(UpgradeFromValues.values()).map(UpgradeFromValues::toString)
+                        ).toArray(String[]::new)),
+                        Importance.LOW,
+                        UPGRADE_FROM_DOC)
+                .define(WINDOWED_INNER_CLASS_SERDE,
+                        Type.STRING,
+                        null,
+                        Importance.LOW,
+                        WINDOWED_INNER_CLASS_SERDE_DOC)
+                .define(WINDOW_STORE_CHANGE_LOG_ADDITIONAL_RETENTION_MS_CONFIG,
+                        Type.LONG,
+                        24 * 60 * 60 * 1000L,
+                        Importance.LOW,
+                        WINDOW_STORE_CHANGE_LOG_ADDITIONAL_RETENTION_MS_DOC)
+                .define(WINDOW_SIZE_MS_CONFIG,
+                        Type.LONG,
+                        null,
+                        Importance.LOW,
+                        WINDOW_SIZE_MS_DOC);
     }
 
     // this is the list of configs for underlying clients
@@ -1313,26 +1434,28 @@ public class StreamsConfig extends AbstractConfig {
     private static final Map<String, Object> PRODUCER_DEFAULT_OVERRIDES = Map.of(ProducerConfig.LINGER_MS_CONFIG, "100");
 
     private static final Map<String, Object> PRODUCER_EOS_OVERRIDES;
+
     static {
         final Map<String, Object> tempProducerDefaultOverrides = new HashMap<>(PRODUCER_DEFAULT_OVERRIDES);
         tempProducerDefaultOverrides.putAll(Map.of(
-            ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, Integer.MAX_VALUE,
-            ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true,
-            // Reduce the transaction timeout for quicker pending offset expiration on broker side.
-            ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, DEFAULT_TRANSACTION_TIMEOUT
+                ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, Integer.MAX_VALUE,
+                ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true,
+                // Reduce the transaction timeout for quicker pending offset expiration on broker side.
+                ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, DEFAULT_TRANSACTION_TIMEOUT
         ));
         PRODUCER_EOS_OVERRIDES = Collections.unmodifiableMap(tempProducerDefaultOverrides);
     }
 
     private static final Map<String, Object> CONSUMER_DEFAULT_OVERRIDES = Map.of(
-        ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1000",
-        ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest",
-        ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
-        ConsumerConfig.GROUP_PROTOCOL_CONFIG, "classic",
-        ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG, "false"
+            ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1000",
+            ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest",
+            ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false",
+            ConsumerConfig.GROUP_PROTOCOL_CONFIG, "classic",
+            ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG, "false"
     );
 
     private static final Map<String, Object> CONSUMER_EOS_OVERRIDES;
+
     static {
         final Map<String, Object> tempConsumerDefaultOverrides = new HashMap<>(CONSUMER_DEFAULT_OVERRIDES);
         tempConsumerDefaultOverrides.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, READ_COMMITTED.toString());
@@ -1340,7 +1463,7 @@ public class StreamsConfig extends AbstractConfig {
     }
 
     private static final Map<String, Object> ADMIN_CLIENT_OVERRIDES =
-        Map.of(AdminClientConfig.ENABLE_METRICS_PUSH_CONFIG, true);
+            Map.of(AdminClientConfig.ENABLE_METRICS_PUSH_CONFIG, true);
 
     public static class InternalConfig {
         // This is settable in the main Streams config, but it's a private API for now
@@ -1364,7 +1487,7 @@ public class StreamsConfig extends AbstractConfig {
 
         // Private API used to control the usage of consistency offset vectors
         public static final String IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED = "__iq.consistency.offset"
-            + ".vector.enabled__";
+                + ".vector.enabled__";
 
         // Private API used to control the prefix of the auto created topics
         @Deprecated
@@ -1390,9 +1513,9 @@ public class StreamsConfig extends AbstractConfig {
                 return Boolean.parseBoolean((String) value);
             } else {
                 log.warn(
-                    "Invalid value ({}) on internal configuration '{}'. Please specify a true/false value.",
-                    value,
-                    key
+                        "Invalid value ({}) on internal configuration '{}'. Please specify a true/false value.",
+                        value,
+                        key
                 );
                 return defaultValue;
             }
@@ -1406,9 +1529,9 @@ public class StreamsConfig extends AbstractConfig {
                 return Long.parseLong((String) value);
             } else {
                 log.warn(
-                    "Invalid value ({}) on internal configuration '{}'. Please specify a numeric value.",
-                    value,
-                    key
+                        "Invalid value ({}) on internal configuration '{}'. Please specify a numeric value.",
+                        value,
+                        key
                 );
                 return defaultValue;
             }
@@ -1420,9 +1543,9 @@ public class StreamsConfig extends AbstractConfig {
                 return (String) value;
             } else {
                 log.warn(
-                    "Invalid value ({}) on internal configuration '{}'. Please specify a String value.",
-                    value,
-                    key
+                        "Invalid value ({}) on internal configuration '{}'. Please specify a String value.",
+                        value,
+                        key
                 );
                 return defaultValue;
             }
@@ -1555,9 +1678,9 @@ public class StreamsConfig extends AbstractConfig {
         verifyStreamsProtocolCompatibility(doLog);
         if (!getBoolean(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG)) {
             log.warn("Processing exception handler is not enabled for the GlobalThread. " +
-                "It's recommended to set `" + StreamsConfig.PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG + "` to true to enable it. " +
-                "Enabling the processing exception handler for global state/KTable processing now, ensures future backward compatibility. " +
-                "The processing exception handler will get enabled by default with Apache Kafka 5.0 release.");
+                    "It's recommended to set `" + StreamsConfig.PROCESSING_EXCEPTION_HANDLER_GLOBAL_ENABLED_CONFIG + "` to true to enable it. " +
+                    "Enabling the processing exception handler for global state/KTable processing now, ensures future backward compatibility. " +
+                    "The processing exception handler will get enabled by default with Apache Kafka 5.0 release.");
         }
     }
 
@@ -1567,15 +1690,15 @@ public class StreamsConfig extends AbstractConfig {
             final String instanceId = (String) mainConsumerConfigs.get(CommonClientConfigs.GROUP_INSTANCE_ID_CONFIG);
             if (instanceId != null && !instanceId.isEmpty()) {
                 throw new ConfigException("Streams rebalance protocol does not support static membership. "
-                    + "Please set group.protocol=classic or remove group.instance.id from the configuration.");
+                        + "Please set group.protocol=classic or remove group.instance.id from the configuration.");
             }
             if (getInt(StreamsConfig.MAX_WARMUP_REPLICAS_CONFIG) != 0) {
                 log.warn("Warmup replicas are not supported yet with the streams protocol and will be ignored. "
-                    + "If you want to use warmup replicas, please set group.protocol=classic.");
+                        + "If you want to use warmup replicas, please set group.protocol=classic.");
             }
             if (getInt(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG) != 0) {
                 log.warn("Standby replicas are configured broker-side in the streams group protocol and will be ignored. "
-                    + "Please use the admin client or kafka-configs.sh to set the streams groups's standby replicas.");
+                        + "Please use the admin client or kafka-configs.sh to set the streams groups's standby replicas.");
             }
         }
     }
@@ -1585,20 +1708,20 @@ public class StreamsConfig extends AbstractConfig {
         final String transactionTimeoutConfigKey = producerPrefix(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG);
         final int transactionTimeout =
                 originals().containsKey(transactionTimeoutConfigKey) ?
-                    (int) Objects.requireNonNull(
-                        parseType(transactionTimeoutConfigKey, originals().get(transactionTimeoutConfigKey), Type.INT),
-                        "Could not parse config `" + COMMIT_INTERVAL_MS_CONFIG + "` because it's set to `null`") :
-                    DEFAULT_TRANSACTION_TIMEOUT;
+                        (int) Objects.requireNonNull(
+                                parseType(transactionTimeoutConfigKey, originals().get(transactionTimeoutConfigKey), Type.INT),
+                                "Could not parse config `" + COMMIT_INTERVAL_MS_CONFIG + "` because it's set to `null`") :
+                        DEFAULT_TRANSACTION_TIMEOUT;
 
         if (transactionTimeout < commitInterval) {
             throw new IllegalArgumentException(String.format(
-                "Transaction timeout %d was set lower than " +
-                "streams commit interval %d. This will cause ongoing transaction always timeout due to inactivity " +
-                "caused by long commit interval. Consider reconfiguring commit interval to match " +
-                "transaction timeout by tuning 'commit.interval.ms' config, or increase the transaction timeout to match " +
-                "commit interval by tuning `producer.transaction.timeout.ms` config.",
-                transactionTimeout,
-                commitInterval
+                    "Transaction timeout %d was set lower than " +
+                            "streams commit interval %d. This will cause ongoing transaction always timeout due to inactivity " +
+                            "caused by long commit interval. Consider reconfiguring commit interval to match " +
+                            "transaction timeout by tuning 'commit.interval.ms' config, or increase the transaction timeout to match " +
+                            "commit interval by tuning `producer.transaction.timeout.ms` config.",
+                    transactionTimeout,
+                    commitInterval
             ));
         }
     }
@@ -1644,7 +1767,7 @@ public class StreamsConfig extends AbstractConfig {
     private Boolean maybeMetricsPushEnabled(final String prefix) {
         Boolean configSetValue = null;
         if (originalsWithPrefix(prefix).containsKey(ENABLE_METRICS_PUSH_CONFIG)) {
-            configSetValue =  (Boolean) originalsWithPrefix(prefix).get(ENABLE_METRICS_PUSH_CONFIG);
+            configSetValue = (Boolean) originalsWithPrefix(prefix).get(ENABLE_METRICS_PUSH_CONFIG);
         }
         return configSetValue;
     }
@@ -1652,7 +1775,7 @@ public class StreamsConfig extends AbstractConfig {
     @Override
     protected Map<String, Object> postProcessParsedConfig(final Map<String, Object> parsedValues) {
         final Map<String, Object> configUpdates =
-            CommonClientConfigs.postProcessReconnectBackoffConfigs(this, parsedValues);
+                CommonClientConfigs.postProcessReconnectBackoffConfigs(this, parsedValues);
 
         if (StreamsConfigUtils.eosEnabled(this) && !originals().containsKey(COMMIT_INTERVAL_MS_CONFIG)) {
             log.debug("Using {} default value of {} as exactly once is enabled.",
@@ -1671,11 +1794,11 @@ public class StreamsConfig extends AbstractConfig {
 
         if (clientTags.size() > MAX_RACK_AWARE_ASSIGNMENT_TAG_LIST_SIZE) {
             throw new ConfigException(
-                String.format(
-                    "At most %s client tags can be specified using %s prefix.",
-                    MAX_RACK_AWARE_ASSIGNMENT_TAG_LIST_SIZE,
-                    CLIENT_TAG_PREFIX
-                )
+                    String.format(
+                            "At most %s client tags can be specified using %s prefix.",
+                            MAX_RACK_AWARE_ASSIGNMENT_TAG_LIST_SIZE,
+                            CLIENT_TAG_PREFIX
+                    )
             );
         }
 
@@ -1683,20 +1806,20 @@ public class StreamsConfig extends AbstractConfig {
             // no need to call `trim()` because for LIST type `AbstractConfig` takes already care of this
             if (rackAwareAssignmentTag.isEmpty()) {
                 throw new ConfigException(
-                    RACK_AWARE_ASSIGNMENT_TAGS_CONFIG,
-                    rackAwareAssignmentTags,
-                    "Contains invalid value []. Tag key cannot be empty."
+                        RACK_AWARE_ASSIGNMENT_TAGS_CONFIG,
+                        rackAwareAssignmentTags,
+                        "Contains invalid value []. Tag key cannot be empty."
                 );
             }
             if (!clientTags.containsKey(rackAwareAssignmentTag)) {
                 throw new ConfigException(
-                    RACK_AWARE_ASSIGNMENT_TAGS_CONFIG,
-                    rackAwareAssignmentTags,
-                    String.format(
-                        "Contains invalid value [%s] which doesn't have corresponding tag set via [%s] prefix.",
-                        rackAwareAssignmentTag,
-                        CLIENT_TAG_PREFIX
-                    )
+                        RACK_AWARE_ASSIGNMENT_TAGS_CONFIG,
+                        rackAwareAssignmentTags,
+                        String.format(
+                                "Contains invalid value [%s] which doesn't have corresponding tag set via [%s] prefix.",
+                                rackAwareAssignmentTag,
+                                CLIENT_TAG_PREFIX
+                        )
                 );
             }
         }
@@ -1707,23 +1830,23 @@ public class StreamsConfig extends AbstractConfig {
             }
             if (tagValue.trim().isEmpty()) {
                 throw new ConfigException(
-                    CLIENT_TAG_PREFIX + tagKey,
-                    "[]",
-                    "Tag value cannot be empty."
+                        CLIENT_TAG_PREFIX + tagKey,
+                        "[]",
+                        "Tag value cannot be empty."
                 );
             }
             if (tagKey.length() > MAX_RACK_AWARE_ASSIGNMENT_TAG_KEY_LENGTH) {
                 throw new ConfigException(
-                    CLIENT_TAG_PREFIX + tagKey,
-                    tagKey,
-                    "Tag key exceeds maximum length of " + MAX_RACK_AWARE_ASSIGNMENT_TAG_KEY_LENGTH + "."
+                        CLIENT_TAG_PREFIX + tagKey,
+                        tagKey,
+                        "Tag key exceeds maximum length of " + MAX_RACK_AWARE_ASSIGNMENT_TAG_KEY_LENGTH + "."
                 );
             }
             if (tagValue.length() > MAX_RACK_AWARE_ASSIGNMENT_TAG_VALUE_LENGTH) {
                 throw new ConfigException(
-                    CLIENT_TAG_PREFIX + tagKey,
-                    tagValue,
-                    "Tag value exceeds maximum length of " + MAX_RACK_AWARE_ASSIGNMENT_TAG_VALUE_LENGTH + "."
+                        CLIENT_TAG_PREFIX + tagKey,
+                        tagValue,
+                        "Tag value exceeds maximum length of " + MAX_RACK_AWARE_ASSIGNMENT_TAG_VALUE_LENGTH + "."
                 );
             }
         });
@@ -1761,18 +1884,18 @@ public class StreamsConfig extends AbstractConfig {
         final String nonConfigurableConfigMessage = "Unexpected user-specified {} config '{}' found. {} setting ({}) will be ignored and the Streams default setting ({}) will be used.";
         final String eosMessage = "'" + PROCESSING_GUARANTEE_CONFIG + "' is set to \"" + getString(PROCESSING_GUARANTEE_CONFIG) + "\". Hence, user";
 
-        for (final String config: nonConfigurableConfigs) {
+        for (final String config : nonConfigurableConfigs) {
             if (clientProvidedProps.containsKey(config)) {
 
                 if (CONSUMER_DEFAULT_OVERRIDES.containsKey(config)) {
                     if (!clientProvidedProps.get(config).equals(CONSUMER_DEFAULT_OVERRIDES.get(config))) {
                         log.error(
-                            nonConfigurableConfigMessage,
-                            "consumer",
-                            config,
-                            "User",
-                            clientProvidedProps.get(config),
-                            CONSUMER_DEFAULT_OVERRIDES.get(config)
+                                nonConfigurableConfigMessage,
+                                "consumer",
+                                config,
+                                "User",
+                                clientProvidedProps.get(config),
+                                CONSUMER_DEFAULT_OVERRIDES.get(config)
                         );
                         clientProvidedProps.remove(config);
                     }
@@ -1780,35 +1903,35 @@ public class StreamsConfig extends AbstractConfig {
                     if (CONSUMER_EOS_OVERRIDES.containsKey(config)) {
                         if (!clientProvidedProps.get(config).equals(CONSUMER_EOS_OVERRIDES.get(config))) {
                             log.warn(
-                                nonConfigurableConfigMessage,
-                                "consumer",
-                                config,
-                                eosMessage,
-                                clientProvidedProps.get(config),
-                                CONSUMER_EOS_OVERRIDES.get(config)
+                                    nonConfigurableConfigMessage,
+                                    "consumer",
+                                    config,
+                                    eosMessage,
+                                    clientProvidedProps.get(config),
+                                    CONSUMER_EOS_OVERRIDES.get(config)
                             );
                             clientProvidedProps.remove(config);
                         }
                     } else if (PRODUCER_EOS_OVERRIDES.containsKey(config)) {
                         if (!clientProvidedProps.get(config).equals(PRODUCER_EOS_OVERRIDES.get(config))) {
                             log.warn(
-                                nonConfigurableConfigMessage,
-                                "producer",
-                                config,
-                                eosMessage,
-                                clientProvidedProps.get(config),
-                                PRODUCER_EOS_OVERRIDES.get(config)
+                                    nonConfigurableConfigMessage,
+                                    "producer",
+                                    config,
+                                    eosMessage,
+                                    clientProvidedProps.get(config),
+                                    PRODUCER_EOS_OVERRIDES.get(config)
                             );
                             clientProvidedProps.remove(config);
                         }
                     } else if (ProducerConfig.TRANSACTIONAL_ID_CONFIG.equals(config)) {
                         log.warn(
-                            nonConfigurableConfigMessage,
-                            "producer",
-                            config,
-                            eosMessage,
-                            clientProvidedProps.get(config),
-                            "<appId>-<generatedSuffix>"
+                                nonConfigurableConfigMessage,
+                                "producer",
+                                config,
+                                eosMessage,
+                                clientProvidedProps.get(config),
+                                "<appId>-<generatedSuffix>"
                         );
                         clientProvidedProps.remove(config);
                     }
@@ -1852,9 +1975,9 @@ public class StreamsConfig extends AbstractConfig {
      * If not specified by {@link #MAIN_CONSUMER_PREFIX}, main consumer will share the general consumer configs
      * prefixed by {@link #CONSUMER_PREFIX}.
      *
-     * @param groupId      consumer groupId
-     * @param clientId     clientId
-     * @param threadIdx    stream thread index
+     * @param groupId   consumer groupId
+     * @param clientId  clientId
+     * @param threadIdx stream thread index
      * @return Map of the consumer configuration.
      */
     @SuppressWarnings("WeakerAccess")
@@ -1899,15 +2022,15 @@ public class StreamsConfig extends AbstractConfig {
         final Map<String, Object> producerProps = getClientPropsWithPrefix(PRODUCER_PREFIX, ProducerConfig.configNames());
 
         if (topicProps.containsKey(topicPrefix(TopicConfig.SEGMENT_BYTES_CONFIG)) &&
-            producerProps.containsKey(ProducerConfig.BATCH_SIZE_CONFIG)) {
+                producerProps.containsKey(ProducerConfig.BATCH_SIZE_CONFIG)) {
             final int segmentSize = Integer.parseInt(topicProps.get(topicPrefix(TopicConfig.SEGMENT_BYTES_CONFIG)).toString());
             final int batchSize = Integer.parseInt(producerProps.get(ProducerConfig.BATCH_SIZE_CONFIG).toString());
 
             if (segmentSize < batchSize) {
                 throw new IllegalArgumentException(String.format(
-                    "Specified topic segment size %d is smaller than the configured producer batch size %d, this will cause produced batch not able to be appended to the topic",
-                    segmentSize,
-                    batchSize
+                        "Specified topic segment size %d is smaller than the configured producer batch size %d, this will cause produced batch not able to be appended to the topic",
+                        segmentSize,
+                        batchSize
                 ));
             }
         }
@@ -2014,6 +2137,7 @@ public class StreamsConfig extends AbstractConfig {
 
     /**
      * Get the configs for the {@link Admin admin client}.
+     *
      * @param clientId clientId
      * @return Map of the admin client configuration.
      */
@@ -2038,10 +2162,10 @@ public class StreamsConfig extends AbstractConfig {
     @SuppressWarnings("WeakerAccess")
     public Map<String, String> getClientTags() {
         return originalsWithPrefix(CLIENT_TAG_PREFIX).entrySet().stream().collect(
-            Collectors.toMap(
-                Map.Entry::getKey,
-                tagEntry -> Objects.toString(tagEntry.getValue())
-            )
+                Collectors.toMap(
+                        Map.Entry::getKey,
+                        tagEntry -> Objects.toString(tagEntry.getValue())
+                )
         );
     }
 
@@ -2081,7 +2205,7 @@ public class StreamsConfig extends AbstractConfig {
                 throw new ConfigException("\"" + config + "\" is not a valid optimization config. " + CONFIG_ERROR_MSG);
             }
         }
-        for (final String conf: configs) {
+        for (final String conf : configs) {
             if (!TOPOLOGY_OPTIMIZATION_CONFIGS.contains(conf)) {
                 throw new ConfigException("Unrecognized config. " + CONFIG_ERROR_MSG);
             }
@@ -2098,11 +2222,12 @@ public class StreamsConfig extends AbstractConfig {
 
     /**
      * Return configured KafkaClientSupplier
+     *
      * @return Configured KafkaClientSupplier
      */
     public KafkaClientSupplier getKafkaClientSupplier() {
         return getConfiguredInstance(StreamsConfig.DEFAULT_CLIENT_SUPPLIER_CONFIG,
-            KafkaClientSupplier.class);
+                KafkaClientSupplier.class);
     }
 
     /**
@@ -2123,8 +2248,8 @@ public class StreamsConfig extends AbstractConfig {
             return serde;
         } catch (final Exception e) {
             throw new StreamsException(
-                String.format("Failed to configure key serde %s", keySerdeConfigSetting),
-                e
+                    String.format("Failed to configure key serde %s", keySerdeConfigSetting),
+                    e
             );
         }
     }
@@ -2147,8 +2272,8 @@ public class StreamsConfig extends AbstractConfig {
             return serde;
         } catch (final Exception e) {
             throw new StreamsException(
-                String.format("Failed to configure value serde %s", valueSerdeConfigSetting),
-                e
+                    String.format("Failed to configure value serde %s", valueSerdeConfigSetting),
+                    e
             );
         }
     }
@@ -2160,9 +2285,9 @@ public class StreamsConfig extends AbstractConfig {
 
     public DeserializationExceptionHandler deserializationExceptionHandler() {
         if (originals().containsKey(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG) &&
-            originals().containsKey(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG)) {
+                originals().containsKey(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG)) {
             log.warn("Both the deprecated and new config for deserialization exception handler are configured. " +
-                "The deprecated one will be ignored.");
+                    "The deprecated one will be ignored.");
         }
         if (originals().containsKey(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG)) {
             return getConfiguredInstance(DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, DeserializationExceptionHandler.class);
@@ -2182,9 +2307,9 @@ public class StreamsConfig extends AbstractConfig {
 
     public ProductionExceptionHandler productionExceptionHandler() {
         if (originals().containsKey(PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG) &&
-            originals().containsKey(DEFAULT_PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG)) {
+                originals().containsKey(DEFAULT_PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG)) {
             log.warn("Both the deprecated and new config for production exception handler are configured. " +
-                "The deprecated one will be ignored.");
+                    "The deprecated one will be ignored.");
         }
         if (originals().containsKey(PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG)) {
             return getConfiguredInstance(PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG, ProductionExceptionHandler.class);
@@ -2222,7 +2347,7 @@ public class StreamsConfig extends AbstractConfig {
         // iterate all client config names, filter out non-client configs from the original
         // property map and use the overridden values when they are not specified by users
         final Map<String, Object> parsed = new HashMap<>();
-        for (final String configName: configNames) {
+        for (final String configName : configNames) {
             if (originals.containsKey(configName)) {
                 parsed.put(configName, originals.get(configName));
             }

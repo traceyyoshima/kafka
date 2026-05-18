@@ -46,10 +46,10 @@ public class TimerTest {
         final AtomicBoolean completed = new AtomicBoolean(false);
 
         TestTask(
-            long delayMs,
-            int id,
-            CountDownLatch latch,
-            List<Integer> output
+                long delayMs,
+                int id,
+                CountDownLatch latch,
+                List<Integer> output
         ) {
             super(delayMs);
             this.id = id;
@@ -96,14 +96,14 @@ public class TimerTest {
         latches.stream().limit(5).forEach(latch -> {
             try {
                 assertTrue(latch.await(3, TimeUnit.SECONDS),
-                    "already expired tasks should run immediately");
+                        "already expired tasks should run immediately");
             } catch (InterruptedException e) {
                 fail("interrupted");
             }
         });
 
         assertEquals(Set.of(-5, -4, -3, -2, -1), new HashSet<>(output),
-            "output of already expired tasks");
+                "output of already expired tasks");
     }
 
     @Test
@@ -139,7 +139,8 @@ public class TimerTest {
         // randomly submit requests
         tasks.forEach(task -> timer.add(task));
 
-        while (timer.advanceClock(2000)) { }
+        while (timer.advanceClock(2000)) {
+        }
 
         latches.forEach(latch -> {
             try {
@@ -150,6 +151,6 @@ public class TimerTest {
         });
 
         assertEquals(ids, output.stream().sorted().collect(Collectors.toList()),
-            "output should match");
+                "output should match");
     }
 }

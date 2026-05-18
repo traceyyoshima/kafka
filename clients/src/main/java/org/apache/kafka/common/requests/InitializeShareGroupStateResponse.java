@@ -46,9 +46,9 @@ public class InitializeShareGroupStateResponse extends AbstractResponse {
     public Map<Errors, Integer> errorCounts() {
         Map<Errors, Integer> counts = new EnumMap<>(Errors.class);
         data.results().forEach(
-            result -> result.partitions().forEach(
-                partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
-            )
+                result -> result.partitions().forEach(
+                        partitionResult -> updateErrorCounts(counts, Errors.forCode(partitionResult.errorCode()))
+                )
         );
         return counts;
     }
@@ -65,7 +65,7 @@ public class InitializeShareGroupStateResponse extends AbstractResponse {
 
     public static InitializeShareGroupStateResponse parse(Readable readable, short version) {
         return new InitializeShareGroupStateResponse(
-            new InitializeShareGroupStateResponseData(readable, version)
+                new InitializeShareGroupStateResponseData(readable, version)
         );
     }
 
@@ -74,7 +74,7 @@ public class InitializeShareGroupStateResponse extends AbstractResponse {
         request.topics().forEach(topicData -> {
             List<InitializeShareGroupStateResponseData.PartitionResult> partitionResults = new ArrayList<>();
             topicData.partitions().forEach(partitionData -> partitionResults.add(
-                toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
+                    toErrorResponsePartitionResult(partitionData.partition(), error, error.message()))
             );
             initStateResults.add(toResponseInitializeStateResult(topicData.topicId(), partitionResults));
         });
@@ -82,33 +82,33 @@ public class InitializeShareGroupStateResponse extends AbstractResponse {
     }
 
     public static InitializeShareGroupStateResponseData.PartitionResult toErrorResponsePartitionResult(
-        int partitionId,
-        Errors error,
-        String errorMessage
+            int partitionId,
+            Errors error,
+            String errorMessage
     ) {
         return new InitializeShareGroupStateResponseData.PartitionResult()
-            .setPartition(partitionId)
-            .setErrorCode(error.code())
-            .setErrorMessage(errorMessage);
+                .setPartition(partitionId)
+                .setErrorCode(error.code())
+                .setErrorMessage(errorMessage);
     }
 
     public static InitializeShareGroupStateResponseData.InitializeStateResult toResponseInitializeStateResult(
-        Uuid topicId,
-        List<InitializeShareGroupStateResponseData.PartitionResult> partitionResults
+            Uuid topicId,
+            List<InitializeShareGroupStateResponseData.PartitionResult> partitionResults
     ) {
         return new InitializeShareGroupStateResponseData.InitializeStateResult()
-            .setTopicId(topicId)
-            .setPartitions(partitionResults);
+                .setTopicId(topicId)
+                .setPartitions(partitionResults);
     }
 
     public static InitializeShareGroupStateResponseData toErrorResponseData(Uuid topicId, int partitionId, Errors error, String errorMessage) {
         return new InitializeShareGroupStateResponseData().setResults(List.of(
-            new InitializeShareGroupStateResponseData.InitializeStateResult()
-                .setTopicId(topicId)
-                .setPartitions(List.of(new InitializeShareGroupStateResponseData.PartitionResult()
-                    .setPartition(partitionId)
-                    .setErrorCode(error.code())
-                    .setErrorMessage(errorMessage)))
+                new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        .setTopicId(topicId)
+                        .setPartitions(List.of(new InitializeShareGroupStateResponseData.PartitionResult()
+                                .setPartition(partitionId)
+                                .setErrorCode(error.code())
+                                .setErrorMessage(errorMessage)))
         ));
     }
 
@@ -118,12 +118,12 @@ public class InitializeShareGroupStateResponse extends AbstractResponse {
 
     public static InitializeShareGroupStateResponseData toResponseData(Uuid topicId, int partitionId) {
         return new InitializeShareGroupStateResponseData().setResults(List.of(
-            new InitializeShareGroupStateResponseData.InitializeStateResult()
-                .setTopicId(topicId)
-                .setPartitions(List.of(
-                    new InitializeShareGroupStateResponseData.PartitionResult()
-                        .setPartition(partitionId)
-                ))
+                new InitializeShareGroupStateResponseData.InitializeStateResult()
+                        .setTopicId(topicId)
+                        .setPartitions(List.of(
+                                new InitializeShareGroupStateResponseData.PartitionResult()
+                                        .setPartition(partitionId)
+                        ))
         ));
     }
 }

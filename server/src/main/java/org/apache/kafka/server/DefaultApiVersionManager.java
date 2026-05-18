@@ -41,13 +41,14 @@ public class DefaultApiVersionManager implements ApiVersionManager {
 
     /**
      * DefaultApiVersionManager constructor
-     * @param listenerType the listener type
-     * @param nodeApiVersionsSupplier the supplier of NodeApiVersions
-     * @param brokerFeatures the broker features
-     * @param metadataCache the metadata cache, used to get the finalized features and the metadata version
+     *
+     * @param listenerType              the listener type
+     * @param nodeApiVersionsSupplier   the supplier of NodeApiVersions
+     * @param brokerFeatures            the broker features
+     * @param metadataCache             the metadata cache, used to get the finalized features and the metadata version
      * @param enableUnstableLastVersion whether to enable unstable last version, see
-     *   {@link org.apache.kafka.server.config.ServerConfigs#UNSTABLE_API_VERSIONS_ENABLE_CONFIG}
-     * @param clientMetricsManager the client metrics manager, helps to determine whether client telemetry is enabled
+     *                                  {@link org.apache.kafka.server.config.ServerConfigs#UNSTABLE_API_VERSIONS_ENABLE_CONFIG}
+     * @param clientMetricsManager      the client metrics manager, helps to determine whether client telemetry is enabled
      */
     public DefaultApiVersionManager(
             ApiMessageType.ListenerType listenerType,
@@ -81,23 +82,23 @@ public class DefaultApiVersionManager implements ApiVersionManager {
         boolean clientTelemetryEnabled = clientMetricsManager.map(ClientMetricsManager::isTelemetryExporterConfigured).orElse(false);
         ApiVersionsResponseData.ApiVersionCollection apiVersions = controllerApiVersions
                 .map(nodeApiVersions -> ApiVersionsResponse.controllerApiVersions(
-                    nodeApiVersions,
-                    listenerType,
-                    enableUnstableLastVersion,
-                    clientTelemetryEnabled))
+                        nodeApiVersions,
+                        listenerType,
+                        enableUnstableLastVersion,
+                        clientTelemetryEnabled))
                 .orElseGet(() -> ApiVersionsResponse.brokerApiVersions(
-                    listenerType,
-                    enableUnstableLastVersion,
-                    clientTelemetryEnabled));
+                        listenerType,
+                        enableUnstableLastVersion,
+                        clientTelemetryEnabled));
 
         return new ApiVersionsResponse.Builder()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setApiVersions(apiVersions)
-            .setSupportedFeatures(brokerFeatures.supportedFeatures())
-            .setFinalizedFeatures(finalizedFeatures.finalizedFeatures())
-            .setFinalizedFeaturesEpoch(finalizedFeatures.finalizedFeaturesEpoch())
-            .setAlterFeatureLevel0(alterFeatureLevel0)
-            .build();
+                .setThrottleTimeMs(throttleTimeMs)
+                .setApiVersions(apiVersions)
+                .setSupportedFeatures(brokerFeatures.supportedFeatures())
+                .setFinalizedFeatures(finalizedFeatures.finalizedFeatures())
+                .setFinalizedFeaturesEpoch(finalizedFeatures.finalizedFeaturesEpoch())
+                .setAlterFeatureLevel0(alterFeatureLevel0)
+                .build();
     }
 
     @Override

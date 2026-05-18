@@ -57,26 +57,26 @@ public class MetadataSnapshot {
     private Cluster clusterInstance;
 
     public MetadataSnapshot(String clusterId,
-                  Map<Integer, Node> nodes,
-                  Collection<PartitionMetadata> partitions,
-                  Set<String> unauthorizedTopics,
-                  Set<String> invalidTopics,
-                  Set<String> internalTopics,
-                  Node controller,
-                  Map<String, Uuid> topicIds) {
+                            Map<Integer, Node> nodes,
+                            Collection<PartitionMetadata> partitions,
+                            Set<String> unauthorizedTopics,
+                            Set<String> invalidTopics,
+                            Set<String> internalTopics,
+                            Node controller,
+                            Map<String, Uuid> topicIds) {
         this(clusterId, nodes, partitions, unauthorizedTopics, invalidTopics, internalTopics, controller, topicIds, null);
     }
 
     // Visible for testing
     public MetadataSnapshot(String clusterId,
-        Map<Integer, Node> nodes,
-        Collection<PartitionMetadata> partitions,
-        Set<String> unauthorizedTopics,
-        Set<String> invalidTopics,
-        Set<String> internalTopics,
-        Node controller,
-        Map<String, Uuid> topicIds,
-        Cluster clusterInstance) {
+                            Map<Integer, Node> nodes,
+                            Collection<PartitionMetadata> partitions,
+                            Set<String> unauthorizedTopics,
+                            Set<String> invalidTopics,
+                            Set<String> internalTopics,
+                            Node controller,
+                            Map<String, Uuid> topicIds,
+                            Cluster clusterInstance) {
         this.clusterId = clusterId;
         this.nodes = Collections.unmodifiableMap(nodes);
         this.unauthorizedTopics = Collections.unmodifiableSet(unauthorizedTopics);
@@ -85,7 +85,7 @@ public class MetadataSnapshot {
         this.controller = controller;
         this.topicIds = Collections.unmodifiableMap(topicIds);
         this.topicNames = Collections.unmodifiableMap(
-            topicIds.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey))
+                topicIds.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey))
         );
 
         Map<TopicPartition, PartitionMetadata> tmpMetadataByPartition = new HashMap<>(partitions.size());
@@ -149,25 +149,25 @@ public class MetadataSnapshot {
      * metadata is presumed to be more recent than the snapshot's metadata, and therefore all overlapping metadata will
      * be overridden.
      *
-     * @param newClusterId the new cluster Id
-     * @param newNodes the new set of nodes
-     * @param addPartitions partitions to add
+     * @param newClusterId          the new cluster Id
+     * @param newNodes              the new set of nodes
+     * @param addPartitions         partitions to add
      * @param addUnauthorizedTopics unauthorized topics to add
-     * @param addInternalTopics internal topics to add
-     * @param newController the new controller node
-     * @param addTopicIds the mapping from topic name to topic ID, for topics in addPartitions
-     * @param retainTopic returns whether a pre-existing topic's metadata should be retained
+     * @param addInternalTopics     internal topics to add
+     * @param newController         the new controller node
+     * @param addTopicIds           the mapping from topic name to topic ID, for topics in addPartitions
+     * @param retainTopic           returns whether a pre-existing topic's metadata should be retained
      * @return the merged metadata snapshot
      */
     MetadataSnapshot mergeWith(String newClusterId,
-                            Map<Integer, Node> newNodes,
-                            Collection<PartitionMetadata> addPartitions,
-                            Set<String> addUnauthorizedTopics,
-                            Set<String> addInvalidTopics,
-                            Set<String> addInternalTopics,
-                            Node newController,
-                            Map<String, Uuid> addTopicIds,
-                            BiPredicate<String, Boolean> retainTopic) {
+                               Map<Integer, Node> newNodes,
+                               Collection<PartitionMetadata> addPartitions,
+                               Set<String> addUnauthorizedTopics,
+                               Set<String> addInvalidTopics,
+                               Set<String> addInternalTopics,
+                               Node newController,
+                               Map<String, Uuid> addTopicIds,
+                               BiPredicate<String, Boolean> retainTopic) {
 
         Predicate<String> shouldRetainTopic = topic -> retainTopic.test(topic, internalTopics.contains(topic));
 
@@ -208,8 +208,8 @@ public class MetadataSnapshot {
      * In other words, all elements of {@code baseSet} will be contained in the result, with additional non-overlapping
      * elements in {@code fillSet} where the predicate is true.
      *
-     * @param baseSet the base elements for the resulting set
-     * @param fillSet elements to be filled into the resulting set
+     * @param baseSet   the base elements for the resulting set
+     * @param fillSet   elements to be filled into the resulting set
      * @param predicate tested against the fill set to determine whether elements should be added to the base set
      */
     private static <T> Set<T> fillSet(Set<T> baseSet, Set<T> fillSet, Predicate<T> predicate) {

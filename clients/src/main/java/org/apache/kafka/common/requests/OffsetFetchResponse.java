@@ -39,19 +39,19 @@ import static org.apache.kafka.common.requests.OffsetFetchRequest.TOP_LEVEL_ERRO
 
 /**
  * Possible error codes:
- *
+ * <p>
  * - Partition errors:
- *   - {@link Errors#UNKNOWN_TOPIC_OR_PARTITION}
- *   - {@link Errors#TOPIC_AUTHORIZATION_FAILED}
- *   - {@link Errors#UNSTABLE_OFFSET_COMMIT}
- *
+ * - {@link Errors#UNKNOWN_TOPIC_OR_PARTITION}
+ * - {@link Errors#TOPIC_AUTHORIZATION_FAILED}
+ * - {@link Errors#UNSTABLE_OFFSET_COMMIT}
+ * <p>
  * - Group or coordinator errors:
- *   - {@link Errors#COORDINATOR_LOAD_IN_PROGRESS}
- *   - {@link Errors#COORDINATOR_NOT_AVAILABLE}
- *   - {@link Errors#NOT_COORDINATOR}
- *   - {@link Errors#GROUP_AUTHORIZATION_FAILED}
- *   - {@link Errors#UNKNOWN_MEMBER_ID}
- *   - {@link Errors#STALE_MEMBER_EPOCH}
+ * - {@link Errors#COORDINATOR_LOAD_IN_PROGRESS}
+ * - {@link Errors#COORDINATOR_NOT_AVAILABLE}
+ * - {@link Errors#NOT_COORDINATOR}
+ * - {@link Errors#GROUP_AUTHORIZATION_FAILED}
+ * - {@link Errors#UNKNOWN_MEMBER_ID}
+ * - {@link Errors#STALE_MEMBER_EPOCH}
  */
 public class OffsetFetchResponse extends AbstractResponse {
     public static final long INVALID_OFFSET = -1L;
@@ -60,8 +60,8 @@ public class OffsetFetchResponse extends AbstractResponse {
     // We only need to track the partition errors returned in version 1. This
     // is used to identify group level errors when the response is normalized.
     private static final List<Errors> PARTITION_ERRORS = Arrays.asList(
-        Errors.UNKNOWN_TOPIC_OR_PARTITION,
-        Errors.TOPIC_AUTHORIZATION_FAILED
+            Errors.UNKNOWN_TOPIC_OR_PARTITION,
+            Errors.TOPIC_AUTHORIZATION_FAILED
     );
 
     private final short version;
@@ -88,7 +88,7 @@ public class OffsetFetchResponse extends AbstractResponse {
             } else {
                 if (groups.size() != 1) {
                     throw new UnsupportedVersionException(
-                        "Version " + version + " of OffsetFetchResponse only supports one group."
+                            "Version " + version + " of OffsetFetchResponse only supports one group."
                     );
                 }
 
@@ -101,11 +101,11 @@ public class OffsetFetchResponse extends AbstractResponse {
 
                     topic.partitions().forEach(partition -> {
                         newTopic.partitions().add(new OffsetFetchResponsePartition()
-                            .setPartitionIndex(partition.partitionIndex())
-                            .setErrorCode(partition.errorCode())
-                            .setCommittedOffset(partition.committedOffset())
-                            .setMetadata(partition.metadata())
-                            .setCommittedLeaderEpoch(partition.committedLeaderEpoch()));
+                                .setPartitionIndex(partition.partitionIndex())
+                                .setErrorCode(partition.errorCode())
+                                .setCommittedOffset(partition.committedOffset())
+                                .setMetadata(partition.metadata())
+                                .setCommittedLeaderEpoch(partition.committedLeaderEpoch()));
                     });
                 });
             }
@@ -132,29 +132,29 @@ public class OffsetFetchResponse extends AbstractResponse {
             short topLevelError = version < TOP_LEVEL_ERROR_AND_NULL_TOPICS_MIN_VERSION ? topLevelError(data).code() : data.errorCode();
             if (topLevelError != Errors.NONE.code()) {
                 return new OffsetFetchResponseGroup()
-                    .setGroupId(groupId)
-                    .setErrorCode(topLevelError);
+                        .setGroupId(groupId)
+                        .setErrorCode(topLevelError);
             } else {
                 return new OffsetFetchResponseGroup()
-                    .setGroupId(groupId)
-                    .setTopics(data.topics().stream().map(topic ->
-                        new OffsetFetchResponseData.OffsetFetchResponseTopics()
-                            .setName(topic.name())
-                            .setPartitions(topic.partitions().stream().map(partition ->
-                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                    .setPartitionIndex(partition.partitionIndex())
-                                    .setErrorCode(partition.errorCode())
-                                    .setCommittedOffset(partition.committedOffset())
-                                    .setMetadata(partition.metadata())
-                                    .setCommittedLeaderEpoch(partition.committedLeaderEpoch())
-                            ).collect(Collectors.toList()))
-                    ).collect(Collectors.toList()));
+                        .setGroupId(groupId)
+                        .setTopics(data.topics().stream().map(topic ->
+                                new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                                        .setName(topic.name())
+                                        .setPartitions(topic.partitions().stream().map(partition ->
+                                                new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                                        .setPartitionIndex(partition.partitionIndex())
+                                                        .setErrorCode(partition.errorCode())
+                                                        .setCommittedOffset(partition.committedOffset())
+                                                        .setMetadata(partition.metadata())
+                                                        .setCommittedLeaderEpoch(partition.committedLeaderEpoch())
+                                        ).collect(Collectors.toList()))
+                        ).collect(Collectors.toList()));
             }
         } else {
             if (groups == null) {
                 groups = data.groups().stream().collect(Collectors.toMap(
-                    OffsetFetchResponseData.OffsetFetchResponseGroup::groupId,
-                    Function.identity()
+                        OffsetFetchResponseData.OffsetFetchResponseGroup::groupId,
+                        Function.identity()
                 ));
             }
             var group = groups.get(groupId);
@@ -195,17 +195,17 @@ public class OffsetFetchResponse extends AbstractResponse {
                 updateErrorCounts(counts, Errors.forCode(data.errorCode()));
             }
             data.topics().forEach(topic ->
-                topic.partitions().forEach(partition ->
-                    updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
-                )
+                    topic.partitions().forEach(partition ->
+                            updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
+                    )
             );
         } else {
             data.groups().forEach(group -> {
                 updateErrorCounts(counts, Errors.forCode(group.errorCode()));
                 group.topics().forEach(topic ->
-                    topic.partitions().forEach(partition ->
-                        updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
-                    )
+                        topic.partitions().forEach(partition ->
+                                updateErrorCounts(counts, Errors.forCode(partition.errorCode()))
+                        )
                 );
             });
         }
@@ -227,29 +227,29 @@ public class OffsetFetchResponse extends AbstractResponse {
     }
 
     public static OffsetFetchResponseData.OffsetFetchResponseGroup groupError(
-        OffsetFetchRequestData.OffsetFetchRequestGroup group,
-        Errors error,
-        int version
+            OffsetFetchRequestData.OffsetFetchRequestGroup group,
+            Errors error,
+            int version
     ) {
         if (version >= TOP_LEVEL_ERROR_AND_NULL_TOPICS_MIN_VERSION) {
             return new OffsetFetchResponseData.OffsetFetchResponseGroup()
-                .setGroupId(group.groupId())
-                .setErrorCode(error.code());
+                    .setGroupId(group.groupId())
+                    .setErrorCode(error.code());
         } else {
             return new OffsetFetchResponseData.OffsetFetchResponseGroup()
-                .setGroupId(group.groupId())
-                .setTopics(group.topics().stream().map(topic ->
-                    new OffsetFetchResponseData.OffsetFetchResponseTopics()
-                        .setName(topic.name())
-                        .setPartitions(topic.partitionIndexes().stream().map(partition ->
-                            new OffsetFetchResponseData.OffsetFetchResponsePartitions()
-                                .setPartitionIndex(partition)
-                                .setErrorCode(error.code())
-                                .setCommittedOffset(INVALID_OFFSET)
-                                .setMetadata(NO_METADATA)
-                                .setCommittedLeaderEpoch(NO_PARTITION_LEADER_EPOCH)
-                        ).collect(Collectors.toList()))
-                ).collect(Collectors.toList()));
+                    .setGroupId(group.groupId())
+                    .setTopics(group.topics().stream().map(topic ->
+                            new OffsetFetchResponseData.OffsetFetchResponseTopics()
+                                    .setName(topic.name())
+                                    .setPartitions(topic.partitionIndexes().stream().map(partition ->
+                                            new OffsetFetchResponseData.OffsetFetchResponsePartitions()
+                                                    .setPartitionIndex(partition)
+                                                    .setErrorCode(error.code())
+                                                    .setCommittedOffset(INVALID_OFFSET)
+                                                    .setMetadata(NO_METADATA)
+                                                    .setCommittedLeaderEpoch(NO_PARTITION_LEADER_EPOCH)
+                                    ).collect(Collectors.toList()))
+                    ).collect(Collectors.toList()));
         }
     }
 }

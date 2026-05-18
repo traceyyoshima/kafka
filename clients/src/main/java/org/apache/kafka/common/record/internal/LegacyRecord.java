@@ -140,6 +140,7 @@ public final class LegacyRecord {
     /**
      * The complete serialized size of this record in bytes (including crc, header attributes, etc), but
      * excluding the log overhead (offset and record size).
+     *
      * @return the size in bytes
      */
     public int sizeInBytes() {
@@ -148,6 +149,7 @@ public final class LegacyRecord {
 
     /**
      * The length of the key in bytes
+     *
      * @return the size in bytes of the key (0 if the key is null)
      */
     public int keySize() {
@@ -159,6 +161,7 @@ public final class LegacyRecord {
 
     /**
      * Does the record have a key?
+     *
      * @return true if so, false otherwise
      */
     public boolean hasKey() {
@@ -177,6 +180,7 @@ public final class LegacyRecord {
 
     /**
      * The length of the value in bytes
+     *
      * @return the size in bytes of the value (0 if the value is null)
      */
     public int valueSize() {
@@ -185,6 +189,7 @@ public final class LegacyRecord {
 
     /**
      * Check whether the value field of this record is null.
+     *
      * @return true if the value is null, false otherwise
      */
     public boolean hasNullValue() {
@@ -193,6 +198,7 @@ public final class LegacyRecord {
 
     /**
      * The magic value (i.e. message format version) of this record
+     *
      * @return the magic value
      */
     public byte magic() {
@@ -201,6 +207,7 @@ public final class LegacyRecord {
 
     /**
      * The attributes stored with this record
+     *
      * @return the attributes
      */
     public byte attributes() {
@@ -222,7 +229,7 @@ public final class LegacyRecord {
             // case 2
             if (wrapperRecordTimestampType == TimestampType.LOG_APPEND_TIME && wrapperRecordTimestamp != null)
                 return wrapperRecordTimestamp;
-            // Case 1, 3
+                // Case 1, 3
             else
                 return buffer.getLong(TIMESTAMP_OFFSET);
         }
@@ -246,6 +253,7 @@ public final class LegacyRecord {
 
     /**
      * A ByteBuffer containing the value of this record
+     *
      * @return the value or null if the value for this record is null
      */
     public ByteBuffer value() {
@@ -254,6 +262,7 @@ public final class LegacyRecord {
 
     /**
      * A ByteBuffer containing the message key
+     *
      * @return the buffer or null if the key for this record is null
      */
     public ByteBuffer key() {
@@ -275,22 +284,22 @@ public final class LegacyRecord {
     public String toString() {
         if (magic() > 0)
             return String.format("Record(magic=%d, attributes=%d, compression=%s, crc=%d, %s=%d, key=%d bytes, value=%d bytes)",
-                                 magic(),
-                                 attributes(),
-                                 compressionType(),
-                                 checksum(),
-                                 timestampType(),
-                                 timestamp(),
-                                 key() == null ? 0 : key().limit(),
-                                 value() == null ? 0 : value().limit());
+                    magic(),
+                    attributes(),
+                    compressionType(),
+                    checksum(),
+                    timestampType(),
+                    timestamp(),
+                    key() == null ? 0 : key().limit(),
+                    value() == null ? 0 : value().limit());
         else
             return String.format("Record(magic=%d, attributes=%d, compression=%s, crc=%d, key=%d bytes, value=%d bytes)",
-                                 magic(),
-                                 attributes(),
-                                 compressionType(),
-                                 checksum(),
-                                 key() == null ? 0 : key().limit(),
-                                 value() == null ? 0 : value().limit());
+                    magic(),
+                    attributes(),
+                    compressionType(),
+                    checksum(),
+                    key() == null ? 0 : key().limit(),
+                    value() == null ? 0 : value().limit());
     }
 
     public boolean equals(Object other) {
@@ -313,12 +322,12 @@ public final class LegacyRecord {
      * its value payload should be already compressed with the specified type; the constructor
      * would always write the value payload as is and will not do the compression itself.
      *
-     * @param magic The magic value to use
-     * @param timestamp The timestamp of the record
-     * @param key The key of the record (null, if none)
-     * @param value The record value
+     * @param magic           The magic value to use
+     * @param timestamp       The timestamp of the record
+     * @param key             The key of the record (null, if none)
+     * @param value           The record value
      * @param compressionType The compression type used on the contents of the record (if any)
-     * @param timestampType The timestamp type to be used for this record
+     * @param timestampType   The timestamp type to be used for this record
      */
     public static LegacyRecord create(byte magic,
                                       long timestamp,
@@ -343,12 +352,12 @@ public final class LegacyRecord {
      * been written at the value offset in a wrapped record). This lets you dynamically create a compressed message
      * set, and then go back later and fill in its size and CRC, which saves the need for copying to another buffer.
      *
-     * @param buffer The buffer containing the compressed record data positioned at the first offset of the
-     * @param magic The magic value of the record set
-     * @param recordSize The size of the record (including record overhead)
-     * @param timestamp The timestamp of the wrapper record
+     * @param buffer          The buffer containing the compressed record data positioned at the first offset of the
+     * @param magic           The magic value of the record set
+     * @param recordSize      The size of the record (including record overhead)
+     * @param timestamp       The timestamp of the wrapper record
      * @param compressionType The compression type used
-     * @param timestampType The timestamp type of the wrapper record
+     * @param timestampType   The timestamp type of the wrapper record
      */
     public static void writeCompressedRecordHeader(ByteBuffer buffer,
                                                    byte magic,
@@ -388,13 +397,13 @@ public final class LegacyRecord {
     /**
      * Write the record data with the given compression type and return the computed crc.
      *
-     * @param out The output stream to write to
-     * @param magic The magic value to be used
-     * @param timestamp The timestamp of the record
-     * @param key The record key
-     * @param value The record value
+     * @param out             The output stream to write to
+     * @param magic           The magic value to be used
+     * @param timestamp       The timestamp of the record
+     * @param key             The record key
+     * @param value           The record value
      * @param compressionType The compression type
-     * @param timestampType The timestamp type
+     * @param timestampType   The timestamp type
      * @return the computed CRC for this record.
      * @throws IOException for any IO errors writing to the output stream.
      */

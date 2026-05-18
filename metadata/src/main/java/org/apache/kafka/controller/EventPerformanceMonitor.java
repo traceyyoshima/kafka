@@ -102,9 +102,9 @@ class EventPerformanceMonitor {
     private int numEvents;
 
     private EventPerformanceMonitor(
-        LogContext logContext,
-        long periodNs,
-        long alwaysLogThresholdNs
+            LogContext logContext,
+            long periodNs,
+            long alwaysLogThresholdNs
     ) {
         this.log = logContext.logger(EventPerformanceMonitor.class);
         this.periodNs = periodNs;
@@ -133,8 +133,8 @@ class EventPerformanceMonitor {
     /**
      * Handle a controller event being finished.
      *
-     * @param name          The name of the controller event.
-     * @param durationNs    The duration of the controller event in nanoseconds.
+     * @param name       The name of the controller event.
+     * @param durationNs The duration of the controller event in nanoseconds.
      */
     void observeEvent(String name, long durationNs) {
         String message = doObserveEvent(name, durationNs);
@@ -146,10 +146,9 @@ class EventPerformanceMonitor {
     /**
      * Handle a controller event being finished.
      *
-     * @param name          The name of the controller event.
-     * @param durationNs    The duration of the controller event in nanoseconds.
-     *
-     * @return              The message to log, or null otherwise.
+     * @param name       The name of the controller event.
+     * @param durationNs The duration of the controller event in nanoseconds.
+     * @return The message to log, or null otherwise.
      */
     String doObserveEvent(String name, long durationNs) {
         if (slowestEventName == null || slowestEventDurationNs < durationNs) {
@@ -162,7 +161,7 @@ class EventPerformanceMonitor {
             return null;
         }
         return "Exceptionally slow controller event " + name + " took " +
-            NANOSECONDS.toMillis(durationNs) + " ms.";
+                NANOSECONDS.toMillis(durationNs) + " ms.";
     }
 
     /**
@@ -178,7 +177,7 @@ class EventPerformanceMonitor {
     /**
      * Generate a log message summarizing the events of the last period.
      *
-     * @return                          The summary string.
+     * @return The summary string.
      */
     String periodicPerformanceMessage() {
         StringBuilder bld = new StringBuilder();
@@ -201,8 +200,8 @@ class EventPerformanceMonitor {
     /**
      * Translate a duration in nanoseconds to a decimal duration in milliseconds.
      *
-     * @param durationNs    The duration in nanoseconds.
-     * @return              The decimal duration in milliseconds.
+     * @param durationNs The duration in nanoseconds.
+     * @return The decimal duration in milliseconds.
      */
     static String formatNsAsDecimalMs(long durationNs) {
         double number = NANOSECONDS.toMicros(durationNs);

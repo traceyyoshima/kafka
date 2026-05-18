@@ -39,12 +39,12 @@ public class HeartbeatRequestStateTest {
     @Test
     public void testCanSendRequestAndTimeToNextHeartbeatMs() {
         final HeartbeatRequestState heartbeatRequestState = new HeartbeatRequestState(
-            LOG_CONTEXT,
-            time,
-            HEARTBEAT_INTERVAL_MS,
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MAX_MS,
-            JITTER
+                LOG_CONTEXT,
+                time,
+                HEARTBEAT_INTERVAL_MS,
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MAX_MS,
+                JITTER
         );
 
         assertFalse(heartbeatRequestState.canSendRequest(time.milliseconds()));
@@ -63,12 +63,12 @@ public class HeartbeatRequestStateTest {
     @Test
     public void testResetTimer() {
         final HeartbeatRequestState heartbeatRequestState = new HeartbeatRequestState(
-            LOG_CONTEXT,
-            time,
-            HEARTBEAT_INTERVAL_MS,
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MAX_MS,
-            JITTER
+                LOG_CONTEXT,
+                time,
+                HEARTBEAT_INTERVAL_MS,
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MAX_MS,
+                JITTER
         );
         time.sleep(HEARTBEAT_INTERVAL_MS + 100);
         assertTrue(heartbeatRequestState.canSendRequest(time.milliseconds()));
@@ -83,12 +83,12 @@ public class HeartbeatRequestStateTest {
     @Test
     public void testUpdateHeartbeatIntervalMs() {
         final HeartbeatRequestState heartbeatRequestState = new HeartbeatRequestState(
-            LOG_CONTEXT,
-            time,
-            HEARTBEAT_INTERVAL_MS,
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MAX_MS,
-            JITTER
+                LOG_CONTEXT,
+                time,
+                HEARTBEAT_INTERVAL_MS,
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MAX_MS,
+                JITTER
         );
         final long updatedHeartbeatIntervalMs = 2 * HEARTBEAT_INTERVAL_MS;
         time.sleep(HEARTBEAT_INTERVAL_MS + 100);
@@ -102,12 +102,12 @@ public class HeartbeatRequestStateTest {
     @Test
     public void testUpdateHeartbeatIntervalMsWithSameInterval() {
         final HeartbeatRequestState heartbeatRequestState = new HeartbeatRequestState(
-            LOG_CONTEXT,
-            time,
-            HEARTBEAT_INTERVAL_MS,
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MAX_MS,
-            JITTER
+                LOG_CONTEXT,
+                time,
+                HEARTBEAT_INTERVAL_MS,
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MAX_MS,
+                JITTER
         );
         time.sleep(HEARTBEAT_INTERVAL_MS + 100);
 
@@ -120,12 +120,12 @@ public class HeartbeatRequestStateTest {
     @Test
     public void testOnFailedAttempt() {
         final HeartbeatRequestState heartbeatRequestState = new HeartbeatRequestState(
-            LOG_CONTEXT,
-            time,
-            HEARTBEAT_INTERVAL_MS,
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MAX_MS,
-            JITTER
+                LOG_CONTEXT,
+                time,
+                HEARTBEAT_INTERVAL_MS,
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MAX_MS,
+                JITTER
         );
         time.sleep(HEARTBEAT_INTERVAL_MS + 100);
 

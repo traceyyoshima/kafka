@@ -70,6 +70,7 @@ public class TestKitNodes {
         public Builder(BootstrapMetadata bootstrapMetadata) {
             this.bootstrapMetadata = bootstrapMetadata;
         }
+
         // The broker and controller listener name and SecurityProtocol configurations must
         // be kept in sync with the default values in ClusterTest.
         private ListenerName brokerListenerName = ListenerName.normalised(TestKitDefaults.DEFAULT_BROKER_LISTENER_NAME);
@@ -115,8 +116,8 @@ public class TestKitNodes {
 
         public Builder setPerServerProperties(Map<Integer, Map<String, String>> perServerProperties) {
             this.perServerProperties = Collections.unmodifiableMap(
-                perServerProperties.entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, e -> Map.copyOf(e.getValue()))));
+                    perServerProperties.entrySet().stream()
+                            .collect(Collectors.toMap(Map.Entry::getKey, e -> Map.copyOf(e.getValue()))));
             return this;
         }
 
@@ -157,7 +158,7 @@ public class TestKitNodes {
             }
             // TODO: remove this assertion after https://issues.apache.org/jira/browse/KAFKA-16680 is finished
             if ((brokerSecurityProtocol != SecurityProtocol.PLAINTEXT && brokerSecurityProtocol != SecurityProtocol.SASL_PLAINTEXT) ||
-                (controllerSecurityProtocol != SecurityProtocol.PLAINTEXT && controllerSecurityProtocol != SecurityProtocol.SASL_PLAINTEXT)) {
+                    (controllerSecurityProtocol != SecurityProtocol.PLAINTEXT && controllerSecurityProtocol != SecurityProtocol.SASL_PLAINTEXT)) {
                 throw new IllegalArgumentException("Currently only support PLAINTEXT / SASL_PLAINTEXT security protocol");
             }
             if (baseDirectory == null) {
@@ -169,11 +170,11 @@ public class TestKitNodes {
 
             int controllerId = combined ? TestKitDefaults.BROKER_ID_OFFSET : TestKitDefaults.BROKER_ID_OFFSET + TestKitDefaults.CONTROLLER_ID_OFFSET;
             List<Integer> controllerNodeIds = IntStream.range(controllerId, controllerId + numControllerNodes)
-                .boxed()
-                .toList();
+                    .boxed()
+                    .toList();
             List<Integer> brokerNodeIds = IntStream.range(TestKitDefaults.BROKER_ID_OFFSET, TestKitDefaults.BROKER_ID_OFFSET + numBrokerNodes)
-                .boxed()
-                .toList();
+                    .boxed()
+                    .toList();
 
             String unknownIds = perServerProperties.keySet().stream()
                     .filter(id -> !controllerNodeIds.contains(id))
@@ -192,12 +193,12 @@ public class TestKitNodes {
             TreeMap<Integer, TestKitNode> controllerNodes = new TreeMap<>();
             for (int id : controllerNodeIds) {
                 TestKitNode controllerNode = TestKitNodes.buildControllerNode(
-                    id,
-                    baseDirectory.toFile().getAbsolutePath(),
-                    clusterId,
-                    brokerNodeIds.contains(id),
-                    perServerProperties.getOrDefault(id, Map.of()),
-                    numDisksPerBroker
+                        id,
+                        baseDirectory.toFile().getAbsolutePath(),
+                        clusterId,
+                        brokerNodeIds.contains(id),
+                        perServerProperties.getOrDefault(id, Map.of()),
+                        numDisksPerBroker
                 );
                 controllerNodes.put(id, controllerNode);
             }
@@ -205,18 +206,18 @@ public class TestKitNodes {
             TreeMap<Integer, TestKitNode> brokerNodes = new TreeMap<>();
             for (int id : brokerNodeIds) {
                 TestKitNode brokerNode = TestKitNodes.buildBrokerNode(
-                    id,
-                    baseDirectory.toFile().getAbsolutePath(),
-                    clusterId,
-                    controllerNodeIds.contains(id),
-                    perServerProperties.getOrDefault(id, Map.of()),
-                    numDisksPerBroker
+                        id,
+                        baseDirectory.toFile().getAbsolutePath(),
+                        clusterId,
+                        controllerNodeIds.contains(id),
+                        perServerProperties.getOrDefault(id, Map.of()),
+                        numDisksPerBroker
                 );
                 brokerNodes.put(id, brokerNode);
             }
 
             return new TestKitNodes(baseDirectory.toFile().getAbsolutePath(), clusterId, bootstrapMetadata, controllerNodes, brokerNodes,
-                brokerListenerName, brokerSecurityProtocol, controllerListenerName, controllerSecurityProtocol);
+                    brokerListenerName, brokerSecurityProtocol, controllerListenerName, controllerSecurityProtocol);
         }
     }
 
@@ -231,15 +232,15 @@ public class TestKitNodes {
     private final SecurityProtocol controllerSecurityProtocol;
 
     private TestKitNodes(
-        String baseDirectory,
-        String clusterId,
-        BootstrapMetadata bootstrapMetadata,
-        SortedMap<Integer, TestKitNode> controllerNodes,
-        SortedMap<Integer, TestKitNode> brokerNodes,
-        ListenerName brokerListenerName,
-        SecurityProtocol brokerSecurityProtocol,
-        ListenerName controllerListenerName,
-        SecurityProtocol controllerSecurityProtocol
+            String baseDirectory,
+            String clusterId,
+            BootstrapMetadata bootstrapMetadata,
+            SortedMap<Integer, TestKitNode> controllerNodes,
+            SortedMap<Integer, TestKitNode> brokerNodes,
+            ListenerName brokerListenerName,
+            SecurityProtocol brokerSecurityProtocol,
+            ListenerName controllerListenerName,
+            SecurityProtocol controllerSecurityProtocol
     ) {
         this.baseDirectory = Objects.requireNonNull(baseDirectory);
         this.clusterId = Objects.requireNonNull(clusterId);
@@ -293,38 +294,38 @@ public class TestKitNodes {
     }
 
     private static TestKitNode buildBrokerNode(int id,
-                                              String baseDirectory,
-                                              String clusterId,
-                                              boolean combined,
-                                              Map<String, String> propertyOverrides,
-                                              int numDisksPerBroker) {
+                                               String baseDirectory,
+                                               String clusterId,
+                                               boolean combined,
+                                               Map<String, String> propertyOverrides,
+                                               int numDisksPerBroker) {
         List<String> logDataDirectories = IntStream
-            .range(0, numDisksPerBroker)
-            .mapToObj(i -> {
-                if (combined) {
-                    return String.format("combined_%d_%d", id, i);
-                }
-                return String.format("broker_%d_data%d", id, i);
-            })
-            .map(logDir -> {
-                if (Paths.get(logDir).isAbsolute()) {
-                    return logDir;
-                }
-                return new File(baseDirectory, logDir).getAbsolutePath();
-            })
-            .toList();
+                .range(0, numDisksPerBroker)
+                .mapToObj(i -> {
+                    if (combined) {
+                        return String.format("combined_%d_%d", id, i);
+                    }
+                    return String.format("broker_%d_data%d", id, i);
+                })
+                .map(logDir -> {
+                    if (Paths.get(logDir).isAbsolute()) {
+                        return logDir;
+                    }
+                    return new File(baseDirectory, logDir).getAbsolutePath();
+                })
+                .toList();
         MetaPropertiesEnsemble.Copier copier = new MetaPropertiesEnsemble.Copier(MetaPropertiesEnsemble.EMPTY);
 
         copier.setMetaLogDir(Optional.of(logDataDirectories.get(0)));
         for (String logDir : logDataDirectories) {
             copier.setLogDirProps(
-                logDir,
-                new MetaProperties.Builder()
-                    .setVersion(MetaPropertiesVersion.V1)
-                    .setClusterId(clusterId)
-                    .setNodeId(id)
-                    .setDirectoryId(copier.generateValidDirectoryId())
-                    .build()
+                    logDir,
+                    new MetaProperties.Builder()
+                            .setVersion(MetaPropertiesVersion.V1)
+                            .setClusterId(clusterId)
+                            .setNodeId(id)
+                            .setDirectoryId(copier.generateValidDirectoryId())
+                            .build()
             );
         }
 
@@ -344,37 +345,37 @@ public class TestKitNodes {
     }
 
     private static TestKitNode buildControllerNode(int id,
-                                                  String baseDirectory,
-                                                  String clusterId,
-                                                  boolean combined,
-                                                  Map<String, String> propertyOverrides,
-                                                  int numDisksPerController) {
+                                                   String baseDirectory,
+                                                   String clusterId,
+                                                   boolean combined,
+                                                   Map<String, String> propertyOverrides,
+                                                   int numDisksPerController) {
         List<String> logDataDirectories = combined
-            ? IntStream
-                .range(0, numDisksPerController)
-                .mapToObj(i -> String.format("combined_%d_%d", id, i))
-                .map(logDir -> {
-                    if (Paths.get(logDir).isAbsolute()) {
-                        return logDir;
-                    }
-                    return new File(baseDirectory, logDir).getAbsolutePath();
-                })
-                .toList()
-            : List.of(new File(baseDirectory, String.format("controller_%d", id)).getAbsolutePath());
+                ? IntStream
+                  .range(0, numDisksPerController)
+                  .mapToObj(i -> String.format("combined_%d_%d", id, i))
+                  .map(logDir -> {
+                      if (Paths.get(logDir).isAbsolute()) {
+                          return logDir;
+                      }
+                      return new File(baseDirectory, logDir).getAbsolutePath();
+                  })
+                  .toList()
+                : List.of(new File(baseDirectory, String.format("controller_%d", id)).getAbsolutePath());
         String metadataDirectory = new File(baseDirectory,
-            combined ? String.format("combined_%d_0", id) : String.format("controller_%d", id)).getAbsolutePath();
+                combined ? String.format("combined_%d_0", id) : String.format("controller_%d", id)).getAbsolutePath();
         MetaPropertiesEnsemble.Copier copier = new MetaPropertiesEnsemble.Copier(MetaPropertiesEnsemble.EMPTY);
 
         copier.setMetaLogDir(Optional.of(metadataDirectory));
         for (String logDir : logDataDirectories) {
             copier.setLogDirProps(
-                logDir,
-                new MetaProperties.Builder()
-                    .setVersion(MetaPropertiesVersion.V1)
-                    .setClusterId(clusterId)
-                    .setNodeId(id)
-                    .setDirectoryId(copier.generateValidDirectoryId())
-                    .build()
+                    logDir,
+                    new MetaProperties.Builder()
+                            .setVersion(MetaPropertiesVersion.V1)
+                            .setClusterId(clusterId)
+                            .setNodeId(id)
+                            .setDirectoryId(copier.generateValidDirectoryId())
+                            .build()
             );
         }
 

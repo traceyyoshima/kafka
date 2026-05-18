@@ -60,9 +60,9 @@ class StandbyTaskCreator {
         createTaskSensor = ThreadMetrics.createTaskSensor(threadId, streamsMetrics);
 
         dummyCache = new ThreadCache(
-            logContext,
-            0,
-            streamsMetrics
+                logContext,
+                0,
+                streamsMetrics
         );
     }
 
@@ -79,29 +79,29 @@ class StandbyTaskCreator {
 
             if (topology.hasStateWithChangelogs()) {
                 final ProcessorStateManager stateManager = new ProcessorStateManager(
-                    taskId,
-                    Task.TaskType.STANDBY,
-                    eosEnabled(applicationConfig),
-                    getLogContext(taskId),
-                    stateDirectory,
-                    topology.storeToChangelogTopic(),
-                    partitions,
-                    upgradeFrom);
+                        taskId,
+                        Task.TaskType.STANDBY,
+                        eosEnabled(applicationConfig),
+                        getLogContext(taskId),
+                        stateDirectory,
+                        topology.storeToChangelogTopic(),
+                        partitions,
+                        upgradeFrom);
 
                 final InternalProcessorContext<?, ?> context = new ProcessorContextImpl(
-                    taskId,
-                    applicationConfig,
-                    stateManager,
-                    streamsMetrics,
-                    dummyCache
+                        taskId,
+                        applicationConfig,
+                        stateManager,
+                        streamsMetrics,
+                        dummyCache
                 );
 
                 createdTasks.add(createStandbyTask(taskId, partitions, topology, stateManager, context));
             } else {
                 log.trace(
-                    "Skipped standby task {} with assigned partitions {} " +
-                        "since it does not have any state stores to materialize",
-                    taskId, partitions
+                        "Skipped standby task {} with assigned partitions {} " +
+                                "since it does not have any state stores to materialize",
+                        taskId, partitions
                 );
             }
         }
@@ -123,15 +123,15 @@ class StandbyTaskCreator {
         streamTask.stateMgr.transitionTaskType(Task.TaskType.STANDBY, getLogContext(streamTask.id));
 
         final StandbyTask task = new StandbyTask(
-            streamTask.id,
-            inputPartitions,
-            streamTask.topology,
-            streamTask.config,
-            streamsMetrics,
-            streamTask.stateMgr,
-            stateDirectory,
-            dummyCache,
-            streamTask.processorContext
+                streamTask.id,
+                inputPartitions,
+                streamTask.topology,
+                streamTask.config,
+                streamsMetrics,
+                streamTask.stateMgr,
+                stateDirectory,
+                dummyCache,
+                streamTask.processorContext
         );
 
         log.trace("Created standby task {} from recycled active task with assigned partitions {}", task.id, inputPartitions);
@@ -145,15 +145,15 @@ class StandbyTaskCreator {
                                   final ProcessorStateManager stateManager,
                                   final InternalProcessorContext<?, ?> context) {
         final StandbyTask task = new StandbyTask(
-            taskId,
-            inputPartitions,
-            topology,
-            topologyMetadata.taskConfig(taskId),
-            streamsMetrics,
-            stateManager,
-            stateDirectory,
-            dummyCache,
-            context
+                taskId,
+                inputPartitions,
+                topology,
+                topologyMetadata.taskConfig(taskId),
+                streamsMetrics,
+                stateManager,
+                stateDirectory,
+                dummyCache,
+                context
         );
 
         log.trace("Created standby task {} with assigned partitions {}", taskId, inputPartitions);

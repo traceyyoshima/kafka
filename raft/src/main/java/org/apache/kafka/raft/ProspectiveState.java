@@ -43,24 +43,24 @@ public class ProspectiveState implements NomineeState {
 
     /**
      * The lifetime of a prospective state is the following.
-     *
+     * <p>
      * 1. Once started, it will send prevote requests and keep record of the received vote responses
      * 2. If it receives a message denoting a leader with a higher epoch, it will transition to follower state.
      * 3. If majority votes granted, it will transition to candidate state.
      * 4. If majority votes rejected or election times out, it will transition to unattached or follower state
-     *    depending on if it knows the leader id and endpoints or not
+     * depending on if it knows the leader id and endpoints or not
      */
     public ProspectiveState(
-        Time time,
-        int localId,
-        int epoch,
-        OptionalInt leaderId,
-        Endpoints leaderEndpoints,
-        Optional<ReplicaKey> votedKey,
-        VoterSet voters,
-        Optional<LogOffsetMetadata> highWatermark,
-        int electionTimeoutMs,
-        LogContext logContext
+            Time time,
+            int localId,
+            int epoch,
+            OptionalInt leaderId,
+            Endpoints leaderEndpoints,
+            Optional<ReplicaKey> votedKey,
+            VoterSet voters,
+            Optional<LogOffsetMetadata> highWatermark,
+            int electionTimeoutMs,
+            LogContext logContext
     ) {
         this.localId = localId;
         this.epoch = epoch;
@@ -102,13 +102,13 @@ public class ProspectiveState implements NomineeState {
     @Override
     public boolean canGrantVote(ReplicaKey replicaKey, boolean isLogUpToDate, boolean isPreVote) {
         return unattachedOrProspectiveCanGrantVote(
-            leaderId,
-            votedKey,
-            epoch,
-            replicaKey,
-            isLogUpToDate,
-            isPreVote,
-            log
+                leaderId,
+                votedKey,
+                epoch,
+                replicaKey,
+                isLogUpToDate,
+                isPreVote,
+                log
         );
     }
 
@@ -153,14 +153,14 @@ public class ProspectiveState implements NomineeState {
     @Override
     public String toString() {
         return String.format(
-            "ProspectiveState(epoch=%d, leaderId=%s, votedKey=%s, epochElection=%s, " +
-            "electionTimeoutMs=%s, highWatermark=%s)",
-            epoch,
-            leaderId,
-            votedKey,
-            epochElection,
-            electionTimeoutMs,
-            highWatermark
+                "ProspectiveState(epoch=%d, leaderId=%s, votedKey=%s, epochElection=%s, " +
+                        "electionTimeoutMs=%s, highWatermark=%s)",
+                epoch,
+                leaderId,
+                votedKey,
+                epochElection,
+                electionTimeoutMs,
+                highWatermark
         );
     }
 
@@ -170,5 +170,6 @@ public class ProspectiveState implements NomineeState {
     }
 
     @Override
-    public void close() {}
+    public void close() {
+    }
 }

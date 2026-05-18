@@ -23,7 +23,7 @@ import java.math.BigInteger;
 
 /**
  * <p>
- *     An arbitrary-precision signed decimal number. The value is unscaled * 10 ^ -scale where:
+ * An arbitrary-precision signed decimal number. The value is unscaled * 10 ^ -scale where:
  *     <ul>
  *         <li>unscaled is an integer </li>
  *         <li>scale is an integer representing how many digits the decimal point should be shifted on the unscaled value</li>
@@ -44,6 +44,7 @@ public class Decimal {
     /**
      * Returns a SchemaBuilder for a Decimal with the given scale factor. By returning a SchemaBuilder you can override
      * additional schema settings such as required/optional, default value, and documentation.
+     *
      * @param scale the scale factor to apply to unscaled values
      * @return a SchemaBuilder
      */
@@ -60,6 +61,7 @@ public class Decimal {
 
     /**
      * Convert a value from its logical format ({@link BigDecimal}) to its encoded format (byte[]).
+     *
      * @param value the logical value
      * @return the encoded value
      */
@@ -67,16 +69,17 @@ public class Decimal {
         int schemaScale = scale(schema);
         if (value.scale() != schemaScale)
             throw new DataException(String.format(
-                "Decimal value has mismatching scale for given Decimal schema. "
-                    + "Schema has scale %d, value has scale %d.",
-                schemaScale,
-                value.scale()
+                    "Decimal value has mismatching scale for given Decimal schema. "
+                            + "Schema has scale %d, value has scale %d.",
+                    schemaScale,
+                    value.scale()
             ));
         return value.unscaledValue().toByteArray();
     }
 
     /**
      * Convert a value from its encoded format (byte[]) to its logical format ({@link BigDecimal}).
+     *
      * @param value the encoded value
      * @return the logical value
      */

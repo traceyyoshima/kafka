@@ -52,15 +52,15 @@ public class AllBrokersStrategyIntegrationTest {
     private final MockTime time = new MockTime();
 
     private AdminApiDriver<AllBrokersStrategy.BrokerKey, Integer> buildDriver(
-        AllBrokersStrategy.AllBrokersFuture<Integer> result
+            AllBrokersStrategy.AllBrokersFuture<Integer> result
     ) {
         return new AdminApiDriver<>(
-            new MockApiHandler(),
-            result,
-            time.milliseconds() + TIMEOUT_MS,
-            RETRY_BACKOFF_MS,
-            RETRY_BACKOFF_MS,
-            logContext
+                new MockApiHandler(),
+                result,
+                time.milliseconds() + TIMEOUT_MS,
+                RETRY_BACKOFF_MS,
+                RETRY_BACKOFF_MS,
+                logContext
         );
     }
 
@@ -208,9 +208,9 @@ public class AllBrokersStrategyIntegrationTest {
         MetadataResponseData response = new MetadataResponseData();
         for (Integer brokerId : brokerIds) {
             response.brokers().add(new MetadataResponseData.MetadataResponseBroker()
-                .setNodeId(brokerId)
-                .setHost("host" + brokerId)
-                .setPort(9092)
+                    .setNodeId(brokerId)
+                    .setHost("host" + brokerId)
+                    .setPort(9092)
             );
         }
         return new MetadataResponse(response, ApiKeys.METADATA.latestVersion());
@@ -226,17 +226,17 @@ public class AllBrokersStrategyIntegrationTest {
 
         @Override
         public AbstractRequest.Builder<?> buildBatchedRequest(
-            int brokerId,
-            Set<AllBrokersStrategy.BrokerKey> keys
+                int brokerId,
+                Set<AllBrokersStrategy.BrokerKey> keys
         ) {
             return new MetadataRequest.Builder(new MetadataRequestData());
         }
 
         @Override
         public ApiResult<AllBrokersStrategy.BrokerKey, Integer> handleResponse(
-            Node broker,
-            Set<AllBrokersStrategy.BrokerKey> keys,
-            AbstractResponse response
+                Node broker,
+                Set<AllBrokersStrategy.BrokerKey> keys,
+                AbstractResponse response
         ) {
             return ApiResult.completed(keys.iterator().next(), broker.id());
         }

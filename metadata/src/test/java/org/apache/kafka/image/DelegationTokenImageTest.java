@@ -54,13 +54,13 @@ public class DelegationTokenImageTest {
 
     static DelegationTokenData randomDelegationTokenData(String tokenId, long expireTimestamp) {
         TokenInformation ti = new TokenInformation(
-            tokenId,
-            SecurityUtils.parseKafkaPrincipal(KafkaPrincipal.USER_TYPE + ":" + "fred"),
-            SecurityUtils.parseKafkaPrincipal(KafkaPrincipal.USER_TYPE + ":" + "fred"),
-            new ArrayList<>(),
-            0,
-            1000,
-            expireTimestamp);
+                tokenId,
+                SecurityUtils.parseKafkaPrincipal(KafkaPrincipal.USER_TYPE + ":" + "fred"),
+                SecurityUtils.parseKafkaPrincipal(KafkaPrincipal.USER_TYPE + ":" + "fred"),
+                new ArrayList<>(),
+                0,
+                1000,
+                expireTimestamp);
         return new DelegationTokenData(ti);
     }
 
@@ -73,14 +73,14 @@ public class DelegationTokenImageTest {
 
         DELTA1_RECORDS = new ArrayList<>();
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new DelegationTokenRecord().
-            setOwner(KafkaPrincipal.USER_TYPE + ":" + "fred").
-            setRequester(KafkaPrincipal.USER_TYPE + ":" + "fred").
-            setIssueTimestamp(0).
-            setMaxTimestamp(1000).
-            setExpirationTimestamp(200).
-            setTokenId("somerandomuuid1"), (short) 0));
+                setOwner(KafkaPrincipal.USER_TYPE + ":" + "fred").
+                setRequester(KafkaPrincipal.USER_TYPE + ":" + "fred").
+                setIssueTimestamp(0).
+                setMaxTimestamp(1000).
+                setExpirationTimestamp(200).
+                setTokenId("somerandomuuid1"), (short) 0));
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new RemoveDelegationTokenRecord().
-            setTokenId("somerandomuuid3"), (short) 0));
+                setTokenId("somerandomuuid3"), (short) 0));
 
         DELTA1 = new DelegationTokenDelta(IMAGE1);
         RecordTestUtils.replayAll(DELTA1, DELTA1_RECORDS);
@@ -127,8 +127,8 @@ public class DelegationTokenImageTest {
     private static void testToImage(DelegationTokenImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> DelegationTokenImage.EMPTY,
-            DelegationTokenDelta::new
+                () -> DelegationTokenImage.EMPTY,
+                DelegationTokenDelta::new
         ).test(image, fromRecords);
     }
 
@@ -150,6 +150,6 @@ public class DelegationTokenImageTest {
         ImageWriterOptions imageWriterOptions = new ImageWriterOptions.Builder(MetadataVersion.IBP_3_5_IV2).build();
         RecordListWriter writer = new RecordListWriter();
         assertThrows(Exception.class, () -> IMAGE1.write(writer, imageWriterOptions),
-            "expected exception writing IMAGE with Delegation Token records for MetadataVersion.IBP_3_5_IV2");
+                "expected exception writing IMAGE with Delegation Token records for MetadataVersion.IBP_3_5_IV2");
     }
 }

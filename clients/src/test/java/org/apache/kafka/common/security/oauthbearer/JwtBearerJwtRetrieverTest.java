@@ -61,11 +61,11 @@ public class JwtBearerJwtRetrieverTest extends OAuthBearerTest {
         System.setProperty(ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG, privateKeyFile);
 
         Map<String, ?> configs = getSaslConfigs(
-            Map.of(
-                SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, tokenEndpointUrl,
-                SASL_OAUTHBEARER_ASSERTION_ALGORITHM, DEFAULT_SASL_OAUTHBEARER_ASSERTION_ALGORITHM,
-                SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE, privateKeyFile
-            )
+                Map.of(
+                        SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, tokenEndpointUrl,
+                        SASL_OAUTHBEARER_ASSERTION_ALGORITHM, DEFAULT_SASL_OAUTHBEARER_ASSERTION_ALGORITHM,
+                        SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE, privateKeyFile
+                )
         );
 
         List<AppConfigurationEntry> jaasConfigEntries = getJaasConfigEntries();
@@ -84,11 +84,11 @@ public class JwtBearerJwtRetrieverTest extends OAuthBearerTest {
         System.setProperty(ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG, malformedPrivateKeyFile);
 
         Map<String, ?> configs = getSaslConfigs(
-            Map.of(
-                SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, tokenEndpointUrl,
-                SASL_OAUTHBEARER_ASSERTION_ALGORITHM, DEFAULT_SASL_OAUTHBEARER_ASSERTION_ALGORITHM,
-                SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE, malformedPrivateKeyFile
-            )
+                Map.of(
+                        SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, tokenEndpointUrl,
+                        SASL_OAUTHBEARER_ASSERTION_ALGORITHM, DEFAULT_SASL_OAUTHBEARER_ASSERTION_ALGORITHM,
+                        SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE, malformedPrivateKeyFile
+                )
         );
 
         List<AppConfigurationEntry> jaasConfigEntries = getJaasConfigEntries();
@@ -109,11 +109,11 @@ public class JwtBearerJwtRetrieverTest extends OAuthBearerTest {
         System.setProperty(ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG, assertionFile);
 
         Map<String, ?> configs = getSaslConfigs(
-            Map.of(
-                SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, tokenEndpointUrl,
-                SASL_OAUTHBEARER_ASSERTION_ALGORITHM, DEFAULT_SASL_OAUTHBEARER_ASSERTION_ALGORITHM,
-                SASL_OAUTHBEARER_ASSERTION_FILE, assertionFile
-            )
+                Map.of(
+                        SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, tokenEndpointUrl,
+                        SASL_OAUTHBEARER_ASSERTION_ALGORITHM, DEFAULT_SASL_OAUTHBEARER_ASSERTION_ALGORITHM,
+                        SASL_OAUTHBEARER_ASSERTION_FILE, assertionFile
+                )
         );
 
         List<AppConfigurationEntry> jaasConfigEntries = getJaasConfigEntries();
@@ -132,12 +132,12 @@ public class JwtBearerJwtRetrieverTest extends OAuthBearerTest {
         System.setProperty(ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG, privateKeyFile);
 
         Map<String, ?> configs = getSaslConfigs(
-            Map.of(
-                SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, tokenEndpointUrl,
-                SASL_OAUTHBEARER_ASSERTION_ALGORITHM, DEFAULT_SASL_OAUTHBEARER_ASSERTION_ALGORITHM,
-                SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE, privateKeyFile,
-                SaslConfigs.SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE, "this-passphrase-is-invalid"
-            )
+                Map.of(
+                        SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, tokenEndpointUrl,
+                        SASL_OAUTHBEARER_ASSERTION_ALGORITHM, DEFAULT_SASL_OAUTHBEARER_ASSERTION_ALGORITHM,
+                        SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE, privateKeyFile,
+                        SaslConfigs.SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE, "this-passphrase-is-invalid"
+                )
         );
 
         List<AppConfigurationEntry> jaasConfigEntries = getJaasConfigEntries();

@@ -30,12 +30,13 @@ import java.util.List;
  */
 public final class NetworkClientUtils {
 
-    private NetworkClientUtils() {}
+    private NetworkClientUtils() {
+    }
 
     /**
      * Checks whether the node is currently connected, first calling `client.poll` to ensure that any pending
      * disconnects have been processed.
-     *
+     * <p>
      * This method can be used to check the status of a connection prior to calling the blocking version to be able
      * to tell whether the latter completed a new connection.
      */
@@ -47,12 +48,12 @@ public final class NetworkClientUtils {
     /**
      * Invokes `client.poll` to discard pending disconnects, followed by `client.ready` and 0 or more `client.poll`
      * invocations until the connection to `node` is ready, the timeoutMs expires or the connection fails.
-     *
+     * <p>
      * It returns `true` if the call completes normally or `false` if the timeoutMs expires. If the connection fails,
      * an `IOException` is thrown instead. Note that if the `NetworkClient` has been configured with a positive
      * connection timeoutMs, it is possible for this method to raise an `IOException` for a previous connection which
      * has recently disconnected. If authentication to the node fails, an `AuthenticationException` is thrown.
-     *
+     * <p>
      * This method is useful for implementing blocking behaviour on top of the non-blocking `NetworkClient`, use it with
      * care.
      */
@@ -62,7 +63,7 @@ public final class NetworkClientUtils {
         }
         long startTime = time.milliseconds();
 
-        if (isReady(client, node, startTime) ||  client.ready(node, startTime))
+        if (isReady(client, node, startTime) || client.ready(node, startTime))
             return true;
 
         long attemptStartTime = time.milliseconds();
@@ -93,10 +94,10 @@ public final class NetworkClientUtils {
     /**
      * Invokes `client.send` followed by 1 or more `client.poll` invocations until a response is received or a
      * disconnection happens (which can happen for a number of reasons including a request timeout).
-     *
+     * <p>
      * In case of a disconnection, an `IOException` is thrown.
      * If shutdown is initiated on the client during this method, an IOException is thrown.
-     *
+     * <p>
      * This method is useful for implementing blocking behaviour on top of the non-blocking `NetworkClient`, use it with
      * care.
      */

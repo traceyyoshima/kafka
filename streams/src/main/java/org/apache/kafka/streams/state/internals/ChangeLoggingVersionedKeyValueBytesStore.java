@@ -57,14 +57,15 @@ public class ChangeLoggingVersionedKeyValueBytesStore extends ChangeLoggingKeyVa
         return oldValue;
     }
 
-    @Override public void log(final Bytes key, final byte[] value, final long timestamp, final Headers headers) {
+    @Override
+    public void log(final Bytes key, final byte[] value, final long timestamp, final Headers headers) {
         internalContext.logChange(
-            name(),
-            key,
-            value,
-            timestamp,
-            headers,
-            wrapped().getPosition()
+                name(),
+                key,
+                value,
+                timestamp,
+                headers,
+                wrapped().getPosition()
         );
     }
 }

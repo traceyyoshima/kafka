@@ -339,7 +339,7 @@ public class ProcessorContextImplTest {
 
         final TimestampedKeyValueStore<String, Long> timestampedKeyValueStoreMock = mock(TimestampedKeyValueStore.class);
         when(stateManager.store("LocalTimestampedKeyValueStore"))
-            .thenAnswer(answer -> timestampedKeyValueStoreMock(timestampedKeyValueStoreMock));
+                .thenAnswer(answer -> timestampedKeyValueStoreMock(timestampedKeyValueStoreMock));
         mockTimestampedKeyValueOperation(timestampedKeyValueStoreMock);
 
         context = buildProcessorContextImpl(streamsConfig, stateManager);
@@ -519,16 +519,16 @@ public class ProcessorContextImplTest {
         context.logChange(REGISTERED_STORE_NAME, KEY_BYTES, VALUE_BYTES, TIMESTAMP, headers, Position.emptyPosition());
 
         verify(recordCollector).send(
-            CHANGELOG_PARTITION.topic(),
-            KEY_BYTES,
-            VALUE_BYTES,
-            headers,
-            CHANGELOG_PARTITION.partition(),
-            TIMESTAMP,
-            BYTES_KEY_SERIALIZER,
-            BYTEARRAY_VALUE_SERIALIZER,
-            null,
-            null);
+                CHANGELOG_PARTITION.topic(),
+                KEY_BYTES,
+                VALUE_BYTES,
+                headers,
+                CHANGELOG_PARTITION.partition(),
+                TIMESTAMP,
+                BYTES_KEY_SERIALIZER,
+                BYTEARRAY_VALUE_SERIALIZER,
+                null,
+                null);
     }
 
     @Test
@@ -540,7 +540,7 @@ public class ProcessorContextImplTest {
         final Headers headers = new RecordHeaders();
         headers.add(ChangelogRecordDeserializationHelper.CHANGELOG_VERSION_HEADER_RECORD_CONSISTENCY);
         headers.add(new RecordHeader(ChangelogRecordDeserializationHelper.CHANGELOG_POSITION_HEADER_KEY,
-            PositionSerde.serialize(position).array()));
+                PositionSerde.serialize(position).array()));
 
         final StreamTask task1 = mock(StreamTask.class);
 
@@ -550,24 +550,24 @@ public class ProcessorContextImplTest {
         context.logChange(REGISTERED_STORE_NAME, KEY_BYTES, VALUE_BYTES, TIMESTAMP, headers, position);
 
         verify(recordCollector).send(
-            CHANGELOG_PARTITION.topic(),
-            KEY_BYTES,
-            VALUE_BYTES,
-            headers,
-            CHANGELOG_PARTITION.partition(),
-            TIMESTAMP,
-            BYTES_KEY_SERIALIZER,
-            BYTEARRAY_VALUE_SERIALIZER,
-            null,
-            null);
+                CHANGELOG_PARTITION.topic(),
+                KEY_BYTES,
+                VALUE_BYTES,
+                headers,
+                CHANGELOG_PARTITION.partition(),
+                TIMESTAMP,
+                BYTES_KEY_SERIALIZER,
+                BYTEARRAY_VALUE_SERIALIZER,
+                null,
+                null);
     }
 
     @Test
     public void shouldThrowUnsupportedOperationExceptionOnLogChange() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.logChange("Store", Bytes.wrap("k".getBytes()), null, 0L, new RecordHeaders(), Position.emptyPosition())
+                UnsupportedOperationException.class,
+                () -> context.logChange("Store", Bytes.wrap("k".getBytes()), null, 0L, new RecordHeaders(), Position.emptyPosition())
         );
     }
 
@@ -575,8 +575,8 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnGetStateStore() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.getStateStore("store")
+                UnsupportedOperationException.class,
+                () -> context.getStateStore("store")
         );
     }
 
@@ -586,8 +586,8 @@ public class ProcessorContextImplTest {
         context.recordContext = mock(ProcessorRecordContext.class);
 
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.forward("key", "value")
+                UnsupportedOperationException.class,
+                () -> context.forward("key", "value")
         );
     }
 
@@ -597,8 +597,8 @@ public class ProcessorContextImplTest {
         context.recordContext = mock(ProcessorRecordContext.class);
 
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.forward("key", "value", To.child("child-name"))
+                UnsupportedOperationException.class,
+                () -> context.forward("key", "value", To.child("child-name"))
         );
     }
 
@@ -606,8 +606,8 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnCommit() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.commit()
+                UnsupportedOperationException.class,
+                () -> context.commit()
         );
     }
 
@@ -615,8 +615,9 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnSchedule() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.schedule(Duration.ofMillis(100L), PunctuationType.STREAM_TIME, t -> { })
+                UnsupportedOperationException.class,
+                () -> context.schedule(Duration.ofMillis(100L), PunctuationType.STREAM_TIME, t -> {
+                })
         );
     }
 
@@ -624,8 +625,8 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnTopic() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.topic()
+                UnsupportedOperationException.class,
+                () -> context.topic()
         );
     }
 
@@ -633,8 +634,8 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnPartition() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.partition()
+                UnsupportedOperationException.class,
+                () -> context.partition()
         );
     }
 
@@ -642,8 +643,8 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnOffset() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.offset()
+                UnsupportedOperationException.class,
+                () -> context.offset()
         );
     }
 
@@ -651,8 +652,8 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnTimestamp() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.timestamp()
+                UnsupportedOperationException.class,
+                () -> context.timestamp()
         );
     }
 
@@ -660,8 +661,8 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnCurrentNode() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.currentNode()
+                UnsupportedOperationException.class,
+                () -> context.currentNode()
         );
     }
 
@@ -669,8 +670,8 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnSetRecordContext() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.setRecordContext(mock(ProcessorRecordContext.class))
+                UnsupportedOperationException.class,
+                () -> context.setRecordContext(mock(ProcessorRecordContext.class))
         );
     }
 
@@ -678,8 +679,8 @@ public class ProcessorContextImplTest {
     public void shouldThrowUnsupportedOperationExceptionOnRecordContext() {
         context = getStandbyContext();
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> context.recordContext()
+                UnsupportedOperationException.class,
+                () -> context.recordContext()
         );
     }
 
@@ -728,10 +729,10 @@ public class ProcessorContextImplTest {
         assertEquals(emptyMetadata, context.processorMetadata());
 
         final ProcessorMetadata metadata = new ProcessorMetadata(
-            mkMap(
-                mkEntry("key1", 10L),
-                mkEntry("key2", 100L)
-            )
+                mkMap(
+                        mkEntry("key1", 10L),
+                        mkEntry("key2", 100L)
+                )
         );
 
         context.setProcessorMetadata(metadata);
@@ -743,29 +744,29 @@ public class ProcessorContextImplTest {
 
     private void mockProcessorNodeWithLocalKeyValueStore() {
         context.setCurrentNode(
-            new ProcessorNode<>(
-                "fake",
-                (org.apache.kafka.streams.processor.api.Processor<String, Long, Object, Object>) null,
-                new HashSet<>(
-                    asList(
-                        "LocalKeyValueStore",
-                        "LocalTimestampedKeyValueStore",
-                        "LocalWindowStore",
-                        "LocalTimestampedWindowStore",
-                        "LocalSessionStore"
-                    )
+                new ProcessorNode<>(
+                        "fake",
+                        (org.apache.kafka.streams.processor.api.Processor<String, Long, Object, Object>) null,
+                        new HashSet<>(
+                                asList(
+                                        "LocalKeyValueStore",
+                                        "LocalTimestampedKeyValueStore",
+                                        "LocalWindowStore",
+                                        "LocalTimestampedWindowStore",
+                                        "LocalSessionStore"
+                                )
+                        )
                 )
-            )
         );
     }
 
     private ProcessorContextImpl buildProcessorContextImpl(final StreamsConfig streamsConfig, final ProcessorStateManager stateManager) {
         return new ProcessorContextImpl(
-            mock(TaskId.class),
-            streamsConfig,
-            stateManager,
-            mock(StreamsMetricsImpl.class),
-            mock(ThreadCache.class)
+                mock(TaskId.class),
+                streamsConfig,
+                stateManager,
+                mock(StreamsMetricsImpl.class),
+                mock(ThreadCache.class)
         );
     }
 

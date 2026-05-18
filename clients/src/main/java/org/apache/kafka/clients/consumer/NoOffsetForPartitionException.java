@@ -54,6 +54,7 @@ public class NoOffsetForPartitionException extends InvalidOffsetException {
 
     /**
      * Returns all partitions for which no offsets are defined.
+     *
      * @return All partitions without offsets
      */
     public Set<TopicPartition> partitions() {

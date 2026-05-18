@@ -28,9 +28,9 @@ public class AccessControlEntry {
     /**
      * Create an instance of an access control entry with the provided parameters.
      *
-     * @param principal non-null principal
-     * @param host non-null host
-     * @param operation non-null operation, ANY is not an allowed operation
+     * @param principal      non-null principal
+     * @param host           non-null host
+     * @param operation      non-null operation, ANY is not an allowed operation
      * @param permissionType non-null permission type, ANY is not an allowed type
      */
     public AccessControlEntry(String principal, String host, AclOperation operation, AclPermissionType permissionType) {

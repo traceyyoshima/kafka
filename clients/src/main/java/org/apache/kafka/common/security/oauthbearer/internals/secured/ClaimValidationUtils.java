@@ -45,13 +45,11 @@ public class ClaimValidationUtils {
      *
      * @param scopeClaimName Name of the claim used for the scope values
      * @param scopes         Collection of String scopes
-     *
      * @return Unmodifiable {@link Set} that includes the values of the original set, but with
-     *         each value trimmed
-     *
+     * each value trimmed
      * @throws JwtValidatorException Thrown if the value is <code>null</code>, contains duplicates, or
-     *                           if any of the values in the set are <code>null</code>, empty,
-     *                           or whitespace only
+     *                               if any of the values in the set are <code>null</code>, empty,
+     *                               or whitespace only
      */
 
     public static Set<String> validateScopes(String scopeClaimName, Collection<String> scopes) throws JwtValidatorException {
@@ -83,9 +81,7 @@ public class ClaimValidationUtils {
      *
      * @param claimName  Name of the claim
      * @param claimValue Expiration time (in milliseconds)
-     *
      * @return Input parameter, as provided
-     *
      * @throws JwtValidatorException Thrown if the value is <code>null</code> or negative
      */
 
@@ -111,9 +107,7 @@ public class ClaimValidationUtils {
      *
      * @param claimName  Name of the claim
      * @param claimValue Name of the subject
-     *
      * @return Trimmed version of the <code>claimValue</code> parameter
-     *
      * @throws JwtValidatorException Thrown if the value is <code>null</code>, empty, or whitespace only
      */
 
@@ -131,9 +125,7 @@ public class ClaimValidationUtils {
      *
      * @param claimName  Name of the claim
      * @param claimValue Start time (in milliseconds) or <code>null</code> if not used
-     *
      * @return Input parameter, as provided
-     *
      * @throws JwtValidatorException Thrown if the value is negative
      */
 
@@ -156,9 +148,7 @@ public class ClaimValidationUtils {
      *
      * @param name  "Standard" name of the claim, e.g. <code>sub</code>
      * @param value "Override" name of the claim, e.g. <code>email</code>
-     *
      * @return Trimmed version of the <code>value</code> parameter
-     *
      * @throws JwtValidatorException Thrown if the value is <code>null</code>, empty, or whitespace only
      */
 

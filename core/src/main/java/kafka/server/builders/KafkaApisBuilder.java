@@ -204,32 +204,33 @@ public class KafkaApisBuilder {
         if (fetchManager == null) throw new RuntimeException("You must set fetchManager");
         if (sharePartitionManager == null) throw new RuntimeException("You must set sharePartitionManager");
         if (clientMetricsManager == null) throw new RuntimeException("You must set clientMetricsManager");
-        if (brokerTopicStats == null) brokerTopicStats = new BrokerTopicStats(config.remoteLogManagerConfig().isRemoteStorageSystemEnabled());
+        if (brokerTopicStats == null)
+            brokerTopicStats = new BrokerTopicStats(config.remoteLogManagerConfig().isRemoteStorageSystemEnabled());
         if (apiVersionManager == null) throw new RuntimeException("You must set apiVersionManager");
         if (groupConfigManager == null) throw new RuntimeException("You must set groupConfigManager");
 
         return new KafkaApis(requestChannel,
-                             forwardingManager,
-                             replicaManager,
-                             groupCoordinator,
-                             txnCoordinator,
-                             shareCoordinator,
-                             autoTopicCreationManager,
-                             brokerId,
-                             config,
-                             configRepository,
-                             metadataCache,
-                             metrics,
-                             OptionConverters.toScala(authorizerPlugin),
-                             quotas,
-                             fetchManager,
-                             sharePartitionManager,
-                             brokerTopicStats,
-                             clusterId,
-                             time,
-                             tokenManager,
-                             apiVersionManager,
-                             clientMetricsManager,
-                             groupConfigManager);
+                forwardingManager,
+                replicaManager,
+                groupCoordinator,
+                txnCoordinator,
+                shareCoordinator,
+                autoTopicCreationManager,
+                brokerId,
+                config,
+                configRepository,
+                metadataCache,
+                metrics,
+                OptionConverters.toScala(authorizerPlugin),
+                quotas,
+                fetchManager,
+                sharePartitionManager,
+                brokerTopicStats,
+                clusterId,
+                time,
+                tokenManager,
+                apiVersionManager,
+                clientMetricsManager,
+                groupConfigManager);
     }
 }

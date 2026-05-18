@@ -31,31 +31,31 @@ public class ReadOnlySessionStoreFacade<K, V> implements ReadOnlySessionStore<K,
 
     @Override
     public KeyValueIterator<Windowed<K>, V> findSessions(final K key,
-                                                          final long earliestSessionEndTime,
-                                                          final long latestSessionStartTime) {
+                                                         final long earliestSessionEndTime,
+                                                         final long latestSessionStartTime) {
         return new SessionStoreIteratorFacade<>(inner.findSessions(key, earliestSessionEndTime, latestSessionStartTime));
     }
 
     @Override
     public KeyValueIterator<Windowed<K>, V> backwardFindSessions(final K key,
-                                                                  final long earliestSessionEndTime,
-                                                                  final long latestSessionStartTime) {
+                                                                 final long earliestSessionEndTime,
+                                                                 final long latestSessionStartTime) {
         return new SessionStoreIteratorFacade<>(inner.backwardFindSessions(key, earliestSessionEndTime, latestSessionStartTime));
     }
 
     @Override
     public KeyValueIterator<Windowed<K>, V> findSessions(final K keyFrom,
-                                                          final K keyTo,
-                                                          final long earliestSessionEndTime,
-                                                          final long latestSessionStartTime) {
+                                                         final K keyTo,
+                                                         final long earliestSessionEndTime,
+                                                         final long latestSessionStartTime) {
         return new SessionStoreIteratorFacade<>(inner.findSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime));
     }
 
     @Override
     public KeyValueIterator<Windowed<K>, V> backwardFindSessions(final K keyFrom,
-                                                                  final K keyTo,
-                                                                  final long earliestSessionEndTime,
-                                                                  final long latestSessionStartTime) {
+                                                                 final K keyTo,
+                                                                 final long earliestSessionEndTime,
+                                                                 final long latestSessionStartTime) {
         return new SessionStoreIteratorFacade<>(inner.backwardFindSessions(keyFrom, keyTo, earliestSessionEndTime, latestSessionStartTime));
     }
 

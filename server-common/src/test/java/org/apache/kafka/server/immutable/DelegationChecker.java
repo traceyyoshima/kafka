@@ -30,15 +30,15 @@ import static org.mockito.Mockito.when;
 
 /**
  * Facilitate testing of wrapper class delegation.
- *
+ * <p>
  * We require the following things to test delegation:
- *
+ * <p>
  * 1. A mock object to which the wrapper is expected to delegate method invocations
  * 2. A way to define how the mock is expected to behave when its method is invoked
  * 3. A way to define how to invoke the method on the wrapper
  * 4. A way to test that the method on the mock is invoked correctly when the wrapper method is invoked
  * 5. A way to test that any return value from the wrapper method is correct
-
+ *
  * @param <D> delegate type
  * @param <W> wrapper type
  * @param <T> delegating method return type, if any
@@ -56,7 +56,7 @@ public abstract class DelegationChecker<D, W, T> {
     private boolean persistentCollectionMethodInvokedCorrectly = false;
 
     /**
-     * @param mock mock for the underlying delegate
+     * @param mock           mock for the underlying delegate
      * @param wrapperCreator how to create a wrapper for the mock
      */
     protected DelegationChecker(D mock, Function<D, W> wrapperCreator) {
@@ -92,8 +92,8 @@ public abstract class DelegationChecker<D, W, T> {
     }
 
     public <R> DelegationChecker<D, W, T> defineWrapperFunctionInvocationAndMockReturnValueTransformation(
-        Function<W, T> wrapperFunctionApplier,
-        Function<T, R> expectedFunctionReturnValueTransformation) {
+            Function<W, T> wrapperFunctionApplier,
+            Function<T, R> expectedFunctionReturnValueTransformation) {
         this.wrapperFunctionApplier = Objects.requireNonNull(wrapperFunctionApplier);
         this.mockFunctionReturnValueTransformation = Objects.requireNonNull(expectedFunctionReturnValueTransformation);
         return this;
@@ -112,8 +112,8 @@ public abstract class DelegationChecker<D, W, T> {
 
     public void doVoidMethodDelegationCheck() {
         if (mockConsumer == null || wrapperConsumer == null ||
-            mockConfigurationFunction != null || wrapperFunctionApplier != null ||
-            mockFunctionReturnValue != null || mockFunctionReturnValueTransformation != null) {
+                mockConfigurationFunction != null || wrapperFunctionApplier != null ||
+                mockFunctionReturnValue != null || mockFunctionReturnValueTransformation != null) {
             throwExceptionForIllegalTestSetup();
         }
         // configure the mock to behave as desired
@@ -136,14 +136,14 @@ public abstract class DelegationChecker<D, W, T> {
         mockConsumer.accept(Mockito.doCallRealMethod().when(mock));
 
         assertThrows(UnsupportedOperationException.class, () -> wrapperConsumer.accept(wrapper),
-            "Expected to Throw UnsupportedOperationException");
+                "Expected to Throw UnsupportedOperationException");
     }
 
     @SuppressWarnings("unchecked")
     public void doFunctionDelegationCheck() {
         if (mockConfigurationFunction == null || wrapperFunctionApplier == null ||
-            mockFunctionReturnValueTransformation == null ||
-            mockConsumer != null || wrapperConsumer != null) {
+                mockFunctionReturnValueTransformation == null ||
+                mockConsumer != null || wrapperConsumer != null) {
             throwExceptionForIllegalTestSetup();
         }
         // configure the mock to behave as desired
@@ -170,11 +170,11 @@ public abstract class DelegationChecker<D, W, T> {
 
         when(mockConfigurationFunction.apply(mock)).thenCallRealMethod();
         assertThrows(UnsupportedOperationException.class, () -> wrapperFunctionApplier.apply(wrapper),
-            "Expected to Throw UnsupportedOperationException");
+                "Expected to Throw UnsupportedOperationException");
     }
 
     private static void throwExceptionForIllegalTestSetup() {
         throw new IllegalStateException(
-            "test setup error: must define both mock and wrapper consumers or both mock and wrapper functions");
+                "test setup error: must define both mock and wrapper consumers or both mock and wrapper functions");
     }
 }

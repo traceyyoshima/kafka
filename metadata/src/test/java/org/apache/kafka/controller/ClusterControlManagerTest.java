@@ -90,33 +90,34 @@ public class ClusterControlManagerTest {
 
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0,
-                QuorumFeatures.defaultSupportedFeatureMap(true),
-                List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0,
+                        QuorumFeatures.defaultSupportedFeatureMap(true),
+                        List.of(0))).
+                build();
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setTime(time).
-            setSnapshotRegistry(snapshotRegistry).
-            setSessionTimeoutNs(1000).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setTime(time).
+                setSnapshotRegistry(snapshotRegistry).
+                setSessionTimeoutNs(1000).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
         clusterControl.activate();
         assertFalse(clusterControl.isUnfenced(0));
 
         RegisterBrokerRecord brokerRecord = new RegisterBrokerRecord().setBrokerEpoch(100).setBrokerId(1);
         brokerRecord.endPoints().add(new BrokerEndpoint().
-            setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
-            setPort((short) 9092).
-            setName("PLAINTEXT").
-            setHost("example.com"));
+                setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
+                setPort((short) 9092).
+                setName("PLAINTEXT").
+                setHost("example.com"));
         clusterControl.replay(brokerRecord, 100L);
         clusterControl.checkBrokerEpoch(1, 100);
         assertThrows(StaleBrokerEpochException.class,
-            () -> clusterControl.checkBrokerEpoch(1, 101));
+                () -> clusterControl.checkBrokerEpoch(1, 101));
         assertThrows(StaleBrokerEpochException.class,
-            () -> clusterControl.checkBrokerEpoch(2, 100));
+                () -> clusterControl.checkBrokerEpoch(2, 100));
         assertFalse(clusterControl.isUnfenced(0));
         assertFalse(clusterControl.isUnfenced(1));
 
@@ -139,34 +140,35 @@ public class ClusterControlManagerTest {
 
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0,
-                QuorumFeatures.defaultSupportedFeatureMap(true),
-                List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0,
+                        QuorumFeatures.defaultSupportedFeatureMap(true),
+                        List.of(0))).
+                build();
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-            setTime(time).
-            setSnapshotRegistry(snapshotRegistry).
-            setSessionTimeoutNs(1000).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                setTime(time).
+                setSnapshotRegistry(snapshotRegistry).
+                setSessionTimeoutNs(1000).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
 
         assertFalse(clusterControl.isUnfenced(0));
         assertFalse(clusterControl.inControlledShutdown(0));
 
         RegisterBrokerRecord brokerRecord = new RegisterBrokerRecord().
-            setBrokerEpoch(100).
-            setBrokerId(0).
-            setRack(null).
-            setFenced(true).
-            setInControlledShutdown(true);
+                setBrokerEpoch(100).
+                setBrokerId(0).
+                setRack(null).
+                setFenced(true).
+                setInControlledShutdown(true);
         brokerRecord.endPoints().add(new BrokerEndpoint().
-            setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
-            setPort((short) 9092).
-            setName("PLAINTEXT").
-            setHost("example.com"));
+                setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
+                setPort((short) 9092).
+                setName("PLAINTEXT").
+                setHost("example.com"));
         clusterControl.replay(brokerRecord, 100L);
 
         assertFalse(clusterControl.isUnfenced(0));
@@ -192,51 +194,52 @@ public class ClusterControlManagerTest {
 
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0,
-                QuorumFeatures.defaultSupportedFeatureMap(true),
-                List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0,
+                        QuorumFeatures.defaultSupportedFeatureMap(true),
+                        List.of(0))).
+                build();
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-            setTime(time).
-            setSnapshotRegistry(snapshotRegistry).
-            setSessionTimeoutNs(1000).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                setTime(time).
+                setSnapshotRegistry(snapshotRegistry).
+                setSessionTimeoutNs(1000).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
 
         assertFalse(clusterControl.isUnfenced(0));
         assertFalse(clusterControl.inControlledShutdown(0));
 
         RegisterBrokerRecord brokerRecord = new RegisterBrokerRecord().
-            setBrokerEpoch(100).
-            setBrokerId(0).
-            setRack(null).
-            setFenced(false);
+                setBrokerEpoch(100).
+                setBrokerId(0).
+                setRack(null).
+                setFenced(false);
         brokerRecord.endPoints().add(new BrokerEndpoint().
-            setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
-            setPort((short) 9092).
-            setName("PLAINTEXT").
-            setHost("example.com"));
+                setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
+                setPort((short) 9092).
+                setName("PLAINTEXT").
+                setHost("example.com"));
         clusterControl.replay(brokerRecord, 100L);
 
         assertTrue(clusterControl.isUnfenced(0));
         assertFalse(clusterControl.inControlledShutdown(0));
 
         BrokerRegistrationChangeRecord registrationChangeRecord = new BrokerRegistrationChangeRecord()
-            .setBrokerId(0)
-            .setBrokerEpoch(100)
-            .setInControlledShutdown(BrokerRegistrationInControlledShutdownChange.IN_CONTROLLED_SHUTDOWN.value());
+                .setBrokerId(0)
+                .setBrokerEpoch(100)
+                .setInControlledShutdown(BrokerRegistrationInControlledShutdownChange.IN_CONTROLLED_SHUTDOWN.value());
         clusterControl.replay(registrationChangeRecord);
 
         assertTrue(clusterControl.isUnfenced(0));
         assertTrue(clusterControl.inControlledShutdown(0));
 
         registrationChangeRecord = new BrokerRegistrationChangeRecord()
-            .setBrokerId(0)
-            .setBrokerEpoch(100)
-            .setFenced(BrokerRegistrationFencingChange.UNFENCE.value());
+                .setBrokerId(0)
+                .setBrokerEpoch(100)
+                .setFenced(BrokerRegistrationFencingChange.UNFENCE.value());
         clusterControl.replay(registrationChangeRecord);
 
         assertTrue(clusterControl.isUnfenced(0));
@@ -247,29 +250,30 @@ public class ClusterControlManagerTest {
     public void testRegistrationWithIncorrectClusterId() {
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0,
-                QuorumFeatures.defaultSupportedFeatureMap(true),
-                List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0,
+                        QuorumFeatures.defaultSupportedFeatureMap(true),
+                        List.of(0))).
+                build();
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-            setTime(new MockTime(0, 0, 0)).
-            setSnapshotRegistry(snapshotRegistry).
-            setSessionTimeoutNs(1000).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                setTime(new MockTime(0, 0, 0)).
+                setSnapshotRegistry(snapshotRegistry).
+                setSessionTimeoutNs(1000).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
         clusterControl.activate();
         assertThrows(InconsistentClusterIdException.class, () ->
-            clusterControl.registerBroker(new BrokerRegistrationRequestData().
-                    setClusterId("WIjw3grwRZmR2uOpdpVXbg").
-                    setBrokerId(0).
-                    setRack(null).
-                    setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
-                123L,
-                new FinalizedControllerFeatures(Map.of(), 456L),
-                false));
+                clusterControl.registerBroker(new BrokerRegistrationRequestData().
+                                setClusterId("WIjw3grwRZmR2uOpdpVXbg").
+                                setBrokerId(0).
+                                setRack(null).
+                                setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
+                        123L,
+                        new FinalizedControllerFeatures(Map.of(), 456L),
+                        false));
     }
 
     private static Stream<Arguments> metadataVersions() {
@@ -277,7 +281,7 @@ public class ClusterControlManagerTest {
                 MetadataVersion.MINIMUM_VERSION,
                 MetadataVersion.IBP_3_7_IV2, // introduces directory assignment
                 MetadataVersion.latestTesting()
-            ).map(Arguments::of);
+        ).map(Arguments::of);
     }
 
     @ParameterizedTest
@@ -285,22 +289,23 @@ public class ClusterControlManagerTest {
     public void testRegisterBrokerRecordVersion(MetadataVersion metadataVersion) {
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0,
-                QuorumFeatures.defaultSupportedFeatureMap(true),
-                List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0,
+                        QuorumFeatures.defaultSupportedFeatureMap(true),
+                        List.of(0))).
+                build();
         featureControl.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(metadataVersion.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(metadataVersion.featureLevel()));
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-            setTime(new MockTime(0, 0, 0)).
-            setSnapshotRegistry(snapshotRegistry).
-            setSessionTimeoutNs(1000).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                setTime(new MockTime(0, 0, 0)).
+                setSnapshotRegistry(snapshotRegistry).
+                setSessionTimeoutNs(1000).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
         clusterControl.activate();
 
         List<Uuid> logDirs = metadataVersion.isDirectoryAssignmentSupported() ? List.of(
@@ -308,82 +313,83 @@ public class ClusterControlManagerTest {
                 Uuid.fromString("Vm1MjsOCR1OjDDydOsDbzg")
         ) : List.of();
         ControllerResult<BrokerRegistrationReply> result = clusterControl.registerBroker(
-            new BrokerRegistrationRequestData().
-                setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-                setBrokerId(0).
-                setLogDirs(logDirs).
-                setRack(null).
-                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                    Set.of(new BrokerRegistrationRequestData.Feature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(metadataVersion.featureLevel()).
-                        setMaxSupportedVersion(metadataVersion.featureLevel())))).
-                setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
-            123L,
-            new FinalizedControllerFeatures(Map.of(MetadataVersion.FEATURE_NAME, metadataVersion.featureLevel()), 456L),
-            false);
+                new BrokerRegistrationRequestData().
+                        setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                        setBrokerId(0).
+                        setLogDirs(logDirs).
+                        setRack(null).
+                        setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                Set.of(new BrokerRegistrationRequestData.Feature().
+                                        setName(MetadataVersion.FEATURE_NAME).
+                                        setMinSupportedVersion(metadataVersion.featureLevel()).
+                                        setMaxSupportedVersion(metadataVersion.featureLevel())))).
+                        setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
+                123L,
+                new FinalizedControllerFeatures(Map.of(MetadataVersion.FEATURE_NAME, metadataVersion.featureLevel()), 456L),
+                false);
 
         short expectedVersion = metadataVersion.registerBrokerRecordVersion();
 
         assertEquals(
-            List.of(new ApiMessageAndVersion(new RegisterBrokerRecord().
-                setBrokerEpoch(123L).
-                setBrokerId(0).
-                setRack(null).
-                setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")).
-                setFenced(true).
-                setLogDirs(logDirs).
-                setFeatures(new RegisterBrokerRecord.BrokerFeatureCollection(List.of(
-                    new RegisterBrokerRecord.BrokerFeature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(metadataVersion.featureLevel()).
-                        setMaxSupportedVersion(metadataVersion.featureLevel())))).
-                setInControlledShutdown(false), expectedVersion)),
-            result.records());
+                List.of(new ApiMessageAndVersion(new RegisterBrokerRecord().
+                        setBrokerEpoch(123L).
+                        setBrokerId(0).
+                        setRack(null).
+                        setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")).
+                        setFenced(true).
+                        setLogDirs(logDirs).
+                        setFeatures(new RegisterBrokerRecord.BrokerFeatureCollection(List.of(
+                                new RegisterBrokerRecord.BrokerFeature().
+                                        setName(MetadataVersion.FEATURE_NAME).
+                                        setMinSupportedVersion(metadataVersion.featureLevel()).
+                                        setMaxSupportedVersion(metadataVersion.featureLevel())))).
+                        setInControlledShutdown(false), expectedVersion)),
+                result.records());
     }
 
     @Test
     public void testUnregister() {
         RegisterBrokerRecord brokerRecord = new RegisterBrokerRecord().
-            setBrokerId(1).
-            setBrokerEpoch(100).
-            setIncarnationId(Uuid.fromString("fPZv1VBsRFmnlRvmGcOW9w")).
-            setRack("arack");
+                setBrokerId(1).
+                setBrokerEpoch(100).
+                setIncarnationId(Uuid.fromString("fPZv1VBsRFmnlRvmGcOW9w")).
+                setRack("arack");
         brokerRecord.endPoints().add(new BrokerEndpoint().
-            setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
-            setPort((short) 9092).
-            setName("PLAINTEXT").
-            setHost("example.com"));
+                setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
+                setPort((short) 9092).
+                setName("PLAINTEXT").
+                setHost("example.com"));
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0,
-                QuorumFeatures.defaultSupportedFeatureMap(true),
-                List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0,
+                        QuorumFeatures.defaultSupportedFeatureMap(true),
+                        List.of(0))).
+                build();
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setTime(new MockTime(0, 0, 0)).
-            setSnapshotRegistry(snapshotRegistry).
-            setSessionTimeoutNs(1000).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setTime(new MockTime(0, 0, 0)).
+                setSnapshotRegistry(snapshotRegistry).
+                setSessionTimeoutNs(1000).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
         clusterControl.activate();
         clusterControl.replay(brokerRecord, 100L);
         assertEquals(new BrokerRegistration.Builder().
-            setId(1).
-            setEpoch(100).
-            setIncarnationId(Uuid.fromString("fPZv1VBsRFmnlRvmGcOW9w")).
-            setListeners(Map.of("PLAINTEXT",
-                new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "example.com", 9092))).
-            setRack(Optional.of("arack")).
-            setFenced(true).
-            setInControlledShutdown(false).build(),
-            clusterControl.brokerRegistrations().get(1));
+                        setId(1).
+                        setEpoch(100).
+                        setIncarnationId(Uuid.fromString("fPZv1VBsRFmnlRvmGcOW9w")).
+                        setListeners(Map.of("PLAINTEXT",
+                                new Endpoint("PLAINTEXT", SecurityProtocol.PLAINTEXT, "example.com", 9092))).
+                        setRack(Optional.of("arack")).
+                        setFenced(true).
+                        setInControlledShutdown(false).build(),
+                clusterControl.brokerRegistrations().get(1));
         assertEquals(100L, clusterControl.registerBrokerRecordOffset(brokerRecord.brokerId()).getAsLong());
         UnregisterBrokerRecord unregisterRecord = new UnregisterBrokerRecord().
-            setBrokerId(1).
-            setBrokerEpoch(100);
+                setBrokerId(1).
+                setBrokerEpoch(100);
         clusterControl.replay(unregisterRecord);
         assertFalse(clusterControl.brokerRegistrations().containsKey(1));
         assertFalse(clusterControl.registerBrokerRecordOffset(brokerRecord.brokerId()).isPresent());
@@ -395,36 +401,37 @@ public class ClusterControlManagerTest {
         MockTime time = new MockTime(0, 0, 0);
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0,
-                QuorumFeatures.defaultSupportedFeatureMap(true),
-                List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0,
+                        QuorumFeatures.defaultSupportedFeatureMap(true),
+                        List.of(0))).
+                build();
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setTime(time).
-            setSnapshotRegistry(snapshotRegistry).
-            setSessionTimeoutNs(1000).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setTime(time).
+                setSnapshotRegistry(snapshotRegistry).
+                setSessionTimeoutNs(1000).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
         clusterControl.activate();
         for (int i = 0; i < numUsableBrokers; i++) {
             RegisterBrokerRecord brokerRecord =
-                new RegisterBrokerRecord().setBrokerEpoch(100).setBrokerId(i);
+                    new RegisterBrokerRecord().setBrokerEpoch(100).setBrokerId(i);
             brokerRecord.endPoints().add(new BrokerEndpoint().
-                setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
-                setPort((short) 9092).
-                setName("PLAINTEXT").
-                setHost("example.com"));
+                    setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
+                    setPort((short) 9092).
+                    setName("PLAINTEXT").
+                    setHost("example.com"));
             clusterControl.replay(brokerRecord, 100L);
             UnfenceBrokerRecord unfenceRecord =
-                new UnfenceBrokerRecord().setId(i).setEpoch(100);
+                    new UnfenceBrokerRecord().setId(i).setEpoch(100);
             clusterControl.replay(unfenceRecord);
             clusterControl.heartbeatManager().touch(i, false, 0);
         }
         for (int i = 0; i < numUsableBrokers; i++) {
             assertTrue(clusterControl.isUnfenced(i),
-                String.format("broker %d was not unfenced.", i));
+                    String.format("broker %d was not unfenced.", i));
         }
         for (int i = 0; i < 100; i++) {
             List<PartitionAssignment> results = clusterControl.replicaPlacer().place(
@@ -458,78 +465,80 @@ public class ClusterControlManagerTest {
         MockTime time = new MockTime(0, 0, 0);
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0,
-                QuorumFeatures.defaultSupportedFeatureMap(true),
-                List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0,
+                        QuorumFeatures.defaultSupportedFeatureMap(true),
+                        List.of(0))).
+                build();
         featureControl.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(metadataVersion.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(metadataVersion.featureLevel()));
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setTime(time).
-            setSnapshotRegistry(snapshotRegistry).
-            setSessionTimeoutNs(1000).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setTime(time).
+                setSnapshotRegistry(snapshotRegistry).
+                setSessionTimeoutNs(1000).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
         clusterControl.activate();
         assertFalse(clusterControl.isUnfenced(0));
         for (int i = 0; i < 3; i++) {
             RegisterBrokerRecord brokerRecord = new RegisterBrokerRecord().
-                setBrokerEpoch(100).setBrokerId(i).setRack(null);
+                    setBrokerEpoch(100).setBrokerId(i).setRack(null);
             brokerRecord.endPoints().add(new BrokerEndpoint().
-                setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
-                setPort((short) 9092 + i).
-                setName("PLAINTEXT").
-                setHost("example.com"));
+                    setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
+                    setPort((short) 9092 + i).
+                    setName("PLAINTEXT").
+                    setHost("example.com"));
             clusterControl.replay(brokerRecord, 100L);
         }
         for (int i = 0; i < 2; i++) {
             UnfenceBrokerRecord unfenceBrokerRecord =
-                new UnfenceBrokerRecord().setId(i).setEpoch(100);
+                    new UnfenceBrokerRecord().setId(i).setEpoch(100);
             clusterControl.replay(unfenceBrokerRecord);
         }
         BrokerRegistrationChangeRecord registrationChangeRecord =
-            new BrokerRegistrationChangeRecord().
-                setBrokerId(0).
-                setBrokerEpoch(100).
-                setInControlledShutdown(BrokerRegistrationInControlledShutdownChange.
-                    IN_CONTROLLED_SHUTDOWN.value());
+                new BrokerRegistrationChangeRecord().
+                        setBrokerId(0).
+                        setBrokerEpoch(100).
+                        setInControlledShutdown(BrokerRegistrationInControlledShutdownChange.
+                                IN_CONTROLLED_SHUTDOWN.value());
         clusterControl.replay(registrationChangeRecord);
         short expectedVersion = metadataVersion.registerBrokerRecordVersion();
 
         ImageWriterOptions options = new ImageWriterOptions.Builder(metadataVersion).
-                setLossHandler(__ -> { }).
+                setLossHandler(__ -> {
+                }).
                 build();
         assertEquals(new ApiMessageAndVersion(new RegisterBrokerRecord().
-                setBrokerEpoch(100).setBrokerId(0).setRack(null).
-                setEndPoints(new BrokerEndpointCollection(Set.of(
-                    new BrokerEndpoint().setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
-                        setPort((short) 9092).
-                        setName("PLAINTEXT").
-                        setHost("example.com")))).
-                setInControlledShutdown(true).
-                setFenced(false), expectedVersion),
-            clusterControl.brokerRegistrations().get(0).toRecord(options));
+                        setBrokerEpoch(100).setBrokerId(0).setRack(null).
+                        setEndPoints(new BrokerEndpointCollection(Set.of(
+                                new BrokerEndpoint().setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
+                                        setPort((short) 9092).
+                                        setName("PLAINTEXT").
+                                        setHost("example.com")))).
+                        setInControlledShutdown(true).
+                        setFenced(false), expectedVersion),
+                clusterControl.brokerRegistrations().get(0).toRecord(options));
         assertEquals(new ApiMessageAndVersion(new RegisterBrokerRecord().
-                setBrokerEpoch(100).setBrokerId(1).setRack(null).
-                setEndPoints(new BrokerEndpointCollection(Set.of(
-                    new BrokerEndpoint().setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
-                        setPort((short) 9093).
-                        setName("PLAINTEXT").
-                        setHost("example.com")))).
-                setFenced(false), expectedVersion),
-            clusterControl.brokerRegistrations().get(1).toRecord(options));
+                        setBrokerEpoch(100).setBrokerId(1).setRack(null).
+                        setEndPoints(new BrokerEndpointCollection(Set.of(
+                                new BrokerEndpoint().setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
+                                        setPort((short) 9093).
+                                        setName("PLAINTEXT").
+                                        setHost("example.com")))).
+                        setFenced(false), expectedVersion),
+                clusterControl.brokerRegistrations().get(1).toRecord(options));
         assertEquals(new ApiMessageAndVersion(new RegisterBrokerRecord().
-                setBrokerEpoch(100).setBrokerId(2).setRack(null).
-                setEndPoints(new BrokerEndpointCollection(Set.of(
-                    new BrokerEndpoint().setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
-                        setPort((short) 9094).
-                        setName("PLAINTEXT").
-                        setHost("example.com")))).
+                        setBrokerEpoch(100).setBrokerId(2).setRack(null).
+                        setEndPoints(new BrokerEndpointCollection(Set.of(
+                                new BrokerEndpoint().setSecurityProtocol(SecurityProtocol.PLAINTEXT.id).
+                                        setPort((short) 9094).
+                                        setName("PLAINTEXT").
+                                        setHost("example.com")))).
                         setFenced(true), expectedVersion),
-            clusterControl.brokerRegistrations().get(2).toRecord(options));
+                clusterControl.brokerRegistrations().get(2).toRecord(options));
     }
 
     @Test
@@ -537,50 +546,51 @@ public class ClusterControlManagerTest {
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         Map<String, VersionRange> supportedFeatures = new HashMap<>();
         supportedFeatures.put(MetadataVersion.FEATURE_NAME, VersionRange.of(
-            MetadataVersion.MINIMUM_VERSION.featureLevel(),
-            MetadataVersion.IBP_3_7_IV0.featureLevel()));
+                MetadataVersion.MINIMUM_VERSION.featureLevel(),
+                MetadataVersion.IBP_3_7_IV0.featureLevel()));
         supportedFeatures.put(TestFeatureVersion.FEATURE_NAME, VersionRange.of(
-            TestFeatureVersion.TEST_0.featureLevel(),
-            TestFeatureVersion.TEST_1.featureLevel()));
+                TestFeatureVersion.TEST_0.featureLevel(),
+                TestFeatureVersion.TEST_1.featureLevel()));
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0, supportedFeatures, List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0, supportedFeatures, List.of(0))).
+                build();
         featureControl.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(MetadataVersion.IBP_3_7_IV0.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(MetadataVersion.IBP_3_7_IV0.featureLevel()));
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-            setTime(new MockTime(0, 0, 0)).
-            setSnapshotRegistry(snapshotRegistry).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                setTime(new MockTime(0, 0, 0)).
+                setSnapshotRegistry(snapshotRegistry).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
         clusterControl.activate();
         FeatureLevelRecord testFeatureRecord = new FeatureLevelRecord().
-            setName(TestFeatureVersion.FEATURE_NAME).setFeatureLevel((short) 1);
+                setName(TestFeatureVersion.FEATURE_NAME).setFeatureLevel((short) 1);
         featureControl.replay(testFeatureRecord);
 
         List<Uuid> logDirs = List.of(Uuid.fromString("yJGxmjfbQZSVFAlNM3uXZg"), Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"));
         BrokerRegistrationRequestData baseRequest = new BrokerRegistrationRequestData().
-            setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-            setBrokerId(0).
-            setRack(null).
-            setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")).
-            setLogDirs(logDirs);
+                setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                setBrokerId(0).
+                setRack(null).
+                setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")).
+                setLogDirs(logDirs);
 
         assertEquals("Unable to register because the broker does not support finalized version 1 of " +
-                "test.feature.version. The broker wants a version between 0 and 0, inclusive.",
-            assertThrows(UnsupportedVersionException.class,
-                () -> clusterControl.registerBroker(
-                    baseRequest.setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                        Set.of(new BrokerRegistrationRequestData.Feature().
-                            setName(MetadataVersion.FEATURE_NAME).
-                            setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                            setMaxSupportedVersion(MetadataVersion.IBP_3_7_IV0.featureLevel())))),
-                    123L,
-                    featureControl.finalizedFeatures(Long.MAX_VALUE),
-                    false)).getMessage());
+                        "test.feature.version. The broker wants a version between 0 and 0, inclusive.",
+                assertThrows(UnsupportedVersionException.class,
+                        () -> clusterControl.registerBroker(
+                                baseRequest.setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                        Set.of(new BrokerRegistrationRequestData.Feature().
+                                                setName(MetadataVersion.FEATURE_NAME).
+                                                setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                                setMaxSupportedVersion(MetadataVersion.IBP_3_7_IV0.featureLevel())))),
+                                123L,
+                                featureControl.finalizedFeatures(Long.MAX_VALUE),
+                                false)).getMessage());
     }
 
     @Test
@@ -588,34 +598,35 @@ public class ClusterControlManagerTest {
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
         Map<String, VersionRange> supportedFeatures = new HashMap<>();
         supportedFeatures.put(MetadataVersion.FEATURE_NAME, VersionRange.of(
-            MetadataVersion.MINIMUM_VERSION.featureLevel(),
-            MetadataVersion.IBP_3_9_IV0.featureLevel()));
+                MetadataVersion.MINIMUM_VERSION.featureLevel(),
+                MetadataVersion.IBP_3_9_IV0.featureLevel()));
         supportedFeatures.put(KRaftVersion.FEATURE_NAME, VersionRange.of(
-            KRaftVersion.KRAFT_VERSION_1.featureLevel(),
-            KRaftVersion.KRAFT_VERSION_1.featureLevel()));
+                KRaftVersion.KRAFT_VERSION_1.featureLevel(),
+                KRaftVersion.KRAFT_VERSION_1.featureLevel()));
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
-            setSnapshotRegistry(snapshotRegistry).
-            setQuorumFeatures(new QuorumFeatures(0, supportedFeatures, List.of(0))).
-            build();
+                setSnapshotRegistry(snapshotRegistry).
+                setQuorumFeatures(new QuorumFeatures(0, supportedFeatures, List.of(0))).
+                build();
         featureControl.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(MetadataVersion.IBP_3_9_IV0.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(MetadataVersion.IBP_3_9_IV0.featureLevel()));
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-            setTime(new MockTime(0, 0, 0)).
-            setSnapshotRegistry(snapshotRegistry).
-            setFeatureControlManager(featureControl).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                setTime(new MockTime(0, 0, 0)).
+                setSnapshotRegistry(snapshotRegistry).
+                setFeatureControlManager(featureControl).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
         clusterControl.activate();
 
         List<Uuid> logDirs = List.of(Uuid.fromString("yJGxmjfbQZSVFAlNM3uXZg"), Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"));
         BrokerRegistrationRequestData baseRequest = new BrokerRegistrationRequestData().
-            setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-            setBrokerId(0).
-            setRack(null).
-            setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")).
-            setLogDirs(logDirs);
+                setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                setBrokerId(0).
+                setRack(null).
+                setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")).
+                setLogDirs(logDirs);
 
         // quorum controller passes in the latest kraft version to populate finalized features
         Map<String, Short> updatedFeaturesMap = new HashMap<>(featureControl.finalizedFeatures(Long.MAX_VALUE).featureMap());
@@ -623,50 +634,50 @@ public class ClusterControlManagerTest {
         FinalizedControllerFeatures updatedFinalizedFeatures = new FinalizedControllerFeatures(updatedFeaturesMap, Long.MAX_VALUE);
 
         assertEquals("Unable to register because the broker does not support finalized version 1 of " +
-                "kraft.version. The broker wants a version between 0 and 0, inclusive.",
-            assertThrows(UnsupportedVersionException.class,
-                () -> clusterControl.registerBroker(
-                    baseRequest.setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                        Set.of(new BrokerRegistrationRequestData.Feature().
-                            setName(MetadataVersion.FEATURE_NAME).
-                            setMinSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()).
-                            setMaxSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel())))),
-                    123L,
-                    updatedFinalizedFeatures,
-                    false)).getMessage());
+                        "kraft.version. The broker wants a version between 0 and 0, inclusive.",
+                assertThrows(UnsupportedVersionException.class,
+                        () -> clusterControl.registerBroker(
+                                baseRequest.setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                        Set.of(new BrokerRegistrationRequestData.Feature().
+                                                setName(MetadataVersion.FEATURE_NAME).
+                                                setMinSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()).
+                                                setMaxSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel())))),
+                                123L,
+                                updatedFinalizedFeatures,
+                                false)).getMessage());
 
         assertEquals("Unable to register because the broker does not support finalized version 1 of " +
-                "kraft.version. The broker wants a version between 0 and 0, inclusive.",
-            assertThrows(UnsupportedVersionException.class,
-                () -> clusterControl.registerBroker(
-                    baseRequest.setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                        List.of(
-                            new BrokerRegistrationRequestData.Feature().
-                                setName(MetadataVersion.FEATURE_NAME).
-                                setMinSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()).
-                                setMaxSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()),
-                            new BrokerRegistrationRequestData.Feature().
-                                setName(KRaftVersion.FEATURE_NAME).
-                                setMinSupportedVersion(KRaftVersion.KRAFT_VERSION_0.featureLevel()).
-                                setMaxSupportedVersion(KRaftVersion.KRAFT_VERSION_0.featureLevel())))),
-                    123L,
-                    updatedFinalizedFeatures,
-                    false)).getMessage());
+                        "kraft.version. The broker wants a version between 0 and 0, inclusive.",
+                assertThrows(UnsupportedVersionException.class,
+                        () -> clusterControl.registerBroker(
+                                baseRequest.setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                        List.of(
+                                                new BrokerRegistrationRequestData.Feature().
+                                                        setName(MetadataVersion.FEATURE_NAME).
+                                                        setMinSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()).
+                                                        setMaxSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()),
+                                                new BrokerRegistrationRequestData.Feature().
+                                                        setName(KRaftVersion.FEATURE_NAME).
+                                                        setMinSupportedVersion(KRaftVersion.KRAFT_VERSION_0.featureLevel()).
+                                                        setMaxSupportedVersion(KRaftVersion.KRAFT_VERSION_0.featureLevel())))),
+                                123L,
+                                updatedFinalizedFeatures,
+                                false)).getMessage());
 
         clusterControl.registerBroker(
-            baseRequest.setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                List.of(
-                    new BrokerRegistrationRequestData.Feature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()).
-                        setMaxSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()),
-                    new BrokerRegistrationRequestData.Feature().
-                        setName(KRaftVersion.FEATURE_NAME).
-                        setMinSupportedVersion(KRaftVersion.KRAFT_VERSION_1.featureLevel()).
-                        setMaxSupportedVersion(KRaftVersion.KRAFT_VERSION_1.featureLevel())))),
-            123L,
-            updatedFinalizedFeatures,
-            false);
+                baseRequest.setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                        List.of(
+                                new BrokerRegistrationRequestData.Feature().
+                                        setName(MetadataVersion.FEATURE_NAME).
+                                        setMinSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()).
+                                        setMaxSupportedVersion(MetadataVersion.IBP_3_9_IV0.featureLevel()),
+                                new BrokerRegistrationRequestData.Feature().
+                                        setName(KRaftVersion.FEATURE_NAME).
+                                        setMinSupportedVersion(KRaftVersion.KRAFT_VERSION_1.featureLevel()).
+                                        setMaxSupportedVersion(KRaftVersion.KRAFT_VERSION_1.featureLevel())))),
+                123L,
+                updatedFinalizedFeatures,
+                false);
     }
 
     @Test
@@ -681,52 +692,53 @@ public class ClusterControlManagerTest {
                         List.of(0))).
                 build();
         featureControl.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(MetadataVersion.IBP_3_5_IV0.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(MetadataVersion.IBP_3_5_IV0.featureLevel()));
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
                 setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
                 setTime(new MockTime(0, 0, 0)).
                 setSnapshotRegistry(snapshotRegistry).
                 setFeatureControlManager(featureControl).
-                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
                 build();
         clusterControl.activate();
 
         assertEquals("Unable to register because the broker does not support finalized version 9 of " +
-            "metadata.version. The broker wants a version between 7 and 7, inclusive.",
-            assertThrows(UnsupportedVersionException.class,
-                () -> clusterControl.registerBroker(
-                    new BrokerRegistrationRequestData().
-                        setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-                        setBrokerId(0).
-                        setRack(null).
-                        setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                            Set.of(new BrokerRegistrationRequestData.Feature().
-                                setName(MetadataVersion.FEATURE_NAME).
-                                setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                                setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
-                        setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
-                    123L,
-                    featureControl.finalizedFeatures(Long.MAX_VALUE),
-                    false)).getMessage());
+                        "metadata.version. The broker wants a version between 7 and 7, inclusive.",
+                assertThrows(UnsupportedVersionException.class,
+                        () -> clusterControl.registerBroker(
+                                new BrokerRegistrationRequestData().
+                                        setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                                        setBrokerId(0).
+                                        setRack(null).
+                                        setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                                Set.of(new BrokerRegistrationRequestData.Feature().
+                                                        setName(MetadataVersion.FEATURE_NAME).
+                                                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                                        setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
+                                        setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
+                                123L,
+                                featureControl.finalizedFeatures(Long.MAX_VALUE),
+                                false)).getMessage());
 
         assertEquals("Unable to register because the broker does not support finalized version 9 of " +
-            "metadata.version. The broker wants a version between 8 and 8, inclusive.",
-            assertThrows(UnsupportedVersionException.class,
-                () -> clusterControl.registerBroker(
-                    new BrokerRegistrationRequestData().
-                        setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
-                        setBrokerId(0).
-                        setRack(null).
-                        setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                                Set.of(new BrokerRegistrationRequestData.Feature().
-                                    setName(MetadataVersion.FEATURE_NAME).
-                                    setMinSupportedVersion(MetadataVersion.IBP_3_4_IV0.featureLevel()).
-                                    setMaxSupportedVersion(MetadataVersion.IBP_3_4_IV0.featureLevel())))).
-                        setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
-                    123L,
-                    featureControl.finalizedFeatures(Long.MAX_VALUE),
-                    false)).getMessage());
+                        "metadata.version. The broker wants a version between 8 and 8, inclusive.",
+                assertThrows(UnsupportedVersionException.class,
+                        () -> clusterControl.registerBroker(
+                                new BrokerRegistrationRequestData().
+                                        setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
+                                        setBrokerId(0).
+                                        setRack(null).
+                                        setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                                Set.of(new BrokerRegistrationRequestData.Feature().
+                                                        setName(MetadataVersion.FEATURE_NAME).
+                                                        setMinSupportedVersion(MetadataVersion.IBP_3_4_IV0.featureLevel()).
+                                                        setMaxSupportedVersion(MetadataVersion.IBP_3_4_IV0.featureLevel())))).
+                                        setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
+                                123L,
+                                featureControl.finalizedFeatures(Long.MAX_VALUE),
+                                false)).getMessage());
     }
 
     @Test
@@ -734,12 +746,13 @@ public class ClusterControlManagerTest {
         FeatureControlManager featureControl = new FeatureControlManager.Builder().
                 build();
         featureControl.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(MetadataVersion.IBP_3_6_IV2.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(MetadataVersion.IBP_3_6_IV2.featureLevel()));
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
                 setClusterId("fPZv1VBsRFmnlRvmGcOW9w").
                 setFeatureControlManager(featureControl).
-                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
                 build();
         clusterControl.activate();
         assertEquals("The current MetadataVersion is too old to support controller registrations.",
@@ -752,7 +765,8 @@ public class ClusterControlManagerTest {
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
                 setClusterId("QzZZEtC7SxucRM29Xdzijw").
                 setFeatureControlManager(createFeatureControlManager()).
-                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
                 build();
         RegisterBrokerRecord brokerRecord = new RegisterBrokerRecord().setBrokerEpoch(100).setBrokerId(0).setLogDirs(List.of(
                 Uuid.fromString("yJGxmjfbQZSVFAlNM3uXZg"),
@@ -763,8 +777,8 @@ public class ClusterControlManagerTest {
         clusterControl.activate();
 
         assertDoesNotThrow(() ->
-            registerNewBrokerWithDirs(clusterControl, 0, List.of(Uuid.fromString("yJGxmjfbQZSVFAlNM3uXZg"), Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"))),
-            "it should be possible to re-register the same broker with the same directories"
+                        registerNewBrokerWithDirs(clusterControl, 0, List.of(Uuid.fromString("yJGxmjfbQZSVFAlNM3uXZg"), Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"))),
+                "it should be possible to re-register the same broker with the same directories"
         );
         assertEquals("No directories specified in request", assertThrows(InvalidRegistrationException.class, () ->
                 registerNewBrokerWithDirs(clusterControl, 1, List.of())
@@ -785,13 +799,13 @@ public class ClusterControlManagerTest {
                 .setClusterId(clusterControl.clusterId())
                 .setIncarnationId(new Uuid(brokerId, brokerId))
                 .setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                    Set.of(new BrokerRegistrationRequestData.Feature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                        setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()))))
+                        Set.of(new BrokerRegistrationRequestData.Feature().
+                                setName(MetadataVersion.FEATURE_NAME).
+                                setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()))))
                 .setLogDirs(dirs);
         FinalizedControllerFeatures finalizedFeatures = new FinalizedControllerFeatures(
-            Map.of(MetadataVersion.FEATURE_NAME, MetadataVersion.MINIMUM_VERSION.featureLevel()), 456L);
+                Map.of(MetadataVersion.FEATURE_NAME, MetadataVersion.MINIMUM_VERSION.featureLevel()), 456L);
         ControllerResult<BrokerRegistrationReply> result = clusterControl.registerBroker(data, 123L, finalizedFeatures, false);
         RecordTestUtils.replayAll(clusterControl, result.records());
     }
@@ -801,7 +815,8 @@ public class ClusterControlManagerTest {
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
                 setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
                 setFeatureControlManager(createFeatureControlManager()).
-                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
                 build();
         clusterControl.activate();
         registerNewBrokerWithDirs(clusterControl, 1, List.of(Uuid.fromString("dir1SEbpRuG1dcpTRGOvJw"), Uuid.fromString("dir2xaEwR2m3JHTiy7PWwA")));
@@ -820,7 +835,8 @@ public class ClusterControlManagerTest {
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
                 setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
                 setFeatureControlManager(createFeatureControlManager()).
-                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
                 build();
         clusterControl.activate();
         RegisterBrokerRecord brokerRecord = new RegisterBrokerRecord().setBrokerEpoch(100).setBrokerId(1).setLogDirs(List.of());
@@ -838,47 +854,48 @@ public class ClusterControlManagerTest {
     @ValueSource(booleans = {false, true})
     public void testReRegistrationAndBrokerEpoch(boolean newIncarnationId) {
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
-            setFeatureControlManager(createFeatureControlManager()).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            build();
+                setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
+                setFeatureControlManager(createFeatureControlManager()).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                build();
         clusterControl.activate();
         var finalizedFeatures = new FinalizedControllerFeatures(Map.of(MetadataVersion.FEATURE_NAME, MetadataVersion.MINIMUM_VERSION.featureLevel()),
-            100L);
+                100L);
         RecordTestUtils.replayAll(clusterControl, clusterControl.registerBroker(
-            new BrokerRegistrationRequestData().
-                setBrokerId(1).
-                setClusterId(clusterControl.clusterId()).
-                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                    Set.of(new BrokerRegistrationRequestData.Feature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                        setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
-                setIncarnationId(Uuid.fromString("mISEfEFwQIuaD1gKCc5tzQ")).
-                setLogDirs(List.of(Uuid.fromString("Vv1gzkM2QpuE-PPrIc6XEw"))),
-            100,
-            finalizedFeatures,
-            false).
+                        new BrokerRegistrationRequestData().
+                                setBrokerId(1).
+                                setClusterId(clusterControl.clusterId()).
+                                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                        Set.of(new BrokerRegistrationRequestData.Feature().
+                                                setName(MetadataVersion.FEATURE_NAME).
+                                                setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                                setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
+                                setIncarnationId(Uuid.fromString("mISEfEFwQIuaD1gKCc5tzQ")).
+                                setLogDirs(List.of(Uuid.fromString("Vv1gzkM2QpuE-PPrIc6XEw"))),
+                        100,
+                        finalizedFeatures,
+                        false).
                 records());
         RecordTestUtils.replayAll(clusterControl, clusterControl.registerBroker(
-            new BrokerRegistrationRequestData().
-                setBrokerId(1).
-                setClusterId(clusterControl.clusterId()).
-                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                    Set.of(new BrokerRegistrationRequestData.Feature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                        setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
-                setIncarnationId(newIncarnationId ?
-                    Uuid.fromString("07OOcU7MQFeSmGAFPP2Zww") : Uuid.fromString("mISEfEFwQIuaD1gKCc5tzQ")).
-                setLogDirs(List.of(Uuid.fromString("Vv1gzkM2QpuE-PPrIc6XEw"))),
-            111,
-            finalizedFeatures,
-            false).
+                        new BrokerRegistrationRequestData().
+                                setBrokerId(1).
+                                setClusterId(clusterControl.clusterId()).
+                                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                        Set.of(new BrokerRegistrationRequestData.Feature().
+                                                setName(MetadataVersion.FEATURE_NAME).
+                                                setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                                setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
+                                setIncarnationId(newIncarnationId ?
+                                        Uuid.fromString("07OOcU7MQFeSmGAFPP2Zww") : Uuid.fromString("mISEfEFwQIuaD1gKCc5tzQ")).
+                                setLogDirs(List.of(Uuid.fromString("Vv1gzkM2QpuE-PPrIc6XEw"))),
+                        111,
+                        finalizedFeatures,
+                        false).
                 records());
         if (newIncarnationId) {
             assertEquals(Uuid.fromString("07OOcU7MQFeSmGAFPP2Zww"),
-                clusterControl.brokerRegistrations().get(1).incarnationId());
+                    clusterControl.brokerRegistrations().get(1).incarnationId());
             assertEquals(111,
                     clusterControl.brokerRegistrations().get(1).epoch());
         } else {
@@ -893,56 +910,56 @@ public class ClusterControlManagerTest {
     @ValueSource(booleans = {false, true})
     public void testReRegistrationWithCleanShutdownDetection(boolean isCleanShutdown) {
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
-            setFeatureControlManager(createFeatureControlManager()).
-            setBrokerShutdownHandler((brokerId, cleanShutdown, records) -> {
-                if (!cleanShutdown) {
-                    records.add(new ApiMessageAndVersion(new PartitionChangeRecord(), PartitionChangeRecord.HIGHEST_SUPPORTED_VERSION));
-                }
-            }).
-            build();
+                setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
+                setFeatureControlManager(createFeatureControlManager()).
+                setBrokerShutdownHandler((brokerId, cleanShutdown, records) -> {
+                    if (!cleanShutdown) {
+                        records.add(new ApiMessageAndVersion(new PartitionChangeRecord(), PartitionChangeRecord.HIGHEST_SUPPORTED_VERSION));
+                    }
+                }).
+                build();
         clusterControl.activate();
         var finalizedFeatures = new FinalizedControllerFeatures(Map.of(MetadataVersion.FEATURE_NAME,
-            MetadataVersion.MINIMUM_VERSION.featureLevel()), 100L);
+                MetadataVersion.MINIMUM_VERSION.featureLevel()), 100L);
         List<ApiMessageAndVersion> records = clusterControl.registerBroker(
-            new BrokerRegistrationRequestData().
-                setBrokerId(1).
-                setClusterId(clusterControl.clusterId()).
-                setIncarnationId(Uuid.fromString("mISEfEFwQIuaD1gKCc5tzQ")).
-                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                    Set.of(new BrokerRegistrationRequestData.Feature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                        setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
-                setLogDirs(List.of(Uuid.fromString("Vv1gzkM2QpuE-PPrIc6XEw"))),
-            100,
-            finalizedFeatures,
-            true).
+                        new BrokerRegistrationRequestData().
+                                setBrokerId(1).
+                                setClusterId(clusterControl.clusterId()).
+                                setIncarnationId(Uuid.fromString("mISEfEFwQIuaD1gKCc5tzQ")).
+                                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                        Set.of(new BrokerRegistrationRequestData.Feature().
+                                                setName(MetadataVersion.FEATURE_NAME).
+                                                setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                                setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
+                                setLogDirs(List.of(Uuid.fromString("Vv1gzkM2QpuE-PPrIc6XEw"))),
+                        100,
+                        finalizedFeatures,
+                        true).
                 records();
         records.add(new ApiMessageAndVersion(new BrokerRegistrationChangeRecord().
-            setBrokerId(1).setBrokerEpoch(100).
-            setInControlledShutdown(BrokerRegistrationInControlledShutdownChange.IN_CONTROLLED_SHUTDOWN.value()),
-            (short) 1));
+                setBrokerId(1).setBrokerEpoch(100).
+                setInControlledShutdown(BrokerRegistrationInControlledShutdownChange.IN_CONTROLLED_SHUTDOWN.value()),
+                (short) 1));
         RecordTestUtils.replayAll(clusterControl, records);
 
         records = clusterControl.registerBroker(
-            new BrokerRegistrationRequestData().
-                setBrokerId(1).
-                setClusterId(clusterControl.clusterId()).
-                setIncarnationId(Uuid.fromString("07OOcU7MQFeSmGAFPP2Zww")).
-                setPreviousBrokerEpoch(isCleanShutdown ? 100 : 10).
-                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                    Set.of(new BrokerRegistrationRequestData.Feature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                        setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
-                setLogDirs(List.of(Uuid.fromString("Vv1gzkM2QpuE-PPrIc6XEw"))),
-            111,
-            finalizedFeatures,
-            true).records();
+                new BrokerRegistrationRequestData().
+                        setBrokerId(1).
+                        setClusterId(clusterControl.clusterId()).
+                        setIncarnationId(Uuid.fromString("07OOcU7MQFeSmGAFPP2Zww")).
+                        setPreviousBrokerEpoch(isCleanShutdown ? 100 : 10).
+                        setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                Set.of(new BrokerRegistrationRequestData.Feature().
+                                        setName(MetadataVersion.FEATURE_NAME).
+                                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                        setMaxSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel())))).
+                        setLogDirs(List.of(Uuid.fromString("Vv1gzkM2QpuE-PPrIc6XEw"))),
+                111,
+                finalizedFeatures,
+                true).records();
         RecordTestUtils.replayAll(clusterControl, records);
         assertEquals(Uuid.fromString("07OOcU7MQFeSmGAFPP2Zww"),
-            clusterControl.brokerRegistrations().get(1).incarnationId());
+                clusterControl.brokerRegistrations().get(1).incarnationId());
         assertFalse(clusterControl.brokerRegistrations().get(1).inControlledShutdown());
         assertEquals(111, clusterControl.brokerRegistrations().get(1).epoch());
         if (isCleanShutdown) {
@@ -956,29 +973,30 @@ public class ClusterControlManagerTest {
     public void testBrokerContactTimesAreUpdatedOnClusterControlActivation() {
         MockTime time = new MockTime(0L, 20L, 1000L);
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
-            setFeatureControlManager(new FeatureControlManager.Builder().build()).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            setTime(time).
-            build();
+                setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
+                setFeatureControlManager(new FeatureControlManager.Builder().build()).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                setTime(time).
+                build();
         clusterControl.replay(new RegisterBrokerRecord().
-            setBrokerEpoch(100).
-            setBrokerId(0).
-            setLogDirs(List.of(Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"))), 10002);
+                setBrokerEpoch(100).
+                setBrokerId(0).
+                setLogDirs(List.of(Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"))), 10002);
         clusterControl.replay(new RegisterBrokerRecord().
-            setBrokerEpoch(123).
-            setBrokerId(1).
-            setFenced(false).
-            setLogDirs(List.of(Uuid.fromString("TyNK6XSSQJaJc2q9uflNHg"))), 10005);
+                setBrokerEpoch(123).
+                setBrokerId(1).
+                setFenced(false).
+                setLogDirs(List.of(Uuid.fromString("TyNK6XSSQJaJc2q9uflNHg"))), 10005);
         clusterControl.activate();
         assertEquals(OptionalLong.empty(), clusterControl.heartbeatManager().tracker().
-            contactTime(new BrokerIdAndEpoch(0, 100)));
+                contactTime(new BrokerIdAndEpoch(0, 100)));
         assertEquals(OptionalLong.of(1000L), clusterControl.heartbeatManager().tracker().
-            contactTime(new BrokerIdAndEpoch(1, 123)));
+                contactTime(new BrokerIdAndEpoch(1, 123)));
         assertEquals(OptionalLong.empty(), clusterControl.heartbeatManager().tracker().
-            contactTime(new BrokerIdAndEpoch(1, 124)));
+                contactTime(new BrokerIdAndEpoch(1, 124)));
         assertEquals(OptionalLong.empty(), clusterControl.heartbeatManager().tracker().
-            contactTime(new BrokerIdAndEpoch(2, 100)));
+                contactTime(new BrokerIdAndEpoch(2, 100)));
     }
 
     @Test
@@ -987,55 +1005,56 @@ public class ClusterControlManagerTest {
         long brokerSessionTimeoutMs = 1000;
         MockTime time = new MockTime(0L, 20L, 1000L);
         FinalizedControllerFeatures finalizedFeatures = new FinalizedControllerFeatures(
-            Map.of(MetadataVersion.FEATURE_NAME, MetadataVersion.LATEST_PRODUCTION.featureLevel()), 456L);
+                Map.of(MetadataVersion.FEATURE_NAME, MetadataVersion.LATEST_PRODUCTION.featureLevel()), 456L);
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
-            setFeatureControlManager(createFeatureControlManager()).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            setSessionTimeoutNs(TimeUnit.MILLISECONDS.toNanos(brokerSessionTimeoutMs)).
-            setTime(time).
-            build();
+                setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
+                setFeatureControlManager(createFeatureControlManager()).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                setSessionTimeoutNs(TimeUnit.MILLISECONDS.toNanos(brokerSessionTimeoutMs)).
+                setTime(time).
+                build();
         clusterControl.replay(new RegisterBrokerRecord().
-            setBrokerEpoch(100).
-            setBrokerId(0).
-            setLogDirs(List.of(Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"))).
-            setFenced(false), 10002);
+                setBrokerEpoch(100).
+                setBrokerId(0).
+                setLogDirs(List.of(Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"))).
+                setFenced(false), 10002);
         clusterControl.activate();
         assertEquals(OptionalLong.of(1000L), clusterControl.heartbeatManager().tracker().
-            contactTime(new BrokerIdAndEpoch(0, 100)));
+                contactTime(new BrokerIdAndEpoch(0, 100)));
 
         // while session is still valid for old broker, duplicate requests should fail
         time.sleep(brokerSessionTimeoutMs / 2);
         assertThrows(DuplicateBrokerRegistrationException.class, () ->
-            clusterControl.registerBroker(new BrokerRegistrationRequestData().
-                    setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
-                    setBrokerId(0).
-                    setLogDirs(List.of(Uuid.fromString("TyNK6XSSQJaJc2q9uflNHg"))).
-                    setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                        Set.of(new BrokerRegistrationRequestData.Feature().
-                            setName(MetadataVersion.FEATURE_NAME).
-                            setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                            setMaxSupportedVersion(MetadataVersion.LATEST_PRODUCTION.featureLevel())))).
-                setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
-                101L,
-                finalizedFeatures,
-                false));
+                clusterControl.registerBroker(new BrokerRegistrationRequestData().
+                                setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
+                                setBrokerId(0).
+                                setLogDirs(List.of(Uuid.fromString("TyNK6XSSQJaJc2q9uflNHg"))).
+                                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                        Set.of(new BrokerRegistrationRequestData.Feature().
+                                                setName(MetadataVersion.FEATURE_NAME).
+                                                setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                                setMaxSupportedVersion(MetadataVersion.LATEST_PRODUCTION.featureLevel())))).
+                                setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
+                        101L,
+                        finalizedFeatures,
+                        false));
 
         // if session expires for broker, even if the broker was active the new registration will succeed
         time.sleep(brokerSessionTimeoutMs);
         clusterControl.registerBroker(new BrokerRegistrationRequestData().
-                setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
-                setBrokerId(0).
-                setLogDirs(List.of(Uuid.fromString("TyNK6XSSQJaJc2q9uflNHg"))).
-                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                    Set.of(new BrokerRegistrationRequestData.Feature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                        setMaxSupportedVersion(MetadataVersion.LATEST_PRODUCTION.featureLevel())))).
-                setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
-            101L,
-            finalizedFeatures,
-            false);
+                        setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
+                        setBrokerId(0).
+                        setLogDirs(List.of(Uuid.fromString("TyNK6XSSQJaJc2q9uflNHg"))).
+                        setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                Set.of(new BrokerRegistrationRequestData.Feature().
+                                        setName(MetadataVersion.FEATURE_NAME).
+                                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                        setMaxSupportedVersion(MetadataVersion.LATEST_PRODUCTION.featureLevel())))).
+                        setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
+                101L,
+                finalizedFeatures,
+                false);
     }
 
     @Test
@@ -1044,72 +1063,73 @@ public class ClusterControlManagerTest {
         long brokerSessionTimeoutMs = 1000;
         MockTime time = new MockTime(0L, 20L, 1000L);
         FinalizedControllerFeatures finalizedFeatures = new FinalizedControllerFeatures(
-            Map.of(MetadataVersion.FEATURE_NAME, MetadataVersion.LATEST_PRODUCTION.featureLevel()), 456L);
+                Map.of(MetadataVersion.FEATURE_NAME, MetadataVersion.LATEST_PRODUCTION.featureLevel()), 456L);
         ClusterControlManager clusterControl = new ClusterControlManager.Builder().
-            setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
-            setFeatureControlManager(createFeatureControlManager()).
-            setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> { }).
-            setSessionTimeoutNs(TimeUnit.MILLISECONDS.toNanos(brokerSessionTimeoutMs)).
-            setTime(time).
-            build();
+                setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
+                setFeatureControlManager(createFeatureControlManager()).
+                setBrokerShutdownHandler((brokerId, isCleanShutdown, records) -> {
+                }).
+                setSessionTimeoutNs(TimeUnit.MILLISECONDS.toNanos(brokerSessionTimeoutMs)).
+                setTime(time).
+                build();
         // first broker is fenced
         clusterControl.replay(new RegisterBrokerRecord().
-            setBrokerEpoch(100).
-            setBrokerId(0).
-            setLogDirs(List.of(Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"))).
-            setFenced(true).
-            setInControlledShutdown(false), 10002);
+                setBrokerEpoch(100).
+                setBrokerId(0).
+                setLogDirs(List.of(Uuid.fromString("Mj3CW3OSRi29cFeNJlXuAQ"))).
+                setFenced(true).
+                setInControlledShutdown(false), 10002);
         // second broker is in controlled shutdown
         clusterControl.replay(new RegisterBrokerRecord().
-            setBrokerEpoch(200).
-            setBrokerId(1).
-            setLogDirs(List.of(Uuid.fromString("TyNK6XSSQJaJc2q9uflNHg"))).
-            setFenced(false).
-            setInControlledShutdown(true), 20002);
+                setBrokerEpoch(200).
+                setBrokerId(1).
+                setLogDirs(List.of(Uuid.fromString("TyNK6XSSQJaJc2q9uflNHg"))).
+                setFenced(false).
+                setInControlledShutdown(true), 20002);
         clusterControl.activate();
         clusterControl.heartbeatManager().maybeUpdateControlledShutdownOffset(1, 20002);
 
         assertEquals(OptionalLong.empty(), clusterControl.heartbeatManager().tracker().
-            contactTime(new BrokerIdAndEpoch(0, 100)));
+                contactTime(new BrokerIdAndEpoch(0, 100)));
         assertEquals(OptionalLong.of(1000L), clusterControl.heartbeatManager().tracker().
-            contactTime(new BrokerIdAndEpoch(1, 200)));
+                contactTime(new BrokerIdAndEpoch(1, 200)));
 
         time.sleep(brokerSessionTimeoutMs / 2);
         clusterControl.registerBroker(new BrokerRegistrationRequestData().
-                setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
-                setBrokerId(0).
-                setLogDirs(List.of(Uuid.fromString("yJGxmjfbQZSVFAlNM3uXZg"))).
-                setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                    Set.of(new BrokerRegistrationRequestData.Feature().
-                        setName(MetadataVersion.FEATURE_NAME).
-                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                        setMaxSupportedVersion(MetadataVersion.LATEST_PRODUCTION.featureLevel())))).
-                setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
-            101L,
-            finalizedFeatures,
-            false);
-        assertThrows(DuplicateBrokerRegistrationException.class, () -> {
-            clusterControl.registerBroker(new BrokerRegistrationRequestData().
-                    setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
-                    setBrokerId(1).
-                    setLogDirs(List.of(Uuid.fromString("b66ybsWIQoygs01vdjH07A"))).
-                    setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
-                        Set.of(new BrokerRegistrationRequestData.Feature().
-                            setName(MetadataVersion.FEATURE_NAME).
-                            setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
-                            setMaxSupportedVersion(MetadataVersion.LATEST_PRODUCTION.featureLevel())))).
-                    setIncarnationId(Uuid.fromString("vZKYST0pSA2HO5x_6hoO2Q")),
-                201L,
+                        setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
+                        setBrokerId(0).
+                        setLogDirs(List.of(Uuid.fromString("yJGxmjfbQZSVFAlNM3uXZg"))).
+                        setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                Set.of(new BrokerRegistrationRequestData.Feature().
+                                        setName(MetadataVersion.FEATURE_NAME).
+                                        setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                        setMaxSupportedVersion(MetadataVersion.LATEST_PRODUCTION.featureLevel())))).
+                        setIncarnationId(Uuid.fromString("0H4fUu1xQEKXFYwB1aBjhg")),
+                101L,
                 finalizedFeatures,
                 false);
+        assertThrows(DuplicateBrokerRegistrationException.class, () -> {
+            clusterControl.registerBroker(new BrokerRegistrationRequestData().
+                            setClusterId("pjvUwj3ZTEeSVQmUiH3IJw").
+                            setBrokerId(1).
+                            setLogDirs(List.of(Uuid.fromString("b66ybsWIQoygs01vdjH07A"))).
+                            setFeatures(new BrokerRegistrationRequestData.FeatureCollection(
+                                    Set.of(new BrokerRegistrationRequestData.Feature().
+                                            setName(MetadataVersion.FEATURE_NAME).
+                                            setMinSupportedVersion(MetadataVersion.MINIMUM_VERSION.featureLevel()).
+                                            setMaxSupportedVersion(MetadataVersion.LATEST_PRODUCTION.featureLevel())))).
+                            setIncarnationId(Uuid.fromString("vZKYST0pSA2HO5x_6hoO2Q")),
+                    201L,
+                    finalizedFeatures,
+                    false);
         });
     }
 
     private FeatureControlManager createFeatureControlManager() {
         FeatureControlManager featureControlManager = new FeatureControlManager.Builder().build();
         featureControlManager.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(MetadataVersion.LATEST_PRODUCTION.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(MetadataVersion.LATEST_PRODUCTION.featureLevel()));
         return featureControlManager;
     }
 }

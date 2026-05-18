@@ -138,11 +138,11 @@ public class HistogramTest {
             double fromBin = scheme.fromBin(bin);
             int binAgain = scheme.toBin(fromBin + EPS);
             assertEquals(bin, binAgain, "unbinning and rebinning the bin " + bin
-                         + " gave a different result ("
-                         + fromBin
-                         + " was placed in bin "
-                         + binAgain
-                         + " )");
+                    + " gave a different result ("
+                    + fromBin
+                    + " was placed in bin "
+                    + binAgain
+                    + " )");
         }
     }
 
@@ -150,8 +150,8 @@ public class HistogramTest {
         Random random = new Random();
         System.out.println("[-100, 100]:");
         for (BinScheme scheme : Arrays.asList(new ConstantBinScheme(1000, -100, 100),
-                                              new ConstantBinScheme(100, -100, 100),
-                                              new ConstantBinScheme(10, -100, 100))) {
+                new ConstantBinScheme(100, -100, 100),
+                new ConstantBinScheme(10, -100, 100))) {
             Histogram h = new Histogram(scheme);
             for (int i = 0; i < 10000; i++)
                 h.record(200.0 * random.nextDouble() - 100.0);
@@ -162,8 +162,8 @@ public class HistogramTest {
 
         System.out.println("[0, 1000]");
         for (BinScheme scheme : Arrays.asList(new LinearBinScheme(1000, 1000),
-                                              new LinearBinScheme(100, 1000),
-                                              new LinearBinScheme(10, 1000))) {
+                new LinearBinScheme(100, 1000),
+                new LinearBinScheme(10, 1000))) {
             Histogram h = new Histogram(scheme);
             for (int i = 0; i < 10000; i++)
                 h.record(1000.0 * random.nextDouble());

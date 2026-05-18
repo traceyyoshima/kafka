@@ -41,13 +41,13 @@ public class NetworkUtils {
                                                    Time time,
                                                    LogContext logContext) {
         ChannelBuilder channelBuilder = ChannelBuilders.clientChannelBuilder(
-            config.interBrokerSecurityProtocol(),
-            JaasContext.Type.SERVER,
-            config,
-            config.interBrokerListenerName(),
-            config.saslMechanismInterBrokerProtocol(),
-            time,
-            logContext
+                config.interBrokerSecurityProtocol(),
+                JaasContext.Type.SERVER,
+                config,
+                config.interBrokerListenerName(),
+                config.saslMechanismInterBrokerProtocol(),
+                time,
+                logContext
         );
 
         if (channelBuilder instanceof Reconfigurable) {
@@ -57,35 +57,35 @@ public class NetworkUtils {
         String metricGroupPrefix = prefix + "-channel";
 
         Selector selector = new Selector(
-            NetworkReceive.UNLIMITED,
-            config.connectionsMaxIdleMs(),
-            metrics,
-            time,
-            metricGroupPrefix,
-            Map.of(),
-            false,
-            channelBuilder,
-            logContext
+                NetworkReceive.UNLIMITED,
+                config.connectionsMaxIdleMs(),
+                metrics,
+                time,
+                metricGroupPrefix,
+                Map.of(),
+                false,
+                channelBuilder,
+                logContext
         );
 
         String clientId = prefix + "-client-" + config.nodeId();
         return new NetworkClient(
-            selector,
-            new ManualMetadataUpdater(),
-            clientId,
-            1,
-            50,
-            50,
-            Selectable.USE_DEFAULT_BUFFER_SIZE,
-            config.socketReceiveBufferBytes(),
-            config.requestTimeoutMs(),
-            config.connectionSetupTimeoutMs(),
-            config.connectionSetupTimeoutMaxMs(),
-            time,
-            true,
-            new ApiVersions(),
-            logContext,
-            MetadataRecoveryStrategy.NONE
+                selector,
+                new ManualMetadataUpdater(),
+                clientId,
+                1,
+                50,
+                50,
+                Selectable.USE_DEFAULT_BUFFER_SIZE,
+                config.socketReceiveBufferBytes(),
+                config.requestTimeoutMs(),
+                config.connectionSetupTimeoutMs(),
+                config.connectionSetupTimeoutMaxMs(),
+                time,
+                true,
+                new ApiVersions(),
+                logContext,
+                MetadataRecoveryStrategy.NONE
         );
     }
 }

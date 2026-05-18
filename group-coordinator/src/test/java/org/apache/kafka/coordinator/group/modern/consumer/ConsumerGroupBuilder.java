@@ -51,8 +51,8 @@ public class ConsumerGroupBuilder {
     }
 
     public ConsumerGroupBuilder withResolvedRegularExpression(
-        String regex,
-        ResolvedRegularExpression resolvedRegularExpression
+            String regex,
+            ResolvedRegularExpression resolvedRegularExpression
     ) {
         this.resolvedRegularExpressions.put(regex, resolvedRegularExpression);
         return this;
@@ -83,12 +83,12 @@ public class ConsumerGroupBuilder {
 
         // Add subscription records for members.
         members.forEach((memberId, member) ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionRecord(groupId, member))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupMemberSubscriptionRecord(groupId, member))
         );
 
         // Add resolved regular expressions.
         resolvedRegularExpressions.forEach((regex, resolvedRegularExpression) ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionRecord(groupId, regex, resolvedRegularExpression))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupRegularExpressionRecord(groupId, regex, resolvedRegularExpression))
         );
 
         // Add group epoch record.
@@ -96,7 +96,7 @@ public class ConsumerGroupBuilder {
 
         // Add target assignment records.
         assignments.forEach((memberId, assignment) ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentRecord(groupId, memberId, assignment.partitions()))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupTargetAssignmentRecord(groupId, memberId, assignment.partitions()))
         );
 
         // Add target assignment epoch.
@@ -104,7 +104,7 @@ public class ConsumerGroupBuilder {
 
         // Add current assignment records for members.
         members.forEach((memberId, member) ->
-            records.add(GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentRecord(groupId, member))
+                records.add(GroupCoordinatorRecordHelpers.newConsumerGroupCurrentAssignmentRecord(groupId, member))
         );
 
         return records;

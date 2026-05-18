@@ -59,8 +59,8 @@ public class ConstrainedPrioritySetTest {
     @Test
     public void shouldReturnLeastLoadedClient() {
         final ConstrainedPrioritySet queue = new ConstrainedPrioritySet(
-            alwaysTrue,
-            client -> (client == PID_1) ? 3.0 : (client == PID_2) ? 2.0 : 1.0
+                alwaysTrue,
+                client -> (client == PID_1) ? 3.0 : (client == PID_2) ? 2.0 : 1.0
         );
 
         queue.offerAll(asList(PID_1, PID_2, PID_3));
@@ -85,8 +85,8 @@ public class ConstrainedPrioritySetTest {
     @Test
     public void shouldOnlyReturnValidClients() {
         final ConstrainedPrioritySet queue = new ConstrainedPrioritySet(
-            (client, task) -> client.equals(PID_1),
-            client -> 1.0
+                (client, task) -> client.equals(PID_1),
+                client -> 1.0
         );
 
         queue.offerAll(asList(PID_1, PID_2));
@@ -98,8 +98,8 @@ public class ConstrainedPrioritySetTest {
     @Test
     public void shouldApplyPollFilter() {
         final ConstrainedPrioritySet queue = new ConstrainedPrioritySet(
-            alwaysTrue,
-            client -> 1.0
+                alwaysTrue,
+                client -> 1.0
         );
 
         queue.offerAll(asList(PID_1, PID_2));

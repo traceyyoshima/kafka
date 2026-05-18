@@ -23,7 +23,7 @@ import java.util.IdentityHashMap;
  * The ObjectSerializationCache stores sizes and values computed during the
  * first serialization pass.  This avoids recalculating and recomputing the same
  * values during the second pass.
- *
+ * <p>
  * It is intended to be used as part of a two-pass serialization process like:
  * ObjectSerializationCache cache = new ObjectSerializationCache();
  * message.size(version, cache);

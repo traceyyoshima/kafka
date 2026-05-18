@@ -59,7 +59,7 @@ public class TopicIds implements Set<Uuid> {
 
         /**
          * Clears any cached data.
-         *
+         * <p>
          * Used for benchmarking purposes.
          */
         void clear();
@@ -70,7 +70,7 @@ public class TopicIds implements Set<Uuid> {
      */
     public record DefaultTopicResolver(CoordinatorMetadataImage image) implements TopicResolver {
         public DefaultTopicResolver(
-            CoordinatorMetadataImage image
+                CoordinatorMetadataImage image
         ) {
             this.image = Objects.requireNonNull(image);
         }
@@ -97,7 +97,7 @@ public class TopicIds implements Set<Uuid> {
 
     /**
      * A TopicResolver that caches results.
-     *
+     * <p>
      * This cache is expected to be short-lived and only used within a single
      * TargetAssignmentBuilder.build() call.
      */
@@ -108,7 +108,7 @@ public class TopicIds implements Set<Uuid> {
         private final Map<Uuid, String> topicNames = new HashMap<>();
 
         public CachedTopicResolver(
-            CoordinatorMetadataImage image
+                CoordinatorMetadataImage image
         ) {
             this.image = Objects.requireNonNull(image);
         }
@@ -144,16 +144,16 @@ public class TopicIds implements Set<Uuid> {
     private final TopicResolver resolver;
 
     public TopicIds(
-        Set<String> topicNames,
-        CoordinatorMetadataImage image
+            Set<String> topicNames,
+            CoordinatorMetadataImage image
     ) {
         this.topicNames = Objects.requireNonNull(topicNames);
         this.resolver = new DefaultTopicResolver(image);
     }
 
     public TopicIds(
-        Set<String> topicNames,
-        TopicResolver resolver
+            Set<String> topicNames,
+            TopicResolver resolver
     ) {
         this.topicNames = Objects.requireNonNull(topicNames);
         this.resolver = Objects.requireNonNull(resolver);
@@ -185,8 +185,8 @@ public class TopicIds implements Set<Uuid> {
         private Uuid next = null;
 
         private TopicIdIterator(
-            Iterator<String> iterator,
-            TopicResolver resolver
+                Iterator<String> iterator,
+                TopicResolver resolver
         ) {
             this.iterator = Objects.requireNonNull(iterator);
             this.resolver = Objects.requireNonNull(resolver);
@@ -293,7 +293,7 @@ public class TopicIds implements Set<Uuid> {
     @Override
     public String toString() {
         return "TopicIds(topicNames=" + topicNames +
-            ", resolver=" + resolver +
-            ')';
+                ", resolver=" + resolver +
+                ')';
     }
 }

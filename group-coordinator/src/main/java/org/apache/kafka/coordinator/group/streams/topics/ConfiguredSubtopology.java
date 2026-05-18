@@ -58,17 +58,16 @@ public record ConfiguredSubtopology(int numberOfTasks,
 
     public StreamsGroupDescribeResponseData.Subtopology asStreamsGroupDescribeSubtopology(String subtopologyId) {
         return new StreamsGroupDescribeResponseData.Subtopology()
-            .setSubtopologyId(subtopologyId)
-            .setSourceTopics(sourceTopics.stream().sorted().toList())
-            .setRepartitionSinkTopics(repartitionSinkTopics.stream().sorted().toList())
-            .setRepartitionSourceTopics(repartitionSourceTopics.values().stream()
-                .map(ConfiguredInternalTopic::asStreamsGroupDescribeTopicInfo)
-                .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.TopicInfo::name)).toList())
-            .setStateChangelogTopics(stateChangelogTopics.values().stream()
-                .map(ConfiguredInternalTopic::asStreamsGroupDescribeTopicInfo)
-                .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.TopicInfo::name)).toList());
+                .setSubtopologyId(subtopologyId)
+                .setSourceTopics(sourceTopics.stream().sorted().toList())
+                .setRepartitionSinkTopics(repartitionSinkTopics.stream().sorted().toList())
+                .setRepartitionSourceTopics(repartitionSourceTopics.values().stream()
+                        .map(ConfiguredInternalTopic::asStreamsGroupDescribeTopicInfo)
+                        .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.TopicInfo::name)).toList())
+                .setStateChangelogTopics(stateChangelogTopics.values().stream()
+                        .map(ConfiguredInternalTopic::asStreamsGroupDescribeTopicInfo)
+                        .sorted(Comparator.comparing(StreamsGroupDescribeResponseData.TopicInfo::name)).toList());
     }
-
 
 
 }

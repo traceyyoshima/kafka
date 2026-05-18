@@ -19,7 +19,8 @@ package org.apache.kafka.streams.kstream.internals.graph;
 import org.apache.kafka.streams.errors.TopologyException;
 
 public final class GraphGraceSearchUtil {
-    private GraphGraceSearchUtil() {}
+    private GraphGraceSearchUtil() {
+    }
 
     public static long findAndVerifyWindowGrace(final GraphNode graphNode) {
         return findAndVerifyWindowGrace(graphNode, "");
@@ -30,7 +31,7 @@ public final class GraphGraceSearchUtil {
         // error base case: we traversed off the end of the graph without finding a window definition
         if (graphNode == null) {
             throw new TopologyException(
-                "Window close time is only defined for windowed computations. Got [" + chain + "]."
+                    "Window close time is only defined for windowed computations. Got [" + chain + "]."
             );
         }
         // base case: return if this node defines a grace period.
@@ -43,7 +44,7 @@ public final class GraphGraceSearchUtil {
         if (graphNode.parentNodes().isEmpty()) {
             // error base case: we traversed to the end of the graph without finding a window definition
             throw new TopologyException(
-                "Window close time is only defined for windowed computations. Got [" + newChain + "]."
+                    "Window close time is only defined for windowed computations. Got [" + newChain + "]."
             );
         }
 

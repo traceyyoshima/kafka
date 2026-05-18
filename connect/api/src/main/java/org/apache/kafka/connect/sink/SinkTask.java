@@ -75,6 +75,7 @@ public abstract class SinkTask implements Task {
     /**
      * Initialize the context of this task. Note that the partition assignment will be empty until
      * Connect has opened the partitions for writing with {@link #open(Collection)}.
+     *
      * @param context The sink task's context
      */
     public void initialize(SinkTaskContext context) {
@@ -83,6 +84,7 @@ public abstract class SinkTask implements Task {
 
     /**
      * Start the Task. This should handle any configuration parsing and one-time setup of the task.
+     *
      * @param props initial configuration
      */
     @Override
@@ -130,10 +132,9 @@ public abstract class SinkTask implements Task {
      *                       {@link Transformation transformations} have been applied. These can be tracked by the task
      *                       through the {@link SinkRecord#originalTopic()}, {@link SinkRecord#originalKafkaPartition()}
      *                       and {@link SinkRecord#originalKafkaOffset()} methods.
-     *
      * @return an empty map if Connect-managed offset commit is not desired, otherwise a map of offsets by topic-partition that are
-     *         safe to commit. Note that the returned topic-partition to offsets map should use the original Kafka
-     *         topic partitions and offsets instead of the transformed values.
+     * safe to commit. Note that the returned topic-partition to offsets map should use the original Kafka
+     * topic partitions and offsets instead of the transformed values.
      */
     public Map<TopicPartition, OffsetAndMetadata> preCommit(Map<TopicPartition, OffsetAndMetadata> currentOffsets) {
         flush(currentOffsets);

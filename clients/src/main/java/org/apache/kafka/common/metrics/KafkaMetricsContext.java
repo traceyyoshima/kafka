@@ -31,6 +31,7 @@ public class KafkaMetricsContext implements MetricsContext {
 
     /**
      * Create a MetricsContext with namespace, no service or client properties
+     *
      * @param namespace value for _namespace key
      */
     public KafkaMetricsContext(String namespace) {
@@ -39,9 +40,10 @@ public class KafkaMetricsContext implements MetricsContext {
 
     /**
      * Create a MetricsContext with namespace, service or client properties
-     * @param namespace value for _namespace key
-     * @param contextLabels  contextLabels additional entries to add to the context.
-     *                  values will be converted to string using Object.toString()
+     *
+     * @param namespace     value for _namespace key
+     * @param contextLabels contextLabels additional entries to add to the context.
+     *                      values will be converted to string using Object.toString()
      */
     public KafkaMetricsContext(String namespace, Map<String, ?> contextLabels) {
         this.contextLabels.put(MetricsContext.NAMESPACE, namespace);

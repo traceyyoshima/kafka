@@ -124,7 +124,8 @@ public class AddPartitionsToTxnManager extends InterBrokerSendThread {
             AddPartitionsToTxnTransactionCollection transactionData,
             Map<String, AppendCallback> callbacks,
             Map<String, Long> startTimeMs,
-            TransactionSupportedOperation transactionSupportedOperation) { }
+            TransactionSupportedOperation transactionSupportedOperation) {
+    }
 
     private class AddPartitionsToTxnHandler implements RequestCompletionHandler {
         private final Node node;
@@ -314,8 +315,8 @@ public class AddPartitionsToTxnManager extends InterBrokerSendThread {
     private Map<TopicPartition, Errors> topicPartitionsToError(AddPartitionsToTxnTransaction txnData, Errors error) {
         Map<TopicPartition, Errors> topicPartitionsToError = new HashMap<>();
         txnData.topics().forEach(topic ->
-            topic.partitions().forEach(partition ->
-                topicPartitionsToError.put(new TopicPartition(topic.name(), partition), error)));
+                topic.partitions().forEach(partition ->
+                        topicPartitionsToError.put(new TopicPartition(topic.name(), partition), error)));
         verificationFailureRate.mark(topicPartitionsToError.size());
         return topicPartitionsToError;
     }

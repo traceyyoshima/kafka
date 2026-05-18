@@ -36,9 +36,9 @@ public class UserScramCredentialUpsertion extends UserScramCredentialAlteration 
     /**
      * Constructor that generates a random salt
      *
-     * @param user the user for which the credential is to be updated/inserted
+     * @param user           the user for which the credential is to be updated/inserted
      * @param credentialInfo the mechanism and iterations to be used
-     * @param password the password
+     * @param password       the password
      */
     public UserScramCredentialUpsertion(String user, ScramCredentialInfo credentialInfo, String password) {
         this(user, credentialInfo, password.getBytes(StandardCharsets.UTF_8));
@@ -47,9 +47,9 @@ public class UserScramCredentialUpsertion extends UserScramCredentialAlteration 
     /**
      * Constructor that generates a random salt
      *
-     * @param user the user for which the credential is to be updated/inserted
+     * @param user           the user for which the credential is to be updated/inserted
      * @param credentialInfo the mechanism and iterations to be used
-     * @param password the password
+     * @param password       the password
      */
     public UserScramCredentialUpsertion(String user, ScramCredentialInfo credentialInfo, byte[] password) {
         this(user, credentialInfo, password, generateRandomSalt());
@@ -58,10 +58,10 @@ public class UserScramCredentialUpsertion extends UserScramCredentialAlteration 
     /**
      * Constructor that accepts an explicit salt
      *
-     * @param user the user for which the credential is to be updated/inserted
+     * @param user           the user for which the credential is to be updated/inserted
      * @param credentialInfo the mechanism and iterations to be used
-     * @param password the password
-     * @param salt the salt to be used
+     * @param password       the password
+     * @param salt           the salt to be used
      */
     public UserScramCredentialUpsertion(String user, ScramCredentialInfo credentialInfo, byte[] password, byte[] salt) {
         super(Objects.requireNonNull(user));

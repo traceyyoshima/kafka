@@ -64,7 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Integration tests for KIP-1035 column family offset recovery.
- *
+ * <p>
  * KIP-1035 moved offset storage from external .checkpoint files into RocksDB column families.
  * These tests verify that Kafka Streams can recover from unclean shutdowns and corrupted
  * column family state, which is critical for exactly-once semantics (EOS) correctness.
@@ -136,10 +136,10 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
         final StreamsBuilder builder = new StreamsBuilder();
         final KStream<String, String> stream = builder.stream(INPUT_TOPIC);
         stream
-            .groupByKey()
-            .count(Materialized.as(STORE_NAME))
-            .toStream()
-            .to(OUTPUT_TOPIC);
+                .groupByKey()
+                .count(Materialized.as(STORE_NAME))
+                .toStream()
+                .to(OUTPUT_TOPIC);
         return builder;
     }
 
@@ -154,17 +154,17 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Store 1: count by key
         stream
-            .groupByKey()
-            .count(Materialized.as(STORE_NAME))
-            .toStream()
-            .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
+                .groupByKey()
+                .count(Materialized.as(STORE_NAME))
+                .toStream()
+                .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
 
         // Store 2: count by value
         stream
-            .groupBy((key, value) -> value)
-            .count(Materialized.as(STORE_NAME_2))
-            .toStream()
-            .to(OUTPUT_TOPIC_2, Produced.with(Serdes.String(), Serdes.Long()));
+                .groupBy((key, value) -> value)
+                .count(Materialized.as(STORE_NAME_2))
+                .toStream()
+                .to(OUTPUT_TOPIC_2, Produced.with(Serdes.String(), Serdes.Long()));
 
         return builder;
     }
@@ -223,18 +223,18 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
     private void produceRecords(final List<KeyValue<String, String>> records) {
         IntegrationTestUtils.produceKeyValuesSynchronously(
-            INPUT_TOPIC,
-            records,
-            producerConfig(),
-            CLUSTER.time
+                INPUT_TOPIC,
+                records,
+                producerConfig(),
+                CLUSTER.time
         );
     }
 
     private List<KeyValue<String, Long>> waitForOutput(final int expectedCount) throws Exception {
         return IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(
-            readCommittedConsumerConfig(),
-            OUTPUT_TOPIC,
-            expectedCount
+                readCommittedConsumerConfig(),
+                OUTPUT_TOPIC,
+                expectedCount
         );
     }
 
@@ -259,9 +259,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start, produce, verify output
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams();
@@ -281,8 +281,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records, verify processing continues
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -301,7 +301,7 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
      * the store status key is left as 1L (open). AbstractColumnFamilyAccessor.open() throws
      * ProcessorStateException("Invalid state during store open") which should be caught and
      * trigger task corruption recovery (wipe + restore from changelog).
-     *
+     * <p>
      * Without the fix, the ProcessorStateException propagates fatally and the application
      * fails to start.
      */
@@ -311,9 +311,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start with EOS, produce records, verify committed output
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams();
@@ -333,8 +333,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records and verify processing continues correctly
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -359,9 +359,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start with EOS, produce records, verify committed output
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams();
@@ -381,8 +381,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records, verify data is re-bootstrapped from changelog
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -397,7 +397,7 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
     /**
      * Combined worst case: status=open (unclean shutdown) AND no committed offsets.
      * Under EOS, this should still trigger corruption recovery.
-     *
+     * <p>
      * Without the fix, the ProcessorStateException from status=open propagates fatally
      * before the missing offsets are even checked.
      */
@@ -407,9 +407,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start with EOS, produce records, verify committed output
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
 
         startStreams();
@@ -430,8 +430,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records, verify data is re-bootstrapped correctly
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -446,7 +446,7 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
     /**
      * Tests that partial store corruption is handled correctly: only one of two stores
      * is corrupted, and the application should still recover.
-     *
+     * <p>
      * Without the fix, corrupting even one store causes the application to crash.
      */
     @Test
@@ -455,9 +455,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 1: start with dual-store topology, produce records
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v2"),
-            new KeyValue<>("A", "v1")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v2"),
+                new KeyValue<>("A", "v1")
         );
 
         final StreamsBuilder builder1 = buildDualStoreTopology();
@@ -483,8 +483,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 4: produce more records, verify both stores produce correct output
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("C", "v3"),
-            new KeyValue<>("A", "v1")
+                new KeyValue<>("C", "v3"),
+                new KeyValue<>("A", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -501,7 +501,7 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
      * Tests standby task recovery with corrupted column family state.
      * After corrupting instance 1's store, it should recover from the standby/changelog
      * and eventually take over as active when instance 2 is shut down.
-     *
+     * <p>
      * Without the fix, instance 1 fails to restart due to ProcessorStateException.
      */
     @Test
@@ -533,9 +533,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Phase 2: produce data, wait for processing
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
         produceRecords(initialRecords);
         waitForOutput(initialRecords.size());
@@ -559,8 +559,8 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Produce more records and verify instance 1 processes them as active
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 
@@ -579,11 +579,11 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
     /**
      * Regression test for KAFKA-19712 (PR #21884): after completely deleting local state
      * and restarting, standby tasks should not get TaskCorruptedException during rebalance.
-     *
+     * <p>
      * The bug: KIP-1035 removed the OFFSET_UNKNOWN sentinel, so stores closed with null
      * offsets when offsets were never initialized. On the next rebalance, initializeStoreOffsets()
      * found null committed offset + non-empty state dir under EOS, and threw TaskCorruptedException.
-     *
+     * <p>
      * The fix: re-introduced OFFSET_UNKNOWN (-4L) as a sentinel in commit(), and translates
      * it back to null in initializeStoreOffsets().
      */
@@ -614,9 +614,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
         IntegrationTestUtils.startApplicationAndWaitUntilRunning(Arrays.asList(streams1, streams2));
 
         final List<KeyValue<String, String>> initialRecords = Arrays.asList(
-            new KeyValue<>("A", "v1"),
-            new KeyValue<>("B", "v1"),
-            new KeyValue<>("A", "v2")
+                new KeyValue<>("A", "v1"),
+                new KeyValue<>("B", "v1"),
+                new KeyValue<>("A", "v2")
         );
         produceRecords(initialRecords);
         waitForOutput(initialRecords.size());
@@ -629,9 +629,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
         final String appId = streamsConfig.getProperty(StreamsConfig.APPLICATION_ID_CONFIG);
         final File stateDirForStreamsOne = new File(stateDir1, appId);
         final List<File> storeDirsAfterCleanup = RocksDBStoreTestingUtils.findAllStoreDirs(
-            stateDir1, appId, STORE_NAME);
+                stateDir1, appId, STORE_NAME);
         assertTrue(storeDirsAfterCleanup.isEmpty(),
-            "No store directories should exist after cleanUp, but found: " + storeDirsAfterCleanup);
+                "No store directories should exist after cleanUp, but found: " + storeDirsAfterCleanup);
 
         final StreamsBuilder builder1Restart = buildCountTopology();
         final KafkaStreams streams1Restart = new KafkaStreams(builder1Restart.build(), config1);
@@ -639,9 +639,9 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
 
         // Wait for instance 1 to have standby tasks
         TestUtils.waitForCondition(() ->
-            streams1Restart.metadataForLocalThreads().stream()
-                .anyMatch(t -> !t.standbyTasks().isEmpty()),
-            60_000, "Instance 1 should have standby tasks after restart");
+                        streams1Restart.metadataForLocalThreads().stream()
+                                .anyMatch(t -> !t.standbyTasks().isEmpty()),
+                60_000, "Instance 1 should have standby tasks after restart");
 
         // Verify that store directories now exist for the standby tasks —
         // these were freshly created from changelog restoration, not carried over.
@@ -652,11 +652,11 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
             }
         }
         assertFalse(standbyPartitions.isEmpty(),
-            "Instance 1 should have standby partitions after restart");
+                "Instance 1 should have standby partitions after restart");
         for (final TopicPartition tp : standbyPartitions) {
             final File storeDir = new File(stateDirForStreamsOne, "0_" + tp.partition() + "/rocksdb/" + STORE_NAME);
             assertTrue(storeDir.exists(),
-                "Standby store directory should exist after changelog restore: " + storeDir);
+                    "Standby store directory should exist after changelog restore: " + storeDir);
         }
 
         // Phase 3: trigger a rebalance by shutting down instance 2 and restarting it.
@@ -669,13 +669,13 @@ public class SelfManagedOffsetRecoveryIntegrationTest {
         IntegrationTestUtils.startApplicationAndWaitUntilRunning(streams2Restart);
         // streams1Restart is already running — just wait for it to stabilize after rebalance
         TestUtils.waitForCondition(
-            () -> streams1Restart.state() == KafkaStreams.State.RUNNING,
-            60_000, "Instance 1 should return to RUNNING after rebalance");
+                () -> streams1Restart.state() == KafkaStreams.State.RUNNING,
+                60_000, "Instance 1 should return to RUNNING after rebalance");
 
         // Phase 4: verify processing still works after rebalance
         final List<KeyValue<String, String>> additionalRecords = Arrays.asList(
-            new KeyValue<>("A", "v3"),
-            new KeyValue<>("C", "v1")
+                new KeyValue<>("A", "v3"),
+                new KeyValue<>("C", "v1")
         );
         produceRecords(additionalRecords);
 

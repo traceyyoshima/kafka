@@ -25,8 +25,8 @@ import org.apache.kafka.server.log.remote.storage.RemoteLogMetadata;
  * Those metadata objects can be {@link org.apache.kafka.server.log.remote.storage.RemoteLogSegmentMetadata},
  * {@link org.apache.kafka.server.log.remote.storage.RemoteLogSegmentMetadataUpdate}, or {@link org.apache.kafka.server.log.remote.storage.RemotePartitionDeleteMetadata}.
  * <p>
- * @param <T> metadata type.
  *
+ * @param <T> metadata type.
  * @see RemoteLogSegmentMetadataTransform
  * @see RemoteLogSegmentMetadataUpdateTransform
  * @see RemotePartitionDeleteMetadataTransform

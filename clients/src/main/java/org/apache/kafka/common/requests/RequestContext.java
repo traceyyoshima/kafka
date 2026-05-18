@@ -55,36 +55,36 @@ public class RequestContext implements AuthorizableRequestContext {
                           ClientInformation clientInformation,
                           boolean fromPrivilegedListener) {
         this(header,
-            connectionId,
-            clientAddress,
-            Optional.empty(),
-            principal,
-            listenerName,
-            securityProtocol,
-            clientInformation,
-            fromPrivilegedListener,
-            Optional.empty());
+                connectionId,
+                clientAddress,
+                Optional.empty(),
+                principal,
+                listenerName,
+                securityProtocol,
+                clientInformation,
+                fromPrivilegedListener,
+                Optional.empty());
     }
 
     public RequestContext(RequestHeader header,
-        String connectionId,
-        InetAddress clientAddress,
-        Optional<Integer> clientPort,
-        KafkaPrincipal principal,
-        ListenerName listenerName,
-        SecurityProtocol securityProtocol,
-        ClientInformation clientInformation,
-        boolean fromPrivilegedListener) {
+                          String connectionId,
+                          InetAddress clientAddress,
+                          Optional<Integer> clientPort,
+                          KafkaPrincipal principal,
+                          ListenerName listenerName,
+                          SecurityProtocol securityProtocol,
+                          ClientInformation clientInformation,
+                          boolean fromPrivilegedListener) {
         this(header,
-            connectionId,
-            clientAddress,
-            clientPort,
-            principal,
-            listenerName,
-            securityProtocol,
-            clientInformation,
-            fromPrivilegedListener,
-            Optional.empty());
+                connectionId,
+                clientAddress,
+                clientPort,
+                principal,
+                listenerName,
+                securityProtocol,
+                clientInformation,
+                fromPrivilegedListener,
+                Optional.empty());
     }
 
     public RequestContext(RequestHeader header,
@@ -142,7 +142,7 @@ public class RequestContext implements AuthorizableRequestContext {
      * will be encapsulated in an {@link EnvelopeResponse}. The buffer will contain
      * both the serialized {@link ResponseHeader} as well as the bytes from the response.
      * There is no `size` prefix unlike the output from {@link #buildResponseSend(AbstractResponse)}.
-     *
+     * <p>
      * Note that envelope requests are reserved only for APIs which have set the
      * {@link ApiKeys#forwardable} flag. Notably the `Fetch` API cannot be forwarded,
      * so we do not lose the benefit of "zero copy" transfers from disk.
@@ -209,15 +209,15 @@ public class RequestContext implements AuthorizableRequestContext {
     @Override
     public String toString() {
         return "RequestContext(" +
-            "header=" + header +
-            ", connectionId='" + connectionId + '\'' +
-            ", clientAddress=" + clientAddress +
-            ", principal=" + principal +
-            ", listenerName=" + listenerName +
-            ", securityProtocol=" + securityProtocol +
-            ", clientInformation=" + clientInformation +
-            ", fromPrivilegedListener=" + fromPrivilegedListener +
-            ", principalSerde=" + principalSerde +
-            ')';
+                "header=" + header +
+                ", connectionId='" + connectionId + '\'' +
+                ", clientAddress=" + clientAddress +
+                ", principal=" + principal +
+                ", listenerName=" + listenerName +
+                ", securityProtocol=" + securityProtocol +
+                ", clientInformation=" + clientInformation +
+                ", fromPrivilegedListener=" + fromPrivilegedListener +
+                ", principalSerde=" + principalSerde +
+                ')';
     }
 }

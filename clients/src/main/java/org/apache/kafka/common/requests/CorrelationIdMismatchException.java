@@ -25,9 +25,9 @@ public class CorrelationIdMismatchException extends IllegalStateException {
     private final int responseCorrelationId;
 
     public CorrelationIdMismatchException(
-        String message,
-        int requestCorrelationId,
-        int responseCorrelationId
+            String message,
+            int requestCorrelationId,
+            int responseCorrelationId
     ) {
         super(message);
         this.requestCorrelationId = requestCorrelationId;

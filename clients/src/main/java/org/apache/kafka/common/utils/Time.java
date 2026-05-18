@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 /**
  * An interface abstracting the clock to use in unit testing classes that make use of clock time.
- *
+ * <p>
  * Implementations of this class should be thread-safe.
  */
 public interface Time {
@@ -66,11 +66,10 @@ public interface Time {
      * Wait for a condition using the monitor of a given object. This avoids the implicit
      * dependence on system time when calling {@link Object#wait()}.
      *
-     * @param obj The object that will be waited with {@link Object#wait()}. Note that it is the responsibility
-     *      of the caller to call notify on this object when the condition is satisfied.
-     * @param condition The condition we are awaiting
+     * @param obj        The object that will be waited with {@link Object#wait()}. Note that it is the responsibility
+     *                   of the caller to call notify on this object when the condition is satisfied.
+     * @param condition  The condition we are awaiting
      * @param deadlineMs The deadline timestamp at which to raise a timeout error
-     *
      * @throws org.apache.kafka.common.errors.TimeoutException if the timeout expires before the condition is satisfied
      */
     void waitObject(Object obj, Supplier<Boolean> condition, long deadlineMs) throws InterruptedException;
@@ -92,15 +91,15 @@ public interface Time {
     /**
      * Wait for a future to complete, or time out.
      *
-     * @param future        The future to wait for.
-     * @param deadlineNs    The time in the future, in monotonic nanoseconds, to time out.
-     * @return              The result of the future.
-     * @param <T>           The type of the future.
+     * @param future     The future to wait for.
+     * @param deadlineNs The time in the future, in monotonic nanoseconds, to time out.
+     * @param <T>        The type of the future.
+     * @return The result of the future.
      */
     default <T> T waitForFuture(
-        Future<T> future,
-        long deadlineNs
-    ) throws TimeoutException, InterruptedException, ExecutionException  {
+            Future<T> future,
+            long deadlineNs
+    ) throws TimeoutException, InterruptedException, ExecutionException {
         TimeoutException timeoutException = null;
         while (true) {
             long nowNs = nanoseconds();

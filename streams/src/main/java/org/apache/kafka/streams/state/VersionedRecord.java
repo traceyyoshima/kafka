@@ -33,8 +33,8 @@ public final class VersionedRecord<V> {
     /**
      * Create a new {@link VersionedRecord} instance. {@code value} cannot be {@code null}.
      *
-     * @param value      The value
-     * @param timestamp  The type of the result returned by this query.
+     * @param value     The value
+     * @param timestamp The type of the result returned by this query.
      */
     public VersionedRecord(final V value, final long timestamp) {
         this.value = Objects.requireNonNull(value, "value cannot be null.");
@@ -45,9 +45,9 @@ public final class VersionedRecord<V> {
     /**
      * Create a new {@link VersionedRecord} instance. {@code value} cannot be {@code null}.
      *
-     * @param value      The value
-     * @param timestamp  The timestamp
-     * @param validTo    The exclusive upper bound of the validity interval
+     * @param value     The value
+     * @param timestamp The timestamp
+     * @param validTo   The exclusive upper bound of the validity interval
      */
     public VersionedRecord(final V value, final long timestamp, final long validTo) {
         this.value = Objects.requireNonNull(value);
@@ -83,7 +83,7 @@ public final class VersionedRecord<V> {
         }
         final VersionedRecord<?> that = (VersionedRecord<?>) o;
         return timestamp == that.timestamp && validTo == that.validTo &&
-            Objects.equals(value, that.value);
+                Objects.equals(value, that.value);
     }
 
     @Override

@@ -48,9 +48,9 @@ public abstract class ConsumerWrapper implements Consumer<byte[], byte[]> {
     protected AsyncKafkaConsumer<byte[], byte[]> delegate;
 
     public void wrapConsumer(
-        final AsyncKafkaConsumer<byte[], byte[]> delegate,
-        final Map<String, Object> config,
-        final Optional<StreamsRebalanceData> streamsRebalanceData
+            final AsyncKafkaConsumer<byte[], byte[]> delegate,
+            final Map<String, Object> config,
+            final Optional<StreamsRebalanceData> streamsRebalanceData
     ) {
         this.delegate = delegate;
     }

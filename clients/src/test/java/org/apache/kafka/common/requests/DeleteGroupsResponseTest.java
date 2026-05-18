@@ -37,18 +37,18 @@ public class DeleteGroupsResponseTest {
     private static final String GROUP_ID_2 = "groupId2";
     private static final int THROTTLE_TIME_MS = 10;
     private static final DeleteGroupsResponse DELETE_GROUPS_RESPONSE = new DeleteGroupsResponse(
-        new DeleteGroupsResponseData()
-            .setResults(
-                new DeletableGroupResultCollection(Arrays.asList(
-                    new DeletableGroupResult()
-                        .setGroupId(GROUP_ID_1)
-                        .setErrorCode(Errors.NONE.code()),
-                    new DeletableGroupResult()
-                        .setGroupId(GROUP_ID_2)
-                        .setErrorCode(Errors.GROUP_AUTHORIZATION_FAILED.code()))
-                )
-            )
-            .setThrottleTimeMs(THROTTLE_TIME_MS));
+            new DeleteGroupsResponseData()
+                    .setResults(
+                            new DeletableGroupResultCollection(Arrays.asList(
+                                    new DeletableGroupResult()
+                                            .setGroupId(GROUP_ID_1)
+                                            .setErrorCode(Errors.NONE.code()),
+                                    new DeletableGroupResult()
+                                            .setGroupId(GROUP_ID_2)
+                                            .setErrorCode(Errors.GROUP_AUTHORIZATION_FAILED.code()))
+                            )
+                    )
+                    .setThrottleTimeMs(THROTTLE_TIME_MS));
 
 
     @Test

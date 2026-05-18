@@ -201,14 +201,14 @@ public class Serdes {
 
         // TODO: we can also serializes objects of type T using generic Java serialization by default
         throw new IllegalArgumentException("Unknown class for built-in serializer. Supported types are: " +
-            "String, Short, Integer, Long, Float, Double, ByteArray, ByteBuffer, Bytes, UUID, Boolean");
+                "String, Short, Integer, Long, Float, Double, ByteArray, ByteBuffer, Bytes, UUID, Boolean");
     }
 
     /**
      * Construct a serde object from separate serializer and deserializer
      *
-     * @param serializer    must not be null.
-     * @param deserializer  must not be null.
+     * @param serializer   must not be null.
+     * @param deserializer must not be null.
      */
     public static <T> Serde<T> serdeFrom(final Serializer<T> serializer, final Deserializer<T> deserializer) {
         if (serializer == null) {

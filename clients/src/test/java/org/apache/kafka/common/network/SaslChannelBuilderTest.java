@@ -165,8 +165,8 @@ public class SaslChannelBuilderTest {
 
     private SaslChannelBuilder createGssapiChannelBuilder(Map<String, JaasContext> jaasContexts, GSSManager gssManager) {
         SaslChannelBuilder channelBuilder = new SaslChannelBuilder(ConnectionMode.SERVER, jaasContexts,
-            SecurityProtocol.SASL_PLAINTEXT, new ListenerName("GSSAPI"), false, "GSSAPI",
-            null, null, null, Time.SYSTEM, new LogContext(), defaultApiVersionsSupplier()) {
+                SecurityProtocol.SASL_PLAINTEXT, new ListenerName("GSSAPI"), false, "GSSAPI",
+                null, null, null, Time.SYSTEM, new LogContext(), defaultApiVersionsSupplier()) {
 
             @Override
             protected GSSManager gssManager() {

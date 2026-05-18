@@ -73,11 +73,11 @@ public class MetadataBatchLoader {
     private boolean hasSeenRecord;
 
     public MetadataBatchLoader(
-        LogContext logContext,
-        Time time,
-        FaultHandler faultHandler,
-        MetadataUpdater callback,
-        SupportedConfigChecker supportedConfigChecker
+            LogContext logContext,
+            Time time,
+            FaultHandler faultHandler,
+            MetadataUpdater callback,
+            SupportedConfigChecker supportedConfigChecker
     ) {
         this.log = logContext.logger(MetadataBatchLoader.class);
         this.time = time;
@@ -100,15 +100,15 @@ public class MetadataBatchLoader {
      * discarded. This is called after applying a delta and passing it back to MetadataLoader, or
      * when MetadataLoader loads a snapshot.
      *
-     * @param image     Metadata image to reset this batch loader's state to.
+     * @param image Metadata image to reset this batch loader's state to.
      */
     public final void resetToImage(MetadataImage image) {
         this.image = image;
         this.hasSeenRecord = !image.isEmpty();
         this.delta = new MetadataDelta.Builder()
-            .setImage(image)
-            .setSupportedConfigChecker(supportedConfigChecker)
-            .build();
+                .setImage(image)
+                .setSupportedConfigChecker(supportedConfigChecker)
+                .build();
         this.transactionState = TransactionState.NO_TRANSACTION;
         this.lastOffset = image.provenance().lastContainedOffset();
         this.lastEpoch = image.provenance().lastContainedEpoch();
@@ -127,8 +127,8 @@ public class MetadataBatchLoader {
      * If this batch starts a transaction, any records preceding the transaction in this
      * batch will be implicitly added to the transaction.
      *
-     * @param batch    The reader which yields the batches.
-     * @return         The time in nanoseconds that elapsed while loading this batch
+     * @param batch The reader which yields the batches.
+     * @return The time in nanoseconds that elapsed while loading this batch
      */
 
     public long loadBatch(Batch<ApiMessageAndVersion> batch, LeaderAndEpoch leaderAndEpoch) {
@@ -143,7 +143,7 @@ public class MetadataBatchLoader {
                 replay(record);
             } catch (Throwable e) {
                 faultHandler.handleFault("Error loading metadata log record from offset " +
-                    (batch.baseOffset() + indexWithinBatch), e);
+                        (batch.baseOffset() + indexWithinBatch), e);
             }
 
             // Emit the accumulated delta if a new transaction has been started and one of the following is true
@@ -153,12 +153,12 @@ public class MetadataBatchLoader {
                 // Accumulated delta is aligned on batch boundaries iff the BeginTransactionRecord is the first record in a batch
                 MetadataProvenance provenance = new MetadataProvenance(lastOffset, lastEpoch, lastContainedLogTimeMs, indexWithinBatch == 0);
                 LogDeltaManifest manifest = LogDeltaManifest.newBuilder()
-                    .provenance(provenance)
-                    .leaderAndEpoch(leaderAndEpoch)
-                    .numBatches(numBatches) // This will be zero if we have not yet read a batch
-                    .elapsedNs(totalBatchElapsedNs)
-                    .numBytes(numBytes)     // This will be zero if we have not yet read a batch
-                    .build();
+                        .provenance(provenance)
+                        .leaderAndEpoch(leaderAndEpoch)
+                        .numBatches(numBatches) // This will be zero if we have not yet read a batch
+                        .elapsedNs(totalBatchElapsedNs)
+                        .numBytes(numBytes)     // This will be zero if we have not yet read a batch
+                        .build();
                 if (log.isDebugEnabled()) {
                     log.debug("handleCommit: Generated a metadata delta between {} and {} from {} batch(es) in {} us. The delta is {}.",
                             image.offset(), manifest.provenance().lastContainedOffset(),
@@ -190,33 +190,33 @@ public class MetadataBatchLoader {
     public void maybeFlushBatches(LeaderAndEpoch leaderAndEpoch, boolean isOffsetBatchAligned) {
         MetadataProvenance provenance = new MetadataProvenance(lastOffset, lastEpoch, lastContainedLogTimeMs, isOffsetBatchAligned);
         LogDeltaManifest manifest = LogDeltaManifest.newBuilder()
-            .provenance(provenance)
-            .leaderAndEpoch(leaderAndEpoch)
-            .numBatches(numBatches)
-            .elapsedNs(totalBatchElapsedNs)
-            .numBytes(numBytes)
-            .build();
+                .provenance(provenance)
+                .leaderAndEpoch(leaderAndEpoch)
+                .numBatches(numBatches)
+                .elapsedNs(totalBatchElapsedNs)
+                .numBytes(numBytes)
+                .build();
         switch (transactionState) {
             case STARTED_TRANSACTION:
             case CONTINUED_TRANSACTION:
                 log.debug("handleCommit: not publishing since a transaction starting at {} is still in progress. " +
-                    "{} batch(es) processed so far.", image.offset(), numBatches);
+                        "{} batch(es) processed so far.", image.offset(), numBatches);
                 break;
             case ABORTED_TRANSACTION:
                 log.debug("handleCommit: publishing empty delta between {} and {} from {} batch(es) " +
-                    "since a transaction was aborted", image.offset(), manifest.provenance().lastContainedOffset(),
-                    manifest.numBatches());
+                                "since a transaction was aborted", image.offset(), manifest.provenance().lastContainedOffset(),
+                        manifest.numBatches());
                 applyDeltaAndUpdate(new MetadataDelta.Builder()
-                    .setImage(image)
-                    .setSupportedConfigChecker(supportedConfigChecker)
-                    .build(), manifest);
+                        .setImage(image)
+                        .setSupportedConfigChecker(supportedConfigChecker)
+                        .build(), manifest);
                 break;
             case ENDED_TRANSACTION:
             case NO_TRANSACTION:
                 if (log.isDebugEnabled()) {
                     log.debug("handleCommit: Generated a metadata delta between {} and {} from {} batch(es) in {} us.",
-                        image.offset(), manifest.provenance().lastContainedOffset(),
-                        manifest.numBatches(), NANOSECONDS.toMicros(manifest.elapsedNs()));
+                            image.offset(), manifest.provenance().lastContainedOffset(),
+                            manifest.numBatches(), NANOSECONDS.toMicros(manifest.elapsedNs()));
                 }
                 applyDeltaAndUpdate(delta, manifest);
                 break;
@@ -228,7 +228,7 @@ public class MetadataBatchLoader {
         switch (type) {
             case BEGIN_TRANSACTION_RECORD:
                 if (transactionState == TransactionState.STARTED_TRANSACTION ||
-                    transactionState == TransactionState.CONTINUED_TRANSACTION) {
+                        transactionState == TransactionState.CONTINUED_TRANSACTION) {
                     throw new RuntimeException("Encountered BeginTransactionRecord while already in a transaction");
                 } else {
                     transactionState = TransactionState.STARTED_TRANSACTION;
@@ -236,7 +236,7 @@ public class MetadataBatchLoader {
                 break;
             case END_TRANSACTION_RECORD:
                 if (transactionState == TransactionState.CONTINUED_TRANSACTION ||
-                    transactionState == TransactionState.STARTED_TRANSACTION) {
+                        transactionState == TransactionState.STARTED_TRANSACTION) {
                     transactionState = TransactionState.ENDED_TRANSACTION;
                 } else {
                     throw new RuntimeException("Encountered EndTransactionRecord without having seen a BeginTransactionRecord");
@@ -244,7 +244,7 @@ public class MetadataBatchLoader {
                 break;
             case ABORT_TRANSACTION_RECORD:
                 if (transactionState == TransactionState.CONTINUED_TRANSACTION ||
-                    transactionState == TransactionState.STARTED_TRANSACTION) {
+                        transactionState == TransactionState.STARTED_TRANSACTION) {
                     transactionState = TransactionState.ABORTED_TRANSACTION;
                 } else {
                     throw new RuntimeException("Encountered AbortTransactionRecord without having seen a BeginTransactionRecord");
@@ -276,8 +276,8 @@ public class MetadataBatchLoader {
             image = delta.apply(manifest.provenance());
         } catch (Throwable e) {
             faultHandler.handleFault("Error generating new metadata image from " +
-                "metadata delta between offset " + image.offset() +
-                " and " + manifest.provenance().lastContainedOffset(), e);
+                    "metadata delta between offset " + image.offset() +
+                    " and " + manifest.provenance().lastContainedOffset(), e);
         }
 
         // Whether we can apply the delta or not, we need to make sure the batch loader gets reset

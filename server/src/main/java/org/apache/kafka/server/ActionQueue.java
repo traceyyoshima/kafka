@@ -22,6 +22,7 @@ package org.apache.kafka.server;
 public interface ActionQueue {
     /**
      * Add action to this queue.
+     *
      * @param action action
      */
     void add(Runnable action);

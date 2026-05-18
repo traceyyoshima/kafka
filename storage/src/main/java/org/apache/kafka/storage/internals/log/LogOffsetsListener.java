@@ -18,7 +18,7 @@ package org.apache.kafka.storage.internals.log;
 
 /**
  * Listener receive notification from the Log.
- *
+ * <p>
  * Note that the callbacks are executed in the thread that triggers the change
  * AND that locks may be held during their execution. They are meant to be used
  * as notification mechanism only.
@@ -27,10 +27,12 @@ public interface LogOffsetsListener {
     /**
      * A default no op offsets listener.
      */
-    LogOffsetsListener NO_OP_OFFSETS_LISTENER = new LogOffsetsListener() { };
+    LogOffsetsListener NO_OP_OFFSETS_LISTENER = new LogOffsetsListener() {
+    };
 
     /**
      * Called when the Log increments its high watermark.
      */
-    default void onHighWatermarkUpdated(long offset) {}
+    default void onHighWatermarkUpdated(long offset) {
+    }
 }

@@ -54,16 +54,16 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
  * The broker lifecycle manager owns the broker state.
- *
+ * <p>
  * Its inputs are messages passed in from other parts of the broker and from the
  * controller: requests to start up, or shut down, for example. Its output are the broker
  * state and various futures that can be used to wait for broker state transitions to
  * occur.
- *
+ * <p>
  * The lifecycle manager handles registering the broker with the controller, as described
  * in KIP-631. After registration is complete, it handles sending periodic broker
  * heartbeats and processing the responses.
- *
+ * <p>
  * This code uses an event queue paradigm. Modifications get translated into events, which
  * are placed on the queue to be processed sequentially. As described in the JavaDoc for
  * each variable, most mutable state can be accessed only from that event queue thread.
@@ -218,7 +218,8 @@ public class BrokerLifecycleManager {
             Time time,
             String threadNamePrefix,
             Set<Uuid> logDirs) {
-        this(config, time, threadNamePrefix, logDirs, () -> { }, () -> false);
+        this(config, time, threadNamePrefix, logDirs, () -> {
+        }, () -> false);
     }
 
     public BrokerLifecycleManager(
@@ -256,12 +257,12 @@ public class BrokerLifecycleManager {
      * @param previousBrokerEpoch           The broker epoch before the reboot.
      */
     public void start(Supplier<Long> highestMetadataOffsetProvider,
-               NodeToControllerChannelManager channelManager,
-               String clusterId,
-               ListenerCollection advertisedListeners,
-               Map<String, VersionRange> supportedFeatures,
-               OptionalLong previousBrokerEpoch,
-               Set<Uuid> cordonedLogDirs) {
+                      NodeToControllerChannelManager channelManager,
+                      String clusterId,
+                      ListenerCollection advertisedListeners,
+                      Map<String, VersionRange> supportedFeatures,
+                      OptionalLong previousBrokerEpoch,
+                      Set<Uuid> cordonedLogDirs) {
         this.previousBrokerEpoch = previousBrokerEpoch;
         if (!cordonedLogDirs.isEmpty()) {
             // At this point we don't have fresh metadata yet so we don't know if the cordoned log dirs feature is supported.
@@ -292,6 +293,7 @@ public class BrokerLifecycleManager {
 
     /**
      * Propagate directory cordoned to the controller.
+     *
      * @param directories The IDs for the directories that is cordoned.
      */
     public void propagateDirectoryCordoned(Set<Uuid> directories) {
@@ -302,6 +304,7 @@ public class BrokerLifecycleManager {
 
     /**
      * Propagate directory uncordoned to the controller.
+     *
      * @param directories The IDs for the directories that is uncordoned.
      */
     public void propagateDirectoryUncordoned(Set<Uuid> directories) {
@@ -351,7 +354,7 @@ public class BrokerLifecycleManager {
         public void run() {
             switch (state) {
                 case PENDING_CONTROLLED_SHUTDOWN ->
-                    logger.info("Attempted to enter pending controlled shutdown state, but we are already in that state.");
+                        logger.info("Attempted to enter pending controlled shutdown state, but we are already in that state.");
                 case RUNNING -> {
                     logger.info("Beginning controlled shutdown.");
                     state = BrokerState.PENDING_CONTROLLED_SHUTDOWN;
@@ -518,16 +521,16 @@ public class BrokerLifecycleManager {
         List<Uuid> sortedLogDirs = new ArrayList<>(logDirs);
         sortedLogDirs.sort(Uuid::compareTo);
         BrokerRegistrationRequestData data = new BrokerRegistrationRequestData()
-            .setBrokerId(nodeId)
-            .setIsMigratingZkBroker(false)
-            .setClusterId(clusterId)
-            .setFeatures(features)
-            .setIncarnationId(incarnationId)
-            .setListeners(advertisedListeners)
-            .setRack(rack.orElse(null))
-            .setPreviousBrokerEpoch(previousBrokerEpoch.orElse(-1L))
-            .setLogDirs(sortedLogDirs)
-            .setCordonedLogDirs(cordonedLogDirs.entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey).toList());
+                .setBrokerId(nodeId)
+                .setIsMigratingZkBroker(false)
+                .setClusterId(clusterId)
+                .setFeatures(features)
+                .setIncarnationId(incarnationId)
+                .setListeners(advertisedListeners)
+                .setRack(rack.orElse(null))
+                .setPreviousBrokerEpoch(previousBrokerEpoch.orElse(-1L))
+                .setLogDirs(sortedLogDirs)
+                .setCordonedLogDirs(cordonedLogDirs.entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey).toList());
         if (logger.isDebugEnabled()) {
             logger.debug("Sending broker registration {}", data);
         }
@@ -600,13 +603,13 @@ public class BrokerLifecycleManager {
     private void sendBrokerHeartbeat() {
         Long metadataOffset = highestMetadataOffsetProvider.get();
         BrokerHeartbeatRequestData data = new BrokerHeartbeatRequestData()
-            .setBrokerEpoch(brokerEpoch)
-            .setBrokerId(nodeId)
-            .setCurrentMetadataOffset(metadataOffset)
-            .setWantFence(!readyToUnfence)
-            .setWantShutDown(state == BrokerState.PENDING_CONTROLLED_SHUTDOWN)
-            .setOfflineLogDirs(new ArrayList<>(offlineDirs.keySet()))
-            .setCordonedLogDirs(cordonedLogDirs.entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey).toList());
+                .setBrokerEpoch(brokerEpoch)
+                .setBrokerId(nodeId)
+                .setCurrentMetadataOffset(metadataOffset)
+                .setWantFence(!readyToUnfence)
+                .setWantShutDown(state == BrokerState.PENDING_CONTROLLED_SHUTDOWN)
+                .setOfflineLogDirs(new ArrayList<>(offlineDirs.keySet()))
+                .setCordonedLogDirs(cordonedLogDirs.entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey).toList());
         if (logger.isTraceEnabled()) {
             logger.trace("Sending broker heartbeat {}", data);
         }

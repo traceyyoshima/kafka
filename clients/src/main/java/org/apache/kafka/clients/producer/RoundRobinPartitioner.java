@@ -28,26 +28,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The "Round-Robin" partitioner
- * 
- * This partitioning strategy can be used when user wants 
+ * <p>
+ * This partitioning strategy can be used when user wants
  * to distribute the writes to all partitions equally. This
- * is the behaviour regardless of record key hash. 
+ * is the behaviour regardless of record key hash.
  *
  */
 public class RoundRobinPartitioner implements Partitioner {
     private final ConcurrentMap<String, AtomicInteger> topicCounterMap = new ConcurrentHashMap<>();
 
-    public void configure(Map<String, ?> configs) {}
+    public void configure(Map<String, ?> configs) {
+    }
 
     /**
      * Compute the partition for the given record.
      *
-     * @param topic The topic name
-     * @param key The key to partition on (or null if no key)
-     * @param keyBytes serialized key to partition on (or null if no key)
-     * @param value The value to partition on or null
+     * @param topic      The topic name
+     * @param key        The key to partition on (or null if no key)
+     * @param keyBytes   serialized key to partition on (or null if no key)
+     * @param value      The value to partition on or null
      * @param valueBytes serialized value to partition on or null
-     * @param cluster The current cluster metadata
+     * @param cluster    The current cluster metadata
      */
     @Override
     public int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster) {
@@ -68,5 +69,6 @@ public class RoundRobinPartitioner implements Partitioner {
         return counter.getAndIncrement();
     }
 
-    public void close() {}
+    public void close() {
+    }
 }

@@ -45,8 +45,8 @@ public final class ReplicaKey implements Comparable<ReplicaKey> {
         int idComparison = Integer.compare(this.id, that.id);
         if (idComparison == 0) {
             return directoryId
-                .orElse(NO_DIRECTORY_ID)
-                .compareTo(that.directoryId.orElse(NO_DIRECTORY_ID));
+                    .orElse(NO_DIRECTORY_ID)
+                    .compareTo(that.directoryId.orElse(NO_DIRECTORY_ID));
         } else {
             return idComparison;
         }
@@ -75,8 +75,8 @@ public final class ReplicaKey implements Comparable<ReplicaKey> {
 
     public static ReplicaKey of(int id, Uuid directoryId) {
         return new ReplicaKey(
-            id,
-            directoryId.equals(NO_DIRECTORY_ID) ? Optional.empty() : Optional.of(directoryId)
+                id,
+                directoryId.equals(NO_DIRECTORY_ID) ? Optional.empty() : Optional.of(directoryId)
         );
     }
 }

@@ -62,8 +62,8 @@ public class JsonUtil {
      * Determine if a string is a JSON object literal.
      * Object literals must begin with an open brace.
      *
-     * @param input         The input string.
-     * @return              True if the string is a JSON literal.
+     * @param input The input string.
+     * @return True if the string is a JSON literal.
      */
     static boolean openBraceComesFirst(String input) {
         for (int i = 0; i < input.length(); i++) {
@@ -82,10 +82,10 @@ public class JsonUtil {
      * file name containing an open brace, you can force it to be interpreted as a file name be
      * prefixing a ./ or full path.
      *
-     * @param argument      The command-line argument.
-     * @param clazz         The class of the object to be read.
-     * @param <T>           The object type.
-     * @return              The object which we read.
+     * @param argument The command-line argument.
+     * @param clazz    The class of the object to be read.
+     * @param <T>      The object type.
+     * @return The object which we read.
      */
     public static <T> T objectFromCommandLineArgument(String argument, Class<T> clazz) throws Exception {
         if (openBraceComesFirst(argument)) {

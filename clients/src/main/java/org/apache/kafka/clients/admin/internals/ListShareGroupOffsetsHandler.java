@@ -83,7 +83,7 @@ public class ListShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coordi
             String groupId = coordinatorKey.idValue;
             ListShareGroupOffsetsSpec spec = groupSpecs.get(groupId);
             DescribeShareGroupOffsetsRequestGroup requestGroup = new DescribeShareGroupOffsetsRequestGroup()
-                .setGroupId(groupId);
+                    .setGroupId(groupId);
 
             if (spec.topicPartitions() != null) {
                 Map<String, List<Integer>> topicPartitionMap = new HashMap<>();
@@ -92,11 +92,11 @@ public class ListShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coordi
                 Map<String, DescribeShareGroupOffsetsRequestTopic> requestTopics = new HashMap<>();
                 for (TopicPartition tp : spec.topicPartitions()) {
                     requestTopics.computeIfAbsent(tp.topic(), t ->
-                            new DescribeShareGroupOffsetsRequestTopic()
-                                .setTopicName(tp.topic())
-                                .setPartitions(new ArrayList<>()))
-                        .partitions()
-                        .add(tp.partition());
+                                    new DescribeShareGroupOffsetsRequestTopic()
+                                            .setTopicName(tp.topic())
+                                            .setPartitions(new ArrayList<>()))
+                            .partitions()
+                            .add(tp.partition());
                 }
                 requestGroup.setTopics(new ArrayList<>(requestTopics.values()));
             } else {
@@ -105,7 +105,7 @@ public class ListShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coordi
             groups.add(requestGroup);
         });
         DescribeShareGroupOffsetsRequestData data = new DescribeShareGroupOffsetsRequestData()
-            .setGroups(groups);
+                .setGroups(groups);
         return new DescribeShareGroupOffsetsRequest.Builder(data);
     }
 
@@ -155,15 +155,15 @@ public class ListShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coordi
 
     private static Set<CoordinatorKey> coordinatorKeys(Collection<String> groupIds) {
         return groupIds.stream()
-            .map(CoordinatorKey::byGroupId)
-            .collect(Collectors.toSet());
+                .map(CoordinatorKey::byGroupId)
+                .collect(Collectors.toSet());
     }
 
     private void validateKeys(Set<CoordinatorKey> groupIds) {
         Set<CoordinatorKey> keys = coordinatorKeys(groupSpecs.keySet());
         if (!keys.containsAll(groupIds)) {
             throw new IllegalArgumentException("Received unexpected group ids " + groupIds +
-                " (expected one of " + keys + ")");
+                    " (expected one of " + keys + ")");
         }
     }
 
@@ -183,7 +183,7 @@ public class ListShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coordi
             case COORDINATOR_LOAD_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("`DescribeShareGroupOffsets` request for group id {} failed because the coordinator " +
-                    "is still in the process of loading state. Will retry", groupId.idValue);
+                        "is still in the process of loading state. Will retry", groupId.idValue);
                 break;
 
             case COORDINATOR_NOT_AVAILABLE:
@@ -191,7 +191,7 @@ public class ListShareGroupOffsetsHandler extends AdminApiHandler.Batched<Coordi
                 // If the coordinator is unavailable or there was a coordinator change, then we unmap
                 // the key so that we retry the `FindCoordinator` request
                 log.debug("`DescribeShareGroupOffsets` request for group id {} returned error {}. " +
-                    "Will attempt to find the coordinator again and retry", groupId.idValue, error);
+                        "Will attempt to find the coordinator again and retry", groupId.idValue, error);
                 groupsToUnmap.add(groupId);
                 break;
 

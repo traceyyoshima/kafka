@@ -41,8 +41,8 @@ public class PartialDefaultRecord extends DefaultRecord {
     @Override
     public boolean equals(Object o) {
         return super.equals(o) &&
-            this.keySize == ((PartialDefaultRecord) o).keySize &&
-            this.valueSize == ((PartialDefaultRecord) o).valueSize;
+                this.keySize == ((PartialDefaultRecord) o).keySize &&
+                this.valueSize == ((PartialDefaultRecord) o).valueSize;
     }
 
     @Override
@@ -56,10 +56,10 @@ public class PartialDefaultRecord extends DefaultRecord {
     @Override
     public String toString() {
         return String.format("PartialDefaultRecord(offset=%d, timestamp=%d, key=%d bytes, value=%d bytes)",
-            offset(),
-            timestamp(),
-            keySize,
-            valueSize);
+                offset(),
+                timestamp(),
+                keySize,
+                valueSize);
     }
 
     @Override

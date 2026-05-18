@@ -106,11 +106,11 @@ public class LogDeltaManifest implements LoaderManifest {
     private final long numBytes;
 
     LogDeltaManifest(
-        MetadataProvenance provenance,
-        LeaderAndEpoch leaderAndEpoch,
-        int numBatches,
-        long elapsedNs,
-        long numBytes
+            MetadataProvenance provenance,
+            LeaderAndEpoch leaderAndEpoch,
+            int numBatches,
+            long elapsedNs,
+            long numBytes
     ) {
         this.provenance = provenance;
         this.leaderAndEpoch = leaderAndEpoch;

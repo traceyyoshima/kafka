@@ -33,12 +33,12 @@ public class DescribeDelegationTokenRequest extends AbstractRequest {
         public Builder(List<KafkaPrincipal> owners) {
             super(ApiKeys.DESCRIBE_DELEGATION_TOKEN);
             this.data = new DescribeDelegationTokenRequestData()
-                .setOwners(owners == null ? null : owners
-                    .stream()
-                    .map(owner -> new DescribeDelegationTokenRequestData.DescribeDelegationTokenOwner()
-                            .setPrincipalName(owner.getName())
-                            .setPrincipalType(owner.getPrincipalType()))
-                    .collect(Collectors.toList()));
+                    .setOwners(owners == null ? null : owners
+                                                       .stream()
+                                                       .map(owner -> new DescribeDelegationTokenRequestData.DescribeDelegationTokenOwner()
+                                                                     .setPrincipalName(owner.getName())
+                                                                     .setPrincipalType(owner.getPrincipalType()))
+                                                       .collect(Collectors.toList()));
         }
 
         @Override
@@ -75,6 +75,6 @@ public class DescribeDelegationTokenRequest extends AbstractRequest {
 
     public static DescribeDelegationTokenRequest parse(Readable readable, short version) {
         return new DescribeDelegationTokenRequest(new DescribeDelegationTokenRequestData(
-            readable, version), version);
+                readable, version), version);
     }
 }

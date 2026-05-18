@@ -100,7 +100,8 @@ import javax.management.ObjectName;
 
 public final class Utils {
 
-    private Utils() {}
+    private Utils() {
+    }
 
     // This matches URIs of formats: host:port and protocol://host:port
     // IPv6 is supported with [ip] pattern
@@ -110,9 +111,9 @@ public final class Utils {
 
     // Prints up to 2 decimal digits. Used for human-readable printing
     private static final DecimalFormat TWO_DIGIT_FORMAT = new DecimalFormat("0.##",
-        DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
-    private static final String[] BYTE_SCALE_SUFFIXES = new String[] {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
+    private static final String[] BYTE_SCALE_SUFFIXES = new String[]{"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
 
     public static final String NL = System.lineSeparator();
 
@@ -123,8 +124,9 @@ public final class Utils {
 
     /**
      * Get a sorted list representation of a collection.
+     *
      * @param collection The collection to sort
-     * @param <T> The class of objects in the collection
+     * @param <T>        The class of objects in the collection
      * @return An unmodifiable sorted list with the contents of the collection
      */
     public static <T extends Comparable<? super T>> List<T> sorted(Collection<T> collection) {
@@ -202,8 +204,9 @@ public final class Utils {
 
     /**
      * Get the minimum of some long values.
+     *
      * @param first Used to ensure at least one value
-     * @param rest The remaining values to compare
+     * @param rest  The remaining values to compare
      * @return The minimum of all passed values
      */
     public static long min(long first, long... rest) {
@@ -217,8 +220,9 @@ public final class Utils {
 
     /**
      * Get the maximum of some long values.
+     *
      * @param first Used to ensure at least one value
-     * @param rest The remaining values to compare
+     * @param rest  The remaining values to compare
      * @return The maximum of all passed values
      */
     public static long max(long first, long... rest) {
@@ -261,6 +265,7 @@ public final class Utils {
 
     /**
      * Read the given byte buffer from its current position to its limit into a byte array.
+     *
      * @param buffer The buffer to read from
      */
     public static byte[] toArray(ByteBuffer buffer) {
@@ -269,8 +274,9 @@ public final class Utils {
 
     /**
      * Read a byte array from its current position given the size in the buffer
+     *
      * @param buffer The buffer to read from
-     * @param size The number of bytes to read into the array
+     * @param size   The number of bytes to read into the array
      */
     public static byte[] toArray(ByteBuffer buffer, int size) {
         return toArray(buffer, 0, size);
@@ -278,6 +284,7 @@ public final class Utils {
 
     /**
      * Convert a ByteBuffer to a nullable array.
+     *
      * @param buffer The buffer to convert
      * @return The resulting array or null if the buffer is null
      */
@@ -287,6 +294,7 @@ public final class Utils {
 
     /**
      * Wrap an array as a nullable ByteBuffer.
+     *
      * @param array The nullable array to wrap
      * @return The wrapping ByteBuffer or null if array is null
      */
@@ -296,9 +304,10 @@ public final class Utils {
 
     /**
      * Read a byte array from the given offset and size in the buffer
+     *
      * @param buffer The buffer to read from
      * @param offset The offset relative to the current position of the buffer
-     * @param size The number of bytes to read into the array
+     * @param size   The number of bytes to read into the array
      */
     public static byte[] toArray(ByteBuffer buffer, int offset, int size) {
         byte[] dest = new byte[size];
@@ -317,6 +326,7 @@ public final class Utils {
      * Starting from the current position, read an integer indicating the size of the byte array to read,
      * then read the array. Consumes the buffer: upon returning, the buffer's position is after the array
      * that is returned.
+     *
      * @param buffer The buffer to read a size-prefixed array from
      * @return The array
      */
@@ -328,8 +338,9 @@ public final class Utils {
     /**
      * Read a byte array of the given size. Consumes the buffer: upon returning, the buffer's position
      * is after the array that is returned.
+     *
      * @param buffer The buffer to read a size-prefixed array from
-     * @param size The number of bytes to read out of the buffer
+     * @param size   The number of bytes to read out of the buffer
      * @return The array
      */
     public static byte[] getNullableArray(final ByteBuffer buffer, final int size) {
@@ -346,6 +357,7 @@ public final class Utils {
 
     /**
      * Returns a copy of src byte array
+     *
      * @param src The byte array to copy
      * @return The copy
      */
@@ -362,7 +374,7 @@ public final class Utils {
      * The calculation time depends only on the length of this first character array; it does not
      * depend on the length of the second character array or the contents of either array.
      *
-     * @param first the first array to compare
+     * @param first  the first array to compare
      * @param second the second array to compare
      * @return true if the arrays are equal, or false otherwise
      */
@@ -391,6 +403,7 @@ public final class Utils {
 
     /**
      * Sleep for a bit
+     *
      * @param ms The duration of the sleep
      */
     public static void sleep(long ms) {
@@ -419,9 +432,10 @@ public final class Utils {
 
     /**
      * Look up the class by name and instantiate it.
+     *
      * @param klass class name
-     * @param base super class of the class to be instantiated
-     * @param <T> the type of the base class
+     * @param base  super class of the class to be instantiated
+     * @param <T>   the type of the base class
      * @return the new instance
      */
     public static <T> T newInstance(String klass, Class<T> base) throws ClassNotFoundException {
@@ -430,9 +444,10 @@ public final class Utils {
 
     /**
      * Look up a class by name.
+     *
      * @param klass class name
-     * @param base super class of the class for verification
-     * @param <T> the type of the base class
+     * @param base  super class of the class for verification
+     * @param <T>   the type of the base class
      * @return the new class
      */
     public static <T> Class<? extends T> loadClass(String klass, Class<T> base) throws ClassNotFoundException {
@@ -448,11 +463,12 @@ public final class Utils {
 
     /**
      * Cast {@code klass} to {@code base} and instantiate it.
+     *
      * @param klass The class to instantiate
-     * @param base A know baseclass of klass.
-     * @param <T> the type of the base class
-     * @throws ClassCastException If {@code klass} is not a subclass of {@code base}.
+     * @param base  A know baseclass of klass.
+     * @param <T>   the type of the base class
      * @return the new instance.
+     * @throws ClassCastException If {@code klass} is not a subclass of {@code base}.
      */
     public static <T> T newInstance(Class<?> klass, Class<T> base) {
         return Utils.newInstance(klass.asSubclass(base));
@@ -461,11 +477,11 @@ public final class Utils {
     /**
      * Construct a new object using a class name and parameters.
      *
-     * @param className                 The full name of the class to construct.
-     * @param params                    A sequence of (type, object) elements.
-     * @param <T>                       The type of object to construct.
-     * @return                          The new object.
-     * @throws ClassNotFoundException   If there was a problem constructing the object.
+     * @param className The full name of the class to construct.
+     * @param params    A sequence of (type, object) elements.
+     * @param <T>       The type of object to construct.
+     * @return The new object.
+     * @throws ClassNotFoundException If there was a problem constructing the object.
      */
     public static <T> T newParameterizedInstance(String className, Object... params)
             throws ClassNotFoundException {
@@ -482,13 +498,13 @@ public final class Utils {
             return constructor.newInstance(args);
         } catch (NoSuchMethodException e) {
             throw new ClassNotFoundException(String.format("Failed to find " +
-                "constructor with %s for %s", Arrays.stream(argTypes).map(Object::toString).collect(Collectors.joining(", ")), className), e);
+                    "constructor with %s for %s", Arrays.stream(argTypes).map(Object::toString).collect(Collectors.joining(", ")), className), e);
         } catch (InstantiationException e) {
             throw new ClassNotFoundException(String.format("Failed to instantiate " +
-                "%s", className), e);
+                    "%s", className), e);
         } catch (IllegalAccessException e) {
             throw new ClassNotFoundException(String.format("Unable to access " +
-                "constructor of %s", className), e);
+                    "constructor of %s", className), e);
         } catch (InvocationTargetException e) {
             throw new KafkaException(String.format("The constructor of %s threw an exception", className), e.getCause());
         }
@@ -496,6 +512,7 @@ public final class Utils {
 
     /**
      * Generates 32 bit murmur2 hash from byte array
+     *
      * @param data byte array to hash
      * @return 32 bit hash of the given array
      */
@@ -543,6 +560,7 @@ public final class Utils {
 
     /**
      * Extracts the hostname from a "host:port" address string.
+     *
      * @param address address string to parse
      * @return hostname or null if the given address is incorrect
      */
@@ -553,6 +571,7 @@ public final class Utils {
 
     /**
      * Extracts the port number from a "host:port" address string.
+     *
      * @param address address string to parse
      * @return port number or null if the given address is incorrect
      */
@@ -563,6 +582,7 @@ public final class Utils {
 
     /**
      * Basic validation of the supplied address. checks for valid characters
+     *
      * @param address hostname string to validate
      * @return true if address contains valid characters
      */
@@ -573,6 +593,7 @@ public final class Utils {
     /**
      * Formats hostname and port number as a "host:port" address string,
      * surrounding IPv6 addresses with braces '[', ']'
+     *
      * @param host hostname
      * @param port port number
      * @return address string
@@ -589,7 +610,7 @@ public final class Utils {
      *
      * @param bytes the size in bytes
      * @return a string representing the size with the appropriate unit (e.g., "3.2 KB", "1.5 MB").
-     *         If the value is negative or too large, the input is returned as a string (e.g., "-500", "999999999999999").
+     * If the value is negative or too large, the input is returned as a string (e.g., "-500", "999999999999999").
      */
     public static String formatBytes(long bytes) {
         if (bytes < 0) {
@@ -609,10 +630,10 @@ public final class Utils {
     }
 
     /**
-     *  Converts a {@code Map} class into a string, concatenating keys and values
-     *  Example:
-     *      {@code mkString({ key: "hello", keyTwo: "hi" }, "|START|", "|END|", "=", ",")
-     *          => "|START|key=hello,keyTwo=hi|END|"}
+     * Converts a {@code Map} class into a string, concatenating keys and values
+     * Example:
+     * {@code mkString({ key: "hello", keyTwo: "hi" }, "|START|", "|END|", "=", ",")
+     * => "|START|key=hello,keyTwo=hi|END|"}
      */
     public static <K, V> String mkString(Map<K, V> map, String begin, String end,
                                          String keyValueSeparator, String elementSeparator) {
@@ -629,10 +650,10 @@ public final class Utils {
     }
 
     /**
-     *  Converts an extensions string into a {@code Map<String, String>}.
+     * Converts an extensions string into a {@code Map<String, String>}.
      * <p>
-     *  Example:
-     *      {@code parseMap("key=hey,keyTwo=hi,keyThree=hello", "=", ",") => { key: "hey", keyTwo: "hi", keyThree: "hello" }}
+     * Example:
+     * {@code parseMap("key=hey,keyTwo=hi,keyThree=hello", "=", ",") => { key: "hey", keyTwo: "hi", keyThree: "hello" }}
      *
      */
     public static Map<String, String> parseMap(String mapStr, String keyValueSeparator, String elementSeparator) {
@@ -650,6 +671,7 @@ public final class Utils {
 
     /**
      * Read a properties file from the given path
+     *
      * @param filename The path of the file to read
      * @return the loaded properties
      */
@@ -659,7 +681,8 @@ public final class Utils {
 
     /**
      * Read a properties file from the given path
-     * @param filename The path of the file to read
+     *
+     * @param filename        The path of the file to read
      * @param onlyIncludeKeys When non-null, only return values associated with these keys and ignore all others
      * @return the loaded properties
      */
@@ -742,10 +765,9 @@ public final class Utils {
      *
      * <p>Since JDK 13, this method could be replaced with slice(int index, int length).
      *
-     * @param srcBuf Source buffer where data is read from
+     * @param srcBuf      Source buffer where data is read from
      * @param bytesToRead Number of bytes to read
      * @return Destination buffer or null if bytesToRead is < 0
-     *
      * @see ByteBuffer#slice()
      */
     public static ByteBuffer readBytes(ByteBuffer srcBuf, int bytesToRead) {
@@ -774,9 +796,10 @@ public final class Utils {
 
     /**
      * Check if the given ByteBuffer capacity
+     *
      * @param existingBuffer ByteBuffer capacity to check
-     * @param newLength new length for the ByteBuffer.
-     * returns ByteBuffer
+     * @param newLength      new length for the ByteBuffer.
+     *                       returns ByteBuffer
      */
     public static ByteBuffer ensureCapacity(ByteBuffer existingBuffer, int newLength) {
         if (newLength > existingBuffer.capacity()) {
@@ -790,8 +813,9 @@ public final class Utils {
 
     /**
      * Creates a sorted set
+     *
      * @param elems the elements
-     * @param <T> the type of element, must be comparable
+     * @param <T>   the type of element, must be comparable
      * @return SortedSet
      */
     @SafeVarargs
@@ -933,7 +957,7 @@ public final class Utils {
      * to repeatedly flush the same parent directory.
      *
      * @throws IOException if both atomic and non-atomic moves fail,
-     * or parent dir flush fails if needFlushParentDir is true.
+     *                     or parent dir flush fails if needFlushParentDir is true.
      */
     public static void atomicMoveWithFallback(Path source, Path target, boolean needFlushParentDir) throws IOException {
         try {
@@ -995,9 +1019,10 @@ public final class Utils {
 
     /**
      * Closes all the provided closeables.
+     *
      * @throws IOException if any of the close methods throws an IOException.
-     *         The first IOException is thrown with subsequent exceptions
-     *         added as suppressed exceptions.
+     *                     The first IOException is thrown with subsequent exceptions
+     *                     added as suppressed exceptions.
      */
     public static void closeAll(Closeable... closeables) throws IOException {
         IOException exception = null;
@@ -1127,16 +1152,16 @@ public final class Utils {
     }
 
     /**
-    * Closes {@code closeable} and if an exception is thrown, it is registered to the firstException parameter.
-    * <b>Be cautious when passing method references as an argument.</b> For example:
-    * <p>
-    * {@code closeQuietly(task::stop, "source task");}
-    * <p>
-    * Although this method gracefully handles null {@link AutoCloseable} objects, attempts to take a method
-    * reference from a null object will result in a {@link NullPointerException}. In the example code above,
-    * it would be the caller's responsibility to ensure that {@code task} was non-null before attempting to
-    * use a method reference from it.
-    */
+     * Closes {@code closeable} and if an exception is thrown, it is registered to the firstException parameter.
+     * <b>Be cautious when passing method references as an argument.</b> For example:
+     * <p>
+     * {@code closeQuietly(task::stop, "source task");}
+     * <p>
+     * Although this method gracefully handles null {@link AutoCloseable} objects, attempts to take a method
+     * reference from a null object will result in a {@link NullPointerException}. In the example code above,
+     * it would be the caller's responsibility to ensure that {@code task} was non-null before attempting to
+     * use a method reference from it.
+     */
     public static void closeQuietly(AutoCloseable closeable, String name, AtomicReference<Throwable> firstException) {
         if (closeable != null) {
             try {
@@ -1150,9 +1175,10 @@ public final class Utils {
 
     /**
      * close all closable objects even if one of them throws exception.
+     *
      * @param firstException keeps the first exception
-     * @param name message of closing those objects
-     * @param closeables closable objects
+     * @param name           message of closing those objects
+     * @param closeables     closable objects
      */
     public static void closeAllQuietly(AtomicReference<Throwable> firstException, String name, AutoCloseable... closeables) {
         for (AutoCloseable closeable : closeables) closeQuietly(closeable, name, firstException);
@@ -1201,8 +1227,9 @@ public final class Utils {
 
     /**
      * Read a size-delimited byte buffer starting at the given offset.
+     *
      * @param buffer Buffer containing the size and data
-     * @param start Offset in the buffer to read from
+     * @param start  Offset in the buffer to read from
      * @return A slice of the buffer containing only the delimited data (excluding the size)
      */
     public static ByteBuffer sizeDelimited(ByteBuffer buffer, int start) {
@@ -1223,15 +1250,14 @@ public final class Utils {
      * Read data from the channel to the given byte buffer until there are no bytes remaining in the buffer. If the end
      * of the file is reached while there are bytes remaining in the buffer, an EOFException is thrown.
      *
-     * @param channel File channel containing the data to read from
+     * @param channel           File channel containing the data to read from
      * @param destinationBuffer The buffer into which bytes are to be transferred
-     * @param position The file position at which the transfer is to begin; it must be non-negative
-     * @param description A description of what is being read, this will be included in the EOFException if it is thrown
-     *
+     * @param position          The file position at which the transfer is to begin; it must be non-negative
+     * @param description       A description of what is being read, this will be included in the EOFException if it is thrown
      * @throws IllegalArgumentException If position is negative
-     * @throws EOFException If the end of the file is reached while there are remaining bytes in the destination buffer
-     * @throws IOException If an I/O error occurs, see {@link FileChannel#read(ByteBuffer, long)} for details on the
-     * possible exceptions
+     * @throws EOFException             If the end of the file is reached while there are remaining bytes in the destination buffer
+     * @throws IOException              If an I/O error occurs, see {@link FileChannel#read(ByteBuffer, long)} for details on the
+     *                                  possible exceptions
      */
     public static void readFullyOrFail(FileChannel channel, ByteBuffer destinationBuffer, long position,
                                        String description) throws IOException {
@@ -1242,7 +1268,7 @@ public final class Utils {
         readFully(channel, destinationBuffer, position);
         if (destinationBuffer.hasRemaining()) {
             throw new EOFException(String.format("Failed to read `%s` from file channel `%s`. Expected to read %d bytes, " +
-                    "but reached end of file after reading %d bytes. Started read from position %d.",
+                            "but reached end of file after reading %d bytes. Started read from position %d.",
                     description, channel, expectedReadBytes, expectedReadBytes - destinationBuffer.remaining(), position));
         }
     }
@@ -1251,13 +1277,12 @@ public final class Utils {
      * Read data from the channel to the given byte buffer until there are no bytes remaining in the buffer or the end
      * of the file has been reached.
      *
-     * @param channel File channel containing the data to read from
+     * @param channel           File channel containing the data to read from
      * @param destinationBuffer The buffer into which bytes are to be transferred
-     * @param position The file position at which the transfer is to begin; it must be non-negative
-     *
+     * @param position          The file position at which the transfer is to begin; it must be non-negative
      * @throws IllegalArgumentException If position is negative
-     * @throws IOException If an I/O error occurs, see {@link FileChannel#read(ByteBuffer, long)} for details on the
-     * possible exceptions
+     * @throws IOException              If an I/O error occurs, see {@link FileChannel#read(ByteBuffer, long)} for details on the
+     *                                  possible exceptions
      */
     public static void readFully(FileChannel channel, ByteBuffer destinationBuffer, long position) throws IOException {
         if (position < 0) {
@@ -1306,18 +1331,17 @@ public final class Utils {
      * Trying to write data in source buffer to a {@link TransferableChannel}, we may need to call this method multiple
      * times since this method doesn't ensure the data in the source buffer can be fully written to the destination channel.
      *
-     * @param destChannel The destination channel
-     * @param position From which the source buffer will be written
-     * @param length The max size of bytes can be written
+     * @param destChannel  The destination channel
+     * @param position     From which the source buffer will be written
+     * @param length       The max size of bytes can be written
      * @param sourceBuffer The source buffer
-     *
      * @return The length of the actual written data
      * @throws IOException If an I/O error occurs
      */
     public static int tryWriteTo(TransferableChannel destChannel,
-                                  int position,
-                                  int length,
-                                  ByteBuffer sourceBuffer) throws IOException {
+                                 int position,
+                                 int length,
+                                 ByteBuffer sourceBuffer) throws IOException {
 
         ByteBuffer dup = sourceBuffer.duplicate();
         dup.position(position);
@@ -1328,7 +1352,8 @@ public final class Utils {
     /**
      * Write the contents of a buffer to an output stream. The bytes are copied from the current position
      * in the buffer.
-     * @param out The output to write to
+     *
+     * @param out    The output to write to
      * @param buffer The buffer to write from
      * @param length The number of bytes to write
      * @throws IOException For any errors writing to the output
@@ -1406,9 +1431,9 @@ public final class Utils {
      * try to do something like build a TreeMap of non-Comparable elements. You'd get a runtime exception for that.
      *
      * @param mapSupplier The constructor for your concrete map type.
-     * @param <K> The Map key type
-     * @param <V> The Map value type
-     * @param <M> The type of the Map itself.
+     * @param <K>         The Map key type
+     * @param <V>         The Map value type
+     * @param <M>         The type of the Map itself.
      * @return new {@code Collector<Map.Entry<K, V>, M, M>}
      */
     public static <K, V, M extends Map<K, V>> Collector<Map.Entry<K, V>, M, M> entriesToMap(final Supplier<M> mapSupplier) {
@@ -1475,6 +1500,7 @@ public final class Utils {
 
     /**
      * Convert a properties to map. All keys in properties must be string type. Otherwise, a ConfigException is thrown.
+     *
      * @param properties to be converted
      * @return a map including all elements in properties
      */
@@ -1501,6 +1527,7 @@ public final class Utils {
 
     /**
      * Cast a map with arbitrary type keys to be keyed on String.
+     *
      * @param inputMap A map with unknown type keys
      * @return A map with the same contents as the input map, but with String keys
      * @throws ConfigException if any key is not a String
@@ -1523,13 +1550,13 @@ public final class Utils {
 
     /**
      * Convert timestamp to an epoch value
-     * @param timestamp the timestamp to be converted, the accepted formats are:
-     *                 (1) yyyy-MM-dd'T'HH:mm:ss.SSS, ex: 2020-11-10T16:51:38.198
-     *                 (2) yyyy-MM-dd'T'HH:mm:ss.SSSZ, ex: 2020-11-10T16:51:38.198+0800
-     *                 (3) yyyy-MM-dd'T'HH:mm:ss.SSSX, ex: 2020-11-10T16:51:38.198+08
-     *                 (4) yyyy-MM-dd'T'HH:mm:ss.SSSXX, ex: 2020-11-10T16:51:38.198+0800
-     *                 (5) yyyy-MM-dd'T'HH:mm:ss.SSSXXX, ex: 2020-11-10T16:51:38.198+08:00
      *
+     * @param timestamp the timestamp to be converted, the accepted formats are:
+     *                  (1) yyyy-MM-dd'T'HH:mm:ss.SSS, ex: 2020-11-10T16:51:38.198
+     *                  (2) yyyy-MM-dd'T'HH:mm:ss.SSSZ, ex: 2020-11-10T16:51:38.198+0800
+     *                  (3) yyyy-MM-dd'T'HH:mm:ss.SSSX, ex: 2020-11-10T16:51:38.198+08
+     *                  (4) yyyy-MM-dd'T'HH:mm:ss.SSSXX, ex: 2020-11-10T16:51:38.198+0800
+     *                  (5) yyyy-MM-dd'T'HH:mm:ss.SSSXXX, ex: 2020-11-10T16:51:38.198+08:00
      * @return epoch value of a given timestamp (i.e. the number of milliseconds since January 1, 1970, 00:00:00 GMT)
      * @throws ParseException for timestamp that doesn't follow ISO8601 format or the format is not expected
      */
@@ -1564,6 +1591,7 @@ public final class Utils {
 
     /**
      * Checks if a string is null, empty or whitespace only.
+     *
      * @param str a string to be checked
      * @return true if the string is null, empty or whitespace only; otherwise, return false.
      */
@@ -1573,6 +1601,7 @@ public final class Utils {
 
     /**
      * Get an array containing all of the {@link Object#toString string representations} of a given enumerable type.
+     *
      * @param enumClass the enum class; may not be null
      * @return an array with the names of every value for the enum class; never null, but may be empty
      * if there are no values defined for the enum
@@ -1592,8 +1621,9 @@ public final class Utils {
      * Ensure that the class is concrete (i.e., not abstract), and that it subclasses a given base class.
      * If it is abstract or does not subclass the given base class, throw a {@link ConfigException}
      * with a friendly error message suggesting a list of concrete child subclasses (if any are known).
+     *
      * @param baseClass the expected superclass; may not be null
-     * @param klass the class to check; may not be null
+     * @param klass     the class to check; may not be null
      * @throws ConfigException if the class is not concrete
      */
     public static void ensureConcreteSubclass(Class<?> baseClass, Class<?> klass) {
@@ -1622,8 +1652,8 @@ public final class Utils {
 
     /**
      * Convert time instant to readable string for logging
-     * @param timestamp the timestamp of the instant to be converted.
      *
+     * @param timestamp the timestamp of the instant to be converted.
      * @return string value of a given timestamp in the format "yyyy-MM-dd HH:mm:ss,SSS"
      */
     public static String toLogDateTimeFormat(long timestamp) {
@@ -1643,12 +1673,13 @@ public final class Utils {
     /**
      * Find all key/value pairs whose keys begin with the given prefix, and remove that prefix from all
      * resulting keys.
-     * @param map the map to filter key/value pairs from
+     *
+     * @param map    the map to filter key/value pairs from
      * @param prefix the prefix to search keys for
+     * @param <V>    the type of values stored in the map
      * @return a {@link Map} containing a key/value pair for every key/value pair in the {@code map}
      * parameter whose key begins with the given {@code prefix} and whose corresponding keys have
      * the prefix stripped from them; may be empty, but never null
-     * @param <V> the type of values stored in the map
      */
     public static <V> Map<String, V> entriesWithPrefix(Map<String, V> map, String prefix) {
         return entriesWithPrefix(map, prefix, true);
@@ -1657,12 +1688,13 @@ public final class Utils {
     /**
      * Find all key/value pairs whose keys begin with the given prefix, optionally removing that prefix
      * from all resulting keys.
-     * @param map the map to filter key/value pairs from
+     *
+     * @param map    the map to filter key/value pairs from
      * @param prefix the prefix to search keys for
-     * @param strip whether the keys of the returned map should not include the prefix
+     * @param strip  whether the keys of the returned map should not include the prefix
+     * @param <V>    the type of values stored in the map
      * @return a {@link Map} containing a key/value pair for every key/value pair in the {@code map}
      * parameter whose key begins with the given {@code prefix}; may be empty, but never null
-     * @param <V> the type of values stored in the map
      */
     public static <V> Map<String, V> entriesWithPrefix(Map<String, V> map, String prefix, boolean strip) {
         return entriesWithPrefix(map, prefix, strip, false);
@@ -1671,13 +1703,14 @@ public final class Utils {
     /**
      * Find all key/value pairs whose keys begin with the given prefix, optionally removing that prefix
      * from all resulting keys.
-     * @param map the map to filter key/value pairs from
-     * @param prefix the prefix to search keys for
-     * @param strip whether the keys of the returned map should not include the prefix
+     *
+     * @param map                 the map to filter key/value pairs from
+     * @param prefix              the prefix to search keys for
+     * @param strip               whether the keys of the returned map should not include the prefix
      * @param allowMatchingLength whether to include keys that are exactly the same length as the prefix
+     * @param <V>                 the type of values stored in the map
      * @return a {@link Map} containing a key/value pair for every key/value pair in the {@code map}
      * parameter whose key begins with the given {@code prefix}; may be empty, but never null
-     * @param <V> the type of values stored in the map
      */
     public static <V> Map<String, V> entriesWithPrefix(Map<String, V> map, String prefix, boolean strip, boolean allowMatchingLength) {
         Map<String, V> result = new HashMap<>();
@@ -1694,6 +1727,7 @@ public final class Utils {
 
     /**
      * Checks requirement. Throw {@link IllegalArgumentException} if {@code requirement} failed.
+     *
      * @param requirement Requirement to check.
      */
     public static void require(boolean requirement) {
@@ -1703,7 +1737,8 @@ public final class Utils {
 
     /**
      * Checks requirement. Throw {@link IllegalArgumentException} if {@code requirement} failed.
-     * @param requirement Requirement to check.
+     *
+     * @param requirement  Requirement to check.
      * @param errorMessage String to include in the failure message
      */
     public static void require(boolean requirement, String errorMessage) {
@@ -1713,6 +1748,7 @@ public final class Utils {
 
     /**
      * Merge multiple {@link ConfigDef} into one
+     *
      * @param configDefs List of {@link ConfigDef}
      */
     public static ConfigDef mergeConfigs(List<ConfigDef> configDefs) {
@@ -1759,6 +1795,7 @@ public final class Utils {
 
     /**
      * convert millisecond to nanosecond, or throw exception if overflow
+     *
      * @param timeMs the time in millisecond
      * @return the converted nanosecond
      */

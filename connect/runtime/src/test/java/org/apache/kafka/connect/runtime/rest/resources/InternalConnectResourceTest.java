@@ -64,10 +64,12 @@ public class InternalConnectResourceTest {
     private static final String CONNECTOR_NAME = "test";
     private static final HttpHeaders NULL_HEADERS = null;
     private static final List<Map<String, String>> TASK_CONFIGS = new ArrayList<>();
+
     static {
         TASK_CONFIGS.add(Map.of("config", "value"));
         TASK_CONFIGS.add(Map.of("config", "other_value"));
     }
+
     private static final String FENCE_PATH = "/connectors/" + CONNECTOR_NAME + "/fence";
     private static final String TASK_CONFIGS_PATH = "/connectors/" + CONNECTOR_NAME + "/tasks";
     private static final RestRequestTimeout REST_REQUEST_TIMEOUT = RestRequestTimeout.constant(
@@ -92,8 +94,7 @@ public class InternalConnectResourceTest {
 
     @Test
     public void testPutConnectorTaskConfigsNoInternalRequestSignature() throws Throwable {
-        @SuppressWarnings("unchecked")
-        final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
+        @SuppressWarnings("unchecked") final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
         expectAndCallbackResult(cb, null).when(herder).putTaskConfigs(
                 eq(CONNECTOR_NAME),
                 eq(TASK_CONFIGS),
@@ -110,8 +111,7 @@ public class InternalConnectResourceTest {
         final String signatureAlgorithm = "HmacSHA256";
         final String encodedSignature = "Kv1/OSsxzdVIwvZ4e30avyRIVrngDfhzVUm/kAZEKc4=";
 
-        @SuppressWarnings("unchecked")
-        final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
+        @SuppressWarnings("unchecked") final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
         final ArgumentCaptor<InternalRequestSignature> signatureCapture = ArgumentCaptor.forClass(InternalRequestSignature.class);
         expectAndCallbackResult(cb, null).when(herder).putTaskConfigs(
                 eq(CONNECTOR_NAME),
@@ -142,8 +142,7 @@ public class InternalConnectResourceTest {
 
     @Test
     public void testPutConnectorTaskConfigsConnectorNotFound() {
-        @SuppressWarnings("unchecked")
-        final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
+        @SuppressWarnings("unchecked") final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
         expectAndCallbackException(cb, new NotFoundException("not found")).when(herder).putTaskConfigs(
                 eq(CONNECTOR_NAME),
                 eq(TASK_CONFIGS),
@@ -158,8 +157,7 @@ public class InternalConnectResourceTest {
 
     @Test
     public void testFenceZombiesNoInternalRequestSignature() throws Throwable {
-        @SuppressWarnings("unchecked")
-        final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
+        @SuppressWarnings("unchecked") final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
         expectAndCallbackResult(cb, null)
                 .when(herder).fenceZombieSourceTasks(eq(CONNECTOR_NAME), cb.capture(), isNull());
         expectRequestPath(FENCE_PATH);
@@ -172,8 +170,7 @@ public class InternalConnectResourceTest {
         final String signatureAlgorithm = "HmacSHA256";
         final String encodedSignature = "Kv1/OSsxzdVIwvZ4e30avyRIVrngDfhzVUm/kAZEKc4=";
 
-        @SuppressWarnings("unchecked")
-        final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
+        @SuppressWarnings("unchecked") final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
         final ArgumentCaptor<InternalRequestSignature> signatureCapture = ArgumentCaptor.forClass(InternalRequestSignature.class);
         expectAndCallbackResult(cb, null)
                 .when(herder).fenceZombieSourceTasks(eq(CONNECTOR_NAME), cb.capture(), signatureCapture.capture());
@@ -200,8 +197,7 @@ public class InternalConnectResourceTest {
 
     @Test
     public void testFenceZombiesConnectorNotFound() {
-        @SuppressWarnings("unchecked")
-        final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
+        @SuppressWarnings("unchecked") final ArgumentCaptor<Callback<Void>> cb = ArgumentCaptor.forClass(Callback.class);
 
         expectAndCallbackException(cb, new NotFoundException("not found"))
                 .when(herder).fenceZombieSourceTasks(eq(CONNECTOR_NAME), cb.capture(), any());

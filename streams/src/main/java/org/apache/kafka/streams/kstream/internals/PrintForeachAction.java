@@ -35,8 +35,8 @@ public class PrintForeachAction<K, V> implements ForeachAction<K, V> {
      * Print customized output with given writer. The {@link OutputStream} can be {@link System#out} or the others.
      *
      * @param outputStream The output stream to write to.
-     * @param mapper The mapper which can allow user to customize output will be printed.
-     * @param label The given name will be printed.
+     * @param mapper       The mapper which can allow user to customize output will be printed.
+     * @param label        The given name will be printed.
      */
     PrintForeachAction(final OutputStream outputStream,
                        final KeyValueMapper<? super K, ? super V, String> mapper,

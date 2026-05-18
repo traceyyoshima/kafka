@@ -94,6 +94,7 @@ public class MockConsumer<K, V> implements Consumer<K, V> {
 
     /**
      * A mock consumer is instantiated by providing ConsumerConfig.AUTO_OFFSET_RESET_CONFIG value as the input.
+     *
      * @param offsetResetStrategy the offset reset strategy to use
      */
     public MockConsumer(String offsetResetStrategy) {
@@ -204,9 +205,9 @@ public class MockConsumer<K, V> implements Consumer<K, V> {
         committed.clear();
         this.subscriptions.subscribe(pattern, listener);
         Set<String> topicsToSubscribe = new HashSet<>();
-        for (String topic: partitions.keySet()) {
+        for (String topic : partitions.keySet()) {
             if (pattern.matcher(topic).matches() &&
-                !subscriptions.subscription().contains(topic))
+                    !subscriptions.subscription().contains(topic))
                 topicsToSubscribe.add(topic);
         }
         ensureNotClosed();
@@ -422,9 +423,9 @@ public class MockConsumer<K, V> implements Consumer<K, V> {
         ensureNotClosed();
 
         return partitions.stream()
-            .filter(committed::containsKey)
-            .collect(Collectors.toMap(tp -> tp, tp -> subscriptions.isAssigned(tp) ?
-                committed.get(tp) : new OffsetAndMetadata(0)));
+                .filter(committed::containsKey)
+                .collect(Collectors.toMap(tp -> tp, tp -> subscriptions.isAssigned(tp) ?
+                        committed.get(tp) : new OffsetAndMetadata(0)));
     }
 
     @Override
@@ -552,7 +553,7 @@ public class MockConsumer<K, V> implements Consumer<K, V> {
     /**
      * Updates the partition information for the specified topic.
      *
-     * @param topic the topic to update
+     * @param topic      the topic to update
      * @param partitions the partition information
      */
     public synchronized void updatePartitions(String topic, List<PartitionInfo> partitions) {
@@ -648,6 +649,7 @@ public class MockConsumer<K, V> implements Consumer<K, V> {
     /**
      * Schedule a task to be executed during a poll(). One enqueued task will be executed per {@link #poll(Duration)}
      * invocation. You can use this repeatedly to mock out multiple responses to poll invocations.
+     *
      * @param task the task to be executed
      */
     public synchronized void schedulePollTask(Runnable task) {
@@ -660,7 +662,8 @@ public class MockConsumer<K, V> implements Consumer<K, V> {
      * Schedules a no-op task to be executed during a poll invocation.
      */
     public synchronized void scheduleNopPollTask() {
-        schedulePollTask(() -> { });
+        schedulePollTask(() -> {
+        });
     }
 
     public synchronized Set<TopicPartition> paused() {
@@ -716,7 +719,7 @@ public class MockConsumer<K, V> implements Consumer<K, V> {
 
     @Override
     public Map<TopicPartition, OffsetAndTimestamp> offsetsForTimes(Map<TopicPartition, Long> timestampsToSearch,
-            Duration timeout) {
+                                                                   Duration timeout) {
         return offsetsForTimes(timestampsToSearch);
     }
 

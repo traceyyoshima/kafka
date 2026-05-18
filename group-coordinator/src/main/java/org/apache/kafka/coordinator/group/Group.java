@@ -53,7 +53,7 @@ public interface Group {
         }
 
         private static final Map<String, GroupType> NAME_TO_ENUM = Arrays.stream(values())
-            .collect(Collectors.toMap(type -> type.name.toLowerCase(Locale.ROOT), Function.identity()));
+                .collect(Collectors.toMap(type -> type.name.toLowerCase(Locale.ROOT), Function.identity()));
 
         /**
          * Parse a string into the corresponding {@code GroupType} enum value, in a case-insensitive manner.
@@ -69,12 +69,12 @@ public interface Group {
 
             return type == null ? UNKNOWN : type;
         }
-        
+
         static String[] documentValidValues() {
             return Arrays.stream(GroupType.values())
-                .filter(type -> type != UNKNOWN)
-                .map(GroupType::toString)
-                .toArray(String[]::new);
+                    .filter(type -> type != UNKNOWN)
+                    .map(GroupType::toString)
+                    .toArray(String[]::new);
         }
     }
 
@@ -115,24 +115,24 @@ public interface Group {
      * @return A validator for per-partition validation.
      */
     CommitPartitionValidator validateOffsetCommit(
-        String memberId,
-        String groupInstanceId,
-        int generationIdOrMemberEpoch,
-        boolean isTransactional,
-        int apiVersion
+            String memberId,
+            String groupInstanceId,
+            int generationIdOrMemberEpoch,
+            boolean isTransactional,
+            int apiVersion
     ) throws KafkaException;
 
     /**
      * Validates the OffsetFetch request.
      *
-     * @param memberId              The member id for consumer groups.
-     * @param memberEpoch           The member epoch for consumer groups.
-     * @param lastCommittedOffset   The last committed offsets in the timeline.
+     * @param memberId            The member id for consumer groups.
+     * @param memberEpoch         The member epoch for consumer groups.
+     * @param lastCommittedOffset The last committed offsets in the timeline.
      */
     void validateOffsetFetch(
-        String memberId,
-        int memberEpoch,
-        long lastCommittedOffset
+            String memberId,
+            int memberEpoch,
+            long lastCommittedOffset
     ) throws KafkaException;
 
     /**
@@ -148,8 +148,7 @@ public interface Group {
     /**
      * Returns true if the group is actively subscribed to the topic.
      *
-     * @param topic  The topic name.
-     *
+     * @param topic The topic name.
      * @return Whether the group is subscribed to the topic.
      */
     boolean isSubscribedToTopic(String topic);
@@ -166,7 +165,8 @@ public interface Group {
      *
      * @param timer The coordinator timer.
      */
-    default void cancelTimers(CoordinatorTimer<CoordinatorRecord> timer) {}
+    default void cancelTimers(CoordinatorTimer<CoordinatorRecord> timer) {
+    }
 
     /**
      * @return Whether the group is in Empty state.
@@ -192,7 +192,6 @@ public interface Group {
      * Returns true if the member exists.
      *
      * @param memberId The member id.
-     *
      * @return A boolean indicating whether the member exists or not.
      */
     boolean hasMember(String memberId);

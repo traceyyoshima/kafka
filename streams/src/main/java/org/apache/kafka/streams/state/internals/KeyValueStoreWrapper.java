@@ -47,7 +47,7 @@ import java.util.Map;
 public class KeyValueStoreWrapper<K, V> implements StateStore {
 
     public static final long PUT_RETURN_CODE_IS_LATEST
-        = VersionedKeyValueStore.PUT_RETURN_CODE_VALID_TO_UNDEFINED;
+            = VersionedKeyValueStore.PUT_RETURN_CODE_VALID_TO_UNDEFINED;
 
     private TimestampedKeyValueStoreWithHeaders<K, V> headersStore = null;
     private VersionedKeyValueStore<K, V> versionedStore = null;
@@ -83,7 +83,7 @@ public class KeyValueStoreWrapper<K, V> implements StateStore {
             store = context.getStateStore(storeName);
             final String storeType = store == null ? "null" : store.getClass().getName();
             throw new InvalidStateStoreException("KTable source state store must implement either "
-                + "TimestampedKeyValueStoreWithHeaders, or VersionedKeyValueStore. Got: " + storeType);
+                    + "TimestampedKeyValueStoreWithHeaders, or VersionedKeyValueStore. Got: " + storeType);
         }
     }
 
@@ -94,8 +94,8 @@ public class KeyValueStoreWrapper<K, V> implements StateStore {
         if (versionedStore != null) {
             final VersionedRecord<V> versionedRecord = versionedStore.get(key);
             return versionedRecord == null
-                ? null
-                : ValueTimestampHeaders.make(versionedRecord.value(), versionedRecord.timestamp(), new RecordHeaders());
+                    ? null
+                    : ValueTimestampHeaders.make(versionedRecord.value(), versionedRecord.timestamp(), new RecordHeaders());
         }
         throw new IllegalStateException("KeyValueStoreWrapper must be initialized with either headers or versioned store");
     }
@@ -110,8 +110,8 @@ public class KeyValueStoreWrapper<K, V> implements StateStore {
 
     /**
      * @return {@code -1} if the put record is the latest for its key, and {@code Long.MIN_VALUE}
-     *         if the put was rejected (i.e., due to grace period having elapsed for a versioned
-     *         store). If neither, any other long value may be returned.
+     * if the put was rejected (i.e., due to grace period having elapsed for a versioned
+     * store). If neither, any other long value may be returned.
      */
     public long put(final K key, final V value, final long timestamp, final Headers headers) {
         if (headersStore != null) {

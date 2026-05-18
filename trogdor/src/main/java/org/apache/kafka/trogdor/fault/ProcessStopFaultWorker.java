@@ -64,7 +64,7 @@ public class ProcessStopFaultWorker implements TaskWorker {
     }
 
     private void sendSignals(Platform platform, String signalName) throws Exception {
-        String jcmdOutput = platform.runCommand(new String[] {"jcmd"});
+        String jcmdOutput = platform.runCommand(new String[]{"jcmd"});
         String[] lines = jcmdOutput.split("\n");
         List<Integer> pids = new ArrayList<>();
         for (String line : lines) {
@@ -79,12 +79,12 @@ public class ProcessStopFaultWorker implements TaskWorker {
         }
         if (pids.isEmpty()) {
             log.error("{}: no processes containing {} found to send {} to.",
-                id, javaProcessName, signalName);
+                    id, javaProcessName, signalName);
         } else {
             log.info("{}: sending {} to {} pid(s) {}",
-                id, signalName, javaProcessName, pids.stream().map(Object::toString).collect(Collectors.joining(",")));
+                    id, signalName, javaProcessName, pids.stream().map(Object::toString).collect(Collectors.joining(",")));
             for (Integer pid : pids) {
-                platform.runCommand(new String[] {"kill", "-" + signalName, pid.toString()});
+                platform.runCommand(new String[]{"kill", "-" + signalName, pid.toString()});
             }
         }
     }

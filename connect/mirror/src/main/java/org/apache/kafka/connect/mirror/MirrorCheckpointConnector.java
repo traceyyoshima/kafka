@@ -50,9 +50,10 @@ import static org.apache.kafka.connect.mirror.Checkpoint.CONSUMER_GROUP_ID_KEY;
 import static org.apache.kafka.connect.mirror.MirrorUtils.TOPIC_KEY;
 import static org.apache.kafka.connect.mirror.MirrorUtils.adminCall;
 
-/** Replicate consumer group state between clusters. Emits checkpoint records.
+/**
+ * Replicate consumer group state between clusters. Emits checkpoint records.
  *
- *  @see MirrorCheckpointConfig for supported config properties.
+ * @see MirrorCheckpointConfig for supported config properties.
  */
 public class MirrorCheckpointConnector extends SourceConnector {
 
@@ -248,7 +249,7 @@ public class MirrorCheckpointConnector extends SourceConnector {
         }
 
         log.debug("Ignoring the following groups which do not have any offsets for topics that are accepted by " +
-                        "the topic filter: {}", irrelevantGroups);
+                "the topic filter: {}", irrelevantGroups);
         return checkpointGroups;
     }
 

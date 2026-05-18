@@ -31,10 +31,10 @@ class FieldSpecPairIterator implements Iterator<FieldSpecPair> {
     private FieldSpecPair next;
 
     FieldSpecPairIterator(
-        Iterator<FieldSpec> iterator1,
-        Iterator<FieldSpec> iterator2,
-        Versions topLevelVersions1,
-        Versions topLevelVersions2
+            Iterator<FieldSpec> iterator1,
+            Iterator<FieldSpec> iterator2,
+            Versions topLevelVersions1,
+            Versions topLevelVersions2
     ) {
         this.iterator1 = iterator1;
         this.iterator2 = iterator2;
@@ -69,7 +69,7 @@ class FieldSpecPairIterator implements Iterator<FieldSpecPair> {
                             case MESSAGE1_ONLY:
                             case NEITHER:
                                 throw new UnificationException("field2 " + field2.name() + " is present in " +
-                                    "message2, but should not be, based on its versions.");
+                                        "message2, but should not be, based on its versions.");
                         }
                     }
                     field1 = iterator1.hasNext() ? iterator1.next() : null;
@@ -78,7 +78,7 @@ class FieldSpecPairIterator implements Iterator<FieldSpecPair> {
                 case MESSAGE2_ONLY:
                 case NEITHER:
                     throw new UnificationException("field1 " + field1.name() + " is present in " +
-                        "message1, but should not be, based on its versions.");
+                            "message1, but should not be, based on its versions.");
             }
         }
         FieldSpec field2 = iterator2.hasNext() ? iterator2.next() : null;
@@ -88,10 +88,10 @@ class FieldSpecPairIterator implements Iterator<FieldSpecPair> {
                 case MESSAGE1_ONLY:
                 case NEITHER:
                     throw new UnificationException("field2 " + field2.name() + " is present in " +
-                        "message2, but should not be, based on its versions.");
+                            "message2, but should not be, based on its versions.");
                 case BOTH:
                     throw new UnificationException("field2 " + field2.name() + " should be present " +
-                        "in message1, but is not, based on its versions.");
+                            "in message1, but is not, based on its versions.");
                 case MESSAGE2_ONLY:
                     field2 = iterator2.hasNext() ? iterator2.next() : null;
                     break;

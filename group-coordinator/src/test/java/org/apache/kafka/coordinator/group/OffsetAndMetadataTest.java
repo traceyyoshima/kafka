@@ -37,12 +37,12 @@ public class OffsetAndMetadataTest {
     public void testAttributes() {
         Uuid topicId = Uuid.randomUuid();
         OffsetAndMetadata offsetAndMetadata = new OffsetAndMetadata(
-            100L,
-            OptionalInt.of(10),
-            "metadata",
-            1234L,
-            OptionalLong.of(5678L),
-            topicId
+                100L,
+                OptionalInt.of(10),
+                "metadata",
+                1234L,
+                OptionalLong.of(5678L),
+                topicId
         );
 
         assertEquals(100L, offsetAndMetadata.committedOffset);
@@ -55,8 +55,8 @@ public class OffsetAndMetadataTest {
 
     private static Stream<Uuid> uuids() {
         return Stream.of(
-            Uuid.ZERO_UUID,
-            Uuid.randomUuid()
+                Uuid.ZERO_UUID,
+                Uuid.randomUuid()
         );
     }
 
@@ -64,35 +64,35 @@ public class OffsetAndMetadataTest {
     @MethodSource("uuids")
     public void testFromRecord(Uuid uuid) {
         OffsetCommitValue record = new OffsetCommitValue()
-            .setOffset(100L)
-            .setLeaderEpoch(-1)
-            .setMetadata("metadata")
-            .setCommitTimestamp(1234L)
-            .setExpireTimestamp(-1L)
-            .setTopicId(uuid);
+                .setOffset(100L)
+                .setLeaderEpoch(-1)
+                .setMetadata("metadata")
+                .setCommitTimestamp(1234L)
+                .setExpireTimestamp(-1L)
+                .setTopicId(uuid);
 
         assertEquals(new OffsetAndMetadata(
-            10L,
-            100L,
-            OptionalInt.empty(),
-            "metadata",
-            1234L,
-            OptionalLong.empty(),
-            uuid
+                10L,
+                100L,
+                OptionalInt.empty(),
+                "metadata",
+                1234L,
+                OptionalLong.empty(),
+                uuid
         ), OffsetAndMetadata.fromRecord(10L, record));
 
         record
-            .setLeaderEpoch(12)
-            .setExpireTimestamp(5678L);
+                .setLeaderEpoch(12)
+                .setExpireTimestamp(5678L);
 
         assertEquals(new OffsetAndMetadata(
-            11L,
-            100L,
-            OptionalInt.of(12),
-            "metadata",
-            1234L,
-            OptionalLong.of(5678L),
-            uuid
+                11L,
+                100L,
+                OptionalInt.of(12),
+                "metadata",
+                1234L,
+                OptionalLong.of(5678L),
+                uuid
         ), OffsetAndMetadata.fromRecord(11L, record));
     }
 
@@ -102,62 +102,62 @@ public class OffsetAndMetadataTest {
         MockTime time = new MockTime();
 
         OffsetCommitRequestData.OffsetCommitRequestPartition partition =
-            new OffsetCommitRequestData.OffsetCommitRequestPartition()
-                .setPartitionIndex(0)
-                .setCommittedOffset(100L)
-                .setCommittedLeaderEpoch(-1)
-                .setCommittedMetadata(null);
+                new OffsetCommitRequestData.OffsetCommitRequestPartition()
+                        .setPartitionIndex(0)
+                        .setCommittedOffset(100L)
+                        .setCommittedLeaderEpoch(-1)
+                        .setCommittedMetadata(null);
 
         assertEquals(
-            new OffsetAndMetadata(
-                100L,
-                OptionalInt.empty(),
-                "",
-                time.milliseconds(),
-                OptionalLong.empty(),
-                uuid
-            ), OffsetAndMetadata.fromRequest(
-                uuid,
-                partition,
-                time.milliseconds(),
-                OptionalLong.empty()
-            )
+                new OffsetAndMetadata(
+                        100L,
+                        OptionalInt.empty(),
+                        "",
+                        time.milliseconds(),
+                        OptionalLong.empty(),
+                        uuid
+                ), OffsetAndMetadata.fromRequest(
+                        uuid,
+                        partition,
+                        time.milliseconds(),
+                        OptionalLong.empty()
+                )
         );
 
         partition
-            .setCommittedLeaderEpoch(10)
-            .setCommittedMetadata("hello");
+                .setCommittedLeaderEpoch(10)
+                .setCommittedMetadata("hello");
 
         assertEquals(
-            new OffsetAndMetadata(
-                100L,
-                OptionalInt.of(10),
-                "hello",
-                time.milliseconds(),
-                OptionalLong.empty(),
-                uuid
-            ), OffsetAndMetadata.fromRequest(
-                uuid,
-                partition,
-                time.milliseconds(),
-                OptionalLong.empty()
-            )
+                new OffsetAndMetadata(
+                        100L,
+                        OptionalInt.of(10),
+                        "hello",
+                        time.milliseconds(),
+                        OptionalLong.empty(),
+                        uuid
+                ), OffsetAndMetadata.fromRequest(
+                        uuid,
+                        partition,
+                        time.milliseconds(),
+                        OptionalLong.empty()
+                )
         );
 
         assertEquals(
-            new OffsetAndMetadata(
-                100L,
-                OptionalInt.of(10),
-                "hello",
-                time.milliseconds(),
-                OptionalLong.of(5678L),
-                uuid
-            ), OffsetAndMetadata.fromRequest(
-                uuid,
-                partition,
-                time.milliseconds(),
-                OptionalLong.of(5678L)
-            )
+                new OffsetAndMetadata(
+                        100L,
+                        OptionalInt.of(10),
+                        "hello",
+                        time.milliseconds(),
+                        OptionalLong.of(5678L),
+                        uuid
+                ), OffsetAndMetadata.fromRequest(
+                        uuid,
+                        partition,
+                        time.milliseconds(),
+                        OptionalLong.of(5678L)
+                )
         );
     }
 
@@ -166,42 +166,42 @@ public class OffsetAndMetadataTest {
         MockTime time = new MockTime();
 
         TxnOffsetCommitRequestData.TxnOffsetCommitRequestPartition partition =
-            new TxnOffsetCommitRequestData.TxnOffsetCommitRequestPartition()
-                .setPartitionIndex(0)
-                .setCommittedOffset(100L)
-                .setCommittedLeaderEpoch(-1)
-                .setCommittedMetadata(null);
+                new TxnOffsetCommitRequestData.TxnOffsetCommitRequestPartition()
+                        .setPartitionIndex(0)
+                        .setCommittedOffset(100L)
+                        .setCommittedLeaderEpoch(-1)
+                        .setCommittedMetadata(null);
 
         assertEquals(
-            new OffsetAndMetadata(
-                100L,
-                OptionalInt.empty(),
-                "",
-                time.milliseconds(),
-                OptionalLong.empty(),
-                Uuid.ZERO_UUID
-            ), OffsetAndMetadata.fromRequest(
-                partition,
-                time.milliseconds()
-            )
+                new OffsetAndMetadata(
+                        100L,
+                        OptionalInt.empty(),
+                        "",
+                        time.milliseconds(),
+                        OptionalLong.empty(),
+                        Uuid.ZERO_UUID
+                ), OffsetAndMetadata.fromRequest(
+                        partition,
+                        time.milliseconds()
+                )
         );
 
         partition
-            .setCommittedLeaderEpoch(10)
-            .setCommittedMetadata("hello");
+                .setCommittedLeaderEpoch(10)
+                .setCommittedMetadata("hello");
 
         assertEquals(
-            new OffsetAndMetadata(
-                100L,
-                OptionalInt.of(10),
-                "hello",
-                time.milliseconds(),
-                OptionalLong.empty(),
-                Uuid.ZERO_UUID
-            ), OffsetAndMetadata.fromRequest(
-                partition,
-                time.milliseconds()
-            )
+                new OffsetAndMetadata(
+                        100L,
+                        OptionalInt.of(10),
+                        "hello",
+                        time.milliseconds(),
+                        OptionalLong.empty(),
+                        Uuid.ZERO_UUID
+                ), OffsetAndMetadata.fromRequest(
+                        partition,
+                        time.milliseconds()
+                )
         );
     }
 }

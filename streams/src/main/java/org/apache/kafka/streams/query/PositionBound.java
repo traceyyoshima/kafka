@@ -83,6 +83,6 @@ public class PositionBound {
     @Override
     public int hashCode() {
         throw new UnsupportedOperationException(
-            "This mutable object is not suitable as a hash key");
+                "This mutable object is not suitable as a hash key");
     }
 }

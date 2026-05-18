@@ -69,11 +69,12 @@ public class OffsetUtils {
      * Parses a partition key that is read back from an offset backing store and adds / removes the partition in the
      * provided {@code connectorPartitions} map. If the partition key has an unexpected format, a warning log is emitted
      * and nothing is added / removed in the {@code connectorPartitions} map.
-     * @param partitionKey the partition key to be processed
-     * @param offsetValue the offset value corresponding to the partition key; determines whether the partition should
-     *                    be added to the {@code connectorPartitions} map or removed depending on whether the offset
-     *                    value is null or not
-     * @param keyConverter the key converter to deserialize the partition key
+     *
+     * @param partitionKey        the partition key to be processed
+     * @param offsetValue         the offset value corresponding to the partition key; determines whether the partition should
+     *                            be added to the {@code connectorPartitions} map or removed depending on whether the offset
+     *                            value is null or not
+     * @param keyConverter        the key converter to deserialize the partition key
      * @param connectorPartitions the map from connector names to its set of partitions which needs to be updated after
      *                            processing the partition key
      */

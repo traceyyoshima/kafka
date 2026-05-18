@@ -103,7 +103,8 @@ public class WorkerCoordinatorTest {
     private Metrics metrics;
     private ConsumerNetworkClient consumerClient;
     private MockRebalanceListener rebalanceListener;
-    @Mock private KafkaConfigBackingStore configStorage;
+    @Mock
+    private KafkaConfigBackingStore configStorage;
     private GroupRebalanceConfig rebalanceConfig;
     private WorkerCoordinator coordinator;
 
@@ -116,8 +117,8 @@ public class WorkerCoordinatorTest {
     // - Expected metadata size
     static Stream<Arguments> mode() {
         return Stream.of(
-            Arguments.of(EAGER, 1),
-            Arguments.of(COMPATIBLE, 2)
+                Arguments.of(EAGER, 1),
+                Arguments.of(COMPATIBLE, 2)
         );
     }
 
@@ -134,24 +135,24 @@ public class WorkerCoordinatorTest {
         this.rebalanceListener = new MockRebalanceListener();
         this.configStorage = mock(KafkaConfigBackingStore.class);
         this.rebalanceConfig = new GroupRebalanceConfig(sessionTimeoutMs,
-                                                        rebalanceTimeoutMs,
-                                                        heartbeatIntervalMs,
-                                                        groupId,
-                                                        Optional.empty(),
-                                                        null,
-                                                        retryBackoffMs,
-                                                        retryBackoffMaxMs);
+                rebalanceTimeoutMs,
+                heartbeatIntervalMs,
+                groupId,
+                Optional.empty(),
+                null,
+                retryBackoffMs,
+                retryBackoffMaxMs);
         this.coordinator = new WorkerCoordinator(rebalanceConfig,
-                                                 logContext,
-                                                 consumerClient,
-                                                 metrics,
-                                                 "consumer" + groupId,
-                                                 time,
-                                                 LEADER_URL,
-                                                 configStorage,
-                                                 rebalanceListener,
-                                                 compatibility,
-                                                 0);
+                logContext,
+                consumerClient,
+                metrics,
+                "consumer" + groupId,
+                time,
+                LEADER_URL,
+                configStorage,
+                rebalanceListener,
+                compatibility,
+                0);
 
         configState1 = new ClusterConfigState(
                 4L,
@@ -545,7 +546,7 @@ public class WorkerCoordinatorTest {
         coordinator.metadata();
 
         assertThrows(IllegalStateException.class,
-            () -> coordinator.onLeaderElected("leader", EAGER.protocol(), List.of(), true));
+                () -> coordinator.onLeaderElected("leader", EAGER.protocol(), List.of(), true));
 
         verify(configStorage).snapshot();
     }
@@ -587,7 +588,7 @@ public class WorkerCoordinatorTest {
     }
 
     private SyncGroupResponse syncGroupResponse(short assignmentError, String leader, long configOffset, List<String> connectorIds,
-                                     List<ConnectorTaskId> taskIds, Errors error) {
+                                                List<ConnectorTaskId> taskIds, Errors error) {
         ConnectProtocol.Assignment assignment = new ConnectProtocol.Assignment(assignmentError, leader, LEADER_URL, configOffset, connectorIds, taskIds);
         ByteBuffer buf = ConnectProtocol.serializeAssignment(assignment);
         return new SyncGroupResponse(
@@ -625,6 +626,7 @@ public class WorkerCoordinatorTest {
         }
 
         @Override
-        public void onPollTimeoutExpiry() {}
+        public void onPollTimeoutExpiry() {
+        }
     }
 }

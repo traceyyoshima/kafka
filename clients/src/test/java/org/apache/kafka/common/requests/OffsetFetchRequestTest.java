@@ -37,24 +37,24 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH)
     public void testWithMultipleGroups(short version) {
         var data = new OffsetFetchRequestData()
-            .setGroups(List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId("grp1")
-                    .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName("foo")
-                            .setTopicId(Uuid.randomUuid())
-                            .setPartitionIndexes(List.of(0, 1, 2))
-                    )),
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId("grp2")
-                    .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName("bar")
-                            .setTopicId(Uuid.randomUuid())
-                            .setPartitionIndexes(List.of(0, 1, 2))
-                    ))
-            ));
+                .setGroups(List.of(
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                                .setGroupId("grp1")
+                                .setTopics(List.of(
+                                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                                .setName("foo")
+                                                .setTopicId(Uuid.randomUuid())
+                                                .setPartitionIndexes(List.of(0, 1, 2))
+                                )),
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                                .setGroupId("grp2")
+                                .setTopics(List.of(
+                                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                                .setName("bar")
+                                                .setTopicId(Uuid.randomUuid())
+                                                .setPartitionIndexes(List.of(0, 1, 2))
+                                ))
+                ));
         var builder = OffsetFetchRequest.Builder.forTopicIdsOrNames(data, false);
 
         if (version < 8) {
@@ -68,19 +68,19 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH)
     public void testThrowOnFetchStableOffsetsUnsupported(short version) {
         var builder = OffsetFetchRequest.Builder.forTopicIdsOrNames(
-            new OffsetFetchRequestData()
-                .setRequireStable(true)
-                .setGroups(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("grp1")
-                        .setTopics(List.of(
-                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName("foo")
-                                .setTopicId(Uuid.randomUuid())
-                                .setPartitionIndexes(List.of(0, 1, 2))
-                        ))
-                )),
-            true
+                new OffsetFetchRequestData()
+                        .setRequireStable(true)
+                        .setGroups(List.of(
+                                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                                        .setGroupId("grp1")
+                                        .setTopics(List.of(
+                                                new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                                        .setName("foo")
+                                                        .setTopicId(Uuid.randomUuid())
+                                                        .setPartitionIndexes(List.of(0, 1, 2))
+                                        ))
+                        )),
+                true
         );
 
         if (version < 7) {
@@ -94,26 +94,26 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH)
     public void testSingleGroup(short version) {
         var data = new OffsetFetchRequestData()
-            .setGroups(List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId("grp1")
-                    .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName("foo")
-                            .setTopicId(Uuid.randomUuid())
-                            .setPartitionIndexes(List.of(0, 1, 2))
-                    ))
-            ));
+                .setGroups(List.of(
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                                .setGroupId("grp1")
+                                .setTopics(List.of(
+                                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                                .setName("foo")
+                                                .setTopicId(Uuid.randomUuid())
+                                                .setPartitionIndexes(List.of(0, 1, 2))
+                                ))
+                ));
         var builder = OffsetFetchRequest.Builder.forTopicIdsOrNames(data, false);
 
         if (version < 8) {
             var expectedRequest = new OffsetFetchRequestData()
-                .setGroupId("grp1")
-                .setTopics(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestTopic()
-                        .setName("foo")
-                        .setPartitionIndexes(List.of(0, 1, 2))
-                ));
+                    .setGroupId("grp1")
+                    .setTopics(List.of(
+                            new OffsetFetchRequestData.OffsetFetchRequestTopic()
+                                    .setName("foo")
+                                    .setPartitionIndexes(List.of(0, 1, 2))
+                    ));
             assertEquals(expectedRequest, builder.build(version).data());
         } else {
             assertEquals(data, builder.build(version).data());
@@ -124,19 +124,19 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH)
     public void testSingleGroupWithAllTopics(short version) {
         var data = new OffsetFetchRequestData()
-            .setGroups(List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId("grp1")
-                    .setTopics(null)
-            ));
+                .setGroups(List.of(
+                        new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                                .setGroupId("grp1")
+                                .setTopics(null)
+                ));
         var builder = OffsetFetchRequest.Builder.forTopicIdsOrNames(data, false);
 
         if (version < 2) {
             assertThrows(UnsupportedVersionException.class, () -> builder.build(version));
         } else if (version < 8) {
             var expectedRequest = new OffsetFetchRequestData()
-                .setGroupId("grp1")
-                .setTopics(null);
+                    .setGroupId("grp1")
+                    .setTopics(null);
             assertEquals(expectedRequest, builder.build(version).data());
         } else {
             assertEquals(data, builder.build(version).data());
@@ -147,55 +147,55 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH)
     public void testGetErrorResponse(short version) {
         var request = OffsetFetchRequest.Builder.forTopicIdsOrNames(
-            new OffsetFetchRequestData()
-                .setGroups(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("grp1")
-                        .setTopics(List.of(
-                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName("foo")
-                                .setTopicId(Uuid.randomUuid())
-                                .setPartitionIndexes(List.of(0, 1))
-                        ))
-                )),
-            false
+                new OffsetFetchRequestData()
+                        .setGroups(List.of(
+                                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                                        .setGroupId("grp1")
+                                        .setTopics(List.of(
+                                                new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                                        .setName("foo")
+                                                        .setTopicId(Uuid.randomUuid())
+                                                        .setPartitionIndexes(List.of(0, 1))
+                                        ))
+                        )),
+                false
         ).build(version);
 
         if (version < 2) {
             var expectedResponse = new OffsetFetchResponseData()
-                .setThrottleTimeMs(1000)
-                .setTopics(List.of(
-                    new OffsetFetchResponseData.OffsetFetchResponseTopic()
-                        .setName("foo")
-                        .setPartitions(List.of(
-                            new OffsetFetchResponseData.OffsetFetchResponsePartition()
-                                .setPartitionIndex(0)
-                                .setErrorCode(Errors.INVALID_GROUP_ID.code())
-                                .setCommittedOffset(OffsetFetchResponse.INVALID_OFFSET)
-                                .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH),
-                            new OffsetFetchResponseData.OffsetFetchResponsePartition()
-                                .setPartitionIndex(1)
-                                .setErrorCode(Errors.INVALID_GROUP_ID.code())
-                                .setCommittedOffset(OffsetFetchResponse.INVALID_OFFSET)
-                                .setMetadata(OffsetFetchResponse.NO_METADATA)
-                                .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
-                        ))
-                ));
+                    .setThrottleTimeMs(1000)
+                    .setTopics(List.of(
+                            new OffsetFetchResponseData.OffsetFetchResponseTopic()
+                                    .setName("foo")
+                                    .setPartitions(List.of(
+                                            new OffsetFetchResponseData.OffsetFetchResponsePartition()
+                                                    .setPartitionIndex(0)
+                                                    .setErrorCode(Errors.INVALID_GROUP_ID.code())
+                                                    .setCommittedOffset(OffsetFetchResponse.INVALID_OFFSET)
+                                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH),
+                                            new OffsetFetchResponseData.OffsetFetchResponsePartition()
+                                                    .setPartitionIndex(1)
+                                                    .setErrorCode(Errors.INVALID_GROUP_ID.code())
+                                                    .setCommittedOffset(OffsetFetchResponse.INVALID_OFFSET)
+                                                    .setMetadata(OffsetFetchResponse.NO_METADATA)
+                                                    .setCommittedLeaderEpoch(RecordBatch.NO_PARTITION_LEADER_EPOCH)
+                                    ))
+                    ));
             assertEquals(expectedResponse, request.getErrorResponse(1000, Errors.INVALID_GROUP_ID.exception()).data());
         } else if (version < 8) {
             var expectedResponse = new OffsetFetchResponseData()
-                .setThrottleTimeMs(1000)
-                .setErrorCode(Errors.INVALID_GROUP_ID.code());
+                    .setThrottleTimeMs(1000)
+                    .setErrorCode(Errors.INVALID_GROUP_ID.code());
             assertEquals(expectedResponse, request.getErrorResponse(1000, Errors.INVALID_GROUP_ID.exception()).data());
         } else {
             var expectedResponse = new OffsetFetchResponseData()
-                .setThrottleTimeMs(1000)
-                .setGroups(List.of(
-                    new OffsetFetchResponseData.OffsetFetchResponseGroup()
-                        .setGroupId("grp1")
-                        .setErrorCode(Errors.INVALID_GROUP_ID.code())
-                ));
+                    .setThrottleTimeMs(1000)
+                    .setGroups(List.of(
+                            new OffsetFetchResponseData.OffsetFetchResponseGroup()
+                                    .setGroupId("grp1")
+                                    .setErrorCode(Errors.INVALID_GROUP_ID.code())
+                    ));
             assertEquals(expectedResponse, request.getErrorResponse(1000, Errors.INVALID_GROUP_ID.exception()).data());
         }
     }
@@ -204,29 +204,29 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH)
     public void testGroups(short version) {
         var request = OffsetFetchRequest.Builder.forTopicIdsOrNames(
-            new OffsetFetchRequestData()
-                .setGroups(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("grp1")
-                        .setTopics(List.of(
-                            new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                                .setName("foo")
-                                .setTopicId(Uuid.randomUuid())
-                                .setPartitionIndexes(List.of(0, 1, 2))
-                        ))
-                )),
-            false
+                new OffsetFetchRequestData()
+                        .setGroups(List.of(
+                                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                                        .setGroupId("grp1")
+                                        .setTopics(List.of(
+                                                new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                                        .setName("foo")
+                                                        .setTopicId(Uuid.randomUuid())
+                                                        .setPartitionIndexes(List.of(0, 1, 2))
+                                        ))
+                        )),
+                false
         ).build(version);
 
         if (version < 8) {
             var expectedGroups = List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId("grp1")
-                    .setTopics(List.of(
-                        new OffsetFetchRequestData.OffsetFetchRequestTopics()
-                            .setName("foo")
-                            .setPartitionIndexes(List.of(0, 1, 2))
-                    ))
+                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                            .setGroupId("grp1")
+                            .setTopics(List.of(
+                                    new OffsetFetchRequestData.OffsetFetchRequestTopics()
+                                            .setName("foo")
+                                            .setPartitionIndexes(List.of(0, 1, 2))
+                            ))
             );
             assertEquals(expectedGroups, request.groups());
         } else {
@@ -238,20 +238,20 @@ public class OffsetFetchRequestTest {
     @ApiKeyVersionsSource(apiKey = ApiKeys.OFFSET_FETCH, fromVersion = 2)
     public void testGroupsWithAllTopics(short version) {
         var request = OffsetFetchRequest.Builder.forTopicIdsOrNames(
-            new OffsetFetchRequestData()
-                .setGroups(List.of(
-                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                        .setGroupId("grp1")
-                        .setTopics(null)
-                )),
-            false
+                new OffsetFetchRequestData()
+                        .setGroups(List.of(
+                                new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                                        .setGroupId("grp1")
+                                        .setTopics(null)
+                        )),
+                false
         ).build(version);
 
         if (version < 8) {
             var expectedGroups = List.of(
-                new OffsetFetchRequestData.OffsetFetchRequestGroup()
-                    .setGroupId("grp1")
-                    .setTopics(null)
+                    new OffsetFetchRequestData.OffsetFetchRequestGroup()
+                            .setGroupId("grp1")
+                            .setTopics(null)
             );
             assertEquals(expectedGroups, request.groups());
         } else {

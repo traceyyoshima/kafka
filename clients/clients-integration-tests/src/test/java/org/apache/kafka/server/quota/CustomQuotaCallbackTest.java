@@ -48,51 +48,51 @@ public class CustomQuotaCallbackTest {
     }
 
     @ClusterTest(
-        controllers = 3,
-        types = {Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(id = 3000, key = QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, value = "org.apache.kafka.server.quota.CustomQuotaCallbackTest$CustomQuotaCallback"),
-            @ClusterConfigProperty(id = 3001, key = QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, value = "org.apache.kafka.server.quota.CustomQuotaCallbackTest$CustomQuotaCallback"),
-            @ClusterConfigProperty(id = 3002, key = QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, value = "org.apache.kafka.server.quota.CustomQuotaCallbackTest$CustomQuotaCallback"),
-        }
+            controllers = 3,
+            types = {Type.KRAFT},
+            serverProperties = {
+                    @ClusterConfigProperty(id = 3000, key = QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, value = "org.apache.kafka.server.quota.CustomQuotaCallbackTest$CustomQuotaCallback"),
+                    @ClusterConfigProperty(id = 3001, key = QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, value = "org.apache.kafka.server.quota.CustomQuotaCallbackTest$CustomQuotaCallback"),
+                    @ClusterConfigProperty(id = 3002, key = QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, value = "org.apache.kafka.server.quota.CustomQuotaCallbackTest$CustomQuotaCallback"),
+            }
     )
     public void testCustomQuotaCallbackWithControllerServer(ClusterInstance cluster) throws InterruptedException {
 
         try (Admin admin = cluster.admin(Map.of())) {
             admin.createTopics(List.of(new NewTopic("topic", 1, (short) 1)));
             TestUtils.waitForCondition(
-                () -> CustomQuotaCallback.COUNTERS.size() == 3 
-                        && CustomQuotaCallback.COUNTERS.values().stream().allMatch(counter -> counter.get() > 0), 
+                    () -> CustomQuotaCallback.COUNTERS.size() == 3
+                            && CustomQuotaCallback.COUNTERS.values().stream().allMatch(counter -> counter.get() > 0),
                     "The CustomQuotaCallback not triggered in all controllers. "
             );
-            
+
             // Reset the counters, and we expect the callback to be triggered again in all controllers
             CustomQuotaCallback.COUNTERS.clear();
-            
+
             admin.deleteTopics(List.of("topic"));
             TestUtils.waitForCondition(
-                () -> CustomQuotaCallback.COUNTERS.size() == 3
-                        && CustomQuotaCallback.COUNTERS.values().stream().allMatch(counter -> counter.get() > 0), 
+                    () -> CustomQuotaCallback.COUNTERS.size() == 3
+                            && CustomQuotaCallback.COUNTERS.values().stream().allMatch(counter -> counter.get() > 0),
                     "The CustomQuotaCallback not triggered in all controllers. "
             );
-        
+
         }
     }
 
     @ClusterTest(
-        types = {Type.CO_KRAFT, Type.KRAFT},
-        serverProperties = {
-            @ClusterConfigProperty(key = QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, value = "org.apache.kafka.server.quota.CustomQuotaCallbackTest$MonitorableCustomQuotaCallback"),
-        }
+            types = {Type.CO_KRAFT, Type.KRAFT},
+            serverProperties = {
+                    @ClusterConfigProperty(key = QuotaConfig.CLIENT_QUOTA_CALLBACK_CLASS_CONFIG, value = "org.apache.kafka.server.quota.CustomQuotaCallbackTest$MonitorableCustomQuotaCallback"),
+            }
     )
     public void testMonitorableCustomQuotaCallbackWithCombinedMode(ClusterInstance cluster) {
         assertMetrics(
-            cluster.brokers().get(0).metrics(),
-            expectedTags(Map.of("role", "broker"))
+                cluster.brokers().get(0).metrics(),
+                expectedTags(Map.of("role", "broker"))
         );
         assertMetrics(
-            cluster.controllers().get(controllerId(cluster.type())).metrics(),
-            expectedTags(Map.of("role", "controller"))
+                cluster.controllers().get(controllerId(cluster.type())).metrics(),
+                expectedTags(Map.of("role", "controller"))
         );
     }
 
@@ -169,7 +169,7 @@ public class CustomQuotaCallbackTest {
     }
 
     public static class MonitorableCustomQuotaCallback extends CustomQuotaCallback implements Monitorable {
-        
+
         private static final String METRIC_NAME = "monitorable-custom-quota-callback-name";
         private static final String METRIC_DESCRIPTION = "monitorable-custom-quota-callback-description";
 
@@ -178,6 +178,6 @@ public class CustomQuotaCallbackTest {
             MetricName metricName = metrics.metricName(METRIC_NAME, METRIC_DESCRIPTION, new LinkedHashMap<>());
             metrics.addMetric(metricName, (Gauge<Integer>) (config, now) -> 1);
         }
-        
+
     }
 }

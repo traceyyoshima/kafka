@@ -27,8 +27,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- *  We are converting the byte array to String before deserializing to UUID. String encoding defaults to UTF8 and can be customized by setting
- *  the property key.deserializer.encoding, value.deserializer.encoding or deserializer.encoding. The first two take precedence over the last.
+ * We are converting the byte array to String before deserializing to UUID. String encoding defaults to UTF8 and can be customized by setting
+ * the property key.deserializer.encoding, value.deserializer.encoding or deserializer.encoding. The first two take precedence over the last.
  */
 public class UUIDDeserializer implements Deserializer<UUID> {
     private String encoding = StandardCharsets.UTF_8.name();

@@ -23,7 +23,7 @@ import java.nio.channels.GatheringByteChannel;
 /**
  * Extends GatheringByteChannel with the minimal set of methods required by the Send interface. Supporting TLS and
  * efficient zero copy transfers are the main reasons for the additional methods.
- * 
+ *
  * @see SslTransportLayer
  */
 public interface TransferableChannel extends GatheringByteChannel {
@@ -35,15 +35,15 @@ public interface TransferableChannel extends GatheringByteChannel {
 
     /**
      * Transfers bytes from `fileChannel` to this `TransferableChannel`.
-     *
+     * <p>
      * This method will delegate to {@link FileChannel#transferTo(long, long, java.nio.channels.WritableByteChannel)},
      * but it will unwrap the destination channel, if possible, in order to benefit from zero copy. This is required
      * because the fast path of `transferTo` is only executed if the destination buffer inherits from an internal JDK
      * class.
      *
      * @param fileChannel The source channel
-     * @param position The position within the file at which the transfer is to begin; must be non-negative
-     * @param count The maximum number of bytes to be transferred; must be non-negative
+     * @param position    The position within the file at which the transfer is to begin; must be non-negative
+     * @param count       The maximum number of bytes to be transferred; must be non-negative
      * @return The number of bytes, possibly zero, that were actually transferred
      * @see FileChannel#transferTo(long, long, java.nio.channels.WritableByteChannel)
      */

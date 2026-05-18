@@ -77,16 +77,16 @@ import java.util.UUID;
 /**
  * Mini KDC based on Apache Directory Server that can be embedded in tests or used from command line as a standalone
  * KDC.
- *
+ * <p>
  * MiniKdc sets 2 System properties when started and unsets them when stopped:
- *
+ * <p>
  * - java.security.krb5.conf: set to the MiniKDC real/host/port
  * - sun.security.krb5.debug: set to the debug value provided in the configuration
- *
+ * <p>
  * As a result of this, multiple MiniKdc instances should not be started concurrently in the same JVM.
- *
+ * <p>
  * MiniKdc default configuration values are:
- *
+ * <p>
  * - org.name=EXAMPLE (used to create the REALM)
  * - org.domain=COM (used to create the REALM)
  * - kdc.bind.address=localhost
@@ -96,9 +96,9 @@ import java.util.UUID;
  * - max.renewable.lifetime604800000 (7 days)
  * - transport=TCP
  * - debug=false
- *
+ * <p>
  * The generated krb5.conf forces TCP connections.
- *
+ * <p>
  * Acknowledgements: this class is derived from the MiniKdc class in the hadoop-minikdc project (git commit
  * d8d8ed35f00b15ee0f2f8aaf3fe7f7b42141286b).
  */
@@ -131,7 +131,7 @@ public class MiniKdc {
     private boolean closed = false;
 
     /**
-     * @param config the MiniKdc configuration
+     * @param config  the MiniKdc configuration
      * @param workDir the working directory which will contain krb5.conf, Apache DS files and any other files needed by
      *                MiniKdc.
      */
@@ -184,7 +184,7 @@ public class MiniKdc {
 
     /**
      * Convenience method that returns MiniKdc default configuration.
-     *
+     * <p>
      * The returned configuration is a copy, it can be customized before using
      * it to create a MiniKdc.
      */
@@ -265,7 +265,7 @@ public class MiniKdc {
                 System.clearProperty(SUN_SECURITY_KRB5_DEBUG);
 
                 // Close kdc acceptors and wait for them to terminate, ensuring that sockets are closed before returning.
-                for (Transport transport: kdc.getTransports()) {
+                for (Transport transport : kdc.getTransports()) {
                     IoAcceptor acceptor = transport.getAcceptor();
                     if (acceptor != null) acceptor.dispose(true);
                 }
@@ -281,7 +281,7 @@ public class MiniKdc {
 
     /**
      * Creates  multiple principals in the KDC and adds them to a keytab file.
-     *
+     * <p>
      * An exception will be thrown if the principal cannot be created.
      *
      * @param keytabFile keytab file to add the created principals
@@ -460,7 +460,7 @@ public class MiniKdc {
 
     /**
      * Creates a principal in the KDC with the specified user and password.
-     *
+     * <p>
      * An exception will be thrown if the principal cannot be created.
      *
      * @param principal principal name, do not include the domain.

@@ -77,9 +77,9 @@ public class TimeWindowedCogroupedKStreamImplTest {
             props.put(StreamsConfig.DSL_STORE_FORMAT_CONFIG, StreamsConfig.DSL_STORE_FORMAT_DEFAULT);
         }
         final KStream<String, String> stream = builder.stream(TOPIC, Consumed
-            .with(Serdes.String(), Serdes.String()));
+                .with(Serdes.String(), Serdes.String()));
         final KStream<String, String> stream2 = builder.stream(TOPIC2, Consumed
-            .with(Serdes.String(), Serdes.String()));
+                .with(Serdes.String(), Serdes.String()));
 
         groupedStream = stream.groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
         groupedStream2 = stream2.groupByKey(Grouped.with(Serdes.String(), Serdes.String()));
@@ -100,7 +100,7 @@ public class TimeWindowedCogroupedKStreamImplTest {
     public void shouldNotHaveNullMaterializedOnTwoOptionAggregate(final boolean withHeaders) {
         setup(withHeaders);
         assertThrows(NullPointerException.class, () -> windowedCogroupedStream.aggregate(MockInitializer.STRING_INIT,
-            (Materialized<String, String, WindowStore<Bytes, byte[]>>) null));
+                (Materialized<String, String, WindowStore<Bytes, byte[]>>) null));
     }
 
     @ParameterizedTest
@@ -159,15 +159,15 @@ public class TimeWindowedCogroupedKStreamImplTest {
 
         assertThat(builder.build().describe().toString(), equalTo(
                 "Topologies:\n" +
-                "   Sub-topology: 0\n" +
-                "    Source: KSTREAM-SOURCE-0000000000 (topics: [topic])\n" +
-                "      --> foo-cogroup-agg-0\n" +
-                "    Processor: foo-cogroup-agg-0 (stores: [COGROUPKSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
-                "      --> foo-cogroup-merge\n" +
-                "      <-- KSTREAM-SOURCE-0000000000\n" +
-                "    Processor: foo-cogroup-merge (stores: [])\n" +
-                "      --> none\n" +
-                "      <-- foo-cogroup-agg-0\n\n"));
+                        "   Sub-topology: 0\n" +
+                        "    Source: KSTREAM-SOURCE-0000000000 (topics: [topic])\n" +
+                        "      --> foo-cogroup-agg-0\n" +
+                        "    Processor: foo-cogroup-agg-0 (stores: [COGROUPKSTREAM-AGGREGATE-STATE-STORE-0000000001])\n" +
+                        "      --> foo-cogroup-merge\n" +
+                        "      <-- KSTREAM-SOURCE-0000000000\n" +
+                        "    Processor: foo-cogroup-merge (stores: [])\n" +
+                        "      --> none\n" +
+                        "      <-- foo-cogroup-agg-0\n\n"));
     }
 
     @ParameterizedTest

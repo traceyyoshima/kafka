@@ -55,11 +55,11 @@ public interface VersionedKeyValueStore<K, V> extends StateStore {
      * @param value     The value, it can be {@code null}. {@code null} is interpreted as a delete.
      * @param timestamp The timestamp for this record version
      * @return The validTo timestamp of the newly put record. Two special values, {@code -1} and
-     *         {@code Long.MIN_VALUE} carry specific meanings. {@code -1} indicates that the
-     *         record that was put is the latest record version for its key, and therefore the
-     *         validTo timestamp is undefined. {@code Long.MIN_VALUE} indicates that the record
-     *         was not put, due to grace period having been exceeded.
-     * @throws NullPointerException If {@code null} is used for key.
+     * {@code Long.MIN_VALUE} carry specific meanings. {@code -1} indicates that the
+     * record that was put is the latest record version for its key, and therefore the
+     * validTo timestamp is undefined. {@code Long.MIN_VALUE} indicates that the record
+     * was not put, due to grace period having been exceeded.
+     * @throws NullPointerException       If {@code null} is used for key.
      * @throws InvalidStateStoreException if the store is not initialized
      */
     long put(K key, V value, long timestamp);
@@ -90,13 +90,13 @@ public interface VersionedKeyValueStore<K, V> extends StateStore {
      * @param key       The key
      * @param timestamp The timestamp for this delete
      * @return The value and timestamp of the record associated with this key as of
-     *         the deletion timestamp (inclusive), or {@code null} if no such record exists
-     *         (including if the deletion timestamp is older than this store's history
-     *         retention time, i.e., the store no longer contains data for the provided
-     *         timestamp). Note that the record timestamp {@code r.timestamp()} of the
-     *         returned {@link VersionedRecord} may be smaller than the provided deletion
-     *         timestamp.
-     * @throws NullPointerException If {@code null} is used for key.
+     * the deletion timestamp (inclusive), or {@code null} if no such record exists
+     * (including if the deletion timestamp is older than this store's history
+     * retention time, i.e., the store no longer contains data for the provided
+     * timestamp). Note that the record timestamp {@code r.timestamp()} of the
+     * returned {@link VersionedRecord} may be smaller than the provided deletion
+     * timestamp.
+     * @throws NullPointerException       If {@code null} is used for key.
      * @throws InvalidStateStoreException if the store is not initialized
      */
     VersionedRecord<V> delete(K key, long timestamp);
@@ -106,7 +106,7 @@ public interface VersionedKeyValueStore<K, V> extends StateStore {
      *
      * @param key The key to fetch
      * @return The value and timestamp of the current record associated with this key, or
-     *         {@code null} if there is no current record for this key.
+     * {@code null} if there is no current record for this key.
      * @throws NullPointerException       If null is used for key.
      * @throws InvalidStateStoreException if the store is not initialized
      */
@@ -122,14 +122,14 @@ public interface VersionedKeyValueStore<K, V> extends StateStore {
      *                      (for the specified key) exists with this timestamp, then
      *                      this is the record that will be returned.
      * @return The value and timestamp of the record associated with this key
-     *         as of the provided timestamp, or {@code null} if no such record exists
-     *         (including if the provided timestamp bound is older than this store's history
-     *         retention time, i.e., the store no longer contains data for the provided
-     *         timestamp). Note that the record timestamp {@code r.timestamp()} of the
-     *         returned {@link VersionedRecord} may be smaller than the provided timestamp
-     *         bound. Additionally, if the latest record version for the key is eligible
-     *         for the provided timestamp bound, then that record will be returned even if
-     *         the timestamp bound is older than the store's history retention.
+     * as of the provided timestamp, or {@code null} if no such record exists
+     * (including if the provided timestamp bound is older than this store's history
+     * retention time, i.e., the store no longer contains data for the provided
+     * timestamp). Note that the record timestamp {@code r.timestamp()} of the
+     * returned {@link VersionedRecord} may be smaller than the provided timestamp
+     * bound. Additionally, if the latest record version for the key is eligible
+     * for the provided timestamp bound, then that record will be returned even if
+     * the timestamp bound is older than the store's history retention.
      * @throws NullPointerException       If null is used for key.
      * @throws InvalidStateStoreException if the store is not initialized
      */

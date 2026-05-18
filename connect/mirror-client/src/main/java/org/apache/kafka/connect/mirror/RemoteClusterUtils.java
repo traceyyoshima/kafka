@@ -38,12 +38,14 @@ import java.util.regex.Pattern;
  *     bootstrap.servers = host1:9092
  *     consumer.client.id = mm2-client
  * </pre>
+ *
  * @see MirrorClientConfig for additional properties used by the internal MirrorClient.
  */
 public final class RemoteClusterUtils {
 
     // utility class
-    private RemoteClusterUtils() {}
+    private RemoteClusterUtils() {
+    }
 
     /**
      * Finds the shortest number of hops from an upstream cluster.
@@ -88,14 +90,15 @@ public final class RemoteClusterUtils {
 
     /**
      * Translates a remote consumer group's offsets into corresponding local offsets. Topics are automatically
-     *  renamed according to the configured {@link ReplicationPolicy}.
-     *  @param properties Map of properties to instantiate a {@link MirrorClient}
-     *  @param remoteClusterAlias The alias of the remote cluster
-     *  @param consumerGroupId The group ID of remote consumer group
-     *  @param timeout The maximum time to block when consuming from the checkpoints topic
+     * renamed according to the configured {@link ReplicationPolicy}.
+     *
+     * @param properties         Map of properties to instantiate a {@link MirrorClient}
+     * @param remoteClusterAlias The alias of the remote cluster
+     * @param consumerGroupId    The group ID of remote consumer group
+     * @param timeout            The maximum time to block when consuming from the checkpoints topic
      */
     public static Map<TopicPartition, OffsetAndMetadata> translateOffsets(Map<String, Object> properties,
-            String remoteClusterAlias, String consumerGroupId, Duration timeout)
+                                                                          String remoteClusterAlias, String consumerGroupId, Duration timeout)
             throws InterruptedException, TimeoutException {
         try (MirrorClient client = new MirrorClient(properties)) {
             return client.remoteConsumerOffsets(consumerGroupId, remoteClusterAlias, timeout);
@@ -104,15 +107,16 @@ public final class RemoteClusterUtils {
 
     /**
      * Translates remote consumer groups' offsets into corresponding local offsets. Topics are automatically
-     *  renamed according to the configured {@link ReplicationPolicy}.
-     *  @param properties Map of properties to instantiate a {@link MirrorClient}
-     *  @param remoteClusterAlias The alias of the remote cluster
-     *  @param consumerGroupPattern The regex pattern specifying the consumer groups to translate offsets for
-     *  @param timeout The maximum time to block when consuming from the checkpoints topic
-     *  @throws IllegalArgumentException If any of the arguments are null
+     * renamed according to the configured {@link ReplicationPolicy}.
+     *
+     * @param properties           Map of properties to instantiate a {@link MirrorClient}
+     * @param remoteClusterAlias   The alias of the remote cluster
+     * @param consumerGroupPattern The regex pattern specifying the consumer groups to translate offsets for
+     * @param timeout              The maximum time to block when consuming from the checkpoints topic
+     * @throws IllegalArgumentException If any of the arguments are null
      */
     public static Map<String, Map<TopicPartition, OffsetAndMetadata>> translateOffsets(Map<String, Object> properties,
-            String remoteClusterAlias, Pattern consumerGroupPattern, Duration timeout) {
+                                                                                       String remoteClusterAlias, Pattern consumerGroupPattern, Duration timeout) {
         try (MirrorClient client = new MirrorClient(properties)) {
             return client.remoteConsumerOffsets(consumerGroupPattern, remoteClusterAlias, timeout);
         }

@@ -65,7 +65,7 @@ public class NewPartitions {
      * <p>In this example partition 3's preferred leader will be broker 1, partition 4's preferred leader will be
      * broker 2 and partition 5's preferred leader will be broker 3.</p>
      *
-     * @param totalCount The total number of partitions after the operation succeeds.
+     * @param totalCount     The total number of partitions after the operation succeeds.
      * @param newAssignments The replica assignments for the new partitions.
      */
     public static NewPartitions increaseTo(int totalCount, List<List<Integer>> newAssignments) {

@@ -222,12 +222,12 @@ public class ProcessorRecordContext implements RecordContext, RecordMetadata {
         }
         final ProcessorRecordContext that = (ProcessorRecordContext) o;
         return timestamp == that.timestamp &&
-            offset == that.offset &&
-            partition == that.partition &&
-            Objects.equals(topic, that.topic) &&
-            Objects.equals(headers, that.headers) &&
-            Arrays.equals(sourceRawKey, that.sourceRawKey) &&
-            Arrays.equals(sourceRawValue, that.sourceRawValue);
+                offset == that.offset &&
+                partition == that.partition &&
+                Objects.equals(topic, that.topic) &&
+                Objects.equals(headers, that.headers) &&
+                Arrays.equals(sourceRawKey, that.sourceRawKey) &&
+                Arrays.equals(sourceRawValue, that.sourceRawValue);
     }
 
     /**
@@ -238,17 +238,17 @@ public class ProcessorRecordContext implements RecordContext, RecordMetadata {
     @Override
     public int hashCode() {
         throw new UnsupportedOperationException("ProcessorRecordContext is unsafe for use in Hash collections "
-                                                    + "due to the mutable Headers field");
+                + "due to the mutable Headers field");
     }
 
     @Override
     public String toString() {
         return "ProcessorRecordContext{" +
-            "topic='" + topic + '\'' +
-            ", partition=" + partition +
-            ", offset=" + offset +
-            ", timestamp=" + timestamp +
-            ", headers=" + headers +
-            '}';
+                "topic='" + topic + '\'' +
+                ", partition=" + partition +
+                ", offset=" + offset +
+                ", timestamp=" + timestamp +
+                ", headers=" + headers +
+                '}';
     }
 }

@@ -29,27 +29,27 @@ import java.util.Random;
  * This generator will flush the producer after a specific number of messages, determined by a gaussian distribution.
  * This is useful to simulate a specific number of messages in a batch regardless of the message size, since batch
  * flushing is not exposed in the KafkaProducer.
- *
+ * <p>
  * WARNING: This does not directly control when KafkaProducer will batch, this only makes best effort.  This also
  * cannot tell when a KafkaProducer batch is closed.  If the KafkaProducer sends a batch before this executes, this
  * will continue to execute on its own cadence.  To alleviate this, make sure to set `linger.ms` to allow for messages
  * to be generated up to your upper limit threshold, and make sure to set `batch.size` to allow for all these messages.
- *
+ * <p>
  * Here is an example spec:
- *
+ * <p>
  * {
- *    "type": "gaussian",
- *    "messagesPerFlushAverage": 16,
- *    "messagesPerFlushDeviation": 4
+ * "type": "gaussian",
+ * "messagesPerFlushAverage": 16,
+ * "messagesPerFlushDeviation": 4
  * }
- *
+ * <p>
  * This example will flush the producer on average every 16 messages, assuming `linger.ms` and `batch.size` allow for
  * it.  That average changes based on a normal distribution after each flush:
- *
- *    An average of the flushes will be at 16 messages.
- *    ~68% of the flushes are at between 12 and 20 messages.
- *    ~95% of the flushes are at between 8 and 24 messages.
- *    ~99% of the flushes are at between 4 and 28 messages.
+ * <p>
+ * An average of the flushes will be at 16 messages.
+ * ~68% of the flushes are at between 12 and 20 messages.
+ * ~95% of the flushes are at between 8 and 24 messages.
+ * ~99% of the flushes are at between 4 and 28 messages.
  */
 
 public class GaussianFlushGenerator implements FlushGenerator {

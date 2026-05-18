@@ -131,7 +131,7 @@ public class KeyValueStoreBuilderTest {
     public void shouldThrowNullPointerIfInnerIsNull() {
         setUpWithoutInner();
         assertThrows(NullPointerException.class, () -> new KeyValueStoreBuilder<>(null, Serdes.String(),
-            Serdes.String(), new MockTime()));
+                Serdes.String(), new MockTime()));
     }
 
     @Test
@@ -147,7 +147,7 @@ public class KeyValueStoreBuilderTest {
         when(supplier.metricsScope()).thenReturn(null);
 
         final Exception e = assertThrows(NullPointerException.class,
-            () -> new KeyValueStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
+                () -> new KeyValueStoreBuilder<>(supplier, Serdes.String(), Serdes.String(), new MockTime()));
         assertThat(e.getMessage(), equalTo("storeSupplier's metricsScope can't be null"));
     }
 

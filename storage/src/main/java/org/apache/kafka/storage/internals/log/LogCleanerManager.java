@@ -274,9 +274,9 @@ public class LogCleanerManager {
             dirtiestLogCleanableRatio = dirtyLogs.isEmpty()
                     ? 0
                     : dirtyLogs.stream()
-                        .mapToDouble(LogToClean::cleanableRatio)
-                        .max()
-                        .orElse(0.0);
+                      .mapToDouble(LogToClean::cleanableRatio)
+                      .max()
+                      .orElse(0.0);
             // and must meet the minimum threshold for dirty byte ratio or have some bytes required to be compacted
             List<LogToClean> cleanableLogs = dirtyLogs.stream()
                     .filter(ltc -> (ltc.needCompactionNow() && ltc.cleanableBytes() > 0) || ltc.cleanableRatio() > ltc.log().config().minCleanableRatio)
@@ -686,7 +686,7 @@ public class LogCleanerManager {
      * @param lastCleanOffset the last checkpointed offset
      * @param now             the current time in milliseconds of the cleaning operation
      * @return OffsetsToClean containing offsets for cleanable portion of log and whether the log checkpoint needs updating
-     * @throws IOException    if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     // Visible for testing
     static OffsetsToClean cleanableOffsets(UnifiedLog log, Optional<Long> lastCleanOffset, long now) throws IOException {

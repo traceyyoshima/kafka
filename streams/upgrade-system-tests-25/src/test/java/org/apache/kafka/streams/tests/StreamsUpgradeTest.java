@@ -49,18 +49,18 @@ public class StreamsUpgradeTest {
 
         final StreamsBuilder builder = new StreamsBuilder();
         final KTable<String, Integer> dataTable = builder.table(
-            "data", Consumed.with(stringSerde, intSerde));
+                "data", Consumed.with(stringSerde, intSerde));
         final KStream<String, Integer> dataStream = dataTable.toStream();
         dataStream.process(printProcessorSupplier("data"));
         dataStream.to("echo");
 
         final boolean runFkJoin = Boolean.parseBoolean(streamsProperties.getProperty(
-            "test.run_fk_join",
-            "false"));
+                "test.run_fk_join",
+                "false"));
         if (runFkJoin) {
             try {
                 final KTable<Integer, String> fkTable = builder.table(
-                    "fk", Consumed.with(intSerde, stringSerde));
+                        "fk", Consumed.with(intSerde, stringSerde));
                 buildFKTable(dataTable, fkTable);
             } catch (final Exception e) {
                 System.err.println("Caught " + e.getMessage());
@@ -69,8 +69,8 @@ public class StreamsUpgradeTest {
 
         final Properties config = new Properties();
         config.setProperty(
-            StreamsConfig.APPLICATION_ID_CONFIG,
-            "StreamsUpgradeTest");
+                StreamsConfig.APPLICATION_ID_CONFIG,
+                "StreamsUpgradeTest");
         config.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 1000L);
         config.putAll(streamsProperties);
 
@@ -87,8 +87,8 @@ public class StreamsUpgradeTest {
     private static void buildFKTable(final KTable<String, Integer> primaryTable,
                                      final KTable<Integer, String> otherTable) {
         final KStream<String, String> kStream = primaryTable
-            .join(otherTable, v -> v, (k0, v0) -> v0)
-            .toStream();
+                .join(otherTable, v -> v, (k0, v0) -> v0)
+                .toStream();
         kStream.process(printProcessorSupplier("fk"));
         kStream.to("fk-result", Produced.with(stringSerde, stringSerde));
     }
@@ -112,7 +112,8 @@ public class StreamsUpgradeTest {
             }
 
             @Override
-            public void close() {}
+            public void close() {
+            }
         };
     }
 }

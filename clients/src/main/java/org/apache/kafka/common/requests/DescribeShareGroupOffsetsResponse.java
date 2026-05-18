@@ -52,14 +52,14 @@ public class DescribeShareGroupOffsetsResponse extends AbstractResponse {
         List<DescribeShareGroupOffsetsResponseGroup> groupList = new ArrayList<>();
         groupIds.forEach(groupId -> {
             groupList.add(new DescribeShareGroupOffsetsResponseGroup()
-                .setGroupId(groupId)
-                .setErrorCode(errorCode)
-                .setErrorMessage(errorCode == Errors.UNKNOWN_SERVER_ERROR.code() ? Errors.forCode(errorCode).message() : allGroupsException.getMessage()));
+                    .setGroupId(groupId)
+                    .setErrorCode(errorCode)
+                    .setErrorMessage(errorCode == Errors.UNKNOWN_SERVER_ERROR.code() ? Errors.forCode(errorCode).message() : allGroupsException.getMessage()));
             groupLevelErrors.put(groupId, allGroupsException);
         });
         this.data = new DescribeShareGroupOffsetsResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setGroups(groupList);
+                .setThrottleTimeMs(throttleTimeMs)
+                .setGroups(groupList);
     }
 
     public boolean hasGroupError(String groupId) {
@@ -81,8 +81,8 @@ public class DescribeShareGroupOffsetsResponse extends AbstractResponse {
         groupLevelErrors.values().forEach(exception -> updateErrorCounts(counts, Errors.forException(exception)));
         for (DescribeShareGroupOffsetsResponseGroup group : data.groups()) {
             group.topics().forEach(topic ->
-                topic.partitions().forEach(partition ->
-                    updateErrorCounts(counts, Errors.forCode(partition.errorCode()))));
+                    topic.partitions().forEach(partition ->
+                            updateErrorCounts(counts, Errors.forCode(partition.errorCode()))));
         }
         return counts;
     }

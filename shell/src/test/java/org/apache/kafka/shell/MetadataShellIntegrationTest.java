@@ -85,14 +85,14 @@ public class MetadataShellIntegrationTest {
     public void testLock(boolean canLock) throws Exception {
         try (IntegrationEnv env = new IntegrationEnv()) {
             env.shell = new MetadataShell(
-                new File(new File(env.tempDir, "__cluster_metadata-0"), "00000000000122906351-0000000226.checkpoint").getAbsolutePath(),
+                    new File(new File(env.tempDir, "__cluster_metadata-0"), "00000000000122906351-0000000226.checkpoint").getAbsolutePath(),
                     env.faultHandler);
 
             if (canLock) {
                 assertEquals(NoSuchFileException.class,
-                    assertThrows(ExecutionException.class,
-                        () -> env.shell.run(List.of())).
-                            getCause().getClass());
+                        assertThrows(ExecutionException.class,
+                                () -> env.shell.run(List.of())).
+                                getCause().getClass());
             } else {
                 FileLock fileLock = new FileLock(new File(env.tempDir, ".lock"));
                 try {
@@ -101,11 +101,11 @@ public class MetadataShellIntegrationTest {
                     // at the 2nd run, so we check that it fails (See KAFKA-19334)
                     for (int i = 0; i < 2; i++) {
                         assertEquals("Unable to lock " + env.tempDir.getAbsolutePath() +
-                                     ". Please ensure that no broker or controller process is using this " +
-                                     "directory before proceeding.",
-                                     assertThrows(RuntimeException.class,
-                                                  () -> env.shell.run(List.of())).
-                                             getMessage());
+                                        ". Please ensure that no broker or controller process is using this " +
+                                        "directory before proceeding.",
+                                assertThrows(RuntimeException.class,
+                                        () -> env.shell.run(List.of())).
+                                        getMessage());
                     }
                 } finally {
                     fileLock.destroy();

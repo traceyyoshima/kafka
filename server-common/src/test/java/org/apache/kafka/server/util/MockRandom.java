@@ -22,7 +22,7 @@ import java.util.Random;
 
 /**
  * A subclass of Random with a fixed seed and generation algorithm.
- *
+ * <p>
  * This is useful for generating a deterministic sequence of pseudorandom numbers.
  */
 public class MockRandom extends Random {

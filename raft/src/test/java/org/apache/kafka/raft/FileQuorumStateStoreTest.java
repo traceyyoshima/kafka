@@ -59,23 +59,23 @@ public class FileQuorumStateStoreTest {
         Set<Integer> voters = Set.of(voter1, voter2, voter3);
 
         stateStore.writeElectionState(
-            ElectionState.withElectedLeader(epoch, voter1, Optional.of(votedKey), voters),
-            kraftVersion
+                ElectionState.withElectedLeader(epoch, voter1, Optional.of(votedKey), voters),
+                kraftVersion
         );
 
         final Optional<ElectionState> expected;
         if (kraftVersion.isReconfigSupported()) {
             expected = Optional.of(
-                ElectionState.withElectedLeader(epoch, voter1, Optional.of(votedKey), Set.of())
+                    ElectionState.withElectedLeader(epoch, voter1, Optional.of(votedKey), Set.of())
             );
         } else {
             expected = Optional.of(
-                ElectionState.withElectedLeader(
-                    epoch,
-                    voter1,
-                    Optional.of(ReplicaKey.of(voter1, ReplicaKey.NO_DIRECTORY_ID)),
-                    voters
-                )
+                    ElectionState.withElectedLeader(
+                            epoch,
+                            voter1,
+                            Optional.of(ReplicaKey.of(voter1, ReplicaKey.NO_DIRECTORY_ID)),
+                            voters
+                    )
             );
         }
 
@@ -97,26 +97,26 @@ public class FileQuorumStateStoreTest {
         Set<Integer> voters = Set.of(voter1, voter2, voter3);
 
         stateStore.writeElectionState(
-            ElectionState.withVotedCandidate(epoch, voter1Key, voters),
-            kraftVersion
+                ElectionState.withVotedCandidate(epoch, voter1Key, voters),
+                kraftVersion
         );
 
         final Optional<ElectionState> expected;
         if (kraftVersion.isReconfigSupported()) {
             expected = Optional.of(
-                ElectionState.withVotedCandidate(
-                    epoch,
-                    voter1Key,
-                    Set.of()
-                )
+                    ElectionState.withVotedCandidate(
+                            epoch,
+                            voter1Key,
+                            Set.of()
+                    )
             );
         } else {
             expected = Optional.of(
-                ElectionState.withVotedCandidate(
-                    epoch,
-                    ReplicaKey.of(voter1, ReplicaKey.NO_DIRECTORY_ID),
-                    voters
-                )
+                    ElectionState.withVotedCandidate(
+                            epoch,
+                            ReplicaKey.of(voter1, ReplicaKey.NO_DIRECTORY_ID),
+                            voters
+                    )
             );
         }
 
@@ -133,8 +133,8 @@ public class FileQuorumStateStoreTest {
         Set<Integer> voters = Set.of(1, 2, 3);
 
         stateStore.writeElectionState(
-            ElectionState.withUnknownLeader(epoch, voters),
-            kraftVersion
+                ElectionState.withUnknownLeader(epoch, voters),
+                kraftVersion
         );
 
         final Optional<ElectionState> expected;
@@ -149,7 +149,7 @@ public class FileQuorumStateStoreTest {
     }
 
     @Test
-    void testReload()  throws IOException {
+    void testReload() throws IOException {
         final File stateFile = TestUtils.tempFile();
         FileQuorumStateStore stateStore = new FileQuorumStateStore(stateFile);
 
@@ -161,8 +161,8 @@ public class FileQuorumStateStoreTest {
         // Check that state is persisted
         FileQuorumStateStore reloadedStore = new FileQuorumStateStore(stateFile);
         assertEquals(
-            Optional.of(ElectionState.withUnknownLeader(epoch, Set.of())),
-            reloadedStore.readElectionState()
+                Optional.of(ElectionState.withUnknownLeader(epoch, Set.of())),
+                reloadedStore.readElectionState()
         );
     }
 

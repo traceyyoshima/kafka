@@ -37,15 +37,15 @@ public class MemberSubscriptionAndAssignmentImpl implements MemberSubscription, 
     /**
      * Constructs a new {@code MemberSubscriptionAndAssignmentImpl}.
      *
-     * @param rackId                The rack Id.
-     * @param subscribedTopicIds    The set of subscribed topic Ids.
-     * @param memberAssignment      The current member assignment.
+     * @param rackId             The rack Id.
+     * @param subscribedTopicIds The set of subscribed topic Ids.
+     * @param memberAssignment   The current member assignment.
      */
     public MemberSubscriptionAndAssignmentImpl(
-        Optional<String> rackId,
-        Optional<String> instanceId,
-        Set<Uuid> subscribedTopicIds,
-        Assignment memberAssignment
+            Optional<String> rackId,
+            Optional<String> instanceId,
+            Set<Uuid> subscribedTopicIds,
+            Assignment memberAssignment
     ) {
         this.rackId = Objects.requireNonNull(rackId);
         this.instanceId = Objects.requireNonNull(instanceId);
@@ -79,9 +79,9 @@ public class MemberSubscriptionAndAssignmentImpl implements MemberSubscription, 
         if (o == null || getClass() != o.getClass()) return false;
         MemberSubscriptionAndAssignmentImpl that = (MemberSubscriptionAndAssignmentImpl) o;
         return rackId.equals(that.rackId) &&
-            instanceId.equals(that.instanceId) &&
-            subscribedTopicIds.equals(that.subscribedTopicIds) &&
-            memberAssignment.equals(that.memberAssignment);
+                instanceId.equals(that.instanceId) &&
+                subscribedTopicIds.equals(that.subscribedTopicIds) &&
+                memberAssignment.equals(that.memberAssignment);
     }
 
     @Override
@@ -96,9 +96,9 @@ public class MemberSubscriptionAndAssignmentImpl implements MemberSubscription, 
     @Override
     public String toString() {
         return "MemberSubscriptionAndAssignmentImpl(rackId=" + rackId.orElse("N/A") +
-            ", instanceId=" + instanceId +
-            ", subscribedTopicIds=" + subscribedTopicIds +
-            ", memberAssignment=" + memberAssignment +
-            ')';
+                ", instanceId=" + instanceId +
+                ", subscribedTopicIds=" + subscribedTopicIds +
+                ", memberAssignment=" + memberAssignment +
+                ')';
     }
 }

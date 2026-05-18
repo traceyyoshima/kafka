@@ -32,7 +32,7 @@ public class AclBinding {
      * Create an instance of this class with the provided parameters.
      *
      * @param pattern non-null resource pattern.
-     * @param entry non-null entry
+     * @param entry   non-null entry
      */
     public AclBinding(ResourcePattern pattern, AccessControlEntry entry) {
         this.pattern = Objects.requireNonNull(pattern, "pattern");
@@ -78,7 +78,7 @@ public class AclBinding {
         if (o == null || getClass() != o.getClass()) return false;
         AclBinding that = (AclBinding) o;
         return Objects.equals(pattern, that.pattern) &&
-            Objects.equals(entry, that.entry);
+                Objects.equals(entry, that.entry);
     }
 
     @Override

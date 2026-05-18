@@ -41,9 +41,9 @@ class FinalizedFeaturesTest {
     @Test
     public void testSetFinalizedLevel() {
         FinalizedFeatures finalizedFeatures = new FinalizedFeatures(
-            MINIMUM_VERSION,
-            Map.of("foo", (short) 2),
-            123
+                MINIMUM_VERSION,
+                Map.of("foo", (short) 2),
+                123
         );
 
         // Override an existing finalized feature version to 0

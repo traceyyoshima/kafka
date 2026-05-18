@@ -72,30 +72,30 @@ public class SimpleAssignorTest {
     @Test
     public void testAssignWithEmptyMembers() {
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            CoordinatorMetadataImage.EMPTY
+                CoordinatorMetadataImage.EMPTY
         );
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            Map.of(),
-            HOMOGENEOUS,
-            Map.of()
+                Map.of(),
+                HOMOGENEOUS,
+                Map.of()
         );
 
         GroupAssignment groupAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertEquals(Map.of(), groupAssignment.members());
 
         groupSpec = new GroupSpecImpl(
-            Map.of(),
-            HETEROGENEOUS,
-            Map.of()
+                Map.of(),
+                HETEROGENEOUS,
+                Map.of()
         );
         groupAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
         assertEquals(Map.of(), groupAssignment.members());
     }
@@ -103,31 +103,31 @@ public class SimpleAssignorTest {
     @Test
     public void testAssignWithNoSubscribedTopic() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .build();
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = Map.of(
-            MEMBER_A,
-            new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                Set.of(),
-                Assignment.EMPTY
-            )
+                MEMBER_A,
+                new MemberSubscriptionAndAssignmentImpl(
+                        Optional.empty(),
+                        Optional.empty(),
+                        Set.of(),
+                        Assignment.EMPTY
+                )
         );
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of()
+                members,
+                HOMOGENEOUS,
+                Map.of()
         );
 
         GroupAssignment groupAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertEquals(Map.of(), groupAssignment.members());
@@ -136,38 +136,38 @@ public class SimpleAssignorTest {
     @Test
     public void testAssignWithSubscribedToNonExistentTopic() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .build();
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = Map.of(
-            MEMBER_A,
-            new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                Set.of(TOPIC_2_UUID),
-                Assignment.EMPTY
-            )
+                MEMBER_A,
+                new MemberSubscriptionAndAssignmentImpl(
+                        Optional.empty(),
+                        Optional.empty(),
+                        Set.of(TOPIC_2_UUID),
+                        Assignment.EMPTY
+                )
         );
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of()
+                members,
+                HOMOGENEOUS,
+                Map.of()
         );
 
         assertThrows(PartitionAssignorException.class,
-            () -> assignor.assign(groupSpec, subscribedTopicMetadata));
+                () -> assignor.assign(groupSpec, subscribedTopicMetadata));
     }
 
     @Test
     public void testAssignWithTwoMembersAndTwoTopicsHomogeneous() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
+                .build();
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new HashMap<>();
 
@@ -176,31 +176,31 @@ public class SimpleAssignorTest {
         topicsSubscription.add(TOPIC_3_UUID);
 
         members.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            topicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                topicsSubscription,
+                Assignment.EMPTY
         ));
 
         members.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            topicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                topicsSubscription,
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of()
+                members,
+                HOMOGENEOUS,
+                Map.of()
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertEveryPartitionGetsAssignment(5, computedAssignment);
@@ -209,9 +209,9 @@ public class SimpleAssignorTest {
     @Test
     public void testAssignWithTwoMembersAndTwoTopicsHomogeneousWithAllowedMap() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 3)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 3)
+                .build();
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new HashMap<>();
 
@@ -220,37 +220,37 @@ public class SimpleAssignorTest {
         topicsSubscription.add(TOPIC_3_UUID);
 
         members.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            topicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                topicsSubscription,
+                Assignment.EMPTY
         ));
 
         members.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            topicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                topicsSubscription,
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of(),
-            Optional.of(
-                Map.of(
-                    TOPIC_1_UUID, Set.of(0, 1, 2),
-                    TOPIC_3_UUID, Set.of(0, 1)    // but not 2
+                members,
+                HOMOGENEOUS,
+                Map.of(),
+                Optional.of(
+                        Map.of(
+                                TOPIC_1_UUID, Set.of(0, 1, 2),
+                                TOPIC_3_UUID, Set.of(0, 1)    // but not 2
+                        )
                 )
-            )
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertEveryPartitionGetsAssignment(5, computedAssignment);
@@ -259,9 +259,9 @@ public class SimpleAssignorTest {
     @Test
     public void testAssignWithTwoMembersAndTwoTopicsHomogeneousWithNonAssignableTopic() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
+                .build();
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new HashMap<>();
 
@@ -270,35 +270,35 @@ public class SimpleAssignorTest {
         topicsSubscription.add(TOPIC_3_UUID);
 
         members.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            topicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                topicsSubscription,
+                Assignment.EMPTY
         ));
 
         members.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            topicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                topicsSubscription,
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            Map.of(),
-            Optional.of(
-                Map.of(TOPIC_1_UUID, Set.of(0, 1, 2))
-            )
+                members,
+                HOMOGENEOUS,
+                Map.of(),
+                Optional.of(
+                        Map.of(TOPIC_1_UUID, Set.of(0, 1, 2))
+                )
         );
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         assertEveryPartitionGetsAssignment(3, computedAssignment);
@@ -307,10 +307,10 @@ public class SimpleAssignorTest {
     @Test
     public void testAssignWithThreeMembersThreeTopicsHeterogeneous() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
+                .build();
 
         Set<Uuid> memberATopicsSubscription = new LinkedHashSet<>();
         memberATopicsSubscription.add(TOPIC_1_UUID);
@@ -318,41 +318,41 @@ public class SimpleAssignorTest {
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new HashMap<>();
         members.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberATopicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                memberATopicsSubscription,
+                Assignment.EMPTY
         ));
 
         members.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_3_UUID),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
 
         Set<Uuid> memberCTopicsSubscription = new LinkedHashSet<>();
         memberCTopicsSubscription.add(TOPIC_2_UUID);
         memberCTopicsSubscription.add(TOPIC_3_UUID);
         members.put(MEMBER_C, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberCTopicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                memberCTopicsSubscription,
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HETEROGENEOUS,
-            Map.of()
+                members,
+                HETEROGENEOUS,
+                Map.of()
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         // T1: 3 partitions + T2: 3 partitions + T3: 2 partitions = 8 partitions
@@ -362,10 +362,10 @@ public class SimpleAssignorTest {
     @Test
     public void testAssignWithThreeMembersThreeTopicsHeterogeneousWithAllowedMap() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
+                .build();
 
         Set<Uuid> memberATopicsSubscription = new LinkedHashSet<>();
         memberATopicsSubscription.add(TOPIC_1_UUID);
@@ -373,49 +373,49 @@ public class SimpleAssignorTest {
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new HashMap<>();
         members.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberATopicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                memberATopicsSubscription,
+                Assignment.EMPTY
         ));
 
         members.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_3_UUID),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
 
         Set<Uuid> memberCTopicsSubscription = new LinkedHashSet<>();
         memberCTopicsSubscription.add(TOPIC_2_UUID);
         memberCTopicsSubscription.add(TOPIC_3_UUID);
         members.put(MEMBER_C, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberCTopicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                memberCTopicsSubscription,
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HETEROGENEOUS,
-            Map.of(),
-            Optional.of(
-                Map.of(
-                    TOPIC_1_UUID, Set.of(0, 1), // but not 2
-                    TOPIC_2_UUID, Set.of(0, 2), // but not 1
-                    TOPIC_3_UUID, Set.of(1)     // but not 0
+                members,
+                HETEROGENEOUS,
+                Map.of(),
+                Optional.of(
+                        Map.of(
+                                TOPIC_1_UUID, Set.of(0, 1), // but not 2
+                                TOPIC_2_UUID, Set.of(0, 2), // but not 1
+                                TOPIC_3_UUID, Set.of(1)     // but not 0
+                        )
                 )
-            )
         );
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         // T1: 2 partitions + T2: 2 partitions + T3: 1 partition = 5 partitions
@@ -425,10 +425,10 @@ public class SimpleAssignorTest {
     @Test
     public void testAssignWithThreeMembersThreeTopicsHeterogeneousWithNonAssignableTopic() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)    // non-assignable
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)    // non-assignable
+                .build();
 
         Set<Uuid> memberATopicsSubscription = new LinkedHashSet<>();
         memberATopicsSubscription.add(TOPIC_1_UUID);
@@ -436,58 +436,58 @@ public class SimpleAssignorTest {
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new HashMap<>();
         members.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberATopicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                memberATopicsSubscription,
+                Assignment.EMPTY
         ));
 
         members.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_3_UUID),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
 
         Set<Uuid> memberCTopicsSubscription = new LinkedHashSet<>();
         memberCTopicsSubscription.add(TOPIC_2_UUID);
         memberCTopicsSubscription.add(TOPIC_3_UUID);
         members.put(MEMBER_C, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberCTopicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                memberCTopicsSubscription,
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HETEROGENEOUS,
-            Map.of(),
-            Optional.of(
-                Map.of(
-                    TOPIC_1_UUID, Set.of(0, 1, 2),
-                    TOPIC_2_UUID, Set.of(0, 1, 2)
+                members,
+                HETEROGENEOUS,
+                Map.of(),
+                Optional.of(
+                        Map.of(
+                                TOPIC_1_UUID, Set.of(0, 1, 2),
+                                TOPIC_2_UUID, Set.of(0, 1, 2)
+                        )
                 )
-            )
         );
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(MEMBER_A, mkAssignment(
-            mkTopicAssignment(TOPIC_1_UUID, 0, 1, 2),
-            mkTopicAssignment(TOPIC_2_UUID, 0, 2)
+                mkTopicAssignment(TOPIC_1_UUID, 0, 1, 2),
+                mkTopicAssignment(TOPIC_2_UUID, 0, 2)
         ));
         expectedAssignment.put(MEMBER_B, Map.of());
         expectedAssignment.put(MEMBER_C, mkAssignment(
-            mkTopicAssignment(TOPIC_2_UUID, 1)
+                mkTopicAssignment(TOPIC_2_UUID, 1)
         ));
 
         // T1: 3 partitions + T2: 3 partitions + T3: 2 partitions(non-assignable) = 6 partitions
@@ -498,46 +498,46 @@ public class SimpleAssignorTest {
     @Test
     public void testAssignWithOneMemberNoAssignedTopicHeterogeneous() {
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 2)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 2)
+                .build();
 
         Set<Uuid> memberATopicsSubscription = new LinkedHashSet<>();
         memberATopicsSubscription.add(TOPIC_1_UUID);
         memberATopicsSubscription.add(TOPIC_2_UUID);
         Map<String, MemberSubscriptionAndAssignmentImpl> members = new HashMap<>();
         members.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberATopicsSubscription,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                memberATopicsSubscription,
+                Assignment.EMPTY
         ));
 
         members.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(),
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HETEROGENEOUS,
-            Map.of()
+                members,
+                HETEROGENEOUS,
+                Map.of()
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         GroupAssignment computedAssignment = assignor.assign(
-            groupSpec,
-            subscribedTopicMetadata
+                groupSpec,
+                subscribedTopicMetadata
         );
 
         Map<String, Map<Uuid, Set<Integer>>> expectedAssignment = new HashMap<>();
         expectedAssignment.put(MEMBER_A, mkAssignment(
-            mkTopicAssignment(TOPIC_1_UUID, 0, 1, 2),
-            mkTopicAssignment(TOPIC_2_UUID, 0, 1)));
+                mkTopicAssignment(TOPIC_1_UUID, 0, 1, 2),
+                mkTopicAssignment(TOPIC_2_UUID, 0, 1)));
         expectedAssignment.put(MEMBER_B, mkAssignment());
 
         // T1: 3 partitions + T2: 2 partitions = 5 partitions
@@ -551,11 +551,11 @@ public class SimpleAssignorTest {
         final int numMembers = 101;
 
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, numPartitions)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, numPartitions)
+                .build();
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         Set<Uuid> topicsSubscription = new LinkedHashSet<>();
@@ -568,26 +568,26 @@ public class SimpleAssignorTest {
         for (int member = 0; member < numMembers; member++) {
             String newMemberId = "M" + member;
             members.put(newMemberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                topicsSubscription,
-                Assignment.EMPTY
+                    Optional.empty(),
+                    Optional.empty(),
+                    topicsSubscription,
+                    Assignment.EMPTY
             ));
 
             GroupSpec groupSpec = new GroupSpecImpl(
-                members,
-                HOMOGENEOUS,
-                new HashMap<>()
+                    members,
+                    HOMOGENEOUS,
+                    new HashMap<>()
             );
 
             GroupAssignment computedAssignment = assignor.assign(groupSpec, subscribedTopicMetadata);
             assertEveryPartitionGetsAssignment(numPartitions, computedAssignment);
 
             computedAssignment.members().forEach((memberId, partitions) -> members.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                topicsSubscription,
-                new Assignment(partitions.partitions())
+                    Optional.empty(),
+                    Optional.empty(),
+                    topicsSubscription,
+                    new Assignment(partitions.partitions())
             )));
         }
     }
@@ -598,11 +598,11 @@ public class SimpleAssignorTest {
         final int numMembers = 101;
 
         MetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, numPartitions)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, numPartitions)
+                .build();
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage)
+                new KRaftCoordinatorMetadataImage(metadataImage)
         );
 
         Set<Uuid> topicsSubscription = new LinkedHashSet<>();
@@ -614,17 +614,17 @@ public class SimpleAssignorTest {
         for (int member = 0; member < numMembers; member++) {
             String newMemberId = "M" + member;
             members.put(newMemberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                topicsSubscription,
-                Assignment.EMPTY
+                    Optional.empty(),
+                    Optional.empty(),
+                    topicsSubscription,
+                    Assignment.EMPTY
             ));
         }
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HOMOGENEOUS,
-            new HashMap<>()
+                members,
+                HOMOGENEOUS,
+                new HashMap<>()
         );
 
         GroupAssignment computedAssignment = assignor.assign(groupSpec, subscribedTopicMetadata);
@@ -633,10 +633,10 @@ public class SimpleAssignorTest {
         for (int member = 0; member < numMembers; member++) {
             String newMemberId = "M" + member;
             members.put(newMemberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                topicsSubscription,
-                new Assignment(computedAssignment.members().get(newMemberId).partitions()))
+                    Optional.empty(),
+                    Optional.empty(),
+                    topicsSubscription,
+                    new Assignment(computedAssignment.members().get(newMemberId).partitions()))
             );
         }
 
@@ -646,19 +646,19 @@ public class SimpleAssignorTest {
             members.remove(newMemberId);
 
             groupSpec = new GroupSpecImpl(
-                members,
-                HOMOGENEOUS,
-                new HashMap<>()
+                    members,
+                    HOMOGENEOUS,
+                    new HashMap<>()
             );
 
             computedAssignment = assignor.assign(groupSpec, subscribedTopicMetadata);
             assertEveryPartitionGetsAssignment(numPartitions, computedAssignment);
 
             computedAssignment.members().forEach((memberId, partitions) -> members.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                topicsSubscription,
-                new Assignment(partitions.partitions())
+                    Optional.empty(),
+                    Optional.empty(),
+                    topicsSubscription,
+                    new Assignment(partitions.partitions())
             )));
         }
     }
@@ -667,10 +667,10 @@ public class SimpleAssignorTest {
     public void testAssignWithCurrentAssignmentHeterogeneous() {
         // Current assignment setup - 3 members A - {T1, T2}, B - {T3}, C - {T2, T3}.
         MetadataImage metadataImage1 = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
+                .build();
 
         Set<Uuid> memberATopicsSubscription1 = new LinkedHashSet<>();
         memberATopicsSubscription1.add(TOPIC_1_UUID);
@@ -678,41 +678,41 @@ public class SimpleAssignorTest {
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members1 = new HashMap<>();
         members1.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberATopicsSubscription1,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                memberATopicsSubscription1,
+                Assignment.EMPTY
         ));
 
         members1.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            Set.of(TOPIC_3_UUID),
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                Set.of(TOPIC_3_UUID),
+                Assignment.EMPTY
         ));
 
         Set<Uuid> memberCTopicsSubscription1 = new LinkedHashSet<>();
         memberCTopicsSubscription1.add(TOPIC_2_UUID);
         memberCTopicsSubscription1.add(TOPIC_3_UUID);
         members1.put(MEMBER_C, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberCTopicsSubscription1,
-            Assignment.EMPTY
+                Optional.empty(),
+                Optional.empty(),
+                memberCTopicsSubscription1,
+                Assignment.EMPTY
         ));
 
         GroupSpec groupSpec1 = new GroupSpecImpl(
-            members1,
-            HETEROGENEOUS,
-            Map.of()
+                members1,
+                HETEROGENEOUS,
+                Map.of()
         );
         SubscribedTopicDescriberImpl subscribedTopicMetadata1 = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage1)
+                new KRaftCoordinatorMetadataImage(metadataImage1)
         );
 
         GroupAssignment computedAssignment1 = assignor.assign(
-            groupSpec1,
-            subscribedTopicMetadata1
+                groupSpec1,
+                subscribedTopicMetadata1
         );
 
         assertEveryPartitionGetsAssignment(8, computedAssignment1);
@@ -720,11 +720,11 @@ public class SimpleAssignorTest {
         // New assignment setup - 2 members A - {T1, T2, T3}, B - {T3, T4}.
 
         MetadataImage metadataImage2 = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
-            .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
-            .addTopic(TOPIC_4_UUID, TOPIC_4_NAME, 1)
-            .build();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, 3)
+                .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, 2)
+                .addTopic(TOPIC_4_UUID, TOPIC_4_NAME, 1)
+                .build();
 
         Map<String, MemberSubscriptionAndAssignmentImpl> members2 = new HashMap<>();
 
@@ -738,35 +738,35 @@ public class SimpleAssignorTest {
         memberBTopicsSubscription2.add(TOPIC_4_UUID);
 
         members2.put(MEMBER_A, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberATopicsSubscription2,
-            new Assignment(mkAssignment(
-                mkTopicAssignment(TOPIC_1_UUID, 0, 1, 2),
-                mkTopicAssignment(TOPIC_2_UUID, 0, 2)))
+                Optional.empty(),
+                Optional.empty(),
+                memberATopicsSubscription2,
+                new Assignment(mkAssignment(
+                        mkTopicAssignment(TOPIC_1_UUID, 0, 1, 2),
+                        mkTopicAssignment(TOPIC_2_UUID, 0, 2)))
         ));
 
         members2.put(MEMBER_B, new MemberSubscriptionAndAssignmentImpl(
-            Optional.empty(),
-            Optional.empty(),
-            memberBTopicsSubscription2,
-            new Assignment(mkAssignment(
-                mkTopicAssignment(TOPIC_3_UUID, 0, 1)))
+                Optional.empty(),
+                Optional.empty(),
+                memberBTopicsSubscription2,
+                new Assignment(mkAssignment(
+                        mkTopicAssignment(TOPIC_3_UUID, 0, 1)))
         ));
 
         GroupSpec groupSpec2 = new GroupSpecImpl(
-            members2,
-            HETEROGENEOUS,
-            Map.of()
+                members2,
+                HETEROGENEOUS,
+                Map.of()
         );
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata2 = new SubscribedTopicDescriberImpl(
-            new KRaftCoordinatorMetadataImage(metadataImage2)
+                new KRaftCoordinatorMetadataImage(metadataImage2)
         );
 
         GroupAssignment computedAssignment2 = assignor.assign(
-            groupSpec2,
-            subscribedTopicMetadata2
+                groupSpec2,
+                subscribedTopicMetadata2
         );
 
         assertEveryPartitionGetsAssignment(9, computedAssignment2);
@@ -778,13 +778,13 @@ public class SimpleAssignorTest {
         final int numMembers = 101;
 
         CoordinatorMetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, numPartitions / 2)
-            .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, numPartitions / 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, numPartitions / 6)
-            .buildCoordinatorMetadataImage();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, numPartitions / 2)
+                .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, numPartitions / 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, numPartitions / 6)
+                .buildCoordinatorMetadataImage();
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            metadataImage
+                metadataImage
         );
 
         ArrayList<Set<Uuid>> topicsSubscriptions = new ArrayList<>(3);
@@ -813,16 +813,16 @@ public class SimpleAssignorTest {
         for (int member = 0; member < numMembers; member++) {
             String newMemberId = "M" + member;
             members.put(newMemberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                topicsSubscriptions.get(member % numTopicsSubscriptions),
-                Assignment.EMPTY
+                    Optional.empty(),
+                    Optional.empty(),
+                    topicsSubscriptions.get(member % numTopicsSubscriptions),
+                    Assignment.EMPTY
             ));
 
             GroupSpec groupSpec = new GroupSpecImpl(
-                members,
-                HETEROGENEOUS,
-                new HashMap<>()
+                    members,
+                    HETEROGENEOUS,
+                    new HashMap<>()
             );
 
             GroupAssignment computedAssignment = assignor.assign(groupSpec, subscribedTopicMetadata);
@@ -831,10 +831,10 @@ public class SimpleAssignorTest {
             for (int m = 0; m < member; m++) {
                 String memberId = "M" + m;
                 members.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                    Optional.empty(),
-                    Optional.empty(),
-                    topicsSubscriptions.get(m % numTopicsSubscriptions),
-                    new Assignment(computedAssignment.members().get(memberId).partitions())
+                        Optional.empty(),
+                        Optional.empty(),
+                        topicsSubscriptions.get(m % numTopicsSubscriptions),
+                        new Assignment(computedAssignment.members().get(memberId).partitions())
                 ));
             }
         }
@@ -846,13 +846,13 @@ public class SimpleAssignorTest {
         final int numMembers = 101;
 
         CoordinatorMetadataImage metadataImage = new MetadataImageBuilder()
-            .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, numPartitions / 2)
-            .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, numPartitions / 3)
-            .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, numPartitions / 6)
-            .buildCoordinatorMetadataImage();
+                .addTopic(TOPIC_1_UUID, TOPIC_1_NAME, numPartitions / 2)
+                .addTopic(TOPIC_2_UUID, TOPIC_2_NAME, numPartitions / 3)
+                .addTopic(TOPIC_3_UUID, TOPIC_3_NAME, numPartitions / 6)
+                .buildCoordinatorMetadataImage();
 
         SubscribedTopicDescriberImpl subscribedTopicMetadata = new SubscribedTopicDescriberImpl(
-            metadataImage
+                metadataImage
         );
 
         ArrayList<Set<Uuid>> topicsSubscriptions = new ArrayList<>(3);
@@ -880,17 +880,17 @@ public class SimpleAssignorTest {
         for (int member = 0; member < numMembers; member++) {
             String newMemberId = "M" + member;
             members.put(newMemberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                topicsSubscriptions.get(member % numTopicsSubscriptions),
-                Assignment.EMPTY
+                    Optional.empty(),
+                    Optional.empty(),
+                    topicsSubscriptions.get(member % numTopicsSubscriptions),
+                    Assignment.EMPTY
             ));
         }
 
         GroupSpec groupSpec = new GroupSpecImpl(
-            members,
-            HETEROGENEOUS,
-            new HashMap<>()
+                members,
+                HETEROGENEOUS,
+                new HashMap<>()
         );
 
         GroupAssignment computedAssignment = assignor.assign(groupSpec, subscribedTopicMetadata);
@@ -899,10 +899,10 @@ public class SimpleAssignorTest {
         for (int member = 0; member < numMembers; member++) {
             String newMemberId = "M" + member;
             members.put(newMemberId, new MemberSubscriptionAndAssignmentImpl(
-                Optional.empty(),
-                Optional.empty(),
-                topicsSubscriptions.get(member % numTopicsSubscriptions),
-                new Assignment(computedAssignment.members().get(newMemberId).partitions()))
+                    Optional.empty(),
+                    Optional.empty(),
+                    topicsSubscriptions.get(member % numTopicsSubscriptions),
+                    new Assignment(computedAssignment.members().get(newMemberId).partitions()))
             );
         }
 
@@ -912,9 +912,9 @@ public class SimpleAssignorTest {
             members.remove(newMemberId);
 
             groupSpec = new GroupSpecImpl(
-                members,
-                HETEROGENEOUS,
-                new HashMap<>()
+                    members,
+                    HETEROGENEOUS,
+                    new HashMap<>()
             );
 
             computedAssignment = assignor.assign(groupSpec, subscribedTopicMetadata);
@@ -923,18 +923,18 @@ public class SimpleAssignorTest {
             for (int m = 0; m < member; m++) {
                 String memberId = "M" + m;
                 members.put(memberId, new MemberSubscriptionAndAssignmentImpl(
-                    Optional.empty(),
-                    Optional.empty(),
-                    topicsSubscriptions.get(m % numTopicsSubscriptions),
-                    new Assignment(computedAssignment.members().get(memberId).partitions())
+                        Optional.empty(),
+                        Optional.empty(),
+                        topicsSubscriptions.get(m % numTopicsSubscriptions),
+                        new Assignment(computedAssignment.members().get(memberId).partitions())
                 ));
             }
         }
     }
 
     private void assertAssignment(
-        Map<String, Map<Uuid, Set<Integer>>> expectedAssignment,
-        GroupAssignment computedGroupAssignment
+            Map<String, Map<Uuid, Set<Integer>>> expectedAssignment,
+            GroupAssignment computedGroupAssignment
     ) {
         assertEquals(expectedAssignment.size(), computedGroupAssignment.members().size());
         for (String memberId : computedGroupAssignment.members().keySet()) {
@@ -944,15 +944,15 @@ public class SimpleAssignorTest {
     }
 
     private void assertEveryPartitionGetsAssignment(
-        int expectedPartitions,
-        GroupAssignment computedGroupAssignment
+            int expectedPartitions,
+            GroupAssignment computedGroupAssignment
     ) {
         Map<String, MemberAssignment> memberAssignments = computedGroupAssignment.members();
         Set<TopicIdPartition> topicPartitionAssignments = new HashSet<>();
         memberAssignments.values().forEach(memberAssignment -> {
             Map<Uuid, Set<Integer>> topicIdPartitions = memberAssignment.partitions();
             topicIdPartitions.forEach((topicId, partitions) ->
-                partitions.forEach(partition -> topicPartitionAssignments.add(new TopicIdPartition(topicId, partition)))
+                    partitions.forEach(partition -> topicPartitionAssignments.add(new TopicIdPartition(topicId, partition)))
             );
         });
         assertEquals(expectedPartitions, topicPartitionAssignments.size());

@@ -81,7 +81,7 @@ public class ConfigurationUtils {
      *     <ul>has read permission</ul>
      *     <ul>points to a file</ul>
      * </li>
-     *
+     * <p>
      * If the value is null or an empty string, it is assumed to be an "empty" value and thus.
      * ignored. Any whitespace is trimmed off of the beginning and end.
      */
@@ -144,7 +144,7 @@ public class ConfigurationUtils {
      *     <ul>is an Integer</ul>
      *     <ul>has a value that is not less than the provided minimum value</ul>
      * </li>
-     *
+     * <p>
      * If the value is null or an empty string, it is assumed to be an "empty" value and thus
      * ignored. Any whitespace is trimmed off of the beginning and end.
      */
@@ -169,7 +169,7 @@ public class ConfigurationUtils {
      *     <ul>is an Integer</ul>
      *     <ul>has a value that is not less than the provided minimum value</ul>
      * </li>
-     *
+     * <p>
      * If the value is null or an empty string, it is assumed to be an "empty" value and thus
      * ignored. Any whitespace is trimmed off of the beginning and end.
      */
@@ -207,7 +207,7 @@ public class ConfigurationUtils {
      *     <li>uses either HTTP, HTTPS, or file protocols</li>
      *     <li>is in the allow-list</li>
      * </ul>
-     *
+     * <p>
      * No effort is made to connect to the URL in the validation step.
      */
 
@@ -296,12 +296,12 @@ public class ConfigurationUtils {
                 o = Utils.newInstance(implementationClassName, expectedClass);
             } catch (Exception e) {
                 throw new ConfigException(
-                    String.format(
-                        "The class %s defined in the %s configuration could not be instantiated: %s",
-                        implementationClassName,
-                        configName,
-                        e.getMessage()
-                    )
+                        String.format(
+                                "The class %s defined in the %s configuration could not be instantiated: %s",
+                                implementationClassName,
+                                configName,
+                                e.getMessage()
+                        )
                 );
             }
         } else if (configValue instanceof Class<?>) {
@@ -311,23 +311,23 @@ public class ConfigurationUtils {
                 o = Utils.newInstance(implementationClass);
             } catch (Exception e) {
                 throw new ConfigException(
-                    String.format(
-                        "The class %s defined in the %s configuration could not be instantiated: %s",
-                        implementationClass.getName(),
-                        configName,
-                        e.getMessage()
-                    )
+                        String.format(
+                                "The class %s defined in the %s configuration could not be instantiated: %s",
+                                implementationClass.getName(),
+                                configName,
+                                e.getMessage()
+                        )
                 );
             }
         } else if (configValue != null) {
             throw new ConfigException(
-                String.format(
-                    "The type for the %s configuration must be either %s or %s, but was %s",
-                    configName,
-                    String.class.getName(),
-                    Class.class.getName(),
-                    configValue.getClass().getName()
-                )
+                    String.format(
+                            "The type for the %s configuration must be either %s or %s, but was %s",
+                            configName,
+                            String.class.getName(),
+                            Class.class.getName(),
+                            configValue.getClass().getName()
+                    )
             );
         } else {
             throw new ConfigException(String.format("The required configuration %s was null", configName));
@@ -335,12 +335,12 @@ public class ConfigurationUtils {
 
         if (!expectedClass.isInstance(o)) {
             throw new ConfigException(
-                String.format(
-                    "The configured class (%s) for the %s configuration is not an instance of %s, as is required",
-                    o.getClass().getName(),
-                    configName,
-                    expectedClass.getName()
-                )
+                    String.format(
+                            "The configured class (%s) for the %s configuration is not an instance of %s, as is required",
+                            o.getClass().getName(),
+                            configName,
+                            expectedClass.getName()
+                    )
             );
         }
 
@@ -350,19 +350,19 @@ public class ConfigurationUtils {
             } catch (Exception e) {
                 Utils.maybeCloseQuietly(o, "Instance of class " + o.getClass().getName() + " failed call to configure()");
                 LOG.warn(
-                    "The class {} defined in the {} configuration encountered an error on configure(): {}",
-                    o.getClass().getName(),
-                    configName,
-                    e.getMessage(),
-                    e
-                );
-                throw new ConfigException(
-                    String.format(
-                        "The class %s defined in the %s configuration encountered an error on configure(): %s",
+                        "The class {} defined in the {} configuration encountered an error on configure(): {}",
                         o.getClass().getName(),
                         configName,
-                        e.getMessage()
-                    )
+                        e.getMessage(),
+                        e
+                );
+                throw new ConfigException(
+                        String.format(
+                                "The class %s defined in the %s configuration encountered an error on configure(): %s",
+                                o.getClass().getName(),
+                                configName,
+                                e.getMessage()
+                        )
                 );
             }
         }
@@ -374,11 +374,11 @@ public class ConfigurationUtils {
     // make sure the url is in the "org.apache.kafka.sasl.oauthbearer.allowed.urls" system property
     void throwIfURLIsNotAllowed(String configName, String configValue) {
         throwIfResourceIsNotAllowed(
-            "URL",
-            configName,
-            configValue,
-            ALLOWED_SASL_OAUTHBEARER_URLS_CONFIG,
-            ALLOWED_SASL_OAUTHBEARER_URLS_DEFAULT
+                "URL",
+                configName,
+                configValue,
+                ALLOWED_SASL_OAUTHBEARER_URLS_CONFIG,
+                ALLOWED_SASL_OAUTHBEARER_URLS_DEFAULT
         );
     }
 
@@ -386,11 +386,11 @@ public class ConfigurationUtils {
     // make sure the file is in the "org.apache.kafka.sasl.oauthbearer.allowed.files" system property
     void throwIfFileIsNotAllowed(String configName, String configValue) {
         throwIfResourceIsNotAllowed(
-            "file",
-            configName,
-            configValue,
-            ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG,
-            ALLOWED_SASL_OAUTHBEARER_FILES_DEFAULT
+                "file",
+                configName,
+                configValue,
+                ALLOWED_SASL_OAUTHBEARER_FILES_CONFIG,
+                ALLOWED_SASL_OAUTHBEARER_FILES_DEFAULT
         );
     }
 
@@ -401,15 +401,15 @@ public class ConfigurationUtils {
                                              String propertyDefault) {
         String[] allowedArray = System.getProperty(propertyName, propertyDefault).split(",");
         Set<String> allowed = Arrays.stream(allowedArray)
-            .map(String::trim)
-            .collect(Collectors.toSet());
+                .map(String::trim)
+                .collect(Collectors.toSet());
 
         if (!allowed.contains(configValue)) {
             String message = String.format(
-                "The %s cannot be accessed due to restrictions. Update the system property '%s' to allow the %s to be accessed.",
-                resourceType,
-                propertyName,
-                resourceType
+                    "The %s cannot be accessed due to restrictions. Update the system property '%s' to allow the %s to be accessed.",
+                    resourceType,
+                    propertyName,
+                    resourceType
             );
             throw new ConfigException(configName, configValue, message);
         }

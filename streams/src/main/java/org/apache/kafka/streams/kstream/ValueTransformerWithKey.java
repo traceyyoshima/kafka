@@ -47,7 +47,7 @@ import java.time.Duration;
  * @param <VR> transformed value type
  * @see ValueTransformer
  * @see ValueTransformerWithKeySupplier
- * @see KTable#transformValues(ValueTransformerWithKeySupplier, String...) 
+ * @see KTable#transformValues(ValueTransformerWithKeySupplier, String...)
  * @see Transformer
  */
 
@@ -70,7 +70,7 @@ public interface ValueTransformerWithKey<K, V, VR> {
      *
      * @param context the context
      * @throws IllegalStateException If store gets registered after initialization is already finished
-     * @throws StreamsException if the store's change log does not contain the partition
+     * @throws StreamsException      if the store's change log does not contain the partition
      */
     void init(final ProcessorContext context);
 

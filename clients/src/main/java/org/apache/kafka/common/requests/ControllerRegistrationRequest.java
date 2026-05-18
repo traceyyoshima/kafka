@@ -65,7 +65,7 @@ public class ControllerRegistrationRequest extends AbstractRequest {
 
     public static ControllerRegistrationRequest parse(Readable readable, short version) {
         return new ControllerRegistrationRequest(
-            new ControllerRegistrationRequestData(readable, version),
-            version);
+                new ControllerRegistrationRequestData(readable, version),
+                version);
     }
 }

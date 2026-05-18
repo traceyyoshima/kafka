@@ -30,9 +30,9 @@ public final class StreamStreamJoinUtil {
     }
 
     public static <KIn, VIn, KOut, VOut> boolean skipRecord(
-        final Record<KIn, VIn> record, final Logger logger,
-        final Sensor droppedRecordsSensor,
-        final ProcessorContext<KOut, VOut> context) {
+            final Record<KIn, VIn> record, final Logger logger,
+            final Sensor droppedRecordsSensor,
+            final ProcessorContext<KOut, VOut> context) {
         // we do join iff keys are equal, thus, if key is null we cannot join and just ignore the record
         //
         // we also ignore the record if value is null, because in a key-value data model a null-value indicates
@@ -43,13 +43,13 @@ public final class StreamStreamJoinUtil {
             if (context.recordMetadata().isPresent()) {
                 final RecordMetadata recordMetadata = context.recordMetadata().get();
                 logger.warn(
-                    "Skipping record due to null key or value. "
-                        + "topic=[{}] partition=[{}] offset=[{}]",
-                    recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
+                        "Skipping record due to null key or value. "
+                                + "topic=[{}] partition=[{}] offset=[{}]",
+                        recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset()
                 );
             } else {
                 logger.warn(
-                    "Skipping record due to null key or value. Topic, partition, and offset not known."
+                        "Skipping record due to null key or value. Topic, partition, and offset not known."
                 );
             }
             droppedRecordsSensor.record();

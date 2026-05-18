@@ -33,17 +33,17 @@ public enum TransactionState {
      * Transaction has not existed yet
      * <p>
      * transition: received AddPartitionsToTxnRequest => Ongoing
-     *             received AddOffsetsToTxnRequest => Ongoing
-     *             received EndTxnRequest with abort and TransactionV2 enabled => PrepareAbort
+     * received AddOffsetsToTxnRequest => Ongoing
+     * received EndTxnRequest with abort and TransactionV2 enabled => PrepareAbort
      */
     EMPTY((byte) 0, org.apache.kafka.clients.admin.TransactionState.EMPTY.toString(), true),
     /**
      * Transaction has started and ongoing
      * <p>
      * transition: received EndTxnRequest with commit => PrepareCommit
-     *             received EndTxnRequest with abort => PrepareAbort
-     *             received AddPartitionsToTxnRequest => Ongoing
-     *             received AddOffsetsToTxnRequest => Ongoing
+     * received EndTxnRequest with abort => PrepareAbort
+     * received AddPartitionsToTxnRequest => Ongoing
+     * received AddOffsetsToTxnRequest => Ongoing
      */
     ONGOING((byte) 1, org.apache.kafka.clients.admin.TransactionState.ONGOING.toString(), false),
     /**
@@ -82,24 +82,24 @@ public enum TransactionState {
     PREPARE_EPOCH_FENCE((byte) 7, org.apache.kafka.clients.admin.TransactionState.PREPARE_EPOCH_FENCE.toString(), false);
 
     private static final Map<String, TransactionState> NAME_TO_ENUM = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(TransactionState::stateName, Function.identity()));
+            .collect(Collectors.toUnmodifiableMap(TransactionState::stateName, Function.identity()));
 
     private static final Map<Byte, TransactionState> ID_TO_ENUM = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(TransactionState::id, Function.identity()));
+            .collect(Collectors.toUnmodifiableMap(TransactionState::id, Function.identity()));
 
     public static final Set<TransactionState> ALL_STATES = Set.copyOf(EnumSet.allOf(TransactionState.class));
 
     private final byte id;
     private final String stateName;
     public static final Map<TransactionState, Set<TransactionState>> VALID_PREVIOUS_STATES = Map.of(
-        EMPTY, Set.of(EMPTY, COMPLETE_COMMIT, COMPLETE_ABORT),
-        ONGOING, Set.of(ONGOING, EMPTY, COMPLETE_COMMIT, COMPLETE_ABORT),
-        PREPARE_COMMIT, Set.of(ONGOING),
-        PREPARE_ABORT, Set.of(ONGOING, PREPARE_EPOCH_FENCE, EMPTY, COMPLETE_COMMIT, COMPLETE_ABORT),
-        COMPLETE_COMMIT, Set.of(PREPARE_COMMIT),
-        COMPLETE_ABORT, Set.of(PREPARE_ABORT),
-        DEAD, Set.of(EMPTY, COMPLETE_ABORT, COMPLETE_COMMIT),
-        PREPARE_EPOCH_FENCE, Set.of(ONGOING)
+            EMPTY, Set.of(EMPTY, COMPLETE_COMMIT, COMPLETE_ABORT),
+            ONGOING, Set.of(ONGOING, EMPTY, COMPLETE_COMMIT, COMPLETE_ABORT),
+            PREPARE_COMMIT, Set.of(ONGOING),
+            PREPARE_ABORT, Set.of(ONGOING, PREPARE_EPOCH_FENCE, EMPTY, COMPLETE_COMMIT, COMPLETE_ABORT),
+            COMPLETE_COMMIT, Set.of(PREPARE_COMMIT),
+            COMPLETE_ABORT, Set.of(PREPARE_ABORT),
+            DEAD, Set.of(EMPTY, COMPLETE_ABORT, COMPLETE_COMMIT),
+            PREPARE_EPOCH_FENCE, Set.of(ONGOING)
     );
 
     private final boolean expirationAllowed;
@@ -119,6 +119,7 @@ public enum TransactionState {
 
     /**
      * Get the name of this state. This is exposed through the `DescribeTransactions` API.
+     *
      * @return The state name string.
      */
     public String stateName() {
@@ -141,6 +142,7 @@ public enum TransactionState {
 
     /**
      * Finds a TransactionState by its name.
+     *
      * @param name The name of the state.
      * @return An Optional containing the TransactionState if found, otherwise empty.
      */
@@ -150,6 +152,7 @@ public enum TransactionState {
 
     /**
      * Finds a TransactionState by its ID.
+     *
      * @param id The byte ID of the state.
      * @return The TransactionState corresponding to the ID.
      * @throws IllegalStateException if the ID is unknown.

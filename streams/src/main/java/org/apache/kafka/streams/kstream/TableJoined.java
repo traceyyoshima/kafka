@@ -25,8 +25,9 @@ import java.util.function.Function;
  * {@link KTable#join(KTable, Function, ValueJoiner, TableJoined) KTable#join(KTable,Function,...)} and
  * {@link KTable#leftJoin(KTable, Function, ValueJoiner, TableJoined) KTable#leftJoin(KTable,Function,...)}
  * operations, for foreign key joins.
- * @param <K>   this key type ; key type for the left (primary) table
- * @param <KO>  other key type ; key type for the right (foreign key) table
+ *
+ * @param <K>  this key type ; key type for the left (primary) table
+ * @param <KO> other key type ; key type for the right (foreign key) table
  */
 public class TableJoined<K, KO> implements NamedOperation<TableJoined<K, KO>> {
 

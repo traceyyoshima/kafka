@@ -48,7 +48,7 @@ import static net.sourceforge.argparse4j.impl.Arguments.store;
 
 /**
  * The Trogdor agent.
- *
+ * <p>
  * The agent process runs tasks.
  */
 public final class Agent {
@@ -92,10 +92,10 @@ public final class Agent {
     /**
      * Create a new Agent.
      *
-     * @param platform      The platform object to use.
-     * @param scheduler     The scheduler to use for this Agent.
-     * @param restServer    The REST server to use.
-     * @param resource      The AgentRestResource to use.
+     * @param platform   The platform object to use.
+     * @param scheduler  The scheduler to use for this Agent.
+     * @param restServer The REST server to use.
+     * @param resource   The AgentRestResource to use.
      */
     public Agent(Platform platform, Scheduler scheduler,
                  JsonRestServer restServer, AgentRestResource resource) {
@@ -155,10 +155,9 @@ public final class Agent {
     /**
      * Start a task on the agent, and block until it completes.
      *
-     * @param spec          The task specification.
-     * @param out           The output stream to print to.
-     *
-     * @return              True if the task run successfully; false otherwise.
+     * @param spec The task specification.
+     * @param out  The output stream to print to.
+     * @return True if the task run successfully; false otherwise.
      */
     boolean exec(TaskSpec spec, PrintStream out) throws Exception {
         TaskController controller;
@@ -172,8 +171,8 @@ public final class Agent {
         Set<String> nodes = controller.targetNodes(platform.topology());
         if (!nodes.contains(platform.curNode().name())) {
             out.println("This task is not configured to run on this node.  It runs on node(s): " +
-                String.join(", ", nodes) + ", whereas this node is " +
-                platform.curNode().name());
+                    String.join(", ", nodes) + ", whereas this node is " +
+                    platform.curNode().name());
             return false;
         }
         KafkaFuture<String> future;
@@ -188,41 +187,41 @@ public final class Agent {
         String error = future.get();
         if (error == null || error.isEmpty()) {
             out.println("Task succeeded with status " +
-                JsonUtil.toPrettyJsonString(workerManager.workerStates().get(EXEC_WORKER_ID).status()));
+                    JsonUtil.toPrettyJsonString(workerManager.workerStates().get(EXEC_WORKER_ID).status()));
             return true;
         } else {
             out.println("Task failed with status " +
-                JsonUtil.toPrettyJsonString(workerManager.workerStates().get(EXEC_WORKER_ID).status()) +
-                " and error " + error);
+                    JsonUtil.toPrettyJsonString(workerManager.workerStates().get(EXEC_WORKER_ID).status()) +
+                    " and error " + error);
             return false;
         }
     }
 
     public static void main(String[] args) throws Exception {
         ArgumentParser parser = ArgumentParsers
-            .newArgumentParser("trogdor-agent")
-            .defaultHelp(true)
-            .description("The Trogdor fault injection agent");
+                .newArgumentParser("trogdor-agent")
+                .defaultHelp(true)
+                .description("The Trogdor fault injection agent");
         parser.addArgument("--agent.config", "-c")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("config")
-            .metavar("CONFIG")
-            .help("The configuration file to use.");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("config")
+                .metavar("CONFIG")
+                .help("The configuration file to use.");
         parser.addArgument("--node-name", "-n")
-            .action(store())
-            .required(true)
-            .type(String.class)
-            .dest("node_name")
-            .metavar("NODE_NAME")
-            .help("The name of this node.");
+                .action(store())
+                .required(true)
+                .type(String.class)
+                .dest("node_name")
+                .metavar("NODE_NAME")
+                .help("The name of this node.");
         parser.addArgument("--exec", "-e")
-            .action(store())
-            .type(String.class)
-            .dest("task_spec")
-            .metavar("TASK_SPEC")
-            .help("Execute a single task spec and then exit.  The argument is the task spec to load when starting up, or a path to it.");
+                .action(store())
+                .type(String.class)
+                .dest("task_spec")
+                .metavar("TASK_SPEC")
+                .help("Execute a single task spec and then exit.  The argument is the task spec to load when starting up, or a path to it.");
         Namespace res = null;
         try {
             res = parser.parseArgs(args);
@@ -241,7 +240,7 @@ public final class Agent {
 
         Platform platform = Platform.Config.parse(nodeName, configPath);
         JsonRestServer restServer =
-            new JsonRestServer(Node.Util.getTrogdorAgentPort(platform.curNode()));
+                new JsonRestServer(Node.Util.getTrogdorAgentPort(platform.curNode()));
         AgentRestResource resource = new AgentRestResource();
         System.out.println("Starting agent process.");
         final Agent agent = new Agent(platform, Scheduler.SYSTEM, restServer, resource);

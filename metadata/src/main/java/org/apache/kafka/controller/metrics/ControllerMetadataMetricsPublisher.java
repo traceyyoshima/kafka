@@ -46,8 +46,8 @@ public class ControllerMetadataMetricsPublisher implements MetadataPublisher {
     private MetadataImage prevImage = MetadataImage.EMPTY;
 
     public ControllerMetadataMetricsPublisher(
-        ControllerMetadataMetrics metrics,
-        FaultHandler faultHandler
+            ControllerMetadataMetrics metrics,
+            FaultHandler faultHandler
     ) {
         this.metrics = metrics;
         this.faultHandler = faultHandler;
@@ -60,9 +60,9 @@ public class ControllerMetadataMetricsPublisher implements MetadataPublisher {
 
     @Override
     public void onMetadataUpdate(
-        MetadataDelta delta,
-        MetadataImage newImage,
-        LoaderManifest manifest
+            MetadataDelta delta,
+            MetadataImage newImage,
+            LoaderManifest manifest
     ) {
         switch (manifest.type()) {
             case LOG_DELTA:
@@ -94,9 +94,9 @@ public class ControllerMetadataMetricsPublisher implements MetadataPublisher {
             for (Entry<Integer, Optional<BrokerRegistration>> entry :
                     delta.clusterDelta().changedBrokers().entrySet()) {
                 changes.handleBrokerChange(
-                    prevImage.cluster().brokers().get(entry.getKey()),
-                    entry.getValue().orElse(null),
-                    metrics
+                        prevImage.cluster().brokers().get(entry.getKey()),
+                        entry.getValue().orElse(null),
+                        metrics
                 );
             }
         }

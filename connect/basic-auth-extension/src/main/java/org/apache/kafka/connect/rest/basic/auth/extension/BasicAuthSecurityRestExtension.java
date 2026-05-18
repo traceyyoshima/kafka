@@ -44,11 +44,11 @@ import javax.security.auth.login.Configuration;
  *
  * <p> An example JAAS config would look as below
  * <Pre>
- *         KafkaConnect {
- *              org.apache.kafka.connect.rest.basic.auth.extension.PropertyFileLoginModule required
- *              file="/mnt/secret/credentials.properties";
- *         };
- *</Pre>
+ * KafkaConnect {
+ * org.apache.kafka.connect.rest.basic.auth.extension.PropertyFileLoginModule required
+ * file="/mnt/secret/credentials.properties";
+ * };
+ * </Pre>
  *
  * <p>This is a reference implementation of the {@link ConnectRestExtension} interface. It registers an implementation of {@link
  * jakarta.ws.rs.container.ContainerRequestFilter} that does JAAS based authentication of incoming Basic Auth credentials. {@link

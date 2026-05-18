@@ -81,31 +81,30 @@ public class KStreamRepartitionTest {
     @Test
     public void shouldInvokePartitionerWhenSet() {
         final int[] expectedKeys = new int[]{0, 1};
-        @SuppressWarnings("unchecked")
-        final StreamPartitioner<Integer, String> streamPartitionerMock = mock(StreamPartitioner.class);
+        @SuppressWarnings("unchecked") final StreamPartitioner<Integer, String> streamPartitionerMock = mock(StreamPartitioner.class);
 
         when(streamPartitionerMock.partitions(anyString(), eq(0), eq("X0"), anyInt())).thenReturn(Optional.of(Collections.singleton(1)));
         when(streamPartitionerMock.partitions(anyString(), eq(1), eq("X1"), anyInt())).thenReturn(Optional.of(Collections.singleton(1)));
 
         final String repartitionOperationName = "test";
         final Repartitioned<Integer, String> repartitioned = Repartitioned
-            .streamPartitioner(streamPartitionerMock)
-            .withName(repartitionOperationName);
+                .streamPartitioner(streamPartitionerMock)
+                .withName(repartitionOperationName);
 
         builder.<Integer, String>stream(inputTopic)
-            .repartition(repartitioned);
+                .repartition(repartitioned);
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<Integer, String> testInputTopic = driver.createInputTopic(inputTopic,
-                                                                                           new IntegerSerializer(),
-                                                                                           new StringSerializer());
+                    new IntegerSerializer(),
+                    new StringSerializer());
 
             final String topicName = repartitionOutputTopic(props, repartitionOperationName);
 
             final TestOutputTopic<Integer, String> testOutputTopic = driver.createOutputTopic(
-                topicName,
-                new IntegerDeserializer(),
-                new StringDeserializer()
+                    topicName,
+                    new IntegerDeserializer(),
+                    new StringDeserializer()
             );
 
             for (int i = 0; i < 2; i++) {

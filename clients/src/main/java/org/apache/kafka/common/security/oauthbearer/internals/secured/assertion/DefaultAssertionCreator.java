@@ -37,9 +37,9 @@ import static org.apache.kafka.common.security.oauthbearer.internals.secured.ass
 /**
  * This is the "default" {@link AssertionCreator} in that it is the common case of using a configured signing
  * algorithm, private key file, and optional passphrase to sign a JWT to dynamically create an assertion.
- *
+ * <p>
  * <p/>
- *
+ * <p>
  * The provided private key file will be cached in memory but will be refreshed when the file changes.
  * <em>Note</em>: there is not yet a facility to reload the configured passphrase. If using a private key
  * passphrase, either use the same passphrase for each private key or else restart the client/application
@@ -55,9 +55,9 @@ public class DefaultAssertionCreator implements AssertionCreator {
         this.algorithm = algorithm;
 
         this.privateKeyFile = new CachedFile<>(
-            privateKeyFile,
-            new PrivateKeyTransformer(algorithm, passphrase),
-            lastModifiedPolicy()
+                privateKeyFile,
+                new PrivateKeyTransformer(algorithm, passphrase),
+                lastModifiedPolicy()
         );
     }
 

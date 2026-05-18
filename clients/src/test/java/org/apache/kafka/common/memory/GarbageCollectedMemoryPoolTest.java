@@ -43,31 +43,31 @@ public class GarbageCollectedMemoryPoolTest {
     @Test
     public void testZeroSize() {
         assertThrows(IllegalArgumentException.class,
-            () -> new GarbageCollectedMemoryPool(0, 7, true, null));
+                () -> new GarbageCollectedMemoryPool(0, 7, true, null));
     }
 
     @Test
     public void testNegativeSize() {
         assertThrows(IllegalArgumentException.class,
-            () -> new GarbageCollectedMemoryPool(-1, 7, false, null));
+                () -> new GarbageCollectedMemoryPool(-1, 7, false, null));
     }
 
     @Test
     public void testZeroMaxAllocation() {
         assertThrows(IllegalArgumentException.class,
-            () -> new GarbageCollectedMemoryPool(100, 0, true, null));
+                () -> new GarbageCollectedMemoryPool(100, 0, true, null));
     }
 
     @Test
     public void testNegativeMaxAllocation() {
         assertThrows(IllegalArgumentException.class,
-            () -> new GarbageCollectedMemoryPool(100, -1, false, null));
+                () -> new GarbageCollectedMemoryPool(100, -1, false, null));
     }
 
     @Test
     public void testMaxAllocationLargerThanSize() {
         assertThrows(IllegalArgumentException.class,
-            () -> new GarbageCollectedMemoryPool(100, 101, true, null));
+                () -> new GarbageCollectedMemoryPool(100, 101, true, null));
     }
 
     @Test

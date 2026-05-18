@@ -70,12 +70,12 @@ public class ClassicGroupDescription {
         if (o == null || getClass() != o.getClass()) return false;
         final ClassicGroupDescription that = (ClassicGroupDescription) o;
         return Objects.equals(groupId, that.groupId) &&
-            Objects.equals(protocol, that.protocol) &&
-            Objects.equals(protocolData, that.protocolData) &&
-            Objects.equals(members, that.members) &&
-            state == that.state &&
-            Objects.equals(coordinator, that.coordinator) &&
-            Objects.equals(authorizedOperations, that.authorizedOperations);
+                Objects.equals(protocol, that.protocol) &&
+                Objects.equals(protocolData, that.protocolData) &&
+                Objects.equals(members, that.members) &&
+                state == that.state &&
+                Objects.equals(coordinator, that.coordinator) &&
+                Objects.equals(authorizedOperations, that.authorizedOperations);
     }
 
     @Override
@@ -144,12 +144,12 @@ public class ClassicGroupDescription {
     @Override
     public String toString() {
         return "(groupId=" + groupId +
-            ", protocol='" + protocol + '\'' +
-            ", protocolData=" + protocolData +
-            ", members=" + members.stream().map(MemberDescription::toString).collect(Collectors.joining(",")) +
-            ", state=" + state +
-            ", coordinator=" + coordinator +
-            ", authorizedOperations=" + authorizedOperations +
-            ")";
+                ", protocol='" + protocol + '\'' +
+                ", protocolData=" + protocolData +
+                ", members=" + members.stream().map(MemberDescription::toString).collect(Collectors.joining(",")) +
+                ", state=" + state +
+                ", coordinator=" + coordinator +
+                ", authorizedOperations=" + authorizedOperations +
+                ")";
     }
 }

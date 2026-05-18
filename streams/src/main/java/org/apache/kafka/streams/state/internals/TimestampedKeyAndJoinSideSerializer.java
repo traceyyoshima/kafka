@@ -30,6 +30,7 @@ import static org.apache.kafka.streams.kstream.internals.WrappingNullableUtils.i
 /**
  * The serializer that is used for {@link TimestampedKeyAndJoinSide}, which is a combo key format of
  * {@code <timestamp, left/right flag, raw-key>}.
+ *
  * @param <K> the raw key type
  */
 public class TimestampedKeyAndJoinSideSerializer<K> implements WrappingNullableSerializer<TimestampedKeyAndJoinSide<K>, K, Void> {
@@ -67,11 +68,11 @@ public class TimestampedKeyAndJoinSideSerializer<K> implements WrappingNullableS
         final byte[] timestampBytes = timestampSerializer.serialize(topic, headers, data.timestamp());
 
         return ByteBuffer
-            .allocate(timestampBytes.length + 1 + keyBytes.length)
-            .put(timestampBytes)
-            .put(boolByte)
-            .put(keyBytes)
-            .array();
+                .allocate(timestampBytes.length + 1 + keyBytes.length)
+                .put(timestampBytes)
+                .put(boolByte)
+                .put(keyBytes)
+                .array();
     }
 
     @Override

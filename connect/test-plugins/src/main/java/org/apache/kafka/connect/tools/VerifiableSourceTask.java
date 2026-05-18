@@ -69,12 +69,12 @@ public class VerifiableSourceTask extends SourceTask {
     private boolean completeRecordData;
 
     private static final Schema COMPLETE_VALUE_SCHEMA = SchemaBuilder.struct()
-        .field("name", Schema.STRING_SCHEMA)
-        .field("task", Schema.INT32_SCHEMA)
-        .field("topic", Schema.STRING_SCHEMA)
-        .field("time_ms", Schema.INT64_SCHEMA)
-        .field("seqno", Schema.INT64_SCHEMA)
-        .build();
+            .field("name", Schema.STRING_SCHEMA)
+            .field("task", Schema.INT32_SCHEMA)
+            .field("topic", Schema.STRING_SCHEMA)
+            .field("time_ms", Schema.INT64_SCHEMA)
+            .field("seqno", Schema.INT64_SCHEMA)
+            .build();
 
     @Override
     public String version() {
@@ -165,7 +165,7 @@ public class VerifiableSourceTask extends SourceTask {
     private Object completeValue(Map<String, Object> data) {
         Struct result = new Struct(COMPLETE_VALUE_SCHEMA);
         Stream.of("name", "task", "topic", "time_ms", "seqno").forEach(
-            field -> result.put(field, data.get(field))
+                field -> result.put(field, data.get(field))
         );
         return result;
     }

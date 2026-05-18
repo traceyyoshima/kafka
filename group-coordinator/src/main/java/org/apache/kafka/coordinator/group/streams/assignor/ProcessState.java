@@ -69,8 +69,8 @@ public class ProcessState {
 
     public Set<TaskId> assignedActiveTasks() {
         return assignedActiveTasks.values().stream()
-            .flatMap(Set::stream)
-            .collect(Collectors.toSet());
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 
     public Map<String, Set<TaskId>> assignedActiveTasksByMember() {
@@ -79,8 +79,8 @@ public class ProcessState {
 
     public Set<TaskId> assignedStandbyTasks() {
         return assignedStandbyTasks.values().stream()
-            .flatMap(Set::stream)
-            .collect(Collectors.toSet());
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 
     public Map<String, Set<TaskId>> assignedStandbyTasksByMember() {
@@ -128,7 +128,7 @@ public class ProcessState {
      * @param taskId   The task to assign.
      * @param isActive Whether the task is an active task (true) or a standby task (false).
      * @return the number of tasks that `memberId` has assigned after adding the new task, or -1 if the
-     *         task was not assigned to any member.
+     * task was not assigned to any member.
      */
     public int addTaskToLeastLoadedMember(final TaskId taskId, final boolean isActive) {
         if (memberToTaskCounts.isEmpty()) {
@@ -139,8 +139,8 @@ public class ProcessState {
         }
         if (membersByLoad == null) {
             membersByLoad = new PriorityQueue<>(
-                memberToTaskCounts.size(),
-                Map.Entry.comparingByValue()
+                    memberToTaskCounts.size(),
+                    Map.Entry.comparingByValue()
             );
             for (Map.Entry<String, Integer> entry : memberToTaskCounts.entrySet()) {
                 // Copy here, since map entry objects are allowed to be reused by the underlying map implementation.

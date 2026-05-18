@@ -43,7 +43,7 @@ class TxnPartitionMap {
         TxnPartitionEntry ent = topicPartitions.get(topicPartition);
         if (ent == null) {
             throw new IllegalStateException("Trying to get txnPartitionEntry for " + topicPartition +
-                ", but it was never set for this partition.");
+                    ", but it was never set for this partition.");
         }
         return ent;
     }

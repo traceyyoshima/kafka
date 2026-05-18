@@ -40,36 +40,36 @@ public class ControlRecordUtilsTest {
         // If any of these asserts fail, please make sure that Kafka supports reading and
         // writing the latest version for these records.
         assertEquals(
-            (short) 0,
-            ControlRecordUtils.LEADER_CHANGE_CURRENT_VERSION
+                (short) 0,
+                ControlRecordUtils.LEADER_CHANGE_CURRENT_VERSION
         );
         assertEquals(
-            SnapshotHeaderRecord.HIGHEST_SUPPORTED_VERSION,
-            ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION
+                SnapshotHeaderRecord.HIGHEST_SUPPORTED_VERSION,
+                ControlRecordUtils.SNAPSHOT_HEADER_CURRENT_VERSION
         );
         assertEquals(
-            SnapshotFooterRecord.HIGHEST_SUPPORTED_VERSION,
-            ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION
+                SnapshotFooterRecord.HIGHEST_SUPPORTED_VERSION,
+                ControlRecordUtils.SNAPSHOT_FOOTER_CURRENT_VERSION
         );
         assertEquals(
-            KRaftVersionRecord.HIGHEST_SUPPORTED_VERSION,
-            ControlRecordUtils.KRAFT_VERSION_CURRENT_VERSION
+                KRaftVersionRecord.HIGHEST_SUPPORTED_VERSION,
+                ControlRecordUtils.KRAFT_VERSION_CURRENT_VERSION
         );
         assertEquals(
-            VotersRecord.HIGHEST_SUPPORTED_VERSION,
-            ControlRecordUtils.KRAFT_VOTERS_CURRENT_VERSION
+                VotersRecord.HIGHEST_SUPPORTED_VERSION,
+                ControlRecordUtils.KRAFT_VOTERS_CURRENT_VERSION
         );
     }
 
     @Test
     public void testInvalidControlRecordType() {
         IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
-            () -> testDeserializeRecord(ControlRecordType.COMMIT)
+                IllegalArgumentException.class,
+                () -> testDeserializeRecord(ControlRecordType.COMMIT)
         );
         assertEquals(
-            "Expected KRAFT_VOTERS control record type(6), but found COMMIT",
-            thrown.getMessage()
+                "Expected KRAFT_VOTERS control record type(6), but found COMMIT",
+                thrown.getMessage()
         );
     }
 
@@ -81,7 +81,7 @@ public class ControlRecordUtilsTest {
     private void testDeserializeRecord(ControlRecordType controlRecordType) {
         final int voterId = 0;
         final List<Voter> voters = Collections.singletonList(
-            new Voter().setVoterId(voterId)
+                new Voter().setVoterId(voterId)
         );
         VotersRecord data = new VotersRecord().setVoters(voters);
 
@@ -92,13 +92,13 @@ public class ControlRecordUtilsTest {
         byte[] keyData = new byte[]{0, 0, 0, (byte) controlRecordType.type()};
 
         DefaultRecord record = new DefaultRecord(
-            256, (byte) 0, 0, 0L, 0, ByteBuffer.wrap(keyData),  valueBuffer, null
+                256, (byte) 0, 0, 0L, 0, ByteBuffer.wrap(keyData), valueBuffer, null
         );
 
         VotersRecord deserializedData = ControlRecordUtils.deserializeVotersRecord(record);
 
         assertEquals(voters, deserializedData.voters());
         assertEquals(Collections.singletonList(
-            new Voter().setVoterId(voterId)), deserializedData.voters());
+                new Voter().setVoterId(voterId)), deserializedData.voters());
     }
 }

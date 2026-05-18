@@ -52,9 +52,10 @@ public class HerderRequestHandler {
 
     /**
      * Wait for a {@link FutureCallback} to complete and return the result if successful.
-     * @param cb the future callback to wait for
-     * @return the future callback's result if successful
+     *
+     * @param cb  the future callback to wait for
      * @param <T> the future's result type
+     * @return the future callback's result if successful
      * @throws Throwable if the future callback isn't successful
      */
     public <T> T completeRequest(FutureCallback<T> cb) throws Throwable {
@@ -135,13 +136,14 @@ public class HerderRequestHandler {
     }
 
     public <T> T completeOrForwardRequest(FutureCallback<T> cb, String path, String method, HttpHeaders headers, Object body,
-                                                 TypeReference<T> resultType, Boolean forward) throws Throwable {
+                                          TypeReference<T> resultType, Boolean forward) throws Throwable {
         return completeOrForwardRequest(cb, path, method, headers, body, resultType, new IdentityTranslator<>(), forward);
     }
 
     public void completeOrForwardRequest(FutureCallback<Void> cb, String path, String method, HttpHeaders headers, Object body,
-                                          Boolean forward) throws Throwable {
-        completeOrForwardRequest(cb, path, method, headers, body, new TypeReference<>() { }, new IdentityTranslator<>(), forward);
+                                         Boolean forward) throws Throwable {
+        completeOrForwardRequest(cb, path, method, headers, body, new TypeReference<>() {
+        }, new IdentityTranslator<>(), forward);
     }
 
     public interface Translator<T, U> {

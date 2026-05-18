@@ -78,23 +78,23 @@ import static org.junit.jupiter.api.Assertions.fail;
  * The simulation testing framework provides a way to verify quorum behavior under
  * different conditions. It is similar to system testing in that the test involves
  * independently executing nodes, but there are several important differences:
- *
+ * <p>
  * 1. Simulation behavior is deterministic provided an initial random seed. This
- *    makes it easy to reproduce and debug test failures.
+ * makes it easy to reproduce and debug test failures.
  * 2. The simulation uses an in-memory message router instead of a real network.
- *    Not only is this much cheaper and faster, it provides an easy way to create
- *    flaky network conditions or even network partitions without losing the
- *    simulation determinism.
+ * Not only is this much cheaper and faster, it provides an easy way to create
+ * flaky network conditions or even network partitions without losing the
+ * simulation determinism.
  * 3. Similarly, persistent state is stored in memory. We can nevertheless simulate
- *    different kinds of failures, such as the loss of unflushed data after a hard
- *    node restart using {@link MockLog}.
- *
+ * different kinds of failures, such as the loss of unflushed data after a hard
+ * node restart using {@link MockLog}.
+ * <p>
  * The framework uses a single event scheduler in order to provide deterministic
  * executions. Each test is setup as a specific scenario with a variable number of
  * voters and observers. Much like system tests, there is typically a warmup
  * period, followed by some cluster event (such as a node failure), and then some
  * logic to validate behavior after recovery.
- *
+ * <p>
  * If any of the tests fail, the output will indicate the arguments that failed.
  * The easiest way to reproduce the failure for debugging is to create a separate
  * `@Test` case which invokes the `@Property` method with those arguments directly.
@@ -114,9 +114,9 @@ public class RaftEventSimulationTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void canElectInitialLeader(
-        @ForAll int seed,
-        @ForAll @IntRange(min = 1, max = 5) int numVoters,
-        @ForAll @IntRange(min = 0, max = 5) int numObservers
+            @ForAll int seed,
+            @ForAll @IntRange(min = 1, max = 5) int numVoters,
+            @ForAll @IntRange(min = 0, max = 5) int numObservers
     ) {
         Random random = new Random(seed);
         Cluster cluster = new Cluster(numVoters, numObservers, random);
@@ -133,10 +133,10 @@ public class RaftEventSimulationTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void canElectNewLeaderAfterOldLeaderFailure(
-        @ForAll int seed,
-        @ForAll @IntRange(min = 3, max = 5) int numVoters,
-        @ForAll @IntRange(min = 0, max = 5) int numObservers,
-        @ForAll boolean isGracefulShutdown
+            @ForAll int seed,
+            @ForAll @IntRange(min = 3, max = 5) int numVoters,
+            @ForAll @IntRange(min = 0, max = 5) int numObservers,
+            @ForAll boolean isGracefulShutdown
     ) {
         Random random = new Random(seed);
         Cluster cluster = new Cluster(numVoters, numObservers, random);
@@ -154,7 +154,7 @@ public class RaftEventSimulationTest {
         // Shutdown the leader and write some more data. We can verify the new leader has been elected
         // by verifying that the high watermark can still advance.
         int leaderId = cluster.latestLeader().orElseThrow(() ->
-            new AssertionError("Failed to find current leader")
+                new AssertionError("Failed to find current leader")
         );
 
         if (isGracefulShutdown) {
@@ -173,9 +173,9 @@ public class RaftEventSimulationTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void canRecoverAfterAllNodesKilled(
-        @ForAll int seed,
-        @ForAll @IntRange(min = 1, max = 5) int numVoters,
-        @ForAll @IntRange(min = 0, max = 5) int numObservers
+            @ForAll int seed,
+            @ForAll @IntRange(min = 1, max = 5) int numVoters,
+            @ForAll @IntRange(min = 0, max = 5) int numObservers
     ) {
         Random random = new Random(seed);
         Cluster cluster = new Cluster(numVoters, numObservers, random);
@@ -206,9 +206,9 @@ public class RaftEventSimulationTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void canElectNewLeaderAfterOldLeaderPartitionedAway(
-        @ForAll int seed,
-        @ForAll @IntRange(min = 3, max = 5) int numVoters,
-        @ForAll @IntRange(min = 0, max = 5) int numObservers
+            @ForAll int seed,
+            @ForAll @IntRange(min = 3, max = 5) int numVoters,
+            @ForAll @IntRange(min = 0, max = 5) int numObservers
     ) {
         Random random = new Random(seed);
         Cluster cluster = new Cluster(numVoters, numObservers, random);
@@ -226,7 +226,7 @@ public class RaftEventSimulationTest {
         // The leader gets partitioned off. We can verify the new leader has been elected
         // by writing some data and ensuring that it gets replicated
         int leaderId = cluster.latestLeader().orElseThrow(() ->
-            new AssertionError("Failed to find current leader")
+                new AssertionError("Failed to find current leader")
         );
         router.filter(leaderId, new DropAllTraffic());
 
@@ -238,8 +238,8 @@ public class RaftEventSimulationTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void canMakeProgressIfMajorityIsReachable(
-        @ForAll int seed,
-        @ForAll @IntRange(min = 0, max = 3) int numObservers
+            @ForAll int seed,
+            @ForAll @IntRange(min = 0, max = 3) int numObservers
     ) {
         int numVoters = 5;
         Random random = new Random(seed);
@@ -259,12 +259,12 @@ public class RaftEventSimulationTest {
         // but the two sets cannot communicate with each other. We should be able
         // to make progress even if an election is needed in the larger set.
         router.filter(
-            0,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(2, 3, 4)))
+                0,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(2, 3, 4)))
         );
         router.filter(
-            1,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(2, 3, 4)))
+                1,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(2, 3, 4)))
         );
         router.filter(2, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0, 1))));
         router.filter(3, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0, 1))));
@@ -277,12 +277,12 @@ public class RaftEventSimulationTest {
         long majorityHighWatermark = cluster.maxHighWatermarkReached(Set.of(2, 3, 4));
 
         assertTrue(
-            majorityHighWatermark > minorityHighWatermark,
-            String.format(
-                "majorityHighWatermark = %s, minorityHighWatermark = %s",
-                majorityHighWatermark,
-                minorityHighWatermark
-            )
+                majorityHighWatermark > minorityHighWatermark,
+                String.format(
+                        "majorityHighWatermark = %s, minorityHighWatermark = %s",
+                        majorityHighWatermark,
+                        minorityHighWatermark
+                )
         );
 
         // Now restore the partition and verify everyone catches up
@@ -298,8 +298,8 @@ public class RaftEventSimulationTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void leadershipAssignedOnlyOnceWithNetworkPartitionIfThereExistsMajority(
-        @ForAll int seed,
-        @ForAll @IntRange(min = 0, max = 3) int numObservers
+            @ForAll int seed,
+            @ForAll @IntRange(min = 0, max = 3) int numObservers
     ) {
         int numVoters = 5;
         Random random = new Random(seed);
@@ -316,12 +316,12 @@ public class RaftEventSimulationTest {
         //  \ /
         //   4
         router.filter(
-            0,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(1, 3, 4)))
+                0,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(1, 3, 4)))
         );
         router.filter(
-            1,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0, 2, 4)))
+                1,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0, 2, 4)))
         );
         router.filter(2, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(1))));
         router.filter(3, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(0))));
@@ -352,8 +352,8 @@ public class RaftEventSimulationTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void leadershipWillNotChangeDuringNetworkPartitionIfMajorityStillReachable(
-        @ForAll int seed,
-        @ForAll @IntRange(min = 0, max = 3) int numObservers
+            @ForAll int seed,
+            @ForAll @IntRange(min = 0, max = 3) int numObservers
     ) {
         int numVoters = 5;
         Random random = new Random(seed);
@@ -371,7 +371,7 @@ public class RaftEventSimulationTest {
         scheduler.runUntil(() -> cluster.allReachedHighWatermark(5));
 
         int leaderId = cluster.latestLeader().orElseThrow(() ->
-            new AssertionError("Failed to find current leader during setup")
+                new AssertionError("Failed to find current leader during setup")
         );
 
         // Create network partition which would result in ping-pong of leadership between nodes C and D without PreVote
@@ -386,12 +386,12 @@ public class RaftEventSimulationTest {
         int nodeD = (leaderId + 3) % numVoters;
         int nodeE = (leaderId + 4) % numVoters;
         router.filter(
-            nodeA,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeB, nodeD, nodeE)))
+                nodeA,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeB, nodeD, nodeE)))
         );
         router.filter(
-            nodeB,
-            new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeA, leaderId, nodeE)))
+                nodeB,
+                new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeA, leaderId, nodeE)))
         );
         router.filter(leaderId, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeB))));
         router.filter(nodeD, new DropOutboundRequestsTo(cluster.endpointsFromIds(Set.of(nodeA))));
@@ -403,9 +403,9 @@ public class RaftEventSimulationTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void canMakeProgressAfterBackToBackLeaderFailures(
-        @ForAll int seed,
-        @ForAll @IntRange(min = 3, max = 5) int numVoters,
-        @ForAll @IntRange(min = 0, max = 5) int numObservers
+            @ForAll int seed,
+            @ForAll @IntRange(min = 3, max = 5) int numVoters,
+            @ForAll @IntRange(min = 0, max = 5) int numObservers
     ) {
         Random random = new Random(seed);
         Cluster cluster = new Cluster(numVoters, numObservers, random);
@@ -436,9 +436,9 @@ public class RaftEventSimulationTest {
 
     @Property(tries = 100, afterFailure = AfterFailureMode.SAMPLE_ONLY)
     void canRecoverFromSingleNodeCommittedDataLoss(
-        @ForAll int seed,
-        @ForAll @IntRange(min = 3, max = 5) int numVoters,
-        @ForAll @IntRange(min = 0, max = 2) int numObservers
+            @ForAll int seed,
+            @ForAll @IntRange(min = 3, max = 5) int numVoters,
+            @ForAll @IntRange(min = 0, max = 2) int numObservers
     ) {
         // We run this test without the `MonotonicEpoch` and `MajorityReachedHighWatermark`
         // invariants since the loss of committed data on one node can violate them.
@@ -459,7 +459,7 @@ public class RaftEventSimulationTest {
         scheduler.runUntil(() -> cluster.anyReachedHighWatermark(10));
 
         RaftNode node = cluster.randomRunning().orElseThrow(() ->
-            new AssertionError("Failed to find running node")
+                new AssertionError("Failed to find running node")
         );
 
         // Kill a random node and drop all of its persistent state. The Raft
@@ -614,7 +614,7 @@ public class RaftEventSimulationTest {
             }
 
             assertTrue(exitCondition.get(), "Simulation condition was not satisfied after "
-                + MAX_ITERATIONS + " iterations");
+                    + MAX_ITERATIONS + " iterations");
 
             validations.forEach(Validation::validate);
         }
@@ -627,9 +627,9 @@ public class RaftEventSimulationTest {
 
         PersistentState(int nodeId) {
             log = new MockLog(
-                METADATA_PARTITION,
-                Uuid.METADATA_TOPIC_ID,
-                new LogContext(String.format("[Node %s] ", nodeId))
+                    METADATA_PARTITION,
+                    Uuid.METADATA_TOPIC_ID,
+                    new LogContext(String.format("[Node %s] ", nodeId))
             );
         }
     }
@@ -659,11 +659,11 @@ public class RaftEventSimulationTest {
 
         Set<InetSocketAddress> endpointsFromIds(Set<Integer> nodeIds) {
             return voters
-                .values()
-                .stream()
-                .filter(node -> nodeIds.contains(node.id()))
-                .map(Cluster::nodeAddress)
-                .collect(Collectors.toSet());
+                    .values()
+                    .stream()
+                    .filter(node -> nodeIds.contains(node.id()))
+                    .map(Cluster::nodeAddress)
+                    .collect(Collectors.toSet());
         }
 
         Set<Integer> nodeIds() {
@@ -676,19 +676,19 @@ public class RaftEventSimulationTest {
 
         long maxLogEndOffset() {
             return running
-                .values()
-                .stream()
-                .mapToLong(RaftNode::logEndOffset)
-                .max()
-                .orElse(0L);
+                    .values()
+                    .stream()
+                    .mapToLong(RaftNode::logEndOffset)
+                    .max()
+                    .orElse(0L);
         }
 
         OptionalLong leaderHighWatermark() {
             Optional<RaftNode> leaderWithMaxEpoch = running
-                .values()
-                .stream()
-                .filter(node -> node.client.quorum().isLeader())
-                .max((node1, node2) -> Integer.compare(node2.client.quorum().epoch(), node1.client.quorum().epoch()));
+                    .values()
+                    .stream()
+                    .filter(node -> node.client.quorum().isLeader())
+                    .max((node1, node2) -> Integer.compare(node2.client.quorum().epoch(), node1.client.quorum().epoch()));
             if (leaderWithMaxEpoch.isPresent()) {
                 return leaderWithMaxEpoch.get().client.highWatermark();
             } else {
@@ -703,27 +703,27 @@ public class RaftEventSimulationTest {
 
         long maxHighWatermarkReached() {
             return running.values().stream()
-                .mapToLong(RaftNode::highWatermark)
-                .max()
-                .orElse(0L);
+                    .mapToLong(RaftNode::highWatermark)
+                    .max()
+                    .orElse(0L);
         }
 
         long maxHighWatermarkReached(Set<Integer> nodeIds) {
             return running.values().stream()
-                .filter(node -> nodeIds.contains(node.nodeId))
-                .mapToLong(RaftNode::highWatermark)
-                .max()
-                .orElse(0L);
+                    .filter(node -> nodeIds.contains(node.nodeId))
+                    .mapToLong(RaftNode::highWatermark)
+                    .max()
+                    .orElse(0L);
         }
 
         boolean allReachedHighWatermark(long offset, Set<Integer> nodeIds) {
             return nodeIds.stream()
-                .allMatch(nodeId -> running.get(nodeId).highWatermark() >= offset);
+                    .allMatch(nodeId -> running.get(nodeId).highWatermark() >= offset);
         }
 
         boolean allReachedHighWatermark(long offset) {
             return running.values().stream()
-                .allMatch(node -> node.highWatermark() >= offset);
+                    .allMatch(node -> node.highWatermark() >= offset);
         }
 
         boolean hasLeader(int nodeId) {
@@ -851,10 +851,10 @@ public class RaftEventSimulationTest {
 
         private static Endpoints endpointsFromId(int nodeId, ListenerName listenerName) {
             return Endpoints.fromInetSocketAddresses(
-                Map.of(
-                    listenerName,
-                    InetSocketAddress.createUnresolved(hostFromId(nodeId), PORT)
-                )
+                    Map.of(
+                            listenerName,
+                            InetSocketAddress.createUnresolved(hostFromId(nodeId), PORT)
+                    )
             );
         }
 
@@ -864,9 +864,9 @@ public class RaftEventSimulationTest {
             MockNetworkChannel channel = new MockNetworkChannel(correlationIdCounter);
             MockMessageQueue messageQueue = new MockMessageQueue();
             Map<Integer, InetSocketAddress> voterAddressMap = voters
-                .values()
-                .stream()
-                .collect(Collectors.toMap(Node::id, Cluster::nodeAddress));
+                    .values()
+                    .stream()
+                    .collect(Collectors.toMap(Node::id, Cluster::nodeAddress));
 
             Map<String, Integer> configMap = new HashMap<>();
             configMap.put(QuorumConfig.QUORUM_REQUEST_TIMEOUT_MS_CONFIG, REQUEST_TIMEOUT_MS);
@@ -884,36 +884,36 @@ public class RaftEventSimulationTest {
             MemoryPool memoryPool = new BatchMemoryPool(2, KafkaRaftClient.MAX_BATCH_SIZE_BYTES);
 
             KafkaRaftClient<Integer> client = new KafkaRaftClient<>(
-                OptionalInt.of(nodeId),
-                persistentState.nodeDirectoryId,
-                serde,
-                channel,
-                messageQueue,
-                persistentState.log,
-                memoryPool,
-                time,
-                new MockExpirationService(time),
-                FETCH_MAX_WAIT_MS,
-                true,
-                clusterId,
-                List.of(),
-                endpointsFromId(nodeId, channel.listenerName()),
-                Feature.KRAFT_VERSION.supportedVersionRange(),
-                logContext,
-                random,
-                quorumConfig
+                    OptionalInt.of(nodeId),
+                    persistentState.nodeDirectoryId,
+                    serde,
+                    channel,
+                    messageQueue,
+                    persistentState.log,
+                    memoryPool,
+                    time,
+                    new MockExpirationService(time),
+                    FETCH_MAX_WAIT_MS,
+                    true,
+                    clusterId,
+                    List.of(),
+                    endpointsFromId(nodeId, channel.listenerName()),
+                    Feature.KRAFT_VERSION.supportedVersionRange(),
+                    logContext,
+                    random,
+                    quorumConfig
             );
             RaftNode node = new RaftNode(
-                nodeId,
-                client,
-                persistentState.log,
-                channel,
-                messageQueue,
-                persistentState.store,
-                logContext,
-                time,
-                random,
-                serde
+                    nodeId,
+                    client,
+                    persistentState.log,
+                    channel,
+                    messageQueue,
+                    persistentState.store,
+                    logContext,
+                    time,
+                    random,
+                    serde
             );
             node.initialize(voterAddressMap, metrics);
 
@@ -933,16 +933,16 @@ public class RaftEventSimulationTest {
         final RecordSerde<Integer> intSerde;
 
         private RaftNode(
-            int nodeId,
-            KafkaRaftClient<Integer> client,
-            MockLog log,
-            MockNetworkChannel channel,
-            MockMessageQueue messageQueue,
-            MockQuorumStateStore store,
-            LogContext logContext,
-            Time time,
-            Random random,
-            RecordSerde<Integer> intSerde
+                int nodeId,
+                KafkaRaftClient<Integer> client,
+                MockLog log,
+                MockNetworkChannel channel,
+                MockMessageQueue messageQueue,
+                MockQuorumStateStore store,
+                LogContext logContext,
+                Time time,
+                Random random,
+                RecordSerde<Integer> intSerde
         ) {
             this.logContext = logContext;
             this.nodeId = nodeId;
@@ -958,10 +958,10 @@ public class RaftEventSimulationTest {
         void initialize(Map<Integer, InetSocketAddress> voterAddresses, Metrics metrics) {
             client.register(counter);
             client.initialize(
-                voterAddresses,
-                store,
-                metrics,
-                Mockito.mock(ExternalKRaftMetrics.class)
+                    voterAddresses,
+                    store,
+                    metrics,
+                    Mockito.mock(ExternalKRaftMetrics.class)
             );
         }
 
@@ -977,8 +977,8 @@ public class RaftEventSimulationTest {
 
         long highWatermark() {
             return client.quorum().highWatermark()
-                .map(LogOffsetMetadata::offset)
-                .orElse(0L);
+                    .map(LogOffsetMetadata::offset)
+                    .orElse(0L);
         }
 
         long logEndOffset() {
@@ -988,10 +988,10 @@ public class RaftEventSimulationTest {
         @Override
         public String toString() {
             return String.format(
-                "Node(id=%s, hw=%s, logEndOffset=%s)",
-                nodeId,
-                highWatermark(),
-                logEndOffset()
+                    "Node(id=%s, hw=%s, logEndOffset=%s)",
+                    nodeId,
+                    highWatermark(),
+                    logEndOffset()
             );
         }
 
@@ -1005,6 +1005,7 @@ public class RaftEventSimulationTest {
 
     private interface NetworkFilter {
         boolean acceptInbound(RaftMessage message);
+
         boolean acceptOutbound(RaftMessage message);
     }
 
@@ -1050,7 +1051,7 @@ public class RaftEventSimulationTest {
 
         /**
          * Returns if the message should be sent to the destination.
-         *
+         * <p>
          * Returns false when outbound request messages contains a destination {@code Node} that
          * matches the set of unreachable {@code InetSocketAddress}. Note that the {@code Node.id()}
          * and {@code Node.rack()} are not compared.
@@ -1062,8 +1063,8 @@ public class RaftEventSimulationTest {
         public boolean acceptOutbound(RaftMessage message) {
             if (message instanceof RaftRequest.Outbound request) {
                 InetSocketAddress destination = InetSocketAddress.createUnresolved(
-                    request.destination().host(),
-                    request.destination().port()
+                        request.destination().host(),
+                        request.destination().port()
                 );
                 return !unreachable.contains(destination);
             }
@@ -1101,7 +1102,7 @@ public class RaftEventSimulationTest {
                             oldEpoch + " -> " + newEpoch);
                 }
                 cluster.ifRunning(nodeId, nodeState ->
-                    assertEquals(newEpoch, nodeState.client.quorum().epoch())
+                        assertEquals(newEpoch, nodeState.client.quorum().epoch())
                 );
                 nodeEpochs.put(nodeId, newEpoch);
             }
@@ -1114,12 +1115,12 @@ public class RaftEventSimulationTest {
         public void verify() {
             cluster.leaderHighWatermark().ifPresent(highWatermark -> {
                 long numReachedHighWatermark = cluster.nodes.entrySet().stream()
-                    .filter(entry -> cluster.voters.containsKey(entry.getKey()))
-                    .filter(entry -> entry.getValue().log.endOffset().offset() >= highWatermark)
-                    .count();
+                        .filter(entry -> cluster.voters.containsKey(entry.getKey()))
+                        .filter(entry -> entry.getValue().log.endOffset().offset() >= highWatermark)
+                        .count();
                 assertTrue(
-                    numReachedHighWatermark >= cluster.majoritySize(),
-                    "Insufficient nodes have reached current high watermark");
+                        numReachedHighWatermark >= cluster.majoritySize(),
+                        "Insufficient nodes have reached current high watermark");
             });
         }
     }
@@ -1221,33 +1222,33 @@ public class RaftEventSimulationTest {
             for (Map.Entry<Integer, PersistentState> nodeEntry : cluster.nodes.entrySet()) {
                 int nodeId = nodeEntry.getKey();
                 RaftLog log = nodeEntry.getValue().log;
-                log.earliestSnapshotId().ifPresent(earliestSnapshotId  -> {
+                log.earliestSnapshotId().ifPresent(earliestSnapshotId -> {
                     long logStartOffset = log.startOffset();
                     ValidOffsetAndEpoch validateOffsetAndEpoch = log.validateOffsetAndEpoch(
-                        earliestSnapshotId.offset(),
-                        earliestSnapshotId.epoch()
+                            earliestSnapshotId.offset(),
+                            earliestSnapshotId.epoch()
                     );
 
                     assertTrue(
-                        logStartOffset <= earliestSnapshotId.offset(),
-                        () -> String.format(
-                            "invalid log start offset (%s) and snapshotId offset (%s): nodeId = %s",
-                            logStartOffset,
-                            earliestSnapshotId.offset(),
-                            nodeId
-                        )
+                            logStartOffset <= earliestSnapshotId.offset(),
+                            () -> String.format(
+                                    "invalid log start offset (%s) and snapshotId offset (%s): nodeId = %s",
+                                    logStartOffset,
+                                    earliestSnapshotId.offset(),
+                                    nodeId
+                            )
                     );
                     assertEquals(
-                        ValidOffsetAndEpoch.valid(earliestSnapshotId),
-                        validateOffsetAndEpoch,
-                        () -> String.format("invalid leader epoch cache: nodeId = %s", nodeId)
+                            ValidOffsetAndEpoch.valid(earliestSnapshotId),
+                            validateOffsetAndEpoch,
+                            () -> String.format("invalid leader epoch cache: nodeId = %s", nodeId)
                     );
 
                     if (logStartOffset > 0) {
                         assertEquals(
-                            logStartOffset,
-                            earliestSnapshotId.offset(),
-                            () -> String.format("missing snapshot at log start offset: nodeId = %s", nodeId)
+                                logStartOffset,
+                                earliestSnapshotId.offset(),
+                                () -> String.format("missing snapshot at log start offset: nodeId = %s", nodeId)
                         );
                     }
                 });
@@ -1270,11 +1271,11 @@ public class RaftEventSimulationTest {
     /**
      * Validating the committed data is expensive, so we do this as a {@link Validation}. We depend
      * on the following external invariants:
-     *
+     * <p>
      * - High watermark increases monotonically
      * - Truncation below the high watermark is not permitted
      * - A majority of nodes reach the high watermark
-     *
+     * <p>
      * Under these assumptions, once the simulation finishes, we validate that all nodes have
      * consistent data below the respective high watermark that has been recorded.
      */
@@ -1313,7 +1314,7 @@ public class RaftEventSimulationTest {
                         Integer.MAX_VALUE,
                         true,
                         node.logContext()
-                    )
+                )
                 ) {
                     // Since the state machine is only on e value we only expect one data record in the snapshot
                     // Expect only one batch with only one record
@@ -1332,9 +1333,9 @@ public class RaftEventSimulationTest {
                     committedSequenceNumbers.putIfAbsent(offset, sequence.getAsInt());
 
                     assertEquals(
-                        committedSequenceNumbers.get(offset),
-                        sequence.getAsInt(),
-                        String.format("Committed sequence at offset %s changed on node %s", offset, nodeId)
+                            committedSequenceNumbers.get(offset),
+                            sequence.getAsInt(),
+                            String.format("Committed sequence at offset %s changed on node %s", offset, nodeId)
                     );
                 }
             });
@@ -1353,9 +1354,9 @@ public class RaftEventSimulationTest {
 
                     int committedSequence = committedSequenceNumbers.get(offset);
                     assertEquals(
-                        committedSequence,
-                        sequence,
-                        String.format("Committed sequence at offset %d changed on node %d", offset, nodeId)
+                            committedSequence,
+                            sequence,
+                            String.format("Committed sequence at offset %d changed on node %d", offset, nodeId)
                     );
                 }
             }
@@ -1385,19 +1386,19 @@ public class RaftEventSimulationTest {
             int correlationId = outbound.correlationId();
             Node destination = outbound.destination();
             RaftRequest.Inbound inbound = cluster
-                .nodeIfRunning(senderId)
-                .map(node ->
-                    new RaftRequest.Inbound(
-                        node.channel.listenerName(),
-                        correlationId,
-                        ApiMessageType
-                            .fromApiKey(outbound.data().apiKey())
-                            .highestSupportedVersion(true),
-                        outbound.data(),
-                        cluster.time.milliseconds()
+                    .nodeIfRunning(senderId)
+                    .map(node ->
+                            new RaftRequest.Inbound(
+                                    node.channel.listenerName(),
+                                    correlationId,
+                                    ApiMessageType
+                                            .fromApiKey(outbound.data().apiKey())
+                                            .highestSupportedVersion(true),
+                                    outbound.data(),
+                                    cluster.time.milliseconds()
+                            )
                     )
-                )
-                .get();
+                    .get();
 
             if (!filters.get(destination.id()).acceptInbound(inbound))
                 return;
@@ -1420,17 +1421,17 @@ public class RaftEventSimulationTest {
             InflightRequest inflightRequest = inflight.remove(correlationId);
 
             RaftResponse.Inbound inbound = new RaftResponse.Inbound(
-                correlationId,
-                outbound.data(),
-                // The source of the response is the destination of the request
-                inflightRequest.destination
+                    correlationId,
+                    outbound.data(),
+                    // The source of the response is the destination of the request
+                    inflightRequest.destination
             );
 
             if (!filters.get(inflightRequest.sourceId).acceptInbound(inbound))
                 return;
 
             cluster.nodeIfRunning(inflightRequest.sourceId).ifPresent(node ->
-                node.channel.mockReceive(inbound)
+                    node.channel.mockReceive(inbound)
             );
         }
 

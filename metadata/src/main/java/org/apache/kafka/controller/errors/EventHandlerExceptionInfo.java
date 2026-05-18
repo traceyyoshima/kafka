@@ -59,14 +59,13 @@ public final class EventHandlerExceptionInfo {
     /**
      * Create an EventHandlerExceptionInfo object from an internal exception.
      *
-     * @param internal                  The internal exception.
-     * @param latestControllerSupplier  A function we can call to obtain the latest leader id.
-     *
-     * @return                          The new immutable info object.
+     * @param internal                 The internal exception.
+     * @param latestControllerSupplier A function we can call to obtain the latest leader id.
+     * @return The new immutable info object.
      */
     public static EventHandlerExceptionInfo fromInternal(
-        Throwable internal,
-        Supplier<OptionalInt> latestControllerSupplier
+            Throwable internal,
+            Supplier<OptionalInt> latestControllerSupplier
     ) {
         if (internal instanceof ApiException) {
             // This exception is a standard API error response from the controller, which can pass
@@ -75,17 +74,17 @@ public final class EventHandlerExceptionInfo {
         } else if (internal instanceof NotLeaderException) {
             // The controller has lost leadership.
             return new EventHandlerExceptionInfo(false, true, internal,
-                ControllerExceptions.newWrongControllerException(latestControllerSupplier.get()));
+                    ControllerExceptions.newWrongControllerException(latestControllerSupplier.get()));
         } else if (internal instanceof RejectedExecutionException) {
             // The controller event queue is shutting down.
             return new EventHandlerExceptionInfo(false, false, internal,
-                new TimeoutException("The controller is shutting down.", internal));
+                    new TimeoutException("The controller is shutting down.", internal));
         } else if (internal instanceof BoundedListTooLongException) {
             // The operation could not be performed because it would have created an overly large
             // batch.
             return new EventHandlerExceptionInfo(false, false, internal,
-                new PolicyViolationException("Unable to perform excessively large batch " +
-                    "operation."));
+                    new PolicyViolationException("Unable to perform excessively large batch " +
+                            "operation."));
         } else if (internal instanceof PeriodicControlTaskException) {
             // This exception is a periodic task which failed.
             return new EventHandlerExceptionInfo(true, false, internal);
@@ -95,13 +94,13 @@ public final class EventHandlerExceptionInfo {
             // to all threads to try to get them to shut down. This isn't the correct way to shut
             // the test, but it may happen if something hung.
             return new EventHandlerExceptionInfo(true, true, internal,
-                new UnknownServerException("The controller was interrupted."));
+                    new UnknownServerException("The controller was interrupted."));
         } else {
             // This is the catch-all case for things that aren't supposed to happen. Null pointer
             // exceptions, illegal argument exceptions, etc. They get translated into an
             // UnknownServerException and a controller failover.
             return new EventHandlerExceptionInfo(true, true, internal,
-                new UnknownServerException(internal));
+                    new UnknownServerException(internal));
         }
     }
 
@@ -116,9 +115,9 @@ public final class EventHandlerExceptionInfo {
     }
 
     EventHandlerExceptionInfo(
-        boolean isFault,
-        boolean causesFailover,
-        Throwable internalException
+            boolean isFault,
+            boolean causesFailover,
+            Throwable internalException
     ) {
         this.isFault = isFault;
         this.causesFailover = causesFailover;
@@ -127,10 +126,10 @@ public final class EventHandlerExceptionInfo {
     }
 
     EventHandlerExceptionInfo(
-        boolean isFault,
-        boolean causesFailover,
-        Throwable internalException,
-        Throwable externalException
+            boolean isFault,
+            boolean causesFailover,
+            Throwable internalException,
+            Throwable externalException
     ) {
         this.isFault = isFault;
         this.causesFailover = causesFailover;
@@ -155,10 +154,10 @@ public final class EventHandlerExceptionInfo {
     }
 
     public String failureMessage(
-        int epoch,
-        OptionalLong deltaUs,
-        boolean isActiveController,
-        long lastCommittedOffset
+            int epoch,
+            OptionalLong deltaUs,
+            boolean isActiveController,
+            long lastCommittedOffset
     ) {
         StringBuilder bld = new StringBuilder();
         if (deltaUs.isPresent()) {
@@ -215,11 +214,11 @@ public final class EventHandlerExceptionInfo {
     @Override
     public String toString() {
         return "EventHandlerExceptionInfo" +
-            "(isFault=" + isFault +
-            ", causesFailover=" + causesFailover +
-            ", internalException.class=" + internalException.getClass().getCanonicalName() +
-            ", externalException.class=" + (externalException.isPresent() ?
+                "(isFault=" + isFault +
+                ", causesFailover=" + causesFailover +
+                ", internalException.class=" + internalException.getClass().getCanonicalName() +
+                ", externalException.class=" + (externalException.isPresent() ?
                 externalException.get().getClass().getCanonicalName() : "(none)") +
-            ")";
+                ")";
     }
 }

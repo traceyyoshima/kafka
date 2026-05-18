@@ -98,7 +98,7 @@ public class MessageGeneratorTest {
                 "}")), MessageSpec.class);
 
         var outputFiles = MessageGenerator.generateAndWriteMessageClasses(testRequestSpec, "kafka",
-            tempDir.toAbsolutePath().toString(), generatorTypes);
+                tempDir.toAbsolutePath().toString(), generatorTypes);
         assertEquals(Set.of(), outputFiles);
         outputFiles = MessageGenerator.generateAndWriteMessageClasses(testResponseSpec, "kafka",
                 tempDir.toAbsolutePath().toString(), generatorTypes);

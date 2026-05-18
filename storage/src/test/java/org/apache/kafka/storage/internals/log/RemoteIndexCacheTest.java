@@ -698,7 +698,9 @@ public class RemoteIndexCacheTest {
                 .toList();
     }
 
-    record EvictionResult(List<RemoteLogSegmentMetadata> evictedSegmentMetadata, List<RemoteIndexCache.Entry> evictedEntries) { }
+    record EvictionResult(List<RemoteLogSegmentMetadata> evictedSegmentMetadata,
+                          List<RemoteIndexCache.Entry> evictedEntries) {
+    }
 
     private EvictionResult verifyEntryIsEvicted(List<RemoteLogSegmentMetadata> metadataToVerify, List<RemoteIndexCache.Entry> entriesToVerify, int numOfMarkAsDeleted) throws InterruptedException {
         TestUtils.waitForCondition(() -> entriesToVerify.stream().filter(RemoteIndexCache.Entry::isMarkedForCleanup).count() == numOfMarkAsDeleted,
@@ -1298,7 +1300,7 @@ public class RemoteIndexCacheTest {
             return Files.walk(cache.cacheDir().toPath())
                     .filter(Files::isRegularFile)
                     .filter(path -> path.getFileName().toString().endsWith(suffix))
-            .findAny();
+                    .findAny();
         } catch (IOException exc) {
             return Optional.empty();
         }

@@ -109,10 +109,10 @@ public class PurgeRepartitionTopicIntegrationTest {
             try {
                 final ConfigResource resource = new ConfigResource(ConfigResource.Type.TOPIC, REPARTITION_TOPIC);
                 final Config config = adminClient
-                    .describeConfigs(Collections.singleton(resource))
-                    .values()
-                    .get(resource)
-                    .get();
+                        .describeConfigs(Collections.singleton(resource))
+                        .values()
+                        .get(resource)
+                        .get();
                 return config.get(TopicConfig.CLEANUP_POLICY_CONFIG).value().equals(TopicConfig.CLEANUP_POLICY_DELETE)
                         && config.get(TopicConfig.SEGMENT_MS_CONFIG).value().equals(PURGE_INTERVAL_MS.toString())
                         && config.get(LogConfig.INTERNAL_SEGMENT_BYTES_CONFIG).value().equals(PURGE_SEGMENT_BYTES.toString());
@@ -139,11 +139,11 @@ public class PurgeRepartitionTopicIntegrationTest {
 
             try {
                 final Collection<LogDirDescription> logDirInfo =
-                    adminClient.describeLogDirs(Collections.singleton(0)).descriptions().get(0).get().values();
+                        adminClient.describeLogDirs(Collections.singleton(0)).descriptions().get(0).get().values();
 
                 for (final LogDirDescription partitionInfo : logDirInfo) {
                     final ReplicaInfo replicaInfo =
-                        partitionInfo.replicaInfos().get(new TopicPartition(REPARTITION_TOPIC, 0));
+                            partitionInfo.replicaInfos().get(new TopicPartition(REPARTITION_TOPIC, 0));
                     if (replicaInfo != null && verifier.verify(replicaInfo.size())) {
                         return true;
                     }
@@ -177,8 +177,8 @@ public class PurgeRepartitionTopicIntegrationTest {
 
         final StreamsBuilder builder = new StreamsBuilder();
         builder.stream(INPUT_TOPIC)
-               .groupBy(MockMapper.selectKeyKeyValueMapper())
-               .count();
+                .groupBy(MockMapper.selectKeyKeyValueMapper())
+                .count();
 
         kafkaStreams = new KafkaStreams(builder.build(), streamsConfiguration, time);
     }
@@ -214,16 +214,16 @@ public class PurgeRepartitionTopicIntegrationTest {
 
         // wait until we received more than 1 segment of data, so that we can confirm the purge succeeds in next verification
         TestUtils.waitForCondition(
-            new RepartitionTopicVerified(currentSize -> currentSize > PURGE_SEGMENT_BYTES),
-            60000,
-            "Repartition topic " + REPARTITION_TOPIC + " not received more than " + PURGE_SEGMENT_BYTES + "B of data after 60000 ms."
+                new RepartitionTopicVerified(currentSize -> currentSize > PURGE_SEGMENT_BYTES),
+                60000,
+                "Repartition topic " + REPARTITION_TOPIC + " not received more than " + PURGE_SEGMENT_BYTES + "B of data after 60000 ms."
         );
-        
+
         final long waitForPurgeMs = 60000;
         TestUtils.waitForCondition(
-            new RepartitionTopicVerified(currentSize -> currentSize <= PURGE_SEGMENT_BYTES),
-            waitForPurgeMs,
-            "Repartition topic " + REPARTITION_TOPIC + " not purged data after " + waitForPurgeMs + " ms."
+                new RepartitionTopicVerified(currentSize -> currentSize <= PURGE_SEGMENT_BYTES),
+                waitForPurgeMs,
+                "Repartition topic " + REPARTITION_TOPIC + " not purged data after " + waitForPurgeMs + " ms."
         );
     }
 }

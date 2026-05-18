@@ -54,7 +54,7 @@ public final class TransactionStateManagerConfig {
 
     public static final String METRICS_GROUP = "transaction-coordinator-metrics";
     public static final String LOAD_TIME_SENSOR = "TransactionsPartitionLoadTime";
-    public static final ConfigDef CONFIG_DEF =  new ConfigDef()
+    public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(TRANSACTIONAL_ID_EXPIRATION_MS_CONFIG, INT, TRANSACTIONAL_ID_EXPIRATION_MS_DEFAULT, atLeast(1), HIGH, TRANSACTIONAL_ID_EXPIRATION_MS_DOC)
             .define(TRANSACTIONS_MAX_TIMEOUT_MS_CONFIG, INT, TRANSACTIONS_MAX_TIMEOUT_MS_DEFAULT, atLeast(1), HIGH, TRANSACTIONS_MAX_TIMEOUT_MS_DOC)
             .define(TRANSACTIONS_ABORT_TIMED_OUT_TRANSACTION_CLEANUP_INTERVAL_MS_CONFIG, INT, TRANSACTIONS_ABORT_TIMED_OUT_TRANSACTION_CLEANUP_INTERVAL_MS_DEFAULT, atLeast(1), LOW, TRANSACTIONS_ABORT_TIMED_OUT_TRANSACTIONS_INTERVAL_MS_DOC)

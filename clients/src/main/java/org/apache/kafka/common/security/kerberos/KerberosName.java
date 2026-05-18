@@ -26,11 +26,17 @@ public class KerberosName {
      */
     private static final Pattern NAME_PARSER = Pattern.compile("([^/@]*)(/([^/@]*))?@([^/@]*)");
 
-    /** The first component of the name */
+    /**
+     * The first component of the name
+     */
     private final String serviceName;
-    /** The second component of the name. It may be null. */
+    /**
+     * The second component of the name. It may be null.
+     */
     private final String hostName;
-    /** The realm of the name. */
+    /**
+     * The realm of the name.
+     */
     private final String realm;
 
     /**
@@ -80,6 +86,7 @@ public class KerberosName {
 
     /**
      * Get the first component of the name.
+     *
      * @return the first section of the Kerberos principal name
      */
     public String serviceName() {
@@ -88,6 +95,7 @@ public class KerberosName {
 
     /**
      * Get the second component of the name.
+     *
      * @return the second section of the Kerberos principal name, and may be null
      */
     public String hostName() {
@@ -96,6 +104,7 @@ public class KerberosName {
 
     /**
      * Get the realm of the name.
+     *
      * @return the realm of the name, may be null
      */
     public String realm() {

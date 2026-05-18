@@ -46,12 +46,12 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * <code>
  * / storage-directory / topic-0-uuidBase64 / tvHCaSDsQZWsjr5rbtCjxA.log
- *                     .                   .  tvHCaSDsQZWsjr5rbtCjxA.index
- *                     .                   .  tvHCaSDsQZWsjr5rbtCjxA.timeindex
- *                     .
- *                     / topic-3-5fEBmixCR5-dMntYSLIr1g / BFyXlC8ySMm-Uzxw5lZSMg.log
- *                                                      . BFyXlC8ySMm-Uzxw5lZSMg.index
- *                                                      . BFyXlC8ySMm-Uzxw5lZSMg.timeindex
+ * .                   .  tvHCaSDsQZWsjr5rbtCjxA.index
+ * .                   .  tvHCaSDsQZWsjr5rbtCjxA.timeindex
+ * .
+ * / topic-3-5fEBmixCR5-dMntYSLIr1g / BFyXlC8ySMm-Uzxw5lZSMg.log
+ * . BFyXlC8ySMm-Uzxw5lZSMg.index
+ * . BFyXlC8ySMm-Uzxw5lZSMg.timeindex
  * </code>
  */
 public final class RemoteTopicPartitionDirectory {

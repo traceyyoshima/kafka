@@ -53,24 +53,24 @@ public class ControllerMetricsChangesTest {
     }
 
     private static BrokerRegistration brokerRegistration(
-        int brokerId,
-        boolean fenced
+            int brokerId,
+            boolean fenced
     ) {
         return brokerRegistration(brokerId, fenced, false);
     }
 
     private static BrokerRegistration brokerRegistration(
-        int brokerId,
-        boolean fenced,
-        boolean controlledShutdown
+            int brokerId,
+            boolean fenced,
+            boolean controlledShutdown
     ) {
         return new BrokerRegistration.Builder().
-            setId(brokerId).
-            setEpoch(100L).
-            setIncarnationId(Uuid.fromString("Pxi6QwS2RFuN8VSKjqJZyQ")).
-            setFenced(fenced).
-            setInControlledShutdown(controlledShutdown).
-            build();
+                setId(brokerId).
+                setEpoch(100L).
+                setIncarnationId(Uuid.fromString("Pxi6QwS2RFuN8VSKjqJZyQ")).
+                setFenced(fenced).
+                setInControlledShutdown(controlledShutdown).
+                build();
     }
 
     @Test

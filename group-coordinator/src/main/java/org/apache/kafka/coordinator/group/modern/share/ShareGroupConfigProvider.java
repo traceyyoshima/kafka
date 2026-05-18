@@ -35,42 +35,42 @@ public class ShareGroupConfigProvider {
      * The method is used to get the record lock duration for the group. If the group config is present,
      * then the record lock duration is returned. Otherwise, the default value is returned.
      *
-     * @param groupId The group id for which the record lock duration is to be fetched.
+     * @param groupId      The group id for which the record lock duration is to be fetched.
      * @param defaultValue The default value to be returned if the group config is not present.
      * @return The record lock duration for the group.
      */
     public int recordLockDurationMsOrDefault(String groupId, int defaultValue) {
         return manager.groupConfig(groupId)
-            .flatMap(GroupConfig::shareRecordLockDurationMs)
-            .orElse(defaultValue);
+                .flatMap(GroupConfig::shareRecordLockDurationMs)
+                .orElse(defaultValue);
     }
 
     /**
      * The method is used to get the delivery count limit for the group. If the group config is present,
      * then the delivery count limit is returned. Otherwise, the default value is returned.
      *
-     * @param groupId The group id for which the delivery count limit is to be fetched.
+     * @param groupId      The group id for which the delivery count limit is to be fetched.
      * @param defaultValue The default value to be returned if the group config is not present.
      * @return The delivery count limit for the group.
      */
     public int deliveryCountLimitOrDefault(String groupId, int defaultValue) {
         return manager.groupConfig(groupId)
-            .flatMap(GroupConfig::shareDeliveryCountLimit)
-            .orElse(defaultValue);
+                .flatMap(GroupConfig::shareDeliveryCountLimit)
+                .orElse(defaultValue);
     }
 
     /**
      * The method is used to get the partition max record locks for the group. If the group config is present,
      * then the partition max record locks is returned. Otherwise, the default value is returned.
      *
-     * @param groupId The group id for which the partition max record locks is to be fetched.
+     * @param groupId      The group id for which the partition max record locks is to be fetched.
      * @param defaultValue The default value to be returned if the group config is not present.
      * @return The partition max record locks for the group.
      */
     public int partitionMaxRecordLocksOrDefault(String groupId, int defaultValue) {
         return manager.groupConfig(groupId)
-            .flatMap(GroupConfig::sharePartitionMaxRecordLocks)
-            .orElse(defaultValue);
+                .flatMap(GroupConfig::sharePartitionMaxRecordLocks)
+                .orElse(defaultValue);
     }
 
     /**
@@ -82,8 +82,8 @@ public class ShareGroupConfigProvider {
      */
     public boolean isRenewAcknowledgeEnabled(String groupId) {
         return manager.groupConfig(groupId)
-            .flatMap(GroupConfig::shareRenewAcknowledgeEnable)
-            .orElse(GroupConfig.SHARE_RENEW_ACKNOWLEDGE_ENABLE_DEFAULT);
+                .flatMap(GroupConfig::shareRenewAcknowledgeEnable)
+                .orElse(GroupConfig.SHARE_RENEW_ACKNOWLEDGE_ENABLE_DEFAULT);
     }
 
     /**
@@ -95,7 +95,7 @@ public class ShareGroupConfigProvider {
      */
     public ShareGroupAutoOffsetResetStrategy autoOffsetReset(String groupId) {
         return manager.groupConfig(groupId)
-            .flatMap(GroupConfig::shareAutoOffsetReset)
-            .orElseGet(GroupConfig::defaultShareAutoOffsetReset);
+                .flatMap(GroupConfig::shareAutoOffsetReset)
+                .orElseGet(GroupConfig::defaultShareAutoOffsetReset);
     }
 }

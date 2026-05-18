@@ -47,7 +47,7 @@ public class SubscriptionResponseWrapperSerde<VRight> implements Serde<Subscript
     }
 
     private static final class SubscriptionResponseWrapperSerializer<V>
-        implements Serializer<SubscriptionResponseWrapper<V>>, WrappingNullableSerializer<SubscriptionResponseWrapper<V>, Void, V> {
+            implements Serializer<SubscriptionResponseWrapper<V>>, WrappingNullableSerializer<SubscriptionResponseWrapper<V>, Void, V> {
 
         private Serializer<V> serializer;
 
@@ -99,7 +99,7 @@ public class SubscriptionResponseWrapperSerde<VRight> implements Serde<Subscript
     }
 
     private static final class SubscriptionResponseWrapperDeserializer<V>
-        implements Deserializer<SubscriptionResponseWrapper<V>>, WrappingNullableDeserializer<SubscriptionResponseWrapper<V>, Void, V> {
+            implements Deserializer<SubscriptionResponseWrapper<V>>, WrappingNullableDeserializer<SubscriptionResponseWrapper<V>, Void, V> {
 
         private Deserializer<V> deserializer;
 

@@ -39,39 +39,40 @@ public final class RackUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(RackUtils.class);
 
-    private RackUtils() { }
+    private RackUtils() {
+    }
 
     public static void annotateTopicPartitionsWithRackInfo(final Cluster cluster,
                                                            final InternalTopicManager internalTopicManager,
                                                            final Set<DefaultTaskTopicPartition> topicPartitions) {
         // First we add all the changelog topics to the set of topics to describe.
         final Set<String> topicsToDescribe = topicPartitions.stream()
-            .filter(tp -> !tp.isSource())
-            .map(topicPartition -> topicPartition.topicPartition().topic())
-            .collect(Collectors.toSet());
+                .filter(tp -> !tp.isSource())
+                .map(topicPartition -> topicPartition.topicPartition().topic())
+                .collect(Collectors.toSet());
 
         // Then we add the non changelog topics that we do not have full information about.
         final Set<TopicPartition> nonChangelogTopics = topicPartitions.stream()
-            .filter(taskTopicPartition -> !taskTopicPartition.isChangelog())
-            .map(TaskTopicPartition::topicPartition)
-            .collect(Collectors.toSet());
+                .filter(taskTopicPartition -> !taskTopicPartition.isChangelog())
+                .map(TaskTopicPartition::topicPartition)
+                .collect(Collectors.toSet());
         topicsToDescribe.addAll(topicsWithMissingMetadata(cluster, nonChangelogTopics));
 
         // We can issue an RPC call to get up-to-date information about the topics that had rack
         // information missing.
         final Map<String, List<TopicPartitionInfo>> freshTopicPartitionInfo =
-            describeTopics(internalTopicManager, topicsToDescribe);
+                describeTopics(internalTopicManager, topicsToDescribe);
 
         // Finally we compute the list of topics that already have all rack information known.
         final Set<TopicPartition> topicsWithUpToDateMetadata = topicPartitions.stream()
-            .map(TaskTopicPartition::topicPartition)
-            .filter(topicPartition -> !topicsToDescribe.contains(topicPartition.topic()))
-            .collect(Collectors.toSet());
+                .map(TaskTopicPartition::topicPartition)
+                .filter(topicPartition -> !topicsToDescribe.contains(topicPartition.topic()))
+                .collect(Collectors.toSet());
 
         // Lastly we compile the mapping of topic partition to rack ids by combining known data and
         // information that we got from the earlier RPC call.
         final Map<TopicPartition, Set<String>> racksForTopicPartition = knownRacksForPartition(
-            cluster, topicsWithUpToDateMetadata);
+                cluster, topicsWithUpToDateMetadata);
         freshTopicPartitionInfo.forEach((topic, partitionInfos) -> {
             for (final TopicPartitionInfo partitionInfo : partitionInfos) {
                 final int partition = partitionInfo.partition();
@@ -83,7 +84,7 @@ public final class RackUtils {
                 }
 
                 final Set<String> racks = replicas.stream().filter(Node::hasRack).map(Node::rack).collect(
-                    Collectors.toSet());
+                        Collectors.toSet());
                 racksForTopicPartition.computeIfAbsent(topicPartition, k -> new HashSet<>());
                 racksForTopicPartition.get(topicPartition).addAll(racks);
             }
@@ -132,7 +133,7 @@ public final class RackUtils {
                 LOG.warn("Node {} for topic partition {} doesn't have rack", node, topicPartition);
             });
             final Set<String> racks = Arrays.stream(replicas).filter(Node::hasRack)
-                .map(Node::rack).collect(Collectors.toSet());
+                    .map(Node::rack).collect(Collectors.toSet());
             racksForPartition.put(topicPartition, racks);
         }
         return racksForPartition;

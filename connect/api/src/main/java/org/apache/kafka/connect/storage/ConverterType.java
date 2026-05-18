@@ -30,10 +30,11 @@ public enum ConverterType {
     HEADER;
 
     private static final Map<String, ConverterType> NAME_TO_TYPE = Arrays.stream(ConverterType.values())
-        .collect(Collectors.toUnmodifiableMap(ConverterType::getName, t -> t));
+            .collect(Collectors.toUnmodifiableMap(ConverterType::getName, t -> t));
 
     /**
      * Find the ConverterType with the given name, using a case-insensitive match.
+     *
      * @param name the name of the converter type; may be null
      * @return the matching converter type, or null if the supplied name is null or does not match the name of the known types
      */

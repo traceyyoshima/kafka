@@ -60,6 +60,6 @@ public final class ValueConverters {
      */
     public static <V> Function<ValueTimestampHeaders<V>, ValueAndTimestamp<V>> extractValueAndTimestampFromHeaders() {
         return vth -> vth == null ? null :
-            ValueAndTimestamp.make(vth.value(), vth.timestamp());
+                ValueAndTimestamp.make(vth.value(), vth.timestamp());
     }
 }

@@ -171,8 +171,8 @@ public class SimpleHomogeneousAssignmentBuilder {
         double preciseDesiredAssignmentCount = desiredSharing * numTargetPartitions / (double) numGroupMembers;
         for (int memberIndex = 0; memberIndex < numGroupMembers; memberIndex++) {
             desiredAssignmentCount[memberIndex] =
-                (int) Math.ceil(preciseDesiredAssignmentCount * (double) (memberIndex + 1)) -
-                    (int) Math.ceil(preciseDesiredAssignmentCount * (double) memberIndex);
+                    (int) Math.ceil(preciseDesiredAssignmentCount * (double) (memberIndex + 1)) -
+                            (int) Math.ceil(preciseDesiredAssignmentCount * (double) memberIndex);
         }
     }
 
@@ -387,22 +387,23 @@ public class SimpleHomogeneousAssignmentBuilder {
     /**
      * Computes the list of target partitions which can be assigned to members. This list includes all partitions
      * for the subscribed topic IDs, with the additional check that they must be assignable.
-     * @param groupSpec                 The assignment spec which includes member metadata.
-     * @param subscribedTopicIds        The set of subscribed topic IDs.
-     * @param subscribedTopicDescriber  The topic and partition metadata describer.
+     *
+     * @param groupSpec                The assignment spec which includes member metadata.
+     * @param subscribedTopicIds       The set of subscribed topic IDs.
+     * @param subscribedTopicDescriber The topic and partition metadata describer.
      * @return The list of target partitions.
      */
     private static List<TopicIdPartition> computeTargetPartitions(
-        GroupSpec groupSpec,
-        Set<Uuid> subscribedTopicIds,
-        SubscribedTopicDescriber subscribedTopicDescriber
+            GroupSpec groupSpec,
+            Set<Uuid> subscribedTopicIds,
+            SubscribedTopicDescriber subscribedTopicDescriber
     ) {
         List<TopicIdPartition> targetPartitions = new ArrayList<>();
         subscribedTopicIds.forEach(topicId -> {
             int numPartitions = subscribedTopicDescriber.numPartitions(topicId);
             if (numPartitions == -1) {
                 throw new PartitionAssignorException(
-                    "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
+                        "Members are subscribed to topic " + topicId + " which doesn't exist in the topic metadata."
                 );
             }
 

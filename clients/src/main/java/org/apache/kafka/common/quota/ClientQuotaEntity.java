@@ -36,8 +36,8 @@ public class ClientQuotaEntity {
 
     public static boolean isValidEntityType(String entityType) {
         return Objects.equals(entityType, USER) ||
-            Objects.equals(entityType, CLIENT_ID) ||
-            Objects.equals(entityType, IP);
+                Objects.equals(entityType, CLIENT_ID) ||
+                Objects.equals(entityType, IP);
     }
 
     /**

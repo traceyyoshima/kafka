@@ -42,13 +42,13 @@ public class RocksDbTimeOrderedSessionHeadersBytesStoreSupplier implements Sessi
     @Override
     public SessionStore<Bytes, byte[]> get() {
         final RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders bytesStore =
-            new RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders(
-                name,
-                metricsScope(),
-                retentionPeriod,
-                segmentIntervalMs(),
-                withIndex
-            );
+                new RocksDBTimeOrderedSessionSegmentedBytesStoreWithHeaders(
+                        name,
+                        metricsScope(),
+                        retentionPeriod,
+                        segmentIntervalMs(),
+                        withIndex
+                );
         return new RocksDBTimeOrderedSessionStore(bytesStore);
     }
 

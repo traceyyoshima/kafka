@@ -61,7 +61,7 @@ public final class TransactionLogConfig {
     public static final String PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_CONFIG = "producer.id.expiration.check.interval.ms";
     public static final int PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DEFAULT = 600000;
     public static final String PRODUCER_ID_EXPIRATION_CHECK_INTERVAL_MS_DOC = "The interval at which to remove producer IDs that have expired due to <code>producer.id.expiration.ms</code> passing.";
-    public static final ConfigDef CONFIG_DEF =  new ConfigDef()
+    public static final ConfigDef CONFIG_DEF = new ConfigDef()
             .define(TRANSACTIONS_TOPIC_MIN_ISR_CONFIG, INT, TRANSACTIONS_TOPIC_MIN_ISR_DEFAULT, atLeast(1), HIGH, TRANSACTIONS_TOPIC_MIN_ISR_DOC)
             .define(TRANSACTIONS_LOAD_BUFFER_SIZE_CONFIG, INT, TRANSACTIONS_LOAD_BUFFER_SIZE_DEFAULT, atLeast(1), HIGH, TRANSACTIONS_LOAD_BUFFER_SIZE_DOC)
             .define(TRANSACTIONS_TOPIC_REPLICATION_FACTOR_CONFIG, SHORT, TRANSACTIONS_TOPIC_REPLICATION_FACTOR_DEFAULT, atLeast(1), HIGH, TRANSACTIONS_TOPIC_REPLICATION_FACTOR_DOC)

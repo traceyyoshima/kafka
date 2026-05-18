@@ -31,9 +31,9 @@ public record JaasModule(String name, boolean debug, Map<String, String> entries
         validUsers.forEach((user, pass) -> entries.put("user_" + user, pass));
 
         return new JaasModule(
-            name,
-            debug,
-            entries
+                name,
+                debug,
+                entries
         );
     }
 

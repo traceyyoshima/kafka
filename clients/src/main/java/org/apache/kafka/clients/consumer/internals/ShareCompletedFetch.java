@@ -167,9 +167,8 @@ public class ShareCompletedFetch {
      * this step.
      *
      * @param deserializers {@link Deserializer}s to use to convert the raw bytes to the expected key and value types
-     * @param maxRecords The number of records to return; the number returned may be {@code 0 <= maxRecords}
-     * @param checkCrcs Whether to check the CRC of fetched records
-     *
+     * @param maxRecords    The number of records to return; the number returned may be {@code 0 <= maxRecords}
+     * @param checkCrcs     Whether to check the CRC of fetched records
      * @return {@link ShareInFlightBatch The ShareInFlightBatch containing records and their acknowledgements}
      */
     <K, V> ShareInFlightBatch<K, V> fetchRecords(final Deserializers<K, V> deserializers,
@@ -357,7 +356,6 @@ public class ShareCompletedFetch {
      * Scans for the next record in the available batches, skipping control records
      *
      * @param checkCrcs Whether to check the CRC of fetched records
-     *
      * @return true if the current batch has more records, else false
      */
     private boolean nextFetchedRecord(final boolean checkCrcs) {

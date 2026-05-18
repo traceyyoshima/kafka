@@ -83,13 +83,13 @@ public class KeyValueStoreMaterializerTest {
     @BeforeEach
     public void setUp() {
         doReturn(emptyMap())
-            .when(streamsConfig).originals();
+                .when(streamsConfig).originals();
         doReturn(new BuiltInDslStoreSuppliers.RocksDBDslStoreSuppliers())
                 .when(streamsConfig).getConfiguredInstance(
-                    StreamsConfig.DSL_STORE_SUPPLIERS_CLASS_CONFIG,
-                    DslStoreSuppliers.class,
-                    emptyMap()
-            );
+                        StreamsConfig.DSL_STORE_SUPPLIERS_CLASS_CONFIG,
+                        DslStoreSuppliers.class,
+                        emptyMap()
+                );
         lenient().doReturn("default")
                 .when(streamsConfig).getString(StreamsConfig.DSL_STORE_FORMAT_CONFIG);
     }
@@ -121,7 +121,7 @@ public class KeyValueStoreMaterializerTest {
     @Test
     public void shouldCreateTimestampedBuilderWithCachingAndLoggingEnabledByDefault() {
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
 
         final TimestampedKeyValueStore<String, String> store = getTimestampedStore(materialized);
 
@@ -135,7 +135,7 @@ public class KeyValueStoreMaterializerTest {
     @Test
     public void shouldCreateTimestampedBuilderWithCachingDisabled() {
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized = new MaterializedInternal<>(
-            Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store").withCachingDisabled(), nameProvider, STORE_PREFIX
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store").withCachingDisabled(), nameProvider, STORE_PREFIX
         );
 
         final TimestampedKeyValueStore<String, String> store = getTimestampedStore(materialized);
@@ -147,7 +147,7 @@ public class KeyValueStoreMaterializerTest {
     @Test
     public void shouldCreateTimestampedBuilderWithLoggingDisabled() {
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized = new MaterializedInternal<>(
-            Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store").withLoggingDisabled(), nameProvider, STORE_PREFIX
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store").withLoggingDisabled(), nameProvider, STORE_PREFIX
         );
 
         final TimestampedKeyValueStore<String, String> store = getTimestampedStore(materialized);
@@ -160,7 +160,7 @@ public class KeyValueStoreMaterializerTest {
     @Test
     public void shouldCreateTimestampedBuilderWithCachingAndLoggingDisabled() {
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized = new MaterializedInternal<>(
-            Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store").withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("store").withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX
         );
 
         final TimestampedKeyValueStore<String, String> store = getTimestampedStore(materialized);
@@ -173,7 +173,7 @@ public class KeyValueStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndCachingAndLoggingEnabledByDefault() {
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as(new HeadersStoreSupplier()), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as(new HeadersStoreSupplier()), nameProvider, STORE_PREFIX);
 
         final TimestampedKeyValueStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -188,7 +188,7 @@ public class KeyValueStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndCachingDisabled() {
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled(), nameProvider, STORE_PREFIX);
 
         final TimestampedKeyValueStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -200,7 +200,7 @@ public class KeyValueStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndLoggingDisabled() {
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withLoggingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withLoggingDisabled(), nameProvider, STORE_PREFIX);
 
         final TimestampedKeyValueStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -213,7 +213,7 @@ public class KeyValueStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndCachingAndLoggingDisabled() {
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX);
 
         final TimestampedKeyValueStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -227,7 +227,7 @@ public class KeyValueStoreMaterializerTest {
     public void shouldCreateVersionedStoreWithProvidedSupplierAndLoggingEnabledByDefault() {
         mockInnerVersionedStore();
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as(versionedStoreSupplier), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as(versionedStoreSupplier), nameProvider, STORE_PREFIX);
 
         final VersionedKeyValueStore<String, String> store = getVersionedStore(materialized);
 
@@ -243,7 +243,7 @@ public class KeyValueStoreMaterializerTest {
     public void shouldCreateVersionedStoreWithProvidedSupplierAndLoggingDisabled() {
         mockInnerVersionedStore();
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(versionedStoreSupplier).withLoggingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(versionedStoreSupplier).withLoggingDisabled(), nameProvider, STORE_PREFIX);
 
         final VersionedKeyValueStore<String, String> store = getVersionedStore(materialized);
 
@@ -257,7 +257,7 @@ public class KeyValueStoreMaterializerTest {
     public void shouldNotBuildVersionedStoreWithCachingEvenIfExplicitlySet() {
         mockInnerVersionedStore();
         final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(versionedStoreSupplier).withCachingEnabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(versionedStoreSupplier).withCachingEnabled(), nameProvider, STORE_PREFIX);
 
         final VersionedKeyValueStore<String, String> store = getVersionedStore(materialized);
 
@@ -271,7 +271,7 @@ public class KeyValueStoreMaterializerTest {
 
     @SuppressWarnings("unchecked")
     private TimestampedKeyValueStore<String, String> getTimestampedStore(
-        final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized) {
+            final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized) {
         final KeyValueStoreMaterializer<String, String> materializer = new KeyValueStoreMaterializer<>(materialized);
         materializer.configure(streamsConfig);
         return (TimestampedKeyValueStore<String, String>) materializer.builder().build();
@@ -279,7 +279,7 @@ public class KeyValueStoreMaterializerTest {
 
     @SuppressWarnings("unchecked")
     private TimestampedKeyValueStoreWithHeaders<String, String> getHeadersStore(
-        final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized) {
+            final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized) {
         final KeyValueStoreMaterializer<String, String> materializer = new KeyValueStoreMaterializer<>(materialized);
         materializer.configure(streamsConfig);
         return (TimestampedKeyValueStoreWithHeaders<String, String>) materializer.builder().build();
@@ -287,7 +287,7 @@ public class KeyValueStoreMaterializerTest {
 
     @SuppressWarnings("unchecked")
     private VersionedKeyValueStore<String, String> getVersionedStore(
-        final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized
+            final MaterializedInternal<String, String, KeyValueStore<Bytes, byte[]>> materialized
     ) {
         final KeyValueStoreMaterializer<String, String> materializer = new KeyValueStoreMaterializer<>(materialized);
         materializer.configure(streamsConfig);

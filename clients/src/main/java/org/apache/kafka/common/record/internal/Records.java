@@ -25,7 +25,7 @@ import java.util.Optional;
 /**
  * Interface for accessing the records contained in a log. The log itself is represented as a sequence of record
  * batches (see {@link RecordBatch}).
- *
+ * <p>
  * For magic versions 1 and below, each batch consists of an 8 byte offset, a 4 byte record size, and a "shallow"
  * {@link Record record}. If the batch is not compressed, then each batch will have only the shallow record contained
  * inside it. If it is compressed, the batch contains "deep" records, which are packed into the value field of the
@@ -33,12 +33,12 @@ import java.util.Optional;
  * {@link Records#records()}. Note that the deep iterator handles both compressed and non-compressed batches:
  * if the batch is not compressed, the shallow record is returned; otherwise, the shallow batch is decompressed and the
  * deep records are returned.
- *
+ * <p>
  * For magic version 2, every batch contains 1 or more log record, regardless of compression. You can iterate
  * over the batches directly using {@link Records#batches()}. Records can be iterated either directly from an individual
  * batch or through {@link Records#records()}. Just as in previous versions, iterating over the records typically involves
  * decompression and should therefore be used with caution.
- *
+ * <p>
  * See {@link MemoryRecords} for the in-memory representation and {@link FileRecords} for the on-disk representation.
  */
 public interface Records extends TransferableRecords {
@@ -59,6 +59,7 @@ public interface Records extends TransferableRecords {
      * to return a more specific batch type. This enables optimizations such as in-place offset
      * assignment (see for example {@link DefaultRecordBatch}), and partial reading of
      * record data, see {@link FileLogInputStream.FileChannelRecordBatch#magic()}.
+     *
      * @return An iterator over the record batches of the log
      */
     Iterable<? extends RecordBatch> batches();
@@ -66,19 +67,21 @@ public interface Records extends TransferableRecords {
     /**
      * Get an iterator over the record batches. This is similar to {@link #batches()} but returns an {@link AbstractIterator}
      * instead of {@link Iterator}, so that clients can use methods like {@link AbstractIterator#peek() peek}.
+     *
      * @return An iterator over the record batches of the log
      */
     AbstractIterator<? extends RecordBatch> batchIterator();
 
     /**
      * Return the last record batch if non-empty or an empty `Optional` otherwise.
-     *
+     * <p>
      * Note that this requires iterating over all the record batches and hence it's expensive.
      */
     Optional<RecordBatch> lastBatch();
 
     /**
      * Check whether all batches in this buffer have a certain magic value.
+     *
      * @param magic The magic value to check
      * @return true if all record batches have a matching magic value, false otherwise
      */
@@ -87,6 +90,7 @@ public interface Records extends TransferableRecords {
     /**
      * Get an iterator over the records in this log. Note that this generally requires decompression,
      * and should therefore be used with care.
+     *
      * @return The record iterator
      */
     Iterable<Record> records();
@@ -94,14 +98,14 @@ public interface Records extends TransferableRecords {
     /**
      * Return a slice of records from this instance, which is a view into this set starting from the given position
      * and with the given size limit.
-     *
+     * <p>
      * If the size is beyond the end of the records, the end will be based on the size of the records at the time of the read.
-     *
+     * <p>
      * If this records set is already sliced, the position will be taken relative to that slicing.
      *
      * @param position The start position to begin the read from. The position should be aligned to
      *                 the batch boundary, else the returned records can't be iterated.
-     * @param size The number of bytes after the start position to include
+     * @param size     The number of bytes after the start position to include
      * @return A sliced wrapper on this message set limited based on the given position and size
      */
     Records slice(int position, int size);

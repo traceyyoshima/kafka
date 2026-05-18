@@ -26,6 +26,7 @@ public interface SourceConnectorContext extends ConnectorContext {
 
     /**
      * Returns the {@link OffsetStorageReader} for this SourceConnectorContext.
+     *
      * @return the OffsetStorageReader for this connector.
      */
     OffsetStorageReader offsetStorageReader();

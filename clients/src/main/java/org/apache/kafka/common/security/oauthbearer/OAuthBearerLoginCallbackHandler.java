@@ -124,7 +124,7 @@ import static org.apache.kafka.common.security.oauthbearer.internals.secured.Con
  * <code>
  * sasl.oauthbearer.token.endpoint.url=https://example.com/oauth2/v1/token
  * </code>
- *
+ * <p>
  * Please see the OAuth/OIDC providers documentation for the token endpoint URL.
  * </p>
  *
@@ -155,22 +155,22 @@ public class OAuthBearerLoginCallbackHandler implements AuthenticateCallbackHand
     public static final String SCOPE_CONFIG = "scope";
 
     public static final String CLIENT_ID_DOC = "The OAuth/OIDC identity provider-issued " +
-        "client ID to uniquely identify the service account to use for authentication for " +
-        "this client. The value must be paired with a corresponding " + CLIENT_SECRET_CONFIG + " " +
-        "value and is provided to the OAuth provider using the OAuth " +
-        "clientcredentials grant type.";
+            "client ID to uniquely identify the service account to use for authentication for " +
+            "this client. The value must be paired with a corresponding " + CLIENT_SECRET_CONFIG + " " +
+            "value and is provided to the OAuth provider using the OAuth " +
+            "clientcredentials grant type.";
 
     public static final String CLIENT_SECRET_DOC = "The OAuth/OIDC identity provider-issued " +
-        "client secret serves a similar function as a password to the " + CLIENT_ID_CONFIG + " " +
-        "account and identifies the service account to use for authentication for " +
-        "this client. The value must be paired with a corresponding " + CLIENT_ID_CONFIG + " " +
-        "value and is provided to the OAuth provider using the OAuth " +
-        "clientcredentials grant type.";
+            "client secret serves a similar function as a password to the " + CLIENT_ID_CONFIG + " " +
+            "account and identifies the service account to use for authentication for " +
+            "this client. The value must be paired with a corresponding " + CLIENT_ID_CONFIG + " " +
+            "value and is provided to the OAuth provider using the OAuth " +
+            "clientcredentials grant type.";
 
     public static final String SCOPE_DOC = "The (optional) HTTP/HTTPS login request to the " +
-        "token endpoint (" + SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL + ") may need to specify an " +
-        "OAuth \"scope\". If so, the " + SCOPE_CONFIG + " is used to provide the value to " +
-        "include with the login request.";
+            "token endpoint (" + SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL + ") may need to specify an " +
+            "OAuth \"scope\". If so, the " + SCOPE_CONFIG + " is used to provide the value to " +
+            "include with the login request.";
 
     private static final String EXTENSION_PREFIX = "extension_";
 
@@ -184,19 +184,19 @@ public class OAuthBearerLoginCallbackHandler implements AuthenticateCallbackHand
     public void configure(Map<String, ?> configs, String saslMechanism, List<AppConfigurationEntry> jaasConfigEntries) {
         moduleOptions = JaasOptionsUtils.getOptions(saslMechanism, jaasConfigEntries);
         jwtRetriever = getConfiguredInstance(
-            configs,
-            saslMechanism,
-            jaasConfigEntries,
-            SaslConfigs.SASL_OAUTHBEARER_JWT_RETRIEVER_CLASS,
-            JwtRetriever.class
+                configs,
+                saslMechanism,
+                jaasConfigEntries,
+                SaslConfigs.SASL_OAUTHBEARER_JWT_RETRIEVER_CLASS,
+                JwtRetriever.class
         );
 
         jwtValidator = getConfiguredInstance(
-            configs,
-            saslMechanism,
-            jaasConfigEntries,
-            SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
-            JwtValidator.class
+                configs,
+                saslMechanism,
+                jaasConfigEntries,
+                SaslConfigs.SASL_OAUTHBEARER_JWT_VALIDATOR_CLASS,
+                JwtValidator.class
         );
     }
 

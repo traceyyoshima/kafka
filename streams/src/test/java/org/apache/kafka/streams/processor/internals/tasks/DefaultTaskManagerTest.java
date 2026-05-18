@@ -64,7 +64,7 @@ public class DefaultTaskManagerTest {
     private final TaskExecutionMetadata taskExecutionMetadata = mock(TaskExecutionMetadata.class);
 
     private final TaskManager taskManager = new DefaultTaskManager(time, "TaskManager", tasks,
-        (taskManager, name, time, taskExecutionMetadata) -> taskExecutor, taskExecutionMetadata, 1);
+            (taskManager, name, time, taskExecutionMetadata) -> taskExecutor, taskExecutionMetadata, 1);
 
     @BeforeEach
     public void setUp() {
@@ -111,6 +111,7 @@ public class DefaultTaskManagerTest {
     private class AwaitingRunnable implements Runnable {
         private final CountDownLatch awaitDone = new CountDownLatch(1);
         private final AtomicBoolean shutdownRequested = new AtomicBoolean(false);
+
         @Override
         public void run() {
             while (!shutdownRequested.get()) {

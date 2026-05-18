@@ -49,33 +49,33 @@ public class KRaftTopicCreator implements TopicCreator {
 
     @Override
     public CompletableFuture<CreateTopicsResponse> createTopicWithPrincipal(
-        RequestContext requestContext,
-        CreateTopicsRequest.Builder createTopicsRequest
+            RequestContext requestContext,
+            CreateTopicsRequest.Builder createTopicsRequest
     ) {
         CompletableFuture<CreateTopicsResponse> responseFuture = new CompletableFuture<>();
 
         short requestVersion = channelManager.controllerApiVersions()
-            .map(v -> v.latestUsableVersion(ApiKeys.CREATE_TOPICS))
-            .orElse(ApiKeys.CREATE_TOPICS.latestVersion());
+                .map(v -> v.latestUsableVersion(ApiKeys.CREATE_TOPICS))
+                .orElse(ApiKeys.CREATE_TOPICS.latestVersion());
 
         RequestHeader requestHeader = new RequestHeader(
-            ApiKeys.CREATE_TOPICS,
-            requestVersion,
-            requestContext.clientId(),
-            requestContext.correlationId()
+                ApiKeys.CREATE_TOPICS,
+                requestVersion,
+                requestContext.clientId(),
+                requestContext.correlationId()
         );
 
         AbstractRequest.Builder<? extends AbstractRequest> envelopeRequest = ForwardingManagerUtil.buildEnvelopeRequest(
-            requestContext,
-            createTopicsRequest.build(requestHeader.apiVersion())
-                .serializeWithHeader(requestHeader)
+                requestContext,
+                createTopicsRequest.build(requestHeader.apiVersion())
+                        .serializeWithHeader(requestHeader)
         );
 
         ControllerRequestCompletionHandler handler = new ControllerRequestCompletionHandler() {
             @Override
             public void onTimeout() {
                 responseFuture.completeExceptionally(
-                    new TimeoutException("CreateTopicsRequest to controller timed out")
+                        new TimeoutException("CreateTopicsRequest to controller timed out")
                 );
             }
 
@@ -95,8 +95,8 @@ public class KRaftTopicCreator implements TopicCreator {
                         } else {
                             try {
                                 CreateTopicsResponse createTopicsResponse = (CreateTopicsResponse) AbstractResponse.parseResponse(
-                                    envelopeResponse.responseData(),
-                                    requestHeader
+                                        envelopeResponse.responseData(),
+                                        requestHeader
                                 );
                                 responseFuture.complete(createTopicsResponse);
                             } catch (Exception e) {
@@ -105,13 +105,13 @@ public class KRaftTopicCreator implements TopicCreator {
                         }
                     } else {
                         responseFuture.completeExceptionally(
-                            new IllegalStateException("Expected EnvelopeResponse but got: " +
-                                response.responseBody().getClass().getSimpleName())
+                                new IllegalStateException("Expected EnvelopeResponse but got: " +
+                                        response.responseBody().getClass().getSimpleName())
                         );
                     }
                 } else {
                     responseFuture.completeExceptionally(
-                        new IllegalStateException("Got no response body for EnvelopeResponse")
+                            new IllegalStateException("Got no response body for EnvelopeResponse")
                     );
                 }
             }
@@ -123,7 +123,7 @@ public class KRaftTopicCreator implements TopicCreator {
 
     @Override
     public CompletableFuture<CreateTopicsResponse> createTopicWithoutPrincipal(
-        CreateTopicsRequest.Builder createTopicsRequest
+            CreateTopicsRequest.Builder createTopicsRequest
     ) {
         CompletableFuture<CreateTopicsResponse> responseFuture = new CompletableFuture<>();
 
@@ -131,7 +131,7 @@ public class KRaftTopicCreator implements TopicCreator {
             @Override
             public void onTimeout() {
                 responseFuture.completeExceptionally(
-                    new TimeoutException("CreateTopicsRequest to controller timed out")
+                        new TimeoutException("CreateTopicsRequest to controller timed out")
                 );
             }
 
@@ -148,13 +148,13 @@ public class KRaftTopicCreator implements TopicCreator {
                         responseFuture.complete(createTopicsResponse);
                     } else {
                         responseFuture.completeExceptionally(
-                            new IllegalStateException("Expected CreateTopicsResponse but got: " +
-                                response.responseBody().getClass().getSimpleName())
+                                new IllegalStateException("Expected CreateTopicsResponse but got: " +
+                                        response.responseBody().getClass().getSimpleName())
                         );
                     }
                 } else {
                     responseFuture.completeExceptionally(
-                        new IllegalStateException("Got no response body for CreateTopicsRequest")
+                            new IllegalStateException("Got no response body for CreateTopicsRequest")
                     );
                 }
             }

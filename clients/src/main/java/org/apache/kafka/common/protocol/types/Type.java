@@ -59,6 +59,7 @@ public abstract class Type {
 
     /**
      * Check if the type supports null values
+     *
      * @return whether or not null is a valid value for the type implementation
      */
     public boolean isNullable() {
@@ -100,6 +101,7 @@ public abstract class Type {
 
         /**
          * Short name of the type to identify it in documentation;
+         *
          * @return the name of the type
          */
         public abstract String typeName();
@@ -143,7 +145,7 @@ public abstract class Type {
     /**
      * The Boolean type represents a boolean value in a byte by using
      * the value of 0 to represent false, and 1 to represent true.
-     *
+     * <p>
      * If for some reason a value that is not 0 or 1 is read,
      * then any non-zero value will return true.
      */
@@ -967,8 +969,8 @@ public abstract class Type {
         @Override
         public String documentation() {
             return "Represents a sequence of Kafka records as " + COMPACT_BYTES + ". " +
-                "For a detailed description of records see " +
-                "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
+                    "For a detailed description of records see " +
+                    "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
         }
     };
 
@@ -1023,8 +1025,8 @@ public abstract class Type {
         @Override
         public String documentation() {
             return "Represents a sequence of Kafka records as " + NULLABLE_BYTES + ". " +
-                "For a detailed description of records see " +
-                "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
+                    "For a detailed description of records see " +
+                    "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
         }
     };
 
@@ -1080,8 +1082,8 @@ public abstract class Type {
         @Override
         public String documentation() {
             return "Represents a sequence of Kafka records as " + COMPACT_NULLABLE_BYTES + ". " +
-                "For a detailed description of records see " +
-                "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
+                    "For a detailed description of records see " +
+                    "<a href=\"/documentation/#messageformat\">Message Sets</a>.";
         }
     };
 
@@ -1157,13 +1159,13 @@ public abstract class Type {
 
     private static String toHtml() {
         DocumentedType[] types = {
-            BOOLEAN, INT8, INT16, INT32, INT64,
-            UINT16, UNSIGNED_INT32, VARINT, VARLONG, UUID, FLOAT64,
-            STRING, COMPACT_STRING, NULLABLE_STRING, COMPACT_NULLABLE_STRING,
-            BYTES, COMPACT_BYTES, NULLABLE_BYTES, COMPACT_NULLABLE_BYTES,
-            RECORDS, COMPACT_RECORDS, NULLABLE_RECORDS, COMPACT_NULLABLE_RECORDS,
-            new ArrayOf(STRING), new CompactArrayOf(COMPACT_STRING), ArrayOf.nullable(STRING), CompactArrayOf.nullable(STRING),
-            new Schema(), new NullableSchema(new Schema())};
+                BOOLEAN, INT8, INT16, INT32, INT64,
+                UINT16, UNSIGNED_INT32, VARINT, VARLONG, UUID, FLOAT64,
+                STRING, COMPACT_STRING, NULLABLE_STRING, COMPACT_NULLABLE_STRING,
+                BYTES, COMPACT_BYTES, NULLABLE_BYTES, COMPACT_NULLABLE_BYTES,
+                RECORDS, COMPACT_RECORDS, NULLABLE_RECORDS, COMPACT_NULLABLE_RECORDS,
+                new ArrayOf(STRING), new CompactArrayOf(COMPACT_STRING), ArrayOf.nullable(STRING), CompactArrayOf.nullable(STRING),
+                new Schema(), new NullableSchema(new Schema())};
 
         final StringBuilder b = new StringBuilder();
         b.append("<table class=\"data-table\"><tbody>\n");

@@ -56,27 +56,27 @@ public class QuorumControllerIntegrationTestUtils {
     /**
      * Create a broker features collection for use in a registration request. We only set MV. here.
      *
-     * @param minVersion    The minimum supported MV.
-     * @param maxVersion    The maximum supported MV.
+     * @param minVersion The minimum supported MV.
+     * @param maxVersion The maximum supported MV.
      */
     static BrokerRegistrationRequestData.FeatureCollection brokerFeatures(
-        MetadataVersion minVersion,
-        MetadataVersion maxVersion
+            MetadataVersion minVersion,
+            MetadataVersion maxVersion
     ) {
         BrokerRegistrationRequestData.FeatureCollection features = new BrokerRegistrationRequestData.FeatureCollection();
         features.add(new BrokerRegistrationRequestData.Feature()
-                         .setName(MetadataVersion.FEATURE_NAME)
-                         .setMinSupportedVersion(minVersion.featureLevel())
-                         .setMaxSupportedVersion(maxVersion.featureLevel()));
+                .setName(MetadataVersion.FEATURE_NAME)
+                .setMinSupportedVersion(minVersion.featureLevel())
+                .setMaxSupportedVersion(maxVersion.featureLevel()));
         return features;
     }
 
     /**
      * Create a broker features collection for use in a registration request. MV and given features are included.
      *
-     * @param minVersion            The minimum supported MV.
-     * @param maxVersion            The maximum supported MV.
-     * @param featureMaxVersions    The features and their max supported versions.
+     * @param minVersion         The minimum supported MV.
+     * @param maxVersion         The maximum supported MV.
+     * @param featureMaxVersions The features and their max supported versions.
      */
     static BrokerRegistrationRequestData.FeatureCollection brokerFeaturesPlusFeatureVersions(
             MetadataVersion minVersion,
@@ -90,9 +90,9 @@ public class QuorumControllerIntegrationTestUtils {
                 .setMaxSupportedVersion(maxVersion.featureLevel()));
         featureMaxVersions.forEach((key, value) -> {
             features.add(new BrokerRegistrationRequestData.Feature()
-                .setName(key)
-                .setMaxSupportedVersion(value)
-                .setMinSupportedVersion((short) 0));
+                    .setName(key)
+                    .setMaxSupportedVersion(value)
+                    .setMinSupportedVersion((short) 0));
         });
         return features;
     }
@@ -100,47 +100,46 @@ public class QuorumControllerIntegrationTestUtils {
     /**
      * Register the given number of brokers.
      *
-     * @param controller    The active controller.
-     * @param numBrokers    The number of brokers to register. We will start at 0 and increment.
-     *
-     * @return              A map from broker IDs to broker epochs.
+     * @param controller The active controller.
+     * @param numBrokers The number of brokers to register. We will start at 0 and increment.
+     * @return A map from broker IDs to broker epochs.
      */
     static Map<Integer, Long> registerBrokersAndUnfence(
-        QuorumController controller,
-        int numBrokers
+            QuorumController controller,
+            int numBrokers
     ) throws Exception {
         Map<Integer, Long> brokerEpochs = new HashMap<>();
         for (int brokerId = 0; brokerId < numBrokers; brokerId++) {
             BrokerRegistrationReply reply = controller.registerBroker(ANONYMOUS_CONTEXT,
-                new BrokerRegistrationRequestData()
-                    .setBrokerId(brokerId)
-                    .setRack(null)
-                    .setClusterId(controller.clusterId())
-                    .setFeatures(brokerFeaturesPlusFeatureVersions(MetadataVersion.MINIMUM_VERSION, MetadataVersion.latestTesting(),
-                        Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_1.featureLevel())))
-                    .setIncarnationId(Uuid.fromString("kxAT73dKQsitIedpiPtwB" + brokerId))
-                    .setLogDirs(List.of(
-                        Uuid.fromString("TESTBROKER" + Integer.toString(100000 + brokerId).substring(1) + "DIRAAAA")
-                    ))
-                    .setListeners(new ListenerCollection(
-                        List.of(
-                            new Listener()
-                                .setName("PLAINTEXT")
-                                .setHost("localhost")
-                                .setPort(9092 + brokerId)
+                    new BrokerRegistrationRequestData()
+                            .setBrokerId(brokerId)
+                            .setRack(null)
+                            .setClusterId(controller.clusterId())
+                            .setFeatures(brokerFeaturesPlusFeatureVersions(MetadataVersion.MINIMUM_VERSION, MetadataVersion.latestTesting(),
+                                    Map.of(EligibleLeaderReplicasVersion.FEATURE_NAME, EligibleLeaderReplicasVersion.ELRV_1.featureLevel())))
+                            .setIncarnationId(Uuid.fromString("kxAT73dKQsitIedpiPtwB" + brokerId))
+                            .setLogDirs(List.of(
+                                    Uuid.fromString("TESTBROKER" + Integer.toString(100000 + brokerId).substring(1) + "DIRAAAA")
+                            ))
+                            .setListeners(new ListenerCollection(
+                                            List.of(
+                                                    new Listener()
+                                                            .setName("PLAINTEXT")
+                                                            .setHost("localhost")
+                                                            .setPort(9092 + brokerId)
+                                            )
+                                    )
                             )
-                        )
-                    )
             ).get();
             brokerEpochs.put(brokerId, reply.epoch());
 
             // Send heartbeat to unfence
             controller.processBrokerHeartbeat(ANONYMOUS_CONTEXT,
-                new BrokerHeartbeatRequestData()
-                    .setWantFence(false)
-                    .setBrokerEpoch(brokerEpochs.get(brokerId))
-                    .setBrokerId(brokerId)
-                    .setCurrentMetadataOffset(100000L)
+                    new BrokerHeartbeatRequestData()
+                            .setWantFence(false)
+                            .setBrokerEpoch(brokerEpochs.get(brokerId))
+                            .setBrokerId(brokerId)
+                            .setCurrentMetadataOffset(100000L)
             ).get();
         }
 
@@ -150,25 +149,25 @@ public class QuorumControllerIntegrationTestUtils {
     /**
      * Send broker heartbeats for the provided brokers.
      *
-     * @param controller    The active controller.
-     * @param brokers       The broker IDs to send heartbeats for.
-     * @param brokerEpochs  A map from broker ID to broker epoch.
+     * @param controller   The active controller.
+     * @param brokers      The broker IDs to send heartbeats for.
+     * @param brokerEpochs A map from broker ID to broker epoch.
      */
     static void sendBrokerHeartbeatToUnfenceBrokers(
-        QuorumController controller,
-        List<Integer> brokers,
-        Map<Integer, Long> brokerEpochs
+            QuorumController controller,
+            List<Integer> brokers,
+            Map<Integer, Long> brokerEpochs
     ) throws Exception {
         if (brokers.isEmpty()) {
             return;
         }
         for (Integer brokerId : brokers) {
             BrokerHeartbeatReply reply = controller.processBrokerHeartbeat(ANONYMOUS_CONTEXT,
-                new BrokerHeartbeatRequestData()
-                    .setWantFence(false)
-                    .setBrokerEpoch(brokerEpochs.get(brokerId))
-                    .setBrokerId(brokerId)
-                    .setCurrentMetadataOffset(100000)
+                    new BrokerHeartbeatRequestData()
+                            .setWantFence(false)
+                            .setBrokerEpoch(brokerEpochs.get(brokerId))
+                            .setBrokerId(brokerId)
+                            .setCurrentMetadataOffset(100000)
             ).get();
             assertEquals(new BrokerHeartbeatReply(true, false, false, false), reply);
         }
@@ -177,16 +176,16 @@ public class QuorumControllerIntegrationTestUtils {
     /**
      * Create some topics directly on the controller.
      *
-     * @param controller            The active controller.
-     * @param prefix                The prefix to use for topic names.
-     * @param numTopics             The number of topics to create.
-     * @param replicationFactor     The replication factor to use.
+     * @param controller        The active controller.
+     * @param prefix            The prefix to use for topic names.
+     * @param numTopics         The number of topics to create.
+     * @param replicationFactor The replication factor to use.
      */
     static void createTopics(
-        QuorumController controller,
-        String prefix,
-        int numTopics,
-        int replicationFactor
+            QuorumController controller,
+            String prefix,
+            int numTopics,
+            int replicationFactor
     ) throws Exception {
         HashSet<String> describable = new HashSet<>();
         for (int i = 0; i < numTopics; i++) {
@@ -195,13 +194,13 @@ public class QuorumControllerIntegrationTestUtils {
         CreateTopicsRequestData request = new CreateTopicsRequestData();
         for (int i = 0; i < numTopics; i++) {
             request.topics().add(
-                new CreatableTopic().
-                    setName(prefix + i).
-                    setNumPartitions(1).
-                    setReplicationFactor((short) replicationFactor));
+                    new CreatableTopic().
+                            setName(prefix + i).
+                            setNumPartitions(1).
+                            setReplicationFactor((short) replicationFactor));
         }
         CreateTopicsResponseData response =
-            controller.createTopics(ANONYMOUS_CONTEXT, request, describable).get();
+                controller.createTopics(ANONYMOUS_CONTEXT, request, describable).get();
         for (int i = 0; i < numTopics; i++) {
             CreatableTopicResult result = response.topics().find(prefix + i);
             if (result.errorCode() != Errors.TOPIC_ALREADY_EXISTS.code()) {
@@ -213,8 +212,8 @@ public class QuorumControllerIntegrationTestUtils {
     /**
      * Add an event to the controller event queue that will pause it temporarily.
      *
-     * @param controller    The controller.
-     * @return              The latch that can be used to unpause the controller.
+     * @param controller The controller.
+     * @return The latch that can be used to unpause the controller.
      */
     public static CountDownLatch pause(QuorumController controller) {
         final CountDownLatch latch = new CountDownLatch(1);
@@ -231,7 +230,7 @@ public class QuorumControllerIntegrationTestUtils {
     /**
      * Force the current controller to renounce.
      *
-     * @param controller    The controller.
+     * @param controller The controller.
      */
     static void forceRenounce(QuorumController controller) throws Exception {
         CompletableFuture<Void> future = new CompletableFuture<>();

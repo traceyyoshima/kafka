@@ -33,7 +33,7 @@ import java.util.Objects;
  * <p>
  * Ex: standard JMX MBean can be constructed like <b>domainName:type=group,key1=val1,key2=val2</b>
  * <p>
- *
+ * <p>
  * Usage looks something like this:
  * <pre>{@code
  * // set up metrics:

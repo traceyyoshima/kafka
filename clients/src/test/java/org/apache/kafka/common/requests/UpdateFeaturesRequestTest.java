@@ -37,21 +37,21 @@ public class UpdateFeaturesRequestTest {
     @Test
     public void testGetErrorResponse() {
         UpdateFeaturesRequestData.FeatureUpdateKeyCollection features =
-            new UpdateFeaturesRequestData.FeatureUpdateKeyCollection();
+                new UpdateFeaturesRequestData.FeatureUpdateKeyCollection();
 
         features.add(new UpdateFeaturesRequestData.FeatureUpdateKey()
-            .setFeature("foo")
-            .setMaxVersionLevel((short) 2)
+                .setFeature("foo")
+                .setMaxVersionLevel((short) 2)
         );
 
         features.add(new UpdateFeaturesRequestData.FeatureUpdateKey()
-            .setFeature("bar")
-            .setMaxVersionLevel((short) 3)
+                .setFeature("bar")
+                .setMaxVersionLevel((short) 3)
         );
 
         UpdateFeaturesRequest request = new UpdateFeaturesRequest(
-            new UpdateFeaturesRequestData().setFeatureUpdates(features),
-            UpdateFeaturesRequestData.HIGHEST_SUPPORTED_VERSION
+                new UpdateFeaturesRequestData().setFeatureUpdates(features),
+                UpdateFeaturesRequestData.HIGHEST_SUPPORTED_VERSION
         );
 
         UpdateFeaturesResponse response = request.getErrorResponse(0, new UnknownServerException());
@@ -66,19 +66,19 @@ public class UpdateFeaturesRequestTest {
                 new UpdateFeaturesRequestData.FeatureUpdateKeyCollection();
 
         features.add(new UpdateFeaturesRequestData.FeatureUpdateKey()
-            .setFeature("foo")
-            .setMaxVersionLevel((short) 1)
-            .setAllowDowngrade(true)
+                .setFeature("foo")
+                .setMaxVersionLevel((short) 1)
+                .setAllowDowngrade(true)
         );
 
         features.add(new UpdateFeaturesRequestData.FeatureUpdateKey()
-            .setFeature("bar")
-            .setMaxVersionLevel((short) 3)
+                .setFeature("bar")
+                .setMaxVersionLevel((short) 3)
         );
 
         UpdateFeaturesRequest request = new UpdateFeaturesRequest(
-            new UpdateFeaturesRequestData().setFeatureUpdates(features),
-            UpdateFeaturesRequestData.LOWEST_SUPPORTED_VERSION
+                new UpdateFeaturesRequestData().setFeatureUpdates(features),
+                UpdateFeaturesRequestData.LOWEST_SUPPORTED_VERSION
         );
         Readable readable = request.serialize();
         request = UpdateFeaturesRequest.parse(readable, UpdateFeaturesRequestData.LOWEST_SUPPORTED_VERSION);
@@ -92,22 +92,22 @@ public class UpdateFeaturesRequestTest {
     @Test
     public void testUpdateFeaturesV1() {
         UpdateFeaturesRequestData.FeatureUpdateKeyCollection features =
-            new UpdateFeaturesRequestData.FeatureUpdateKeyCollection();
+                new UpdateFeaturesRequestData.FeatureUpdateKeyCollection();
 
         features.add(new UpdateFeaturesRequestData.FeatureUpdateKey()
-            .setFeature("foo")
-            .setMaxVersionLevel((short) 1)
-            .setUpgradeType(FeatureUpdate.UpgradeType.SAFE_DOWNGRADE.code())
+                .setFeature("foo")
+                .setMaxVersionLevel((short) 1)
+                .setUpgradeType(FeatureUpdate.UpgradeType.SAFE_DOWNGRADE.code())
         );
 
         features.add(new UpdateFeaturesRequestData.FeatureUpdateKey()
-            .setFeature("bar")
-            .setMaxVersionLevel((short) 3)
+                .setFeature("bar")
+                .setMaxVersionLevel((short) 3)
         );
 
         UpdateFeaturesRequest request = new UpdateFeaturesRequest(
-            new UpdateFeaturesRequestData().setFeatureUpdates(features),
-            UpdateFeaturesRequestData.HIGHEST_SUPPORTED_VERSION
+                new UpdateFeaturesRequestData().setFeatureUpdates(features),
+                UpdateFeaturesRequestData.HIGHEST_SUPPORTED_VERSION
         );
 
         Readable readable = request.serialize();
@@ -123,25 +123,25 @@ public class UpdateFeaturesRequestTest {
     @Test
     public void testUpdateFeaturesV1OldBoolean() {
         UpdateFeaturesRequestData.FeatureUpdateKeyCollection features =
-            new UpdateFeaturesRequestData.FeatureUpdateKeyCollection();
+                new UpdateFeaturesRequestData.FeatureUpdateKeyCollection();
 
         features.add(new UpdateFeaturesRequestData.FeatureUpdateKey()
-            .setFeature("foo")
-            .setMaxVersionLevel((short) 1)
-            .setAllowDowngrade(true)
+                .setFeature("foo")
+                .setMaxVersionLevel((short) 1)
+                .setAllowDowngrade(true)
         );
 
         features.add(new UpdateFeaturesRequestData.FeatureUpdateKey()
-            .setFeature("bar")
-            .setMaxVersionLevel((short) 3)
+                .setFeature("bar")
+                .setMaxVersionLevel((short) 3)
         );
 
         UpdateFeaturesRequest request = new UpdateFeaturesRequest(
-            new UpdateFeaturesRequestData().setFeatureUpdates(features),
-            UpdateFeaturesRequestData.HIGHEST_SUPPORTED_VERSION
+                new UpdateFeaturesRequestData().setFeatureUpdates(features),
+                UpdateFeaturesRequestData.HIGHEST_SUPPORTED_VERSION
         );
         assertThrows(UnsupportedVersionException.class, request::serialize,
-            "This should fail since allowDowngrade is not supported in v1 of this RPC");
+                "This should fail since allowDowngrade is not supported in v1 of this RPC");
     }
 
 }

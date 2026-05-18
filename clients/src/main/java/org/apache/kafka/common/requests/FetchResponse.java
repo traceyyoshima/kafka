@@ -42,25 +42,25 @@ import static org.apache.kafka.common.requests.FetchMetadata.INVALID_SESSION_ID;
 
 /**
  * This wrapper supports all versions of the Fetch API
- *
+ * <p>
  * Possible error codes:
- *
+ * <p>
  * - {@link Errors#OFFSET_OUT_OF_RANGE} If the fetch offset is out of range for a requested partition
  * - {@link Errors#TOPIC_AUTHORIZATION_FAILED} If the user does not have READ access to a requested topic
  * - {@link Errors#REPLICA_NOT_AVAILABLE} If the request is received by a broker with version < 2.6 which is not a replica
  * - {@link Errors#NOT_LEADER_OR_FOLLOWER} If the broker is not a leader or follower and either the provided leader epoch
- *     matches the known leader epoch on the broker or is empty
+ * matches the known leader epoch on the broker or is empty
  * - {@link Errors#FENCED_LEADER_EPOCH} If the epoch is lower than the broker's epoch
  * - {@link Errors#UNKNOWN_LEADER_EPOCH} If the epoch is larger than the broker's epoch
  * - {@link Errors#UNKNOWN_TOPIC_OR_PARTITION} If the broker does not have metadata for a topic or partition
  * - {@link Errors#KAFKA_STORAGE_ERROR} If the log directory for one of the requested partitions is offline
  * - {@link Errors#UNSUPPORTED_COMPRESSION_TYPE} If a fetched topic is using a compression type which is
- *     not supported by the fetch request version
+ * not supported by the fetch request version
  * - {@link Errors#CORRUPT_MESSAGE} If corrupt message encountered, e.g. when the broker scans the log to find
- *     the fetch offset after the index lookup
+ * the fetch offset after the index lookup
  * - {@link Errors#UNKNOWN_TOPIC_ID} If the request contains a topic ID unknown to the broker
  * - {@link Errors#FETCH_SESSION_TOPIC_ID_ERROR} If the request version supports topic IDs but the session does not or vice versa,
- *     or a topic ID in the request is inconsistent with a topic ID in the session
+ * or a topic ID in the request is inconsistent with a topic ID in the session
  * - {@link Errors#INCONSISTENT_TOPIC_ID} If a topic ID in the session does not match the topic ID in the log
  * - {@link Errors#UNKNOWN_SERVER_ERROR} For any unexpected errors
  */
@@ -105,7 +105,7 @@ public class FetchResponse extends AbstractResponse {
             }
             if (name != null) {
                 topicResponse.partitions().forEach(partition ->
-                    responseData.put(new TopicPartition(name, partition.partitionIndex()), partition));
+                        responseData.put(new TopicPartition(name, partition.partitionIndex()), partition));
             }
         });
         return responseData;
@@ -130,8 +130,8 @@ public class FetchResponse extends AbstractResponse {
         Map<Errors, Integer> errorCounts = new EnumMap<>(Errors.class);
         updateErrorCounts(errorCounts, error());
         data.responses().forEach(topicResponse ->
-            topicResponse.partitions().forEach(partition ->
-                updateErrorCounts(errorCounts, Errors.forCode(partition.errorCode())))
+                topicResponse.partitions().forEach(partition ->
+                        updateErrorCounts(errorCounts, Errors.forCode(partition.errorCode())))
         );
         return errorCounts;
     }
@@ -156,13 +156,13 @@ public class FetchResponse extends AbstractResponse {
     /**
      * Convenience method to find the size of a response.
      *
-     * @param version       The version of the response to use.
-     * @param partIterator  The partition iterator.
-     * @return              The response size in bytes.
+     * @param version      The version of the response to use.
+     * @param partIterator The partition iterator.
+     * @return The response size in bytes.
      */
     public static int sizeOf(short version,
                              Iterator<Map.Entry<TopicIdPartition,
-                             FetchResponseData.PartitionData>> partIterator) {
+                                     FetchResponseData.PartitionData>> partIterator) {
         // Since the throttleTimeMs and metadata field sizes are constant and fixed, we can
         // use arbitrary values here without affecting the result.
         FetchResponseData data = toMessage(Errors.NONE, 0, INVALID_SESSION_ID, partIterator, List.of());
@@ -199,10 +199,10 @@ public class FetchResponse extends AbstractResponse {
 
     public static FetchResponseData.PartitionData partitionResponse(int partition, Errors error) {
         return new FetchResponseData.PartitionData()
-            .setPartitionIndex(partition)
-            .setErrorCode(error.code())
-            .setHighWatermark(FetchResponse.INVALID_HIGH_WATERMARK)
-            .setRecords(MemoryRecords.EMPTY);
+                .setPartitionIndex(partition)
+                .setErrorCode(error.code())
+                .setHighWatermark(FetchResponse.INVALID_HIGH_WATERMARK)
+                .setRecords(MemoryRecords.EMPTY);
     }
 
     /**
@@ -215,7 +215,7 @@ public class FetchResponse extends AbstractResponse {
         if (partition.records() == null) return MemoryRecords.EMPTY;
         if (partition.records() instanceof Records) return (Records) partition.records();
         throw new ClassCastException("The record type is " + partition.records().getClass().getSimpleName() + ", which is not a subtype of " +
-            Records.class.getSimpleName() + ". This method is only safe to call if the `FetchResponse` was deserialized from bytes.");
+                Records.class.getSimpleName() + ". This method is only safe to call if the `FetchResponse` was deserialized from bytes.");
     }
 
     /**
@@ -280,16 +280,16 @@ public class FetchResponse extends AbstractResponse {
             // We have to keep the order of input topic-partition. Hence, we batch the partitions only if the last
             // batch is in the same topic group.
             FetchResponseData.FetchableTopicResponse previousTopic = topicResponseList.isEmpty() ? null
-                : topicResponseList.get(topicResponseList.size() - 1);
+                    : topicResponseList.get(topicResponseList.size() - 1);
             if (matchingTopic(previousTopic, entry.getKey()))
                 previousTopic.partitions().add(partitionData);
             else {
                 List<FetchResponseData.PartitionData> partitionResponses = new ArrayList<>();
                 partitionResponses.add(partitionData);
                 topicResponseList.add(new FetchResponseData.FetchableTopicResponse()
-                    .setTopic(entry.getKey().topicPartition().topic())
-                    .setTopicId(entry.getKey().topicId())
-                    .setPartitions(partitionResponses));
+                        .setTopic(entry.getKey().topicPartition().topic())
+                        .setTopicId(entry.getKey().topicId())
+                        .setPartitions(partitionResponses));
             }
         }
         FetchResponseData data = new FetchResponseData();

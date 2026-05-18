@@ -139,7 +139,7 @@ public class ConsumerConfigTest {
     @Test
     public void testDefaultPartitionAssignor() {
         assertEquals(Arrays.asList(RangeAssignor.class, CooperativeStickyAssignor.class),
-            new ConsumerConfig(properties).getList(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG));
+                new ConsumerConfig(properties).getList(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG));
     }
 
     @Test

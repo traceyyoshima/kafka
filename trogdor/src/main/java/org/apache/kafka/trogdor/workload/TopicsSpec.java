@@ -29,17 +29,17 @@ import java.util.Map;
 
 /**
  * TopicsSpec maps topic names to descriptions of the partitions in them.
- *
+ * <p>
  * In JSON form, this is serialized as a map whose keys are topic names,
  * and whose entries are partition descriptions.
  * Keys may also refer to multiple partitions.  For example, this specification
  * refers to 3 topics foo1, foo2, and foo3:
- *
+ * <p>
  * {
- *   "foo[1-3]" : {
- *      "numPartitions": 3
- *      "replicationFactor": 3
- *    }
+ * "foo[1-3]" : {
+ * "numPartitions": 3
+ * "replicationFactor": 3
+ * }
  * }
  */
 public class TopicsSpec extends Message {
@@ -73,7 +73,7 @@ public class TopicsSpec extends Message {
     /**
      * Enumerate the partitions inside this TopicsSpec.
      *
-     * @return      A map from topic names to PartitionsSpec objects.
+     * @return A map from topic names to PartitionsSpec objects.
      */
     public Map<String, PartitionsSpec> materialize() {
         HashMap<String, PartitionsSpec> all = new HashMap<>();

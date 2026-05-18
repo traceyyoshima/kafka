@@ -43,7 +43,7 @@ public class SimpleMemoryPool implements MemoryPool {
     public SimpleMemoryPool(long sizeInBytes, int maxSingleAllocationBytes, boolean strict, Sensor oomPeriodSensor) {
         if (sizeInBytes <= 0 || maxSingleAllocationBytes <= 0 || maxSingleAllocationBytes > sizeInBytes)
             throw new IllegalArgumentException("must provide a positive size and max single allocation size smaller than size."
-                + "provided " + sizeInBytes + " and " + maxSingleAllocationBytes + " respectively");
+                    + "provided " + sizeInBytes + " and " + maxSingleAllocationBytes + " respectively");
         this.sizeBytes = sizeInBytes;
         this.strict = strict;
         this.availableMemory = new AtomicLong(sizeInBytes);

@@ -117,8 +117,8 @@ public class ChangedSerdeTest {
         buffer.put((byte) -1);
 
         assertThrows(
-            StreamsException.class,
-            () -> CHANGED_STRING_DESERIALIZER.deserialize(TOPIC, HEADERS, serialized));
+                StreamsException.class,
+                () -> CHANGED_STRING_DESERIALIZER.deserialize(TOPIC, HEADERS, serialized));
     }
 
     @Test

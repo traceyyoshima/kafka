@@ -44,8 +44,10 @@ public class SharedTopicAdminTest {
 
     private static final Map<String, Object> EMPTY_CONFIG = Map.of();
 
-    @Mock private TopicAdmin mockTopicAdmin;
-    @Mock private Function<Map<String, Object>, TopicAdmin> factory;
+    @Mock
+    private TopicAdmin mockTopicAdmin;
+    @Mock
+    private Function<Map<String, Object>, TopicAdmin> factory;
 
     @Test
     public void shouldCloseWithoutBeingUsed() {

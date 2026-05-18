@@ -103,7 +103,8 @@ public class ThreadCache {
     /**
      * The thread cache maintains a set of {@link NamedCache}s whose names are a concatenation of the task ID and the
      * underlying store name. This method creates those names.
-     * @param taskIDString Task ID
+     *
+     * @param taskIDString        Task ID
      * @param underlyingStoreName Underlying store name
      */
     public static String nameSpaceFromTaskIdAndStore(final String taskIDString, final String underlyingStoreName) {

@@ -34,13 +34,13 @@ import java.util.NoSuchElementException;
  * As a result put calls would be interpreted as a get-append-put to the underlying RocksDB store.
  * A put(k,null) will still delete the key, ie, the full list of all values of this key.
  * Range iterators would also flatten the value lists and return the values one-by-one.
- *
+ * <p>
  * This store is used for cases where we do not want to de-duplicate values of the same keys but want to retain all such values.
  */
 @SuppressWarnings("unchecked")
 public class ListValueStore
-    extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
-    implements KeyValueStore<Bytes, byte[]> {
+        extends WrappedStateStore<KeyValueStore<Bytes, byte[]>, Bytes, byte[]>
+        implements KeyValueStore<Bytes, byte[]> {
 
     private static final Serde<List<byte[]>> LIST_SERDE = Serdes.ListSerde(ArrayList.class, Serdes.ByteArray());
 
@@ -123,7 +123,7 @@ public class ListValueStore
     }
 
     private static class ValueListIterator extends AbstractIterator<KeyValue<Bytes, byte[]>>
-        implements KeyValueIterator<Bytes, byte[]> {
+            implements KeyValueIterator<Bytes, byte[]> {
 
         private final KeyValueIterator<Bytes, byte[]> bytesIterator;
         private final List<byte[]> currList = new ArrayList<>();

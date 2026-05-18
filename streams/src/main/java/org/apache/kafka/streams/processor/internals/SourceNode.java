@@ -68,10 +68,10 @@ public class SourceNode<KIn, VIn> extends ProcessorNode<KIn, VIn, KIn, VIn> {
         // Once the backwards compatibility is not needed anymore it might be possible to
         // change this.
         processAtSourceSensor = ProcessorNodeMetrics.processAtSourceSensor(
-            Thread.currentThread().getName(),
-            context.taskId().toString(),
-            context.currentNode().name(),
-            context.metrics()
+                Thread.currentThread().getName(),
+                context.taskId().toString(),
+                context.currentNode().name(),
+                context.metrics()
         );
         super.init(context);
         this.context = context;

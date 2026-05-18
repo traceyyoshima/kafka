@@ -60,25 +60,25 @@ public class TopicMetricsTest {
         final String descriptionOfBytesTotal = "The total number of bytes consumed from this topic";
 
         when(streamsMetrics.topicLevelSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, "consumed", RecordingLevel.INFO))
-            .thenReturn(expectedSensor);
+                .thenReturn(expectedSensor);
         when(streamsMetrics.topicLevelSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, "consumed", RecordingLevel.INFO))
-            .thenReturn(expectedSensor);
+                .thenReturn(expectedSensor);
         when(streamsMetrics.topicLevelTagMap(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC)).thenReturn(tagMap);
 
         verifySensor(
-            () -> TopicMetrics.consumedSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, streamsMetrics)
+                () -> TopicMetrics.consumedSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, streamsMetrics)
         );
 
         STREAMS_METRICS_STATIC_MOCK.verify(
-            () -> StreamsMetricsImpl.addTotalCountAndSumMetricsToSensor(
-                expectedSensor,
-                TOPIC_LEVEL_GROUP,
-                tagMap,
-                recordsMetricNamePrefix,
-                bytesMetricNamePrefix,
-                descriptionOfRecordsTotal,
-                descriptionOfBytesTotal
-            )
+                () -> StreamsMetricsImpl.addTotalCountAndSumMetricsToSensor(
+                        expectedSensor,
+                        TOPIC_LEVEL_GROUP,
+                        tagMap,
+                        recordsMetricNamePrefix,
+                        bytesMetricNamePrefix,
+                        descriptionOfRecordsTotal,
+                        descriptionOfBytesTotal
+                )
         );
     }
 
@@ -90,23 +90,23 @@ public class TopicMetricsTest {
         final String descriptionOfBytesTotal = "The total number of bytes produced to this topic";
 
         when(streamsMetrics.topicLevelSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, "produced", RecordingLevel.INFO))
-            .thenReturn(expectedSensor);
+                .thenReturn(expectedSensor);
         when(streamsMetrics.topicLevelSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, "produced", RecordingLevel.INFO))
-            .thenReturn(expectedSensor);
+                .thenReturn(expectedSensor);
         when(streamsMetrics.topicLevelTagMap(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC)).thenReturn(tagMap);
 
         verifySensor(() -> TopicMetrics.producedSensor(THREAD_ID, TASK_ID, PROCESSOR_NODE_ID, TOPIC, streamsMetrics));
 
         STREAMS_METRICS_STATIC_MOCK.verify(
-            () -> StreamsMetricsImpl.addTotalCountAndSumMetricsToSensor(
-                expectedSensor,
-                TOPIC_LEVEL_GROUP,
-                tagMap,
-                recordsMetricNamePrefix,
-                bytesMetricNamePrefix,
-                descriptionOfRecordsTotal,
-                descriptionOfBytesTotal
-            )
+                () -> StreamsMetricsImpl.addTotalCountAndSumMetricsToSensor(
+                        expectedSensor,
+                        TOPIC_LEVEL_GROUP,
+                        tagMap,
+                        recordsMetricNamePrefix,
+                        bytesMetricNamePrefix,
+                        descriptionOfRecordsTotal,
+                        descriptionOfBytesTotal
+                )
         );
     }
 

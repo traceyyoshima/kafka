@@ -47,14 +47,15 @@ public class AclEntry {
     public static final String WILDCARD_HOST = "*";
     public static final String WILDCARD_RESOURCE = ResourcePattern.WILDCARD_RESOURCE;
     public static final Set<AclOperation> ACL_OPERATIONS = Arrays.stream(AclOperation.values())
-        .filter(t -> !(t == AclOperation.UNKNOWN || t == AclOperation.ANY))
-        .collect(Collectors.toSet());
+            .filter(t -> !(t == AclOperation.UNKNOWN || t == AclOperation.ANY))
+            .collect(Collectors.toSet());
 
     public static Set<AclOperation> supportedOperations(ResourceType resourceType) {
         return switch (resourceType) {
             case TOPIC -> Set.of(READ, WRITE, CREATE, DESCRIBE, DELETE, ALTER, DESCRIBE_CONFIGS, ALTER_CONFIGS);
             case GROUP -> Set.of(READ, DESCRIBE, DELETE, DESCRIBE_CONFIGS, ALTER_CONFIGS);
-            case CLUSTER -> Set.of(CREATE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, IDEMPOTENT_WRITE, ALTER, DESCRIBE);
+            case CLUSTER ->
+                    Set.of(CREATE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, IDEMPOTENT_WRITE, ALTER, DESCRIBE);
             case TRANSACTIONAL_ID -> Set.of(DESCRIBE, WRITE, TWO_PHASE_COMMIT);
             case DELEGATION_TOKEN -> Set.of(DESCRIBE);
             case USER -> Set.of(CREATE_TOKENS, DESCRIBE_TOKENS);

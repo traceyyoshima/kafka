@@ -38,8 +38,8 @@ public class FileAssertionJwtTemplateTest {
     @Test
     public void testBasicUsage() throws Exception {
         String expected = createTemplateJson(
-            Map.of("typ", "JWT", "alg", "RS256"),
-            Map.of("sub", "jdoe")
+                Map.of("typ", "JWT", "alg", "RS256"),
+                Map.of("sub", "jdoe")
         );
 
         File tmpFile = tempFile(expected);
@@ -59,10 +59,10 @@ public class FileAssertionJwtTemplateTest {
     @Test
     public void testHeaderOnly() throws Exception {
         String expected = toJson(
-            Map.of(
-                "header",
-                Map.of("typ", "JWT", "alg", "RS256")
-            )
+                Map.of(
+                        "header",
+                        Map.of("typ", "JWT", "alg", "RS256")
+                )
         );
 
         File tmpFile = tempFile(expected);
@@ -82,10 +82,10 @@ public class FileAssertionJwtTemplateTest {
     @Test
     public void testPayloadOnly() throws Exception {
         String expected = toJson(
-            Map.of(
-                "payload",
-                Map.of("sub", "jdoe")
-            )
+                Map.of(
+                        "payload",
+                        Map.of("sub", "jdoe")
+                )
         );
 
         File tmpFile = tempFile(expected);

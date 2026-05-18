@@ -33,7 +33,7 @@ public class ForeignTableJoinNode<K, V> extends ProcessorGraphNode<K, V> impleme
         }
 
         final ForeignTableJoinProcessorSupplier<?, ?, ?> subscriptionProcessor
-            = (ForeignTableJoinProcessorSupplier<?, ?, ?>) processorSupplier;
+                = (ForeignTableJoinProcessorSupplier<?, ?, ?>) processorSupplier;
         subscriptionProcessor.setUseVersionedSemantics(useVersionedSemantics);
     }
 }

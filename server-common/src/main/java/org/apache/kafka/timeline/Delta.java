@@ -24,8 +24,8 @@ interface Delta {
     /**
      * Merge the source delta into this one.
      *
-     * @param destinationEpoch  The epoch of this delta.
-     * @param source            The source delta.
+     * @param destinationEpoch The epoch of this delta.
+     * @param source           The source delta.
      */
     void mergeFrom(long destinationEpoch, Delta source);
 }

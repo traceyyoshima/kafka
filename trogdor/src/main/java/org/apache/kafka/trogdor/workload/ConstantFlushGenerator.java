@@ -16,6 +16,7 @@
  */
 
 package org.apache.kafka.trogdor.workload;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.common.errors.InterruptException;
 
@@ -26,19 +27,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * This generator will flush the producer after a specific number of messages.  This is useful to simulate a specific
  * number of messages in a batch regardless of the message size, since batch flushing is not exposed in the
  * KafkaProducer client code.
- *
+ * <p>
  * WARNING: This does not directly control when KafkaProducer will batch, this only makes best effort.  This also
  * cannot tell when a KafkaProducer batch is closed.  If the KafkaProducer sends a batch before this executes, this
  * will continue to execute on its own cadence.  To alleviate this, make sure to set `linger.ms` to allow for at least
  * `messagesPerFlush` messages to be generated, and make sure to set `batch.size` to allow for all these messages.
- *
+ * <p>
  * Here is an example spec:
- *
+ * <p>
  * {
- *    "type": "constant",
- *    "messagesPerFlush": 16
+ * "type": "constant",
+ * "messagesPerFlush": 16
  * }
- *
+ * <p>
  * This example will flush the producer every 16 messages.
  */
 

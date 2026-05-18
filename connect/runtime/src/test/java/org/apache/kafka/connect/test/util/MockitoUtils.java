@@ -32,6 +32,7 @@ public class MockitoUtils {
      * Sample usage:
      * <p>
      * {@code verify(sourceTask, anyTimes()).poll();}
+     *
      * @return the verification mode; never null
      */
     public static VerificationMode anyTimes() {
@@ -52,7 +53,8 @@ public class MockitoUtils {
      *     countInvocations(producer, "send", ProducerRecord.class, Callback.class)
      * );
      * }</pre>
-     * @param mock the mock object whose method invocations should be counted; may not be null
+     *
+     * @param mock       the mock object whose method invocations should be counted; may not be null
      * @param methodName the name of the method whose invocations should be counted; may not be null
      * @param parameters the types of the parameters for the method whose invocations should be counted;
      *                   may be empty, but may not contain any null elements

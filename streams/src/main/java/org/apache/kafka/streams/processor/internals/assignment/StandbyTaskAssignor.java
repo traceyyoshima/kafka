@@ -30,9 +30,10 @@ interface StandbyTaskAssignor extends LegacyTaskAssignor {
 
     /**
      * If a specific task can be moved from source to destination
-     * @param source Source client
-     * @param destination Destination client
-     * @param sourceTask Task to move
+     *
+     * @param source         Source client
+     * @param destination    Destination client
+     * @param sourceTask     Task to move
      * @param clientStateMap All client metadata
      * @return True if task can be moved, false otherwise
      */

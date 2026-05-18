@@ -39,7 +39,7 @@ import java.util.concurrent.CompletionStage;
 
 /**
  * An interface for Authorizers which store state in the __cluster_metadata log.
- *
+ * <p>
  * These methods must all be thread-safe.
  */
 public interface ClusterMetadataAuthorizer extends Authorizer {
@@ -51,8 +51,7 @@ public interface ClusterMetadataAuthorizer extends Authorizer {
     /**
      * Get the mutator object which should be used for creating and deleting ACLs.
      *
-     * @throws org.apache.kafka.common.errors.NotControllerException
-     *              If the aclMutator was not set.
+     * @throws org.apache.kafka.common.errors.NotControllerException If the aclMutator was not set.
      */
     AclMutator aclMutatorOrException();
 
@@ -89,9 +88,8 @@ public interface ClusterMetadataAuthorizer extends Authorizer {
      * Create ACLs. This function must be called on the active controller, or else
      * the futures will fail with NOT_CONTROLLER.
      *
-     * @param requestContext    The request context.
-     * @param aclBindings       The ACL bindings to create.
-     *
+     * @param requestContext The request context.
+     * @param aclBindings    The ACL bindings to create.
      * @return a list of futures, one per input acl binding. Each future will be completed
      * once addAcl has been called on the controller, and the ACL has been persisted to
      * the cluster metadata log.
@@ -103,12 +101,12 @@ public interface ClusterMetadataAuthorizer extends Authorizer {
         AclMutator aclMutator = aclMutatorOrException();
         aclBindings.forEach(b -> futures.add(new CompletableFuture<>()));
         ControllerRequestContext context = new ControllerRequestContext(
-            requestContext, OptionalLong.empty());
+                requestContext, OptionalLong.empty());
         aclMutator.createAcls(context, aclBindings).whenComplete((results, throwable) -> {
             if (throwable == null && results.size() != futures.size()) {
                 throwable = new UnknownServerException("Invalid size " +
-                    "of result set from controller. Expected " + futures.size() +
-                    "; got " + results.size());
+                        "of result set from controller. Expected " + futures.size() +
+                        "; got " + results.size());
             }
             if (throwable == null) {
                 for (int i = 0; i < futures.size(); i++) {
@@ -117,7 +115,7 @@ public interface ClusterMetadataAuthorizer extends Authorizer {
             } else {
                 for (CompletableFuture<AclCreateResult> future : futures) {
                     ApiException e = (throwable instanceof ApiException) ? (ApiException) throwable :
-                        ApiError.fromThrowable(throwable).exception();
+                            ApiError.fromThrowable(throwable).exception();
                     future.complete(new AclCreateResult(e));
                 }
             }
@@ -129,9 +127,8 @@ public interface ClusterMetadataAuthorizer extends Authorizer {
      * Delete ACLs based on filters. This function must be called on the active
      * controller, or else the futures will fail with NOT_CONTROLLER.
      *
-     * @param requestContext    The request context.
-     * @param filters           The ACL filters.
-     *
+     * @param requestContext The request context.
+     * @param filters        The ACL filters.
      * @return a list of futures, one per input acl filter. Each future will be completed
      * once the relevant deleteAcls have been called on the controller (if any), and th
      * ACL deletions have been persisted to the cluster metadata log (if any).
@@ -143,12 +140,12 @@ public interface ClusterMetadataAuthorizer extends Authorizer {
         AclMutator aclMutator = aclMutatorOrException();
         filters.forEach(b -> futures.add(new CompletableFuture<>()));
         ControllerRequestContext context = new ControllerRequestContext(
-            requestContext, OptionalLong.empty());
+                requestContext, OptionalLong.empty());
         aclMutator.deleteAcls(context, filters).whenComplete((results, throwable) -> {
             if (throwable == null && results.size() != futures.size()) {
                 throwable = new UnknownServerException("Invalid size " +
-                    "of result set from controller. Expected " + futures.size() +
-                    "; got " + results.size());
+                        "of result set from controller. Expected " + futures.size() +
+                        "; got " + results.size());
             }
             if (throwable == null) {
                 for (int i = 0; i < futures.size(); i++) {
@@ -157,7 +154,7 @@ public interface ClusterMetadataAuthorizer extends Authorizer {
             } else {
                 for (CompletableFuture<AclDeleteResult> future : futures) {
                     ApiException e = (throwable instanceof ApiException) ? (ApiException) throwable :
-                        ApiError.fromThrowable(throwable).exception();
+                            ApiError.fromThrowable(throwable).exception();
                     future.complete(new AclDeleteResult(e));
                 }
             }

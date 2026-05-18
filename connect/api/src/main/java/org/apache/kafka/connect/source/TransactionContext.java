@@ -36,6 +36,7 @@ public interface TransactionContext {
      * be committed by invoking this method, and also requests that that same batch be aborted by
      * invoking {@link #abortTransaction()}, the record-based operation (in this case, committing
      * the transaction) will take precedence.
+     *
      * @param record the record to commit the transaction after; may not be null.
      */
     void commitTransaction(SourceRecord record);
@@ -60,6 +61,7 @@ public interface TransactionContext {
      * be aborted by invoking this method, and also requests that that same batch be committed by
      * invoking {@link #commitTransaction()}, the record-based operation (in this case, aborting
      * the transaction) will take precedence.
+     *
      * @param record the record to abort the transaction after; may not be null.
      */
     void abortTransaction(SourceRecord record);

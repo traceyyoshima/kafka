@@ -37,14 +37,14 @@ import java.util.stream.Collectors;
  * in the delete records operation purgatory
  */
 public class DelayedDeleteRecords extends DelayedOperation {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(DelayedDeleteRecords.class);
-    
+
     //  migration from kafka.server.DelayedDeleteRecordsMetrics
     private static final KafkaMetricsGroup METRICS_GROUP = new KafkaMetricsGroup("kafka.server", "DelayedDeleteRecordsMetrics");
     private static final Meter AGGREGATE_EXPIRATION_METER = METRICS_GROUP.newMeter("ExpiresPerSec", "requests",
             TimeUnit.SECONDS);
-    
+
     private final Map<TopicPartition, DeleteRecordsPartitionStatus> deleteRecordsStatus;
     private final BiConsumer<TopicPartition, DeleteRecordsPartitionStatus> onAcksPending;
     private final Consumer<Map<TopicPartition, DeleteRecordsPartitionResult>> responseCallback;
@@ -67,14 +67,14 @@ public class DelayedDeleteRecords extends DelayedOperation {
             } else {
                 status.setAcksPending(false);
             }
-            
+
             LOG.trace("Initial partition status for {} is {}", topicPartition, status);
         });
     }
 
     /**
      * The delayed delete records operation can be completed if every partition specified in the request satisfied one of the following:
-     *
+     * <p>
      * 1) There was an error while checking if all replicas have caught up to the deleteRecordsOffset: set an error in response
      * 2) The low watermark of the partition has caught up to the deleteRecordsOffset. set the low watermark in response
      *

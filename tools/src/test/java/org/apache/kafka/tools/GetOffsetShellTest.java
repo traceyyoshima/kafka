@@ -63,9 +63,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ClusterTestDefaults(serverProperties = {
-    @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
-    @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
-    @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "4")
+        @ClusterConfigProperty(key = "auto.create.topics.enable", value = "false"),
+        @ClusterConfigProperty(key = "offsets.topic.replication.factor", value = "1"),
+        @ClusterConfigProperty(key = "offsets.topic.num.partitions", value = "4")
 })
 public class GetOffsetShellTest {
     private final int topicCount = 4;
@@ -216,10 +216,10 @@ public class GetOffsetShellTest {
         setUp();
 
         IntStream.range(1, topicCount + 1).forEach(i -> {
-            List<Row> offsets = executeAndParse("--topic", getTopicName(i));
+                    List<Row> offsets = executeAndParse("--topic", getTopicName(i));
 
-            assertEquals(expectedOffsetsForTopic(i), offsets, () -> "Offset output did not match for " + getTopicName(i));
-            }
+                    assertEquals(expectedOffsetsForTopic(i), offsets, () -> "Offset output did not match for " + getTopicName(i));
+                }
         );
     }
 
@@ -271,7 +271,7 @@ public class GetOffsetShellTest {
     public void testGetLatestOffsets() {
         setUp();
 
-        for (String time : new String[] {"-1", "latest"}) {
+        for (String time : new String[]{"-1", "latest"}) {
             List<Row> offsets = executeAndParse("--topic-partitions", "topic.*:0", "--time", time);
             List<Row> expected = List.of(
                     new Row("topic1", 0, 1L),
@@ -288,7 +288,7 @@ public class GetOffsetShellTest {
     public void testGetEarliestOffsets() {
         setUp();
 
-        for (String time : new String[] {"-2", "earliest"}) {
+        for (String time : new String[]{"-2", "earliest"}) {
             List<Row> offsets = executeAndParse("--topic-partitions", "topic.*:0", "--time", time);
             List<Row> expected = List.of(
                     new Row("topic1", 0, 0L),
@@ -305,7 +305,7 @@ public class GetOffsetShellTest {
     public void testGetOffsetsByMaxTimestamp() {
         setUp();
 
-        for (String time : new String[] {"-3", "max-timestamp"}) {
+        for (String time : new String[]{"-3", "max-timestamp"}) {
             List<Row> offsets = executeAndParse("--topic-partitions", "topic.*", "--time", time);
 
             offsets.forEach(
@@ -319,26 +319,26 @@ public class GetOffsetShellTest {
         setUp();
         setUpRemoteLogTopics();
 
-        for (String time : new String[] {"-4", "earliest-local"}) {
+        for (String time : new String[]{"-4", "earliest-local"}) {
             // test topics disable remote log storage
             // as remote log disabled, broker return the same result as earliest offset
             TestUtils.waitForCondition(() ->
-                    List.of(
-                            new Row("topic1", 0, 0L),
-                            new Row("topic2", 0, 0L),
-                            new Row("topic3", 0, 0L),
-                            new Row("topic4", 0, 0L))
-                            .equals(executeAndParse("--topic-partitions", "topic\\d+.*:0", "--time", time)),
+                            List.of(
+                                            new Row("topic1", 0, 0L),
+                                            new Row("topic2", 0, 0L),
+                                            new Row("topic3", 0, 0L),
+                                            new Row("topic4", 0, 0L))
+                                    .equals(executeAndParse("--topic-partitions", "topic\\d+.*:0", "--time", time)),
                     "testGetOffsetsByEarliestLocalSpec get topics with remote log disabled result not match");
 
             // test topics enable remote log storage
             TestUtils.waitForCondition(() ->
-                    List.of(
-                            new Row("topicRLS1", 0, 0L),
-                            new Row("topicRLS2", 0, 1L),
-                            new Row("topicRLS3", 0, 2L),
-                            new Row("topicRLS4", 0, 3L))
-                            .equals(executeAndParse("--topic-partitions", "topicRLS.*:0", "--time", time)),
+                            List.of(
+                                            new Row("topicRLS1", 0, 0L),
+                                            new Row("topicRLS2", 0, 1L),
+                                            new Row("topicRLS3", 0, 2L),
+                                            new Row("topicRLS4", 0, 3L))
+                                    .equals(executeAndParse("--topic-partitions", "topicRLS.*:0", "--time", time)),
                     "testGetOffsetsByEarliestLocalSpec get topics with remote log enabled result not match");
         }
     }
@@ -348,7 +348,7 @@ public class GetOffsetShellTest {
         setUp();
         setUpRemoteLogTopics();
 
-        for (String time : new String[] {"-5", "latest-tiered"}) {
+        for (String time : new String[]{"-5", "latest-tiered"}) {
             // test topics disable remote log storage
             // as remote log not enabled, broker return unknown offset for each topic partition and these
             // unknown offsets are ignored by GetOffsetShell hence we have empty result here.
@@ -358,11 +358,11 @@ public class GetOffsetShellTest {
             // test topics enable remote log storage
             // topicRLS1 has no result because there's no log segments being uploaded to the remote storage
             TestUtils.waitForCondition(() ->
-                    List.of(
-                            new Row("topicRLS2", 0, 0L),
-                            new Row("topicRLS3", 0, 1L),
-                            new Row("topicRLS4", 0, 2L))
-                            .equals(executeAndParse("--topic-partitions", "topicRLS.*:0", "--time", time)),
+                            List.of(
+                                            new Row("topicRLS2", 0, 0L),
+                                            new Row("topicRLS3", 0, 1L),
+                                            new Row("topicRLS4", 0, 2L))
+                                    .equals(executeAndParse("--topic-partitions", "topicRLS.*:0", "--time", time)),
                     "testGetOffsetsByLatestTieredSpec result not match");
         }
     }
@@ -372,21 +372,21 @@ public class GetOffsetShellTest {
         setUp();
         setUpRemoteLogTopics();
 
-        for (String time : new String[] {"-6", "earliest-pending-upload"}) {
+        for (String time : new String[]{"-6", "earliest-pending-upload"}) {
             // test topics disable remote log storage
             // as remote log disabled, broker returns unknown offset of each topic partition and these
             // unknown offsets are ignore by GetOffsetShell, hence we have empty result here.
             assertEquals(List.of(),
-                executeAndParse("--topic-partitions", "topic\\d+:0", "--time", time));
+                    executeAndParse("--topic-partitions", "topic\\d+:0", "--time", time));
 
             // test topics enable remote log storage
             TestUtils.waitForCondition(() ->
-                    List.of(
-                            new Row("topicRLS1", 0, 0L),
-                            new Row("topicRLS2", 0, 1L),
-                            new Row("topicRLS3", 0, 2L),
-                            new Row("topicRLS4", 0, 3L))
-                            .equals(executeAndParse("--topic-partitions", "topicRLS.*:0", "--time", time)),
+                            List.of(
+                                            new Row("topicRLS1", 0, 0L),
+                                            new Row("topicRLS2", 0, 1L),
+                                            new Row("topicRLS3", 0, 2L),
+                                            new Row("topicRLS4", 0, 3L))
+                                    .equals(executeAndParse("--topic-partitions", "topicRLS.*:0", "--time", time)),
                     "testGetOffsetsByEarliestTieredSpec result not match");
         }
     }
@@ -472,7 +472,8 @@ public class GetOffsetShellTest {
 
     @ClusterTest
     public void testPrintHelp() {
-        Exit.setExitProcedure((statusCode, message) -> { });
+        Exit.setExitProcedure((statusCode, message) -> {
+        });
         try {
             String out = ToolsTestUtils.captureStandardErr(() -> GetOffsetShell.mainNoExit("--help"));
             assertTrue(out.startsWith(GetOffsetShell.USAGE_TEXT));

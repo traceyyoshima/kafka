@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * Possible error codes.
- *
+ * <p>
  * - {@link Errors#GROUP_AUTHORIZATION_FAILED}
  * - {@link Errors#NOT_COORDINATOR}
  * - {@link Errors#COORDINATOR_NOT_AVAILABLE}

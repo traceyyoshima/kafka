@@ -100,11 +100,11 @@ public class StreamsGroupCommand {
             opts.checkArgs();
             // should have exactly one action
             long numberOfActions = Stream.of(
-                opts.listOpt,
-                opts.describeOpt,
-                opts.resetOffsetsOpt,
-                opts.deleteOpt,
-                opts.deleteOffsetsOpt
+                    opts.listOpt,
+                    opts.describeOpt,
+                    opts.resetOffsetsOpt,
+                    opts.deleteOpt,
+                    opts.deleteOffsetsOpt
             ).filter(opts.options::has).count();
             if (numberOfActions != 1)
                 throw new IllegalArgumentException("Command must include exactly one action: --list, --describe, --delete, --reset-offsets, or --delete-offsets.");
@@ -158,22 +158,22 @@ public class StreamsGroupCommand {
         }
 
         groupAssignmentsToReset.forEach((groupId, assignment) ->
-            assignment.forEach((streamsAssignment, offsetAndMetadata) ->
-                System.out.printf(format,
-                    groupId,
-                    streamsAssignment.topic(),
-                    streamsAssignment.partition(),
-                    offsetAndMetadata.offset())));
+                assignment.forEach((streamsAssignment, offsetAndMetadata) ->
+                        System.out.printf(format,
+                                groupId,
+                                streamsAssignment.topic(),
+                                streamsAssignment.partition(),
+                                offsetAndMetadata.offset())));
         System.out.println();
     }
 
     static Set<GroupState> groupStatesFromString(String input) {
         Set<GroupState> parsedStates =
-            Arrays.stream(input.split(",")).map(s -> GroupState.parse(s.trim())).collect(Collectors.toSet());
+                Arrays.stream(input.split(",")).map(s -> GroupState.parse(s.trim())).collect(Collectors.toSet());
         Set<GroupState> validStates = GroupState.groupStatesForType(GroupType.STREAMS);
         if (!validStates.containsAll(parsedStates)) {
             throw new IllegalArgumentException("Invalid state list '" + input + "'. Valid states are: " +
-                validStates.stream().map(GroupState::toString).collect(Collectors.joining(", ")));
+                    validStates.stream().map(GroupState::toString).collect(Collectors.joining(", ")));
         }
         return parsedStates;
     }
@@ -207,21 +207,21 @@ public class StreamsGroupCommand {
 
         private OffsetsUtils.OffsetsUtilsOptions getOffsetsUtilsOptions(StreamsGroupCommandOptions opts) {
             return
-                new OffsetsUtils.OffsetsUtilsOptions(opts.options.valuesOf(opts.groupOpt),
-                    opts.options.valuesOf(opts.resetToOffsetOpt),
-                    opts.options.valuesOf(opts.resetFromFileOpt),
-                    opts.options.valuesOf(opts.resetToDatetimeOpt),
-                    opts.options.valueOf(opts.resetByDurationOpt),
-                    opts.options.valueOf(opts.resetShiftByOpt),
-                    opts.options.valueOf(opts.timeoutMsOpt));
+                    new OffsetsUtils.OffsetsUtilsOptions(opts.options.valuesOf(opts.groupOpt),
+                            opts.options.valuesOf(opts.resetToOffsetOpt),
+                            opts.options.valuesOf(opts.resetFromFileOpt),
+                            opts.options.valuesOf(opts.resetToDatetimeOpt),
+                            opts.options.valueOf(opts.resetByDurationOpt),
+                            opts.options.valueOf(opts.resetShiftByOpt),
+                            opts.options.valueOf(opts.timeoutMsOpt));
         }
 
         public void listGroups() throws ExecutionException, InterruptedException {
             if (opts.options.has(opts.stateOpt)) {
                 String stateValue = opts.options.valueOf(opts.stateOpt);
                 Set<GroupState> states = (stateValue == null || stateValue.isEmpty())
-                    ? Set.of()
-                    : groupStatesFromString(stateValue);
+                        ? Set.of()
+                        : groupStatesFromString(stateValue);
                 List<GroupListing> listings = listStreamsGroupsInStates(states);
                 printGroupInfo(listings);
             } else
@@ -231,8 +231,8 @@ public class StreamsGroupCommand {
         List<String> listStreamsGroups() {
             try {
                 ListGroupsResult result = adminClient.listGroups(new ListGroupsOptions()
-                    .timeoutMs(opts.options.valueOf(opts.timeoutMsOpt).intValue())
-                    .withTypes(Set.of(GroupType.STREAMS)));
+                        .timeoutMs(opts.options.valueOf(opts.timeoutMsOpt).intValue())
+                        .withTypes(Set.of(GroupType.STREAMS)));
                 Collection<GroupListing> listings = result.all().get();
                 return listings.stream().map(GroupListing::groupId).collect(Collectors.toList());
             } catch (InterruptedException | ExecutionException e) {
@@ -242,9 +242,9 @@ public class StreamsGroupCommand {
 
         List<GroupListing> listStreamsGroupsInStates(Set<GroupState> states) throws ExecutionException, InterruptedException {
             ListGroupsResult result = adminClient.listGroups(new ListGroupsOptions()
-                .timeoutMs(opts.options.valueOf(opts.timeoutMsOpt).intValue())
-                .withTypes(Set.of(GroupType.STREAMS))
-                .inGroupStates(states));
+                    .timeoutMs(opts.options.valueOf(opts.timeoutMsOpt).intValue())
+                    .withTypes(Set.of(GroupType.STREAMS))
+                    .inGroupStates(states));
             return new ArrayList<>(result.all().get());
         }
 
@@ -264,8 +264,8 @@ public class StreamsGroupCommand {
 
         public void describeGroups() throws ExecutionException, InterruptedException {
             List<String> groupIds = opts.options.has(opts.allGroupsOpt)
-                ? new ArrayList<>(listStreamsGroups())
-                : new ArrayList<>(opts.options.valuesOf(opts.groupOpt));
+                    ? new ArrayList<>(listStreamsGroups())
+                    : new ArrayList<>(opts.options.valuesOf(opts.groupOpt));
             if (!groupIds.isEmpty()) {
                 for (String groupId : groupIds) {
                     StreamsGroupDescription description = getDescribeGroup(groupId);
@@ -283,8 +283,8 @@ public class StreamsGroupCommand {
 
         StreamsGroupDescription getDescribeGroup(String group) throws ExecutionException, InterruptedException {
             DescribeStreamsGroupsResult result = adminClient.describeStreamsGroups(
-                List.of(group),
-                withTimeoutMs(new DescribeStreamsGroupsOptions()));
+                    List.of(group),
+                    withTimeoutMs(new DescribeStreamsGroupsOptions()));
             Map<String, StreamsGroupDescription> descriptionMap = result.all().get();
             return descriptionMap.get(group);
         }
@@ -306,16 +306,16 @@ public class StreamsGroupCommand {
                     System.out.printf(fmt, "GROUP", "MEMBER", "PROCESS", "CLIENT-ID", "ASSIGNMENTS");
                     for (StreamsGroupMemberDescription member : members) {
                         System.out.printf(fmt, description.groupId(), member.memberId(), member.processId(), member.clientId(),
-                            getTasksForPrinting(member.assignment(), Optional.empty()));
+                                getTasksForPrinting(member.assignment(), Optional.empty()));
                     }
                 } else {
                     final int targetAssignmentEpochLen = 25, topologyEpochLen = 15, memberProtocolLen = 15, memberEpochLen = 15;
                     String fmt = "%" + -groupLen + "s %" + -targetAssignmentEpochLen + "s %" + -topologyEpochLen + "s%" + -maxMemberIdLen
-                        + "s %" + -memberProtocolLen + "s %" + -memberEpochLen + "s %" + -maxHostLen + "s %" + -maxClientIdLen + "s %s\n";
+                            + "s %" + -memberProtocolLen + "s %" + -memberEpochLen + "s %" + -maxHostLen + "s %" + -maxClientIdLen + "s %s\n";
                     System.out.printf(fmt, "GROUP", "TARGET-ASSIGNMENT-EPOCH", "TOPOLOGY-EPOCH", "MEMBER", "MEMBER-PROTOCOL", "MEMBER-EPOCH", "PROCESS", "CLIENT-ID", "ASSIGNMENTS");
                     for (StreamsGroupMemberDescription member : members) {
                         System.out.printf(fmt, description.groupId(), description.targetAssignmentEpoch(), description.topologyEpoch(), member.memberId(),
-                            member.isClassic() ? "classic" : "streams", member.memberEpoch(), member.processId(), member.clientId(), getTasksForPrinting(member.assignment(), Optional.of(member.targetAssignment())));
+                                member.isClassic() ? "classic" : "streams", member.memberEpoch(), member.processId(), member.clientId(), getTasksForPrinting(member.assignment(), Optional.of(member.targetAssignment())));
                     }
                 }
             }
@@ -324,8 +324,8 @@ public class StreamsGroupCommand {
         String exportOffsetsToCsv(Map<String, Map<TopicPartition, OffsetAndMetadata>> assignments) {
             boolean isSingleGroupQuery = opts.options.valuesOf(opts.groupOpt).size() == 1;
             ObjectWriter csvWriter = isSingleGroupQuery
-                ? CsvUtils.writerFor(CsvUtils.CsvRecordNoGroup.class)
-                : CsvUtils.writerFor(CsvUtils.CsvRecordWithGroup.class);
+                    ? CsvUtils.writerFor(CsvUtils.CsvRecordNoGroup.class)
+                    : CsvUtils.writerFor(CsvUtils.CsvRecordWithGroup.class);
 
             return assignments.entrySet().stream().flatMap(e -> {
                 String groupId = e.getKey();
@@ -335,8 +335,8 @@ public class StreamsGroupCommand {
                     TopicPartition k = e1.getKey();
                     OffsetAndMetadata v = e1.getValue();
                     Object csvRecord = isSingleGroupQuery
-                        ? new CsvUtils.CsvRecordNoGroup(k.topic(), k.partition(), v.offset())
-                        : new CsvUtils.CsvRecordWithGroup(groupId, k.topic(), k.partition(), v.offset());
+                            ? new CsvUtils.CsvRecordNoGroup(k.topic(), k.partition(), v.offset())
+                            : new CsvUtils.CsvRecordWithGroup(groupId, k.topic(), k.partition(), v.offset());
 
                     try {
                         return csvWriter.writeValueAsString(csvRecord);
@@ -363,11 +363,11 @@ public class StreamsGroupCommand {
         private String getTasksForPrinting(StreamsGroupMemberAssignment assignment, Optional<StreamsGroupMemberAssignment> targetAssignment) {
             StringBuilder builder = new StringBuilder();
             builder.append(prepareTaskType(assignment.activeTasks(), "ACTIVE"))
-                .append(prepareTaskType(assignment.standbyTasks(), "STANDBY"))
-                .append(prepareTaskType(assignment.warmupTasks(), "WARMUP"));
+                    .append(prepareTaskType(assignment.standbyTasks(), "STANDBY"))
+                    .append(prepareTaskType(assignment.warmupTasks(), "WARMUP"));
             targetAssignment.ifPresent(target -> builder.append(prepareTaskType(target.activeTasks(), "TARGET-ACTIVE"))
-                .append(prepareTaskType(target.standbyTasks(), "TARGET-STANDBY"))
-                .append(prepareTaskType(target.warmupTasks(), "TARGET-WARMUP")));
+                    .append(prepareTaskType(target.standbyTasks(), "TARGET-STANDBY"))
+                    .append(prepareTaskType(target.warmupTasks(), "TARGET-WARMUP")));
             return builder.toString();
         }
 
@@ -412,8 +412,8 @@ public class StreamsGroupCommand {
                     System.out.printf(fmt, "GROUP", "TOPIC", "PARTITION", "CURRENT-OFFSET", "LEADER-EPOCH", "LOG-END-OFFSET", "OFFSET-LAG");
                     for (Map.Entry<TopicPartition, OffsetsInfo> offset : offsets.entrySet()) {
                         System.out.printf(fmt, description.groupId(), offset.getKey().topic(), offset.getKey().partition(),
-                            offset.getValue().currentOffset.map(Object::toString).orElse("-"), offset.getValue().leaderEpoch.map(Object::toString).orElse("-"),
-                            offset.getValue().logEndOffset, offset.getValue().lag);
+                                offset.getValue().currentOffset.map(Object::toString).orElse("-"), offset.getValue().leaderEpoch.map(Object::toString).orElse("-"),
+                                offset.getValue().logEndOffset, offset.getValue().lag);
                     }
                 }
             }
@@ -434,12 +434,12 @@ public class StreamsGroupCommand {
                 latest.put(tp, OffsetSpec.latest());
             }
             Map<TopicPartition, ListOffsetsResult.ListOffsetsResultInfo> earliestResult = adminClient.listOffsets(
-                earliest,
-                withTimeoutMs(new ListOffsetsOptions())
+                    earliest,
+                    withTimeoutMs(new ListOffsetsOptions())
             ).all().get();
             Map<TopicPartition, ListOffsetsResult.ListOffsetsResultInfo> latestResult = adminClient.listOffsets(
-                latest,
-                withTimeoutMs(new ListOffsetsOptions())
+                    latest,
+                    withTimeoutMs(new ListOffsetsOptions())
             ).all().get();
             Map<TopicPartition, OffsetAndMetadata> committedOffsets = getCommittedOffsets(description.groupId());
 
@@ -449,11 +449,11 @@ public class StreamsGroupCommand {
                 final Optional<Integer> leaderEpoch = committedOffsets.containsKey(tp.getKey()) ? committedOffsets.get(tp.getKey()).leaderEpoch() : Optional.empty();
                 final long lag = currentOffset.map(current -> latestResult.get(tp.getKey()).offset() - current).orElseGet(() -> latestResult.get(tp.getKey()).offset() - earliestResult.get(tp.getKey()).offset());
                 output.put(tp.getKey(),
-                    new OffsetsInfo(
-                        currentOffset,
-                        leaderEpoch,
-                        latestResult.get(tp.getKey()).offset(),
-                        lag));
+                        new OffsetsInfo(
+                                currentOffset,
+                                leaderEpoch,
+                                latestResult.get(tp.getKey()).offset(),
+                                lag));
             }
             return output;
         }
@@ -461,17 +461,17 @@ public class StreamsGroupCommand {
         Map<TopicPartition, OffsetAndMetadata> getCommittedOffsets(String groupId) {
             try {
                 var sourceTopics = adminClient.describeStreamsGroups(
-                    List.of(groupId),
-                    withTimeoutMs(new DescribeStreamsGroupsOptions())
-                ).all().get().get(groupId).subtopologies().stream()
-                    .flatMap(subtopology -> Stream.concat(
-                        subtopology.sourceTopics().stream(),
-                        subtopology.repartitionSourceTopics().keySet().stream()))
-                    .collect(Collectors.toSet());
+                                List.of(groupId),
+                                withTimeoutMs(new DescribeStreamsGroupsOptions())
+                        ).all().get().get(groupId).subtopologies().stream()
+                        .flatMap(subtopology -> Stream.concat(
+                                subtopology.sourceTopics().stream(),
+                                subtopology.repartitionSourceTopics().keySet().stream()))
+                        .collect(Collectors.toSet());
 
                 var allTopicPartitions = adminClient.listStreamsGroupOffsets(
-                    Map.of(groupId, new ListStreamsGroupOffsetsSpec()),
-                    withTimeoutMs(new ListStreamsGroupOffsetsOptions())
+                        Map.of(groupId, new ListStreamsGroupOffsetsSpec()),
+                        withTimeoutMs(new ListStreamsGroupOffsetsOptions())
                 ).partitionsToOffsetAndMetadata(groupId).get();
 
                 allTopicPartitions.keySet().removeIf(tp -> !sourceTopics.contains(tp.topic()));
@@ -484,15 +484,15 @@ public class StreamsGroupCommand {
         Map<TopicPartition, OffsetAndMetadata> getInputTopicOffsets(String groupId) {
             try {
                 var sourceTopics = adminClient.describeStreamsGroups(
-                    List.of(groupId),
-                    withTimeoutMs(new DescribeStreamsGroupsOptions())
-                ).all().get().get(groupId).subtopologies().stream()
-                    .flatMap(subtopology -> subtopology.sourceTopics().stream())
-                    .collect(Collectors.toSet());
+                                List.of(groupId),
+                                withTimeoutMs(new DescribeStreamsGroupsOptions())
+                        ).all().get().get(groupId).subtopologies().stream()
+                        .flatMap(subtopology -> subtopology.sourceTopics().stream())
+                        .collect(Collectors.toSet());
 
                 var allTopicPartitions = adminClient.listStreamsGroupOffsets(
-                    Map.of(groupId, new ListStreamsGroupOffsetsSpec()),
-                    withTimeoutMs(new ListStreamsGroupOffsetsOptions())
+                        Map.of(groupId, new ListStreamsGroupOffsetsSpec()),
+                        withTimeoutMs(new ListStreamsGroupOffsetsOptions())
                 ).partitionsToOffsetAndMetadata(groupId).get();
 
                 allTopicPartitions.keySet().removeIf(tp -> !sourceTopics.contains(tp.topic()));
@@ -505,8 +505,8 @@ public class StreamsGroupCommand {
         private List<TopicPartition> filterExistingGroupTopics(String groupId, List<TopicPartition> topicPartitions) {
             try {
                 var allTopicPartitions = adminClient.listStreamsGroupOffsets(
-                    Map.of(groupId, new ListStreamsGroupOffsetsSpec()),
-                    withTimeoutMs(new ListStreamsGroupOffsetsOptions())
+                        Map.of(groupId, new ListStreamsGroupOffsetsSpec()),
+                        withTimeoutMs(new ListStreamsGroupOffsetsOptions())
                 ).partitionsToOffsetAndMetadata(groupId).get();
                 boolean allPresent = topicPartitions.stream().allMatch(allTopicPartitions::containsKey);
                 if (!allPresent) {
@@ -525,12 +525,12 @@ public class StreamsGroupCommand {
 
             Map<String, Map<TopicPartition, OffsetAndMetadata>> result = new HashMap<>();
             List<String> groupIds = opts.options.has(opts.allGroupsOpt)
-                ? listStreamsGroups()
-                : opts.options.valuesOf(opts.groupOpt);
+                    ? listStreamsGroups()
+                    : opts.options.valuesOf(opts.groupOpt);
             if (!groupIds.isEmpty()) {
                 Map<String, KafkaFuture<StreamsGroupDescription>> streamsGroups = adminClient.describeStreamsGroups(
-                    groupIds,
-                    withTimeoutMs(new DescribeStreamsGroupsOptions())
+                        groupIds,
+                        withTimeoutMs(new DescribeStreamsGroupsOptions())
                 ).describedGroups();
 
                 streamsGroups.forEach((groupId, groupDescription) -> {
@@ -547,16 +547,16 @@ public class StreamsGroupCommand {
                                     if (!internalTopics.isEmpty()) {
                                         try {
                                             adminClient.deleteTopics(
-                                                internalTopics,
-                                                withTimeoutMs(new DeleteTopicsOptions())
+                                                    internalTopics,
+                                                    withTimeoutMs(new DeleteTopicsOptions())
                                             ).all().get();
                                         } catch (InterruptedException | ExecutionException e) {
                                             if (e.getCause() instanceof UnknownTopicOrPartitionException) {
                                                 printError("Deleting internal topics for group '" + groupId + "' failed because the topics do not exist.", Optional.empty());
                                             } else if (e.getCause() instanceof UnsupportedVersionException) {
                                                 printError("Deleting internal topics is not supported by the broker version.\n" +
-                                                    "Internal topics: (" + String.join(",", internalTopics) + ").\n" +
-                                                    "Use 'kafka-topics.sh' to delete the group's internal topics.", Optional.of(e.getCause()));
+                                                        "Internal topics: (" + String.join(",", internalTopics) + ").\n" +
+                                                        "Use 'kafka-topics.sh' to delete the group's internal topics.", Optional.of(e.getCause()));
                                             } else {
                                                 printError("Deleting internal topics for group '" + groupId + "' failed due to " + e.getMessage(), Optional.of(e));
                                             }
@@ -608,14 +608,14 @@ public class StreamsGroupCommand {
 
             // Get the partitions of topics that the user did not explicitly specify the partitions
             DescribeTopicsResult describeTopicsResult = adminClient.describeTopics(
-                topicWithoutPartitions,
-                withTimeoutMs(new DescribeTopicsOptions()));
+                    topicWithoutPartitions,
+                    withTimeoutMs(new DescribeTopicsOptions()));
 
             Iterator<TopicPartition> unspecifiedPartitions = describeTopicsResult.topicNameValues().entrySet().stream().flatMap(e -> {
                 String topic = e.getKey();
                 try {
                     return e.getValue().get().partitions().stream().map(partition ->
-                        new TopicPartition(topic, partition.partition()));
+                            new TopicPartition(topic, partition.partition()));
                 } catch (ExecutionException | InterruptedException err) {
                     partitionLevelResult.put(new TopicPartition(topic, -1), err);
                     return Stream.empty();
@@ -632,9 +632,9 @@ public class StreamsGroupCommand {
         private Map.Entry<Errors, Map<TopicPartition, Throwable>> deleteOffsets(String groupId, Set<TopicPartition> partitions, Map<TopicPartition, Throwable> partitionLevelResult) {
 
             DeleteStreamsGroupOffsetsResult deleteResult = adminClient.deleteStreamsGroupOffsets(
-                groupId,
-                partitions,
-                withTimeoutMs(new DeleteStreamsGroupOffsetsOptions())
+                    groupId,
+                    partitions,
+                    withTimeoutMs(new DeleteStreamsGroupOffsetsOptions())
             );
 
             Errors topLevelException = Errors.NONE;
@@ -668,7 +668,7 @@ public class StreamsGroupCommand {
                 res = deleteOffsets(groupId, topics);
             } else {
                 CommandLineUtils.printUsageAndExit(opts.parser, "Option " + opts.deleteOffsetsOpt +
-                    " requires either" + opts.allInputTopicsOpt + " or " + opts.inputTopicOpt + " to be specified.");
+                        " requires either" + opts.allInputTopicsOpt + " or " + opts.inputTopicOpt + " to be specified.");
                 return null;
             }
 
@@ -704,16 +704,16 @@ public class StreamsGroupCommand {
 
             System.out.printf(format, "TOPIC", "PARTITION", "STATUS");
             partitionLevelResult.entrySet().stream()
-                .sorted(Comparator.comparing(e -> e.getKey().topic() + e.getKey().partition()))
-                .forEach(e -> {
-                    TopicPartition tp = e.getKey();
-                    Throwable error = e.getValue();
-                    System.out.printf(format,
-                        tp.topic(),
-                        tp.partition() >= 0 ? tp.partition() : MISSING_COLUMN_VALUE,
-                        error != null ? "Error: " + error.getMessage() : "Successful"
-                    );
-                });
+                    .sorted(Comparator.comparing(e -> e.getKey().topic() + e.getKey().partition()))
+                    .forEach(e -> {
+                        TopicPartition tp = e.getKey();
+                        Throwable error = e.getValue();
+                        System.out.printf(format,
+                                tp.topic(),
+                                tp.partition() >= 0 ? tp.partition() : MISSING_COLUMN_VALUE,
+                                error != null ? "Error: " + error.getMessage() : "Successful"
+                        );
+                    });
             System.out.println();
             // testing purpose: return the result of the delete operation
             return res;
@@ -721,8 +721,8 @@ public class StreamsGroupCommand {
 
         Map<String, Throwable> deleteGroups() {
             List<String> groupIds = opts.options.has(opts.allGroupsOpt)
-                ? new ArrayList<>(listStreamsGroups())
-                : new ArrayList<>(opts.options.valuesOf(opts.groupOpt));
+                    ? new ArrayList<>(listStreamsGroups())
+                    : new ArrayList<>(opts.options.valuesOf(opts.groupOpt));
 
             // pre admin call checks
             Map<String, Throwable> failed = preAdminCallChecks(groupIds);
@@ -738,8 +738,8 @@ public class StreamsGroupCommand {
                 }
                 // delete streams groups
                 Map<String, KafkaFuture<Void>> groupsToDelete = adminClient.deleteStreamsGroups(
-                    groupIds,
-                    withTimeoutMs(new DeleteStreamsGroupsOptions())
+                        groupIds,
+                        withTimeoutMs(new DeleteStreamsGroupsOptions())
                 ).deletedGroups();
 
                 groupsToDelete.forEach((g, f) -> {
@@ -791,8 +791,8 @@ public class StreamsGroupCommand {
                         DeleteTopicsResult deleteTopicsResult = null;
                         try {
                             deleteTopicsResult = adminClient.deleteTopics(
-                                internalTopicsToDelete,
-                                withTimeoutMs(new DeleteTopicsOptions())
+                                    internalTopicsToDelete,
+                                    withTimeoutMs(new DeleteTopicsOptions())
                             );
                             deleteTopicsResult.all().get();
                         } catch (InterruptedException | ExecutionException e) {
@@ -840,8 +840,8 @@ public class StreamsGroupCommand {
         List<GroupListing> listDetailedStreamsGroups() {
             try {
                 ListGroupsResult result = adminClient.listGroups(new ListGroupsOptions()
-                    .timeoutMs(opts.options.valueOf(opts.timeoutMsOpt).intValue())
-                    .withTypes(Set.of(GroupType.STREAMS)));
+                        .timeoutMs(opts.options.valueOf(opts.timeoutMsOpt).intValue())
+                        .withTypes(Set.of(GroupType.STREAMS)));
                 Collection<GroupListing> listings = result.all().get();
                 return listings.stream().toList();
             } catch (InterruptedException | ExecutionException e) {
@@ -855,14 +855,14 @@ public class StreamsGroupCommand {
             if (!deletedGroupIds.isEmpty()) {
                 if (internalTopicsDeletionFailures.isEmpty()) {
                     List<String> successfulGroups = deletedGroupIds.stream()
-                        .filter(groupIdsWithInternalTopics::contains)
-                        .collect(Collectors.toList());
+                            .filter(groupIdsWithInternalTopics::contains)
+                            .collect(Collectors.toList());
                     System.out.println("Deletion of associated internal topics of the streams groups ('" +
-                        String.join("', '", successfulGroups) + "') was successful.");
+                            String.join("', '", successfulGroups) + "') was successful.");
                 } else {
                     System.out.println("Deletion of some associated internal topics failed:");
                     internalTopicsDeletionFailures.forEach((group, error) ->
-                        System.out.println("* Internal topics of the streams group '" + group + "' could not be deleted due to: " + error));
+                            System.out.println("* Internal topics of the streams group '" + group + "' could not be deleted due to: " + error));
                 }
             }
         }
@@ -872,24 +872,24 @@ public class StreamsGroupCommand {
             Map<String, List<String>> groupToInternalTopics = new HashMap<>();
             try {
                 Map<String, StreamsGroupDescription> descriptionMap = adminClient.describeStreamsGroups(
-                    groupIds,
-                    withTimeoutMs(new DescribeStreamsGroupsOptions())
+                        groupIds,
+                        withTimeoutMs(new DescribeStreamsGroupsOptions())
                 ).all().get();
                 for (StreamsGroupDescription description : descriptionMap.values()) {
 
                     List<String> sourceTopics = description.subtopologies().stream()
-                        .flatMap(subtopology -> subtopology.sourceTopics().stream()).toList();
+                            .flatMap(subtopology -> subtopology.sourceTopics().stream()).toList();
 
                     List<String> internalTopics = description.subtopologies().stream()
-                        .flatMap(subtopology -> Stream.concat(
-                            subtopology.repartitionSourceTopics().keySet().stream(),
-                            subtopology.stateChangelogTopics().keySet().stream()))
-                        .filter(topic -> !sourceTopics.contains(topic))
-                        .collect(Collectors.toList());
+                            .flatMap(subtopology -> Stream.concat(
+                                    subtopology.repartitionSourceTopics().keySet().stream(),
+                                    subtopology.stateChangelogTopics().keySet().stream()))
+                            .filter(topic -> !sourceTopics.contains(topic))
+                            .collect(Collectors.toList());
                     internalTopics.removeIf(topic -> {
                         if (!isInferredInternalTopic(topic, description.groupId())) {
                             printError("The internal topic '" + topic + "' is not inferred as internal " +
-                                "and thus will not be deleted with the group '" + description.groupId() + "'.", Optional.empty());
+                                    "and thus will not be deleted with the group '" + description.groupId() + "'.", Optional.empty());
                             return true;
                         }
                         return false;
@@ -904,14 +904,14 @@ public class StreamsGroupCommand {
                         // Retrieve internal topic list if possible, and add the list of topic names to error message
                         Set<String> allTopics = adminClient.listTopics(withTimeoutMs(new ListTopicsOptions())).names().get();
                         List<String> internalTopics = allTopics.stream()
-                            .filter(topic -> groupIds.stream().anyMatch(groupId -> isInferredInternalTopic(topic, groupId)))
-                            .collect(Collectors.toList());
+                                .filter(topic -> groupIds.stream().anyMatch(groupId -> isInferredInternalTopic(topic, groupId)))
+                                .collect(Collectors.toList());
                         printError("Retrieving internal topics is not supported by the broker version.\n" +
-                            "Internal topics: (" + String.join(",", internalTopics) + ").\n" +
-                            "Use 'kafka-topics.sh' to delete the group's internal topics.", Optional.of(e.getCause()));
+                                "Internal topics: (" + String.join(",", internalTopics) + ").\n" +
+                                "Use 'kafka-topics.sh' to delete the group's internal topics.", Optional.of(e.getCause()));
                     } catch (InterruptedException | ExecutionException ex) {
                         printError("Retrieving internal topics is not supported by the broker version. " +
-                            "Use 'kafka-topics.sh' to list and delete the group's internal topics.", Optional.of(e.getCause()));
+                                "Use 'kafka-topics.sh' to list and delete the group's internal topics.", Optional.of(e.getCause()));
                     }
                 } else {
                     printError("Retrieving internal topics failed due to " + e.getMessage(), Optional.of(e));
@@ -926,9 +926,9 @@ public class StreamsGroupCommand {
                 Map<TopicPartition, OffsetAndMetadata> preparedOffsets = prepareOffsetsToReset(groupId, partitionsToReset);
                 if (!dryRun) {
                     adminClient.alterStreamsGroupOffsets(
-                        groupId,
-                        preparedOffsets,
-                        withTimeoutMs(new AlterStreamsGroupOffsetsOptions())
+                            groupId,
+                            preparedOffsets,
+                            withTimeoutMs(new AlterStreamsGroupOffsetsOptions())
                     ).all().get();
                 }
 
@@ -986,7 +986,7 @@ public class StreamsGroupCommand {
             }
 
             CommandLineUtils
-                .printUsageAndExit(opts.parser, String.format("Option '%s' requires one of the following scenarios: %s", opts.resetOffsetsOpt, opts.allResetOffsetScenarioOpts));
+                    .printUsageAndExit(opts.parser, String.format("Option '%s' requires one of the following scenarios: %s", opts.resetOffsetsOpt, opts.allResetOffsetScenarioOpts));
             return null;
         }
 
@@ -996,10 +996,10 @@ public class StreamsGroupCommand {
 
         public static boolean matchesInternalTopicFormat(final String topicName) {
             return topicName.endsWith("-changelog") || topicName.endsWith("-repartition")
-                || topicName.endsWith("-subscription-registration-topic")
-                || topicName.endsWith("-subscription-response-topic")
-                || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-\\d+-topic")
-                || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-\\d+-topic");
+                    || topicName.endsWith("-subscription-registration-topic")
+                    || topicName.endsWith("-subscription-response-topic")
+                    || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-REGISTRATION-\\d+-topic")
+                    || topicName.matches(".+-KTABLE-FK-JOIN-SUBSCRIPTION-RESPONSE-\\d+-topic");
         }
 
         Collection<StreamsGroupMemberDescription> collectGroupMembers(String groupId) throws Exception {
@@ -1078,6 +1078,7 @@ public class StreamsGroupCommand {
         }
     }
 
-    public record OffsetsInfo(Optional<Long> currentOffset, Optional<Integer> leaderEpoch, Long logEndOffset, Long lag) {
+    public record OffsetsInfo(Optional<Long> currentOffset, Optional<Integer> leaderEpoch, Long logEndOffset,
+                              Long lag) {
     }
 }

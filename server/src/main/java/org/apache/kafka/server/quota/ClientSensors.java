@@ -24,6 +24,7 @@ import java.util.Objects;
 
 /**
  * Represents the sensors aggregated per client
+ *
  * @param metricTags         quota metric tags for the client
  * @param quotaSensor        sensor that tracks the quota
  * @param throttleTimeSensor sensor that tracks the throttle time

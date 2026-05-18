@@ -44,10 +44,10 @@ public class InMemoryWindowBytesStoreSupplier implements WindowBytesStoreSupplie
     @Override
     public WindowStore<Bytes, byte[]> get() {
         return new InMemoryWindowStore(name,
-                                       retentionPeriod,
-                                       windowSize,
-                                       retainDuplicates,
-                                       metricsScope());
+                retentionPeriod,
+                windowSize,
+                retainDuplicates,
+                metricsScope());
     }
 
     @Override
@@ -80,10 +80,10 @@ public class InMemoryWindowBytesStoreSupplier implements WindowBytesStoreSupplie
     @Override
     public String toString() {
         return "InMemoryWindowBytesStoreSupplier{" +
-            "name='" + name + '\'' +
-            ", retentionPeriod=" + retentionPeriod +
-            ", windowSize=" + windowSize +
-            ", retainDuplicates=" + retainDuplicates +
-            '}';
+                "name='" + name + '\'' +
+                ", retentionPeriod=" + retentionPeriod +
+                ", windowSize=" + windowSize +
+                ", retainDuplicates=" + retainDuplicates +
+                '}';
     }
 }

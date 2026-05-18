@@ -100,7 +100,7 @@ public final class DelegationTokenDelta {
     @Override
     public String toString() {
         return "DelegationTokenDelta(" +
-            "changes=" + changes +
-            ')';
+                "changes=" + changes +
+                ')';
     }
 }

@@ -339,10 +339,10 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
         Map<String, String> config = configState.rawConnectorConfig(connector);
 
         return new ConnectorInfo(
-            connector,
-            config,
-            configState.tasks(connector),
-            connectorType(config)
+                connector,
+                config,
+                configState.tasks(connector),
+                connectorType(config)
         );
     }
 
@@ -417,32 +417,30 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
     /**
      * General-purpose validation logic for converters that are configured directly
      * in a connector config (as opposed to inherited from the worker config).
-     * @param connectorConfig the configuration for the connector; may not be null
-     * @param pluginConfigValue the {@link ConfigValue} for the converter property in the connector config;
-     *                          may be null, in which case no validation will be performed under the assumption that the
-     *                          connector will use inherit the converter settings from the worker. Some errors encountered
-     *                          during validation may be {@link ConfigValue#addErrorMessage(String) added} to this object
-     * @param pluginVersionValue the {@link ConfigValue} for the converter version property in the connector config;
      *
-     * @param pluginInterface the interface for the plugin type
-     *                        (e.g., {@code org.apache.kafka.connect.storage.Converter.class});
-     *                        may not be null
-     * @param configDefAccessor an accessor that can be used to retrieve a {@link ConfigDef}
-     *                          from an instance of the plugin type (e.g., {@code Converter::config});
-     *                          may not be null
-     * @param pluginName a lowercase, human-readable name for the type of plugin (e.g., {@code "key converter"});
-     *                   may not be null
-     * @param pluginProperty the property used to define a custom class for the plugin type
-     *                       in a connector config (e.g., {@link ConnectorConfig#KEY_CONVERTER_CLASS_CONFIG});
-     *                       may not be null
-     * @param defaultProperties any default properties to include in the configuration that will be used for
-     *                          the plugin; may be null
-
+     * @param connectorConfig    the configuration for the connector; may not be null
+     * @param pluginConfigValue  the {@link ConfigValue} for the converter property in the connector config;
+     *                           may be null, in which case no validation will be performed under the assumption that the
+     *                           connector will use inherit the converter settings from the worker. Some errors encountered
+     *                           during validation may be {@link ConfigValue#addErrorMessage(String) added} to this object
+     * @param pluginVersionValue the {@link ConfigValue} for the converter version property in the connector config;
+     * @param pluginInterface    the interface for the plugin type
+     *                           (e.g., {@code org.apache.kafka.connect.storage.Converter.class});
+     *                           may not be null
+     * @param configDefAccessor  an accessor that can be used to retrieve a {@link ConfigDef}
+     *                           from an instance of the plugin type (e.g., {@code Converter::config});
+     *                           may not be null
+     * @param pluginName         a lowercase, human-readable name for the type of plugin (e.g., {@code "key converter"});
+     *                           may not be null
+     * @param pluginProperty     the property used to define a custom class for the plugin type
+     *                           in a connector config (e.g., {@link ConnectorConfig#KEY_CONVERTER_CLASS_CONFIG});
+     *                           may not be null
+     * @param defaultProperties  any default properties to include in the configuration that will be used for
+     *                           the plugin; may be null
+     * @param <T>                the plugin class to perform validation for
      * @return a {@link ConfigInfos} object containing validation results for the plugin in the connector config,
      * or null if either no custom validation was performed (possibly because no custom plugin was defined in the
      * connector config), or if custom validation failed
-
-     * @param <T> the plugin class to perform validation for
      */
     @SuppressWarnings("unchecked")
     private <T> ConfigInfos validateConverterConfig(
@@ -620,7 +618,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
      *
      * @param request the restart request; may not be null
      * @return the restart plan, or empty if this worker has no status for the connector named in the request and therefore the
-     *         connector cannot be restarted
+     * connector cannot be restarted
      */
     public Optional<RestartPlan> buildRestartPlan(RestartRequest request) {
         String connectorName = request.connectorName();
@@ -677,7 +675,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
 
     protected boolean connectorUsesProducer(org.apache.kafka.connect.health.ConnectorType connectorType, Map<String, String> connProps) {
         return connectorType == org.apache.kafka.connect.health.ConnectorType.SOURCE
-            || SinkConnectorConfig.hasDlqTopicConfig(connProps);
+                || SinkConnectorConfig.hasDlqTopicConfig(connProps);
     }
 
     private ConfigInfos validateClientOverrides(
@@ -905,25 +903,25 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
     }
 
     private static ConfigInfos validateClientOverrides(String connName,
-                                                      String prefix,
-                                                      AbstractConfig connectorConfig,
-                                                      ConfigDef configDef,
-                                                      Class<? extends Connector> connectorClass,
-                                                      org.apache.kafka.connect.health.ConnectorType connectorType,
-                                                      ConnectorClientConfigRequest.ClientType clientType,
-                                                      Plugin<ConnectorClientConfigOverridePolicy> connectorClientConfigOverridePolicyPlugin) {
+                                                       String prefix,
+                                                       AbstractConfig connectorConfig,
+                                                       ConfigDef configDef,
+                                                       Class<? extends Connector> connectorClass,
+                                                       org.apache.kafka.connect.health.ConnectorType connectorType,
+                                                       ConnectorClientConfigRequest.ClientType clientType,
+                                                       Plugin<ConnectorClientConfigOverridePolicy> connectorClientConfigOverridePolicyPlugin) {
         Map<String, Object> clientConfigs = new HashMap<>();
         for (Map.Entry<String, Object> rawClientConfig : connectorConfig.originalsWithPrefix(prefix).entrySet()) {
             String configName = rawClientConfig.getKey();
             Object rawConfigValue = rawClientConfig.getValue();
             ConfigKey configKey = configDef.configKeys().get(configName);
             Object parsedConfigValue = configKey != null
-                ? ConfigDef.parseType(configName, rawConfigValue, configKey.type)
-                : rawConfigValue;
+                    ? ConfigDef.parseType(configName, rawConfigValue, configKey.type)
+                    : rawConfigValue;
             clientConfigs.put(configName, parsedConfigValue);
         }
         ConnectorClientConfigRequest connectorClientConfigRequest = new ConnectorClientConfigRequest(
-            connName, connectorType, connectorClass, clientConfigs, clientType);
+                connName, connectorType, connectorClass, clientConfigs, clientType);
         List<ConfigValue> configValues = connectorClientConfigOverridePolicyPlugin.get().validate(connectorClientConfigRequest);
 
         return prefixedConfigInfos(configDef.configKeys(), configValues, prefix);
@@ -965,7 +963,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
         List<ConfigInfo> configInfoList = new LinkedList<>();
 
         Map<String, ConfigValue> configValueMap = new HashMap<>();
-        for (ConfigValue configValue: configValues) {
+        for (ConfigValue configValue : configValues) {
             String configName = configValue.name();
             configValueMap.put(configName, configValue);
             if (!configKeys.containsKey(configName)) {
@@ -1021,7 +1019,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
         List<String> recommendedValues = new LinkedList<>();
 
         if (type == Type.LIST) {
-            for (Object object: configValue.recommendedValues()) {
+            for (Object object : configValue.recommendedValues()) {
                 recommendedValues.add(ConfigDef.convertToString(object, Type.STRING));
             }
         } else {
@@ -1034,6 +1032,7 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
 
     /**
      * Retrieves ConnectorType for the class specified in the connector config
+     *
      * @param connConfig the connector config, may be null
      * @return the {@link ConnectorType} of the connector, or {@link ConnectorType#UNKNOWN} if an error occurs or the
      * type cannot be determined
@@ -1060,30 +1059,30 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
      * to the given {@link Callback} if any were found.
      *
      * @param configInfos configInfos to read Errors from
-     * @param callback callback to add config error exception to
+     * @param callback    callback to add config error exception to
      * @return true if errors were found in the config
      */
     protected final boolean maybeAddConfigErrors(
-        ConfigInfos configInfos,
-        Callback<Created<ConnectorInfo>> callback
+            ConfigInfos configInfos,
+            Callback<Created<ConnectorInfo>> callback
     ) {
         int errors = configInfos.errorCount();
         boolean hasErrors = errors > 0;
         if (hasErrors) {
             StringBuilder messages = new StringBuilder();
             messages.append("Connector configuration is invalid and contains the following ")
-                .append(errors).append(" error(s):");
+                    .append(errors).append(" error(s):");
             for (ConfigInfo configInfo : configInfos.configs()) {
                 for (String msg : configInfo.configValue().errors()) {
                     messages.append('\n').append(msg);
                 }
             }
             callback.onCompletion(
-                new BadRequestException(
-                    messages.append(
-                        "\nYou can also find the above list of errors at the endpoint `/connector-plugins/{connectorType}/config/validate`"
-                    ).toString()
-                ), null
+                    new BadRequestException(
+                            messages.append(
+                                    "\nYou can also find the above list of errors at the endpoint `/connector-plugins/{connectorType}/config/validate`"
+                            ).toString()
+                    ), null
             );
         }
         return hasErrors;
@@ -1256,9 +1255,10 @@ public abstract class AbstractHerder implements Herder, TaskStatus.Listener, Con
 
     /**
      * Service external requests to alter or reset connector offsets.
+     *
      * @param connName the name of the connector whose offsets are to be modified
-     * @param offsets the offsets to be written; this should be {@code null} for offsets reset requests
-     * @param cb callback to invoke upon completion
+     * @param offsets  the offsets to be written; this should be {@code null} for offsets reset requests
+     * @param cb       callback to invoke upon completion
      */
     protected abstract void modifyConnectorOffsets(String connName, Map<Map<String, ?>, Map<String, ?>> offsets, Callback<Message> cb);
 

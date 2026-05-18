@@ -141,7 +141,7 @@ public class TestInputTopic<K, V> {
      * Send an input record with the given value and timestamp on the topic and then commit the records.
      * Does not auto advance internally tracked time.
      *
-     * @param value       the record value
+     * @param value     the record value
      * @param timestamp the record timestamp
      */
     public void pipeInput(final V value,
@@ -167,8 +167,8 @@ public class TestInputTopic<K, V> {
      * Send an input record with the given key, value and timestamp on the topic and then commit the records.
      * Does not auto advance internally tracked time.
      *
-     * @param key         the record key
-     * @param value       the record value
+     * @param key       the record key
+     * @param value     the record value
      * @param timestamp the record timestamp
      */
     public void pipeInput(final K key,

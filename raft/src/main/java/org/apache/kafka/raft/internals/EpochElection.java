@@ -25,19 +25,19 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- *  Tracks the votes cast by voters in an election held by a Nominee.
+ * Tracks the votes cast by voters in an election held by a Nominee.
  */
 public record EpochElection(Map<Integer, VoterState> voterStates) {
     public EpochElection(Set<ReplicaKey> voters) {
         this(voters.stream()
-            .collect(Collectors.toMap(ReplicaKey::id, VoterState::new))
+                .collect(Collectors.toMap(ReplicaKey::id, VoterState::new))
         );
     }
 
     /**
      * Record a vote from a voter.
      *
-     * @param voterId The id of the voter
+     * @param voterId   The id of the voter
      * @param isGranted true if the vote is granted, false if it is rejected
      * @return true if the voter had not been previously recorded
      */
@@ -45,7 +45,7 @@ public record EpochElection(Map<Integer, VoterState> voterStates) {
         VoterState voterState = getVoterStateOrThrow(voterId);
         boolean wasUnrecorded = voterState.state == VoterState.State.UNRECORDED;
         voterState.setState(
-            isGranted ? VoterState.State.GRANTED : VoterState.State.REJECTED
+                isGranted ? VoterState.State.GRANTED : VoterState.State.REJECTED
         );
         return wasUnrecorded;
     }
@@ -133,10 +133,10 @@ public record EpochElection(Map<Integer, VoterState> voterStates) {
 
     private Stream<ReplicaKey> votersOfState(VoterState.State state) {
         return voterStates
-            .values()
-            .stream()
-            .filter(voterState -> voterState.state().equals(state))
-            .map(VoterState::replicaKey);
+                .values()
+                .stream()
+                .filter(voterState -> voterState.state().equals(state))
+                .map(VoterState::replicaKey);
     }
 
     private long numGranted() {
@@ -180,9 +180,9 @@ public record EpochElection(Map<Integer, VoterState> voterStates) {
         @Override
         public String toString() {
             return String.format(
-                "VoterState(replicaKey=%s, state=%s)",
-                replicaKey,
-                state
+                    "VoterState(replicaKey=%s, state=%s)",
+                    replicaKey,
+                    state
             );
         }
     }

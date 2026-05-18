@@ -48,20 +48,20 @@ public class DirectoryIdTest {
         assertThrows(IllegalArgumentException.class, () ->
                 DirectoryId.createAssignmentMap(new int[]{1, 2}, DirectoryId.unassignedArray(3)));
         assertEquals(
-            new HashMap<Integer, Uuid>() {{
+                new HashMap<Integer, Uuid>() {{
                     put(1, Uuid.fromString("upjfkCrUR9GNn1i94ip1wg"));
                     put(2, Uuid.fromString("bCF3l0RIQjOKhUqgbivHZA"));
                     put(3, Uuid.fromString("Fg3mFhcVQlqCWRk4dZazxw"));
                     put(4, Uuid.fromString("bv9TEYi4TqOm52hLmrxT5w"));
                 }},
-            DirectoryId.createAssignmentMap(
-                    new int[] {1, 2, 3, 4},
-                    new Uuid[] {
-                            Uuid.fromString("upjfkCrUR9GNn1i94ip1wg"),
-                            Uuid.fromString("bCF3l0RIQjOKhUqgbivHZA"),
-                            Uuid.fromString("Fg3mFhcVQlqCWRk4dZazxw"),
-                            Uuid.fromString("bv9TEYi4TqOm52hLmrxT5w")
-                    })
+                DirectoryId.createAssignmentMap(
+                        new int[]{1, 2, 3, 4},
+                        new Uuid[]{
+                                Uuid.fromString("upjfkCrUR9GNn1i94ip1wg"),
+                                Uuid.fromString("bCF3l0RIQjOKhUqgbivHZA"),
+                                Uuid.fromString("Fg3mFhcVQlqCWRk4dZazxw"),
+                                Uuid.fromString("bv9TEYi4TqOm52hLmrxT5w")
+                        })
         );
     }
 
@@ -69,9 +69,9 @@ public class DirectoryIdTest {
     void testIsOnline() {
         // Given
         List<Uuid> sortedDirs = new ArrayList<>(List.of(
-            Uuid.fromString("imQKg2cXTVe8OUFNa3R9bg"),
-            Uuid.fromString("Mwy5wxTDQxmsZwGzjsaX7w"),
-            Uuid.fromString("s8rHMluuSDCnxt3FmKwiyw")
+                Uuid.fromString("imQKg2cXTVe8OUFNa3R9bg"),
+                Uuid.fromString("Mwy5wxTDQxmsZwGzjsaX7w"),
+                Uuid.fromString("s8rHMluuSDCnxt3FmKwiyw")
         ));
         sortedDirs.sort(Uuid::compareTo);
         List<Uuid> emptySortedDirs = List.of();

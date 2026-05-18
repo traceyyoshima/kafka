@@ -27,13 +27,13 @@ public interface EpochState extends Closeable {
 
     /**
      * Decide whether to grant a vote to a replica.
-     *
+     * <p>
      * It is the responsibility of the caller to invoke
      * {@link QuorumState#unattachedAddVotedState(int, ReplicaKey)} if a standard vote is granted.
      *
-     * @param replicaKey the id and directory of the replica requesting the vote
+     * @param replicaKey    the id and directory of the replica requesting the vote
      * @param isLogUpToDate whether the replica's log is at least as up-to-date as receiver’s log
-     * @param isPreVote whether the vote request is a PreVote (non-binding) or standard vote
+     * @param isPreVote     whether the vote request is a PreVote (non-binding) or standard vote
      * @return true if it can grant the vote, false otherwise
      */
     boolean canGrantVote(ReplicaKey replicaKey, boolean isLogUpToDate, boolean isPreVote);
@@ -50,7 +50,7 @@ public interface EpochState extends Closeable {
 
     /**
      * Returns the known endpoints for the leader.
-     *
+     * <p>
      * If the leader is not known then {@code Endpoints.empty()} is returned.
      */
     Endpoints leaderEndpoints();

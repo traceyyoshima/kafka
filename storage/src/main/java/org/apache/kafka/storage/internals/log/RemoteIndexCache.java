@@ -64,15 +64,15 @@ import static org.apache.kafka.storage.internals.log.LogFileUtils.TXN_INDEX_FILE
  * This is a LFU (Least Frequently Used) cache of remote index files stored in `$logdir/remote-log-index-cache`.
  * This is helpful to avoid re-fetching the index files like offset, time indexes from the remote storage for every
  * fetch call. The cache is re-initialized from the index files on disk on startup, if the index files are available.
- *
+ * <p>
  * The cache contains a garbage collection thread which will delete the files for entries that have been removed from
  * the cache.
- *
+ * <p>
  * Note that closing this cache does not delete the index files on disk.
  * Note that the cache eviction policy is based on the default implementation of Caffeine i.e.
  * <a href="https://github.com/ben-manes/caffeine/wiki/Efficiency">Window TinyLfu</a>. TinyLfu relies on a frequency
  * sketch to probabilistically estimate the historic usage of an entry.
- *
+ * <p>
  * This class is thread safe.
  */
 public class RemoteIndexCache implements Closeable {
@@ -103,13 +103,13 @@ public class RemoteIndexCache implements Closeable {
 
     /**
      * Actual cache implementation that this file wraps around.
-     *
+     * <p>
      * The requirements for this internal cache is as follows:
      * 1. Multiple threads should be able to read concurrently.
      * 2. Fetch for missing keys should not block read for available keys.
      * 3. Only one thread should fetch for a specific key.
      * 4. Should support LRU-like policy.
-     *
+     * <p>
      * We use {@link Caffeine} cache instead of implementing a thread safe LRU cache on our own.
      */
     private final Cache<Uuid, Entry> internalCache;
@@ -149,7 +149,7 @@ public class RemoteIndexCache implements Closeable {
      * @param ticker               custom ticker for testing time-based eviction (null for system ticker)
      */
     public RemoteIndexCache(long maxSize, long ttlMs, boolean recordStats, RemoteStorageManager remoteStorageManager, String logDir,
-                           Ticker ticker) throws IOException {
+                            Ticker ticker) throws IOException {
         this.remoteStorageManager = remoteStorageManager;
         cacheDir = new File(logDir, DIR_NAME);
 
@@ -658,7 +658,7 @@ public class RemoteIndexCache implements Closeable {
      * suppressed to the KafkaException.
      *
      * @param actions actions to be executes
-     * @throws IOException Any IOException encountered while executing those actions.
+     * @throws IOException    Any IOException encountered while executing those actions.
      * @throws KafkaException Any other non IOExceptions are wrapped and thrown as KafkaException
      */
     private static void tryAll(List<StorageAction<Void, Exception>> actions) throws IOException {

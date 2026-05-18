@@ -73,9 +73,9 @@ public class KafkaMetricsCollectorTest {
 
         // Define collector to test.
         collector = new KafkaMetricsCollector(
-            metricNamingStrategy,
-            time,
-            Collections.emptySet()
+                metricNamingStrategy,
+                time,
+                Collections.emptySet()
         );
 
         // Add reporter to metrics.
@@ -100,8 +100,8 @@ public class KafkaMetricsCollectorTest {
         assertEquals(2, result.size());
 
         Metric counter = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
 
         assertTrue(counter.hasSum());
         assertEquals(tags, getTags(counter.getSum().getDataPoints(0).getAttributesList()));
@@ -111,9 +111,9 @@ public class KafkaMetricsCollectorTest {
         NumberDataPoint point = counter.getSum().getDataPoints(0);
         assertEquals(2d, point.getAsDouble(), 0.0);
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(61L).getEpochSecond()) +
-            Instant.ofEpochSecond(61L).getNano(), point.getTimeUnixNano());
+                Instant.ofEpochSecond(61L).getNano(), point.getTimeUnixNano());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(1L).getEpochSecond()) +
-            Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
+                Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
     }
 
     @Test
@@ -135,8 +135,8 @@ public class KafkaMetricsCollectorTest {
         assertEquals(2, result.size());
 
         Metric counter = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
 
         assertTrue(counter.hasSum());
         assertEquals(tags, getTags(counter.getSum().getDataPoints(0).getAttributesList()));
@@ -146,9 +146,9 @@ public class KafkaMetricsCollectorTest {
         NumberDataPoint point = counter.getSum().getDataPoints(0);
         assertEquals(2d, point.getAsDouble(), 0.0);
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(61L).getEpochSecond()) +
-            Instant.ofEpochSecond(61L).getNano(), point.getTimeUnixNano());
+                Instant.ofEpochSecond(61L).getNano(), point.getTimeUnixNano());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(1L).getEpochSecond()) +
-            Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
+                Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
     }
 
     @Test
@@ -167,8 +167,8 @@ public class KafkaMetricsCollectorTest {
         assertEquals(2, result.size());
 
         Metric counter = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
 
         assertTrue(counter.hasSum());
         assertEquals(tags, getTags(counter.getSum().getDataPoints(0).getAttributesList()));
@@ -192,8 +192,8 @@ public class KafkaMetricsCollectorTest {
         assertEquals(2, result.size());
 
         Metric counter = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
 
         assertTrue(counter.hasSum());
         assertEquals(tags, getTags(counter.getSum().getDataPoints(0).getAttributesList()));
@@ -211,8 +211,8 @@ public class KafkaMetricsCollectorTest {
         assertEquals(2, result.size());
 
         Metric counter = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
 
         assertTrue(counter.hasGauge());
         assertEquals(tags, getTags(counter.getGauge().getDataPoints(0).getAttributesList()));
@@ -233,22 +233,22 @@ public class KafkaMetricsCollectorTest {
         assertEquals(5, result.size());
 
         result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(metric -> metric.getName().equals("test.domain.group1.(float|double)")).forEach(
-                doubleGauge -> {
-                    assertTrue(doubleGauge.hasGauge());
-                    assertEquals(tags, getTags(doubleGauge.getGauge().getDataPoints(0).getAttributesList()));
-                    assertEquals(99d, doubleGauge.getGauge().getDataPoints(0).getAsDouble(), 0.0);
-                });
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(metric -> metric.getName().equals("test.domain.group1.(float|double)")).forEach(
+                        doubleGauge -> {
+                            assertTrue(doubleGauge.hasGauge());
+                            assertEquals(tags, getTags(doubleGauge.getGauge().getDataPoints(0).getAttributesList()));
+                            assertEquals(99d, doubleGauge.getGauge().getDataPoints(0).getAsDouble(), 0.0);
+                        });
 
         result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(metric -> metric.getName().equals("test.domain.group1.(int|long)")).forEach(
-                intGauge -> {
-                    assertTrue(intGauge.hasGauge());
-                    assertEquals(tags, getTags(intGauge.getGauge().getDataPoints(0).getAttributesList()));
-                    assertEquals(100, intGauge.getGauge().getDataPoints(0).getAsDouble(), 0.0);
-                });
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(metric -> metric.getName().equals("test.domain.group1.(int|long)")).forEach(
+                        intGauge -> {
+                            assertTrue(intGauge.hasGauge());
+                            assertEquals(tags, getTags(intGauge.getGauge().getDataPoints(0).getAttributesList()));
+                            assertEquals(100, intGauge.getGauge().getDataPoints(0).getAsDouble(), 0.0);
+                        });
     }
 
     @Test
@@ -266,8 +266,8 @@ public class KafkaMetricsCollectorTest {
         assertEquals("test.domain.kafka.count.count", result.get(0).builder().build().getName());
         //Verify metrics with measure() method throw exception is not returned
         assertFalse(result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .anyMatch(metric -> metric.getName().equals("test.domain.group1.name1")));
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .anyMatch(metric -> metric.getName().equals("test.domain.group1.name1")));
     }
 
     @Test
@@ -315,17 +315,17 @@ public class KafkaMetricsCollectorTest {
 
 
         Metric cumulative = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
 
         NumberDataPoint point = cumulative.getSum().getDataPoints(0);
         assertEquals(AggregationTemporality.AGGREGATION_TEMPORALITY_CUMULATIVE, cumulative.getSum().getAggregationTemporality());
         assertTrue(cumulative.getSum().getIsMonotonic());
         assertEquals(7d, point.getAsDouble(), 0.0);
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(121L).getEpochSecond()) +
-            Instant.ofEpochSecond(121L).getNano(), point.getTimeUnixNano());
+                Instant.ofEpochSecond(121L).getNano(), point.getTimeUnixNano());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(1L).getEpochSecond()) +
-            Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
+                Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
     }
 
     @Test
@@ -355,17 +355,17 @@ public class KafkaMetricsCollectorTest {
         assertEquals(2, result.size());
 
         Metric cumulative = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(metric -> metric.getName().equals("test.domain.group1.name1")).findFirst().get();
 
         NumberDataPoint point = cumulative.getSum().getDataPoints(0);
         assertEquals(AggregationTemporality.AGGREGATION_TEMPORALITY_DELTA, cumulative.getSum().getAggregationTemporality());
         assertTrue(cumulative.getSum().getIsMonotonic());
         assertEquals(5d, point.getAsDouble(), 0.0);
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(121L).getEpochSecond()) +
-            Instant.ofEpochSecond(121L).getNano(), point.getTimeUnixNano());
+                Instant.ofEpochSecond(121L).getNano(), point.getTimeUnixNano());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(61L).getEpochSecond()) +
-            Instant.ofEpochSecond(61L).getNano(), point.getStartTimeUnixNano());
+                Instant.ofEpochSecond(61L).getNano(), point.getStartTimeUnixNano());
     }
 
     @Test
@@ -489,9 +489,9 @@ public class KafkaMetricsCollectorTest {
         NumberDataPoint point = counter.getSum().getDataPoints(0);
         assertEquals(1d, point.getAsDouble());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(61L).getEpochSecond()) +
-            Instant.ofEpochSecond(61L).getNano(), point.getTimeUnixNano());
+                Instant.ofEpochSecond(61L).getNano(), point.getTimeUnixNano());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(1L).getEpochSecond()) +
-            Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
+                Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
 
         // Again emit metrics as cumulative, verify the start time is unchanged and current time is
         // advanced by 60 seconds again.
@@ -506,9 +506,9 @@ public class KafkaMetricsCollectorTest {
         point = counter.getSum().getDataPoints(0);
         assertEquals(2d, point.getAsDouble(), 0.0);
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(121L).getEpochSecond()) +
-            Instant.ofEpochSecond(121L).getNano(), point.getTimeUnixNano());
+                Instant.ofEpochSecond(121L).getNano(), point.getTimeUnixNano());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(1L).getEpochSecond()) +
-            Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
+                Instant.ofEpochSecond(1L).getNano(), point.getStartTimeUnixNano());
 
 
         // Change Temporality. Emit metrics as delta, verify the temporality changes to delta and start time is reset to
@@ -526,9 +526,9 @@ public class KafkaMetricsCollectorTest {
         point = counter.getSum().getDataPoints(0);
         assertEquals(3d, point.getAsDouble(), 0.0);
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(181L).getEpochSecond()) +
-            Instant.ofEpochSecond(181L).getNano(), point.getTimeUnixNano());
+                Instant.ofEpochSecond(181L).getNano(), point.getTimeUnixNano());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(181L).getEpochSecond()) +
-            Instant.ofEpochSecond(181L).getNano(), point.getStartTimeUnixNano());
+                Instant.ofEpochSecond(181L).getNano(), point.getStartTimeUnixNano());
 
         // Again emit metrics as delta, verify the start time is tracked properly and only delta value
         // is present on response.
@@ -543,9 +543,9 @@ public class KafkaMetricsCollectorTest {
         point = counter.getSum().getDataPoints(0);
         assertEquals(1d, point.getAsDouble(), 0.0);
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(241L).getEpochSecond()) +
-            Instant.ofEpochSecond(241L).getNano(), point.getTimeUnixNano());
+                Instant.ofEpochSecond(241L).getNano(), point.getTimeUnixNano());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(181L).getEpochSecond()) +
-            Instant.ofEpochSecond(181L).getNano(), point.getStartTimeUnixNano());
+                Instant.ofEpochSecond(181L).getNano(), point.getStartTimeUnixNano());
 
         // Change Temporality. Emit metrics as cumulative, verify the temporality changes to cumulative
         // and start time is reset to current time.
@@ -562,17 +562,17 @@ public class KafkaMetricsCollectorTest {
         point = counter.getSum().getDataPoints(0);
         assertEquals(5d, point.getAsDouble(), 0.0);
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(301L).getEpochSecond()) +
-            Instant.ofEpochSecond(301L).getNano(), point.getTimeUnixNano());
+                Instant.ofEpochSecond(301L).getNano(), point.getTimeUnixNano());
         assertEquals(TimeUnit.SECONDS.toNanos(Instant.ofEpochSecond(301L).getEpochSecond()) +
-            Instant.ofEpochSecond(301L).getNano(), point.getStartTimeUnixNano());
+                Instant.ofEpochSecond(301L).getNano(), point.getStartTimeUnixNano());
     }
 
     @Test
     public void testCollectMetricsWithExcludeLabels() {
         collector = new KafkaMetricsCollector(
-            metricNamingStrategy,
-            time,
-            Collections.singleton("tag2")
+                metricNamingStrategy,
+                time,
+                Collections.singleton("tag2")
         );
 
         tags = new HashMap<>();
@@ -593,8 +593,8 @@ public class KafkaMetricsCollectorTest {
         collector.collect(testEmitter);
         List<SinglePointMetric> result = testEmitter.emittedMetrics();
         Metric metric = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(m -> m.getName().equals("test.domain.group1.nonmeasurable")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(m -> m.getName().equals("test.domain.group1.nonmeasurable")).findFirst().get();
 
         assertEquals(1, metric.getGauge().getDataPointsCount());
         NumberDataPoint point = metric.getGauge().getDataPoints(0);
@@ -603,8 +603,8 @@ public class KafkaMetricsCollectorTest {
         assertEquals("value1", point.getAttributes(0).getValue().getStringValue());
 
         metric = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(m -> m.getName().equals("test.domain.group1.counter")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(m -> m.getName().equals("test.domain.group1.counter")).findFirst().get();
 
         assertEquals(AggregationTemporality.AGGREGATION_TEMPORALITY_CUMULATIVE, metric.getSum().getAggregationTemporality());
         assertEquals(1, metric.getSum().getDataPointsCount());
@@ -620,8 +620,8 @@ public class KafkaMetricsCollectorTest {
 
         // Delta metrics.
         metric = result.stream()
-            .flatMap(metrics -> Stream.of(metrics.builder().build()))
-            .filter(m -> m.getName().equals("test.domain.group1.counter")).findFirst().get();
+                .flatMap(metrics -> Stream.of(metrics.builder().build()))
+                .filter(m -> m.getName().equals("test.domain.group1.counter")).findFirst().get();
 
         assertEquals(AggregationTemporality.AGGREGATION_TEMPORALITY_DELTA, metric.getSum().getAggregationTemporality());
         assertEquals(1, metric.getSum().getDataPointsCount());
@@ -663,10 +663,10 @@ public class KafkaMetricsCollectorTest {
 
     public static Map<String, String> getTags(List<KeyValue> attributes) {
         return attributes.stream()
-            .filter(attr -> attr.getValue().hasStringValue())
-            .collect(Collectors.toMap(
-                KeyValue::getKey,
-                attr -> attr.getValue().getStringValue()
-            ));
+                .filter(attr -> attr.getValue().hasStringValue())
+                .collect(Collectors.toMap(
+                        KeyValue::getKey,
+                        attr -> attr.getValue().getStringValue()
+                ));
     }
 }

@@ -30,6 +30,7 @@ public class DescribeDelegationTokenOptions extends AbstractOptions<DescribeDele
     /**
      * If owners is null, all the user owned tokens and tokens where user have Describe permission
      * will be returned.
+     *
      * @param owners The owners that we want to describe delegation tokens for
      * @return this instance
      */

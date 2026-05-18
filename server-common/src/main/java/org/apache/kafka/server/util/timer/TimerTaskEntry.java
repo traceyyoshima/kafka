@@ -24,8 +24,8 @@ public final class TimerTaskEntry {
     TimerTaskEntry prev;
 
     public TimerTaskEntry(
-        TimerTask timerTask,
-        long expirationMs
+            TimerTask timerTask,
+            long expirationMs
     ) {
         this.timerTask = timerTask;
         this.expirationMs = expirationMs;

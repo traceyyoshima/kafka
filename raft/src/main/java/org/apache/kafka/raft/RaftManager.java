@@ -27,10 +27,10 @@ import java.util.concurrent.CompletableFuture;
 public interface RaftManager<T> {
 
     CompletableFuture<ApiMessage> handleRequest(
-        RequestContext context,
-        RequestHeader header,
-        ApiMessage request,
-        long createdTimeMs
+            RequestContext context,
+            RequestHeader header,
+            ApiMessage request,
+            long createdTimeMs
     );
 
     /**

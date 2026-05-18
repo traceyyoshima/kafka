@@ -56,7 +56,9 @@ import static org.apache.kafka.streams.internals.ApiUtils.validateMillisecondDur
  */
 public final class TimeWindows extends Windows<TimeWindow> {
 
-    /** The size of the windows in milliseconds. */
+    /**
+     * The size of the windows in milliseconds.
+     */
     @SuppressWarnings("WeakerAccess")
     public final long sizeMs;
 
@@ -80,7 +82,7 @@ public final class TimeWindows extends Windows<TimeWindow> {
 
         if (advanceMs <= 0 || advanceMs > sizeMs) {
             throw new IllegalArgumentException(String.format("Window advancement interval should be more than zero " +
-                "and less than window duration which is %d ms, but given advancement interval is: %d ms", sizeMs, advanceMs));
+                    "and less than window duration which is %d ms, but given advancement interval is: %d ms", sizeMs, advanceMs));
         }
 
         if (graceMs < 0) {
@@ -120,7 +122,7 @@ public final class TimeWindows extends Windows<TimeWindow> {
      * The window close, after which any incoming records are considered late and will be rejected, is defined as
      * {@code windowEnd + afterWindowEnd}
      *
-     * @param size The size of the window. Must be larger than zero
+     * @param size           The size of the window. Must be larger than zero
      * @param afterWindowEnd The grace period to admit out-of-order events to a window. Must be non-negative.
      * @return a TimeWindows object with the specified size and the specified grace period
      * @throws IllegalArgumentException if {@code afterWindowEnd} is negative or can't be represented as {@code long milliseconds}
@@ -184,8 +186,8 @@ public final class TimeWindows extends Windows<TimeWindow> {
         }
         final TimeWindows that = (TimeWindows) o;
         return sizeMs == that.sizeMs &&
-            advanceMs == that.advanceMs &&
-            graceMs == that.graceMs;
+                advanceMs == that.advanceMs &&
+                graceMs == that.graceMs;
     }
 
     @Override
@@ -196,9 +198,9 @@ public final class TimeWindows extends Windows<TimeWindow> {
     @Override
     public String toString() {
         return "TimeWindows{" +
-            ", sizeMs=" + sizeMs +
-            ", advanceMs=" + advanceMs +
-            ", graceMs=" + graceMs +
-            '}';
+                ", sizeMs=" + sizeMs +
+                ", advanceMs=" + advanceMs +
+                ", graceMs=" + graceMs +
+                '}';
     }
 }

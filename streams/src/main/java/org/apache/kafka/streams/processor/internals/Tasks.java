@@ -38,7 +38,7 @@ import static org.apache.kafka.common.utils.Utils.union;
 
 /**
  * All tasks contained by the Streams instance.
- *
+ * <p>
  * Note that these tasks are shared between the TaskManager (stream thread) and the StateUpdater (restore thread),
  * i.e. all running active tasks are processed by the former and all restoring active tasks and standby tasks are
  * processed by the latter.
@@ -75,7 +75,7 @@ class Tasks implements TasksRegistry {
     @Override
     public Map<TaskId, Set<TopicPartition>> drainPendingActiveTasksForTopologies(final Set<String> currentTopologies) {
         final Map<TaskId, Set<TopicPartition>> pendingActiveTasksForTopologies =
-            filterMap(pendingActiveTasksToCreate, t -> currentTopologies.contains(t.getKey().topologyName()));
+                filterMap(pendingActiveTasksToCreate, t -> currentTopologies.contains(t.getKey().topologyName()));
 
         pendingActiveTasksToCreate.keySet().removeAll(pendingActiveTasksForTopologies.keySet());
 
@@ -85,7 +85,7 @@ class Tasks implements TasksRegistry {
     @Override
     public Map<TaskId, Set<TopicPartition>> drainPendingStandbyTasksForTopologies(final Set<String> currentTopologies) {
         final Map<TaskId, Set<TopicPartition>> pendingActiveTasksForTopologies =
-            filterMap(pendingStandbyTasksToCreate, t -> currentTopologies.contains(t.getKey().topologyName()));
+                filterMap(pendingStandbyTasksToCreate, t -> currentTopologies.contains(t.getKey().topologyName()));
 
         pendingStandbyTasksToCreate.keySet().removeAll(pendingActiveTasksForTopologies.keySet());
 
@@ -288,9 +288,9 @@ class Tasks implements TasksRegistry {
 
     private void removePartitionsForActiveTask(final TaskId taskId) {
         final Set<TopicPartition> toBeRemoved = activeTasksPerPartition.entrySet().stream()
-            .filter(e -> e.getValue().id().equals(taskId))
-            .map(Map.Entry::getKey)
-            .collect(Collectors.toSet());
+                .filter(e -> e.getValue().id().equals(taskId))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
         toBeRemoved.forEach(activeTasksPerPartition::remove);
     }
 
@@ -367,11 +367,11 @@ class Tasks implements TasksRegistry {
     @Override
     public synchronized Set<Task> allNonFailedInitializedTasks() {
         final Set<Task> nonFailedActiveTasks = activeTasksPerId.values().stream()
-            .filter(task -> !failedTaskIds.contains(task.id()))
-            .collect(Collectors.toSet());
+                .filter(task -> !failedTaskIds.contains(task.id()))
+                .collect(Collectors.toSet());
         final Set<Task> nonFailedStandbyTasks = standbyTasksPerId.values().stream()
-            .filter(task -> !failedTaskIds.contains(task.id()))
-            .collect(Collectors.toSet());
+                .filter(task -> !failedTaskIds.contains(task.id()))
+                .collect(Collectors.toSet());
         return union(HashSet::new, nonFailedActiveTasks, nonFailedStandbyTasks);
     }
 

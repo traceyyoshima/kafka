@@ -47,22 +47,22 @@ public class DescribeReplicaLogDirsResult {
      */
     public KafkaFuture<Map<TopicPartitionReplica, ReplicaLogDirInfo>> all() {
         return KafkaFuture.allOf(futures.values().toArray(new KafkaFuture<?>[0]))
-            .thenApply(v -> {
-                Map<TopicPartitionReplica, ReplicaLogDirInfo> replicaLogDirInfos = new HashMap<>();
-                for (Map.Entry<TopicPartitionReplica, KafkaFuture<ReplicaLogDirInfo>> entry : futures.entrySet()) {
-                    try {
-                        replicaLogDirInfos.put(entry.getKey(), entry.getValue().get());
-                    } catch (InterruptedException | ExecutionException e) {
-                        // This should be unreachable, because allOf ensured that all the futures completed successfully.
-                        throw new RuntimeException(e);
+                .thenApply(v -> {
+                    Map<TopicPartitionReplica, ReplicaLogDirInfo> replicaLogDirInfos = new HashMap<>();
+                    for (Map.Entry<TopicPartitionReplica, KafkaFuture<ReplicaLogDirInfo>> entry : futures.entrySet()) {
+                        try {
+                            replicaLogDirInfos.put(entry.getKey(), entry.getValue().get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            // This should be unreachable, because allOf ensured that all the futures completed successfully.
+                            throw new RuntimeException(e);
+                        }
                     }
-                }
-                return replicaLogDirInfos;
-            });
+                    return replicaLogDirInfos;
+                });
     }
 
     public static class ReplicaLogDirInfo {
-        
+
         private final String currentReplicaLogDir;
         private final long currentReplicaOffsetLag;
         private final String futureReplicaLogDir;
@@ -118,12 +118,12 @@ public class DescribeReplicaLogDirsResult {
             StringBuilder builder = new StringBuilder();
             if (futureReplicaLogDir != null) {
                 builder.append("(currentReplicaLogDir=")
-                    .append(currentReplicaLogDir)
-                    .append(", futureReplicaLogDir=")
-                    .append(futureReplicaLogDir)
-                    .append(", futureReplicaOffsetLag=")
-                    .append(futureReplicaOffsetLag)
-                    .append(")");
+                        .append(currentReplicaLogDir)
+                        .append(", futureReplicaLogDir=")
+                        .append(futureReplicaLogDir)
+                        .append(", futureReplicaOffsetLag=")
+                        .append(futureReplicaOffsetLag)
+                        .append(")");
             } else {
                 builder.append("ReplicaLogDirInfo(currentReplicaLogDir=").append(currentReplicaLogDir).append(")");
             }

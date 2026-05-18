@@ -41,11 +41,11 @@ public class RocksDbIndexedTimeOrderedWindowBytesStoreSupplier implements Window
     final WindowStoreTypes windowStoreType;
 
     public static RocksDbIndexedTimeOrderedWindowBytesStoreSupplier create(
-        final String name,
-        final Duration retentionPeriod,
-        final Duration windowSize,
-        final boolean retainDuplicates,
-        final boolean hasIndex
+            final String name,
+            final Duration retentionPeriod,
+            final Duration windowSize,
+            final boolean retainDuplicates,
+            final boolean hasIndex
     ) {
         Objects.requireNonNull(name, "name cannot be null");
         final String rpMsgPrefix = prepareMillisCheckFailMsgPrefix(retentionPeriod, "retentionPeriod");
@@ -63,38 +63,38 @@ public class RocksDbIndexedTimeOrderedWindowBytesStoreSupplier implements Window
         }
         if (windowSizeMs > retentionMs) {
             throw new IllegalArgumentException("The retention period of the window store "
-                + name + " must be no smaller than its window size. Got size=["
-                + windowSizeMs + "], retention=[" + retentionMs + "]");
+                    + name + " must be no smaller than its window size. Got size=["
+                    + windowSizeMs + "], retention=[" + retentionMs + "]");
         }
 
         return new RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
-            name,
-            retentionMs,
-            defaultSegmentInterval,
-            windowSizeMs,
-            retainDuplicates,
-            hasIndex,
-            false
+                name,
+                retentionMs,
+                defaultSegmentInterval,
+                windowSizeMs,
+                retainDuplicates,
+                hasIndex,
+                false
         );
     }
 
     // for testing only
     RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
-        final String name,
-        final long retentionPeriod,
-        final long segmentInterval,
-        final long windowSize,
-        final boolean retainDuplicates,
-        final boolean withIndex,
-        final boolean withHeaders
+            final String name,
+            final long retentionPeriod,
+            final long segmentInterval,
+            final long windowSize,
+            final boolean retainDuplicates,
+            final boolean withIndex,
+            final boolean withHeaders
     ) {
         this(
-            name,
-            retentionPeriod,
-            segmentInterval,
-            windowSize,
-            retainDuplicates,
-            determineStoreType(withIndex, withHeaders)
+                name,
+                retentionPeriod,
+                segmentInterval,
+                windowSize,
+                retainDuplicates,
+                determineStoreType(withIndex, withHeaders)
         );
     }
 
@@ -109,12 +109,12 @@ public class RocksDbIndexedTimeOrderedWindowBytesStoreSupplier implements Window
     }
 
     RocksDbIndexedTimeOrderedWindowBytesStoreSupplier(
-        final String name,
-        final long retentionPeriod,
-        final long segmentInterval,
-        final long windowSize,
-        final boolean retainDuplicates,
-        final WindowStoreTypes windowStoreType
+            final String name,
+            final long retentionPeriod,
+            final long segmentInterval,
+            final long windowSize,
+            final boolean retainDuplicates,
+            final WindowStoreTypes windowStoreType
     ) {
         this.name = name;
         this.retentionPeriod = retentionPeriod;
@@ -134,31 +134,31 @@ public class RocksDbIndexedTimeOrderedWindowBytesStoreSupplier implements Window
         switch (windowStoreType) {
             case DEFAULT_WINDOW_STORE:
                 return new RocksDBTimeOrderedWindowStore<>(
-                    new RocksDBTimeOrderedWindowSegmentedBytesStore<>(
-                        name,
-                        retentionPeriod,
-                        false,
-                        new KeyValueSegments(name, metricsScope(), retentionPeriod, segmentInterval)),
-                    retainDuplicates,
-                    windowSize);
+                        new RocksDBTimeOrderedWindowSegmentedBytesStore<>(
+                                name,
+                                retentionPeriod,
+                                false,
+                                new KeyValueSegments(name, metricsScope(), retentionPeriod, segmentInterval)),
+                        retainDuplicates,
+                        windowSize);
             case INDEXED_WINDOW_STORE:
                 return new RocksDBTimeOrderedWindowStore<>(
-                    new RocksDBTimeOrderedWindowSegmentedBytesStore<>(
-                        name,
-                        retentionPeriod,
-                        true,
-                        new KeyValueSegments(name, metricsScope(), retentionPeriod, segmentInterval)),
-                    retainDuplicates,
-                    windowSize);
+                        new RocksDBTimeOrderedWindowSegmentedBytesStore<>(
+                                name,
+                                retentionPeriod,
+                                true,
+                                new KeyValueSegments(name, metricsScope(), retentionPeriod, segmentInterval)),
+                        retainDuplicates,
+                        windowSize);
             case INDEXED_WINDOW_STORE_WITH_HEADERS:
                 return new RocksDBTimeOrderedWindowStoreWithHeaders(
-                    new RocksDBTimeOrderedWindowSegmentedBytesStore<>(
-                        name,
-                        retentionPeriod,
-                        true,
-                        new WindowSegmentsWithHeaders(name, metricsScope(), retentionPeriod, segmentInterval)),
-                    retainDuplicates,
-                    windowSize);
+                        new RocksDBTimeOrderedWindowSegmentedBytesStore<>(
+                                name,
+                                retentionPeriod,
+                                true,
+                                new WindowSegmentsWithHeaders(name, metricsScope(), retentionPeriod, segmentInterval)),
+                        retainDuplicates,
+                        windowSize);
             default:
                 throw new IllegalArgumentException("invalid window store type: " + windowStoreType);
         }
@@ -192,12 +192,12 @@ public class RocksDbIndexedTimeOrderedWindowBytesStoreSupplier implements Window
     @Override
     public String toString() {
         return "RocksDbIndexedTimeOrderedWindowBytesStoreSupplier{" +
-                   "name='" + name + '\'' +
-                   ", retentionPeriod=" + retentionPeriod +
-                   ", segmentInterval=" + segmentInterval +
-                   ", windowSize=" + windowSize +
-                   ", retainDuplicates=" + retainDuplicates +
-                   ", windowStoreType=" + windowStoreType +
-                   '}';
+                "name='" + name + '\'' +
+                ", retentionPeriod=" + retentionPeriod +
+                ", segmentInterval=" + segmentInterval +
+                ", windowSize=" + windowSize +
+                ", retainDuplicates=" + retainDuplicates +
+                ", windowStoreType=" + windowStoreType +
+                '}';
     }
 }

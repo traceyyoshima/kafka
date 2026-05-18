@@ -82,10 +82,10 @@ public class KTableReduce<K, V> implements KTableProcessorSupplier<K, V, K, V> {
         public void init(final ProcessorContext<K, Change<V>> context) {
             store = new KeyValueStoreWrapper<>(context, storeName);
             tupleForwarder = new TimestampedTupleForwarder<>(
-                store.store(),
-                context,
-                store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                sendOldValues);
+                    store.store(),
+                    context,
+                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                    sendOldValues);
         }
 
         /**
@@ -130,8 +130,8 @@ public class KTableReduce<K, V> implements KTableProcessorSupplier<K, V, K, V> {
             // if not put to store, do not forward downstream either
             if (putReturnCode != PUT_RETURN_CODE_NOT_PUT) {
                 tupleForwarder.maybeForward(
-                    record.withValue(new Change<>(newAgg, sendOldValues ? oldAgg : null, putReturnCode == PUT_RETURN_CODE_IS_LATEST))
-                        .withTimestamp(newTimestamp));
+                        record.withValue(new Change<>(newAgg, sendOldValues ? oldAgg : null, putReturnCode == PUT_RETURN_CODE_IS_LATEST))
+                                .withTimestamp(newTimestamp));
             }
         }
     }

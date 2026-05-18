@@ -78,7 +78,7 @@ public class MockAdminClient extends AdminClient {
     public static final String DEFAULT_CLUSTER_ID = "I4ZmrWqfT2e-upky_4fdPA";
 
     public static final List<String> DEFAULT_LOG_DIRS =
-        Collections.singletonList("/tmp/kafka-logs");
+            Collections.singletonList("/tmp/kafka-logs");
 
     private final List<Node> brokers;
     private final Map<String, TopicMetadata> allTopics = new HashMap<>();
@@ -207,16 +207,16 @@ public class MockAdminClient extends AdminClient {
 
         public MockAdminClient build() {
             return new MockAdminClient(brokers,
-                controller == null ? brokers.get(0) : controller,
-                clusterId,
-                defaultPartitions != null ? defaultPartitions : 1,
-                defaultReplicationFactor != null ? defaultReplicationFactor.shortValue() : Math.min(brokers.size(), 3),
-                brokerLogDirs,
-                usingRaftController,
-                featureLevels,
-                minSupportedFeatureLevels,
-                maxSupportedFeatureLevels,
-                defaultGroupConfigs);
+                    controller == null ? brokers.get(0) : controller,
+                    clusterId,
+                    defaultPartitions != null ? defaultPartitions : 1,
+                    defaultReplicationFactor != null ? defaultReplicationFactor.shortValue() : Math.min(brokers.size(), 3),
+                    brokerLogDirs,
+                    usingRaftController,
+                    featureLevels,
+                    minSupportedFeatureLevels,
+                    maxSupportedFeatureLevels,
+                    defaultGroupConfigs);
         }
     }
 
@@ -226,30 +226,30 @@ public class MockAdminClient extends AdminClient {
 
     public MockAdminClient(List<Node> brokers, Node controller) {
         this(brokers,
-            controller,
-            DEFAULT_CLUSTER_ID,
-            1,
-            brokers.size(),
-            Collections.nCopies(brokers.size(), DEFAULT_LOG_DIRS),
-            false,
-            Collections.emptyMap(),
-            Collections.emptyMap(),
-            Collections.emptyMap(),
-            Collections.emptyMap());
+                controller,
+                DEFAULT_CLUSTER_ID,
+                1,
+                brokers.size(),
+                Collections.nCopies(brokers.size(), DEFAULT_LOG_DIRS),
+                false,
+                Collections.emptyMap(),
+                Collections.emptyMap(),
+                Collections.emptyMap(),
+                Collections.emptyMap());
     }
 
     private MockAdminClient(
-        List<Node> brokers,
-        Node controller,
-        String clusterId,
-        int defaultPartitions,
-        int defaultReplicationFactor,
-        List<List<String>> brokerLogDirs,
-        boolean usingRaftController,
-        Map<String, Short> featureLevels,
-        Map<String, Short> minSupportedFeatureLevels,
-        Map<String, Short> maxSupportedFeatureLevels,
-        Map<String, String> defaultGroupConfigs
+            List<Node> brokers,
+            Node controller,
+            String clusterId,
+            int defaultPartitions,
+            int defaultReplicationFactor,
+            List<List<String>> brokerLogDirs,
+            boolean usingRaftController,
+            Map<String, Short> featureLevels,
+            Map<String, Short> minSupportedFeatureLevels,
+            Map<String, Short> maxSupportedFeatureLevels,
+            Map<String, String> defaultGroupConfigs
     ) {
         this.brokers = brokers;
         controller(controller);
@@ -698,7 +698,7 @@ public class MockAdminClient extends AdminClient {
         if (tokenFound) {
             allTokens.removeAll(tokensToRemove);
             future.complete(expiryTimestamp);
-        }   else {
+        } else {
             future.completeExceptionally(new DelegationTokenNotFoundException(""));
         }
 
@@ -762,10 +762,10 @@ public class MockAdminClient extends AdminClient {
     @Override
     public synchronized ListStreamsGroupOffsetsResult listStreamsGroupOffsets(Map<String, ListStreamsGroupOffsetsSpec> groupSpecs, ListStreamsGroupOffsetsOptions options) {
         Map<String, ListConsumerGroupOffsetsSpec> consumerGroupSpecs = groupSpecs.entrySet().stream()
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> new ListConsumerGroupOffsetsSpec().topicPartitions(entry.getValue().topicPartitions())
-            ));
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> new ListConsumerGroupOffsetsSpec().topicPartitions(entry.getValue().topicPartitions())
+                ));
         return new ListStreamsGroupOffsetsResult(listConsumerGroupOffsets(consumerGroupSpecs, new ListConsumerGroupOffsetsOptions()));
     }
 
@@ -851,7 +851,7 @@ public class MockAdminClient extends AdminClient {
                 int brokerId = Integer.parseInt(resource.name());
                 if (brokerId >= brokerConfigs.size()) {
                     throw new InvalidRequestException("Broker " + resource.name() +
-                        " not found.");
+                            " not found.");
                 }
                 return toConfigObject(brokerConfigs.get(brokerId));
             }
@@ -905,7 +905,7 @@ public class MockAdminClient extends AdminClient {
             KafkaFutureImpl<Void> future = new KafkaFutureImpl<>();
             futures.put(resource, future);
             Throwable throwable =
-                handleIncrementalResourceAlteration(resource, entry.getValue());
+                    handleIncrementalResourceAlteration(resource, entry.getValue());
             if (throwable == null) {
                 future.complete(null);
             } else {
@@ -939,7 +939,7 @@ public class MockAdminClient extends AdminClient {
                             break;
                         default:
                             return new InvalidRequestException(
-                                "Unsupported op type " + op.opType());
+                                    "Unsupported op type " + op.opType());
                     }
                 }
                 brokerConfigs.set(brokerId, newMap);
@@ -949,7 +949,7 @@ public class MockAdminClient extends AdminClient {
                 TopicMetadata topicMetadata = allTopics.get(resource.name());
                 if (topicMetadata == null) {
                     return new UnknownTopicOrPartitionException("No such topic as " +
-                        resource.name());
+                            resource.name());
                 }
                 HashMap<String, String> newMap = new HashMap<>(topicMetadata.configs);
                 for (AlterConfigOp op : ops) {
@@ -962,7 +962,7 @@ public class MockAdminClient extends AdminClient {
                             break;
                         default:
                             return new InvalidRequestException(
-                                "Unsupported op type " + op.opType());
+                                    "Unsupported op type " + op.opType());
                     }
                 }
                 topicMetadata.configs = newMap;
@@ -990,7 +990,7 @@ public class MockAdminClient extends AdminClient {
                             break;
                         default:
                             return new InvalidRequestException(
-                                "Unsupported op type " + op.opType());
+                                    "Unsupported op type " + op.opType());
                     }
                 }
                 clientMetricsConfigs.put(resourceName, newMap);
@@ -1017,7 +1017,7 @@ public class MockAdminClient extends AdminClient {
                             break;
                         default:
                             return new InvalidRequestException(
-                                "Unsupported op type " + op.opType());
+                                    "Unsupported op type " + op.opType());
                     }
                 }
                 groupConfigs.put(resourceName, newMap);
@@ -1041,19 +1041,19 @@ public class MockAdminClient extends AdminClient {
             List<String> dirs = brokerLogDirs.get(replica.brokerId());
             if (dirs == null) {
                 future.completeExceptionally(
-                    new ReplicaNotAvailableException("Can't find " + replica));
+                        new ReplicaNotAvailableException("Can't find " + replica));
             } else if (!dirs.contains(newLogDir)) {
                 future.completeExceptionally(
-                    new KafkaStorageException("Log directory " + newLogDir + " is offline"));
+                        new KafkaStorageException("Log directory " + newLogDir + " is offline"));
             } else {
                 TopicMetadata metadata = allTopics.get(replica.topic());
                 if (metadata == null || metadata.partitions.size() <= replica.partition()) {
                     future.completeExceptionally(
-                        new ReplicaNotAvailableException("Can't find " + replica));
+                            new ReplicaNotAvailableException("Can't find " + replica));
                 } else {
                     String currentLogDir = metadata.partitionLogDirs.get(replica.partition());
                     replicaMoves.put(replica,
-                        new ReplicaLogDirInfo(currentLogDir, 0, newLogDir, 0));
+                            new ReplicaLogDirInfo(currentLogDir, 0, newLogDir, 0));
                     future.complete(null);
                 }
             }
@@ -1084,11 +1084,11 @@ public class MockAdminClient extends AdminClient {
                     Map<TopicPartition, ReplicaInfo> topicPartitionReplicaInfoMap = new HashMap<>(logDirDescription.replicaInfos());
                     topicPartitionReplicaInfoMap.put(new TopicPartition(topicName, topicPartitionInfo.partition()), new ReplicaInfo(0, 0, false));
                     logDirDescriptionMap.put(partitionLogDirs.get(0), new LogDirDescription(
-                        logDirDescription.error(),
-                        topicPartitionReplicaInfoMap,
-                        logDirDescription.totalBytes().orElse(DescribeLogDirsResponse.UNKNOWN_VOLUME_BYTES),
-                        logDirDescription.usableBytes().orElse(DescribeLogDirsResponse.UNKNOWN_VOLUME_BYTES),
-                        logDirDescription.isCordoned()));
+                            logDirDescription.error(),
+                            topicPartitionReplicaInfoMap,
+                            logDirDescription.totalBytes().orElse(DescribeLogDirsResponse.UNKNOWN_VOLUME_BYTES),
+                            logDirDescription.usableBytes().orElse(DescribeLogDirsResponse.UNKNOWN_VOLUME_BYTES),
+                            logDirDescription.isCordoned()));
                 }
             }
         }
@@ -1116,9 +1116,9 @@ public class MockAdminClient extends AdminClient {
                 String currentLogDir = currentLogDir(replica);
                 if (currentLogDir == null) {
                     future.complete(new ReplicaLogDirInfo(null,
-                        DescribeLogDirsResponse.INVALID_OFFSET_LAG,
-                        null,
-                        DescribeLogDirsResponse.INVALID_OFFSET_LAG));
+                            DescribeLogDirsResponse.INVALID_OFFSET_LAG,
+                            null,
+                            DescribeLogDirsResponse.INVALID_OFFSET_LAG));
                 } else {
                     ReplicaLogDirInfo info = replicaMoves.get(replica);
                     future.complete(Objects.requireNonNullElseGet(info, () -> new ReplicaLogDirInfo(currentLogDir, 0, null, 0)));
@@ -1188,12 +1188,12 @@ public class MockAdminClient extends AdminClient {
         TopicMetadata metadata = allTopics.get(partition.topic());
         if (metadata == null) {
             throw new RuntimeException("Internal MockAdminClient logic error: found " +
-                "reassignment for " + partition + ", but no TopicMetadata");
+                    "reassignment for " + partition + ", but no TopicMetadata");
         }
         TopicPartitionInfo info = metadata.partitions.get(partition.partition());
         if (info == null) {
             throw new RuntimeException("Internal MockAdminClient logic error: found " +
-                "reassignment for " + partition + ", but no TopicPartitionInfo");
+                    "reassignment for " + partition + ", but no TopicPartitionInfo");
         }
         List<Integer> replicas = new ArrayList<>();
         List<Integer> removingReplicas = new ArrayList<>();
@@ -1278,14 +1278,14 @@ public class MockAdminClient extends AdminClient {
         }
         return new DescribeFeaturesResult(KafkaFuture.completedFuture(
                 new FeatureMetadata(finalizedFeatures,
-                    Optional.of(123L),
-                    supportedFeatures)));
+                        Optional.of(123L),
+                        supportedFeatures)));
     }
 
     @Override
     public UpdateFeaturesResult updateFeatures(
-        Map<String, FeatureUpdate> featureUpdates,
-        UpdateFeaturesOptions options
+            Map<String, FeatureUpdate> featureUpdates,
+            UpdateFeaturesOptions options
     ) {
         Throwable error = null;
         for (Map.Entry<String, FeatureUpdate> entry : featureUpdates.entrySet()) {
@@ -1474,14 +1474,15 @@ public class MockAdminClient extends AdminClient {
     public synchronized DescribeStreamsGroupsResult describeStreamsGroups(Collection<String> groupIds, DescribeStreamsGroupsOptions options) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
-    
+
     @Override
     public synchronized DescribeClassicGroupsResult describeClassicGroups(Collection<String> groupIds, DescribeClassicGroupsOptions options) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public synchronized void close(Duration timeout) {}
+    public synchronized void close(Duration timeout) {
+    }
 
     public synchronized void updateBeginningOffsets(Map<TopicPartition, Long> newOffsets) {
         beginningOffsets.putAll(newOffsets);

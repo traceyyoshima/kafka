@@ -116,6 +116,7 @@ class KerberosRule {
      * Replace the numbered parameters of the form $n where n is from 0 to
      * the length of params - 1. Normal text is copied directly and $n is replaced
      * by the corresponding parameter.
+     *
      * @param format the string to replace parameters again
      * @param params the list of parameters
      * @return the generated string with the parameter references replaced.
@@ -152,9 +153,10 @@ class KerberosRule {
     /**
      * Replace the matches of the from pattern in the base string with the value
      * of the to string.
-     * @param base the string to transform
-     * @param from the pattern to look for in the base string
-     * @param to the string to replace matches of the pattern with
+     *
+     * @param base   the string to transform
+     * @param from   the pattern to look for in the base string
+     * @param to     the string to replace matches of the pattern with
      * @param repeat whether the substitution should be repeated
      * @return
      */
@@ -171,8 +173,9 @@ class KerberosRule {
     /**
      * Try to apply this rule to the given name represented as a parameter
      * array.
+     *
      * @param params first element is the realm, second and later elements are
-     *        are the components of the name "a/b@FOO" -> {"FOO", "a", "b"}
+     *               are the components of the name "a/b@FOO" -> {"FOO", "a", "b"}
      * @return the short name if this rule applies or null
      * @throws IOException throws if something is wrong with the rules
      */
@@ -188,7 +191,7 @@ class KerberosRule {
                 if (fromPattern == null) {
                     result = base;
                 } else {
-                    result = replaceSubstitution(base, fromPattern, toPattern,  repeat);
+                    result = replaceSubstitution(base, fromPattern, toPattern, repeat);
                 }
             }
         }

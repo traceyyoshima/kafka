@@ -31,7 +31,7 @@ import java.util.Map.Entry;
 
 /**
  * Represents a topic in the metadata image.
- *
+ * <p>
  * This class is thread-safe.
  */
 public record TopicImage(String name, Uuid id, Map<Integer, PartitionRegistration> partitions) {
@@ -41,8 +41,8 @@ public record TopicImage(String name, Uuid id, Map<Integer, PartitionRegistratio
 
     public void write(ImageWriter writer, ImageWriterOptions options) {
         writer.write(0, new TopicRecord().
-            setName(name).
-            setTopicId(id));
+                setName(name).
+                setTopicId(id));
         for (Entry<Integer, PartitionRegistration> entry : partitions.entrySet()) {
             int partitionId = entry.getKey();
             PartitionRegistration partition = entry.getValue();

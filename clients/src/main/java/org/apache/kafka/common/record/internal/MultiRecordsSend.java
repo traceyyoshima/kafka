@@ -108,8 +108,8 @@ public class MultiRecordsSend implements Send {
     @Override
     public String toString() {
         return "MultiRecordsSend(" +
-            "size=" + size +
-            ", totalWritten=" + totalWritten +
-            ')';
+                "size=" + size +
+                ", totalWritten=" + totalWritten +
+                ')';
     }
 }

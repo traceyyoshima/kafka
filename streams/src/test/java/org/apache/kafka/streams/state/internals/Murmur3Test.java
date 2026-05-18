@@ -27,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * This class was taken from Hive org.apache.hive.common.util;
  * https://github.com/apache/hive/blob/master/storage-api/src/test/org/apache/hive/common/util/TestMurmur3.java
  * Commit: dffa3a16588bc8e95b9d0ab5af295a74e06ef702
- *
- *
+ * <p>
+ * <p>
  * Tests for Murmur3 variants.
  */
 public class Murmur3Test {

@@ -49,6 +49,7 @@ public interface TopologyDescription {
     interface Subtopology {
         /**
          * Internally assigned unique ID.
+         *
          * @return the ID of the sub-topology
          */
         @SuppressWarnings("unused")
@@ -56,6 +57,7 @@ public interface TopologyDescription {
 
         /**
          * All nodes of this sub-topology.
+         *
          * @return set of all nodes within the sub-topology
          */
         @SuppressWarnings("unused")
@@ -75,6 +77,7 @@ public interface TopologyDescription {
     interface GlobalStore {
         /**
          * The source node reading from a "global" topic.
+         *
          * @return the "global" source node
          */
         @SuppressWarnings("unused")
@@ -82,6 +85,7 @@ public interface TopologyDescription {
 
         /**
          * The processor node maintaining the global store.
+         *
          * @return the "global" processor node
          */
         @SuppressWarnings("unused")
@@ -97,22 +101,27 @@ public interface TopologyDescription {
     interface Node {
         /**
          * The name of the node. Will never be {@code null}.
+         *
          * @return the name of the node
          */
         @SuppressWarnings("unused")
         String name();
+
         /**
          * The predecessors of this node within a sub-topology.
          * Note, sources do not have any predecessors.
          * Will never be {@code null}.
+         *
          * @return set of all predecessors
          */
         @SuppressWarnings("unused")
         Set<Node> predecessors();
+
         /**
          * The successor of this node within a sub-topology.
          * Note, sinks do not have any successors.
          * Will never be {@code null}.
+         *
          * @return set of all successor
          */
         @SuppressWarnings("unused")
@@ -127,6 +136,7 @@ public interface TopologyDescription {
 
         /**
          * The topic names this source node is reading from.
+         *
          * @return a set of topic names
          */
         @SuppressWarnings("unused")
@@ -134,6 +144,7 @@ public interface TopologyDescription {
 
         /**
          * The pattern used to match topic names that is reading from.
+         *
          * @return the pattern used to match topic names
          */
         @SuppressWarnings("unused")
@@ -146,6 +157,7 @@ public interface TopologyDescription {
     interface Processor extends Node {
         /**
          * The names of all connected stores.
+         *
          * @return set of store names
          */
         @SuppressWarnings("unused")
@@ -159,6 +171,7 @@ public interface TopologyDescription {
         /**
          * The topic name this sink node is writing to.
          * Could be {@code null} if the topic name can only be dynamically determined based on {@link TopicNameExtractor}
+         *
          * @return a topic name
          */
         @SuppressWarnings("unused")
@@ -167,6 +180,7 @@ public interface TopologyDescription {
         /**
          * The {@link TopicNameExtractor} class that this sink node uses to dynamically extract the topic name to write to.
          * Could be {@code null} if the topic name is not dynamically determined.
+         *
          * @return the {@link TopicNameExtractor} class used get the topic name
          */
         @SuppressWarnings("unused")
@@ -175,6 +189,7 @@ public interface TopologyDescription {
 
     /**
      * All sub-topologies of the represented topology.
+     *
      * @return set of all sub-topologies
      */
     @SuppressWarnings("unused")
@@ -182,6 +197,7 @@ public interface TopologyDescription {
 
     /**
      * All global stores of the represented topology.
+     *
      * @return set of all global stores
      */
     @SuppressWarnings("unused")

@@ -45,7 +45,7 @@ public class StreamsOnTasksRevokedCallbackCompletedEvent extends ApplicationEven
     @Override
     protected String toStringBase() {
         return super.toStringBase() +
-            ", future=" + future +
-            ", error=" + error;
+                ", future=" + future +
+                ", error=" + error;
     }
 }

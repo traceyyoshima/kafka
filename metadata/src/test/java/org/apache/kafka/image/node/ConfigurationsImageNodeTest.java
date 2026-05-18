@@ -59,26 +59,26 @@ public class ConfigurationsImageNodeTest {
         List<String> childNames = new ArrayList<>(NODE.childNames());
         childNames.sort(String::compareTo);
         assertEquals(List.of(
-            "BROKER",
-            "BROKER:0",
-            "TOPIC",
-            "TOPIC::colons:",
-            "TOPIC:__internal",
-            "TOPIC:foobar"), childNames);
+                "BROKER",
+                "BROKER:0",
+                "TOPIC",
+                "TOPIC::colons:",
+                "TOPIC:__internal",
+                "TOPIC:foobar"), childNames);
     }
 
     @Test
     public void testNodeChildNameParsing() {
         List<ConfigResource> childResources = NODE.childNames().stream().
-            sorted().
-            map(ConfigurationsImageNode::resourceFromName).
-            toList();
+                sorted().
+                map(ConfigurationsImageNode::resourceFromName).
+                toList();
         assertEquals(List.of(
-            new ConfigResource(BROKER, ""),
-            new ConfigResource(BROKER, "0"),
-            new ConfigResource(TOPIC, ""),
-            new ConfigResource(TOPIC, ":colons:"),
-            new ConfigResource(TOPIC, "__internal"),
-            new ConfigResource(TOPIC, "foobar")), childResources);
+                new ConfigResource(BROKER, ""),
+                new ConfigResource(BROKER, "0"),
+                new ConfigResource(TOPIC, ""),
+                new ConfigResource(TOPIC, ":colons:"),
+                new ConfigResource(TOPIC, "__internal"),
+                new ConfigResource(TOPIC, "foobar")), childResources);
     }
 }

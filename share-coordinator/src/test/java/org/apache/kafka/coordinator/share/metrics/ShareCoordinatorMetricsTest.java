@@ -42,10 +42,10 @@ public class ShareCoordinatorMetricsTest {
         Metrics metrics = new Metrics();
 
         Set<MetricName> expectedMetrics = Set.of(
-            metrics.metricName("write-rate", ShareCoordinatorMetrics.METRICS_GROUP),
-            metrics.metricName("write-total", ShareCoordinatorMetrics.METRICS_GROUP),
-            metrics.metricName("write-latency-avg", ShareCoordinatorMetrics.METRICS_GROUP),
-            metrics.metricName("write-latency-max", ShareCoordinatorMetrics.METRICS_GROUP)
+                metrics.metricName("write-rate", ShareCoordinatorMetrics.METRICS_GROUP),
+                metrics.metricName("write-total", ShareCoordinatorMetrics.METRICS_GROUP),
+                metrics.metricName("write-latency-avg", ShareCoordinatorMetrics.METRICS_GROUP),
+                metrics.metricName("write-latency-max", ShareCoordinatorMetrics.METRICS_GROUP)
         );
 
         ShareCoordinatorMetrics coordMetrics = new ShareCoordinatorMetrics(metrics);
@@ -55,8 +55,8 @@ public class ShareCoordinatorMetricsTest {
 
         assertFalse(metrics.metrics().containsKey(pruneMetricName(metrics, Topic.SHARE_GROUP_STATE_TOPIC_NAME, 1)));
         coordMetrics.recordPrune(
-            10.0,
-            new TopicPartition(Topic.SHARE_GROUP_STATE_TOPIC_NAME, 1)
+                10.0,
+                new TopicPartition(Topic.SHARE_GROUP_STATE_TOPIC_NAME, 1)
         );
         assertTrue(metrics.metrics().containsKey(pruneMetricName(metrics, Topic.SHARE_GROUP_STATE_TOPIC_NAME, 1)));
     }
@@ -67,7 +67,7 @@ public class ShareCoordinatorMetricsTest {
         Metrics metrics = new Metrics(time);
         ShareCoordinatorMetrics coordinatorMetrics = new ShareCoordinatorMetrics(metrics);
         ShareCoordinatorMetricsShard shard = coordinatorMetrics.newMetricsShard(
-            new SnapshotRegistry(new LogContext()), new TopicPartition("__share_group_state", 0)
+                new SnapshotRegistry(new LogContext()), new TopicPartition("__share_group_state", 0)
         );
 
         shard.record(SHARE_COORDINATOR_WRITE_SENSOR_NAME);
@@ -98,8 +98,8 @@ public class ShareCoordinatorMetricsTest {
 
         assertFalse(metrics.metrics().containsKey(pruneMetricName(metrics, Topic.SHARE_GROUP_STATE_TOPIC_NAME, 1)));
         coordinatorMetrics.recordPrune(
-            10.0,
-            new TopicPartition(Topic.SHARE_GROUP_STATE_TOPIC_NAME, 1)
+                10.0,
+                new TopicPartition(Topic.SHARE_GROUP_STATE_TOPIC_NAME, 1)
         );
         assertMetricValue(metrics, pruneMetricName(metrics, Topic.SHARE_GROUP_STATE_TOPIC_NAME, 1), 10.0);
     }
@@ -110,13 +110,13 @@ public class ShareCoordinatorMetricsTest {
 
     private MetricName pruneMetricName(Metrics metrics, String topic, Integer partition) {
         return metrics.metricName(
-            "last-pruned-offset",
-            ShareCoordinatorMetrics.METRICS_GROUP,
-            "The offset at which the share-group state topic was last pruned.",
-            MetricsUtils.getTags(
-                "topic", topic,
-                "partition", Integer.toString(partition)
-            )
+                "last-pruned-offset",
+                ShareCoordinatorMetrics.METRICS_GROUP,
+                "The offset at which the share-group state topic was last pruned.",
+                MetricsUtils.getTags(
+                        "topic", topic,
+                        "partition", Integer.toString(partition)
+                )
         );
     }
 
@@ -126,7 +126,7 @@ public class ShareCoordinatorMetricsTest {
         ShareCoordinatorMetrics coordinatorMetrics = new ShareCoordinatorMetrics(metrics);
         TopicPartition tp = new TopicPartition(Topic.SHARE_GROUP_STATE_TOPIC_NAME, 0);
         ShareCoordinatorMetricsShard shard = coordinatorMetrics.newMetricsShard(
-            new SnapshotRegistry(new LogContext()), tp
+                new SnapshotRegistry(new LogContext()), tp
         );
 
         coordinatorMetrics.activateMetricsShard(shard);

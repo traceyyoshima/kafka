@@ -65,18 +65,18 @@ public class SaslExtensionsTest {
         // If the maps are distinct objects but have the same underlying values, the SaslExtension
         // objects should still be unique.
         assertNotEquals(new SaslExtensions(Collections.singletonMap("key", "value")),
-            new SaslExtensions(Collections.singletonMap("key", "value")),
-            "SaslExtensions with unique maps should be unique");
+                new SaslExtensions(Collections.singletonMap("key", "value")),
+                "SaslExtensions with unique maps should be unique");
 
         // If the maps are the same object (with the same underlying values), the SaslExtension
         // objects should still be unique.
         assertNotEquals(new SaslExtensions(map),
-            new SaslExtensions(map),
-            "SaslExtensions with duplicate maps should be unique");
+                new SaslExtensions(map),
+                "SaslExtensions with duplicate maps should be unique");
 
         // If the maps are empty, the SaslExtension objects should still be unique.
         assertNotEquals(SaslExtensions.empty(),
-            SaslExtensions.empty(),
-            "SaslExtensions returned from SaslExtensions.empty() should be unique");
+                SaslExtensions.empty(),
+                "SaslExtensions returned from SaslExtensions.empty() should be unique");
     }
 }

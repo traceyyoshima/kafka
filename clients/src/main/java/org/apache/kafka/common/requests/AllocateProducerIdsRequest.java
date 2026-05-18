@@ -34,8 +34,8 @@ public class AllocateProducerIdsRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return new AllocateProducerIdsResponse(new AllocateProducerIdsResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setErrorCode(Errors.forException(e).code()));
+                .setThrottleTimeMs(throttleTimeMs)
+                .setErrorCode(Errors.forException(e).code()));
     }
 
     @Override

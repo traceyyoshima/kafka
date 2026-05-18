@@ -26,7 +26,7 @@ public interface ChannelMetadataRegistry extends Closeable {
 
     /**
      * Register information about the SSL cipher we are using.
-     *  Re-registering the information will overwrite the previous one.
+     * Re-registering the information will overwrite the previous one.
      */
     void registerCipherInformation(CipherInformation cipherInformation);
 

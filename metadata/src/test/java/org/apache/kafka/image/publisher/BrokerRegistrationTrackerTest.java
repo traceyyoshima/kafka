@@ -57,50 +57,50 @@ public class BrokerRegistrationTrackerTest {
             MetadataProvenance provenance = new MetadataProvenance(0, 0, 0, true);
             image = delta.apply(provenance);
             LogDeltaManifest manifest = new LogDeltaManifest.Builder().
-                provenance(provenance).
-                leaderAndEpoch(LeaderAndEpoch.UNKNOWN).
-                numBatches(1).
-                elapsedNs(1).
-                numBytes(1).
-                build();
+                    provenance(provenance).
+                    leaderAndEpoch(LeaderAndEpoch.UNKNOWN).
+                    numBatches(1).
+                    elapsedNs(1).
+                    numBytes(1).
+                    build();
             tracker.onMetadataUpdate(delta, image, manifest);
         }
 
         MetadataDelta newDelta() {
             return new MetadataDelta.Builder().
-                setImage(image).
-                build();
+                    setImage(image).
+                    build();
         }
     }
 
     @Test
     public void testTrackerName() {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         assertEquals("BrokerRegistrationTracker(id=1)", ctx.tracker.name());
     }
 
     @Test
     public void testMetadataVersionUpdateWithoutRegistrationDoesNothing() {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         MetadataDelta delta = ctx.newDelta();
         delta.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(MetadataVersion.IBP_3_7_IV2.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(MetadataVersion.IBP_3_7_IV2.featureLevel()));
         ctx.onMetadataUpdate(delta);
         assertEquals(0, ctx.numCalls.get());
     }
 
     @Test
     public void testBrokerUpdateWithoutNewMvDoesNothing() {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         MetadataDelta delta = ctx.newDelta();
         delta.replay(new RegisterBrokerRecord().
-            setBrokerId(1).
-            setIncarnationId(INCARNATION_ID).
-            setLogDirs(List.of(A, B, C)));
+                setBrokerId(1).
+                setIncarnationId(INCARNATION_ID).
+                setLogDirs(List.of(A, B, C)));
         delta.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(MetadataVersion.MINIMUM_VERSION.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(MetadataVersion.MINIMUM_VERSION.featureLevel()));
         ctx.onMetadataUpdate(delta);
         assertEquals(0, ctx.numCalls.get());
     }
@@ -108,16 +108,16 @@ public class BrokerRegistrationTrackerTest {
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void testBrokerUpdateWithNewMv(boolean jbodMv) {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         MetadataDelta delta = ctx.newDelta();
         delta.replay(new RegisterBrokerRecord().
-            setBrokerId(1).
-            setIncarnationId(INCARNATION_ID).
-            setLogDirs(List.of()));
+                setBrokerId(1).
+                setIncarnationId(INCARNATION_ID).
+                setLogDirs(List.of()));
         delta.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(jbodMv ? MetadataVersion.IBP_3_7_IV2.featureLevel() :
-                MetadataVersion.IBP_3_7_IV1.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(jbodMv ? MetadataVersion.IBP_3_7_IV2.featureLevel() :
+                        MetadataVersion.IBP_3_7_IV1.featureLevel()));
         ctx.onMetadataUpdate(delta);
         if (jbodMv) {
             assertEquals(1, ctx.numCalls.get());
@@ -129,24 +129,24 @@ public class BrokerRegistrationTrackerTest {
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void testBrokerUpdateWithNewMvWithTwoDeltas(boolean jbodMv) {
-        BrokerRegistrationTrackerTestContext ctx  = new BrokerRegistrationTrackerTestContext();
+        BrokerRegistrationTrackerTestContext ctx = new BrokerRegistrationTrackerTestContext();
         MetadataDelta delta = ctx.newDelta();
         delta.replay(new RegisterBrokerRecord().
-            setBrokerId(1).
-            setIncarnationId(INCARNATION_ID).
-            setLogDirs(List.of()));
+                setBrokerId(1).
+                setIncarnationId(INCARNATION_ID).
+                setLogDirs(List.of()));
         delta.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(MetadataVersion.IBP_3_7_IV1.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(MetadataVersion.IBP_3_7_IV1.featureLevel()));
         ctx.onMetadataUpdate(delta);
         // No calls are made because MetadataVersion is older than IBP_3_7_IV2 initially
         assertEquals(0, ctx.numCalls.get());
 
         delta = ctx.newDelta();
         delta.replay(new FeatureLevelRecord().
-            setName(MetadataVersion.FEATURE_NAME).
-            setFeatureLevel(jbodMv ? MetadataVersion.IBP_3_7_IV2.featureLevel() :
-                MetadataVersion.IBP_3_7_IV1.featureLevel()));
+                setName(MetadataVersion.FEATURE_NAME).
+                setFeatureLevel(jbodMv ? MetadataVersion.IBP_3_7_IV2.featureLevel() :
+                        MetadataVersion.IBP_3_7_IV1.featureLevel()));
         ctx.onMetadataUpdate(delta);
         if (jbodMv) {
             assertEquals(1, ctx.numCalls.get());

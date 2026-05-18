@@ -58,19 +58,15 @@ public class OAuthBearerUnsecuredJws implements OAuthBearerToken {
     /**
      * Constructor with the given principal and scope claim names
      *
-     * @param compactSerialization
-     *            the compact serialization to parse as an unsecured JWS
-     * @param principalClaimName
-     *            the required principal claim name
-     * @param scopeClaimName
-     *            the required scope claim name
-     * @throws OAuthBearerIllegalTokenException
-     *             if the compact serialization is not a valid unsecured JWS
-     *             (meaning it did not have 3 dot-separated Base64URL sections
-     *             without an empty digital signature; or the header or claims
-     *             either are not valid Base 64 URL encoded values or are not JSON
-     *             after decoding; or the mandatory '{@code alg}' header value is
-     *             not "{@code none}")
+     * @param compactSerialization the compact serialization to parse as an unsecured JWS
+     * @param principalClaimName   the required principal claim name
+     * @param scopeClaimName       the required scope claim name
+     * @throws OAuthBearerIllegalTokenException if the compact serialization is not a valid unsecured JWS
+     *                                          (meaning it did not have 3 dot-separated Base64URL sections
+     *                                          without an empty digital signature; or the header or claims
+     *                                          either are not valid Base 64 URL encoded values or are not JSON
+     *                                          after decoding; or the mandatory '{@code alg}' header value is
+     *                                          not "{@code none}")
      */
     public OAuthBearerUnsecuredJws(String compactSerialization, String principalClaimName, String scopeClaimName)
             throws OAuthBearerIllegalTokenException {
@@ -183,11 +179,9 @@ public class OAuthBearerUnsecuredJws implements OAuthBearerToken {
     /**
      * Indicate if the claim exists and is the given type
      *
-     * @param claimName
-     *            the mandatory JWT claim name
-     * @param type
-     *            the mandatory type, which should either be String.class,
-     *            Number.class, or List.class
+     * @param claimName the mandatory JWT claim name
+     * @param type      the mandatory type, which should either be String.class,
+     *                  Number.class, or List.class
      * @return true if the claim exists and is the given type, otherwise false
      */
     public final boolean isClaimType(String claimName, Class<?> type) {
@@ -205,14 +199,11 @@ public class OAuthBearerUnsecuredJws implements OAuthBearerToken {
     /**
      * Extract a claim of the given type
      *
-     * @param claimName
-     *            the mandatory JWT claim name
-     * @param type
-     *            the mandatory type, which must either be String.class,
-     *            Number.class, or List.class
+     * @param claimName the mandatory JWT claim name
+     * @param type      the mandatory type, which must either be String.class,
+     *                  Number.class, or List.class
      * @return the claim if it exists, otherwise null
-     * @throws OAuthBearerIllegalTokenException
-     *             if the claim exists but is not the given type
+     * @throws OAuthBearerIllegalTokenException if the claim exists but is not the given type
      */
     public final <T> T claim(String claimName, Class<T> type) throws OAuthBearerIllegalTokenException {
         Object value = rawClaim(claimName);
@@ -228,8 +219,7 @@ public class OAuthBearerUnsecuredJws implements OAuthBearerToken {
     /**
      * Extract a claim in its raw form
      *
-     * @param claimName
-     *            the mandatory JWT claim name
+     * @param claimName the mandatory JWT claim name
      * @return the raw claim value, if it exists, otherwise null
      */
     public final Object rawClaim(String claimName) {
@@ -242,10 +232,9 @@ public class OAuthBearerUnsecuredJws implements OAuthBearerToken {
      * Time</a> claim
      *
      * @return the <a href=
-     *         "https://tools.ietf.org/html/rfc7519#section-4.1.4">Expiration
-     *         Time</a> claim if available, otherwise null
-     * @throws OAuthBearerIllegalTokenException
-     *             if the claim value is the incorrect type
+     * "https://tools.ietf.org/html/rfc7519#section-4.1.4">Expiration
+     * Time</a> claim if available, otherwise null
+     * @throws OAuthBearerIllegalTokenException if the claim value is the incorrect type
      */
     public final Number expirationTime() throws OAuthBearerIllegalTokenException {
         return claim("exp", Number.class);
@@ -256,10 +245,9 @@ public class OAuthBearerUnsecuredJws implements OAuthBearerToken {
      * At</a> claim
      *
      * @return the
-     *         <a href= "https://tools.ietf.org/html/rfc7519#section-4.1.6">Issued
-     *         At</a> claim if available, otherwise null
-     * @throws OAuthBearerIllegalTokenException
-     *             if the claim value is the incorrect type
+     * <a href= "https://tools.ietf.org/html/rfc7519#section-4.1.6">Issued
+     * At</a> claim if available, otherwise null
+     * @throws OAuthBearerIllegalTokenException if the claim value is the incorrect type
      */
     public Number issuedAt() throws OAuthBearerIllegalTokenException {
         return claim("iat", Number.class);
@@ -270,10 +258,9 @@ public class OAuthBearerUnsecuredJws implements OAuthBearerToken {
      * <a href="https://tools.ietf.org/html/rfc7519#section-4.1.2">Subject</a> claim
      *
      * @return the <a href=
-     *         "https://tools.ietf.org/html/rfc7519#section-4.1.2">Subject</a> claim
-     *         if available, otherwise null
-     * @throws OAuthBearerIllegalTokenException
-     *             if the claim value is the incorrect type
+     * "https://tools.ietf.org/html/rfc7519#section-4.1.2">Subject</a> claim
+     * if available, otherwise null
+     * @throws OAuthBearerIllegalTokenException if the claim value is the incorrect type
      */
     public String subject() throws OAuthBearerIllegalTokenException {
         return claim("sub", String.class);
@@ -284,12 +271,10 @@ public class OAuthBearerUnsecuredJws implements OAuthBearerToken {
      * object, and return the map of member names to their values (each value being
      * represented as either a String, a Number, or a List of Strings).
      *
-     * @param split
-     *            the value to decode and parse
+     * @param split the value to decode and parse
      * @return the map of JSON member names to their String, Number, or String List
-     *         value
-     * @throws OAuthBearerIllegalTokenException
-     *             if the given Base64URL-encoded value cannot be decoded or parsed
+     * value
+     * @throws OAuthBearerIllegalTokenException if the given Base64URL-encoded value cannot be decoded or parsed
      */
     public static Map<String, Object> toMap(String split) throws OAuthBearerIllegalTokenException {
         Map<String, Object> retval = new HashMap<>();

@@ -100,6 +100,7 @@ public class Fetcher<K, V> extends AbstractFetch {
     /**
      * Set up a fetch request for any node that we have assigned partitions for which doesn't already have
      * an in-flight fetch or pending fetch data.
+     *
      * @return number of fetches sent
      */
     public synchronized int sendFetches() {

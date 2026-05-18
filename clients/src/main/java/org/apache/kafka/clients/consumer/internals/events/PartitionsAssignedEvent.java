@@ -39,7 +39,7 @@ public class PartitionsAssignedEvent extends CompletableBackgroundEvent<Void> {
      * Constructor for the partitions assigned event.
      *
      * @param assignedPartitions The full assignment to apply
-     * @param addedPartitions The newly added partitions (passed to the callback)
+     * @param addedPartitions    The newly added partitions (passed to the callback)
      */
     public PartitionsAssignedEvent(final Set<TopicPartition> assignedPartitions,
                                    final SortedSet<TopicPartition> addedPartitions) {

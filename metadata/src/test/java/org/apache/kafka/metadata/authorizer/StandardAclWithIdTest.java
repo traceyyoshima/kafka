@@ -36,15 +36,15 @@ public class StandardAclWithIdTest {
 
     static {
         TEST_ACLS.add(new StandardAclWithId(Uuid.fromString("QZDDv-R7SyaPgetDPGd0Mw"),
-            StandardAclTest.TEST_ACLS.get(0)));
+                StandardAclTest.TEST_ACLS.get(0)));
         TEST_ACLS.add(new StandardAclWithId(Uuid.fromString("SdDjEdlbRmy2__WFKe3RMg"),
-            StandardAclTest.TEST_ACLS.get(1)));
+                StandardAclTest.TEST_ACLS.get(1)));
         TEST_ACLS.add(new StandardAclWithId(Uuid.fromString("wQzt5gkSTwuQNXZF5gIw7A"),
-            StandardAclTest.TEST_ACLS.get(2)));
+                StandardAclTest.TEST_ACLS.get(2)));
         TEST_ACLS.add(new StandardAclWithId(Uuid.fromString("ab_5xjJXSbS1o5jGfhgQXg"),
-            StandardAclTest.TEST_ACLS.get(3)));
+                StandardAclTest.TEST_ACLS.get(3)));
         TEST_ACLS.add(new StandardAclWithId(Uuid.fromString("wP_cCK0LTEGSX9oDRInJHQ"),
-            StandardAclTest.TEST_ACLS.get(4)));
+                StandardAclTest.TEST_ACLS.get(4)));
     }
 
     @Test

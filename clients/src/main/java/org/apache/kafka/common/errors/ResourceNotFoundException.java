@@ -37,7 +37,7 @@ public class ResourceNotFoundException extends ApiException {
     /**
      *
      * @param message the exception's message
-     * @param cause the exception's cause
+     * @param cause   the exception's cause
      */
     public ResourceNotFoundException(String message, Throwable cause) {
         this(null, message, cause);
@@ -47,7 +47,7 @@ public class ResourceNotFoundException extends ApiException {
      * Constructor
      *
      * @param resource the (potentially null) resource that was not found
-     * @param message the exception's message
+     * @param message  the exception's message
      */
     public ResourceNotFoundException(String resource, String message) {
         super(message);
@@ -58,8 +58,8 @@ public class ResourceNotFoundException extends ApiException {
      * Constructor
      *
      * @param resource the (potentially null) resource that was not found
-     * @param message the exception's message
-     * @param cause the exception's cause
+     * @param message  the exception's message
+     * @param cause    the exception's cause
      */
     public ResourceNotFoundException(String resource, String message, Throwable cause) {
         super(message, cause);

@@ -126,10 +126,10 @@ public class KTableFilter<KIn, VIn> implements KTableProcessorSupplier<KIn, VIn,
             if (queryableName != null) {
                 store = new KeyValueStoreWrapper<>(context, queryableName);
                 tupleForwarder = new TimestampedTupleForwarder<>(
-                    store.store(),
-                    context,
-                    store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
-                    sendOldValues);
+                        store.store(),
+                        context,
+                        store.isHeadersStore() ? new TimestampedCacheFlushListenerWithHeaders<>(context) : new TimestampedCacheFlushListener<>(context),
+                        sendOldValues);
             }
         }
 
@@ -164,8 +164,8 @@ public class KTableFilter<KIn, VIn> implements KTableProcessorSupplier<KIn, VIn,
             }
 
             return queryableName != null
-                ? getValueOrNull(store.get(key))
-                : computeValue(key, change.oldValue);
+                    ? getValueOrNull(store.get(key))
+                    : computeValue(key, change.oldValue);
         }
     }
 

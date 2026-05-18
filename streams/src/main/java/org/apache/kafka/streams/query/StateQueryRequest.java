@@ -39,12 +39,12 @@ public class StateQueryRequest<R> {
     private final boolean requireActive;
 
     private StateQueryRequest(
-        final String storeName,
-        final PositionBound position,
-        final Optional<Set<Integer>> partitions,
-        final Query<R> query,
-        final boolean executionInfoEnabled,
-        final boolean requireActive) {
+            final String storeName,
+            final PositionBound position,
+            final Optional<Set<Integer>> partitions,
+            final Query<R> query,
+            final boolean executionInfoEnabled,
+            final boolean requireActive) {
 
         this.storeName = storeName;
         this.position = position;
@@ -66,12 +66,12 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> withPositionBound(final PositionBound positionBound) {
         return new StateQueryRequest<>(
-            storeName,
-            positionBound,
-            partitions,
-            query,
-            executionInfoEnabled,
-            requireActive
+                storeName,
+                positionBound,
+                partitions,
+                query,
+                executionInfoEnabled,
+                requireActive
         );
     }
 
@@ -81,12 +81,12 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> withAllPartitions() {
         return new StateQueryRequest<>(
-            storeName,
-            position,
-            Optional.empty(),
-            query,
-            executionInfoEnabled,
-            requireActive
+                storeName,
+                position,
+                Optional.empty(),
+                query,
+                executionInfoEnabled,
+                requireActive
         );
     }
 
@@ -98,12 +98,12 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> withPartitions(final Set<Integer> partitions) {
         return new StateQueryRequest<>(
-            storeName,
-            position,
-            Optional.of(Set.copyOf(partitions)),
-            query,
-            executionInfoEnabled,
-            requireActive
+                storeName,
+                position,
+                Optional.of(Set.copyOf(partitions)),
+                query,
+                executionInfoEnabled,
+                requireActive
         );
     }
 
@@ -113,12 +113,12 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> enableExecutionInfo() {
         return new StateQueryRequest<>(
-            storeName,
-            position,
-            partitions,
-            query,
-            true,
-            requireActive
+                storeName,
+                position,
+                partitions,
+                query,
+                true,
+                requireActive
         );
     }
 
@@ -129,12 +129,12 @@ public class StateQueryRequest<R> {
      */
     public StateQueryRequest<R> requireActive() {
         return new StateQueryRequest<>(
-            storeName,
-            position,
-            partitions,
-            query,
-            executionInfoEnabled,
-            true
+                storeName,
+                position,
+                partitions,
+                query,
+                executionInfoEnabled,
+                true
         );
     }
 
@@ -175,7 +175,7 @@ public class StateQueryRequest<R> {
     public Set<Integer> getPartitions() {
         if (partitions.isEmpty()) {
             throw new IllegalStateException(
-                "Cannot list partitions of an 'all partitions' request");
+                    "Cannot list partitions of an 'all partitions' request");
         } else {
             return partitions.get();
         }
@@ -211,12 +211,12 @@ public class StateQueryRequest<R> {
          */
         public <R> StateQueryRequest<R> withQuery(final Query<R> query) {
             return new StateQueryRequest<>(
-                name, // name is already specified
-                PositionBound.unbounded(), // default: unbounded
-                Optional.empty(), // default: all partitions
-                query, // the query is specified
-                false, // default: no execution info
-                false // default: don't require active
+                    name, // name is already specified
+                    PositionBound.unbounded(), // default: unbounded
+                    Optional.empty(), // default: all partitions
+                    query, // the query is specified
+                    false, // default: no execution info
+                    false // default: don't require active
             );
         }
     }

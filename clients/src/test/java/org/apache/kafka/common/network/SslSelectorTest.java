@@ -127,7 +127,7 @@ public abstract class SslSelectorTest extends SelectorTest {
         waitForBytesBuffered(selector, node);
 
         TestUtils.waitForCondition(() -> cipherMetrics(metrics).size() == 1,
-            "Waiting for cipher metrics to be created.");
+                "Waiting for cipher metrics to be created.");
         assertEquals(1, cipherMetrics(metrics).get(0).metricValue());
         assertNotNull(selector.channel(node).channelMetadataRegistry().cipherInformation());
 
@@ -177,7 +177,7 @@ public abstract class SslSelectorTest extends SelectorTest {
     @Test
     public void testBytesBufferedChannelWithNoIncomingBytes() throws Exception {
         verifyNoUnnecessaryPollWithBytesBuffered(key ->
-            key.interestOps(key.interestOps() & ~SelectionKey.OP_READ));
+                key.interestOps(key.interestOps() & ~SelectionKey.OP_READ));
     }
 
     @Test
@@ -211,7 +211,7 @@ public abstract class SslSelectorTest extends SelectorTest {
         // Truncate the read buffers to ensure that there is buffered data, but not enough to make progress.
         int largeRequestSize = 100 * 1024;
         connect(node1, new InetSocketAddress("localhost", server.port));
-        selector.send(createSend(node1,  TestUtils.randomString(largeRequestSize)));
+        selector.send(createSend(node1, TestUtils.randomString(largeRequestSize)));
         waitForBytesBuffered(selector, node1);
         TestSslChannelBuilder.TestSslTransportLayer.transportLayers.get(node1).truncateReadBuffer();
         disableRead.accept(selector.channel(node1).selectionKey());

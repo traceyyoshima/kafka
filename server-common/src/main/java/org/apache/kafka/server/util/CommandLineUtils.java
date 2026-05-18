@@ -237,9 +237,9 @@ public class CommandLineUtils {
     }
 
     public static void initializeBootstrapProperties(
-        Properties properties,
-        Optional<String> bootstrapServer,
-        Optional<String> bootstrapControllers
+            Properties properties,
+            Optional<String> bootstrapServer,
+            Optional<String> bootstrapControllers
     ) {
         if (bootstrapServer.isPresent()) {
             if (bootstrapControllers.isPresent()) {
@@ -260,18 +260,18 @@ public class CommandLineUtils {
     }
 
     public static void initializeBootstrapProperties(
-        OptionParser parser,
-        OptionSet options,
-        Properties properties,
-        OptionSpec<String> bootstrapServer,
-        OptionSpec<String> bootstrapControllers
+            OptionParser parser,
+            OptionSet options,
+            Properties properties,
+            OptionSpec<String> bootstrapServer,
+            OptionSpec<String> bootstrapControllers
     ) {
         try {
             initializeBootstrapProperties(properties,
-                options.has(bootstrapServer) ?
-                    Optional.of(options.valueOf(bootstrapServer)) : Optional.empty(),
-                options.has(bootstrapControllers) ?
-                        Optional.of(options.valueOf(bootstrapControllers)) : Optional.empty());
+                    options.has(bootstrapServer) ?
+                            Optional.of(options.valueOf(bootstrapServer)) : Optional.empty(),
+                    options.has(bootstrapControllers) ?
+                            Optional.of(options.valueOf(bootstrapControllers)) : Optional.empty());
         } catch (InitializeBootstrapException e) {
             printUsageAndExit(parser, e.getMessage());
         }

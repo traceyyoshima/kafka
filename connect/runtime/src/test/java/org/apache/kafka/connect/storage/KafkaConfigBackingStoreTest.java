@@ -762,7 +762,7 @@ public class KafkaConfigBackingStoreTest {
     }
 
     @Test
-    public void testRestoreZeroTasks()  {
+    public void testRestoreZeroTasks() {
         // Restoring data should notify only of the latest values after loading is complete. This also validates
         // that inconsistent state is ignored.
 
@@ -829,14 +829,14 @@ public class KafkaConfigBackingStoreTest {
 
         int offset = 0;
         List<ConsumerRecord<String, byte[]>> existingRecords = List.of(
-            new ConsumerRecord<>(TOPIC, 0, offset++, 0L, TimestampType.CREATE_TIME, 0, 0,
-                TASK_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0), new RecordHeaders(), Optional.empty()),
-            new ConsumerRecord<>(TOPIC, 0, offset++, 0L, TimestampType.CREATE_TIME, 0, 0,
-                TASK_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(1), new RecordHeaders(), Optional.empty()),
-            new ConsumerRecord<>(TOPIC, 0, offset++, 0L, TimestampType.CREATE_TIME, 0, 0,
-                COMMIT_TASKS_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(2), new RecordHeaders(), Optional.empty()),
-            new ConsumerRecord<>(TOPIC, 0, offset++, 0L, TimestampType.CREATE_TIME, 0, 0,
-                CONNECTOR_TASK_COUNT_RECORD_KEYS.get(0), CONFIGS_SERIALIZED.get(3), new RecordHeaders(), Optional.empty()));
+                new ConsumerRecord<>(TOPIC, 0, offset++, 0L, TimestampType.CREATE_TIME, 0, 0,
+                        TASK_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0), new RecordHeaders(), Optional.empty()),
+                new ConsumerRecord<>(TOPIC, 0, offset++, 0L, TimestampType.CREATE_TIME, 0, 0,
+                        TASK_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(1), new RecordHeaders(), Optional.empty()),
+                new ConsumerRecord<>(TOPIC, 0, offset++, 0L, TimestampType.CREATE_TIME, 0, 0,
+                        COMMIT_TASKS_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(2), new RecordHeaders(), Optional.empty()),
+                new ConsumerRecord<>(TOPIC, 0, offset++, 0L, TimestampType.CREATE_TIME, 0, 0,
+                        CONNECTOR_TASK_COUNT_RECORD_KEYS.get(0), CONFIGS_SERIALIZED.get(3), new RecordHeaders(), Optional.empty()));
         LinkedHashMap<byte[], Struct> deserialized = new LinkedHashMap<>();
         deserialized.put(CONFIGS_SERIALIZED.get(0), TASK_CONFIG_STRUCTS.get(0));
         deserialized.put(CONFIGS_SERIALIZED.get(1), TASK_CONFIG_STRUCTS.get(0));
@@ -1525,10 +1525,10 @@ public class KafkaConfigBackingStoreTest {
         doAnswer(expectReadToEnd(new LinkedHashMap<>()))
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>()))
                 .doAnswer(expectReadToEnd(new LinkedHashMap<>() {{
-                        put(TASK_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0));
-                        put(TASK_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(1));
-                        put(COMMIT_TASKS_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(2));
-                    }})
+                            put(TASK_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(0));
+                            put(TASK_CONFIG_KEYS.get(1), CONFIGS_SERIALIZED.get(1));
+                            put(COMMIT_TASKS_CONFIG_KEYS.get(0), CONFIGS_SERIALIZED.get(2));
+                        }})
                 )
                 .when(configLog).readToEnd();
 
@@ -1677,7 +1677,7 @@ public class KafkaConfigBackingStoreTest {
     // from the log. Validate the data that is captured when the conversion is performed matches the specified data
     // (by checking a single field's value)
     private void expectConvertWriteRead2(final String configKey, final Schema valueSchema, final byte[] serialized,
-                                        final Struct value) {
+                                         final Struct value) {
         doReturn(serialized).when(converter).fromConnectData(eq(TOPIC), eq(valueSchema), eq(value));
         doReturn(producerFuture).when(configLog).sendWithReceipt(eq(configKey), eq(serialized));
         doReturn(new SchemaAndValue(null, structToMap(value))).when(converter).toConnectData(eq(TOPIC), eq(serialized));

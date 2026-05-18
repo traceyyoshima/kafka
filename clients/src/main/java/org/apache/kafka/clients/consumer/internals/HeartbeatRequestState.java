@@ -22,7 +22,7 @@ import org.apache.kafka.common.utils.Timer;
 
 /**
  * Represents the state of a heartbeat request, including logic for timing, retries, and exponential backoff.
- *
+ * <p>
  * The class extends {@link org.apache.kafka.clients.consumer.internals.RequestState} to enable exponential backoff
  * and duplicated request handling.
  */
@@ -45,12 +45,12 @@ public class HeartbeatRequestState extends RequestState {
                                  final long retryBackoffMaxMs,
                                  final double jitter) {
         super(
-            logContext,
-            HeartbeatRequestState.class.getName(),
-            retryBackoffMs,
-            2,
-            retryBackoffMaxMs,
-            jitter
+                logContext,
+                HeartbeatRequestState.class.getName(),
+                retryBackoffMs,
+                2,
+                retryBackoffMaxMs,
+                jitter
         );
         this.heartbeatIntervalMs = heartbeatIntervalMs;
         this.heartbeatTimer = time.timer(heartbeatIntervalMs);
@@ -72,9 +72,7 @@ public class HeartbeatRequestState extends RequestState {
     }
 
     /**
-     * @inheritDoc
-     *
-     * Adds to the overridden method the reset of the heartbeat timer to a zero interval which allows sending
+     * @inheritDoc Adds to the overridden method the reset of the heartbeat timer to a zero interval which allows sending
      * heartbeats after a failure without waiting for the interval.
      * After a failure, a next heartbeat may be needed with backoff (ex. errors that lead to retries, like coordinator
      * load error), or immediately (ex. errors that lead to rejoining, like fencing errors).
@@ -107,7 +105,7 @@ public class HeartbeatRequestState extends RequestState {
     @Override
     public String toStringBase() {
         return super.toStringBase() +
-            ", remainingMs=" + heartbeatTimer.remainingMs() +
-            ", heartbeatIntervalMs=" + heartbeatIntervalMs;
+                ", remainingMs=" + heartbeatTimer.remainingMs() +
+                ", heartbeatIntervalMs=" + heartbeatIntervalMs;
     }
 }

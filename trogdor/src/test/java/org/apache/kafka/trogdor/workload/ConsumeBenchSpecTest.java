@@ -67,8 +67,8 @@ public class ConsumeBenchSpecTest {
 
     private ConsumeBenchSpec consumeBenchSpec(List<String> activeTopics) {
         return new ConsumeBenchSpec(0, 0, "node", "localhost",
-            123, 1234, "cg-1",
-            Map.of(), Map.of(), Map.of(), 1,
-            Optional.empty(), activeTopics);
+                123, 1234, "cg-1",
+                Map.of(), Map.of(), Map.of(), 1,
+                Optional.empty(), activeTopics);
     }
 }

@@ -97,16 +97,16 @@ public class UpdateFeaturesRequest extends AbstractRequest {
 
     public Collection<FeatureUpdateItem> featureUpdates() {
         return data.featureUpdates().stream()
-            .map(update -> getFeature(update.feature()))
-            .collect(Collectors.toList());
+                .map(update -> getFeature(update.feature()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public UpdateFeaturesResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         return UpdateFeaturesResponse.createWithErrors(
-            ApiError.fromThrowable(e),
-            Set.of(),
-            throttleTimeMs
+                ApiError.fromThrowable(e),
+                Set.of(),
+                throttleTimeMs
         );
     }
 

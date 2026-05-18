@@ -29,11 +29,11 @@ public final class UnwritableMetadataException extends RuntimeException {
     private final String loss;
 
     public UnwritableMetadataException(
-        MetadataVersion metadataVersion,
-        String loss
+            MetadataVersion metadataVersion,
+            String loss
     ) {
         super("Metadata has been lost because the following could not be represented " +
-            "in metadata.version " + metadataVersion + ": " + loss);
+                "in metadata.version " + metadataVersion + ": " + loss);
         this.metadataVersion = metadataVersion;
         this.loss = loss;
     }

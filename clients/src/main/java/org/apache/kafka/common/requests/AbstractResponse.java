@@ -59,6 +59,7 @@ public abstract class AbstractResponse implements AbstractRequestResponse {
     /**
      * The number of each type of error in the response, including {@link Errors#NONE} and top-level errors as well as
      * more specifically scoped errors (such as topic or partition-level errors).
+     *
      * @return A count of errors.
      */
     public abstract Map<Errors, Integer> errorCounts();
@@ -102,9 +103,9 @@ public abstract class AbstractResponse implements AbstractRequestResponse {
 
         if (requestHeader.correlationId() != responseHeader.correlationId()) {
             throw new CorrelationIdMismatchException("Correlation id for response ("
-                + responseHeader.correlationId() + ") does not match request ("
-                + requestHeader.correlationId() + "), request header: " + requestHeader,
-                requestHeader.correlationId(), responseHeader.correlationId());
+                    + responseHeader.correlationId() + ") does not match request ("
+                    + requestHeader.correlationId() + "), request header: " + requestHeader,
+                    requestHeader.correlationId(), responseHeader.correlationId());
         }
 
         return AbstractResponse.parseResponse(apiKey, new ByteBufferAccessor(buffer), apiVersion);

@@ -77,11 +77,11 @@ public class Position {
      */
     public Position withComponent(final String topic, final int partition, final long offset) {
         position
-            .computeIfAbsent(topic, k -> new ConcurrentHashMap<>())
-            .compute(
-                partition,
-                (integer, prior) -> prior == null || offset > prior ? offset : prior
-            );
+                .computeIfAbsent(topic, k -> new ConcurrentHashMap<>())
+                .compute(
+                        partition,
+                        (integer, prior) -> prior == null || offset > prior ? offset : prior
+                );
         return this;
     }
 
@@ -131,12 +131,12 @@ public class Position {
     }
 
     private static ConcurrentHashMap<String, ConcurrentHashMap<Integer, Long>> deepCopy(
-        final Map<String, ? extends Map<Integer, Long>> map) {
+            final Map<String, ? extends Map<Integer, Long>> map) {
         if (map == null) {
             return new ConcurrentHashMap<>();
         } else {
             final ConcurrentHashMap<String, ConcurrentHashMap<Integer, Long>> copy =
-                new ConcurrentHashMap<>(map.size());
+                    new ConcurrentHashMap<>(map.size());
             for (final Entry<String, ? extends Map<Integer, Long>> entry : map.entrySet()) {
                 copy.put(entry.getKey(), new ConcurrentHashMap<>(entry.getValue()));
             }
@@ -147,8 +147,8 @@ public class Position {
     @Override
     public String toString() {
         return "Position{" +
-            "position=" + position +
-            '}';
+                "position=" + position +
+                '}';
     }
 
     @Override
@@ -166,7 +166,7 @@ public class Position {
     @Override
     public int hashCode() {
         throw new UnsupportedOperationException(
-            "This mutable object is not suitable as a hash key");
+                "This mutable object is not suitable as a hash key");
     }
 
     public boolean isEmpty() {

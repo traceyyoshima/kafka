@@ -385,8 +385,8 @@ public class StateDirectoryTest {
             assertEquals(0, directory.listAllTaskDirectories().size());
             assertEquals(0, directory.listNonEmptyTaskDirectories().size());
             assertThat(
-                appender.getMessages(),
-                hasItem(containsString("Deleting obsolete state directory"))
+                    appender.getMessages(),
+                    hasItem(containsString("Deleting obsolete state directory"))
             );
         }
     }
@@ -415,16 +415,16 @@ public class StateDirectoryTest {
     public void shouldReturnEmptyArrayIfListFilesReturnsNull() throws IOException {
         stateDir = new File(TestUtils.IO_TMP_DIR, "kafka-" + TestUtils.randomString(5));
         directory = new StateDirectory(
-            new StreamsConfig(new Properties() {
-                {
-                    put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
-                    put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
-                    put(StreamsConfig.STATE_DIR_CONFIG, stateDir.getPath());
-                }
-            }),
-            time,
-            true,
-            false);
+                new StreamsConfig(new Properties() {
+                    {
+                        put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
+                        put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
+                        put(StreamsConfig.STATE_DIR_CONFIG, stateDir.getPath());
+                    }
+                }),
+                time,
+                true,
+                false);
         appDir = new File(stateDir, applicationId);
 
         // make sure the File#listFiles returns null and StateDirectory#listAllTaskDirectories is able to handle null
@@ -458,16 +458,16 @@ public class StateDirectoryTest {
         final File tempDir = TestUtils.tempDirectory();
         final File stateDir = new File(new File(tempDir, "foo"), "state-dir");
         final StateDirectory stateDirectory = new StateDirectory(
-            new StreamsConfig(new Properties() {
-                {
-                    put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
-                    put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
-                    put(StreamsConfig.STATE_DIR_CONFIG, stateDir.getPath());
-                }
-            }),
-            time,
-            true,
-            false);
+                new StreamsConfig(new Properties() {
+                    {
+                        put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
+                        put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
+                        put(StreamsConfig.STATE_DIR_CONFIG, stateDir.getPath());
+                    }
+                }),
+                time,
+                true,
+                false);
         final File taskDir = stateDirectory.getOrCreateDirectoryForTask(new TaskId(0, 0));
         assertTrue(stateDir.exists());
         assertTrue(taskDir.exists());
@@ -521,7 +521,7 @@ public class StateDirectoryTest {
         final File dir0 = new File(appDir, id.toString());
         final File globalDir = new File(appDir, "global");
         assertEquals(Set.of(dir0, globalDir), Arrays.stream(
-            Objects.requireNonNull(appDir.listFiles())).collect(Collectors.toSet()));
+                Objects.requireNonNull(appDir.listFiles())).collect(Collectors.toSet()));
 
         directory.clean();
 
@@ -536,7 +536,7 @@ public class StateDirectoryTest {
             assertThat(stateDir.exists(), is(false));
             assertThat(appDir.exists(), is(false));
             assertThat(appender.getMessages(),
-                not(hasItem(containsString("Error changing permissions for the state or base directory"))));
+                    not(hasItem(containsString("Error changing permissions for the state or base directory"))));
         }
     }
 
@@ -615,8 +615,8 @@ public class StateDirectoryTest {
             // call StateDirectory#clean
             directory.clean();
             assertThat(
-                appender.getMessages(),
-                hasItem(endsWith(String.format("Failed to delete state store directory of %s for it is not empty", appDir.getAbsolutePath())))
+                    appender.getMessages(),
+                    hasItem(endsWith(String.format("Failed to delete state store directory of %s for it is not empty", appDir.getAbsolutePath())))
             );
         }
     }
@@ -632,8 +632,8 @@ public class StateDirectoryTest {
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(StateDirectory.class)) {
             directory.clean();
             assertThat(
-                appender.getMessages(),
-                hasItem(endsWith("as user calling cleanup."))
+                    appender.getMessages(),
+                    hasItem(endsWith("as user calling cleanup."))
             );
         }
     }
@@ -658,19 +658,19 @@ public class StateDirectoryTest {
     public void shouldLogTempDirMessage() {
         try (final LogCaptureAppender appender = LogCaptureAppender.createAndRegister(StateDirectory.class)) {
             new StateDirectory(
-                new StreamsConfig(
-                    mkMap(
-                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "mock-localhost:9092"),
-                        mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "")
-                    )
-                ),
-                new MockTime(),
-                true,
-                false
+                    new StreamsConfig(
+                            mkMap(
+                                    mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "mock-localhost:9092"),
+                                    mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, "")
+                            )
+                    ),
+                    new MockTime(),
+                    true,
+                    false
             );
             assertThat(
-                appender.getMessages(),
-                hasItem("Using an OS temp directory in the state.dir property can cause failures with writing the" +
+                    appender.getMessages(),
+                    hasItem("Using an OS temp directory in the state.dir property can cause failures with writing the" +
                             " checkpoint file due to the fact that this directory can be cleared by the OS." +
                             " Resolved state.dir: [" + System.getProperty("java.io.tmpdir") + "/kafka-streams]")
             );
@@ -799,8 +799,8 @@ public class StateDirectoryTest {
             assertThat(directory.listAllTaskDirectories().size(), is(0));
             assertThat(directory.listNonEmptyTaskDirectories().size(), is(0));
             assertThat(
-                appender.getMessages(),
-                hasItem(containsString("Deleting obsolete state directory"))
+                    appender.getMessages(),
+                    hasItem(containsString("Deleting obsolete state directory"))
             );
         }
     }
@@ -832,7 +832,7 @@ public class StateDirectoryTest {
 
         final FileOutputStream fileOutputStream = new FileOutputStream(processFile);
         try (final BufferedWriter writer = new BufferedWriter(
-            new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8))) {
+                new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8))) {
             writer.write(processId.toString());
             writer.flush();
             fileOutputStream.getFD().sync();

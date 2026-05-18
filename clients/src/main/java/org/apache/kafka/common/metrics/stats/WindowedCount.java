@@ -24,7 +24,7 @@ import org.apache.kafka.common.metrics.MetricConfig;
  * In other words, it counts the number of
  * {@link WindowedCount#record(MetricConfig, double, long)} invocations,
  * instead of summing the recorded values.
- *
+ * <p>
  * See also {@link CumulativeCount} for a non-sampled version of this metric.
  */
 public class WindowedCount extends WindowedSum {

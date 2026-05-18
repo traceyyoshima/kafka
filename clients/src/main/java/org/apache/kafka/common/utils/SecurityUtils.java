@@ -55,7 +55,7 @@ public class SecurityUtils {
             NAME_TO_OPERATIONS.put(operationName.toUpperCase(Locale.ROOT), operation);
         }
         for (AclPermissionType permissionType : AclPermissionType.values()) {
-            String permissionName  = toPascalCase(permissionType.name());
+            String permissionName = toPascalCase(permissionType.name());
             NAME_TO_PERMISSION_TYPES.put(permissionName, permissionType);
             NAME_TO_PERMISSION_TYPES.put(permissionName.toUpperCase(Locale.ROOT), permissionType);
         }
@@ -84,7 +84,7 @@ public class SecurityUtils {
             String[] securityProviderClasses = securityProviderClassesStr.replaceAll("\\s+", "").split(",");
             for (int index = 0; index < securityProviderClasses.length; index++) {
                 SecurityProviderCreator securityProviderCreator =
-                    (SecurityProviderCreator) Class.forName(securityProviderClasses[index]).getConstructor().newInstance();
+                        (SecurityProviderCreator) Class.forName(securityProviderClasses[index]).getConstructor().newInstance();
                 securityProviderCreator.configure(configs);
                 Security.insertProviderAt(securityProviderCreator.getProvider(), index + 1);
             }
@@ -152,22 +152,22 @@ public class SecurityUtils {
                                                         ResourceType type) {
         if (type == ResourceType.ANY) {
             throw new IllegalArgumentException(
-                "Must specify a non-filter resource type for authorizeByResourceType");
+                    "Must specify a non-filter resource type for authorizeByResourceType");
         }
 
         if (type == ResourceType.UNKNOWN) {
             throw new IllegalArgumentException(
-                "Unknown resource type");
+                    "Unknown resource type");
         }
 
         if (op == AclOperation.ANY) {
             throw new IllegalArgumentException(
-                "Must specify a non-filter operation type for authorizeByResourceType");
+                    "Must specify a non-filter operation type for authorizeByResourceType");
         }
 
         if (op == AclOperation.UNKNOWN) {
             throw new IllegalArgumentException(
-                "Unknown operation type");
+                    "Unknown operation type");
         }
     }
 }

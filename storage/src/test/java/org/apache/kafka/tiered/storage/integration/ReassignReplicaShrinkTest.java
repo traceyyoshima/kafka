@@ -30,6 +30,7 @@ public final class ReassignReplicaShrinkTest extends TieredStorageTestHarness {
 
     /**
      * Cluster of two brokers
+     *
      * @return number of brokers in the cluster
      */
     @Override
@@ -39,6 +40,7 @@ public final class ReassignReplicaShrinkTest extends TieredStorageTestHarness {
 
     /**
      * Number of partitions in the '__remote_log_metadata' topic
+     *
      * @return number of partitions in the '__remote_log_metadata' topic
      */
     @Override

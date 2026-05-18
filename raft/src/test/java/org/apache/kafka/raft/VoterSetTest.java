@@ -53,8 +53,8 @@ public final class VoterSetTest {
     void testVoterNode() {
         VoterSet voterSet = VoterSet.fromMap(voterMap(IntStream.of(1, 2, 3), true));
         assertEquals(
-            Optional.of(new Node(1, "localhost", 9991)),
-            voterSet.voterNode(1, DEFAULT_LISTENER_NAME)
+                Optional.of(new Node(1, "localhost", 9991)),
+                voterSet.voterNode(1, DEFAULT_LISTENER_NAME)
         );
         assertEquals(Optional.empty(), voterSet.voterNode(1, ListenerName.normalised("MISSING")));
         assertEquals(Optional.empty(), voterSet.voterNode(4, DEFAULT_LISTENER_NAME));
@@ -65,18 +65,18 @@ public final class VoterSetTest {
         VoterSet voterSet = VoterSet.fromMap(voterMap(IntStream.of(1, 2, 3), true));
 
         assertEquals(
-            Set.of(new Node(1, "localhost", 9991), new Node(2, "localhost", 9992)),
-            voterSet.voterNodes(IntStream.of(1, 2).boxed(), DEFAULT_LISTENER_NAME)
+                Set.of(new Node(1, "localhost", 9991), new Node(2, "localhost", 9992)),
+                voterSet.voterNodes(IntStream.of(1, 2).boxed(), DEFAULT_LISTENER_NAME)
         );
 
         assertThrows(
-            IllegalArgumentException.class,
-            () -> voterSet.voterNodes(IntStream.of(1, 2).boxed(), ListenerName.normalised("MISSING"))
+                IllegalArgumentException.class,
+                () -> voterSet.voterNodes(IntStream.of(1, 2).boxed(), ListenerName.normalised("MISSING"))
         );
 
         assertThrows(
-            IllegalArgumentException.class,
-            () -> voterSet.voterNodes(IntStream.of(1, 4).boxed(), DEFAULT_LISTENER_NAME)
+                IllegalArgumentException.class,
+                () -> voterSet.voterNodes(IntStream.of(1, 4).boxed(), DEFAULT_LISTENER_NAME)
         );
     }
 
@@ -108,8 +108,8 @@ public final class VoterSetTest {
 
         VoterSet.VoterNode voter3 = aVoterMap.remove(3);
         assertEquals(
-            Optional.of(VoterSet.fromMap(new HashMap<>(aVoterMap))),
-            voterSet.removeVoter(voter3.voterKey())
+                Optional.of(VoterSet.fromMap(new HashMap<>(aVoterMap))),
+                voterSet.removeVoter(voter3.voterKey())
         );
     }
 
@@ -125,21 +125,21 @@ public final class VoterSetTest {
 
         VoterSet.VoterNode voter3 = aVoterMap.get(3);
         VoterSet.VoterNode newVoter3 = VoterSet.VoterNode.of(
-            voter3.voterKey(),
-            Endpoints.fromInetSocketAddresses(
-                Map.of(
-                    ListenerName.normalised("ABC"),
-                    InetSocketAddress.createUnresolved("abc", 1234)
-                )
-            ),
-            new SupportedVersionRange((short) 1, (short) 1)
+                voter3.voterKey(),
+                Endpoints.fromInetSocketAddresses(
+                        Map.of(
+                                ListenerName.normalised("ABC"),
+                                InetSocketAddress.createUnresolved("abc", 1234)
+                        )
+                ),
+                new SupportedVersionRange((short) 1, (short) 1)
         );
         aVoterMap.put(3, newVoter3);
 
         assertTrue(voterSet.voterNodeNeedsUpdate(newVoter3));
         assertEquals(
-            Optional.of(VoterSet.fromMap(new HashMap<>(aVoterMap))),
-            voterSet.updateVoter(newVoter3)
+                Optional.of(VoterSet.fromMap(new HashMap<>(aVoterMap))),
+                voterSet.updateVoter(newVoter3)
         );
     }
 
@@ -157,8 +157,8 @@ public final class VoterSetTest {
         aVoterMap.put(3, newVoter3);
 
         assertEquals(
-            Optional.of(VoterSet.fromMap(new HashMap<>(aVoterMap))),
-            voterSet.updateVoterIgnoringDirectoryId(newVoter3)
+                Optional.of(VoterSet.fromMap(new HashMap<>(aVoterMap))),
+                voterSet.updateVoterIgnoringDirectoryId(newVoter3)
         );
 
         // Test that it can continue to override voter set with different directory ids
@@ -167,8 +167,8 @@ public final class VoterSetTest {
         aVoterMap.put(3, newVoter3);
 
         assertEquals(
-            Optional.of(VoterSet.fromMap(new HashMap<>(aVoterMap))),
-            voterSet.updateVoterIgnoringDirectoryId(newVoter3)
+                Optional.of(VoterSet.fromMap(new HashMap<>(aVoterMap))),
+                voterSet.updateVoterIgnoringDirectoryId(newVoter3)
         );
     }
 
@@ -191,10 +191,10 @@ public final class VoterSetTest {
         assertFalse(voterSet.isVoter(ReplicaKey.of(1, Uuid.randomUuid())));
         assertFalse(voterSet.isVoter(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID)));
         assertFalse(
-            voterSet.isVoter(ReplicaKey.of(2, aVoterMap.get(1).voterKey().directoryId().get()))
+                voterSet.isVoter(ReplicaKey.of(2, aVoterMap.get(1).voterKey().directoryId().get()))
         );
         assertFalse(
-            voterSet.isVoter(ReplicaKey.of(4, aVoterMap.get(1).voterKey().directoryId().get()))
+                voterSet.isVoter(ReplicaKey.of(4, aVoterMap.get(1).voterKey().directoryId().get()))
         );
         assertFalse(voterSet.isVoter(ReplicaKey.of(4, ReplicaKey.NO_DIRECTORY_ID)));
     }
@@ -235,7 +235,7 @@ public final class VoterSetTest {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { true, false })
+    @ValueSource(booleans = {true, false})
     void testEndpoints(boolean withDirectoryId) {
         Map<Integer, VoterSet.VoterNode> aVoterMap = voterMap(IntStream.of(1, 2, 3), withDirectoryId);
         VoterSet voterSet = VoterSet.fromMap(new HashMap<>(aVoterMap));
@@ -255,7 +255,7 @@ public final class VoterSetTest {
         assertFalse(voterSet.isOnlyVoter(ReplicaKey.of(1, Uuid.randomUuid())));
         assertFalse(voterSet.isOnlyVoter(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID)));
         assertFalse(
-            voterSet.isOnlyVoter(ReplicaKey.of(4, aVoterMap.get(1).voterKey().directoryId().get()))
+                voterSet.isOnlyVoter(ReplicaKey.of(4, aVoterMap.get(1).voterKey().directoryId().get()))
         );
         assertFalse(voterSet.isOnlyVoter(ReplicaKey.of(4, ReplicaKey.NO_DIRECTORY_ID)));
     }
@@ -269,10 +269,10 @@ public final class VoterSetTest {
         assertFalse(voterSet.isOnlyVoter(ReplicaKey.of(1, Uuid.randomUuid())));
         assertFalse(voterSet.isOnlyVoter(ReplicaKey.of(1, ReplicaKey.NO_DIRECTORY_ID)));
         assertFalse(
-            voterSet.isOnlyVoter(ReplicaKey.of(2, aVoterMap.get(1).voterKey().directoryId().get()))
+                voterSet.isOnlyVoter(ReplicaKey.of(2, aVoterMap.get(1).voterKey().directoryId().get()))
         );
         assertFalse(
-            voterSet.isOnlyVoter(ReplicaKey.of(4, aVoterMap.get(1).voterKey().directoryId().get()))
+                voterSet.isOnlyVoter(ReplicaKey.of(4, aVoterMap.get(1).voterKey().directoryId().get()))
         );
         assertFalse(voterSet.isOnlyVoter(ReplicaKey.of(4, ReplicaKey.NO_DIRECTORY_ID)));
     }
@@ -290,20 +290,20 @@ public final class VoterSetTest {
         VoterSet startingVoterSet = voterSet(startingVoterMap);
 
         VoterSet biggerVoterSet = startingVoterSet
-            .addVoter(voterNode(4, true))
-            .get();
+                .addVoter(voterNode(4, true))
+                .get();
         assertMajorities(true, startingVoterSet, biggerVoterSet);
 
         VoterSet smallerVoterSet = startingVoterSet
-            .removeVoter(startingVoterMap.get(1).voterKey())
-            .get();
+                .removeVoter(startingVoterMap.get(1).voterKey())
+                .get();
         assertMajorities(true, startingVoterSet, smallerVoterSet);
 
         VoterSet replacedVoterSet = startingVoterSet
-            .removeVoter(startingVoterMap.get(1).voterKey())
-            .get()
-            .addVoter(voterNode(1, true))
-            .get();
+                .removeVoter(startingVoterMap.get(1).voterKey())
+                .get()
+                .addVoter(voterNode(1, true))
+                .get();
         assertMajorities(true, startingVoterSet, replacedVoterSet);
     }
 
@@ -314,30 +314,30 @@ public final class VoterSetTest {
 
         // Two additions don't have an overlapping majority
         VoterSet biggerVoterSet = startingVoterSet
-            .addVoter(voterNode(6, true))
-            .get()
-            .addVoter(voterNode(7, true))
-            .get();
+                .addVoter(voterNode(6, true))
+                .get()
+                .addVoter(voterNode(7, true))
+                .get();
         assertMajorities(false, startingVoterSet, biggerVoterSet);
 
         // Two removals don't have an overlapping majority
         VoterSet smallerVoterSet = startingVoterSet
-            .removeVoter(startingVoterMap.get(1).voterKey())
-            .get()
-            .removeVoter(startingVoterMap.get(2).voterKey())
-            .get();
+                .removeVoter(startingVoterMap.get(1).voterKey())
+                .get()
+                .removeVoter(startingVoterMap.get(2).voterKey())
+                .get();
         assertMajorities(false, startingVoterSet, smallerVoterSet);
 
         // Two replacements don't have an overlapping majority
         VoterSet replacedVoterSet = startingVoterSet
-            .removeVoter(startingVoterMap.get(1).voterKey())
-            .get()
-            .addVoter(voterNode(1, true))
-            .get()
-            .removeVoter(startingVoterMap.get(2).voterKey())
-            .get()
-            .addVoter(voterNode(2, true))
-            .get();
+                .removeVoter(startingVoterMap.get(1).voterKey())
+                .get()
+                .addVoter(voterNode(1, true))
+                .get()
+                .removeVoter(startingVoterMap.get(2).voterKey())
+                .get()
+                .addVoter(voterNode(2, true))
+                .get();
         assertMajorities(false, startingVoterSet, replacedVoterSet);
     }
 
@@ -354,66 +354,66 @@ public final class VoterSetTest {
 
     private void assertMajorities(boolean overlap, VoterSet a, VoterSet b) {
         assertEquals(
-            overlap,
-            a.hasOverlappingMajority(b),
-            String.format("a = %s, b = %s", a, b)
+                overlap,
+                a.hasOverlappingMajority(b),
+                String.format("a = %s, b = %s", a, b)
         );
         assertEquals(
-            overlap,
-            b.hasOverlappingMajority(a),
-            String.format("b = %s, a = %s", b, a)
+                overlap,
+                b.hasOverlappingMajority(a),
+                String.format("b = %s, a = %s", b, a)
         );
     }
 
     public static final ListenerName DEFAULT_LISTENER_NAME = ListenerName.normalised("LISTENER");
 
     public static Map<Integer, VoterSet.VoterNode> voterMap(
-        IntStream replicas,
-        boolean withDirectoryId
+            IntStream replicas,
+            boolean withDirectoryId
     ) {
         return replicas
-            .boxed()
-            .collect(
-                Collectors.toMap(
-                    Function.identity(),
-                    id -> voterNode(id, withDirectoryId)
-                )
-            );
+                .boxed()
+                .collect(
+                        Collectors.toMap(
+                                Function.identity(),
+                                id -> voterNode(id, withDirectoryId)
+                        )
+                );
     }
 
     public static Map<Integer, VoterSet.VoterNode> voterMap(Stream<ReplicaKey> replicas) {
         return replicas
-            .collect(Collectors.toMap(ReplicaKey::id, VoterSetTest::voterNode));
+                .collect(Collectors.toMap(ReplicaKey::id, VoterSetTest::voterNode));
     }
 
     public static VoterSet.VoterNode voterNode(int id, boolean withDirectoryId) {
         return voterNode(
-            ReplicaKey.of(
-                id,
-                withDirectoryId ? Uuid.randomUuid() : ReplicaKey.NO_DIRECTORY_ID
-            )
+                ReplicaKey.of(
+                        id,
+                        withDirectoryId ? Uuid.randomUuid() : ReplicaKey.NO_DIRECTORY_ID
+                )
         );
     }
 
     public static VoterSet.VoterNode voterNode(ReplicaKey replicaKey) {
         return voterNode(
-            replicaKey,
-            Endpoints.fromInetSocketAddresses(
-                Map.of(
-                    DEFAULT_LISTENER_NAME,
-                    InetSocketAddress.createUnresolved(
-                        "localhost",
-                        9990 + replicaKey.id()
-                    )
+                replicaKey,
+                Endpoints.fromInetSocketAddresses(
+                        Map.of(
+                                DEFAULT_LISTENER_NAME,
+                                InetSocketAddress.createUnresolved(
+                                        "localhost",
+                                        9990 + replicaKey.id()
+                                )
+                        )
                 )
-            )
         );
     }
 
     public static VoterSet.VoterNode voterNode(ReplicaKey replicaKey, Endpoints endpoints) {
         var supportedVersionRange = replicaKey.directoryId().isEmpty() ?
-            new SupportedVersionRange((short) 0) :
-            Feature.KRAFT_VERSION.supportedVersionRange();
+                new SupportedVersionRange((short) 0) :
+                Feature.KRAFT_VERSION.supportedVersionRange();
 
         return new VoterSet.VoterNode(replicaKey, endpoints, supportedVersionRange);
     }

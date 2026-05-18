@@ -186,8 +186,8 @@ public class StoresTest {
     @Test
     public void shouldCreateRocksDbStore() {
         assertThat(
-            Stores.persistentKeyValueStore("store").get(),
-            allOf(not(instanceOf(RocksDBTimestampedStore.class)), instanceOf(RocksDBStore.class)));
+                Stores.persistentKeyValueStore("store").get(),
+                allOf(not(instanceOf(RocksDBTimestampedStore.class)), instanceOf(RocksDBStore.class)));
     }
 
     @Test
@@ -226,9 +226,9 @@ public class StoresTest {
     @Test
     public void shouldBuildKeyValueStore() {
         final KeyValueStore<String, String> store = Stores.keyValueStoreBuilder(
-            Stores.persistentKeyValueStore("name"),
-            Serdes.String(),
-            Serdes.String()
+                Stores.persistentKeyValueStore("name"),
+                Serdes.String(),
+                Serdes.String()
         ).build();
         assertThat(store, not(nullValue()));
     }
@@ -236,9 +236,9 @@ public class StoresTest {
     @Test
     public void shouldBuildTimestampedKeyValueStore() {
         final TimestampedKeyValueStore<String, String> store = Stores.timestampedKeyValueStoreBuilder(
-            Stores.persistentTimestampedKeyValueStore("name"),
-            Serdes.String(),
-            Serdes.String()
+                Stores.persistentTimestampedKeyValueStore("name"),
+                Serdes.String(),
+                Serdes.String()
         ).build();
         assertThat(store, not(nullValue()));
     }
@@ -246,9 +246,9 @@ public class StoresTest {
     @Test
     public void shouldBuildTimestampedKeyValueStoreThatWrapsKeyValueStore() {
         final TimestampedKeyValueStore<String, String> store = Stores.timestampedKeyValueStoreBuilder(
-            Stores.persistentKeyValueStore("name"),
-            Serdes.String(),
-            Serdes.String()
+                Stores.persistentKeyValueStore("name"),
+                Serdes.String(),
+                Serdes.String()
         ).build();
         assertThat(store, not(nullValue()));
     }
@@ -256,9 +256,9 @@ public class StoresTest {
     @Test
     public void shouldBuildTimestampedKeyValueStoreThatWrapsInMemoryKeyValueStore() {
         final TimestampedKeyValueStore<String, String> store = Stores.timestampedKeyValueStoreBuilder(
-            Stores.inMemoryKeyValueStore("name"),
-            Serdes.String(),
-            Serdes.String()
+                Stores.inMemoryKeyValueStore("name"),
+                Serdes.String(),
+                Serdes.String()
         ).withLoggingDisabled().withCachingDisabled().build();
         assertThat(store, not(nullValue()));
         assertThat(((WrappedStateStore) store).wrapped(), instanceOf(TimestampedBytesStore.class));
@@ -267,9 +267,9 @@ public class StoresTest {
     @Test
     public void shouldBuildVersionedKeyValueStore() {
         final VersionedKeyValueStore<String, String> store = Stores.versionedKeyValueStoreBuilder(
-            Stores.persistentVersionedKeyValueStore("name", ofMillis(1)),
-            Serdes.String(),
-            Serdes.String()
+                Stores.persistentVersionedKeyValueStore("name", ofMillis(1)),
+                Serdes.String(),
+                Serdes.String()
         ).build();
         assertThat(store, not(nullValue()));
     }
@@ -277,9 +277,9 @@ public class StoresTest {
     @Test
     public void shouldBuildWindowStore() {
         final WindowStore<String, String> store = Stores.windowStoreBuilder(
-            Stores.persistentWindowStore("store", ofMillis(3L), ofMillis(3L), true),
-            Serdes.String(),
-            Serdes.String()
+                Stores.persistentWindowStore("store", ofMillis(3L), ofMillis(3L), true),
+                Serdes.String(),
+                Serdes.String()
         ).build();
         assertThat(store, not(nullValue()));
     }
@@ -287,9 +287,9 @@ public class StoresTest {
     @Test
     public void shouldBuildTimestampedWindowStore() {
         final TimestampedWindowStore<String, String> store = Stores.timestampedWindowStoreBuilder(
-            Stores.persistentTimestampedWindowStore("store", ofMillis(3L), ofMillis(3L), true),
-            Serdes.String(),
-            Serdes.String()
+                Stores.persistentTimestampedWindowStore("store", ofMillis(3L), ofMillis(3L), true),
+                Serdes.String(),
+                Serdes.String()
         ).build();
         assertThat(store, not(nullValue()));
     }
@@ -297,9 +297,9 @@ public class StoresTest {
     @Test
     public void shouldBuildTimestampedWindowStoreThatWrapsWindowStore() {
         final TimestampedWindowStore<String, String> store = Stores.timestampedWindowStoreBuilder(
-            Stores.persistentWindowStore("store", ofMillis(3L), ofMillis(3L), true),
-            Serdes.String(),
-            Serdes.String()
+                Stores.persistentWindowStore("store", ofMillis(3L), ofMillis(3L), true),
+                Serdes.String(),
+                Serdes.String()
         ).build();
         assertThat(store, not(nullValue()));
     }
@@ -307,9 +307,9 @@ public class StoresTest {
     @Test
     public void shouldBuildTimestampedWindowStoreThatWrapsInMemoryWindowStore() {
         final TimestampedWindowStore<String, String> store = Stores.timestampedWindowStoreBuilder(
-            Stores.inMemoryWindowStore("store", ofMillis(3L), ofMillis(3L), true),
-            Serdes.String(),
-            Serdes.String()
+                Stores.inMemoryWindowStore("store", ofMillis(3L), ofMillis(3L), true),
+                Serdes.String(),
+                Serdes.String()
         ).withLoggingDisabled().withCachingDisabled().build();
         assertThat(store, not(nullValue()));
         assertThat(((WrappedStateStore) store).wrapped(), instanceOf(TimestampedBytesStore.class));
@@ -318,9 +318,9 @@ public class StoresTest {
     @Test
     public void shouldBuildSessionStore() {
         final SessionStore<String, String> store = Stores.sessionStoreBuilder(
-            Stores.persistentSessionStore("name", ofMillis(10)),
-            Serdes.String(),
-            Serdes.String()
+                Stores.persistentSessionStore("name", ofMillis(10)),
+                Serdes.String(),
+                Serdes.String()
         ).build();
         assertThat(store, not(nullValue()));
     }

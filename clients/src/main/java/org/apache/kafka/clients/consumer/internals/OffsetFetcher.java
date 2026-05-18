@@ -212,10 +212,10 @@ public class OffsetFetcher {
             if (subscriptions.partitionEndOffset(topicPartition, isolationLevel) == null &&
                     offsetFetcherUtils.maybeSetPartitionEndOffsetRequest(topicPartition)) {
                 beginningOrEndOffset(
-                    Set.of(topicPartition),
-                    ListOffsetsRequest.LATEST_TIMESTAMP,
-                    time.timer(0L),
-                    true
+                        Set.of(topicPartition),
+                        ListOffsetsRequest.LATEST_TIMESTAMP,
+                        time.timer(0L),
+                        true
                 );
             }
 
@@ -272,9 +272,9 @@ public class OffsetFetcher {
     /**
      * For each partition which needs validation, make an asynchronous request to get the end-offsets for the partition
      * with the epoch less than or equal to the epoch the partition last saw.
-     *
+     * <p>
      * <p/>
-     *
+     * <p>
      * Requests are grouped by Node for efficiency.
      */
     private void validatePositionsAsync(Map<TopicPartition, FetchPosition> partitionsToValidate) {

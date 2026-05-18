@@ -57,9 +57,9 @@ public class DeleteShareGroupOffsetsRequest extends AbstractRequest {
 
     public DeleteShareGroupOffsetsResponse getErrorResponse(int throttleTimeMs, short errorCode, String errorMessage) {
         return new DeleteShareGroupOffsetsResponse(new DeleteShareGroupOffsetsResponseData()
-            .setThrottleTimeMs(throttleTimeMs)
-            .setErrorMessage(errorMessage)
-            .setErrorCode(errorCode));
+                .setThrottleTimeMs(throttleTimeMs)
+                .setErrorMessage(errorMessage)
+                .setErrorCode(errorCode));
     }
 
     @Override
@@ -74,8 +74,8 @@ public class DeleteShareGroupOffsetsRequest extends AbstractRequest {
 
     public static DeleteShareGroupOffsetsRequest parse(Readable readable, short version) {
         return new DeleteShareGroupOffsetsRequest(
-            new DeleteShareGroupOffsetsRequestData(readable, version),
-            version
+                new DeleteShareGroupOffsetsRequestData(readable, version),
+                version
         );
     }
 
@@ -85,13 +85,13 @@ public class DeleteShareGroupOffsetsRequest extends AbstractRequest {
 
     public static DeleteShareGroupOffsetsResponseData getErrorDeleteResponseData(short errorCode, String errorMessage) {
         return new DeleteShareGroupOffsetsResponseData()
-            .setErrorCode(errorCode)
-            .setErrorMessage(errorMessage == null ? Errors.forCode(errorCode).message() : errorMessage);
+                .setErrorCode(errorCode)
+                .setErrorMessage(errorMessage == null ? Errors.forCode(errorCode).message() : errorMessage);
     }
 
     public static DeleteShareGroupOffsetsResponseData getErrorDeleteResponseData(Errors error, String errorMessage) {
         return new DeleteShareGroupOffsetsResponseData()
-            .setErrorCode(error.code())
-            .setErrorMessage(errorMessage == null ? error.message() : errorMessage);
+                .setErrorCode(error.code())
+                .setErrorMessage(errorMessage == null ? error.message() : errorMessage);
     }
 }

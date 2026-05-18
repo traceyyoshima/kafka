@@ -100,10 +100,10 @@ public class KTableMapValuesTest {
 
         final KTable<String, String> table1 = builder.table(topic1, consumed);
         final KTable<String, Integer> table2 = table1
-            .mapValues(
-                value -> value.charAt(0) - 48,
-                Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("anyName")
-                    .withValueSerde(Serdes.Integer()));
+                .mapValues(
+                        value -> value.charAt(0) - 48,
+                        Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("anyName")
+                                .withValueSerde(Serdes.Integer()));
 
         final MockApiProcessorSupplier<String, Integer, Void, Void> supplier = new MockApiProcessorSupplier<>();
         table2.toStream().process(supplier);
@@ -189,19 +189,19 @@ public class KTableMapValuesTest {
         final String storeName3 = "store3";
 
         final KTableImpl<String, String, String> table1 =
-            (KTableImpl<String, String, String>) builder.table(topic1, consumed);
+                (KTableImpl<String, String, String>) builder.table(topic1, consumed);
         final KTableImpl<String, String, Integer> table2 =
-            (KTableImpl<String, String, Integer>) table1.mapValues(
-                s -> Integer.valueOf(s),
-                Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as(storeName2)
-                    .withValueSerde(Serdes.Integer()));
+                (KTableImpl<String, String, Integer>) table1.mapValues(
+                        s -> Integer.valueOf(s),
+                        Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as(storeName2)
+                                .withValueSerde(Serdes.Integer()));
         final KTableImpl<String, String, Integer> table3 =
-            (KTableImpl<String, String, Integer>) table1.mapValues(
-                value -> Integer.valueOf(value) * (-1),
-                Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as(storeName3)
-                    .withValueSerde(Serdes.Integer()));
+                (KTableImpl<String, String, Integer>) table1.mapValues(
+                        value -> Integer.valueOf(value) * (-1),
+                        Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as(storeName3)
+                                .withValueSerde(Serdes.Integer()));
         final KTableImpl<String, String, Integer> table4 =
-            (KTableImpl<String, String, Integer>) table1.mapValues(s -> Integer.valueOf(s));
+                (KTableImpl<String, String, Integer>) table1.mapValues(s -> Integer.valueOf(s));
 
         assertEquals(storeName2, table2.queryableStoreName());
         assertEquals(storeName3, table3.queryableStoreName());
@@ -218,9 +218,9 @@ public class KTableMapValuesTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, String, String> table1 =
-            (KTableImpl<String, String, String>) builder.table(topic1, consumed);
+                (KTableImpl<String, String, String>) builder.table(topic1, consumed);
         final KTableImpl<String, String, Integer> table2 =
-            (KTableImpl<String, String, Integer>) table1.mapValues(s -> Integer.valueOf(s));
+                (KTableImpl<String, String, Integer>) table1.mapValues(s -> Integer.valueOf(s));
 
         final MockApiProcessorSupplier<String, Integer, Void, Void> supplier = new MockApiProcessorSupplier<>();
         final Topology topology = builder.build().addProcessor("proc", supplier, table2.name);
@@ -261,9 +261,9 @@ public class KTableMapValuesTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, String, String> table1 =
-            (KTableImpl<String, String, String>) builder.table(topic1, consumed);
+                (KTableImpl<String, String, String>) builder.table(topic1, consumed);
         final KTableImpl<String, String, Integer> table2 =
-            (KTableImpl<String, String, Integer>) table1.mapValues(s -> Integer.valueOf(s));
+                (KTableImpl<String, String, Integer>) table1.mapValues(s -> Integer.valueOf(s));
 
         table2.enableSendingOldValues(true);
 
@@ -281,12 +281,12 @@ public class KTableMapValuesTest {
         final String topic1 = "topic1";
 
         final KTableImpl<String, String, String> table1 =
-            (KTableImpl<String, String, String>) builder.table(topic1, consumed);
+                (KTableImpl<String, String, String>) builder.table(topic1, consumed);
         final KTableImpl<String, String, Integer> table2 =
-            (KTableImpl<String, String, Integer>) table1.mapValues(
-                s -> Integer.valueOf(s),
-                Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("bob").withValueSerde(Serdes.Integer())
-            );
+                (KTableImpl<String, String, Integer>) table1.mapValues(
+                        s -> Integer.valueOf(s),
+                        Materialized.<String, Integer, KeyValueStore<Bytes, byte[]>>as("bob").withValueSerde(Serdes.Integer())
+                );
 
         table2.enableSendingOldValues(true);
 
@@ -297,42 +297,42 @@ public class KTableMapValuesTest {
     }
 
     private void testSendingOldValues(
-        final StreamsBuilder builder,
-        final String topic1,
-        final KTableImpl<String, String, Integer> table2
+            final StreamsBuilder builder,
+            final String topic1,
+            final KTableImpl<String, String, Integer> table2
     ) {
         final MockApiProcessorSupplier<String, Integer, Void, Void> supplier = new MockApiProcessorSupplier<>();
         builder.build().addProcessor("proc", supplier, table2.name);
 
         try (final TopologyTestDriver driver = new TopologyTestDriver(builder.build(), props)) {
             final TestInputTopic<String, String> inputTopic1 =
-                driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
+                    driver.createInputTopic(topic1, new StringSerializer(), new StringSerializer(), Instant.ofEpochMilli(0L), Duration.ZERO);
             final MockApiProcessor<String, Integer, Void, Void> proc = supplier.theCapturedProcessor();
 
             inputTopic1.pipeInput("A", "01", 5L);
             inputTopic1.pipeInput("B", "01", 10L);
             inputTopic1.pipeInput("C", "01", 15L);
             proc.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(1, null), 5),
-                new KeyValueTimestamp<>("B", new Change<>(1, null), 10),
-                new KeyValueTimestamp<>("C", new Change<>(1, null), 15)
+                    new KeyValueTimestamp<>("A", new Change<>(1, null), 5),
+                    new KeyValueTimestamp<>("B", new Change<>(1, null), 10),
+                    new KeyValueTimestamp<>("C", new Change<>(1, null), 15)
             );
 
             inputTopic1.pipeInput("A", "02", 10L);
             inputTopic1.pipeInput("B", "02", 8L);
             proc.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(2, 1), 10),
-                new KeyValueTimestamp<>("B", new Change<>(2, 1), 8)
+                    new KeyValueTimestamp<>("A", new Change<>(2, 1), 10),
+                    new KeyValueTimestamp<>("B", new Change<>(2, 1), 8)
             );
 
             inputTopic1.pipeInput("A", "03", 20L);
             proc.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(3, 2), 20)
+                    new KeyValueTimestamp<>("A", new Change<>(3, 2), 20)
             );
 
             inputTopic1.pipeInput("A", (String) null, 30L);
             proc.checkAndClearProcessResult(
-                new KeyValueTimestamp<>("A", new Change<>(null, 3), 30)
+                    new KeyValueTimestamp<>("A", new Change<>(null, 3), 30)
             );
         }
     }

@@ -39,8 +39,8 @@ public interface TopicCreator {
      * @return A future of the create topics response. This future will be completed on the network thread.
      */
     CompletableFuture<CreateTopicsResponse> createTopicWithPrincipal(
-        RequestContext requestContext,
-        CreateTopicsRequest.Builder createTopicsRequest
+            RequestContext requestContext,
+            CreateTopicsRequest.Builder createTopicsRequest
     );
 
     /**
@@ -51,6 +51,6 @@ public interface TopicCreator {
      * @return A future of the create topics response. This future will be completed on the network thread.
      */
     CompletableFuture<CreateTopicsResponse> createTopicWithoutPrincipal(
-        CreateTopicsRequest.Builder createTopicsRequest
+            CreateTopicsRequest.Builder createTopicsRequest
     );
 }

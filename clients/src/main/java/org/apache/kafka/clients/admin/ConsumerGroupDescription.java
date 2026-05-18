@@ -128,21 +128,21 @@ public class ConsumerGroupDescription {
         if (o == null || getClass() != o.getClass()) return false;
         final ConsumerGroupDescription that = (ConsumerGroupDescription) o;
         return isSimpleConsumerGroup == that.isSimpleConsumerGroup &&
-            Objects.equals(groupId, that.groupId) &&
-            Objects.equals(members, that.members) &&
-            Objects.equals(partitionAssignor, that.partitionAssignor) &&
-            type == that.type &&
-            groupState == that.groupState &&
-            Objects.equals(coordinator, that.coordinator) &&
-            Objects.equals(authorizedOperations, that.authorizedOperations) &&
-            Objects.equals(groupEpoch, that.groupEpoch) &&
-            Objects.equals(targetAssignmentEpoch, that.targetAssignmentEpoch);
+                Objects.equals(groupId, that.groupId) &&
+                Objects.equals(members, that.members) &&
+                Objects.equals(partitionAssignor, that.partitionAssignor) &&
+                type == that.type &&
+                groupState == that.groupState &&
+                Objects.equals(coordinator, that.coordinator) &&
+                Objects.equals(authorizedOperations, that.authorizedOperations) &&
+                Objects.equals(groupEpoch, that.groupEpoch) &&
+                Objects.equals(targetAssignmentEpoch, that.targetAssignmentEpoch);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(groupId, isSimpleConsumerGroup, members, partitionAssignor, type, groupState, coordinator,
-            authorizedOperations, groupEpoch, targetAssignmentEpoch);
+                authorizedOperations, groupEpoch, targetAssignmentEpoch);
     }
 
     /**
@@ -183,6 +183,7 @@ public class ConsumerGroupDescription {
 
     /**
      * The consumer group state, or UNKNOWN if the state is too new for us to parse.
+     *
      * @deprecated Since 4.0. Use {@link #groupState()} instead.
      */
     @SuppressWarnings("removal")
@@ -233,15 +234,15 @@ public class ConsumerGroupDescription {
     @Override
     public String toString() {
         return "(groupId=" + groupId +
-            ", isSimpleConsumerGroup=" + isSimpleConsumerGroup +
-            ", members=" + members.stream().map(MemberDescription::toString).collect(Collectors.joining(",")) +
-            ", partitionAssignor=" + partitionAssignor +
-            ", type=" + type +
-            ", groupState=" + groupState +
-            ", coordinator=" + coordinator +
-            ", authorizedOperations=" + authorizedOperations +
-            ", groupEpoch=" + groupEpoch.orElse(null) +
-            ", targetAssignmentEpoch=" + targetAssignmentEpoch.orElse(null) +
-            ")";
+                ", isSimpleConsumerGroup=" + isSimpleConsumerGroup +
+                ", members=" + members.stream().map(MemberDescription::toString).collect(Collectors.joining(",")) +
+                ", partitionAssignor=" + partitionAssignor +
+                ", type=" + type +
+                ", groupState=" + groupState +
+                ", coordinator=" + coordinator +
+                ", authorizedOperations=" + authorizedOperations +
+                ", groupEpoch=" + groupEpoch.orElse(null) +
+                ", targetAssignmentEpoch=" + targetAssignmentEpoch.orElse(null) +
+                ")";
     }
 }

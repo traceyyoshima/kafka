@@ -54,7 +54,7 @@ public class UserScramCredentialsDescription {
 
     /**
      *
-     * @param name the required user name
+     * @param name            the required user name
      * @param credentialInfos the required SASL/SCRAM credential representations for the user
      */
     public UserScramCredentialsDescription(String name, List<ScramCredentialInfo> credentialInfos) {

@@ -70,17 +70,16 @@ public class OAuthBearerSaslServer implements SaslServer {
     }
 
     /**
-     * @throws SaslAuthenticationException
-     *             if access token cannot be validated
-     *             <p>
-     *             <b>Note:</b> This method may throw
-     *             {@link SaslAuthenticationException} to provide custom error
-     *             messages to clients. But care should be taken to avoid including
-     *             any information in the exception message that should not be
-     *             leaked to unauthenticated clients. It may be safer to throw
-     *             {@link SaslException} in some cases so that a standard error
-     *             message is returned to clients.
-     *             </p>
+     * @throws SaslAuthenticationException if access token cannot be validated
+     *                                     <p>
+     *                                     <b>Note:</b> This method may throw
+     *                                     {@link SaslAuthenticationException} to provide custom error
+     *                                     messages to clients. But care should be taken to avoid including
+     *                                     any information in the exception message that should not be
+     *                                     leaked to unauthenticated clients. It may be safer to throw
+     *                                     {@link SaslException} in some cases so that a standard error
+     *                                     message is returned to clients.
+     *                                     </p>
      */
     @Override
     public byte[] evaluateResponse(byte[] response) throws SaslException, SaslAuthenticationException {
@@ -153,7 +152,7 @@ public class OAuthBearerSaslServer implements SaslServer {
     private byte[] process(String tokenValue, String authorizationId, SaslExtensions extensions) throws SaslException {
         OAuthBearerValidatorCallback callback = new OAuthBearerValidatorCallback(tokenValue);
         try {
-            callbackHandler.handle(new Callback[] {callback});
+            callbackHandler.handle(new Callback[]{callback});
         } catch (IOException | UnsupportedCallbackException e) {
             handleCallbackError(e);
         }
@@ -185,7 +184,7 @@ public class OAuthBearerSaslServer implements SaslServer {
     private Map<String, String> processExtensions(OAuthBearerToken token, SaslExtensions extensions) throws SaslException {
         OAuthBearerExtensionsValidatorCallback extensionsCallback = new OAuthBearerExtensionsValidatorCallback(token, extensions);
         try {
-            callbackHandler.handle(new Callback[] {extensionsCallback});
+            callbackHandler.handle(new Callback[]{extensionsCallback});
         } catch (UnsupportedCallbackException e) {
             // backwards compatibility - no extensions will be added
         } catch (IOException e) {
@@ -220,14 +219,14 @@ public class OAuthBearerSaslServer implements SaslServer {
     }
 
     public static String[] mechanismNamesCompatibleWithPolicy(Map<String, ?> props) {
-        return props != null && "true".equals(String.valueOf(props.get(Sasl.POLICY_NOPLAINTEXT))) ? new String[] {}
-                : new String[] {OAuthBearerLoginModule.OAUTHBEARER_MECHANISM};
+        return props != null && "true".equals(String.valueOf(props.get(Sasl.POLICY_NOPLAINTEXT))) ? new String[]{}
+                : new String[]{OAuthBearerLoginModule.OAUTHBEARER_MECHANISM};
     }
 
     public static class OAuthBearerSaslServerFactory implements SaslServerFactory {
         @Override
         public SaslServer createSaslServer(String mechanism, String protocol, String serverName, Map<String, ?> props,
-                CallbackHandler callbackHandler) {
+                                           CallbackHandler callbackHandler) {
             String[] mechanismNamesCompatibleWithPolicy = getMechanismNames(props);
             for (String name : mechanismNamesCompatibleWithPolicy) {
                 if (name.equals(mechanism)) {

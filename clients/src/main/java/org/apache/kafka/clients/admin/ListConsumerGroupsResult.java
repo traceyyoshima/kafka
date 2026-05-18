@@ -25,6 +25,7 @@ import java.util.Collection;
 
 /**
  * The result of the {@link Admin#listConsumerGroups()} call.
+ *
  * @deprecated Since 4.1. Use {@link Admin#listGroups(ListGroupsOptions)} instead.
  */
 @Deprecated(since = "4.1")
@@ -62,7 +63,7 @@ public class ListConsumerGroupsResult {
     /**
      * Returns a future that yields either an exception, or the full set of consumer group
      * listings.
-     *
+     * <p>
      * In the event of a failure, the future yields nothing but the first exception which
      * occurred.
      */
@@ -72,7 +73,7 @@ public class ListConsumerGroupsResult {
 
     /**
      * Returns a future which yields just the valid listings.
-     *
+     * <p>
      * This future never fails with an error, no matter what happens.  Errors are completely
      * ignored.  If nothing can be fetched, an empty collection is yielded.
      * If there is an error, but some results can be returned, this future will yield
@@ -85,10 +86,10 @@ public class ListConsumerGroupsResult {
 
     /**
      * Returns a future which yields just the errors which occurred.
-     *
+     * <p>
      * If this future yields a non-empty collection, it is very likely that elements are
      * missing from the valid() set.
-     *
+     * <p>
      * This future itself never fails with an error.  In the event of an error, this future
      * will successfully yield a collection containing at least one exception.
      */

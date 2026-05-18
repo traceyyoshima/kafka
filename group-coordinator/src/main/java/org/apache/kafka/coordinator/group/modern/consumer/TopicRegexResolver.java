@@ -52,8 +52,8 @@ public class TopicRegexResolver {
     private final Time time;
 
     public TopicRegexResolver(
-        Supplier<Optional<Plugin<Authorizer>>> authorizerPluginSupplier,
-        Time time
+            Supplier<Optional<Plugin<Authorizer>>> authorizerPluginSupplier,
+            Time time
     ) {
         this.authorizerPluginSupplier = authorizerPluginSupplier;
         this.time = time;
@@ -62,21 +62,21 @@ public class TopicRegexResolver {
     /**
      * Resolves the provided regular expressions.
      *
-     * @param context           The request context.
-     * @param groupId           The group id.
-     * @param log               The logger to use.
-     * @param metadataImage     The metadata image to use for the resolution.
-     * @param regexes           The list of regular expressions that must be resolved.
+     * @param context       The request context.
+     * @param groupId       The group id.
+     * @param log           The logger to use.
+     * @param metadataImage The metadata image to use for the resolution.
+     * @param regexes       The list of regular expressions that must be resolved.
      * @return The list of resolved regular expressions.
-     *
+     * <p>
      * public for benchmarks.
      */
     public Map<String, ResolvedRegularExpression> resolveRegularExpressions(
-        AuthorizableRequestContext context,
-        String groupId,
-        Logger log,
-        CoordinatorMetadataImage metadataImage,
-        Set<String> regexes
+            AuthorizableRequestContext context,
+            String groupId,
+            Logger log,
+            CoordinatorMetadataImage metadataImage,
+            Set<String> regexes
     ) {
         long startTimeMs = time.milliseconds();
         log.debug("[GroupId {}] Refreshing regular expressions: {}", groupId, regexes);
@@ -105,22 +105,22 @@ public class TopicRegexResolver {
         }
 
         filterTopicDescribeAuthorizedTopics(
-            context,
-            resolvedRegexes
+                context,
+                resolvedRegexes
         );
 
         long version = metadataImage.version();
         Map<String, ResolvedRegularExpression> result = new HashMap<>(resolvedRegexes.size());
         for (Map.Entry<String, Set<String>> resolvedRegex : resolvedRegexes.entrySet()) {
             result.put(
-                resolvedRegex.getKey(),
-                new ResolvedRegularExpression(resolvedRegex.getValue(), version, startTimeMs)
+                    resolvedRegex.getKey(),
+                    new ResolvedRegularExpression(resolvedRegex.getValue(), version, startTimeMs)
             );
         }
 
         log.info("[GroupId {}] Scanned {} topics to refresh regular expressions {} in {}ms.",
-            groupId, metadataImage.topicNames().size(), resolvedRegexes.keySet(),
-            time.milliseconds() - startTimeMs);
+                groupId, metadataImage.topicNames().size(), resolvedRegexes.keySet(),
+                time.milliseconds() - startTimeMs);
 
         return result;
     }
@@ -129,12 +129,12 @@ public class TopicRegexResolver {
      * This method filters the topics in the resolved regexes
      * that the member is authorized to describe.
      *
-     * @param context           The request context.
-     * @param resolvedRegexes   The map of the regex pattern and its set of matched topics.
+     * @param context         The request context.
+     * @param resolvedRegexes The map of the regex pattern and its set of matched topics.
      */
     private void filterTopicDescribeAuthorizedTopics(
-        AuthorizableRequestContext context,
-        Map<String, Set<String>> resolvedRegexes
+            AuthorizableRequestContext context,
+            Map<String, Set<String>> resolvedRegexes
     ) {
         if (authorizerPluginSupplier.get().isEmpty()) return;
 
@@ -142,9 +142,9 @@ public class TopicRegexResolver {
 
         Map<String, Integer> topicNameCount = new HashMap<>();
         resolvedRegexes.values().forEach(topicNames ->
-            topicNames.forEach(topicName ->
-                topicNameCount.compute(topicName, Utils::incValue)
-            )
+                topicNames.forEach(topicName ->
+                        topicNameCount.compute(topicName, Utils::incValue)
+                )
         );
 
         List<Action> actions = topicNameCount.entrySet().stream().map(entry -> {

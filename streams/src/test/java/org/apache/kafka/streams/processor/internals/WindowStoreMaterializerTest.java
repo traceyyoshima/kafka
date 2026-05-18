@@ -75,7 +75,7 @@ public class WindowStoreMaterializerTest {
     private StreamsConfig streamsConfig;
 
     private final WindowStore<Bytes, byte[]> innerWindowStore =
-        new InMemoryWindowStore(STORE_NAME, 60000L, WINDOW_SIZE_MS, true, "metricScope");
+            new InMemoryWindowStore(STORE_NAME, 60000L, WINDOW_SIZE_MS, true, "metricScope");
 
     private Windows<?> windows;
     private EmitStrategy emitStrategy;
@@ -86,13 +86,13 @@ public class WindowStoreMaterializerTest {
         emitStrategy = EmitStrategy.onWindowUpdate();
 
         doReturn(emptyMap())
-            .when(streamsConfig).originals();
+                .when(streamsConfig).originals();
         doReturn(new BuiltInDslStoreSuppliers.RocksDBDslStoreSuppliers())
                 .when(streamsConfig).getConfiguredInstance(
-                    StreamsConfig.DSL_STORE_SUPPLIERS_CLASS_CONFIG,
-                    DslStoreSuppliers.class,
-                    emptyMap()
-            );
+                        StreamsConfig.DSL_STORE_SUPPLIERS_CLASS_CONFIG,
+                        DslStoreSuppliers.class,
+                        emptyMap()
+                );
         lenient().doReturn("timestamped")
                 .when(streamsConfig).getString(StreamsConfig.DSL_STORE_FORMAT_CONFIG);
     }
@@ -137,7 +137,7 @@ public class WindowStoreMaterializerTest {
     @Test
     public void shouldCreateTimestampedBuilderWithCachingAndLoggingEnabledByDefault() {
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
 
         final TimestampedWindowStore<String, String> store = getTimestampedStore(materialized);
         final WrappedStateStore<?, ?, ?> caching = (WrappedStateStore<?, ?, ?>) ((WrappedStateStore<?, ?, ?>) store).wrapped();
@@ -151,7 +151,7 @@ public class WindowStoreMaterializerTest {
     @Test
     public void shouldCreateTimestampedBuilderWithCachingDisabled() {
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized = new MaterializedInternal<>(
-            Materialized.<String, String, WindowStore<Bytes, byte[]>>as("store").withCachingDisabled(), nameProvider, STORE_PREFIX
+                Materialized.<String, String, WindowStore<Bytes, byte[]>>as("store").withCachingDisabled(), nameProvider, STORE_PREFIX
         );
 
         final TimestampedWindowStore<String, String> store = getTimestampedStore(materialized);
@@ -163,7 +163,7 @@ public class WindowStoreMaterializerTest {
     @Test
     public void shouldCreateTimestampedBuilderWithLoggingDisabled() {
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized = new MaterializedInternal<>(
-            Materialized.<String, String, WindowStore<Bytes, byte[]>>as("store").withLoggingDisabled(), nameProvider, STORE_PREFIX
+                Materialized.<String, String, WindowStore<Bytes, byte[]>>as("store").withLoggingDisabled(), nameProvider, STORE_PREFIX
         );
 
         final TimestampedWindowStore<String, String> store = getTimestampedStore(materialized);
@@ -176,7 +176,7 @@ public class WindowStoreMaterializerTest {
     @Test
     public void shouldCreateTimestampedBuilderWithCachingAndLoggingDisabled() {
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized = new MaterializedInternal<>(
-            Materialized.<String, String, WindowStore<Bytes, byte[]>>as("store").withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX
+                Materialized.<String, String, WindowStore<Bytes, byte[]>>as("store").withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX
         );
 
         final TimestampedWindowStore<String, String> store = getTimestampedStore(materialized);
@@ -189,7 +189,7 @@ public class WindowStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndCachingAndLoggingEnabledByDefault() {
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as(new HeadersStoreSupplier()), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as(new HeadersStoreSupplier()), nameProvider, STORE_PREFIX);
 
         final TimestampedWindowStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -204,7 +204,7 @@ public class WindowStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndCachingDisabled() {
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled(), nameProvider, STORE_PREFIX);
 
         final TimestampedWindowStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -216,7 +216,7 @@ public class WindowStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndLoggingDisabled() {
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withLoggingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withLoggingDisabled(), nameProvider, STORE_PREFIX);
 
         final TimestampedWindowStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -229,7 +229,7 @@ public class WindowStoreMaterializerTest {
     @Test
     public void shouldCreateHeadersStoreWithProvidedSupplierAndCachingAndLoggingDisabled() {
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier()).withCachingDisabled().withLoggingDisabled(), nameProvider, STORE_PREFIX);
 
         final TimestampedWindowStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -244,8 +244,8 @@ public class WindowStoreMaterializerTest {
         emitStrategy = EmitStrategy.onWindowClose();
 
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("store")
-                .withCachingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String, WindowStore<Bytes, byte[]>>as("store")
+                        .withCachingDisabled(), nameProvider, STORE_PREFIX);
 
         final TimestampedWindowStore<String, String> store = getTimestampedStore(materialized);
 
@@ -259,7 +259,7 @@ public class WindowStoreMaterializerTest {
         emitStrategy = EmitStrategy.onWindowClose();
 
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as("store"), nameProvider, STORE_PREFIX);
 
         final TimestampedWindowStore<String, String> store = getTimestampedStore(materialized);
 
@@ -272,8 +272,8 @@ public class WindowStoreMaterializerTest {
         emitStrategy = EmitStrategy.onWindowClose();
 
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier())
-                .withCachingDisabled(), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.<String, String>as(new HeadersStoreSupplier())
+                        .withCachingDisabled(), nameProvider, STORE_PREFIX);
 
         final TimestampedWindowStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -287,9 +287,9 @@ public class WindowStoreMaterializerTest {
         emitStrategy = EmitStrategy.onWindowClose();
 
         final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized =
-            new MaterializedInternal<>(Materialized.as(RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier.create(
-                STORE_NAME, Duration.ofMillis(60000L), Duration.ofMillis(WINDOW_SIZE_MS), false, true
-            )), nameProvider, STORE_PREFIX);
+                new MaterializedInternal<>(Materialized.as(RocksDbIndexedTimeOrderedWindowBytesStoreWithHeadersSupplier.create(
+                        STORE_NAME, Duration.ofMillis(60000L), Duration.ofMillis(WINDOW_SIZE_MS), false, true
+                )), nameProvider, STORE_PREFIX);
 
         final TimestampedWindowStoreWithHeaders<String, String> store = getHeadersStore(materialized);
 
@@ -299,18 +299,18 @@ public class WindowStoreMaterializerTest {
 
     @SuppressWarnings("unchecked")
     private TimestampedWindowStore<String, String> getTimestampedStore(
-        final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized) {
+            final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized) {
         final WindowStoreMaterializer<String, String> materializer =
-            new WindowStoreMaterializer<>(materialized, windows, emitStrategy);
+                new WindowStoreMaterializer<>(materialized, windows, emitStrategy);
         materializer.configure(streamsConfig);
         return (TimestampedWindowStore<String, String>) materializer.builder().build();
     }
 
     @SuppressWarnings("unchecked")
     private TimestampedWindowStoreWithHeaders<String, String> getHeadersStore(
-        final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized) {
+            final MaterializedInternal<String, String, WindowStore<Bytes, byte[]>> materialized) {
         final WindowStoreMaterializer<String, String> materializer =
-            new WindowStoreMaterializer<>(materialized, windows, emitStrategy);
+                new WindowStoreMaterializer<>(materialized, windows, emitStrategy);
         materializer.configure(streamsConfig);
         return (TimestampedWindowStoreWithHeaders<String, String>) materializer.builder().build();
     }

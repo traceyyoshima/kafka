@@ -97,18 +97,18 @@ public class MetadataQuorumCommand {
 
     static void execute(String... args) throws Exception {
         ArgumentParser parser = ArgumentParsers
-            .newArgumentParser("kafka-metadata-quorum")
-            .defaultHelp(true)
-            .description("This tool describes kraft metadata quorum status.");
+                .newArgumentParser("kafka-metadata-quorum")
+                .defaultHelp(true)
+                .description("This tool describes kraft metadata quorum status.");
         MutuallyExclusiveGroup connectionOptions = parser.addMutuallyExclusiveGroup().required(true);
         connectionOptions.addArgument("--bootstrap-server")
-            .help("A comma-separated list of host:port pairs to use for establishing the connection to the Kafka cluster.");
+                .help("A comma-separated list of host:port pairs to use for establishing the connection to the Kafka cluster.");
         connectionOptions.addArgument("--bootstrap-controller")
-            .help("A comma-separated list of host:port pairs to use for establishing the connection to the Kafka controllers.");
+                .help("A comma-separated list of host:port pairs to use for establishing the connection to the Kafka controllers.");
         parser.addArgument("--command-config")
-            .type(Arguments.fileType())
-            .help("Property file containing configs to be passed to Admin Client. " +
-                "For add-controller, the file is used to specify the controller properties as well.");
+                .type(Arguments.fileType())
+                .help("Property file containing configs to be passed to Admin Client. " +
+                        "For add-controller, the file is used to specify the controller properties as well.");
         Subparsers subparsers = parser.addSubparsers().dest("command");
         addDescribeSubParser(subparsers);
         addAddControllerSubParser(subparsers);
@@ -122,8 +122,8 @@ public class MetadataQuorumCommand {
             File optionalCommandConfig = namespace.get("command_config");
             final Properties props = getProperties(optionalCommandConfig);
             CommandLineUtils.initializeBootstrapProperties(props,
-                Optional.ofNullable(namespace.getString("bootstrap_server")),
-                Optional.ofNullable(namespace.getString("bootstrap_controller")));
+                    Optional.ofNullable(namespace.getString("bootstrap_server")),
+                    Optional.ofNullable(namespace.getString("bootstrap_controller")));
             admin = Admin.create(props);
 
             switch (command) {
@@ -145,16 +145,16 @@ public class MetadataQuorumCommand {
                 case "add-controller" -> {
                     if (optionalCommandConfig == null) {
                         throw new TerseException("You must supply the configuration file of the controller you are " +
-                            "adding when using add-controller.");
+                                "adding when using add-controller.");
                     }
                     handleAddController(admin,
-                        namespace.getBoolean("dry_run"),
-                        props);
+                            namespace.getBoolean("dry_run"),
+                            props);
                 }
                 case "remove-controller" -> handleRemoveController(admin,
-                    namespace.getInt("controller_id"),
-                    namespace.getString("controller_directory_id"),
-                    namespace.getBoolean("dry_run"));
+                        namespace.getInt("controller_id"),
+                        namespace.getString("controller_directory_id"),
+                        namespace.getBoolean("dry_run"));
                 default -> throw new IllegalStateException(format("Unknown command: %s", command));
             }
         } finally {
@@ -175,24 +175,24 @@ public class MetadataQuorumCommand {
 
     private static void addDescribeSubParser(Subparsers subparsers) {
         Subparser describeParser = subparsers
-            .addParser("describe")
-            .help("Describe the metadata quorum info");
+                .addParser("describe")
+                .help("Describe the metadata quorum info");
 
         ArgumentGroup statusArgs = describeParser.addArgumentGroup("Status");
         statusArgs
-            .addArgument("--status")
-            .help("A short summary of the quorum status and the other provides detailed information about the status of replication.")
-            .action(Arguments.storeTrue());
+                .addArgument("--status")
+                .help("A short summary of the quorum status and the other provides detailed information about the status of replication.")
+                .action(Arguments.storeTrue());
 
         ArgumentGroup replicationArgs = describeParser.addArgumentGroup("Replication");
         replicationArgs
-            .addArgument("--replication")
-            .help("Detailed information about the status of replication")
-            .action(Arguments.storeTrue());
+                .addArgument("--replication")
+                .help("Detailed information about the status of replication")
+                .action(Arguments.storeTrue());
         replicationArgs
-            .addArgument("--human-readable")
-            .help("Human-readable output")
-            .action(Arguments.storeTrue());
+                .addArgument("--human-readable")
+                .help("Human-readable output")
+                .action(Arguments.storeTrue());
     }
 
     private static void handleDescribeReplication(Admin admin, boolean humanReadable) throws ExecutionException, InterruptedException {
@@ -206,9 +206,9 @@ public class MetadataQuorumCommand {
         rows.addAll(quorumInfoToRows(leader, quorumInfo.observers().stream(), "Observer", humanReadable));
 
         ToolsUtils.prettyPrintTable(
-            List.of("NodeId", "DirectoryId", "LogEndOffset", "Lag", "LastFetchTimestamp", "LastCaughtUpTimestamp", "Status"),
-            rows,
-            System.out
+                List.of("NodeId", "DirectoryId", "LogEndOffset", "Lag", "LastFetchTimestamp", "LastCaughtUpTimestamp", "Status"),
+                rows,
+                System.out
         );
     }
 
@@ -218,19 +218,19 @@ public class MetadataQuorumCommand {
                                                        boolean humanReadable) {
         return infos.map(info -> {
             String lastFetchTimestamp = info.lastFetchTimestamp().isEmpty() ? "-1" :
-                humanReadable ? format("%d ms ago", relativeTimeMs(info.lastFetchTimestamp().getAsLong(), "last fetch")) :
-                    valueOf(info.lastFetchTimestamp().getAsLong());
+                    humanReadable ? format("%d ms ago", relativeTimeMs(info.lastFetchTimestamp().getAsLong(), "last fetch")) :
+                            valueOf(info.lastFetchTimestamp().getAsLong());
             String lastCaughtUpTimestamp = info.lastCaughtUpTimestamp().isEmpty() ? "-1" :
-                humanReadable ? format("%d ms ago", relativeTimeMs(info.lastCaughtUpTimestamp().getAsLong(), "last caught up")) :
-                    valueOf(info.lastCaughtUpTimestamp().getAsLong());
+                    humanReadable ? format("%d ms ago", relativeTimeMs(info.lastCaughtUpTimestamp().getAsLong(), "last caught up")) :
+                            valueOf(info.lastCaughtUpTimestamp().getAsLong());
             return Stream.of(
-                info.replicaId(),
-                info.replicaDirectoryId(),
-                info.logEndOffset(),
-                leader.logEndOffset() - info.logEndOffset(),
-                lastFetchTimestamp,
-                lastCaughtUpTimestamp,
-                status
+                    info.replicaId(),
+                    info.replicaDirectoryId(),
+                    info.logEndOffset(),
+                    leader.logEndOffset() - info.logEndOffset(),
+                    lastFetchTimestamp,
+                    lastCaughtUpTimestamp,
+                    status
             ).map(Object::toString).collect(Collectors.toList());
         }).collect(Collectors.toList());
     }
@@ -241,8 +241,8 @@ public class MetadataQuorumCommand {
         Instant now = Instant.now();
         if (!(lastTimestamp.isAfter(Instant.EPOCH) && (lastTimestamp.isBefore(now) || lastTimestamp.equals(now)))) {
             throw new KafkaException(
-                format("Error while computing relative time, possible drift in system clock.%n" +
-                    "Current timestamp is %d, %s timestamp is %d", now.toEpochMilli(), desc, timestampMs)
+                    format("Error while computing relative time, possible drift in system clock.%n" +
+                            "Current timestamp is %d, %s timestamp is %d", now.toEpochMilli(), desc, timestampMs)
             );
         }
         return Duration.between(lastTimestamp, now).toMillis();
@@ -266,14 +266,14 @@ public class MetadataQuorumCommand {
         }
 
         System.out.println(
-            "ClusterId:              " + clusterId +
-            "\nLeaderId:               " + quorumInfo.leaderId() +
-            "\nLeaderEpoch:            " + quorumInfo.leaderEpoch() +
-            "\nHighWatermark:          " + quorumInfo.highWatermark() +
-            "\nMaxFollowerLag:         " + maxFollowerLag +
-            "\nMaxFollowerLagTimeMs:   " + maxFollowerLagTimeMs +
-            "\nCurrentVoters:          " + printVoterState(quorumInfo) +
-            "\nCurrentObservers:       " + printObserverState(quorumInfo)
+                "ClusterId:              " + clusterId +
+                        "\nLeaderId:               " + quorumInfo.leaderId() +
+                        "\nLeaderEpoch:            " + quorumInfo.leaderEpoch() +
+                        "\nHighWatermark:          " + quorumInfo.highWatermark() +
+                        "\nMaxFollowerLag:         " + maxFollowerLag +
+                        "\nMaxFollowerLagTimeMs:   " + maxFollowerLagTimeMs +
+                        "\nCurrentVoters:          " + printVoterState(quorumInfo) +
+                        "\nCurrentObservers:       " + printObserverState(quorumInfo)
         );
     }
 
@@ -290,9 +290,9 @@ public class MetadataQuorumCommand {
 
     private static String printReplicaState(QuorumInfo quorumInfo, List<QuorumInfo.ReplicaState> replicas) {
         List<Node> currentVoterList = replicas.stream().map(voter -> new Node(
-            voter.replicaId(),
-            voter.replicaDirectoryId(),
-            getEndpoints(quorumInfo.nodes().get(voter.replicaId())))).toList();
+                voter.replicaId(),
+                voter.replicaDirectoryId(),
+                getEndpoints(quorumInfo.nodes().get(voter.replicaId())))).toList();
         return currentVoterList.stream().map(Objects::toString).collect(Collectors.joining(", ", "[", "]"));
     }
 
@@ -330,28 +330,28 @@ public class MetadataQuorumCommand {
 
     private static void addAddControllerSubParser(Subparsers subparsers) {
         Subparser addControllerParser = subparsers
-            .addParser("add-controller")
-            .help("Add a controller to the KRaft controller cluster");
+                .addParser("add-controller")
+                .help("Add a controller to the KRaft controller cluster");
 
         addControllerParser
-            .addArgument("--dry-run")
-            .help("True if we should print what would be done, but not do it.")
-            .action(Arguments.storeTrue());
+                .addArgument("--dry-run")
+                .help("True if we should print what would be done, but not do it.")
+                .action(Arguments.storeTrue());
     }
 
     static int getControllerId(Properties props) throws TerseException {
         if (!props.containsKey(KRaftConfigs.NODE_ID_CONFIG)) {
             throw new TerseException(KRaftConfigs.NODE_ID_CONFIG + " not found in configuration " +
-                "file. Is this a valid controller configuration file?");
+                    "file. Is this a valid controller configuration file?");
         }
         int nodeId = Integer.parseInt(props.getProperty(KRaftConfigs.NODE_ID_CONFIG));
         if (nodeId < 0) {
             throw new TerseException(KRaftConfigs.NODE_ID_CONFIG + " was negative in configuration " +
-                "file. Is this a valid controller configuration file?");
+                    "file. Is this a valid controller configuration file?");
         }
         if (!props.getOrDefault(KRaftConfigs.PROCESS_ROLES_CONFIG, "").toString().contains("controller")) {
             throw new TerseException(KRaftConfigs.PROCESS_ROLES_CONFIG + " did not contain 'controller' in " +
-                "configuration file. Is this a valid controller configuration file?");
+                    "configuration file. Is this a valid controller configuration file?");
         }
         return nodeId;
     }
@@ -367,15 +367,15 @@ public class MetadataQuorumCommand {
             }
         }
         throw new TerseException("Neither " + MetadataLogConfig.METADATA_LOG_DIR_CONFIG + " nor " +
-            ServerLogConfigs.LOG_DIRS_CONFIG + " were found. Is this a valid controller " +
-            "configuration file?");
+                ServerLogConfigs.LOG_DIRS_CONFIG + " were found. Is this a valid controller " +
+                "configuration file?");
     }
 
     static Uuid getMetadataDirectoryId(String metadataDirectory) throws Exception {
         MetaPropertiesEnsemble ensemble = new MetaPropertiesEnsemble.Loader().
-            addLogDirs(List.of(metadataDirectory)).
-            addMetadataLogDir(metadataDirectory).
-            load();
+                addLogDirs(List.of(metadataDirectory)).
+                addMetadataLogDir(metadataDirectory).
+                load();
         MetaProperties metaProperties = ensemble.logDirProps().get(metadataDirectory);
         if (metaProperties == null) {
             throw new TerseException("Unable to read meta.properties from " + metadataDirectory);
@@ -387,18 +387,18 @@ public class MetadataQuorumCommand {
     }
 
     static Set<RaftVoterEndpoint> getControllerAdvertisedListeners(
-        Properties props
+            Properties props
     ) throws Exception {
         Map<String, Endpoint> listeners = new HashMap<>();
         SocketServerConfigs.listenerListToEndPoints(
-            Csv.parseCsvList(props.getOrDefault(SocketServerConfigs.LISTENERS_CONFIG, "").toString()),
-            __ -> SecurityProtocol.PLAINTEXT).forEach(e -> listeners.put(e.listener(), e));
+                Csv.parseCsvList(props.getOrDefault(SocketServerConfigs.LISTENERS_CONFIG, "").toString()),
+                __ -> SecurityProtocol.PLAINTEXT).forEach(e -> listeners.put(e.listener(), e));
         SocketServerConfigs.listenerListToEndPoints(
-            Csv.parseCsvList(props.getOrDefault(SocketServerConfigs.ADVERTISED_LISTENERS_CONFIG, "").toString()),
-            __ -> SecurityProtocol.PLAINTEXT).forEach(e -> listeners.put(e.listener(), e));
+                Csv.parseCsvList(props.getOrDefault(SocketServerConfigs.ADVERTISED_LISTENERS_CONFIG, "").toString()),
+                __ -> SecurityProtocol.PLAINTEXT).forEach(e -> listeners.put(e.listener(), e));
         if (!props.containsKey(KRaftConfigs.CONTROLLER_LISTENER_NAMES_CONFIG)) {
             throw new TerseException(KRaftConfigs.CONTROLLER_LISTENER_NAMES_CONFIG +
-                " was not found. Is this a valid controller configuration file?");
+                    " was not found. Is this a valid controller configuration file?");
         }
         LinkedHashSet<RaftVoterEndpoint> results = new LinkedHashSet<>();
         for (String listenerName : props.getProperty(
@@ -407,7 +407,7 @@ public class MetadataQuorumCommand {
             Endpoint endpoint = listeners.get(listenerName);
             if (endpoint == null) {
                 throw new TerseException("Cannot find information about controller listener name: " +
-                    listenerName);
+                        listenerName);
             }
             results.add(new RaftVoterEndpoint(endpoint.listener(),
                     endpoint.host() == null ? "localhost" : endpoint.host(),
@@ -417,9 +417,9 @@ public class MetadataQuorumCommand {
     }
 
     static void handleAddController(
-        Admin admin,
-        boolean dryRun,
-        Properties props
+            Admin admin,
+            boolean dryRun,
+            Properties props
     ) throws Exception {
         int controllerId = getControllerId(props);
         String metadataDirectory = getMetadataDirectory(props);
@@ -427,7 +427,7 @@ public class MetadataQuorumCommand {
         Set<RaftVoterEndpoint> endpoints = getControllerAdvertisedListeners(props);
         if (!dryRun) {
             admin.addRaftVoter(controllerId, directoryId, endpoints).
-                all().get();
+                    all().get();
         }
         StringBuilder output = new StringBuilder();
         if (dryRun) {
@@ -456,33 +456,33 @@ public class MetadataQuorumCommand {
 
     private static void addRemoveControllerSubParser(Subparsers subparsers) {
         Subparser removeControllerParser = subparsers
-            .addParser("remove-controller")
-            .help("Remove a controller from the KRaft controller cluster");
+                .addParser("remove-controller")
+                .help("Remove a controller from the KRaft controller cluster");
 
         removeControllerParser
-            .addArgument("--controller-id", "-i")
-            .help("The id of the controller to remove.")
-            .type(Integer.class)
-            .required(true)
-            .action(Arguments.store());
+                .addArgument("--controller-id", "-i")
+                .help("The id of the controller to remove.")
+                .type(Integer.class)
+                .required(true)
+                .action(Arguments.store());
 
         removeControllerParser
-            .addArgument("--controller-directory-id", "-d")
-            .help("The directory ID of the controller to remove.")
-            .required(true)
-            .action(Arguments.store());
+                .addArgument("--controller-directory-id", "-d")
+                .help("The directory ID of the controller to remove.")
+                .required(true)
+                .action(Arguments.store());
 
         removeControllerParser
-            .addArgument("--dry-run")
-            .help("True if we should print what would be done, but not do it.")
-            .action(Arguments.storeTrue());
+                .addArgument("--dry-run")
+                .help("True if we should print what would be done, but not do it.")
+                .action(Arguments.storeTrue());
     }
 
     static void handleRemoveController(
-        Admin admin,
-        int controllerId,
-        String controllerDirectoryIdString,
-        boolean dryRun
+            Admin admin,
+            int controllerId,
+            String controllerDirectoryIdString,
+            boolean dryRun
     ) throws TerseException, ExecutionException, InterruptedException {
         if (controllerId < 0) {
             throw new TerseException("Invalid negative --controller-id: " + controllerId);
@@ -495,11 +495,11 @@ public class MetadataQuorumCommand {
         }
         if (!dryRun) {
             admin.removeRaftVoter(controllerId, directoryId).
-                all().get();
+                    all().get();
         }
         System.out.printf("%s KRaft controller %d with directory id %s%n",
-            dryRun ? "DRY RUN of removing " : "Removed ",
-            controllerId,
-            directoryId);
+                dryRun ? "DRY RUN of removing " : "Removed ",
+                controllerId,
+                directoryId);
     }
 }

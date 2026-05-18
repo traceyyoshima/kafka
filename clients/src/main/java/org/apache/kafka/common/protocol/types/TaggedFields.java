@@ -36,14 +36,14 @@ public class TaggedFields extends DocumentedType {
     /**
      * Create a new TaggedFields object with the given tags and fields.
      *
-     * @param fields    This is an array containing Integer tags followed
-     *                  by associated Field objects.
-     * @return          The new {@link TaggedFields}
+     * @param fields This is an array containing Integer tags followed
+     *               by associated Field objects.
+     * @return The new {@link TaggedFields}
      */
     public static TaggedFields of(Object... fields) {
         if (fields.length % 2 != 0) {
             throw new RuntimeException("TaggedFields#of takes an even " +
-                "number of parameters.");
+                    "number of parameters.");
         }
         TreeMap<Integer, Field> newFields = new TreeMap<>();
         for (int i = 0; i < fields.length; i += 2) {
@@ -155,7 +155,7 @@ public class TaggedFields extends DocumentedType {
                 if (field == null) {
                     if (!(entry.getValue() instanceof RawTaggedField)) {
                         throw new SchemaException("The value associated with tag " + tag +
-                            " must be a RawTaggedField in this version of the software.");
+                                " must be a RawTaggedField in this version of the software.");
                     }
                 } else {
                     field.type.validate(entry.getValue());

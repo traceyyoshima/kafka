@@ -59,23 +59,23 @@ public final class HistoryCommandHandler implements Commands.Handler {
         @Override
         public void addArguments(ArgumentParser parser) {
             parser.addArgument("numEntriesToShow").
-                nargs("?").
-                type(Integer.class).
-                help("The number of entries to show.");
+                    nargs("?").
+                    type(Integer.class).
+                    help("The number of entries to show.");
         }
 
         @Override
         public Commands.Handler createHandler(Namespace namespace) {
             Integer numEntriesToShow = namespace.getInt("numEntriesToShow");
             return new HistoryCommandHandler(numEntriesToShow == null ?
-                Integer.MAX_VALUE : numEntriesToShow);
+                    Integer.MAX_VALUE : numEntriesToShow);
         }
 
         @Override
         public void completeNext(
-            MetadataShellState state,
-            List<String> nextWords,
-            List<Candidate> candidates
+                MetadataShellState state,
+                List<String> nextWords,
+                List<Candidate> candidates
         ) throws Exception {
             // nothing to do
         }
@@ -89,9 +89,9 @@ public final class HistoryCommandHandler implements Commands.Handler {
 
     @Override
     public void run(
-        Optional<InteractiveShell> shell,
-        PrintWriter writer,
-        MetadataShellState state
+            Optional<InteractiveShell> shell,
+            PrintWriter writer,
+            MetadataShellState state
     ) throws Exception {
         if (shell.isEmpty()) {
             throw new RuntimeException("The history command requires a shell.");

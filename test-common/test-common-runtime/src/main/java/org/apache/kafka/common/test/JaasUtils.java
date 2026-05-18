@@ -32,9 +32,9 @@ public class JaasUtils {
         @Override
         public String toString() {
             return String.format(
-                "%s {%n  %s%n};%n",
-                contextName,
-                modules.stream().map(Object::toString).collect(Collectors.joining("\n  "))
+                    "%s {%n  %s%n};%n",
+                    contextName,
+                    modules.stream().map(Object::toString).collect(Collectors.joining("\n  "))
             );
         }
     }

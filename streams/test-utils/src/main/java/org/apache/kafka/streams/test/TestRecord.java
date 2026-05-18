@@ -41,9 +41,9 @@ public class TestRecord<K, V> {
     /**
      * Creates a record.
      *
-     * @param key The key that will be included in the record
-     * @param value The value of the record
-     * @param headers the record headers that will be included in the record
+     * @param key        The key that will be included in the record
+     * @param value      The value of the record
+     * @param headers    the record headers that will be included in the record
      * @param recordTime The timestamp of the record.
      */
     public TestRecord(final K key, final V value, final Headers headers, final Instant recordTime) {
@@ -55,17 +55,17 @@ public class TestRecord<K, V> {
 
     /**
      * Creates a record.
-     * 
-     * @param key The key that will be included in the record
-     * @param value The value of the record
-     * @param headers the record headers that will be included in the record
+     *
+     * @param key         The key that will be included in the record
+     * @param value       The value of the record
+     * @param headers     the record headers that will be included in the record
      * @param timestampMs The timestamp of the record, in milliseconds since the beginning of the epoch.
      */
     public TestRecord(final K key, final V value, final Headers headers, final Long timestampMs) {
         if (timestampMs != null) {
             if (timestampMs < 0) {
                 throw new IllegalArgumentException(
-                    String.format("Invalid timestamp: %d. Timestamp should always be non-negative or null.", timestampMs));
+                        String.format("Invalid timestamp: %d. Timestamp should always be non-negative or null.", timestampMs));
             }
             this.recordTime = Instant.ofEpochMilli(timestampMs);
         } else {
@@ -79,8 +79,8 @@ public class TestRecord<K, V> {
     /**
      * Creates a record.
      *
-     * @param key The key of the record
-     * @param value The value of the record
+     * @param key        The key of the record
+     * @param value      The value of the record
      * @param recordTime The timestamp of the record as Instant.
      */
     public TestRecord(final K key, final V value, final Instant recordTime) {
@@ -90,8 +90,8 @@ public class TestRecord<K, V> {
     /**
      * Creates a record.
      *
-     * @param key The key of the record
-     * @param value The value of the record
+     * @param key     The key of the record
+     * @param value   The value of the record
      * @param headers The record headers that will be included in the record
      */
     public TestRecord(final K key, final V value, final Headers headers) {
@@ -100,11 +100,11 @@ public class TestRecord<K, V> {
         this.headers = new RecordHeaders(headers);
         this.recordTime = null;
     }
-    
+
     /**
      * Creates a record.
      *
-     * @param key The key of the record
+     * @param key   The key of the record
      * @param value The value of the record
      */
     public TestRecord(final K key, final V value) {
@@ -225,9 +225,9 @@ public class TestRecord<K, V> {
         }
         final TestRecord<?, ?> that = (TestRecord<?, ?>) o;
         return Objects.equals(headers, that.headers) &&
-            Objects.equals(key, that.key) &&
-            Objects.equals(value, that.value) &&
-            Objects.equals(recordTime, that.recordTime);
+                Objects.equals(key, that.key) &&
+                Objects.equals(value, that.value) &&
+                Objects.equals(recordTime, that.recordTime);
     }
 
     @Override

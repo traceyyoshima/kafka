@@ -39,7 +39,7 @@ public enum Feature {
     /**
      * Features defined. If a feature is included in this list, and marked to be used in production they will also be specified when
      * formatting a cluster via the StorageTool. MetadataVersion is handled separately, so it is not included here.
-     *
+     * <p>
      * See {@link TestFeatureVersion} as an example. See {@link FeatureVersion} when implementing a new feature.
      */
     KRAFT_VERSION(KRaftVersion.FEATURE_NAME, KRaftVersion.values(), KRaftVersion.LATEST_PRODUCTION),
@@ -91,12 +91,12 @@ public enum Feature {
         FEATURES = Arrays.copyOf(enumValues, enumValues.length);
 
         TEST_AND_PRODUCTION_FEATURES = Arrays.stream(FEATURES).filter(feature ->
-            !feature.name.startsWith("unit." + TestFeatureVersion.FEATURE_NAME)
+                !feature.name.startsWith("unit." + TestFeatureVersion.FEATURE_NAME)
         ).toList();
 
         PRODUCTION_FEATURES = Arrays.stream(FEATURES).filter(feature ->
-            !feature.name.equals(TEST_VERSION.featureName()) &&
-            !feature.name.startsWith("unit." + TestFeatureVersion.FEATURE_NAME)
+                !feature.name.equals(TEST_VERSION.featureName()) &&
+                        !feature.name.startsWith("unit." + TestFeatureVersion.FEATURE_NAME)
         ).toList();
         PRODUCTION_FEATURE_NAMES = PRODUCTION_FEATURES.stream().map(feature ->
                 feature.name).toList();
@@ -129,8 +129,8 @@ public enum Feature {
 
     public SupportedVersionRange supportedVersionRange() {
         return new SupportedVersionRange(
-            minimumProduction(),
-            latestTesting()
+                minimumProduction(),
+                latestTesting()
         );
     }
 
@@ -140,12 +140,12 @@ public enum Feature {
      * @param level                        the level of the feature
      * @param allowUnstableFeatureVersions whether unstable versions can be used
      * @return the FeatureVersionUtils.FeatureVersion for the feature the enum is based on.
-     * @throws IllegalArgumentException    if the feature is not known.
+     * @throws IllegalArgumentException if the feature is not known.
      */
     public FeatureVersion fromFeatureLevel(short level,
                                            boolean allowUnstableFeatureVersions) {
         return Arrays.stream(featureVersions).filter(featureVersion ->
-            featureVersion.featureLevel() == level && (allowUnstableFeatureVersions || level <= latestProduction())).findFirst().orElseThrow(
+                featureVersion.featureLevel() == level && (allowUnstableFeatureVersions || level <= latestProduction())).findFirst().orElseThrow(
                 () -> new IllegalArgumentException("No feature:" + featureName() + " with feature level " + level));
     }
 
@@ -156,8 +156,8 @@ public enum Feature {
      * For example, say feature X level x relies on feature Y level y:
      * if feature X >= x then throw an error if feature Y < y.
      *
-     * @param feature                   the feature we are validating
-     * @param features                  the feature versions we have (or want to set)
+     * @param feature  the feature we are validating
+     * @param features the feature versions we have (or want to set)
      * @throws IllegalArgumentException if the feature is not valid
      */
     public static void validateVersion(FeatureVersion feature, Map<String, Short> features) {
@@ -167,7 +167,7 @@ public enum Feature {
             throw new IllegalArgumentException(feature.featureName() + " could not be set to " + feature.featureLevel() +
                     " because it depends on metadata.version=" + MetadataVersion.MINIMUM_VERSION.featureLevel() + " (" + MetadataVersion.MINIMUM_VERSION + ")");
 
-        for (Map.Entry<String, Short> dependency: feature.dependencies().entrySet()) {
+        for (Map.Entry<String, Short> dependency : feature.dependencies().entrySet()) {
             Short featureLevel = features.get(dependency.getKey());
 
             if (featureLevel == null || featureLevel < dependency.getValue()) {
@@ -179,7 +179,7 @@ public enum Feature {
 
     /**
      * A method to return the default (latest production) version of a feature based on the metadata version provided.
-     *
+     * <p>
      * Every time a new feature is added, it should create a mapping from metadata version to feature version
      * with {@link FeatureVersion#bootstrapMetadataVersion()}. The feature version should be marked as production ready
      * before the metadata version is made production ready.
@@ -232,34 +232,34 @@ public enum Feature {
      * 4. The dependencies of all default values <= their default values.
      * 5. If the latest production depends on MetadataVersion, the value should be <= MetadataVersion.LATEST_PRODUCTION.
      * 6. If any default value depends on MetadataVersion, the value should be <= the default value bootstrap MV.
-     *
+     * <p>
      * Suppose we have feature X as the feature being validated.
      * Invalid examples:
-     *     - The feature X has default version = XV_10 (dependency = {}), latest production = XV_5 (dependency = {})
-     *       (Violating rule 2. The latest production value XV_5 is smaller than the default value)
-     *     - The feature X has latest production = XV_11 (dependency = {Y: YV_4})
-     *       The feature Y has latest production = YV_3 (dependency = {})
-     *       (Violating rule 3. For latest production XV_11, Y's latest production YV_3 is smaller than the dependency value YV_4)
-     *     - The feature X has default version = XV_10 (dependency = {Y: YV_4})
-     *       The feature Y has default version = YV_3 (dependency = {})
-     *       (Violating rule 4. For default version XV_10, Y's default value YV_3 is smaller than the dependency value YV_4)
-     *     - The feature X has latest production = XV_11 (dependency = {MetadataVersion: IBP_4_0_IV1}), MetadataVersion.LATEST_PRODUCTION is IBP_4_0_IV0
-     *       (Violating rule 5. The dependency MV IBP_4_0_IV1 is behind MV latest production IBP_4_0_IV0)
-     *     - The feature X has default version = XV_10 (dependency = {MetadataVersion: IBP_4_0_IV1}) and bootstrap MV = IBP_4_0_IV0
-     *       (Violating rule 6. When MV latest production is IBP_4_0_IV0, feature X will be set to XV_10 by default whereas it depends on MV IBP_4_0_IV1)
+     * - The feature X has default version = XV_10 (dependency = {}), latest production = XV_5 (dependency = {})
+     * (Violating rule 2. The latest production value XV_5 is smaller than the default value)
+     * - The feature X has latest production = XV_11 (dependency = {Y: YV_4})
+     * The feature Y has latest production = YV_3 (dependency = {})
+     * (Violating rule 3. For latest production XV_11, Y's latest production YV_3 is smaller than the dependency value YV_4)
+     * - The feature X has default version = XV_10 (dependency = {Y: YV_4})
+     * The feature Y has default version = YV_3 (dependency = {})
+     * (Violating rule 4. For default version XV_10, Y's default value YV_3 is smaller than the dependency value YV_4)
+     * - The feature X has latest production = XV_11 (dependency = {MetadataVersion: IBP_4_0_IV1}), MetadataVersion.LATEST_PRODUCTION is IBP_4_0_IV0
+     * (Violating rule 5. The dependency MV IBP_4_0_IV1 is behind MV latest production IBP_4_0_IV0)
+     * - The feature X has default version = XV_10 (dependency = {MetadataVersion: IBP_4_0_IV1}) and bootstrap MV = IBP_4_0_IV0
+     * (Violating rule 6. When MV latest production is IBP_4_0_IV0, feature X will be set to XV_10 by default whereas it depends on MV IBP_4_0_IV1)
      * Valid examples:
-     *     - The feature X has default version = XV_10 (dependency = {}), latest production = XV_10 (dependency = {})
-     *     - The feature X has default version = XV_10 (dependency = {Y: YV_3}), latest production = XV_11 (dependency = {Y: YV_4})
-     *       The feature Y has default version = YV_3 (dependency = {}), latest production = YV_4 (dependency = {})
-     *     - The feature X has default version = XV_10 (dependency = {MetadataVersion: IBP_4_0_IV0}), bootstrap MV = IBP_4_0_IV0,
-     *                       latest production = XV_11 (dependency = {MetadataVersion: IBP_4_0_IV1}), MV latest production = IBP_4_0_IV1
+     * - The feature X has default version = XV_10 (dependency = {}), latest production = XV_10 (dependency = {})
+     * - The feature X has default version = XV_10 (dependency = {Y: YV_3}), latest production = XV_11 (dependency = {Y: YV_4})
+     * The feature Y has default version = YV_3 (dependency = {}), latest production = YV_4 (dependency = {})
+     * - The feature X has default version = XV_10 (dependency = {MetadataVersion: IBP_4_0_IV0}), bootstrap MV = IBP_4_0_IV0,
+     * latest production = XV_11 (dependency = {MetadataVersion: IBP_4_0_IV1}), MV latest production = IBP_4_0_IV1
      *
      * @param feature the feature to validate.
      * @return true if the feature is valid, false otherwise.
      * @throws IllegalArgumentException if the feature violates any of the rules thus is not valid.
      */
     public static void validateDefaultValueAndLatestProductionValue(
-        Feature feature
+            Feature feature
     ) throws IllegalArgumentException {
         FeatureVersion defaultVersion = feature.defaultVersion(MetadataVersion.LATEST_PRODUCTION);
         FeatureVersion latestProduction = feature.latestProduction;
@@ -271,50 +271,50 @@ public enum Feature {
 
         if (latestProduction.featureLevel() < defaultVersion.featureLevel()) {
             throw new IllegalArgumentException(String.format("Feature %s has latest production value %s " +
-                    "smaller than its default version %s with latest production MV.",
-                feature.name(), latestProduction, defaultVersion));
+                            "smaller than its default version %s with latest production MV.",
+                    feature.name(), latestProduction, defaultVersion));
         }
 
-        for (Map.Entry<String, Short> dependency: latestProduction.dependencies().entrySet()) {
+        for (Map.Entry<String, Short> dependency : latestProduction.dependencies().entrySet()) {
             String dependencyFeatureName = dependency.getKey();
             if (!dependencyFeatureName.equals(MetadataVersion.FEATURE_NAME)) {
                 Feature dependencyFeature = featureFromName(dependencyFeatureName);
                 if (!dependencyFeature.isProductionReady(dependency.getValue())) {
                     throw new IllegalArgumentException(String.format("Feature %s has latest production FeatureVersion %s " +
-                            "with dependency %s that is not production ready. (%s latest production: %s)",
-                        feature.name(), latestProduction, dependencyFeature.fromFeatureLevel(dependency.getValue(), true),
-                        dependencyFeature, dependencyFeature.latestProduction));
+                                    "with dependency %s that is not production ready. (%s latest production: %s)",
+                            feature.name(), latestProduction, dependencyFeature.fromFeatureLevel(dependency.getValue(), true),
+                            dependencyFeature, dependencyFeature.latestProduction));
                 }
             } else {
                 if (dependency.getValue() > MetadataVersion.LATEST_PRODUCTION.featureLevel()) {
                     throw new IllegalArgumentException(String.format("Feature %s has latest production FeatureVersion %s " +
-                            "with MV dependency %s that is not production ready. (MV latest production: %s)",
-                        feature.name(), latestProduction, MetadataVersion.fromFeatureLevel(dependency.getValue()),
-                        MetadataVersion.LATEST_PRODUCTION));
+                                    "with MV dependency %s that is not production ready. (MV latest production: %s)",
+                            feature.name(), latestProduction, MetadataVersion.fromFeatureLevel(dependency.getValue()),
+                            MetadataVersion.LATEST_PRODUCTION));
                 }
             }
         }
 
-        for (MetadataVersion metadataVersion: MetadataVersion.values()) {
+        for (MetadataVersion metadataVersion : MetadataVersion.values()) {
             defaultVersion = feature.defaultVersion(metadataVersion);
-            for (Map.Entry<String, Short> dependency: defaultVersion.dependencies().entrySet()) {
+            for (Map.Entry<String, Short> dependency : defaultVersion.dependencies().entrySet()) {
                 String dependencyFeatureName = dependency.getKey();
                 if (!dependencyFeatureName.equals(MetadataVersion.FEATURE_NAME)) {
                     Feature dependencyFeature = featureFromName(dependencyFeatureName);
                     if (dependency.getValue() > dependencyFeature.defaultLevel(metadataVersion)) {
                         throw new IllegalArgumentException(String.format("Feature %s has default FeatureVersion %s " +
-                                "when MV=%s with dependency %s that is behind its default version %s.",
-                            feature.name(), defaultVersion, metadataVersion,
-                            dependencyFeature.fromFeatureLevel(dependency.getValue(), true),
-                            dependencyFeature.defaultVersion(metadataVersion)));
+                                        "when MV=%s with dependency %s that is behind its default version %s.",
+                                feature.name(), defaultVersion, metadataVersion,
+                                dependencyFeature.fromFeatureLevel(dependency.getValue(), true),
+                                dependencyFeature.defaultVersion(metadataVersion)));
                     }
                 } else {
                     if (dependency.getValue() > defaultVersion.bootstrapMetadataVersion().featureLevel()) {
                         throw new IllegalArgumentException(String.format("Feature %s has default FeatureVersion %s " +
-                                "when MV=%s with MV dependency %s that is behind its bootstrap MV %s.",
-                            feature.name(), defaultVersion, metadataVersion,
-                            MetadataVersion.fromFeatureLevel(dependency.getValue()),
-                            defaultVersion.bootstrapMetadataVersion()));
+                                        "when MV=%s with MV dependency %s that is behind its bootstrap MV %s.",
+                                feature.name(), defaultVersion, metadataVersion,
+                                MetadataVersion.fromFeatureLevel(dependency.getValue()),
+                                defaultVersion.bootstrapMetadataVersion()));
                     }
                 }
             }

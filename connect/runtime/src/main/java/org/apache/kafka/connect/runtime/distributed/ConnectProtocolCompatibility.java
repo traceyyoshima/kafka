@@ -95,7 +95,7 @@ public enum ConnectProtocolCompatibility {
      * if no mapping is found {@code IllegalArgumentException} is thrown.
      *
      * @param protocolVersion the version of the protocol; for example,
-     * {@link ConnectProtocol#CONNECT_PROTOCOL_V0 CONNECT_PROTOCOL_V0}. May not be null
+     *                        {@link ConnectProtocol#CONNECT_PROTOCOL_V0 CONNECT_PROTOCOL_V0}. May not be null
      * @return the enum that corresponds to the protocol compatibility mode
      */
     public static ConnectProtocolCompatibility fromProtocolVersion(short protocolVersion) {

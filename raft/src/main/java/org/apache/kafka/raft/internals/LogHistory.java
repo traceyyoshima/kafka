@@ -24,12 +24,12 @@ import java.util.Optional;
 public interface LogHistory<T> {
     /**
      * Add a new value at a given offset.
-     *
+     * <p>
      * The provided {@code offset} must be greater than or equal to 0 and must be greater than the
      * offset of all previous calls to this method.
      *
      * @param offset the offset
-     * @param value the value to store
+     * @param value  the value to store
      * @throws IllegalArgumentException if the offset is not greater than all previous offsets
      */
     void addAt(long offset, T value);
@@ -60,7 +60,7 @@ public interface LogHistory<T> {
     /**
      * Removes all entries but the last entry that has an offset that is less than or equal to
      * {@code startOffset}.
-     *
+     * <p>
      * This operation does not remove the entry with the largest offset that is less than or equal
      * to {@code startOffset}. This is needed so that calls to {@code valueAtOrBefore} and
      * {@code lastEntry} always return a non-empty value if a value was previously added to this
@@ -75,5 +75,6 @@ public interface LogHistory<T> {
      */
     void clear();
 
-    record Entry<T>(long offset, T value) { }
+    record Entry<T>(long offset, T value) {
+    }
 }

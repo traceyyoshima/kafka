@@ -53,11 +53,11 @@ public class RocksDBMigratingWindowStoreWithHeaders extends RocksDBStore impleme
     private static final Logger log = LoggerFactory.getLogger(RocksDBMigratingWindowStoreWithHeaders.class);
 
     static final byte[] WINDOW_STORE_HEADERS_VALUES_COLUMN_FAMILY_NAME =
-        "windowKeyValueWithHeaders".getBytes(StandardCharsets.UTF_8);
+            "windowKeyValueWithHeaders".getBytes(StandardCharsets.UTF_8);
 
     RocksDBMigratingWindowStoreWithHeaders(final String name,
-                                            final String parentDir,
-                                            final RocksDBMetricsRecorder metricsRecorder) {
+                                           final String parentDir,
+                                           final RocksDBMetricsRecorder metricsRecorder) {
         super(name, parentDir, metricsRecorder);
     }
 
@@ -65,10 +65,10 @@ public class RocksDBMigratingWindowStoreWithHeaders extends RocksDBStore impleme
     void openRocksDB(final DBOptions dbOptions,
                      final ColumnFamilyOptions columnFamilyOptions) {
         final List<ColumnFamilyHandle> columnFamilies = openRocksDB(
-            dbOptions,
-            new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
-            new ColumnFamilyDescriptor(WINDOW_STORE_HEADERS_VALUES_COLUMN_FAMILY_NAME, columnFamilyOptions),
-            new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, createOffsetsCFOptions())
+                dbOptions,
+                new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, columnFamilyOptions),
+                new ColumnFamilyDescriptor(WINDOW_STORE_HEADERS_VALUES_COLUMN_FAMILY_NAME, columnFamilyOptions),
+                new ColumnFamilyDescriptor(OFFSETS_COLUMN_FAMILY_NAME, createOffsetsCFOptions())
         );
         final ColumnFamilyHandle noHeadersColumnFamily = columnFamilies.get(0);
         final ColumnFamilyHandle withHeadersColumnFamily = columnFamilies.get(1);
@@ -80,12 +80,12 @@ public class RocksDBMigratingWindowStoreWithHeaders extends RocksDBStore impleme
             if (noHeadersIter.isValid()) {
                 log.info("Opening window store {} in upgrade mode from plain value format", name);
                 cfAccessor = new DualColumnFamilyAccessor(
-                    offsetsCf,
-                    noHeadersColumnFamily,
-                    withHeadersColumnFamily,
-                    HeadersBytesStore::convertToHeaderFormat,
-                    this,
-                    open
+                        offsetsCf,
+                        noHeadersColumnFamily,
+                        withHeadersColumnFamily,
+                        HeadersBytesStore::convertToHeaderFormat,
+                        this,
+                        open
                 );
             } else {
                 log.info("Opening window store {} in regular headers-aware mode", name);

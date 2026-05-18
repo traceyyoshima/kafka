@@ -58,7 +58,6 @@ public class TopicCreationGroup {
      * defined in the given configuration as a map of group names to {@link TopicCreationGroup} objects.
      *
      * @param config the source connector configuration
-     *
      * @return the map of topic creation groups; may be empty but not {@code null}
      */
     public static Map<String, TopicCreationGroup> configuredGroups(SourceConnectorConfig config) {
@@ -91,7 +90,6 @@ public class TopicCreationGroup {
      * {@code topic} name.
      *
      * @param topic the topic name to check against the groups configuration
-     *
      * @return true if the topic name matches the inclusion regex and does
      * not match the exclusion regex of this group's configuration; false otherwise
      */
@@ -105,7 +103,6 @@ public class TopicCreationGroup {
      * settings defined for this topic creation group.
      *
      * @param topic the name of the topic to be created
-     *
      * @return the topic description of the given topic with settings of this topic creation group
      */
     public NewTopic newTopic(String topic) {

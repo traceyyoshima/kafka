@@ -94,10 +94,10 @@ public class SuppressedInternal<K> implements Suppressed<K>, NamedSuppressed<K> 
         }
         final SuppressedInternal<?> that = (SuppressedInternal<?>) o;
         return safeToDropTombstones == that.safeToDropTombstones &&
-            Objects.equals(name, that.name) &&
-            Objects.equals(bufferConfig, that.bufferConfig) &&
-            Objects.equals(timeToWaitForMoreEvents, that.timeToWaitForMoreEvents) &&
-            Objects.equals(timeDefinition, that.timeDefinition);
+                Objects.equals(name, that.name) &&
+                Objects.equals(bufferConfig, that.bufferConfig) &&
+                Objects.equals(timeToWaitForMoreEvents, that.timeToWaitForMoreEvents) &&
+                Objects.equals(timeDefinition, that.timeDefinition);
     }
 
     @Override

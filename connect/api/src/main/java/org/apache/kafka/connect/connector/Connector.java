@@ -51,6 +51,7 @@ public abstract class Connector implements ConnectPlugin {
     /**
      * Initialize this connector, using the provided ConnectorContext to notify the runtime of
      * input configuration changes.
+     *
      * @param ctx context object used to interact with the Kafka Connect runtime
      */
     public void initialize(ConnectorContext ctx) {
@@ -69,7 +70,7 @@ public abstract class Connector implements ConnectPlugin {
      * implement special handling of this case if it will avoid unnecessary changes to running Tasks.
      * </p>
      *
-     * @param ctx context object used to interact with the Kafka Connect runtime
+     * @param ctx         context object used to interact with the Kafka Connect runtime
      * @param taskConfigs existing task configurations, which may be used when generating new task configs to avoid
      *                    churn in partition to task assignments
      */
@@ -130,6 +131,7 @@ public abstract class Connector implements ConnectPlugin {
 
     /**
      * Validate the connector configuration values against configuration definitions.
+     *
      * @param connectorConfigs the provided configuration values
      * @return a parsed and validated {@link Config} containing any relevant validation errors with the raw
      * {@code connectorConfigs} which should prevent this configuration from being used.
@@ -138,7 +140,7 @@ public abstract class Connector implements ConnectPlugin {
         ConfigDef configDef = config();
         if (null == configDef) {
             throw new ConnectException(
-                String.format("%s.config() must return a ConfigDef that is not null.", this.getClass().getName())
+                    String.format("%s.config() must return a ConfigDef that is not null.", this.getClass().getName())
             );
         }
         List<ConfigValue> configValues = configDef.validate(connectorConfigs);
@@ -147,6 +149,7 @@ public abstract class Connector implements ConnectPlugin {
 
     /**
      * Define the configuration for the connector.
+     *
      * @return The ConfigDef for this connector; may not be null.
      */
     @Override

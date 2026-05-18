@@ -31,10 +31,10 @@ public interface ConnectAssignor {
      * Based on the member metadata and the information stored in the worker coordinator this
      * method computes an assignment of connectors and tasks among the members of the worker group.
      *
-     * @param leaderId the leader of the group
-     * @param protocol the protocol type
+     * @param leaderId          the leader of the group
+     * @param protocol          the protocol type
      * @param allMemberMetadata the metadata of all the active workers of the group
-     * @param coordinator the worker coordinator that runs this assignor
+     * @param coordinator       the worker coordinator that runs this assignor
      * @return the assignment of connectors and tasks to workers
      */
     Map<String, ByteBuffer> performAssignment(String leaderId, ConnectProtocolCompatibility protocol,

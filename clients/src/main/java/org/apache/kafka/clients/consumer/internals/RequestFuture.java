@@ -53,6 +53,7 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
 
     /**
      * Check whether the response is ready to be handled
+     *
      * @return true if the response is ready, false otherwise
      */
     public boolean isDone() {
@@ -65,6 +66,7 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
 
     /**
      * Get the value corresponding to this request (only available if the request succeeded)
+     *
      * @return the value set in {@link #complete(Object)}
      * @throws IllegalStateException if the future is not complete or failed
      */
@@ -77,6 +79,7 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
 
     /**
      * Check if the request succeeded;
+     *
      * @return true if the request completed and was successful
      */
     public boolean succeeded() {
@@ -85,6 +88,7 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
 
     /**
      * Check if the request failed.
+     *
      * @return true if the request completed with a failure
      */
     public boolean failed() {
@@ -94,6 +98,7 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
     /**
      * Check if the request is retriable. This is a convenience method for checking if
      * the exception is an instance of {@link RetriableException}.
+     *
      * @return true if it is retriable, false otherwise
      * @throws IllegalStateException if the future is not complete or completed successfully
      */
@@ -103,6 +108,7 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
 
     /**
      * Get the exception from a failed result (only available if the request failed)
+     *
      * @return the exception set in {@link #raise(RuntimeException)}
      * @throws IllegalStateException if the future is not complete or completed successfully
      */
@@ -115,8 +121,9 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
     /**
      * Complete the request successfully. After this call, {@link #succeeded()} will return true
      * and the value can be obtained through {@link #value()}.
+     *
      * @param value corresponding value (or null if there is none)
-     * @throws IllegalStateException if the future has already been completed
+     * @throws IllegalStateException    if the future has already been completed
      * @throws IllegalArgumentException if the argument is an instance of {@link RuntimeException}
      */
     public void complete(T value) {
@@ -135,6 +142,7 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
     /**
      * Raise an exception. The request will be marked as failed, and the caller can either
      * handle the exception or throw it.
+     *
      * @param e corresponding exception to be passed to caller
      * @throws IllegalStateException if the future has already been completed
      */
@@ -154,6 +162,7 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
 
     /**
      * Raise an error. The request will be marked as failed.
+     *
      * @param error corresponding error to be passed to caller
      */
     public void raise(Errors error) {
@@ -182,6 +191,7 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
 
     /**
      * Add a listener which will be notified when the future completes
+     *
      * @param listener non-null listener to add
      */
     public void addListener(RequestFutureListener<T> listener) {
@@ -194,8 +204,9 @@ public class RequestFuture<T> implements ConsumerNetworkClient.PollCondition {
 
     /**
      * Convert from a request future of one type to another type
+     *
      * @param adapter The adapter which does the conversion
-     * @param <S> The type of the future adapted to
+     * @param <S>     The type of the future adapted to
      * @return The new future
      */
     public <S> RequestFuture<S> compose(final RequestFutureAdapter<T, S> adapter) {

@@ -70,10 +70,10 @@ public class ByteBufferSend implements Send {
     @Override
     public String toString() {
         return "ByteBufferSend(" +
-            ", size=" + size +
-            ", remaining=" + remaining +
-            ", pending=" + pending +
-            ')';
+                ", size=" + size +
+                ", remaining=" + remaining +
+                ", pending=" + pending +
+                ')';
     }
 
     public static ByteBufferSend sizePrefixed(ByteBuffer buffer) {

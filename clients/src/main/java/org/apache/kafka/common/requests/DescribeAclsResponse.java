@@ -100,7 +100,7 @@ public class DescribeAclsResponse extends AbstractResponse {
     private void validate(Optional<Short> version) {
         if (version.isPresent() && version.get() == 0) {
             final boolean unsupported = acls().stream()
-                .anyMatch(acl -> acl.patternType() != PatternType.LITERAL.code());
+                    .anyMatch(acl -> acl.patternType() != PatternType.LITERAL.code());
             if (unsupported) {
                 throw new UnsupportedVersionException("Version 0 only supports literal resource pattern types");
             }
@@ -147,17 +147,17 @@ public class DescribeAclsResponse extends AbstractResponse {
             List<AclDescription> aclDescriptions = new ArrayList<>(entry.getValue().size());
             for (AccessControlEntry ace : entry.getValue()) {
                 AclDescription ad = new AclDescription()
-                    .setHost(ace.host())
-                    .setOperation(ace.operation().code())
-                    .setPermissionType(ace.permissionType().code())
-                    .setPrincipal(ace.principal());
+                        .setHost(ace.host())
+                        .setOperation(ace.operation().code())
+                        .setPermissionType(ace.permissionType().code())
+                        .setPrincipal(ace.principal());
                 aclDescriptions.add(ad);
             }
             DescribeAclsResource dar = new DescribeAclsResource()
-                .setResourceName(key.name())
-                .setPatternType(key.patternType().code())
-                .setResourceType(key.resourceType().code())
-                .setAcls(aclDescriptions);
+                    .setResourceName(key.name())
+                    .setPatternType(key.patternType().code())
+                    .setResourceType(key.resourceType().code())
+                    .setAcls(aclDescriptions);
             resources.add(dar);
         }
         return resources;

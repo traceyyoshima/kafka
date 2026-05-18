@@ -59,8 +59,8 @@ public class LogicalKeyValueSegments extends AbstractSegments<LogicalKeyValueSeg
     protected LogicalKeyValueSegment createSegment(final long segmentId, final String segmentName) {
         if (segmentId < 0) {
             throw new IllegalArgumentException(
-                "Negative segment IDs are reserved for reserved segments, "
-                    + "and should be created through createReservedSegment() instead");
+                    "Negative segment IDs are reserved for reserved segments, "
+                            + "and should be created through createReservedSegment() instead");
         }
         return new LogicalKeyValueSegment(segmentId, segmentName, physicalStore);
     }
@@ -138,8 +138,8 @@ public class LogicalKeyValueSegments extends AbstractSegments<LogicalKeyValueSeg
     public String segmentName(final long segmentId) {
         if (segmentId < 0) {
             throw new IllegalArgumentException(
-                "Negative segment IDs are reserved for reserved segments, "
-                    + "which have custom names that should not be accessed from this method");
+                    "Negative segment IDs are reserved for reserved segments, "
+                            + "which have custom names that should not be accessed from this method");
         }
 
         return super.segmentName(segmentId);

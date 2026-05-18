@@ -123,34 +123,34 @@ public class DescribeStreamsGroupTest {
     public void testDescribeStreamsGroup() throws Exception {
         final List<String> expectedHeader = List.of("GROUP", "TOPIC", "PARTITION", "OFFSET-LAG");
         final Set<List<String>> expectedRows = Set.of(
-            List.of(APP_ID, INPUT_TOPIC, "0", "0"),
-            List.of(APP_ID, INPUT_TOPIC, "1", "0"),
-            List.of(APP_ID, "streams-group-command-test-KSTREAM-AGGREGATE-STATE-STORE-0000000003-repartition", "0", "0"),
-            List.of(APP_ID, "streams-group-command-test-KSTREAM-AGGREGATE-STATE-STORE-0000000003-repartition", "1", "0"));
+                List.of(APP_ID, INPUT_TOPIC, "0", "0"),
+                List.of(APP_ID, INPUT_TOPIC, "1", "0"),
+                List.of(APP_ID, "streams-group-command-test-KSTREAM-AGGREGATE-STATE-STORE-0000000003-repartition", "0", "0"),
+                List.of(APP_ID, "streams-group-command-test-KSTREAM-AGGREGATE-STATE-STORE-0000000003-repartition", "1", "0"));
 
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--group", APP_ID), expectedHeader, expectedRows, List.of());
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--group", APP_ID), expectedHeader, expectedRows, List.of());
         // --describe --offsets has the same output as --describe
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--offsets", "--group", APP_ID), expectedHeader, expectedRows, List.of());
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--offsets", "--group", APP_ID), expectedHeader, expectedRows, List.of());
     }
 
     @Test
     public void testDescribeStreamsGroupWithVerboseOption() throws Exception {
         final List<String> expectedHeader = List.of("GROUP", "TOPIC", "PARTITION", "CURRENT-OFFSET", "LEADER-EPOCH", "LOG-END-OFFSET", "OFFSET-LAG");
         final Set<List<String>> expectedRows = Set.of(
-            List.of(APP_ID, INPUT_TOPIC, "0", "-", "-", "0", "0"),
-            List.of(APP_ID, INPUT_TOPIC, "1", "-", "-", "0", "0"),
-            List.of(APP_ID, "streams-group-command-test-KSTREAM-AGGREGATE-STATE-STORE-0000000003-repartition", "0", "-", "-", "0", "0"),
-            List.of(APP_ID, "streams-group-command-test-KSTREAM-AGGREGATE-STATE-STORE-0000000003-repartition", "1", "-", "-", "0", "0"));
+                List.of(APP_ID, INPUT_TOPIC, "0", "-", "-", "0", "0"),
+                List.of(APP_ID, INPUT_TOPIC, "1", "-", "-", "0", "0"),
+                List.of(APP_ID, "streams-group-command-test-KSTREAM-AGGREGATE-STATE-STORE-0000000003-repartition", "0", "-", "-", "0", "0"),
+                List.of(APP_ID, "streams-group-command-test-KSTREAM-AGGREGATE-STATE-STORE-0000000003-repartition", "1", "-", "-", "0", "0"));
 
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--group", APP_ID), expectedHeader, expectedRows, List.of());
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--group", APP_ID), expectedHeader, expectedRows, List.of());
         // --describe --offsets has the same output as --describe
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--offsets", "--verbose", "--group", APP_ID), expectedHeader, expectedRows, List.of());
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--offsets", "--verbose", "--group", APP_ID), expectedHeader, expectedRows, List.of());
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--offsets", "--group", APP_ID), expectedHeader, expectedRows, List.of());
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--offsets", "--group", APP_ID), expectedHeader, expectedRows, List.of());
     }
 
     @Test
@@ -160,7 +160,7 @@ public class DescribeStreamsGroupTest {
         // The coordinator is not deterministic, so we don't care about it.
         final List<Integer> dontCares = List.of(1, 2);
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--state", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--state", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
     }
 
     @Test
@@ -172,58 +172,58 @@ public class DescribeStreamsGroupTest {
         final List<Integer> dontCares = List.of(1, 2, 4, 5);
 
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--state", "--verbose", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--state", "--verbose", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--state", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--state", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
     }
 
     @Test
     public void testDescribeStreamsGroupWithMembersOption() throws Exception {
         final List<String> expectedHeader = List.of("GROUP", "MEMBER", "PROCESS", "CLIENT-ID", "ASSIGNMENTS");
         final Set<List<String>> expectedRows = Set.of(
-            List.of(APP_ID, "", "", "", "ACTIVE:", "0:[1];", "1:[1];"),
-            List.of(APP_ID, "", "", "", "ACTIVE:", "0:[0];", "1:[0];"));
+                List.of(APP_ID, "", "", "", "ACTIVE:", "0:[1];", "1:[1];"),
+                List.of(APP_ID, "", "", "", "ACTIVE:", "0:[0];", "1:[0];"));
         // The member and process names as well as client-id are not deterministic, so we don't care about them.
         final List<Integer> dontCares = List.of(1, 2, 3);
 
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--members", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--members", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
     }
 
     @Test
     public void testDescribeStreamsGroupWithMembersAndVerboseOptions() throws Exception {
         final List<String> expectedHeader = List.of("GROUP", "TARGET-ASSIGNMENT-EPOCH", "TOPOLOGY-EPOCH", "MEMBER", "MEMBER-PROTOCOL", "MEMBER-EPOCH", "PROCESS", "CLIENT-ID", "ASSIGNMENTS");
         final Set<List<String>> expectedRows = Set.of(
-            List.of(APP_ID, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[1];", "1:[1];", "TARGET-ACTIVE:", "0:[1];", "1:[1];"),
-            List.of(APP_ID, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[0];", "1:[0];", "TARGET-ACTIVE:", "0:[0];", "1:[0];"));
+                List.of(APP_ID, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[1];", "1:[1];", "TARGET-ACTIVE:", "0:[1];", "1:[1];"),
+                List.of(APP_ID, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[0];", "1:[0];", "TARGET-ACTIVE:", "0:[0];", "1:[0];"));
         // The member and process names as well as client-id are not deterministic, so we don't care about them.
         // The TARGET-ASSIGNMENT-EPOCH and MEMBER-EPOCH can vary due to rebalance timing, so we don't care about them either.
         final List<Integer> dontCares = List.of(1, 3, 5, 6, 7);
 
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--members", "--verbose", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--members", "--verbose", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--members", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--members", "--group", APP_ID), expectedHeader, expectedRows, dontCares);
     }
 
     @Test
     public void testDescribeMultipleStreamsGroupWithMembersAndVerboseOptions() throws Exception {
         cluster.createTopic(INPUT_TOPIC_2, 1, 1);
         TestUtils.waitForCondition(
-            () -> cluster.getAllTopicsInCluster().contains(INPUT_TOPIC_2),
-            30000,
-            "Topic " + INPUT_TOPIC_2 + " not created"
+                () -> cluster.getAllTopicsInCluster().contains(INPUT_TOPIC_2),
+                30000,
+                "Topic " + INPUT_TOPIC_2 + " not created"
         );
         KafkaStreams streams2 = new KafkaStreams(topology(INPUT_TOPIC_2, OUTPUT_TOPIC_2), streamsProp(APP_ID_2));
         startApplicationAndWaitUntilRunning(streams2);
 
         final List<String> expectedHeader = List.of("GROUP", "TARGET-ASSIGNMENT-EPOCH", "TOPOLOGY-EPOCH", "MEMBER", "MEMBER-PROTOCOL", "MEMBER-EPOCH", "PROCESS", "CLIENT-ID", "ASSIGNMENTS");
         final Set<List<String>> expectedRows1 = Set.of(
-            List.of(APP_ID, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[1];", "1:[1];", "TARGET-ACTIVE:", "0:[1];", "1:[1];"),
-            List.of(APP_ID, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[0];", "1:[0];", "TARGET-ACTIVE:", "0:[0];", "1:[0];"));
+                List.of(APP_ID, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[1];", "1:[1];", "TARGET-ACTIVE:", "0:[1];", "1:[1];"),
+                List.of(APP_ID, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[0];", "1:[0];", "TARGET-ACTIVE:", "0:[0];", "1:[0];"));
         final Set<List<String>> expectedRows2 = Set.of(
-            List.of(APP_ID_2, "", "0", "", "streams", "", "", "", "ACTIVE:", "1:[0];", "TARGET-ACTIVE:", "1:[0];"),
-            List.of(APP_ID_2, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[0];", "TARGET-ACTIVE:", "0:[0];"));
+                List.of(APP_ID_2, "", "0", "", "streams", "", "", "", "ACTIVE:", "1:[0];", "TARGET-ACTIVE:", "1:[0];"),
+                List.of(APP_ID_2, "", "0", "", "streams", "", "", "", "ACTIVE:", "0:[0];", "TARGET-ACTIVE:", "0:[0];"));
         final Map<String, Set<List<String>>> expectedRowsMap = new HashMap<>();
         expectedRowsMap.put(APP_ID, expectedRows1);
         expectedRowsMap.put(APP_ID_2, expectedRows2);
@@ -233,14 +233,14 @@ public class DescribeStreamsGroupTest {
         final List<Integer> dontCares = List.of(1, 3, 5, 6, 7);
 
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--members", "--verbose", "--group", APP_ID, "--group", APP_ID_2),
-            expectedHeader, expectedRowsMap, dontCares);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--members", "--verbose", "--group", APP_ID, "--group", APP_ID_2),
+                expectedHeader, expectedRowsMap, dontCares);
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--members", "--group", APP_ID, "--group", APP_ID_2),
-            expectedHeader, expectedRowsMap, dontCares);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--members", "--group", APP_ID, "--group", APP_ID_2),
+                expectedHeader, expectedRowsMap, dontCares);
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--members", "--all-groups"),
-            expectedHeader, expectedRowsMap, dontCares);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--members", "--all-groups"),
+                expectedHeader, expectedRowsMap, dontCares);
 
         streams2.close();
         streams2.cleanUp();
@@ -250,13 +250,13 @@ public class DescribeStreamsGroupTest {
     public void testDescribeNonExistingStreamsGroup() {
         final String nonExistingGroup = "non-existing-group";
         final String errorMessage = String.format(
-            "Error: Executing streams group command failed due to org.apache.kafka.common.errors.GroupIdNotFoundException: Group %s not found.",
-            nonExistingGroup);
+                "Error: Executing streams group command failed due to org.apache.kafka.common.errors.GroupIdNotFoundException: Group %s not found.",
+                nonExistingGroup);
 
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--members", "--verbose", "--group", nonExistingGroup), errorMessage);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--members", "--verbose", "--group", nonExistingGroup), errorMessage);
         validateDescribeOutput(
-            List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--members", "--group", nonExistingGroup), errorMessage);
+                List.of("--bootstrap-server", bootstrapServers, "--describe", "--verbose", "--members", "--group", nonExistingGroup), errorMessage);
     }
 
     @Test
@@ -271,10 +271,10 @@ public class DescribeStreamsGroupTest {
     private static Topology topology(String inputTopic, String outputTopic) {
         final StreamsBuilder builder = new StreamsBuilder();
         builder.stream(inputTopic, Consumed.with(Serdes.String(), Serdes.String()))
-            .flatMapValues(value -> List.of(value.toLowerCase(Locale.getDefault()).split("\\W+")))
-            .groupBy((key, value) -> value)
-            .count()
-            .toStream().to(outputTopic, Produced.with(Serdes.String(), Serdes.Long()));
+                .flatMapValues(value -> List.of(value.toLowerCase(Locale.getDefault()).split("\\W+")))
+                .groupBy((key, value) -> value)
+                .count()
+                .toStream().to(outputTopic, Produced.with(Serdes.String(), Serdes.Long()));
         return builder.build();
     }
 
@@ -294,8 +294,8 @@ public class DescribeStreamsGroupTest {
     private StreamsGroupCommand.StreamsGroupService getStreamsGroupService(String[] args) {
         StreamsGroupCommandOptions opts = StreamsGroupCommandOptions.fromArgs(args);
         return new StreamsGroupCommand.StreamsGroupService(
-            opts,
-            Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
+                opts,
+                Map.of(AdminClientConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE))
         );
     }
 
@@ -305,10 +305,10 @@ public class DescribeStreamsGroupTest {
     }
 
     private static void validateDescribeOutput(
-        List<String> args,
-        List<String> expectedHeader,
-        Set<List<String>> expectedRows,
-        List<Integer> dontCareIndices
+            List<String> args,
+            List<String> expectedHeader,
+            Set<List<String>> expectedRows,
+            List<Integer> dontCareIndices
     ) throws InterruptedException {
         final AtomicReference<String> out = new AtomicReference<>("");
         TestUtils.waitForCondition(() -> {
@@ -323,27 +323,27 @@ public class DescribeStreamsGroupTest {
             if (!expectedHeader.equals(header)) return false;
 
             Set<List<String>> groupDesc = Arrays.stream(Arrays.copyOfRange(lines, 1, lines.length))
-                .map(line -> List.of(line.split("\\s+")))
-                .collect(Collectors.toSet());
+                    .map(line -> List.of(line.split("\\s+")))
+                    .collect(Collectors.toSet());
             if (groupDesc.size() != expectedRows.size()) return false;
             // clear the dontCare fields and then compare two sets
             return expectedRows
-                .equals(
-                    groupDesc.stream()
-                        .map(list -> {
-                            List<String> listCloned = new ArrayList<>(list);
-                            dontCareIndices.forEach(index -> listCloned.set(index, ""));
-                            return listCloned;
-                        }).collect(Collectors.toSet())
-                );
+                    .equals(
+                            groupDesc.stream()
+                                    .map(list -> {
+                                        List<String> listCloned = new ArrayList<>(list);
+                                        dontCareIndices.forEach(index -> listCloned.set(index, ""));
+                                        return listCloned;
+                                    }).collect(Collectors.toSet())
+                    );
         }, () -> String.format("Expected header=%s and groups=%s, but found:%n%s", expectedHeader, expectedRows, out.get()));
     }
 
     private static void validateDescribeOutput(
-        List<String> args,
-        List<String> expectedHeader,
-        Map<String, Set<List<String>>> expectedRows,
-        List<Integer> dontCareIndices
+            List<String> args,
+            List<String> expectedHeader,
+            Map<String, Set<List<String>>> expectedRows,
+            List<Integer> dontCareIndices
     ) throws InterruptedException {
         final AtomicReference<String> out = new AtomicReference<>("");
         TestUtils.waitForCondition(() -> {
@@ -392,8 +392,8 @@ public class DescribeStreamsGroupTest {
             if (lines[i].replaceAll(" ", "").equals(headerLine) || i == lines.length - 1) {
                 if (i == lines.length - 1) i++;
                 Set<List<String>> groupDesc = Arrays.stream(Arrays.copyOfRange(lines, j, i))
-                    .map(line -> List.of(line.split("\\s+")))
-                    .collect(Collectors.toSet());
+                        .map(line -> List.of(line.split("\\s+")))
+                        .collect(Collectors.toSet());
                 groupdescMap.put(groupName, groupDesc);
                 if (i + 1 < lines.length) {
                     j = i + 1;

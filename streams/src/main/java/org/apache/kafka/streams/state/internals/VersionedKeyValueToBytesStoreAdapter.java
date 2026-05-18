@@ -51,9 +51,9 @@ import java.util.Objects;
  */
 public class VersionedKeyValueToBytesStoreAdapter implements VersionedBytesStore {
     private static final Serde<ValueAndTimestamp<byte[]>> VALUE_AND_TIMESTAMP_SERDE
-        = new ValueAndTimestampSerde<>(new ByteArraySerde());
+            = new ValueAndTimestampSerde<>(new ByteArraySerde());
     private static final Serializer<ValueAndTimestamp<byte[]>> VALUE_AND_TIMESTAMP_SERIALIZER
-        = VALUE_AND_TIMESTAMP_SERDE.serializer();
+            = VALUE_AND_TIMESTAMP_SERDE.serializer();
 
     final VersionedKeyValueStore<Bytes, byte[]> inner;
 
@@ -190,7 +190,7 @@ public class VersionedKeyValueToBytesStoreAdapter implements VersionedBytesStore
             return null;
         }
         return VALUE_AND_TIMESTAMP_SERIALIZER.serialize(
-            null,
-            ValueAndTimestamp.make(versionedRecord.value(), versionedRecord.timestamp()));
+                null,
+                ValueAndTimestamp.make(versionedRecord.value(), versionedRecord.timestamp()));
     }
 }

@@ -43,8 +43,8 @@ class Unifier {
     private final StructRegistry structRegistry2;
 
     Unifier(
-        MessageSpec topLevelMessage1,
-        MessageSpec topLevelMessage2
+            MessageSpec topLevelMessage1,
+            MessageSpec topLevelMessage2
     ) throws Exception {
         this.topLevelMessage1 = topLevelMessage1;
         this.structRegistry1 = new StructRegistry();
@@ -56,24 +56,24 @@ class Unifier {
 
     static FieldSpec structSpecToFieldSpec(StructSpec structSpec) {
         return new FieldSpec(structSpec.name(),
-            structSpec.versions().toString(),
-            structSpec.fields(),
-            MessageGenerator.capitalizeFirst(structSpec.name()),
-            false,
-            "",
-            "",
-            false,
-            EntityType.UNKNOWN,
-            "Top level StructSpec",
-            "",
-            null,
-            null,
-            false);
+                structSpec.versions().toString(),
+                structSpec.fields(),
+                MessageGenerator.capitalizeFirst(structSpec.name()),
+                false,
+                "",
+                "",
+                false,
+                EntityType.UNKNOWN,
+                "Top level StructSpec",
+                "",
+                null,
+                null,
+                false);
     }
 
     void unify() {
         unify(structSpecToFieldSpec(topLevelMessage1.struct()),
-            structSpecToFieldSpec(topLevelMessage2.struct()));
+                structSpecToFieldSpec(topLevelMessage2.struct()));
     }
 
     void unify(FieldSpec field1, FieldSpec field2) {
@@ -91,8 +91,8 @@ class Unifier {
         short f2Highest = min(field2.versions().highest(), topLevelMessage2.validVersions().highest());
         if (f2Highest < f1Highest) {
             throw new UnificationException("Maximum effective valid version for field2 " +
-                field2.name() + ", '" + f2Highest + "' cannot be lower than the " +
-                "maximum effective valid version for field1 " + field1.name() + ", '" + f1Highest + "'");
+                    field2.name() + ", '" + f2Highest + "' cannot be lower than the " +
+                    "maximum effective valid version for field1 " + field1.name() + ", '" + f1Highest + "'");
         }
         // The minimum supported version in field2 must not be different from the minimum supported
         // version in field1.
@@ -100,9 +100,9 @@ class Unifier {
         short f2Lowest = max(field2.versions().lowest(), topLevelMessage2.validVersions().lowest());
         if (f2Lowest != f1Lowest) {
             throw new UnificationException("Minimum effective valid version for field2 " +
-                field2.name() + ", '" + f2Lowest + "' cannot be different than the " +
-                "minimum effective valid version for field1 " + field1.name() + ", '" +
-                f1Lowest + "'");
+                    field2.name() + ", '" + f2Lowest + "' cannot be different than the " +
+                    "minimum effective valid version for field1 " + field1.name() + ", '" +
+                    f1Lowest + "'");
         }
         // The maximum nullable version in field2 must not be lower than the maximum nullable
         // version in field1.
@@ -110,9 +110,9 @@ class Unifier {
         short f2HighestNull = min(f2Highest, field1.nullableVersions().highest());
         if (f2HighestNull < f1HighestNull) {
             throw new UnificationException("Maximum effective nullable version for field2 " +
-                field2.name() + ", '" + f2HighestNull + "' cannot be lower than the " +
-                "minimum effective nullable version for field1 " + field1.name() + ", '" +
-                f1HighestNull + "'");
+                    field2.name() + ", '" + f2HighestNull + "' cannot be lower than the " +
+                    "minimum effective nullable version for field1 " + field1.name() + ", '" +
+                    f1HighestNull + "'");
         }
         // The minimum nullable version in field2 must not be different from the minimum nullable
         // version in field1.
@@ -120,9 +120,9 @@ class Unifier {
         short f2LowestNull = max(field2.nullableVersions().lowest(), topLevelMessage2.validVersions().lowest());
         if (f2LowestNull != f1LowestNull) {
             throw new UnificationException("Minimum effective nullable version for field2 " +
-                field2.name() + ", '" + f2LowestNull + "' cannot be different than the " +
-                "minimum effective nullable version for field1 " + field1.name() + ", '" +
-                f1LowestNull + "'");
+                    field2.name() + ", '" + f2LowestNull + "' cannot be different than the " +
+                    "minimum effective nullable version for field1 " + field1.name() + ", '" +
+                    f1LowestNull + "'");
         }
         // Check that the flexibleVersions match exactly. Currently, there is only one case where
         // flexibleVersions is set on a FieldSpec object: the FieldSpec is the ClientId string
@@ -134,35 +134,35 @@ class Unifier {
                 orElseGet(topLevelMessage1::flexibleVersions);
         if (!field2EffectiveFlexibleVersions.contains(field1EffectiveFlexibleVersions)) {
             throw new UnificationException("Flexible versions for field2 " + field2.name() +
-                " is " + field2.flexibleVersions().orElse(Versions.NONE) +
-                ", but flexible versions for field1 is " +
-                field1.flexibleVersions().orElse(Versions.NONE));
+                    " is " + field2.flexibleVersions().orElse(Versions.NONE) +
+                    ", but flexible versions for field1 is " +
+                    field1.flexibleVersions().orElse(Versions.NONE));
         }
         // Check that defaults match exactly.
         if (!field2.defaultString().equals(field1.defaultString())) {
             throw new UnificationException("Default for field2 " + field2.name() + " is '" +
-                field2.defaultString() + "', but default for field1 " + field1.name() + " is '" +
-                field1.defaultString() + "'");
+                    field2.defaultString() + "', but default for field1 " + field1.name() + " is '" +
+                    field1.defaultString() + "'");
         }
         // Recursive step.
         if (field1.type().isStruct()) {
             unifyStructs(field1.name(),
-                field1.fields(),
-                field2.name(),
-                field2.fields());
+                    field1.fields(),
+                    field2.name(),
+                    field2.fields());
         } else if (field2.type().isStructArray()) {
             unifyStructs(((FieldType.ArrayType) field1.type()).elementName(),
-                field1.fields(),
-                ((FieldType.ArrayType) field2.type()).elementName(),
-                field2.fields());
+                    field1.fields(),
+                    ((FieldType.ArrayType) field2.type()).elementName(),
+                    field2.fields());
         }
     }
 
     void unifyStructs(
-        String struct1Name,
-        List<FieldSpec> struct1Fields,
-        String struct2Name,
-        List<FieldSpec> struct2Fields
+            String struct1Name,
+            List<FieldSpec> struct1Fields,
+            String struct2Name,
+            List<FieldSpec> struct2Fields
     ) {
         // By convention, structure names are always uppercase.
         struct1Name = MessageGenerator.capitalizeFirst(struct1Name);
@@ -183,9 +183,9 @@ class Unifier {
         }
         // Iterate over fields1 and fields2.
         FieldSpecPairIterator iterator = new FieldSpecPairIterator(struct1Fields.iterator(),
-            struct2Fields.iterator(),
-            topLevelMessage1.validVersions(),
-            topLevelMessage2.validVersions());
+                struct2Fields.iterator(),
+                topLevelMessage1.validVersions(),
+                topLevelMessage2.validVersions());
         while (iterator.hasNext()) {
             FieldSpecPair pair = iterator.next();
             unify(pair.field1(), pair.field2());
@@ -193,8 +193,8 @@ class Unifier {
     }
 
     List<FieldSpec> lookupCommonStructFields(
-        String structName,
-        StructRegistry structRegistry
+            String structName,
+            StructRegistry structRegistry
     ) {
         StructSpec struct = structRegistry.findStruct(structName);
         // TODO: we should probably validate the versions, etc. settings of the common struct.

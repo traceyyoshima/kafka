@@ -41,6 +41,7 @@ public final class AssignorHelpers {
 
     /**
      * Deep copies a member assignment map.
+     *
      * @param map The assignment to copy.
      * @return A deep copy of the assignment.
      */
@@ -54,6 +55,7 @@ public final class AssignorHelpers {
 
     /**
      * Constructs a HashNap with a known capacity. This is equivalent to HashMap.newHashMap which is introduced in Java 19.
+     *
      * @param numMappings The expected number of mappings.
      * @return The newly created map.
      */
@@ -63,6 +65,7 @@ public final class AssignorHelpers {
 
     /**
      * Constructs a HashSet with a known capacity. This is equivalent to HashSet.newHashSet which is introduced in Java 19.
+     *
      * @param numElements The expected number of elements.
      * @return The newly created set.
      */

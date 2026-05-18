@@ -60,6 +60,7 @@ public abstract class SourceTask implements Task {
 
         /**
          * Parse a {@link TransactionBoundary} from the given string.
+         *
          * @param property the string to parse; should not be null
          * @return the {@link TransactionBoundary} whose name matches the given string
          * @throws IllegalArgumentException if there is no transaction boundary type with the given name
@@ -86,6 +87,7 @@ public abstract class SourceTask implements Task {
 
     /**
      * Start the Task. This should handle any configuration parsing and one-time setup of the task.
+     *
      * @param props initial configuration
      */
     @Override
@@ -144,7 +146,7 @@ public abstract class SourceTask implements Task {
      * <p>
      * The default implementation is a nop. It is not necessary to implement the method.
      *
-     * @param record {@link SourceRecord} that was successfully sent via the producer, filtered by a transformation, or dropped on producer exception
+     * @param record   {@link SourceRecord} that was successfully sent via the producer, filtered by a transformation, or dropped on producer exception
      * @param metadata {@link RecordMetadata} record metadata returned from the broker, or null if the record was filtered or if producer exceptions are ignored
      * @throws InterruptedException
      */

@@ -45,7 +45,7 @@ public interface AlterConfigPolicy extends Configurable, AutoCloseable {
 
         /**
          * Create an instance of this class with the provided parameters.
-         *
+         * <p>
          * This constructor is public to make testing of <code>AlterConfigPolicy</code> implementations easier.
          */
         public RequestMetadata(ConfigResource resource, Map<String, String> configs) {
@@ -74,7 +74,7 @@ public interface AlterConfigPolicy extends Configurable, AutoCloseable {
             if ((o == null) || (!o.getClass().equals(getClass()))) return false;
             RequestMetadata other = (RequestMetadata) o;
             return resource.equals(other.resource) &&
-                configs.equals(other.configs);
+                    configs.equals(other.configs);
         }
 
         @Override
@@ -87,7 +87,7 @@ public interface AlterConfigPolicy extends Configurable, AutoCloseable {
     /**
      * Validate the request parameters and throw a <code>PolicyViolationException</code> with a suitable error
      * message if the alter configs request parameters for the provided resource do not satisfy this policy.
-     *
+     * <p>
      * Clients will receive the POLICY_VIOLATION error code along with the exception's message. Note that validation
      * failure only affects the relevant resource, other resources in the request will still be processed.
      *

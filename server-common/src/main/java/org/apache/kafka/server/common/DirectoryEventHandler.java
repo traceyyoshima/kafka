@@ -27,36 +27,51 @@ public interface DirectoryEventHandler {
      * A no-op implementation of {@link DirectoryEventHandler}.
      */
     DirectoryEventHandler NOOP = new DirectoryEventHandler() {
-        @Override public void handleAssignment(TopicIdPartition partition, Uuid directoryId, String reason, Runnable callback) {}
-        @Override public void handleFailure(Uuid directoryId) {}
-        @Override public void handleCordoned(Set<Uuid> directoryIds) {}
-        @Override public void handleUncordoned(Set<Uuid> directoryIds) {}
+        @Override
+        public void handleAssignment(TopicIdPartition partition, Uuid directoryId, String reason, Runnable callback) {
+        }
+
+        @Override
+        public void handleFailure(Uuid directoryId) {
+        }
+
+        @Override
+        public void handleCordoned(Set<Uuid> directoryIds) {
+        }
+
+        @Override
+        public void handleUncordoned(Set<Uuid> directoryIds) {
+        }
     };
 
     /**
      * Handle the assignment of a topic partition to a directory.
-     * @param directoryId  The directory ID
-     * @param partition    The topic partition
-     * @param reason       The reason
-     * @param callback     Callback to apply when the request is completed.
+     *
+     * @param directoryId The directory ID
+     * @param partition   The topic partition
+     * @param reason      The reason
+     * @param callback    Callback to apply when the request is completed.
      */
     void handleAssignment(TopicIdPartition partition, Uuid directoryId, String reason, Runnable callback);
 
     /**
      * Handle the transition of an online log directory to the offline state.
-     * @param directoryId  The directory ID
+     *
+     * @param directoryId The directory ID
      */
     void handleFailure(Uuid directoryId);
 
     /**
      * Handle the transition of an online log directory to the cordoned state.
-     * @param directoryIds  The directory IDs to cordon
+     *
+     * @param directoryIds The directory IDs to cordon
      */
     void handleCordoned(Set<Uuid> directoryIds);
 
     /**
      * Handle the transition of a cordoned log directory to the online state.
-     * @param directoryIds  The directory IDs to uncordon
+     *
+     * @param directoryIds The directory IDs to uncordon
      */
     void handleUncordoned(Set<Uuid> directoryIds);
 }

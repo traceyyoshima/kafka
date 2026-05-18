@@ -27,15 +27,15 @@ public class Deadline {
     private final long nanoseconds;
 
     public static Deadline fromMonotonicNanoseconds(
-        long nanoseconds
+            long nanoseconds
     ) {
         return new Deadline(nanoseconds);
     }
 
     public static Deadline fromDelay(
-        Time time,
-        long delay,
-        TimeUnit timeUnit
+            Time time,
+            long delay,
+            TimeUnit timeUnit
     ) {
         if (delay < 0) {
             throw new RuntimeException("Negative delays are not allowed.");

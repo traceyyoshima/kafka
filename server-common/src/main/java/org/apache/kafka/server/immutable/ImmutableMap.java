@@ -30,27 +30,27 @@ import java.util.Map;
  */
 public interface ImmutableMap<K, V> extends Map<K, V> {
     /**
-     * @return a wrapped hash-based persistent map that is empty
      * @param <K> the key type
      * @param <V> the value type
+     * @return a wrapped hash-based persistent map that is empty
      */
     static <K, V> ImmutableMap<K, V> empty() {
         return PCollectionsImmutableMap.empty();
     }
 
     /**
-     * @param key the key
+     * @param key   the key
      * @param value the value
+     * @param <K>   the key type
+     * @param <V>   the value type
      * @return a wrapped hash-based persistent map that has a single mapping
-     * @param <K> the key type
-     * @param <V> the value type
      */
     static <K, V> ImmutableMap<K, V> singleton(K key, V value) {
         return PCollectionsImmutableMap.singleton(key, value);
     }
 
     /**
-     * @param key the key
+     * @param key   the key
      * @param value the value
      * @return a wrapped persistent map that differs from this one in that the given mapping is added (if necessary)
      */

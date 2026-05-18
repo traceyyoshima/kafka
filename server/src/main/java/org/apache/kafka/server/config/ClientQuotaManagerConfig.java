@@ -19,12 +19,12 @@ package org.apache.kafka.server.config;
 /**
  * Configuration settings for quota management
  *
- * @param numQuotaSamples         The number of samples to retain in memory
- * @param quotaWindowSizeSeconds  The time span of each sample
+ * @param numQuotaSamples        The number of samples to retain in memory
+ * @param quotaWindowSizeSeconds The time span of each sample
  */
 public record ClientQuotaManagerConfig(
-    int numQuotaSamples,
-    int quotaWindowSizeSeconds
+        int numQuotaSamples,
+        int quotaWindowSizeSeconds
 ) {
     /**
      * Default constructor with default values

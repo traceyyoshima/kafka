@@ -20,7 +20,7 @@ import org.apache.kafka.streams.processor.internals.tasks.DefaultTaskExecutor;
 
 /**
  * Common interface for {@link StreamThread} and {@link DefaultTaskExecutor} threads.
- *
+ * <p>
  * This interface defines no behaviour, but tags processing threads so they can be differentiated from interactive query
  * threads.
  */

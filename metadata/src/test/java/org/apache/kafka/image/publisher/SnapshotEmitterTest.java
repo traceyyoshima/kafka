@@ -102,8 +102,8 @@ public class SnapshotEmitterTest {
 
         @Override
         public Optional<SnapshotWriter<ApiMessageAndVersion>> createSnapshot(
-            OffsetAndEpoch snapshotId,
-            long lastContainedLogTime
+                OffsetAndEpoch snapshotId,
+                long lastContainedLogTime
         ) {
             if (writers.containsKey(snapshotId)) {
                 return Optional.empty();
@@ -149,10 +149,10 @@ public class SnapshotEmitterTest {
         MockRaftClient mockRaftClient = new MockRaftClient();
         MockTime time = new MockTime(0, 10000L, 20000L);
         SnapshotEmitter emitter = new SnapshotEmitter.Builder().
-            setTime(time).
-            setBatchSize(2).
-            setRaftClient(mockRaftClient).
-            build();
+                setTime(time).
+                setBatchSize(2).
+                setRaftClient(mockRaftClient).
+                build();
         assertEquals(0L, emitter.metrics().latestSnapshotGeneratedAgeMs());
         assertEquals(0L, emitter.metrics().latestSnapshotGeneratedBytes());
         time.sleep(30000L);

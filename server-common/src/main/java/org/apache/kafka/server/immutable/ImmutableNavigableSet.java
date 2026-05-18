@@ -29,17 +29,17 @@ import java.util.NavigableSet;
  */
 public interface ImmutableNavigableSet<E> extends ImmutableSet<E>, NavigableSet<E> {
     /**
-     * @return a wrapped tree-based persistent navigable set that is empty
      * @param <E> the element type
+     * @return a wrapped tree-based persistent navigable set that is empty
      */
     static <E extends Comparable<? super E>> ImmutableNavigableSet<E> empty() {
         return PCollectionsImmutableNavigableSet.empty();
     }
 
     /**
-     * @param e the element
-     * @return a wrapped tree-based persistent set that is empty
+     * @param e   the element
      * @param <E> the element type
+     * @return a wrapped tree-based persistent set that is empty
      */
     static <E extends Comparable<? super E>> ImmutableNavigableSet<E> singleton(E e) {
         return PCollectionsImmutableNavigableSet.singleton(e);

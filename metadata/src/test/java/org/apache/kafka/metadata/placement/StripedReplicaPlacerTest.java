@@ -70,11 +70,11 @@ public class StripedReplicaPlacerTest {
     public void testAvoidFencedReplicaIfPossibleOnSingleRack() {
         MockRandom random = new MockRandom();
         RackList rackList = new RackList(random, List.of(
-            new UsableBroker(3, Optional.empty(), false),
-            new UsableBroker(1, Optional.empty(), true),
-            new UsableBroker(0, Optional.empty(), false),
-            new UsableBroker(4, Optional.empty(), false),
-            new UsableBroker(2, Optional.empty(), false)).iterator());
+                new UsableBroker(3, Optional.empty(), false),
+                new UsableBroker(1, Optional.empty(), true),
+                new UsableBroker(0, Optional.empty(), false),
+                new UsableBroker(4, Optional.empty(), false),
+                new UsableBroker(2, Optional.empty(), false)).iterator());
         assertEquals(5, rackList.numTotalBrokers());
         assertEquals(4, rackList.numUnfencedBrokers());
         assertEquals(List.of(Optional.empty()), rackList.rackNames());
@@ -88,15 +88,15 @@ public class StripedReplicaPlacerTest {
     }
 
     private TopicAssignment place(
-        ReplicaPlacer placer,
-        int startPartition,
-        int numPartitions,
-        short replicationFactor,
-        List<UsableBroker> brokers
+            ReplicaPlacer placer,
+            int startPartition,
+            int numPartitions,
+            short replicationFactor,
+            List<UsableBroker> brokers
     ) {
         PlacementSpec placementSpec = new PlacementSpec(startPartition,
-            numPartitions,
-            replicationFactor);
+                numPartitions,
+                replicationFactor);
         return placer.place(placementSpec, new ClusterDescriber() {
             @Override
             public Iterator<UsableBroker> usableBrokers() {
@@ -119,8 +119,8 @@ public class StripedReplicaPlacerTest {
         MockRandom random = new MockRandom();
         StripedReplicaPlacer placer = new StripedReplicaPlacer(random);
         assertEquals(new TopicAssignment(List.of(partitionAssignment(List.of(0)),
-                partitionAssignment(List.of(0)),
-                partitionAssignment(List.of(0)))),
+                        partitionAssignment(List.of(0)),
+                        partitionAssignment(List.of(0)))),
                 place(placer, 0, 3, (short) 1, List.of(
                         new UsableBroker(0, Optional.empty(), false),
                         new UsableBroker(1, Optional.empty(), true))));
@@ -133,9 +133,9 @@ public class StripedReplicaPlacerTest {
     public void testPlacementOnFencedReplicaOnSingleRack() {
         MockRandom random = new MockRandom();
         RackList rackList = new RackList(random, List.of(
-            new UsableBroker(3, Optional.empty(), false),
-            new UsableBroker(1, Optional.empty(), true),
-            new UsableBroker(2, Optional.empty(), false)).iterator());
+                new UsableBroker(3, Optional.empty(), false),
+                new UsableBroker(1, Optional.empty(), true),
+                new UsableBroker(2, Optional.empty(), false)).iterator());
         assertEquals(3, rackList.numTotalBrokers());
         assertEquals(2, rackList.numUnfencedBrokers());
         assertEquals(List.of(Optional.empty()), rackList.rackNames());
@@ -149,12 +149,12 @@ public class StripedReplicaPlacerTest {
     public void testRackListWithMultipleRacks() {
         MockRandom random = new MockRandom();
         RackList rackList = new RackList(random, List.of(
-            new UsableBroker(11, Optional.of("1"), false),
-            new UsableBroker(10, Optional.of("1"), false),
-            new UsableBroker(30, Optional.of("3"), false),
-            new UsableBroker(31, Optional.of("3"), false),
-            new UsableBroker(21, Optional.of("2"), false),
-            new UsableBroker(20, Optional.of("2"), true)).iterator());
+                new UsableBroker(11, Optional.of("1"), false),
+                new UsableBroker(10, Optional.of("1"), false),
+                new UsableBroker(30, Optional.of("3"), false),
+                new UsableBroker(31, Optional.of("3"), false),
+                new UsableBroker(21, Optional.of("2"), false),
+                new UsableBroker(20, Optional.of("2"), true)).iterator());
         assertEquals(6, rackList.numTotalBrokers());
         assertEquals(5, rackList.numUnfencedBrokers());
         assertEquals(List.of(Optional.of("1"), Optional.of("2"), Optional.of("3")), rackList.rackNames());
@@ -167,20 +167,20 @@ public class StripedReplicaPlacerTest {
     public void testRackListWithInvalidRacks() {
         MockRandom random = new MockRandom();
         RackList rackList = new RackList(random, List.of(
-            new UsableBroker(11, Optional.of("1"), false),
-            new UsableBroker(10, Optional.of("1"), false),
-            new UsableBroker(30, Optional.of("3"), true),
-            new UsableBroker(31, Optional.of("3"), true),
-            new UsableBroker(20, Optional.of("2"), true),
-            new UsableBroker(21, Optional.of("2"), true),
-            new UsableBroker(41, Optional.of("4"), false),
-            new UsableBroker(40, Optional.of("4"), true)).iterator());
+                new UsableBroker(11, Optional.of("1"), false),
+                new UsableBroker(10, Optional.of("1"), false),
+                new UsableBroker(30, Optional.of("3"), true),
+                new UsableBroker(31, Optional.of("3"), true),
+                new UsableBroker(20, Optional.of("2"), true),
+                new UsableBroker(21, Optional.of("2"), true),
+                new UsableBroker(41, Optional.of("4"), false),
+                new UsableBroker(40, Optional.of("4"), true)).iterator());
         assertEquals(8, rackList.numTotalBrokers());
         assertEquals(3, rackList.numUnfencedBrokers());
         assertEquals(List.of(Optional.of("1"),
-            Optional.of("2"),
-            Optional.of("3"),
-            Optional.of("4")), rackList.rackNames());
+                Optional.of("2"),
+                Optional.of("3"),
+                Optional.of("4")), rackList.rackNames());
         assertEquals(List.of(41, 11, 21, 30), rackList.place(4));
         assertEquals(List.of(10, 20, 31, 41), rackList.place(4));
         assertEquals(List.of(41, 21, 30, 11), rackList.place(4));
@@ -191,10 +191,10 @@ public class StripedReplicaPlacerTest {
         MockRandom random = new MockRandom();
         StripedReplicaPlacer placer = new StripedReplicaPlacer(random);
         assertEquals("All brokers are currently fenced, or have all their log directories cordoned.",
-            assertThrows(InvalidReplicationFactorException.class,
-                () -> place(placer, 0, 1, (short) 1, List.of(
-                    new UsableBroker(11, Optional.of("1"), true),
-                    new UsableBroker(10, Optional.of("1"), true)))).getMessage());
+                assertThrows(InvalidReplicationFactorException.class,
+                        () -> place(placer, 0, 1, (short) 1, List.of(
+                                new UsableBroker(11, Optional.of("1"), true),
+                                new UsableBroker(10, Optional.of("1"), true)))).getMessage());
     }
 
     @Test
@@ -202,11 +202,11 @@ public class StripedReplicaPlacerTest {
         MockRandom random = new MockRandom();
         StripedReplicaPlacer placer = new StripedReplicaPlacer(random);
         assertEquals("The target replication factor of 3 cannot be reached because only " +
-            "2 broker(s) are registered or some brokers have all their log directories cordoned.",
-            assertThrows(InvalidReplicationFactorException.class,
-                () -> place(placer, 0, 1, (short) 3, List.of(
-                    new UsableBroker(11, Optional.of("1"), false),
-                    new UsableBroker(10, Optional.of("1"), false)))).getMessage());
+                        "2 broker(s) are registered or some brokers have all their log directories cordoned.",
+                assertThrows(InvalidReplicationFactorException.class,
+                        () -> place(placer, 0, 1, (short) 3, List.of(
+                                new UsableBroker(11, Optional.of("1"), false),
+                                new UsableBroker(10, Optional.of("1"), false)))).getMessage());
     }
 
     @Test
@@ -225,15 +225,15 @@ public class StripedReplicaPlacerTest {
         MockRandom random = new MockRandom();
         StripedReplicaPlacer placer = new StripedReplicaPlacer(random);
         assertEquals(new TopicAssignment(List.of(partitionAssignment(List.of(2, 3, 0)),
-                partitionAssignment(List.of(3, 0, 1)),
-                partitionAssignment(List.of(0, 1, 2)),
-                partitionAssignment(List.of(1, 2, 3)),
-                partitionAssignment(List.of(1, 0, 2)))),
-            place(placer, 0, 5, (short) 3, List.of(
-                new UsableBroker(0, Optional.empty(), false),
-                new UsableBroker(3, Optional.empty(), false),
-                new UsableBroker(2, Optional.empty(), false),
-                new UsableBroker(1, Optional.empty(), false))));
+                        partitionAssignment(List.of(3, 0, 1)),
+                        partitionAssignment(List.of(0, 1, 2)),
+                        partitionAssignment(List.of(1, 2, 3)),
+                        partitionAssignment(List.of(1, 0, 2)))),
+                place(placer, 0, 5, (short) 3, List.of(
+                        new UsableBroker(0, Optional.empty(), false),
+                        new UsableBroker(3, Optional.empty(), false),
+                        new UsableBroker(2, Optional.empty(), false),
+                        new UsableBroker(1, Optional.empty(), false))));
     }
 
     @Test
@@ -241,10 +241,10 @@ public class StripedReplicaPlacerTest {
         MockRandom random = new MockRandom();
         StripedReplicaPlacer placer = new StripedReplicaPlacer(random);
         TopicAssignment topicAssignment = place(placer, 0, 200, (short) 2, List.of(
-            new UsableBroker(0, Optional.empty(), false),
-            new UsableBroker(1, Optional.empty(), false),
-            new UsableBroker(2, Optional.empty(), false),
-            new UsableBroker(3, Optional.empty(), false)));
+                new UsableBroker(0, Optional.empty(), false),
+                new UsableBroker(1, Optional.empty(), false),
+                new UsableBroker(2, Optional.empty(), false),
+                new UsableBroker(3, Optional.empty(), false)));
         Map<List<Integer>, Integer> counts = new HashMap<>();
         for (PartitionAssignment partitionAssignment : topicAssignment.assignments()) {
             counts.put(partitionAssignment.replicas(), counts.getOrDefault(partitionAssignment.replicas(), 0) + 1);

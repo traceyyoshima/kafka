@@ -48,17 +48,17 @@ public class ExceptionHandlerUtils {
     /**
      * If required, return Dead Letter Queue records for the provided exception
      *
-     * @param key Serialized key for the records
-     * @param value Serialized value for the records
-     * @param context ErrorHandlerContext of the exception
+     * @param key       Serialized key for the records
+     * @param value     Serialized value for the records
+     * @param context   ErrorHandlerContext of the exception
      * @param exception Thrown exception
      * @return A list of Dead Letter Queue records to produce
      */
     public static List<ProducerRecord<byte[], byte[]>> maybeBuildDeadLetterQueueRecords(final String deadLetterQueueTopicName,
-                                                                                 final byte[] key,
-                                                                                 final byte[] value,
-                                                                                 final ErrorHandlerContext context,
-                                                                                 final Exception exception) {
+                                                                                        final byte[] key,
+                                                                                        final byte[] value,
+                                                                                        final ErrorHandlerContext context,
+                                                                                        final Exception exception) {
         if (!shouldBuildDeadLetterQueueRecord(deadLetterQueueTopicName)) {
             return Collections.emptyList();
         }
@@ -70,16 +70,16 @@ public class ExceptionHandlerUtils {
     /**
      * Build dead letter queue record for the provided exception.
      *
-     * @param key Serialized key for the record.
-     * @param value Serialized value for the record.
+     * @param key     Serialized key for the record.
+     * @param value   Serialized value for the record.
      * @param context error handler context of the exception.
      * @return A dead letter queue record to produce.
      */
     public static ProducerRecord<byte[], byte[]> buildDeadLetterQueueRecord(final String deadLetterQueueTopicName,
-                                                                     final byte[] key,
-                                                                     final byte[] value,
-                                                                     final ErrorHandlerContext context,
-                                                                     final Exception e) {
+                                                                            final byte[] key,
+                                                                            final byte[] value,
+                                                                            final ErrorHandlerContext context,
+                                                                            final Exception e) {
         if (deadLetterQueueTopicName == null) {
             throw new InvalidConfigurationException(String.format("%s cannot be null while building dead letter queue record", StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG));
         }

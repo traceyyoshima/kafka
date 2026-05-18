@@ -39,12 +39,10 @@ public interface Message {
     /**
      * Returns the number of bytes it would take to write out this message.
      *
-     * @param cache         The serialization size cache to populate.
-     * @param version       The version to use.
-     *
-     * @throws org.apache.kafka.common.errors.UnsupportedVersionException
-     *                      If the specified version is too new to be supported
-     *                      by this software.
+     * @param cache   The serialization size cache to populate.
+     * @param version The version to use.
+     * @throws org.apache.kafka.common.errors.UnsupportedVersionException If the specified version is too new to be supported
+     *                                                                    by this software.
      */
     default int size(ObjectSerializationCache cache, short version) {
         MessageSizeAccumulator size = new MessageSizeAccumulator();
@@ -55,23 +53,21 @@ public interface Message {
     /**
      * Add the size of this message to an accumulator.
      *
-     * @param size          The size accumulator to add to
-     * @param cache         The serialization size cache to populate.
-     * @param version       The version to use.
+     * @param size    The size accumulator to add to
+     * @param cache   The serialization size cache to populate.
+     * @param version The version to use.
      */
     void addSize(MessageSizeAccumulator size, ObjectSerializationCache cache, short version);
 
     /**
      * Writes out this message to the given Writable.
      *
-     * @param writable      The destination writable.
-     * @param cache         The object serialization cache to use.  You must have
-     *                      previously populated the size cache using #{Message#size()}.
-     * @param version       The version to use.
-     *
-     * @throws org.apache.kafka.common.errors.UnsupportedVersionException
-     *                      If the specified version is too new to be supported
-     *                      by this software.
+     * @param writable The destination writable.
+     * @param cache    The object serialization cache to use.  You must have
+     *                 previously populated the size cache using #{Message#size()}.
+     * @param version  The version to use.
+     * @throws org.apache.kafka.common.errors.UnsupportedVersionException If the specified version is too new to be supported
+     *                                                                    by this software.
      */
     void write(Writable writable, ObjectSerializationCache cache, short version);
 
@@ -79,26 +75,24 @@ public interface Message {
      * Reads this message from the given Readable.  This will overwrite all
      * relevant fields with information from the byte buffer.
      *
-     * @param readable      The source readable.
-     * @param version       The version to use.
-     *
-     * @throws org.apache.kafka.common.errors.UnsupportedVersionException
-     *                      If the specified version is too new to be supported
-     *                      by this software.
+     * @param readable The source readable.
+     * @param version  The version to use.
+     * @throws org.apache.kafka.common.errors.UnsupportedVersionException If the specified version is too new to be supported
+     *                                                                    by this software.
      */
     void read(Readable readable, short version);
 
     /**
      * Returns a list of tagged fields which this software can't understand.
      *
-     * @return              The raw tagged fields.
+     * @return The raw tagged fields.
      */
     List<RawTaggedField> unknownTaggedFields();
 
     /**
      * Make a deep copy of the message.
      *
-     * @return              A copy of the message which does not share any mutable fields.
+     * @return A copy of the message which does not share any mutable fields.
      */
     Message duplicate();
 }

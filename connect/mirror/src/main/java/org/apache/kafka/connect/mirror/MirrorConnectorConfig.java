@@ -38,16 +38,17 @@ import static org.apache.kafka.clients.consumer.ConsumerConfig.AUTO_OFFSET_RESET
 import static org.apache.kafka.clients.consumer.ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG;
 import static org.apache.kafka.common.config.ConfigDef.CaseInsensitiveValidString.in;
 
-/** Shared config properties used by {@link MirrorSourceConnector}, {@link MirrorCheckpointConnector}, and {@link MirrorHeartbeatConnector}.
- *  <p>
- *  Generally, these properties are filled-in automatically by MirrorMaker based on a top-level mm2.properties file.
- *  However, when running MM2 connectors as plugins on a Connect-as-a-Service cluster, these properties must be configured manually,
- *  e.g. via the Connect REST API.
- *  </p>
- *  <p>
- *  An example configuration when running on Connect (not via MirrorMaker driver):
- *  </p>
- *  <pre>
+/**
+ * Shared config properties used by {@link MirrorSourceConnector}, {@link MirrorCheckpointConnector}, and {@link MirrorHeartbeatConnector}.
+ * <p>
+ * Generally, these properties are filled-in automatically by MirrorMaker based on a top-level mm2.properties file.
+ * However, when running MM2 connectors as plugins on a Connect-as-a-Service cluster, these properties must be configured manually,
+ * e.g. via the Connect REST API.
+ * </p>
+ * <p>
+ * An example configuration when running on Connect (not via MirrorMaker driver):
+ * </p>
+ * <pre>
  *      {
  *        "name": "MirrorSourceConnector",
  *        "connector.class": "org.apache.kafka.connect.mirror.MirrorSourceConnector",
@@ -86,10 +87,10 @@ public abstract class MirrorConnectorConfig extends AbstractConfig {
     public static final String REPLICATION_POLICY_SEPARATOR_DEFAULT =
             MirrorClientConfig.REPLICATION_POLICY_SEPARATOR_DEFAULT;
 
-    private static final String INTERNAL_TOPIC_SEPARATOR_ENABLED =  MirrorClientConfig.INTERNAL_TOPIC_SEPARATOR_ENABLED;
+    private static final String INTERNAL_TOPIC_SEPARATOR_ENABLED = MirrorClientConfig.INTERNAL_TOPIC_SEPARATOR_ENABLED;
     private static final String INTERNAL_TOPIC_SEPARATOR_ENABLED_DOC = MirrorClientConfig.INTERNAL_TOPIC_SEPARATOR_ENABLED_DOC;
     public static final Boolean INTERNAL_TOPIC_SEPARATOR_ENABLED_DEFAULT =
-        DefaultReplicationPolicy.INTERNAL_TOPIC_SEPARATOR_ENABLED_DEFAULT;
+            DefaultReplicationPolicy.INTERNAL_TOPIC_SEPARATOR_ENABLED_DEFAULT;
 
     public static final String ADMIN_TASK_TIMEOUT_MILLIS = "admin.timeout.ms";
     private static final String ADMIN_TASK_TIMEOUT_MILLIS_DOC = "Timeout for administrative tasks, e.g. detecting new topics.";
@@ -330,7 +331,7 @@ public abstract class MirrorConnectorConfig extends AbstractConfig {
                     ConfigDef.Type.LIST,
                     List.of(),
                     ConfigDef.ValidList.anyNonDuplicateValues(true, false),
-                    ConfigDef.Importance.LOW, 
+                    ConfigDef.Importance.LOW,
                     CONFIG_PROVIDERS_DOC)
             .withClientSslSupport()
             .withClientSaslSupport();

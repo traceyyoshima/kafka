@@ -31,21 +31,21 @@ public class StringFormatter {
     /**
      * Pretty-print a date string.
      *
-     * @param timeMs        The time since the epoch in milliseconds.
-     * @param zoneOffset    The time zone offset.
-     * @return              The date string in ISO format.
+     * @param timeMs     The time since the epoch in milliseconds.
+     * @param zoneOffset The time zone offset.
+     * @return The date string in ISO format.
      */
     public static String dateString(long timeMs, ZoneOffset zoneOffset) {
         return new Date(timeMs).toInstant().
-            atOffset(zoneOffset).
-            format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                atOffset(zoneOffset).
+                format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
     /**
      * Pretty-print a duration.
      *
-     * @param periodMs      The duration in milliseconds.
-     * @return              A human-readable duration string.
+     * @param periodMs The duration in milliseconds.
+     * @return A human-readable duration string.
      */
     public static String durationString(long periodMs) {
         StringBuilder bld = new StringBuilder();
@@ -69,12 +69,12 @@ public class StringFormatter {
 
     /**
      * Formats strings in a grid pattern.
-     *
+     * <p>
      * All entries in the same column will have the same width.
      *
-     * @param lines     A list of lines.  Each line contains a list of columns.
-     *                  Each line must contain the same number of columns.
-     * @return          The string.
+     * @param lines A list of lines.  Each line contains a list of columns.
+     *              Each line must contain the same number of columns.
+     * @return The string.
      */
     public static String prettyPrintGrid(List<List<String>> lines) {
         int numColumns = -1;
@@ -84,7 +84,7 @@ public class StringFormatter {
                 numColumns = col.size();
             } else if (numColumns != col.size()) {
                 throw new RuntimeException("Expected " + numColumns + " columns in row " +
-                    rowIndex + ", but got " + col.size());
+                        rowIndex + ", but got " + col.size());
             }
             rowIndex++;
         }

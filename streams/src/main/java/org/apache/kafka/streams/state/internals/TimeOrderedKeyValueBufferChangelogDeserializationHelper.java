@@ -28,7 +28,8 @@ import java.nio.ByteBuffer;
 import static java.util.Objects.requireNonNull;
 
 final class TimeOrderedKeyValueBufferChangelogDeserializationHelper {
-    private TimeOrderedKeyValueBufferChangelogDeserializationHelper() {}
+    private TimeOrderedKeyValueBufferChangelogDeserializationHelper() {
+    }
 
     static final class DeserializationResult {
         private final long time;
@@ -66,22 +67,22 @@ final class TimeOrderedKeyValueBufferChangelogDeserializationHelper {
         final Change<byte[]> change = requireNonNull(FullChangeSerde.decomposeLegacyFormattedArrayIntoChangeArrays(changelogValue));
 
         final ProcessorRecordContext recordContext = new ProcessorRecordContext(
-            record.timestamp(),
-            record.offset(),
-            record.partition(),
-            record.topic(),
-            record.headers()
+                record.timestamp(),
+                record.offset(),
+                record.partition(),
+                record.topic(),
+                record.headers()
         );
 
         return new DeserializationResult(
-            time,
-            key,
-            new BufferValue(
-                previousBufferedValue == null ? change.oldValue : previousBufferedValue,
-                change.oldValue,
-                change.newValue,
-                recordContext
-            )
+                time,
+                key,
+                new BufferValue(
+                        previousBufferedValue == null ? change.oldValue : previousBufferedValue,
+                        change.oldValue,
+                        change.newValue,
+                        recordContext
+                )
         );
     }
 
@@ -97,14 +98,14 @@ final class TimeOrderedKeyValueBufferChangelogDeserializationHelper {
         final Change<byte[]> change = requireNonNull(FullChangeSerde.decomposeLegacyFormattedArrayIntoChangeArrays(contextualRecord.value()));
 
         return new DeserializationResult(
-            time,
-            key,
-            new BufferValue(
-                previousBufferedValue == null ? change.oldValue : previousBufferedValue,
-                change.oldValue,
-                change.newValue,
-                contextualRecord.recordContext()
-            )
+                time,
+                key,
+                new BufferValue(
+                        previousBufferedValue == null ? change.oldValue : previousBufferedValue,
+                        change.oldValue,
+                        change.newValue,
+                        contextualRecord.recordContext()
+                )
         );
     }
 
@@ -130,8 +131,8 @@ final class TimeOrderedKeyValueBufferChangelogDeserializationHelper {
         if (deserializationResult == null) {
             // ok, it wasn't V3 either. Throw both exceptions:
             final RuntimeException exception =
-                new RuntimeException("Couldn't deserialize record as v2 or v3: " + record,
-                                     v2DeserializationException);
+                    new RuntimeException("Couldn't deserialize record as v2 or v3: " + record,
+                            v2DeserializationException);
             exception.addSuppressed(v3DeserializationException);
             throw exception;
         }

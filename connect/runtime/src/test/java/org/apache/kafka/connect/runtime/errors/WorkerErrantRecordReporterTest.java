@@ -51,12 +51,18 @@ public class WorkerErrantRecordReporterTest {
 
     private WorkerErrantRecordReporter reporter;
 
-    @Mock private Converter converter;
-    @Mock private HeaderConverter headerConverter;
-    @Mock private ProcessingContext<ConsumerRecord<byte[], byte[]>> context;
-    @Mock private InternalSinkRecord record;
-    @Mock private ErrorHandlingMetrics errorHandlingMetrics;
-    @Mock private ErrorReporter<ConsumerRecord<byte[], byte[]>> errorReporter;
+    @Mock
+    private Converter converter;
+    @Mock
+    private HeaderConverter headerConverter;
+    @Mock
+    private ProcessingContext<ConsumerRecord<byte[], byte[]>> context;
+    @Mock
+    private InternalSinkRecord record;
+    @Mock
+    private ErrorHandlingMetrics errorHandlingMetrics;
+    @Mock
+    private ErrorReporter<ConsumerRecord<byte[], byte[]>> errorReporter;
 
     @Test
     public void testGetFutures() {

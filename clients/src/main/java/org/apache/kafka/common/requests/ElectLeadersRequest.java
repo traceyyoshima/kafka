@@ -55,10 +55,10 @@ public class ElectLeadersRequest extends AbstractRequest {
         @Override
         public String toString() {
             return "ElectLeadersRequest("
-                + "electionType=" + electionType
-                + ", topicPartitions=" + ((topicPartitions == null) ? "null" : MessageUtil.deepToString(topicPartitions.iterator()))
-                + ", timeoutMs=" + timeoutMs
-                + ")";
+                    + "electionType=" + electionType
+                    + ", topicPartitions=" + ((topicPartitions == null) ? "null" : MessageUtil.deepToString(topicPartitions.iterator()))
+                    + ", timeoutMs=" + timeoutMs
+                    + ")";
         }
 
         private ElectLeadersRequestData toRequestData(short version) {
@@ -67,7 +67,7 @@ public class ElectLeadersRequest extends AbstractRequest {
             }
 
             ElectLeadersRequestData data = new ElectLeadersRequestData()
-                .setTimeoutMs(timeoutMs);
+                    .setTimeoutMs(timeoutMs);
 
             if (topicPartitions != null) {
                 topicPartitions.forEach(tp -> {
@@ -94,10 +94,10 @@ public class ElectLeadersRequest extends AbstractRequest {
             return Set.of();
         }
         return this.data.topicPartitions().stream()
-            .flatMap(topicPartition -> topicPartition.partitions().stream()
-                    .map(partitionId -> new TopicPartition(topicPartition.topic(), partitionId))
-            )
-            .collect(Collectors.toSet());
+                .flatMap(topicPartition -> topicPartition.partitions().stream()
+                        .map(partitionId -> new TopicPartition(topicPartition.topic(), partitionId))
+                )
+                .collect(Collectors.toSet());
     }
 
     public ElectionType electionType() {

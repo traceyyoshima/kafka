@@ -44,8 +44,8 @@ public class MockRaftClientTest {
     @Test
     public void testCreateAndClose() throws Exception {
         try (
-            MockRaftClientTestEnv env = new MockRaftClientTestEnv.Builder(1).
-                buildWithMockListeners()
+                MockRaftClientTestEnv env = new MockRaftClientTestEnv.Builder(1).
+                        buildWithMockListeners()
         ) {
             env.close();
             assertNull(env.firstError.get());
@@ -58,8 +58,8 @@ public class MockRaftClientTest {
     @Test
     public void testClaimsLeadership() throws Exception {
         try (
-            MockRaftClientTestEnv env = new MockRaftClientTestEnv.Builder(1).
-                    buildWithMockListeners()
+                MockRaftClientTestEnv env = new MockRaftClientTestEnv.Builder(1).
+                        buildWithMockListeners()
         ) {
             assertEquals(new LeaderAndEpoch(OptionalInt.of(0), 1), env.waitForLeader());
             env.close();
@@ -73,14 +73,14 @@ public class MockRaftClientTest {
     @Test
     public void testPassLeadership() throws Exception {
         try (
-            MockRaftClientTestEnv env = new MockRaftClientTestEnv.Builder(3).
-                    buildWithMockListeners()
+                MockRaftClientTestEnv env = new MockRaftClientTestEnv.Builder(3).
+                        buildWithMockListeners()
         ) {
             LeaderAndEpoch first = env.waitForLeader();
             LeaderAndEpoch cur = first;
             do {
                 int currentLeaderId = cur.leaderId().orElseThrow(() ->
-                    new AssertionError("Current leader is undefined")
+                        new AssertionError("Current leader is undefined")
                 );
                 env.raftClients().get(currentLeaderId).resign(cur.epoch());
 
@@ -91,7 +91,7 @@ public class MockRaftClientTest {
                 }
                 long expectedNextEpoch = cur.epoch() + 2;
                 assertEquals(expectedNextEpoch, next.epoch(), "Expected next epoch to be " + expectedNextEpoch +
-                    ", but found  " + next);
+                        ", but found  " + next);
                 cur = next;
             } while (cur.leaderId().equals(first.leaderId()));
             env.close();
@@ -100,24 +100,24 @@ public class MockRaftClientTest {
     }
 
     private static void waitForLastCommittedOffset(long targetOffset,
-                MockRaftClient raftClient) throws InterruptedException {
+                                                   MockRaftClient raftClient) throws InterruptedException {
         TestUtils.retryOnExceptionWithTimeout(20000, 3, () -> {
             MockRaftClientListener listener = (MockRaftClientListener) raftClient.listeners().get(0);
             long highestOffset = -1;
             for (String event : listener.serializedEvents()) {
                 if (event.startsWith(LAST_COMMITTED_OFFSET)) {
                     long offset = Long.parseLong(
-                        event.substring(LAST_COMMITTED_OFFSET.length() + 1));
+                            event.substring(LAST_COMMITTED_OFFSET.length() + 1));
                     if (offset < highestOffset) {
                         throw new RuntimeException("Invalid offset: " + offset +
-                            " is less than the previous offset of " + highestOffset);
+                                " is less than the previous offset of " + highestOffset);
                     }
                     highestOffset = offset;
                 }
             }
             if (highestOffset < targetOffset) {
                 throw new RuntimeException("Offset for raft client " +
-                    raftClient.nodeId() + " only reached " + highestOffset);
+                        raftClient.nodeId() + " only reached " + highestOffset);
             }
         });
     }
@@ -128,20 +128,20 @@ public class MockRaftClientTest {
     @Test
     public void testCommits() throws Exception {
         try (
-            MockRaftClientTestEnv env = new MockRaftClientTestEnv.Builder(3).
-                    buildWithMockListeners()
+                MockRaftClientTestEnv env = new MockRaftClientTestEnv.Builder(3).
+                        buildWithMockListeners()
         ) {
             LeaderAndEpoch leaderInfo = env.waitForLeader();
             int leaderId = leaderInfo.leaderId().orElseThrow(() ->
-                new AssertionError("Current leader is undefined")
+                    new AssertionError("Current leader is undefined")
             );
 
             MockRaftClient activeRaftClient = env.raftClients().get(leaderId);
             int epoch = activeRaftClient.leaderAndEpoch().epoch();
             List<ApiMessageAndVersion> messages = List.of(
-                new ApiMessageAndVersion(new RegisterBrokerRecord().setBrokerId(0), (short) 0),
-                new ApiMessageAndVersion(new RegisterBrokerRecord().setBrokerId(1), (short) 0),
-                new ApiMessageAndVersion(new RegisterBrokerRecord().setBrokerId(2), (short) 0));
+                    new ApiMessageAndVersion(new RegisterBrokerRecord().setBrokerId(0), (short) 0),
+                    new ApiMessageAndVersion(new RegisterBrokerRecord().setBrokerId(1), (short) 0),
+                    new ApiMessageAndVersion(new RegisterBrokerRecord().setBrokerId(2), (short) 0));
             assertEquals(3, activeRaftClient.prepareAppend(epoch, messages));
 
             activeRaftClient.schedulePreparedAppend();
@@ -150,8 +150,8 @@ public class MockRaftClientTest {
             }
 
             List<MockRaftClientListener> listeners = env.raftClients().stream().
-                map(m -> (MockRaftClientListener) m.listeners().get(0)).
-                toList();
+                    map(m -> (MockRaftClientListener) m.listeners().get(0)).
+                    toList();
             env.close();
             for (MockRaftClientListener listener : listeners) {
                 List<String> events = listener.serializedEvents();
@@ -160,7 +160,7 @@ public class MockRaftClientTest {
                 for (String event : events) {
                     if (event.startsWith(COMMIT)) {
                         assertEquals(messages.get(foundIndex).message().toString(),
-                            event.substring(COMMIT.length() + 1));
+                                event.substring(COMMIT.length() + 1));
                         foundIndex++;
                     }
                 }

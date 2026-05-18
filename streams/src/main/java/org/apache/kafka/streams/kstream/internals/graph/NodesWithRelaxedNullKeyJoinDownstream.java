@@ -35,9 +35,9 @@ public class NodesWithRelaxedNullKeyJoinDownstream {
     public Set<BaseRepartitionNode<?, ?>> find() {
         traverseGraph(this.start);
         return visited.stream()
-            .filter(node -> node instanceof BaseRepartitionNode && !nonOptimizable.contains(node))
-            .map(node -> (BaseRepartitionNode<?, ?>) node)
-            .collect(Collectors.toSet());
+                .filter(node -> node instanceof BaseRepartitionNode && !nonOptimizable.contains(node))
+                .map(node -> (BaseRepartitionNode<?, ?>) node)
+                .collect(Collectors.toSet());
     }
 
     private void traverseGraph(final GraphNode node) {

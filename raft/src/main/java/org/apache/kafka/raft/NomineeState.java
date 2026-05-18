@@ -41,12 +41,14 @@ interface NomineeState extends EpochState {
 
     /**
      * Returns true if the election timeout has expired, false otherwise.
+     *
      * @param currentTimeMs The current time in milliseconds
      */
     boolean hasElectionTimeoutExpired(long currentTimeMs);
 
     /**
      * Returns the remaining time in milliseconds until the election timeout expires.
+     *
      * @param currentTimeMs The current time in milliseconds
      */
     long remainingElectionTimeMs(long currentTimeMs);

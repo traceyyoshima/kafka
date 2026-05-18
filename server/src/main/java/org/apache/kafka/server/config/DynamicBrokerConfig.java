@@ -60,30 +60,30 @@ public class DynamicBrokerConfig {
             SocketServerConfigs.NUM_NETWORK_THREADS_CONFIG);
 
     private static final Set<String> PER_BROKER_CONFIGS = Stream.of(
-            DYNAMIC_SECURITY_CONFIGS,
-            DynamicListenerConfig.RECONFIGURABLE_CONFIGS,
-            Set.of(ServerLogConfigs.CORDONED_LOG_DIRS_CONFIG))
-        .flatMap(Collection::stream)
-        .filter(c -> !CLUSTER_LEVEL_LISTENER_CONFIGS.contains(c))
-        .collect(Collectors.toUnmodifiableSet());
+                    DYNAMIC_SECURITY_CONFIGS,
+                    DynamicListenerConfig.RECONFIGURABLE_CONFIGS,
+                    Set.of(ServerLogConfigs.CORDONED_LOG_DIRS_CONFIG))
+            .flatMap(Collection::stream)
+            .filter(c -> !CLUSTER_LEVEL_LISTENER_CONFIGS.contains(c))
+            .collect(Collectors.toUnmodifiableSet());
 
     public static final Set<String> ALL_DYNAMIC_CONFIGS = Stream.of(
-            DYNAMIC_SECURITY_CONFIGS,
-            LogCleaner.RECONFIGURABLE_CONFIGS,
-            DynamicLogConfig.RECONFIGURABLE_CONFIGS,
-            DynamicThreadPool.RECONFIGURABLE_CONFIGS,
-            List.of(MetricConfigs.METRIC_REPORTER_CLASSES_CONFIG),
-            DynamicListenerConfig.RECONFIGURABLE_CONFIGS,
-            SocketServer.RECONFIGURABLE_CONFIGS,
-            DYNAMIC_PRODUCER_STATE_MANAGER_CONFIGS,
-            DynamicRemoteLogConfig.RECONFIGURABLE_CONFIGS,
-            DynamicReplicationConfig.RECONFIGURABLE_CONFIGS,
-            List.of(AbstractConfig.CONFIG_PROVIDERS_CONFIG),
-            GroupCoordinatorConfig.RECONFIGURABLE_CONFIGS,
-            DynamicQuotaConfig.RECONFIGURABLE_CONFIGS,
-            ShareCoordinatorConfig.RECONFIGURABLE_CONFIGS)
-        .flatMap(Collection::stream)
-        .collect(Collectors.toUnmodifiableSet());
+                    DYNAMIC_SECURITY_CONFIGS,
+                    LogCleaner.RECONFIGURABLE_CONFIGS,
+                    DynamicLogConfig.RECONFIGURABLE_CONFIGS,
+                    DynamicThreadPool.RECONFIGURABLE_CONFIGS,
+                    List.of(MetricConfigs.METRIC_REPORTER_CLASSES_CONFIG),
+                    DynamicListenerConfig.RECONFIGURABLE_CONFIGS,
+                    SocketServer.RECONFIGURABLE_CONFIGS,
+                    DYNAMIC_PRODUCER_STATE_MANAGER_CONFIGS,
+                    DynamicRemoteLogConfig.RECONFIGURABLE_CONFIGS,
+                    DynamicReplicationConfig.RECONFIGURABLE_CONFIGS,
+                    List.of(AbstractConfig.CONFIG_PROVIDERS_CONFIG),
+                    GroupCoordinatorConfig.RECONFIGURABLE_CONFIGS,
+                    DynamicQuotaConfig.RECONFIGURABLE_CONFIGS,
+                    ShareCoordinatorConfig.RECONFIGURABLE_CONFIGS)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableSet());
 
     private static final Set<String> LISTENER_MECHANISM_CONFIGS = Set.of(
             SaslConfigs.SASL_JAAS_CONFIG,
@@ -194,9 +194,9 @@ public class DynamicBrokerConfig {
 
     public static Map<String, String> dynamicConfigUpdateModes() {
         return ALL_DYNAMIC_CONFIGS.stream().collect(Collectors.toMap(
-                Function.identity(),
-                name -> PER_BROKER_CONFIGS.contains(name) ? "per-broker" : "cluster-wide"
-            )
+                        Function.identity(),
+                        name -> PER_BROKER_CONFIGS.contains(name) ? "per-broker" : "cluster-wide"
+                )
         );
     }
 
@@ -207,10 +207,10 @@ public class DynamicBrokerConfig {
          * configuration).
          */
         public static final Set<String> RECONFIGURABLE_CONFIGS = Stream.of(
-                ServerTopicConfigSynonyms.TOPIC_CONFIG_SYNONYMS.values(),
-                Set.of(ServerLogConfigs.CORDONED_LOG_DIRS_CONFIG))
-            .flatMap(Collection::stream)
-            .collect(Collectors.toUnmodifiableSet());
+                        ServerTopicConfigSynonyms.TOPIC_CONFIG_SYNONYMS.values(),
+                        Set.of(ServerLogConfigs.CORDONED_LOG_DIRS_CONFIG))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     public static class DynamicListenerConfig {

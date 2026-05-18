@@ -34,8 +34,8 @@ class RangeSet implements Set<Integer> {
     /**
      * Constructs a {@code RangeSet} with the specified range.
      *
-     * @param from      The starting value (inclusive) of the range.
-     * @param to        The ending value (exclusive) of the range.
+     * @param from The starting value (inclusive) of the range.
+     * @param to   The ending value (exclusive) of the range.
      */
     public RangeSet(int from, int to) {
         this.from = from;

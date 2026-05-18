@@ -33,7 +33,7 @@ public class ClientQuotaFilter {
      * A filter to be applied to matching client quotas.
      *
      * @param components the components to filter on
-     * @param strict whether the filter only includes specified components
+     * @param strict     whether the filter only includes specified components
      */
     private ClientQuotaFilter(Collection<ClientQuotaFilterComponent> components, boolean strict) {
         this.components = components;

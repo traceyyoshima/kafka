@@ -40,12 +40,12 @@ public final class LocalReplicaChanges {
     private final Map<TopicIdPartition, Uuid> directoryIds;
 
     LocalReplicaChanges(
-        Set<TopicPartition> deletes,
-        Map<TopicPartition, PartitionInfo> electedLeaders,
-        Map<TopicPartition, PartitionInfo> leaders,
-        Map<TopicPartition, PartitionInfo> followers,
-        Map<String, Uuid> topicIds,
-        Map<TopicIdPartition, Uuid> directoryIds
+            Set<TopicPartition> deletes,
+            Map<TopicPartition, PartitionInfo> electedLeaders,
+            Map<TopicPartition, PartitionInfo> leaders,
+            Map<TopicPartition, PartitionInfo> followers,
+            Map<String, Uuid> topicIds,
+            Map<TopicIdPartition, Uuid> directoryIds
     ) {
         this.deletes = deletes;
         this.electedLeaders = electedLeaders;
@@ -82,13 +82,13 @@ public final class LocalReplicaChanges {
     @Override
     public String toString() {
         return String.format(
-            "LocalReplicaChanges(deletes = %s, newly elected leaders = %s, leaders = %s, followers = %s, topicIds = %s, directoryIds = %s)",
-            deletes,
-            electedLeaders,
-            leaders,
-            followers,
-            topicIds,
-            directoryIds
+                "LocalReplicaChanges(deletes = %s, newly elected leaders = %s, leaders = %s, followers = %s, topicIds = %s, directoryIds = %s)",
+                deletes,
+                electedLeaders,
+                leaders,
+                followers,
+                topicIds,
+                directoryIds
         );
     }
 

@@ -25,9 +25,9 @@ import java.util.regex.Pattern;
 
 /**
  * ServerConnectionId is used to uniquely identify a connection on server for the client. The
- *  connection id is in the format of "localHost:localPort-remoteHost:remotePort-processorId-index".
- *  The processorId is the id of the processor that will handle this connection and the index is
- *  used to ensure uniqueness.
+ * connection id is in the format of "localHost:localPort-remoteHost:remotePort-processorId-index".
+ * The processorId is the id of the processor that will handle this connection and the index is
+ * used to ensure uniqueness.
  */
 public class ServerConnectionId {
 
@@ -43,12 +43,12 @@ public class ServerConnectionId {
     private final int index;
 
     public ServerConnectionId(
-        String localHost,
-        int localPort,
-        String remoteHost,
-        int remotePort,
-        int processorId,
-        int index
+            String localHost,
+            int localPort,
+            String remoteHost,
+            int remotePort,
+            int processorId,
+            int index
     ) {
         this.localHost = localHost;
         this.localPort = localPort;
@@ -59,10 +59,10 @@ public class ServerConnectionId {
     }
 
     private ServerConnectionId(
-        Map.Entry<String, Integer> localEndpoint,
-        Map.Entry<String, Integer> remoteEndpoint,
-        int processorId,
-        int index
+            Map.Entry<String, Integer> localEndpoint,
+            Map.Entry<String, Integer> remoteEndpoint,
+            int processorId,
+            int index
     ) {
         this(localEndpoint.getKey(), localEndpoint.getValue(), remoteEndpoint.getKey(), remoteEndpoint.getValue(), processorId, index);
     }
@@ -105,7 +105,7 @@ public class ServerConnectionId {
 
         try {
             return parseHostPort(split[0]).flatMap(localHost -> parseHostPort(split[1]).map(
-                remoteHost -> new ServerConnectionId(localHost, remoteHost, Integer.parseInt(split[2]), Integer.parseInt(split[3]))));
+                    remoteHost -> new ServerConnectionId(localHost, remoteHost, Integer.parseInt(split[2]), Integer.parseInt(split[3]))));
         } catch (NumberFormatException e) {
             return Optional.empty();
         }
@@ -114,8 +114,8 @@ public class ServerConnectionId {
     /**
      * Generates a unique connection ID for the given socket.
      *
-     * @param socket The socket for which the connection ID is to be generated.
-     * @param processorId The ID of the server processor that will handle this connection.
+     * @param socket          The socket for which the connection ID is to be generated.
+     * @param processorId     The ID of the server processor that will handle this connection.
      * @param connectionIndex The index to be used in the connection ID to ensure uniqueness.
      * @return A string representing the unique connection ID.
      */

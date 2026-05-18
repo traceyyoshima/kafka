@@ -60,15 +60,13 @@ public interface KafkaStreamsState {
      * did not have any state for this task on disk.
      *
      * @return end offset sum - offset sum
-     *                    Task.LATEST_OFFSET if this was previously an active running task on this client
-     *
+     * Task.LATEST_OFFSET if this was previously an active running task on this client
      * @throws UnsupportedOperationException if the user did not request task lags be computed.
      */
     long lagFor(final TaskId task);
 
     /**
      * @return the previous tasks assigned to this consumer ordered by lag, filtered for any tasks that don't exist in this assignment
-     *
      * @throws UnsupportedOperationException if the user did not request task lags be computed.
      */
     SortedSet<TaskId> prevTasksByLag(final String consumerClientId);
@@ -79,7 +77,6 @@ public interface KafkaStreamsState {
      * and the current offset, summed across all logged state stores in the task.
      *
      * @return a map from all stateful tasks to their lag sum
-     *
      * @throws UnsupportedOperationException if the user did not request task lags be computed.
      */
     Map<TaskId, Long> statefulTasksToLagSums();

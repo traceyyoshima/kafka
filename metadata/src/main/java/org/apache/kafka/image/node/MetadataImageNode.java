@@ -34,16 +34,16 @@ public record MetadataImageNode(MetadataImage image) implements MetadataNode {
     public static final String NAME = "image";
 
     private static final Map<String, Function<MetadataImage, MetadataNode>> CHILDREN = Map.of(
-        ProvenanceNode.NAME, image -> new ProvenanceNode(image.provenance()),
-        FeaturesImageNode.NAME, image -> new FeaturesImageNode(image.features()),
-        ClusterImageNode.NAME, image -> new ClusterImageNode(image.cluster()),
-        TopicsImageNode.NAME, image -> new TopicsImageNode(image.topics()),
-        ConfigurationsImageNode.NAME, image -> new ConfigurationsImageNode(image.configs()),
-        ClientQuotasImageNode.NAME, image -> new ClientQuotasImageNode(image.clientQuotas()),
-        ProducerIdsImageNode.NAME, image -> new ProducerIdsImageNode(image.producerIds()),
-        AclsImageNode.NAME, image -> new AclsImageNode(image.acls()),
-        ScramImageNode.NAME, image -> new ScramImageNode(image.scram()),
-        DelegationTokenImageNode.NAME, image -> new DelegationTokenImageNode(image.delegationTokens())
+            ProvenanceNode.NAME, image -> new ProvenanceNode(image.provenance()),
+            FeaturesImageNode.NAME, image -> new FeaturesImageNode(image.features()),
+            ClusterImageNode.NAME, image -> new ClusterImageNode(image.cluster()),
+            TopicsImageNode.NAME, image -> new TopicsImageNode(image.topics()),
+            ConfigurationsImageNode.NAME, image -> new ConfigurationsImageNode(image.configs()),
+            ClientQuotasImageNode.NAME, image -> new ClientQuotasImageNode(image.clientQuotas()),
+            ProducerIdsImageNode.NAME, image -> new ProducerIdsImageNode(image.producerIds()),
+            AclsImageNode.NAME, image -> new AclsImageNode(image.acls()),
+            ScramImageNode.NAME, image -> new ScramImageNode(image.scram()),
+            DelegationTokenImageNode.NAME, image -> new DelegationTokenImageNode(image.delegationTokens())
     );
 
     @Override

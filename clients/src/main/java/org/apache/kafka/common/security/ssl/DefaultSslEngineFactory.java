@@ -211,13 +211,14 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
         }
         return sslEngine;
     }
+
     private static SslClientAuth createSslClientAuth(String key) {
         SslClientAuth auth = SslClientAuth.forConfig(key);
         if (auth != null) {
             return auth;
         }
         log.warn("Unrecognized client authentication configuration {}.  Falling " +
-                "back to NONE.  Recognized client authentication configurations are {}.",
+                        "back to NONE.  Recognized client authentication configurations are {}.",
                 key, SslClientAuth.VALUES.stream().
                         map(Enum::name).collect(Collectors.joining(", ")));
         return SslClientAuth.NONE;
@@ -329,7 +330,9 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
 
     interface SecurityStore {
         KeyStore get();
+
         char[] keyPassword();
+
         boolean modified();
     }
 
@@ -365,9 +368,10 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
 
         /**
          * Loads this keystore
+         *
          * @return the keystore
          * @throws KafkaException if the file could not be read or if the keystore could not be loaded
-         *   using the specified configs (e.g. if the password or keystore type is invalid)
+         *                        using the specified configs (e.g. if the password or keystore type is invalid)
          */
         protected KeyStore load(boolean isKeyStore) {
             try (InputStream in = Files.newInputStream(Paths.get(path))) {
@@ -413,7 +417,7 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
             try {
                 Password storeContents = new Password(Utils.readFileAsString(path));
                 PemStore pemStore = isKeyStore ? new PemStore(storeContents, storeContents, keyPassword) :
-                    new PemStore(storeContents);
+                        new PemStore(storeContents);
                 return pemStore.keyStore;
             } catch (Exception e) {
                 throw new InvalidConfigurationException("Failed to load PEM SSL keystore " + path, e);
@@ -495,7 +499,7 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
             Certificate[] certs = new Certificate[certEntries.size()];
             for (int i = 0; i < certs.length; i++) {
                 certs[i] = CertificateFactory.getInstance("X.509")
-                    .generateCertificate(new ByteArrayInputStream(certEntries.get(i)));
+                        .generateCertificate(new ByteArrayInputStream(certEntries.get(i)));
             }
             return certs;
         }
@@ -545,14 +549,14 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
     /**
      * Parser to process certificate/private key entries from PEM files
      * Examples:
-     *   -----BEGIN CERTIFICATE-----
-     *   Base64 cert
-     *   -----END CERTIFICATE-----
-     *
-     *   -----BEGIN ENCRYPTED PRIVATE KEY-----
-     *   Base64 private key
-     *   -----END ENCRYPTED PRIVATE KEY-----
-     *   Additional data may be included before headers, so we match all entries within the PEM.
+     * -----BEGIN CERTIFICATE-----
+     * Base64 cert
+     * -----END CERTIFICATE-----
+     * <p>
+     * -----BEGIN ENCRYPTED PRIVATE KEY-----
+     * Base64 private key
+     * -----END ENCRYPTED PRIVATE KEY-----
+     * Additional data may be included before headers, so we match all entries within the PEM.
      */
     static class PemParser {
         private final String name;
@@ -565,16 +569,16 @@ public class DefaultSslEngineFactory implements SslEngineFactory {
 
             String encodingParams = "\\s*[^\\r\\n]*:[^\\r\\n]*[\\r\\n]+";
             String base64Pattern = "([a-zA-Z0-9/+=\\s]*)";
-            String patternStr =  String.format(beginOrEndFormat, "BEGIN", nameIgnoreSpace) +
-                String.format("(?:%s)*", encodingParams) +
-                base64Pattern +
-                String.format(beginOrEndFormat, "END", nameIgnoreSpace);
+            String patternStr = String.format(beginOrEndFormat, "BEGIN", nameIgnoreSpace) +
+                    String.format("(?:%s)*", encodingParams) +
+                    base64Pattern +
+                    String.format(beginOrEndFormat, "END", nameIgnoreSpace);
             pattern = Pattern.compile(patternStr);
         }
 
         private List<byte[]> pemEntries(String pem) {
             Matcher matcher = pattern.matcher(pem + "\n"); // allow last newline to be omitted in value
-            List<byte[]>  entries = new ArrayList<>();
+            List<byte[]> entries = new ArrayList<>();
             while (matcher.find()) {
                 String base64Str = matcher.group(1).replaceAll("\\s", "");
                 entries.add(Base64.getDecoder().decode(base64Str));

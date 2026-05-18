@@ -38,11 +38,11 @@ public final class KafkaAuthorizerServerInfo implements AuthorizerServerInfo {
     private final Collection<String> earlyStartListeners;
 
     public KafkaAuthorizerServerInfo(
-        ClusterResource clusterResource,
-        int brokerId,
-        Collection<Endpoint> endpoints,
-        Endpoint interbrokerEndpoint,
-        Collection<String> earlyStartListeners
+            ClusterResource clusterResource,
+            int brokerId,
+            Collection<Endpoint> endpoints,
+            Endpoint interbrokerEndpoint,
+            Collection<String> earlyStartListeners
     ) {
         this.clusterResource = clusterResource;
         this.brokerId = brokerId;

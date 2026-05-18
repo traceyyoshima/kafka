@@ -24,6 +24,7 @@ import java.util.Objects;
 
 /**
  * Interactive query for retrieving a single record based on its key from {@link TimestampedKeyValueStore}
+ *
  * @param <K> Type of keys
  * @param <V> Type of values
  */
@@ -41,6 +42,7 @@ public final class TimestampedKeyQuery<K, V> implements Query<ValueAndTimestamp<
     /**
      * Creates a query that will retrieve the record identified by {@code key} if it exists
      * (or {@code null} otherwise).
+     *
      * @param key The key to retrieve
      * @param <K> The type of the key
      * @param <V> The type of the value that will be retrieved

@@ -53,9 +53,9 @@ public class Field {
         /**
          * Create a new TaggedFieldsSection with the given tags and fields.
          *
-         * @param fields    This is an array containing Integer tags followed
-         *                  by associated Field objects.
-         * @return          The new {@link TaggedFieldsSection}
+         * @param fields This is an array containing Integer tags followed
+         *               by associated Field objects.
+         * @return The new {@link TaggedFieldsSection}
          */
         public static TaggedFieldsSection of(Object... fields) {
             return new TaggedFieldsSection(TaggedFields.of(fields));

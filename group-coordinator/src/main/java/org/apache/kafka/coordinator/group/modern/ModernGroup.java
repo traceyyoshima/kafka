@@ -125,8 +125,8 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     protected DeadlineAndEpoch metadataRefreshDeadline = DeadlineAndEpoch.EMPTY;
 
     protected ModernGroup(
-        SnapshotRegistry snapshotRegistry,
-        String groupId
+            SnapshotRegistry snapshotRegistry,
+            String groupId
     ) {
         this.snapshotRegistry = Objects.requireNonNull(snapshotRegistry);
         this.groupId = Objects.requireNonNull(groupId);
@@ -146,10 +146,10 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
      */
     public ListGroupsResponseData.ListedGroup asListedGroup(long committedOffset) {
         return new ListGroupsResponseData.ListedGroup()
-            .setGroupId(groupId)
-            .setProtocolType(protocolType())
-            .setGroupState(stateAsString(committedOffset))
-            .setGroupType(type().toString());
+                .setGroupId(groupId)
+                .setProtocolType(protocolType())
+                .setGroupState(stateAsString(committedOffset))
+                .setGroupType(type().toString());
     }
 
     /**
@@ -194,7 +194,7 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     /**
      * Sets the assignment metadata.
      *
-     * @param targetAssignmentEpoch The new assignment epoch.
+     * @param targetAssignmentEpoch     The new assignment epoch.
      * @param targetAssignmentTimestamp The time at which the assignment calculation finished.
      */
     public void setTargetAssignmentMetadata(int targetAssignmentEpoch, long targetAssignmentTimestamp) {
@@ -227,7 +227,7 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
 
     /**
      * @return An immutable map containing all the subscribed topic names
-     *         with the subscribers counts per topic.
+     * with the subscribers counts per topic.
      */
     public Map<String, SubscriptionCount> subscribedTopicNames() {
         return Collections.unmodifiableMap(subscribedTopicNames);
@@ -236,8 +236,7 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     /**
      * Returns true if the group is actively subscribed to the topic.
      *
-     * @param topic  The topic name.
-     *
+     * @param topic The topic name.
      * @return Whether the group is subscribed to the topic.
      */
     @Override
@@ -256,7 +255,7 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
      * Returns the target assignment of the member.
      *
      * @return The ConsumerGroupMemberAssignment or an EMPTY one if it does not
-     *         exist.
+     * exist.
      */
     public Assignment targetAssignment(String memberId) {
         return targetAssignment.getOrDefault(memberId, Assignment.EMPTY);
@@ -264,7 +263,7 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
 
     /**
      * @return An immutable map containing all the topic partitions
-     *         with their current member assignments.
+     * with their current member assignments.
      */
     public Map<Uuid, Map<Integer, String>> invertedTargetAssignment() {
         return Collections.unmodifiableMap(invertedTargetAssignment);
@@ -273,14 +272,14 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     /**
      * Updates target assignment of a member.
      *
-     * @param memberId              The member id.
-     * @param newTargetAssignment   The new target assignment.
+     * @param memberId            The member id.
+     * @param newTargetAssignment The new target assignment.
      */
     public void updateTargetAssignment(String memberId, Assignment newTargetAssignment) {
         updateInvertedTargetAssignment(
-            memberId,
-            targetAssignment.getOrDefault(memberId, new Assignment(Map.of())),
-            newTargetAssignment
+                memberId,
+                targetAssignment.getOrDefault(memberId, new Assignment(Map.of())),
+                newTargetAssignment
         );
         targetAssignment.put(memberId, newTargetAssignment);
     }
@@ -288,14 +287,14 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     /**
      * Updates the reverse lookup map of the target assignment.
      *
-     * @param memberId              The member Id.
-     * @param oldTargetAssignment   The old target assignment.
-     * @param newTargetAssignment   The new target assignment.
+     * @param memberId            The member Id.
+     * @param oldTargetAssignment The old target assignment.
+     * @param newTargetAssignment The new target assignment.
      */
     private void updateInvertedTargetAssignment(
-        String memberId,
-        Assignment oldTargetAssignment,
-        Assignment newTargetAssignment
+            String memberId,
+            Assignment oldTargetAssignment,
+            Assignment newTargetAssignment
     ) {
         // Combine keys from both old and new assignments.
         Set<Uuid> allTopicIds = new HashSet<>();
@@ -307,7 +306,7 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
             Set<Integer> newPartitions = newTargetAssignment.partitions().getOrDefault(topicId, Set.of());
 
             TimelineHashMap<Integer, String> topicPartitionAssignment = invertedTargetAssignment.computeIfAbsent(
-                topicId, k -> new TimelineHashMap<>(snapshotRegistry, Math.max(oldPartitions.size(), newPartitions.size()))
+                    topicId, k -> new TimelineHashMap<>(snapshotRegistry, Math.max(oldPartitions.size(), newPartitions.size()))
             );
 
             // Remove partitions that aren't present in the new assignment only if the partition is currently
@@ -342,9 +341,9 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
      */
     public void removeTargetAssignment(String memberId) {
         updateInvertedTargetAssignment(
-            memberId,
-            targetAssignment.getOrDefault(memberId, Assignment.EMPTY),
-            Assignment.EMPTY
+                memberId,
+                targetAssignment.getOrDefault(memberId, Assignment.EMPTY),
+                Assignment.EMPTY
         );
         targetAssignment.remove(memberId);
     }
@@ -373,15 +372,15 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     }
 
     public static long computeMetadataHash(
-        Map<String, SubscriptionCount> subscribedTopicNames,
-        Map<String, Long> topicHashCache,
-        CoordinatorMetadataImage metadataImage
+            Map<String, SubscriptionCount> subscribedTopicNames,
+            Map<String, Long> topicHashCache,
+            CoordinatorMetadataImage metadataImage
     ) {
         Map<String, Long> topicHash = subscribedTopicNames.keySet().stream()
-            .filter(topicName -> metadataImage.topicMetadata(topicName).isPresent())
-            .collect(Collectors.toMap(
-                topicName -> topicName,
-                topicName -> topicHashCache.computeIfAbsent(topicName, k -> Utils.computeTopicHash(k, metadataImage))));
+                .filter(topicName -> metadataImage.topicMetadata(topicName).isPresent())
+                .collect(Collectors.toMap(
+                        topicName -> topicName,
+                        topicName -> topicHashCache.computeIfAbsent(topicName, k -> Utils.computeTopicHash(k, metadataImage))));
         return Utils.computeGroupHash(topicHash);
     }
 
@@ -392,8 +391,8 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
      * @param groupEpoch The associated group epoch.
      */
     public void setMetadataRefreshDeadline(
-        long deadlineMs,
-        int groupEpoch
+            long deadlineMs,
+            int groupEpoch
     ) {
         this.metadataRefreshDeadline = new DeadlineAndEpoch(deadlineMs, groupEpoch);
     }
@@ -410,8 +409,8 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
      * Checks if a metadata refresh is required. A refresh is required in two cases:
      * 1) The deadline is smaller or equal to the current time;
      * 2) The group epoch associated with the deadline is larger than
-     *    the current group epoch. This means that the operations which updated
-     *    the deadline failed.
+     * the current group epoch. This means that the operations which updated
+     * the deadline failed.
      *
      * @param currentTimeMs The current time in milliseconds.
      * @return A boolean indicating whether a refresh is required or not.
@@ -441,8 +440,8 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
      * @param newMember The new member.
      */
     protected void maybeUpdateSubscribedTopicNames(
-        ModernGroupMember oldMember,
-        ModernGroupMember newMember
+            ModernGroupMember oldMember,
+            ModernGroupMember newMember
     ) {
         maybeUpdateSubscribedTopicNames(subscribedTopicNames, oldMember, newMember);
     }
@@ -450,24 +449,24 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     /**
      * Updates the subscription count.
      *
-     * @param subscribedTopicCount  The map to update.
-     * @param oldMember             The old member.
-     * @param newMember             The new member.
+     * @param subscribedTopicCount The map to update.
+     * @param oldMember            The old member.
+     * @param newMember            The new member.
      */
     private static void maybeUpdateSubscribedTopicNames(
-        Map<String, SubscriptionCount> subscribedTopicCount,
-        ModernGroupMember oldMember,
-        ModernGroupMember newMember
+            Map<String, SubscriptionCount> subscribedTopicCount,
+            ModernGroupMember oldMember,
+            ModernGroupMember newMember
     ) {
         if (oldMember != null) {
             oldMember.subscribedTopicNames().forEach(topicName ->
-                subscribedTopicCount.compute(topicName, SubscriptionCount::decNameCount)
+                    subscribedTopicCount.compute(topicName, SubscriptionCount::decNameCount)
             );
         }
 
         if (newMember != null) {
             newMember.subscribedTopicNames().forEach(topicName ->
-                subscribedTopicCount.compute(topicName, SubscriptionCount::incNameCount)
+                    subscribedTopicCount.compute(topicName, SubscriptionCount::incNameCount)
             );
         }
     }
@@ -475,20 +474,19 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     /**
      * Updates the subscription count.
      *
-     * @param oldMember             The old member.
-     * @param newMember             The new member.
-     *
+     * @param oldMember The old member.
+     * @param newMember The new member.
      * @return Copy of the map of topics to the count of number of subscribers.
      */
     public Map<String, SubscriptionCount> computeSubscribedTopicNames(
-        ModernGroupMember oldMember,
-        ModernGroupMember newMember
+            ModernGroupMember oldMember,
+            ModernGroupMember newMember
     ) {
         Map<String, SubscriptionCount> subscribedTopicNames = new HashMap<>(this.subscribedTopicNames);
         maybeUpdateSubscribedTopicNames(
-            subscribedTopicNames,
-            oldMember,
-            newMember
+                subscribedTopicNames,
+                oldMember,
+                newMember
         );
         return subscribedTopicNames;
     }
@@ -496,21 +494,20 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     /**
      * Updates the subscription count with a set of members removed.
      *
-     * @param removedMembers        The set of removed members.
-     *
+     * @param removedMembers The set of removed members.
      * @return Copy of the map of topics to the count of number of subscribers.
      */
     public Map<String, SubscriptionCount> computeSubscribedTopicNames(
-        Set<? extends ModernGroupMember> removedMembers
+            Set<? extends ModernGroupMember> removedMembers
     ) {
         Map<String, SubscriptionCount> subscribedTopicNames = new HashMap<>(this.subscribedTopicNames);
         if (removedMembers != null) {
             removedMembers.forEach(removedMember ->
-                maybeUpdateSubscribedTopicNames(
-                    subscribedTopicNames,
-                    removedMember,
-                    null
-                )
+                    maybeUpdateSubscribedTopicNames(
+                            subscribedTopicNames,
+                            removedMember,
+                            null
+                    )
             );
         }
         return subscribedTopicNames;
@@ -519,14 +516,13 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
     /**
      * Compute the subscription type of the group.
      *
-     * @param subscribedTopicNames      A map of topic names to the count of members subscribed to each topic.
-     *
+     * @param subscribedTopicNames A map of topic names to the count of members subscribed to each topic.
      * @return {@link SubscriptionType#HOMOGENEOUS} if all members are subscribed to exactly the same topics;
-     *         otherwise, {@link SubscriptionType#HETEROGENEOUS}.
+     * otherwise, {@link SubscriptionType#HETEROGENEOUS}.
      */
     public static SubscriptionType subscriptionType(
-        Map<String, SubscriptionCount> subscribedTopicNames,
-        int numberOfMembers
+            Map<String, SubscriptionCount> subscribedTopicNames,
+            int numberOfMembers
     ) {
         if (subscribedTopicNames.isEmpty()) {
             return HOMOGENEOUS;
@@ -553,7 +549,6 @@ public abstract class ModernGroup<T extends ModernGroupMember> implements Group 
      * @param memberId          The member id.
      * @param createIfNotExists Booleans indicating whether the member must be
      *                          created if it does not exist.
-     *
      * @return A ConsumerGroupMember.
      * @throws UnknownMemberIdException when the member does not exist and createIfNotExists is false.
      */

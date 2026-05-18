@@ -49,7 +49,7 @@ public class AlterShareGroupOffsetsResult {
                 result.completeExceptionally(throwable);
             } else if (!topicPartitions.containsKey(partition)) {
                 result.completeExceptionally(new IllegalArgumentException(
-                    "Alter offset for partition \"" + partition + "\" was not attempted"));
+                        "Alter offset for partition \"" + partition + "\" was not attempted"));
             } else {
                 final ApiException exception = topicPartitions.get(partition);
                 if (exception == null) {
@@ -68,16 +68,16 @@ public class AlterShareGroupOffsetsResult {
      * If not, the first topic error shall be returned.
      */
     public KafkaFuture<Void> all() {
-        return this.future.thenApply(topicPartitionErrorsMap ->  {
+        return this.future.thenApply(topicPartitionErrorsMap -> {
             List<TopicPartition> partitionsFailed = topicPartitionErrorsMap.entrySet()
-                .stream()
-                .filter(e -> e.getValue() != null)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+                    .stream()
+                    .filter(e -> e.getValue() != null)
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
             for (ApiException exception : topicPartitionErrorsMap.values()) {
                 if (exception != null) {
                     throw Errors.forException(exception).exception(
-                        "Failed altering group offsets for the following partitions: " + partitionsFailed);
+                            "Failed altering group offsets for the following partitions: " + partitionsFailed);
                 }
             }
             return null;

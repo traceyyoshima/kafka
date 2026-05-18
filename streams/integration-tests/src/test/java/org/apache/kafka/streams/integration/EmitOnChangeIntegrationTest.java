@@ -84,32 +84,32 @@ public class EmitOnChangeIntegrationTest {
 
     @Test
     public void shouldEmitSameRecordAfterFailover() throws Exception {
-        final Properties properties  = mkObjectProperties(
-            mkMap(
-                mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
-                mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
-                mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
-                mkEntry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 1),
-                mkEntry(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 0),
-                mkEntry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 300000L),
-                mkEntry(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.IntegerSerde.class),
-                mkEntry(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class),
-                mkEntry(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 10000)
-            )
+        final Properties properties = mkObjectProperties(
+                mkMap(
+                        mkEntry(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, CLUSTER.bootstrapServers()),
+                        mkEntry(StreamsConfig.APPLICATION_ID_CONFIG, appId),
+                        mkEntry(StreamsConfig.STATE_DIR_CONFIG, TestUtils.tempDirectory().getPath()),
+                        mkEntry(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 1),
+                        mkEntry(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 0),
+                        mkEntry(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 300000L),
+                        mkEntry(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.IntegerSerde.class),
+                        mkEntry(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class),
+                        mkEntry(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 10000)
+                )
         );
 
         final AtomicBoolean shouldThrow = new AtomicBoolean(true);
         final StreamsBuilder builder = new StreamsBuilder();
         builder.table(inputTopic, Materialized.as("test-store"))
-            .toStream()
-            .map((key, value) -> {
-                if (shouldThrow.compareAndSet(true, false)) {
-                    throw new IllegalStateException("Kaboom");
-                } else {
-                    return new KeyValue<>(key, value);
-                }
-            })
-            .to(outputTopic);
+                .toStream()
+                .map((key, value) -> {
+                    if (shouldThrow.compareAndSet(true, false)) {
+                        throw new IllegalStateException("Kaboom");
+                    } else {
+                        return new KeyValue<>(key, value);
+                    }
+                })
+                .to(outputTopic);
         builder.stream(inputTopic2).to(outputTopic2);
 
         try (final KafkaStreams kafkaStreams = new KafkaStreams(builder.build(), properties)) {
@@ -117,54 +117,54 @@ public class EmitOnChangeIntegrationTest {
             IntegrationTestUtils.startApplicationAndWaitUntilRunning(kafkaStreams);
 
             IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-                inputTopic,
-                Arrays.asList(
-                    new KeyValue<>(1, "A"),
-                    new KeyValue<>(1, "B")
-                ),
-                TestUtils.producerConfig(
-                    CLUSTER.bootstrapServers(),
-                    IntegerSerializer.class,
-                    StringSerializer.class,
-                    new Properties()),
-                0L);
+                    inputTopic,
+                    Arrays.asList(
+                            new KeyValue<>(1, "A"),
+                            new KeyValue<>(1, "B")
+                    ),
+                    TestUtils.producerConfig(
+                            CLUSTER.bootstrapServers(),
+                            IntegerSerializer.class,
+                            StringSerializer.class,
+                            new Properties()),
+                    0L);
 
             IntegrationTestUtils.produceKeyValuesSynchronouslyWithTimestamp(
-                inputTopic2,
-                Arrays.asList(
-                    new KeyValue<>(1, "A"),
-                    new KeyValue<>(1, "B")
-                ),
-                TestUtils.producerConfig(
-                    CLUSTER.bootstrapServers(),
-                    IntegerSerializer.class,
-                    StringSerializer.class,
-                    new Properties()),
-                0L);
+                    inputTopic2,
+                    Arrays.asList(
+                            new KeyValue<>(1, "A"),
+                            new KeyValue<>(1, "B")
+                    ),
+                    TestUtils.producerConfig(
+                            CLUSTER.bootstrapServers(),
+                            IntegerSerializer.class,
+                            StringSerializer.class,
+                            new Properties()),
+                    0L);
 
             IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-                TestUtils.consumerConfig(
-                    CLUSTER.bootstrapServers(),
-                    IntegerDeserializer.class,
-                    StringDeserializer.class
-                ),
-                outputTopic,
-                Arrays.asList(
-                    new KeyValue<>(1, "A"),
-                    new KeyValue<>(1, "B")
-                )
+                    TestUtils.consumerConfig(
+                            CLUSTER.bootstrapServers(),
+                            IntegerDeserializer.class,
+                            StringDeserializer.class
+                    ),
+                    outputTopic,
+                    Arrays.asList(
+                            new KeyValue<>(1, "A"),
+                            new KeyValue<>(1, "B")
+                    )
             );
             IntegrationTestUtils.waitUntilFinalKeyValueRecordsReceived(
-                TestUtils.consumerConfig(
-                    CLUSTER.bootstrapServers(),
-                    IntegerDeserializer.class,
-                    StringDeserializer.class
-                ),
-                outputTopic2,
-                Arrays.asList(
-                    new KeyValue<>(1, "A"),
-                    new KeyValue<>(1, "B")
-                )
+                    TestUtils.consumerConfig(
+                            CLUSTER.bootstrapServers(),
+                            IntegerDeserializer.class,
+                            StringDeserializer.class
+                    ),
+                    outputTopic2,
+                    Arrays.asList(
+                            new KeyValue<>(1, "A"),
+                            new KeyValue<>(1, "B")
+                    )
             );
         }
     }

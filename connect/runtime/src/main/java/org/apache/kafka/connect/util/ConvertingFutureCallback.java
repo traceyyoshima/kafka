@@ -30,6 +30,7 @@ import java.util.concurrent.TimeoutException;
  * operations like waiting until the callback is completed via {@link #onCompletion(Throwable, Object)}. The result
  * from the callback can be converted by concrete implementations of this class before being retrieved via
  * {@link Future#get}.
+ *
  * @param <U> the callback result type
  * @param <T> the future result type obtained after converting the callback result
  */
@@ -59,7 +60,7 @@ public abstract class ConvertingFutureCallback<U, T> implements Callback<U>, Fut
             if (isDone()) {
                 return;
             }
-            
+
             if (error != null) {
                 this.exception = error;
             } else {

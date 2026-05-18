@@ -44,12 +44,12 @@ import java.util.function.Function;
  * that you store either controller listeners or broker listeners here, but not both. On a
  * combined KRaft node, which has both broker and controller roles, you would have two
  * separate ListenerInfo objects to represent the listeners of each role.
- *
+ * <p>
  * Listener information is stored in a linked hash map. This maintains ordering while still
  * allowing the traditional O(1) hash map access. By convention, the first listener is special,
  * corresponding to either the inter-controller listener or the inter-broker listener.
  * This is the only listener that other nodes will attempt to use to communicate with this node.
- *
+ * <p>
  * You may wonder why nodes support multiple listeners, given that inter-cluster communication only
  * ever uses the first one. Well, one reason is that external clients may wish to use the additional
  * listeners. It is a good practice to separate external and internal traffic. In some cases,
@@ -59,16 +59,16 @@ import java.util.function.Function;
  * (or controllers) might be using one listener, while the other half use another. This lets us,
  * for example, transition from using a PLAINTEXT inter broker listener to using an SSL one without
  * taking any downtime.
- *
+ * <p>
  * The ListenerInfo class is intended to handle translating endpoint information between various
  * different data structures, and also to handle the two big gotchas of Kafka endpoints.
- *
+ * <p>
  * The first gotcha is that the hostname will be null or blank if we are listening on 0.0.0.0.
  * The withWildcardHostnamesResolved function creates a ListenerInfo object where all such hostnames
  * are replaced by specific hostnames. (It's not perfect because we have to choose a single hostname
  * out of multiple possibilities. In production scenarios it would be better to set the desired
  * hostname explicitly in the configuration rather than binding to 0.0.0.0.)
- *
+ * <p>
  * The second gotcha is that if someone configures an ephemeral port (aka port 0), we need to fill
  * in the port which is chosen at runtime. The withEphemeralPortsCorrected resolves this by filling
  * in the missing information for ephemeral ports.
@@ -79,62 +79,11 @@ public final class ListenerInfo {
     /**
      * Create a ListenerInfo from data in a ControllerRegistrationRequest RPC.
      *
-     * @param collection    The RPC data.
-     *
-     * @return              The ListenerInfo object.
+     * @param collection The RPC data.
+     * @return The ListenerInfo object.
      */
     public static ListenerInfo fromControllerRegistrationRequest(
-        ControllerRegistrationRequestData.ListenerCollection collection
-    ) {
-        LinkedHashMap<String, Endpoint> listeners = new LinkedHashMap<>();
-        collection.forEach(listener -> {
-            SecurityProtocol protocol = SecurityProtocol.forId(listener.securityProtocol());
-            if (protocol == null) {
-                throw new RuntimeException("Unknown security protocol " +
-                    (int) listener.securityProtocol() + " in listener " + listener.name());
-            }
-            listeners.put(listener.name(), new Endpoint(listener.name(),
-                protocol,
-                listener.host(),
-                listener.port()));
-        });
-        return new ListenerInfo(listeners);
-    }
-
-    /**
-     * Create a ListenerInfo from data in a RegisterControllerRecord.
-     *
-     * @param collection    The record data.
-     *
-     * @return              The ListenerInfo object.
-     */
-    public static ListenerInfo fromControllerRegistrationRecord(
-        RegisterControllerRecord.ControllerEndpointCollection collection
-    ) {
-        LinkedHashMap<String, Endpoint> listeners = new LinkedHashMap<>();
-        collection.forEach(listener -> {
-            SecurityProtocol protocol = SecurityProtocol.forId(listener.securityProtocol());
-            if (protocol == null) {
-                throw new RuntimeException("Unknown security protocol " +
-                    (int) listener.securityProtocol() + " in listener " + listener.name());
-            }
-            listeners.put(listener.name(), new Endpoint(listener.name(),
-                protocol,
-                listener.host(),
-                listener.port()));
-        });
-        return new ListenerInfo(listeners);
-    }
-
-    /**
-     * Create a ListenerInfo from data in a BrokerRegistrationRequest RPC.
-     *
-     * @param collection    The RPC data.
-     *
-     * @return              The ListenerInfo object.
-     */
-    public static ListenerInfo fromBrokerRegistrationRequest(
-        BrokerRegistrationRequestData.ListenerCollection collection
+            ControllerRegistrationRequestData.ListenerCollection collection
     ) {
         LinkedHashMap<String, Endpoint> listeners = new LinkedHashMap<>();
         collection.forEach(listener -> {
@@ -144,9 +93,57 @@ public final class ListenerInfo {
                         (int) listener.securityProtocol() + " in listener " + listener.name());
             }
             listeners.put(listener.name(), new Endpoint(listener.name(),
-                protocol,
-                listener.host(),
-                listener.port()));
+                    protocol,
+                    listener.host(),
+                    listener.port()));
+        });
+        return new ListenerInfo(listeners);
+    }
+
+    /**
+     * Create a ListenerInfo from data in a RegisterControllerRecord.
+     *
+     * @param collection The record data.
+     * @return The ListenerInfo object.
+     */
+    public static ListenerInfo fromControllerRegistrationRecord(
+            RegisterControllerRecord.ControllerEndpointCollection collection
+    ) {
+        LinkedHashMap<String, Endpoint> listeners = new LinkedHashMap<>();
+        collection.forEach(listener -> {
+            SecurityProtocol protocol = SecurityProtocol.forId(listener.securityProtocol());
+            if (protocol == null) {
+                throw new RuntimeException("Unknown security protocol " +
+                        (int) listener.securityProtocol() + " in listener " + listener.name());
+            }
+            listeners.put(listener.name(), new Endpoint(listener.name(),
+                    protocol,
+                    listener.host(),
+                    listener.port()));
+        });
+        return new ListenerInfo(listeners);
+    }
+
+    /**
+     * Create a ListenerInfo from data in a BrokerRegistrationRequest RPC.
+     *
+     * @param collection The RPC data.
+     * @return The ListenerInfo object.
+     */
+    public static ListenerInfo fromBrokerRegistrationRequest(
+            BrokerRegistrationRequestData.ListenerCollection collection
+    ) {
+        LinkedHashMap<String, Endpoint> listeners = new LinkedHashMap<>();
+        collection.forEach(listener -> {
+            SecurityProtocol protocol = SecurityProtocol.forId(listener.securityProtocol());
+            if (protocol == null) {
+                throw new RuntimeException("Unknown security protocol " +
+                        (int) listener.securityProtocol() + " in listener " + listener.name());
+            }
+            listeners.put(listener.name(), new Endpoint(listener.name(),
+                    protocol,
+                    listener.host(),
+                    listener.port()));
         });
         return new ListenerInfo(listeners);
     }
@@ -154,12 +151,11 @@ public final class ListenerInfo {
     /**
      * Create a ListenerInfo from data in a RegisterBrokerRecord.
      *
-     * @param collection    The record data.
-     *
-     * @return              The ListenerInfo object.
+     * @param collection The record data.
+     * @return The ListenerInfo object.
      */
     public static ListenerInfo fromBrokerRegistrationRecord(
-        RegisterBrokerRecord.BrokerEndpointCollection collection
+            RegisterBrokerRecord.BrokerEndpointCollection collection
     ) {
         LinkedHashMap<String, Endpoint> listeners = new LinkedHashMap<>();
         collection.forEach(listener -> {
@@ -177,14 +173,14 @@ public final class ListenerInfo {
     }
 
     public static ListenerInfo create(
-        List<Endpoint> rawListeners
+            List<Endpoint> rawListeners
     ) {
         return create(Optional.empty(), rawListeners);
     }
 
     public static ListenerInfo create(
-        Optional<String> firstListenerName,
-        List<Endpoint> rawListeners
+            Optional<String> firstListenerName,
+            List<Endpoint> rawListeners
     ) {
         LinkedHashMap<String, Endpoint> listeners = new LinkedHashMap<>();
         for (Endpoint listener : rawListeners) {
@@ -252,13 +248,12 @@ public final class ListenerInfo {
     /**
      * Create a new ListenerInfo object where ephemeral ports are populated with their true runtime
      * values.
-     *
+     * <p>
      * In other words, if a port was set to 0, indicating that a random port should be assigned by the
      * operating system, this function will replace it with the value the operating system actually
      * chose.
      *
-     * @param getBoundPortCallback  The callback used to correct ephemeral endpoints.
-     *
+     * @param getBoundPortCallback The callback used to correct ephemeral endpoints.
      * @return A new ListenerInfo object.
      */
     public ListenerInfo withEphemeralPortsCorrected(Function<String, Integer> getBoundPortCallback) {
@@ -286,10 +281,10 @@ public final class ListenerInfo {
             throw new RuntimeException("Cannot serialize ephemeral port 0 in ListenerInfo.");
         } else if (port < 0) {
             throw new RuntimeException("Cannot serialize negative port number " + port +
-                " in ListenerInfo.");
+                    " in ListenerInfo.");
         } else if (port > 65535) {
             throw new RuntimeException("Cannot serialize invalid port number " + port +
-                " in ListenerInfo.");
+                    " in ListenerInfo.");
         }
     }
 
@@ -303,15 +298,15 @@ public final class ListenerInfo {
 
     public ControllerRegistrationRequestData.ListenerCollection toControllerRegistrationRequest() {
         ControllerRegistrationRequestData.ListenerCollection collection =
-            new ControllerRegistrationRequestData.ListenerCollection();
+                new ControllerRegistrationRequestData.ListenerCollection();
         listeners.values().forEach(endpoint -> {
             checkPortIsSerializable(endpoint.port());
             checkHostIsSerializable(endpoint.host());
             collection.add(new ControllerRegistrationRequestData.Listener().
-                setHost(endpoint.host()).
-                setName(endpoint.listener()).
-                setPort(endpoint.port()).
-                setSecurityProtocol(endpoint.securityProtocol().id));
+                    setHost(endpoint.host()).
+                    setName(endpoint.listener()).
+                    setPort(endpoint.port()).
+                    setSecurityProtocol(endpoint.securityProtocol().id));
         });
         return collection;
     }
@@ -323,10 +318,10 @@ public final class ListenerInfo {
             checkPortIsSerializable(endpoint.port());
             checkHostIsSerializable(endpoint.host());
             collection.add(new RegisterControllerRecord.ControllerEndpoint().
-                setHost(endpoint.host()).
-                setName(endpoint.listener()).
-                setPort(endpoint.port()).
-                setSecurityProtocol(endpoint.securityProtocol().id));
+                    setHost(endpoint.host()).
+                    setName(endpoint.listener()).
+                    setPort(endpoint.port()).
+                    setSecurityProtocol(endpoint.securityProtocol().id));
         });
         return collection;
     }
@@ -338,10 +333,10 @@ public final class ListenerInfo {
             checkPortIsSerializable(endpoint.port());
             checkHostIsSerializable(endpoint.host());
             collection.add(new BrokerRegistrationRequestData.Listener().
-                setHost(endpoint.host()).
-                setName(endpoint.listener()).
-                setPort(endpoint.port()).
-                setSecurityProtocol(endpoint.securityProtocol().id));
+                    setHost(endpoint.host()).
+                    setName(endpoint.listener()).
+                    setPort(endpoint.port()).
+                    setSecurityProtocol(endpoint.securityProtocol().id));
         });
         return collection;
     }
@@ -353,10 +348,10 @@ public final class ListenerInfo {
             checkPortIsSerializable(endpoint.port());
             checkHostIsSerializable(endpoint.host());
             collection.add(new RegisterBrokerRecord.BrokerEndpoint().
-                setHost(endpoint.host()).
-                setName(endpoint.listener()).
-                setPort(endpoint.port()).
-                setSecurityProtocol(endpoint.securityProtocol().id));
+                    setHost(endpoint.host()).
+                    setName(endpoint.listener()).
+                    setPort(endpoint.port()).
+                    setSecurityProtocol(endpoint.securityProtocol().id));
         });
         return collection;
     }

@@ -50,17 +50,17 @@ public class ThreadMetadataImplTest {
     public static final TopicPartition TP_0_1 = new TopicPartition("t", 2);
     public static final TopicPartition TP_1_1 = new TopicPartition("t", 3);
     public static final TaskMetadata TM_0 = new TaskMetadataImpl(
-        TASK_ID_0,
-        Set.of(TP_0_0, TP_1_0),
-        mkMap(mkEntry(TP_0_0, 1L), mkEntry(TP_1_0, 2L)),
-        mkMap(mkEntry(TP_0_0, 1L), mkEntry(TP_1_0, 2L)),
-        Optional.of(3L));
+            TASK_ID_0,
+            Set.of(TP_0_0, TP_1_0),
+            mkMap(mkEntry(TP_0_0, 1L), mkEntry(TP_1_0, 2L)),
+            mkMap(mkEntry(TP_0_0, 1L), mkEntry(TP_1_0, 2L)),
+            Optional.of(3L));
     public static final TaskMetadata TM_1 = new TaskMetadataImpl(
-        TASK_ID_1,
-        Set.of(TP_0_1, TP_1_1),
-        mkMap(mkEntry(TP_0_1, 1L), mkEntry(TP_1_1, 2L)),
-        mkMap(mkEntry(TP_0_1, 1L), mkEntry(TP_1_1, 2L)),
-        Optional.of(3L));
+            TASK_ID_1,
+            Set.of(TP_0_1, TP_1_1),
+            mkMap(mkEntry(TP_0_1, 1L), mkEntry(TP_1_1, 2L)),
+            mkMap(mkEntry(TP_0_1, 1L), mkEntry(TP_1_1, 2L)),
+            Optional.of(3L));
     public static final Set<TaskMetadata> STANDBY_TASKS = Set.of(TM_0, TM_1);
     public static final Set<TaskMetadata> ACTIVE_TASKS = Set.of(TM_1);
     public static final String ADMIN_CLIENT_ID = "admin ClientID";
@@ -70,14 +70,14 @@ public class ThreadMetadataImplTest {
     @BeforeEach
     public void setUp() {
         threadMetadata = new ThreadMetadataImpl(
-            THREAD_NAME,
-            THREAD_STATE,
-            MAIN_CONSUMER_CLIENT_ID,
-            RESTORE_CONSUMER_CLIENT_ID,
-            PRODUCER_CLIENT_IDS,
-            ADMIN_CLIENT_ID,
-            ACTIVE_TASKS,
-            STANDBY_TASKS
+                THREAD_NAME,
+                THREAD_STATE,
+                MAIN_CONSUMER_CLIENT_ID,
+                RESTORE_CONSUMER_CLIENT_ID,
+                PRODUCER_CLIENT_IDS,
+                ADMIN_CLIENT_ID,
+                ACTIVE_TASKS,
+                STANDBY_TASKS
         );
     }
 
@@ -91,14 +91,14 @@ public class ThreadMetadataImplTest {
     @Test
     public void shouldBeEqualIfSameObject() {
         final ThreadMetadata same = new ThreadMetadataImpl(
-            THREAD_NAME,
-            THREAD_STATE,
-            MAIN_CONSUMER_CLIENT_ID,
-            RESTORE_CONSUMER_CLIENT_ID,
-            PRODUCER_CLIENT_IDS,
-            ADMIN_CLIENT_ID,
-            ACTIVE_TASKS,
-            STANDBY_TASKS
+                THREAD_NAME,
+                THREAD_STATE,
+                MAIN_CONSUMER_CLIENT_ID,
+                RESTORE_CONSUMER_CLIENT_ID,
+                PRODUCER_CLIENT_IDS,
+                ADMIN_CLIENT_ID,
+                ACTIVE_TASKS,
+                STANDBY_TASKS
         );
         assertThat(threadMetadata, equalTo(same));
         assertThat(threadMetadata.hashCode(), equalTo(same.hashCode()));
@@ -107,14 +107,14 @@ public class ThreadMetadataImplTest {
     @Test
     public void shouldNotBeEqualIfDifferInThreadName() {
         final ThreadMetadata differThreadName = new ThreadMetadataImpl(
-            "different",
-            THREAD_STATE,
-            MAIN_CONSUMER_CLIENT_ID,
-            RESTORE_CONSUMER_CLIENT_ID,
-            PRODUCER_CLIENT_IDS,
-            ADMIN_CLIENT_ID,
-            ACTIVE_TASKS,
-            STANDBY_TASKS
+                "different",
+                THREAD_STATE,
+                MAIN_CONSUMER_CLIENT_ID,
+                RESTORE_CONSUMER_CLIENT_ID,
+                PRODUCER_CLIENT_IDS,
+                ADMIN_CLIENT_ID,
+                ACTIVE_TASKS,
+                STANDBY_TASKS
         );
         assertThat(threadMetadata, not(equalTo(differThreadName)));
         assertThat(threadMetadata.hashCode(), not(equalTo(differThreadName.hashCode())));
@@ -123,14 +123,14 @@ public class ThreadMetadataImplTest {
     @Test
     public void shouldNotBeEqualIfDifferInThreadState() {
         final ThreadMetadata differThreadState = new ThreadMetadataImpl(
-            THREAD_NAME,
-            "different",
-            MAIN_CONSUMER_CLIENT_ID,
-            RESTORE_CONSUMER_CLIENT_ID,
-            PRODUCER_CLIENT_IDS,
-            ADMIN_CLIENT_ID,
-            ACTIVE_TASKS,
-            STANDBY_TASKS
+                THREAD_NAME,
+                "different",
+                MAIN_CONSUMER_CLIENT_ID,
+                RESTORE_CONSUMER_CLIENT_ID,
+                PRODUCER_CLIENT_IDS,
+                ADMIN_CLIENT_ID,
+                ACTIVE_TASKS,
+                STANDBY_TASKS
         );
         assertThat(threadMetadata, not(equalTo(differThreadState)));
         assertThat(threadMetadata.hashCode(), not(equalTo(differThreadState.hashCode())));
@@ -139,14 +139,14 @@ public class ThreadMetadataImplTest {
     @Test
     public void shouldNotBeEqualIfDifferInClientId() {
         final ThreadMetadata differMainConsumerClientId = new ThreadMetadataImpl(
-            THREAD_NAME,
-            THREAD_STATE,
-            "different",
-            RESTORE_CONSUMER_CLIENT_ID,
-            PRODUCER_CLIENT_IDS,
-            ADMIN_CLIENT_ID,
-            ACTIVE_TASKS,
-            STANDBY_TASKS
+                THREAD_NAME,
+                THREAD_STATE,
+                "different",
+                RESTORE_CONSUMER_CLIENT_ID,
+                PRODUCER_CLIENT_IDS,
+                ADMIN_CLIENT_ID,
+                ACTIVE_TASKS,
+                STANDBY_TASKS
         );
         assertThat(threadMetadata, not(equalTo(differMainConsumerClientId)));
         assertThat(threadMetadata.hashCode(), not(equalTo(differMainConsumerClientId.hashCode())));
@@ -155,14 +155,14 @@ public class ThreadMetadataImplTest {
     @Test
     public void shouldNotBeEqualIfDifferInConsumerClientId() {
         final ThreadMetadata differRestoreConsumerClientId = new ThreadMetadataImpl(
-            THREAD_NAME,
-            THREAD_STATE,
-            MAIN_CONSUMER_CLIENT_ID,
-            "different",
-            PRODUCER_CLIENT_IDS,
-            ADMIN_CLIENT_ID,
-            ACTIVE_TASKS,
-            STANDBY_TASKS
+                THREAD_NAME,
+                THREAD_STATE,
+                MAIN_CONSUMER_CLIENT_ID,
+                "different",
+                PRODUCER_CLIENT_IDS,
+                ADMIN_CLIENT_ID,
+                ACTIVE_TASKS,
+                STANDBY_TASKS
         );
         assertThat(threadMetadata, not(equalTo(differRestoreConsumerClientId)));
         assertThat(threadMetadata.hashCode(), not(equalTo(differRestoreConsumerClientId.hashCode())));
@@ -171,14 +171,14 @@ public class ThreadMetadataImplTest {
     @Test
     public void shouldNotBeEqualIfDifferInProducerClientIds() {
         final ThreadMetadata differProducerClientIds = new ThreadMetadataImpl(
-            THREAD_NAME,
-            THREAD_STATE,
-            MAIN_CONSUMER_CLIENT_ID,
-            RESTORE_CONSUMER_CLIENT_ID,
-            "different-producer-client-id",
-            ADMIN_CLIENT_ID,
-            ACTIVE_TASKS,
-            STANDBY_TASKS
+                THREAD_NAME,
+                THREAD_STATE,
+                MAIN_CONSUMER_CLIENT_ID,
+                RESTORE_CONSUMER_CLIENT_ID,
+                "different-producer-client-id",
+                ADMIN_CLIENT_ID,
+                ACTIVE_TASKS,
+                STANDBY_TASKS
         );
         assertThat(threadMetadata, not(equalTo(differProducerClientIds)));
         assertThat(threadMetadata.hashCode(), not(equalTo(differProducerClientIds.hashCode())));
@@ -187,14 +187,14 @@ public class ThreadMetadataImplTest {
     @Test
     public void shouldNotBeEqualIfDifferInAdminClientId() {
         final ThreadMetadata differAdminClientId = new ThreadMetadataImpl(
-            THREAD_NAME,
-            THREAD_STATE,
-            MAIN_CONSUMER_CLIENT_ID,
-            RESTORE_CONSUMER_CLIENT_ID,
-            PRODUCER_CLIENT_IDS,
-            "different",
-            ACTIVE_TASKS,
-            STANDBY_TASKS
+                THREAD_NAME,
+                THREAD_STATE,
+                MAIN_CONSUMER_CLIENT_ID,
+                RESTORE_CONSUMER_CLIENT_ID,
+                PRODUCER_CLIENT_IDS,
+                "different",
+                ACTIVE_TASKS,
+                STANDBY_TASKS
         );
         assertThat(threadMetadata, not(equalTo(differAdminClientId)));
         assertThat(threadMetadata.hashCode(), not(equalTo(differAdminClientId.hashCode())));
@@ -203,14 +203,14 @@ public class ThreadMetadataImplTest {
     @Test
     public void shouldNotBeEqualIfDifferInActiveTasks() {
         final ThreadMetadata differActiveTasks = new ThreadMetadataImpl(
-            THREAD_NAME,
-            THREAD_STATE,
-            MAIN_CONSUMER_CLIENT_ID,
-            RESTORE_CONSUMER_CLIENT_ID,
-            PRODUCER_CLIENT_IDS,
-            ADMIN_CLIENT_ID,
-            Set.of(TM_0),
-            STANDBY_TASKS
+                THREAD_NAME,
+                THREAD_STATE,
+                MAIN_CONSUMER_CLIENT_ID,
+                RESTORE_CONSUMER_CLIENT_ID,
+                PRODUCER_CLIENT_IDS,
+                ADMIN_CLIENT_ID,
+                Set.of(TM_0),
+                STANDBY_TASKS
         );
         assertThat(threadMetadata, not(equalTo(differActiveTasks)));
         assertThat(threadMetadata.hashCode(), not(equalTo(differActiveTasks.hashCode())));
@@ -219,14 +219,14 @@ public class ThreadMetadataImplTest {
     @Test
     public void shouldNotBeEqualIfDifferInStandByTasks() {
         final ThreadMetadata differStandByTasks = new ThreadMetadataImpl(
-            THREAD_NAME,
-            THREAD_STATE,
-            MAIN_CONSUMER_CLIENT_ID,
-            RESTORE_CONSUMER_CLIENT_ID,
-            PRODUCER_CLIENT_IDS,
-            ADMIN_CLIENT_ID,
-            ACTIVE_TASKS,
-            Set.of(TM_0)
+                THREAD_NAME,
+                THREAD_STATE,
+                MAIN_CONSUMER_CLIENT_ID,
+                RESTORE_CONSUMER_CLIENT_ID,
+                PRODUCER_CLIENT_IDS,
+                ADMIN_CLIENT_ID,
+                ACTIVE_TASKS,
+                Set.of(TM_0)
         );
         assertThat(threadMetadata, not(equalTo(differStandByTasks)));
         assertThat(threadMetadata.hashCode(), not(equalTo(differStandByTasks.hashCode())));

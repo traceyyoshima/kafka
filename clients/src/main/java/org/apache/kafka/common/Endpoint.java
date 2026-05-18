@@ -49,6 +49,7 @@ public class Endpoint {
     /**
      * Returns the listener name of this endpoint. This is non-empty for endpoints provided
      * to broker plugins, but may be empty when used in clients.
+     *
      * @deprecated Since 4.1. Use {@link #listener()} instead. This function will be removed in 5.0.
      */
     @Deprecated(since = "4.1", forRemoval = true)
@@ -88,9 +89,9 @@ public class Endpoint {
 
         Endpoint that = (Endpoint) o;
         return Objects.equals(this.listener, that.listener) &&
-            Objects.equals(this.securityProtocol, that.securityProtocol) &&
-            Objects.equals(this.host, that.host) &&
-            this.port == that.port;
+                Objects.equals(this.securityProtocol, that.securityProtocol) &&
+                Objects.equals(this.host, that.host) &&
+                this.port == that.port;
 
     }
 
@@ -102,10 +103,10 @@ public class Endpoint {
     @Override
     public String toString() {
         return "Endpoint(" +
-            "listenerName='" + listener + '\'' +
-            ", securityProtocol=" + securityProtocol +
-            ", host='" + host + '\'' +
-            ", port=" + port +
-            ')';
+                "listenerName='" + listener + '\'' +
+                ", securityProtocol=" + securityProtocol +
+                ", host='" + host + '\'' +
+                ", port=" + port +
+                ')';
     }
 }

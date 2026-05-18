@@ -67,10 +67,10 @@ public class ConsumerRebalanceListenerInvoker {
                 throw e;
             } catch (Exception e) {
                 log.error(
-                    "User provided listener {} failed on invocation of onPartitionsAssigned for partitions {}",
-                    listener.get().getClass().getName(),
-                    assignedPartitions,
-                    e
+                        "User provided listener {} failed on invocation of onPartitionsAssigned for partitions {}",
+                        listener.get().getClass().getName(),
+                        assignedPartitions,
+                        e
                 );
                 return e;
             }
@@ -97,10 +97,10 @@ public class ConsumerRebalanceListenerInvoker {
                 throw e;
             } catch (Exception e) {
                 log.error(
-                    "User provided listener {} failed on invocation of onPartitionsRevoked for partitions {}",
-                    listener.get().getClass().getName(),
-                    revokedPartitions,
-                    e
+                        "User provided listener {} failed on invocation of onPartitionsRevoked for partitions {}",
+                        listener.get().getClass().getName(),
+                        revokedPartitions,
+                        e
                 );
                 return e;
             }
@@ -127,10 +127,10 @@ public class ConsumerRebalanceListenerInvoker {
                 throw e;
             } catch (Exception e) {
                 log.error(
-                    "User provided listener {} failed on invocation of onPartitionsLost for partitions {}",
-                    listener.get().getClass().getName(),
-                    lostPartitions,
-                    e
+                        "User provided listener {} failed on invocation of onPartitionsLost for partitions {}",
+                        listener.get().getClass().getName(),
+                        lostPartitions,
+                        e
                 );
                 return e;
             }

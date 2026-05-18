@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * All the samples are combined to produce the measurement. When a window is complete the oldest sample is cleared and
  * recycled to begin recording the next sample.
- * 
+ * <p>
  * Subclasses of this class define different statistics measured using this basic pattern.
  */
 public abstract class SampledStat implements MeasurableStat {
@@ -112,10 +112,10 @@ public abstract class SampledStat implements MeasurableStat {
     @Override
     public String toString() {
         return "SampledStat(" +
-            "initialValue=" + initialValue +
-            ", current=" + current +
-            ", samples=" + samples +
-            ')';
+                "initialValue=" + initialValue +
+                ", current=" + current +
+                ", samples=" + samples +
+                ')';
     }
 
     protected abstract void update(Sample sample, MetricConfig config, double value, long timeMs);
@@ -176,13 +176,13 @@ public abstract class SampledStat implements MeasurableStat {
         @Override
         public String toString() {
             return "Sample(" +
-                "value=" + value +
-                ", eventCount=" + eventCount +
-                ", startTimeMs=" + startTimeMs +
-                ", lastEventMs=" + lastEventMs +
-                ", initialValue=" + initialValue +
-                ", timeWindowMs=" + timeWindowMs +
-                ')';
+                    "value=" + value +
+                    ", eventCount=" + eventCount +
+                    ", startTimeMs=" + startTimeMs +
+                    ", lastEventMs=" + lastEventMs +
+                    ", initialValue=" + initialValue +
+                    ", timeWindowMs=" + timeWindowMs +
+                    ')';
         }
     }
 

@@ -28,12 +28,12 @@ public interface PartitionAssignor {
     /**
      * Assigns partitions to group members based on the given assignment specification and topic metadata.
      *
-     * @param groupSpec           The assignment spec which includes member metadata.
+     * @param groupSpec                The assignment spec which includes member metadata.
      * @param subscribedTopicDescriber The topic and partition metadata describer.
      * @return The new assignment for the group.
      */
     GroupAssignment assign(
-        GroupSpec groupSpec,
-        SubscribedTopicDescriber subscribedTopicDescriber
+            GroupSpec groupSpec,
+            SubscribedTopicDescriber subscribedTopicDescriber
     ) throws PartitionAssignorException;
 }

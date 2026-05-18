@@ -68,81 +68,81 @@ import static org.mockito.Mockito.when;
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 public class GlobalStateStoreProviderTest {
     private final Map<String, StateStore> stores = new HashMap<>();
-    private static final Map<String, Object> CONFIGS =  mkMap(mkEntry(StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE, "appId"));
+    private static final Map<String, Object> CONFIGS = mkMap(mkEntry(StreamsConfig.InternalConfig.TOPIC_PREFIX_ALTERNATIVE, "appId"));
 
     @BeforeEach
     public void before() {
         stores.put(
-            "kv-store",
-            Stores.keyValueStoreBuilder(
-                Stores.inMemoryKeyValueStore("kv-store"),
-                Serdes.String(),
-                Serdes.String()).build());
+                "kv-store",
+                Stores.keyValueStoreBuilder(
+                        Stores.inMemoryKeyValueStore("kv-store"),
+                        Serdes.String(),
+                        Serdes.String()).build());
         stores.put(
-            "ts-kv-store",
-            Stores.timestampedKeyValueStoreBuilder(
-                Stores.inMemoryKeyValueStore("ts-kv-store"),
-                Serdes.String(),
-                Serdes.String()).build());
+                "ts-kv-store",
+                Stores.timestampedKeyValueStoreBuilder(
+                        Stores.inMemoryKeyValueStore("ts-kv-store"),
+                        Serdes.String(),
+                        Serdes.String()).build());
         stores.put(
-            "w-store",
-            Stores.windowStoreBuilder(
-                Stores.inMemoryWindowStore(
-                    "w-store",
-                    Duration.ofMillis(10L),
-                    Duration.ofMillis(2L),
-                    false),
-                Serdes.String(),
-                Serdes.String()).build());
+                "w-store",
+                Stores.windowStoreBuilder(
+                        Stores.inMemoryWindowStore(
+                                "w-store",
+                                Duration.ofMillis(10L),
+                                Duration.ofMillis(2L),
+                                false),
+                        Serdes.String(),
+                        Serdes.String()).build());
         stores.put(
-            "ts-w-store",
-            Stores.timestampedWindowStoreBuilder(
-                Stores.inMemoryWindowStore(
-                    "ts-w-store",
-                    Duration.ofMillis(10L),
-                    Duration.ofMillis(2L),
-                    false),
-                Serdes.String(),
-                Serdes.String()).build());
+                "ts-w-store",
+                Stores.timestampedWindowStoreBuilder(
+                        Stores.inMemoryWindowStore(
+                                "ts-w-store",
+                                Duration.ofMillis(10L),
+                                Duration.ofMillis(2L),
+                                false),
+                        Serdes.String(),
+                        Serdes.String()).build());
         stores.put(
-            "s-store",
-            Stores.sessionStoreBuilder(
-                Stores.inMemorySessionStore(
-                    "s-store",
-                    Duration.ofMillis(10L)),
-                Serdes.String(),
-                Serdes.String()).build());
+                "s-store",
+                Stores.sessionStoreBuilder(
+                        Stores.inMemorySessionStore(
+                                "s-store",
+                                Duration.ofMillis(10L)),
+                        Serdes.String(),
+                        Serdes.String()).build());
         stores.put(
-            "ts-kv-store-with-headers",
-            Stores.timestampedKeyValueStoreWithHeadersBuilder(
-                Stores.inMemoryKeyValueStore("ts-kv-store-with-headers"),
-                Serdes.String(),
-                Serdes.String()).build());
+                "ts-kv-store-with-headers",
+                Stores.timestampedKeyValueStoreWithHeadersBuilder(
+                        Stores.inMemoryKeyValueStore("ts-kv-store-with-headers"),
+                        Serdes.String(),
+                        Serdes.String()).build());
         stores.put(
-            "ts-w-store-with-headers",
-            Stores.timestampedWindowStoreWithHeadersBuilder(
-                Stores.inMemoryWindowStore(
-                    "ts-w-store-with-headers",
-                    Duration.ofMillis(10L),
-                    Duration.ofMillis(2L),
-                    false),
-                Serdes.String(),
-                Serdes.String()).build());
+                "ts-w-store-with-headers",
+                Stores.timestampedWindowStoreWithHeadersBuilder(
+                        Stores.inMemoryWindowStore(
+                                "ts-w-store-with-headers",
+                                Duration.ofMillis(10L),
+                                Duration.ofMillis(2L),
+                                false),
+                        Serdes.String(),
+                        Serdes.String()).build());
         stores.put(
-            "s-store-with-headers",
-            Stores.sessionStoreWithHeadersBuilder(
-                Stores.inMemorySessionStore(
-                    "s-store-with-headers",
-                    Duration.ofMillis(10L)),
-                Serdes.String(),
-                Serdes.String()).build());
+                "s-store-with-headers",
+                Stores.sessionStoreWithHeadersBuilder(
+                        Stores.inMemorySessionStore(
+                                "s-store-with-headers",
+                                Duration.ofMillis(10L)),
+                        Serdes.String(),
+                        Serdes.String()).build());
 
         final InternalProcessorContext<?, ?> mockContext = mock(InternalProcessorContext.class);
         when(mockContext.applicationId()).thenReturn("appId");
         when(mockContext.metrics())
-            .thenReturn(
-                new StreamsMetricsImpl(new Metrics(), "threadName", new MockTime())
-            );
+                .thenReturn(
+                        new StreamsMetricsImpl(new Metrics(), "threadName", new MockTime())
+                );
         when(mockContext.taskId()).thenReturn(new TaskId(0, 0));
         when(mockContext.appConfigs()).thenReturn(CONFIGS);
         for (final StateStore store : stores.values()) {
@@ -153,9 +153,9 @@ public class GlobalStateStoreProviderTest {
     @Test
     public void shouldReturnSingleItemListIfStoreExists() {
         final GlobalStateStoreProvider provider =
-            new GlobalStateStoreProvider(Collections.singletonMap("global", new NoOpReadOnlyStore<>()));
+                new GlobalStateStoreProvider(Collections.singletonMap("global", new NoOpReadOnlyStore<>()));
         final List<ReadOnlyKeyValueStore<Object, Object>> stores =
-            provider.stores("global", QueryableStoreTypes.keyValueStore());
+                provider.stores("global", QueryableStoreTypes.keyValueStore());
         assertEquals(1, stores.size());
     }
 
@@ -163,7 +163,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnEmptyItemListIfStoreDoesntExist() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(Collections.emptyMap());
         final List<ReadOnlyKeyValueStore<Object, Object>> stores =
-            provider.stores("global", QueryableStoreTypes.keyValueStore());
+                provider.stores("global", QueryableStoreTypes.keyValueStore());
         assertTrue(stores.isEmpty());
     }
 
@@ -172,16 +172,16 @@ public class GlobalStateStoreProviderTest {
         final NoOpReadOnlyStore<Object, Object> store = new NoOpReadOnlyStore<>();
         store.close();
         final GlobalStateStoreProvider provider =
-            new GlobalStateStoreProvider(Collections.singletonMap("global", store));
+                new GlobalStateStoreProvider(Collections.singletonMap("global", store));
         assertThrows(InvalidStateStoreException.class, () -> provider.stores("global",
-            QueryableStoreTypes.keyValueStore()));
+                QueryableStoreTypes.keyValueStore()));
     }
 
     @Test
     public void shouldReturnKeyValueStore() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, String>> stores =
-            provider.stores("kv-store", QueryableStoreTypes.keyValueStore());
+                provider.stores("kv-store", QueryableStoreTypes.keyValueStore());
         assertEquals(1, stores.size());
         for (final ReadOnlyKeyValueStore<String, String> store : stores) {
             assertThat(store, instanceOf(ReadOnlyKeyValueStore.class));
@@ -194,7 +194,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedKeyValueStore() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, ValueAndTimestamp<String>>> stores =
-            provider.stores("ts-kv-store", QueryableStoreTypes.timestampedKeyValueStore());
+                provider.stores("ts-kv-store", QueryableStoreTypes.timestampedKeyValueStore());
         assertEquals(1, stores.size());
         for (final ReadOnlyKeyValueStore<String, ValueAndTimestamp<String>> store : stores) {
             assertThat(store, instanceOf(ReadOnlyKeyValueStore.class));
@@ -207,7 +207,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldNotReturnKeyValueStoreAsTimestampedKeyValueStore() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, ValueAndTimestamp<String>>> stores =
-            provider.stores("kv-store", QueryableStoreTypes.timestampedKeyValueStore());
+                provider.stores("kv-store", QueryableStoreTypes.timestampedKeyValueStore());
         assertEquals(0, stores.size());
     }
 
@@ -215,7 +215,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedKeyValueStoreAsKeyValueStore() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, String>> stores =
-            provider.stores("ts-kv-store", QueryableStoreTypes.keyValueStore());
+                provider.stores("ts-kv-store", QueryableStoreTypes.keyValueStore());
         assertEquals(1, stores.size());
         for (final ReadOnlyKeyValueStore<String, String> store : stores) {
             assertThat(store, instanceOf(ReadOnlyKeyValueStore.class));
@@ -241,7 +241,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedWindowStore() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyWindowStore<String, ValueAndTimestamp<String>>> stores =
-            provider.stores("ts-w-store", QueryableStoreTypes.timestampedWindowStore());
+                provider.stores("ts-w-store", QueryableStoreTypes.timestampedWindowStore());
         assertEquals(1, stores.size());
         for (final ReadOnlyWindowStore<String, ValueAndTimestamp<String>> store : stores) {
             assertThat(store, instanceOf(ReadOnlyWindowStore.class));
@@ -262,7 +262,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedWindowStoreAsWindowStore() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyWindowStore<String, String>> stores =
-            provider.stores("ts-w-store", QueryableStoreTypes.windowStore());
+                provider.stores("ts-w-store", QueryableStoreTypes.windowStore());
         assertEquals(1, stores.size());
         for (final ReadOnlyWindowStore<String, String> store : stores) {
             assertThat(store, instanceOf(ReadOnlyWindowStore.class));
@@ -287,7 +287,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedKeyValueStoreWithHeaders() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, ValueTimestampHeaders<String>>> stores =
-            provider.stores("ts-kv-store-with-headers", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
+                provider.stores("ts-kv-store-with-headers", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
         assertEquals(1, stores.size());
         for (final ReadOnlyKeyValueStore<String, ValueTimestampHeaders<String>> store : stores) {
             assertThat(store, instanceOf(ReadOnlyKeyValueStore.class));
@@ -299,7 +299,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedKeyValueStoreWithHeadersAsTimestampedKeyValueStores() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, ValueAndTimestamp<String>>> stores =
-            provider.stores("ts-kv-store-with-headers", QueryableStoreTypes.timestampedKeyValueStore());
+                provider.stores("ts-kv-store-with-headers", QueryableStoreTypes.timestampedKeyValueStore());
         assertEquals(1, stores.size());
         for (final ReadOnlyKeyValueStore<String, ValueAndTimestamp<String>> store : stores) {
             assertThat(store, instanceOf(GenericReadOnlyKeyValueStoreFacade.class));
@@ -311,7 +311,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedKeyValueStoreWithHeadersAsKeyValueStores() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, String>> stores =
-            provider.stores("ts-kv-store-with-headers", QueryableStoreTypes.keyValueStore());
+                provider.stores("ts-kv-store-with-headers", QueryableStoreTypes.keyValueStore());
         assertEquals(1, stores.size());
         for (final ReadOnlyKeyValueStore<String, String> store : stores) {
             assertThat(store, instanceOf(GenericReadOnlyKeyValueStoreFacade.class));
@@ -324,7 +324,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldNotReturnTimestampedKeyValueStoreAsTimestampedKeyValueStoreWithHeaders() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, ValueTimestampHeaders<String>>> stores =
-            provider.stores("ts-kv-store", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
+                provider.stores("ts-kv-store", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
         assertEquals(0, stores.size());
     }
 
@@ -332,7 +332,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldNotReturnKeyValueStoreAsTimestampedKeyValueStoreWithHeaders() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, ValueTimestampHeaders<String>>> stores =
-            provider.stores("kv-store", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
+                provider.stores("kv-store", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
         assertEquals(0, stores.size());
     }
 
@@ -340,7 +340,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedWindowStoreWithHeaders() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyWindowStore<String, ValueTimestampHeaders<String>>> stores =
-            provider.stores("ts-w-store-with-headers", QueryableStoreTypes.timestampedWindowStoreWithHeaders());
+                provider.stores("ts-w-store-with-headers", QueryableStoreTypes.timestampedWindowStoreWithHeaders());
         assertEquals(1, stores.size());
         for (final ReadOnlyWindowStore<String, ValueTimestampHeaders<String>> store : stores) {
             assertThat(store, instanceOf(ReadOnlyWindowStore.class));
@@ -352,7 +352,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedWindowStoreWithHeadersAsTimestampedWindowStore() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyWindowStore<String, ValueAndTimestamp<String>>> stores =
-            provider.stores("ts-w-store-with-headers", QueryableStoreTypes.timestampedWindowStore());
+                provider.stores("ts-w-store-with-headers", QueryableStoreTypes.timestampedWindowStore());
         assertEquals(1, stores.size());
         for (final ReadOnlyWindowStore<String, ValueAndTimestamp<String>> store : stores) {
             assertThat(store, instanceOf(ReadOnlyWindowStore.class));
@@ -365,7 +365,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnTimestampedWindowStoreWithHeadersAsWindowStore() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyWindowStore<String, String>> stores =
-            provider.stores("ts-w-store-with-headers", QueryableStoreTypes.windowStore());
+                provider.stores("ts-w-store-with-headers", QueryableStoreTypes.windowStore());
         assertEquals(1, stores.size());
         for (final ReadOnlyWindowStore<String, String> store : stores) {
             assertThat(store, instanceOf(ReadOnlyWindowStore.class));
@@ -378,7 +378,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldNotReturnTimestampedWindowStoreAsTimestampedWindowStoreWithHeaders() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, ValueTimestampHeaders<String>>> stores =
-            provider.stores("ts-w-store", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
+                provider.stores("ts-w-store", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
         assertEquals(0, stores.size());
     }
 
@@ -386,7 +386,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldNotReturnWindowStoreAsTimestampedWindowStoreWithHeaders() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlyKeyValueStore<String, ValueTimestampHeaders<String>>> stores =
-            provider.stores("w-store", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
+                provider.stores("w-store", QueryableStoreTypes.timestampedKeyValueStoreWithHeaders());
         assertEquals(0, stores.size());
     }
 
@@ -394,7 +394,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnSessionStoreWithHeaders() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlySessionStore<String, AggregationWithHeaders<String>>> stores =
-            provider.stores("s-store-with-headers", QueryableStoreTypes.sessionStoreWithHeaders());
+                provider.stores("s-store-with-headers", QueryableStoreTypes.sessionStoreWithHeaders());
         assertEquals(1, stores.size());
         for (final ReadOnlySessionStore<String, AggregationWithHeaders<String>> store : stores) {
             assertThat(store, instanceOf(ReadOnlySessionStore.class));
@@ -406,7 +406,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldReturnSessionStoreWithHeadersAsSessionStore() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlySessionStore<String, String>> stores =
-            provider.stores("s-store-with-headers", QueryableStoreTypes.sessionStore());
+                provider.stores("s-store-with-headers", QueryableStoreTypes.sessionStore());
         assertEquals(1, stores.size());
         for (final ReadOnlySessionStore<String, String> store : stores) {
             assertThat(store, instanceOf(ReadOnlySessionStore.class));
@@ -418,7 +418,7 @@ public class GlobalStateStoreProviderTest {
     public void shouldNotReturnSessionStoreAsSessionStoreWithHeaders() {
         final GlobalStateStoreProvider provider = new GlobalStateStoreProvider(stores);
         final List<ReadOnlySessionStore<String, AggregationWithHeaders<String>>> stores =
-            provider.stores("s-store", QueryableStoreTypes.sessionStoreWithHeaders());
+                provider.stores("s-store", QueryableStoreTypes.sessionStoreWithHeaders());
         assertEquals(0, stores.size());
     }
 

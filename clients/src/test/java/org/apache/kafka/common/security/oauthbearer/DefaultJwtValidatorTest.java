@@ -48,7 +48,7 @@ public class DefaultJwtValidatorTest extends OAuthBearerTest {
     @Test
     public void testConfigureWithVerificationKeyResolver() {
         AccessTokenBuilder builder = new AccessTokenBuilder()
-            .alg(AlgorithmIdentifiers.RSA_USING_SHA256);
+                .alg(AlgorithmIdentifiers.RSA_USING_SHA256);
         CloseableVerificationKeyResolver verificationKeyResolver = createVerificationKeyResolver(builder);
         Map<String, ?> configs = getSaslConfigs();
         DefaultJwtValidator jwtValidator = new DefaultJwtValidator(verificationKeyResolver);
@@ -68,8 +68,8 @@ public class DefaultJwtValidatorTest extends OAuthBearerTest {
     public void testConfigureWithJwksUrl() throws Exception {
         PublicJsonWebKey jwk = createRsaJwk();
         AccessTokenBuilder builder = new AccessTokenBuilder()
-            .jwk(jwk)
-            .alg(AlgorithmIdentifiers.RSA_USING_SHA256);
+                .jwk(jwk)
+                .alg(AlgorithmIdentifiers.RSA_USING_SHA256);
         String accessToken = builder.build();
 
         JsonWebKeySet jwks = new JsonWebKeySet(jwk);

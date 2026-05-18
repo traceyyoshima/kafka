@@ -64,22 +64,22 @@ public class ClientQuotasImageTest {
         // remove quota
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ClientQuotaRecord().
                 setEntity(List.of(
-                    new EntityData().setEntityType(ClientQuotaEntity.USER).setEntityName("bar"),
-                    new EntityData().setEntityType(ClientQuotaEntity.IP).setEntityName("127.0.0.1"))).
+                        new EntityData().setEntityType(ClientQuotaEntity.USER).setEntityName("bar"),
+                        new EntityData().setEntityType(ClientQuotaEntity.IP).setEntityName("127.0.0.1"))).
                 setKey(QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG).
                 setRemove(true), CLIENT_QUOTA_RECORD.highestSupportedVersion()));
         // alter quota
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ClientQuotaRecord().
-            setEntity(List.of(
-                new EntityData().setEntityType(ClientQuotaEntity.USER).setEntityName("foo"))).
-            setKey(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG).
-            setValue(234.0), CLIENT_QUOTA_RECORD.highestSupportedVersion()));
+                setEntity(List.of(
+                        new EntityData().setEntityType(ClientQuotaEntity.USER).setEntityName("foo"))).
+                setKey(QuotaConfig.PRODUCER_BYTE_RATE_OVERRIDE_CONFIG).
+                setValue(234.0), CLIENT_QUOTA_RECORD.highestSupportedVersion()));
         // add quota to entity with existing quota
         DELTA1_RECORDS.add(new ApiMessageAndVersion(new ClientQuotaRecord().
-            setEntity(List.of(
-                new EntityData().setEntityType(ClientQuotaEntity.USER).setEntityName("foo"))).
-            setKey(QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG).
-            setValue(999.0), CLIENT_QUOTA_RECORD.highestSupportedVersion()));
+                setEntity(List.of(
+                        new EntityData().setEntityType(ClientQuotaEntity.USER).setEntityName("foo"))).
+                setKey(QuotaConfig.CONSUMER_BYTE_RATE_OVERRIDE_CONFIG).
+                setValue(999.0), CLIENT_QUOTA_RECORD.highestSupportedVersion()));
 
         DELTA1 = new ClientQuotasDelta(IMAGE1);
         RecordTestUtils.replayAll(DELTA1, DELTA1_RECORDS);
@@ -127,8 +127,8 @@ public class ClientQuotasImageTest {
     private static void testToImage(ClientQuotasImage image, List<ApiMessageAndVersion> fromRecords) {
         // test from empty image stopping each of the various intermediate images along the way
         new RecordTestUtils.TestThroughAllIntermediateImagesLeadingToFinalImageHelper<>(
-            () -> ClientQuotasImage.EMPTY,
-            ClientQuotasDelta::new
+                () -> ClientQuotasImage.EMPTY,
+                ClientQuotasDelta::new
         ).test(image, fromRecords);
     }
 

@@ -45,59 +45,59 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConsoleProducerTest {
     private static final String[] BOOTSTRAP_SERVER_VALID_ARGS_DEPRECATED = new String[]{
-        "--bootstrap-server", "localhost:1003,localhost:1004",
-        "--topic", "t3",
-        "--property", "parse.key=true",
-        "--property", "key.separator=#"
+            "--bootstrap-server", "localhost:1003,localhost:1004",
+            "--topic", "t3",
+            "--property", "parse.key=true",
+            "--property", "key.separator=#"
     };
     private static final String[] BOOTSTRAP_SERVER_VALID_ARGS = new String[]{
-        "--bootstrap-server", "localhost:1003,localhost:1004",
-        "--topic", "t3",
-        "--reader-property", "parse.key=true",
-        "--reader-property", "key.separator=#"
+            "--bootstrap-server", "localhost:1003,localhost:1004",
+            "--topic", "t3",
+            "--reader-property", "parse.key=true",
+            "--reader-property", "key.separator=#"
     };
     private static final String[] INVALID_ARGS = new String[]{
-        "--t", // not a valid argument
-        "t3"
+            "--t", // not a valid argument
+            "t3"
     };
     private static final String[] BOOTSTRAP_SERVER_OVERRIDE = new String[]{
-        "--bootstrap-server", "localhost:1002",
-        "--topic", "t3",
+            "--bootstrap-server", "localhost:1002",
+            "--topic", "t3",
     };
     private static final String[] CLIENT_ID_OVERRIDE_DEPRECATED = new String[]{
-        "--bootstrap-server", "localhost:1001",
-        "--topic", "t3",
-        "--producer-property", "client.id=producer-1"
+            "--bootstrap-server", "localhost:1001",
+            "--topic", "t3",
+            "--producer-property", "client.id=producer-1"
     };
     private static final String[] CLIENT_ID_OVERRIDE = new String[]{
-        "--bootstrap-server", "localhost:1001",
-        "--topic", "t3",
-        "--command-property", "client.id=producer-1"
+            "--bootstrap-server", "localhost:1001",
+            "--topic", "t3",
+            "--command-property", "client.id=producer-1"
     };
     private static final String[] BATCH_SIZE_OVERRIDDEN_BY_MAX_PARTITION_MEMORY_BYTES_VALUE = new String[]{
-        "--bootstrap-server", "localhost:1002",
-        "--topic", "t3",
-        "--batch-size", "123",
-        "--max-partition-memory-bytes", "456"
+            "--bootstrap-server", "localhost:1002",
+            "--topic", "t3",
+            "--batch-size", "123",
+            "--max-partition-memory-bytes", "456"
     };
     private static final String[] BATCH_SIZE_SET_AND_MAX_PARTITION_MEMORY_BYTES_NOT_SET = new String[]{
-        "--bootstrap-server", "localhost:1002",
-        "--topic", "t3",
-        "--batch-size", "123"
+            "--bootstrap-server", "localhost:1002",
+            "--topic", "t3",
+            "--batch-size", "123"
     };
     private static final String[] BATCH_SIZE_NOT_SET_AND_MAX_PARTITION_MEMORY_BYTES_SET = new String[]{
-        "--bootstrap-server", "localhost:1002",
-        "--topic", "t3",
-        "--max-partition-memory-bytes", "456"
+            "--bootstrap-server", "localhost:1002",
+            "--topic", "t3",
+            "--max-partition-memory-bytes", "456"
     };
     private static final String[] BATCH_SIZE_DEFAULT = new String[]{
-        "--bootstrap-server", "localhost:1002",
-        "--topic", "t3"
+            "--bootstrap-server", "localhost:1002",
+            "--topic", "t3"
     };
     private static final String[] TEST_RECORD_READER = new String[]{
-        "--bootstrap-server", "localhost:1002",
-        "--topic", "t3",
-        "--line-reader", TestRecordReader.class.getName()
+            "--bootstrap-server", "localhost:1002",
+            "--topic", "t3",
+            "--line-reader", TestRecordReader.class.getName()
     };
 
     @Test
@@ -139,11 +139,11 @@ public class ConsoleProducerTest {
         propsStream.close();
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--property", "key.separator=;",
-            "--property", "parse.headers=true",
-            "--reader-config", propsFile.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--property", "key.separator=;",
+                "--property", "parse.headers=true",
+                "--reader-config", propsFile.getAbsolutePath()
         };
         ConsoleProducerOptions opts = new ConsoleProducerOptions(args);
         LineMessageReader reader = (LineMessageReader) Class.forName(opts.readerClass()).getDeclaredConstructor().newInstance();
@@ -197,11 +197,11 @@ public class ConsoleProducerTest {
         propsStream.close();
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--reader-property", "key.separator=;",
-            "--reader-property", "parse.headers=true",
-            "--reader-config", propsFile.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--reader-property", "key.separator=;",
+                "--reader-property", "parse.headers=true",
+                "--reader-config", propsFile.getAbsolutePath()
         };
         ConsoleProducerOptions opts = new ConsoleProducerOptions(args);
         LineMessageReader reader = (LineMessageReader) Class.forName(opts.readerClass()).getDeclaredConstructor().newInstance();
@@ -275,10 +275,10 @@ public class ConsoleProducerTest {
         });
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--producer-property", "acks=all",
-            "--command-property", "batch.size=16384"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--producer-property", "acks=all",
+                "--command-property", "batch.size=16384"
         };
 
         try {
@@ -303,10 +303,10 @@ public class ConsoleProducerTest {
         File propsFile2 = ToolsTestUtils.tempPropertiesFile(configs2);
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--producer.config", propsFile.getAbsolutePath(),
-            "--command-config", propsFile2.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--producer.config", propsFile.getAbsolutePath(),
+                "--command-config", propsFile2.getAbsolutePath()
         };
 
         try {
@@ -323,10 +323,10 @@ public class ConsoleProducerTest {
         });
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--property", "parse.key=true",
-            "--reader-property", "parse.headers=true"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--property", "parse.key=true",
+                "--reader-property", "parse.headers=true"
         };
 
         try {
@@ -352,9 +352,9 @@ public class ConsoleProducerTest {
         File propsFile = ToolsTestUtils.tempPropertiesFile(configs);
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--command-config", propsFile.getAbsolutePath()
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--command-config", propsFile.getAbsolutePath()
         };
 
         ConsoleProducerOptions opts = new ConsoleProducerOptions(args);
@@ -373,10 +373,10 @@ public class ConsoleProducerTest {
         File propsFile = ToolsTestUtils.tempPropertiesFile(configs);
 
         String[] args = new String[]{
-            "--bootstrap-server", "localhost:9092",
-            "--topic", "test",
-            "--command-config", propsFile.getAbsolutePath(),
-            "--command-property", "acks=all"
+                "--bootstrap-server", "localhost:9092",
+                "--topic", "test",
+                "--command-config", propsFile.getAbsolutePath(),
+                "--command-property", "acks=all"
         };
 
         ConsoleProducerOptions opts = new ConsoleProducerOptions(args);

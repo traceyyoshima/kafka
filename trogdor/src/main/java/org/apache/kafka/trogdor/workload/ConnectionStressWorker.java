@@ -111,11 +111,11 @@ public class ConnectionStressWorker implements TaskWorker {
             this.startTimeMs = Time.SYSTEM.milliseconds();
         }
         this.statusUpdaterExecutor = Executors.newScheduledThreadPool(1,
-            ThreadUtils.createThreadFactory("StatusUpdaterWorkerThread%d", false));
+                ThreadUtils.createThreadFactory("StatusUpdaterWorkerThread%d", false));
         this.statusUpdaterFuture = this.statusUpdaterExecutor.scheduleAtFixedRate(
-            new StatusUpdater(), 0, REPORT_INTERVAL_MS, TimeUnit.MILLISECONDS);
+                new StatusUpdater(), 0, REPORT_INTERVAL_MS, TimeUnit.MILLISECONDS);
         this.workerExecutor = Executors.newFixedThreadPool(spec.numThreads(),
-            ThreadUtils.createThreadFactory("ConnectionStressWorkerThread%d", false));
+                ThreadUtils.createThreadFactory("ConnectionStressWorkerThread%d", false));
         for (int i = 0; i < spec.numThreads(); i++) {
             this.workerExecutor.submit(new ConnectLoop());
         }
@@ -149,8 +149,8 @@ public class ConnectionStressWorker implements TaskWorker {
             WorkerUtils.addConfigsToProperties(props, spec.commonClientConf(), spec.commonClientConf());
             this.conf = new AdminClientConfig(props);
             List<InetSocketAddress> addresses = ClientUtils.parseAndValidateAddresses(
-                conf.getList(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG),
-                conf.getString(AdminClientConfig.CLIENT_DNS_LOOKUP_CONFIG));
+                    conf.getList(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG),
+                    conf.getString(AdminClientConfig.CLIENT_DNS_LOOKUP_CONFIG));
             this.updater = new ManualMetadataUpdater(Cluster.bootstrap(addresses).nodes());
         }
 
@@ -163,23 +163,23 @@ public class ConnectionStressWorker implements TaskWorker {
                 ChannelBuilder channelBuilder = ClientUtils.createChannelBuilder(conf, Time.SYSTEM, logContext);
                 try (Metrics metrics = new Metrics()) {
                     try (Selector selector = new Selector(conf.getLong(AdminClientConfig.CONNECTIONS_MAX_IDLE_MS_CONFIG),
-                        metrics, Time.SYSTEM, "", channelBuilder, logContext)) {
+                            metrics, Time.SYSTEM, "", channelBuilder, logContext)) {
                         try (NetworkClient client = new NetworkClient(selector,
-                            updater,
-                            "ConnectionStressWorker",
-                            1,
-                            1000,
-                            1000,
-                            4096,
-                            4096,
-                            1000,
-                            10 * 1000,
-                            127 * 1000,
-                            Time.SYSTEM,
-                            false,
-                            new ApiVersions(),
-                            logContext,
-                            MetadataRecoveryStrategy.NONE)) {
+                                updater,
+                                "ConnectionStressWorker",
+                                1,
+                                1000,
+                                1000,
+                                4096,
+                                4096,
+                                1000,
+                                10 * 1000,
+                                127 * 1000,
+                                Time.SYSTEM,
+                                false,
+                                new ApiVersions(),
+                                logContext,
+                                MetadataRecoveryStrategy.NONE)) {
                             NetworkClientUtils.awaitReady(client, targetNode, Time.SYSTEM, 500);
                         }
                     }
@@ -196,7 +196,7 @@ public class ConnectionStressWorker implements TaskWorker {
         }
     }
 
-    static class FetchMetadataStressor  implements Stressor {
+    static class FetchMetadataStressor implements Stressor {
         private final Properties props;
 
         FetchMetadataStressor(ConnectionStressSpec spec) {
@@ -209,7 +209,7 @@ public class ConnectionStressWorker implements TaskWorker {
         public boolean tryConnect() {
             try (Admin client = Admin.create(this.props)) {
                 client.describeCluster().nodes().get();
-            } catch (ExecutionException | InterruptedException  e) {
+            } catch (ExecutionException | InterruptedException e) {
                 return false;
             }
             return true;
@@ -225,8 +225,8 @@ public class ConnectionStressWorker implements TaskWorker {
         public void run() {
             Stressor stressor = Stressor.fromSpec(spec);
             int rate = WorkerUtils.perSecToPerPeriod(
-                ((float) spec.targetConnectionsPerSec()) / spec.numThreads(),
-                THROTTLE_PERIOD_MS);
+                    ((float) spec.targetConnectionsPerSec()) / spec.numThreads(),
+                    THROTTLE_PERIOD_MS);
             Throttle throttle = new ConnectStressThrottle(rate);
             try {
                 while (!doneFuture.isDone()) {
@@ -255,8 +255,8 @@ public class ConnectionStressWorker implements TaskWorker {
                 JsonNode node;
                 synchronized (ConnectionStressWorker.this) {
                     node = JsonUtil.JSON_SERDE.valueToTree(
-                        new StatusData(totalConnections, totalFailedConnections,
-                            (totalConnections * 1000.0) / (lastTimeMs - startTimeMs)));
+                            new StatusData(totalConnections, totalFailedConnections,
+                                    (totalConnections * 1000.0) / (lastTimeMs - startTimeMs)));
                 }
                 status.update(node);
             } catch (Exception e) {

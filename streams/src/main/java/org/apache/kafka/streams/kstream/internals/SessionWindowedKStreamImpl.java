@@ -93,7 +93,7 @@ public class SessionWindowedKStreamImpl<K, V> extends AbstractStream<K, V> imple
     private KTable<Windowed<K>, Long> doCount(final Named named,
                                               final Materialized<K, Long, SessionStore<Bytes, byte[]>> materialized) {
         final MaterializedInternal<K, Long, SessionStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
+                new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
 
         if (materializedInternal.keySerde() == null) {
             materializedInternal.withKeySerde(keySerde);
@@ -107,20 +107,20 @@ public class SessionWindowedKStreamImpl<K, V> extends AbstractStream<K, V> imple
         final long gracePeriod = windows.gracePeriodMs() + windows.inactivityGap();
 
         return aggregateBuilder.buildWindowed(
-            new NamedInternal(aggregateName),
-            storeFactory.storeName(),
-            gracePeriod,
-            new KStreamSessionWindowAggregate<>(
-                windows,
-                storeFactory,
-                emitStrategy,
-                aggregateBuilder.countInitializer,
-                aggregateBuilder.countAggregator,
-                countMerger),
-            materializedInternal.queryableStoreName(),
-            materializedInternal.keySerde() != null ? new WindowedSerdes.SessionWindowedSerde<>(materializedInternal.keySerde()) : null,
-            materializedInternal.valueSerde(),
-            false);
+                new NamedInternal(aggregateName),
+                storeFactory.storeName(),
+                gracePeriod,
+                new KStreamSessionWindowAggregate<>(
+                        windows,
+                        storeFactory,
+                        emitStrategy,
+                        aggregateBuilder.countInitializer,
+                        aggregateBuilder.countAggregator,
+                        countMerger),
+                materializedInternal.queryableStoreName(),
+                materializedInternal.keySerde() != null ? new WindowedSerdes.SessionWindowedSerde<>(materializedInternal.keySerde()) : null,
+                materializedInternal.valueSerde(),
+                false);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class SessionWindowedKStreamImpl<K, V> extends AbstractStream<K, V> imple
         Objects.requireNonNull(materialized, "materialized can't be null");
         final Aggregator<K, V, V> reduceAggregator = aggregatorFromReducer(reducer);
         final MaterializedInternal<K, V, SessionStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, builder, REDUCE_NAME);
+                new MaterializedInternal<>(materialized, builder, REDUCE_NAME);
         if (materializedInternal.keySerde() == null) {
             materializedInternal.withKeySerde(keySerde);
         }
@@ -161,21 +161,21 @@ public class SessionWindowedKStreamImpl<K, V> extends AbstractStream<K, V> imple
         final long gracePeriod = windows.gracePeriodMs() + windows.inactivityGap();
 
         return aggregateBuilder.buildWindowed(
-            new NamedInternal(reduceName),
-            storeFactory.storeName(),
-            gracePeriod,
-            new KStreamSessionWindowAggregate<>(
-                windows,
-                storeFactory,
-                emitStrategy,
-                aggregateBuilder.reduceInitializer,
-                reduceAggregator,
-                mergerFromAggregator(reduceAggregator)
-            ),
-            materializedInternal.queryableStoreName(),
-            materializedInternal.keySerde() != null ? new WindowedSerdes.SessionWindowedSerde<>(materializedInternal.keySerde()) : null,
-            materializedInternal.valueSerde(),
-            false);
+                new NamedInternal(reduceName),
+                storeFactory.storeName(),
+                gracePeriod,
+                new KStreamSessionWindowAggregate<>(
+                        windows,
+                        storeFactory,
+                        emitStrategy,
+                        aggregateBuilder.reduceInitializer,
+                        reduceAggregator,
+                        mergerFromAggregator(reduceAggregator)
+                ),
+                materializedInternal.queryableStoreName(),
+                materializedInternal.keySerde() != null ? new WindowedSerdes.SessionWindowedSerde<>(materializedInternal.keySerde()) : null,
+                materializedInternal.valueSerde(),
+                false);
     }
 
     private Aggregator<K, V, V> aggregatorFromReducer(final Reducer<V> reducer) {
@@ -220,7 +220,7 @@ public class SessionWindowedKStreamImpl<K, V> extends AbstractStream<K, V> imple
         Objects.requireNonNull(sessionMerger, "sessionMerger can't be null");
         Objects.requireNonNull(materialized, "materialized can't be null");
         final MaterializedInternal<K, VOut, SessionStore<Bytes, byte[]>> materializedInternal =
-            new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
+                new MaterializedInternal<>(materialized, builder, AGGREGATE_NAME);
 
         if (materializedInternal.keySerde() == null) {
             materializedInternal.withKeySerde(keySerde);
@@ -231,20 +231,20 @@ public class SessionWindowedKStreamImpl<K, V> extends AbstractStream<K, V> imple
         final long gracePeriod = windows.gracePeriodMs() + windows.inactivityGap();
 
         return aggregateBuilder.buildWindowed(
-            new NamedInternal(aggregateName),
-            storeFactory.storeName(),
-            gracePeriod,
-            new KStreamSessionWindowAggregate<>(
-                windows,
-                storeFactory,
-                emitStrategy,
-                initializer,
-                aggregator,
-                sessionMerger),
-            materializedInternal.queryableStoreName(),
-            materializedInternal.keySerde() != null ? new WindowedSerdes.SessionWindowedSerde<>(materializedInternal.keySerde()) : null,
-            materializedInternal.valueSerde(),
-            false);
+                new NamedInternal(aggregateName),
+                storeFactory.storeName(),
+                gracePeriod,
+                new KStreamSessionWindowAggregate<>(
+                        windows,
+                        storeFactory,
+                        emitStrategy,
+                        initializer,
+                        aggregator,
+                        sessionMerger),
+                materializedInternal.queryableStoreName(),
+                materializedInternal.keySerde() != null ? new WindowedSerdes.SessionWindowedSerde<>(materializedInternal.keySerde()) : null,
+                materializedInternal.valueSerde(),
+                false);
     }
 
     @Override

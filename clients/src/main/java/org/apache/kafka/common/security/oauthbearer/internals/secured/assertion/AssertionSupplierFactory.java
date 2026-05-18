@@ -78,7 +78,7 @@ public class AssertionSupplierFactory {
      * @param cu   The configuration utilities containing assertion configuration
      * @param time The time source for generating timestamps in dynamically-created assertions
      * @return A closeable supplier that provides JWT assertion strings when invoked
-     * @throws ConfigException if required configuration is missing or invalid
+     * @throws ConfigException       if required configuration is missing or invalid
      * @throws JwtRetrieverException if assertion creation fails (wrapped in the returned supplier)
      */
     public static CloseableSupplier<String> create(ConfigurationUtils cu, Time time) {
@@ -94,10 +94,10 @@ public class AssertionSupplierFactory {
             String algorithm = cu.validateString(SASL_OAUTHBEARER_ASSERTION_ALGORITHM);
             File privateKeyFile = cu.validateFile(SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_FILE);
             Optional<String> passphrase = cu.containsKey(SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE) ?
-                Optional.of(cu.validatePassword(SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE)) :
-                Optional.empty();
+                    Optional.of(cu.validatePassword(SASL_OAUTHBEARER_ASSERTION_PRIVATE_KEY_PASSPHRASE)) :
+                    Optional.empty();
             LOG.debug("Configuring dynamic assertion creation using algorithm: {} and private key file: {}",
-                algorithm, privateKeyFile.getAbsolutePath());
+                    algorithm, privateKeyFile.getAbsolutePath());
             assertionCreator = new DefaultAssertionCreator(algorithm, privateKeyFile, passphrase);
             assertionJwtTemplate = layeredAssertionJwtTemplate(cu, time);
         }

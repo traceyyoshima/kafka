@@ -34,37 +34,35 @@ public class FutureUtils {
     /**
      * Wait for a future until a specific time in the future, with copious logging.
      *
-     * @param log           The slf4j object to use to log success and failure.
-     * @param action        The action we are waiting for.
-     * @param future        The future we are waiting for.
-     * @param deadline      The deadline in the future we are waiting for.
-     * @param time          The clock object.
-     *
-     * @return              The result of the future.
-     * @param <T>           The type of the future.
-     *
+     * @param log      The slf4j object to use to log success and failure.
+     * @param action   The action we are waiting for.
+     * @param future   The future we are waiting for.
+     * @param deadline The deadline in the future we are waiting for.
+     * @param time     The clock object.
+     * @param <T>      The type of the future.
+     * @return The result of the future.
      * @throws java.util.concurrent.TimeoutException If the future times out.
-     * @throws Throwable If the future fails. Note: we unwrap ExecutionException here.
+     * @throws Throwable                             If the future fails. Note: we unwrap ExecutionException here.
      */
     public static <T> T waitWithLogging(
-        Logger log,
-        String prefix,
-        String action,
-        CompletableFuture<T> future,
-        Deadline deadline,
-        Time time
+            Logger log,
+            String prefix,
+            String action,
+            CompletableFuture<T> future,
+            Deadline deadline,
+            Time time
     ) throws Throwable {
         log.info("{}Waiting for {}", prefix, action);
         try {
             T result = time.waitForFuture(future, deadline.nanoseconds());
             log.info("{}Finished waiting for {}", prefix, action);
             return result;
-        } catch (TimeoutException t)  {
+        } catch (TimeoutException t) {
             log.error("{}Timed out while waiting for {}", prefix, action, t);
             TimeoutException timeout = new TimeoutException("Timed out while waiting for " + action);
             timeout.setStackTrace(t.getStackTrace());
             throw timeout;
-        } catch (Throwable t)  {
+        } catch (Throwable t) {
             if (t instanceof ExecutionException executionException) {
                 t = executionException.getCause();
             }
@@ -76,13 +74,13 @@ public class FutureUtils {
     /**
      * Complete a given destination future when a source future is completed.
      *
-     * @param sourceFuture          The future to trigger off of.
-     * @param destinationFuture     The future to complete when the source future is completed.
-     * @param <T>                   The destination future type.
+     * @param sourceFuture      The future to trigger off of.
+     * @param destinationFuture The future to complete when the source future is completed.
+     * @param <T>               The destination future type.
      */
     public static <T> void chainFuture(
-        CompletableFuture<? extends T> sourceFuture,
-        CompletableFuture<T> destinationFuture
+            CompletableFuture<? extends T> sourceFuture,
+            CompletableFuture<T> destinationFuture
     ) {
         sourceFuture.whenComplete((BiConsumer<T, Throwable>) (val, throwable) -> {
             if (throwable != null) {
@@ -96,17 +94,17 @@ public class FutureUtils {
     /**
      * Given a list of CompletableFutures returns a single CompletableFuture combining them.
      *
-     * @param futures       The list of futures.
-     * @param init          The function to init the accumulator.
-     * @param add           The function to accumulate the results. The function
-     *                      takes the accumulator as a first argument and the new
-     *                      results as a second argument.
+     * @param futures The list of futures.
+     * @param init    The function to init the accumulator.
+     * @param add     The function to accumulate the results. The function
+     *                takes the accumulator as a first argument and the new
+     *                results as a second argument.
      * @return A new CompletableFuture.
      */
     public static <T> CompletableFuture<T> combineFutures(
-        List<CompletableFuture<T>> futures,
-        Supplier<T> init,
-        BiConsumer<T, T> add
+            List<CompletableFuture<T>> futures,
+            Supplier<T> init,
+            BiConsumer<T, T> add
     ) {
         final CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
         return allFutures.thenApply(v -> {
@@ -120,13 +118,13 @@ public class FutureUtils {
      * Applies the given exception handler to all the futures provided in the list
      * and returns a new list of futures.
      *
-     * @param futures   A list of futures.
-     * @param fn        A function taking an exception to handle it.
+     * @param futures A list of futures.
+     * @param fn      A function taking an exception to handle it.
      * @return A list of futures.
      */
     public static <T> List<CompletableFuture<T>> mapExceptionally(
-        List<CompletableFuture<T>> futures,
-        Function<Throwable, ? extends T> fn
+            List<CompletableFuture<T>> futures,
+            Function<Throwable, ? extends T> fn
     ) {
         final List<CompletableFuture<T>> results = new ArrayList<>(futures.size());
         futures.forEach(future -> results.add(future.exceptionally(fn)));

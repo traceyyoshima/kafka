@@ -37,7 +37,7 @@ public class PreparedTxnState {
     /**
      * Creates a new PreparedTxnState from a serialized string representation
      *
-     * @param serializedState               The serialized string to deserialize.
+     * @param serializedState The serialized string to deserialize.
      * @throws IllegalArgumentException if the serialized string is not in the expected format
      */
     public PreparedTxnState(String serializedState) {
@@ -59,7 +59,7 @@ public class PreparedTxnState {
             // Validate the producerId and epoch values.
             if (!(this.producerId >= 0 && this.epoch >= 0)) {
                 throw new IllegalArgumentException("Invalid producer ID and epoch values: " +
-                    producerId + ":" + epoch + ". Both must be >= 0");
+                        producerId + ":" + epoch + ". Both must be >= 0");
             }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid serialized transaction state format: " + serializedState, e);
@@ -69,8 +69,8 @@ public class PreparedTxnState {
     /**
      * Creates a new PreparedTxnState with the given producer ID and epoch
      *
-     * @param producerId        The producer ID
-     * @param epoch             The producer epoch
+     * @param producerId The producer ID
+     * @param epoch      The producer epoch
      */
     PreparedTxnState(long producerId, short epoch) {
         this.producerId = producerId;

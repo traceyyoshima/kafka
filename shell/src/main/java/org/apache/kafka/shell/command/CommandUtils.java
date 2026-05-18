@@ -35,9 +35,8 @@ public final class CommandUtils {
      * Empty strings will be removed.  If no paths are given, the current working
      * directory will be used.
      *
-     * @param paths     The input paths.  Non-null.
-     *
-     * @return          The output paths.
+     * @param paths The input paths.  Non-null.
+     * @return The output paths.
      */
     public static List<String> getEffectivePaths(List<String> paths) {
         List<String> effectivePaths = new ArrayList<>();
@@ -55,8 +54,8 @@ public final class CommandUtils {
     /**
      * Generate a list of potential completions for a prefix of a command name.
      *
-     * @param commandPrefix     The command prefix.  Non-null.
-     * @param candidates        The list to add the output completions to.
+     * @param commandPrefix The command prefix.  Non-null.
+     * @param candidates    The list to add the output completions to.
      */
     public static void completeCommand(String commandPrefix, List<Candidate> candidates) {
         String command = Commands.TYPES.ceilingKey(commandPrefix);
@@ -99,22 +98,22 @@ public final class CommandUtils {
     /**
      * Generate a list of potential completions for a path.
      *
-     * @param state             The MetadataShellState.
-     * @param pathPrefix        The path prefix.  Non-null.
-     * @param candidates        The list to add the output completions to.
+     * @param state      The MetadataShellState.
+     * @param pathPrefix The path prefix.  Non-null.
+     * @param candidates The list to add the output completions to.
      */
     public static void completePath(
-        MetadataShellState state,
-        String pathPrefix,
-        List<Candidate> candidates
+            MetadataShellState state,
+            String pathPrefix,
+            List<Candidate> candidates
     ) {
         state.visit(data -> {
             String absolutePath = pathPrefix.startsWith("/") ?
-                pathPrefix : data.workingDirectory() + "/" + pathPrefix;
+                    pathPrefix : data.workingDirectory() + "/" + pathPrefix;
             List<String> pathComponents = stripDotPathComponents(splitPath(absolutePath));
             MetadataNode directory = data.root();
             int numDirectories = pathPrefix.endsWith("/") ?
-                pathComponents.size() : pathComponents.size() - 1;
+                    pathComponents.size() : pathComponents.size() - 1;
             for (int i = 0; i < numDirectories; i++) {
                 MetadataNode node = directory.child(pathComponents.get(i));
                 if (node == null || !node.isDirectory()) {
@@ -145,7 +144,7 @@ public final class CommandUtils {
                     complete = false;
                 }
                 candidates.add(new Candidate(candidateBuilder.toString(),
-                    candidateBuilder.toString(), null, null, null, null, complete));
+                        candidateBuilder.toString(), null, null, null, null, complete));
                 candidate = children.higher(candidate);
             }
         });

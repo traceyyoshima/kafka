@@ -140,7 +140,7 @@ public enum ApiKeys {
     DELETE_SHARE_GROUP_OFFSETS(ApiMessageType.DELETE_SHARE_GROUP_OFFSETS);
 
     private static final Map<ApiMessageType.ListenerType, EnumSet<ApiKeys>> APIS_BY_LISTENER =
-        new EnumMap<>(ApiMessageType.ListenerType.class);
+            new EnumMap<>(ApiMessageType.ListenerType.class);
 
     static {
         for (ApiMessageType.ListenerType listenerType : ApiMessageType.ListenerType.values()) {
@@ -150,23 +150,31 @@ public enum ApiKeys {
 
     // The generator ensures every `ApiMessageType` has a unique id
     private static final Map<Integer, ApiKeys> ID_TO_TYPE = Arrays.stream(ApiKeys.values())
-        .collect(Collectors.toMap(key -> (int) key.id, Function.identity()));
+            .collect(Collectors.toMap(key -> (int) key.id, Function.identity()));
 
     // Versions 0-2 were removed in Apache Kafka 4.0, version 3 is the new baseline. Due to a bug in librdkafka,
     // version `0` has to be included in the api versions response (see KAFKA-18659). In order to achieve that,
     // we adjust `toApiVersion` to return `0` for the min version of `produce` in the broker listener.
     public static final short PRODUCE_API_VERSIONS_RESPONSE_MIN_VERSION = 0;
 
-    /** the permanent and immutable id of an API - this can't change ever */
+    /**
+     * the permanent and immutable id of an API - this can't change ever
+     */
     public final short id;
 
-    /** An english description of the api - used for debugging and metric names, it can potentially be changed via a KIP */
+    /**
+     * An english description of the api - used for debugging and metric names, it can potentially be changed via a KIP
+     */
     public final String name;
 
-    /** indicates if this is a ClusterAction request used only by brokers */
+    /**
+     * indicates if this is a ClusterAction request used only by brokers
+     */
     public final boolean clusterAction;
 
-    /** indicates whether the API is enabled for forwarding */
+    /**
+     * indicates whether the API is enabled for forwarding
+     */
     public final boolean forwardable;
 
     public final boolean requiresDelayedAllocation;
@@ -182,9 +190,9 @@ public enum ApiKeys {
     }
 
     ApiKeys(
-        ApiMessageType messageType,
-        boolean clusterAction,
-        boolean forwardable
+            ApiMessageType messageType,
+            boolean clusterAction,
+            boolean forwardable
     ) {
         this.messageType = messageType;
         this.id = messageType.apiKey();
@@ -267,10 +275,10 @@ public enum ApiKeys {
      * To workaround a critical bug in librdkafka, the api versions response is inconsistent with the actual versions
      * supported by `produce` - this method handles that. It should be called in the context of the api response protocol
      * handling.
-     *
+     * <p>
      * It should not be used by code generating protocol documentation - we keep that consistent with the actual versions
      * supported by `produce`.
-     *
+     * <p>
      * See `PRODUCE_API_VERSIONS_RESPONSE_MIN_VERSION` for details.
      */
     public Optional<ApiVersionsResponseData.ApiVersion> toApiVersionForApiResponse(boolean enableUnstableLastVersion,
@@ -283,18 +291,18 @@ public enum ApiKeys {
     }
 
     private Optional<ApiVersionsResponseData.ApiVersion> toApiVersion(boolean enableUnstableLastVersion,
-                                                                     Optional<ApiMessageType.ListenerType> listenerType) {
+                                                                      Optional<ApiMessageType.ListenerType> listenerType) {
         // see `PRODUCE_API_VERSIONS_RESPONSE_MIN_VERSION` for details on why we do this
         short oldestVersion = (this == PRODUCE && listenerType.map(l -> l == ApiMessageType.ListenerType.BROKER).orElse(false)) ?
-            PRODUCE_API_VERSIONS_RESPONSE_MIN_VERSION : oldestVersion();
+                PRODUCE_API_VERSIONS_RESPONSE_MIN_VERSION : oldestVersion();
         short latestVersion = latestVersion(enableUnstableLastVersion);
 
         // API is entirely disabled if latestStableVersion is smaller than oldestVersion.
         if (latestVersion >= oldestVersion) {
             return Optional.of(new ApiVersionsResponseData.ApiVersion()
-               .setApiKey(messageType.apiKey())
-               .setMinVersion(oldestVersion)
-               .setMaxVersion(latestVersion));
+                    .setApiKey(messageType.apiKey())
+                    .setMinVersion(oldestVersion)
+                    .setMaxVersion(latestVersion));
         } else {
             return Optional.empty();
         }
@@ -320,17 +328,17 @@ public enum ApiKeys {
         b.append("<th>Key</th>\n");
         b.append("</tr>");
         clientApis().stream()
-            .filter(apiKey -> apiKey.toApiVersion(false, Optional.empty()).isPresent())
-            .forEach(apiKey -> {
-                b.append("<tr>\n");
-                b.append("<td>");
-                b.append("<a href=\"#The_Messages_" + apiKey.name + "\">" + apiKey.name + "</a>");
-                b.append("</td>");
-                b.append("<td>");
-                b.append(apiKey.id);
-                b.append("</td>");
-                b.append("</tr>\n");
-            });
+                .filter(apiKey -> apiKey.toApiVersion(false, Optional.empty()).isPresent())
+                .forEach(apiKey -> {
+                    b.append("<tr>\n");
+                    b.append("<td>");
+                    b.append("<a href=\"#The_Messages_" + apiKey.name + "\">" + apiKey.name + "</a>");
+                    b.append("</td>");
+                    b.append("<td>");
+                    b.append(apiKey.id);
+                    b.append("</td>");
+                    b.append("</tr>\n");
+                });
         b.append("</tbody></table>\n");
         return b.toString();
     }
@@ -346,9 +354,9 @@ public enum ApiKeys {
             public void visit(Type field) {
                 // avoid BooleanExpressionComplexity checkstyle warning
                 boolean isBytesType = field == BYTES || field == NULLABLE_BYTES ||
-                    field == COMPACT_BYTES || field == COMPACT_NULLABLE_BYTES;
+                        field == COMPACT_BYTES || field == COMPACT_NULLABLE_BYTES;
                 boolean isRecordsType = field == RECORDS || field == NULLABLE_RECORDS ||
-                    field == COMPACT_RECORDS || field == COMPACT_NULLABLE_RECORDS;
+                        field == COMPACT_RECORDS || field == COMPACT_NULLABLE_RECORDS;
                 if (isBytesType || isRecordsType) {
                     hasBuffer.set(true);
                 }
@@ -376,8 +384,8 @@ public enum ApiKeys {
 
     private static EnumSet<ApiKeys> filterApisForListener(ApiMessageType.ListenerType listener) {
         List<ApiKeys> apis = Arrays.stream(ApiKeys.values())
-            .filter(apiKey -> apiKey.inScope(listener))
-            .collect(Collectors.toList());
+                .filter(apiKey -> apiKey.inScope(listener))
+                .collect(Collectors.toList());
         return EnumSet.copyOf(apis);
     }
 }

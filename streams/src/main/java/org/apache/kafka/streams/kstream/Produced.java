@@ -57,11 +57,12 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
 
     /**
      * Create a Produced instance with provided keySerde and valueSerde.
-     * @param keySerde      Serde to use for serializing the key
-     * @param valueSerde    Serde to use for serializing the value
-     * @param <K>           key type
-     * @param <V>           value type
-     * @return  A new {@link Produced} instance configured with keySerde and valueSerde
+     *
+     * @param keySerde   Serde to use for serializing the key
+     * @param valueSerde Serde to use for serializing the value
+     * @param <K>        key type
+     * @param <V>        value type
+     * @return A new {@link Produced} instance configured with keySerde and valueSerde
      * @see KStream#to(String, Produced)
      */
     public static <K, V> Produced<K, V> with(final Serde<K> keySerde,
@@ -71,15 +72,16 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
 
     /**
      * Create a Produced instance with provided keySerde, valueSerde, and partitioner.
-     * @param keySerde      Serde to use for serializing the key
-     * @param valueSerde    Serde to use for serializing the value
-     * @param partitioner   the function used to determine how records are distributed among partitions of the topic,
-     *                      if not specified and {@code keySerde} provides a {@link WindowedSerializer} for the key
-     *                      {@link WindowedStreamPartitioner} will be used&mdash;otherwise {@link DefaultStreamPartitioner}
-     *                      will be used
-     * @param <K>           key type
-     * @param <V>           value type
-     * @return  A new {@link Produced} instance configured with keySerde, valueSerde, and partitioner
+     *
+     * @param keySerde    Serde to use for serializing the key
+     * @param valueSerde  Serde to use for serializing the value
+     * @param partitioner the function used to determine how records are distributed among partitions of the topic,
+     *                    if not specified and {@code keySerde} provides a {@link WindowedSerializer} for the key
+     *                    {@link WindowedStreamPartitioner} will be used&mdash;otherwise {@link DefaultStreamPartitioner}
+     *                    will be used
+     * @param <K>         key type
+     * @param <V>         value type
+     * @return A new {@link Produced} instance configured with keySerde, valueSerde, and partitioner
      * @see KStream#to(String, Produced)
      */
     public static <K, V> Produced<K, V> with(final Serde<K> keySerde,
@@ -92,8 +94,8 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
      * Create an instance of {@link Produced} with provided processor name.
      *
      * @param processorName the processor name to be used. If {@code null} a default processor name will be generated
-     * @param <K>         key type
-     * @param <V>         value type
+     * @param <K>           key type
+     * @param <V>           value type
      * @return a new instance of {@link Produced}
      */
     public static <K, V> Produced<K, V> as(final String processorName) {
@@ -102,10 +104,11 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
 
     /**
      * Create a Produced instance with provided keySerde.
-     * @param keySerde      Serde to use for serializing the key
-     * @param <K>           key type
-     * @param <V>           value type
-     * @return  A new {@link Produced} instance configured with keySerde
+     *
+     * @param keySerde Serde to use for serializing the key
+     * @param <K>      key type
+     * @param <V>      value type
+     * @return A new {@link Produced} instance configured with keySerde
      * @see KStream#to(String, Produced)
      */
     public static <K, V> Produced<K, V> keySerde(final Serde<K> keySerde) {
@@ -114,10 +117,11 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
 
     /**
      * Create a Produced instance with provided valueSerde.
-     * @param valueSerde    Serde to use for serializing the key
-     * @param <K>           key type
-     * @param <V>           value type
-     * @return  A new {@link Produced} instance configured with valueSerde
+     *
+     * @param valueSerde Serde to use for serializing the key
+     * @param <K>        key type
+     * @param <V>        value type
+     * @return A new {@link Produced} instance configured with valueSerde
      * @see KStream#to(String, Produced)
      */
     public static <K, V> Produced<K, V> valueSerde(final Serde<V> valueSerde) {
@@ -126,12 +130,13 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
 
     /**
      * Create a Produced instance with provided partitioner.
-     * @param partitioner   the function used to determine how records are distributed among partitions of the topic,
-     *                      if not specified and the key serde provides a {@link WindowedSerializer} for the key
-     *                      {@link WindowedStreamPartitioner} will be used&mdash;otherwise {@link DefaultStreamPartitioner} will be used
-     * @param <K>           key type
-     * @param <V>           value type
-     * @return  A new {@link Produced} instance configured with partitioner
+     *
+     * @param partitioner the function used to determine how records are distributed among partitions of the topic,
+     *                    if not specified and the key serde provides a {@link WindowedSerializer} for the key
+     *                    {@link WindowedStreamPartitioner} will be used&mdash;otherwise {@link DefaultStreamPartitioner} will be used
+     * @param <K>         key type
+     * @param <V>         value type
+     * @return A new {@link Produced} instance configured with partitioner
      * @see KStream#to(String, Produced)
      */
     public static <K, V> Produced<K, V> streamPartitioner(final StreamPartitioner<? super K, ? super V> partitioner) {
@@ -140,9 +145,10 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
 
     /**
      * Produce records using the provided partitioner.
-     * @param partitioner   the function used to determine how records are distributed among partitions of the topic,
-     *                      if not specified and the key serde provides a {@link WindowedSerializer} for the key
-     *                      {@link WindowedStreamPartitioner} will be used&mdash;otherwise {@link DefaultStreamPartitioner} will be used
+     *
+     * @param partitioner the function used to determine how records are distributed among partitions of the topic,
+     *                    if not specified and the key serde provides a {@link WindowedSerializer} for the key
+     *                    {@link WindowedStreamPartitioner} will be used&mdash;otherwise {@link DefaultStreamPartitioner} will be used
      * @return this
      */
     public Produced<K, V> withStreamPartitioner(final StreamPartitioner<? super K, ? super V> partitioner) {
@@ -152,7 +158,8 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
 
     /**
      * Produce records using the provided valueSerde.
-     * @param valueSerde    Serde to use for serializing the value
+     *
+     * @param valueSerde Serde to use for serializing the value
      * @return this
      */
     public Produced<K, V> withValueSerde(final Serde<V> valueSerde) {
@@ -162,7 +169,8 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
 
     /**
      * Produce records using the provided keySerde.
-     * @param keySerde    Serde to use for serializing the key
+     *
+     * @param keySerde Serde to use for serializing the key
      * @return this
      */
     public Produced<K, V> withKeySerde(final Serde<K> keySerde) {
@@ -180,8 +188,8 @@ public class Produced<K, V> implements NamedOperation<Produced<K, V>> {
         }
         final Produced<?, ?> produced = (Produced<?, ?>) o;
         return Objects.equals(keySerde, produced.keySerde) &&
-               Objects.equals(valueSerde, produced.valueSerde) &&
-               Objects.equals(partitioner, produced.partitioner);
+                Objects.equals(valueSerde, produced.valueSerde) &&
+                Objects.equals(partitioner, produced.partitioner);
     }
 
     @Override

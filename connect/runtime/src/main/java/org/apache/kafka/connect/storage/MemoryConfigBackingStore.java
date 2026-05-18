@@ -198,9 +198,9 @@ public class MemoryConfigBackingStore implements ConfigBackingStore {
         private AppliedConnectorConfig appliedConnConfig;
 
         /**
-         * @param connConfig the connector's configuration
+         * @param connConfig  the connector's configuration
          * @param targetState the connector's initial {@link TargetState}; may be {@code null} in which case the default initial target state
-         * {@link TargetState#STARTED} will be used
+         *                    {@link TargetState#STARTED} will be used
          */
         public ConnectorState(Map<String, String> connConfig, TargetState targetState) {
             this.targetState = targetState == null ? TargetState.STARTED : targetState;
@@ -217,7 +217,7 @@ public class MemoryConfigBackingStore implements ConfigBackingStore {
     private static Map<ConnectorTaskId, Map<String, String>> taskConfigListAsMap(String connector, List<Map<String, String>> configs) {
         int index = 0;
         Map<ConnectorTaskId, Map<String, String>> result = new TreeMap<>();
-        for (Map<String, String> taskConfigMap: configs) {
+        for (Map<String, String> taskConfigMap : configs) {
             result.put(new ConnectorTaskId(connector, index++), taskConfigMap);
         }
         return result;

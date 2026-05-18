@@ -88,7 +88,7 @@ public class TopicMetadataFetcher {
      * Get metadata for all topics present in Kafka cluster.
      *
      * @param request The MetadataRequest to send
-     * @param timer Timer bounding how long this method can block
+     * @param timer   Timer bounding how long this method can block
      * @return The map of topics with their partition information
      */
     private Map<String, List<PartitionInfo>> getTopicMetadata(MetadataRequest.Builder request, Timer timer) {
@@ -154,6 +154,7 @@ public class TopicMetadataFetcher {
 
     /**
      * Send Metadata Request to the least loaded node in Kafka cluster asynchronously
+     *
      * @return A future that indicates result of sent metadata request
      */
     private RequestFuture<ClientResponse> sendMetadataRequest(MetadataRequest.Builder request) {

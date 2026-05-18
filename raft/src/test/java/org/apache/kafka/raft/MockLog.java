@@ -70,9 +70,9 @@ public class MockLog implements RaftLog {
     private boolean flushedSinceLastChecked = false;
 
     public MockLog(
-        TopicPartition topicPartition,
-        Uuid topicId,
-        LogContext logContext
+            TopicPartition topicPartition,
+            Uuid topicId,
+            LogContext logContext
     ) {
         this.topicPartition = topicPartition;
         this.topicId = topicId;
@@ -83,7 +83,7 @@ public class MockLog implements RaftLog {
     public void truncateTo(long offset) {
         if (offset < highWatermark.offset()) {
             throw new IllegalArgumentException("Illegal attempt to truncate to offset " + offset +
-                " which is below the current high watermark " + highWatermark);
+                    " which is below the current high watermark " + highWatermark);
         }
 
         logger.debug("Truncating log to end offset {}", offset);
@@ -97,8 +97,8 @@ public class MockLog implements RaftLog {
         AtomicBoolean truncated = new AtomicBoolean(false);
         latestSnapshotId().ifPresent(snapshotId -> {
             if (snapshotId.epoch() > logLastFetchedEpoch().orElse(0) ||
-                (snapshotId.epoch() == logLastFetchedEpoch().orElse(0) &&
-                 snapshotId.offset() > endOffset().offset())) {
+                    (snapshotId.epoch() == logLastFetchedEpoch().orElse(0) &&
+                            snapshotId.offset() > endOffset().offset())) {
 
                 logger.debug("Truncating to the latest snapshot at {}", snapshotId);
 
@@ -119,13 +119,13 @@ public class MockLog implements RaftLog {
     public void updateHighWatermark(LogOffsetMetadata offsetMetadata) {
         if (this.highWatermark.offset() > offsetMetadata.offset()) {
             throw new IllegalArgumentException("Non-monotonic update of current high watermark " +
-                highWatermark + " to new value " + offsetMetadata);
+                    highWatermark + " to new value " + offsetMetadata);
         } else if (offsetMetadata.offset() > endOffset().offset()) {
             throw new IllegalArgumentException("Attempt to update high watermark to " + offsetMetadata +
-                " which is larger than the current end offset " + endOffset());
+                    " which is larger than the current end offset " + endOffset());
         } else if (offsetMetadata.offset() < startOffset()) {
             throw new IllegalArgumentException("Attempt to update high watermark to " + offsetMetadata +
-                " which is smaller than the current start offset " + startOffset());
+                    " which is smaller than the current start offset " + startOffset());
         }
 
         assertValidHighWatermarkMetadata(offsetMetadata);
@@ -178,8 +178,8 @@ public class MockLog implements RaftLog {
             long entryId = ((MockOffsetMetadata) metadata).id;
             if (entryId != id) {
                 throw new IllegalArgumentException("High watermark " + offset +
-                    " metadata uuid " + id + " does not match the " +
-                    " log's record entry maintained uuid " + entryId);
+                        " metadata uuid " + id + " does not match the " +
+                        " log's record entry maintained uuid " + entryId);
             }
         });
     }
@@ -229,24 +229,24 @@ public class MockLog implements RaftLog {
     @Override
     public LogOffsetMetadata endOffset() {
         long nextOffset = lastEntry()
-            .map(entry -> entry.offset + 1)
-            .orElse(
-                latestSnapshotId()
-                    .map(OffsetAndEpoch::offset)
-                    .orElse(0L)
-            );
+                .map(entry -> entry.offset + 1)
+                .orElse(
+                        latestSnapshotId()
+                                .map(OffsetAndEpoch::offset)
+                                .orElse(0L)
+                );
         return new LogOffsetMetadata(nextOffset, Optional.of(new MockOffsetMetadata(nextId)));
     }
 
     @Override
     public long startOffset() {
         return firstEntry()
-            .map(entry -> entry.offset)
-            .orElse(
-                earliestSnapshotId()
-                    .map(OffsetAndEpoch::offset)
-                    .orElse(0L)
-            );
+                .map(entry -> entry.offset)
+                .orElse(
+                        earliestSnapshotId()
+                                .map(OffsetAndEpoch::offset)
+                                .orElse(0L)
+                );
     }
 
     private List<LogEntry> buildEntries(RecordBatch batch, Function<Record, Long> offsetSupplier) {
@@ -310,20 +310,20 @@ public class MockLog implements RaftLog {
                  * best we can do from this module.
                  */
                 throw new RuntimeException(
-                    String.format(
-                        "Illegal append at offset %s with current end offset of %s",
-                        batch.baseOffset(),
-                        endOffset().offset()
-                    )
+                        String.format(
+                                "Illegal append at offset %s with current end offset of %s",
+                                batch.baseOffset(),
+                                endOffset().offset()
+                        )
                 );
             } else if (isLeader && epoch != batch.partitionLeaderEpoch()) {
                 // the partition leader epoch is set and does not match the one set in the batch
                 throw new RuntimeException(
-                    String.format(
-                        "Epoch %s doesn't match batch leader epoch %s",
-                        epoch,
-                        batch.partitionLeaderEpoch()
-                    )
+                        String.format(
+                                "Epoch %s doesn't match batch leader epoch %s",
+                                epoch,
+                                batch.partitionLeaderEpoch()
+                        )
                 );
             } else if (!isLeader && batch.partitionLeaderEpoch() > epoch) {
                 /* To avoid inconsistent log replication, follower should only append record
@@ -335,16 +335,16 @@ public class MockLog implements RaftLog {
 
             hasBatches = true;
             LogBatch logBatch = new LogBatch(
-                batch.partitionLeaderEpoch(),
-                batch.isControlBatch(),
-                buildEntries(batch, Record::offset)
+                    batch.partitionLeaderEpoch(),
+                    batch.isControlBatch(),
+                    buildEntries(batch, Record::offset)
             );
 
             if (logger.isDebugEnabled()) {
                 logger.debug(
-                    "{} appending to the log {}",
-                    isLeader ? "Leader" : "Follower",
-                    logBatch
+                        "{} appending to the log {}",
+                        isLeader ? "Leader" : "Follower",
+                        logBatch
                 );
             }
 
@@ -402,19 +402,19 @@ public class MockLog implements RaftLog {
         }
 
         return batches.stream()
-            .filter(batch -> batch.lastOffset() >= startOffset && batch.lastOffset() < maxOffset)
-            .collect(Collectors.toList());
+                .filter(batch -> batch.lastOffset() >= startOffset && batch.lastOffset() < maxOffset)
+                .collect(Collectors.toList());
     }
 
     private void verifyOffsetInRange(long offset) {
         if (offset > endOffset().offset()) {
             throw new OffsetOutOfRangeException("Requested offset " + offset + " is larger than " +
-                "then log end offset " + endOffset().offset());
+                    "then log end offset " + endOffset().offset());
         }
 
         if (offset < this.startOffset()) {
             throw new OffsetOutOfRangeException("Requested offset " + offset + " is smaller than " +
-                "then log start offset " + this.startOffset());
+                    "then log start offset " + this.startOffset());
         }
     }
 
@@ -425,7 +425,7 @@ public class MockLog implements RaftLog {
         long maxOffset = isolation == Isolation.COMMITTED ? highWatermark.offset() : endOffset().offset();
         if (startOffset >= maxOffset) {
             return new LogFetchInfo(MemoryRecords.EMPTY, new LogOffsetMetadata(
-                startOffset, metadataForOffset(startOffset)));
+                    startOffset, metadataForOffset(startOffset)));
         }
 
         ByteBuffer buffer = ByteBuffer.allocate(512);
@@ -433,10 +433,10 @@ public class MockLog implements RaftLog {
         LogOffsetMetadata batchStartOffset = null;
 
         logger.debug(
-            "Looking for a batch that starts at {} and ends at {} for isolation {}",
-            startOffset,
-            maxOffset,
-            isolation
+                "Looking for a batch that starts at {} and ends at {} for isolation {}",
+                startOffset,
+                maxOffset,
+                isolation
         );
 
         for (LogBatch batch : batches) {
@@ -448,9 +448,9 @@ public class MockLog implements RaftLog {
             // maxTotalBatchBytes. To keep to that invariant, we exit the loop as soon as the buffer contains
             // more bytes than maxTotalBatchBytes.
             if (batch.lastOffset() >= startOffset
-                && batch.lastOffset() < maxOffset
-                && !batch.entries.isEmpty()
-                && buffer.position() < maxTotalBatchBytes) {
+                    && batch.lastOffset() < maxOffset
+                    && !batch.entries.isEmpty()
+                    && buffer.position() < maxTotalBatchBytes) {
                 buffer = batch.writeTo(buffer);
 
                 if (batchStartOffset == null) {
@@ -474,7 +474,7 @@ public class MockLog implements RaftLog {
 
         if (batchStartOffset == null) {
             throw new RuntimeException("Expected to find at least one entry starting from offset " +
-                startOffset + " but found none");
+                    startOffset + " but found none");
         }
 
         return new LogFetchInfo(records, batchStartOffset);
@@ -484,7 +484,7 @@ public class MockLog implements RaftLog {
     public void initializeLeaderEpoch(int epoch) {
         long startOffset = endOffset().offset();
         epochStartOffsets.removeIf(epochStartOffset ->
-            epochStartOffset.startOffset >= startOffset || epochStartOffset.epoch >= epoch);
+                epochStartOffset.startOffset >= startOffset || epochStartOffset.epoch >= epoch);
         epochStartOffsets.add(new EpochStartOffset(epoch, startOffset));
     }
 
@@ -492,9 +492,9 @@ public class MockLog implements RaftLog {
     public Optional<RawSnapshotWriter> createNewSnapshot(OffsetAndEpoch snapshotId) {
         if (snapshotId.offset() < startOffset()) {
             logger.info(
-                "Cannot create a snapshot with an id ({}) less than the log start offset ({})",
-                snapshotId,
-                startOffset()
+                    "Cannot create a snapshot with an id ({}) less than the log start offset ({})",
+                    snapshotId,
+                    startOffset()
             );
 
             return Optional.empty();
@@ -503,38 +503,38 @@ public class MockLog implements RaftLog {
         long highWatermarkOffset = highWatermark().offset();
         if (snapshotId.offset() > highWatermarkOffset) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Cannot create a snapshot with an id (%s) greater than the high-watermark (%s)",
-                    snapshotId,
-                    highWatermarkOffset
-                )
+                    String.format(
+                            "Cannot create a snapshot with an id (%s) greater than the high-watermark (%s)",
+                            snapshotId,
+                            highWatermarkOffset
+                    )
             );
         }
 
         ValidOffsetAndEpoch validOffsetAndEpoch = validateOffsetAndEpoch(snapshotId.offset(), snapshotId.epoch());
         if (validOffsetAndEpoch.kind() != ValidOffsetAndEpoch.Kind.VALID) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Snapshot id (%s) is not valid according to the log: %s",
-                    snapshotId,
-                    validOffsetAndEpoch
-                )
+                    String.format(
+                            "Snapshot id (%s) is not valid according to the log: %s",
+                            snapshotId,
+                            validOffsetAndEpoch
+                    )
             );
         }
 
         long baseOffset = read(
-            snapshotId.offset(),
-            Isolation.COMMITTED,
-            1 // Only needs to read the first batch.
+                snapshotId.offset(),
+                Isolation.COMMITTED,
+                1 // Only needs to read the first batch.
         ).startOffsetMetadata.offset();
         if (snapshotId.offset() != baseOffset) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Cannot create snapshot at offset (%s) because it is not batch aligned. " +
-                    "The batch containing the requested offset has a base offset of (%s)",
-                    snapshotId.offset(),
-                    baseOffset
-                )
+                    String.format(
+                            "Cannot create snapshot at offset (%s) because it is not batch aligned. " +
+                                    "The batch containing the requested offset has a base offset of (%s)",
+                            snapshotId.offset(),
+                            baseOffset
+                    )
             );
         }
 
@@ -547,9 +547,9 @@ public class MockLog implements RaftLog {
             return Optional.empty();
         } else {
             return Optional.of(
-                new MockRawSnapshotWriter(snapshotId, buffer ->
-                    snapshots.putIfAbsent(snapshotId, new MockRawSnapshotReader(snapshotId, buffer))
-                )
+                    new MockRawSnapshotWriter(snapshotId, buffer ->
+                            snapshots.putIfAbsent(snapshotId, new MockRawSnapshotReader(snapshotId, buffer))
+                    )
             );
         }
     }
@@ -567,36 +567,37 @@ public class MockLog implements RaftLog {
     @Override
     public Optional<OffsetAndEpoch> latestSnapshotId() {
         return Optional.ofNullable(snapshots.lastEntry())
-            .map(Map.Entry::getKey);
+                .map(Map.Entry::getKey);
     }
 
     @Override
     public Optional<OffsetAndEpoch> earliestSnapshotId() {
         return Optional.ofNullable(snapshots.firstEntry())
-            .map(Map.Entry::getKey);
+                .map(Map.Entry::getKey);
     }
 
     @Override
-    public void onSnapshotFrozen(OffsetAndEpoch snapshotId) {}
+    public void onSnapshotFrozen(OffsetAndEpoch snapshotId) {
+    }
 
     @Override
     public boolean deleteBeforeSnapshot(OffsetAndEpoch snapshotId) {
         if (startOffset() > snapshotId.offset()) {
             throw new OffsetOutOfRangeException(
-                String.format(
-                    "New log start (%s) is less than the current log start offset (%s)",
-                    snapshotId,
-                    startOffset()
-                )
+                    String.format(
+                            "New log start (%s) is less than the current log start offset (%s)",
+                            snapshotId,
+                            startOffset()
+                    )
             );
         }
         if (highWatermark.offset() < snapshotId.offset()) {
             throw new OffsetOutOfRangeException(
-                String.format(
-                    "New log start (%s) is greater than the high watermark (%s)",
-                    snapshotId,
-                    highWatermark.offset()
-                )
+                    String.format(
+                            "New log start (%s) is greater than the high watermark (%s)",
+                            snapshotId,
+                            highWatermark.offset()
+                    )
             );
         }
 
@@ -618,8 +619,8 @@ public class MockLog implements RaftLog {
             });
 
             last.get().ifPresent(epochStartOffset ->
-                epochStartOffsets.add(0, new EpochStartOffset(epochStartOffset.epoch, snapshotId.offset())
-                )
+                    epochStartOffsets.add(0, new EpochStartOffset(epochStartOffset.epoch, snapshotId.offset())
+                    )
             );
 
             updated = true;
@@ -631,11 +632,11 @@ public class MockLog implements RaftLog {
     @Override
     public String toString() {
         return String.format(
-            "MockLog(epochStartOffsets=%s, batches=%s, snapshots=%s, highWatermark=%s",
-            epochStartOffsets,
-            batches,
-            snapshots,
-            highWatermark
+                "MockLog(epochStartOffsets=%s, batches=%s, snapshots=%s, highWatermark=%s",
+                epochStartOffsets,
+                batches,
+                snapshots,
+                highWatermark
         );
     }
 
@@ -675,11 +676,11 @@ public class MockLog implements RaftLog {
             LogEntry first = first();
 
             MemoryRecordsBuilder builder = MemoryRecords.builder(
-                buffer, RecordBatch.CURRENT_MAGIC_VALUE, Compression.NONE,
-                TimestampType.CREATE_TIME, first.offset, first.record.timestamp(),
-                RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH,
-                RecordBatch.NO_SEQUENCE, false,
-                isControlBatch, epoch);
+                    buffer, RecordBatch.CURRENT_MAGIC_VALUE, Compression.NONE,
+                    TimestampType.CREATE_TIME, first.offset, first.record.timestamp(),
+                    RecordBatch.NO_PRODUCER_ID, RecordBatch.NO_PRODUCER_EPOCH,
+                    RecordBatch.NO_SEQUENCE, false,
+                    isControlBatch, epoch);
 
             for (LogEntry entry : entries) {
                 if (isControlBatch) {

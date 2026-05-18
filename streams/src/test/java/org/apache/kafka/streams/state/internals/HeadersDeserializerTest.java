@@ -60,7 +60,7 @@ public class HeadersDeserializerTest {
     @Test
     public void shouldRoundTripSingleHeader() {
         final Headers original = new RecordHeaders()
-            .add("key1", "value1".getBytes());
+                .add("key1", "value1".getBytes());
         final byte[] serialized = HeadersSerializer.serialize(original);
 
         final Headers deserialized = HeadersDeserializer.deserialize(serialized);
@@ -77,9 +77,9 @@ public class HeadersDeserializerTest {
     @Test
     public void shouldRoundTripMultipleHeaders() {
         final Headers original = new RecordHeaders()
-            .add("key0", "value0".getBytes())
-            .add("key1", "value1".getBytes())
-            .add("key2", "value2".getBytes());
+                .add("key0", "value0".getBytes())
+                .add("key1", "value1".getBytes())
+                .add("key2", "value2".getBytes());
         final byte[] serialized = HeadersSerializer.serialize(original);
 
         final Headers deserialized = HeadersDeserializer.deserialize(serialized);
@@ -98,7 +98,7 @@ public class HeadersDeserializerTest {
     @Test
     public void shouldRoundTripHeaderWithNullValue() {
         final Headers original = new RecordHeaders()
-            .add("key1", null);
+                .add("key1", null);
         final byte[] serialized = HeadersSerializer.serialize(original);
 
         final Headers deserialized = HeadersDeserializer.deserialize(serialized);
@@ -115,7 +115,7 @@ public class HeadersDeserializerTest {
     @Test
     public void shouldRoundTripHeaderWithEmptyValue() {
         final Headers original = new RecordHeaders()
-            .add("key1", new byte[0]);
+                .add("key1", new byte[0]);
         final byte[] serialized = HeadersSerializer.serialize(original);
 
         final Headers deserialized = HeadersDeserializer.deserialize(serialized);
@@ -132,11 +132,11 @@ public class HeadersDeserializerTest {
     @Test
     public void shouldAllowDuplicateKeys() {
         final Headers original = new RecordHeaders()
-            .add("key0", "value0".getBytes())
-            .add("key0", "value0".getBytes())
-            .add("key1", "value1".getBytes())
-            .add("key2", "value2".getBytes())
-            .add("key2", "value3".getBytes());
+                .add("key0", "value0".getBytes())
+                .add("key0", "value0".getBytes())
+                .add("key1", "value1".getBytes())
+                .add("key2", "value2".getBytes())
+                .add("key2", "value3".getBytes());
         final byte[] serialized = HeadersSerializer.serialize(original);
 
         final Headers deserialized = HeadersDeserializer.deserialize(serialized);

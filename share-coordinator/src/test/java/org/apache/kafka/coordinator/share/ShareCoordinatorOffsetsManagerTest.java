@@ -105,138 +105,138 @@ public class ShareCoordinatorOffsetsManagerTest {
 
     static Stream<ShareOffsetTestHolder> generateNoRedundantStateCases() {
         return Stream.of(
-            new ShareOffsetTestHolder(
-                "no redundant state single key.",
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L))
-                )
-            ),
+                new ShareOffsetTestHolder(
+                        "no redundant state single key.",
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L))
+                        )
+                ),
 
-            new ShareOffsetTestHolder(
-                "no redundant state single key with delete.",
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L), true)
-                )
-            ),
+                new ShareOffsetTestHolder(
+                        "no redundant state single key with delete.",
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L), true)
+                        )
+                ),
 
-            new ShareOffsetTestHolder(
-                "no redundant state multiple keys.",
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY4, 11L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 13L, Optional.of(10L))
-                )
-            ),
+                new ShareOffsetTestHolder(
+                        "no redundant state multiple keys.",
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY4, 11L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 13L, Optional.of(10L))
+                        )
+                ),
 
-            new ShareOffsetTestHolder(
-                "no redundant state multiple keys with delete.",
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L), true),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY4, 11L, Optional.of(11L), true),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 13L, Optional.of(13L), true)
+                new ShareOffsetTestHolder(
+                        "no redundant state multiple keys with delete.",
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L), true),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY4, 11L, Optional.of(11L), true),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 13L, Optional.of(13L), true)
+                        )
                 )
-            )
         );
     }
 
     static Stream<ShareOffsetTestHolder> generateRedundantStateCases() {
         return Stream.of(
-            new ShareOffsetTestHolder(
-                "redundant state single key.",
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 11L, Optional.of(11L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 15L, Optional.of(15L))
-                )
-            ),
+                new ShareOffsetTestHolder(
+                        "redundant state single key.",
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 11L, Optional.of(11L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 15L, Optional.of(15L))
+                        )
+                ),
 
-            new ShareOffsetTestHolder(
-                "redundant state multiple keys.",
-                // KEY1: 10 17
-                // KEY2: 11 16
-                // KEY3: 15
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 16L, Optional.of(10L)),  // KEY2 11 redundant but should not be returned
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 17L, Optional.of(15L))
-                )
-            ),
+                new ShareOffsetTestHolder(
+                        "redundant state multiple keys.",
+                        // KEY1: 10 17
+                        // KEY2: 11 16
+                        // KEY3: 15
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 16L, Optional.of(10L)),  // KEY2 11 redundant but should not be returned
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 17L, Optional.of(15L))
+                        )
+                ),
 
-            new ShareOffsetTestHolder(
-                "redundant state multiple keys with delete.",
-                // KEY1: 10 17
-                // KEY2: 11 16
-                // KEY3: 15
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L), true),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 16L, Optional.of(10L)),  // KEY2 11 redundant but should not be returned
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 17L, Optional.of(16L))   // Because we have removed KEY3 from calculation
+                new ShareOffsetTestHolder(
+                        "redundant state multiple keys with delete.",
+                        // KEY1: 10 17
+                        // KEY2: 11 16
+                        // KEY3: 15
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L), true),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 16L, Optional.of(10L)),  // KEY2 11 redundant but should not be returned
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 17L, Optional.of(16L))   // Because we have removed KEY3 from calculation
+                        )
                 )
-            )
         );
 
     }
 
     static Stream<ShareOffsetTestHolder> generateComplexCases() {
         return Stream.of(
-            new ShareOffsetTestHolder(
-                "redundant state reverse key order.",
-                // Requests come in order KEY1, KEY2, KEY3, KEY3, KEY2, KEY1.
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 18L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 20L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 25L, Optional.of(18L))
-                )
-            ),
+                new ShareOffsetTestHolder(
+                        "redundant state reverse key order.",
+                        // Requests come in order KEY1, KEY2, KEY3, KEY3, KEY2, KEY1.
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 18L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 20L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 25L, Optional.of(18L))
+                        )
+                ),
 
-            new ShareOffsetTestHolder(
-                "redundant state reverse key order with delete.",
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 18L, Optional.of(10L), true),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 20L, Optional.of(10L), true),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 25L, Optional.of(25L))   // Because KEY2 and KEY3 are gone.
-                )
-            ),
+                new ShareOffsetTestHolder(
+                        "redundant state reverse key order with delete.",
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 18L, Optional.of(10L), true),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 20L, Optional.of(10L), true),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 25L, Optional.of(25L))   // Because KEY2 and KEY3 are gone.
+                        )
+                ),
 
-            new ShareOffsetTestHolder(
-                "redundant state infrequently written partition.",
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 18L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 20L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 22L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 25L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 27L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 28L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 30L, Optional.of(27L))
-                )
-            ),
+                new ShareOffsetTestHolder(
+                        "redundant state infrequently written partition.",
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 18L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 20L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 22L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 25L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 27L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 28L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 30L, Optional.of(27L))
+                        )
+                ),
 
-            new ShareOffsetTestHolder(
-                "redundant state infrequently written partition with delete.",
-                List.of(
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 18L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY3, 20L, Optional.of(10L), true),    //KEY3 no longer party to calculation
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 22L, Optional.of(10L)),
-                    ShareOffsetTestHolder.TestTuple.instance(KEY2, 27L, Optional.of(10L), true),    //KEY2 no longer party to calculation
-                    ShareOffsetTestHolder.TestTuple.instance(KEY1, 30L, Optional.of(30L))
+                new ShareOffsetTestHolder(
+                        "redundant state infrequently written partition with delete.",
+                        List.of(
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 10L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 11L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 15L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 18L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY3, 20L, Optional.of(10L), true),    //KEY3 no longer party to calculation
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 22L, Optional.of(10L)),
+                                ShareOffsetTestHolder.TestTuple.instance(KEY2, 27L, Optional.of(10L), true),    //KEY2 no longer party to calculation
+                                ShareOffsetTestHolder.TestTuple.instance(KEY1, 30L, Optional.of(30L))
+                        )
                 )
-            )
         );
     }
 

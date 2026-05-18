@@ -55,7 +55,7 @@ public class ChangeLoggingVersionedKeyValueBytesStoreTest {
 
     private static final Serializer<String> STRING_SERIALIZER = new StringSerializer();
     private static final Serializer<ValueAndTimestamp<String>> VALUE_AND_TIMESTAMP_SERIALIZER
-        = new ValueAndTimestampSerializer<>(STRING_SERIALIZER);
+            = new ValueAndTimestampSerializer<>(STRING_SERIALIZER);
     private static final long HISTORY_RETENTION = 1000L;
 
     private final MockRecordCollector collector = new MockRecordCollector();
@@ -75,11 +75,11 @@ public class ChangeLoggingVersionedKeyValueBytesStoreTest {
 
     private InternalMockProcessorContext<String, Long> mockContext() {
         return new InternalMockProcessorContext<>(
-            TestUtils.tempDirectory(),
-            Serdes.String(),
-            Serdes.Long(),
-            collector,
-            new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
+                TestUtils.tempDirectory(),
+                Serdes.String(),
+                Serdes.Long(),
+                collector,
+                new ThreadCache(new LogContext("testCache "), 0, new MockStreamsMetrics(new Metrics()))
         );
     }
 
@@ -91,7 +91,7 @@ public class ChangeLoggingVersionedKeyValueBytesStoreTest {
     @Test
     public void shouldThrowIfInnerIsNotVersioned() {
         assertThrows(IllegalArgumentException.class,
-            () -> new ChangeLoggingVersionedKeyValueBytesStore(new InMemoryKeyValueStore("kv")));
+                () -> new ChangeLoggingVersionedKeyValueBytesStore(new InMemoryKeyValueStore("kv")));
     }
 
     @Test
@@ -171,8 +171,8 @@ public class ChangeLoggingVersionedKeyValueBytesStoreTest {
     @Test
     public void shouldNotLogOnPutAllIfInnerStoreThrows() {
         final List<KeyValue<Bytes, byte[]>> entries = Collections.singletonList(KeyValue.pair(
-            Bytes.wrap(rawBytes("k")),
-            rawValueAndTimestamp("v", 12L)));
+                Bytes.wrap(rawBytes("k")),
+                rawValueAndTimestamp("v", 12L)));
         assertThrows(UnsupportedOperationException.class, () -> inner.putAll(entries));
 
         assertThrows(UnsupportedOperationException.class, () -> store.putAll(entries));

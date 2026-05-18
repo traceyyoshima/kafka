@@ -29,31 +29,31 @@ import java.util.Random;
 /**
  * This class behaves identically to TimestampConstantPayloadGenerator, except the message size follows a gaussian
  * distribution.
- *
+ * <p>
  * This should be used in conjunction with TimestampRecordProcessor in the Consumer to measure true end-to-end latency
  * of a system.
- *
+ * <p>
  * `messageSizeAverage` - The average size in bytes of each message.
  * `messageSizeDeviation` - The standard deviation to use when calculating message size.
  * `messagesUntilSizeChange` - The number of messages to keep at the same size.
- *
+ * <p>
  * Here is an example spec:
- *
+ * <p>
  * {
- *    "type": "gaussianTimestampConstant",
- *    "messageSizeAverage": 512,
- *    "messageSizeDeviation": 100,
- *    "messagesUntilSizeChange": 100
+ * "type": "gaussianTimestampConstant",
+ * "messageSizeAverage": 512,
+ * "messageSizeDeviation": 100,
+ * "messagesUntilSizeChange": 100
  * }
- *
+ * <p>
  * This will generate messages on a gaussian distribution with an average size each 512-bytes. The message sizes will
  * have a standard deviation of 100 bytes, and the size will only change every 100 messages.  The distribution of
  * messages will be as follows:
- *
- *    The average size of the messages are 512 bytes.
- *    ~68% of the messages are between 412 and 612 bytes
- *    ~95% of the messages are between 312 and 712 bytes
- *    ~99% of the messages are between 212 and 812 bytes
+ * <p>
+ * The average size of the messages are 512 bytes.
+ * ~68% of the messages are between 412 and 612 bytes
+ * ~95% of the messages are between 312 and 712 bytes
+ * ~99% of the messages are between 212 and 812 bytes
  */
 
 public class GaussianTimestampConstantPayloadGenerator implements PayloadGenerator {

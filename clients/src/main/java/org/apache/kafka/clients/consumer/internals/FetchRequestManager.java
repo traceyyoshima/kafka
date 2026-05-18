@@ -73,8 +73,8 @@ public class FetchRequestManager extends AbstractFetch implements RequestManager
      * Signals the {@link Consumer} wants requests be created for the broker nodes to fetch the next
      * batch of records.
      *
-     * @see CreateFetchRequestsEvent
      * @return Future on which the caller can wait to ensure that the requests have been created
+     * @see CreateFetchRequestsEvent
      */
     public CompletableFuture<Void> createFetchRequests() {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -102,9 +102,9 @@ public class FetchRequestManager extends AbstractFetch implements RequestManager
     @Override
     public PollResult poll(long currentTimeMs) {
         return pollInternal(
-            this::prepareFetchRequests,
-            this::handleFetchSuccess,
-            this::handleFetchFailure
+                this::prepareFetchRequests,
+                this::handleFetchSuccess,
+                this::handleFetchFailure
         );
     }
 

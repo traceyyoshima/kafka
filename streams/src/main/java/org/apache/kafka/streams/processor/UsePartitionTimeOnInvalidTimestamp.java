@@ -47,9 +47,9 @@ public class UsePartitionTimeOnInvalidTimestamp extends ExtractRecordMetadataTim
     /**
      * Returns the current stream-time as new timestamp for the record.
      *
-     * @param record a data record
+     * @param record          a data record
      * @param recordTimestamp the timestamp extractor from the record
-     * @param partitionTime the highest extracted valid timestamp of the current record's partition˙ (could be -1 if unknown)
+     * @param partitionTime   the highest extracted valid timestamp of the current record's partition˙ (could be -1 if unknown)
      * @return the provided highest extracted valid timestamp as new timestamp for the record
      * @throws StreamsException if highest extracted valid timestamp is unknown
      */

@@ -247,9 +247,9 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStore<S extends Seg
         final String taskName = stateStoreContext.taskId().toString();
 
         expiredRecordSensor = TaskMetrics.droppedRecordsSensor(
-            threadId,
-            taskName,
-            metrics
+                threadId,
+                taskName,
+                metrics
         );
 
         segments.openExisting(internalProcessorContext, observedStreamTime);
@@ -258,17 +258,17 @@ public abstract class AbstractDualSchemaRocksDBSegmentedBytesStore<S extends Seg
 
         // register and possibly restore the state from the logs
         stateStoreContext.register(
-            root,
-            (RecordBatchingStateRestoreCallback) this::restoreAllInternal,
-            segments::writePosition
+                root,
+                (RecordBatchingStateRestoreCallback) this::restoreAllInternal,
+                segments::writePosition
         );
 
         open = true;
 
         consistencyEnabled = StreamsConfig.InternalConfig.getBoolean(
-            stateStoreContext.appConfigs(),
-            IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
-            false
+                stateStoreContext.appConfigs(),
+                IQ_CONSISTENCY_OFFSET_VECTOR_ENABLED,
+                false
         );
     }
 

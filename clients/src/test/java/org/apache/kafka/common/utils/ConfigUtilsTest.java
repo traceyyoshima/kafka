@@ -33,15 +33,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class ConfigUtilsTest {
 
     private static final ConfigDef CONFIG = new ConfigDef().
-        define("myPassword", Type.PASSWORD, Importance.HIGH, "").
-        define("myString", Type.STRING, Importance.HIGH, "").
-        define("myInt", Type.INT, Importance.HIGH, "").
-        define("myString2", Type.STRING, Importance.HIGH, "");
+            define("myPassword", Type.PASSWORD, Importance.HIGH, "").
+            define("myString", Type.STRING, Importance.HIGH, "").
+            define("myInt", Type.INT, Importance.HIGH, "").
+            define("myString2", Type.STRING, Importance.HIGH, "");
 
     @Test
     public void testConfigMapToRedactedStringForEmptyMap() {
         assertEquals("{}", ConfigUtils.
-            configMapToRedactedString(Collections.emptyMap(), CONFIG));
+                configMapToRedactedString(Collections.emptyMap(), CONFIG));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class ConfigUtilsTest {
         testMap1.put("myString2", null);
         testMap1.put("myUnknown", 456);
         assertEquals("{myInt=123, myPassword=(redacted), myString=\"whatever\", myString2=null, myUnknown=(redacted)}",
-            ConfigUtils.configMapToRedactedString(testMap1, CONFIG));
+                ConfigUtils.configMapToRedactedString(testMap1, CONFIG));
     }
 
     @Test

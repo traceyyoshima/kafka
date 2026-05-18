@@ -39,20 +39,20 @@ public class FakeKafkaConfigSchema {
 
     static {
         CONFIGS.put(BROKER, new ConfigDef().
-            define("unclean.leader.election.enable", BOOLEAN, "false", HIGH, "").
-            define("min.insync.replicas", INT, "1", HIGH, ""));
+                define("unclean.leader.election.enable", BOOLEAN, "false", HIGH, "").
+                define("min.insync.replicas", INT, "1", HIGH, ""));
         CONFIGS.put(TOPIC, new ConfigDef().
-            define("unclean.leader.election.enable", BOOLEAN, "false", HIGH, "").
-            define("min.insync.replicas", INT, "1", HIGH, ""));
+                define("unclean.leader.election.enable", BOOLEAN, "false", HIGH, "").
+                define("min.insync.replicas", INT, "1", HIGH, ""));
     }
 
     public static final Map<String, List<ConfigSynonym>> SYNONYMS = new HashMap<>();
 
     static {
         SYNONYMS.put("unclean.leader.election.enable",
-            List.of(new ConfigSynonym("unclean.leader.election.enable")));
+                List.of(new ConfigSynonym("unclean.leader.election.enable")));
         SYNONYMS.put("min.insync.replicas",
-            List.of(new ConfigSynonym("min.insync.replicas")));
+                List.of(new ConfigSynonym("min.insync.replicas")));
     }
 
     public static final KafkaConfigSchema INSTANCE = new KafkaConfigSchema(CONFIGS, SYNONYMS);

@@ -178,6 +178,7 @@ public class TaskHandle {
 
     /**
      * Returns the number of times the partition has been assigned to this (sink) task.
+     *
      * @param partition the partition
      * @return the number of times it has been assigned; may be 0 if never assigned
      */
@@ -187,6 +188,7 @@ public class TaskHandle {
 
     /**
      * Returns the number of times the partition has been revoked from this (sink) task.
+     *
      * @param partition the partition
      * @return the number of times it has been revoked; may be 0 if never revoked
      */
@@ -196,6 +198,7 @@ public class TaskHandle {
 
     /**
      * Returns the number of times the framework has committed offsets for this partition
+     *
      * @param partition the partition
      * @return the number of times it has been committed; may be 0 if never committed
      */
@@ -236,7 +239,7 @@ public class TaskHandle {
             throw new DataException(msg);
         }
         log.debug("Task {} saw {} records, expected {} records",
-                  taskId, expectedRecords - recordsRemainingLatch.getCount(), expectedRecords);
+                taskId, expectedRecords - recordsRemainingLatch.getCount(), expectedRecords);
     }
 
     /**
@@ -272,7 +275,7 @@ public class TaskHandle {
             throw new DataException(msg);
         }
         log.debug("Task {} saw {} records, expected {} records",
-                  taskId, expectedCommits - recordsToCommitLatch.getCount(), expectedCommits);
+                taskId, expectedCommits - recordsToCommitLatch.getCount(), expectedCommits);
     }
 
     /**
@@ -302,7 +305,7 @@ public class TaskHandle {
      * Obtain a {@link StartAndStopLatch} that can be used to wait until this task has completed the
      * expected number of starts.
      *
-     * @param expectedStarts    the expected number of starts
+     * @param expectedStarts the expected number of starts
      * @return the latch; never null
      */
     public StartAndStopLatch expectedStarts(int expectedStarts) {
@@ -313,7 +316,7 @@ public class TaskHandle {
      * Obtain a {@link StartAndStopLatch} that can be used to wait until this task has completed the
      * expected number of starts.
      *
-     * @param expectedStops    the expected number of stops
+     * @param expectedStops the expected number of stops
      * @return the latch; never null
      */
     public StartAndStopLatch expectedStops(int expectedStops) {

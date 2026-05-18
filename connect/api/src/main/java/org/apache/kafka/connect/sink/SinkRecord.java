@@ -104,7 +104,6 @@ public class SinkRecord extends ConnectRecord<SinkRecord> {
      * names when deployed to older Connect runtimes that do not support this method.
      *
      * @return the topic for this record before any transformations were applied
-     *
      * @since 3.6
      */
     public String originalTopic() {
@@ -137,7 +136,6 @@ public class SinkRecord extends ConnectRecord<SinkRecord> {
      * partitions when deployed to older Connect runtimes that do not support this method.
      *
      * @return the topic partition for this record before any transformations were applied
-     *
      * @since 3.6
      */
     public Integer originalKafkaPartition() {
@@ -170,7 +168,6 @@ public class SinkRecord extends ConnectRecord<SinkRecord> {
      * values when deployed to older Connect runtimes that do not support this method.
      *
      * @return the offset for this record before any transformations were applied
-     *
      * @since 3.6
      */
     public long originalKafkaOffset() {

@@ -43,7 +43,7 @@ import java.util.Set;
 import static java.util.Objects.requireNonNull;
 
 public class KTableSuppressProcessorSupplier<K, V> implements
-    KTableProcessorSupplier<K, V, K, V> {
+        KTableProcessorSupplier<K, V, K, V> {
     private final SuppressedInternal<K> suppress;
     private final StoreBuilder<?> storeBuilder;
     private final KTableImpl<K, ?, V> parentKTable;
@@ -156,10 +156,10 @@ public class KTableSuppressProcessorSupplier<K, V> implements
             super.init(context);
             internalProcessorContext = (InternalProcessorContext<K, Change<V>>) context;
             suppressionEmitSensor = ProcessorNodeMetrics.suppressionEmitSensor(
-                Thread.currentThread().getName(),
-                context.taskId().toString(),
-                internalProcessorContext.currentNode().name(),
-                internalProcessorContext.metrics()
+                    Thread.currentThread().getName(),
+                    context.taskId().toString(),
+                    internalProcessorContext.currentNode().name(),
+                    internalProcessorContext.metrics()
             );
 
             buffer = requireNonNull(context.getStateStore(storeName));
@@ -192,15 +192,15 @@ public class KTableSuppressProcessorSupplier<K, V> implements
                         return;
                     case SHUT_DOWN:
                         throw new StreamsException(String.format(
-                            "%s buffer exceeded its max capacity. Currently [%d/%d] records and [%d/%d] bytes.",
-                            internalProcessorContext.currentNode().name(),
-                            buffer.numRecords(), maxRecords,
-                            buffer.bufferSize(), maxBytes
+                                "%s buffer exceeded its max capacity. Currently [%d/%d] records and [%d/%d] bytes.",
+                                internalProcessorContext.currentNode().name(),
+                                buffer.numRecords(), maxRecords,
+                                buffer.bufferSize(), maxBytes
                         ));
                     default:
                         throw new UnsupportedOperationException(
-                            "The bufferFullStrategy [" + bufferFullStrategy +
-                                "] is not implemented. This is a bug in Kafka Streams."
+                                "The bufferFullStrategy [" + bufferFullStrategy +
+                                        "] is not implemented. This is a bug in Kafka Streams."
                         );
                 }
             }
@@ -216,8 +216,8 @@ public class KTableSuppressProcessorSupplier<K, V> implements
                 internalProcessorContext.setRecordContext(toEmit.recordContext());
                 try {
                     internalProcessorContext.forward(toEmit.record()
-                        .withTimestamp(toEmit.recordContext().timestamp())
-                        .withHeaders(toEmit.recordContext().headers()));
+                            .withTimestamp(toEmit.recordContext().timestamp())
+                            .withHeaders(toEmit.recordContext().headers()));
                     suppressionEmitSensor.record(1.0d, internalProcessorContext.currentSystemTimeMs());
                 } finally {
                     internalProcessorContext.setRecordContext(prevRecordContext);

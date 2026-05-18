@@ -58,7 +58,7 @@ public class HeartbeatRequest extends AbstractRequest {
     @Override
     public AbstractResponse getErrorResponse(int throttleTimeMs, Throwable e) {
         HeartbeatResponseData responseData = new HeartbeatResponseData().
-            setErrorCode(Errors.forException(e).code());
+                setErrorCode(Errors.forException(e).code());
         if (version() >= 1) {
             responseData.setThrottleTimeMs(throttleTimeMs);
         }

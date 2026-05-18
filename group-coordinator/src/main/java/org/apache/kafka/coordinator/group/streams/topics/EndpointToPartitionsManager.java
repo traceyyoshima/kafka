@@ -46,9 +46,9 @@ public class EndpointToPartitionsManager {
      * @return An Optional containing the EndpointToPartitions if the member has an endpoint, empty otherwise.
      */
     public static Optional<StreamsGroupHeartbeatResponseData.EndpointToPartitions> maybeEndpointToPartitions(
-        final StreamsGroupMember streamsGroupMember,
-        final StreamsGroup streamsGroup,
-        final CoordinatorMetadataImage metadataImage
+            final StreamsGroupMember streamsGroupMember,
+            final StreamsGroup streamsGroup,
+            final CoordinatorMetadataImage metadataImage
     ) {
         Optional<StreamsGroupMemberMetadataValue.Endpoint> endpointOptional = streamsGroupMember.userEndpoint();
         if (endpointOptional.isEmpty()) {
@@ -69,10 +69,10 @@ public class EndpointToPartitionsManager {
                                                                                               final CoordinatorMetadataImage metadataImage) {
         StreamsGroupHeartbeatResponseData.EndpointToPartitions endpointToPartitions = new StreamsGroupHeartbeatResponseData.EndpointToPartitions();
         Map<String, Set<Integer>> activeTasks = streamsGroupMember.assignedTasks().activeTasksWithEpochs().entrySet().stream()
-            .collect(java.util.stream.Collectors.toUnmodifiableMap(
-                Map.Entry::getKey,
-                entry -> entry.getValue().keySet()
-            ));
+                .collect(java.util.stream.Collectors.toUnmodifiableMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().keySet()
+                ));
         Map<String, Set<Integer>> standbyTasks = streamsGroupMember.assignedTasks().standbyTasks();
         endpointToPartitions.setUserEndpoint(responseEndpoint);
         Map<String, ConfiguredSubtopology> configuredSubtopologies = streamsGroup.configuredTopology().flatMap(ConfiguredTopology::subtopologies).get();

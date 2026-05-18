@@ -43,8 +43,8 @@ public abstract class DeleteGroupsHandler extends AdminApiHandler.Batched<Coordi
     private final AdminApiLookupStrategy<CoordinatorKey> lookupStrategy;
 
     public DeleteGroupsHandler(
-        LogContext logContext,
-        Class<?> loggerClass
+            LogContext logContext,
+            Class<?> loggerClass
     ) {
         this.log = logContext.logger(loggerClass);
         this.lookupStrategy = new CoordinatorStrategy(FindCoordinatorRequest.CoordinatorType.GROUP, logContext);
@@ -60,33 +60,33 @@ public abstract class DeleteGroupsHandler extends AdminApiHandler.Batched<Coordi
     }
 
     public static AdminApiFuture.SimpleAdminApiFuture<CoordinatorKey, Void> newFuture(
-        Collection<String> groupIds
+            Collection<String> groupIds
     ) {
         return AdminApiFuture.forKeys(buildKeySet(groupIds));
     }
 
     private static Set<CoordinatorKey> buildKeySet(Collection<String> groupIds) {
         return groupIds.stream()
-            .map(CoordinatorKey::byGroupId)
-            .collect(Collectors.toSet());
+                .map(CoordinatorKey::byGroupId)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public DeleteGroupsRequest.Builder buildBatchedRequest(
-        int coordinatorId,
-        Set<CoordinatorKey> keys
+            int coordinatorId,
+            Set<CoordinatorKey> keys
     ) {
         List<String> groupIds = keys.stream().map(key -> key.idValue).collect(Collectors.toList());
         DeleteGroupsRequestData data = new DeleteGroupsRequestData()
-            .setGroupsNames(groupIds);
+                .setGroupsNames(groupIds);
         return new DeleteGroupsRequest.Builder(data);
     }
 
     @Override
     public ApiResult<CoordinatorKey, Void> handleResponse(
-        Node coordinator,
-        Set<CoordinatorKey> groupIds,
-        AbstractResponse abstractResponse
+            Node coordinator,
+            Set<CoordinatorKey> groupIds,
+            AbstractResponse abstractResponse
     ) {
         final DeleteGroupsResponse response = (DeleteGroupsResponse) abstractResponse;
         final Map<CoordinatorKey, Void> completed = new HashMap<>();
@@ -108,10 +108,10 @@ public abstract class DeleteGroupsHandler extends AdminApiHandler.Batched<Coordi
     }
 
     private void handleError(
-        CoordinatorKey groupId,
-        Errors error,
-        Map<CoordinatorKey, Throwable> failed,
-        Set<CoordinatorKey> groupsToUnmap
+            CoordinatorKey groupId,
+            Errors error,
+            Map<CoordinatorKey, Throwable> failed,
+            Set<CoordinatorKey> groupsToUnmap
     ) {
         switch (error) {
             case GROUP_AUTHORIZATION_FAILED:
@@ -125,7 +125,7 @@ public abstract class DeleteGroupsHandler extends AdminApiHandler.Batched<Coordi
             case COORDINATOR_LOAD_IN_PROGRESS:
                 // If the coordinator is in the middle of loading, then we just need to retry
                 log.debug("`{}` request for group id {} failed because the coordinator " +
-                    "is still in the process of loading state. Will retry", displayName(), groupId.idValue);
+                        "is still in the process of loading state. Will retry", displayName(), groupId.idValue);
                 break;
 
             case COORDINATOR_NOT_AVAILABLE:
@@ -133,7 +133,7 @@ public abstract class DeleteGroupsHandler extends AdminApiHandler.Batched<Coordi
                 // If the coordinator is unavailable or there was a coordinator change, then we unmap
                 // the key so that we retry the `FindCoordinator` request
                 log.debug("`{}` request for group id {} returned error {}. " +
-                    "Will attempt to find the coordinator again and retry", displayName(), groupId.idValue, error);
+                        "Will attempt to find the coordinator again and retry", displayName(), groupId.idValue, error);
                 groupsToUnmap.add(groupId);
                 break;
 

@@ -53,7 +53,9 @@ import static org.apache.kafka.connect.mirror.MirrorSourceMetrics.REPLICATION_LA
 import static org.apache.kafka.connect.mirror.MirrorSourceMetrics.REPLICATION_LATENCY_MS_MIN;
 import static org.apache.kafka.connect.mirror.MirrorSourceMetrics.REPLICATION_LATENCY_MS_MIN_DESCRIPTION;
 
-/** Metrics for replicated topic-partitions */
+/**
+ * Metrics for replicated topic-partitions
+ */
 class MirrorSourceLegacyMetrics implements AutoCloseable {
 
     private static final String SOURCE_CONNECTOR_GROUP = MirrorSourceConnector.class.getSimpleName();
@@ -114,8 +116,8 @@ class MirrorSourceLegacyMetrics implements AutoCloseable {
 
         ReplicationPolicy replicationPolicy = taskConfig.replicationPolicy();
         partitionMetrics = taskConfig.taskTopicPartitions().stream()
-            .map(x -> new TopicPartition(replicationPolicy.formatRemoteTopic(source, x.topic()), x.partition()))
-            .collect(Collectors.toMap(x -> x, PartitionMetrics::new));
+                .map(x -> new TopicPartition(replicationPolicy.formatRemoteTopic(source, x.topic()), x.partition()))
+                .collect(Collectors.toMap(x -> x, PartitionMetrics::new));
     }
 
     @Override
@@ -154,7 +156,7 @@ class MirrorSourceLegacyMetrics implements AutoCloseable {
 
             Map<String, String> tags = new LinkedHashMap<>();
             tags.put("source", source);
-            tags.put("target", target); 
+            tags.put("target", target);
             tags.put("topic", topicPartition.topic());
             tags.put("partition", Integer.toString(topicPartition.partition()));
 
